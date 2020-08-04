@@ -1,0 +1,50 @@
+namespace Flux
+{
+  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
+  public static partial class XtensionsArray
+  {
+    /// <summary>Returns the array as a sequence of one-dimensional arrays (i.e. jagged).</summary>
+    public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
+
+      var jagged = new T[source.GetLength(dimension)][];
+
+      var sourceLength0 = source.GetLength(0);
+      var sourceLength1 = source.GetLength(1);
+
+      switch (dimension)
+      {
+        case 0:
+          for (int s0 = 0; s0 < sourceLength0; s0++)
+          {
+            var jaggedDimension = new T[sourceLength1];
+
+            for (var s1 = 0; s1 < sourceLength1; s1++)
+            {
+              jaggedDimension[s1] = source[s0, s1];
+            }
+
+            jagged[s0] = jaggedDimension;
+          }
+          break;
+        case 1:
+          for (var s1 = 0; s1 < sourceLength1; s1++)
+          {
+            var jaggedDimension = new T[sourceLength0];
+
+            for (var s0 = 0; s0 < sourceLength0; s0++)
+            {
+              jaggedDimension[s0] = source[s0, s1];
+            }
+
+            jagged[s1] = jaggedDimension;
+          }
+          break;
+      }
+
+      return jagged;
+    }
+  }
+}

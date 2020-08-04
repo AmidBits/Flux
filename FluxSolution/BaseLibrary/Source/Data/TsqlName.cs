@@ -1,0 +1,182 @@
+using System.Linq;
+
+namespace Flux.Data
+{
+  public static partial class ExtensionMethodsData
+  {
+    /// System.Data.SqlClient is not in .NetStandard OBVIOUSLY! :)
+    /// static System.Reflection.FieldInfo _rowsCopiedField = null;
+    //public static int TotalRowsCopied(this System.Data.SqlClient.SqlBulkCopy bulkCopy)
+    //  => (int)typeof(System.Data.SqlClient.SqlBulkCopy).GetField(@"_rowsCopied", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance).GetValue(bulkCopy);
+
+    public static string EscapeTsql(this string source) => source.Replace("'", "''");
+    public static string UnescapeTsql(this string source) => source.Replace("''", "'");
+
+    public static string QuoteTsql(this string source, bool ansi = false) => ansi ? source.Wrap('"', '"') : source.Wrap('[', ']');
+    public static string UnquoteTsql(this string source) => source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source;
+  }
+
+  public struct TsqlName
+    : System.IEquatable<TsqlName>
+  {
+    private readonly string[] m_parts;
+
+    /// <summary>Returns the sql instance.</summary>
+    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.UnquoteTsql(); }
+    /// <summary>Returns the sql instance qouted.</summary>
+    public string ServerNameQuoted
+      => m_parts[0].QuoteTsql();
+
+    /// <summary>Returns the database name.</summary>
+    public string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.UnquoteTsql(); }
+    /// <summary>Returns the database name quoted.</summary>
+    public string DatabaseNameQuoted
+      => m_parts[1].QuoteTsql();
+
+    /// <summary>Returns the schema name.</summary>
+    public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.UnquoteTsql(); }
+    /// <summary>Returns the schema name quoted.</summary>
+    public string SchemaNameQuoted
+      => m_parts[2].QuoteTsql();
+
+    /// <summary>Returns the object name.</summary>
+    public string ObjectName { get => m_parts[3]; set => m_parts[3] = value.UnquoteTsql(); }
+    /// <summary>Returns the object name quoted.</summary>
+    public string ObjectNameQuoted
+      => m_parts[3].QuoteTsql();
+
+    public string QualifiedName(int count)
+      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count)) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
+    public string QualifiedNameQuoted(int count)
+      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.QuoteTsql())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
+
+    /// <summary></summary>
+    public string? ApplicationName { get; set; }
+
+    /// <summary></summary>
+    public TsqlName DefaultMergeName
+      => new TsqlName() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
+
+    /// <summary></summary>
+    public string? WorkstationID { get; set; }
+
+    public const string CsApplicationName = @"Application Name";
+    public const string CsDatabase = @"Database";
+    public const string CsDataSource = @"Data Source";
+    public const string CsDriver = @"Driver";
+    public const string CsInitialCatalog = @"Initial Catalog";
+    public const string CsIntegratedSecurity = @"Integrated Security";
+    public const string CsProvider = @"Provider";
+    public const string CsServer = @"Server";
+    public const string CsTrustedConnection = @"Trusted_Connection";
+    public const string CsWorkstationID = @"Workstation ID";
+
+    /// <summary></summary>
+    /// <remarks>return $"Driver=SQL Server;Server={ServerName};Database={DatabaseName};Trusted_Connection=Yes;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
+    public string TrustedConnectionStringOdbc
+    {
+      get
+      {
+        var csb = new System.Data.Common.DbConnectionStringBuilder
+        {
+          { CsDriver, @"SQL Server" },
+          { CsServer, ServerName },
+          { CsDatabase, DatabaseName },
+          { CsTrustedConnection, @"Yes" }
+        };
+        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        return csb.ToString();
+      }
+    }
+    /// <summary></summary>
+    /// <remarks>return $"Provider=SQLOLEDB;Data Source={ServerName};Initial Catalog={DatabaseName};Trusted_Connection=Yes;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
+    public string TrustedConnectionStringOleDb
+    {
+      get
+      {
+        var csb = new System.Data.Common.DbConnectionStringBuilder
+        {
+          { CsProvider, @"SQLOLEDB" },
+          { CsDataSource, ServerName },
+          { CsInitialCatalog, DatabaseName },
+          { CsTrustedConnection, @"Yes" }
+        };
+        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        return csb.ToString();
+      }
+    }
+    /// <summary></summary>
+    /// <remarks>return $"Data Source={ServerName};Initial Catalog={DatabaseName};Integrated Security=True;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
+    public string TrustedConnectionStringSqlClient
+    {
+      get
+      {
+        var csb = new System.Data.Common.DbConnectionStringBuilder
+        {
+          { CsDataSource, ServerName },
+          { CsInitialCatalog, DatabaseName },
+          { CsIntegratedSecurity, @"True" }
+        };
+        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        return csb.ToString();
+      }
+    }
+
+    public TsqlName(string serverName, string databaseName, string schemaName, string objectName)
+    {
+      m_parts = new string[4] { serverName.UnquoteTsql(), databaseName.UnquoteTsql(), schemaName.UnquoteTsql(), objectName.UnquoteTsql() };
+
+      ApplicationName = Flux.Reflection.AssemblyInfo.EntryAssembly.Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
+      WorkstationID = System.Environment.MachineName;
+    }
+
+    private readonly static System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new System.Text.RegularExpressions.Regex(@"(?<!\[[^\]])\.(?![^\[]*\])");
+
+    public static TsqlName Parse(string qualifiedName)
+    {
+      var names = m_reQualifiedNameSplitter.Split(qualifiedName);
+
+      if (names.Length >= 1 && names.Length <= 4)
+      {
+        if (names.Length < 4)
+        {
+          names = names.Select(n => n.UnquoteTsql()).Prepend(new string[4 - names.Length]).Select(n => n is null ? string.Empty : n).ToArray();
+        }
+      }
+      else throw new System.ArgumentOutOfRangeException(nameof(qualifiedName), "The name cannot be parsed.");
+
+      return new TsqlName(names[0], names[1], names[2], names[3]);
+    }
+    public static bool TryParse(string qualifiedName, out TsqlName? result)
+    {
+      try
+      {
+        result = Parse(qualifiedName);
+        return true;
+      }
+      catch { }
+
+      result = default;
+      return false;
+    }
+
+    // System.IEquatable<SqlName>
+    public bool Equals(TsqlName other)
+      => ToString() == other.ToString();
+    // System.Object Overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlName && ((TsqlName)obj) is var sn ? this.Equals(sn) : false;
+    public override int GetHashCode()
+      => ToString().GetHashCode();
+    public override string ToString()
+      => QualifiedNameQuoted(4);
+    // Operators
+    public static bool operator ==(TsqlName left, TsqlName right)
+      => left.Equals(right);
+    public static bool operator !=(TsqlName left, TsqlName right)
+      => !left.Equals(right);
+  }
+}
