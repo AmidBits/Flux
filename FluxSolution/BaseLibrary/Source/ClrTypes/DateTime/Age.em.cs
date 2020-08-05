@@ -14,7 +14,7 @@ namespace Flux
 
       var last = source.AddYears(ageInYears); // This is the most recent "birthday" (either direction).
 
-      return ageInYears + (((target - last).TotalDays * sign) / (last.AddYears(sign) - last).TotalDays);
+      return ageInYears + ((target - last).TotalDays * sign / (last.AddYears(sign) - last).TotalDays);
     }
 
     /// <summary>Determines the life time in integer years (age) between the source (e.g. a birth) and the specified target (e.g. a birthday). I.e. the typical western way of calculating age. Work in either direction.</summary>
