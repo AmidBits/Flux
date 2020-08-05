@@ -1,6 +1,7 @@
 ﻿using Flux;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace ConsoleApp
 {
@@ -8,6 +9,33 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var x = " Blañk";
+      var y = "blank";
+     
+      System.Console.WriteLine(x);
+      System.Console.WriteLine(y);
+      var a = new ReadOnlySpan<string>(x.Select(c => c.ToString()).ToArray());
+      var b = new ReadOnlySpan<string>(y.Select(c => c.ToString()).ToArray());
+
+      //a = "AGGTAB".AsSpan();
+      //b = "GXTXAYB".AsSpan();
+      System.Console.WriteLine(a.ToString());
+      System.Console.WriteLine(b.ToString());
+
+      System.Console.WriteLine($"DamerauLevenshteinDistance: {a.DamerauLevenshteinDistance(b, Flux.StringComparer.CurrentCulture)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"   JackardIndexCoefficient: {a.JackardIndexCoefficient(b, Flux.StringComparer.CurrentCulture)}, {a.JackardIndexCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.JackardIndexCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.JackardIndexCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"     JaroWinklerSimilarity: {a.JaroWinklerSimilarity(b, Flux.StringComparer.CurrentCulture)}, {a.JaroWinklerSimilarity(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.JaroWinklerSimilarity(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.JaroWinklerSimilarity(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"       LevenshteinDistance: {a.LevenshteinDistance(b, Flux.StringComparer.CurrentCulture)}, {a.LevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.LevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.LevenshteinDistance(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"  LongestCommonSubsequence: {a.LongestCommonSubsequence(b, Flux.StringComparer.CurrentCulture)}, {a.LongestCommonSubsequence(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.LongestCommonSubsequence(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubsequence(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"    LongestCommonSubstring: {a.LongestCommonSubstring(b, Flux.StringComparer.CurrentCulture)}, {a.LongestCommonSubstring(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.LongestCommonSubstring(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubstring(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"    OptimalStringAlignment: {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCulture)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"        OverlapCoefficient: {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCulture)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"         SørensenDiceIndex: {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCulture)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
+      System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
+      System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
+      System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
+      return;
+
       foreach (var data in Flux.Resources.Ucd.Blocks.GetData(Flux.Resources.Ucd.Blocks.LocalUri))
       {
         System.Console.WriteLine(string.Join('|', data));

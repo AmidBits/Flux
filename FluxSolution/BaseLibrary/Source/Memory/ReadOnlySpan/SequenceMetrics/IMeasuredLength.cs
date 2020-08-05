@@ -7,7 +7,7 @@ namespace Flux.SequenceMetrics
     /// <param name="source">The primary sequence.</param>
     /// <param name="target">The secondary sequence.</param>
     /// <returns>A measure that represents a length in relation to the two specified sequences.</returns>
-		int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer);
+		int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
     int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
     //=> GetMeasuredLength(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }

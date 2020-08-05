@@ -9,7 +9,7 @@ namespace Flux.SequenceMetrics
     /// <param name="target">The secondary sequence.</param>
     /// <returns>A metric representing a SMD in relation to the two sequences. The simple matching coefficient (SMC) can be derived by (1 - SMD).</returns>
     /// <remarks>The SMC can be derived from (1 - ISimpleMatchingDistance). The SMC can be derived from (IMetricDistance / Max(a, b)).</remarks>
-		double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer);
+		double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
     double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
     //=> GetSimpleMatchingCoefficient(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
@@ -23,7 +23,7 @@ namespace Flux.SequenceMetrics
     /// <param name="target">The secondary sequence.</param>
     /// <returns>A metric representing a SMD in relation to the two sequences. The simple matching distance (SMD) can be derived by (1 - SMC).</returns>
     /// <remarks>The SMD can be derived from (1 - ISimpleMatchingCoefficient). The SMD can be derived from (IMetricDistance / Max(a, b)).</remarks>
-		double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer);
+		double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
     double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
     //=> GetSimpleMatchingDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }

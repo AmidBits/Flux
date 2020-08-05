@@ -10,7 +10,7 @@ namespace Flux.SequenceMetrics
     /// <param name="target">The secondary sequence.</param>
     /// <returns>The edit distance, i.e. the minimum-weight series of edit operations that transforms one sequence into the other.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Edit_distance"/>
-    int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer);
+    int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
     int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
     //=> GetMetricDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }

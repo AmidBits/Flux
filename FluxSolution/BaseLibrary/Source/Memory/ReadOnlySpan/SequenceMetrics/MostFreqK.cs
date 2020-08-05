@@ -44,7 +44,7 @@ namespace Flux.SequenceMetrics
 
     /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_distance"/> 
-    public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

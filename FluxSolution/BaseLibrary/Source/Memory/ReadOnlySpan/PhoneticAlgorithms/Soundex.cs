@@ -9,25 +9,18 @@ namespace Flux
     /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
     public static int SoundexDifference(this System.ReadOnlySpan<char> encodedSoundex1, System.ReadOnlySpan<char> encodedSoundex2)
     {
-      if (encodedSoundex1 == encodedSoundex2)
-        return 4;
+      if (encodedSoundex1 == encodedSoundex2) return 4;
 
-      if (encodedSoundex1.Slice(1, 3) == (encodedSoundex2.Slice(1, 3)))
-        return 3;
+      if (encodedSoundex1.Slice(1, 3) == encodedSoundex2.Slice(1, 3)) return 3;
 
-      var result = (encodedSoundex1[0] == encodedSoundex2[0] ? 1 : 0);
+      var result = encodedSoundex1[0] == encodedSoundex2[0] ? 1 : 0;
 
-      if (encodedSoundex2.IndexOf(encodedSoundex1.Slice(2, 2)) > -1)
-        return (2 + result);
-      else if (encodedSoundex2.IndexOf(encodedSoundex1.Slice(1, 2)) > -1)
-        return (2 + result);
+      if (encodedSoundex2.IndexOf(encodedSoundex1.Slice(2, 2)) > -1) return 2 + result;
+      else if (encodedSoundex2.IndexOf(encodedSoundex1.Slice(1, 2)) > -1) return 2 + result;
 
-      if (encodedSoundex2[1] == encodedSoundex1[1])
-        result++;
-      if (encodedSoundex2[2] == encodedSoundex1[2])
-        result++;
-      if (encodedSoundex2[3] == encodedSoundex1[3])
-        result++;
+      if (encodedSoundex2[1] == encodedSoundex1[1]) result++;
+      if (encodedSoundex2[2] == encodedSoundex1[2]) result++;
+      if (encodedSoundex2[3] == encodedSoundex1[3]) result++;
 
       return (result == 0) ? 1 : result;
     }

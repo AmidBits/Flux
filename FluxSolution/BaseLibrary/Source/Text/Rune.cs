@@ -620,5 +620,8 @@ namespace Flux
 
     public static Block GetBlock(this System.Text.Rune source)
       => GetBlockRanges().Where(r => source.Value >= r.firstCodeUnit && source.Value <= r.lastCodeUnit).Select(b => b.block).SingleOrValue(Block.Unknown);
+
+    //public static void ToLower(this System.Text.Rune source)
+    //  => new char[ source.EncodeToUtf16
   }
 }

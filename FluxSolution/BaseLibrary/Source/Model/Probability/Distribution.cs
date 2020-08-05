@@ -14,8 +14,9 @@ namespace Flux.Probability
     public static string Histogram(this IDistribution<double> d, double low, double high) =>
       d.Samples().Histogram(low, high);
 
-    public static string Histogram<T>(this IDiscreteDistribution<T> d) =>
-        d.Samples().DiscreteHistogram();
+    public static string Histogram<T>(this IDiscreteDistribution<T> d)
+      where T : notnull
+      => d.Samples().DiscreteHistogram();
 
     public static string ShowWeights<T>(this IDiscreteDistribution<T> d)
     {

@@ -33,7 +33,6 @@ namespace Flux
 
     // IComparer
     public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
-
     // IEqualityComparer
     public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
     public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
