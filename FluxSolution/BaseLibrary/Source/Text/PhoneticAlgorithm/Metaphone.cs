@@ -21,7 +21,7 @@ namespace Flux.Text.PhoneticAlgorithm
     {
       _output = new System.Text.StringBuilder();
 
-      __text = string.Join(string.Empty, text.RemoveDiacriticalMarks(c => c.RemoveDiacriticalStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c)));
+      __text = string.Join(string.Empty, text.RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c)));
       __pos = 0;
 
       // Special handling of some string prefixes: PN, KN, GN, AE, WR, WH and X

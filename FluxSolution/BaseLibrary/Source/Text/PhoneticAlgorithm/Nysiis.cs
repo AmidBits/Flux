@@ -117,7 +117,7 @@ namespace Flux.Text.PhoneticAlgorithm
 		/// <summary>Ensure valid characters for nysiis code generation.</summary>
 		public static System.Collections.Generic.IEnumerable<char> GetValidCharacters(string text)
 		{
-			return string.Concat(text.RemoveDiacriticalMarks(c => c.RemoveDiacriticalStroke()).Where(c => Flux.Globalization.EnUs.Language.IsEnglishLetter(c)).Select(c => char.ToUpper(c)));
+			return string.Concat(text.RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => Flux.Globalization.EnUs.Language.IsEnglishLetter(c)).Select(c => char.ToUpper(c)));
 		}
 	}
 }

@@ -4,6 +4,6 @@ namespace Flux
   {
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
     public static string RemoveDiacriticalMarksAndStrokes(this string source)
-      => source.RemoveDiacriticalMarks(XtensionsChar.RemoveDiacriticalStroke);
+      => source.RemoveDiacriticalMarks(XtensionsChar.RemoveDiacriticalLatinStroke);
   }
 }
