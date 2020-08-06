@@ -6,7 +6,7 @@ namespace Flux.Media.Midi
   /// <summary>
   /// Manufacturer of MIDI device driver.
   /// </summary>
-  public enum Manufacturer : ushort
+  public enum Manufacturer : int
   {
     /// <summary>
     /// Unknown manufacturer.
@@ -394,46 +394,81 @@ namespace Flux.Media.Midi
     public int[] dwReserved;
   }
 
-  /// <summary>Manage MIDI In Ports</summary>
-  public class MidiInPort
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  public struct MidiInCapabilities
   {
-    private System.IntPtr m_handle;
+    private ushort wMid;
+    private ushort wPid;
+    private uint vDriverVersion;
+    [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 32)]
+    private string szPname;
+    private uint dwSupport;
 
-    private WinMm.MidiInProc m_midiInProc;
+    public System.Version DriverVersion => new System.Version((int)(vDriverVersion >> 8), (int)(vDriverVersion & 0xFF));
+    public Manufacturer Manufacturer => System.Enum.IsDefined(typeof(Manufacturer), wMid) ? (Manufacturer)wMid : Manufacturer.Unknown;
+    public string Name => szPname;
+    public int ProductIdentifier => wPid;
+    public long Support => dwSupport;
+  }
 
-    public MidiInPort()
+  /// <summary>Manage MIDI In Ports</summary>
+  public class MidiIn
+    : Disposable
+  {
+    public const int MMSYSERR_NOERROR = 0;
+
+    public const int CALLBACK_FUNCTION = 0x00030000;
+
+    private MidiInProc m_midiInProc;
+
+    private System.IntPtr m_id;
+
+    public int Index { get; }
+
+    public MidiOutCapabilities Capabilities { get; }
+
+    private MidiIn(int index, MidiOutCapabilities capabilities)
     {
-      m_handle = System.IntPtr.Zero;
+      m_midiInProc = new MidiInProc(MidiProc);
 
-      m_midiInProc = new WinMm.MidiInProc(MidiProc);
+      Index = index;
+      Capabilities = capabilities;
+
+      midiInOpen(out m_id, (uint)index, m_midiInProc, System.IntPtr.Zero, 0);
     }
 
     public static int Count
-      => unchecked((int)WinMm.midiInGetNumDevs());
-
-    public bool Close()
-    {
-      bool result = WinMm.midiInClose(m_handle) == WinMm.MMSYSERR_NOERROR;
-
-      m_handle = System.IntPtr.Zero;
-
-      return result;
-    }
-
-    public bool Open(int deviceId)
-      => WinMm.midiInOpen(out m_handle, deviceId, m_midiInProc, System.IntPtr.Zero, WinMm.CALLBACK_FUNCTION) == WinMm.MMSYSERR_NOERROR;
+      => unchecked((int)midiInGetNumDevs());
 
     public bool Start()
-      => WinMm.midiInStart(m_handle) == WinMm.MMSYSERR_NOERROR;
+      => midiInStart(m_id) == MMSYSERR_NOERROR;
 
     public bool Stop()
-      => WinMm.midiInStop(m_handle) == WinMm.MMSYSERR_NOERROR;
+      => midiInStop(m_id) == MMSYSERR_NOERROR;
 
     private void MidiProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2)
     {
       // Receive messages here
     }
 
+    #region WinMM MIDI Output functions
+    public delegate void MidiInProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInClose(System.IntPtr hMidiIn);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInGetDevCaps(System.IntPtr uDeviceID, out MidiInCapabilities pmic, uint cbmic);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInGetErrorText(uint wError, System.Text.StringBuilder lpText, uint cchText);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInGetNumDevs();
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInOpen(out System.IntPtr lphMidiIn, uint uDeviceID, MidiInProc dwCallback, System.IntPtr dwCallbackInstance, uint dwFlags);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInMessage(System.IntPtr hmi, uint uMsg, out uint dw1, out uint dw2);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInStart(System.IntPtr hMidiIn);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] [System.CLSCompliant(false)] public static extern uint midiInStop(System.IntPtr hMidiIn);
+    #endregion WinMM MIDI Output functions
+
+    protected override void DisposeManaged()
+    {
+      midiInClose(m_id);
+
+      m_id = System.IntPtr.Zero;
+    }
   }
 
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
