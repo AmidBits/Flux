@@ -1,3 +1,6 @@
+using System.Linq;
+using System.Reflection;
+
 namespace Flux
 {
   public enum AppDataStore
@@ -16,6 +19,10 @@ namespace Flux
     public static string AppDomainName
       => System.AppDomain.CurrentDomain.FriendlyName;
 
+    /// <summary>Returns the version of the common language runtime.</summary>
+    public static System.Version ClrVersion
+      => System.Environment.Version;
+
     /// <summary>Returns the computer domain namn, or string.Empty if the computer is not registered in a domain.</summary>
     public static string ComputerDomainName
       => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
@@ -30,7 +37,7 @@ namespace Flux
 
     /// <summary>Returns the description of the hosting framework.</summary>
     public static string FrameworkDescription
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
     public static System.Version FrameworkVersion
       => System.Version.TryParse(FrameworkDescription.Substring(FrameworkDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
@@ -52,7 +59,7 @@ namespace Flux
 
     /// <summary>Returns the description of the hosting operating system.</summary>
     public static string OperatingSystemDescription
-      => System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim();
     public static System.Version OperatingSystemVersion
       => System.Version.TryParse(OperatingSystemDescription.Substring(OperatingSystemDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 

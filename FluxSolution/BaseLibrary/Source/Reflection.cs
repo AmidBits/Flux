@@ -5,8 +5,8 @@ namespace Flux.Reflection
   public static class Helper
   {
     /// <summary>Returns all the fields matching the binding attributes.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object?>> GetFields<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
-      => !(source is null) ? typeof(T).GetFields(bindingAttr).Select(fi => new System.Collections.Generic.KeyValuePair<string, object?>(fi.Name, fi.GetValue(source))) : throw new System.ArgumentNullException(nameof(source));
+    public static System.Collections.Generic.IDictionary<string, object?> GetFields<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+      => typeof(T).GetFields(bindingAttr).ToDictionary(fi => fi.Name, fi => fi.GetValue(source));
 
     /// <summary>Get the current method name without using reflection.</summary>
     /// <remarks>Using reflection System.Reflection.MethodInfo.GetCurrentMethod() also works.</remarks>
@@ -14,8 +14,8 @@ namespace Flux.Reflection
       => caller;
 
     /// <summary>Returns all the properties matching the binding attributes.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object?>> GetProperties<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
-      => !(source is null) ? typeof(T).GetProperties(bindingAttr).Select(pi => new System.Collections.Generic.KeyValuePair<string, object?>(pi.Name, pi.GetValue(source, new object[] { }))) : throw new System.ArgumentNullException(nameof(source));
+    public static System.Collections.Generic.IDictionary<string, object?> GetProperties<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+      => typeof(T).GetProperties(bindingAttr).ToDictionary(pi => pi.Name, pi => pi.GetValue(source, new object[] { }));
 
     /// <summary>Returns whether the source type is a reference type. Determined by typeof(T), not source.</summary>
     public static bool IsReferenceType<T>(T source)

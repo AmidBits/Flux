@@ -10,10 +10,16 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      foreach (var kvp in typeof(Flux.Locale).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).ToDictionary(pi => pi.Name, pi => pi.GetValue(null, null)))
+      {
+        System.Console.WriteLine($"\"{kvp.Key}\"=\"{kvp.Value}\"");
+      }
+      return;
+
       var stream = System.IO.File.OpenRead(@"C:\Test\County_Spillman.csv");
       var reader = new CsvReader(stream, new CsvOptions());
 
-      foreach (var array in reader.ReadArrays())
+      foreach (var array in reader.ReadArrays().Take(9))
       {
         System.Console.WriteLine($"{string.Join('|', array)}");
         System.Console.WriteLine($"");
@@ -44,7 +50,6 @@ namespace ConsoleApp
       System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
       System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
       System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
-      return;
 
       foreach (var data in Flux.Resources.Ucd.Blocks.GetData(Flux.Resources.Ucd.Blocks.LocalUri))
       {
