@@ -1,4 +1,5 @@
 ﻿using Flux;
+using Flux.Text;
 using System;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,18 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var stream = System.IO.File.OpenRead(@"C:\Test\County_Spillman.csv");
+      var reader = new CsvReader(stream, new CsvOptions());
+
+      foreach (var array in reader.ReadArrays())
+      {
+        System.Console.WriteLine($"{string.Join('|', array)}");
+        System.Console.WriteLine($"");
+      }
+
       var x = " Blañk";
       var y = "blank";
-     
+
       System.Console.WriteLine(x);
       System.Console.WriteLine(y);
       var a = new ReadOnlySpan<string>(x.Select(c => c.ToString()).ToArray());

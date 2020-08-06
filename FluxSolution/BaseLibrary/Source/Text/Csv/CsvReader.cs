@@ -16,6 +16,8 @@ namespace Flux.Text
       m_streamReader = new System.IO.StreamReader(stream, options.Encoding);
     }
 
+    private bool m_inField = false;
+
     public string[] ReadArray()
     {
       var sb = new System.Text.StringBuilder(8192);
@@ -24,15 +26,13 @@ namespace Flux.Text
 
       System.Collections.Generic.IEnumerable<string> GetFields()
       {
-        var inQuotedField = false;
-
         for (int read = m_streamReader.Read(), peek = m_streamReader.Peek(); read != -1; read = m_streamReader.Read(), peek = m_streamReader.Peek())
         {
-          if (!inQuotedField)
+          if (!m_inField)
           {
             if (read == '"')
             {
-              inQuotedField = true; // Enter quoted field.
+              m_inField = true; // Enter quoted field.
             }
             else if (read == m_options.FieldSeparator) // Between fields?
             {
@@ -62,13 +62,13 @@ namespace Flux.Text
               sb.Append(char.ConvertFromUtf32(read));
             }
           }
-          else if (inQuotedField)
+          else if (m_inField)
           {
             if (read == '"')
             {
               if (peek != '"')
               {
-                inQuotedField = false; // Exit quoted field.
+                m_inField = false; // Exit quoted field.
               }
               else // Peek is a DoubleQuote, so this is an escape sequence.
               {
