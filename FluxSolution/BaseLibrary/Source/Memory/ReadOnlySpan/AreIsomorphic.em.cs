@@ -1,10 +1,10 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtensionsStringBuilder
   {
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool IsIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : System.IEquatable<T>
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -36,8 +36,8 @@ namespace Flux
     }
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool IsIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : System.IEquatable<T>
-    => IsIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    => AreIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

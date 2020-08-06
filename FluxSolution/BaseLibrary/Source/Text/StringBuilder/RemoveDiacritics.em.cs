@@ -1,22 +1,20 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtensionsStringBuilder
   {
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
-    public static char[] RemoveDiacriticalLatinStrokes(this System.ReadOnlySpan<char> source)
+    public static System.Text.StringBuilder RemoveDiacriticalLatinStrokes(this System.Text.StringBuilder source)
     {
-      var buffer = new char[source.Length];
-
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = 0; index < source.Length; index++)
       {
-        buffer[index] = XtensionsChar.RemoveDiacriticalLatinStroke(source[index]);
+        source[index] = XtensionsChar.RemoveDiacriticalLatinStroke(source[index]);
       }
 
-      return buffer;
+      return source;
     }
 
     /// <summary>Remove diacritical marks and any optional replacements desired.</summary>
-    public static System.ReadOnlySpan<char> RemoveDiacriticalMarks(this System.ReadOnlySpan<char> source, System.Func<char, char> additionalCharacterReplacements)
+    public static System.Text.StringBuilder RemoveDiacriticalMarks(this System.Text.StringBuilder source, System.Func<char, char> additionalCharacterReplacements)
     {
       var sb = new System.Text.StringBuilder();
 
@@ -34,11 +32,11 @@ namespace Flux
         }
       }
 
-      return sb.ToString();
+      return sb;
     }
 
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
-    public static System.ReadOnlySpan<char> RemoveDiacriticalMarksAndLatinStrokes(this System.ReadOnlySpan<char> source)
+    public static System.Text.StringBuilder RemoveDiacriticalMarksAndLatinStrokes(this System.Text.StringBuilder source)
       => RemoveDiacriticalMarks(source, XtensionsChar.RemoveDiacriticalLatinStroke);
   }
 }
