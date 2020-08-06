@@ -1,7 +1,13 @@
+using System.Linq;
+
 namespace Flux
 {
   public static partial class XtensionsString
   {
+    /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
+    public static string RemoveDiacriticalLatinStrokes(this string source)
+      => string.Concat(source.Select(XtensionsChar.RemoveDiacriticalLatinStroke));
+
     /// <summary>Remove diacritical marks and any optional replacements desired.</summary>
     public static string RemoveDiacriticalMarks(this string source, System.Func<char, char> additionalCharacterReplacements)
     {
@@ -23,5 +29,9 @@ namespace Flux
 
       return sb.ToString();
     }
+
+    /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
+    public static string RemoveDiacriticalMarksAndStrokes(this string source)
+      => source.RemoveDiacriticalMarks(XtensionsChar.RemoveDiacriticalLatinStroke);
   }
 }
