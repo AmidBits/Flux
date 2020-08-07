@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsByte
+  public static partial class XtensionsByteArray
   {
     /// <summary>Converts the specified number of bytes to a number, starting at the specified index.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this byte[] source, int startIndex, int count)

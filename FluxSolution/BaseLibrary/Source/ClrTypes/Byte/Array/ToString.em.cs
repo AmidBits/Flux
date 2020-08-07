@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsByte
+  public static partial class XtensionsByteArray
   {
     /// <summary>Create a string with each byte in the array as a binary number, separated by the specified string.</summary>
     public static string ToBinaryString(this byte[] source, string separator = @" ")

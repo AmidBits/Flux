@@ -13,7 +13,7 @@ namespace Flux
     }
 
     /// <summary>Returns the index of the first occurence of value in the string. If not found a -1 is returned.</summary>
-    public static int LastIndexOf(this System.Text.StringBuilder source, string value, Flux.StringComparer? comparer = null)
+    public static int LastIndexOf(this System.Text.StringBuilder source, string value, Flux.StringComparer comparer)
     {
       for (int index = source.Length - value.Length; index >= 0; index--)
         if (source.Equals(index, value, 0, value.Length, comparer))

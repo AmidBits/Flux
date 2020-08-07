@@ -6,8 +6,14 @@ namespace Flux
     public static T[] ToArray<T>(this System.Collections.Generic.IList<T> source, int offset, int count)
     {
       var target = new T[count];
-      offset += count;
-      while (count > 0) target[--count] = source[--offset];
+
+      if (source.GetType().IsArray) System.Array.Copy((System.Array)source, offset, target, 0, count);
+      else
+      {
+        offset += count;
+        while (count > 0) target[--count] = source[--offset];
+      }
+
       return target;
     }
   }

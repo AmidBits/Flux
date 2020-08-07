@@ -13,7 +13,7 @@ namespace Flux
     }
 
     /// <summary>Returns a new string with the specified characters doubled in the string.</summary>
-    public static int IndexOf(this System.Text.StringBuilder source, string value, Flux.StringComparer? comparer = null)
+    public static int IndexOf(this System.Text.StringBuilder source, string value, Flux.StringComparer comparer)
     {
       for (var index = 0; index < source.Length; index++)
       {
