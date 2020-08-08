@@ -3,20 +3,22 @@ namespace Flux.Collections.Generic
   public interface IDeque<T>
   {
     bool IsEmpty { get; }
-    //T DequeueLeft();
-    //T DequeueRight();
-    //void EnqueueLeft(T value);
-    //void EnqueueRight(T value);
-    //T PeekLeft();
-    //T PeekRight();
+    T Dequeue();
+    void Enqueue(T value);
+    System.Collections.Generic.IEnumerable<T> PeekQueue();
+    System.Collections.Generic.IEnumerable<T> PeekStack();
+    T Pop();
+    void Push(T value);
   }
 
   /// <summary>A queue, for which elements can be added to or removed from either the front (head) or back (tail).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Double-ended_queue"/>
   /// <seealso cref="https://referencesource.microsoft.com/#mscorlib/system/collections/queue.cs,f7cdfd0f848ca249"/>
-  public class DequeCollection<T>
+  public class Deque<T>
     : System.Collections.Generic.IEnumerable<T>, IDeque<T>
   {
+    public static IDeque<T> Empty = new EmptyDeque();
+
     private const string DequeIsEmpty = @"The deque is empty.";
 
     private T[] m_array = System.Array.Empty<T>();
@@ -37,10 +39,10 @@ namespace Flux.Collections.Generic
     public int Length
       => m_size;
 
-    public DequeCollection() { }
-    public DequeCollection(int capacity)
+    public Deque() { }
+    public Deque(int capacity)
       => SetCapacity(capacity);
-    public DequeCollection(System.Collections.Generic.ICollection<T> collection)
+    public Deque(System.Collections.Generic.ICollection<T> collection)
     {
       foreach (var item in collection ?? throw new System.ArgumentNullException(nameof(collection)))
       {
@@ -122,14 +124,14 @@ namespace Flux.Collections.Generic
       m_version++;
     }
 
-    public System.Collections.Generic.IEnumerable<T> Peek()
+    public System.Collections.Generic.IEnumerable<T> PeekQueue()
     {
       for (var index = m_head; index != m_tail; index = (index + 1) % m_array.Length)
       {
         yield return m_array[index];
       }
     }
-    public System.Collections.Generic.IEnumerable<T> PeekReverse()
+    public System.Collections.Generic.IEnumerable<T> PeekStack()
     {
       for (var index = m_tail - 1; index != m_head; index = ((index - 1) + m_array.Length) % m_array.Length)
       {
@@ -199,6 +201,19 @@ namespace Flux.Collections.Generic
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
+    public class EmptyDeque
+      : IDeque<T>
+    {
+      public bool IsEmpty => true;
+
+      public T Dequeue() => throw new System.NotImplementedException(nameof(EmptyDeque));
+      public void Enqueue(T value) => throw new System.NotImplementedException(nameof(EmptyDeque));
+      public System.Collections.Generic.IEnumerable<T> PeekQueue() { yield break; }
+      public System.Collections.Generic.IEnumerable<T> PeekStack() { yield break; }
+      public T Pop() => throw new System.NotImplementedException(nameof(EmptyDeque));
+      public void Push(T value) => throw new System.NotImplementedException(nameof(EmptyDeque));
+    }
+
     private class Enumerator
       : System.Collections.Generic.IEnumerator<T>
     {
@@ -207,10 +222,10 @@ namespace Flux.Collections.Generic
       private T m_current;
       private int m_index;
       private readonly object m_lock = new object();
-      private readonly DequeCollection<T> m_source;
+      private readonly Deque<T> m_source;
       private readonly int m_version;
 
-      public Enumerator(DequeCollection<T> source)
+      public Enumerator(Deque<T> source)
       {
         m_current = default!;
         m_index = m_source.m_head;
