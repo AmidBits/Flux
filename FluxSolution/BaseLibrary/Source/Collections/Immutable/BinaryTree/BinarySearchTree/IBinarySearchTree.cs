@@ -210,7 +210,7 @@ namespace Flux
       }
     }
 
-    /// <summary>Depth-first search (DFS), by Eric Lippert for immutable AVL tree enumeration.</summary>
+    ///// <summary>Depth-first search (DFS), by Eric Lippert for immutable AVL tree enumeration.</summary>
     //public static System.Collections.Generic.IEnumerable<T> InOrder<T>(this Collections.Immutable.IBinaryTree<T> source)
     //{
     //  var stack = Collections.Immutable.Stack<Collections.Immutable.IBinaryTree<T>>.Empty;
@@ -234,7 +234,7 @@ namespace Flux
   namespace Collections.Immutable
   {
     public interface IBinarySearchTree<TKey, TValue>
-      : IImmutableBinaryTree<TValue>, IMap<TKey, TValue>
+      : IBinaryTree<TValue>, IMap<TKey, TValue>
       where TKey : System.IComparable<TKey>
     {
       TKey Key { get; }

@@ -1,15 +1,15 @@
 namespace Flux.Collections.Immutable
 {
   public sealed class BinaryTree<TValue>
-    : IImmutableBinaryTree<TValue>
+    : IBinaryTree<TValue>
   {
-    public static readonly IImmutableBinaryTree<TValue> Empty = new EmptyBinaryTree();
+    public static readonly IBinaryTree<TValue> Empty = new EmptyBinaryTree();
 
-    private readonly IImmutableBinaryTree<TValue> m_left;
-    private readonly IImmutableBinaryTree<TValue> m_right;
+    private readonly IBinaryTree<TValue> m_left;
+    private readonly IBinaryTree<TValue> m_right;
     private readonly TValue m_value;
 
-    public BinaryTree(TValue value, IImmutableBinaryTree<TValue> left, IImmutableBinaryTree<TValue> right)
+    public BinaryTree(TValue value, IBinaryTree<TValue> left, IBinaryTree<TValue> right)
     {
       m_left = left ?? Empty;
       m_right = right ?? Empty;
@@ -19,22 +19,22 @@ namespace Flux.Collections.Immutable
     #region IBinaryTree Implementation
     public bool IsEmpty
       => false;
-    public IImmutableBinaryTree<TValue> Left
+    public IBinaryTree<TValue> Left
       => m_left;
-    public IImmutableBinaryTree<TValue> Right
+    public IBinaryTree<TValue> Right
       => m_right;
     public TValue Value
       => m_value;
     #endregion IBinaryTree Implementation
 
-    private sealed class EmptyBinaryTree : IImmutableBinaryTree<TValue>
+    private sealed class EmptyBinaryTree : IBinaryTree<TValue>
     {
       #region IBinaryTree Implementation
       public bool IsEmpty
         => true;
-      public IImmutableBinaryTree<TValue> Left
+      public IBinaryTree<TValue> Left
         => throw new System.Exception(nameof(EmptyBinaryTree));
-      public IImmutableBinaryTree<TValue> Right
+      public IBinaryTree<TValue> Right
         => throw new System.Exception(nameof(EmptyBinaryTree));
       public TValue Value
         => throw new System.Exception(nameof(EmptyBinaryTree));

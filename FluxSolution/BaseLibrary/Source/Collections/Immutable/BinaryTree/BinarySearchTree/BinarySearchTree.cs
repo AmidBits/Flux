@@ -24,9 +24,9 @@ namespace Flux.Collections.Immutable
     #region IBinaryTree Implementation
     public bool IsEmpty
       => false;
-    IImmutableBinaryTree<TValue> IImmutableBinaryTree<TValue>.Left
+    IBinaryTree<TValue> IBinaryTree<TValue>.Left
       => m_left;
-    IImmutableBinaryTree<TValue> IImmutableBinaryTree<TValue>.Right
+    IBinaryTree<TValue> IBinaryTree<TValue>.Right
       => m_right;
     public TValue Value
       => m_value;
@@ -88,9 +88,9 @@ namespace Flux.Collections.Immutable
       #region IBinaryTree Implementation
       public bool IsEmpty
         => true;
-      IImmutableBinaryTree<TValue> IImmutableBinaryTree<TValue>.Left
+      IBinaryTree<TValue> IBinaryTree<TValue>.Left
         => throw new System.Exception(nameof(EmptyBinarySearchTree));
-      IImmutableBinaryTree<TValue> IImmutableBinaryTree<TValue>.Right
+      IBinaryTree<TValue> IBinaryTree<TValue>.Right
         => throw new System.Exception(nameof(EmptyBinarySearchTree));
       public TValue Value
         => throw new System.Exception(nameof(EmptyBinarySearchTree));
