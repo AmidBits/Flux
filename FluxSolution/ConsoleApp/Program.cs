@@ -1,6 +1,7 @@
 ﻿using Flux;
 using Flux.Text;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -9,8 +10,29 @@ namespace ConsoleApp
 {
   class Program
   {
+    private static System.Collections.Generic.Dictionary<string, object> m_dictionary = new System.Collections.Generic.Dictionary<string, object>()
+    {
+      { @"Blañk", @"blank" },
+      { @"AGGTAB", @"GXTXAYB" },
+      { @"DateTime", System.DateTime.Parse("0001-07-01T06:12:00.1234567") },
+      { @"Guid", System.Guid.NewGuid() },
+      { @"Ashcraft", @"Ashcroft" },
+      { @"Rupert", @"Rubin" },
+      { @"Pfister", @"Tymczak" },
+      { @"Drawer", @"Dror" },
+      { @"Honeyman", @"Honeyman" }
+    };
+
     private static void TimedMain(string[] args)
     {
+      System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(m_dictionary));
+      System.Console.WriteLine(m_dictionary.ToPropertiesXml());
+
+      foreach(var kvp in m_dictionary)
+      {
+        System.Console.WriteLine($"{kvp.Key} = {Flux.Soundextrous.Encode(kvp.Key).ToString()} = {kvp.Key.SoundexSqlEncode()}, {kvp.Value} = {Flux.Soundextrous.Encode(kvp.Value.ToString()).ToString()} = {kvp.Value.ToString().SoundexSqlEncode()}");
+      }
+      return;
       var x = " Blañk";
       var y = "blank";
 
@@ -33,9 +55,9 @@ namespace ConsoleApp
       System.Console.WriteLine($"    OptimalStringAlignment: {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCulture)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
       System.Console.WriteLine($"        OverlapCoefficient: {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCulture)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
       System.Console.WriteLine($"         SørensenDiceIndex: {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCulture)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
-      System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
-      System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
+      //System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
+      //System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
+      //System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
 
       return;
 
