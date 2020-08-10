@@ -5,7 +5,7 @@ namespace Flux
   public static partial class XtensionsCollections
   {
     /// <summary></summary>
-    public static System.Xml.Linq.XElement ToPropertiesXml(this System.Collections.Generic.IDictionary<string, string> properties, string propertiesElementName = @"Properties")
-      => new System.Xml.Linq.XElement(propertiesElementName, (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => Flux.Text.XmlEx.ToPropertyXmlAsName(kvp.Key, kvp.Value)));
+    public static System.Xml.Linq.XElement ToPropertiesXml(this System.Collections.Generic.IDictionary<string, object> properties, System.Func<object, string> valueSelector)
+      => new System.Xml.Linq.XElement(@"Properties", (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => new System.Xml.Linq.XElement(@"Property", new System.Xml.Linq.XAttribute(@"Name", kvp.Key), new System.Xml.Linq.XAttribute(@"Value", valueSelector(kvp.Value)))));
   }
 }
