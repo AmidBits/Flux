@@ -11,6 +11,42 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      System.Collections.Generic.Dictionary<string, string> m_soundexTests = new System.Collections.Generic.Dictionary<string, string>()
+      {
+        { "Ashcroft", "A261" },
+        { "Fusedale", "F234" },
+        { "Grayley", "G640" },
+        { "Hatcher", "H326" },
+        { "Honeyman", "H555" },
+        { "Parade", "P630" },
+        { "Pfister", "P236" },
+        { "Rubin", "R150" },
+        { "Rupert", "R163" },
+        { "Tymczak", "T522" },
+      };
+
+      foreach (var kvp in m_soundexTests)
+      {
+        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.Soundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
+        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.SqlSoundex().Encode(kvp.Key) is var sql ? sql : throw new System.Exception())}\" ({kvp.Value}) == {sql.Equals(kvp.Value)}");
+      }
+
+      System.Collections.Generic.Dictionary<string, string> m_refinedSoundexTests = new System.Collections.Generic.Dictionary<string, string>()
+      {
+        { "Braz", "B1905" },
+        { "Charon", "C30908" },
+        { "Hayers", "H093" },
+        { "Lambert", "L7081096" },
+        { "Nolton", "N807608" },
+      };
+
+      foreach (var kvp in m_refinedSoundexTests)
+      {
+        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.RefinedSoundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
+      }
+
+      return;
+
       var x = " Blañk";
       var y = "blank";
 
@@ -33,9 +69,9 @@ namespace ConsoleApp
       System.Console.WriteLine($"    OptimalStringAlignment: {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCulture)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OptimalStringAlignment(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
       System.Console.WriteLine($"        OverlapCoefficient: {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCulture)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.OverlapCoefficient(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
       System.Console.WriteLine($"         SørensenDiceIndex: {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCulture)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreCase)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpace)}, {a.SørensenDiceIndex(b, Flux.StringComparer.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
-      System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
-      System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
+      //System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
+      //System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
+      //System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
 
       return;
 
