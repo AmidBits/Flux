@@ -23,12 +23,14 @@ namespace ConsoleApp
         { "Rubin", "R150" },
         { "Rupert", "R163" },
         { "Tymczak", "T522" },
+        { "Levenshtein", "CTHRN" }
       };
 
       foreach (var kvp in m_soundexTests)
       {
-        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.Soundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
-        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.SqlSoundex().Encode(kvp.Key) is var sql ? sql : throw new System.Exception())}\" ({kvp.Value}) == {sql.Equals(kvp.Value)}");
+        System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.MatchRatingApproach().Encode(kvp.Key) is var mra ? mra : throw new System.Exception())}\" ({kvp.Value}) == {mra.Equals(kvp.Value)}");
+        //System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.Soundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
+        //System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.SqlSoundex().Encode(kvp.Key) is var sql ? sql : throw new System.Exception())}\" ({kvp.Value}) == {sql.Equals(kvp.Value)}");
       }
 
       System.Collections.Generic.Dictionary<string, string> m_refinedSoundexTests = new System.Collections.Generic.Dictionary<string, string>()
