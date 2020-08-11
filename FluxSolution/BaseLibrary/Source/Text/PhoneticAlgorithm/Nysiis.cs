@@ -2,7 +2,8 @@
 
 namespace Flux.Text.PhoneticAlgorithm
 {
-	public class Nysiis : IPhoneticAlgorithm
+	public class Nysiis 
+		: IPhoneticEncoder
 	{
 		public int MaxCodeLength = 6;
 		#region Regular Expressions for the Nysiis encoder.

@@ -3,7 +3,8 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
   /// <summary>Implements the Metaphone algorithm</summary>
-  public class Metaphone : IPhoneticAlgorithm
+  public class Metaphone 
+    : IPhoneticEncoder
   {
     public int MaxCodeLength = 6;
 
