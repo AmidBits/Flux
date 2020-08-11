@@ -35,7 +35,7 @@ namespace Flux.Intrinsic
     public static Vector3D FromVector256(Vector256<double> v) => new Vector3D(v.GetElement(0), v.GetElement(1), v.GetElement(2), v.GetElement(3));
     public Vector256<double> ToVector256() => Vector256.Create(X, Y, Z, W);
 
-#region Static Members
+    #region Static Members
     //public static readonly Vector256<double> Epsilon = Vector256.Create(double.Epsilon);
     //public static readonly Vector256<double> NegativeOne = Vector256.Create(-1d);
     public static readonly Vector256<double> One = Vector256.Create(1d);
@@ -58,16 +58,21 @@ namespace Flux.Intrinsic
     public static readonly Vector256<double> OneDiv2Pi = Vector256.Create(1 / (2 * System.Math.PI));
     public static readonly Vector256<double> PiMul2 = Vector256.Create(System.Math.PI * 2);
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Abs(in Vector256<double> v) => Max(Subtract(Vector256<double>.Zero, v), v);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Add(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Add(v1, v2) : Vector256.Create(v1.GetElement(0) + v2.GetElement(0), v1.GetElement(1) + v2.GetElement(1), v1.GetElement(2) + v2.GetElement(2), v1.GetElement(3) + v2.GetElement(3));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Add(in Vector256<double> v, in double scalar) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Add(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) + scalar, v.GetElement(1) + scalar, v.GetElement(2) + scalar, v.GetElement(3) + scalar);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Clamp(in Vector256<double> v, in Vector256<double> min, in Vector256<double> max) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Max(Min(v, max), min) : Vector256.Create(System.Math.Clamp(v.GetElement(0), min.GetElement(0), max.GetElement(0)), System.Math.Clamp(v.GetElement(1), min.GetElement(1), max.GetElement(1)), System.Math.Clamp(v.GetElement(2), min.GetElement(2), max.GetElement(2)), System.Math.Clamp(v.GetElement(3), min.GetElement(3), max.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> CopySign(in Vector256<double> v, in Vector256<double> sign) => System.Runtime.Intrinsics.X86.Avx.Or(Sign(sign), Abs(v));
+    /// <summary>Returns the vector with absolute values.</summary>
+    public static Vector256<double> Abs(in Vector256<double> v)
+      => Max(Subtract(Vector256<double>.Zero, v), v);
+    /// <summary>Returns a new vector with the sum of the two vectors.</summary>
+    public static Vector256<double> Add(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Add(v1, v2) : Vector256.Create(v1.GetElement(0) + v2.GetElement(0), v1.GetElement(1) + v2.GetElement(1), v1.GetElement(2) + v2.GetElement(2), v1.GetElement(3) + v2.GetElement(3));
+    /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
+    public static Vector256<double> Add(in Vector256<double> v, in double scalar)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Add(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) + scalar, v.GetElement(1) + scalar, v.GetElement(2) + scalar, v.GetElement(3) + scalar);
+    /// <summary>Returns the vector with its components clamped between min and max.</summary>
+    public static Vector256<double> Clamp(in Vector256<double> v, in Vector256<double> min, in Vector256<double> max)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Max(Min(v, max), min) : Vector256.Create(System.Math.Clamp(v.GetElement(0), min.GetElement(0), max.GetElement(0)), System.Math.Clamp(v.GetElement(1), min.GetElement(1), max.GetElement(1)), System.Math.Clamp(v.GetElement(2), min.GetElement(2), max.GetElement(2)), System.Math.Clamp(v.GetElement(3), min.GetElement(3), max.GetElement(3)));
+    /// <summary>Returns the vector with the values from clamped between min and max.</summary>
+    public static Vector256<double> CopySign(in Vector256<double> v, in Vector256<double> sign)
+      => System.Runtime.Intrinsics.X86.Avx.Or(Sign(sign), Abs(v));
     /// <summary>Returns the cross product of the vector.</summary>
     /// <remarks>
     /// Cross product of A(x, y, z, _) and B(x, y, z, _) is
@@ -88,26 +93,25 @@ namespace Flux.Intrinsic
     /// to be in *reversed* (no clue why), so here (3, 0, 2, 1) means you have the 2nd elem (1, 0 indexed) in the first slot,
     /// the 3rd elem (2) in the next one, the 1st elem (0) in the next one, and the 4th (3, W/_, unused here) in the last reg
     /// </remarks>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> CrossProduct3D(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx2.IsSupported ? System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v1, ShuffleValues.YZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v2, ShuffleValues.ZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v1, ShuffleValues.ZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v2, ShuffleValues.YZXW))), MaskW) : Vector256.Create(v1.GetElement(1) * v2.GetElement(2) - v1.GetElement(2) * v2.GetElement(1), v1.GetElement(2) * v2.GetElement(0) - v1.GetElement(0) * v2.GetElement(2), v1.GetElement(0) * v2.GetElement(1) - v1.GetElement(1) * v2.GetElement(0), 0);
+    public static Vector256<double> CrossProduct3D(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx2.IsSupported ? System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v1, ShuffleValues.YZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v2, ShuffleValues.ZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v1, ShuffleValues.ZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(v2, ShuffleValues.YZXW))), MaskW) : Vector256.Create(v1.GetElement(1) * v2.GetElement(2) - v1.GetElement(2) * v2.GetElement(1), v1.GetElement(2) * v2.GetElement(0) - v1.GetElement(0) * v2.GetElement(2), v1.GetElement(0) * v2.GetElement(1) - v1.GetElement(1) * v2.GetElement(0), 0);
     /// <summary>Computes the euclidean distance between two vectors.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Distance2D(in Vector256<double> v1, in Vector256<double> v2) => Length2D(Subtract(v1, v2));
+    public static Vector256<double> Distance2D(in Vector256<double> v1, in Vector256<double> v2)
+      => Length2D(Subtract(v1, v2));
     /// <summary>Returns the distance between the two vectors.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Distance3D(in Vector256<double> v1, in Vector256<double> v2) => Length3D(Subtract(v1, v2));
+    public static Vector256<double> Distance3D(in Vector256<double> v1, in Vector256<double> v2)
+      => Length3D(Subtract(v1, v2));
     /// <summary>Computes the euclidean distance squared between two vectors.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> DistanceSquared2D(in Vector256<double> v1, in Vector256<double> v2) => LengthSquared2D(Subtract(v1, v2));
+    public static Vector256<double> DistanceSquared2D(in Vector256<double> v1, in Vector256<double> v2)
+      => LengthSquared2D(Subtract(v1, v2));
     /// <summary>Returns the squared distance between the two vectors.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> DistanceSquared3D(in Vector256<double> v1, in Vector256<double> v2) => LengthSquared3D(Subtract(v1, v2));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Divide(in Vector256<double> v, in Vector256<double> divisor) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Divide(v, divisor) : Vector256.Create(v.GetElement(0) / divisor.GetElement(0), v.GetElement(1) / divisor.GetElement(1), v.GetElement(2) / divisor.GetElement(2), v.GetElement(3) / divisor.GetElement(3));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Divide(in Vector256<double> v, in double divisor) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Subtract(v, Vector256.Create(divisor)) : Vector256.Create(v.GetElement(0) / divisor, v.GetElement(1) / divisor, v.GetElement(2) / divisor, v.GetElement(3) / divisor);
+    public static Vector256<double> DistanceSquared3D(in Vector256<double> v1, in Vector256<double> v2)
+      => LengthSquared3D(Subtract(v1, v2));
+    public static Vector256<double> Divide(in Vector256<double> v, in Vector256<double> divisor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Divide(v, divisor) : Vector256.Create(v.GetElement(0) / divisor.GetElement(0), v.GetElement(1) / divisor.GetElement(1), v.GetElement(2) / divisor.GetElement(2), v.GetElement(3) / divisor.GetElement(3));
+    public static Vector256<double> Divide(in Vector256<double> v, in double divisor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Subtract(v, Vector256.Create(divisor)) : Vector256.Create(v.GetElement(0) / divisor, v.GetElement(1) / divisor, v.GetElement(2) / divisor, v.GetElement(3) / divisor);
     /// <summary>Returns the dot product of the two given vectors.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> DotProduct2D(in Vector256<double> v1, in Vector256<double> v2)
     {
       // SSE4.1 has a native dot product instruction, dppd
@@ -133,7 +137,6 @@ namespace Flux.Intrinsic
       return Vector256.Create(v1.GetElement(0) * v2.GetElement(0) + v1.GetElement(1) * v2.GetElement(1));
     }
     /// <summary>Returns the dot product of the vector.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> DotProduct3D(in Vector256<double> v1, in Vector256<double> v2)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
@@ -149,90 +152,88 @@ namespace Flux.Intrinsic
 
       return Vector256.Create(v1.GetElement(0) * v2.GetElement(0) + v1.GetElement(1) * v2.GetElement(1) + v1.GetElement(2) * v2.GetElement(2));
     }
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> HorizontalAdd(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.HorizontalAdd(v1, v2) : Vector256.Create(v1.GetElement(0) + v1.GetElement(1), v2.GetElement(0) + v2.GetElement(1), v1.GetElement(2) + v1.GetElement(3), v2.GetElement(2) + v2.GetElement(3));
     /// <summary>Returns the length of the given Vector2D.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Length2D(in Vector256<double> v) => Sqrt(DotProduct2D(v, v));
+    public static Vector256<double> Length2D(in Vector256<double> v)
+      => Sqrt(DotProduct2D(v, v));
     /// <summary>Returns the Euclidean length (magnitude) of the vector.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Length3D(in Vector256<double> v) => Sqrt(DotProduct3D(v, v));
+    public static Vector256<double> Length3D(in Vector256<double> v)
+      => Sqrt(DotProduct3D(v, v));
     /// <summary>Returns the length of the given Vector2D.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> LengthSquared2D(in Vector256<double> v) => DotProduct2D(v, v);
+    public static Vector256<double> LengthSquared2D(in Vector256<double> v)
+      => DotProduct2D(v, v);
     /// <summary>Returns the squared Euclidean length (magnitude) of the vector.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> LengthSquared3D(in Vector256<double> v) => DotProduct3D(v, v);
+    public static Vector256<double> LengthSquared3D(in Vector256<double> v)
+      => DotProduct3D(v, v);
     /// <summary>Returns a new vector that is a linear blend of the two given vectors. Lerp (Linear interpolate) interpolates between two values.</summary>
     /// <param name="weight">The blend factor. a when blend=0, b when blend=1.</param>
     /// <returns>The linear interpolated blend of the two vectors.</returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Lerp(in Vector256<double> v1, in Vector256<double> v2, in double weight) => Add(v1, Multiply(Subtract(v2, v1), Vector256.Create(weight >= 0 && weight <= 1 ? weight : throw new System.ArgumentOutOfRangeException(nameof(weight))))); // General formula of linear interpolation: (from + (to - from) * weight).
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Max(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Max(v1, v2) : Vector256.Create(System.Math.Max(v1.GetElement(0), v2.GetElement(0)), System.Math.Max(v1.GetElement(1), v2.GetElement(1)), System.Math.Max(v1.GetElement(2), v2.GetElement(2)), System.Math.Max(v1.GetElement(3), v2.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Min(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Min(v1, v2) : Vector256.Create(System.Math.Min(v1.GetElement(0), v2.GetElement(0)), System.Math.Min(v1.GetElement(1), v2.GetElement(1)), System.Math.Min(v1.GetElement(2), v2.GetElement(2)), System.Math.Min(v1.GetElement(3), v2.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Mod2Pi(in Vector256<double> v) => Subtract(v, Multiply(Round(Multiply(v, OneDiv2Pi)), PiMul2));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Multiply(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Multiply(v1, v2) : Vector256.Create(v1.GetElement(0) * v2.GetElement(0), v1.GetElement(1) * v2.GetElement(1), v1.GetElement(2) * v2.GetElement(2), v1.GetElement(3) * v2.GetElement(3));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Multiply(in Vector256<double> v, in double scalar) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Multiply(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) * scalar, v.GetElement(1) * scalar, v.GetElement(2) * scalar, v.GetElement(3) * scalar);
+    public static Vector256<double> Lerp(in Vector256<double> v1, in Vector256<double> v2, in double weight)
+      => Add(v1, Multiply(Subtract(v2, v1), Vector256.Create(weight >= 0 && weight <= 1 ? weight : throw new System.ArgumentOutOfRangeException(nameof(weight))))); // General formula of linear interpolation: (from + (to - from) * weight).
+    public static Vector256<double> Max(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Max(v1, v2) : Vector256.Create(System.Math.Max(v1.GetElement(0), v2.GetElement(0)), System.Math.Max(v1.GetElement(1), v2.GetElement(1)), System.Math.Max(v1.GetElement(2), v2.GetElement(2)), System.Math.Max(v1.GetElement(3), v2.GetElement(3)));
+    public static Vector256<double> Min(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Min(v1, v2) : Vector256.Create(System.Math.Min(v1.GetElement(0), v2.GetElement(0)), System.Math.Min(v1.GetElement(1), v2.GetElement(1)), System.Math.Min(v1.GetElement(2), v2.GetElement(2)), System.Math.Min(v1.GetElement(3), v2.GetElement(3)));
+    public static Vector256<double> Mod2Pi(in Vector256<double> v)
+      => Subtract(v, Multiply(Round(Multiply(v, OneDiv2Pi)), PiMul2));
+    public static Vector256<double> Multiply(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Multiply(v1, v2) : Vector256.Create(v1.GetElement(0) * v2.GetElement(0), v1.GetElement(1) * v2.GetElement(1), v1.GetElement(2) * v2.GetElement(2), v1.GetElement(3) * v2.GetElement(3));
+    public static Vector256<double> Multiply(in Vector256<double> v, in double scalar)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Multiply(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) * scalar, v.GetElement(1) * scalar, v.GetElement(2) * scalar, v.GetElement(3) * scalar);
     /// <summary>Returns (x * y) + z on each element of a <see cref="Vector256{Double}"/>, rounded as one ternary operation.</summary>
     /// <param name="x">The vector to be multiplied with <paramref name="y"/></param>
     /// <param name="y">The vector to be multiplied with <paramref name="x"/></param>
     /// <param name="z">The vector to be added to to the infinite precision multiplication of <paramref name="x"/> and <paramref name="y"/></param>
     /// <returns>(x * y) + z on each element, rounded as one ternary operation</returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> MultiplyAdd(Vector256<double> x, Vector256<double> y, Vector256<double> z) => System.Runtime.Intrinsics.X86.Fma.IsSupported ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(x, y, z) : Vector256.Create(x.GetElement(0) * y.GetElement(0) + z.GetElement(0), x.GetElement(1) * y.GetElement(1) + z.GetElement(1), x.GetElement(2) * y.GetElement(2) + z.GetElement(2), x.GetElement(3) * y.GetElement(3) + z.GetElement(3));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Negate(in Vector256<double> v) => System.Runtime.Intrinsics.X86.Avx.Xor(MaskNotSign, v);
+    public static Vector256<double> Negate(in Vector256<double> v)
+      => System.Runtime.Intrinsics.X86.Avx.Xor(MaskNotSign, v);
     /// <summary>Scales the Vector2D to unit length.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Normalize2D(in Vector256<double> v) => Divide(v, Length2D(v));
+    public static Vector256<double> Normalize2D(in Vector256<double> v)
+      => Divide(v, Length2D(v));
     /// <summary>Scales the Vector3D to unit length.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Normalize3D(in Vector256<double> v) => Divide(v, Length3D(v));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Reciprocal(in Vector256<double> v) => Divide(One, v);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> ReciprocalSqrt(in Vector256<double> v) => Divide(One, Sqrt(v));
+    public static Vector256<double> Normalize3D(in Vector256<double> v)
+      => Divide(v, Length3D(v));
+    public static Vector256<double> Reciprocal(in Vector256<double> v)
+      => Divide(One, v);
+    public static Vector256<double> ReciprocalSqrt(in Vector256<double> v)
+      => Divide(One, Sqrt(v));
     /// <summary>Calculates the reflection of an incident ray. Reflection: (incident - (2 * DotProduct(incident, normal)) * normal)</summary>
     /// <param name="incident">The incident ray's vector.</param>
     /// <param name="normal">The normal of the mirror upon which the ray is reflecting.</param>
     /// <returns>The vector of the reflected ray.</returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Reflect2D(in Vector256<double> incident, in Vector256<double> normal) => Subtract(incident, Multiply(Multiply(DotProduct2D(incident, normal), 2), normal));
+    public static Vector256<double> Reflect2D(in Vector256<double> incident, in Vector256<double> normal)
+      => Subtract(incident, Multiply(Multiply(DotProduct2D(incident, normal), 2), normal));
     /// <summary>Calculates the reflection of an incident ray.</summary>
     /// <param name="incident">The incident ray's vector.</param>
     /// <param name="normal">The normal of the mirror upon which the ray is reflecting.</param>
     /// <returns>The vector of the reflected ray.</returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Reflect3D(in Vector256<double> incident, in Vector256<double> normal) => Subtract(incident, Multiply(Multiply(DotProduct3D(incident, normal), 2), normal)); // reflection = incident - (2 * DotProduct(incident, normal)) * normal
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Remainder(in Vector256<double> v, in Vector256<double> divisor) => Subtract(v, Multiply(Truncate(Divide(v, divisor)), divisor));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Remainder(in Vector256<double> v, in double divisor) => Remainder(v, Vector256.Create(divisor));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Round(in Vector256<double> v) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.RoundToNearestInteger(v) : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(upper)) : Vector256.Create(System.Math.Round(v.GetElement(0)), System.Math.Round(v.GetElement(1)), System.Math.Round(v.GetElement(2)), System.Math.Round(v.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Sign(in Vector256<double> v) => System.Runtime.Intrinsics.X86.Avx.And(v, MaskNotSign);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Sqrt(in Vector256<double> v) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Sqrt(v) : Vector256.Create(System.Math.Sqrt(v.GetElement(0)), System.Math.Sqrt(v.GetElement(1)), System.Math.Sqrt(v.GetElement(2)), System.Math.Sqrt(v.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Square(in Vector256<double> v) => Multiply(v, v);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Subtract(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Subtract(v1, v2) : Vector256.Create(v1.GetElement(0) - v2.GetElement(0), v1.GetElement(1) - v2.GetElement(1), v1.GetElement(2) - v2.GetElement(2), v1.GetElement(3) - v2.GetElement(3));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Subtract(in Vector256<double> v, in double scalar) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Subtract(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) - scalar, v.GetElement(1) - scalar, v.GetElement(2) - scalar, v.GetElement(3) - scalar);
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Truncate(in Vector256<double> v) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(v) : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(upper)) : Vector256.Create(System.Math.Truncate(v.GetElement(0)), System.Math.Truncate(v.GetElement(1)), System.Math.Truncate(v.GetElement(2)), System.Math.Truncate(v.GetElement(3)));
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> WithinBounds(in Vector256<double> v, in Vector256<double> bound) => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(v, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(v, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
+    public static Vector256<double> Reflect3D(in Vector256<double> incident, in Vector256<double> normal)
+      => Subtract(incident, Multiply(Multiply(DotProduct3D(incident, normal), 2), normal)); // reflection = incident - (2 * DotProduct(incident, normal)) * normal
+    public static Vector256<double> Remainder(in Vector256<double> v, in Vector256<double> divisor)
+      => Subtract(v, Multiply(Truncate(Divide(v, divisor)), divisor));
+    public static Vector256<double> Remainder(in Vector256<double> v, in double divisor)
+      => Remainder(v, Vector256.Create(divisor));
+    public static Vector256<double> Round(in Vector256<double> v)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.RoundToNearestInteger(v) : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(upper)) : Vector256.Create(System.Math.Round(v.GetElement(0)), System.Math.Round(v.GetElement(1)), System.Math.Round(v.GetElement(2)), System.Math.Round(v.GetElement(3)));
+    public static Vector256<double> Sign(in Vector256<double> v)
+      => System.Runtime.Intrinsics.X86.Avx.And(v, MaskNotSign);
+    public static Vector256<double> Sqrt(in Vector256<double> v)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Sqrt(v) : Vector256.Create(System.Math.Sqrt(v.GetElement(0)), System.Math.Sqrt(v.GetElement(1)), System.Math.Sqrt(v.GetElement(2)), System.Math.Sqrt(v.GetElement(3)));
+    public static Vector256<double> Square(in Vector256<double> v)
+      => Multiply(v, v);
+    public static Vector256<double> Subtract(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.Subtract(v1, v2) : Vector256.Create(v1.GetElement(0) - v2.GetElement(0), v1.GetElement(1) - v2.GetElement(1), v1.GetElement(2) - v2.GetElement(2), v1.GetElement(3) - v2.GetElement(3));
+    public static Vector256<double> Subtract(in Vector256<double> v, in double scalar)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? Subtract(v, Vector256.Create(scalar)) : Vector256.Create(v.GetElement(0) - scalar, v.GetElement(1) - scalar, v.GetElement(2) - scalar, v.GetElement(3) - scalar);
+    public static Vector256<double> Truncate(in Vector256<double> v)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(v) : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(upper)) : Vector256.Create(System.Math.Truncate(v.GetElement(0)), System.Math.Truncate(v.GetElement(1)), System.Math.Truncate(v.GetElement(2)), System.Math.Truncate(v.GetElement(3)));
+    public static Vector256<double> WithinBounds(in Vector256<double> v, in Vector256<double> bound)
+      => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(v, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(v, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> DuplicateToVector256(in Vector128<double> v) => Vector256.Create(v, v);
-#endregion Static Members
+    #endregion Static Members
   }
 
   /// <summary>
@@ -248,7 +249,7 @@ namespace Flux.Intrinsic
   /// </example>
   public static class ShuffleValues
   {
-#region Byte Mask Constants to Shuffle Values.
+    #region Byte Mask Constants to Shuffle Values.
     public const byte XXXX = (0 << 6) | (0 << 4) | (0 << 2) | 0;
     public const byte YXXX = (0 << 6) | (0 << 4) | (0 << 2) | 1;
     public const byte ZXXX = (0 << 6) | (0 << 4) | (0 << 2) | 2;
@@ -505,14 +506,14 @@ namespace Flux.Intrinsic
     public const byte YWWW = (3 << 6) | (3 << 4) | (3 << 2) | 1;
     public const byte ZWWW = (3 << 6) | (3 << 4) | (3 << 2) | 2;
     public const byte WWWW = (3 << 6) | (3 << 4) | (3 << 2) | 3;
-#endregion Byte Mask Constants to Shuffle Values.
+    #endregion Byte Mask Constants to Shuffle Values.
 
-#region Byte Mask Shortcut Constants for XXXX(X), YYYY(Y), ZZZZ(Z) and WWWW(W) to Shuffle Values.
+    #region Byte Mask Shortcut Constants for XXXX(X), YYYY(Y), ZZZZ(Z) and WWWW(W) to Shuffle Values.
     public const byte X = XXXX;
     public const byte Y = YYYY;
     public const byte Z = ZZZZ;
     public const byte W = WWWW;
-#endregion Byte Mask Shortcut Constants for XXXX(X), YYYY(Y), ZZZZ(Z) and WWWW(W) to Shuffle Values.
+    #endregion Byte Mask Shortcut Constants for XXXX(X), YYYY(Y), ZZZZ(Z) and WWWW(W) to Shuffle Values.
   }
 }
 #endif

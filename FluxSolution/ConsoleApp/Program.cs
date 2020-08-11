@@ -23,7 +23,7 @@ namespace ConsoleApp
         { "Rubin", "R150" },
         { "Rupert", "R163" },
         { "Tymczak", "T522" },
-        { "Levenshtein", "CTHRN" }
+        { "Catherine", "CTHRN" }
       };
 
       foreach (var kvp in m_soundexTests)
