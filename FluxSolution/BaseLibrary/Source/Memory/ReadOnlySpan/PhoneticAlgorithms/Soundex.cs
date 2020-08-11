@@ -33,7 +33,7 @@ namespace Flux
     {
       const string LetterCodes = @"01230120022455012623010202";
 
-      const string Vowels = @"AIOUY";
+      const string Vowels = @"AEIOUY";
 
       var soundex = new System.Text.StringBuilder();
 
@@ -98,5 +98,196 @@ namespace Flux
     //    }
     //  }
     //}
+  }
+
+  public class Soundex
+  {
+    public const string LetterCodes = @"01230120022455012623010202";
+
+    public static void Clean(string characters, out System.Text.StringBuilder letters, out System.Text.StringBuilder codes)
+    {
+      letters = new System.Text.StringBuilder(characters.Length);
+      codes = new System.Text.StringBuilder(characters.Length);
+
+      foreach (var character in characters)
+      {
+
+      }
+    }
+
+    public static bool CharacterLetter(char character, out char letter)
+      => (letter = char.ToUpper(character)) is var l && l >= 'A' && l <= 'Z';
+
+    public static bool CharacterCode(char character, out char code)
+    {
+      return CharacterCode(character, out code);
+
+      static bool CharacterCode(char character, out char code)
+      {
+        switch (character)
+        {
+          case 'b':
+          case 'f':
+          case 'p':
+          case 'v':
+            code = '1';
+            return true;
+          case 'c':
+          case 'g':
+          case 'j':
+          case 'k':
+          case 'q':
+          case 's':
+          case 'x':
+          case 'z':
+            code = '2';
+            return true;
+          case 'd':
+          case 't':
+            code = '3';
+            return true;
+          case 'l':
+            code = '4';
+            return true;
+          case 'm':
+          case 'n':
+            code = '5';
+            return true;
+          case 'r':
+            code = '6';
+            return true;
+          case 'a':
+          case 'e':
+          case 'i':
+          case 'o':
+          case 'u':
+          case 'y':
+            code = '+';
+            return true;
+          case 'h':
+          case 'w':
+            code = '-';
+            return true;
+          default:
+            code = ' ';
+            return false;
+        }
+      }
+    }
+
+    public static bool Is0(char character)
+      => char.ToLower(character) switch
+      {
+        'a' => true,
+        'e' => true,
+        'i' => true,
+        'o' => true,
+        'u' => true,
+        'y' => true,
+        'h' => true,
+        'w' => true,
+        _ => false
+      };
+    public static bool Is1(char character)
+      => char.ToLower(character) switch
+      {
+        'b' => true,
+        'f' => true,
+        'p' => true,
+        'v' => true,
+        _ => false;
+      };
+    public static bool Is2(char character)
+      => char.ToLower(character) switch
+      {
+        'c' => true,
+        'g' => true,
+        'j' => true,
+        'k' => true,
+        'q' => true,
+        's' => true,
+        'x' => true,
+        'z' => true,
+        _ => false;
+      };
+    public static bool Is3(char character)
+      => char.ToLower(character) switch
+      {
+        'd' => true,
+        't' => true,
+        _ => false;
+      };
+    public static bool Is4(char character)
+      => char.ToLower(character) == 'l';
+    public static bool Is5(char character)
+      => char.ToLower(character) switch
+      {
+        'm' => true,
+        'n' => true,
+        _ => false
+      };
+    public static bool Is6(char character)
+      => char.ToLower(character) == 'r';
+    public static bool IsHW(char character)
+      => char.ToLower(character) switch
+      {
+        'h' => true,
+        'w' => true,
+        _ => false
+      };
+    public static bool IsVowel(char character)
+      => char.ToLower(character) switch
+      {
+        'a' => true,
+        'e' => true,
+        'i' => true,
+        'o' => true,
+        'u' => true,
+        'y' => true,
+        _ => false
+      };
+
+    public static TResult TransformCharacter<TResult>(char character, System.Func<char, TResult> selector)
+    {
+      switch (character)
+      {
+        case 'b':
+        case 'f':
+        case 'p':
+        case 'v':
+          return '1';
+        case 'c':
+        case 'g':
+        case 'j':
+        case 'k':
+        case 'q':
+        case 's':
+        case 'x':
+        case 'z':
+          return '2';
+        case 'd':
+        case 't':
+          return '3';
+        case 'l':
+          return '4';
+        case 'm':
+        case 'n':
+          return '5';
+        case 'r':
+          return '6';
+        case 'a':
+        case 'e':
+        case 'i':
+        case 'o':
+        case 'u':
+        case 'y':
+          return '+';
+        case 'h':
+        case 'w':
+          return '-';
+        default:
+          return ' ';
+      }
+    }
   }
 }
