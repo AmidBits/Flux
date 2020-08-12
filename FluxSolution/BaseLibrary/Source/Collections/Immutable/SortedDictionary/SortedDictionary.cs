@@ -38,11 +38,12 @@ namespace Flux.Collections.Immutable
         value = Lookup(key);
         return true;
       }
-      catch
-      {
-        value = default!;
-        return false;
-      }
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
+
+      value = default!;
+      return false;
     }
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator() => m_tree.GetNodesInOrder().Select(bst => new System.Collections.Generic.KeyValuePair<TKey, TValue>(bst.Key, bst.Value)).GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();

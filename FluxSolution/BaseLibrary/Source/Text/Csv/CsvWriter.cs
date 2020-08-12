@@ -42,7 +42,7 @@ namespace Flux.Text
       if (value.IndexOfAny(m_escapeCharacters) > -1)
       {
         m_streamWriter.Write('"');
-        m_streamWriter.Write(value.Contains("\"") ? value.Replace("\"", "\"\"") : value);
+        m_streamWriter.Write(value.Contains("\"", System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
         m_streamWriter.Write('"');
       }
       else

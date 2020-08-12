@@ -60,7 +60,7 @@ namespace Flux.IFormatProvider
 
               var checksumDigit = g4.Value[0];
 
-              if ((sum135 + sum246 * 2).ToString().Last() != checksumDigit)
+              if ((sum135 + sum246 * 2).ToString(System.Globalization.CultureInfo.CurrentCulture).Last() != checksumDigit)
               {
                 throw new System.Exception("Invalid checksum");
               }
@@ -80,7 +80,10 @@ namespace Flux.IFormatProvider
           }
         }
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = string.Empty;
       return false;

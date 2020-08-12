@@ -174,7 +174,10 @@ namespace Flux
         result = CloneBinary<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -187,7 +190,10 @@ namespace Flux
         result = CloneJson<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -200,7 +206,10 @@ namespace Flux
         result = CloneXml<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -214,7 +223,10 @@ namespace Flux
         result = (TTarget)FromBinary<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -227,7 +239,10 @@ namespace Flux
         result = FromJson<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -240,7 +255,10 @@ namespace Flux
         result = FromXml<TTarget>(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -254,7 +272,10 @@ namespace Flux
         result = ToBinary(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -267,7 +288,10 @@ namespace Flux
         result = ToJson(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;
@@ -280,7 +304,10 @@ namespace Flux
         result = ToXml(source);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default!;
       return false;

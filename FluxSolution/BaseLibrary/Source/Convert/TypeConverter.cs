@@ -14,11 +14,12 @@ namespace Flux
         result = TypeConverter(value, culture, type);
         return true;
       }
-      catch
-      {
-        result = default!;
-        return false;
-      }
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
+
+      result = default!;
+      return false;
     }
     /// <summary>Complement the built-in TypeConverter system using the Try paradigm.</summary>
     public static bool TryTypeConverter<T>(object value, out T result, System.Globalization.CultureInfo? culture = null)
@@ -28,11 +29,12 @@ namespace Flux
         result = TypeConverter<T>(value, culture);
         return true;
       }
-      catch
-      {
-        result = default!;
-        return false;
-      }
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
+
+      result = default!;
+      return false;
     }
 
     /// <summary>Complement the built-in TypeConverter system.</summary>

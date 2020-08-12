@@ -22,7 +22,7 @@ namespace Flux.Resources.W3c
 
       if (uri.Equals(LocalUri))
       {
-        var localFilePath = LocalUri.AbsoluteUri.Replace(@"file://", ".");
+        var localFilePath = LocalUri.AbsoluteUri.Replace(@"file://", ".", System.StringComparison.OrdinalIgnoreCase);
 
         s = System.IO.File.ReadAllText(localFilePath);
       }
@@ -36,7 +36,7 @@ namespace Flux.Resources.W3c
       foreach (var jp in jd.RootElement.EnumerateObject())
       {
         var codepoints = string.Join(@",", jp.Value.GetProperty(@"codepoints").EnumerateArray().Select(e => e.GetInt32()));
-        var characters = jp.Value.GetProperty(@"characters").GetRawText().Trim().Replace(@"""", string.Empty);
+        var characters = jp.Value.GetProperty(@"characters").GetRawText().Trim().Replace(@"""", string.Empty, System.StringComparison.Ordinal);
         var charactersAsString = m_reUnicode.Replace(characters, match => ((char)System.Int32.Parse(match.Value.Substring(2), System.Globalization.NumberStyles.HexNumber)).ToString());
 
         yield return new string[] { jp.Name, codepoints, characters, charactersAsString };

@@ -119,7 +119,9 @@ namespace Flux
         result = NumberToText(number, symbols);
         return true;
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = default;
       return false;
@@ -155,7 +157,9 @@ namespace Flux
         result = TextToNumber(number, symbols);
         return true;
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = default;
       return false;

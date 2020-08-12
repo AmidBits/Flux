@@ -50,7 +50,7 @@ namespace Flux.Resources.ProjectGutenberg
         {
           if (line.Length > 0)
           {
-            if (definition.Length > 0 && !definition.ToString().EndsWith(System.Environment.NewLine)) definition.Append(' ');
+            if (definition.Length > 0 && !definition.ToString().EndsWith(System.Environment.NewLine, System.StringComparison.Ordinal)) definition.Append(' ');
             definition.Append(line.Trim());
           }
           else definition.Append(System.Environment.NewLine);

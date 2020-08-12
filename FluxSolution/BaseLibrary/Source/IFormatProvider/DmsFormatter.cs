@@ -43,7 +43,7 @@ namespace Flux.IFormatProvider
     {
       try
       {
-        if (_regexFormat.Match(format.ToUpper()) is System.Text.RegularExpressions.Match m && m.Success)
+        if (_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
           var decimalDegrees = System.Math.Abs(value);
           var degrees = System.Math.Floor(decimalDegrees);
@@ -63,13 +63,13 @@ namespace Flux.IFormatProvider
             switch (sp)
             {
               case @"D":
-                sb.AppendFormat(@"{0:N" + (dp >= 0 ? dp : 4) + @"}{1}", decimalDegrees, SymbolDegrees);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N" + (dp >= 0 ? dp : 4) + @"}{1}", decimalDegrees, SymbolDegrees);
                 break;
               case @"DM":
-                sb.AppendFormat(@"{0:N0}{1}{2:N" + (dp >= 0 ? dp : 2) + @"}{3}", degrees, SymbolDegrees, decimalMinutes, SymbolMinutes);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N0}{1}{2:N" + (dp >= 0 ? dp : 2) + @"}{3}", degrees, SymbolDegrees, decimalMinutes, SymbolMinutes);
                 break;
               case @"DMS":
-                sb.AppendFormat(@"{0:N0}{1}{2:N0}{3}{4:N" + (dp >= 0 ? dp : 0) + @"}{5}", degrees, SymbolDegrees, minutes, SymbolMinutes, decimalSeconds, SymbolSeconds);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N0}{1}{2:N0}{3}{4:N" + (dp >= 0 ? dp : 0) + @"}{5}", degrees, SymbolDegrees, minutes, SymbolMinutes, decimalSeconds, SymbolSeconds);
                 break;
             }
 
@@ -83,13 +83,15 @@ namespace Flux.IFormatProvider
           return true;
         }
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = string.Empty;
       return false;
     }
 
-    private static readonly System.Text.RegularExpressions.Regex _regexParse = new System.Text.RegularExpressions.Regex(string.Format(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^NSEW]*(?<CompassDirection>[NSEW])?", SymbolDegrees, SymbolMinutes, SymbolSeconds));
+    private static readonly System.Text.RegularExpressions.Regex _regexParse = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^NSEW]*(?<CompassDirection>[NSEW])?");
     /// <summary>Try parsing dms format.</summary>
     public static bool TryParse(string text, out double result)
     {
@@ -122,7 +124,10 @@ namespace Flux.IFormatProvider
           return true;
         }
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;

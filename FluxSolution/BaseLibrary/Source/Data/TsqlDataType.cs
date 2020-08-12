@@ -58,21 +58,21 @@ namespace Flux.Data
     {
     }
 
-    // System.IEquatable<SqlDefinitionNullability>
-    public bool Equals(TsqlDataType other)
-      => Name == other.Name;
-    // System.Object Overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlDataType ? this.Equals((TsqlDataType)obj) : false;
-    public override int GetHashCode()
-      => Name.GetHashCode();
-    public override string ToString()
-      => Name;
     // Operators
     public static bool operator ==(TsqlDataType left, TsqlDataType right)
       => left.Equals(right);
     public static bool operator !=(TsqlDataType left, TsqlDataType right)
       => !left.Equals(right);
+    // System.IEquatable<SqlDefinitionNullability>
+    public bool Equals(TsqlDataType other)
+      => Name == other.Name;
+    // System.Object Overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlDataType dt && this.Equals(dt);
+    public override int GetHashCode()
+      => Name.GetHashCode(System.StringComparison.Ordinal);
+    public override string ToString()
+      => Name;
 
     /// <summary>Returns the default argument of the specified dataTypeName.</summary>
     public static string GetDefaultArgument(string dataTypeName, bool beExplicit = false)
@@ -124,7 +124,10 @@ namespace Flux.Data
         result = Parse(expression);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;

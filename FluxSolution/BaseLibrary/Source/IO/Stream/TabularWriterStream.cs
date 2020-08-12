@@ -54,7 +54,7 @@ namespace Flux.IO
         if (value.IndexOfAny($"{_fieldSeparator}\"\r\n") > -1)
         {
           _streamWriter.Write('"');
-          _streamWriter.Write(value.Replace("\"", "\"\""));
+          _streamWriter.Write(value.Replace("\"", "\"\"", System.StringComparison.Ordinal));
           _streamWriter.Write('"');
         }
         else

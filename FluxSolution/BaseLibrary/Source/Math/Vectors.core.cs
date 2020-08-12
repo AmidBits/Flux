@@ -1,8 +1,6 @@
-#if NETCOREAPP3_0 || NETCOREAPP3_1
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Intrinsics;
 
-namespace Flux.Intrinsic
+namespace Flux
 {
   //public static class ExtensionMethodsIntrinsics
   //{
@@ -15,12 +13,14 @@ namespace Flux.Intrinsic
   /// <summary></summary>
   /// <see cref="https://github.com/john-h-k/MathSharp/tree/master/sources/MathSharp/Vector/VectorFloatingPoint/VectorDouble"/>
   public struct Vector3D
-    : System.IEquatable<Vector3D>
+    : System.IEquatable<Vector3D>, System.IFormattable
   {
-    public double X;
-    public double Y;
-    public double Z;
-    public double W;
+    //public static Vector3D Empty = new Vector3D();
+
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+    public double W { get; set; }
 
     public Vector3D(double x, double y, double z, double w)
     {
@@ -30,12 +30,10 @@ namespace Flux.Intrinsic
       W = w;
     }
 
-    public bool Equals(Vector3D other) => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
-
     public static Vector3D FromVector256(Vector256<double> v) => new Vector3D(v.GetElement(0), v.GetElement(1), v.GetElement(2), v.GetElement(3));
     public Vector256<double> ToVector256() => Vector256.Create(X, Y, Z, W);
 
-    #region Static Members
+    #region Static members (implementations using intrinsics if applicable)
     //public static readonly Vector256<double> Epsilon = Vector256.Create(double.Epsilon);
     //public static readonly Vector256<double> NegativeOne = Vector256.Create(-1d);
     public static readonly Vector256<double> One = Vector256.Create(1d);
@@ -152,7 +150,8 @@ namespace Flux.Intrinsic
 
       return Vector256.Create(v1.GetElement(0) * v2.GetElement(0) + v1.GetElement(1) * v2.GetElement(1) + v1.GetElement(2) * v2.GetElement(2));
     }
-    public static Vector256<double> HorizontalAdd(in Vector256<double> v1, in Vector256<double> v2) => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.HorizontalAdd(v1, v2) : Vector256.Create(v1.GetElement(0) + v1.GetElement(1), v2.GetElement(0) + v2.GetElement(1), v1.GetElement(2) + v1.GetElement(3), v2.GetElement(2) + v2.GetElement(3));
+    public static Vector256<double> HorizontalAdd(in Vector256<double> v1, in Vector256<double> v2)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported ? System.Runtime.Intrinsics.X86.Avx.HorizontalAdd(v1, v2) : Vector256.Create(v1.GetElement(0) + v1.GetElement(1), v2.GetElement(0) + v2.GetElement(1), v1.GetElement(2) + v1.GetElement(3), v2.GetElement(2) + v2.GetElement(3));
     /// <summary>Returns the length of the given Vector2D.</summary>
     public static Vector256<double> Length2D(in Vector256<double> v)
       => Sqrt(DotProduct2D(v, v));
@@ -231,9 +230,32 @@ namespace Flux.Intrinsic
     public static Vector256<double> WithinBounds(in Vector256<double> v, in Vector256<double> bound)
       => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(v, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(v, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
 
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static Vector256<double> DuplicateToVector256(in Vector128<double> v) => Vector256.Create(v, v);
-    #endregion Static Members
+    #endregion Static members (implementations using intrinsics if applicable)
+
+    // Operators
+    public static bool operator ==(Vector3D a, Vector3D b)
+      => a.Equals(b);
+    public static bool operator !=(Vector3D a, Vector3D b)
+      => !a.Equals(b);
+    // IEquatable
+    public bool Equals(Vector3D other)
+      => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? provider)
+    {
+      if (string.IsNullOrEmpty(format)) format = "G";
+      if (provider is null) provider = System.Globalization.CultureInfo.CurrentCulture;
+
+      return $"<{X.ToString(format, provider)}, {Y.ToString(format, provider)}, {Z.ToString(format, provider)}, {W.ToString(format, provider)}>";
+    }
+    // Object (overrides)
+    public override bool Equals(object? obj)
+      => obj is Vector3D && Equals(obj);
+    public override int GetHashCode()
+      => Flux.HashCode.CombineCore(X, Y, Z, W);
+    public override string ToString()
+      => ToString("G", System.Globalization.CultureInfo.CurrentCulture);
   }
 
   /// <summary>
@@ -516,4 +538,3 @@ namespace Flux.Intrinsic
     #endregion Byte Mask Shortcut Constants for XXXX(X), YYYY(Y), ZZZZ(Z) and WWWW(W) to Shuffle Values.
   }
 }
-#endif

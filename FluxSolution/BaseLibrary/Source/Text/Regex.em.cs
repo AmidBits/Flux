@@ -10,7 +10,7 @@ namespace Flux
       {
         var group = source.Groups[index];
 
-        if (!group.Name.Equals(index.ToString()))
+        if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal))
         {
           yield return new System.Collections.Generic.KeyValuePair<string, string>(group.Name, group.Value);
         }

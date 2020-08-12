@@ -32,7 +32,7 @@ namespace Flux.Diagnostics
           var expectedResultTypeName = expectedResult?.GetType().Name ?? "null";
           var lastResultTypeName = LastResult?.GetType().Name ?? "null";
 
-          if (!expectedResultTypeName.Equals(lastResultTypeName)) throw new System.Exception($"Assertion expected({expectedResult}) <{expectedResultTypeName}> != actual({LastResult}) <{lastResultTypeName}>");
+          if (!expectedResultTypeName.Equals(lastResultTypeName, System.StringComparison.Ordinal)) throw new System.Exception($"Assertion expected({expectedResult}) <{expectedResultTypeName}> != actual({LastResult}) <{lastResultTypeName}>");
           else throw new System.ArgumentException($"Assertion expected({expectedResultTypeName}) <{expectedResult}> != actual({lastResultTypeName}) <{LastResult}>", nameof(expectedResult));
         }
       }

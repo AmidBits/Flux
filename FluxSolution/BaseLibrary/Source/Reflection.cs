@@ -50,7 +50,7 @@ namespace Flux.Reflection
   public class AssemblyInfo
   {
     public static AssemblyInfo CallingAssembly => new AssemblyInfo(System.Reflection.Assembly.GetCallingAssembly());
-    public static AssemblyInfo EntryAssembly => new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.EntryPointNotFoundException());
+    public static AssemblyInfo EntryAssembly => new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
     public static AssemblyInfo ExecutingAssembly => new AssemblyInfo(System.Reflection.Assembly.GetExecutingAssembly());
 
     public static AssemblyInfo FluxAssembly => new AssemblyInfo(typeof(AssemblyInfo).Assembly);

@@ -32,7 +32,7 @@ namespace Flux
         var sourceIndex = startAt + valueIndex;
 
         while (--sourceIndex >= 0 && --valueIndex >= 0)
-          if (!source[sourceIndex].ToString().Equals(value[valueIndex].ToString()))
+          if (!source[sourceIndex].ToString().Equals(value[valueIndex].ToString(), comparisonType))
             continue;
 
         return true;

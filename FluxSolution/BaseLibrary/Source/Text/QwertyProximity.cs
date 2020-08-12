@@ -7,7 +7,7 @@ namespace Flux
     public static void GetRelativeFrequencyOfLetters(this System.Globalization.CultureInfo source)
     {
       var table = new System.Collections.Generic.Dictionary<char, double>();
-      if (source.Name.StartsWith("en"))
+      if (source.Name.StartsWith("en", System.StringComparison.Ordinal))
       {
       }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux.IFormatProvider
@@ -86,13 +87,13 @@ namespace Flux.IFormatProvider
         {
           var e = (Parts)index;
           var s = e.ToString();
-          var si = format.IndexOf(s);
+          var si = (format ?? throw new System.ArgumentNullException(nameof(format))).IndexOf(s, System.StringComparison.Ordinal);
           var sli = si + s.Length;
 
           if (e == Parts.Direction && si > -1)
           {
             if (sli < format.Length && format[sli] == '$') format = format.Remove(sli, 1);
-            else parts[index] = StreetDirections.First(kvp => kvp.Key == parts[index] || kvp.Value.Contains(parts[index])).Key;
+            else parts[index] = StreetDirections.First(kvp => kvp.Key == parts[index] || kvp.Value.Contains(parts[index], System.StringComparison.OrdinalIgnoreCase)).Key;
           }
           else if (e == Parts.Type && si > -1)
           {
@@ -100,10 +101,10 @@ namespace Flux.IFormatProvider
             else parts[index] = StreetTypes.First(kvp => kvp.Key == parts[index] || kvp.Value.Contains(parts[index])).Key;
           }
 
-          format = format.Replace(s, $"{{{index}}}");
+          format = format.Replace(s, $"{{{index}}}", StringComparison.Ordinal);
         }
 
-        result = string.Format(format, parts).NormalizeAll(' ', c => c == ' ');
+        result = string.Format(System.Globalization.CultureInfo.CurrentCulture, format, parts).NormalizeAll(' ', c => c == ' ');
         return true;
       }
 
@@ -111,7 +112,7 @@ namespace Flux.IFormatProvider
       return false;
     }
 
-    private static readonly System.Text.RegularExpressions.Regex _regexParse = new System.Text.RegularExpressions.Regex(string.Format(@"^(?<Number>\d+)?(?:\s*(?<Direction>{0})\.?)?(?:\s*(?<Intersection>CL|EPI|PI|SPI)\s+)?(?:\s*(?<Name>.*?))?(?:(?:\s+(?<Type>{1})\.?)(?:\s+(?<Unit>.*))?)?$", StreetDirections.SelectMany(kvp => new string[] { kvp.Value, kvp.Key }).ToDelimitedString(@"|"), StreetTypes.SelectMany(kvp => kvp.Value.Append(kvp.Key)).ToDelimitedString(@"|")));
+    private static readonly System.Text.RegularExpressions.Regex _regexParse = new System.Text.RegularExpressions.Regex($@"^(?<Number>\d+)?(?:\s*(?<Direction>{StreetDirections.SelectMany(kvp => new string[] { kvp.Value, kvp.Key }).ToDelimitedString(@"|")})\.?)?(?:\s*(?<Intersection>CL|EPI|PI|SPI)\s+)?(?:\s*(?<Name>.*?))?(?:(?:\s+(?<Type>{StreetTypes.SelectMany(kvp => kvp.Value.Append(kvp.Key)).ToDelimitedString(@"|")})\.?)(?:\s+(?<Unit>.*))?)?$");
     /// <summary>Try parsing dms format.</summary>
     public static bool TryParse(string text, out string[] result)
     {
@@ -133,7 +134,10 @@ namespace Flux.IFormatProvider
           return true;
         }
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = new string[0];
       return false;

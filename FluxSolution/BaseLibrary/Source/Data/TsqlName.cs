@@ -9,8 +9,8 @@ namespace Flux.Data
     //public static int TotalRowsCopied(this System.Data.SqlClient.SqlBulkCopy bulkCopy)
     //  => (int)typeof(System.Data.SqlClient.SqlBulkCopy).GetField(@"_rowsCopied", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance).GetValue(bulkCopy);
 
-    public static string EscapeTsql(this string source) => source.Replace("'", "''");
-    public static string UnescapeTsql(this string source) => source.Replace("''", "'");
+    public static string EscapeTsql(this string source) => source.Replace("'", "''", System.StringComparison.Ordinal);
+    public static string UnescapeTsql(this string source) => source.Replace("''", "'", System.StringComparison.Ordinal);
 
     public static string QuoteTsql(this string source, bool ansi = false) => ansi ? source.Wrap('"', '"') : source.Wrap('[', ']');
     public static string UnquoteTsql(this string source) => source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source;
@@ -157,26 +157,29 @@ namespace Flux.Data
         result = Parse(qualifiedName);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;
     }
 
-    // System.IEquatable<SqlName>
-    public bool Equals(TsqlName other)
-      => ToString() == other.ToString();
-    // System.Object Overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlName && ((TsqlName)obj) is var sn ? this.Equals(sn) : false;
-    public override int GetHashCode()
-      => ToString().GetHashCode();
-    public override string ToString()
-      => QualifiedNameQuoted(4);
     // Operators
     public static bool operator ==(TsqlName left, TsqlName right)
       => left.Equals(right);
     public static bool operator !=(TsqlName left, TsqlName right)
       => !left.Equals(right);
+    // System.IEquatable<SqlName>
+    public bool Equals(TsqlName other)
+      => ToString() == other.ToString();
+    // Object overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlName n && this.Equals(n);
+    public override int GetHashCode()
+      => ToString().GetHashCode(System.StringComparison.Ordinal);
+    public override string ToString()
+      => QualifiedNameQuoted(4);
   }
 }

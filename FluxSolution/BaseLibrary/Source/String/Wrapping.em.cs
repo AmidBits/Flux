@@ -14,7 +14,7 @@ namespace Flux
 
     /// <summary>Indicates whether the source is already wrapped in the strings.</summary>
     public static bool IsWrapped(this string source, string left, string right)
-      => source.Length >= (left.Length + right.Length) && source.StartsWith(left) && source.EndsWith(right);
+      => source.Length >= (left.Length + right.Length) && source.StartsWith(left, System.StringComparison.Ordinal) && source.EndsWith(right, System.StringComparison.Ordinal);
     /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
     public static string Unwrap(this string source, string left, string right)
       => source.IsWrapped(left, right) ? source.Substring(left.Length, source.Length - (left.Length + right.Length)) : source;

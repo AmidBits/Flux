@@ -34,7 +34,10 @@ namespace Flux.IFormatProvider
         result = Flux.PositionalNotation.TextToNumber(number, radixNumerals.Select(c => c.ToString()).ToArray());
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;
@@ -46,7 +49,10 @@ namespace Flux.IFormatProvider
         result = Flux.PositionalNotation.NumberToText(number, radixNumerals.Select(c => c.ToString()).ToArray());
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = string.Empty;
       return false;

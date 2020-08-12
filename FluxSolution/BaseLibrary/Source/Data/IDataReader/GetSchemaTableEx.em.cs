@@ -83,7 +83,7 @@ namespace Flux
           {
             if (row.IsNull(CsTsqlDefinitionAdapted))
             {
-              if (Data.TsqlColumnDefinition.Parse((string)row[CsTsqlDefinitionCurrent]) is var definition && definition.DataTypeName.Equals(Data.TsqlDataType.Rowversion) || definition.DataTypeName.Equals(Data.TsqlDataType.Timestamp))
+              if (Data.TsqlColumnDefinition.Parse((string)row[CsTsqlDefinitionCurrent]) is var definition && definition.DataTypeName.Equals(Data.TsqlDataType.Rowversion, System.StringComparison.Ordinal) || definition.DataTypeName.Equals(Data.TsqlDataType.Timestamp, System.StringComparison.Ordinal))
               {
                 row[CsTsqlDefinitionAdapted] = $"[{definition.ColumnName}] [{(definition.Nullability.Equals(@"NULL") ? Data.TsqlDataType.Varbinary : Data.TsqlDataType.Binary)}](8) {definition.Nullability}";
               }

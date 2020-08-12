@@ -52,8 +52,10 @@ namespace Flux
         result = Parse(version);
         return true;
       }
-      catch { }
-
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
       result = default;
       return false;
     }
@@ -99,7 +101,7 @@ namespace Flux
       => string.Join(m_separatorsArray[0].ToString(formatProvider), m_parts.Select(i => i.ToString(formatProvider)));
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is VersionEx ? Equals((VersionEx)obj) : false;
+      => obj is VersionEx && Equals(obj);
     public override int GetHashCode()
       => Flux.HashCode.Combine(m_parts.Cast<object>().AsEnumerable());
     public override string? ToString()

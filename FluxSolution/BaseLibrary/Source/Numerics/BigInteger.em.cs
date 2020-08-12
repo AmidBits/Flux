@@ -875,7 +875,7 @@ namespace Flux.Numerics
       {
         var result = System.Numerics.BigInteger.Zero;
 
-        if (!System.Text.RegularExpressions.Regex.IsMatch(number, "^-?0?$") && number.Replace(@"-", string.Empty) is string s && s.Length > 0)
+        if (!System.Text.RegularExpressions.Regex.IsMatch(number, "^-?0?$") && number.Replace(@"-", string.Empty, System.StringComparison.Ordinal) is string s && s.Length > 0)
         {
           var multiplier = System.Numerics.BigInteger.Pow(baseCharacters.Length, s.Length - 1);
 

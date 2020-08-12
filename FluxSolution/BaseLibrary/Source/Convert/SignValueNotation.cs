@@ -66,7 +66,7 @@ namespace Flux
 
         foreach (var item in dictionarySignValueSystem)
         {
-          while (number.StartsWith(item.Key))
+          while (number.StartsWith(item.Key, System.StringComparison.Ordinal))
           {
             bi += item.Value;
 

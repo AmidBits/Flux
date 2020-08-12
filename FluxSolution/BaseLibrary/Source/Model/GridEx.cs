@@ -163,12 +163,12 @@ namespace Flux.Model
     /// <returns>Null in case of failure to eliminate, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string> Eliminate(System.Collections.Generic.List<string> values, int square, string digit)
     {
-      if (!values[square].Contains(digit))
+      if (!values[square].Contains(digit, System.StringComparison.Ordinal))
       {
         return values; // already eliminated
       }
 
-      values[square] = values[square].Replace(digit, string.Empty);
+      values[square] = values[square].Replace(digit, string.Empty, System.StringComparison.Ordinal);
 
       #region 1: if a square is reduced to only one possible digit (d), then eliminate d from the square's peers
 
@@ -190,7 +190,7 @@ namespace Flux.Model
       #region 2: if a unit is reduced to only one possible place for a digit, then assign it there.
       foreach (var unit in Units[square])
       {
-        var places = unit.Where(s => values[s].Contains(digit));
+        var places = unit.Where(s => values[s].Contains(digit, System.StringComparison.Ordinal));
 
         if (places.Count() == 0) // contradiction; there is no place for this digit
         {
@@ -336,7 +336,7 @@ namespace Flux.Model
     }
 
     public static string ToLabel(int index) => (index >= 0 && index < 81) ? $"{RowLabels[index / 9]}{ColumnLabels[index % 9]}" : throw new System.ArgumentOutOfRangeException(nameof(index));
-    public static int ToIndex(string label) => (label.Length == 2 && RowLabels.Contains(label[0]) && ColumnLabels.Contains(label[1])) ? RowLabels.IndexOf(label[0]) * 9 + ColumnLabels.IndexOf(label[1]) : throw new System.ArgumentOutOfRangeException(nameof(label));
+    public static int ToIndex(string label) => (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1],System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
 
     #region Preset Puzzles
     public const string Puzzle1439 = ".....5.8....6.1.43..........1.5........1.6...3.......553.....61........4.........";

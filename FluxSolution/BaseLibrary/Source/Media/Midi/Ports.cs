@@ -500,6 +500,8 @@ namespace Flux.Media.Midi
   public class MidiOut
     : Disposable
   {
+    public const int MMSYSERR_NOERROR = 0;
+
     private System.IntPtr m_id;
 
     public int Index { get; }
@@ -524,7 +526,7 @@ namespace Flux.Media.Midi
     public void TrySendMore(byte[] message)
     {
       var mhdr = new Header();
-      mhdr.dwBufferLength = mhdr.dwBytesRecorded = message.Length;
+      mhdr.dwBufferLength = mhdr.dwBytesRecorded = message?.Length ?? throw new System.ArgumentNullException(nameof(message));
       mhdr.lpData = System.Runtime.InteropServices.Marshal.AllocHGlobal(mhdr.dwBufferLength);
       System.Runtime.InteropServices.Marshal.Copy(message, 0, mhdr.lpData, mhdr.dwBufferLength);
       var sizeOfHeader = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Header));
@@ -535,10 +537,10 @@ namespace Flux.Media.Midi
       result = midiOutUnprepareHeader(m_id, nhdr, sizeOfHeader);
     }
     //=> message.Length <= 3 ? midiOutShortMsg(Id, BitConverter.BigEndian.ToUInt32(message, 0)) : throw new System.ArgumentOutOfRangeException(nameof(message));
-    public void TrySend(byte status, byte data1, byte data2)
-      => midiOutShortMsg(m_id, (uint)(data2 << 16 | data1 << 8 | status));
-    public void TrySend(int message)
-      => midiOutShortMsg(m_id, (uint)(message));
+    public bool TrySend(byte status, byte data1, byte data2)
+      => midiOutShortMsg(m_id, (uint)(data2 << 16 | data1 << 8 | status)) == MMSYSERR_NOERROR;
+    public bool TrySend(int message)
+      => midiOutShortMsg(m_id, (uint)(message)) == MMSYSERR_NOERROR;
 
     public void NoteOff(int channel, int note, int velocity)
       => midiOutShortMsg(m_id, (uint)((velocity << 16) | (note << 8) | (0x80 | (channel & 0xF))));

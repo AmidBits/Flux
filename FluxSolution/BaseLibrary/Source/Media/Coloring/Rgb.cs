@@ -421,7 +421,7 @@ namespace Flux.Media.Coloring
         }
       }
 
-      if (colorString.Length > 3 && colorString.StartsWith(@"sc#"))
+      if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
       {
         switch (colorString.Substring(3).Split(','))
         {
@@ -430,11 +430,11 @@ namespace Flux.Media.Coloring
           case var s3 when s3.Length == 3:
             return (255, (byte)(double.Parse(s3[0]) * 255), (byte)(double.Parse(s3[1]) * 255), (byte)(double.Parse(s3[2]) * 255));
           default:
-            throw new System.FormatException(string.Format("The {0} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB).", colorString));
+            throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB).");
         }
       }
 
-      throw new System.FormatException(string.Format("The {0} string passed in the colorString argument is not a recognized Color.", colorString));
+      throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
 
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>

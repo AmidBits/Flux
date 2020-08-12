@@ -62,7 +62,10 @@ namespace Flux.Data
         result = Parse(tsqlColumnDefinition);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;
@@ -71,20 +74,21 @@ namespace Flux.Data
     public string ToString(bool ansi)
       => $"{ColumnName.QuoteTsql(ansi)} {DataTypeName.QuoteTsql(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability}";
 
-    // System.IEquatable<SqlName>
-    public bool Equals(TsqlColumnDefinition other) => ColumnName == other.ColumnName && DataTypeName == other.DataTypeName && DataTypeArguments == other.DataTypeArguments && Nullability == other.Nullability;
-    // System.Object Overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlColumnDefinition ? this.Equals((TsqlColumnDefinition)obj) : false;
-    public override int GetHashCode()
-      => ToString().GetHashCode();
-    public override string ToString()
-      => ToString(false);
     // Operators
     public static bool operator ==(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => left.Equals(right);
     public static bool operator !=(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => !left.Equals(right);
+    // System.IEquatable<SqlName>
+    public bool Equals(TsqlColumnDefinition other)
+      => ColumnName == other.ColumnName && DataTypeName == other.DataTypeName && DataTypeArguments == other.DataTypeArguments && Nullability == other.Nullability;
+    // System.Object Overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlColumnDefinition cd && this.Equals(cd);
+    public override int GetHashCode()
+      => ToString().GetHashCode(System.StringComparison.Ordinal);
+    public override string ToString()
+      => ToString(false);
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)
     //{

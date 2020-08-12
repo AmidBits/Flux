@@ -22,7 +22,7 @@ namespace Flux
 
         var value = source.GetStringEx(index, nullValue);
 
-        sb.Append(value.Contains('"') ? value.Replace("\"", "\"\"") : value);
+        sb.Append(value.Contains('"', System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
 
         if (quotes)
         {

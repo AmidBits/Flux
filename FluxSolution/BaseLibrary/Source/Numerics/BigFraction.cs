@@ -410,11 +410,11 @@ namespace Flux.Numerics
     }
     public static BigFraction Parse(string s, int radix)
     {
-      var index = s.IndexOf(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+      var index = s.IndexOf(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, System.StringComparison.Ordinal);
 
       if (index <= -1) return new BigFraction(s.FromRadixString(radix), System.Numerics.BigInteger.One, true);
 
-      var num = s.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty).FromRadixString(radix);
+      var num = s.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty, System.StringComparison.Ordinal).FromRadixString(radix);
       var den = System.Numerics.BigInteger.Pow(radix, s.Length - index - 1);
 
       return new BigFraction(num, den, false);
@@ -500,7 +500,9 @@ namespace Flux.Numerics
         result = Create(numerator, denominator);
         return true;
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = default;
       return false;

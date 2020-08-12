@@ -20,7 +20,10 @@ namespace Flux.Media.Midi
         result = FromFrequency(frequency);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;
@@ -69,7 +72,10 @@ namespace Flux.Media.Midi
         result = Parse(scientificPitchNotation);
         return true;
       }
-      catch { }
+#pragma warning disable CA1031 // Do not catch general exception types.
+      catch
+#pragma warning restore CA1031 // Do not catch general exception types.
+      { }
 
       result = default;
       return false;

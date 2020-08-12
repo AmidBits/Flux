@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class Convert
   {
-    private static System.Reflection.MethodInfo m_changeTypeOfT = typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType)) && mi.GetParameters().Length == 2);
+    private static System.Reflection.MethodInfo m_changeTypeOfT = typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
 
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain.</summary>
     [System.CLSCompliant(false)]
@@ -37,7 +37,9 @@ namespace Flux
         result = ChangeType(value, provider, sequentialTargetTypes);
         return true;
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = default!;
       return false;
@@ -51,7 +53,9 @@ namespace Flux
         result = ChangeType<T>(value, provider);
         return true;
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       result = default!;
       return false;

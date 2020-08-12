@@ -92,7 +92,7 @@ namespace Flux
     {
       var text = primeNumber.ToString();
 
-      if (text.IndexOf('0') > -1)
+      if (text.IndexOf('0', System.StringComparison.Ordinal) > -1)
       {
         return false;
       }
