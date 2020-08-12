@@ -22,6 +22,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_distance"/> 
     public static int MostFreqKSimilarity<T>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2, int limit, System.Collections.Generic.IEqualityComparer<T>? comparer = null)
     {
+      if (hashing1 is null) throw new System.ArgumentNullException(nameof(hashing1));
+      if (hashing2 is null) throw new System.ArgumentNullException(nameof(hashing2));
+
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var similarity = 0;

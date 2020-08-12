@@ -13,7 +13,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
     public int CodeLength { get; set; } = 4;
 
-    public string Encode(string name)
+    public string Encode(System.ReadOnlySpan<char> name)
     {
       var soundex = new System.Text.StringBuilder();
 
@@ -21,7 +21,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
       for (var index = 0; index < name.Length; index++)
       {
-        if (char.ToUpper(name[index]) is var letter && letter >= 'A' && letter <= 'Z')
+        if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
         {
           var code = LetterCodeMap[letter - 'A'];
 

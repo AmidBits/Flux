@@ -5,6 +5,8 @@ namespace Flux
     /// <summary>Trim all repeated characters in the string.</summary>
     public static System.Text.StringBuilder TrimRepeats(this System.Text.StringBuilder source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var index = 0;
       var previous = '\0';
 
@@ -26,6 +28,8 @@ namespace Flux
     /// <summary>Trim aany repeated combination of the specified characters in the string.</summary>
     public static System.Text.StringBuilder TrimRepeats(this System.Text.StringBuilder source, params char[] characters)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var index = 0;
       var previous = '\0';
 

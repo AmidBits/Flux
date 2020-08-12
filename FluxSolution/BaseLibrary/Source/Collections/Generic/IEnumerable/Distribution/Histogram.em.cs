@@ -16,6 +16,10 @@ namespace Flux
     public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> countSelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
       where TKey : notnull
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
+      if (countSelector is null) throw new System.ArgumentNullException(nameof(countSelector));
+
       var histogram = new System.Collections.Generic.SortedDictionary<TKey, int>(comparer);
 
       var index = 0;
@@ -38,6 +42,10 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.IList<int> Histogram<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> binSelector, System.Func<TSource, int, int> frequencySelector, out int totalFrequency)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (binSelector is null) throw new System.ArgumentNullException(nameof(binSelector));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
+
       totalFrequency = 0;
 
       var histogram = new System.Collections.Generic.List<int>();

@@ -4,6 +4,7 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Create a new two-dimensional array from the source, with the order of all elements along the specified dimension reversed.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] Reverse<T>(this T[,] source, int dimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -44,10 +45,15 @@ namespace Flux
 
       return target;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
     /// <summary>Reverse the order of all elements, in-place, along the specified dimension of the two-dimensional array.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] ReverseInPlace<T>(this T[,] source, int dimension)
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
 

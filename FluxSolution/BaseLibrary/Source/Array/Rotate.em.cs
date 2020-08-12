@@ -4,6 +4,7 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Create a new two dimensional array from the source, with the elements rotated clockwise.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] RotateClockwise<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -25,8 +26,10 @@ namespace Flux
 
       return target;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
     /// <summary>Create a new two dimensional array from the source, with the elements rotated counter-clockwise.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] RotateCounterClockwise<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -48,5 +51,6 @@ namespace Flux
 
       return target;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

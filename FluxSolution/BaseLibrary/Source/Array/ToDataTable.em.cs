@@ -6,7 +6,9 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Create a new System.Data.DataTable from the two dimensional array.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool hasColumnNames, params string[] customColumnNames)
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

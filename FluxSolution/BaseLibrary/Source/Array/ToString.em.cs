@@ -6,7 +6,9 @@ namespace Flux
   public static partial class XtensionsArray
   {
     // Returns the array elements formatted for the console.
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static string ToConsoleString<T>(this T[,] source, bool useTotalMaxWidth = false, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015')
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -26,7 +28,7 @@ namespace Flux
           sb.AppendLine(verticalSeparatorRow);
         }
 
-        sb.AppendLine(string.Format(format, source.GetElements(0, d0).Select(e => (object?)e.item).ToArray()));
+        sb.AppendLine(string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, d0).Select(e => (object?)e.item).ToArray()));
       }
 
       return sb.ToString();

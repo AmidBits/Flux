@@ -7,16 +7,18 @@ namespace Flux
     /// <summary>Finds all sub-nodes matching the specified key.</summary>
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> FindAllNodes<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey key)
       where TKey : System.IComparable<TKey>
-      => source.GetNodesInOrder().Where(node => node.Key.CompareTo(key) == 0);
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetNodesInOrder().Where(node => node.Key.CompareTo(key) == 0);
     /// <summary>Finds the first sub-node matching the specified key.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> FindOneNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey key)
       where TKey : System.IComparable<TKey>
-      => (key.CompareTo(source.Key)) switch { var gt when gt > 0 => source.Right.Search(key), var lt when lt < 0 => source.Left.Search(key), _ => source };
+      => (key.CompareTo((source ?? throw new System.ArgumentNullException(nameof(source))).Key)) switch { var gt when gt > 0 => source.Right.Search(key), var lt when lt < 0 => source.Left.Search(key), _ => source };
 
     /// <summary>Gets the maximum (with the greatest key) node.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) return source;
 
       var node = source;
@@ -27,6 +29,8 @@ namespace Flux
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMinimumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) return source;
 
       var node = source;
@@ -37,11 +41,11 @@ namespace Flux
     /// <summary>Gets the predecessor (or "previous") node by key.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetPredecessorNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
-      => source.IsEmpty ? source : source.Left.GetMaximumNode();
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).IsEmpty ? source : source.Left.GetMaximumNode();
     /// <summary>Gets the successor (or "next") node by key.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetSuccessorNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
-      => source.IsEmpty ? source : source.Right.GetMinimumNode();
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).IsEmpty ? source : source.Right.GetMinimumNode();
 
     /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
@@ -49,6 +53,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
 
       var node = source;
@@ -77,6 +83,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrderReversed<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
 
       var node = source;
@@ -106,6 +114,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) yield break;
 
       var queue = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
@@ -128,6 +138,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>[]> GetNodesLevelOrderChunked<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) yield break;
 
       var level = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
@@ -153,6 +165,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPostOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) yield break;
 
       var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
@@ -193,6 +207,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPreOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (source.IsEmpty) yield break;
 
       var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();

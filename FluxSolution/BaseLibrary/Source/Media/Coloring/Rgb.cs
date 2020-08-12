@@ -27,7 +27,7 @@ namespace Flux.Media.Coloring
 
     public double GetChroma()
       => System.Math.Max(System.Math.Max(m_red, m_green), m_blue) - System.Math.Min(System.Math.Min(m_red, m_green), m_blue);
-    public double GetHue()
+    public static double GetHue()
       => 0;
 
     /// <summary>Plain average of all colors.</summary>
@@ -156,7 +156,7 @@ namespace Flux.Media.Coloring
         switch (colorString.Substring(3).Split(','))
         {
           case var s4 when s4.Length == 4:
-            return new Rgb((byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2]) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255));
+            return new Rgb((byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255));
           case var s3 when s3.Length == 3:
             return new Rgb(255, (byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255));
           default:
@@ -385,10 +385,7 @@ namespace Flux.Media.Coloring
     /// <returns>Parsed color</returns>
     public static (double red, double green, double blue, double alpha) StringToRgb(string colorString)
     {
-      if (string.IsNullOrEmpty(colorString))
-      {
-        throw new System.ArgumentException(nameof(colorString));
-      }
+      if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
 
       if (colorString[0] == '#')
       {
@@ -417,7 +414,7 @@ namespace Flux.Media.Coloring
             b4 = (byte)(b4 << 4 | b4);
             return (255, r4, g4, b4);
           default:
-            throw new System.FormatException(string.Format("The {0} string passed in the colorString argument is not a recognized Color format.", colorString));
+            throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
         }
       }
 
@@ -426,9 +423,9 @@ namespace Flux.Media.Coloring
         switch (colorString.Substring(3).Split(','))
         {
           case var s4 when s4.Length == 4:
-            return ((byte)(double.Parse(s4[0]) * 255), (byte)(double.Parse(s4[1]) * 255), (byte)(double.Parse(s4[2]) * 255), (byte)(double.Parse(s4[3]) * 255));
+            return ((byte)(double.Parse(s4[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.CultureInfo.CurrentCulture) * 255));
           case var s3 when s3.Length == 3:
-            return (255, (byte)(double.Parse(s3[0]) * 255), (byte)(double.Parse(s3[1]) * 255), (byte)(double.Parse(s3[2]) * 255));
+            return (255, (byte)(double.Parse(s3[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.CultureInfo.CurrentCulture) * 255));
           default:
             throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB).");
         }

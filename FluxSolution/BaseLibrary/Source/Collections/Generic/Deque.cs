@@ -201,7 +201,7 @@ namespace Flux.Collections.Generic
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
-    public class EmptyDeque
+    private class EmptyDeque
       : IDeque<T>
     {
       public bool IsEmpty => true;

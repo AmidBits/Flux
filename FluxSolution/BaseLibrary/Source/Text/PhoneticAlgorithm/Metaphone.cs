@@ -6,7 +6,7 @@ namespace Flux.Text.PhoneticAlgorithm
   public class Metaphone 
     : IPhoneticEncoder
   {
-    public int MaxCodeLength = 6;
+    public int MaxCodeLength { get; set; } = 6;
 
     private System.Text.StringBuilder _output = new System.Text.StringBuilder();
     public string Output { get { return _output.ToString(); } }
@@ -18,11 +18,11 @@ namespace Flux.Text.PhoneticAlgorithm
     private int __pos;
 
     /// <summary>Encodes the given text using the Metaphone algorithm.</summary>
-    public string Encode(string text)
+    public string Encode(System.ReadOnlySpan<char> text)
     {
       _output = new System.Text.StringBuilder();
 
-      __text = string.Join(string.Empty, text.RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c)));
+      __text = string.Join(string.Empty, text.ToString().RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
       __pos = 0;
 
       // Special handling of some string prefixes: PN, KN, GN, AE, WR, WH and X
@@ -244,11 +244,11 @@ namespace Flux.Text.PhoneticAlgorithm
     }
 
     /// <summary>Indicates if the specified character occurs within the specified string.</summary>
-    protected bool IsOneOf(char c, string chars)
+    protected static bool IsOneOf(char c, string chars)
     {
-      return (chars.IndexOf(c, System.StringComparison.Ordinal) != -1);
+      return !(chars is null) && chars.IndexOf(c, System.StringComparison.Ordinal) != -1;
     }
 
-    private static readonly System.Text.RegularExpressions.Regex _notLetters = new System.Text.RegularExpressions.Regex(@"[^A-Z]+");
+    //private static readonly System.Text.RegularExpressions.Regex m_notLetters = new System.Text.RegularExpressions.Regex(@"[^A-Z]+");
   }
 }

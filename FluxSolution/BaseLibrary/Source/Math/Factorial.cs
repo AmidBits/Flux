@@ -7,7 +7,7 @@ namespace Flux
     /// <summary>The factorial of a non-negative integer value, is the product of all positive integers less than or equal to the value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
     public static System.Numerics.BigInteger Factorial(System.Numerics.BigInteger value)
-      => value >= 0 ? value <= 1 ? 1 : Flux.Linq.Range(2, value - 1, 1).AsParallel().Aggregate((a, b) => a * b) : throw new System.ArgumentOutOfRangeException(nameof(value));
+      => value >= 0 ? value <= 1 ? 1 : Flux.LinqX.Range(2, value - 1, 1).AsParallel().Aggregate((a, b) => a * b) : throw new System.ArgumentOutOfRangeException(nameof(value));
 
     /// <summary>The factorial of a non-negative integer value, is the product of all positive integers less than or equal to the value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
@@ -22,11 +22,11 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
     [System.CLSCompliant(false)]
     public static uint Factorial(uint value)
-      => value <= 1 ? 1 : Flux.Linq.Range(2, unchecked(value - 1), 1).AsParallel().Aggregate((a, b) => a * b);
+      => value <= 1 ? 1 : Flux.LinqX.Range(2, unchecked(value - 1), 1).AsParallel().Aggregate((a, b) => a * b);
     /// <summary>The factorial of a non-negative integer value, is the product of all positive integers less than or equal to the value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
     [System.CLSCompliant(false)]
     public static ulong Factorial(ulong value)
-      => value <= 1 ? 1 : Flux.Linq.Range(2, unchecked(value - 1), 1).AsParallel().Aggregate((a, b) => a * b);
+      => value <= 1 ? 1 : Flux.LinqX.Range(2, unchecked(value - 1), 1).AsParallel().Aggregate((a, b) => a * b);
   }
 }

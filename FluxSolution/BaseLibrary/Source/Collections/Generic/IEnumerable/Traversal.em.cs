@@ -13,6 +13,9 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<T> TraverseBinarySearchTree<T>(T node, System.Func<T, T> leftChildSelector, System.Func<T, T> rightChildSelector, TraverseBinarySearchTreeOrder order)
     {
+      if (leftChildSelector is null) throw new System.ArgumentNullException(nameof(leftChildSelector));
+      if (rightChildSelector is null) throw new System.ArgumentNullException(nameof(rightChildSelector));
+
       if (order == TraverseBinarySearchTreeOrder.PreOrder) yield return node;
 
       foreach (var subNode in TraverseBinarySearchTree<T>(leftChildSelector(node), leftChildSelector, rightChildSelector, order))

@@ -5,8 +5,11 @@ namespace Flux
     /// <summary>Creates a seqeuence of indices for elements when the predicate is met.</summary>
     public static System.Collections.Generic.IEnumerable<int> IndicesOf<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var index = 0;
-      foreach (var element in source ?? throw new System.ArgumentNullException(nameof(source)))
+      foreach (var element in source)
       {
         if (predicate(element)) yield return index;
 
@@ -16,8 +19,11 @@ namespace Flux
     /// <summary>Creates a seqeuence of indices for elements when the predicate is met.</summary>
     public static System.Collections.Generic.IEnumerable<int> IndicesOf<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var index = 0;
-      foreach (var element in source ?? throw new System.ArgumentNullException(nameof(source)))
+      foreach (var element in source)
       {
         if (predicate(element, index)) yield return index;
 

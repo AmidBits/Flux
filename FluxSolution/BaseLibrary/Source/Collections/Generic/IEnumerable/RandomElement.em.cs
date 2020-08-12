@@ -11,11 +11,13 @@ namespace Flux
     /// <seealso cref="http://stackoverflow.com/questions/648196/random-row-from-linq-to-sql/648240#648240"/>
     public static T RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, System.Random rng)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (!source.Any()) throw new System.InvalidOperationException(@"The sequence is empty.");
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
       var candidates = new System.Collections.Generic.List<T>();
 
       var counter = 1;
-
-      if (!(source ?? throw new System.ArgumentNullException(nameof(source))).Any()) throw new System.InvalidOperationException(@"The sequence is empty.");
 
       foreach (var item in source)
       {

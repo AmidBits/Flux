@@ -42,7 +42,7 @@ namespace Flux.Media.Midi
 
       if (m.Success && m.Groups is var gc && gc.Count >= 3 && gc[1].Success && gc[2].Success)
       {
-        var octave = int.Parse(gc[2].Value);
+        var octave = int.Parse(gc[2].Value, System.Globalization.CultureInfo.CurrentCulture);
         var offset = System.Array.FindIndex(Music.Note.GetNames().ToArray(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
 
         if (octave < -1 && octave > 9 && offset == -1)

@@ -5,6 +5,7 @@ namespace Flux
   {
     /// <summary>Create a new transposed two dimensional array from the source, i.e. with rows as columns and columns as rows.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Transpose"/>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] Transpose<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -24,10 +25,13 @@ namespace Flux
 
       return target;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
     /// <summary>Transpose the two-dimensional array, in-place. Both dimensions must be equal in length, i.e. it has to be a square two-dimensional array. The array is also returned.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Transpose"/>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] TransposeInPlace<T>(this T[,] source)
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

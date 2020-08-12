@@ -5,7 +5,7 @@ namespace Flux.Text.PhoneticAlgorithm
   public class MatchRatingApproach
     : IPhoneticEncoder
   {
-    public string Encode(string expression)
+    public string Encode(System.ReadOnlySpan<char> expression)
     {
       var soundex = new System.Text.StringBuilder();
 
@@ -20,7 +20,7 @@ namespace Flux.Text.PhoneticAlgorithm
           if (Flux.Globalization.EnUs.Language.IsEnglishVowel(character, true) && character == expression[index - 1]) continue;
         }
 
-        soundex.Append(char.ToUpper(character));
+        soundex.Append(char.ToUpper(character, System.Globalization.CultureInfo.InvariantCulture));
       }
 
       if (soundex.Length > 6) return soundex.ToString(0, 3) + soundex.ToString(soundex.Length - 3, 3);

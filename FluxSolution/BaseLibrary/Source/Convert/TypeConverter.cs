@@ -57,6 +57,8 @@ namespace Flux
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter"/>
     public static T TypeConverter<T>(object value, System.Globalization.CultureInfo? culture = null)
     {
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+
       var exceptions = new System.Collections.Generic.List<System.Exception>();
 
       try
@@ -66,7 +68,9 @@ namespace Flux
           return (T)valueConverter.ConvertTo(null, culture, value, typeof(T));
         }
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch (System.Exception ex) { exceptions.Add(ex); }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       try
       {
@@ -75,7 +79,9 @@ namespace Flux
           return (T)typeConverter.ConvertFrom(null, culture, value);
         }
       }
+#pragma warning disable CA1031 // Do not catch general exception types
       catch (System.Exception ex) { exceptions.Add(ex); }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       if (exceptions.Count > 0) throw new System.AggregateException(exceptions);
 

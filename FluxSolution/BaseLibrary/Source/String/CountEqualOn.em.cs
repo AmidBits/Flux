@@ -12,6 +12,8 @@ namespace Flux
     /// <summary>Determines whether the beginning of the first sequence is equivalent to the second sequence, using the specified element equality comparer.</summary>
     public static int CountEqualOnLeft(this string source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       var index = 0;
 
       minLength = source.Length < target.Length ? source.Length : target.Length;
@@ -32,6 +34,8 @@ namespace Flux
 
     public static int CountEqualOnRight(this string source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
 

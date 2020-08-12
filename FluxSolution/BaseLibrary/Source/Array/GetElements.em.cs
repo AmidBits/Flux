@@ -3,8 +3,11 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Create a new sequence with all elements from the source, starting with specified dimension.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int majorDimension)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
 
@@ -32,10 +35,14 @@ namespace Flux
           throw new System.ArgumentOutOfRangeException(nameof(majorDimension));
       }
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
     /// <summary>Create a new sequence with elements from the specified dimension and the index of the other.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int dimension, int index)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
 
@@ -57,5 +64,6 @@ namespace Flux
           throw new System.ArgumentOutOfRangeException(nameof(dimension));
       }
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

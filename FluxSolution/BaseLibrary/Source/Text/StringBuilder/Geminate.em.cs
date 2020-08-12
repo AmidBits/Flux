@@ -7,6 +7,8 @@ namespace Flux
     /// <summary>Returns a new string with the specified characters doubled in the string.</summary>
     public static System.Text.StringBuilder Geminate(this System.Text.StringBuilder source, params char[] character)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.Length; index++)
       {
         if (character.Contains(source[index]))
@@ -22,6 +24,8 @@ namespace Flux
 
     public static System.Text.StringBuilder Geminate(this System.Text.StringBuilder source, int count, params char[] character)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.Length; index++)
       {
         if (character.Contains(source[index]))

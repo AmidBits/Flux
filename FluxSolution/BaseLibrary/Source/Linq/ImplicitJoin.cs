@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Linq
+  public static partial class LinqX
   {
     public static T[] ImplicitJoin<T>(params T[][] source)
     {

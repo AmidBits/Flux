@@ -14,7 +14,7 @@ namespace Flux
     {
       var inventory = source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-      foreach (var kvp in target)
+      foreach (var kvp in target ?? throw new System.ArgumentNullException(nameof(target)))
       {
         if (inventory.ContainsKey(kvp.Key)) inventory[kvp.Key] -= kvp.Value;
         else inventory.Add(kvp.Key, kvp.Value);

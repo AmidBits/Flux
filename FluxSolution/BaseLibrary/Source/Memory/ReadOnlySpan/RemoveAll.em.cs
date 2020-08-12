@@ -16,7 +16,7 @@ namespace Flux
       {
         var sourceValue = source[sourceIndex];
 
-        if (!predicate(sourceValue))
+        if (!(predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(sourceValue))
           buffer[bufferIndex++] = sourceValue;
       }
 

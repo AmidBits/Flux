@@ -4,7 +4,9 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Returns the array as a sequence of one-dimensional arrays (i.e. jagged).</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));

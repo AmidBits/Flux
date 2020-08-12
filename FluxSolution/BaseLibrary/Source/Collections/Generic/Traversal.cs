@@ -8,6 +8,9 @@ namespace Flux.Collections.Generic
     /// <see cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> BreadthFirstSearch<T>(T source, int maxDepth, System.Func<(int depth, T item), bool> branchPredicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildren)
     {
+      if (branchPredicate is null) throw new System.ArgumentNullException(nameof(branchPredicate));
+      if (selectorChildren is null) throw new System.ArgumentNullException(nameof(selectorChildren));
+
       var items = new System.Collections.Generic.List<T> { source };
 
       for (var depth = 0; items.Count != 0 && depth < maxDepth; depth++)
@@ -34,6 +37,9 @@ namespace Flux.Collections.Generic
     /// <see cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> DepthFirstSearch<T>(T source, int maxDepth, System.Func<(int depth, T item), bool> branchPredicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildren)
     {
+      if (branchPredicate is null) throw new System.ArgumentNullException(nameof(branchPredicate));
+      if (selectorChildren is null) throw new System.ArgumentNullException(nameof(selectorChildren));
+
       var stack = new System.Collections.Generic.Stack<System.Collections.Generic.Queue<T>>();
 
       stack.Push(new System.Collections.Generic.Queue<T>(System.Linq.Enumerable.Empty<T>().Append((T)source)));

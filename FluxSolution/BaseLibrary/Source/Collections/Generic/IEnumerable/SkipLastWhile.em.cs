@@ -26,6 +26,9 @@ namespace Flux
     /// <summary>Returns all elements in a sequence except those at the end that satisfies a specified condition. The element's index is used in the logic of the predicate function.</summary>
     public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var buffer = new System.Collections.Generic.Queue<T>();
 
       var counter = 0;

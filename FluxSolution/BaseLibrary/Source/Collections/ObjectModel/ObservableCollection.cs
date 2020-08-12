@@ -8,11 +8,13 @@ namespace Flux
     : System.Collections.ObjectModel.ObservableCollection<T>
     where T : System.ComponentModel.INotifyPropertyChanged
   {
-    private bool _suppressOnCollectionChanged = false;
+    private bool _suppressOnCollectionChanged;
 
     /// <summary>AddItems (with suppressed OnCollectionChanged while adding)</summary>
     public void AddItems(System.Collections.Generic.IEnumerable<T> items)
     {
+      if (items is null) throw new System.ArgumentNullException(nameof(items));
+
       _suppressOnCollectionChanged = true;
 
       foreach (T item in items)
@@ -35,6 +37,8 @@ namespace Flux
     /// <summary>Override OnCollectionChanged to manage subscription of to OnPropertyChangedItem to [item].PropertyChanged.</summary>
     protected override void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
+      if (e is null) throw new System.ArgumentNullException(nameof(e));
+
       if (e.OldItems != null)
         foreach (T item in e.OldItems.Cast<T>())
           item.PropertyChanged -= OnItemPropertyChanged;

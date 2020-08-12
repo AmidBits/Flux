@@ -24,6 +24,8 @@ namespace Flux
     /// <summary>Returns the index of the specified string within the string builder, or -1 if not found. Uses the specified comparer.</summary>
     public static int IndexOf(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.Length; index++)
       {
         if (source.Equals(index, value, 0, value?.Length ?? throw new System.ArgumentNullException(nameof(value)), comparer)) return index;
@@ -49,7 +51,7 @@ namespace Flux
 
         foreach (var value in values)
         {
-          if (currentChar == value)
+          if (comparer.Equals(currentChar, value))
           {
             return index;
           }
@@ -78,6 +80,8 @@ namespace Flux
     /// <summary>Returns all indices of the specified characters within the string builder (-1 if not found). Uses the specified comparer.</summary>
     public static int[] IndicesOf(this System.Text.StringBuilder source, params char[] values)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var indices = new int[values.Length];
 
       System.Array.Fill<int>(indices, -1);

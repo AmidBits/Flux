@@ -28,6 +28,8 @@ namespace Flux
     /// <summary>This version of Zip runs over all elements in all sequences.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this System.Collections.Generic.IEnumerable<T1>? source1, System.Collections.Generic.IEnumerable<T2>? source2, System.Collections.Generic.IEnumerable<T3>? source3, System.Collections.Generic.IEnumerable<T4>? source4, System.Collections.Generic.IEnumerable<T5>? source5, System.Collections.Generic.IEnumerable<T6>? source6, System.Collections.Generic.IEnumerable<T7>? source7, System.Collections.Generic.IEnumerable<T8>? source8, System.Collections.Generic.IEnumerable<T9>? source9, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult> resultSelector)
     {
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       System.Collections.Generic.IEnumerator<T1> e1 = null!;
       System.Collections.Generic.IEnumerator<T2> e2 = null!;
       System.Collections.Generic.IEnumerator<T3> e3 = null!;
@@ -89,6 +91,8 @@ namespace Flux
     /// <summary>This version of Zip runs over all elements in all sequences.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> ZipEx<TResult>(System.Func<object[], TResult> resultSelector, params System.Collections.Generic.IEnumerable<object>[] sequence)
     {
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       var e = new System.Collections.Generic.IEnumerator<object>[sequence.Length];
 
       for (var index = 0; index < sequence.Length; index++)
@@ -131,6 +135,8 @@ namespace Flux
     /// <summary>This version of Zip runs over all elements in all sequences.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T, TResult>(System.Func<T[], TResult> resultSelector, params System.Collections.Generic.IEnumerable<T>[] sequence)
     {
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       var e = new System.Collections.Generic.IEnumerator<T>[sequence.Length];
 
       for (var index = 0; index < sequence.Length; index++)

@@ -4,6 +4,8 @@ namespace Flux
   {
     static public Collections.Immutable.IQueue<TValue> Reverse<TValue>(this Collections.Immutable.IQueue<TValue> queue)
     {
+      if (queue is null) throw new System.ArgumentNullException(nameof(queue));
+
       var rq = Collections.Immutable.Queue<TValue>.Empty;
       for (var q = queue; !q.IsEmpty; q = q.Dequeue())
         rq = rq.Enqueue(q.Peek());

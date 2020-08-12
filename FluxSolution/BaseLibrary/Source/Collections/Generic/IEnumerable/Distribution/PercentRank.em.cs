@@ -8,6 +8,8 @@ namespace Flux
     /// <param name="source">A sequence of <typeparamref name="T"/>.</param>
     public static System.Collections.Generic.IList<double> PercentRank(this System.Collections.IEnumerable source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var pr = new System.Collections.Generic.List<double>();
 
       var index = 0;

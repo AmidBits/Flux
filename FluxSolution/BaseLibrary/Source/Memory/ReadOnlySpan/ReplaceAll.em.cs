@@ -8,7 +8,7 @@ namespace Flux
       var buffer = new T[source.Length];
 
       for (var index = source.Length - 1; index >= 0; index--)
-        buffer[index] = replacementSelector(source[index]);
+        buffer[index] = (replacementSelector ?? throw new System.ArgumentNullException(nameof(replacementSelector)))(source[index]);
 
       return buffer;
     }
@@ -19,7 +19,7 @@ namespace Flux
       var buffer = source.ToArray();
 
       for (var index = source.Length - 1; index >= 0; index--)
-        buffer[index] = predicate(source[index]) ? replacement : source[index];
+        buffer[index] = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(source[index]) ? replacement : source[index];
 
       return buffer;
     }

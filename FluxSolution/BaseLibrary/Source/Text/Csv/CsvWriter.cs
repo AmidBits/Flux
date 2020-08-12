@@ -11,18 +11,18 @@ namespace Flux.Text
 
     public CsvWriter(System.IO.Stream stream, CsvOptions options)
     {
-      m_escapeCharacters = new char[] { '"', options.FieldSeparator, '\r', '\n' };
+      m_options = options ?? new CsvOptions();
 
-      m_options = options;
+      m_escapeCharacters = new char[] { '"', m_options.FieldSeparator, '\r', '\n' };
 
-      m_streamWriter = new System.IO.StreamWriter(stream, options.Encoding);
+      m_streamWriter = new System.IO.StreamWriter(stream, m_options.Encoding);
     }
 
     public int FieldCount { get; private set; } = -1;
     public int FieldIndex { get; private set; } = -1;
 
-    private bool m_inField = false;
-    private bool m_inLine = false;
+    private bool m_inField;
+    private bool m_inLine;
 
     private readonly System.Text.StringBuilder m_fieldValue = new System.Text.StringBuilder();
 
@@ -81,7 +81,7 @@ namespace Flux.Text
 
         if (LineNumber == 0) FieldCount = FieldIndex + 1;
 
-        FlushFieldValue(value);
+        FlushFieldValue(value ?? string.Empty);
       }
       else throw new System.InvalidOperationException(@"Invalid context.");
     }
@@ -134,7 +134,7 @@ namespace Flux.Text
     public void WriteArray(string[] values)
     {
       WriteStartLine();
-      foreach (var value in values)
+      foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
       {
         WriteFieldString(value);
 
@@ -146,7 +146,7 @@ namespace Flux.Text
     }
     public void WriteArrays(System.Collections.Generic.IEnumerable<string[]> arrays)
     {
-      foreach (var array in arrays)
+      foreach (var array in arrays ?? throw new System.ArgumentNullException(nameof(arrays)))
       {
         WriteArray(array);
       }

@@ -18,7 +18,7 @@ namespace Flux
           case System.Globalization.UnicodeCategory.EnclosingMark:
             break;
           default:
-            sb.Append(additionalCharacterReplacements(c));
+            sb.Append((additionalCharacterReplacements ?? throw new System.ArgumentNullException(nameof(additionalCharacterReplacements)))(c));
             break;
         }
       }

@@ -9,6 +9,8 @@ namespace Flux
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
     public static double ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, out int countLessOrEqual, out int countTotal, System.Collections.Generic.IComparer<TSource>? comparer = null)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       comparer ??= System.Collections.Generic.Comparer<TSource>.Default;
 
       countLessOrEqual = 0;
@@ -33,6 +35,9 @@ namespace Flux
     /// <returns>A sequence of key-value-pair where the value is the PMF corresponding to the key in the <paramref name="source"/>.</returns>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> ProbabilityMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TSource>> source, System.Func<TKey, TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
+
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var pmf = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<TKey, double>>();
@@ -69,6 +74,9 @@ namespace Flux
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
     public static System.Collections.Generic.IList<double> ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
+
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var cmf = new System.Collections.Generic.List<double>();

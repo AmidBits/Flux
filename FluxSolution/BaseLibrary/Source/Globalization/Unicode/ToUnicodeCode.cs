@@ -1,10 +1,9 @@
 namespace Flux
 {
-  public static partial class Convert
+  public static partial class Unicode
   {
-    public static string ToUnicodeCategoryValue(this System.Globalization.UnicodeCategory unicodeCategory)
-    {
-      return unicodeCategory switch
+    public static string ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory)
+      => unicodeCategory switch
       {
         System.Globalization.UnicodeCategory.Control => @"Cc",
         System.Globalization.UnicodeCategory.Format => @"Cf",
@@ -45,6 +44,5 @@ namespace Flux
 
         _ => throw new System.ArgumentOutOfRangeException(nameof(unicodeCategory)),
       };
-    }
   }
 }

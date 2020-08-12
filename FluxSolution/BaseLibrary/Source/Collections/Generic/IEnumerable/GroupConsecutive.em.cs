@@ -5,6 +5,8 @@ namespace Flux
     /// <summary>Creates a new sequence of equal (based on the specified keySelector) consecutive (adjacent) items grouped together as a key and a list.</summary>
     public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupConsecutive<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer)
     {
+      comparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
+
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
 
       using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));

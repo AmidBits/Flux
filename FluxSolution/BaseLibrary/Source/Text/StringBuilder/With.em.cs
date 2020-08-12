@@ -4,6 +4,8 @@ namespace Flux
   {
     public static bool EndsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       if (value is null) throw new System.ArgumentNullException(nameof(value));
@@ -24,6 +26,8 @@ namespace Flux
 
     public static bool StartsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       if (value is null) throw new System.ArgumentNullException(nameof(value));

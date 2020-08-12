@@ -8,7 +8,7 @@ namespace Flux.Text.PhoneticAlgorithm
   {
     public const string LetterCodeMap = @"01360240043788015936020505";
 
-    public string Encode(string name)
+    public string Encode(System.ReadOnlySpan<char> name)
     {
       var refinedSoundex = new System.Text.StringBuilder(20);
 
@@ -16,7 +16,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
       for (var index = 0; index < name.Length; index++)
       {
-        if (char.ToUpper(name[index]) is var letter && letter >= 'A' && letter <= 'Z')
+        if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
         {
           if (refinedSoundex.Length == 0) refinedSoundex.Append(letter);
 

@@ -6,6 +6,7 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Returns the jagged array (i.e. an array of arrays) as a two-dimensional array.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] ToTwoDimensionalArray<T>(this T[][] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -25,9 +26,13 @@ namespace Flux
 
       return array;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] ToTwoDimensionalArray<T>(this T[] source, int length0, int length1)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var array = new T[length0--, length1--];
 
       for (int index = array.Length - 1, i0 = length0, i1 = length1; i0 >= 0 && i1 >= 0; index--)
@@ -44,5 +49,6 @@ namespace Flux
 
       return array;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

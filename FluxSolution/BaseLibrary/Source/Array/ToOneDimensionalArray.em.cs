@@ -6,7 +6,9 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Returns the jagged array (i.e. an array of arrays) as a two-dimensional array.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[] ToOneDimensionalArray<T>(this T[,] source)
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

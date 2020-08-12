@@ -4,6 +4,7 @@ namespace Flux
   public static partial class XtensionsArray
   {
     /// <summary>Create a new two dimensional array with the perpendicular dimensional indices removed from the specified dimension.</summary>
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] Remove<T>(this T[,] source, int dimension, params int[] indices)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -37,5 +38,6 @@ namespace Flux
 
       return target;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

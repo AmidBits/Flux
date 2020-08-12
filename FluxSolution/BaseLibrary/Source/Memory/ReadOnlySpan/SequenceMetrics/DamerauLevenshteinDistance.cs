@@ -36,7 +36,9 @@ namespace Flux
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
         var matrix = new int[sourceCount + 2, targetCount + 2];
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
         int maxDistance = sourceCount + targetCount;
 

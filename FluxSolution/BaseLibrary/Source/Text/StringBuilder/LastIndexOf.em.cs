@@ -5,6 +5,8 @@ namespace Flux
     /// <summary>Returns the index of the first character in the string. If not found a -1 is returned.</summary>
     public static int LastIndexOf(this System.Text.StringBuilder source, char value)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = source.Length - 1; index >= 0; index++)
         if (source[index] == value)
           return index;
@@ -15,6 +17,9 @@ namespace Flux
     /// <summary>Returns the index of the first occurence of value in the string. If not found a -1 is returned.</summary>
     public static int LastIndexOf(this System.Text.StringBuilder source, string value, Flux.StringComparer comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+
       for (int index = source.Length - value.Length; index >= 0; index--)
         if (source.Equals(index, value, 0, value.Length, comparer))
           return index;
@@ -44,6 +49,8 @@ namespace Flux
 
     public static int[] LastIndicesOfAny(this System.Text.StringBuilder source, params char[] values)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var lastIndices = new int[values.Length];
 
       for (var index = lastIndices.Length - 1; index >= 0; index--)

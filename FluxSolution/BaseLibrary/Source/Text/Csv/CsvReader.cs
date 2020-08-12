@@ -11,12 +11,12 @@ namespace Flux.Text
 
     public CsvReader(System.IO.Stream stream, CsvOptions options)
     {
-      m_options = options;
+      m_options = options ?? new CsvOptions();
 
-      m_streamReader = new System.IO.StreamReader(stream, options.Encoding);
+      m_streamReader = new System.IO.StreamReader(stream, m_options.Encoding);
     }
 
-    private bool m_inField = false;
+    private bool m_inField;
 
     public string[] ReadArray()
     {

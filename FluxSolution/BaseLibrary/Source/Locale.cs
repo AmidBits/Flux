@@ -51,7 +51,7 @@ namespace Flux
       };
 
     public static System.IO.DirectoryInfo? GetDirectoryInfo(System.Environment.SpecialFolder specialFolder)
-      => System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) is var fp && string.IsNullOrEmpty(fp) ? default : new System.IO.DirectoryInfo(fp);
+      => System.Environment.GetFolderPath(specialFolder) is var fp && string.IsNullOrEmpty(fp) ? default : new System.IO.DirectoryInfo(fp);
 
     /// <summary>Returns the computer name from <see cref="System.Environment"/>.</summary>
     public static string MachineName

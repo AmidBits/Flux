@@ -12,6 +12,11 @@ namespace Flux
     /// <summary>Yields the number of characters that the source and the target have in common from the start.</summary>
     public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
+
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       var index = 0;
 
       minLength = source.Length < target.Length ? source.Length : target.Length;
@@ -33,6 +38,11 @@ namespace Flux
     /// <summary>Yields the number of characters that the source and the target have in common at the end.</summary>
     public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
+
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
 

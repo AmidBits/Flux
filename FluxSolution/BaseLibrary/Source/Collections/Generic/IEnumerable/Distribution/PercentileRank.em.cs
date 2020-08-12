@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class XtensionsCollections
@@ -29,6 +27,9 @@ namespace Flux
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>> PercentileRank<TKey, TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TSource>> source, System.Func<TKey, TSource, int, int> frequencySelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
+
       var pr = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<TKey, int>>();
 
       var sumOfFrequencies = 0;
@@ -59,6 +60,9 @@ namespace Flux
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
     public static System.Collections.Generic.IList<int> PercentileRank<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> frequencySelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
+
       var pr = new System.Collections.Generic.List<int>();
 
       var sumOfFrequencies = 0;

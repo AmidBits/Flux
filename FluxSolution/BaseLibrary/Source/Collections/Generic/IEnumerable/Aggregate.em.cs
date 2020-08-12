@@ -1,3 +1,5 @@
+using System;
+
 namespace Flux
 {
   public static partial class XtensionsCollections
@@ -14,6 +16,11 @@ namespace Flux
     /// <returns></returns>
     public static TResult Aggregate<T, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<T> source, TAccumulate seed, System.Func<TAccumulate, T, int, TAccumulate> func, System.Func<TAccumulate, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      if (func is null) throw new System.ArgumentNullException(nameof(func));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       var accumulated = seed;
 
       var index = 0;

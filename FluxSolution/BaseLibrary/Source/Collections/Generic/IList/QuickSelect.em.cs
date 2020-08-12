@@ -6,6 +6,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quickselect"/>
     public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int Kth, System.Collections.Generic.IComparer<T> comparer) where T : System.IComparable<T>
     {
+      comparer ??= System.Collections.Generic.Comparer<T>.Default;
+
       if (leftIndex == rightIndex)
         return source[leftIndex];
 

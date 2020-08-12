@@ -9,6 +9,9 @@ namespace Flux
     /// <example>"".NormalizeAll(' ', c => c == ' ');</example>
     public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Func<char, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var targetIndex = 0;
 
       var previous = true;

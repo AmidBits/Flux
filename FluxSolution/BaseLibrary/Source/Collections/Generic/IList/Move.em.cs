@@ -9,6 +9,8 @@ namespace Flux
     /// <summary>Remove the element at fromIndex from the list, then insert the element at toIndex.</summary>
     public static System.Collections.Generic.IList<T> MoveItem<T>(this System.Collections.Generic.IList<T> source, int fromIndex, int toIndex)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       if (fromIndex < 0 || fromIndex >= source.Count) throw new System.ArgumentOutOfRangeException(nameof(fromIndex));
       if (toIndex < 0 || toIndex >= source.Count) throw new System.ArgumentOutOfRangeException(nameof(toIndex));
 
@@ -21,6 +23,6 @@ namespace Flux
 
     /// <summary>Move the last element in the list to the specified index.</summary>
     public static System.Collections.Generic.IList<T> MoveLast<T>(this System.Collections.Generic.IList<T> source, int newIndex)
-      => MoveItem(source, source.Count - 1, newIndex);
+      => MoveItem(source, (source ?? throw new System.ArgumentNullException(nameof(source))).Count - 1, newIndex);
   }
 }

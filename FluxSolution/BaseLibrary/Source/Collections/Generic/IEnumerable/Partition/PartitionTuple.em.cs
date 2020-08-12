@@ -10,10 +10,13 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int n, int overlap, System.Func<System.Collections.Generic.IEnumerable<T>, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (n < 2) throw new System.ArgumentOutOfRangeException(nameof(overlap));
       if (overlap < 0 || overlap >= n) throw new System.ArgumentOutOfRangeException(nameof(overlap));
 
-      using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+      using var e = source.GetEnumerator();
 
       var index = 0;
 
@@ -88,7 +91,10 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, bool overlap, System.Func<T, T, int, TResult> resultSelector)
     {
-      using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
+      using var e = source.GetEnumerator();
 
       var index = 0;
 
@@ -122,9 +128,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (overlap >= 0 && overlap <= 2)
       {
-        using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+        using var e = source.GetEnumerator();
 
         var index = 0;
 
@@ -165,9 +174,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (overlap >= 0 && overlap <= 3)
       {
-        using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+        using var e = source.GetEnumerator();
 
         var index = 0;
 
@@ -216,9 +228,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, T, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (overlap >= 0 && overlap <= 4)
       {
-        using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+        using var e = source.GetEnumerator();
 
         var index = 0;
 
@@ -275,9 +290,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, T, T, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (overlap >= 0 && overlap <= 5)
       {
-        using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+        using var e = source.GetEnumerator();
 
         var index = 0;
 
@@ -342,9 +360,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, T, T, T, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
       if (overlap >= 0 && overlap <= 6)
       {
-        using var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+        using var e = source.GetEnumerator();
 
         var index = 0;
 

@@ -6,6 +6,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     public static System.Text.StringBuilder InsertOrdinalIndicator(this System.Text.StringBuilder source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var wasDigit = false;
 
       for (var index = source.Length - 1; index >= 0; index--)

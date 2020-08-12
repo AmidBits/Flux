@@ -72,6 +72,8 @@ namespace Flux.Collections.Generic
 
     public TResult SearchNodes<TResult>(TResult seed, System.Func<Quadtree<T>, TResult, TResult> aggregator)
     {
+      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+
       seed = aggregator(this, seed);
 
       if (m_subNodes.Count > 0)

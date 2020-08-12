@@ -6,7 +6,7 @@ namespace Flux
   {
     public static TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
     {
-      return new TrendLine<double>(source.Select(v => System.Convert.ToDouble(source)), d => d);
+      return new TrendLine<double>(source, d => d);
     }
   }
 
@@ -15,13 +15,15 @@ namespace Flux
   {
     // http://dynamicnotions.blogspot.com/2009/05/linear-regression-in-c.html
 
-    public double xAvg = 0, yAvg = 0;
+    public double AvgX { get; }
+    public double AvgY { get; }
 
-    public int count;
+    public int Count { get; }
 
-    public double v1 = 0, v2 = 0;
+    private readonly double v1, v2;
 
-    public double Slope = 0, Intercept = 0;
+    public double Slope { get; }
+    public double Intercept { get; }
 
     public TrendLine(System.Collections.Generic.IEnumerable<T> series, System.Func<T, double> valueSelector)
     {
@@ -29,23 +31,23 @@ namespace Flux
 
       foreach (var item in list.Select((v, i) => (value: v, index: i)))
       {
-        xAvg += item.index;
-        yAvg += item.value;
+        AvgX += item.index;
+        AvgY += item.value;
       }
 
-      count = series.Count();
+      Count = series.Count();
 
-      xAvg = xAvg / count;
-      yAvg = yAvg / count;
+      AvgX /= Count;
+      AvgY /= Count;
 
       foreach (var item in list.Select((v, i) => (value: v, index: i)))
       {
-        v1 += (item.index - xAvg) * (item.value - yAvg);
-        v2 += System.Math.Pow(item.index - xAvg, 2);
+        v1 += (item.index - AvgX) * (item.value - AvgY);
+        v2 += System.Math.Pow(item.index - AvgX, 2);
       }
 
       Slope = v1 / v2;
-      Intercept = yAvg - Slope * xAvg;
+      Intercept = AvgY - Slope * AvgX;
     }
   }
 }

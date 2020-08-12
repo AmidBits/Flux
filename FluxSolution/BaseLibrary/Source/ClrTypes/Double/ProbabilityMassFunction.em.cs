@@ -10,6 +10,8 @@ namespace Flux.Model
     public static System.Collections.Generic.IDictionary<TKey, double> ProbabilityMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, double factor = 1.0)
       where TKey : notnull
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       factor /= source.Values.Sum();
 
       return source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value * factor);

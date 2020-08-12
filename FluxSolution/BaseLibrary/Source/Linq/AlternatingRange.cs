@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Linq
+  public static partial class LinqX
   {
     public enum AlternatingRangeDirection
     {

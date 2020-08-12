@@ -16,7 +16,7 @@ namespace Flux
 
       for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
       {
-        var current = predicate(source[sourceIndex]);
+        var current = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(source[sourceIndex]);
 
         if (!(previous && current))
         {

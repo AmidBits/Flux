@@ -9,6 +9,9 @@ namespace Flux
     /// <example>"".RemoveAll(c => c == ' ');</example>
     public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var targetIndex = 0;
 
       for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)

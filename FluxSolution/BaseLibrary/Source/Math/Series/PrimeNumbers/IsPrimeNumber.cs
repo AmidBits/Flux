@@ -90,7 +90,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Truncatable_prime"/>
     public static bool IsLeftTruncatablePrime(System.Numerics.BigInteger primeNumber)
     {
-      var text = primeNumber.ToString();
+      var text = primeNumber.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
       if (text.IndexOf('0', System.StringComparison.Ordinal) > -1)
       {

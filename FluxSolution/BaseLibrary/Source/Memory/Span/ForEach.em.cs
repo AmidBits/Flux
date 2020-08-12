@@ -8,7 +8,7 @@ namespace Flux
       var sourceLength = source.Length;
 
       for (var index = 0; index < sourceLength; index++)
-        action(source[index]);
+        (action ?? throw new System.ArgumentNullException(nameof(action)))(source[index]);
     }
   }
 }

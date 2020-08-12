@@ -4,6 +4,8 @@ namespace Flux
   {
     public static byte[] SetBits(this byte[] source, long startBitIndex, long bitCount, bool state)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var sourceBitLength = source.Length * 8;
 
       if (startBitIndex < 0 || startBitIndex > sourceBitLength) throw new System.ArgumentOutOfRangeException(nameof(startBitIndex));

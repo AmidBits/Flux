@@ -5,6 +5,8 @@ namespace Flux
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
     public static System.Text.StringBuilder RemoveDiacriticalLatinStrokes(this System.Text.StringBuilder source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.Length; index++)
       {
         source[index] = XtensionsChar.RemoveDiacriticalLatinStroke(source[index]);
@@ -16,6 +18,9 @@ namespace Flux
     /// <summary>Remove diacritical marks and any optional replacements desired.</summary>
     public static System.Text.StringBuilder RemoveDiacriticalMarks(this System.Text.StringBuilder source, System.Func<char, char> additionalCharacterReplacements)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (additionalCharacterReplacements is null) throw new System.ArgumentNullException(nameof(additionalCharacterReplacements));
+
       var sb = new System.Text.StringBuilder();
 
       foreach (var c in source.ToString().Normalize(System.Text.NormalizationForm.FormKD))

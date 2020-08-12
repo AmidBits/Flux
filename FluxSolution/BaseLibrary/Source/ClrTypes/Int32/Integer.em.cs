@@ -12,25 +12,9 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<int> FindMissingIntegers(this System.Collections.Generic.IEnumerable<int> source)
     {
-      //return sequence.Zip(sequence.Skip(1), (a, b) => Enumerable.Range(a + 1, (b - a) - 1)).SelectMany(s => s);
-      var missing = new System.Collections.Generic.List<int>();
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      if ((source != null) && (source.Any()))
-      {
-        source.Aggregate((previous, aggregate) =>
-        {
-          var difference = (aggregate - previous) - 1;
-
-          if (difference > 0)
-          {
-            missing.AddRange(System.Linq.Enumerable.Range((aggregate - difference), difference));
-          }
-
-          return aggregate;
-        });
-      }
-
-      return missing;
+      return source.Zip(source.Skip(1), (a, b) => Enumerable.Range(a + 1, (b - a) - 1)).SelectMany(s => s);
     }
   }
 }

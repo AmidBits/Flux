@@ -28,6 +28,9 @@ namespace Flux
     /// <summary>Returns the last elements of a sequence that satisfies a specified condition. The element's index is used in the logic of the predicate function.</summary>
     public static System.Collections.Generic.IEnumerable<T> TakeLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
       var buffer = new System.Collections.Generic.List<T>();
 
       var counter = 0;
