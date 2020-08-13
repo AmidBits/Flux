@@ -66,7 +66,7 @@ namespace Flux.Wpf
       var angleInRadians = System.Math.Atan2(cos, sin);
 
       if (inDegrees)
-        return Flux.Maths.RadianToDegree(angleInRadians);
+        return Angles.RadianToDegree(angleInRadians);
 
       return angleInRadians;
     }
@@ -131,7 +131,7 @@ namespace Flux.Wpf
     public static System.Windows.Point Rotate(this System.Windows.Point self, double relativeRotationAngle, bool inDegrees = false)
     {
       if (inDegrees)
-        relativeRotationAngle = Flux.Maths.DegreeToRadian(relativeRotationAngle);
+        relativeRotationAngle = Angles.DegreeToRadian(relativeRotationAngle);
 
       var cos = System.Math.Cos(relativeRotationAngle);
       var sin = System.Math.Sin(relativeRotationAngle);

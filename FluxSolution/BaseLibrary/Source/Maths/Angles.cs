@@ -1,14 +1,14 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Angles
   {
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians).</summary>
     public static double CartesianToRotationAngle(double x, double y)
-      => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? PiX2 + atan2 : atan2;
+      => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static double CartesianToRotationAngleEx(double x, double y)
-      => PiX2 - CartesianToRotationAngle(y, -x);
+      => Maths.PiX2 - CartesianToRotationAngle(y, -x);
 
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
     public static double DegreeToGradian(double degrees)
@@ -36,6 +36,6 @@ namespace Flux
       => (System.Math.Cos(radians), System.Math.Sin(radians));
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y).</summary>
     public static (double x, double y) RotationAngleToCartesianEx(double radians)
-      => RotationAngleToCartesian(PiX2 - (radians >= PiX2 ? radians % PiX2 : radians) + PiOver2);
+      => RotationAngleToCartesian(Maths.PiX2 - (radians >= Maths.PiX2 ? radians % Maths.PiX2 : radians) + Maths.PiOver2);
   }
 }

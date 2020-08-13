@@ -28,7 +28,7 @@ namespace Flux
       if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"Maximum value ({maxValue}) must be greater than 0.");
 
       var bytesOfMaxValue = maxValue.ToByteArray(); // Value is a positive integer, no funky zero byte.
-      var highByteBitMask = (byte)((1 << Maths.BitLength(bytesOfMaxValue[bytesOfMaxValue.Length - 1])) - 1); // Bitmask for masking the highest byte in the byte array.
+      var highByteBitMask = (byte)((1 << Bitwise.BitLength(bytesOfMaxValue[bytesOfMaxValue.Length - 1])) - 1); // Bitmask for masking the highest byte in the byte array.
 
       System.Numerics.BigInteger value;
 

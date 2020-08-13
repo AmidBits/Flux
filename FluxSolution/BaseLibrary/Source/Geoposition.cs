@@ -33,18 +33,18 @@ namespace Flux
 
     private double m_latitudeDeg, m_latitudeRad;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => m_latitudeDeg; set => m_latitudeRad = Flux.Maths.DegreeToRadian(m_latitudeDeg = Maths.Wrap(value, -90.0, 90.0)); }
+    public double Latitude { get => m_latitudeDeg; set => m_latitudeRad = Angles.DegreeToRadian(m_latitudeDeg = Maths.Wrap(value, -90.0, 90.0)); }
 
     private double m_longitudeDeg, m_longitudeRad;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => m_longitudeDeg; set => m_longitudeRad = Flux.Maths.DegreeToRadian(m_longitudeDeg = Maths.Wrap(value, -180.0, 180.0)); }
+    public double Longitude { get => m_longitudeDeg; set => m_longitudeRad = Angles.DegreeToRadian(m_longitudeDeg = Maths.Wrap(value, -180.0, 180.0)); }
 
     public Geoposition(double latitude, double longitude, double altitude = 1.0)
     {
       Altitude = altitude;
 
-      m_latitudeRad = Flux.Maths.DegreeToRadian(m_latitudeDeg = Maths.Wrap(latitude, -90, +90));
-      m_longitudeRad = Flux.Maths.DegreeToRadian(m_longitudeDeg = Maths.Wrap(longitude, -180, +180));
+      m_latitudeRad = Angles.DegreeToRadian(m_latitudeDeg = Maths.Wrap(latitude, -90, +90));
+      m_longitudeRad = Angles.DegreeToRadian(m_longitudeDeg = Maths.Wrap(longitude, -180, +180));
     }
 
     /// <summary>Calculates the approximate radius at the latitude of the specified geoposition.</summary>
@@ -71,9 +71,9 @@ namespace Flux
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     public Geoposition DestinationPointAt(double bearingDegrees, double angularDistance)
     {
-      EndPoint(m_latitudeRad, m_longitudeRad, Flux.Maths.DegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
+      EndPoint(m_latitudeRad, m_longitudeRad, Angles.DegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new Geoposition(Flux.Maths.RadianToDegree(lat2), Maths.Wrap(Flux.Maths.RadianToDegree(lon2), -180, +180), Altitude);
+      return new Geoposition(Angles.RadianToDegree(lat2), Maths.Wrap(Angles.RadianToDegree(lon2), -180, +180), Altitude);
     }
 
     /// <summary>The distance from the point to the specified target.</summary>
@@ -82,14 +82,14 @@ namespace Flux
     /// <returns></returns>
     public double DistanceTo(Geoposition targetPoint, double earthRadius = EarthRadii.MeanInMeters) => earthRadius * CentralAngleVincentyFormula(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad);
 
-    public double InitialBearingTo(Geoposition targetPoint) => Flux.Maths.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
+    public double InitialBearingTo(Geoposition targetPoint) => Angles.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
     public Geoposition IntermediaryPointTo(Geoposition target, double unitInterval)
     {
       IntermediaryPoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, unitInterval, out var lat, out var lon);
 
-      return new Geoposition(Flux.Maths.RadianToDegree(lat), Flux.Maths.RadianToDegree(lon), Altitude);
+      return new Geoposition(Angles.RadianToDegree(lat), Angles.RadianToDegree(lon), Altitude);
     }
 
     /// <summary>The midpoint between this point and the specified target.</summary>
@@ -97,7 +97,7 @@ namespace Flux
     {
       Midpoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, out var lat, out var lon);
 
-      return new Geoposition(Flux.Maths.RadianToDegree(lat), Flux.Maths.RadianToDegree(lon), Altitude);
+      return new Geoposition(Angles.RadianToDegree(lat), Angles.RadianToDegree(lon), Altitude);
     }
 
     #region Static Members
@@ -328,7 +328,7 @@ namespace Flux
     {
       var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-      var mpForward = System.Math.Log(System.Math.Tan((Flux.Maths.DegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
+      var mpForward = System.Math.Log(System.Math.Tan((Angles.DegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
 
       var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Maths.PiX2));
 
@@ -340,7 +340,7 @@ namespace Flux
 
       var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Maths.PiX2);
 
-      var latitude = Flux.Maths.RadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
+      var latitude = Angles.RadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
 
       return (latitude, longitude);
     }
