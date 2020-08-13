@@ -44,9 +44,9 @@ namespace Flux.Geo
     /// </summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> Create(double segments, double radiusX, double radiusY, double offsetRadians = 0, double randomnessUnitInterval = 0)
     {
-      offsetRadians += -Flux.Math.PiOver2;
+      offsetRadians += -Flux.Maths.PiOver2;
 
-      var segmentRadian = Flux.Math.PiX2 / segments;
+      var segmentRadian = Flux.Maths.PiX2 / segments;
 
       var rng = new System.Random();
 
@@ -64,19 +64,19 @@ namespace Flux.Geo
     }
 
     /// Flux.Media.Geometry.Ellipse.Create(7, 100, 100, Flux.Math.Pi.DivBy7); // heptagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHeptagon(double width, double height, double offsetRadians = Flux.Math.PiOver7) => Create(7, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHeptagon(double width, double height, double offsetRadians = Flux.Maths.PiOver7) => Create(7, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHexagon(double width, double height, double offsetRadians = Flux.Math.PiOver6) => Create(6, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHexagon(double width, double height, double offsetRadians = Flux.Maths.PiOver6) => Create(6, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(9, 100, 100, Flux.Math.Pi.DivBy9); // nonagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateNonagon(double width, double height, double offsetRadians = Flux.Math.PiOver9) => Create(9, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateNonagon(double width, double height, double offsetRadians = Flux.Maths.PiOver9) => Create(9, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateOctagon(double width, double height, double offsetRadians = Flux.Math.PiOver8) => Create(8, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateOctagon(double width, double height, double offsetRadians = Flux.Maths.PiOver8) => Create(8, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(5, 100, 100, Flux.Math.Pi.DivBy5); // pentagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreatePentagon(double width, double height, double offsetRadians = Flux.Math.PiOver5) => Create(5, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreatePentagon(double width, double height, double offsetRadians = Flux.Maths.PiOver5) => Create(5, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(4, 100, 100, Flux.Math.Pi.DivBy4); // square, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateSquare(double width, double height, double offsetRadians = Flux.Math.PiOver4) => Create(4, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateSquare(double width, double height, double offsetRadians = Flux.Maths.PiOver4) => Create(4, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(3, 100, 100, Flux.Math.Pi.DivBy3); // triangle, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateTriangle(double width, double height, double offsetRadians = Flux.Math.PiOver3) => Create(3, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateTriangle(double width, double height, double offsetRadians = Flux.Maths.PiOver3) => Create(3, width, height, offsetRadians);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public static double SurfaceArea(double radiusA, double radiusB) => System.Math.PI * radiusA * radiusB;

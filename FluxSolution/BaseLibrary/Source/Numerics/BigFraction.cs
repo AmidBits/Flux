@@ -66,8 +66,8 @@ namespace Flux.Numerics
     {
       var countDecimalPlaces = System.BitConverter.GetBytes(decimal.GetBits(value)[3])[2];
 
-      Numerator = new System.Numerics.BigInteger(value * (System.Decimal)Math.Pow(10, countDecimalPlaces));
-      Denominator = new System.Numerics.BigInteger(Math.Pow(10, countDecimalPlaces));
+      Numerator = new System.Numerics.BigInteger(value * (System.Decimal)Maths.Pow(10, countDecimalPlaces));
+      Denominator = new System.Numerics.BigInteger(Maths.Pow(10, countDecimalPlaces));
     }
     public BigFraction(double value, double accuracy = 1E-15)
     {

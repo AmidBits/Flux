@@ -9,13 +9,13 @@ namespace Flux
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
-    public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 target) => System.Math.Acos(Flux.Math.Clamp(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(source), System.Numerics.Vector3.Normalize(target)), -1, 1));
+    public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 target) => System.Math.Acos(Flux.Maths.Clamp(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(source), System.Numerics.Vector3.Normalize(target)), -1, 1));
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
-    public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 target) => System.Math.Acos(Flux.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
+    public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 target) => System.Math.Acos(Flux.Maths.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
     /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
     public static System.Numerics.Vector2 IntermediaryPoint(System.Numerics.Vector2 a, System.Numerics.Vector2 b, float scalar = 0.5f) => (a + b) * scalar;

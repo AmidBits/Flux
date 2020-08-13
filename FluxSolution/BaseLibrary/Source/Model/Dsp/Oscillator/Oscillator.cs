@@ -4,7 +4,7 @@ namespace Flux.Dsp
   {
     private double _amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>
-    public double AmplitudeModulation { get => _amplitudeModulation; set => _amplitudeModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double AmplitudeModulation { get => _amplitudeModulation; set => _amplitudeModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The amplitude modulator (AM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
@@ -20,7 +20,7 @@ namespace Flux.Dsp
 
     private double _frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
-    public double FrequencyModulation { get => _frequencyModulation; set => _frequencyModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double FrequencyModulation { get => _frequencyModulation; set => _frequencyModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
@@ -39,16 +39,16 @@ namespace Flux.Dsp
     private double _offset;
     /// <summary>Initial offset of the oscillator phase.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Offset { get => _offset; set => _offset = Math.Wrap(value, -1.0, 1.0); }
+    public double Offset { get => _offset; set => _offset = Maths.Wrap(value, -1.0, 1.0); }
 
     private double _phase;
     /// <summary>The position of a point in time (an instant) on the waveform cycle in the range [0, 1].</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Phase { get => _phase; set => _phase = Math.Wrap(value, 0.0, 1.0); }
+    public double Phase { get => _phase; set => _phase = Maths.Wrap(value, 0.0, 1.0); }
 
     private double _phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
-    public double PhaseModulation { get => _phaseModulation; set => _phaseModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double PhaseModulation { get => _phaseModulation; set => _phaseModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
@@ -65,7 +65,7 @@ namespace Flux.Dsp
 
     private double _ringModulation;
     /// <summary>The amount [0, 1] of output from the ring modulator to apply.</summary>
-    public double RingModulation { get => _ringModulation; set => _ringModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double RingModulation { get => _ringModulation; set => _ringModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The ring modulator (RM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ring_modulation"/>
@@ -115,14 +115,14 @@ namespace Flux.Dsp
         Current = processor.ProcessAudio(new MonoSample(Current)).FrontCenter;
       }
 
-      if (AmplitudeModulator != null && _amplitudeModulation > Math.EpsilonCpp32)
+      if (AmplitudeModulator != null && _amplitudeModulation > Maths.EpsilonCpp32)
       {
         Current *= AmplitudeModulator.NextSample().FrontCenter * _amplitudeModulation + 1;
 
         Current /= _amplitudeModulation + 1; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && _ringModulation > Math.EpsilonCpp32)
+      if (RingModulator != null && _ringModulation > Maths.EpsilonCpp32)
       {
         Current *= RingModulator.NextSample().FrontCenter * _ringModulation;
       }
@@ -139,12 +139,12 @@ namespace Flux.Dsp
 
       var phaseShift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && _phaseModulation > Math.EpsilonCpp32)
+      if (PhaseModulator != null && _phaseModulation > Maths.EpsilonCpp32)
       {
         phaseShift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * _phaseModulation;
       }
 
-      if (FrequencyModulator != null && _frequencyModulation > Math.EpsilonCpp32)
+      if (FrequencyModulator != null && _frequencyModulation > Maths.EpsilonCpp32)
       {
         phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample().FrontCenter * _frequencyModulation;
       }
@@ -154,7 +154,7 @@ namespace Flux.Dsp
         phaseShift = -phaseShift;
       }
 
-      _phase = Math.Wrap(_phase + phaseShift, 0, 1); // Ensure phase wraps within cycle.
+      _phase = Maths.Wrap(_phase + phaseShift, 0, 1); // Ensure phase wraps within cycle.
 
       System.Diagnostics.Debug.Assert(Current >= -1 && Current <= 1);
 

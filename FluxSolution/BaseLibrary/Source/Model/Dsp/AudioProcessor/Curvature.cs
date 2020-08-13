@@ -9,9 +9,9 @@ namespace Flux.Dsp.AudioProcessor
       get => m_contour;
       set
       {
-        m_contour = Math.Clamp(value, -1.0, 1.0);
+        m_contour = Maths.Clamp(value, -1.0, 1.0);
 
-        m_contourScaled = m_contour > Math.EpsilonCpp32 || m_contour < -Math.EpsilonCpp32 ? m_contour * 0.1 + 1 : 0;
+        m_contourScaled = m_contour > Maths.EpsilonCpp32 || m_contour < -Maths.EpsilonCpp32 ? m_contour * 0.1 + 1 : 0;
       }
     }
 
@@ -26,7 +26,7 @@ namespace Flux.Dsp.AudioProcessor
     /// <summary>Apply curvature with the specified contour to an arbitrary mono signal sample.</summary>
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>
     /// <param name="mono">The mono sample in the range [-1, 1].</param>
-    public static double ApplyCurvature(double contour, double mono) => (contour > Math.EpsilonCpp32 || contour < -Math.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled ? 2.0 * ((System.Math.Pow(contourScaled, (mono + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0 : mono;
+    public static double ApplyCurvature(double contour, double mono) => (contour > Maths.EpsilonCpp32 || contour < -Maths.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled ? 2.0 * ((System.Math.Pow(contourScaled, (mono + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0 : mono;
   }
 
   public class CurvatureStereo : IAudioProcessorStereo
@@ -35,7 +35,7 @@ namespace Flux.Dsp.AudioProcessor
     public CurvatureMono Right { get; }
 
     /// <summary>The quadratic exponent can be set within the constrained range [0, 10]. Below</summary>
-    public double Exponent { get => Left.Contour; set => Right.Contour = Left.Contour = Math.Clamp(value, -1.0, 1.0); }
+    public double Exponent { get => Left.Contour; set => Right.Contour = Left.Contour = Maths.Clamp(value, -1.0, 1.0); }
 
     public CurvatureStereo(double contourL, double contourR)
     {

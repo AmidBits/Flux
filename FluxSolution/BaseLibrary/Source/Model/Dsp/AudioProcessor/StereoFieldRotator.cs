@@ -10,9 +10,9 @@ namespace Flux.Dsp.AudioProcessor
       get => m_angle;
       set
       {
-        m_angle = Math.Clamp(value, -1.0, 1.0);
+        m_angle = Maths.Clamp(value, -1.0, 1.0);
 
-        if (m_angle > Math.EpsilonCpp32 || m_angle < -Math.EpsilonCpp32)
+        if (m_angle > Maths.EpsilonCpp32 || m_angle < -Maths.EpsilonCpp32)
         {
           var angle = m_angle * System.Math.PI;
 
@@ -33,6 +33,6 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="angle">The rotational angle of the stereo samples [-1, 1] across the stereo field, where negative means to the left, positive means to the right and 0 means center.</param>
     /// <param name="left">The left stereo sample in the range [-1, 1].</param>
     /// <param name="right">The right stereo sample in the range [-1, 1].</param>
-    public static (double left, double right) ApplyStereoFieldRotation(double angle, double left, double right) => (angle > Math.EpsilonCpp32 || angle < Math.EpsilonCpp32) && angle * System.Math.PI is var anglePi && System.Math.Cos(anglePi) is var cos && System.Math.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
+    public static (double left, double right) ApplyStereoFieldRotation(double angle, double left, double right) => (angle > Maths.EpsilonCpp32 || angle < Maths.EpsilonCpp32) && angle * System.Math.PI is var anglePi && System.Math.Cos(anglePi) is var cos && System.Math.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
   }
 }

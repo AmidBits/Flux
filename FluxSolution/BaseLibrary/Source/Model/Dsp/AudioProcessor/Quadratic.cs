@@ -25,12 +25,12 @@ namespace Flux.Dsp.AudioProcessor
       get => m_exponent;
       set
       {
-        m_exponent = Math.Clamp(value, -1.0, 1.0);
+        m_exponent = Maths.Clamp(value, -1.0, 1.0);
 
         m_exponentExpanded = (-m_exponent) switch
         {
-          var exp when exp > Flux.Math.EpsilonCpp32 => 1 + -m_exponent * 99,
-          var exp when exp < -Flux.Math.EpsilonCpp32 => 1 + -m_exponent,
+          var exp when exp > Flux.Maths.EpsilonCpp32 => 1 + -m_exponent * 99,
+          var exp when exp < -Flux.Maths.EpsilonCpp32 => 1 + -m_exponent,
           _ => 0,
         };
       }
@@ -62,7 +62,7 @@ namespace Flux.Dsp.AudioProcessor
     public QuadraticMode Mode { get => Left.Mode; set => Right.Mode = Left.Mode = value; }
 
     /// <summary>The quadratic exponent can be set within the constrained range [-1, 1].</summary>
-    public double Exponent { get => Left.Exponent; set => Right.Exponent = Left.Exponent = Math.Clamp(value, -1.0, 1.0); }
+    public double Exponent { get => Left.Exponent; set => Right.Exponent = Left.Exponent = Maths.Clamp(value, -1.0, 1.0); }
 
     public QuadraticStereo(QuadraticMode modeL, double exponentL, QuadraticMode modeR, double exponentR)
     {

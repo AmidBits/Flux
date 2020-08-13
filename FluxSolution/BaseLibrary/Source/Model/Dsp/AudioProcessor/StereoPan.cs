@@ -8,7 +8,7 @@ namespace Flux.Dsp.AudioProcessor
     {
       get => m_position; set
       {
-        m_position = Math.Clamp(value, -1, 1);
+        m_position = Maths.Clamp(value, -1, 1);
       }
     }
 
@@ -20,6 +20,6 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="left">The left stereo sample in the range [-1, 1].</param>
     ///// <param name="right">The right stereo sample in the range [-1, 1].</param>
     //public static (double left, double right) ApplyStereoPan(double position, double left, double right) => (position > Flux.Math.EpsilonCpp32 && position * 0.5 is var scaledR) ? (left * (1.0 - position), left * scaledR + right * (1.0 - scaledR)) : (position < -Flux.Math.EpsilonCpp32 && position * -0.5 is var scaledL) ? (left * (1.0 - scaledL) + right * scaledL, right * (1.0 + position)) : (left, right);
-    public static ISampleStereo ApplyStereoPan(double position, ISampleStereo sample) => (position > Flux.Math.EpsilonCpp32 && position * 0.5 is var scaledR) ? new StereoSample(sample.FrontLeft * (1.0 - position), sample.FrontLeft * scaledR + sample.FrontRight * (1.0 - scaledR)) : (position < -Flux.Math.EpsilonCpp32 && position * -0.5 is var scaledL) ? new StereoSample(sample.FrontLeft * (1.0 - scaledL) + sample.FrontRight * scaledL, sample.FrontRight * (1.0 + position)) : sample;
+    public static ISampleStereo ApplyStereoPan(double position, ISampleStereo sample) => (position > Flux.Maths.EpsilonCpp32 && position * 0.5 is var scaledR) ? new StereoSample(sample.FrontLeft * (1.0 - position), sample.FrontLeft * scaledR + sample.FrontRight * (1.0 - scaledR)) : (position < -Flux.Maths.EpsilonCpp32 && position * -0.5 is var scaledL) ? new StereoSample(sample.FrontLeft * (1.0 - scaledL) + sample.FrontRight * scaledL, sample.FrontRight * (1.0 + position)) : sample;
   }
 }

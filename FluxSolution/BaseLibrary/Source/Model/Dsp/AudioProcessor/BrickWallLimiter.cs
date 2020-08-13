@@ -6,7 +6,7 @@ namespace Flux.Dsp.AudioProcessor
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
-    public double Release { get => m_release; set => m_release = Math.Clamp(value, Math.EpsilonCpp32, 1.0); }
+    public double Release { get => m_release; set => m_release = Maths.Clamp(value, Maths.EpsilonCpp32, 1.0); }
 
     private double m_autoAttenuation = 1.0;
     /// <summary>The amount of attenuation to apply on the output. This is automatically calculated on sample amplitude overflow.</summary>
@@ -16,7 +16,7 @@ namespace Flux.Dsp.AudioProcessor
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = Math.Clamp(m_autoAttenuation + m_release, Math.EpsilonCpp32, 1.0);
+        m_autoAttenuation = Maths.Clamp(m_autoAttenuation + m_release, Maths.EpsilonCpp32, 1.0);
       }
 
       if (sample < -1.0 || sample > 1.0)
@@ -30,13 +30,13 @@ namespace Flux.Dsp.AudioProcessor
       return sample * m_autoAttenuation;
     }
 
-    public static double Limit(double sample) => Flux.Math.Clamp(sample, -1.0, 1.0);
+    public static double Limit(double sample) => Flux.Maths.Clamp(sample, -1.0, 1.0);
 
     public ISampleMono ProcessAudio(ISampleMono sample)
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = Math.Clamp(m_autoAttenuation + m_release, Math.EpsilonCpp32, 1);
+        m_autoAttenuation = Maths.Clamp(m_autoAttenuation + m_release, Maths.EpsilonCpp32, 1);
       }
 
       if (sample.FrontCenter < -1 || sample.FrontCenter > 1)

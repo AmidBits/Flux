@@ -164,11 +164,11 @@ namespace Flux.Geo
     }
 
     /// <summary>Creates a circular polygon with a specified number of sides, radius and an optional offset (in radians).</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateCircularXY(double numberOfSides, double radius, double offsetRadians = Math.PiOver2)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateCircularXY(double numberOfSides, double radius, double offsetRadians = Maths.PiOver2)
     {
-      var stepSizeInRadians = Math.PiX2 / numberOfSides;
+      var stepSizeInRadians = Maths.PiX2 / numberOfSides;
 
-      for (var side = 0; side < Math.PiX2; side++)
+      for (var side = 0; side < Maths.PiX2; side++)
       {
         var radians = side * stepSizeInRadians + offsetRadians;
 
@@ -176,16 +176,16 @@ namespace Flux.Geo
       }
     }
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius) => Ellipse.Create(6, radius, radius, Math.PiOver2).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius) => Ellipse.Create(6, radius, radius, Maths.PiOver2).ToVector3();
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonVerticalXY(float radius) => Ellipse.Create(6, radius, radius).ToVector3();
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY1(float radius) => Ellipse.Create(8, radius, radius).ToVector3();
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius) => Ellipse.Create(8, radius, radius, Flux.Math.PiOver8).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius) => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).ToVector3();
     /// <summary>Creates a square with the specified radius, starting point 45 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateSquareXY(float radius)
-      => Ellipse.Create(4, radius, radius, Flux.Math.PiOver4).ToVector3();
+      => Ellipse.Create(4, radius, radius, Flux.Maths.PiOver4).ToVector3();
     /// <summary>Creates a triangle with the specified radius, starting point up.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateTriangleXY(float radius)
       => Ellipse.Create(3, radius, radius).ToVector3();
@@ -381,11 +381,11 @@ namespace Flux.Geo
             triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
             break;
           case TriangulationEnum.LeastSquare:
-            var leastSquare = GetAngles(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Math.PiOver2) > System.Math.Abs(b.angle - Math.PiOver2) ? a : b);
+            var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
             triplet = (leastSquare.Item1, leastSquare.Item2, leastSquare.Item3, leastSquare.index);
             break;
           case TriangulationEnum.MostSquare:
-            var mostSquare = GetAngles(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Math.PiOver2) < System.Math.Abs(b.angle - Math.PiOver2) ? a : b);
+            var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
             triplet = (mostSquare.Item1, mostSquare.Item2, mostSquare.Item3, mostSquare.index);
             break;
           default:

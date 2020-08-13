@@ -6,7 +6,7 @@ namespace Flux.Dsp
   {
     private double m_amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>
-    public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The amplitude modulator (AM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
@@ -21,7 +21,7 @@ namespace Flux.Dsp
 
     private double m_ringModulation;
     /// <summary>The amount [0, 1] of output from the ring modulator to apply.</summary>
-    public double RingModulation { get => m_ringModulation; set => m_ringModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double RingModulation { get => m_ringModulation; set => m_ringModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The ring modulator (RM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ring_modulation"/>
@@ -59,14 +59,14 @@ namespace Flux.Dsp
         sample = -sample;
       }
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > Math.EpsilonCpp32)
+      if (AmplitudeModulator != null && m_amplitudeModulation > Maths.EpsilonCpp32)
       {
         sample *= AmplitudeModulator.NextSample().FrontCenter * m_amplitudeModulation + 1.0;
 
         sample /= m_amplitudeModulation + 1.0; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > Math.EpsilonCpp32)
+      if (RingModulator != null && m_ringModulation > Maths.EpsilonCpp32)
       {
         sample *= RingModulator.NextSample().FrontCenter * m_ringModulation;
       }

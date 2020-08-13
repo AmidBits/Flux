@@ -10,16 +10,16 @@ namespace Flux.Dsp.AudioProcessor
 
     private double m_feedback, m_feedbackCompensation;
     /// <summary>The amount of delayed audio to resend through the delay line. For example, a setting of 20% sends delayed audio at one-fifth of its original volume, creating echoes that gently fade away. A setting of 200% sends delayed audio at double its original volume, creating echoes that quickly grow in intensity.note: When experimenting with extremely high Feedback settings, turn down your system volume.</summary>
-    public double Feedback { get => m_feedback; set => m_feedbackCompensation = 1.0 + (m_feedback = Math.Clamp(value, 0.0, 1.0)); }
+    public double Feedback { get => m_feedback; set => m_feedbackCompensation = 1.0 + (m_feedback = Maths.Clamp(value, 0.0, 1.0)); }
 
     private double m_gain, m_gainCompensation;
     /// <summary>The gain amount of delayed audio [0, 1] to send through the output.</summary>
-    public double Gain { get => m_gain; set => m_gainCompensation = 1.0 - (m_gain = Math.Clamp(value, 0.0, 1.0)); }
+    public double Gain { get => m_gain; set => m_gainCompensation = 1.0 - (m_gain = Maths.Clamp(value, 0.0, 1.0)); }
 
     private double _time;
     private int m_timeIndex;
     /// <summary>The amount of buffer time [0, 1] (percent) used of the delay time, where 0 means no delay abd 1 means maximum delay.</summary>
-    public double Time { get => _time; set => m_timeIndex = (int)(m_buffer.Length * (_time = Math.Clamp(value, 0.0, 1.0))); }
+    public double Time { get => _time; set => m_timeIndex = (int)(m_buffer.Length * (_time = Maths.Clamp(value, 0.0, 1.0))); }
 
     private double _mix, m_dryMix, m_wetMix;
     /// <summary>The balance of dry (source audio) and wet (delay/feedback line) mix.</summary>
@@ -28,13 +28,13 @@ namespace Flux.Dsp.AudioProcessor
       get => _mix;
       set
       {
-        _mix = Math.Clamp(value, -1.0, 1.0);
+        _mix = Maths.Clamp(value, -1.0, 1.0);
 
-        if (_mix > Flux.Math.EpsilonCpp32)
+        if (_mix > Flux.Maths.EpsilonCpp32)
         {
           m_dryMix = 1.0 - (m_wetMix = 0.5 * (1.0 + _mix));
         }
-        else if (_mix < -Flux.Math.EpsilonCpp32)
+        else if (_mix < -Flux.Maths.EpsilonCpp32)
         {
           m_wetMix = 1.0 - (m_dryMix = 0.5 * (1.0 - _mix));
         }
@@ -87,13 +87,13 @@ namespace Flux.Dsp.AudioProcessor
     public DelayMono Left { get; }
     public DelayMono Right { get; }
 
-    public double Feedback { get => Left.Feedback; set => Right.Feedback = Left.Feedback = Math.Clamp(value, 0.0, 1.0); }
+    public double Feedback { get => Left.Feedback; set => Right.Feedback = Left.Feedback = Maths.Clamp(value, 0.0, 1.0); }
 
-    public double Gain { get => Left.Gain; set => Right.Gain = Left.Gain = Math.Clamp(value, 0.0, 1.0); }
+    public double Gain { get => Left.Gain; set => Right.Gain = Left.Gain = Maths.Clamp(value, 0.0, 1.0); }
 
-    public double Time { get => Left.Time; set => Right.Time = Left.Time = Math.Clamp(value, 0.0, 1.0); }
+    public double Time { get => Left.Time; set => Right.Time = Left.Time = Maths.Clamp(value, 0.0, 1.0); }
 
-    public double Mix { get => Left.Mix; set => Right.Mix = Left.Mix = Math.Clamp(value, -1.0, 1.0); }
+    public double Mix { get => Left.Mix; set => Right.Mix = Left.Mix = Maths.Clamp(value, -1.0, 1.0); }
 
     public DelayStereo(int maxDelayTimeInSeconds, double sampleRate)
     {

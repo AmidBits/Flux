@@ -7,15 +7,15 @@ namespace Flux.Wpf
       /// <summary>Creates a circular polygon with a specified number of sides, radius and an optional offset (in radians).</summary>
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateCircular(double numberOfSides, double radius, double offsetRadians = 0f)
       {
-        var step = Flux.Math.PiX2 / numberOfSides;
+        var step = Flux.Maths.PiX2 / numberOfSides;
 
-        for (var angle = 0.0; angle < Flux.Math.PiX2; angle += step)
+        for (var angle = 0.0; angle < Flux.Maths.PiX2; angle += step)
           yield return (angle + offsetRadians).AngularRotationToPoint().Multiply(radius);
       }
 
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonHorizontal(double radius)
       {
-        return CreateCircular(6, radius, Flux.Math.PiOver2);
+        return CreateCircular(6, radius, Flux.Maths.PiOver2);
       }
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonVertical(double radius)
       {
@@ -48,7 +48,7 @@ namespace Flux.Wpf
       {
         unitRatio = unitRatio % 1.0;
 
-        return Flux.Math.DegreeToRadian(unitRatio * 360.0).AngularRotationToPoint();
+        return Flux.Maths.DegreeToRadian(unitRatio * 360.0).AngularRotationToPoint();
       }
       public static System.Windows.Point PatternSquare(double unitRatio)
       {

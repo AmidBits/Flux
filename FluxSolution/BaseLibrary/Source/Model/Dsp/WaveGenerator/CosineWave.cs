@@ -5,7 +5,7 @@ namespace Flux.Dsp.WaveGenerator
     : IWaveGenerator
   {
     public ISampleMono GenerateWave(double phase)
-      => new MonoSample(System.Math.Cos(phase * Math.PiX2));
+      => new MonoSample(System.Math.Cos(phase * Maths.PiX2));
 
     // public static double Sample(double phase) => System.Math.Cos(phase * Math.PiX2);
   }

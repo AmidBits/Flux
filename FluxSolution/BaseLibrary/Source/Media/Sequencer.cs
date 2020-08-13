@@ -26,7 +26,7 @@ namespace Flux.Media.Sequencer
 
     protected double m_beatsPerMinute;
     /// <summary>Beats per minute, or BPM for short, defines the speed of music.</summary>
-    public double BeatsPerMinute { get => m_beatsPerMinute; set => m_beatsPerMinute = Math.Wrap(value, 40.0, 280.0); }
+    public double BeatsPerMinute { get => m_beatsPerMinute; set => m_beatsPerMinute = Maths.Wrap(value, 40.0, 280.0); }
 
     public double MicroSecondsPerBeat(double ratioOfQuarterNote = 1.0) => MicrosecondsPerMinute / (m_beatsPerMinute / ratioOfQuarterNote);
 

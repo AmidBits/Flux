@@ -146,7 +146,7 @@
       public static void FFT(System.Numerics.Complex[] data, Direction direction)
       {
         var n = data.Length;
-        var m = (int)Flux.Math.Log2(n);
+        var m = (int)Flux.Maths.Log2(n);
 
         ReorderData(data); // reorder data first
 
@@ -200,7 +200,7 @@
         var k = data.GetLength(0);
         var n = data.GetLength(1);
 
-        if ((!Flux.Math.IsPowerOf2(k)) || (!Flux.Math.IsPowerOf2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
+        if ((!Flux.Maths.IsPowerOf2(k)) || (!Flux.Maths.IsPowerOf2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
         {
           throw new System.ArgumentException("Incorrect data length.");
         }
@@ -316,12 +316,12 @@
         var len = data.Length;
 
         // check data length
-        if ((len < minLength) || (len > maxLength) || (!Flux.Math.IsPowerOf2(len)))
+        if ((len < minLength) || (len > maxLength) || (!Flux.Maths.IsPowerOf2(len)))
         {
           throw new System.ArgumentException("Incorrect data length.");
         }
 
-        var rBits = GetReversedBits((int)Flux.Math.Log2(len));
+        var rBits = GetReversedBits((int)Flux.Maths.Log2(len));
 
         for (var i = 0; i < len; i++)
         {

@@ -4,11 +4,11 @@ namespace Flux.Wpf
   {
     /// <summary>Returns the angle, in radians, according to the laws of cosine. Zero is to the top.</summary>
     public static double PointToAngularRotation(this System.Windows.Point point, bool inDegrees = false)
-      => inDegrees ? Flux.Math.RadianToDegree(Flux.Math.CartesianToRotationAngleEx(point.X, point.Y)) : Flux.Math.CartesianToRotationAngleEx(point.X, point.Y);
+      => inDegrees ? Flux.Maths.RadianToDegree(Flux.Maths.CartesianToRotationAngleEx(point.X, point.Y)) : Flux.Maths.CartesianToRotationAngleEx(point.X, point.Y);
     /// <summary>Returns a unit point of the specified angle, in radians. Zero is to the top.</summary>
     public static System.Windows.Point AngularRotationToPoint(this double angularRotation, bool inDegrees = false)
     {
-      var (x, y) = inDegrees ? Flux.Math.RotationAngleToCartesianEx(Flux.Math.DegreeToRadian(angularRotation)) : Flux.Math.RotationAngleToCartesianEx(angularRotation);
+      var (x, y) = inDegrees ? Flux.Maths.RotationAngleToCartesianEx(Flux.Maths.DegreeToRadian(angularRotation)) : Flux.Maths.RotationAngleToCartesianEx(angularRotation);
 
       return new System.Windows.Point(x, y);
     }

@@ -47,6 +47,8 @@ namespace ConsoleApp
         System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.RefinedSoundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
       }
 
+      
+
       return;
 
       var x = " Blañk";

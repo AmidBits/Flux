@@ -33,18 +33,18 @@ namespace Flux
 
     private double m_latitudeDeg, m_latitudeRad;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => m_latitudeDeg; set => m_latitudeRad = Flux.Math.DegreeToRadian(m_latitudeDeg = Math.Wrap(value, -90.0, 90.0)); }
+    public double Latitude { get => m_latitudeDeg; set => m_latitudeRad = Flux.Maths.DegreeToRadian(m_latitudeDeg = Maths.Wrap(value, -90.0, 90.0)); }
 
     private double m_longitudeDeg, m_longitudeRad;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => m_longitudeDeg; set => m_longitudeRad = Flux.Math.DegreeToRadian(m_longitudeDeg = Math.Wrap(value, -180.0, 180.0)); }
+    public double Longitude { get => m_longitudeDeg; set => m_longitudeRad = Flux.Maths.DegreeToRadian(m_longitudeDeg = Maths.Wrap(value, -180.0, 180.0)); }
 
     public Geoposition(double latitude, double longitude, double altitude = 1.0)
     {
       Altitude = altitude;
 
-      m_latitudeRad = Flux.Math.DegreeToRadian(m_latitudeDeg = Math.Wrap(latitude, -90, +90));
-      m_longitudeRad = Flux.Math.DegreeToRadian(m_longitudeDeg = Math.Wrap(longitude, -180, +180));
+      m_latitudeRad = Flux.Maths.DegreeToRadian(m_latitudeDeg = Maths.Wrap(latitude, -90, +90));
+      m_longitudeRad = Flux.Maths.DegreeToRadian(m_longitudeDeg = Maths.Wrap(longitude, -180, +180));
     }
 
     /// <summary>Calculates the approximate radius at the latitude of the specified geoposition.</summary>
@@ -71,9 +71,9 @@ namespace Flux
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     public Geoposition DestinationPointAt(double bearingDegrees, double angularDistance)
     {
-      EndPoint(m_latitudeRad, m_longitudeRad, Flux.Math.DegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
+      EndPoint(m_latitudeRad, m_longitudeRad, Flux.Maths.DegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new Geoposition(Flux.Math.RadianToDegree(lat2), Math.Wrap(Flux.Math.RadianToDegree(lon2), -180, +180), Altitude);
+      return new Geoposition(Flux.Maths.RadianToDegree(lat2), Maths.Wrap(Flux.Maths.RadianToDegree(lon2), -180, +180), Altitude);
     }
 
     /// <summary>The distance from the point to the specified target.</summary>
@@ -82,14 +82,14 @@ namespace Flux
     /// <returns></returns>
     public double DistanceTo(Geoposition targetPoint, double earthRadius = EarthRadii.MeanInMeters) => earthRadius * CentralAngleVincentyFormula(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad);
 
-    public double InitialBearingTo(Geoposition targetPoint) => Flux.Math.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
+    public double InitialBearingTo(Geoposition targetPoint) => Flux.Maths.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
     public Geoposition IntermediaryPointTo(Geoposition target, double unitInterval)
     {
       IntermediaryPoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, unitInterval, out var lat, out var lon);
 
-      return new Geoposition(Flux.Math.RadianToDegree(lat), Flux.Math.RadianToDegree(lon), Altitude);
+      return new Geoposition(Flux.Maths.RadianToDegree(lat), Flux.Maths.RadianToDegree(lon), Altitude);
     }
 
     /// <summary>The midpoint between this point and the specified target.</summary>
@@ -97,7 +97,7 @@ namespace Flux
     {
       Midpoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, out var lat, out var lon);
 
-      return new Geoposition(Flux.Math.RadianToDegree(lat), Flux.Math.RadianToDegree(lon), Altitude);
+      return new Geoposition(Flux.Maths.RadianToDegree(lat), Flux.Maths.RadianToDegree(lon), Altitude);
     }
 
     #region Static Members
@@ -141,7 +141,7 @@ namespace Flux
     /// <remarks>The haversine formula is numerically better-conditioned for small distances. Although this formula is accurate for most distances on a sphere, it too suffers from rounding errors for the special (and somewhat unusual) case of antipodal points (on opposite ends of the sphere).</remarks>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
     public static double CentralAngleHaversineFormula(double latitude1, double longitude1, double latitude2, double longitude2)
-      => Math.Ahvsin(Math.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Math.Hvsin(longitude2 - longitude1));
+      => Maths.Ahvsin(Maths.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Maths.Hvsin(longitude2 - longitude1));
 
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/>
@@ -187,7 +187,7 @@ namespace Flux
     /// <returns></returns>
     public static string? CompassPoint(double bearing, PointsOfTheCompass precision)
     {
-      var compassNotch = System.Math.Round(Math.Wrap(bearing, 0, Math.PiX2) / (Math.PiX2 / (int)precision) % (int)precision);
+      var compassNotch = System.Math.Round(Maths.Wrap(bearing, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
 
       return precision switch
       {
@@ -230,7 +230,7 @@ namespace Flux
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2) => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Math.PiX2;
+    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2) => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
 
     ///// <summary>Computes the square of half the chord length between the points, often labeled "a" in C implementations.</summary>
     ///// <returns>The square of half the chord length between the points.</returns>
@@ -252,7 +252,7 @@ namespace Flux
       var y = System.Math.Sin(lonD) * cosLat2;
       var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
 
-      return (System.Math.Atan2(y, x) + Math.PiX2) % Math.PiX2; // atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees)
+      return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees)
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
@@ -290,14 +290,14 @@ namespace Flux
       var φ1 = System.Math.Acos(sinLat2 - sinLat1 * System.Math.Cos(d12) / System.Math.Sin(d12) * cosLat1);
       var φ2 = System.Math.Acos(sinLat1 - sinLat2 * System.Math.Cos(d12) / System.Math.Sin(d12) * cosLat2);
 
-      var bearing12 = System.Math.Sin(dLon) > 0 ? φ1 : Math.PiX2 - φ1;
-      var bearing21 = System.Math.Sin(dLon) > 0 ? Math.PiX2 - φ2 : φ2;
+      var bearing12 = System.Math.Sin(dLon) > 0 ? φ1 : Maths.PiX2 - φ1;
+      var bearing21 = System.Math.Sin(dLon) > 0 ? Maths.PiX2 - φ2 : φ2;
 
-      var α1 = (bearing1 - bearing12 + System.Math.PI) % Math.PiX2 - System.Math.PI;
+      var α1 = (bearing1 - bearing12 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
       var α1cos = System.Math.Cos(α1);
       var α1sin = System.Math.Sin(α1);
 
-      var α2 = (bearing21 - bearing2 + System.Math.PI) % Math.PiX2 - System.Math.PI;
+      var α2 = (bearing21 - bearing2 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
       var α2cos = System.Math.Cos(α2);
       var α2sin = System.Math.Sin(α2);
 
@@ -311,7 +311,7 @@ namespace Flux
 
       var dLon13 = System.Math.Atan2(System.Math.Sin(bearing1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(lat3));
 
-      var lon3 = (lon1 + dLon13 + System.Math.PI) % Math.PiX2 - System.Math.PI;
+      var lon3 = (lon1 + dLon13 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
 
       return (lat3, lon3);
     }
@@ -328,9 +328,9 @@ namespace Flux
     {
       var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-      var mpForward = System.Math.Log(System.Math.Tan((Flux.Math.DegreeToRadian(latitude) / 2.0) + Flux.Math.PiOver4));
+      var mpForward = System.Math.Log(System.Math.Tan((Flux.Maths.DegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
 
-      var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Math.PiX2));
+      var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Maths.PiX2));
 
       return (x, y);
     }
@@ -338,9 +338,9 @@ namespace Flux
     {
       var longitude = x * 360.0 / pixelCanvasWidth - 180.0;
 
-      var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Math.PiX2);
+      var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Maths.PiX2);
 
-      var latitude = Flux.Math.RadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Math.PiOver4) * 2.0);
+      var latitude = Flux.Maths.RadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
 
       return (latitude, longitude);
     }

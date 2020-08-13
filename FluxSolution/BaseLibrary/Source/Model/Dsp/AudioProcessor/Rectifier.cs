@@ -20,7 +20,7 @@ namespace Flux.Dsp.AudioProcessor
 
     private double m_threshold;
     /// <summary>The recifier threshold can be set within the constrained range [-1, 1].</summary>
-    public double Threshold { get => m_threshold; set => m_threshold = Math.Clamp(value, -1.0, 1.0); }
+    public double Threshold { get => m_threshold; set => m_threshold = Maths.Clamp(value, -1.0, 1.0); }
 
     public RectifierMono(RectifierMode mode, double threshold)
     {
@@ -51,7 +51,7 @@ namespace Flux.Dsp.AudioProcessor
     public RectifierMode Mode { get => Left.Mode; }
 
     /// <summary>The recifier threshold can be set within the constrained range [-1, 1].</summary>
-    public double Threshold { get => Left.Threshold; set => Right.Threshold = Left.Threshold = Math.Clamp(value, -1.0, 1.0); }
+    public double Threshold { get => Left.Threshold; set => Right.Threshold = Left.Threshold = Maths.Clamp(value, -1.0, 1.0); }
 
     public RectifierStereo(RectifierMode leftMode, RectifierMode rightMode, double leftThreshold, double rightThreshold)
     {

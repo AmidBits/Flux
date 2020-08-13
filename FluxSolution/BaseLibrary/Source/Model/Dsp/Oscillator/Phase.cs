@@ -4,7 +4,7 @@ namespace Flux.Dsp
   {
     private double m_frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
-    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
@@ -13,18 +13,18 @@ namespace Flux.Dsp
     public double NormalizedFrequency { get; set; }
 
     private double m_offset;
-    public double Offset { get => m_offset; set => m_offset = Math.Wrap(value, m_minimumPhase, m_maximumPhase); }
+    public double Offset { get => m_offset; set => m_offset = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
-    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = Math.Clamp(value, 0.0, 1.0); }
+    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = Maths.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
     public Oscillator? PhaseModulator { get; set; }
 
     private double m_position;
-    public double Position { get => m_position; set => m_position = Math.Wrap(value, m_minimumPhase, m_maximumPhase); }
+    public double Position { get => m_position; set => m_position = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
 
     private double m_maximumPhase;
     private double m_minimumPhase;
@@ -67,12 +67,12 @@ namespace Flux.Dsp
 
       var shift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > Flux.Math.EpsilonCpp32)
+      if (PhaseModulator != null && m_phaseModulation > Flux.Maths.EpsilonCpp32)
       {
         shift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
       }
 
-      if (FrequencyModulator != null && m_frequencyModulation > Flux.Math.EpsilonCpp32)
+      if (FrequencyModulator != null && m_frequencyModulation > Flux.Maths.EpsilonCpp32)
       {
         shift += normalizedFrequency.Value * FrequencyModulator.NextSample().FrontCenter * m_frequencyModulation;
       }
@@ -82,7 +82,7 @@ namespace Flux.Dsp
         shift = -shift;
       }
 
-      m_position = Math.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
+      m_position = Maths.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
     }
   }
 }

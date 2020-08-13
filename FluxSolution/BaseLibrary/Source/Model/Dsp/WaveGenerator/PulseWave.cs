@@ -6,10 +6,10 @@
   {
     private double? _dutyCycle;
     /// <summary>The duty cycle (pulse width) in the range [0, 2PI].</summary>
-    public double? DutyCycle { get => _dutyCycle; set => _dutyCycle = value.HasValue ? Math.Wrap(value.Value, 0.0, 1.0) : default; }
+    public double? DutyCycle { get => _dutyCycle; set => _dutyCycle = value.HasValue ? Maths.Wrap(value.Value, 0.0, 1.0) : default; }
 
     public PulseWave(double dutyCycle)
-      => _dutyCycle = Math.Wrap(dutyCycle, 0.0, 1.0);
+      => _dutyCycle = Maths.Wrap(dutyCycle, 0.0, 1.0);
     public PulseWave() : this(System.Math.PI) { }
 
     public ISampleMono GenerateWave(double phase)

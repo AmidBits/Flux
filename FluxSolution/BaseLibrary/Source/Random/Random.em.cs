@@ -28,7 +28,7 @@ namespace Flux
       if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"Maximum value ({maxValue}) must be greater than 0.");
 
       var bytesOfMaxValue = maxValue.ToByteArray(); // Value is a positive integer, no funky zero byte.
-      var highByteBitMask = (byte)((1 << Math.BitLength(bytesOfMaxValue[bytesOfMaxValue.Length - 1])) - 1); // Bitmask for masking the highest byte in the byte array.
+      var highByteBitMask = (byte)((1 << Maths.BitLength(bytesOfMaxValue[bytesOfMaxValue.Length - 1])) - 1); // Bitmask for masking the highest byte in the byte array.
 
       System.Numerics.BigInteger value;
 
@@ -104,8 +104,8 @@ namespace Flux
       }
       while (u1 <= double.Epsilon || u2 <= double.Epsilon);
 
-      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(Math.PiX2 * u2);
-      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(Math.PiX2 * u2);
+      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(Maths.PiX2 * u2);
+      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(Maths.PiX2 * u2);
 
       return (z0 * stdDev + mean, z1 * stdDev + mean);
     }
