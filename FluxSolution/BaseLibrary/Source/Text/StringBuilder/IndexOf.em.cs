@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class XtensionsStringBuilder
@@ -47,15 +45,10 @@ namespace Flux
 
       for (var index = 0; index < source.Length; index++)
       {
-        var currentChar = source[index];
+        var character = source[index];
 
-        foreach (var value in values)
-        {
-          if (comparer.Equals(currentChar, value))
-          {
-            return index;
-          }
-        }
+        if (System.Array.Exists(values, c => comparer.Equals(c, character)))
+          return index;
       }
 
       return -1;
@@ -67,6 +60,10 @@ namespace Flux
     /// <summary>Returns the index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
     public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
         if (IndexOf(source, values[valueIndex], comparer) is var index && index > -1)
           return index;
@@ -78,28 +75,28 @@ namespace Flux
       => IndexOfAny(source, System.Collections.Generic.EqualityComparer<char>.Default, values);
 
     /// <summary>Returns all indices of the specified characters within the string builder (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] IndicesOf(this System.Text.StringBuilder source, params char[] values)
+    public static int[] IndicesOf(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+
       var indices = new int[values.Length];
 
-      System.Array.Fill<int>(indices, -1);
+      System.Array.Fill(indices, -1);
 
       for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
       {
         var sourceChar = source[sourceIndex];
 
-        for (var valueIndex = values.Length - 1; valueIndex >= 0; valueIndex--)
+        for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
         {
-          if (sourceChar == values[valueIndex] && indices[valueIndex] == -1)
+          if (indices[valueIndex] == -1 && comparer.Equals(sourceChar, values[valueIndex]))
           {
             indices[valueIndex] = sourceIndex;
 
             if (!System.Array.Exists(indices, i => i == -1))
-            {
               return indices;
-            }
           }
         }
       }

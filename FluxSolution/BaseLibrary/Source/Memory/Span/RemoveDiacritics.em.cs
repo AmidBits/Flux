@@ -7,6 +7,8 @@ namespace Flux
     /// <summary>Remove diacritical marks and any optional replacements desired.</summary>
     public static System.Span<char> RemoveDiacriticalMarks(this System.Span<char> source, System.Func<char, char> additionalCharacterReplacements)
     {
+      if (additionalCharacterReplacements is null) throw new System.ArgumentNullException(nameof(additionalCharacterReplacements));
+
       var sb = new System.Text.StringBuilder();
 
       foreach (var c in source.ToString().Normalize(System.Text.NormalizationForm.FormKD))
@@ -18,7 +20,7 @@ namespace Flux
           case System.Globalization.UnicodeCategory.EnclosingMark:
             break;
           default:
-            sb.Append((additionalCharacterReplacements ?? throw new System.ArgumentNullException(nameof(additionalCharacterReplacements)))(c));
+            sb.Append(additionalCharacterReplacements(c));
             break;
         }
       }

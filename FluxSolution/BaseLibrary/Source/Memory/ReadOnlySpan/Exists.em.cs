@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class XtensionsReadOnlySpan
   {
-    /// <summary>Determines the index of the first occurence that satisfy the predicate.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    /// <summary>Determines whether the this instance contains the specified target. Uses the default comparer.</summary>
+    public static bool Exists<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -11,9 +11,9 @@ namespace Flux
 
       for (var index = 0; index < sourceLength; index++)
         if (predicate(source[index], index))
-          return index;
+          return true;
 
-      return -1;
+      return false;
     }
   }
 }

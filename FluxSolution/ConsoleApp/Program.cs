@@ -11,6 +11,9 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var sss = new System.ReadOnlySpan<Program>(new Program[10] );
+      
+      
       System.Collections.Generic.Dictionary<string, string> m_soundexTests = new System.Collections.Generic.Dictionary<string, string>()
       {
         { "Ashcroft", "A261" },

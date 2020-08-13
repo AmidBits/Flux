@@ -4,8 +4,7 @@ namespace Flux
   {
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool IsIsomorphic<T>(this System.Span<T> source, System.Span<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      where T : System.IEquatable<T>
+    public static bool AreIsomorphic<T>(this System.Span<T> source, System.Span<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -36,8 +35,7 @@ namespace Flux
     }
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool IsIsomorphic<T>(this System.Span<T> source, System.Span<T> target)
-      where T : System.IEquatable<T>
-    => IsIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static bool AreIsomorphic<T>(this System.Span<T> source, System.Span<T> target)
+      => AreIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

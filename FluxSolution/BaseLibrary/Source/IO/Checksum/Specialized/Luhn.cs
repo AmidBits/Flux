@@ -19,7 +19,7 @@ namespace Flux.IO.Checksum
 
       var sum = 0;
 
-      var numbers = new System.ReadOnlySpan<int>(m_sequence).Reverse();
+      var numbers = m_sequence.Reverse().ToArray();
 
       for (var index = 0; index < numbers.Length; index++)
       {

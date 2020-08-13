@@ -5,7 +5,7 @@ namespace Flux
   public static partial class XtensionsSpan
   {
     /// <summary>Trim all occurences of sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
-    public static void TrimConsecutive<T>(ref this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] remove)
+    public static void NormalizeConsecutive<T>(ref this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] trim)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -17,7 +17,7 @@ namespace Flux
       {
         var sourceValue = source[sourceIndex];
 
-        if (sourceIndex == 0 || !comparer.Equals(sourceValue, sourceValuePrevious) || (remove.Length > 0 && !remove.Contains(sourceValue, comparer)))
+        if (sourceIndex == 0 || !comparer.Equals(sourceValue, sourceValuePrevious) || (trim.Length > 0 && !trim.Contains(sourceValue, comparer)))
         {
           source[trimIndex++] = sourceValue;
         }
@@ -27,7 +27,7 @@ namespace Flux
 
       source = source.Slice(0, trimIndex);
     }
-    public static void TrimConsecutive<T>(ref this System.Span<T> source, params T[] remove)
-      => TrimConsecutive(ref source, System.Collections.Generic.EqualityComparer<T>.Default, remove);
+    public static void NormalizeConsecutive<T>(ref this System.Span<T> source, params T[] trim)
+      => NormalizeConsecutive(ref source, System.Collections.Generic.EqualityComparer<T>.Default, trim);
   }
 }

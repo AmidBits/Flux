@@ -25,8 +25,11 @@ namespace Flux
 
       source = source.Slice(0, previous ? normalizeIndex - 1 : normalizeIndex);
     }
-    /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
+    /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
     public static void NormalizeAll<T>(ref this System.Span<T> source, T normalizeWith, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] normalize)
       => NormalizeAll(ref source, normalizeWith, t => normalize.Contains(t, comparer));
+    /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the default equality comparer.</summary>
+    public static void NormalizeAll<T>(ref this System.Span<T> source, T normalizeWith, params T[] normalize)
+      => NormalizeAll(ref source, normalizeWith, normalize.Contains);
   }
 }
