@@ -1,6 +1,6 @@
 namespace Flux.Text.PhoneticAlgorithm
-{
-  /// <summary>Encodes the text using an implementation of the refined soundex.</summary>
+{ 
+  /// <summary>Refined soundex is a phonetic algorithm for indexing names by sound, as pronounced in English. It is an 'refined' version of the basic soundex.</summary>
   /// <returns>Returns a variable length refined soundex code.</returns>
   /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
   public class RefinedSoundex
