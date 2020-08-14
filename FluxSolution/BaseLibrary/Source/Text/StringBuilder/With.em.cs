@@ -11,13 +11,9 @@ namespace Flux
       if (value is null) throw new System.ArgumentNullException(nameof(value));
       else if (source.Length < value.Length) return false;
 
-      for (int indexOfSource = source.Length - 1, indexOfValue = value.Length - 1; indexOfSource >= 0 && indexOfValue >= 0; indexOfSource--, indexOfValue--)
-      {
-        if (!comparer.Equals(source[indexOfSource], value[indexOfValue]))
-        {
+      for (int sourceIndex = source.Length - 1, valueIndex = value.Length - 1; sourceIndex >= 0 && valueIndex >= 0; sourceIndex--, valueIndex--)
+        if (!comparer.Equals(source[sourceIndex], value[valueIndex]))
           return false;
-        }
-      }
 
       return true;
     }
@@ -34,12 +30,8 @@ namespace Flux
       else if (source.Length < value.Length) return false;
 
       for (var index = 0; index < value.Length; index++)
-      {
         if (!comparer.Equals(source[index], value[index]))
-        {
           return false;
-        }
-      }
 
       return true;
     }
