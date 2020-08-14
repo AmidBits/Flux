@@ -4,10 +4,10 @@ namespace Flux
   public abstract class BitConverter
   {
     /// <summary>Returns a little-endian bit converter instance. The same instance is always returned.</summary>
-    public static LittleEndianBitConverter LittleEndian { get; } = new LittleEndianBitConverter();
+    public static BitConverter LittleEndian { get; } = new LittleEndianBitConverter();
 
     /// <summary>Returns a big-endian bit converter instance. The same instance is always returned.</summary>
-    public static BigEndianBitConverter BigEndian { get; } = new BigEndianBitConverter();
+    public static BitConverter BigEndian { get; } = new BigEndianBitConverter();
 
     #region CopyBytes
     /// <summary>Copies the given number of bytes from the least-specific end of the specified value into the specified byte array, beginning at the specified index. This is used to implement the other CopyBytes methods.</summary>
@@ -320,7 +320,8 @@ namespace Flux
     #endregion ToType
 
     /// <summary>Implementation of EndianBitConverter which converts to/from big-endian byte arrays.</summary>
-    public sealed class BigEndianBitConverter : BitConverter
+    private sealed class BigEndianBitConverter
+      : BitConverter
     {
       /// <summary>Copies the specified number of bytes from value to buffer, starting at index.</summary>
       /// <param name="value">The value to copy</param>
@@ -358,7 +359,8 @@ namespace Flux
     }
 
     /// <summary>Implementation of EndianBitConverter which converts to/from little-endian byte arrays.</summary>
-    public sealed class LittleEndianBitConverter : BitConverter
+    private sealed class LittleEndianBitConverter
+      : BitConverter
     {
       /// <summary>Copies the specified number of bytes from value to buffer, starting at index.</summary>
       /// <param name="value">The value to copy</param>
