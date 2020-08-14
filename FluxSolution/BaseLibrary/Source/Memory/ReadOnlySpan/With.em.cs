@@ -6,9 +6,12 @@ namespace Flux
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (source.Length < value.Length) return false;
+      var sourceIndex = source.Length;
+      var valueIndex = value.Length;
 
-      for (int sourceIndex = source.Length - 1, valueIndex = value.Length - 1; sourceIndex >= 0 && valueIndex >= 0; sourceIndex--, valueIndex--)
+      if (sourceIndex < valueIndex) return false;
+
+      while (--sourceIndex >= 0 && --valueIndex >= 0)
         if (!comparer.Equals(source[sourceIndex], value[valueIndex]))
           return false;
 
