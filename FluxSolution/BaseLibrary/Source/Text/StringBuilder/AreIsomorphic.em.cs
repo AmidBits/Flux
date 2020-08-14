@@ -1,18 +1,20 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtensionsStringBuilder
   {
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      where T : System.IEquatable<T>
+    public static bool AreIsomorphic(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
+
+      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       if (source.Length != target.Length) return false;
 
-      var map1 = new System.Collections.Generic.Dictionary<T, T>(comparer);
-      var map2 = new System.Collections.Generic.Dictionary<T, T>(comparer);
+      var map1 = new System.Collections.Generic.Dictionary<char, char>(comparer);
+      var map2 = new System.Collections.Generic.Dictionary<char, char>(comparer);
 
       for (var i = source.Length - 1; i >= 0; i--)
       {
@@ -36,8 +38,7 @@ namespace Flux
     }
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      where T : System.IEquatable<T>
-    => AreIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static bool AreIsomorphic(this System.Text.StringBuilder source, string target)
+      => AreIsomorphic(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

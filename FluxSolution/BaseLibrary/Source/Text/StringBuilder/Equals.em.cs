@@ -7,8 +7,7 @@ namespace Flux
     {
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      if (ReferenceEquals(source, target)) return true;
-      else if (source is null || target is null || sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length) return false;
+      if (source is null || target is null || sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length) return ReferenceEquals(source, target);
 
       while (length-- > 0)
         if (!comparer.Equals(source[sourceIndex++], target[targetIndex++]))
@@ -22,10 +21,10 @@ namespace Flux
 
     /// <summary>Returns whether the specified target is found at the specified index in the string, using the specified comparer.</summary>
     public static bool Equals(this System.Text.StringBuilder source, int sourceIndex, string target, System.Collections.Generic.IEqualityComparer<char> comparer)
-      => Equals(source, sourceIndex, target, 0, (target ?? throw new System.ArgumentNullException(nameof(target))).Length, comparer);
+      => Equals(source, sourceIndex, target, 0, target?.Length ?? 0, comparer);
 
     /// <summary>Returns whether the specified target is found at the specified index in the string, using the default comparer.</summary>
     public static bool Equals(this System.Text.StringBuilder source, int sourceIndex, string target)
-      => Equals(source, sourceIndex, target, 0, (target ?? throw new System.ArgumentNullException(nameof(target))).Length, System.Collections.Generic.EqualityComparer<char>.Default);
+      => Equals(source, sourceIndex, target, 0, target?.Length ?? 0, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

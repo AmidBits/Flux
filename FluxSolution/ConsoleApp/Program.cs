@@ -11,8 +11,20 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var sss = new System.ReadOnlySpan<Program>(new Program[10] );
-      
+      var sss = new System.ReadOnlySpan<int>(new int[10]);
+
+      var s = "Wooloomooloo";
+      var t = "olo";
+      var sb = new System.Text.StringBuilder(s);
+      // sb.Equals()
+      var ss = new System.Span<char>(s.ToCharArray());
+      var sbna = sb.NormalizeAdjacent(null, 'o', 'm');
+      var ssna = ss.NormalizeAdjacent(null, 'o', 'm');
+      System.Console.WriteLine($"\"{s}\" = \"{sbna}\" ({sbna.Length}) = {sb.IndexOfAny(t)}");
+      System.Console.WriteLine($"\"{s}\" = \"{sbna}\" ({sbna.Length})");
+      System.Console.WriteLine($"\"{s}\" = \"{ssna.ToString()}\" ({ssna.Length})");
+      return;
+
       System.Collections.Generic.Dictionary<string, string> m_soundexTests = new System.Collections.Generic.Dictionary<string, string>()
       {
         { "Ashcroft", "A261" },
@@ -49,7 +61,7 @@ namespace ConsoleApp
         System.Console.WriteLine($"{kvp.Key} = \"{(new Flux.Text.PhoneticAlgorithm.RefinedSoundex().Encode(kvp.Key) is var code ? code : throw new System.Exception())}\" ({kvp.Value}) == {code.Equals(kvp.Value)}");
       }
 
-      
+
 
       return;
 

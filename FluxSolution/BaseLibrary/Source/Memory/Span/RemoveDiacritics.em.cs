@@ -1,5 +1,3 @@
-using System;
-
 namespace Flux
 {
   public static partial class XtensionsSpan
