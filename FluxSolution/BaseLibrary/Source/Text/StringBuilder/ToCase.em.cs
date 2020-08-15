@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsStringBuilder
+  public static partial class XtendStringBuilder
   {
     /// <summary>Convert all characters to lower case using the specified culture.</summary>
     public static System.Text.StringBuilder ToLower(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)

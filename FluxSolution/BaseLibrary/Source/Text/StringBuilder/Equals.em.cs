@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsStringBuilder
+  public static partial class XtendStringBuilder
   {
     /// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
     public static bool Equals(this System.Text.StringBuilder source, int sourceIndex, string target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<char> comparer)

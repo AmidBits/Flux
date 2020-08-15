@@ -4,6 +4,9 @@ namespace Flux
 
   public static partial class XtensionsQwerty
   {
+    public static System.ReadOnlySpan<char> AdjacentQwertyKeys(this char source)
+      => QwertyProximity.English.ContainsKey(source) ? QwertyProximity.English[source] : string.Empty;
+
     public static void GetRelativeFrequencyOfLetters(this System.Globalization.CultureInfo source)
     {
       var table = new System.Collections.Generic.Dictionary<char, double>();

@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendSequenceMetrics
   {
     /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
     /// <param name="source"></param>

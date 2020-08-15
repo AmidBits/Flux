@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendSequenceMetrics
   {
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>

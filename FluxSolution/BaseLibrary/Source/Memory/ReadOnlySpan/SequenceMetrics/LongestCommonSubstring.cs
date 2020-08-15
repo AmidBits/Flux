@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendSequenceMetrics
   {
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /

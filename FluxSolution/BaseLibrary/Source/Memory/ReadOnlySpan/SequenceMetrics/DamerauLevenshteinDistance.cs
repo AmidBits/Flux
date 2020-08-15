@@ -2,7 +2,7 @@ using Flux.SequenceMetrics;
 
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendSequenceMetrics
   {
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences, using the specified comparer. Implemented based on the Wiki article.</summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or adjacent transpositions.</remarks>

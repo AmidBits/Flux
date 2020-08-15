@@ -12,9 +12,10 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       var sss = new System.ReadOnlySpan<int>(new int[10]);
-
+      
       var s = "Wooloomooloo";
       var t = "olo";
+      s.LevenshteinDistance(t);
       var sb = new System.Text.StringBuilder(s);
       // sb.Equals()
       var ss = new System.Span<char>(s.ToCharArray());

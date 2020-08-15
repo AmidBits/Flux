@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsStringBuilder
+  public static partial class XtendStringBuilder
   {
     /// <summary>Returns the string builder with the specified characters replicated by the specified count throughout.</summary>
     public static System.Text.StringBuilder Replicate(this System.Text.StringBuilder source, int count, params char[] characters)

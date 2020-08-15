@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsStringBuilder
+  public static partial class XtendStringBuilder
   {
     /// <summary>Returns the first index of the specified character within the string builder, or -1 if not found. Uses the specified comparer.</summary>
     public static int IndexOf(this System.Text.StringBuilder source, char value, System.Collections.Generic.IEqualityComparer<char> comparer)
