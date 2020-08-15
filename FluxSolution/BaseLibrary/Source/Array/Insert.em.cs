@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class XtensionsArray
+  public static partial class XtendArray
   {
     /// <summary>Create a new array from the existing array, copy all elements and insert the specified items at the specified dimension and index.</summary>
     /// <param name="source">The source array from where the new array as is based..</param>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Determines whether the beginning of the first sequence is equivalent to the second sequence, using the specified element equality comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)

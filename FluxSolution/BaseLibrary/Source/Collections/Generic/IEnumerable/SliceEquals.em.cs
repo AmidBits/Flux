@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Returns whether a sub-sequence of elements in the source equal the target elements.</summary>
     public static bool SliceEquals<T>(this System.Collections.Generic.IEnumerable<T> source, int sourceStartAt, System.Collections.Generic.IEnumerable<T> target, int targetStartAt, int length, System.Collections.Generic.IEqualityComparer<T>? comparer)

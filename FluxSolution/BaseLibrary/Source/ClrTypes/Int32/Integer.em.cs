@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsInteger
+  public static partial class XtendInteger
   {
     public static System.Collections.Generic.IEnumerable<int> SequenceFindMissings(this System.Collections.Generic.IEnumerable<int> sequence)
       => sequence.Zip(sequence.Skip(1), (a, b) => Enumerable.Range(a + 1, (b - a) - 1)).SelectMany(s => s);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDouble
+  public static partial class XtendDouble
   {
     /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution.</summary>
     public static double CumulativeDistributionFunction(this System.Collections.Generic.IEnumerable<double> source, double value, out int countTotal, out int countLessOrEqual)

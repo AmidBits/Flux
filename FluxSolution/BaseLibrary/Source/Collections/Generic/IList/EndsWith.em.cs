@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Reports the length (or count) of equal.</summary>
     public static bool EndsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T>? comparer = null)

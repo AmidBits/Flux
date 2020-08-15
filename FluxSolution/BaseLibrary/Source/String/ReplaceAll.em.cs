@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     /// <summary>Replace all characters using the specified replacement selector function. If the replacement selector returns null, no replacement is made.</summary>
     public static string ReplaceAll(this string source, System.Func<char, string?> replacementSelector)

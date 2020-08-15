@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 

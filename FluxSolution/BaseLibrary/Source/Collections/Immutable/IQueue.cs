@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsImmutable
+  public static partial class XtendImmutable
   {
     static public Collections.Immutable.IQueue<TValue> Reverse<TValue>(this Collections.Immutable.IQueue<TValue> queue)
     {

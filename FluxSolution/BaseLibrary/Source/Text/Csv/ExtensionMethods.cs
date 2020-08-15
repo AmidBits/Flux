@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsText
+  public static partial class XtendText
   {
     public static string CsvEscape(this string source, char fieldSeparator)
       => !string.IsNullOrEmpty(source) && source.Contains('"', System.StringComparison.Ordinal) ? source.Replace("\"", "\"\"", System.StringComparison.Ordinal).Wrap('"', '"') : source.ContainsAny(fieldSeparator, '\r', '\n') ? source.Wrap('"', '"') : source;

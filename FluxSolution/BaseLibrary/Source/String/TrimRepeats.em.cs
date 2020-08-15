@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     /// <summary>Trim all repeated characters in the string.</summary>
     public static string TrimRepeats(this string source)

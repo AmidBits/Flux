@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsSpan
+  public static partial class XtendSpan
   {
     /// <summary>Remove (in-place) all elements satisfying the predicate.</summary>
     public static void RemoveAll<T>(ref this System.Span<T> source, System.Func<T, bool> predicate)

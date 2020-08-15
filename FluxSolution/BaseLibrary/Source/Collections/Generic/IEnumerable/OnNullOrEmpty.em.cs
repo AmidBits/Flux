@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>If the sequence is null or empty, replace it with an alternate sequence, otherwise continue normally.</summary>
     public static System.Collections.Generic.IEnumerable<T> OnNullOrEmpty<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> alternate)

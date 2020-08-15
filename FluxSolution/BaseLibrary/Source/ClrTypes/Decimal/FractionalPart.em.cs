@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDecimal
+  public static partial class XtendDecimal
   {
     /// <summary>Strips the integer part of the floating point value, resulting in only the fractional part.</summary>
     public static decimal FractionalPart(this decimal source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDouble
+  public static partial class XtendDouble
   {
     /// <summary>Calculate the mean of a sequence.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Mean"/>

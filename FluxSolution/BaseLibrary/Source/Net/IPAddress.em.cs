@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsNet
+  public static partial class XtendNet
   {
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/IPv6"/>

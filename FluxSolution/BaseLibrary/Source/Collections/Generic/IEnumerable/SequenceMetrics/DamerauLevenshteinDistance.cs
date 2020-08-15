@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences, using the specified comparer. Implemented based on the Wiki article.</summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or adjacent transpositions.</remarks>

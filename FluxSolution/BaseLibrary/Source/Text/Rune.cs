@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static class XtensionsRune
+  public static class XtendRune
   {
     #region Unicode Blocks
     public enum Block

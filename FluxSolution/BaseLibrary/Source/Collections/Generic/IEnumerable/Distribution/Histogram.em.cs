@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     public static System.Collections.Generic.IDictionary<int, int> AsHistogram(this System.Collections.Generic.IEnumerable<int> source)
       => source.ToSortedDictionary((e, i) => i, (e, i) => e);

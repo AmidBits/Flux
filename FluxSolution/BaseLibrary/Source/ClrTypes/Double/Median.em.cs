@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsDouble
+  public static partial class XtendDouble
   {
     /// <summary>Calculate the median of a sequence.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Median"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Reverses the IList in-place.</summary>
     public static void ReverseInPlace<T>(this System.Collections.Generic.IList<T> source)

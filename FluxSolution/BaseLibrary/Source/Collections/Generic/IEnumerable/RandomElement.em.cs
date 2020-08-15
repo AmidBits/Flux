@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Returns a random element from the sequence. Based on a cryptographic randomizer.</summary>
     public static T RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     public static object[,] ToArray(this System.Data.DataTable source, bool includeColumnName)
     {

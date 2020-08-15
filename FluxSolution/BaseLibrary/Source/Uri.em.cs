@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsUri
+  public static partial class XtendUri
   {
     /// <summary>Creates and returns a System.IO.Stream from the URI source.</summary>
     /// <param name="uri"></param>

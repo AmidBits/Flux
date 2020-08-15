@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     public static System.Collections.Generic.IEnumerable<(TAccumulate cumulative, TSource element, int index)> RunningAggregate<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate initial, System.Func<TAccumulate, TSource, int, TAccumulate> aggregator)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsByte
+  public static partial class XtendByte
   {
     public const string CsCannotExceedNumberOfBitsInByte = @"Cannot exceed the number of bits in a byte.";
 

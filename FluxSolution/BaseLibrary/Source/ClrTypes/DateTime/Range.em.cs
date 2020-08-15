@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDateTime
+  public static partial class XtendDateTime
   {
     public static System.TimeSpan OverlapOfRanges(System.DateTime startA, System.DateTime endA, System.DateTime startB, System.DateTime endB)
       => (endA < endB ? endA : endB) - (startA > startB ? startA : startB);

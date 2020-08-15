@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsByteArray
+  public static partial class XtendByteArray
   {
     /// <summary>Performs an in-place left rotation of all bits in the array.</summary>
     public static byte[] BitRotateLeft(this byte[] source)

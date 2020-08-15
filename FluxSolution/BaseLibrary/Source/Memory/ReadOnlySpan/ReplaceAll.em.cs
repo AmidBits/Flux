@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     /// <summary>Replace all elements using the specified replacement selector function.</summary>
     public static T[] ReplaceAll<T>(this System.ReadOnlySpan<T> source, System.Func<T, T> replacementSelector)

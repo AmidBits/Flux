@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>

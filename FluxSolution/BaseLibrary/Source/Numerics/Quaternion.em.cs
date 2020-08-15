@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class XtensionsNumerics
+	public static partial class XtendNumerics
 	{
 		public static System.Numerics.Vector3 EulerAngles(this System.Numerics.Quaternion source)
 		{

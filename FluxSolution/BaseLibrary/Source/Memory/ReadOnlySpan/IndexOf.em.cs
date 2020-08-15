@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     /// <summary>Determines the index of the first occurence that satisfy the predicate.</summary>
     public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

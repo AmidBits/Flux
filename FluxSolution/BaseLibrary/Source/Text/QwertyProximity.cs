@@ -2,7 +2,7 @@ namespace Flux
 {
   // https://en.wikipedia.org/wiki/QWERTY
 
-  public static partial class XtensionsQwerty
+  public static partial class XtendQwerty
   {
     public static System.ReadOnlySpan<char> AdjacentQwertyKeys(this char source)
       => QwertyProximity.English.ContainsKey(source) ? QwertyProximity.English[source] : string.Empty;

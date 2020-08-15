@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsChar
+  public static partial class XtendChar
   {
     /// <summary>Determines whether the character is in the specified unicode category.</summary>
     public static bool IsUnicodeCategory(this char source, System.Globalization.UnicodeCategory category)

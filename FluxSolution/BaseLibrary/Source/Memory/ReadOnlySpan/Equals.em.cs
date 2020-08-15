@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     /// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
     public static bool Equals<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T> comparer)

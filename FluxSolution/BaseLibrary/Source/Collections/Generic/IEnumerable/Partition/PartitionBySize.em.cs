@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Partition the sequence into one or more lists of a specified size. The last partition may contain less elements than requested.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionBySize<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int sizeOfEachPartition, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)

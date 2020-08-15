@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsNumerics
+  public static partial class XtendNumerics
   {
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this byte source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Returns a new hashset containing the symmetric difference between the two sequences. </summary>
     /// <returns>The elements which are in either of the sets and not in their intersection.</returns>

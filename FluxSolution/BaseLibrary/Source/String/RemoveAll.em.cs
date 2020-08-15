@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     /// <summary>Remove all characters satisfying the predicate from the string.</summary>
     /// <example>"".RemoveAll(char.IsWhiteSpace);</example>

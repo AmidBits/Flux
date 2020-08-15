@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     public static string ToCsv(this System.Data.IDataRecord source, string nullValue, bool quotes)
     {

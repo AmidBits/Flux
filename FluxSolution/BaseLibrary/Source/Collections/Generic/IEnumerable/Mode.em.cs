@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Results in a new sequence consisting of mode (i.e. the most frequent or common) elements in decreasing count of a appearance in the sequence.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Mode"/>

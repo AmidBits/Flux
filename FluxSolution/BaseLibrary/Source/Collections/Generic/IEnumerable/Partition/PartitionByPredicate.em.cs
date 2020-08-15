@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Partition the sequence into one or more lists of a specified size. The last partition may contain less elements than requested.</summary>
     /// <remarks>The integers passed to the predicates contains (in order) elementCount (within partition), elementIndex (within partition) and partitionIndex.</remarks>

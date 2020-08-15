@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Partition the sequence as a new sequence of size elements.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/N-gram"/>

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     /// <summary>Returns a sequence of <see cref="System.Data.IDataRecord"/> from all rows.</summary>
     /// <returns>A sequence of <see cref="System.Data.IDataRecord"/>.</returns>

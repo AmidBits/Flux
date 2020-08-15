@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsSpan
+  public static partial class XtendSpan
   {
     public static bool EndsWith<T>(this System.Span<T> source, System.Span<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {

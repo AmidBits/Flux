@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDateTime
+  public static partial class XtendDateTime
   {
     /// <summary>Determines the life time in years (age) with fractions between the source (e.g. a birth) and the specified target (e.g. a birthday). This algorithm takes into account time, and works the same in either direction.</summary>
     public static double AgeInTotalYears(this System.DateTime source, System.DateTime target)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDateTime
+  public static partial class XtendDateTime
   {
     public static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0);
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
 #if !NETCOREAPP
     /// <summary>Returns a specified number of contiguos elements at the end of a sequence.</summary>

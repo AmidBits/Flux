@@ -9,7 +9,7 @@ namespace Flux
 
       for (var index = 0; index < source.Length; index++)
       {
-        source[index] = XtensionsChar.RemoveDiacriticalLatinStroke(source[index]);
+        source[index] = XtendChar.RemoveDiacriticalLatinStroke(source[index]);
       }
 
       return source;
@@ -42,6 +42,6 @@ namespace Flux
 
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
     public static System.Text.StringBuilder RemoveDiacriticalMarksAndLatinStrokes(this System.Text.StringBuilder source)
-      => RemoveDiacriticalMarks(source, XtensionsChar.RemoveDiacriticalLatinStroke);
+      => RemoveDiacriticalMarks(source, XtendChar.RemoveDiacriticalLatinStroke);
   }
 }

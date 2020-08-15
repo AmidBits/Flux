@@ -4,7 +4,7 @@ namespace Flux
 {
   // http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(System.IO.Stream);k(Stream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5.1);k(DevLang-csharp)&rd=true
 
-  public static partial class XtensionsStream
+  public static partial class XtendStream
   {
     /// <summary>Read a record (comma delimted and double quoted CSVs) from the System.IO.StreamReader.</summary>
     public static System.Collections.Generic.IList<string?> ReadRecord(this System.IO.StreamReader source)

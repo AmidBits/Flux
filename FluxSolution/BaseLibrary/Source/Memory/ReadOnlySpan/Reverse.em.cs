@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     /// <summary>Creates a new array with the elements in reverse order.</summary>
     public static T[] Reverse<T>(this System.ReadOnlySpan<T> source)

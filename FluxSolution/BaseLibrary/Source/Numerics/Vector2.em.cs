@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsNumerics
+  public static partial class XtendNumerics
   {
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source) => new System.Numerics.Vector2(-source.Y, source.X);

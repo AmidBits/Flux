@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     public static System.Text.StringBuilder ToStringBuilder(this string source)
       => new System.Text.StringBuilder(source);

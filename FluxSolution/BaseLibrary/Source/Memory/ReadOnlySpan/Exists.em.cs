@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     /// <summary>Determines whether the this instance contains the specified target. Uses the default comparer.</summary>
     public static bool Exists<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

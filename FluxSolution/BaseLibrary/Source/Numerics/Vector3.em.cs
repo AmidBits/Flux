@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsNumerics
+  public static partial class XtendNumerics
   {
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after) => (before - source).AngleTo(after - source);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsDateTime
+  public static partial class XtendDateTime
   {
     public static System.Collections.Generic.IEnumerable<(System.DateTime begin, System.DateTime end)> GetQuarters(this System.DateTime source)
     {

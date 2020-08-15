@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     /// <summary>Returns a null, if the string is empty.</summary>
     public static string? NullIfEmpty(this string? source)

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Returns whether the source contains all of the items in subset, using the default comparer.</summary>
     public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array, int arrayIndex)

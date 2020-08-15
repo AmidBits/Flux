@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Swap two elements by the specified indices.</summary>
     public static System.Collections.Generic.IList<T> Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)

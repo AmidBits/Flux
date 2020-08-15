@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     /// <summary>Executes the specified <paramref name="commandText"/> and returns the number of rows affected.</summary>
     /// <returns>The number of rows affected.</returns>

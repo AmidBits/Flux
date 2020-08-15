@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     /// <summary>Returns a sequence of objects (as an array) from all results, rows and columns.</summary>
     /// <param name="includeNames">Whether to the column header names for each result set.</param>

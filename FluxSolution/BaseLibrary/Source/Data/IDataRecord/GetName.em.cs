@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     /// <summary>Returns a string with the column name (header) for the specified index in the current row. This version will replace null or blank names with "ColumnN" where N is the column index + 1.</summary>
     public static string GetNameEx(this System.Data.IDataRecord source, int index)

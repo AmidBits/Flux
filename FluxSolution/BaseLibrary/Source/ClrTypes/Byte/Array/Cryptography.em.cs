@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsByteArray
+  public static partial class XtendByteArray
   {
     /// <summary>Attempts to decrypt the source byte array to the output byte array with the specified key, salt and symmetric algorithm.</summary>
     public static bool TryDecrypt(this byte[] data, out byte[] result, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))

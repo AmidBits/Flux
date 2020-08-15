@@ -119,7 +119,7 @@ namespace ConsoleApp
       var chord = new byte[] { 0x90, 0x3C, 0x7F, 0x90, 0x40, 0x7F, 0x90, 0x43, 0x7F };
 
 
-      foreach (var index in Flux.LinqX.AlternatingRange(60, 24, 1, LinqX.AlternatingRangeDirection.AwayFromMean))
+      foreach (var index in Flux.LinqEx.AlternatingRange(60, 24, 1, LinqEx.AlternatingRangeDirection.AwayFromMean))
       {
         mop.NoteOn(0, index, 127);
         System.Threading.Thread.Sleep(40);

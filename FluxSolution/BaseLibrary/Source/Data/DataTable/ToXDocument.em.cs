@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     /// <summary>Converts the DataTable into XML in the form of an XDocument.</summary>
     public static System.Xml.Linq.XDocument ToXDocument(this System.Data.DataTable source)

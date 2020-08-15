@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsData
+  public static partial class XtendData
   {
     const string CsAllowDBNull = @"AllowDBNull";
     const string CsColumnName = @"ColumnName";

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsImmutable
+  public static partial class XtendImmutable
   {
     public static int GetNodeCount<TValue>(this Collections.Immutable.IBinaryTree<TValue> source)
       => source?.IsEmpty ?? throw new System.ArgumentNullException(nameof(source)) ? 0 : 1 + source.Left.GetNodeCount() + source.Right.GetNodeCount();

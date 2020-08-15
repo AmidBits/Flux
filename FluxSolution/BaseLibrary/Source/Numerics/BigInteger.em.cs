@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsNumerics
+  public static partial class XtendNumerics
   {
     //public const string csMustBeAPositiveNumber = @"Must be a positive number.";
 

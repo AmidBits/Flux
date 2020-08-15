@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Invokes a transform on each element of a generic sequence and returns the index of the maximum value.</summary>
     public static int IndexOfMax<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, TResult> selector, System.Collections.Generic.IComparer<TResult>? comparer = null)

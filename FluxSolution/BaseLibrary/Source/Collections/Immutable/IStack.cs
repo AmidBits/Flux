@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsImmutable
+  public static partial class XtendImmutable
   {
     static public Collections.Immutable.IStack<TValue> Reverse<TValue>(this Collections.Immutable.IStack<TValue> stack)
     {

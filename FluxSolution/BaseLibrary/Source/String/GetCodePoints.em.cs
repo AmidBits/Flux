@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsString
+  public static partial class XtendString
   {
     /// <summary>Returns a new sequence of Unicode code points from the string.</summary>
     public static System.Collections.Generic.IEnumerable<int> GetCodePoints(this string characters)

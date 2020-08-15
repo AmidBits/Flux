@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsArray
+  public static partial class XtendArray
   {
     /// <summary>Create a new sequence with all elements from the source, starting with specified dimension.</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional

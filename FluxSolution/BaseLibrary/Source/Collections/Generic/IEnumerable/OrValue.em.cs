@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Returns the first element of the sequence or a specified value if no elements are found.</summary>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)

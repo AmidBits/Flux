@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsCollections
+  public static partial class XtendCollections
   {
     /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
     /// <param name="n">The number of elements in each tuple.</param>

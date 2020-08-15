@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtensionsByteArray
+  public static partial class XtendByteArray
   {
     /// <summary>Returs an array consisting of the original array appended with the specified arrays of bytes.</summary>
     public static byte[] CombineWith(this byte[] source, params byte[][] others)

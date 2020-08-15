@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionsStream
+  public static partial class XtendStream
   {
     /// <summary>Yields a sequence of byte buffers (arrays) from the stream.</summary>
     static public System.Collections.Generic.IEnumerable<byte[]> GetByteBuffers(this System.IO.Stream source, int bufferSize)

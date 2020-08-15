@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionsByteArray
+  public static partial class XtendByteArray
   {
     /// <summary>Returs a boolean indicating whether the byte array is equal to the specified byte array.</summary>
     public static bool CompareWith(this byte[] source, byte[] other)

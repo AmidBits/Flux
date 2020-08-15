@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-  public static partial class XtensionsReadOnlySpan
+  public static partial class XtendReadOnlySpan
   {
     public static void ToLowerCase(this System.Span<char> source, System.Globalization.CultureInfo culture)
     {
