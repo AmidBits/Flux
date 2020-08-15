@@ -113,7 +113,7 @@ namespace Flux.Text
 
         LineNumber++;
       }
-      else throw new System.InvalidOperationException(@"Invalid context.");
+      else throw new System.InvalidOperationException(@"Invalid context (not in field).");
     }
     public void WriteEndLine()
     {
@@ -128,7 +128,7 @@ namespace Flux.Text
 
         m_inLine = false;
       }
-      else throw new System.InvalidOperationException(@"Invalid context.");
+      else throw new System.InvalidOperationException(@"Invalid context (not in field).");
     }
 
     public void WriteArray(string[] values)
