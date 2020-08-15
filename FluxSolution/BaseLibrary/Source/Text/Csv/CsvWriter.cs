@@ -63,7 +63,7 @@ namespace Flux.Text
 
         if (LineNumber == 0) FieldCount = FieldIndex + 1;
       }
-      else throw new System.InvalidOperationException(@"Invalid context.");
+      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
     }
     public void WriteChars(char[] buffer, int index, int count)
     {
@@ -71,7 +71,7 @@ namespace Flux.Text
       {
         m_fieldValue.Append(buffer, index, count);
       }
-      else throw new System.InvalidOperationException(@"Invalid field context.");
+      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
     }
     public void WriteFieldString(string value)
     {
@@ -83,7 +83,7 @@ namespace Flux.Text
 
         FlushFieldValue(value ?? string.Empty);
       }
-      else throw new System.InvalidOperationException(@"Invalid context.");
+      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
     }
     public void WriteString(string value)
     {
@@ -91,7 +91,7 @@ namespace Flux.Text
       {
         m_fieldValue.Append(value);
       }
-      else throw new System.InvalidOperationException(@"Invalid field context.");
+      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
     }
     public void WriteEndField()
     {
@@ -101,7 +101,7 @@ namespace Flux.Text
 
         m_inField = false;
       }
-      else throw new System.InvalidOperationException(@"Invalid field context.");
+      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
 
     }
 
@@ -113,7 +113,7 @@ namespace Flux.Text
 
         LineNumber++;
       }
-      else throw new System.InvalidOperationException(@"Invalid context (not in field).");
+      else throw new System.InvalidOperationException(@"Invalid context (in field or in line).");
     }
     public void WriteEndLine()
     {
@@ -128,7 +128,7 @@ namespace Flux.Text
 
         m_inLine = false;
       }
-      else throw new System.InvalidOperationException(@"Invalid context (not in field).");
+      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
     }
 
     public void WriteArray(string[] values)
