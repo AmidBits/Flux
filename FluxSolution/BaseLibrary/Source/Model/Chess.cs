@@ -1,11 +1,63 @@
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Flux.Model
 {
+  public enum ChessPieceType
+  {
+    Empty = '\u0020',
+    WhiteKing = '\u2654',
+    WhiteQueen = '\u2655',
+    WhiteRook = '\u2656',
+    WhiteBishop = '\u2657',
+    WhiteKnight = '\u2658',
+    WhitePawn = '\u2659',
+    BlackKing = '\u265A',
+    BlackQueen = '\u265B',
+    BlackRook = '\u265C',
+    BlackBishop = '\u265D',
+    BlackKnight = '\u265E',
+    BlackPawn = '\u265F',
+  }
+
+  public class ChessPiece
+  {
+    public ChessPieceType Type { get; }
+    public System.Collections.Generic.List<Vector2I> Position { get; } = new System.Collections.Generic.List<Vector2I>();
+
+    public ChessPiece(ChessPieceType type, Vector2I vector)
+    {
+      Type = type;
+      Position.Add(vector);
+    }
+  }
+
   public static partial class Convert
   {
     public static class Chess // Correlated from top/left to bottom/right.
     {
+      public static bool IsValidIndex(int index)
+        => index >= 0 && index <= 63;
+      public static bool IsValidLabel(char column, char row)
+        => column >= 'a' && column <= 'h' && row >= '1' && row <= '8';
+      public static bool IsValidVector(Vector2I vector)
+        => vector.X >= 0 && vector.X <= 7 && vector.Y >= 0 && vector.Y <= 7;
+
+      public static (char column, char row) IndexToLabel(int index)
+        => ((char)((index % 8) + 'a'), (char)(8 - index / 8 + '0'));
+      public static Vector2I IndexToVector(int index)
+        => new Vector2I(index % 8, index / 8);
+
+      public static int LabelToIndex(char column, char row)
+        => IsValidLabel(column, row) ? ((8 - (row - '0')) * 8) + (column - 'a') : throw new System.ArgumentOutOfRangeException($"Invalid label: \"{nameof(column)}{nameof(row)}\"");
+      public static Vector2I LabelToVector(char column, char row)
+        => new Vector2I(column - 'a', 8 - (row - '0'));
+
+      public static int VectorToIndex(Vector2I vector)
+        => vector.Y * 8 + vector.X;
+      public static (char column, char row) VectorToLabel(Vector2I vector)
+        => ((char)(vector.X + 'a'), (char)(8 - vector.Y + '0'));
+
       public static (char column, char row) VectorToLabels(int x, int y) => (x >= 0 && x <= 7 ? (char)(x + 'a') : throw new System.ArgumentOutOfRangeException(nameof(x)), y >= 0 && y <= 7 ? (char)((-y + 7) + '1') : throw new System.ArgumentOutOfRangeException(nameof(y)));
       public static (int x, int y) LabelsToVector(char column, char row) => (column >= 'a' && column <= 'h' ? (column - 'a') : throw new System.ArgumentOutOfRangeException(nameof(column)), row >= '1' && row <= '8' ? -((row - '1') - 7) : throw new System.ArgumentOutOfRangeException(nameof(row)));
 
@@ -136,7 +188,7 @@ namespace Flux.Model
 
   public class Board<T>
     : IBoard
-    //where T : notnull
+  //where T : notnull
   {
     public string[] Rows { get; private set; }
     public string[] Columns { get; private set; }

@@ -7,7 +7,7 @@ namespace Flux
   {
     // Returns the array elements formatted for the console.
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-    public static string ToConsoleString<T>(this T[,] source, bool useTotalMaxWidth = false, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015')
+    public static string ToConsoleString<T>(this T[,] source, bool useTotalMaxWidth = false, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D')
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

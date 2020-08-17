@@ -1,4 +1,5 @@
 ﻿using Flux;
+using Flux.Model;
 using Flux.Text;
 using System;
 using System.Linq;
@@ -11,6 +12,20 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var a = new Flux.Model.ChessGrid();
+
+
+      // System.Console.WriteLine(a.ToString());
+
+      //System.Console.WriteLine(string.Join(",", a.Values));
+
+      System.Console.WriteLine(string.Join(",", System.Linq.Enumerable.Range(0,64).Select(i=>Flux.Model.Convert.ChessIndexToLabel(i))));
+
+//      System.Console.WriteLine(string.Join(",", Flux.Model.ChessGrid.Squares.Select(s =>Flux.Model.Convert.ChessVectorToLabels( Flux.Model.Convert.ChessLabelToVector(s[0], s[1])))));
+
+      return;
+
+
       var sss = new System.ReadOnlySpan<int>(new int[10]);
       
       var s = "Wooloomooloo";
@@ -66,31 +81,31 @@ namespace ConsoleApp
 
       return;
 
-      var x = " Blañk";
-      var y = "blank";
+      //var x = " Blañk";
+      //var y = "blank";
 
-      System.Console.WriteLine(x);
-      System.Console.WriteLine(y);
-      var a = new ReadOnlySpan<string>(x.Select(c => c.ToString()).ToArray());
-      var b = new ReadOnlySpan<string>(y.Select(c => c.ToString()).ToArray());
+      //System.Console.WriteLine(x);
+      //System.Console.WriteLine(y);
+      //var a = new ReadOnlySpan<string>(x.Select(c => c.ToString()).ToArray());
+      //var b = new ReadOnlySpan<string>(y.Select(c => c.ToString()).ToArray());
 
-      //a = "AGGTAB".AsSpan();
-      //b = "GXTXAYB".AsSpan();
-      System.Console.WriteLine(a.ToString());
-      System.Console.WriteLine(b.ToString());
+      ////a = "AGGTAB".AsSpan();
+      ////b = "GXTXAYB".AsSpan();
+      //System.Console.WriteLine(a.ToString());
+      //System.Console.WriteLine(b.ToString());
 
-      System.Console.WriteLine($"DamerauLevenshteinDistance: {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCulture)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"   JackardIndexCoefficient: {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCulture)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"     JaroWinklerSimilarity: {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCulture)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"       LevenshteinDistance: {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCulture)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"  LongestCommonSubsequence: {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCulture)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"    LongestCommonSubstring: {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCulture)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"    OptimalStringAlignment: {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCulture)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"        OverlapCoefficient: {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCulture)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      System.Console.WriteLine($"         SørensenDiceIndex: {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCulture)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
-      //System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
-      //System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
-      //System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
+      //System.Console.WriteLine($"DamerauLevenshteinDistance: {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCulture)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.DamerauLevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"   JackardIndexCoefficient: {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCulture)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.JackardIndexCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"     JaroWinklerSimilarity: {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCulture)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.JaroWinklerSimilarity(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"       LevenshteinDistance: {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCulture)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LevenshteinDistance(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"  LongestCommonSubsequence: {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCulture)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubsequence(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"    LongestCommonSubstring: {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCulture)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.LongestCommonSubstring(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"    OptimalStringAlignment: {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCulture)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.OptimalStringAlignment(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"        OverlapCoefficient: {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCulture)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.OverlapCoefficient(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      //System.Console.WriteLine($"         SørensenDiceIndex: {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCulture)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreCase)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpace)}, {a.SørensenDiceIndex(b, Flux.StringComparerEx.CurrentCultureIgnoreNonSpaceAndCase)}");
+      ////System.Console.WriteLine($"                   Soundex: {x.AsSpan().ToUpperCase().SoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().SoundexEncode().ToString()}");
+      ////System.Console.WriteLine($"         SoundexDifference: {x.AsSpan().ToUpperCase().SoundexEncode().SoundexDifference(y.AsSpan().ToUpperCase().SoundexEncode())}");
+      ////System.Console.WriteLine($"            RefinedSoundex: {x.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}, {y.AsSpan().ToUpperCase().RefinedSoundexEncode().ToString()}");
 
       return;
 

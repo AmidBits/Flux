@@ -92,7 +92,7 @@ namespace Flux.Model
     public const string ColumnLabels = @"abcdefgh";
     public const string RowLabels = @"87654321";
 
-    public static readonly System.Collections.Generic.List<string> Slots;
+    public static readonly System.Collections.Generic.List<string> Slots = RowLabels.SelectMany(cl => ColumnLabels.Select(rl => new string(new char[] { rl, cl }))).ToList();
 
     public TValue this[char columnLabel, char rowLabel]
     {
@@ -115,10 +115,6 @@ namespace Flux.Model
       set => Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
     }
 
-    static ChessGrid()
-    {
-      Slots = RowLabels.SelectMany(cl => ColumnLabels.Select(rl => new string(new char[] { rl, cl }))).ToList();
-    }
     public ChessGrid()
       : base(ColumnLabels.Length, RowLabels.Length)
     {
@@ -130,22 +126,14 @@ namespace Flux.Model
     public const string ColumnLabels = @"123456789";
     public const string RowLabels = @"ABCDEFGHI";
 
-    public static readonly System.Collections.Generic.List<string> Slots;
+    public static readonly System.Collections.Generic.List<string> Slots = RowLabels.SelectMany(rl => ColumnLabels.Select(cl => new string(new char[] { rl, cl }))).ToList();
 
     /// <summary>A list of all squares and their respective list of 3 unit lists, e.g. { "C2", [ ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2"], ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"], ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"] ] }.</summary>
-    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>> Units;
+    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>> Units = Slots.Select((s, i) => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
 
     /// <summary>A list of all squares and their respective list of 20 peer squares, e.g. ["A2", "B2", "D2", "E2", "F2", "G2", "H2", "I2", "C1", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "A1", "A3", "B1", "B3"].</summary>
-    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers;
+    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers = Slots.Select((s, i) => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();
 
-    static SudokuGrid()
-    {
-      Slots = RowLabels.SelectMany(rl => ColumnLabels.Select(cl => new string(new char[] { rl, cl }))).ToList();
-
-      Units = Slots.Select((s, i) => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
-
-      Peers = Slots.Select((s, i) => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();
-    }
     public SudokuGrid() : base(ColumnLabels.Length, RowLabels.Length)
     {
     }
@@ -336,7 +324,7 @@ namespace Flux.Model
     }
 
     public static string ToLabel(int index) => (index >= 0 && index < 81) ? $"{RowLabels[index / 9]}{ColumnLabels[index % 9]}" : throw new System.ArgumentOutOfRangeException(nameof(index));
-    public static int ToIndex(string label) => (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1],System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
+    public static int ToIndex(string label) => (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1], System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
 
     #region Preset Puzzles
     public const string Puzzle1439 = ".....5.8....6.1.43..........1.5........1.6...3.......553.....61........4.........";
@@ -462,7 +450,7 @@ namespace Flux.Model
     public const string ColumnLabels = @"123";
     public const string RowLabels = @"ABC";
 
-    public static readonly System.Collections.Generic.List<string> Slots;
+    public static readonly System.Collections.Generic.List<string> Slots = RowLabels.SelectMany(cl => ColumnLabels.Select(rl => new string(new char[] { rl, cl }))).ToList();
 
     public TValue this[char columnLabel, char rowLabel]
     {
@@ -485,10 +473,6 @@ namespace Flux.Model
       set => Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
     }
 
-    static TicTacTowGrid()
-    {
-      Slots = RowLabels.SelectMany(cl => ColumnLabels.Select(rl => new string(new char[] { rl, cl }))).ToList();
-    }
     public TicTacTowGrid() : base(ColumnLabels.Length, RowLabels.Length)
     {
     }
