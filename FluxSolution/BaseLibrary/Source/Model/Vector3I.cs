@@ -149,9 +149,12 @@ namespace Flux.Model
     public int Y { get; set; }
     public int Z { get; set; }
 
-    public Vector3I(int value) : this(value, value, value) { }
-    public Vector3I(Vector2I value, int z) : this(value.X, value.Y, z) { }
-    public Vector3I(int x, int y) : this(x, y, 0) { }
+    public Vector3I(int value)
+      : this(value, value, value) { }
+    public Vector3I(Vector2I value, int z)
+      : this(value.X, value.Y, z) { }
+    public Vector3I(int x, int y)
+      : this(x, y, 0) { }
     public Vector3I(int x, int y, int z)
     {
       X = x;
@@ -167,6 +170,10 @@ namespace Flux.Model
       Z = array[startIndex];
     }
 
+    /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
+    public int ToUniqueIndex(int lengthX, int lengthY)
+      => X + Y * lengthX + Z * lengthX * lengthY;
+
     #region Explicit Conversions
     public static explicit operator int[](in Vector3I v) => new int[] { v.X, v.Y, v.Z };
     public static explicit operator System.Numerics.Vector3(in Vector3I v) => new System.Numerics.Vector3(v.X, v.Y, v.Z);
@@ -174,95 +181,136 @@ namespace Flux.Model
 
     #region Static Members
     /// <summary>Create a new vector with the sum from the vector added by the other.</summary>
-    public static Vector3I Add(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+    public static Vector3I Add(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
     /// <summary>Create a new vector with the sum from each member added to the value.</summary>
-    public static Vector3I Add(in Vector3I v, int value) => new Vector3I(v.X + value, v.Y + value, v.Z + value);
+    public static Vector3I Add(in Vector3I v, int value)
+      => new Vector3I(v.X + value, v.Y + value, v.Z + value);
     /// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-    public static Vector3I BitShiftLeft(in Vector3I v, int count) => new Vector3I(v.X << count, v.Y << count, v.Z << count);
+    public static Vector3I BitShiftLeft(in Vector3I v, int count)
+      => new Vector3I(v.X << count, v.Y << count, v.Z << count);
     /// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-    public static Vector3I BitShiftRight(in Vector3I v, int count) => new Vector3I(v.X << count, v.Y << count, v.Z << count);
+    public static Vector3I BitShiftRight(in Vector3I v, int count)
+      => new Vector3I(v.X << count, v.Y << count, v.Z << count);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
-    public static Vector3I BitwiseAnd(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X & v2.X, v1.Y & v2.Y, v1.Z & v2.Z);
+    public static Vector3I BitwiseAnd(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X & v2.X, v1.Y & v2.Y, v1.Z & v2.Z);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the value.</summary>
-    public static Vector3I BitwiseAnd(in Vector3I v, int value) => new Vector3I(v.X & value, v.Y & value, v.Z & value);
+    public static Vector3I BitwiseAnd(in Vector3I v, int value)
+      => new Vector3I(v.X & value, v.Y & value, v.Z & value);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-    public static Vector3I BitwiseExclusiveOr(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X ^ v2.X, v1.Y ^ v2.Y, v1.Z ^ v2.Z);
+    public static Vector3I BitwiseExclusiveOr(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X ^ v2.X, v1.Y ^ v2.Y, v1.Z ^ v2.Z);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-    public static Vector3I BitwiseExclusiveOr(in Vector3I v, int value) => new Vector3I(v.X ^ value, v.Y ^ value, v.Z ^ value);
+    public static Vector3I BitwiseExclusiveOr(in Vector3I v, int value)
+      => new Vector3I(v.X ^ value, v.Y ^ value, v.Z ^ value);
     /// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-    public static Vector3I BitwiseNot(in Vector3I v) => new Vector3I(~v.X, ~v.Y, ~v.Z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
+    public static Vector3I BitwiseNot(in Vector3I v)
+      => new Vector3I(~v.X, ~v.Y, ~v.Z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
-    public static Vector3I BitwiseOr(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X | v2.X, v1.Y | v2.Y, v1.Z | v2.Z);
+    public static Vector3I BitwiseOr(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X | v2.X, v1.Y | v2.Y, v1.Z | v2.Z);
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
-    public static Vector3I BitwiseOr(in Vector3I v, int value) => new Vector3I(v.X | value, v.Y | value, v.Z | value);
+    public static Vector3I BitwiseOr(in Vector3I v, int value)
+      => new Vector3I(v.X | value, v.Y | value, v.Z | value);
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(in Vector3I v1, in Vector3I v2) => System.Math.Max(System.Math.Max(System.Math.Abs(v2.X - v1.X), System.Math.Abs(v2.Y - v1.Y)), System.Math.Abs(v2.Z - v1.Z));
+    public static double ChebyshevDistance(in Vector3I v1, in Vector3I v2)
+      => System.Math.Max(System.Math.Max(System.Math.Abs(v2.X - v1.X), System.Math.Abs(v2.Y - v1.Y)), System.Math.Abs(v2.Z - v1.Z));
     /// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
-    public static Vector3I CrossProduct(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+    public static Vector3I CrossProduct(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
     /// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
-    public static Vector3I Divide(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
+    public static Vector3I Divide(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
     /// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
-    public static Vector3I Divide(in Vector3I v, int value) => new Vector3I(v.X / value, v.Y / value, v.Z / value);
+    public static Vector3I Divide(in Vector3I v, int value)
+      => new Vector3I(v.X / value, v.Y / value, v.Z / value);
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static Vector3I DivideCeiling(in Vector3I v, double value) => new Vector3I((int)System.Math.Ceiling(v.X / value), (int)System.Math.Ceiling(v.Y / value), (int)System.Math.Ceiling(v.Z / value));
+    public static Vector3I DivideCeiling(in Vector3I v, double value)
+      => new Vector3I((int)System.Math.Ceiling(v.X / value), (int)System.Math.Ceiling(v.Y / value), (int)System.Math.Ceiling(v.Z / value));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static Vector3I DivideFloor(in Vector3I v, double value) => new Vector3I((int)System.Math.Floor(v.X / value), (int)System.Math.Floor(v.Y / value), (int)System.Math.Floor(v.Z / value));
+    public static Vector3I DivideFloor(in Vector3I v, double value)
+      => new Vector3I((int)System.Math.Floor(v.X / value), (int)System.Math.Floor(v.Y / value), (int)System.Math.Floor(v.Z / value));
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-    public static int DotProduct(in Vector3I v1, in Vector3I v2) => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+    public static int DotProduct(in Vector3I v1, in Vector3I v2)
+      => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
     /// <summary>Compute the euclidean length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(in Vector3I v) => System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+    public static double EuclideanDistance(in Vector3I v)
+      => System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+    /// <summary>Create a new vector from the index and the length of the X and the length of the Y axes.</summary>
+    public static Vector3I FromUniqueIndex(int index, int lengthX, int lengthY)
+      => index % (lengthX * lengthY) is var irxy ? new Vector3I(irxy % lengthX, irxy / lengthX, index / (lengthX * lengthY)) : throw new System.ArgumentOutOfRangeException(nameof(index));
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLength(in Vector3I v) => System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+    public static double GetLength(in Vector3I v)
+      => System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
     /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLengthSquared(in Vector3I v) => v.X * v.X + v.Y * v.Y + v.Z * v.Z;
+    public static double GetLengthSquared(in Vector3I v)
+      => v.X * v.X + v.Y * v.Y + v.Z * v.Z;
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int RectilinearDistance(in Vector3I a, in Vector3I b) => System.Math.Abs(b.X - a.X) + System.Math.Abs(b.Y - a.Y) + System.Math.Abs(b.Z - a.Z);
+    public static int RectilinearDistance(in Vector3I a, in Vector3I b)
+      => System.Math.Abs(b.X - a.X) + System.Math.Abs(b.Y - a.Y) + System.Math.Abs(b.Z - a.Z);
     /// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
-    public static Vector3I Multiply(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
+    public static Vector3I Multiply(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
     /// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
-    public static Vector3I Multiply(in Vector3I v, int value) => new Vector3I(v.X * value, v.Y * value, v.Z * value);
+    public static Vector3I Multiply(in Vector3I v, int value)
+      => new Vector3I(v.X * value, v.Y * value, v.Z * value);
     /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
-    public static Vector3I MultiplyCeiling(in Vector3I v, double value) => new Vector3I((int)System.Math.Ceiling(v.X * value), (int)System.Math.Ceiling(v.Y * value), (int)System.Math.Ceiling(v.Z * value));
+    public static Vector3I MultiplyCeiling(in Vector3I v, double value)
+      => new Vector3I((int)System.Math.Ceiling(v.X * value), (int)System.Math.Ceiling(v.Y * value), (int)System.Math.Ceiling(v.Z * value));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static Vector3I MultiplyFloor(in Vector3I v, double value) => new Vector3I((int)System.Math.Floor(v.X * value), (int)System.Math.Floor(v.Y * value), (int)System.Math.Floor(v.Z * value));
+    public static Vector3I MultiplyFloor(in Vector3I v, double value)
+      => new Vector3I((int)System.Math.Floor(v.X * value), (int)System.Math.Floor(v.Y * value), (int)System.Math.Floor(v.Z * value));
     /// <summary>Create a new vector from the additive inverse, i.e. a negation of the members in the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
-    public static Vector3I Negate(in Vector3I v) => new Vector3I(-v.X, -v.Y, -v.Z); // Negate the members of the vector.
+    public static Vector3I Negate(in Vector3I v)
+      => new Vector3I(-v.X, -v.Y, -v.Z); // Negate the members of the vector.
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static Vector3I Random(in int toExlusiveX, in int toExclusiveY, in int toExclusiveZ) => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ));
+    public static Vector3I Random(in int toExlusiveX, in int toExclusiveY, in int toExclusiveZ)
+      => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
-    public static Vector3I Random(in Vector3I toExclusive) => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.X), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.Y));
+    public static Vector3I Random(in Vector3I toExclusive)
+      => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.X), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    public static Vector3I RandomZero(in int toExlusiveX, in int toExclusiveY, in int toExclusiveZ) => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ * 2) - toExclusiveZ);
+    public static Vector3I RandomZero(in int toExlusiveX, in int toExclusiveY, in int toExclusiveZ)
+      => new Vector3I(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ * 2) - toExclusiveZ);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
-    public static Vector3I RandomZero(in Vector3I toExclusive) => RandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
+    public static Vector3I RandomZero(in Vector3I toExclusive)
+      => RandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
     /// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
-    public static Vector3I Remainder(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X % v2.X, v1.Y % v2.Y, v1.Z % v2.Z);
+    public static Vector3I Remainder(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X % v2.X, v1.Y % v2.Y, v1.Z % v2.Z);
     /// <summary>Create a new vector with the remainder from each member divided by the value.</summary>
-    public static Vector3I Remainder(in Vector3I v, int value) => new Vector3I(v.X % value, v.Y % value, v.Z % value);
+    public static Vector3I Remainder(in Vector3I v, int value)
+      => new Vector3I(v.X % value, v.Y % value, v.Z % value);
     /// <summary>Create a new vector with the floor(remainder) from each member divided by the value.</summary>
-    public static Vector3I Remainder(in Vector3I v, double value) => new Vector3I((int)(v.X % value), (int)(v.Y % value), (int)(v.Z % value));
+    public static Vector3I Remainder(in Vector3I v, double value)
+      => new Vector3I((int)(v.X % value), (int)(v.Y % value), (int)(v.Z % value));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static int ScalarTripleProduct(in Vector3I a, in Vector3I b, in Vector3I c) => DotProduct(a, CrossProduct(b, c));
+    public static int ScalarTripleProduct(in Vector3I a, in Vector3I b, in Vector3I c)
+      => DotProduct(a, CrossProduct(b, c));
     /// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
-    public static Vector3I Subtract(in Vector3I v1, in Vector3I v2) => new Vector3I(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+    public static Vector3I Subtract(in Vector3I v1, in Vector3I v2)
+      => new Vector3I(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
     /// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
-    public static Vector3I Subtract(in Vector3I v, in int value) => new Vector3I(v.X - value, v.Y - value, v.Z - value);
+    public static Vector3I Subtract(in Vector3I v, in int value)
+      => new Vector3I(v.X - value, v.Y - value, v.Z - value);
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Vector3I VectorTripleProduct(in Vector3I a, in Vector3I b, in Vector3I c) => CrossProduct(a, CrossProduct(b, c));
+    public static Vector3I VectorTripleProduct(in Vector3I a, in Vector3I b, in Vector3I c)
+      => CrossProduct(a, CrossProduct(b, c));
     #endregion Static Members
 
     #region Overloaded Operators
