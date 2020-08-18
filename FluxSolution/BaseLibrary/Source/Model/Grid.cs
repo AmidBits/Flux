@@ -43,6 +43,86 @@ namespace Flux.Model
   //  }
   //}
 
+  public interface INode<TValue, TNexus>
+  {
+    bool IsEmpty { get; }
+    TValue Value { get; }
+  }
+
+  public class Node<TValue, TNexus>
+    : INode<TValue, TNexus>
+  {
+    public static INode<TValue, TNexus> Empty = new EmptyNode();
+
+    public bool IsEmpty => false;
+    public TValue Value { get; set; }
+
+    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Edges { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+
+    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Gates { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+
+    public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithoutPaths() => Gates.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+    public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithPaths() => Gates.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+
+    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Paths { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+
+
+    public Node(TValue value)
+    {
+      Value = value;
+    }
+
+    public void CreatePath(Node<TValue, TNexus> node, bool biDirectional)
+    {
+      try
+      {
+        var key = Gates.Where(kvp => kvp.Value.Equals(node)).First().Key;
+
+        Paths[key] = node;
+
+        if (biDirectional) node.CreatePath(this, false);
+      }
+      catch { }
+    }
+    public void DestroyPath(Node<TValue, TNexus> node, bool biDirectional)
+    {
+      try
+      {
+        var key = Gates.Where(e => e.Value.Equals(node)).First().Key;
+
+        Paths.Remove(key);
+
+        if (biDirectional) node.DestroyPath(this, false);
+      }
+      catch { }
+    }
+    public void ResetPaths(bool asCreated)
+    {
+      Paths.Clear();
+
+      if (asCreated)
+        foreach (var gate in Gates)
+          Paths[gate.Key] = gate.Value;
+    }
+
+    private class EmptyNode
+      : INode<TValue,TNexus>
+    {
+      public bool IsEmpty => true;
+      public TValue Value => throw new System.ArgumentException(nameof(EmptyNode));
+    }
+  }
+
+  public class Travel
+  {
+    public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
+
+    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+
+    public System.Collections.Generic.Dictionary<int, Cell> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
+  }
+
   public class Cell
   {
     public int Column { get; set; }

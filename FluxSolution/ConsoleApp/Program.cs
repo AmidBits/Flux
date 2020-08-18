@@ -12,22 +12,37 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var a = new Flux.Model.ChessGrid();
+      var empty = '_';
 
+      char[,] board = {
+        { '_', '_', '_' },
+        { '_', '_', '_' },
+        { '_', '_', '_' }
+      };
 
-      // System.Console.WriteLine(a.ToString());
+      System.Console.WriteLine(board.ToConsoleString());
 
-      //System.Console.WriteLine(string.Join(",", a.Values));
+      var player = 'x';
+      var opponent = 'o';
 
-      System.Console.WriteLine(string.Join(",", System.Linq.Enumerable.Range(0,64).Select(i=>Flux.Model.Convert.ChessIndexToLabel(i))));
+      for (var index = 0; index < 9; index++)
+      {
+        var move = Flux.Model.TicTacToe.FindBestMove(board, player, opponent, empty);
 
-//      System.Console.WriteLine(string.Join(",", Flux.Model.ChessGrid.Squares.Select(s =>Flux.Model.Convert.ChessVectorToLabels( Flux.Model.Convert.ChessLabelToVector(s[0], s[1])))));
+        System.Console.WriteLine(move);
 
+        board[move.col, move.row] = player;
+
+        System.Console.WriteLine(board.ToConsoleString());
+
+        var tmp = player;
+        player = opponent;
+        opponent = tmp;
+      }
       return;
 
-
       var sss = new System.ReadOnlySpan<int>(new int[10]);
-      
+
       var s = "Wooloomooloo";
       var t = "olo";
       s.LevenshteinDistance(t);

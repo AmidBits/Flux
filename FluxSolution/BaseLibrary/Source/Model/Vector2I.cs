@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Model
 {
   public static partial class ExtensionMethods
@@ -68,6 +70,8 @@ namespace Flux.Model
     /// <summary>Convert the vector to a unique index using the length of the X axis.</summary>
     public int ToUniqueIndex(int lengthX)
       => X * Y * lengthX;
+    public (string column, string row) ToLabels(System.Collections.Generic.IList<string> columnLabels, System.Collections.Generic.IList<string> rowLabels)
+      => (columnLabels.ElementAt(X), rowLabels.ElementAt(Y));
 
     #region Explicit  Conversions
     public static explicit operator int[](Vector2I value) => new int[] { value.X, value.Y };
@@ -139,6 +143,9 @@ namespace Flux.Model
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(in Vector2I v)
       => System.Math.Sqrt(v.X * v.X + v.Y * v.Y);
+    /// <summary>Create a new vector from the labels and label definitions.</summary>
+    public static Vector2I FromLabels(string column, string row, System.Collections.Generic.IList<string> columnLabels, System.Collections.Generic.IList<string> rowLabels)
+      => new Vector2I(columnLabels?.IndexOf(column) ?? throw new System.ArgumentOutOfRangeException(nameof(column)), rowLabels?.IndexOf(row) ?? throw new System.ArgumentOutOfRangeException(nameof(column)));
     /// <summary>Create a new vector from the index and the length of the X axis.</summary>
     public static Vector2I FromUniqueIndex(int index, int lengthX)
       => new Vector2I(index % lengthX, index / lengthX);
