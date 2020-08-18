@@ -14,7 +14,7 @@ namespace Flux.Model
     /// <summary>Convert the 2D vector to a quadrant based on the specified center vector.</summary>
     /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public static int ToQuadrant(this Vector3I source, in Vector2I centerAxis) => ((source.X >= centerAxis.X ? 1 : 0) * 1) + ((source.Y >= centerAxis.Y ? 1 : 0) * 2);
+    public static int ToQuadrant(this Vector2I source, in Vector2I centerAxis) => ((source.X >= centerAxis.X ? 1 : 0) * 1) + ((source.Y >= centerAxis.Y ? 1 : 0) * 2);
   }
 
   public struct Vector2I
@@ -63,6 +63,9 @@ namespace Flux.Model
       X = array[startIndex++];
       Y = array[startIndex];
     }
+
+    public int ToUniqueIndex(int lengthX)
+      => Y * lengthX + X;
 
     #region Explicit  Conversions
     public static explicit operator int[](Vector2I value) => new int[] { value.X, value.Y };
@@ -115,6 +118,8 @@ namespace Flux.Model
     /// <summary>Compute the euclidean length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(in Vector2I v) => System.Math.Sqrt(v.X * v.X + v.Y * v.Y);
+    public static Vector2I FromUniqueIndex(int index, int lengthX)
+      => new Vector2I(index % lengthX, index / lengthX);
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLength(in Vector2I v) => System.Math.Sqrt(v.X * v.X + v.Y * v.Y);
