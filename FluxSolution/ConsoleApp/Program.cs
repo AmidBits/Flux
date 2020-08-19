@@ -29,39 +29,59 @@ namespace ConsoleApp
 
       for (var index = 0; index < 9; index++)
       {
-        var allMoves = Flux.Model.TicTacToe.Tools.FindMoves(board, player, opponent, empty).ToList();
+        {
+          var myAllMoves = Flux.Model.TicTacToe.Board.GetMoves(board, opponent, player, empty);
+          var myTopMoves = myAllMoves.Where(m => m.Score == myAllMoves.Max(m => m.Score));
+          var myTopMove = myTopMoves.RandomElement();
+          if (myTopMove.Score == -10) break;
+          System.Console.WriteLine($"Your top move: {myTopMove}");
 
-        if (allMoves.Count == 0) break;
+          System.Console.Write("Enter row: ");
+          var rowChar = System.Console.ReadKey().KeyChar;
+          System.Console.Write("\r\nEnter column: ");
+          var columnChar = System.Console.ReadKey().KeyChar;
 
-        foreach (var m in allMoves)
-          System.Console.WriteLine(m);
+          if (rowChar == '\u001b' || columnChar == '\u001b')
+          {
+            board = new char[,] {
+              { '_', '_', '_' },
+              { '_', '_', '_' },
+              { '_', '_', '_' }
+            };
+            System.Console.Clear();
+            continue;
+          }
 
-        var topMoves = allMoves.Where(m => m.Score == allMoves.Max(m => m.Score)).ToList();
+          var row = int.Parse(rowChar.ToString());
+          var column = int.Parse(columnChar.ToString());
 
-        if (topMoves.Count == 0) break;
+          System.Console.WriteLine($"\r\nYour move: {row}, {column}");
 
-        var topMove = topMoves.RandomElement();
+          board[row, column] = opponent;
 
-        if (!(topMove.Row == -1 || topMove.Column == -1))
-          board[topMove.Row, topMove.Column] = player;//turn ? player : opponent;
+          System.Console.WriteLine(board.ToConsoleString());
+        }
 
-        System.Console.WriteLine(board.ToConsoleString());
+        {
+          var allMoves = Flux.Model.TicTacToe.Board.GetMoves(board, player, opponent, empty).ToList();
 
-        System.Console.Write("Enter row: ");
-        var rowChar = System.Console.ReadKey().KeyChar;
-        if (rowChar == '\u001B') break;
-        System.Console.Write("\r\nEnter column: ");
-        var columnChar = System.Console.ReadKey().KeyChar;
-        if (columnChar == '\u001B') break;
+          if (allMoves.Count == 0) break;
 
-        var row = int.Parse(rowChar.ToString());
-        var column = int.Parse(columnChar.ToString());
+          foreach (var m in allMoves)
+            System.Console.WriteLine(m);
 
-        System.Console.WriteLine($"\r\nYour move: {row}, {column}");
+          var topMoves = allMoves.Where(m => m.Score == allMoves.Max(m => m.Score)).ToList();
 
-        board[row, column] = opponent;
+          if (topMoves.Count == 0) break;
 
-        System.Console.WriteLine(board.ToConsoleString());
+          var topMove = topMoves.RandomElement();
+          if (topMove.Score == 10) break;
+
+          if (!(topMove.Row == -1 || topMove.Column == -1))
+            board[topMove.Row, topMove.Column] = player;//turn ? player : opponent;
+
+          System.Console.WriteLine(board.ToConsoleString());
+        }
 
         //if (move.Score == +10 || move.Score == -10) break;
 
@@ -77,7 +97,7 @@ namespace ConsoleApp
       int[] scores = { 3, 5, 2, 9, 12, 5, 23, 23 };
       int n = scores.Length;
       int h = log2(n);
-      int res = Flux.Model.TicTacToe.Tools.Minimax(0, 0, true, scores, h);
+      int res = Flux.Model.TicTacToe.Board.Minimax(0, 0, true, scores, h);
       Console.WriteLine("The optimal value is : " + res);
       return;
 
