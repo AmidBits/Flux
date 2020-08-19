@@ -25,20 +25,60 @@ namespace ConsoleApp
       var player = 'x';
       var opponent = 'o';
 
+      var turn = true;
+
       for (var index = 0; index < 9; index++)
       {
-        var move = Flux.Model.TicTacToe.Tools.FindBestMove(board, player, opponent, empty);
+        var allMoves = Flux.Model.TicTacToe.Tools.FindMoves(board, player, opponent, empty).ToList();
 
-        System.Console.WriteLine(move);
+        if (allMoves.Count == 0) break;
 
-        board[move.Column, move.Row] = player;
+        foreach (var m in allMoves)
+          System.Console.WriteLine(m);
+
+        var topMoves = allMoves.Where(m => m.Score == allMoves.Max(m => m.Score)).ToList();
+
+        if (topMoves.Count == 0) break;
+
+        var topMove = topMoves.RandomElement();
+
+        if (!(topMove.Row == -1 || topMove.Column == -1))
+          board[topMove.Row, topMove.Column] = player;//turn ? player : opponent;
 
         System.Console.WriteLine(board.ToConsoleString());
 
-        var tmp = player;
-        player = opponent;
-        opponent = tmp;
+        System.Console.Write("Enter row: ");
+        var rowChar = System.Console.ReadKey().KeyChar;
+        if (rowChar == '\u001B') break;
+        System.Console.Write("\r\nEnter column: ");
+        var columnChar = System.Console.ReadKey().KeyChar;
+        if (columnChar == '\u001B') break;
+
+        var row = int.Parse(rowChar.ToString());
+        var column = int.Parse(columnChar.ToString());
+
+        System.Console.WriteLine($"\r\nYour move: {row}, {column}");
+
+        board[row, column] = opponent;
+
+        System.Console.WriteLine(board.ToConsoleString());
+
+        //if (move.Score == +10 || move.Score == -10) break;
+
+        //var tmp = player;
+        //player = opponent;
+        //opponent = tmp;
+        //turn = !turn;
       }
+      static int log2(int n)
+      {
+        return (n == 1) ? 0 : 1 + log2(n / 2);
+      }
+      int[] scores = { 3, 5, 2, 9, 12, 5, 23, 23 };
+      int n = scores.Length;
+      int h = log2(n);
+      int res = Flux.Model.TicTacToe.Tools.Minimax(0, 0, true, scores, h);
+      Console.WriteLine("The optimal value is : " + res);
       return;
 
       var sss = new System.ReadOnlySpan<int>(new int[10]);

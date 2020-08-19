@@ -17,6 +17,6 @@ namespace Flux
     }
     /// <summary>Returns a random element from the sequence.</summary>
     public static T RandomElement<T>(this System.Collections.Generic.IList<T> source)
-      => source.RandomElement(new Flux.Random.Cryptographic());
+      => source.RandomElement(Flux.Random.NumberGenerator.Crypto);
   }
 }
