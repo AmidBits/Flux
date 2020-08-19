@@ -27,11 +27,11 @@ namespace ConsoleApp
 
       for (var index = 0; index < 9; index++)
       {
-        var move = Flux.Model.TicTacToe.FindBestMove(board, player, opponent, empty);
+        var move = Flux.Model.TicTacToe.Tools.FindBestMove(board, player, opponent, empty);
 
         System.Console.WriteLine(move);
 
-        board[move.col, move.row] = player;
+        board[move.Column, move.Row] = player;
 
         System.Console.WriteLine(board.ToConsoleString());
 

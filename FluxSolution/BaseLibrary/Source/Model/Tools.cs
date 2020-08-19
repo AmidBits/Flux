@@ -1,28 +1,34 @@
-namespace Flux.Model
+namespace Flux.Model.TicTacToe
 {
+  public struct Move
+  {
+    public int Column { get; set; }
+    public int Row { get; set; }
+    public int Score { get; set; }
+
+    public Move(int row, int column, int score)
+    {
+      Column = column;
+      Row = row;
+      Score = score;
+    }
+
+    public override string ToString()
+      => $"<({Row}, {Column}) {Score}>";
+  };
+
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
-  public class TicTacToe
+  public class Tools
   {
-    public struct Move
-    {
-      public int row, col, val;
-
-      public override string ToString()
-      {
-        return $"R={row}, C={col}, V={val}";
-      }
-    };
-
     // This function returns true if there are moves remaining on the board. It returns false if there are no moves left to play. 
     public static bool HasMoreMoves(char[,] board, char empty)
     {
       if (board is null) throw new System.ArgumentNullException(nameof(board));
 
-      for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-          if (board[i, j] == empty)
-            return true;
+      foreach (var square in board)
+        if (square == empty)
+          return true;
 
       return false;
     }
@@ -32,84 +38,50 @@ namespace Flux.Model
     {
       if (board is null) throw new System.ArgumentNullException(nameof(board));
 
-      for (int row = 0; row < 3; row++) // Check rows.
+      for (var r = 0; r < 3; r++)
       {
-        if (board[row, 0] == board[row, 1] && board[row, 1] == board[row, 2])
+        var br1 = board[r, 1];
+
+        if (board[r, 0] == br1 && br1 == board[r, 2])
         {
-          if (board[row, 0] == player) return +10;
-          else if (board[row, 0] == opponent) return -10;
+          if (br1 == player) return +10;
+          else if (br1 == opponent) return -10;
         }
       }
 
-      for (int col = 0; col < 3; col++) // Check columns.
+      for (var c = 0; c < 3; c++)
       {
-        if (board[0, col] == board[1, col] && board[1, col] == board[2, col])
+        var b1c = board[1, c];
+
+        if (board[0, c] == b1c && b1c == board[2, c])
         {
-          if (board[0, col] == player) return +10;
-          else if (board[0, col] == opponent) return -10;
+          if (b1c == player) return +10;
+          else if (b1c == opponent) return -10;
         }
       }
 
-      if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2]) // Check diagonal top-left to bottom-right.
+      var b11 = board[1, 1];
+
+      if (board[0, 0] == b11 && b11 == board[2, 2]) // Check diagonal top-left to bottom-right.
       {
-        if (board[0, 0] == player) return +10;
-        else if (board[0, 0] == opponent) return -10;
+        if (b11 == player) return +10;
+        else if (b11 == opponent) return -10;
       }
 
-      if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) // Check diagonal top-right to bottom-left.
+      if (board[0, 2] == b11 && b11 == board[2, 0]) // Check diagonal top-right to bottom-left.
       {
-        if (board[0, 2] == player) return +10;
-        else if (board[0, 2] == opponent) return -10;
+        if (b11 == player) return +10;
+        else if (b11 == opponent) return -10;
       }
 
       return 0;
     }
 
-    // This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
-    //public int Evaluate(char[,] b)
-    //{
-    //  // Checking for Rows for X or O victory. 
-    //  for (int row = 0; row < 3; row++)
-    //  {
-    //    if (board[row, 0] == board[row, 1] && board[row, 1] == board[row, 2])
-    //    {
-    //      if (board[row, 0] == Player) return +10;
-    //      else if (board[row, 0] == Opponent) return -10;
-    //    }
-    //  }
-
-    //  // Checking for Columns for X or O victory. 
-    //  for (int col = 0; col < 3; col++)
-    //  {
-    //    if (board[0, col] == board[1, col] && board[1, col] == board[2, col])
-    //    {
-    //      if (board[0, col] == Player) return +10;
-    //      else if (board[0, col] == Opponent) return -10;
-    //    }
-    //  }
-
-    //  // Checking for Diagonals for X or O victory. 
-    //  if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2])
-    //  {
-    //    if (board[0, 0] == Player) return +10;
-    //    else if (board[0, 0] == Opponent) return -10;
-    //  }
-
-    //  if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0])
-    //  {
-    //    if (board[0, 2] == Player) return +10;
-    //    else if (board[0, 2] == Opponent) return -10;
-    //  }
-
-    //  // Else if none of them have won then return 0 
-    //  return 0;
-    //}
-
     /// <summary>This is the minimax function. It considers all the possible ways the game can go and returns the value of the board.</summary>
     /// <returns>The value of the board.</returns>
     public static int Minimax(char[,] board, int depth, bool isMaximizingPlayer, char player, char opponent, char empty)
     {
-      int score = Evaluate(board, player, opponent);
+      var score = Evaluate(board, player, opponent);
 
       //if (score == +10) return score - depth; // Maximizer won? Return evaluated score.
       //if (score == -10) return score + depth; // Minimizer won? Return minimizer score.
@@ -120,43 +92,31 @@ namespace Flux.Model
 
       if (isMaximizingPlayer)
       {
-        var best = -1000;
+        var bestScore = int.MinValue;
 
-        for (int i = 0; i < 3; i++)
-        {
-          for (int j = 0; j < 3; j++)
-          {
+        for (var i = 0; i < 3; i++)
+          for (var j = 0; j < 3; j++)
             if (board[i, j] == empty)
             {
               board[i, j] = player; // Perform the move.
-
-              best = System.Math.Max(best, Minimax(board, depth + 1, !isMaximizingPlayer, player, opponent, empty)); // Call minimax recursively and choose the maximum value.
-
+              bestScore = System.Math.Max(bestScore, Minimax(board, depth + 1, isMaximizingPlayer, player, opponent, empty)); // Call minimax recursively and choose the maximum value.
               board[i, j] = empty; // Undo the move.
             }
-          }
-        }
 
-        return best;
+        return bestScore;
       }
       else // This is the minimizer's move. 
       {
-        var best = 1000;
+        var best = int.MaxValue;
 
-        for (int i = 0; i < 3; i++)
-        {
-          for (int j = 0; j < 3; j++)
-          {
+        for (var i = 0; i < 3; i++)
+          for (var j = 0; j < 3; j++)
             if (board[i, j] == empty)
             {
               board[i, j] = opponent; // Perform the move 
-
               best = System.Math.Min(best, Minimax(board, depth + 1, !isMaximizingPlayer, player, opponent, empty)); // Call minimax recursively and choose the minimum value.
-
               board[i, j] = empty; // Undo the move.
             }
-          }
-        }
 
         return best;
       }
@@ -258,11 +218,11 @@ namespace Flux.Model
     {
       if (board is null) throw new System.ArgumentNullException(nameof(board));
 
-      int bestVal = -1000;
-      var bestMove = new Move
+      var best = new Move
       {
-        row = -1,
-        col = -1
+        Column = -1,
+        Row = -1,
+        Score = -1000
       };
 
       // Traverse all cells, evaluate minimax function for all empty cells. And return the cell with optimal value. 
@@ -270,38 +230,26 @@ namespace Flux.Model
       {
         for (int j = 0; j < 3; j++)
         {
-          // Check if cell is empty 
           if (board[i, j] == empty)
           {
-            // Make the move 
-            board[i, j] = player;
+            board[i, j] = player; // Make move.
 
-            // compute evaluation function for this move. 
-            int moveValue = Minimax(board, 0, false, player, opponent, empty);
+            var moveScore = Minimax(board, 0, false, player, opponent, empty);
 
-            //System.Console.WriteLine($"moveValue={moveValue}");
+            board[i, j] = empty; // Undo move.
 
-            // Undo the move 
-            board[i, j] = empty;
-
-            // If the value of the current move is 
-            // more than the best value, then update 
-            // best/ 
-            if (moveValue > bestVal)
+            // Update best score with score of the move if it's greater.
+            if (moveScore > best.Score)
             {
-              bestMove.row = i;
-              bestMove.col = j;
-              bestMove.val = moveValue;
-
-              bestVal = moveValue;
+              best.Row = i;
+              best.Column = j;
+              best.Score = moveScore;
             }
           }
         }
       }
 
-      System.Console.WriteLine("The value of the best Move is : {0}\n\n", bestVal);
-
-      return bestMove;
+      return best;
     }
   }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
