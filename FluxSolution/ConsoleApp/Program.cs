@@ -23,7 +23,9 @@ namespace ConsoleApp
       for (var index = 0; index < 9; index++)
       {
         {
-          var myAllMoves = ttt.GetMovesForPlayer2().ToList();
+          var myAllMoves = ttt.GetOptionsForPlayer2().ToList();
+          if (myAllMoves.Count > 0)
+            System.Console.WriteLine(string.Join(System.Environment.NewLine, myAllMoves));
           var myTopMoves = myAllMoves.Where(m => m.Score == myAllMoves.Max(m => m.Score)).ToList();
           if (myTopMoves.Count > 0)
           {
@@ -55,7 +57,7 @@ namespace ConsoleApp
         }
 
         {
-          var allMoves = ttt.GetMovesForPlayer1().ToList();
+          var allMoves = ttt.GetOptionsForPlayer1().ToList();
 
           if (allMoves.Count == 0) break;
 
