@@ -49,7 +49,7 @@ namespace ConsoleApp
 
           System.Console.WriteLine($"\r\nYour move: {row}, {column}");
 
-          ttt[row, column] = Flux.Model.TicTacToe.Board.Player2;
+          ttt[row, column] = Flux.Model.TicTacToe.State.Player2;
 
           System.Console.WriteLine(ttt.ToString());
         }
@@ -70,7 +70,7 @@ namespace ConsoleApp
           if (topMove.Score == 10) break;
 
           if (!(topMove.Row == -1 || topMove.Column == -1))
-            ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.Board.Player1;//turn ? player : opponent;
+            ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.State.Player1;//turn ? player : opponent;
 
           System.Console.WriteLine(ttt.ToString());
         }

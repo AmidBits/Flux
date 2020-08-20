@@ -4,13 +4,6 @@
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 namespace Flux.Model.TicTacToe
 {
-  public enum Square
-  {
-    Empty,
-    Player1,
-    Player2
-  }
-
   public class Move
   {
     public int Row { get; set; }
@@ -30,18 +23,33 @@ namespace Flux.Model.TicTacToe
       => $"<({Row}, {Column}) {Score}>";
   }
 
+  public enum State
+  {
+    Empty,
+    Player1,
+    Player2
+  }
+
   public class Board
   {
     public const char Empty = '_';
     public const char Player1 = 'x';
     public const char Player2 = 'o';
 
-    private char[,] m_board = new char[3, 3];
+    //private char[,] m_board = new char[3, 3];
+    ///// <summary>Gets or sets the specified [row, column] square on the board.</summary>
+    //public char this[int row, int column]
+    //{
+    //  get => m_board[row, column];
+    //  set => m_board[row, column] = row >= 0 && row <= 2 ? column >= 0 && column <= 2 ? value : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+    //}
+
+    private State[,] m_states = new State[3, 3];
     /// <summary>Gets or sets the specified [row, column] square on the board.</summary>
-    public char this[int row, int column]
+    public State this[int row, int column]
     {
-      get => m_board[row, column];
-      set => m_board[row, column] = row >= 0 && row <= 2 ? column >= 0 && column <= 2 ? value : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+      get => m_states[row, column];
+      set => m_states[row, column] = row >= 0 && row <= 2 ? column >= 0 && column <= 2 ? value : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
     }
 
     public Board() => Clear();
@@ -50,17 +58,20 @@ namespace Flux.Model.TicTacToe
     {
       for (int r = 0; r < 3; r++)
         for (int c = 0; c < 3; c++)
-          m_board[r, c] = Empty;
+          //m_board[r, c] = Empty;
+          m_states[r, c] = State.Empty;
     }
     public int Evaluate(bool isMax)
     {
-      var player1 = isMax ? Player1 : Player2;
-      var player2 = isMax ? Player2 : Player1;
+      var player1 = isMax ? State.Player1 : State.Player2;
+      var player2 = isMax ? State.Player2 : State.Player1;
 
       for (int row = 0; row < 3; row++) // Any row winner?
       {
-        var boardR1 = m_board[row, 1];
-        if (m_board[row, 0] == boardR1 && boardR1 == m_board[row, 2])
+        //var boardR1 = m_board[row, 1];
+        //if (m_board[row, 0] == boardR1 && boardR1 == m_board[row, 2])
+        var boardR1 = m_states[row, 1];
+        if (m_states[row, 0] == boardR1 && boardR1 == m_states[row, 2])
         {
           if (boardR1 == player1) return +10;
           else if (boardR1 == player2) return -10;
@@ -69,17 +80,21 @@ namespace Flux.Model.TicTacToe
 
       for (int col = 0; col < 3; col++) // Any column winner?
       {
-        var board1C = m_board[1, col];
-        if (m_board[0, col] == board1C && board1C == m_board[2, col])
+        //var board1C = m_board[1, col];
+        //if (m_board[0, col] == board1C && board1C == m_board[2, col])
+        var board1C = m_states[1, col];
+        if (m_states[0, col] == board1C && board1C == m_states[2, col])
         {
           if (board1C == player1) return +10;
           else if (board1C == player2) return -10;
         }
       }
 
-      var board11 = m_board[1, 1];
+      //var board11 = m_board[1, 1];
+      var board11 = m_states[1, 1];
 
-      if ((m_board[0, 0] == board11 && board11 == m_board[2, 2]) || (m_board[0, 2] == board11 && board11 == m_board[2, 0])) // Any diagonal winner?
+      //if ((m_board[0, 0] == board11 && board11 == m_board[2, 2]) || (m_board[0, 2] == board11 && board11 == m_board[2, 0])) // Any diagonal winner?
+      if ((m_states[0, 0] == board11 && board11 == m_states[2, 2]) || (m_states[0, 2] == board11 && board11 == m_states[2, 0])) // Any diagonal winner?
       {
         if (board11 == player1) return +10;
         else if (board11 == player2) return -10;
@@ -87,34 +102,60 @@ namespace Flux.Model.TicTacToe
 
       return 0; // No winner.
     }
-    public System.Collections.Generic.IEnumerable<Move> GetMovesForPlayer1()
+    public System.Collections.Generic.IList<Move> GetMovesForPlayer1()
     {
+      var moves = new System.Collections.Generic.List<Move>();
+
       for (var r = 0; r < 3; r++)
+      {
         for (var c = 0; c < 3; c++)
-          if (m_board[r, c] == Empty)
+        {
+          //if (m_board[r, c] == Empty)
+          //{
+          //  m_board[r, c] = Player1;
+          //  moves.Add(new Move(r, c, Minimax(0, false)));
+          //  m_board[r, c] = Empty;
+          //}
+          if (m_states[r, c] == State.Empty)
           {
-            m_board[r, c] = Player1;
-            var score = Minimax(0, false);
-            m_board[r, c] = Empty;
-            yield return new Move(r, c, score);
+            m_states[r, c] = State.Player1;
+            moves.Add(new Move(r, c, Minimax(0, false)));
+            m_states[r, c] = State.Empty;
           }
+        }
+      }
+
+      return moves;
     }
-    public System.Collections.Generic.IEnumerable<Move> GetMovesForPlayer2()
+    public System.Collections.Generic.IList<Move> GetMovesForPlayer2()
     {
+      var moves = new System.Collections.Generic.List<Move>();
+
       for (var r = 0; r < 3; r++)
+      {
         for (var c = 0; c < 3; c++)
-          if (m_board[r, c] == Empty)
+        {
+          //if (m_board[r, c] == Empty)
+          //{
+          //  m_board[r, c] = Player2;
+          //  moves.Add(new Move(r, c, Minimax(0, true)));
+          //  m_board[r, c] = Empty;
+          //}
+          if (m_states[r, c] == State.Empty)
           {
-            m_board[r, c] = Player2;
-            var score = Minimax(0, true);
-            m_board[r, c] = Empty;
-            yield return new Move(r, c, score);
+            m_states[r, c] = State.Player2;
+            moves.Add(new Move(r, c, Minimax(0, true)));
+            m_states[r, c] = State.Empty;
           }
+        }
+      }
+
+      return moves;
     }
     public bool HasEmptySquares()
     {
-      foreach (var square in m_board)
-        if (square == Empty)
+      foreach (var state in m_states)
+        if (state == State.Empty)
           return true;
 
       return false;
@@ -132,26 +173,30 @@ namespace Flux.Model.TicTacToe
 
       for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-          if (m_board[i, j] == Empty)
-          {
-            if (isMax)
+          //if (m_board[i, j] == Empty)
+            if (m_states[i, j] == State.Empty)
             {
-              m_board[i, j] = Player1;
+              if (isMax)
+            {
+              //m_board[i, j] = Player1;
+              m_states[i, j] = State.Player1;
               best = System.Math.Max(best, Minimax(depth + 1, !isMax));
             }
             else
             {
-              m_board[i, j] = Player2;
+              //m_board[i, j] = Player2;
+              m_states[i, j] = State.Player2;
               best = System.Math.Min(best, Minimax(depth + 1, !isMax));
             }
-            m_board[i, j] = Empty;
+            //m_board[i, j] = Empty;
+            m_states[i, j] = State.Empty;
           }
 
       return best;
     }
 
-    public override string ToString() 
-      => m_board.ToConsoleString();
+    public override string ToString()
+      => m_states.ToConsoleString();
 
     // This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
     //public static int EvaluateBoard(char[,] board, char player, char opponent)
