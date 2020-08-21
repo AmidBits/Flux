@@ -78,7 +78,7 @@ namespace Flux.Model
     {
       for (var index = ushort.MaxValue; index > 0; index--)
       {
-        yield return characterPool.Shuffle().First();
+        yield return characterPool.Randomize().First();
       }
     }
     /// <summary>Creates a new sequence where all chars from the entire set of specified characters are randomly distributed over and over (unbiased).</summary>
@@ -86,7 +86,7 @@ namespace Flux.Model
     {
       for (var index = ushort.MaxValue / characterPool?.Length ?? throw new System.ArgumentNullException(nameof(characterPool)); index > 0; index--)
       {
-        foreach (var character in characterPool.Distinct().Shuffle())
+        foreach (var character in characterPool.Distinct().Randomize())
         {
           yield return character;
         }

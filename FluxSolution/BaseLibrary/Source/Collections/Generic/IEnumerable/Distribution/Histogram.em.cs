@@ -7,12 +7,6 @@ namespace Flux
 
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.IDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
-      where TKey : notnull
-      => source.Histogram(keySelector, (e, i) => 1, comparer);
-
-    /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
     public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> countSelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
       where TKey : notnull
     {
@@ -34,6 +28,16 @@ namespace Flux
 
       return histogram;
     }
+    /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the default comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
+    public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> countSelector)
+      where TKey : notnull
+      => Histogram(source, keySelector, countSelector, System.Collections.Generic.Comparer<TKey>.Default);
+    /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the default comparer and a count of 1 for each element.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
+    public static System.Collections.Generic.IDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector)
+      where TKey : notnull
+      => Histogram(source, keySelector, (e, i) => 1, System.Collections.Generic.Comparer<TKey>.Default);
 
     /// <summary>Generates a histogram.</summary>
     /// <param name="source">The sequence of objects from which to build a histogram.</param>

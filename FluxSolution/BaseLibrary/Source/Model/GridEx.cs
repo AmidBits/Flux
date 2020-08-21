@@ -242,7 +242,7 @@ namespace Flux.Model
     {
       var values = Slots.Select((s, i) => ColumnLabels).ToList();
 
-      foreach (var square in Slots.Select((s, i) => i).Shuffle())
+      foreach (var square in Slots.Select((s, i) => i).Randomize())
       {
         if (Assign(values, square, values[square].RandomElement().ToString()) == null)
         {

@@ -10,7 +10,7 @@ namespace Flux
 
     /// <summary>Concatenates strings with a delimiter from the sequence.</summary>
     public static string ToDelimitedString<T>(this System.Collections.Generic.IEnumerable<T> source, string delimiter)
-      => ToDelimitedString(source ?? throw new System.ArgumentNullException(nameof(source)), delimiter, (sb, e) => sb.Append(e));
+      => ToDelimitedString(source, delimiter, (sb, e) => sb.Append(e));
 
     private static string ToDelimitedString<T>(System.Collections.Generic.IEnumerable<T> source, string delimiter, System.Func<System.Text.StringBuilder, T, System.Text.StringBuilder> append)
     {

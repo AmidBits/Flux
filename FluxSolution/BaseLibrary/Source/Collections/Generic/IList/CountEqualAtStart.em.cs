@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
-    /// <summary>Determines whether the beginning of the first sequence is equivalent to the second sequence, using the specified element equality comparer.</summary>
+    /// <summary>Returns the number of equal elements in the sequences at the start. Using the specified equality comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -21,6 +21,7 @@ namespace Flux
 
       return minCount;
     }
+    /// <summary>Returns the number of equal elements in the sequences at the start. Using the specified equality comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
       => CountEqualAtStart(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }

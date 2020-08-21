@@ -4,10 +4,10 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
-    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution.</summary>
+    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution. Uses the specified comparer.</summary>
     /// <returns>Basically the percentile rank but as a probability in the range [0, 1], rather than a percentile rank which is in the range [0, 100].</returns>
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static double ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, out int countLessOrEqual, out int countTotal, System.Collections.Generic.IComparer<TSource>? comparer = null)
+    public static double ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, out int countLessOrEqual, out int countTotal, System.Collections.Generic.IComparer<TSource> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -25,6 +25,11 @@ namespace Flux
 
       return (double)countLessOrEqual / (double)countTotal;
     }
+    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution. Uses the default comparer.</summary>
+    /// <returns>Basically the percentile rank but as a probability in the range [0, 1], rather than a percentile rank which is in the range [0, 100].</returns>
+    /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
+    public static double ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, out int countLessOrEqual, out int countTotal)
+      => ProbabilityMassFunction(source, value, out countLessOrEqual, out countTotal, System.Collections.Generic.Comparer<TSource>.Default);
 
     /// <summary>The probability mass function (PMF), is the function that maps values to their proportional rank in a distribution. This version allows for a factor (divisor) to scale the results.</summary>
     /// <typeparam name="TKey">The key associated with each bin.</typeparam>

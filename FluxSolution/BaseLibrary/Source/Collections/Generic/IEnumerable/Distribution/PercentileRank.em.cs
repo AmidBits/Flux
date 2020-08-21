@@ -2,9 +2,9 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
-    /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it.</summary>
+    /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile_rank"/>
-    public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
@@ -19,6 +19,10 @@ namespace Flux
 
       return 100.0 * countLessOrEqual / countTotal;
     }
+    /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the default comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Percentile_rank"/>
+    public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
+      => PercentileRank(source, value, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>The percentile rank (PR), is the function that maps values to their percentile rank in a distribution.</summary>
     /// <param name="source">A sequence of System.Collections.Generic.KeyValuePair<TKey, TSource>.</param>

@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
-    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution.</summary>
+    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution. Uses the specified comparer.</summary>
     /// <returns>Basically the percentile rank but as a probability in the range [0, 1], rather than a percentile rank which is in the range [0, 100].</returns>
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static double CumulativeMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, System.Collections.Generic.IComparer<TSource>? comparer = null)
+    public static double CumulativeMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, System.Collections.Generic.IComparer<TSource> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -24,6 +24,11 @@ namespace Flux
 
       return (double)countLessOrEqual / (double)countTotal;
     }
+    /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution. Uses the default comparer.</summary>
+    /// <returns>Basically the percentile rank but as a probability in the range [0, 1], rather than a percentile rank which is in the range [0, 100].</returns>
+    /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
+    public static double CumulativeMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value)
+      => CumulativeMassFunction(source, value, System.Collections.Generic.Comparer<TSource>.Default);
 
     /// <summary>The cumulative mass function (CMF), more commonly known as CDF (cumulative distribution function), is the function that maps values to their percentile rank in a distribution. This version allows for a factor (divisor) to scale the results.</summary>
     /// <param name="source">A sequence of System.Collections.Generic.KeyValuePair<TKey, TSource>.</param>

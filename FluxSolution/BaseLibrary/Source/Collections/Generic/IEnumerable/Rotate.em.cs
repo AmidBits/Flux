@@ -11,7 +11,7 @@ namespace Flux
 
       var buffer = new System.Collections.Generic.Queue<T>(count);
 
-      using (var e = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source)))
+      using (var e = source.ThrowOnNull().GetEnumerator())
       {
         while (e.MoveNext())
         {
@@ -37,7 +37,7 @@ namespace Flux
     {
       if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var buffer = source?.ToList() ?? throw new System.ArgumentNullException(nameof(source));
+      var buffer = source.ThrowOnNull().ToList();
 
       var remainderCount = buffer.Count - count;
 

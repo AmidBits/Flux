@@ -9,9 +9,12 @@ namespace Flux
 
       switch (source)
       {
-        case null: throw new System.ArgumentNullException(nameof(source));
-        case System.Collections.Generic.ICollection<T> ict: return ict.Count >= count;
-        case System.Collections.ICollection ic: return ic.Count >= count;
+        case null:
+          throw new System.ArgumentNullException(nameof(source));
+        case System.Collections.Generic.ICollection<T> ict:
+          return ict.Count >= count;
+        case System.Collections.ICollection ic:
+          return ic.Count >= count;
         default:
           using (var e = source.GetEnumerator())
           {

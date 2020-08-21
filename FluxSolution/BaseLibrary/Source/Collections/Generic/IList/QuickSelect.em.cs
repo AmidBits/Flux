@@ -4,8 +4,10 @@ namespace Flux
   {
     /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quickselect"/>
-    public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int Kth, System.Collections.Generic.IComparer<T> comparer) where T : System.IComparable<T>
+    public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int Kth, System.Collections.Generic.IComparer<T> comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
       if (leftIndex == rightIndex)
