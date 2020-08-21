@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-1-introduction/
@@ -38,33 +35,23 @@ namespace Flux.Model.TicTacToe
   public class Board
     : System.Collections.Generic.IEnumerable<State>
   {
-    public State R1C1 { get => m_states[0, 0]; set => m_states[0, 0] = value; }
-    public State R1C2 { get => m_states[0, 1]; set => m_states[0, 1] = value; }
-    public State R1C3 { get => m_states[0, 2]; set => m_states[0, 2] = value; }
-    public State R2C1 { get => m_states[1, 0]; set => m_states[1, 0] = value; }
-    public State R2C2 { get => m_states[1, 1]; set => m_states[1, 1] = value; }
-    public State R2C3 { get => m_states[1, 2]; set => m_states[1, 2] = value; }
-    public State R3C1 { get => m_states[2, 0]; set => m_states[2, 0] = value; }
-    public State R3C2 { get => m_states[2, 1]; set => m_states[2, 1] = value; }
-    public State R3C3 { get => m_states[2, 2]; set => m_states[2, 2] = value; }
+    private State[] m_state = new State[9];
 
-    private State[,] m_states = new State[3, 3];
-    /// <summary>Gets or sets the specified [row, column] square on the board.</summary>
+    /// <summary>Gets or sets the state of the specified [row, column] square on the board.</summary>
     public State this[int row, int column]
     {
-      get => m_states[row, column];
-      set => m_states[row, column] = row >= 0 && row <= 2 ? column >= 0 && column <= 2 ? value : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+      get 
+        => m_state[row * 3 + column];
+      set 
+        => m_state[row * 3 + column] = value;
     }
 
-    public Board()
+    public Board() 
       => Clear();
 
-    public void Clear()
-    {
-      for (int r = 0; r < 3; r++)
-        for (int c = 0; c < 3; c++)
-          m_states[r, c] = State.Empty;
-    }
+    public void Clear() 
+      => System.Array.Fill(m_state, State.Empty);
+
     public int Evaluate(bool isMax)
     {
       var player1 = isMax ? State.Player1 : State.Player2;
@@ -72,8 +59,8 @@ namespace Flux.Model.TicTacToe
 
       for (int row = 0; row < 3; row++) // Any row winner?
       {
-        var boardR1 = m_states[row, 1];
-        if (m_states[row, 0] == boardR1 && boardR1 == m_states[row, 2])
+        var boardR1 = this[row, 1];
+        if (this[row, 0] == boardR1 && boardR1 == this[row, 2])
         {
           if (boardR1 == player1) return +10;
           else if (boardR1 == player2) return -10;
@@ -82,24 +69,25 @@ namespace Flux.Model.TicTacToe
 
       for (int col = 0; col < 3; col++) // Any column winner?
       {
-        var board1C = m_states[1, col];
-        if (m_states[0, col] == board1C && board1C == m_states[2, col])
+        var board1C = this[1, col];
+        if (this[0, col] == board1C && board1C == this[2, col])
         {
           if (board1C == player1) return +10;
           else if (board1C == player2) return -10;
         }
       }
 
-      var board11 = m_states[1, 1];
+      var board11 = this[1, 1];
 
-      if ((m_states[0, 0] == board11 && board11 == m_states[2, 2]) || (m_states[0, 2] == board11 && board11 == m_states[2, 0])) // Any diagonal winner?
+      if ((this[0, 0] == board11 && board11 == this[2, 2]) || (this[0, 2] == board11 && board11 == this[2, 0])) // Any diagonal winner?
       {
         if (board11 == player1) return +10;
         else if (board11 == player2) return -10;
       }
 
-      return 0; // No winner.
+      return 0; // No winner yet.
     }
+
     public System.Collections.Generic.IList<Move> GetOptionsForPlayer1()
     {
       var moves = new System.Collections.Generic.List<Move>();
@@ -108,11 +96,11 @@ namespace Flux.Model.TicTacToe
       {
         for (var c = 0; c < 3; c++)
         {
-          if (m_states[r, c] == State.Empty)
+          if (this[r, c] == State.Empty)
           {
-            m_states[r, c] = State.Player1;
+            this[r, c] = State.Player1;
             moves.Add(new Move(r, c, Minimax(0, false)));
-            m_states[r, c] = State.Empty;
+            this[r, c] = State.Empty;
           }
         }
       }
@@ -127,25 +115,27 @@ namespace Flux.Model.TicTacToe
       {
         for (var c = 0; c < 3; c++)
         {
-          if (m_states[r, c] == State.Empty)
+          if (this[r, c] == State.Empty)
           {
-            m_states[r, c] = State.Player2;
+            this[r, c] = State.Player2;
             moves.Add(new Move(r, c, Minimax(0, true)));
-            m_states[r, c] = State.Empty;
+            this[r, c] = State.Empty;
           }
         }
       }
 
       return moves;
     }
+
     public bool HasEmptySquares()
     {
-      foreach (var state in m_states)
+      foreach (var state in this)
         if (state == State.Empty)
           return true;
 
       return false;
     }
+
     public int Minimax(int depth, bool isMax)
     {
       int score = Evaluate(isMax);
@@ -159,32 +149,33 @@ namespace Flux.Model.TicTacToe
 
       for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-          if (m_states[i, j] == State.Empty)
+          if (this[i, j] == State.Empty)
           {
             if (isMax)
             {
-              m_states[i, j] = State.Player1;
+              this[i, j] = State.Player1;
               best = System.Math.Max(best, Minimax(depth + 1, !isMax));
             }
             else
             {
-              m_states[i, j] = State.Player2;
+              this[i, j] = State.Player2;
               best = System.Math.Min(best, Minimax(depth + 1, !isMax));
             }
 
-            m_states[i, j] = State.Empty;
+            this[i, j] = State.Empty;
           }
 
       return best;
     }
+
     public System.Collections.Generic.IDictionary<State, int> StateCounts()
-      => m_states.GetElements(0).GroupBy(vt => vt.item).ToDictionary(g => g.Key, g => g.Count());
+      => GetRowMajorOrder().GroupBy(s => s).ToDictionary(g => g.Key, g => g.Count());
 
     //public override string ToString<T>(System.Func<State, T> selector)
     //  =>
 
     public override string ToString()
-      => GetStateArray(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).ToConsoleString(false, '\0', '\0');
+      => GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).ToConsoleString(false, '\0', '\0');
 
     // This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
     //public static int EvaluateBoard(char[,] board, char player, char opponent)
@@ -315,37 +306,16 @@ namespace Flux.Model.TicTacToe
       else return System.Math.Min(Minimax(depth + 1, nodeIndex * 2, true, scores, maxHeight), Minimax(depth + 1, nodeIndex * 2 + 1, true, scores, maxHeight));
     }
 
-    public T[,] GetStateArray<T>(System.Func<State, T> selector)
+    public State[] GetRowMajorOrder()
+      => m_state.ToArray();
+    public T[,] GetRowMajorOrder2D<T>(System.Func<State, T> selector)
       => GetRowMajorOrder().Select(selector).ToArray().ToTwoDimensionalArray(3, 3);
 
-    public System.Collections.Generic.IEnumerable<State> GetColumnMajorOrder()
-    {
-      yield return R1C1;
-      yield return R2C1;
-      yield return R3C1;
-      yield return R1C2;
-      yield return R2C2;
-      yield return R3C2;
-      yield return R1C3;
-      yield return R2C3;
-      yield return R3C3;
-    }
-    public System.Collections.Generic.IEnumerable<State> GetRowMajorOrder()
-    {
-      yield return R1C1;
-      yield return R1C2;
-      yield return R1C3;
-      yield return R2C1;
-      yield return R2C2;
-      yield return R2C3;
-      yield return R3C1;
-      yield return R3C2;
-      yield return R3C3;
-    }
-
     // IEnumerable<State>
-    public IEnumerator<State> GetEnumerator() => GetRowMajorOrder().ToList().GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public System.Collections.Generic.IEnumerator<State> GetEnumerator()
+      => GetRowMajorOrder().ToList().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
