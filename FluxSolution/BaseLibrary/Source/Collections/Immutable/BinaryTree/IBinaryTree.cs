@@ -15,33 +15,38 @@ namespace Flux
 
       if (isMax)
       {
-        int? left = default;
-        if (!source.Left.IsEmpty) left = Minimax(source.Left, depth + 1, false, maxHeight, valueSelector);
-        int? right = default;
-        if (!source.Right.IsEmpty) right = Minimax(source.Right, depth + 1, false, maxHeight, valueSelector);
-
-        return System.Math.Max(left.HasValue ? left.Value : right!.Value, right.HasValue ? right.Value : left!.Value);
+        if (source.Left.IsEmpty && source.Right.IsEmpty) return valueSelector(source.Value);
+        else if (!source.Left.IsEmpty && source.Right.IsEmpty && Minimax(source.Left, depth + 1, false, maxHeight, valueSelector) is var left)
+          return left;
+        else if (source.Left.IsEmpty && !source.Right.IsEmpty && Minimax(source.Right, depth + 1, false, maxHeight, valueSelector) is var right)
+          return right;
+        else if (!source.Left.IsEmpty && !source.Right.IsEmpty)
+          return System.Math.Max(left, right);
       }
+
+      return System.Math.Max(left.HasValue ? left.Value : right!.Value, right.HasValue ? right.Value : left!.Value);
+    }
       else
       {
-        int? left = default;
-        if (!source.Left.IsEmpty) left = Minimax(source.Right, depth + 1, true, maxHeight, valueSelector);
-        int? right = default;
-        if (!source.Right.IsEmpty) right = Minimax(source.Left, depth + 1, true, maxHeight, valueSelector);
+        if (source.Left.IsEmpty && source.Right.IsEmpty) return valueSelector(source.Value);
+        if ((!source.Left.IsEmpty && Minimax(source.Right, depth + 1, true, maxHeight, valueSelector) is var left || (!source.Right.IsEmpty && Minimax(source.Left, depth + 1, true, maxHeight, valueSelector) is var right)
+          {
 
-        return System.Math.Min(left.HasValue ? left.Value : right!.Value, right.HasValue ? right.Value : left!.Value);
-      }
+        }
+
+        return System.Math.Min(left.HasValue? left.Value : right!.Value, right.HasValue? right.Value : left!.Value);
+}
     }
   }
 
   namespace Collections.Immutable
+{
+  public interface IBinaryTree<TValue>
   {
-    public interface IBinaryTree<TValue>
-    {
-      bool IsEmpty { get; }
-      IBinaryTree<TValue> Left { get; }
-      IBinaryTree<TValue> Right { get; }
-      TValue Value { get; }
-    }
+    bool IsEmpty { get; }
+    IBinaryTree<TValue> Left { get; }
+    IBinaryTree<TValue> Right { get; }
+    TValue Value { get; }
   }
+}
 }
