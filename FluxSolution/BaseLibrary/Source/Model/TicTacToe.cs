@@ -6,7 +6,7 @@ using System.Linq;
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 namespace Flux.Model.TicTacToe
 {
-  public class Move
+  public sealed class Move
   {
     public int Row { get; set; }
     public int Column { get; set; }
@@ -35,7 +35,7 @@ namespace Flux.Model.TicTacToe
   public class Board
     : System.Collections.Generic.IEnumerable<State>
   {
-    private State[] m_state = new State[9];
+    private readonly State[] m_state = new State[9];
 
     /// <summary>Gets or sets the state of the specified [row, column] square on the board.</summary>
     public State this[int row, int column]

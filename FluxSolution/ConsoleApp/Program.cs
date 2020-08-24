@@ -12,6 +12,22 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var bst = Flux.Collections.Immutable.BinarySearchTree<int, int>.Empty;
+
+      bst = bst.Add(3, 3);
+      bst = bst.Add(5, 5);
+      bst = bst.Add(2, 2);
+      bst = bst.Add(9, 9);
+      bst = bst.Add(12, 12);
+      bst = bst.Add(5, 5);
+      bst = bst.Add(23, 23);
+      bst = bst.Add(23, 23);
+
+      var res = bst.Minimax(0, true, Flux.Bitwise.Log2(bst.GetNodeCount()), i => i);
+
+      System.Console.WriteLine(res);
+      return;
+
       var ttt = new Flux.Model.TicTacToe.Board();
       System.Console.WriteLine(ttt.ToString());
 
@@ -91,8 +107,8 @@ namespace ConsoleApp
       int[] scores = { 3, 5, 2, 9, 12, 5, 23, 23 };
       int n = scores.Length;
       int h = log2(n);
-      int res = Flux.Model.TicTacToe.Board.Minimax(0, 0, true, scores, h);
-      Console.WriteLine("The optimal value is : " + res);
+      int resx = Flux.Model.TicTacToe.Board.Minimax(0, 0, true, scores, h);
+      Console.WriteLine("The optimal value is : " + resx);
       return;
 
       var sss = new System.ReadOnlySpan<int>(new int[10]);
