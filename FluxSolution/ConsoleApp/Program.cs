@@ -22,11 +22,12 @@ namespace ConsoleApp
       bst = bst.Add(5, 5);
       bst = bst.Add(23, 23);
       bst = bst.Add(23, 23);
+      var now = System.DateTime.Now;
 
-      var res = bst.Minimax(0, true, Flux.Bitwise.Log2(bst.GetNodeCount()), i => i);
+      //var res = bst.Minimax(0, true, Flux.Bitwise.Log2(bst.GetNodeCount()), i => i);
 
-      System.Console.WriteLine(res);
-      return;
+      //System.Console.WriteLine(res);
+      //return;
 
       var ttt = new Flux.Model.TicTacToe.Board();
       System.Console.WriteLine(ttt.ToString());
