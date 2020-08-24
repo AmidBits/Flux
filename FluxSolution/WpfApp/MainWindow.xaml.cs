@@ -1,28 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace WpfApp
+﻿namespace WpfApp
 {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
-  public partial class MainWindow : Window
+  /// <summary>Interaction logic for MainWindow.</summary>
+  public partial class MainWindow : System.Windows.Window
   {
     public MainWindow()
     {
       InitializeComponent();
     }
+
+    #region DesktopWidget
+    DesktopWidget m_desktopWidget = null;
+
+    private void toggleButtonDesktopWidget_Checked(object sender, System.Windows.RoutedEventArgs e)
+    {
+      if (m_desktopWidget is null)
+      {
+        m_desktopWidget = new DesktopWidget();
+        m_desktopWidget.Show();
+      }
+      else
+        throw new System.ArgumentNullException(nameof(m_desktopWidget));
+    }
+
+    private void toggleButtonDesktopWidget_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+    {
+      if (m_desktopWidget is null)
+        throw new System.ArgumentNullException(nameof(m_desktopWidget));
+      else
+      {
+        m_desktopWidget.Close();
+        m_desktopWidget = null;
+      }
+    }
+    #endregion DesktopWidget
   }
 }
