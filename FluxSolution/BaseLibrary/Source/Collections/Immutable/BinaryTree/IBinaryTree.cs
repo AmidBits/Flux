@@ -5,36 +5,38 @@ namespace Flux
     public static int GetNodeCount<TValue>(this Collections.Immutable.IBinaryTree<TValue> source)
       => source?.IsEmpty ?? throw new System.ArgumentNullException(nameof(source)) ? 0 : 1 + GetNodeCount(source.Left) + GetNodeCount(source.Right);
 
-    //public static int Minimax<TValue>(this Collections.Immutable.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
-    //{
-    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
-    //  else if (source.IsEmpty) throw new System.ArgumentNullException(source.GetType().Name);
+    public static int Minimax<TValue>(this Collections.Immutable.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      else if (source.IsEmpty) throw new System.ArgumentNullException(source.GetType().Name);
 
-    //  if (depth == maxHeight) // Terminating condition.
-    //    return valueSelector?.Invoke(source.Value) ?? throw new System.ArgumentNullException(nameof(valueSelector));
+      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
 
-    //  if (isMax)
-    //  {
-    //    if (source.Left.IsEmpty && source.Right.IsEmpty) return valueSelector(source.Value);
-    //    else if (!source.Left.IsEmpty && source.Right.IsEmpty && Minimax(source.Left, depth + 1, false, maxHeight, valueSelector) is var left)
-    //      return left;
-    //    else if (source.Left.IsEmpty && !source.Right.IsEmpty && Minimax(source.Right, depth + 1, false, maxHeight, valueSelector) is var right)
-    //      return right;
-    //    else if (!source.Left.IsEmpty && !source.Right.IsEmpty)
-    //      return System.Math.Max(left, right);
-    //  }
+      if (depth == maxHeight)
+        return valueSelector(source.Value); // Terminating condition.
 
-    //  return System.Math.Max(left.HasValue ? left.Value : right!.Value, right.HasValue ? right.Value : left!.Value);
-    //}
-    //  else
-    //  {
-    //    if (source.Left.IsEmpty && source.Right.IsEmpty) return valueSelector(source.Value);
-    //    if ((!source.Left.IsEmpty && Minimax(source.Right, depth + 1, true, maxHeight, valueSelector) is var left || (!source.Right.IsEmpty && Minimax(source.Left, depth + 1, true, maxHeight, valueSelector) is var right)
-    //      {
+      int? left = null, right = null;
 
-    //    }
+      if (isMax)
+      {
+        if (!source.Left.IsEmpty)
+          left = Minimax(source.Left, depth + 1, false, maxHeight, valueSelector);
+        if (!source.Right.IsEmpty)
+          right = Minimax(source.Right, depth + 1, false, maxHeight, valueSelector);
+      }
+      else
+      {
+        if (!source.Left.IsEmpty)
+          left = Minimax(source.Left, depth + 1, true, maxHeight, valueSelector);
+        if (!source.Right.IsEmpty)
+          right = Minimax(source.Right, depth + 1, true, maxHeight, valueSelector);
+      }
 
-    //    return System.Math.Min(left.HasValue? left.Value : right!.Value, right.HasValue? right.Value : left!.Value);
+      if (left.HasValue && right.HasValue) return isMax ? System.Math.Max(left.Value, right.Value) : System.Math.Min(left.Value, right.Value);
+      else if (left.HasValue) return left.Value;
+      else if (right.HasValue) return right.Value;
+      else return valueSelector(source.Value);
+    }
   }
 
   namespace Collections.Immutable
