@@ -4,7 +4,8 @@ namespace Flux
   {
     /// <summary>Returns the Catalan number for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
-    public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number) => Factorial(number * 2) / (Factorial(number + 1) * Factorial(number));
+    public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number)
+      => Factorial(number * 2) / (Factorial(number + 1) * Factorial(number));
 
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>

@@ -2,9 +2,11 @@
 using Flux.Model;
 using Flux.Text;
 using System;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.Json;
 
 namespace ConsoleApp
 {
@@ -12,21 +14,26 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var bst = Flux.Collections.Immutable.BinarySearchTree<int, int>.Empty;
+      foreach (var pq in Flux.Maths.GetPerrinSequence())
+        System.Console.WriteLine(pq);
 
-      bst = bst.Add(3, 3);
-      bst = bst.Add(5, 5);
-      bst = bst.Add(2, 2);
-      bst = bst.Add(9, 9);
-      bst = bst.Add(12, 12);
-      bst = bst.Add(5, 5);
-      bst = bst.Add(23, 23);
-      bst = bst.Add(23, 23);
-
-      var res = bst.Minimax(0, true, Flux.Bitwise.Log2(bst.GetNodeCount()), i => i);
-
-      System.Console.WriteLine(res);
       return;
+
+      //var bst = Flux.Collections.Immutable.BinarySearchTree<int, int>.Empty;
+
+      //bst = bst.Add(3, 3);
+      //bst = bst.Add(5, 5);
+      //bst = bst.Add(2, 2);
+      //bst = bst.Add(9, 9);
+      //bst = bst.Add(12, 12);
+      //bst = bst.Add(5, 5);
+      //bst = bst.Add(23, 23);
+      //bst = bst.Add(23, 23);
+
+      //var res = bst.Minimax(0, true, Flux.Bitwise.Log2(bst.GetNodeCount()), i => i);
+
+      //System.Console.WriteLine(res);
+      //return;
 
       var ttt = new Flux.Model.TicTacToe.Board();
       System.Console.WriteLine(ttt.ToString());

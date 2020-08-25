@@ -24,7 +24,8 @@ namespace Flux.Media.Midi
   }
 
   /// <summary>This note library enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
-  /// <see cref="https://www.midi.org/specifications/item/table-1-summary-of-midi-message"/>
+  /// <seealso cref="https://www.midi.org/specifications/item/table-1-summary-of-midi-message"/>
+  /// <seealso cref="https://tttapa.github.io/Arduino/MIDI/Chap01-MIDI-Protocol.html"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public static class Protocol
@@ -161,9 +162,12 @@ namespace Flux.Media.Midi
     {
       TwentyFour = 24,
       TwentyFive = 25,
-      TwentyNineNinetySeven = 29,
+      TwentyNineNinetySeven = 29, // This is really the 29.97, hence the name. 
       Thirty = 30
     }
+
+    /// <summary></summary>
+    /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
     public struct MidiTimeCode
     {
       private MidiTimeCodeRate m_rate;

@@ -9,20 +9,20 @@ namespace Flux
       var lo = quotient * 6;
       var hi = lo + 6;
 
-      if (number == 3)
+      if (number <= 2)
       {
-        yield return 3;
         yield return 2;
+        yield return 3;
         lo = -6;
       }
-      else if (number == 2)
+      else if (number <= 3)
       {
-        yield return 2;
         yield return 3;
+        yield return 2;
         lo = -6;
       }
 
-      if (quotient == 0 || remainder >= 3)
+      if (remainder >= 3)
       {
         while (true)
         {
@@ -59,20 +59,20 @@ namespace Flux
       var lo = quotient * 6;
       var hi = lo + 6;
 
-      if (number == 3)
+      if (number <= 2)
       {
-        yield return 3;
         yield return 2;
+        yield return 3;
         lo = -6;
       }
-      else if (number == 2)
+      else if (number <= 3)
       {
-        yield return 2;
         yield return 3;
+        yield return 2;
         lo = -6;
       }
 
-      if (quotient == 0 || remainder >= 3)
+      if (remainder >= 3)
       {
         while (true)
         {
@@ -108,20 +108,20 @@ namespace Flux
       var lo = quotient * 6;
       var hi = lo + 6;
 
-      if (number == 3)
+      if (number <= 2)
       {
-        yield return 3;
         yield return 2;
+        yield return 3;
         lo = -6;
       }
-      else if (number == 2)
+      else if (number <= 3)
       {
-        yield return 2;
         yield return 3;
+        yield return 2;
         lo = -6;
       }
 
-      if (quotient == 0 || remainder >= 3)
+      if (remainder >= 3)
       {
         while (true)
         {

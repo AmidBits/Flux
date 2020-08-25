@@ -36,11 +36,6 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPerrinSequence()
-    {
-      for (var number = 0; number <= int.MaxValue; number++)
-      {
-        yield return GetPerrinNumber(number);
-      }
-    }
+      => Flux.LinqEx.Range(System.Numerics.BigInteger.Zero, 1).Select(GetPerrinNumber);
   }
 }

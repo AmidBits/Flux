@@ -20,12 +20,10 @@ namespace Flux
         {
           if (list[1] - list[0] == 2 && list[2] - list[0] == 6 && list[3] - list[0] == 8)
           {
-            yield return (list[0], list[1], list[2], list[3], index);
+            yield return (list[0], list[1], list[2], list[3], index++);
           }
 
           list.RemoveAt(0);
-
-          index++;
         }
       }
     }

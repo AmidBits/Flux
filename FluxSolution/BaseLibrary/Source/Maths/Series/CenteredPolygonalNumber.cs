@@ -16,7 +16,8 @@ namespace Flux
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-    public static int GetCenteredPolygonalNumber(int index, int numberOfSides) => index >= 0 ? (numberOfSides * index * index + numberOfSides * index + 2) / 2 : throw new System.ArgumentOutOfRangeException(nameof(index));
+    public static int GetCenteredPolygonalNumber(int index, int numberOfSides)
+      => index >= 0 ? (numberOfSides * index * index + numberOfSides * index + 2) / 2 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
