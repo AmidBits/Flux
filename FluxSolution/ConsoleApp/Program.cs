@@ -15,11 +15,20 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var degree = 0;
+      var radian = Flux.Angles.DegreeToRadian(degree);
+      var cart1 = Flux.Angles.RotationAngleToCartesian(radian, out var x1, out var y1);
+      var cart2 = Flux.Angles.RotationAngleToCartesianEx(radian, out var x2, out var y2);
+
+      System.Console.WriteLine($"{degree} = {radian} = ({x1:N5}, {y1:N5}) = ({x2:N5}, {y2:N5})");
+
+      return;
+
       var txt = "This is the 1 \t \t test @ about a 1012 degree (that's a [little] bit) text (𠜎) manipulation.";
 
       var tokenizer = new Flux.Text.Tokenization.Rune.Tokenizer();
 
-      foreach(var token in tokenizer.GetTokens(txt))
+      foreach (var token in tokenizer.GetTokens(txt))
       {
         System.Console.WriteLine(token);
       }
@@ -29,7 +38,7 @@ namespace ConsoleApp
       var spn = new System.Span<char>(txt.ToCharArray());
 
       var sbr = spn.ToStringBuilder();
-      
+
       System.Console.WriteLine(sbr.ToString());
       sbr.ReplaceAll(c => c == '\t' ? "[Tab]" : c.ToString()).NormalizeAll(' ', char.IsWhiteSpace).RemoveAll('[', ']').InsertOrdinalIndicatorSuffix();
       System.Console.WriteLine(sbr.ToString());

@@ -8,7 +8,7 @@ namespace Flux.Wpf
     /// <summary>Returns a unit point of the specified angle, in radians. Zero is to the top.</summary>
     public static System.Windows.Point AngularRotationToPoint(this double angularRotation, bool inDegrees = false)
     {
-      var (x, y) = inDegrees ? Angles.RotationAngleToCartesianEx(Angles.DegreeToRadian(angularRotation)) : Angles.RotationAngleToCartesianEx(angularRotation);
+      Angles.RotationAngleToCartesianEx(inDegrees ? Angles.DegreeToRadian(angularRotation) : angularRotation, out var x, out var y);
 
       return new System.Windows.Point(x, y);
     }
