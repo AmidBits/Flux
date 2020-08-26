@@ -63,7 +63,8 @@ namespace Flux.Model
       else throw new System.ArgumentOutOfRangeException(nameof(segmentIndex));
     }
 
-    private System.Collections.Generic.IEnumerable<long> GetSegments(int segmentStart, int segmentCount) => System.Linq.ParallelEnumerable.Range(segmentStart, segmentCount).SelectMany(segment => GetSegment(segment));
+    private System.Collections.Generic.IEnumerable<long> GetSegments(int segmentStart, int segmentCount)
+      => System.Linq.ParallelEnumerable.Range(segmentStart, segmentCount).SelectMany(segment => GetSegment(segment));
 
     /// <summary></summary>
     /// <see cref="https://www.geeksforgeeks.org/segmented-sieve/"/>

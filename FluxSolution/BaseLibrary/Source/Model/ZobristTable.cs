@@ -47,6 +47,7 @@ namespace Flux.Model
       return (long)hash;
     }
 
-    public override string ToString() => $"<{m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
+    public override string ToString()
+      => $"<{m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
   }
 }

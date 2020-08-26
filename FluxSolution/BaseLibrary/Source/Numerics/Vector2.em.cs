@@ -2,18 +2,38 @@ namespace Flux
 {
   public static partial class XtendNumerics
   {
+    /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
+    /// When dot eq 0 then the vectors are perpendicular.
+    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    /// </summary>
+    public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
+      => System.Math.Acos(Flux.Maths.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
+
+    /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
+    public static System.Numerics.Vector2 IntermediaryPoint(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float scalar = 0.5f)
+      => (source + target) * scalar;
+
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source) => new System.Numerics.Vector2(-source.Y, source.X);
+    public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
+      => new System.Numerics.Vector2(-source.Y, source.X);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source) => new System.Numerics.Vector2(source.Y, -source.X);
+    public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
+      => new System.Numerics.Vector2(source.Y, -source.X);
 
     /// <summary>Rotate the vector around the specified axis.</summary>
-    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle) => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
+    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
     /// <summary>Rotate the vector around the world axes.</summary>
-    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll) => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
+    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b) => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
+    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
+
+    public static System.Numerics.Vector3 ToVector3(this System.Numerics.Vector2 source)
+      => new System.Numerics.Vector3(source, 0);
 
     // /// <summary>Returns a new set of triangular polygons from the specified polygon. The first vertex (in clockwise order) having an angle greater or equal to 0 degrees and less than 180 degrees, to its neighbors are extracted first. The remaining vertices are then evaluated from the beginning again. This process continues until only 3 vertices are left, which are also returned as the last triangle.</summary>
     // public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IList<System.Numerics.Vector2> source)

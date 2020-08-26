@@ -24,11 +24,16 @@ namespace Flux.Model
 
     public int Length => m_sieve.Length;
 
-    public SieveOfEratosthenes(int maxNumber) => m_sieve = CreateBitArray(maxNumber);
-    public SieveOfEratosthenes() { }
+    public SieveOfEratosthenes(int maxNumber)
+      => m_sieve = CreateBitArray(maxNumber);
+    public SieveOfEratosthenes()
+    {
+    }
 
-    public System.Collections.Generic.IEnumerable<int> GetCompositeNumbers() => m_sieve.Cast<bool>().IndicesOf(e => !e);
-    public System.Collections.Generic.IEnumerable<int> GetPrimeNumbers() => m_sieve.Cast<bool>().IndicesOf(e => e);
+    public System.Collections.Generic.IEnumerable<int> GetCompositeNumbers()
+      => m_sieve.Cast<bool>().IndicesOf(e => !e);
+    public System.Collections.Generic.IEnumerable<int> GetPrimeNumbers()
+      => m_sieve.Cast<bool>().IndicesOf(e => e);
 
     public static System.Collections.BitArray CreateBitArray(int length)
     {

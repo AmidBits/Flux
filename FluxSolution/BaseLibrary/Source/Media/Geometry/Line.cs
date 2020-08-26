@@ -1,4 +1,4 @@
-namespace Flux.Geo
+namespace Flux.Media.Shapes
 {
   public enum TestOutcome
   {

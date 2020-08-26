@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Geo
+namespace Flux.Media.Shapes
 {
   public enum HexagonOrientation
   {

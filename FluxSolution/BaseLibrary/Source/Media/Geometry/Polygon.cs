@@ -1,59 +1,7 @@
-using System.Diagnostics;
 using System.Linq;
 
-namespace Flux.Geo
+namespace Flux.Media.Shapes
 {
-
-  public struct ViewPort
-    : System.IEquatable<ViewPort>, System.IFormattable
-  {
-    /// <summary>Transform the 3D point from world space to camera space.</summary>
-    /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector3 TransformToCameraSpace(System.Numerics.Vector3 source, ref System.Numerics.Matrix4x4 worldToCamera) => System.Numerics.Vector3.Transform(source, worldToCamera);
-
-    /// <summary>Transform from camera space to vector on the canvas. Use perspective projection.</summary>
-    /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformToScreen(System.Numerics.Vector3 source) => new System.Numerics.Vector2(source.X / -source.Z, source.Y / -source.Z); // camera space vector on the canvas, using perspective projection
-
-    /// <summary>Transform from camera space to vector on the canvas. Use perspective projection, output whether the point is within the bounds of the canvas.</summary>
-    /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformToScreen(System.Numerics.Vector3 source, out bool visible, float canvasHeight = 2, float canvasWidth = 2)
-    {
-      var screen = TransformToScreen(source);
-
-      visible = (System.Math.Abs(screen.X) > canvasWidth || System.Math.Abs(screen.Y) > canvasHeight); // if the absolute value screen space of X or Y is greater than the canvas size, X or Y respectively, the point is not visible
-
-      return screen;
-    }
-
-    /// <summary>Convert from screen vector to a normalized device coordinate (NDC). The NDC will be in the range [0.0, 1.0].</summary>
-    /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformToNdc(System.Numerics.Vector2 source, float canvasHeight = 2, float canvasWidth = 2) => new System.Numerics.Vector2((source.X + canvasWidth / 2F) / canvasWidth, (source.Y + canvasHeight / 2F) / canvasHeight); // normalize vector, will be in the range [0.0, 1.0]
-
-    /// <summary>Convert from normalize device coordinate (NDC) to pixel coordinate, with the Y coordinate inverted. (Why is that?)</summary>
-    /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformToRaster(System.Numerics.Vector2 source, float rasterHeight, float rasterWidth) => new System.Numerics.Vector2(source.X * rasterWidth, (1F - source.Y) * rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
-
-    // Operators
-    public static bool operator ==(ViewPort a, ViewPort b)
-      => a.Equals(b);
-    public static bool operator !=(ViewPort a, ViewPort b)
-      => !a.Equals(b);
-    // IEquatable
-    public bool Equals(ViewPort other)
-      => ToString() == other.ToString(); // NOTE THAT ViewPort does not currently have any properties.
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<ViewPort>";
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is ViewPort && Equals(obj);
-    public override int GetHashCode()
-      => Flux.HashCode.CombineCore(0);
-    public override string? ToString()
-      => base.ToString();
-  }
-
   public struct Polygon
     : System.IEquatable<Polygon>, System.IFormattable
   {
@@ -176,19 +124,19 @@ namespace Flux.Geo
       }
     }
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius) => Ellipse.Create(6, radius, radius, Maths.PiOver2).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius) => Ellipse.Create(6, radius, radius, Maths.PiOver2).Select(v2 => v2.ToVector3());
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonVerticalXY(float radius) => Ellipse.Create(6, radius, radius).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonVerticalXY(float radius) => Ellipse.Create(6, radius, radius).Select(v2 => v2.ToVector3());
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY1(float radius) => Ellipse.Create(8, radius, radius).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY1(float radius) => Ellipse.Create(8, radius, radius).Select(v2 => v2.ToVector3());
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius) => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).ToVector3();
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius) => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).Select(v2 => v2.ToVector3());
     /// <summary>Creates a square with the specified radius, starting point 45 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateSquareXY(float radius)
-      => Ellipse.Create(4, radius, radius, Flux.Maths.PiOver4).ToVector3();
+      => Ellipse.Create(4, radius, radius, Flux.Maths.PiOver4).Select(v2 => v2.ToVector3());
     /// <summary>Creates a triangle with the specified radius, starting point up.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateTriangleXY(float radius)
-      => Ellipse.Create(3, radius, radius).ToVector3();
+      => Ellipse.Create(3, radius, radius).Select(v2 => v2.ToVector3());
 
     /// <summary>Returns a sequence of triplets, their angles and ordinal indices. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)> GetAngles(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
@@ -381,11 +329,11 @@ namespace Flux.Geo
             triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
             break;
           case TriangulationEnum.LeastSquare:
-            var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+            var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
             triplet = (leastSquare.Item1, leastSquare.Item2, leastSquare.Item3, leastSquare.index);
             break;
           case TriangulationEnum.MostSquare:
-            var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle),(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+            var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
             triplet = (mostSquare.Item1, mostSquare.Item2, mostSquare.Item3, mostSquare.index);
             break;
           default:

@@ -28,7 +28,8 @@ namespace Flux.Model
       return _sieve[number];
     }
 
-    public SieveOfAtkin(int length) => _sieve = CreateBitArray(length);
+    public SieveOfAtkin(int length)
+      => _sieve = CreateBitArray(length);
 
     public static System.Collections.BitArray CreateBitArray(int length)
     {
