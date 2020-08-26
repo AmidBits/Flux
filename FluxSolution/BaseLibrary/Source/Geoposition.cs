@@ -402,7 +402,7 @@ namespace Flux
       => string.Format(formatProvider, "<{1}{0}{2}{0}{3}>", System.Globalization.NumberFormatInfo.GetInstance(formatProvider).NumberGroupSeparator, Altitude.ToString(format, formatProvider), Latitude.ToString(format, formatProvider), Longitude.ToString(format, formatProvider));
     // Object (override)
     public override bool Equals(object? obj)
-      => obj is Geoposition geoposition && Equals(geoposition);
+      => obj is Geoposition gp && Equals(gp);
     public override string ToString()
       => string.Format(new IFormatProvider.DmsFormatter(), "{0:DMSNS} {1:DMSEW}", Latitude, Longitude);
     public override int GetHashCode()

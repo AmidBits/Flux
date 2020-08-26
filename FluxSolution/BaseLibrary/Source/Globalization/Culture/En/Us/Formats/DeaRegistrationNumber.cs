@@ -1,16 +1,22 @@
 namespace Flux.Globalization.EnUs
 {
-  public sealed class DeaRegistrationNumber
+  public struct DeaRegistrationNumber
+    : System.IEquatable<DeaRegistrationNumber>
   {
     /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>
     public const string Regex = @"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?";
 
-    public string RegistrantType { get; private set; } = string.Empty;
-    public string RegistrantLastNameOr9 { get; private set; } = string.Empty;
-    public string Digits { get; private set; } = string.Empty;
-    public string Checksum { get; private set; } = string.Empty;
-    public string AffixedID { get; private set; } = string.Empty;
+    public string RegistrantType { get; private set; }
+    public string RegistrantLastNameOr9 { get; private set; }
+    public string Digits { get; private set; }
+    public string Checksum { get; private set; }
+    public string AffixedID { get; private set; }
+
+    public bool IsEmpty
+      => string.IsNullOrEmpty(RegistrantType) && string.IsNullOrEmpty(RegistrantLastNameOr9) && string.IsNullOrEmpty(Digits) && string.IsNullOrEmpty(Checksum) && string.IsNullOrEmpty(AffixedID);
+    public bool IsValid
+      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
 
     public static DeaRegistrationNumber Parse(string text)
     {
@@ -32,7 +38,35 @@ namespace Flux.Globalization.EnUs
 
       throw new System.InvalidOperationException();
     }
+    public static bool TryParse(string text, out DeaRegistrationNumber result)
+    {
+      try
+      {
+        result = Parse(text);
+        return true;
+      }
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
-    public override string ToString() => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
+      result = new DeaRegistrationNumber();
+      return false;
+    }
+
+    // Operators
+    public static bool operator ==(DeaRegistrationNumber a, DeaRegistrationNumber b)
+      => a.Equals(b);
+    public static bool operator !=(DeaRegistrationNumber a, DeaRegistrationNumber b)
+      => !a.Equals(b);
+    // IEquatable
+    public bool Equals(DeaRegistrationNumber other)
+      => RegistrantType == other.RegistrantType && RegistrantLastNameOr9 == other.RegistrantLastNameOr9 && Digits == other.Digits && Checksum == other.Checksum && AffixedID == other.AffixedID;
+    // Object (overrides)
+    public override bool Equals(object? obj)
+      => obj is DeaRegistrationNumber drn && Equals(drn);
+    public override int GetHashCode()
+      => Flux.HashCode.CombineCore(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID);
+    public override string? ToString()
+      => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }
 }

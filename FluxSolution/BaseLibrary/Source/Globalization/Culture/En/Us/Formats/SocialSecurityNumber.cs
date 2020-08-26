@@ -1,14 +1,20 @@
 namespace Flux.Globalization.EnUs
 {
-  public sealed class SocialSecurityNumber
+  public struct SocialSecurityNumber
+    : System.IEquatable<SocialSecurityNumber>
   {
     /// <summary>A regular expression that complies with SSN regulations.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Social_Security_number#Structure"/>
     public const string Regex = @"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)";
 
-    public string AAA { get; private set; } = string.Empty;
-    public string GG { get; private set; } = string.Empty;
-    public string SSSS { get; private set; } = string.Empty;
+    public string AAA { get; private set; }
+    public string GG { get; private set; }
+    public string SSSS { get; private set; }
+
+    public bool IsEmpty
+      => string.IsNullOrEmpty(AAA) && string.IsNullOrEmpty(GG) && string.IsNullOrEmpty(SSSS);
+    public bool IsValid
+      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
 
     public static SocialSecurityNumber Parse(string text)
     {
@@ -28,7 +34,35 @@ namespace Flux.Globalization.EnUs
 
       throw new System.InvalidOperationException();
     }
+    public static bool TryParse(string text, out SocialSecurityNumber result)
+    {
+      try
+      {
+        result = Parse(text);
+        return true;
+      }
+#pragma warning disable CA1031 // Do not catch general exception types
+      catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
-    public override string ToString() => $"{AAA}-{GG}-{SSSS}";
+      result = new SocialSecurityNumber();
+      return false;
+    }
+
+    // Operators
+    public static bool operator ==(SocialSecurityNumber a, SocialSecurityNumber b)
+      => a.Equals(b);
+    public static bool operator !=(SocialSecurityNumber a, SocialSecurityNumber b)
+      => !a.Equals(b);
+    // IEquatable
+    public bool Equals(SocialSecurityNumber other)
+      => AAA == other.AAA && GG == other.GG && SSSS == other.SSSS;
+    // Object (overrides)
+    public override bool Equals(object? obj)
+      => obj is SocialSecurityNumber nanp && Equals(nanp);
+    public override int GetHashCode()
+      => Flux.HashCode.CombineCore(AAA, GG, SSSS);
+    public override string? ToString()
+      => $"{AAA}-{GG}-{SSSS}";
   }
 }

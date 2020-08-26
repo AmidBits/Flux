@@ -1,4 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+
 /// <summary>A rune is a Unicode code point.</summary>
 namespace Flux.Text.Tokenization.Rune
 {
@@ -23,7 +24,7 @@ namespace Flux.Text.Tokenization.Rune
     }
 
     public override string ToString()
-      => $"<{UnicodeCategory}({CategoryOrdinal})=\"{Value}\" @{Index} +{Value.Utf16SequenceLength}>";
+      => $"<{UnicodeCategory}#{CategoryOrdinal}=\"{Value}\"@{Index}+{Value.Utf16SequenceLength}>";
   }
 
   public class TokenLetter
@@ -67,35 +68,42 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenPunctuation
     : Token
   {
-    public int BracketDepth { get; set; }
-    public int BracketGroup { get; set; }
+    public int? Depth { get; set; }
+    public int? Group { get; set; }
 
-    public int QuotationDepth { get; set; }
-    public int QuotationGroup { get; set; }
-
-    public TokenPunctuation(int index, System.Text.Rune value, int categoryOrdinal, int depth, int group, int quotationDepth, int quotationGroup)
+    public TokenPunctuation(int index, System.Text.Rune value, int categoryOrdinal)
       : base(index, value, categoryOrdinal)
     {
-      BracketDepth = depth;
-      BracketGroup = group;
-
-      QuotationDepth = quotationDepth;
-      QuotationGroup = quotationGroup;
+    }
+    public TokenPunctuation(int index, System.Text.Rune value, int categoryOrdinal, int depth, int group)
+      : base(index, value, categoryOrdinal)
+    {
+      Depth = depth;
+      Group = group;
     }
 
     public override string ToString()
     {
-      var sb = new System.Text.StringBuilder();
+      var sb = new System.Text.StringBuilder(base.ToString());
 
-      if (BracketDepth > 0 || BracketGroup > 0)
-        sb.Append($"[BD={BracketDepth}, BG={BracketGroup}]");
+      if (Depth.HasValue && Group.HasValue)
+      {
+        sb.Remove(sb.Length - 1, 1);
 
-      if (QuotationDepth > 0 || QuotationGroup > 0)
-        sb.Append($"[QD={QuotationDepth}, QG={QuotationGroup}]");
+        switch (UnicodeCategory)
+        {
+          case System.Globalization.UnicodeCategory.ClosePunctuation:
+          case System.Globalization.UnicodeCategory.OpenPunctuation:
+          case System.Globalization.UnicodeCategory.FinalQuotePunctuation:
+          case System.Globalization.UnicodeCategory.InitialQuotePunctuation:
+            sb.Append($"[Depth={Depth},Group={Group}]");
+            break;
+        }
 
-      sb.Append('>');
+        sb.Append('>');
+      }
 
-      return base.ToString().Replace(@">", sb.ToString(), System.StringComparison.Ordinal);
+      return sb.ToString();
     }
   }
 
@@ -117,6 +125,15 @@ namespace Flux.Text.Tokenization.Rune
     }
   }
 
+  public class TokenUnrecognized
+  : Token
+  {
+    public TokenUnrecognized(int index, System.Text.Rune value, int categoryOrdinal)
+      : base(index, value, categoryOrdinal)
+    {
+    }
+  }
+
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
   public class Tokenizer
     : ITokenizer<Token>
@@ -129,14 +146,7 @@ namespace Flux.Text.Tokenization.Rune
 
       if (Normalize) expression = expression.Normalize() ?? throw new System.NullReferenceException(nameof(expression.Normalize));
 
-      var ordinalLetter = 0;
-      var ordinalMark = 0;
-      var ordinalNumber = 0;
-      var ordinalPunctuation = 0;
-      var ordinalSeparator = 0;
-      var ordinalSymbol = 0;
-      var ordinalOther = 0;
-      var ordinalToken = 0;
+      var unicodeCategoryCounts = ((System.Globalization.UnicodeCategory[])System.Enum.GetValues(typeof(System.Globalization.UnicodeCategory))).ToDictionary(uc => uc, uc => 0);
 
       var punctuationBracketDepth = 0;
       var punctuationBracketGroup = 0;
@@ -152,57 +162,47 @@ namespace Flux.Text.Tokenization.Rune
       {
         var unicodeCategory = System.Text.Rune.GetUnicodeCategory(rune);
 
+        unicodeCategoryCounts[unicodeCategory]++;
+
         switch (unicodeCategory.ToCategoryMajor())
         {
           case Flux.Unicode.CategoryMajor.Letter:
-            ordinalLetter++;
-            yield return new TokenLetter(index, rune, ordinalLetter);
+            yield return new TokenLetter(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Mark:
-            ordinalMark++;
-            yield return new TokenMark(index, rune, ordinalMark);
+            yield return new TokenMark(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Number:
-            ordinalNumber++;
-            yield return new TokenNumber(index, rune, ordinalNumber);
+            yield return new TokenNumber(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Other:
-            ordinalOther++;
-            yield return new TokenOther(index, rune, ordinalOther);
+            yield return new TokenOther(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.OpenPunctuation:
-            ordinalPunctuation++;
             punctuationBracketGroups.Push(++punctuationBracketGroup);
-            yield return new TokenPunctuation(index, rune, ordinalPunctuation, ++punctuationBracketDepth, punctuationBracketGroups.Peek(), punctuationQuotationDepth, punctuationQuotationGroup);
+            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationBracketDepth, punctuationBracketGroups.Peek());
             break;
           case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.InitialQuotePunctuation:
-            ordinalPunctuation++;
             punctuationQuotationGroups.Push(++punctuationQuotationGroup);
-            yield return new TokenPunctuation(index, rune, ordinalPunctuation, punctuationBracketDepth, punctuationBracketGroup, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
+            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
             break;
           case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.ClosePunctuation:
-            ordinalPunctuation++;
-            yield return new TokenPunctuation(index, rune, ordinalPunctuation, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1, punctuationQuotationDepth, punctuationQuotationGroup);
+            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
             break;
           case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.FinalQuotePunctuation:
-            ordinalPunctuation++;
-            yield return new TokenPunctuation(index, rune, ordinalPunctuation, punctuationBracketDepth, punctuationBracketGroup, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
+            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
             break;
           case Flux.Unicode.CategoryMajor.Punctuation:
-            ordinalPunctuation++;
-            yield return new TokenPunctuation(index, rune, ordinalPunctuation, punctuationBracketDepth, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Peek() : 0, punctuationQuotationDepth, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Peek() : 0);
+            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Separator:
-            ordinalSeparator++;
-            yield return new TokenSeparator(index, rune, ordinalSeparator);
+            yield return new TokenSeparator(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           case Flux.Unicode.CategoryMajor.Symbol:
-            ordinalSymbol++;
-            yield return new TokenSymbol(index, rune, ordinalSymbol);
+            yield return new TokenSymbol(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           default:
-            ordinalToken++;
-            yield return new Token(index, rune, ordinalToken);
+            yield return new TokenUnrecognized(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
         }
 
