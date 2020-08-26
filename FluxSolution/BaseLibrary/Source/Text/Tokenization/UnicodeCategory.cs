@@ -18,7 +18,7 @@ namespace Flux.Text.Tokenization.UnicodeCategory
     }
 
     public override string ToString()
-      => $"<{UnicodeCategory.ToString()}=\"{Value}\" @{Index}>";
+      => $"<{UnicodeCategory}=\"{Value}\" @{Index}>";
   }
 
   public class TokenLetter

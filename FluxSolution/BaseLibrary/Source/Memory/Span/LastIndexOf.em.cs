@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class XtendSpan
   {
     /// <summary>Reports the index of the last occurence that satisfies the predicate.</summary>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    public static int LastIndexOf<T>(this System.Span<T> source, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -17,7 +17,7 @@ namespace Flux
     }
 
     /// <summary>Returns the last index of the occurence of the target within the source. Or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int LastIndexOf<T>(this System.Span<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -28,11 +28,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Returns the last index of the occurence of the target within the source. Or -1 if not found. Uses the default comparer.</summary>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, T value)
+    public static int LastIndexOf<T>(this System.Span<T> source, T value)
       => LastIndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Reports the last index of the occurence of the target within the source. Or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf(this System.ReadOnlySpan<char> source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static int LastIndexOf(this System.Span<char> source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (value is null) throw new System.ArgumentNullException(nameof(value));
 
@@ -45,11 +45,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the last index of the occurence of the target within the source. Or -1 if not found. Uses the default comparer</summary>
-    public static int LastIndexOf(this System.ReadOnlySpan<char> source, string value)
+    public static int LastIndexOf(this System.Span<char> source, string value)
       => LastIndexOf(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Reports the last index of any of the specified targets in the source. Or -1 if none were found. Uses the specified comparer.</summary>
-    public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int LastIndexOfAny<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -61,11 +61,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the last index of any of the specified targets in the source. Or -1 if none were found. Uses the default comparer</summary>
-    public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> source, params T[] values)
+    public static int LastIndexOfAny<T>(this System.Span<T> source, params T[] values)
       => LastIndexOfAny(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
 
     /// <summary>Reports the last index of any of the targets within the source. or -1 if none is found. Uses the specified comparer.</summary>
-    public static int LastIndexOfAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
+    public static int LastIndexOfAny(this System.Span<char> source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -77,11 +77,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the last index of any of the targets within the source. or -1 if none is found. Uses the default comparer</summary>
-    public static int LastIndexOfAny(this System.ReadOnlySpan<char> source, params string[] values)
+    public static int LastIndexOfAny(this System.Span<char> source, params string[] values)
       => LastIndexOfAny(source, System.Collections.Generic.EqualityComparer<char>.Default, values);
 
     /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] LastIndicesOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int[] LastIndicesOfAny<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -108,7 +108,7 @@ namespace Flux
       return lastIndices;
     }
     /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the default comparer.</summary>
-    public static int[] LastIndicesOfAny<T>(this System.ReadOnlySpan<T> source, params T[] values)
+    public static int[] LastIndicesOfAny<T>(this System.Span<T> source, params T[] values)
       => LastIndicesOfAny(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
   }
 }

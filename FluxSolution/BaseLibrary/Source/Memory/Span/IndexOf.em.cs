@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class XtendSpan
   {
     /// <summary>Reports the index of the first occurence that satisfy the predicate.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    public static int IndexOf<T>(this System.Span<T> source, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -17,7 +17,7 @@ namespace Flux
     }
 
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int IndexOf<T>(this System.Span<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -28,11 +28,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value)
+    public static int IndexOf<T>(this System.Span<T> source, T value)
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf(this System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static int IndexOf(this System.Span<char> source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       for (var index = 0; index < source.Length; index++)
       {
@@ -43,11 +43,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf(this System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> value)
+    public static int IndexOf(this System.Span<char> source, System.ReadOnlySpan<char> value)
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int IndexOfAny<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -62,11 +62,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the default comparer.</summary>
-    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, params T[] values)
+    public static int IndexOfAny<T>(this System.Span<T> source, params T[] values)
       => IndexOfAny(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
 
     /// <summary>Reports the first index of any of the specified targets within the source, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
+    public static int IndexOfAny(this System.Span<char> source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -77,11 +77,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of any of the specified targets within the source, or -1 if none were found. Uses the default comparer.</summary>
-    public static int IndexOfAny(this System.ReadOnlySpan<char> source, params string[] values)
+    public static int IndexOfAny(this System.Span<char> source, params string[] values)
       => IndexOfAny(source, System.Collections.Generic.EqualityComparer<char>.Default, values);
 
     /// <summary>Reports all first indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] IndicesOf<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int[] IndicesOf<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -108,7 +108,7 @@ namespace Flux
       return indices;
     }
     /// <summary>Reports all first indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] IndicesOf<T>(this System.ReadOnlySpan<T> source, params T[] values)
+    public static int[] IndicesOf<T>(this System.Span<T> source, params T[] values)
       => IndicesOf(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
   }
 }

@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class XtendStringBuilder
   {
-    /// <summary>Convert all characters to lower case using the specified culture.</summary>
-    public static System.Text.StringBuilder ToLower(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
+    /// <summary>Convert all characters, in the specified range, to lower case. Uses the specified culture.</summary>
+    public static System.Text.StringBuilder ToLowerCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -19,9 +19,15 @@ namespace Flux
 
       return source;
     }
+    /// <summary>Convert all characters, in the specified range, to lower case. Uses the current culture.</summary>
+    public static System.Text.StringBuilder ToLowerCase(this System.Text.StringBuilder source, int startIndex, int length)
+      => ToLowerCase(source, startIndex, length, System.Globalization.CultureInfo.CurrentCulture);
+    /// <summary>Convert all characters, in the specified range, to lower case. Uses the invariant culture.</summary>
+    public static System.Text.StringBuilder ToLowerCaseInvariant(this System.Text.StringBuilder source, int startIndex, int length)
+      => ToLowerCase(source, startIndex, length, System.Globalization.CultureInfo.InvariantCulture);
 
-    /// <summary>Convert all characters to upper case using the specified culture.</summary>
-    public static System.Text.StringBuilder ToUpper(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
+    /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture.</summary>
+    public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -37,5 +43,11 @@ namespace Flux
 
       return source;
     }
+    /// <summary>Convert all characters, in the specified range, to upper case. Uses the current culture.</summary>
+    public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, int startIndex, int length)
+      => ToUpperCase(source, startIndex, length, System.Globalization.CultureInfo.CurrentCulture);
+    /// <summary>Convert all characters, in the specified range, to upper case. Uses the invariant culture.</summary>
+    public static System.Text.StringBuilder ToUpperCaseInvariant(this System.Text.StringBuilder source, int startIndex, int length)
+      => ToUpperCase(source, startIndex, length, System.Globalization.CultureInfo.InvariantCulture);
   }
 }

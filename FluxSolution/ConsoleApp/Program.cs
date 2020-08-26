@@ -5,6 +5,7 @@ using System;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -14,10 +15,24 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      //Flux.
+      var txt = "This is the 1 \t \t test @ about a 1012 degree (that's a [little] bit) text (𠜎) manipulation.";
 
-      foreach (var pq in Flux.Maths.GetPerrinSequence())
-        System.Console.WriteLine(pq);
+      var tokenizer = new Flux.Text.Tokenization.Rune.Tokenizer();
+
+      foreach(var token in tokenizer.GetTokens(txt))
+      {
+        System.Console.WriteLine(token);
+      }
+
+      return;
+
+      var spn = new System.Span<char>(txt.ToCharArray());
+
+      var sbr = spn.ToStringBuilder();
+      
+      System.Console.WriteLine(sbr.ToString());
+      sbr.ReplaceAll(c => c == '\t' ? "[Tab]" : c.ToString()).NormalizeAll(' ', char.IsWhiteSpace).RemoveAll('[', ']').InsertOrdinalIndicatorSuffix();
+      System.Console.WriteLine(sbr.ToString());
 
       return;
 

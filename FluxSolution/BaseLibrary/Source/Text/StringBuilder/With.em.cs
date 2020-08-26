@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class XtendStringBuilder
   {
+    /// <summary>Indicates whether the source ends with value. Uses the specified comparer.</summary>
     public static bool EndsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -17,9 +18,11 @@ namespace Flux
 
       return true;
     }
+    /// <summary>Indicates whether the source ends with value. Uses the default comparer.</summary>
     public static bool EndsWith(this System.Text.StringBuilder source, string value)
       => EndsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
 
+    /// <summary>Indicates whether the source starts with value. Uses the specified comparer.</summary>
     public static bool StartsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -35,6 +38,7 @@ namespace Flux
 
       return true;
     }
+    /// <summary>Indicates whether the source starts with value. Uses the default comparer.</summary>
     public static bool StartsWith(this System.Text.StringBuilder source, string value)
        => EndsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
   }

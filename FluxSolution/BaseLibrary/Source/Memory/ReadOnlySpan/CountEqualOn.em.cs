@@ -19,11 +19,10 @@ namespace Flux
 
       minLength = sourceLength < targetLength ? sourceLength : targetLength;
 
-      for (var index = 0; index < minLength; index++)
-        if (!comparer.Equals(source[index], target[index]))
-          return index;
-
-      return minLength;
+      var index = 0;
+      while (index < minLength && comparer.Equals(source[index], target[index]))
+        index++;
+      return index;
     }
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
     public static int CountEqualOnLeft<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int minLength)

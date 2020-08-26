@@ -2,34 +2,38 @@ namespace Flux
 {
   public static partial class XtendSpan
   {
-    public static bool EndsWith<T>(this System.Span<T> source, System.Span<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
+    public static bool EndsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (source.Length < value.Length) return false;
+      if (source.Length < other.Length) return false;
 
-      for (int sourceIndex = source.Length - 1, valueIndex = value.Length - 1; sourceIndex >= 0 && valueIndex >= 0; sourceIndex--, valueIndex--)
-        if (!comparer.Equals(source[sourceIndex], value[valueIndex]))
+      for (int sourceIndex = source.Length - 1, valueIndex = other.Length - 1; sourceIndex >= 0 && valueIndex >= 0; sourceIndex--, valueIndex--)
+        if (!comparer.Equals(source[sourceIndex], other[valueIndex]))
           return false;
 
       return true;
     }
-    public static bool EndsWith<T>(this System.Span<T> source, System.Span<T> value)
-      => EndsWith(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
+    public static bool EndsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other)
+      => EndsWith(source, other, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    public static bool StartsWith<T>(this System.Span<T> source, System.Span<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
+    public static bool StartsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (source.Length < value.Length) return false;
+      if (source.Length < other.Length) return false;
 
-      for (var index = 0; index < value.Length; index++)
-        if (!comparer.Equals(source[index], value[index]))
+      for (var index = 0; index < other.Length; index++)
+        if (!comparer.Equals(source[index], other[index]))
           return false;
 
       return true;
     }
-    public static bool StartsWith<T>(this System.Span<T> source, System.Span<T> value)
-       => EndsWith(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
+    public static bool StartsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other)
+       => EndsWith(source, other, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

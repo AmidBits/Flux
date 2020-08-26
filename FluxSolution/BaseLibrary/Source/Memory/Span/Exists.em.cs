@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class XtendSpan
   {
     /// <summary>Indicates whether any element in the sequence satisfies the predicate.</summary>
-    public static bool Exists<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    public static bool Exists<T>(this System.Span<T> source, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 

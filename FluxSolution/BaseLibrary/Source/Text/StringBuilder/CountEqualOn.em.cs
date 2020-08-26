@@ -10,19 +10,18 @@ namespace Flux
       => CountEqualOnBothEnds(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Yields the number of characters that the source and the target have in common from the start.</summary>
-    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
+    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
 
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var index = 0;
-
       minLength = source.Length < target.Length ? source.Length : target.Length;
 
-      while (index < minLength && comparer.Equals(source[index], target[index])) index++;
-
+      var index = 0;
+      while (index < minLength && comparer.Equals(source[index], target[index])) 
+        index++;
       return index;
     }
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
@@ -36,7 +35,7 @@ namespace Flux
       => CountEqualOnLeft(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out _);
 
     /// <summary>Yields the number of characters that the source and the target have in common at the end.</summary>
-    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
+    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));

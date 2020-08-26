@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class XtendStringBuilder
   {
-    /// <summary>Returns the first index of the specified character within the string builder, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf(this System.Text.StringBuilder source, char value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    /// <summary>Reports the first index of the specified character within the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    public static int IndexOf(this System.Text.StringBuilder source, char value, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -15,12 +15,12 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Returns the first index of the specified character within the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    /// <summary>Reports the first index of the specified character within the string builder, or -1 if not found. Uses the default comparer.</summary>
     public static int IndexOf(this System.Text.StringBuilder source, char value)
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Returns the first index of the specified string within the string builder, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static int IndexOf(this System.Text.StringBuilder source, string value, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -32,12 +32,12 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Returns the first index of the specified string within the string builder, or -1 if not found. Uses the default comparer.</summary>
+    /// <summary>Reports the first index of the specified string within the string builder, or -1 if not found. Uses the default comparer.</summary>
     public static int IndexOf(this System.Text.StringBuilder source, string value)
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Returns the first index of any of the specified characters within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] values)
+    public static int IndexOfAny(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params char[] values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -53,12 +53,12 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Returns the first index of any of the specified characters within the string builder, or -1 if none were found. Uses the default comparer.</summary>
+    /// <summary>Reports the first index of any of the specified characters within the string builder, or -1 if none were found. Uses the default comparer.</summary>
     public static int IndexOfAny(this System.Text.StringBuilder source, params char[] values)
       => IndexOfAny(source, System.Collections.Generic.EqualityComparer<char>.Default, values);
 
-    /// <summary>Returns the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
+    /// <summary>Reports the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
+    public static int IndexOfAny(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -70,12 +70,12 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Returns the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
+    /// <summary>Reports the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the default comparer.</summary>
     public static int IndexOfAny(this System.Text.StringBuilder source, params string[] values)
       => IndexOfAny(source, System.Collections.Generic.EqualityComparer<char>.Default, values);
 
-    /// <summary>Returns all first indices of the specified characters within the string builder (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] IndicesOf(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] values)
+    /// <summary>Reports all first indices of the specified characters within the string builder (-1 if not found). Uses the specified comparer.</summary>
+    public static int[] IndicesOf(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params char[] values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

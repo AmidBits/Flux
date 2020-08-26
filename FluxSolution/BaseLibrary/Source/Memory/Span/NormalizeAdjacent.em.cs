@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class XtendSpan
   {
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
+    /// <summary>Normalize (in-place) the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
     public static System.Span<T> NormalizeAdjacent<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -24,7 +24,7 @@ namespace Flux
 
       return source.Slice(0, index);
     }
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
+    /// <summary>Normalize (in-place) the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
     public static System.Span<T> NormalizeAdjacent<T>(this System.Span<T> source, params T[] values)
       => NormalizeAdjacent(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
   }

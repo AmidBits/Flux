@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class XtendSpan
   {
     /// <summary>Returns a string padded evenly on both sides to the specified width by the specified padding characters for left and right respectively.</summary>
-    public static System.ReadOnlySpan<T> PadEven<T>(this System.ReadOnlySpan<T> source, int desiredWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool invertDefaultOddPaddingBehavior = false)
+    public static System.Span<T> PadEven<T>(this System.Span<T> source, int desiredWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool invertDefaultOddPaddingBehavior = false)
     {
       var sourceLength = source.Length;
 
@@ -15,7 +15,7 @@ namespace Flux
     }
 
     /// <summary>Returns a new string that right-aligns this string by padding them on the left with the specified padding string.</summary>
-    public static System.ReadOnlySpan<T> PadLeft<T>(this System.ReadOnlySpan<T> source, int desiredWidth, System.ReadOnlySpan<T> padding)
+    public static System.Span<T> PadLeft<T>(this System.Span<T> source, int desiredWidth, System.ReadOnlySpan<T> padding)
     {
       if (desiredWidth <= source.Length) return source;
 
@@ -40,7 +40,7 @@ namespace Flux
     }
 
     /// <summary>Returns a new string that left-aligns this string by padding them on the right with the specified padding string.</summary>
-    public static System.ReadOnlySpan<T> PadRight<T>(this System.ReadOnlySpan<T> source, int desiredWidth, System.ReadOnlySpan<T> padding)
+    public static System.Span<T> PadRight<T>(this System.Span<T> source, int desiredWidth, System.ReadOnlySpan<T> padding)
     {
       if (desiredWidth <= source.Length) return source;
 
