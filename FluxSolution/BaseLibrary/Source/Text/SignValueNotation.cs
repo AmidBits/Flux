@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
   public static class SignValueNotation

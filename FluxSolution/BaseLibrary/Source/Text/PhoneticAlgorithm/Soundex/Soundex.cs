@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendPhoneticAlgorithm
+  public static partial class XtendText
   {
     /// <summary>Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>

@@ -76,12 +76,14 @@ namespace Flux
   //  }
   //}
 
-  public class DataReceivedEventArgs : System.EventArgs
+  /// <summary>Event arguments for when data is received.</summary>
+  public class UdpCastDataReceivedEventArgs
+    : System.EventArgs
   {
     public System.Collections.Generic.IList<byte> Bytes { get; private set; }
     public System.Net.EndPoint Remote { get; private set; }
 
-    public DataReceivedEventArgs(byte[] bytes, System.Net.EndPoint remote)
+    public UdpCastDataReceivedEventArgs(byte[] bytes, System.Net.EndPoint remote)
     {
       Bytes = bytes;
       Remote = remote;
@@ -102,7 +104,7 @@ namespace Flux
     #region "Event Handling"
     private System.Threading.Thread Thread;
 
-    public event System.EventHandler<DataReceivedEventArgs>? DataReceived;
+    public event System.EventHandler<UdpCastDataReceivedEventArgs>? DataReceived;
     #endregion
 
     public System.Net.IPEndPoint RemoteAddress { get; private set; }
@@ -144,7 +146,7 @@ namespace Flux
 
           Socket.ReceiveFrom(buffer, ref remoteEP);
 
-          DataReceived?.Invoke(this, new DataReceivedEventArgs(buffer, remoteEP));
+          DataReceived?.Invoke(this, new UdpCastDataReceivedEventArgs(buffer, remoteEP));
         }
       }
     }

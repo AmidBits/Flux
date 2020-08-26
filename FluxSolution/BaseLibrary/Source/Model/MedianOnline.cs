@@ -49,8 +49,10 @@ namespace Flux
       }
     }
 
-    public double EffectiveMedian() => m_maxHeap.Count > m_minHeap.Count ? m_maxHeap.Peek() : m_minHeap.Count > m_maxHeap.Count ? m_minHeap.Peek() : ((m_maxHeap?.Peek() ?? 0) + (m_minHeap?.Peek() ?? 0)) / 2;
+    public double EffectiveMedian()
+      => m_maxHeap.Count > m_minHeap.Count ? m_maxHeap.Peek() : m_minHeap.Count > m_maxHeap.Count ? m_minHeap.Peek() : ((m_maxHeap?.Peek() ?? 0) + (m_minHeap?.Peek() ?? 0)) / 2;
 
-    public override string ToString() => $"<{EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}]>";
+    public override string ToString()
+      => $"<{EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}]>";
   }
 }

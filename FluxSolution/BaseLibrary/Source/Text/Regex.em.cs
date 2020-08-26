@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>All expressions are unanchored (for now).</summary>
-  public static partial class XtendRegex
+  public static partial class XtendText
   {
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> GetNamedGroups(this System.Text.RegularExpressions.Match source)
     {
