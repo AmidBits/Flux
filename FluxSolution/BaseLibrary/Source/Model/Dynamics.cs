@@ -1,230 +1,237 @@
 using System.Linq;
 
-namespace Flux.Model.Dynamics
+namespace Flux.Model.Dynamics.ForceGenerators
 {
-  public static class ForceGenerators
+  public interface IForceGenerator
   {
-    public interface IForceGenerator
+    bool Disabled { get; set; }
+
+    void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies);
+  }
+
+  public class ForceGenerator : IForceGenerator
+  {
+    public virtual bool Disabled { get; set; }
+
+    public virtual void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
     {
-      bool Disabled { get; set; }
-
-      void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies);
-    }
-
-    public class ForceGenerator : IForceGenerator
-    {
-      public virtual bool Disabled { get; set; }
-
-      public virtual void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
-      {
-      }
-    }
-
-    public class BoundaryBoxForce : ForceGenerator
-    {
-      public enum OutOfBoundsActionEnum
-      {
-        BounceBack,
-        Unhindered,
-        WrapAround
-      }
-
-      public OutOfBoundsActionEnum OutOfBoundsAction = OutOfBoundsActionEnum.Unhindered;
-
-      public System.Numerics.Vector3 Low = new System.Numerics.Vector3(0, 1000, 0);
-      public System.Numerics.Vector3 High = new System.Numerics.Vector3(1000, 0, 0);
-
-      public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
-      {
-        switch (OutOfBoundsAction)
-        {
-          case OutOfBoundsActionEnum.BounceBack:
-            if (body.Position.X < Low.X)
-            {
-              body.Position.X = (Low.X + (Low.X - body.Position.X));
-              body.LinearVelocity.X = System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            else if (body.Position.X > High.X)
-            {
-              body.Position.X = (High.X - (body.Position.X - High.X));
-              body.LinearVelocity.X = -System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            if (body.Position.Y < Low.Y)
-            {
-              body.Position.Y = (Low.Y + (Low.Y - body.Position.Y));
-              body.LinearVelocity.Y = System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            else if (body.Position.Y > High.Y)
-            {
-              body.Position.Y = (High.Y - (body.Position.Y - High.Y));
-              body.LinearVelocity.Y = -System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            if (body.Position.Z < Low.Z)
-            {
-              body.Position.Z = (Low.Z + (Low.Z - body.Position.Z));
-              body.LinearVelocity.Z = System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            else if (body.Position.Z > High.Z)
-            {
-              body.Position.Z = (High.Z - (body.Position.Z - High.Z));
-              body.LinearVelocity.Z = -System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
-              System.Numerics.Quaternion.Inverse(body.Orientation);
-            }
-            break;
-          case OutOfBoundsActionEnum.WrapAround:
-            if (body.Position.X < Low.X)
-            {
-              body.Position.X = (High.X - (Low.X - body.Position.X));
-            }
-            else if (body.Position.X > High.X)
-            {
-              body.Position.X = (Low.X + (body.Position.X - High.X));
-            }
-            if (body.Position.Y < Low.Y)
-            {
-              body.Position.Y = (High.Y - (Low.Y - body.Position.Y));
-            }
-            else if (body.Position.Y > High.Y)
-            {
-              body.Position.Y = (Low.Y + (body.Position.Y - High.Y));
-            }
-            if (body.Position.Z < Low.Z)
-            {
-              body.Position.Z = (High.Z - (Low.Z - body.Position.Z));
-            }
-            else if (body.Position.Z > High.Z)
-            {
-              body.Position.Z = (Low.Z + (body.Position.Z - High.Z));
-            }
-            break;
-          default:
-            break;
-        }
-
-        //if (OutOfBoundsAction == OutOfBoundsActionEnum.BounceBack)
-        //{
-        //  if (body.Position.X < Boundary.Left)
-        //  {
-        //    body.Position.X = (float)(Boundary.Left + (Boundary.Left - body.Position.X));
-        //    body.LinearVelocity.X = System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
-        //    System.Numerics.Quaternion.Negate(body.Orientation);
-        //    //body.AngularVelocity = -body.AngularVelocity * .5F;
-        //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X * 0.5F));
-        //  }
-        //  else if (body.Position.X > Boundary.Right)
-        //  {
-        //    body.Position.X = (float)(Boundary.Right - (body.Position.X - Boundary.Right));
-        //    body.LinearVelocity.X = -System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
-        //    System.Numerics.Quaternion.Negate(body.Orientation);
-        //    //body.AngularVelocity = body.AngularVelocity * .5F;
-        //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X * 0.5F));
-        //  }
-        //  //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X));
-
-        //  if (body.Position.Y < Boundary.Top)
-        //  {
-        //    body.Position.Y = (float)(Boundary.Top + (Boundary.Top - body.Position.Y));
-        //    body.LinearVelocity.Y = System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
-        //    System.Numerics.Quaternion.Negate(body.Orientation);
-        //    //body.AngularVelocity = -body.AngularVelocity * .5F;
-        //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y * 0.5F));
-        //  }
-        //  else if (body.Position.Y > Boundary.Bottom)
-        //  {
-        //    body.Position.Y = (float)(Boundary.Bottom - (body.Position.Y - Boundary.Bottom));
-        //    body.LinearVelocity.Y = -System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
-        //    System.Numerics.Quaternion.Negate(body.Orientation);
-        //    //body.AngularVelocity = body.AngularVelocity * .5F;
-        //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y*0.5F));
-        //  }
-        //  //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y));
-        //}
-        //else if (OutOfBoundsAction == OutOfBoundsActionEnum.WrapAround)
-        //{
-        //  if (body.Position.X < Boundary.Left)
-        //    body.Position.X = (float)(Boundary.Right - (Boundary.Left - body.Position.X));
-        //  else if (body.Position.X > Boundary.Right)
-        //    body.Position.X = (float)(Boundary.Left + (body.Position.X - Boundary.Right));
-
-        //  if (body.Position.Y < Boundary.Top)
-        //    body.Position.Y = (float)(Boundary.Bottom - (Boundary.Top - body.Position.Y));
-        //  else if (body.Position.Y > Boundary.Bottom)
-        //    body.Position.Y = (float)(Boundary.Top + (body.Position.Y - Boundary.Bottom));
-        //}
-      }
-    }
-
-    public class DragForce : ForceGenerator
-    {
-      public const float DensityOfAir = 1.29F;
-      public const float DensityOfWater = 1.94F;
-
-      public float DragDensity = DensityOfAir;
-
-      public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
-      {
-        var dragForce = 0.5f * DragDensity * (float)System.Math.Pow(body.LinearVelocity.Length(), 2) * body.CoefficientOfDrag;
-
-        body.ApplyForce(System.Numerics.Vector3.Zero, System.Numerics.Vector3.Negate(body.LinearVelocity * dragForce));
-      }
-    }
-
-    /// <summary></summary>
-    /// <seealso cref="https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.vector3.dot.aspx"/>
-    public class GravityForce : ForceGenerator
-    {
-      public const float GravityOnEarth = 9.780F;
-      public const float GravityOnMars = 3.711F;
-      public const float GravityOnTheMoon = 1.622F;
-
-      public System.Numerics.Vector3 GravitationalPull = new System.Numerics.Vector3(0, GravityOnEarth, 0);
-
-      public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
-      {
-        // Dot product: >0 = <90, <0 = >90, =0 = 90, =1 = parallel same dir, =-1 = parallel opposite dir.
-        // if the gravitational pull and the body position is within 90 degrees then apply gravity.
-        //        if (System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(GravitationalPull), System.Numerics.Vector3.Normalize(body.Position)) > 0)
-        {
-          body.ApplyForce(System.Numerics.Vector3.Zero, GravitationalPull);
-        }
-      }
-    }
-
-    public class LambdaForce : ForceGenerator
-    {
-      public System.Func<RigidBody, System.Collections.Generic.IEnumerable<RigidBody>, System.Numerics.Vector3>? ForcePosition { get; set; }
-      public System.Func<RigidBody, System.Collections.Generic.IEnumerable<RigidBody>, System.Numerics.Vector3>? DirectionMagnitude { get; set; }
-
-      public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies) => body.ApplyForce(ForcePosition?.Invoke(body, bodies) ?? System.Numerics.Vector3.Zero, DirectionMagnitude?.Invoke(body, bodies) ?? System.Numerics.Vector3.Zero);
     }
   }
 
+  public class BoundaryBoxForce : ForceGenerator
+  {
+    public enum OutOfBoundsActionEnum
+    {
+      BounceBack,
+      Unhindered,
+      WrapAround
+    }
+
+    public OutOfBoundsActionEnum OutOfBoundsAction { get; set; } = OutOfBoundsActionEnum.Unhindered;
+
+    public System.Numerics.Vector3 Low { get; set; } = new System.Numerics.Vector3(0, 1000, 0);
+    public System.Numerics.Vector3 High { get; set; } = new System.Numerics.Vector3(1000, 0, 0);
+
+    public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
+      switch (OutOfBoundsAction)
+      {
+        case OutOfBoundsActionEnum.BounceBack:
+          if (body.Position.X < Low.X)
+          {
+            body.Position.X = (Low.X + (Low.X - body.Position.X));
+            body.LinearVelocity.X = System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          else if (body.Position.X > High.X)
+          {
+            body.Position.X = (High.X - (body.Position.X - High.X));
+            body.LinearVelocity.X = -System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          if (body.Position.Y < Low.Y)
+          {
+            body.Position.Y = (Low.Y + (Low.Y - body.Position.Y));
+            body.LinearVelocity.Y = System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          else if (body.Position.Y > High.Y)
+          {
+            body.Position.Y = (High.Y - (body.Position.Y - High.Y));
+            body.LinearVelocity.Y = -System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          if (body.Position.Z < Low.Z)
+          {
+            body.Position.Z = (Low.Z + (Low.Z - body.Position.Z));
+            body.LinearVelocity.Z = System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          else if (body.Position.Z > High.Z)
+          {
+            body.Position.Z = (High.Z - (body.Position.Z - High.Z));
+            body.LinearVelocity.Z = -System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
+            System.Numerics.Quaternion.Inverse(body.Orientation);
+          }
+          break;
+        case OutOfBoundsActionEnum.WrapAround:
+          if (body.Position.X < Low.X)
+          {
+            body.Position.X = (High.X - (Low.X - body.Position.X));
+          }
+          else if (body.Position.X > High.X)
+          {
+            body.Position.X = (Low.X + (body.Position.X - High.X));
+          }
+          if (body.Position.Y < Low.Y)
+          {
+            body.Position.Y = (High.Y - (Low.Y - body.Position.Y));
+          }
+          else if (body.Position.Y > High.Y)
+          {
+            body.Position.Y = (Low.Y + (body.Position.Y - High.Y));
+          }
+          if (body.Position.Z < Low.Z)
+          {
+            body.Position.Z = (High.Z - (Low.Z - body.Position.Z));
+          }
+          else if (body.Position.Z > High.Z)
+          {
+            body.Position.Z = (Low.Z + (body.Position.Z - High.Z));
+          }
+          break;
+        default:
+          break;
+      }
+
+      //if (OutOfBoundsAction == OutOfBoundsActionEnum.BounceBack)
+      //{
+      //  if (body.Position.X < Boundary.Left)
+      //  {
+      //    body.Position.X = (float)(Boundary.Left + (Boundary.Left - body.Position.X));
+      //    body.LinearVelocity.X = System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+      //    System.Numerics.Quaternion.Negate(body.Orientation);
+      //    //body.AngularVelocity = -body.AngularVelocity * .5F;
+      //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X * 0.5F));
+      //  }
+      //  else if (body.Position.X > Boundary.Right)
+      //  {
+      //    body.Position.X = (float)(Boundary.Right - (body.Position.X - Boundary.Right));
+      //    body.LinearVelocity.X = -System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+      //    System.Numerics.Quaternion.Negate(body.Orientation);
+      //    //body.AngularVelocity = body.AngularVelocity * .5F;
+      //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X * 0.5F));
+      //  }
+      //  //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.X));
+
+      //  if (body.Position.Y < Boundary.Top)
+      //  {
+      //    body.Position.Y = (float)(Boundary.Top + (Boundary.Top - body.Position.Y));
+      //    body.LinearVelocity.Y = System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+      //    System.Numerics.Quaternion.Negate(body.Orientation);
+      //    //body.AngularVelocity = -body.AngularVelocity * .5F;
+      //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y * 0.5F));
+      //  }
+      //  else if (body.Position.Y > Boundary.Bottom)
+      //  {
+      //    body.Position.Y = (float)(Boundary.Bottom - (body.Position.Y - Boundary.Bottom));
+      //    body.LinearVelocity.Y = -System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+      //    System.Numerics.Quaternion.Negate(body.Orientation);
+      //    //body.AngularVelocity = body.AngularVelocity * .5F;
+      //    //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y*0.5F));
+      //  }
+      //  //body.ApplyForce(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(0, 0, body.LinearVelocity.Y));
+      //}
+      //else if (OutOfBoundsAction == OutOfBoundsActionEnum.WrapAround)
+      //{
+      //  if (body.Position.X < Boundary.Left)
+      //    body.Position.X = (float)(Boundary.Right - (Boundary.Left - body.Position.X));
+      //  else if (body.Position.X > Boundary.Right)
+      //    body.Position.X = (float)(Boundary.Left + (body.Position.X - Boundary.Right));
+
+      //  if (body.Position.Y < Boundary.Top)
+      //    body.Position.Y = (float)(Boundary.Bottom - (Boundary.Top - body.Position.Y));
+      //  else if (body.Position.Y > Boundary.Bottom)
+      //    body.Position.Y = (float)(Boundary.Top + (body.Position.Y - Boundary.Bottom));
+      //}
+    }
+  }
+
+  public class DragForce : ForceGenerator
+  {
+    public const float DensityOfAir = 1.29F;
+    public const float DensityOfWater = 1.94F;
+
+    public float DragDensity { get; set; } = DensityOfAir;
+
+    public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
+      var dragForce = 0.5f * DragDensity * (float)System.Math.Pow(body.LinearVelocity.Length(), 2) * body.CoefficientOfDrag;
+
+      body.ApplyForce(System.Numerics.Vector3.Zero, System.Numerics.Vector3.Negate(body.LinearVelocity * dragForce));
+    }
+  }
+
+  /// <summary></summary>
+  /// <seealso cref="https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.vector3.dot.aspx"/>
+  public class GravityForce : ForceGenerator
+  {
+    public const float GravityOnEarth = 9.780F;
+    public const float GravityOnMars = 3.711F;
+    public const float GravityOnTheMoon = 1.622F;
+
+    public System.Numerics.Vector3 GravitationalPull { get; set; } = new System.Numerics.Vector3(0, GravityOnEarth, 0);
+
+    public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
+      // Dot product: >0 = <90, <0 = >90, =0 = 90, =1 = parallel same dir, =-1 = parallel opposite dir.
+      // if the gravitational pull and the body position is within 90 degrees then apply gravity.
+      //        if (System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(GravitationalPull), System.Numerics.Vector3.Normalize(body.Position)) > 0)
+      {
+        body.ApplyForce(System.Numerics.Vector3.Zero, GravitationalPull);
+      }
+    }
+  }
+
+  public class LambdaForce : ForceGenerator
+  {
+    public System.Func<RigidBody, System.Collections.Generic.IEnumerable<RigidBody>, System.Numerics.Vector3>? ForcePosition { get; set; }
+    public System.Func<RigidBody, System.Collections.Generic.IEnumerable<RigidBody>, System.Numerics.Vector3>? DirectionMagnitude { get; set; }
+
+    public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
+      => (body ?? throw new System.ArgumentNullException(nameof(body))).ApplyForce(ForcePosition?.Invoke(body, bodies) ?? System.Numerics.Vector3.Zero, DirectionMagnitude?.Invoke(body, bodies) ?? System.Numerics.Vector3.Zero);
+  }
+}
+
+namespace Flux.Model.Dynamics
+{
   // http://www.enchantedage.com/node/68
   public class RigidBody
   {
-    public System.Collections.Generic.List<ForceGenerators.ForceGenerator> ForceGenerators = new System.Collections.Generic.List<ForceGenerators.ForceGenerator>();
+    public System.Collections.Generic.List<ForceGenerators.ForceGenerator> ForceGenerators { get; } = new System.Collections.Generic.List<ForceGenerators.ForceGenerator>();
 
-    public float CoefficientOfDrag = 0.35F;
-    public float CoefficientOfRestitution = 0.95F;
+    public float CoefficientOfDrag { get; set; } = 0.35F;
+    public float CoefficientOfRestitution { get; set; } = 0.95F;
 
-    public float Mass = 7F;
+    public float Mass { get; set; } = 7F;
 
     public System.Numerics.Vector3 LinearVelocity;
-    public System.Numerics.Vector3 Force;
+    public System.Numerics.Vector3 Force { get; set; }
 
-    public System.Numerics.Vector3 AngularVelocity;
-    public System.Numerics.Vector3 Torque;
+    public System.Numerics.Vector3 AngularVelocity { get; set; }
+    public System.Numerics.Vector3 Torque { get; set; }
 
     public System.Numerics.Vector3 Position;
 
-    public System.Numerics.Quaternion Orientation = System.Numerics.Quaternion.Identity;
+    public System.Numerics.Quaternion Orientation { get; set; } = System.Numerics.Quaternion.Identity;
 
-    public System.Numerics.Vector3 Volume = new System.Numerics.Vector3(0.5F, 2F, 0.25F);
+    public System.Numerics.Vector3 Volume { get; set; } = new System.Numerics.Vector3(0.5F, 2F, 0.25F);
 
     public void Integrate(float deltaTime)
     {

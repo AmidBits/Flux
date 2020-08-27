@@ -52,7 +52,7 @@
 
     #region Static functions
     public static ISampleStereo ToStereoSample(in ISampleMono mono)
-      => new StereoSample(mono.FrontCenter, mono.FrontCenter);
+      => mono is null ? throw new System.ArgumentNullException(nameof(mono)) : new StereoSample(mono.FrontCenter, mono.FrontCenter);
     //public static ISampleQuad ToQuadSample(in ISampleMono mono)
     //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
     #endregion Static functions
@@ -100,7 +100,7 @@
 
     #region Static functions
     public static ISampleMono ToMonoSample(in ISampleStereo stereo)
-      => new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
+      => stereo is null ? throw new System.ArgumentNullException(nameof(stereo)) : new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
     //public static ISampleQuad ToQuadSample(in ISampleStereo stereo)
     //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
     #endregion Static functions

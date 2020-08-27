@@ -4,7 +4,7 @@ namespace Flux.Dsp.AudioProcessor
   {
     private double m_peakL = 1, m_peakR = 1; // The max peaks of the each channel, represented in the range [0, 1], where 0 is silent and 1 is full volume (no mix), i.e. 100%.
 
-    private double m_position = 0; // The position of the balance across the stereo field, represented in the range [-1, 1], where -1 is left and 1 is right.
+    private double m_position; // The position of the balance across the stereo field, represented in the range [-1, 1], where -1 is left and 1 is right.
     public double Position
     {
       get => m_position;

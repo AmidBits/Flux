@@ -25,6 +25,9 @@ namespace Flux
     /// <summary>Reports the zero-based index of the first occurrence in this instance of any substring in a specified array of strings when compared using the specified comparison option. The search starts at a specified character position and examines a specified number of character positions.</summary>
     public static int IndexOfAny(this string source, int startIndex, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> values)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       var sourceLengthAdjusted = source.Length - startIndex; // Adjusted with offset from startIndex, in case startIndex is too close to the end of the string.
 
       foreach (var value in values)

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Model.Maze
+namespace Flux.Model
 {
   public interface IMaze
   {
@@ -12,19 +12,19 @@ namespace Flux.Model.Maze
   public abstract class Maze
     : IMaze
   {
-    protected System.Random m_rng = new System.Random();
+    protected System.Random Rng { get; set; } = new System.Random();
 
     public virtual void Braid(Grid grid, double threshold = 0.5)
     {
       foreach (var cell in grid.GetDeadEnds().ToList())
       {
-        if (m_rng.NextDouble() <= threshold)
+        if (Rng.NextDouble() <= threshold)
         {
           var unlinkedNeighbors = cell.Edges.Where(kvp => !cell.Paths.ContainsValue(kvp.Value));
 
           var preferedNeighbors = unlinkedNeighbors.OrderBy(kvp => kvp.Value.Paths.Count);
 
-          var neighbor = preferedNeighbors.RandomElement(m_rng).Value;
+          var neighbor = preferedNeighbors.RandomElement(Rng).Value;
 
           cell.ConnectPath(neighbor, true);
         }
@@ -34,18 +34,18 @@ namespace Flux.Model.Maze
     public abstract void Build(Grid grid);
   }
 
-  public class AldusBroder
+  public class AldusBroderMaze
     : Maze
   {
     public override void Build(Grid grid)
     {
-      var current = grid.Cells.RandomElement(m_rng);
+      var current = grid.Cells.RandomElement(Rng);
 
       var unvisitedCount = grid.Cells.Count - 1;
 
       while (unvisitedCount > 0)
       {
-        var neighbor = current.Edges.Select(kvp => kvp.Value).RandomElement(m_rng);
+        var neighbor = current.Edges.Select(kvp => kvp.Value).RandomElement(Rng);
 
         if (!neighbor.Paths.Any())
         {
@@ -59,18 +59,18 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class Backtracker
+  public class BacktrackerMaze
     : Maze
   {
     public override void Build(Grid grid)
     {
       var stack = new System.Collections.Generic.Stack<Cell>();
-      stack.Push(grid.Cells.RandomElement(m_rng));
+      stack.Push(grid.Cells.RandomElement(Rng));
       while (stack.Any())
       {
         if (stack.Peek() is Cell current && current.GetEdgesWithoutPaths() is System.Collections.Generic.IEnumerable<Cell> unvisited && unvisited.Any())
         {
-          stack.Push(current.ConnectPath(unvisited.RandomElement(m_rng), true));
+          stack.Push(current.ConnectPath(unvisited.RandomElement(Rng), true));
         }
         else
         {
@@ -80,7 +80,7 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class BinaryTree
+  public class BinaryTreeMaze
     : Maze
   {
     private DirectionEnum _diagonal = DirectionEnum.NorthEast;
@@ -113,31 +113,31 @@ namespace Flux.Model.Maze
         var direction = cell.Edges.Where(kvp => kvp.Key == direction1 || kvp.Key == direction2);
         if (direction.Any())
         {
-          cell.ConnectPath(direction.RandomElement(m_rng).Value, true);
+          cell.ConnectPath(direction.RandomElement(Rng).Value, true);
         }
       }
     }
   }
 
-  public class GrowingTree
+  public class GrowingTreeMaze
     : Maze
   {
-    public System.Func<System.Collections.Generic.List<Cell>, System.Random, Cell> Selector = (list, random) =>
-    {
-      return list.RandomElement(); // Prim's algorithm by default
+    public System.Func<System.Collections.Generic.List<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
+      {
+        return list.RandomElement(); // Prim's algorithm by default
     };
 
     public override void Build(Grid grid)
     {
-      var active = new System.Collections.Generic.List<Cell> { Selector(grid.Cells, m_rng) };
+      var active = new System.Collections.Generic.List<Cell> { Selector(grid.Cells, Rng) };
       while (active.Any())
       {
-        var cell = Selector(active, m_rng);
+        var cell = Selector(active, Rng);
 
         var unvisited = cell.GetEdgesWithoutPaths();
         if (unvisited.Any())
         {
-          active.Add(cell.ConnectPath(unvisited.RandomElement(m_rng), true));
+          active.Add(cell.ConnectPath(unvisited.RandomElement(Rng), true));
         }
         else
         {
@@ -147,19 +147,19 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class HuntAndKill
+  public class HuntAndKillMaze
     : Maze
   {
     public override void Build(Grid grid)
     {
-      Cell? current = grid.Cells.RandomElement(m_rng);
+      Cell? current = grid.Cells.RandomElement(Rng);
 
       while (current != null)
       {
         var unvisited = current.GetEdgesWithoutPaths();
         if (unvisited.Any())
         {
-          current = current.ConnectPath(unvisited.RandomElement(m_rng), true);
+          current = current.ConnectPath(unvisited.RandomElement(Rng), true);
         }
         else
         {
@@ -170,7 +170,7 @@ namespace Flux.Model.Maze
             var visited = cell.GetEdgesWithPaths();
             if (visited.Any())
             {
-              cell.ConnectPath(visited.RandomElement(m_rng), true);
+              cell.ConnectPath(visited.RandomElement(Rng), true);
 
               current = cell;
 
@@ -182,7 +182,7 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class RecursiveDivision
+  public class RecursiveDivisionMaze
     : Maze
   {
     public override void Build(Grid grid)
@@ -211,8 +211,8 @@ namespace Flux.Model.Maze
     }
     private void DivideHorizontally(Grid grid, int row, int column, int height, int width)
     {
-      var divideSouthOf = m_rng.Next(height - 1);
-      var passageAt = m_rng.Next(width);
+      var divideSouthOf = Rng.Next(height - 1);
+      var passageAt = Rng.Next(width);
 
       for (var i = 0; i < width; i++)
       {
@@ -229,8 +229,8 @@ namespace Flux.Model.Maze
     }
     private void DivideVertically(Grid grid, int row, int column, int height, int width)
     {
-      var divideEastOf = m_rng.Next(width - 1);
-      var passageAt = m_rng.Next(height);
+      var divideEastOf = Rng.Next(width - 1);
+      var passageAt = Rng.Next(height);
 
       for (var i = 0; i < height; i++)
       {
@@ -247,7 +247,7 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class Sidewinder
+  public class SidewinderMaze
     : Maze
   {
     private DirectionEnum _diagonal = DirectionEnum.NorthEast;
@@ -288,9 +288,9 @@ namespace Flux.Model.Maze
           var atBoundary1 = !cell.Edges.ContainsKey(direction1);
           var atBoundary2 = !cell.Edges.ContainsKey(direction2);
 
-          if (atBoundary2 || (!atBoundary1 && m_rng.Next(2) == 0)) // should close out
+          if (atBoundary2 || (!atBoundary1 && Rng.Next(2) == 0)) // should close out
           {
-            if (run.RandomElement(m_rng) is var member && member.Edges.ContainsKey(direction1))
+            if (run.RandomElement(Rng) is var member && member.Edges.ContainsKey(direction1))
             {
               member.ConnectPath(member.Edges[direction1], true);
             }
@@ -306,7 +306,7 @@ namespace Flux.Model.Maze
     }
   }
 
-  public class Wilsons
+  public class WilsonsMaze
     : Maze
   {
     public override void Build(Grid grid)
@@ -314,18 +314,18 @@ namespace Flux.Model.Maze
       var path = new System.Collections.Generic.List<Cell>();
 
       var unvisited = grid.Cells.ToList();
-      unvisited.Remove(unvisited.RandomElement(m_rng));
+      unvisited.Remove(unvisited.RandomElement(Rng));
 
       while (unvisited.Any())
       {
-        var cell = unvisited.RandomElement(m_rng);
+        var cell = unvisited.RandomElement(Rng);
 
         path.Clear();
         path.Add(cell);
 
         while (unvisited.Contains(cell))
         {
-          cell = cell.Edges.Select(kvp => kvp.Value).RandomElement(m_rng);
+          cell = cell.Edges.Select(kvp => kvp.Value).RandomElement(Rng);
 
           if (path.IndexOf(cell) is int position && position > -1)
           {

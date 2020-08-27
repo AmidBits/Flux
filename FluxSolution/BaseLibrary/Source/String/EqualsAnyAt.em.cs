@@ -21,8 +21,9 @@ namespace Flux
     public static bool EqualsAnyAt(this string source, int startAt, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      else if (startAt < 0 || startAt >= source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startAt));
-      else if (count >= 0 && startAt + count >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      if (startAt < 0 || startAt >= source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startAt));
+      if (count >= 0 && startAt + count >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       foreach (var value in values)
       {

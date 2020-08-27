@@ -8,9 +8,9 @@ namespace Flux.Numerics
     private const double NormalizeEpsilon = 1.192092896e-07f; // smallest such that 1.0+NormalizeEpsilon != 1.0
 
     /// <summary>The normal vector of the Plane.</summary>
-    public Vector4 Normal;
+    public Vector4 Normal { get; set; }
     /// <summary>The distance of the Plane along its normal from the origin.</summary>
-    public double D;
+    public double D { get; set; }
 
     /// <summary>Constructs a Plane from the X, Y, and Z components of its normal, and its distance from the origin on that normal.</summary>
     public Plane(double x, double y, double z, double d)

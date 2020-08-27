@@ -81,7 +81,7 @@ namespace Flux.Model
       {
         var places = unit.Where(s => values[s].Contains(digit, System.StringComparison.Ordinal));
 
-        if (places.Count() == 0) // contradiction; there is no place for this digit
+        if (!places.Any()) // contradiction; there is no place for this digit
         {
           return null;
         }
@@ -238,7 +238,7 @@ namespace Flux.Model
     #region Preset Puzzles
     public const string Puzzle1439 = ".....5.8....6.1.43..........1.5........1.6...3.......553.....61........4.........";
 
-    public static string[] Puzzles11 = new string[]
+    public static readonly string[] Puzzles11 = new string[]
     {
       "85...24..72......9..4.........1.7..23.5...9...4...........8..7..17..........36.4.",
       "..53.....8......2..7..1.5..4....53...1..7...6..32...8..6.5....9..4....3......97..",
@@ -253,7 +253,7 @@ namespace Flux.Model
       "....7..2.8.......6.1.2.5...9.54....8.........3....85.1...3.2.8.4.......9.7..6...."
     };
 
-    public static string[] Puzzles95 = new string[]
+    public static readonly string[] Puzzles95 = new string[]
     {
       "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......",
       "52...6.........7.13...........4..8..6......5...........418.........3..2...87.....",

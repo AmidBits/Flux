@@ -2,9 +2,9 @@ namespace Flux.Dsp.AudioProcessor
 {
   public class StereoFieldRotator : IAudioProcessorStereo
   {
-    private double m_cosC = 1, m_sinC = 0; // The coefficients of the transformation matrix (used for processing speed).
+    private double m_cosC = 1, m_sinC; // The coefficients of the transformation matrix (used for processing speed).
 
-    private double m_angle = 0; // The rotational angle, represented in the range [-1, 1], where -1 = -180 degrees and 1 = 180 degrees.
+    private double m_angle; // The rotational angle, represented in the range [-1, 1], where -1 = -180 degrees and 1 = 180 degrees.
     public double Angle
     {
       get => m_angle;

@@ -13,7 +13,7 @@
 
     public const double RMI2 = 2.0 / 1.0 + 1.0;
 
-    private double m_state0 = 0, m_state1 = 0, m_state2 = 0;
+    private double m_state0, m_state1, m_state2;
 
     public PinkNoise3(System.Random random) : base(random) { }
     public PinkNoise3() : base(null) { }

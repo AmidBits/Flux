@@ -7,8 +7,11 @@ namespace Flux
   public static partial class XtendStream
   {
     /// <summary>Copies a chunk of bytes from one stream to another.</summary>
-    static public int CopyTo(this System.IO.Stream source, System.IO.Stream destination, int bufferSize = 8192)
+    static public int CopyTo(this System.IO.Stream source, System.IO.Stream target, int bufferSize = 8192)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
+
       var buffer = new byte[bufferSize];
 
       var bytesCopied = 0;
@@ -19,7 +22,7 @@ namespace Flux
 
         if (bytesRead > 0)
         {
-          destination.Write(buffer, 0, bytesRead);
+          target.Write(buffer, 0, bytesRead);
         }
       }
 

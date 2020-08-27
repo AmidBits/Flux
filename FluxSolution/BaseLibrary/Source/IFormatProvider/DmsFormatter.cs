@@ -6,15 +6,18 @@ namespace Flux.IFormatProvider
   /// var value = "40 11 15 ";
   /// Flux.IFormatProvider.DmsFormatter.TryParse(value, out var result);
   /// System.Console.WriteLine(result);
-  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMS}", result));
+  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
+  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class DmsFormatter : FormatProvider
+  public class DmsFormatter
+    : FormatProvider
   {
-    public const string FormatIdentifier = @"DMS";
+    public bool InsertSpaces { get; set; }
+    public System.Text.Rune SymbolDegrees { get; set; } = new System.Text.Rune('\u00B0');
+    public System.Text.Rune SymbolMinutes { get; set; } = new System.Text.Rune('\u2032');
+    public System.Text.Rune SymbolSeconds { get; set; } = new System.Text.Rune('\u2033');
 
-    public static string SymbolDegrees = "\u00B0";
-    public static string SymbolMinutes = "\u2032";
-    public static string SymbolSeconds = "\u2033";
+    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?(?<AxisCardinalDirections>(NS|EW))?");
 
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
@@ -33,17 +36,18 @@ namespace Flux.IFormatProvider
       return HandleOtherFormats(format, arg);
     }
 
-    private static readonly System.Text.RegularExpressions.Regex _regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?(?<AxisCardinalDirections>(NS|EW))?");
     /// <summary>Try formatting either a latitude or a longitude from a decimal value according to the format parameter as shown.</summary>
     /// <param name="value">Either latitude or longitude.</param>
     /// <param name="format">[D|DM|DMS]{numberOfDecimaPlaces}{NS|EW}</param>
     /// <param name="result">{-}[nn.nnnn\u00B0|nn\u00B0nn.nn\u2032|nn\u00B0nn\u2032nn\u2033]</param>
     /// <returns></returns>
-    public static bool TryFormat(double value, string format, out string result)
+    public bool TryFormat(double value, string format, out string result)
     {
       try
       {
-        if (_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+        var space = InsertSpaces ? @" " : string.Empty;
+
+        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
           var decimalDegrees = System.Math.Abs(value);
           var degrees = System.Math.Floor(decimalDegrees);
@@ -63,18 +67,19 @@ namespace Flux.IFormatProvider
             switch (sp)
             {
               case @"D":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N" + (dp >= 0 ? dp : 4) + @"}{1}", decimalDegrees, SymbolDegrees);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", decimalDegrees);
                 break;
               case @"DM":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N0}{1}{2:N" + (dp >= 0 ? dp : 2) + @"}{3}", degrees, SymbolDegrees, decimalMinutes, SymbolMinutes);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
                 break;
               case @"DMS":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, @"{0:N0}{1}{2:N0}{3}{4:N" + (dp >= 0 ? dp : 0) + @"}{5}", degrees, SymbolDegrees, minutes, SymbolMinutes, decimalSeconds, SymbolSeconds);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
                 break;
             }
 
             if (m.Groups["AxisCardinalDirections"] is System.Text.RegularExpressions.Group group && group.Success && group.Value is string axisCardinalDirections && axisCardinalDirections.Length == 2)
             {
+              sb.Append(space);
               sb.Append(value >= 0 ? axisCardinalDirections[0] : axisCardinalDirections[1]);
             }
           }
@@ -91,36 +96,38 @@ namespace Flux.IFormatProvider
       return false;
     }
 
-    private static readonly System.Text.RegularExpressions.Regex _regexParse = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^NSEW]*(?<CompassDirection>[NSEW])?");
-    /// <summary>Try parsing dms format.</summary>
-    public static bool TryParse(string text, out double result)
+    /// <summary>Try parsing a single DMS part (i.e. either latitude OR longitude).</summary>
+    public static bool TryParse(string dms, out double result)
     {
       try
       {
-        result = 0;
+        var regex = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^NSEW]*(?<CompassDirection>[NSEW])?");
 
-        if (_regexParse.Match(text) is var m && m.Success)
+        var value = 0.0;
+
+        if (regex.Match(dms) is var m && m.Success)
         {
           if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var decimalDegrees))
           {
-            result += decimalDegrees;
+            value += decimalDegrees;
           }
 
           if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var decimalMinutes))
           {
-            result += decimalMinutes / 60;
+            value += decimalMinutes / 60;
           }
 
           if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
           {
-            result += decimalSeconds / 3600;
+            value += decimalSeconds / 3600;
           }
 
           if (m.Groups["CompassDirection"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
           {
-            result = -result;
+            value = -value;
           }
 
+          result = value;
           return true;
         }
       }

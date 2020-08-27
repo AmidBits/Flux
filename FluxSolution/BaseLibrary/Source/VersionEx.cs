@@ -98,13 +98,13 @@ namespace Flux
     }
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Join(m_separatorsArray[0].ToString(formatProvider), m_parts.Select(i => i.ToString(formatProvider)));
+      => string.Join(m_separatorsArray[0].ToString(formatProvider), m_parts.Select(i => i.ToString(format, formatProvider)));
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is VersionEx ve && Equals(ve);
     public override int GetHashCode()
       => Flux.HashCode.Combine(m_parts.Cast<object>().AsEnumerable());
     public override string? ToString()
-      => base.ToString();
+      => ToString();
   }
 }

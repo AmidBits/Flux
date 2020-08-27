@@ -14,7 +14,7 @@ namespace Flux.Probability
     {
       System.Collections.Generic.List<int> w = weights.ToList();
       if (w.Any(x => x < 0) || !w.Any(x => x > 0))
-        throw new System.ArgumentException();
+        throw new System.ArgumentOutOfRangeException(nameof(weights));
       if (w.Count == 1)
         return Singleton<int>.Distribution(0);
       if (w.Count == 2)

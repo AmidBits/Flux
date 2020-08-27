@@ -8,40 +8,40 @@ namespace Flux.Numerics
     : System.IEquatable<Matrix4x4>, System.IFormattable
   {
     /// <summary>Value at row 1, column 1 of the matrix.</summary>
-    public double M11;
+    public double M11 { get; set; }
     /// <summary>Value at row 1, column 2 of the matrix.</summary>
-    public double M12;
+    public double M12 { get; set; }
     /// <summary>Value at row 1, column 3 of the matrix.</summary>
-    public double M13;
+    public double M13 { get; set; }
     /// <summary>Value at row 1, column 4 of the matrix.</summary>
-    public double M14;
+    public double M14 { get; set; }
 
     /// <summary>Value at row 2, column 1 of the matrix.</summary>
-    public double M21;
+    public double M21 { get; set; }
     /// <summary>Value at row 2, column 2 of the matrix.</summary>
-    public double M22;
+    public double M22 { get; set; }
     /// <summary>Value at row 2, column 3 of the matrix.</summary>
-    public double M23;
+    public double M23 { get; set; }
     /// <summary>Value at row 2, column 4 of the matrix.</summary>
-    public double M24;
+    public double M24 { get; set; }
 
     /// <summary>Value at row 3, column 1 of the matrix.</summary>
-    public double M31;
+    public double M31 { get; set; }
     /// <summary>Value at row 3, column 2 of the matrix.</summary>
-    public double M32;
+    public double M32 { get; set; }
     /// <summary>Value at row 3, column 3 of the matrix.</summary>
-    public double M33;
+    public double M33 { get; set; }
     /// <summary>Value at row 3, column 4 of the matrix.</summary>
-    public double M34;
+    public double M34 { get; set; }
 
     /// <summary>Value at row 4, column 1 of the matrix.</summary>
-    public double M41;
+    public double M41 { get; set; }
     /// <summary>Value at row 4, column 2 of the matrix.</summary>
-    public double M42;
+    public double M42 { get; set; }
     /// <summary>Value at row 4, column 3 of the matrix.</summary>
-    public double M43;
+    public double M43 { get; set; }
     /// <summary>Value at row 4, column 4 of the matrix.</summary>
-    public double M44;
+    public double M44 { get; set; }
 
     private static readonly Matrix4x4 m_identity = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     /// <summary>Returns the multiplicative identity matrix.</summary>
@@ -148,7 +148,7 @@ namespace Flux.Numerics
     /// <returns>The negated matrix.</returns>
     public static Matrix4x4 operator -(Matrix4x4 value)
     {
-      Matrix4x4 m;
+      Matrix4x4 m = new Matrix4x4();
 
       m.M11 = -value.M11;
       m.M12 = -value.M12;
@@ -178,7 +178,7 @@ namespace Flux.Numerics
     /// <returns>The resulting matrix.</returns>
     public static Matrix4x4 operator +(Matrix4x4 value1, Matrix4x4 value2)
     {
-      Matrix4x4 m;
+      Matrix4x4 m = new Matrix4x4();
 
       m.M11 = value1.M11 + value2.M11;
       m.M12 = value1.M12 + value2.M12;
@@ -208,7 +208,7 @@ namespace Flux.Numerics
     /// <returns>The result of the subtraction.</returns>
     public static Matrix4x4 operator -(Matrix4x4 value1, Matrix4x4 value2)
     {
-      Matrix4x4 m;
+      Matrix4x4 m = new Matrix4x4();
 
       m.M11 = value1.M11 - value2.M11;
       m.M12 = value1.M12 - value2.M12;
@@ -238,7 +238,7 @@ namespace Flux.Numerics
     /// <returns>The result of the multiplication.</returns>
     public static Matrix4x4 operator *(Matrix4x4 value1, Matrix4x4 value2)
     {
-      Matrix4x4 m;
+      Matrix4x4 m = new Matrix4x4();
 
       // First row
       m.M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21 + value1.M13 * value2.M31 + value1.M14 * value2.M41;
@@ -275,7 +275,7 @@ namespace Flux.Numerics
     /// <returns>The scaled matrix.</returns>
     public static Matrix4x4 operator *(Matrix4x4 value1, double value2)
     {
-      Matrix4x4 m;
+      Matrix4x4 m = new Matrix4x4();
 
       m.M11 = value1.M11 * value2;
       m.M12 = value1.M12 * value2;
@@ -509,10 +509,10 @@ namespace Flux.Numerics
     /// <returns>The perspective projection matrix.</returns>
     public static Matrix4x4 CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
     {
-      if (fieldOfView <= 0 || fieldOfView >= System.Math.PI) throw new System.ArgumentOutOfRangeException("fieldOfView");
-      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
-      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("farPlaneDistance");
-      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
+      if (fieldOfView <= 0 || fieldOfView >= System.Math.PI) throw new System.ArgumentOutOfRangeException(nameof(fieldOfView));
+      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
+      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
+      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
       var yScale = 1 / System.Math.Tan(fieldOfView * 0.5);
       var xScale = yScale / aspectRatio;
@@ -529,9 +529,9 @@ namespace Flux.Numerics
     /// <returns>The perspective projection matrix.</returns>
     public static Matrix4x4 CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
     {
-      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
-      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("farPlaneDistance");
-      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
+      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
+      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
+      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
       return new Matrix4x4(2 * nearPlaneDistance / width, 0, 0, 0, 0, 2 * nearPlaneDistance / height, 0, 0, 0, 0, farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
     }
@@ -547,9 +547,9 @@ namespace Flux.Numerics
     /// <returns>The perspective projection matrix.</returns>
     public static Matrix4x4 CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
     {
-      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
-      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException("farPlaneDistance");
-      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException("nearPlaneDistance");
+      if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
+      if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
+      if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
       return new Matrix4x4(2 * nearPlaneDistance / (right - left), 0, 0, 0, 0, 2 * nearPlaneDistance / (top - bottom), 0, 0, (left + right) / (right - left), (top + bottom) / (top - bottom), farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
     }
@@ -767,29 +767,29 @@ namespace Flux.Numerics
       double c = -p.Normal.Z;
       double d = -p.D;
 
-      Matrix4x4 result;
+      Matrix4x4 m = new Matrix4x4();
 
-      result.M11 = a * lightDirection.X + dot;
-      result.M21 = b * lightDirection.X;
-      result.M31 = c * lightDirection.X;
-      result.M41 = d * lightDirection.X;
+      m.M11 = a * lightDirection.X + dot;
+      m.M21 = b * lightDirection.X;
+      m.M31 = c * lightDirection.X;
+      m.M41 = d * lightDirection.X;
 
-      result.M12 = a * lightDirection.Y;
-      result.M22 = b * lightDirection.Y + dot;
-      result.M32 = c * lightDirection.Y;
-      result.M42 = d * lightDirection.Y;
+      m.M12 = a * lightDirection.Y;
+      m.M22 = b * lightDirection.Y + dot;
+      m.M32 = c * lightDirection.Y;
+      m.M42 = d * lightDirection.Y;
 
-      result.M13 = a * lightDirection.Z;
-      result.M23 = b * lightDirection.Z;
-      result.M33 = c * lightDirection.Z + dot;
-      result.M43 = d * lightDirection.Z;
+      m.M13 = a * lightDirection.Z;
+      m.M23 = b * lightDirection.Z;
+      m.M33 = c * lightDirection.Z + dot;
+      m.M43 = d * lightDirection.Z;
 
-      result.M14 = 0;
-      result.M24 = 0;
-      result.M34 = 0;
-      result.M44 = dot;
+      m.M14 = 0;
+      m.M24 = 0;
+      m.M34 = 0;
+      m.M44 = dot;
 
-      return result;
+      return m;
     }
     /// <summary>
     /// Creates a translation matrix.
@@ -1173,6 +1173,8 @@ namespace Flux.Numerics
         return false;
       }
 
+      result = new Matrix4x4();
+
       double invDet = 1 / det;
 
       result.M11 = a11 * invDet;
@@ -1304,7 +1306,7 @@ namespace Flux.Numerics
       double q23 = yz2 + wx2;
       double q33 = 1 - xx2 - yy2;
 
-      Matrix4x4 result;
+      Matrix4x4 result = new Matrix4x4();
 
       // First row
       result.M11 = value.M11 * q11 + value.M12 * q21 + value.M13 * q31;

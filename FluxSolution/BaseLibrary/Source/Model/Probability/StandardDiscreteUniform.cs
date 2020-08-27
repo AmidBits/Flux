@@ -5,7 +5,7 @@ namespace Flux.Probability
     public static StandardDiscreteUniform Distribution(int min, int max)
     {
       if (min > max)
-        throw new System.ArgumentException();
+        throw new System.ArithmeticException();
       return new StandardDiscreteUniform(min, max);
     }
     public int Min { get; }

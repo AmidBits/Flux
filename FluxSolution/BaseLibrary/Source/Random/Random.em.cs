@@ -74,11 +74,11 @@ namespace Flux
     /// <summary>Returns a non-negative random double that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static double NextDouble(this System.Random source, double maxValue)
-      => maxValue > 0 ? source.NextDouble() * maxValue : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
+      => maxValue > 0 ? (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble() * maxValue : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
     /// <summary>Returns a random double that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static double NextDouble(this System.Random source, double minValue, double maxValue)
-      => minValue < maxValue ? source.NextDouble() * (maxValue - minValue) + minValue : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{minValue} < {maxValue}");
+      => minValue < maxValue ? (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble() * (maxValue - minValue) + minValue : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{minValue} < {maxValue}");
 
     /// <summary>Get exponential random sample with mean 1.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -142,15 +142,15 @@ namespace Flux
     /// <summary>Returns a non-negative random Int32.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source)
-      => source.Next();
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next();
     /// <summary>Returns a non-negative random Int32 that is less than the specified maxValue.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source, int maxValue)
-      => source.Next(maxValue);
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next(maxValue);
     /// <summary>Returns a random Int32 that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source, int minValue, int maxValue)
-      => source.Next(minValue, maxValue);
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next(minValue, maxValue);
 
     /// <summary>Returns a non-negative random Int64.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -159,11 +159,11 @@ namespace Flux
     /// <summary>Returns a non-negative random Int64 that is less than the specified maxValue.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static long NextInt64(this System.Random source, long maxValue)
-      => maxValue > 0 ? (long)(maxValue * source.NextDouble()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
+      => maxValue > 0 ? (long)(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
     /// <summary>Returns a random Int64 that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static long NextInt64(this System.Random source, long minValue, long maxValue)
-      => minValue < maxValue ? (long)(source.NextDouble() * (maxValue - minValue) + minValue) : throw new System.ArgumentOutOfRangeException(nameof(minValue), $"{minValue} < {maxValue}");
+      => minValue < maxValue ? (long)((source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble() * (maxValue - minValue) + minValue) : throw new System.ArgumentOutOfRangeException(nameof(minValue), $"{minValue} < {maxValue}");
 
     /// <summary>Returns a random System.Net.IPAddress = IPv4.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -218,7 +218,7 @@ namespace Flux
     /// <summary>Produce a uniform random sample from the open interval [0, 1]. The method will not return either end point.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static double NextUniform(this System.Random source)
-      => source.NextDouble() is var sample && sample > 0 && sample < 1 ? sample : sample == 0 ? double.Epsilon : sample == 1 ? 1 - double.Epsilon : throw new System.ArgumentOutOfRangeException(nameof(source), $"NextDouble() returned an invalid value ({sample}).");
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble() is var sample && sample > 0 && sample < 1 ? sample : sample == 0 ? double.Epsilon : sample == 1 ? 1 - double.Epsilon : throw new System.ArgumentOutOfRangeException(nameof(source), $"NextDouble() returned an invalid value ({sample}).");
 
     /// <see cref="https://en.wikipedia.org/wiki/Weibull_distribution"/>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

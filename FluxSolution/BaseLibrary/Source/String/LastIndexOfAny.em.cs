@@ -25,7 +25,7 @@ namespace Flux
     /// <summary>Reports the zero-based index of the last occurrence in this instance of any substring in a specified sequence when compared using the specified comparison option. The search starts at a specified character position and examines a specified number of character positions.</summary>
     public static int LastIndexOfAny(this string source, int startIndex, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> values)
     {
-      var sourceLengthAdjusted = source.Length - startIndex; // Adjusted with offset from startIndex, in case startIndex is too close to the end of the string.
+      var sourceLengthAdjusted = (source ?? throw new System.ArgumentNullException(nameof(source))).Length - startIndex; // Adjusted with offset from startIndex, in case startIndex is too close to the end of the string.
 
       foreach (var value in values)
       {

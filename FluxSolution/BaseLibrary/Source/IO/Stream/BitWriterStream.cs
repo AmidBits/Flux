@@ -92,6 +92,8 @@ namespace Flux.IO
     /// <summary>Implements writing bulk bytes of bits.</summary>
     public override void Write(byte[] buffer, int offset, int count)
     {
+      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer));
+
       for (int index = offset, limit = offset + count; index < limit; index++)
       {
         WriteByte(buffer[index]);

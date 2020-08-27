@@ -24,13 +24,14 @@ namespace Flux.Model
       System.Console.WriteLine(ks.Recurser(10, 67));
 */
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   /// <summary>
   /// 
   /// </summary>
   /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
   public class Knapsack
   {
-    public int WeightCapacity;
+    public int WeightCapacity { get; set; }
     public Item[] Items;
 
     public int[,] Value;
@@ -134,4 +135,5 @@ namespace Flux.Model
       return K[items.Length, weightCapacity];
     }
   }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

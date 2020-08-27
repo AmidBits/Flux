@@ -15,6 +15,8 @@ namespace Flux.Random
     /// <summary>Fills the elements of a specified array of bytes with random numbers.</summary>
     public override void NextBytes(byte[] buffer)
     {
+      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer));
+
       for (var index = 0; index < buffer.Length;)
       {
         var value = SampleUInt64();

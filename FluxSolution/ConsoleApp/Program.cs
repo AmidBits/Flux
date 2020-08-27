@@ -15,6 +15,25 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var originalLatitude = 32.221667;
+      var originalLongitude = -110.926389;
+      System.Console.WriteLine($"{originalLatitude}, {originalLongitude}");
+
+      var geoposition = new Flux.Geoposition(originalLatitude, originalLongitude, EarthRadii.MeanInMeters);
+      System.Console.WriteLine($"Loaded: {geoposition}");
+
+      var parsedLatitude = string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", geoposition.Latitude);
+      var parsedLongitude = string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", geoposition.Longitude);
+
+      Flux.Geoposition.TryParse(parsedLatitude, parsedLongitude, out var geo2);
+      System.Console.WriteLine($"Parsed: {geo2}");
+
+
+      System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS} = {0:DMNS} = {0:DNS} \u2248 {0:D6NS}", originalLatitude));
+      System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW} = {0:DMEW} = {0:DEW} \u2248 {0:D6EW}", originalLongitude));
+      System.Console.WriteLine(string.Format(new Flux.IFormatProvider.RadixFormatter(), "{0:RADIX2}", 95));
+      return;
+
       //var deg0 = 135;
       //var rad0 = Flux.Angles.DegreeToRadian(deg0);
       //var crt1 = Flux.Angles.RotationAngleToCartesian(rad0, out var x1, out var y1);

@@ -43,7 +43,7 @@ namespace Flux.Text
 
     public static string QuotedPrintable(byte value) => value >= 33 && value <= 126 && value != 61 ? new string(System.Text.Encoding.UTF8.GetChars(new byte[] { value })) : value.ToString("X2");
 
-    public static string Encode(System.Numerics.BigInteger number, char[] baseCharacters)
+    public static string Encode(System.Numerics.BigInteger number, params char[] baseCharacters)
     {
       var sb = new System.Text.StringBuilder(64);
 
@@ -69,8 +69,10 @@ namespace Flux.Text
       return sb.ToString();
     }
 
-    public static System.Numerics.BigInteger Decode(string number, char[] baseCharacters)
+    public static System.Numerics.BigInteger Decode(string number, params char[] baseCharacters)
     {
+      if (number is null) throw new System.ArgumentNullException(nameof(number));
+
       var result = System.Numerics.BigInteger.Zero;
 
       if (!System.Text.RegularExpressions.Regex.IsMatch(number, "^-?0?$") && number.Replace(@"-", string.Empty, System.StringComparison.Ordinal) is string s && s.Length > 0)

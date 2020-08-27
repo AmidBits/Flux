@@ -5,7 +5,7 @@
   public class BrownNoise
     : WhiteNoise
   {
-    private double m_brown = 0;
+    private double m_brown;
 
     public BrownNoise(System.Random rng) : base(rng) { }
     public BrownNoise() : base(null) { }

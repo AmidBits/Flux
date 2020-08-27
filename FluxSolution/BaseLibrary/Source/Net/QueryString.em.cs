@@ -7,6 +7,9 @@ namespace Flux
     /// <summary>Change any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
     public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ChangeInQueryStringDictionary(this System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> change, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (change is null) throw new System.ArgumentNullException(nameof(change));
+
       var changed = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
       foreach (var kvp in source)
@@ -29,6 +32,9 @@ namespace Flux
     /// <summary>Remove any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
     public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> RemoveInQueryStringDictionary(this System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> remove, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (remove is null) throw new System.ArgumentNullException(nameof(remove));
+
       var removed = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
       foreach (var kvp in source)
@@ -43,10 +49,10 @@ namespace Flux
     }
 
     public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ToQueryStringDictionary(this string source)
-      => (source.Length > 0 && source[0] == '?' ? source.Substring(1) : source).Split('&').Select(s => s.Split('=')).Where(a => a.Length == 2).GroupBy(a => a[0]).ToDictionary(g => System.Net.WebUtility.UrlDecode(g.Key), g => g.Select(a => System.Net.WebUtility.UrlDecode(a[1])).ToList());
+      => ((source ?? throw new System.ArgumentNullException(nameof(source))).Length > 0 && source[0] == '?' ? source.Substring(1) : source).Split('&').Select(s => s.Split('=')).Where(a => a.Length == 2).GroupBy(a => a[0]).ToDictionary(g => System.Net.WebUtility.UrlDecode(g.Key), g => g.Select(a => System.Net.WebUtility.UrlDecode(a[1])).ToList());
 
     /// <summary>Generate a query string from the 'query dictionary'.</summary>
     public static string ToQueryString(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
-      => source.Count > 0 ? $"{'?'}{string.Join(@"&", source.OrderBy(kvp => kvp.Key).Where(kvp => kvp.Value.Count > 0).SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}={v}")))}" : string.Empty;
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Count > 0 ? $"{'?'}{string.Join(@"&", source.OrderBy(kvp => kvp.Key).Where(kvp => kvp.Value.Count > 0).SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}={v}")))}" : string.Empty;
   }
 }

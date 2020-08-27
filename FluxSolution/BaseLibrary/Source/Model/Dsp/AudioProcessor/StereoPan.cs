@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor
 {
   public class StereoPan : IAudioProcessorStereo
   {
-    private double m_position = 0;
+    private double m_position;
     // The position of the pan across the stereo field in the range [-1, 1], where -1 is left and 1 is right.
     public double Position
     {

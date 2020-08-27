@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Indicates whether the source is already wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
     public static bool IsWrapped(this string source, char left, char right)
-      => source.Length >= 2 && source[0] == left && source[source.Length - 1] == right;
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Length >= 2 && source[0] == left && source[source.Length - 1] == right;
     /// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. SQL brackets, or parenthesis.</summary>
     public static string Unwrap(this string source, char left, char right)
       => source.IsWrapped(left, right) ? source.Substring(1, source.Length - 2) : source;
@@ -14,7 +14,7 @@ namespace Flux
 
     /// <summary>Indicates whether the source is already wrapped in the strings.</summary>
     public static bool IsWrapped(this string source, string left, string right)
-      => source.Length >= (left.Length + right.Length) && source.StartsWith(left, System.StringComparison.Ordinal) && source.EndsWith(right, System.StringComparison.Ordinal);
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Length >= ((left ?? throw new System.ArgumentNullException(nameof(left))).Length + (right ?? throw new System.ArgumentNullException(nameof(right))).Length) && source.StartsWith(left, System.StringComparison.Ordinal) && source.EndsWith(right, System.StringComparison.Ordinal);
     /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
     public static string Unwrap(this string source, string left, string right)
       => source.IsWrapped(left, right) ? source.Substring(left.Length, source.Length - (left.Length + right.Length)) : source;

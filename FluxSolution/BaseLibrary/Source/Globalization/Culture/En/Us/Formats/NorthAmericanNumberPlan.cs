@@ -53,6 +53,8 @@ namespace Flux.Globalization.EnUs
 
     public static string TranslateAlphabeticMnemonics(string phoneNumberWithAlphabeticMnemonics)
     {
+      if (phoneNumberWithAlphabeticMnemonics is null) throw new System.ArgumentNullException(nameof(phoneNumberWithAlphabeticMnemonics));
+
       var sb = new System.Text.StringBuilder();
 
       foreach (var c in phoneNumberWithAlphabeticMnemonics)

@@ -163,6 +163,8 @@ namespace Flux.Model
     }
     public Vector3I(int[] array, int startIndex)
     {
+      if (array is null) throw new System.ArgumentNullException(nameof(array));
+
       if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
 
       X = array[startIndex++];

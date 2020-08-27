@@ -3,7 +3,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   /// <summary>Process a stereo signal using one mono audio processor (IAudioProcessorMono).</summary>
   public class OneMonoAsStereo : IAudioProcessorStereo
   {
-    public IAudioProcessorMono Mono;
+    public IAudioProcessorMono Mono { get; set; }
 
     public OneMonoAsStereo(IAudioProcessorMono mono)
     {
@@ -19,7 +19,8 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   /// <summary>Process a stereo signal using two mono audio processors (IAudioProcessorMono).</summary>
   public class TwoMonoAsStereo : IAudioProcessorStereo
   {
-    public IAudioProcessorMono Left, Right;
+    public IAudioProcessorMono Left { get; set; }
+    public IAudioProcessorMono Right { get; set; }
 
     public TwoMonoAsStereo(IAudioProcessorMono left, IAudioProcessorMono right)
     {

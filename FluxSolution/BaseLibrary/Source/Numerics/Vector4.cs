@@ -7,13 +7,13 @@ namespace Flux.Numerics
     : System.IEquatable<Vector4>, System.IFormattable
   {
     /// <summary>The X component of the vector.</summary>
-    public double X;
+    public double X { get; set; }
     /// <summary>The Y component of the vector.</summary>
-    public double Y;
+    public double Y { get; set; }
     /// <summary>The Z component of the vector.</summary>
-    public double Z;
+    public double Z { get; set; }
     /// <summary>The W component of the vector.</summary>
-    public double W;
+    public double W { get; set; }
 
     /// <summary>Returns the vector (0,0,0,0).</summary>
     public static Vector4 Zero
@@ -59,7 +59,7 @@ namespace Flux.Numerics
     {
       if (array == null) throw new System.NullReferenceException(nameof(array));
       if (index < 0 || index >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if ((array.Length - index) < 4) throw new System.ArgumentException(nameof(index));
+      if ((array.Length - index) < 4) throw new System.ArgumentOutOfRangeException(nameof(index));
 
       array[index] = X;
       array[index + 1] = Y;

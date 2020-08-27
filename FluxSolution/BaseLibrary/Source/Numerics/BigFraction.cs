@@ -203,17 +203,17 @@ namespace Flux.Numerics
     private static readonly System.Numerics.BigInteger MinDecimal = new System.Numerics.BigInteger(decimal.MinValue);
 
     /// <summary>Represents a BigFraction value of 5.</summary>
-    public static BigFraction Five = new BigFraction(5, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction Five = new BigFraction(5, System.Numerics.BigInteger.One, true);
     /// <summary>Represents a BigFraction value of -1.</summary>
-    public static BigFraction MinusOne = new BigFraction(-1, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction MinusOne = new BigFraction(-1, System.Numerics.BigInteger.One, true);
     /// <summary>Represents a BigFraction value of 1.</summary>
-    public static BigFraction One = new BigFraction(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction One = new BigFraction(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
     /// <summary>Represents a BigFraction value of 10.</summary>
-    public static BigFraction Ten = new BigFraction(10, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction Ten = new BigFraction(10, System.Numerics.BigInteger.One, true);
     /// <summary>Represents a BigFraction value of 2.</summary>
-    public static BigFraction Two = new BigFraction(2, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction Two = new BigFraction(2, System.Numerics.BigInteger.One, true);
     /// <summary>Represents a BigFraction value of 0.</summary>
-    public static BigFraction Zero = new BigFraction(0, System.Numerics.BigInteger.One, true);
+    public static readonly BigFraction Zero = new BigFraction(0, System.Numerics.BigInteger.One, true);
 
     /// <summary>Returns the absolute value a value.</summary>
     public static BigFraction Abs(BigFraction value)
@@ -318,7 +318,7 @@ namespace Flux.Numerics
         return Negate(NthRoot(Negate(v), n, maxError));
       }
 
-      if (maxError == null || maxError.Sign <= 0) throw new System.ArgumentOutOfRangeException("Epsilon must be positive");
+      if (maxError == null || maxError.Sign <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxError), "Epsilon must be positive");
 
       if (v.IsZero) return Zero;
       if (n == 1) return v;

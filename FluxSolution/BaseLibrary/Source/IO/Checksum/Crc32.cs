@@ -4,21 +4,25 @@ namespace Flux.IO.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
-  public class Crc32
+  public struct Crc32
     : IChecksum32, System.IEquatable<Crc32>, System.IFormattable
   {
     private readonly uint[] m_lookupTable;
 
-    private uint m_hash = 0xFFFFFFFF;
+    private uint m_hash;
 
     public int Code { get => (int)(m_hash ^ 0xFFFFFFFF); set => m_hash = (uint)value ^ 0xFFFFFFFF; }
 
-    public Crc32()
+    public Crc32(int hash = unchecked((int)0xFFFFFFFF))
     {
+      m_hash = unchecked((uint)hash);
+
       m_lookupTable = Flux.Maths.GetVanEckSequence(256).Take(256).Select((e, i) => (e == 0 ? i : e) * 256 * i).Select(bi => (uint)bi).ToArray();
     }
     public Crc32(int[] lookupTable)
     {
+      m_hash = 0xFFFFFFFF;
+
       if (lookupTable is null) throw new System.ArgumentNullException(nameof(lookupTable));
 
       if (lookupTable.Length != 256) throw new System.ArgumentOutOfRangeException(nameof(lookupTable), @"The lookup table must contain 256 values");
@@ -50,7 +54,7 @@ namespace Flux.IO.Checksum
       => !a.Equals(b);
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Crc32 other)
-      => !(other is null) && m_hash == other.m_hash;
+      => m_hash == other.m_hash;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";

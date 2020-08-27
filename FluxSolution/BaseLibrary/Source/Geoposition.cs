@@ -24,6 +24,8 @@ namespace Flux
   public struct Geoposition
     : System.IEquatable<Geoposition>, System.IFormattable
   {
+    public static readonly Geoposition Empty;
+
     public const string SymbolDegrees = "\u00B0";
     public const string SymbolMinutes = "\u2032";
     public const string SymbolSeconds = "\u2033";
@@ -60,11 +62,13 @@ namespace Flux
     /// <param name="trackEnd"></param>
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
-    public double AlongTrackDistance(Geoposition trackStart, Geoposition trackEnd, double earthRadius = EarthRadii.MeanInMeters) => earthRadius * AlongTrackCentralAngle(trackStart.m_latitudeRad, trackStart.m_longitudeRad, trackEnd.m_latitudeRad, trackEnd.m_longitudeRad, m_latitudeRad, m_longitudeRad, out var _);
+    public double AlongTrackDistance(Geoposition trackStart, Geoposition trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+      => earthRadius * AlongTrackCentralAngle(trackStart.m_latitudeRad, trackStart.m_longitudeRad, trackEnd.m_latitudeRad, trackEnd.m_longitudeRad, m_latitudeRad, m_longitudeRad, out var _);
 
     /// <summary>The shortest distance of this position from the specified track.</summary>
     /// <remarks>The cross track error, i.e. the distance off course.</remarks>
-    public double CrossTrackError(Geoposition trackStart, Geoposition trackEnd, double earthRadius = EarthRadii.MeanInMeters) => earthRadius * CrossTrackCentralAngle(trackStart.m_latitudeRad, trackStart.m_longitudeRad, trackEnd.m_latitudeRad, trackEnd.m_longitudeRad, m_latitudeRad, m_longitudeRad, out var _);
+    public double CrossTrackError(Geoposition trackStart, Geoposition trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+      => earthRadius * CrossTrackCentralAngle(trackStart.m_latitudeRad, trackStart.m_longitudeRad, trackEnd.m_latitudeRad, trackEnd.m_longitudeRad, m_latitudeRad, m_longitudeRad, out var _);
 
     // <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
     /// <param name="bearingDegrees"></param>
@@ -80,9 +84,11 @@ namespace Flux
     /// <param name="targetPoint"></param>
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns></returns>
-    public double DistanceTo(Geoposition targetPoint, double earthRadius = EarthRadii.MeanInMeters) => earthRadius * CentralAngleVincentyFormula(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad);
+    public double DistanceTo(Geoposition targetPoint, double earthRadius = EarthRadii.MeanInMeters)
+      => earthRadius * CentralAngleVincentyFormula(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad);
 
-    public double InitialBearingTo(Geoposition targetPoint) => Angles.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
+    public double InitialBearingTo(Geoposition targetPoint)
+      => Angles.RadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
     public Geoposition IntermediaryPointTo(Geoposition target, double unitInterval)
@@ -360,33 +366,18 @@ namespace Flux
       longitudeOut = longitude1 + System.Math.Atan2(By, cosLat1 + Bx);
     }
 
-    /// <summary>Try parsing the specified DMS strings containing both latitude and longitude.</summary>
-    //public static bool TryParseDMS(string s, out Geoposition position)
-    //{
-    //  try
-    //  {
-    //    if (System.Text.RegularExpressions.Regex.Split(s, @"[\s\,]+") is string[] a && a.Length == 2)
-    //    {
-    //      position = new Geoposition();
+    /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
+    public static bool TryParse(string latitudeDMS, string longitudeDMS, out Geoposition result, double earthRadius = EarthRadii.MeanInMeters)
+    {
+      if (Flux.IFormatProvider.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Flux.IFormatProvider.DmsFormatter.TryParse(longitudeDMS, out var longitude))
+      {
+        result = new Geoposition(latitude, longitude, earthRadius);
+        return true;
+      }
 
-    //      if (!IFormatProvider.DmsFormatter.TryParse(a[0], out position.Latitude))
-    //      {
-    //        throw new System.Exception();
-    //      }
-
-    //      if (!IFormatProvider.DmsFormatter.TryParse(a[1], out position.Longitude))
-    //      {
-    //        throw new System.Exception();
-    //      }
-
-    //      return true;
-    //    }
-    //  }
-    //  catch { }
-
-    //  position = default(Geoposition);
-    //  return false;
-    //}
+      result = Empty;
+      return false;
+    }
     #endregion Static Members
 
     // Operators
@@ -399,14 +390,14 @@ namespace Flux
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, "<{1}{0}{2}{0}{3}>", System.Globalization.NumberFormatInfo.GetInstance(formatProvider).NumberGroupSeparator, Altitude.ToString(format, formatProvider), Latitude.ToString(format, formatProvider), Longitude.ToString(format, formatProvider));
+      => string.Format(formatProvider ?? new IFormatProvider.DmsFormatter(), $"<{{0:{format ?? @"DMS"}NS}}, {{1:{format ?? @"DMS"}EW}}, {{2}} m>", Latitude, Longitude, Altitude);
     // Object (override)
     public override bool Equals(object? obj)
       => obj is Geoposition gp && Equals(gp);
-    public override string ToString()
-      => string.Format(new IFormatProvider.DmsFormatter(), "{0:DMSNS} {1:DMSEW}", Latitude, Longitude);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(System.Linq.Enumerable.Empty<object>().Append(Altitude, Latitude, Longitude));
+    public override string ToString()
+      => ToString(null, null);
   }
 }
 

@@ -5,22 +5,14 @@ namespace Flux.Numerics
   public struct Quaternion
     : System.IEquatable<Quaternion>, System.IFormattable
   {
-    /// <summary>
-    /// Specifies the X-value of the vector component of the Quaternion.
-    /// </summary>
-    public double X;
-    /// <summary>
-    /// Specifies the Y-value of the vector component of the Quaternion.
-    /// </summary>
-    public double Y;
-    /// <summary>
-    /// Specifies the Z-value of the vector component of the Quaternion.
-    /// </summary>
-    public double Z;
-    /// <summary>
-    /// Specifies the rotation component of the Quaternion.
-    /// </summary>
-    public double W;
+    /// <summary>Specifies the X-value of the vector component of the Quaternion.</summary>
+    public double X { get; set; }
+    /// <summary>Specifies the Y-value of the vector component of the Quaternion.</summary>
+    public double Y { get; set; }
+    /// <summary>Specifies the Z-value of the vector component of the Quaternion.</summary>
+    public double Z { get; set; }
+    /// <summary>Specifies the rotation component of the Quaternion.</summary>
+    public double W { get; set; }
 
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion Identity

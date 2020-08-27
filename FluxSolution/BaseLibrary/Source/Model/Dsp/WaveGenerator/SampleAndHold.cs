@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveGenerator
   public class SampleAndHold
     : WhiteNoise
   {
-    private double m_sample = 0.0, m_hold = System.Math.PI;
+    private double m_sample, m_hold = System.Math.PI;
 
     public SampleAndHold(System.Random rng) : base(rng) { }
     public SampleAndHold() : base(null) { }

@@ -15,7 +15,7 @@ namespace Flux.Reflection
 
     /// <summary>Returns all the properties matching the binding attributes.</summary>
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
-      => typeof(T).GetProperties(bindingAttr).ToDictionary(pi => pi.Name, pi => pi.GetValue(source, new object[] { }));
+      => typeof(T).GetProperties(bindingAttr).ToDictionary(pi => pi.Name, pi => pi.GetValue(source, System.Array.Empty<object>()));
 
     /// <summary>Returns whether the source type is a reference type. Determined by typeof(T), not source.</summary>
     public static bool IsReferenceType<T>(T source)

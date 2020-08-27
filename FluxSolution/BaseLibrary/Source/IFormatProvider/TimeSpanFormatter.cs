@@ -6,7 +6,8 @@ namespace Flux.IFormatProvider
   /// <example>
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.TsFormatter() { Abbreviated = true }, "{0:TS}", timeValue));
   /// </example>
-  public class TimeSpanFormatter : FormatProvider
+  public class TimeSpanFormatter 
+    : FormatProvider
   {
     private const string csD = "d";
     private const string csDay = "day";
@@ -62,15 +63,15 @@ namespace Flux.IFormatProvider
       var text = new System.Collections.Generic.List<string>(5);
 
       if (ts.Days > 0)
-        text.Add(ts.Days.ToString() + (Abbreviated ? csD : csDay) + (ts.Days == 1 ? string.Empty : @"s"));
+        text.Add(ts.Days.ToString(System.Globalization.CultureInfo.InvariantCulture) + (Abbreviated ? csD : csDay) + (ts.Days == 1 ? string.Empty : @"s"));
       if (ts.Hours > 0)
-        text.Add(ts.Hours.ToString() + (Abbreviated ? csH : csHour) + (ts.Hours == 1 ? string.Empty : @"s"));
+        text.Add(ts.Hours.ToString(System.Globalization.CultureInfo.InvariantCulture) + (Abbreviated ? csH : csHour) + (ts.Hours == 1 ? string.Empty : @"s"));
       if (ts.Minutes > 0)
-        text.Add(ts.Minutes.ToString() + (Abbreviated ? csMin : csMinute) + (ts.Minutes == 1 ? string.Empty : @"s"));
+        text.Add(ts.Minutes.ToString(System.Globalization.CultureInfo.InvariantCulture) + (Abbreviated ? csMin : csMinute) + (ts.Minutes == 1 ? string.Empty : @"s"));
       if (ts.Seconds > 0)
-        text.Add(ts.Seconds.ToString() + (Abbreviated ? csS : csSecond) + (ts.Seconds == 1 ? string.Empty : @"s"));
+        text.Add(ts.Seconds.ToString(System.Globalization.CultureInfo.InvariantCulture) + (Abbreviated ? csS : csSecond) + (ts.Seconds == 1 ? string.Empty : @"s"));
       if (ts.Milliseconds > 0)
-        text.Add(ts.Milliseconds.ToString() + (Abbreviated ? csMs : csMillisecond) + (ts.Milliseconds == 1 ? string.Empty : @"s"));
+        text.Add(ts.Milliseconds.ToString(System.Globalization.CultureInfo.InvariantCulture) + (Abbreviated ? csMs : csMillisecond) + (ts.Milliseconds == 1 ? string.Empty : @"s"));
 
       return string.Join(@", ", text.SkipLast(1)) + @" and " + text.Last();
     }
