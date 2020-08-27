@@ -15,7 +15,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-
       //var deg0 = 135;
       //var rad0 = Flux.Angles.DegreeToRadian(deg0);
       //var crt1 = Flux.Angles.RotationAngleToCartesian(rad0, out var x1, out var y1);
@@ -26,9 +25,12 @@ namespace ConsoleApp
       //var deg2 = Flux.Angles.RadianToDegree(rad2);
 
       //System.Console.WriteLine($"{deg0} = {rad0} = ({x1:N5}, {y1:N5}) = [{deg1:N1}] = ({x2:N5}, {y2:N5}) = [{deg2:N1}] ... ({Maths.PiX2:N5})");
+      var st1 = "This is the 191 time.";
+
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => "This is the 191 time.".ToStringBuilder().Geminate('t', 's', 'i').InsertOrdinalIndicatorSuffix().Reverse().NormalizeAdjacent().ToLowerCaseInvariant().LeftMost(10)));
 
       var tokenizer = new Flux.Text.Tokenization.Rune.Tokenizer();
-      foreach (var token in tokenizer.GetTokens("This is the 191 time.".ToStringBuilder().InsertOrdinalIndicatorSuffix().ToString()))
+      foreach (var token in tokenizer.GetTokens("This is the 191 time.".ToStringBuilder().Geminate('t', 's', 'i').InsertOrdinalIndicatorSuffix().Reverse().NormalizeAdjacent().ToString()))
       {
         System.Console.WriteLine(token);
       }

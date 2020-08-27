@@ -26,6 +26,16 @@ namespace Flux
     public static System.Text.StringBuilder ToLowerCaseInvariant(this System.Text.StringBuilder source, int startIndex, int length)
       => ToLowerCase(source, startIndex, length, System.Globalization.CultureInfo.InvariantCulture);
 
+    /// <summary>Convert all characters to lower case. Uses the specified culture.</summary>
+    public static System.Text.StringBuilder ToLowerCase(this System.Text.StringBuilder source, System.Globalization.CultureInfo culture)
+      => ToLowerCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), culture);
+    /// <summary>Convert all characters to lower case. Uses the current culture.</summary>
+    public static System.Text.StringBuilder ToLowerCaseCurrent(this System.Text.StringBuilder source)
+      => ToLowerCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), System.Globalization.CultureInfo.CurrentCulture);
+    /// <summary>Convert all characters to lower case. Uses the invariant culture.</summary>
+    public static System.Text.StringBuilder ToLowerCaseInvariant(this System.Text.StringBuilder source)
+      => ToLowerCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), System.Globalization.CultureInfo.InvariantCulture);
+
     /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture.</summary>
     public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
     {
@@ -49,8 +59,15 @@ namespace Flux
     /// <summary>Convert all characters, in the specified range, to upper case. Uses the invariant culture.</summary>
     public static System.Text.StringBuilder ToUpperCaseInvariant(this System.Text.StringBuilder source, int startIndex, int length)
       => ToUpperCase(source, startIndex, length, System.Globalization.CultureInfo.InvariantCulture);
-    /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture.</summary>
+
+    /// <summary>Convert all characters to upper case. Uses the specified culture.</summary>
     public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, System.Globalization.CultureInfo culture)
       => ToUpperCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), culture);
+    /// <summary>Convert all characters to upper case. Uses the current culture.</summary>
+    public static System.Text.StringBuilder ToUpperCaseCurrent(this System.Text.StringBuilder source)
+      => ToUpperCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), System.Globalization.CultureInfo.CurrentCulture);
+    /// <summary>Convert all characters to upper case. Uses the invariant culture.</summary>
+    public static System.Text.StringBuilder ToUpperCaseInvariant(this System.Text.StringBuilder source)
+      => ToUpperCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), System.Globalization.CultureInfo.InvariantCulture);
   }
 }
