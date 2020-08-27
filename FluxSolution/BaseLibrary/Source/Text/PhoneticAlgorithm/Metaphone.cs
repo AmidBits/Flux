@@ -3,7 +3,7 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
   /// <summary>Implements the Metaphone algorithm</summary>
-  public class Metaphone 
+  public class Metaphone
     : IPhoneticEncoder
   {
     public int MaxCodeLength { get; set; } = 6;
@@ -22,7 +22,7 @@ namespace Flux.Text.PhoneticAlgorithm
     {
       _output = new System.Text.StringBuilder();
 
-      __text = string.Join(string.Empty, text.ToString().RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+      __text = string.Join(string.Empty, text.ToStringBuilder().RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).ToString().Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
       __pos = 0;
 
       // Special handling of some string prefixes: PN, KN, GN, AE, WR, WH and X

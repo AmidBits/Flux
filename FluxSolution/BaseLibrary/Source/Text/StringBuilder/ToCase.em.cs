@@ -49,5 +49,8 @@ namespace Flux
     /// <summary>Convert all characters, in the specified range, to upper case. Uses the invariant culture.</summary>
     public static System.Text.StringBuilder ToUpperCaseInvariant(this System.Text.StringBuilder source, int startIndex, int length)
       => ToUpperCase(source, startIndex, length, System.Globalization.CultureInfo.InvariantCulture);
+    /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture.</summary>
+    public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, System.Globalization.CultureInfo culture)
+      => ToUpperCase(source, 0, source?.Length ?? throw new System.ArgumentNullException(nameof(source)), culture);
   }
 }

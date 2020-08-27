@@ -12,7 +12,7 @@ namespace Flux.Data
       => IsNullable = isNullable;
 
     public static TsqlNullability Parse(string expression)
-      => (expression.NormalizeAll(' ', char.IsWhiteSpace).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) switch
+      => (expression.ToStringBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToUpperCase(System.Globalization.CultureInfo.InvariantCulture).ToString()) switch
       {
         CsNotNull => new TsqlNullability() { IsNullable = false },
         CsNull => new TsqlNullability() { IsNullable = true },

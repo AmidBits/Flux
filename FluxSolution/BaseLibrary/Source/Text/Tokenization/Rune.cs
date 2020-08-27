@@ -15,10 +15,10 @@ namespace Flux.Text.Tokenization.Rune
 
     public int CategoryOrdinal { get; }
 
-    public Token(int index, System.Text.Rune value, int categoryOrdinal)
+    public Token(int index, System.Text.Rune rune, int categoryOrdinal)
     {
       Index = index;
-      Value = value;
+      Value = rune;
 
       CategoryOrdinal = categoryOrdinal;
     }
@@ -30,10 +30,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenLetter
   : Token
   {
-    public int LetterIndex { get; set; }
-
-    public TokenLetter(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenLetter(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -41,8 +39,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenMark
     : Token
   {
-    public TokenMark(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenMark(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -50,8 +48,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenNumber
     : Token
   {
-    public TokenNumber(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenNumber(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -59,8 +57,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenOther
     : Token
   {
-    public TokenOther(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenOther(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -110,8 +108,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenSeparator
     : Token
   {
-    public TokenSeparator(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenSeparator(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -119,8 +117,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenSymbol
     : Token
   {
-    public TokenSymbol(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenSymbol(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }
@@ -128,8 +126,8 @@ namespace Flux.Text.Tokenization.Rune
   public class TokenUnrecognized
   : Token
   {
-    public TokenUnrecognized(int index, System.Text.Rune value, int categoryOrdinal)
-      : base(index, value, categoryOrdinal)
+    public TokenUnrecognized(int index, System.Text.Rune rune, int categoryOrdinal)
+      : base(index, rune, categoryOrdinal)
     {
     }
   }

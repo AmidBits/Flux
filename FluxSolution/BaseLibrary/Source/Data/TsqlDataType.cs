@@ -105,7 +105,7 @@ namespace Flux.Data
       => string.Join(@",", dataTypeArguments) is var dta && dta.Length > 0 ? dta.Wrap('(', ')') : string.Empty;
     /// <summary>Convert a data type arguments string into a new sequence of argument values.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToArguments(string dataTypeArguments)
-      => dataTypeArguments.RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(',');
+      => dataTypeArguments.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, ',');
 
     private readonly static System.Text.RegularExpressions.Regex m_reParse = new System.Text.RegularExpressions.Regex(@"^\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?$");
     /// <summary></summary>

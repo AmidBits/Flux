@@ -104,7 +104,7 @@ namespace Flux.IFormatProvider
           format = format.Replace(s, $"{{{index}}}", StringComparison.Ordinal);
         }
 
-        result = string.Format(System.Globalization.CultureInfo.CurrentCulture, format, parts).NormalizeAll(' ', c => c == ' ');
+        result = string.Format(System.Globalization.CultureInfo.CurrentCulture, format, parts).ToStringBuilder().NormalizeAll(' ', c => c == ' ').ToString();
         return true;
       }
 

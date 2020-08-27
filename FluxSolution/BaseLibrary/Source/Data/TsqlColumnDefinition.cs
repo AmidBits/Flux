@@ -21,7 +21,7 @@ namespace Flux.Data
     {
       ColumnName = columnName.UnquoteTsql();
       DataTypeName = dataTypeName.UnquoteTsql();
-      DataTypeArguments = dataTypeArguments.Select(s => s.RemoveAll(char.IsWhiteSpace)).ToList();
+      DataTypeArguments = dataTypeArguments.Select(s => s.ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToString()).ToList();
       Nullability = nullability;
     }
 
@@ -30,7 +30,7 @@ namespace Flux.Data
       => string.Join(@",", dataTypeArguments) is var dta && dta.Length > 0 ? dta.Wrap('(', ')') : string.Empty;
     /// <summary>Convert a data type arguments string into a new sequence of argument values.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToDataTypeArguments(string dataTypeArgumentsAsString)
-      => dataTypeArgumentsAsString.RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(',');
+      => dataTypeArgumentsAsString.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, ',');
 
     private readonly static System.Text.RegularExpressions.Regex m_reParse = new System.Text.RegularExpressions.Regex(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
     public static TsqlColumnDefinition Parse(string tsqlColumnDefinition)

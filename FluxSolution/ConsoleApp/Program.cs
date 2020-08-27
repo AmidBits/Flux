@@ -15,16 +15,22 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var degree = 135;
-      var radian = Flux.Angles.DegreeToRadian(degree);
-      var cart1 = Flux.Angles.RotationAngleToCartesian(radian, out var x1, out var y1);
-      var cart2 = Flux.Angles.RotationAngleToCartesianEx(radian, out var x2, out var y2);
-      var radi1 = Flux.Angles.CartesianToRotationAngle(x1, y1);
-      var radi2 = Flux.Angles.CartesianToRotationAngleEx(x2, y2);
-      var degr1 = Flux.Angles.RadianToDegree(radi1);
-      var degr2 = Flux.Angles.RadianToDegree(radi2);
+      //var deg0 = 135;
+      //var rad0 = Flux.Angles.DegreeToRadian(deg0);
+      //var crt1 = Flux.Angles.RotationAngleToCartesian(rad0, out var x1, out var y1);
+      //var crt2 = Flux.Angles.RotationAngleToCartesianEx(rad0, out var x2, out var y2);
+      //var rad1 = Flux.Angles.CartesianToRotationAngle(x1, y1);
+      //var rad2 = Flux.Angles.CartesianToRotationAngleEx(x2, y2);
+      //var deg1 = Flux.Angles.RadianToDegree(rad1);
+      //var deg2 = Flux.Angles.RadianToDegree(rad2);
 
-      System.Console.WriteLine($"{degree} = {radian} = ({x1:N5}, {y1:N5}) = [{degr1:N1}] = ({x2:N5}, {y2:N5}) = [{degr2:N1}] ... ({Maths.PiX2:N5})");
+      //System.Console.WriteLine($"{deg0} = {rad0} = ({x1:N5}, {y1:N5}) = [{deg1:N1}] = ({x2:N5}, {y2:N5}) = [{deg2:N1}] ... ({Maths.PiX2:N5})");
+
+      var tokenizer = new Flux.Text.Tokenization.Rune.Tokenizer();
+      foreach (var token in tokenizer.GetTokens("This is the 191 time.".ToStringBuilder().InsertOrdinalIndicatorSuffix().ToString()))
+      {
+        System.Console.WriteLine(token);
+      }
 
       return;
 

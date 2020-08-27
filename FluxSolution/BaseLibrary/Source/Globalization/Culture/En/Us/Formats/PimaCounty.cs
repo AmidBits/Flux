@@ -1,3 +1,5 @@
+using System;
+
 namespace Flux.Globalization.EnUs.PimaCounty
 {
   public struct StreetAddress
@@ -98,6 +100,6 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()
-      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".NormalizeAll(' ', ' ');
+      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpan().NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }
 }
