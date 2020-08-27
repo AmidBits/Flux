@@ -15,6 +15,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+
       //var deg0 = 135;
       //var rad0 = Flux.Angles.DegreeToRadian(deg0);
       //var crt1 = Flux.Angles.RotationAngleToCartesian(rad0, out var x1, out var y1);

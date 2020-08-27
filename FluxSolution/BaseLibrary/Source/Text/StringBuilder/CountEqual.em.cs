@@ -3,14 +3,14 @@ namespace Flux
   public static partial class XtendStringBuilder
   {
     /// <summary>Reports the length (or count) of equality at both the start and the end of the sequence. Using the specified comparer.</summary>
-    public static int CountEqualOnBothEnds(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
-      => CountEqualOnLeft(source, target, comparer, out _) + CountEqualOnRight(source, target, comparer, out _);
+    public static int CountEqualOnBothSides(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+      => CountEqualAtStart(source, target, comparer, out _) + CountEqualAtEnd(source, target, comparer, out _);
     /// <summary>Reports the length (or count) of equality at both the start and the end of the sequence. Using the default comparer.</summary>
-    public static int CountEqualOnBothEnds(this System.Text.StringBuilder source, string target)
-      => CountEqualOnBothEnds(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
+    public static int CountEqualOnBothSides(this System.Text.StringBuilder source, string target)
+      => CountEqualOnBothSides(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Yields the number of characters that the source and the target have in common from the start.</summary>
-    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
+    public static int CountEqualAtStart(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
@@ -25,17 +25,17 @@ namespace Flux
       return index;
     }
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
-    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, out int minLength)
-      => CountEqualOnLeft(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out minLength);
+    public static int CountEqualAtStart(this System.Text.StringBuilder source, string target, out int minLength)
+      => CountEqualAtStart(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out minLength);
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the specified comparer.</summary>
-    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
-      => CountEqualOnLeft(source, target, comparer, out var _);
+    public static int CountEqualAtStart(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+      => CountEqualAtStart(source, target, comparer, out var _);
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
-    public static int CountEqualOnLeft(this System.Text.StringBuilder source, string target)
-      => CountEqualOnLeft(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out _);
+    public static int CountEqualAtStart(this System.Text.StringBuilder source, string target)
+      => CountEqualAtStart(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out _);
 
     /// <summary>Yields the number of characters that the source and the target have in common at the end.</summary>
-    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
+    public static int CountEqualAtEnd(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
@@ -54,13 +54,13 @@ namespace Flux
       return minLength;
     }
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the default comparer.</summary>
-    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, out int minLength)
-      => CountEqualOnRight(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out minLength);
+    public static int CountEqualAtEnd(this System.Text.StringBuilder source, string target, out int minLength)
+      => CountEqualAtEnd(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out minLength);
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the specified comparer.</summary>
-    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
-      => CountEqualOnRight(source, target, comparer, out var _);
+    public static int CountEqualAtEnd(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+      => CountEqualAtEnd(source, target, comparer, out var _);
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the default comparer.</summary>
-    public static int CountEqualOnRight(this System.Text.StringBuilder source, string target)
-      => CountEqualOnRight(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out var _);
+    public static int CountEqualAtEnd(this System.Text.StringBuilder source, string target)
+      => CountEqualAtEnd(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out var _);
   }
 }
