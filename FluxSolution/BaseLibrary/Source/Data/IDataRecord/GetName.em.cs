@@ -8,8 +8,10 @@ namespace Flux
 
     /// <summary>Results in a string array of all column names.</summary>
     public static System.Collections.Generic.IEnumerable<string> GetNames(this System.Data.IDataRecord source)
-//      => source.GetFields((idr, i) => idr.GetName(i));
+    //      => source.GetFields((idr, i) => idr.GetName(i));
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.FieldCount; index++)
       {
         yield return source.GetName(index);
@@ -18,6 +20,8 @@ namespace Flux
     /// <summary>Results in a string array of all column names.</summary>
     public static System.Collections.Generic.IEnumerable<string> GetNamesEx(this System.Data.IDataRecord source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       for (var index = 0; index < source.FieldCount; index++)
       {
         yield return source.GetNameEx(index);

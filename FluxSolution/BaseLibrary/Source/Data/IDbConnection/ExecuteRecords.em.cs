@@ -32,6 +32,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<TResult> ExecuteRecords<TResult>(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<System.Data.IDataRecord, System.Data.DataTable, TResult> recordSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (recordSelector is null) throw new System.ArgumentNullException(nameof(recordSelector));
 
       using var c = source.CreateCommand();
 

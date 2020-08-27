@@ -17,7 +17,7 @@ namespace Flux.Collections.Generic
   public class Deque<T>
     : System.Collections.Generic.IEnumerable<T>, IDeque<T>
   {
-    public static IDeque<T> Empty = new EmptyDeque();
+    public static readonly IDeque<T> Empty = new EmptyDeque();
 
     private const string DequeIsEmpty = @"The deque is empty.";
 
