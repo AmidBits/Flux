@@ -1,7 +1,8 @@
 ﻿namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
 {
   /// <summary>Calculates all filter frequency functions akk at once.</summary>
-  public class MultiSVF : IAudioFilterMono, IAudioProcessorMono
+  public class MultiSVF
+    : IAudioFilterMono, IAudioProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
@@ -76,6 +77,7 @@
       return LowPass;
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

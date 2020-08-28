@@ -3,7 +3,8 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
   /// <summary>A linear trapezoidal integrated state variable filter (SVF) collection</summary>
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
-  public class SingleSVF : IAudioFilterMono, IAudioProcessorMono
+  public class SingleSVF
+    : IAudioFilterMono, IAudioProcessorMono
   {
     public enum FrequencyFunction
     {
@@ -170,6 +171,6 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
       return m0 * v0 + m1 * v1 + m2 * v2;
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

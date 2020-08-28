@@ -161,7 +161,7 @@ namespace Flux.Dsp
       return Current;
     }
 
-    public ISampleMono NextSample() => new MonoSample(Next(null));
+    public MonoSample NextSample() => new MonoSample(Next(null));
 
     /// <summary>Returns a sequence of the specified number of samples.</summary>
     public System.Collections.Generic.IEnumerable<double> GetNext(int count)

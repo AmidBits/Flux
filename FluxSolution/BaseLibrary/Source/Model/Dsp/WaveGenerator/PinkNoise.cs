@@ -15,10 +15,16 @@
 
     private double m_state0, m_state1, m_state2;
 
-    public PinkNoise3(System.Random random) : base(random) { }
-    public PinkNoise3() : base(null) { }
+    public PinkNoise3(System.Random random)
+      : base(random)
+    {
+    }
+    public PinkNoise3()
+      : base(null)
+    {
+    }
 
-    public override ISampleMono GenerateWave(double phase)
+    public override MonoSample GenerateWave(double phase)
     {
       var temp1 = Rng.NextDouble();
       m_state0 = P0 * (m_state0 - temp1) + temp1;

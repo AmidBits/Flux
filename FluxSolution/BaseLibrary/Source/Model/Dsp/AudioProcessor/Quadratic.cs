@@ -14,7 +14,8 @@ namespace Flux.Dsp.AudioProcessor
     SymmetricInverse
   }
 
-  public class QuadraticMono : IAudioProcessorMono
+  public class QuadraticMono
+    : IAudioProcessorMono
   {
     public QuadraticMode Mode { get; internal set; }
 
@@ -42,9 +43,12 @@ namespace Flux.Dsp.AudioProcessor
 
       Exponent = exponent;
     }
-    public QuadraticMono() : this(QuadraticMode.Asymmetric, 0) { }
+    public QuadraticMono()
+      : this(QuadraticMode.Asymmetric, 0)
+    {
+    }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(Mode switch
+    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(Mode switch
     {
       QuadraticMode.Asymmetric => (System.Math.Pow(sample.FrontCenter / 2 + 0.5, m_exponentExpanded) * 2 - 1),
       QuadraticMode.InvertedAsymmetric => (-(System.Math.Pow(-sample.FrontCenter / 2 + 0.5, m_exponentExpanded) * 2 - 1)),
@@ -54,7 +58,8 @@ namespace Flux.Dsp.AudioProcessor
     });
   }
 
-  public class QuadraticStereo : IAudioProcessorStereo
+  public class QuadraticStereo
+    : IAudioProcessorStereo
   {
     public QuadraticMono Left { get; private set; }
     public QuadraticMono Right { get; private set; }
@@ -69,9 +74,16 @@ namespace Flux.Dsp.AudioProcessor
       Left = new QuadraticMono(modeL, exponentL);
       Right = new QuadraticMono(modeR, exponentR);
     }
-    public QuadraticStereo(QuadraticMode mode, double exponent) : this(mode, exponent, mode, exponent) { }
-    public QuadraticStereo() : this(QuadraticMode.Asymmetric, 1) { }
+    public QuadraticStereo(QuadraticMode mode, double exponent)
+      : this(mode, exponent, mode, exponent)
+    {
+    }
+    public QuadraticStereo()
+      : this(QuadraticMode.Asymmetric, 1)
+    {
+    }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }

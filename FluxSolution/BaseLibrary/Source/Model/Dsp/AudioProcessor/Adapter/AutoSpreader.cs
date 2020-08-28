@@ -1,11 +1,12 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
-  public class AutoSpreader : IAudioProcessorStereo
+  public class AutoSpreader
+    : IAudioProcessorStereo
   {
     public System.Collections.Generic.List<IAudioProcessorMono> Processors { get; } = new System.Collections.Generic.List<IAudioProcessorMono>();
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample)
+    public StereoSample ProcessAudio(StereoSample sample)
     {
       var left = sample.FrontLeft;
       var right = sample.FrontRight;

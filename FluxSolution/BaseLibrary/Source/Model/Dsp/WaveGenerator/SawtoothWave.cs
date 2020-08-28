@@ -4,7 +4,7 @@
   public class SawtoothWave
     : IWaveGenerator
   {
-    public ISampleMono GenerateWave(double phase)
+    public MonoSample GenerateWave(double phase)
       => new MonoSample(1 - phase * 2);
 
     // public static double Sample(double phase) => 1.0 - phase * 2.0;

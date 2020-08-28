@@ -4,7 +4,8 @@ namespace Flux.Dsp.AudioFilter
   // http://musicdsp.org/files/Audio-EQ-Cookbook.txt
 
   // http://musicdsp.org/showArchiveComment.php?ArchiveID=240 // Karlsen 24 dB Ladder
-  public class FastLadder4P : IAudioFilterMono, IAudioProcessorMono
+  public class FastLadder4P
+    : IAudioFilterMono, IAudioProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
@@ -59,6 +60,7 @@ namespace Flux.Dsp.AudioFilter
       return buf4;
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

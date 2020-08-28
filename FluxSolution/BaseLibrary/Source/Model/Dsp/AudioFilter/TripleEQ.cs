@@ -1,6 +1,7 @@
 namespace Flux.Dsp.AudioFilter
 {
-  public class TripleEQ : IAudioFilterMono, IAudioProcessorMono
+  public class TripleEQ
+    : IAudioFilterMono, IAudioProcessorMono
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
 
@@ -65,6 +66,7 @@ namespace Flux.Dsp.AudioFilter
       return (low + mid + high);
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

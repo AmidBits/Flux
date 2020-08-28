@@ -3,7 +3,8 @@ namespace Flux.Dsp.AudioFilter
   /// <comment>A biquad is a second order (two poles and two zeros) IIR filter. It is high enough order to be useful on its own, and—because of coefficient sensitivities in higher order filters—the biquad is often used as the basic building block for more complex filters. This implementation use the transposed direct form II architecture (which has good floating point characteristics, and requires only two unit delays).</comment>
 	/// <see cref="http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/"/>
   /// <seealso cref="http://www.earlevel.com/main/2003/02/28/biquads/"/>
-	public sealed class BiQuad : IAudioFilterMono, IAudioProcessorMono
+	public sealed class BiQuad
+    : IAudioFilterMono, IAudioProcessorMono
   {
     public FrequencyFunction FilterType { get; private set; }
 
@@ -311,6 +312,7 @@ namespace Flux.Dsp.AudioFilter
       return o;
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

@@ -2,7 +2,8 @@ namespace Flux.Dsp.AudioProcessor
 {
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
-  public class BrickWallLimiterMono : IAudioProcessorMono
+  public class BrickWallLimiterMono
+    : IAudioProcessorMono
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
@@ -30,9 +31,10 @@ namespace Flux.Dsp.AudioProcessor
       return sample * m_autoAttenuation;
     }
 
-    public static double Limit(double sample) => Flux.Maths.Clamp(sample, -1.0, 1.0);
+    public static double Limit(double sample)
+      => Flux.Maths.Clamp(sample, -1.0, 1.0);
 
-    public ISampleMono ProcessAudio(ISampleMono sample)
+    public MonoSample ProcessAudio(MonoSample sample)
     {
       if (m_autoAttenuation < 1.0)
       {
@@ -51,7 +53,8 @@ namespace Flux.Dsp.AudioProcessor
     }
   }
 
-  public class BrickWallLimiterStereo : IAudioProcessorStereo
+  public class BrickWallLimiterStereo
+    : IAudioProcessorStereo
   {
     public BrickWallLimiterMono Left { get; }
     public BrickWallLimiterMono Right { get; }
@@ -64,6 +67,7 @@ namespace Flux.Dsp.AudioProcessor
       Right = new BrickWallLimiterMono();
     }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudioMono(sample.FrontLeft), Right.ProcessAudioMono(sample.FrontRight));
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudioMono(sample.FrontLeft), Right.ProcessAudioMono(sample.FrontRight));
   }
 }

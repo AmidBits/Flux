@@ -13,14 +13,19 @@
     PositivePeekOnly
   }
 
-  public class InverterMono : IAudioProcessorMono
+  public class InverterMono
+    : IAudioProcessorMono
   {
     public InverterMode Mode { get; internal set; }
 
-    public InverterMono(InverterMode mode) => Mode = mode;
-    public InverterMono() : this(InverterMode.PeekToPeek) { }
+    public InverterMono(InverterMode mode)
+      => Mode = mode;
+    public InverterMono()
+      : this(InverterMode.PeekToPeek)
+    {
+    }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(Mode switch
+    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(Mode switch
     {
       InverterMode.PeekToPeek => (-sample.FrontCenter),
       InverterMode.PeeksIndependently when sample.FrontCenter < 0 => (-sample.FrontCenter - 1),
@@ -36,7 +41,8 @@
     public static double InvertPositivePeekOnly(double sample) => sample > 0.0 ? -sample + 1.0 : sample;
   }
 
-  public class InverterStereo : IAudioProcessorStereo
+  public class InverterStereo
+    : IAudioProcessorStereo
   {
     public InverterMono Left { get; }
     public InverterMono Right { get; }
@@ -53,8 +59,12 @@
       Left = new InverterMono(mode);
       Right = new InverterMono(mode);
     }
-    public InverterStereo() : this(InverterMode.PeekToPeek) { }
+    public InverterStereo()
+      : this(InverterMode.PeekToPeek)
+    {
+    }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }

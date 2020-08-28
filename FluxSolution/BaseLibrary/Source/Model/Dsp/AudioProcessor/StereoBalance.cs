@@ -1,6 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public class StereoBalance : IAudioProcessorStereo
+  public class StereoBalance
+    : IAudioProcessorStereo
   {
     private double m_peakL = 1, m_peakR = 1; // The max peaks of the each channel, represented in the range [0, 1], where 0 is silent and 1 is full volume (no mix), i.e. 100%.
 
@@ -30,12 +31,14 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(sample.FrontLeft * m_peakL, sample.FrontRight * m_peakR);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(sample.FrontLeft * m_peakL, sample.FrontRight * m_peakR);
 
     /// <summary>Apply stereo balance using the specified position to an arbitrary stereo signal sample</summary>
     /// <param name="position">The balance position of the stereo samples [-1, 1] across the stereo field, where negative means to the left, positive means to the right and 0 means center.</param>
     /// <param name="left">The left stereo sample in the range [-1, 1].</param>
     /// <param name="right">The right stereo sample in the range [-1, 1].</param>
-    public static (double left, double right) ApplyStereoBalance(double position, double left, double right) => position > Maths.EpsilonCpp32 ? (left * (1.0 - position), right) : position < Maths.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
+    public static (double left, double right) ApplyStereoBalance(double position, double left, double right)
+      => position > Maths.EpsilonCpp32 ? (left * (1.0 - position), right) : position < Maths.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
   }
 }

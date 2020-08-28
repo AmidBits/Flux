@@ -7,14 +7,14 @@
 
     /// <returns>Process the shaped sample in the [-1, 1] range in mono.</returns>
     //double ProcessAudioMono(double sample);
-    ISampleMono ProcessAudio(ISampleMono sample);
+    MonoSample ProcessAudio(MonoSample sample);
 
     private class EmptyAudioProcessorMono
       : IAudioProcessorMono
     {
       public static IAudioProcessorMono Instance = new EmptyAudioProcessorMono();
 
-      public ISampleMono ProcessAudio(ISampleMono sample)
+      public MonoSample ProcessAudio(MonoSample sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorMono));
     }
   }
@@ -24,14 +24,14 @@
   {
     /// <returns>Process the shaped samples in the [-1, 1] range in stereo.</returns>
     //(double left, double right) ProcessAudioStereo(double left, double right);
-    ISampleStereo ProcessAudio(ISampleStereo sample);
+    StereoSample ProcessAudio(StereoSample sample);
 
     private class EmptyAudioProcessorStereo
       : IAudioProcessorStereo
     {
       public static IAudioProcessorStereo Instance = new EmptyAudioProcessorStereo();
 
-      public ISampleStereo ProcessAudio(ISampleStereo sample)
+      public StereoSample ProcessAudio(StereoSample sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorStereo));
     }
   }

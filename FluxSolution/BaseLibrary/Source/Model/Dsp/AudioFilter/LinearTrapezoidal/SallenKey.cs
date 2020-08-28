@@ -5,7 +5,8 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
   /// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
-  public class SallenKey : IAudioFilterMono, IAudioProcessorMono
+  public class SallenKey
+    : IAudioFilterMono, IAudioProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 and 20,000 Hz, but no restrictions are enforced.</value>
@@ -68,6 +69,7 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
       return v2;
     }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(FilterAudioMono(sample.FrontCenter));
   }
 }

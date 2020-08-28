@@ -7,10 +7,16 @@
   {
     private double m_brown;
 
-    public BrownNoise(System.Random rng) : base(rng) { }
-    public BrownNoise() : base(null) { }
+    public BrownNoise(System.Random rng)
+      : base(rng)
+    {
+    }
+    public BrownNoise()
+      : base(null)
+    {
+    }
 
-    public override ISampleMono GenerateWave(double phase)
+    public override MonoSample GenerateWave(double phase)
     {
       while (true)
       {

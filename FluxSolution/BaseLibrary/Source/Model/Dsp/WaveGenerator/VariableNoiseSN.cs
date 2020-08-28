@@ -45,9 +45,12 @@
         GenerateWave(default);
       }
     }
-    public VariableNoiseSN() : this(1, 5, null) { }
+    public VariableNoiseSN()
+      : this(1, 5, null)
+    {
+    }
 
-    public override ISampleMono GenerateWave(double phase)
+    public override MonoSample GenerateWave(double phase)
     {
       // ??? how can this work when it makes -0.5 to 0.5
       var value0 = Rng?.NextDouble() ?? (Rng = new System.Random()).NextDouble() - 0.5;

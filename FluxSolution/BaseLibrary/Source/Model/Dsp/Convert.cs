@@ -35,10 +35,10 @@ namespace Flux.Dsp
       => quantityScalar * System.Math.Log10(ratio / referenceFactor);
 
     /// <summary>Convert a mono sample into a set of stereo samples.</summary>
-    public static ISampleStereo MonoToStereo(double sampleM)
+    public static StereoSample MonoToStereo(double sampleM)
       => new StereoSample(sampleM, sampleM);
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
-    public static ISampleMono StereoToMono(double sampleL, double sampleR)
+    public static MonoSample StereoToMono(double sampleL, double sampleR)
       => new MonoSample((sampleL + sampleR) / 2);
 
     /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals.</summary>

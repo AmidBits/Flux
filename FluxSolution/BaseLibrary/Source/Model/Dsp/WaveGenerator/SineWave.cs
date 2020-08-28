@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveGenerator
   public class SineWave
     : IWaveGenerator
   {
-    public ISampleMono GenerateWave(double phase)
+    public MonoSample GenerateWave(double phase)
       => new MonoSample(System.Math.Sin(phase * Maths.PiX2));
 
     // public static double Sample(double phase) => System.Math.Sin(phase * Math.PiX2);

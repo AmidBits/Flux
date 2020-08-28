@@ -2,7 +2,8 @@ namespace Flux.Dsp.AudioProcessor
 {
   // https://creatingsound.com/2013/06/dsp-audio-programming-series-part-1/
   // https://stackoverflow.com/questions/11793310/how-to-add-echo-effect-on-audio-file-using-objective-c
-  public class DelayMono : IAudioProcessorMono
+  public class DelayMono
+    : IAudioProcessorMono
   {
     private readonly double[] m_buffer;
 
@@ -56,8 +57,14 @@ namespace Flux.Dsp.AudioProcessor
       Time = 1.0;
       Mix = 0.0;
     }
-    public DelayMono(int maxDelayTimeInSeconds) : this(maxDelayTimeInSeconds, 44100.0) { }
-    public DelayMono() : this(1) { }
+    public DelayMono(int maxDelayTimeInSeconds)
+      : this(maxDelayTimeInSeconds, 44100.0)
+    {
+    }
+    public DelayMono()
+      : this(1)
+    {
+    }
 
     //public double ProcessAudioMono(double sample)
     //{
@@ -70,7 +77,7 @@ namespace Flux.Dsp.AudioProcessor
     //  return sample * (_dryMix + _gainCompensation * _wetMix) + (_gain * bufferSample) * _wetMix;
     //}
 
-    public ISampleMono ProcessAudio(ISampleMono sample)
+    public MonoSample ProcessAudio(MonoSample sample)
     {
       var bufferSample = m_buffer[m_bufferPosition];
 
@@ -82,7 +89,8 @@ namespace Flux.Dsp.AudioProcessor
     }
   }
 
-  public class DelayStereo : IAudioProcessorStereo
+  public class DelayStereo
+    : IAudioProcessorStereo
   {
     public DelayMono Left { get; }
     public DelayMono Right { get; }
@@ -100,9 +108,16 @@ namespace Flux.Dsp.AudioProcessor
       Left = new DelayMono(maxDelayTimeInSeconds, sampleRate);
       Right = new DelayMono(maxDelayTimeInSeconds, sampleRate);
     }
-    public DelayStereo(int maxDelayTimeInSeconds) : this(maxDelayTimeInSeconds, 44100.0) { }
-    public DelayStereo() : this(1) { }
+    public DelayStereo(int maxDelayTimeInSeconds)
+      : this(maxDelayTimeInSeconds, 44100.0)
+    {
+    }
+    public DelayStereo()
+      : this(1)
+    {
+    }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }

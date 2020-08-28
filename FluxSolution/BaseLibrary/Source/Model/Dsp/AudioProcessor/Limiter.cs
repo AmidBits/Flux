@@ -1,7 +1,8 @@
 namespace Flux.Dsp.AudioProcessor
 {
   /// <see cref="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>
-  public class LimiterMono : IAudioProcessorMono
+  public class LimiterMono
+    : IAudioProcessorMono
   {
     private double m_threshold;
     public double Threshold
@@ -82,7 +83,7 @@ namespace Flux.Dsp.AudioProcessor
       m_computedSoftClipMult = System.Math.Abs((m_computedCeilingDecibel - m_computedSoftClip) / (m_computedPeakDecibel - m_computedSoftClip));
     }
 
-    public ISampleMono ProcessAudio(ISampleMono mono)
+    public MonoSample ProcessAudio(MonoSample mono)
     {
       // var peak = System.Math.Abs(sample);
 
@@ -104,7 +105,8 @@ namespace Flux.Dsp.AudioProcessor
     }
   }
 
-  public class LimiterStereo : IAudioProcessorStereo
+  public class LimiterStereo
+    : IAudioProcessorStereo
   {
     public LimiterMono Left { get; }
     public LimiterMono Right { get; }
@@ -115,6 +117,7 @@ namespace Flux.Dsp.AudioProcessor
       Right = new LimiterMono();
     }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }

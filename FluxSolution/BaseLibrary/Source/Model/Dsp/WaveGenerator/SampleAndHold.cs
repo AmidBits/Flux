@@ -6,10 +6,16 @@ namespace Flux.Dsp.WaveGenerator
   {
     private double m_sample, m_hold = System.Math.PI;
 
-    public SampleAndHold(System.Random rng) : base(rng) { }
-    public SampleAndHold() : base(null) { }
+    public SampleAndHold(System.Random rng)
+      : base(rng)
+    {
+    }
+    public SampleAndHold()
+      : base(null)
+    {
+    }
 
-    public override ISampleMono GenerateWave(double phase)
+    public override MonoSample GenerateWave(double phase)
     {
       if (phase < m_hold)
       {

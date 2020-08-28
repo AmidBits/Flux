@@ -14,7 +14,8 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
-  public class RectifierMono : IAudioProcessorMono
+  public class RectifierMono
+    : IAudioProcessorMono
   {
     public RectifierMode Mode { get; }
 
@@ -27,9 +28,12 @@ namespace Flux.Dsp.AudioProcessor
       Mode = mode;
       Threshold = threshold;
     }
-    public RectifierMono() : this(RectifierMode.FullWave, 0.0) { }
+    public RectifierMono()
+      : this(RectifierMode.FullWave, 0.0)
+    {
+    }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(Mode switch
+    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(Mode switch
     {
       RectifierMode.NegativeFullWave when sample.FrontCenter > m_threshold => (System.Math.Max(m_threshold - (sample.FrontCenter - m_threshold), -1)),
       RectifierMode.NegativeHalfWave when sample.FrontCenter > m_threshold => (m_threshold),
@@ -38,12 +42,15 @@ namespace Flux.Dsp.AudioProcessor
       _ => (sample.FrontCenter),
     });
 
-    public static double RectifyFullWave(double sample, double threshold = 0.0) => sample < threshold ? System.Math.Min(threshold + (threshold - sample), 1.0) : sample;
-    public static double RectifyHalfWave(double sample, double threshold = 0.0) => sample < threshold ? threshold : sample;
+    public static double RectifyFullWave(double sample, double threshold = 0.0)
+      => sample < threshold ? System.Math.Min(threshold + (threshold - sample), 1.0) : sample;
+    public static double RectifyHalfWave(double sample, double threshold = 0.0)
+      => sample < threshold ? threshold : sample;
   }
 
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
-  public class RectifierStereo : IAudioProcessorStereo
+  public class RectifierStereo
+    : IAudioProcessorStereo
   {
     public RectifierMono Left { get; }
     public RectifierMono Right { get; }
@@ -58,9 +65,16 @@ namespace Flux.Dsp.AudioProcessor
       Left = new RectifierMono(leftMode, leftThreshold);
       Right = new RectifierMono(rightMode, rightThreshold);
     }
-    public RectifierStereo(RectifierMode mode, double threshold) : this(mode, mode, threshold, threshold) { }
-    public RectifierStereo() : this(RectifierMode.FullWave, 0.0) { }
+    public RectifierStereo(RectifierMode mode, double threshold)
+      : this(mode, mode, threshold, threshold)
+    {
+    }
+    public RectifierStereo()
+      : this(RectifierMode.FullWave, 0.0)
+    {
+    }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }

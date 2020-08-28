@@ -11,7 +11,7 @@
     public WhiteNoise()
       => Rng = new Flux.Random.Xoshiro256SS();
 
-    public virtual ISampleMono GenerateWave(double phase2Pi)
+    public virtual MonoSample GenerateWave(double phase2Pi)
       => new MonoSample(Rng.NextDouble() * 2 - 1);
   }
 }

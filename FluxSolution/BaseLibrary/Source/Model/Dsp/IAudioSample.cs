@@ -21,19 +21,15 @@
     double FrontRight { get; }
   }
 
-  public interface ISample
-  {
-  }
+  //public interface ISampleMono
+  //  : IChannelFc
+  //{
+  //}
 
-  public interface ISampleMono
-    : ISample, IChannelFc
-  {
-  }
-
-  public interface ISampleStereo
-    : ISample, IChannelFl, IChannelFr
-  {
-  }
+  //public interface ISampleStereo
+  //  : IChannelFl, IChannelFr
+  //{
+  //}
 
   //public interface ISampleQuad
   //  : ISample, IChannelBl, IChannelBr, IChannelFl, IChannelFr
@@ -41,7 +37,7 @@
   //}
 
   public struct MonoSample
-    : ISampleMono, System.IEquatable<MonoSample>
+    : IChannelFc, System.IEquatable<MonoSample>
   {
     public double FrontCenter { get; }
 
@@ -50,9 +46,12 @@
       FrontCenter = frontCenter;
     }
 
+    public StereoSample ToStereo()
+      => new StereoSample(FrontCenter, FrontCenter);
+
     #region Static functions
-    public static ISampleStereo ToStereoSample(in ISampleMono mono)
-      => mono is null ? throw new System.ArgumentNullException(nameof(mono)) : new StereoSample(mono.FrontCenter, mono.FrontCenter);
+    public static StereoSample ToStereoSample(MonoSample mono)
+      => new StereoSample(mono.FrontCenter, mono.FrontCenter);
     //public static ISampleQuad ToQuadSample(in ISampleMono mono)
     //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
     #endregion Static functions
@@ -83,7 +82,7 @@
   }
 
   public struct StereoSample
-    : ISampleStereo, System.IEquatable<StereoSample>
+    : IChannelFl, IChannelFr, System.IEquatable<StereoSample>
   {
     public double FrontLeft { get; }
     public double FrontRight { get; }
@@ -98,9 +97,12 @@
       FrontRight = frontRight;
     }
 
+    public MonoSample ToMono()
+      => new MonoSample((FrontLeft + FrontRight) / 2);
+
     #region Static functions
-    public static ISampleMono ToMonoSample(in ISampleStereo stereo)
-      => stereo is null ? throw new System.ArgumentNullException(nameof(stereo)) : new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
+    public static MonoSample ToMonoSample(StereoSample stereo)
+      => new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
     //public static ISampleQuad ToQuadSample(in ISampleStereo stereo)
     //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
     #endregion Static functions
@@ -116,10 +118,10 @@
     //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
     // IEquatable<T>
     public bool Equals(StereoSample other)
-      => FrontLeft.Equals(other.FrontLeft) && FrontRight.Equals(other.FrontRight);
+      => FrontLeft == other.FrontLeft && FrontRight == other.FrontRight;
     // Object overrides
     public override bool Equals(object? obj)
-      => obj is StereoSample sample && sample.Equals(this);
+      => obj is StereoSample sample && Equals(sample);
     public override int GetHashCode()
       => Flux.HashCode.Combine(FrontLeft, FrontRight);
     public override string ToString()

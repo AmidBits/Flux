@@ -8,12 +8,18 @@
   {
     private double m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6;
 
-    public PinkNoisePk3(System.Random rng) : base(rng) { }
-    public PinkNoisePk3() : base(default) { }
+    public PinkNoisePk3(System.Random rng)
+      : base(rng)
+    {
+    }
+    public PinkNoisePk3()
+      : base(default)
+    {
+    }
 
     /// <summary>A bipolar (-1 to 1) pink noise sample. The phase is ignored.</summary>
     /// <returns>A pink noise sample inthe -1 to 1 range.</returns>
-    public override ISampleMono GenerateWave(double phase2Pi)
+    public override MonoSample GenerateWave(double phase2Pi)
     {
       var white = Rng.NextDouble(phase2Pi); // The variable 'white' was probably intended to be a new random value each time.
 

@@ -10,14 +10,14 @@ namespace Flux.Dsp
     /// <seealso cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
     /// <param name="phase2Pi">Phase is the position of a point in time (an instant) on a waveform cycle. A complete cycle is defined as the interval required for the waveform to return to its arbitrary initial value. The graph to the right shows how one cycle constitutes 360° of phase. The graph also shows how phase is sometimes expressed in radians, where one radian of phase equals approximately 57.3°.</param>
     /// <returns>A wave sample in the [-1, 1] range.</returns>
-    ISampleMono GenerateWave(double phase);
+    MonoSample GenerateWave(double phase);
 
     private class EmptyWaveGenerator
       : IWaveGenerator
     {
       public static IWaveGenerator Instance = new EmptyWaveGenerator();
 
-      public ISampleMono GenerateWave(double sample)
+      public MonoSample GenerateWave(double sample)
         => throw new System.NotImplementedException(nameof(EmptyWaveGenerator));
     }
   }

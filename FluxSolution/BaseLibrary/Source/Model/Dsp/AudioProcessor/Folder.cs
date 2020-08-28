@@ -1,6 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public class FolderMono : IAudioProcessorMono
+  public class FolderMono
+    : IAudioProcessorMono
   {
     private double m_polarBias;
     /// <summary>The (polar) bias can be set within the range of [-1, 1].</summary>
@@ -32,12 +33,17 @@ namespace Flux.Dsp.AudioProcessor
 
       Multiplier = multiplier;
     }
-    public FolderMono() : this(0, 0) { }
+    public FolderMono()
+      : this(0, 0)
+    {
+    }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(Maths.Fold(m_multiplier * (sample.FrontCenter + m_polarBias), -1, 1));
+    public MonoSample ProcessAudio(MonoSample sample)
+      => new MonoSample(Maths.Fold(m_multiplier * (sample.FrontCenter + m_polarBias), -1, 1));
   }
 
-  public class FolderStereo : IAudioProcessorStereo
+  public class FolderStereo
+    : IAudioProcessorStereo
   {
     public FolderMono Left { get; }
     public FolderMono Right { get; }
@@ -53,9 +59,16 @@ namespace Flux.Dsp.AudioProcessor
       Left = new FolderMono(polarBiasL, multiplierL);
       Right = new FolderMono(polarBiasR, multiplierR);
     }
-    public FolderStereo(double polarBias, double multiplier) : this(polarBias, multiplier, polarBias, multiplier) { }
-    public FolderStereo() : this(0.0, 0.0) { }
+    public FolderStereo(double polarBias, double multiplier)
+      : this(polarBias, multiplier, polarBias, multiplier)
+    {
+    }
+    public FolderStereo()
+      : this(0.0, 0.0)
+    {
+    }
 
-    public ISampleStereo ProcessAudio(ISampleStereo sample) => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+    public StereoSample ProcessAudio(StereoSample sample)
+      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
   }
 }
