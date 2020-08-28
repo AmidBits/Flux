@@ -67,6 +67,8 @@ namespace Flux.Diagnostics
     /// <summary></summary>
     public static MeasuredResult Measure(System.Linq.Expressions.Expression<System.Func<object>> expression, int iterations = 1000000, string? name = null)
     {
+      if (expression is null) throw new System.ArgumentNullException(nameof(expression));
+
       var compiledExpression = expression.Compile();
 
       var stopWatch = new System.Diagnostics.Stopwatch();
@@ -101,6 +103,8 @@ namespace Flux.Diagnostics
     /// <summary></summary>
     public static MeasuredResult Measure(System.Linq.Expressions.Expression<System.Action> expression, int iterations = 1000000, string? name = null)
     {
+      if (expression is null) throw new System.ArgumentNullException(nameof(expression));
+
       var compiledExpression = expression.Compile();
 
       var stopWatch = new System.Diagnostics.Stopwatch();

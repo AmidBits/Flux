@@ -9,8 +9,8 @@ namespace Flux.Data
     //public static int TotalRowsCopied(this System.Data.SqlClient.SqlBulkCopy bulkCopy)
     //  => (int)typeof(System.Data.SqlClient.SqlBulkCopy).GetField(@"_rowsCopied", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance).GetValue(bulkCopy);
 
-    public static string EscapeTsql(this string source) => source.Replace("'", "''", System.StringComparison.Ordinal);
-    public static string UnescapeTsql(this string source) => source.Replace("''", "'", System.StringComparison.Ordinal);
+    public static string EscapeTsql(this string source) => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("'", "''", System.StringComparison.Ordinal);
+    public static string UnescapeTsql(this string source) => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("''", "'", System.StringComparison.Ordinal);
 
     public static string QuoteTsql(this string source, bool ansi = false) => ansi ? source.Wrap('"', '"') : source.Wrap('[', ']');
     public static string UnquoteTsql(this string source) => source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source;

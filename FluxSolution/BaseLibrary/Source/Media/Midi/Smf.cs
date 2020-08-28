@@ -23,25 +23,32 @@ namespace Flux.Media.Midi.Smf
   {
     public byte[] Buffer = System.Array.Empty<byte>();
 
-    public string ChunkID { get => System.Text.Encoding.ASCII.GetString(Buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes(value.Substring(0, 4)).CopyTo(Buffer, 0); } }
+    public string ChunkID { get => System.Text.Encoding.ASCII.GetString(Buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(Buffer, 0); } }
     [System.CLSCompliant(false)]
     public uint ChunkSize { get => System.BitConverter.ToUInt32(Buffer, 4); set { System.BitConverter.GetBytes(value).CopyTo(Buffer, 4); } }
 
     public long PositionInStream { get; set; }
 
     [System.CLSCompliant(false)]
-    public Chunk(uint chunkSize) => Buffer = new byte[chunkSize];
+    public Chunk(uint chunkSize)
+      => Buffer = new byte[chunkSize];
     [System.CLSCompliant(false)]
-    public Chunk(string chunkID, uint chunkSize) : this(chunkSize)
+    public Chunk(string chunkID, uint chunkSize)
+      : this(chunkSize)
     {
       ChunkID = chunkID;
       ChunkSize = chunkSize - 8;
     }
-    public Chunk(byte[] bytes) : this((uint)bytes.Length) => bytes.CopyTo(Buffer, 0);
-    public Chunk(System.IO.Stream stream, int count) => Read(stream, count);
+    public Chunk(byte[] bytes)
+      : this((uint)(bytes ?? throw new System.ArgumentNullException(nameof(bytes))).Length)
+      => bytes.CopyTo(Buffer, 0);
+    public Chunk(System.IO.Stream stream, int count)
+      => Read(stream, count);
 
     public byte[] Read(System.IO.Stream stream, int byteCount)
     {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
       if (Buffer.Length == 0)
       {
         PositionInStream = stream.Position;
@@ -60,7 +67,7 @@ namespace Flux.Media.Midi.Smf
       return Buffer;
     }
 
-    public virtual void WriteTo(System.IO.Stream stream) => stream.Write(Buffer, 0, Buffer.Length);
+    public virtual void WriteTo(System.IO.Stream stream) => (stream ?? throw new System.ArgumentNullException(nameof(stream))).Write(Buffer, 0, Buffer.Length);
   }
 
   public class HeaderChunk

@@ -6,6 +6,8 @@ namespace Flux
   {
     public static string ToFormattedString(this System.Data.DataTable source, string horizontalSeparator = @"|", char verticalSeparator = '\0')
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var sb = new System.Text.StringBuilder();
 
       var columnWidths = new int[source.Columns.Count];

@@ -37,7 +37,7 @@ namespace Flux.Resources.W3c
       {
         var codepoints = string.Join(@",", jp.Value.GetProperty(@"codepoints").EnumerateArray().Select(e => e.GetInt32()));
         var characters = jp.Value.GetProperty(@"characters").GetRawText().Trim().Replace(@"""", string.Empty, System.StringComparison.Ordinal);
-        var charactersAsString = m_reUnicode.Replace(characters, match => ((char)System.Int32.Parse(match.Value.Substring(2), System.Globalization.NumberStyles.HexNumber)).ToString());
+        var charactersAsString = m_reUnicode.Replace(characters, match => ((char)int.Parse(match.Value.Substring(2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture)).ToString());
 
         yield return new string[] { jp.Name, codepoints, characters, charactersAsString };
       }

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Security
+  public static partial class Safety
   {
     public static System.Xml.Linq.XElement ClaimXml(this System.Security.Claims.Claim source)
     {
@@ -16,6 +16,7 @@ namespace Flux
       {
         xe.SetAttributeValue(nameof(System.Type), source.GetType().Name);
 
+#pragma warning disable CA1031 // Do not catch general exception types
         try { xe.SetAttributeValue(nameof(source.Issuer), source.Issuer); } catch { }
         try { xe.SetAttributeValue(nameof(source.OriginalIssuer), source.Issuer); } catch { }
 //        try { xe.Add(source.Properties.ToPropertiesXml()); } catch { }
@@ -24,6 +25,7 @@ namespace Flux
         try { xe.SetAttributeValue(nameof(source.Value), source.Value); } catch { }
         //try { xe.SetAttributeValue(@"NTAccount", ((System.Security.Principal.NTAccount)new System.Security.Principal.SecurityIdentifier(source.Value).Translate(typeof(System.Security.Principal.NTAccount))).Value); } catch { }
         try { xe.SetAttributeValue(nameof(source.ValueType), source.ValueType); } catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
       }
 
       return xe;

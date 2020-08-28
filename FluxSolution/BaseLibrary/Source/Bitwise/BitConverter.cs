@@ -118,7 +118,7 @@ namespace Flux
     /// <summary>Returns the specified Boolean value as an array of bytes.</summary>
     /// <param name="value">A Boolean value.</param>
     /// <returns>An array of bytes with length 1.</returns>
-    public byte[] GetBytes(bool value) => System.BitConverter.GetBytes(value);
+    public static byte[] GetBytes(bool value) => System.BitConverter.GetBytes(value);
     /// <summary>Returns the specified Unicode character value as an array of bytes.</summary>
     /// <param name="value">A character to convert.</param>
     /// <returns>An array of bytes with length 2.</returns>
@@ -216,12 +216,12 @@ namespace Flux
     {
       if (value == null)
       {
-        throw new System.ArgumentNullException("value");
+        throw new System.ArgumentNullException(nameof(value));
       }
 
       if (startIndex < 0 || startIndex > value.Length - bytesRequired)
       {
-        throw new System.ArgumentOutOfRangeException("startIndex");
+        throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       }
     }
 
@@ -248,7 +248,7 @@ namespace Flux
     /// <param name="value">An array of bytes.</param>
     /// <param name="startIndex">The starting position within value.</param>
     /// <returns>true if the byte at startIndex in value is nonzero; otherwise, false.</returns>
-    public bool ToBoolean(byte[] value, int startIndex)
+    public static bool ToBoolean(byte[] value, int startIndex)
     {
       CheckByteArgument(value, startIndex, 1);
 

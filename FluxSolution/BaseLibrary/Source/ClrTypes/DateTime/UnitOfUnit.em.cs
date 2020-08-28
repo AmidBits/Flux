@@ -11,7 +11,7 @@ namespace Flux
       => source.WeekOfYear(System.Globalization.DateTimeFormatInfo.CurrentInfo);
     /// <summary>Determines the current week of the source using the specified DateTimeFormatInfo.</summary>
     public static int WeekOfYear(this System.DateTime source, System.Globalization.DateTimeFormatInfo dateTimeFormatInfo)
-      => dateTimeFormatInfo.Calendar.GetWeekOfYear(source, dateTimeFormatInfo.CalendarWeekRule, dateTimeFormatInfo.FirstDayOfWeek);
+      => (dateTimeFormatInfo ?? throw new System.ArgumentNullException(nameof(dateTimeFormatInfo))).Calendar.GetWeekOfYear(source, dateTimeFormatInfo.CalendarWeekRule, dateTimeFormatInfo.FirstDayOfWeek);
 
     /// <summary>Determines the current week of the source date.</summary>
     /// <see cref="https://stackoverflow.com/questions/1497586/how-can-i-calculate-find-the-week-number-of-a-given-date"/>

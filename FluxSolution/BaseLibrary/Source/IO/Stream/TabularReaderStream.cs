@@ -225,7 +225,7 @@ namespace Flux.IO
       }
       else if (type == typeof(System.DateTime)) // Parse method. Must be formatted as ISO6801 'yyyy-MM-ddTHH:mm:ss.fffffff' (DateTimeKind.Unspecified).
       {
-        return System.DateTime.Parse(value);
+        return System.DateTime.Parse(value, System.Globalization.CultureInfo.CurrentCulture);
       }
       else if (type == typeof(System.Guid)) // Parse method.
       {
@@ -237,11 +237,11 @@ namespace Flux.IO
       }
       else if (type == typeof(System.TimeSpan)) // Parse method.
       {
-        return System.TimeSpan.Parse(value);
+        return System.TimeSpan.Parse(value, System.Globalization.CultureInfo.CurrentCulture);
       }
       else // All other input use ChangeType method
       {
-        return System.Convert.ChangeType(value, type);
+        return System.Convert.ChangeType(value, type, System.Globalization.CultureInfo.CurrentCulture);
       }
     }
   }

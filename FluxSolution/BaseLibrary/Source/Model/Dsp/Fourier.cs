@@ -1,5 +1,6 @@
 ﻿namespace Flux.Dsp
 {
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   public static class Fourier
   {
     /// <summary>Fourier transformation.</summary>
@@ -21,6 +22,8 @@
       /// <param name="direction">Transformation direction.</param>
       public static void DFT(System.Numerics.Complex[] data, Direction direction)
       {
+        if (data is null) throw new System.ArgumentNullException(nameof(data));
+
         var n = data.Length;
         double arg, cos, sin;
         var dst = new System.Numerics.Complex[n];
@@ -65,6 +68,8 @@
       /// 
       public static void DFT2(System.Numerics.Complex[,] data, Direction direction)
       {
+        if (data is null) throw new System.ArgumentNullException(nameof(data));
+
         var n = data.GetLength(0);  // rows
         var m = data.GetLength(1);  // columns
         double arg, cos, sin;
@@ -145,6 +150,8 @@
       /// <exception cref="ArgumentException">Incorrect data length.</exception>
       public static void FFT(System.Numerics.Complex[] data, Direction direction)
       {
+        if (data is null) throw new System.ArgumentNullException(nameof(data));
+
         var n = data.Length;
         var m = (int)Bitwise.Log2(n);
 
@@ -197,6 +204,8 @@
       /// <exception cref="ArgumentException">Incorrect data length.</exception>
       public static void FFT2(System.Numerics.Complex[,] data, Direction direction)
       {
+        if (data is null) throw new System.ArgumentNullException(nameof(data));
+
         var k = data.GetLength(0);
         var n = data.GetLength(1);
 
@@ -339,4 +348,5 @@
       #endregion
     }
   }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

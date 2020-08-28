@@ -10,12 +10,16 @@ namespace Flux.Data
     public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, System.Collections.Generic.IEnumerable<string>? fieldNames = null)
       : base(fieldNames)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       m_enumerator = source.GetEnumerator();
       m_valuesSelector = valueSelector;
     }
     public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, int fieldCount)
       : base(fieldCount)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       m_enumerator = source.GetEnumerator();
       m_valuesSelector = valueSelector;
     }

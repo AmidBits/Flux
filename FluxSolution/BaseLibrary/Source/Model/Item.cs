@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model
 {
-  public enum Attributes
+  public enum Attribute
   {
     Armor,
     Attack,
@@ -27,7 +27,7 @@ namespace Flux.Model
   public class Container : System.Collections.Generic.List<Item>
   {
     public System.Guid ID { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
   }
 
   [System.Serializable]
@@ -38,7 +38,7 @@ namespace Flux.Model
 
     public System.Collections.Generic.List<Container> Containers { get; set; }
 
-    public System.Collections.Generic.Dictionary<Attributes, double> Attributes = new System.Collections.Generic.Dictionary<Model.Attributes, double>();
+    public System.Collections.Generic.Dictionary<Attribute, double> Attributes = new System.Collections.Generic.Dictionary<Model.Attribute, double>();
 
     public System.Collections.Generic.List<Item> Items = new System.Collections.Generic.List<Item>();
 
@@ -75,6 +75,8 @@ namespace Flux.Model
 
     public Item AddItem(string path, Item item)
     {
+      if (path is null) throw new System.ArgumentNullException(nameof(path));
+
       Item parent = this, child = null;
 
       foreach (var split in path.Split('/'))
@@ -128,7 +130,7 @@ namespace Flux.Model
           {
             return item;
           }
-          else if(item.FindItem(nameOrID) is Item subItem && subItem!=null)
+          else if (item.FindItem(nameOrID) is Item subItem && subItem != null)
           {
             return item;
           }
@@ -140,6 +142,8 @@ namespace Flux.Model
 
     public Item RemoveItem(string path, string nameOrID)
     {
+      if (path is null) throw new System.ArgumentNullException(nameof(path));
+
       Item child = this, current = null;
 
       foreach (var split in path.Split('/'))

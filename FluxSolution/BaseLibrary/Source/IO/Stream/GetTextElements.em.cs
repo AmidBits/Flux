@@ -4,6 +4,8 @@ namespace Flux.IO
   {
     public static System.Collections.Generic.IEnumerable<string> GetTextElements(this System.IO.TextReader source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var buffer = new char[4];
       var length = 0;
 

@@ -165,9 +165,9 @@ namespace Flux.Data
     //}
 
     /// <summary>Concatenates a single column expression SELECT statement over multiple rows using the delimiter into a single string result.</summary>
-    public static string ConcatColumnOverRows(string statement, char delimiter = ',') => statement.StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"{statement.Insert(7, $"'{delimiter}' + ")} FOR XML PATH('')" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
+    public static string ConcatColumnOverRows(string statement, char delimiter = ',') => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"{statement.Insert(7, $"'{delimiter}' + ")} FOR XML PATH('')" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
     /// <summary>Creates a variable and concatenates a single column expression SELECT statement over multiple rows using the delimiter into the variable.</summary>
-    public static string ConcatColumnOverRows(string variableName, string statement, char delimiter = ',') => statement.StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"DECLARE @{variableName} [nvarchar](MAX) {statement.Insert(7, $"@{variableName} = COALESCE(@{variableName} + '{delimiter}', '') + ")}" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
+    public static string ConcatColumnOverRows(string variableName, string statement, char delimiter = ',') => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"DECLARE @{variableName} [nvarchar](MAX) {statement.Insert(7, $"@{variableName} = COALESCE(@{variableName} + '{delimiter}', '') + ")}" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
 
     public static string Combine(System.Collections.Generic.IEnumerable<string> columnNames, string? tableAlias = null) => string.Join(@", ", columnNames.SubstituteOnNullOrEmpty(@"*").Select(cn => (tableAlias?.Length ?? 0) > 0 ? $"{tableAlias}.{cn}" : cn));
     public static string DropTable(TsqlName table3) => $"DROP TABLE {table3.QualifiedNameQuoted(3)}";

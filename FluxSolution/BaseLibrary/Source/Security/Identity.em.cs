@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Security
+  public static partial class Safety
   {
     public static System.Xml.Linq.XElement IdentityXml(this System.Security.Principal.IIdentity source)
     {

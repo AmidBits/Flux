@@ -40,7 +40,7 @@ namespace Flux
     }
 
     public static System.Numerics.BigInteger GetMaxValue()
-    => System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456");
+    => System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
     public static System.Numerics.BigInteger GetMinValue()
       => System.Numerics.BigInteger.Zero;
 
@@ -104,7 +104,7 @@ namespace Flux
     }
   }
 
-  public static partial class Net
+  public static partial class Network
   {
     public static readonly System.Net.IPEndPoint RemoteTest = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(@"4.3.2.1"), 4321);
 

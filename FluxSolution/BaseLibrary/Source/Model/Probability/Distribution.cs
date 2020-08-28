@@ -20,6 +20,8 @@ namespace Flux.Probability
 
     public static string ShowWeights<T>(this IDiscreteDistribution<T> d)
     {
+      if (d is null) throw new System.ArgumentNullException(nameof(d));
+
       int labelMax = d.Support().Select(x => x?.ToString()?.Length ?? 0).Max();
       return d.Support().Select(s => $"{ToLabel(s)}:{d.Weight(s)}").NewlineSeparated();
       string ToLabel(T t) => t?.ToString()?.PadLeft(labelMax) ?? throw new System.ArgumentNullException(nameof(T));

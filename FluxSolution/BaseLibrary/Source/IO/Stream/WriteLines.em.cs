@@ -19,6 +19,8 @@ namespace Flux
     /// <summary>Writes an string[] or a params of strings to a stream.</summary>
     public static void WriteLines(this System.IO.Stream target, System.Collections.Generic.IEnumerable<string> lines)
     {
+      if (lines is null) throw new System.ArgumentNullException(nameof(lines));
+
       using System.IO.StreamWriter sw = new System.IO.StreamWriter(target);
       
       foreach (string line in lines)

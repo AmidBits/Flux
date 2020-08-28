@@ -5,17 +5,22 @@ namespace Flux.Text
     // https://www.w3.org/TR/xml/#NT-Char
     // https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlreader
     // https://github.com/Microsoft/referencesource/blob/master/mscorlib/system/io/textreader.cs
-    class FilterInvalidXmlReader : System.IO.TextReader
+    public class FilterInvalidXmlReader
+          : System.IO.TextReader
     {
       private readonly System.IO.StreamReader m_streamReader;
 
-      public System.IO.Stream BaseStream => m_streamReader.BaseStream;
+      public System.IO.Stream BaseStream 
+        => m_streamReader.BaseStream;
 
-      public FilterInvalidXmlReader(System.IO.Stream stream) => m_streamReader = new System.IO.StreamReader(stream);
+      public FilterInvalidXmlReader(System.IO.Stream stream) 
+        => m_streamReader = new System.IO.StreamReader(stream);
 
-      public override void Close() => m_streamReader.Close();
+      public override void Close() 
+        => m_streamReader.Close();
 
-      protected override void Dispose(bool disposing) => m_streamReader.Dispose();
+      protected override void Dispose(bool disposing) 
+        => m_streamReader.Dispose();
 
       public override int Peek()
       {

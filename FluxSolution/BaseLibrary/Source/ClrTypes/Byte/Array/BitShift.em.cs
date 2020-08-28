@@ -5,6 +5,8 @@ namespace Flux
     /// <summary>Performs an in-place one bit shift to the left on all bytes, and returns whether the MSB or overflow bit was set.</summary>
     public static bool BitShiftLeft(this byte[] source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var maxIndex = source.Length - 1;
 
       var carryFlag = (source[0] & 0x80) > 0;
@@ -19,6 +21,8 @@ namespace Flux
     /// <summary>Performs an in-place ont bit shift to the right on all bytes, and returns whether the LSB or overflow bit was set.</summary>
     public static bool BitShiftRight(this byte[] source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var index = source.Length - 1;
 
       var carryFlag = (source[index] & 0x01) > 0;

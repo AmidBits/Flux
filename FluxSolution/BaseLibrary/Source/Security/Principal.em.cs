@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Security
+  public static partial class Safety
   {
     public static System.Xml.Linq.XElement PrincipalXml(this System.Security.Principal.IPrincipal source)
     {

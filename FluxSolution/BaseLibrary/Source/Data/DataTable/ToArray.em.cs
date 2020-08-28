@@ -2,8 +2,11 @@ namespace Flux
 {
   public static partial class XtendData
   {
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static object[,] ToArray(this System.Data.DataTable source, bool includeColumnName)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var offset = includeColumnName ? 1 : 0;
 
       var array = new object[source.Rows.Count + offset, source.Columns.Count];
@@ -26,5 +29,6 @@ namespace Flux
 
       return array;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

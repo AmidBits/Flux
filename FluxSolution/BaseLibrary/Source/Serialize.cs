@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static class Serialization
+  public static class Serialize
   {
     ///// <summary>Constructs a string representing a JSON array from IEnumerable.</summary>
     //public static string JsonArray(System.Collections.IEnumerable source)
@@ -158,6 +158,8 @@ namespace Flux
     /// <summary>Serialize the source to an XML string.</summary>
     public static string ToXml(object source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       using var sw = new System.IO.StringWriter();
       using var xw = System.Xml.XmlWriter.Create(sw, new System.Xml.XmlWriterSettings() { OmitXmlDeclaration = true });
       var xsn = new System.Xml.Serialization.XmlSerializerNamespaces();

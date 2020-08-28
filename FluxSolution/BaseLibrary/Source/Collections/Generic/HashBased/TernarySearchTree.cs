@@ -10,6 +10,8 @@ namespace Flux.Collections.Generic
 
     public void Insert(ref object data, System.Collections.Generic.IList<T> keys)
     {
+      if (keys is null) throw new System.ArgumentNullException(nameof(keys));
+
       var _this = this;
 
       Insert(ref _this, ref data, keys);
@@ -101,6 +103,8 @@ namespace Flux.Collections.Generic
 
     public object Search(System.Collections.Generic.IList<T> keys)
     {
+      if (keys is null) throw new System.ArgumentNullException(nameof(keys));
+
       var _this = this;
 
       return Search(ref _this, keys);

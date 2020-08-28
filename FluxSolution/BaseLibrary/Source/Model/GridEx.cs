@@ -142,6 +142,8 @@ namespace Flux.Model
     /// <returns>Null in case of failure to assign, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string> Assign(System.Collections.Generic.List<string> values, int square, string digit)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       if (values[square].Where(d => d.ToString() != digit).Any(d => Eliminate(values, square, d.ToString()) == null))
         return null;
 
@@ -151,6 +153,8 @@ namespace Flux.Model
     /// <returns>Null in case of failure to eliminate, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string> Eliminate(System.Collections.Generic.List<string> values, int square, string digit)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       if (!values[square].Contains(digit, System.StringComparison.Ordinal))
       {
         return values; // already eliminated
@@ -303,6 +307,8 @@ namespace Flux.Model
 
     public static string ToConsoleString(System.Collections.Generic.List<string> values)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       var width = 1 + values.Max(s => s.Length);
 
       var sb = new System.Text.StringBuilder();
@@ -324,7 +330,7 @@ namespace Flux.Model
     }
 
     public static string ToLabel(int index) => (index >= 0 && index < 81) ? $"{RowLabels[index / 9]}{ColumnLabels[index % 9]}" : throw new System.ArgumentOutOfRangeException(nameof(index));
-    public static int ToIndex(string label) => (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1], System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
+    public static int ToIndex(string label) => ((label ?? throw new System.ArgumentNullException(nameof(label))).Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1], System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
 
     #region Preset Puzzles
     public const string Puzzle1439 = ".....5.8....6.1.43..........1.5........1.6...3.......553.....61........4.........";

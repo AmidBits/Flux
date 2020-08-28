@@ -7,6 +7,8 @@ namespace Flux
     /// <summary>Returs an array consisting of the original array appended with the specified arrays of bytes.</summary>
     public static byte[] CombineWith(this byte[] source, params byte[][] others)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var rv = new byte[source.Length + others.Sum(x => x.Length)];
       System.Buffer.BlockCopy(source, 0, rv, 0, source.Length);
       var offset = source.Length;

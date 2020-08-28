@@ -7,8 +7,10 @@ namespace Flux
   public static partial class XtendStream
   {
     /// <summary>Write a record (comma delimted and double quoted CSVs) to the System.IO.StreamWriter.</summary>
-    public static void WriteRecord(this System.IO.StreamWriter source, object[] values)
+    public static void WriteRecord(this System.IO.StreamWriter source, params object[] values)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       void WriteField(object value)
       {
         source.Write('"');
@@ -48,6 +50,8 @@ namespace Flux
     /// <summary>Writes a sequence of records (comma delimted and double quoted CSVs) from the System.IO.StreamReader.</summary>
     public static void WriteRecords(this System.IO.StreamWriter source, System.Collections.Generic.IEnumerable<object[]> records)
     {
+      if (records is null) throw new System.ArgumentNullException(nameof(records));
+
       foreach (var record in records)
       {
         source.WriteRecord(record);

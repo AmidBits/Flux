@@ -1,5 +1,6 @@
 namespace Flux.Model
 {
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   public class ZobristTable
   {
     private readonly ulong[,,] m_table;
@@ -18,6 +19,10 @@ namespace Flux.Model
 
     public long ComputeHash<TValue>(TValue[,] board, System.Func<TValue, bool> predicate, System.Func<TValue, int> selector)
     {
+      if (board is null) throw new System.ArgumentNullException(nameof(board));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      if (selector is null) throw new System.ArgumentNullException(nameof(selector));
+
       var td0l = m_table.GetLength(0);
       var td1l = m_table.GetLength(1);
       var td2l = m_table.GetLength(2);
@@ -37,7 +42,7 @@ namespace Flux.Model
           {
             var permutation = selector(value);
 
-            if (permutation < 0 || permutation >= td2l) throw new System.ArgumentOutOfRangeException(nameof(permutation), $"The board value does not evaluate to a valid permutation.");
+            if (permutation < 0 || permutation >= td2l) throw new System.InvalidOperationException($"The board value does not evaluate to a valid permutation.");
 
             hash ^= m_table[d0i, d1i, permutation];
           }
@@ -50,4 +55,5 @@ namespace Flux.Model
     public override string ToString()
       => $"<{m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
   }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

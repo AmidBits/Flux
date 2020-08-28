@@ -2,6 +2,7 @@ using System.Linq;
 
 namespace Flux.Model
 {
+#pragma warning disable CA1031 // Do not catch general exception types
   public enum DirectionEnum
   {
     North = 0,
@@ -51,6 +52,7 @@ namespace Flux.Model
 
   public class Node<TValue, TNexus>
     : INode<TValue, TNexus>
+    where TNexus : notnull
   {
     public static INode<TValue, TNexus> Empty = new EmptyNode();
 
@@ -74,6 +76,8 @@ namespace Flux.Model
 
     public void CreatePath(Node<TValue, TNexus> node, bool biDirectional)
     {
+      if (node is null) throw new System.ArgumentNullException(nameof(node));
+
       try
       {
         var key = Gates.Where(kvp => kvp.Value.Equals(node)).First().Key;
@@ -86,6 +90,8 @@ namespace Flux.Model
     }
     public void DestroyPath(Node<TValue, TNexus> node, bool biDirectional)
     {
+      if (node is null) throw new System.ArgumentNullException(nameof(node));
+
       try
       {
         var key = Gates.Where(e => e.Value.Equals(node)).First().Key;
@@ -106,7 +112,7 @@ namespace Flux.Model
     }
 
     private class EmptyNode
-      : INode<TValue,TNexus>
+      : INode<TValue, TNexus>
     {
       public bool IsEmpty => true;
       public TValue Value => throw new System.ArgumentException(nameof(EmptyNode));
@@ -137,6 +143,8 @@ namespace Flux.Model
 
     public Cell ConnectPath(Cell cell, bool biDirectional)
     {
+      if (cell is null) throw new System.ArgumentNullException(nameof(cell));
+
       try
       {
         var index = Edges.Where(kvp => kvp.Value.Equals(cell)).First().Key;
@@ -152,6 +160,8 @@ namespace Flux.Model
     }
     public void DisconnectPath(Cell cell, bool biDirectional)
     {
+      if (cell is null) throw new System.ArgumentNullException(nameof(cell));
+
       try
       {
         var index = Edges.Where(e => e.Value.Equals(cell)).First().Key;
@@ -255,6 +265,7 @@ namespace Flux.Model
     public static int RowColumnToIndex(int row, int column, int rows, int columns)
       => (row < 0 || row >= rows) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (column < 0 || column >= columns) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (row * columns + column);
   }
+#pragma warning restore CA1031 // Do not catch general exception types
 
   //public class Grid
   //{

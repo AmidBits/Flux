@@ -131,6 +131,8 @@ namespace Flux.Data
     public abstract object GetValue(int index);
     public virtual int GetValues(object[] values)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       var count = System.Math.Min(FieldCount, values.Length);
 
       for (var index = count - 1; index >= 0; index--)

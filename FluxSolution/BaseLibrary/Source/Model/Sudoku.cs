@@ -43,6 +43,8 @@ namespace Flux.Model
     /// <returns>Null in case of failure to assign, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string>? Assign(System.Collections.Generic.List<string> values, int square, string digit)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       if (values[square].Where(d => d.ToString() != digit).Any(d => Eliminate(values, square, d.ToString()) == null))
         return null;
 
@@ -52,6 +54,8 @@ namespace Flux.Model
     /// <returns>Null in case of failure to eliminate, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string>? Eliminate(System.Collections.Generic.List<string> values, int square, string digit)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       if (!values[square].Contains(digit, System.StringComparison.Ordinal))
       {
         return values; // already eliminated

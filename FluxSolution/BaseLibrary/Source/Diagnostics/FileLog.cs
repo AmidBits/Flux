@@ -25,6 +25,8 @@ namespace Flux.Diagnostics
 
 		public void Write(System.Exception exception)
 		{
+			if (exception is null) throw new System.ArgumentNullException(nameof(exception));
+
 			System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringISO8601Full()} EXCEPTION {exception.Message}", exception.StackTrace ?? @"No StackTrace Available." });
 		}
 	}

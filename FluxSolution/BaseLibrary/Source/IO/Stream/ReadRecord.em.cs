@@ -9,6 +9,8 @@ namespace Flux
     /// <summary>Read a record (comma delimted and double quoted CSVs) from the System.IO.StreamReader.</summary>
     public static System.Collections.Generic.IList<string?> ReadRecord(this System.IO.StreamReader source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       return GetFields().ToArray();
 
       System.Collections.Generic.IEnumerable<string?> GetFields()
