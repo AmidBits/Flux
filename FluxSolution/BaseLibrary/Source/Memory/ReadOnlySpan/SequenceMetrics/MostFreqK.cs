@@ -2,6 +2,8 @@ using System.Linq;
 
 namespace Flux.SequenceMetrics
 {
+  /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
   public class MostFreqK<T>
     : IMeasuredDistance<T>
   {
@@ -19,6 +21,7 @@ namespace Flux.SequenceMetrics
     /// <summary>Used when computing the measured distance.</summary>
     public int MaxDistance { get; set; }
 
+    /// <summary>Specifies the scoring behavior to employ when computing the measured distance.</summary>
     public SimilarityScoringBehavior ScoringBehavior { get; set; } = SimilarityScoringBehavior.OnlyOneFrequencyWhenEqual;
 
     public MostFreqK(int k, int maxDistance)
@@ -28,8 +31,6 @@ namespace Flux.SequenceMetrics
       MaxDistance = maxDistance;
     }
 
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       foreach (var kvp in source.GroupBy(c => c, comparer).Select(g => new System.Collections.Generic.KeyValuePair<T, int>(g.Key, g.Count())).OrderByDescending(g => g.Value).Take(K))
@@ -37,13 +38,9 @@ namespace Flux.SequenceMetrics
         yield return kvp;
       }
     }
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are, using the default comparer.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source)
       => Hashing(source, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_distance"/> 
     public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -67,20 +64,12 @@ namespace Flux.SequenceMetrics
 
       return similarity;
     }
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are, using the default comparer.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_distance"/> 
     public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2)
       => GetSimilarity(hashing1, hashing2, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    #region IMeasuredDistance
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are, according to the specified comparer.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#String_distance_wrapper_function"/> 
     public int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
       => MaxDistance - GetSimilarity(Hashing(source.ToArray(), comparer), Hashing(target.ToArray(), comparer), comparer);
-    /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are, according to the default comparer.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#String_distance_wrapper_function"/> 
     public int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetMeasuredDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-    #endregion IMeasuredDistance
   }
 }

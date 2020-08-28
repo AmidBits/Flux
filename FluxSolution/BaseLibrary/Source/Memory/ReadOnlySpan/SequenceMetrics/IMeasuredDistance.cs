@@ -1,13 +1,18 @@
 namespace Flux.SequenceMetrics
 {
-  /// <summary>Represents a measure of length. Some cannot be used to derive direct metrics. E.g. the longest common substring, since there can be many between two strings.</summary>
+  /// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
 	public interface IMeasuredDistance<T>
   {
-    /// <summary>Compute a length measure for the two specified sequences.</summary>
-    /// <param name="source">The primary sequence.</param>
-    /// <param name="target">The secondary sequence.</param>
-    /// <returns>A measure that represents a length in relation to the two specified sequences.</returns>
+    /// <summary>Compute a measured distance for the two sequences.</summary>
+    /// <param name="source">The source sequence.</param>
+    /// <param name="target">The target sequence.</param>
+    /// <param name="comparer">The equality comparer to use when comparing elements in the sequences.</param>
+    /// <returns>A measure that represents an arbitrary distance between the two sequences.</returns>
 		int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
+    /// <summary>Compute a measured distance for the two sequences. Uses the default equality comparer.</summary>
+    /// <param name="source">The source sequence.</param>
+    /// <param name="target">The target sequence.</param>
+    /// <returns>A measure that represents an arbitrary distance between the two sequences.</returns>
     int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
   }
 }

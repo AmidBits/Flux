@@ -22,15 +22,12 @@ namespace Flux
 
   namespace SequenceMetrics
   {
+    /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
     public class LongestCommonSubstring<T>
     : IMeasuredLength<T>
     {
-      /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences. Uses the specified comparer.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
-      /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
-      /// <param name="source">The primary sequence.</param>
-      /// <param name="target">The secondary sequence.</param>
-      /// <returns>The longest number of consecutive elements common to both source and target.</returns>
       public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       {
         comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -61,12 +58,6 @@ namespace Flux
 
         return maxLength;
       }
-      /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences. Uses the specified comparer.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
-      /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
-      /// <param name="source">The primary sequence.</param>
-      /// <param name="target">The secondary sequence.</param>
-      /// <returns>The longest number of consecutive elements common to both source and target.</returns>
       public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetMeasuredLength(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
     }

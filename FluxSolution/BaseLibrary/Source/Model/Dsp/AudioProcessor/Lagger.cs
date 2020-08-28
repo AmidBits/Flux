@@ -11,7 +11,7 @@ namespace Flux.Dsp.AudioProcessor
     public LaggerMono(double amount) => m_amount = amount;
     public LaggerMono() : this(0.75) { }
 
-    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.Interpolate.Cosine(sample.FrontCenter, m_previousSample, m_amount) : sample.FrontCenter);
+    public ISampleMono ProcessAudio(ISampleMono sample) => new MonoSample(m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.InterpolateCosine(sample.FrontCenter, m_previousSample, m_amount) : sample.FrontCenter);
   }
 
   public class LaggerStereo : IAudioProcessorStereo

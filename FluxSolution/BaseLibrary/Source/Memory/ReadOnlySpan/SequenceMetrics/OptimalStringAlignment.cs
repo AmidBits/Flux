@@ -16,12 +16,13 @@ namespace Flux
 
   namespace SequenceMetrics
   {
+    /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
+    /// <remarks>Implemented based on the Wiki article.</remarks>
     public class OptimalStringAlignment<T>
-    : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
-      /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
-      /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       {
         comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -33,59 +34,58 @@ namespace Flux
 
         var v2 = new int[targetCount + 1]; // Row of costs, two rows back.
         var v1 = new int[targetCount + 1]; // Row of costs, one row back (previous).
-        var v0 = new int[targetCount + 1]; // Current row of costs.
+        var v0 = new int[targetCount + 1]; // Row of costs, current row.
 
-        for (int j = 0; j <= targetCount; j++) v0[j] = j; // Initialize v1 (the previous row of costs) to an edit distance for an empty source, i.e. the the number of characters to delete from target.
+        for (int ti = 0; ti <= targetCount; ti++) v0[ti] = ti; // Initialize v1 (the previous row of costs) to an edit distance for empty source items, i.e. the the number of characters to delete from target.
 
-        for (int i = 1; i <= sourceCount; i++)
+        for (int si = 1; si <= sourceCount; si++)
         {
           var rotate = v2; v2 = v1; v1 = v0; v0 = rotate; // Rotate and reuse buffered rows of the cost matrix.
 
-          v0[0] = i; // Edit distance is delete (i) chars from source to match empty target.
+          v0[0] = si; // Edit distance is delete (i) chars from source to match empty target.
 
-          for (int j = 1; j <= targetCount; j++)
+          var sourceItem = source[si - 1];
+
+          for (int ti = 1; ti <= targetCount; ti++)
           {
-            var sourceM1 = source[i - 1]; // Cache the last source element, because it's used twice below.
-            var targetM1 = target[j - 1]; // Cache the last target element, because it's used twice below.
+            var targetItem = target[ti - 1];
 
-            var cost = comparer.Equals(sourceM1, targetM1) ? 0 : 1; // Cache comparison cost.
+            var cost = comparer.Equals(sourceItem, targetItem) ? 0 : 1;
 
-            if (i > 1 && j > 1 && comparer.Equals(sourceM1, target[j - 2]) && comparer.Equals(source[i - 2], targetM1))
+            if (si > 1 && ti > 1 && comparer.Equals(sourceItem, target[ti - 2]) && comparer.Equals(source[si - 2], targetItem))
             {
-              v0[j] = System.Math.Min(System.Math.Min(System.Math.Min(v1[j] + 1, v0[j - 1] + 1), v1[j - 1] + cost), v2[j - 2] + cost); // Store minimum cost of deletion, insertion, substitution and transposition, respectively.
+              v0[ti] = Maths.Min(
+                v1[ti] + 1, // Deletion.
+                v0[ti - 1] + 1, // Insertion.
+                v1[ti - 1] + cost, // Substitution.
+                v2[ti - 2] + 1 // Transposition.
+              );
             }
             else
             {
-              v0[j] = System.Math.Min(System.Math.Min(v1[j] + 1, v0[j - 1] + 1), v1[j - 1] + cost); // Store minimum cost of deletion, insertion and substitution, respectively.
+              v0[ti] = Maths.Min(
+                v1[ti] + 1, // Deletion.
+                v0[ti - 1] + 1, // Insertion.
+                v1[ti - 1] + cost // Substitution.
+              );
             }
           }
         }
 
         return v0[targetCount];
       }
-      /// <summary>Computes the optimal sequence alignment (OSA) using the default comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
-      /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
-      /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetMetricDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
 
-      #region ISimpleMatchingCoefficient<T>
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
         => 1.0 - GetSimpleMatchingDistance(source, target, comparer);
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetSimpleMatchingCoefficient(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-      #endregion ISimpleMatchingCoefficient<T>
 
-      #region ISimpleMatchingDistance<T>
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
         => (double)GetMetricDistance(source, target, comparer) / (double)System.Math.Max(source.Length, target.Length);
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetSimpleMatchingDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-      #endregion ISimpleMatchingDistance<T>
     }
   }
 }

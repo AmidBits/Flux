@@ -28,6 +28,10 @@ namespace Flux
   namespace SequenceMetrics
   {
     /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two sequences is, the more similar the sequences are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
+    /// <param name="boostThreshold">The minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
+    /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
+    /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
+    /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
     public class JaroWinklerDistance<T>
       : INormalizedDistance<T>
     {
@@ -36,35 +40,11 @@ namespace Flux
       /// <summary>PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</summary>
       public int PrefixSize { get; set; } = 4;
 
-      /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-      /// <param name="source"></param>
-      /// <param name="target"></param>
-      /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-      /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
-      /// <param name="comparer"></param>
-      /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
-      /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
       public double GetNormalizedDistance(ReadOnlySpan<T> source, ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
         => 1 - GetNormalizedSimilarity(source, target, comparer);
-      /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-      /// <param name="source"></param>
-      /// <param name="target"></param>
-      /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-      /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
-      /// <param name="comparer"></param>
-      /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
-      /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
       public double GetNormalizedDistance(ReadOnlySpan<T> source, ReadOnlySpan<T> target)
         => GetNormalizedDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
 
-      /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-      /// <param name="source"></param>
-      /// <param name="target"></param>
-      /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-      /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
-      /// <param name="comparer"></param>
-      /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
-      /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
       public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       {
         comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -136,13 +116,6 @@ namespace Flux
 
         return score + 0.1 * initialMatches * (1 - score); // Return the Winkler modified distance score.
       }
-      /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-      /// <param name="source"></param>
-      /// <param name="target"></param>
-      /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-      /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
-      /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
-      /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
       public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetNormalizedSimilarity(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
     }

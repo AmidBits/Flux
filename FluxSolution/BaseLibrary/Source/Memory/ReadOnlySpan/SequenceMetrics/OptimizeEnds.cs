@@ -9,16 +9,18 @@ namespace Flux.SequenceMetrics
       sourceSlice = source;
       targetSlice = target;
 
-      atStart = 0; while (sourceSlice.Length > atStart && targetSlice.Length > atStart && comparer.Equals(sourceSlice[atStart], targetSlice[atStart])) atStart++;
-
+      atStart = 0;
+      while (sourceSlice.Length > atStart && targetSlice.Length > atStart && comparer.Equals(sourceSlice[atStart], targetSlice[atStart]))
+        atStart++;
       if (atStart > 0)
       {
         sourceSlice = sourceSlice.Slice(atStart);
         targetSlice = targetSlice.Slice(atStart);
       }
 
-      atEnd = 0; for (int sourceEnd = sourceSlice.Length - 1, targetEnd = targetSlice.Length - 1; sourceEnd > 0 && targetEnd > 0 && comparer.Equals(sourceSlice[sourceEnd], targetSlice[targetEnd]); sourceEnd--, targetEnd--) atEnd++;
-
+      atEnd = 0;
+      for (int sourceEnd = sourceSlice.Length - 1, targetEnd = targetSlice.Length - 1; sourceEnd > 0 && targetEnd > 0 && comparer.Equals(sourceSlice[sourceEnd], targetSlice[targetEnd]); sourceEnd--, targetEnd--)
+        atEnd++;
       if (atEnd > 0)
       {
         sourceSlice = sourceSlice.Slice(0, sourceSlice.Length - atEnd);

@@ -9,16 +9,17 @@ namespace Flux
     /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other. Uses the default comparer.</summary>
     /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
     public static int LevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new SequenceMetrics.LevenshteinDistance<T>().GetMetricDistance(source, target);
+      => ((SequenceMetrics.IMetricDistance<T>)new SequenceMetrics.LevenshteinDistance<T>()).GetMetricDistance(source, target);
   }
 
   namespace SequenceMetrics
   {
+    /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</summary>
+    /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// <remarks>Implemented based on the Wiki article.</remarks>
     public class LevenshteinDistance<T>
       : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other. Uses the specified comparer.</summary>
-      /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       {
         comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -28,10 +29,11 @@ namespace Flux
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
 
-        var v1 = new int[targetCount + 1];
-        var v0 = new int[targetCount + 1];
+        var v1 = new int[targetCount + 1]; // Row of costs, one row back (previous row).
+        var v0 = new int[targetCount + 1]; // Row of costs, current row.
 
-        for (var j = 0; j <= targetCount; j++) v0[j] = j;
+        for (var j = 0; j <= targetCount; j++)
+          v0[j] = j; // Initialize the 'previous' (swapped to 'v1' in loop) row.
 
         for (var i = 0; i < sourceCount; i++)
         {
@@ -41,7 +43,11 @@ namespace Flux
 
           for (var j = 0; j < targetCount; j++)
           {
-            v0[j + 1] = System.Math.Min(System.Math.Min(v1[j + 1] + 1, v0[j] + 1), comparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + 1); // Minimum costs of deletion, insertion and substitution, resp.
+            v0[j + 1] = Maths.Min(
+              v1[j + 1] + 1, // Deletion.
+              v0[j] + 1, // Insertion.
+              comparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + 1 // Substitution.
+            );
           }
         }
 
@@ -100,28 +106,18 @@ namespace Flux
         //return v0[target.Length];
         #endregion Another optimized version with one vector and temp variables this time, not thoroughly tested!
       }
-      /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other. Uses the default comparer.</summary>
-      /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetMetricDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
 
-      #region ISimpleMatchingCoefficient<T>
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
         => 1.0 - GetSimpleMatchingDistance(source, target, comparer);
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetSimpleMatchingCoefficient(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-      #endregion ISimpleMatchingCoefficient<T>
 
-      #region ISimpleMatchingDistance<T>
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
         => (double)GetMetricDistance(source, target, comparer) / (double)System.Math.Max(source.Length, target.Length);
-      /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => GetSimpleMatchingDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-      #endregion ISimpleMatchingDistance<T>
     }
   }
 }
