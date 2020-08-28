@@ -9,7 +9,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/IPv6"/>
     public static System.Collections.Generic.IEnumerable<int> GetAddressWords(this System.Net.IPAddress source)
     {
-      var bytes = source.GetAddressBytes();
+      var bytes = (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes();
 
       for (var index = 0; index < bytes.Length; index += 2)
       {
@@ -21,6 +21,9 @@ namespace Flux
     /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetBroadcastAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (subnetMask is null) throw new System.ArgumentNullException(nameof(subnetMask));
+
       var sourceBytes = source.GetAddressBytes();
       var subnetMaskBytes = subnetMask.GetAddressBytes();
 
@@ -45,6 +48,9 @@ namespace Flux
     /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetNetworkAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (subnetMask is null) throw new System.ArgumentNullException(nameof(subnetMask));
+
       var sourceBytes = source.GetAddressBytes();
       var subnetMaskBytes = subnetMask.GetAddressBytes();
 
@@ -83,10 +89,10 @@ namespace Flux
 
     /// <summary>Determintes whether the address is an IPv4 multicast address.</summary>
     public static bool IsIPv4Multicast(this System.Net.IPAddress source)
-      => source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? source.GetAddressBytes() is var bytes && bytes[0] >= 224 && bytes[0] <= 239 : throw new System.ArgumentOutOfRangeException(nameof(source), $"Not an IPv4 address ({source.AddressFamily.ToString()}).");
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? source.GetAddressBytes() is var bytes && bytes[0] >= 224 && bytes[0] <= 239 : throw new System.ArgumentOutOfRangeException(nameof(source), $"Not an IPv4 address ({source.AddressFamily.ToString()}).");
 
     public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
-      => source.GetAddressBytes().Reverse().ToBigInteger();
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().Reverse().ToBigInteger();
 
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {

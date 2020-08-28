@@ -27,7 +27,7 @@ namespace Flux
     {
       var sourceLengthAdjusted = (source ?? throw new System.ArgumentNullException(nameof(source))).Length - startIndex; // Adjusted with offset from startIndex, in case startIndex is too close to the end of the string.
 
-      foreach (var value in values)
+      foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
       {
         if (source.LastIndexOf(value, startIndex, count > -1 ? count : System.Math.Min(sourceLengthAdjusted, value.Length), comparisonType) is var index && index > -1)
         {

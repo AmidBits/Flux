@@ -16,6 +16,8 @@ namespace Flux.Model
 
     public virtual void Braid(Grid grid, double threshold = 0.5)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       foreach (var cell in grid.GetDeadEnds().ToList())
       {
         if (Rng.NextDouble() <= threshold)
@@ -39,6 +41,8 @@ namespace Flux.Model
   {
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var current = grid.Cells.RandomElement(Rng);
 
       var unvisitedCount = grid.Cells.Count - 1;
@@ -64,6 +68,8 @@ namespace Flux.Model
   {
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var stack = new System.Collections.Generic.Stack<Cell>();
       stack.Push(grid.Cells.RandomElement(Rng));
       while (stack.Any())
@@ -98,13 +104,15 @@ namespace Flux.Model
             _diagonal = value;
             break;
           default:
-            throw new System.ArgumentOutOfRangeException("Must be a diagonal.");
+            throw new System.ArgumentOutOfRangeException(nameof(value), @"Must be a diagonal.");
         }
       }
     }
 
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var direction1 = (int)_diagonal - 45;
       var direction2 = (int)_diagonal + 45;
 
@@ -125,11 +133,14 @@ namespace Flux.Model
     public System.Func<System.Collections.Generic.List<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
       {
         return list.RandomElement(); // Prim's algorithm by default
-    };
+      };
 
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var active = new System.Collections.Generic.List<Cell> { Selector(grid.Cells, Rng) };
+
       while (active.Any())
       {
         var cell = Selector(active, Rng);
@@ -152,6 +163,8 @@ namespace Flux.Model
   {
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       Cell? current = grid.Cells.RandomElement(Rng);
 
       while (current != null)
@@ -187,6 +200,8 @@ namespace Flux.Model
   {
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       Divide(grid, 0, 0, grid.Rows, grid.Columns);
     }
 
@@ -265,13 +280,15 @@ namespace Flux.Model
             _diagonal = value;
             break;
           default:
-            throw new System.ArgumentOutOfRangeException("Must be a diagonal.");
+            throw new System.ArgumentOutOfRangeException(nameof(value), "Must be a diagonal.");
         }
       }
     }
 
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var direction1 = (int)_diagonal - 45;
       var direction2 = (int)_diagonal + 45;
 
@@ -311,6 +328,8 @@ namespace Flux.Model
   {
     public override void Build(Grid grid)
     {
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+
       var path = new System.Collections.Generic.List<Cell>();
 
       var unvisited = grid.Cells.ToList();
