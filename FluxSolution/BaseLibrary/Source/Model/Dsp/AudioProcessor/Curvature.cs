@@ -31,8 +31,7 @@ namespace Flux.Dsp.AudioProcessor
     /// <summary>Apply curvature with the specified contour to an arbitrary mono signal sample.</summary>
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>
     /// <param name="mono">The mono sample in the range [-1, 1].</param>
-    public static double ApplyCurvature(double contour, double mono)
-      => (contour > Maths.EpsilonCpp32 || contour < -Maths.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled ? 2.0 * ((System.Math.Pow(contourScaled, (mono + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0 : mono;
+    public static double ApplyCurvature(double contour, double mono) => (contour > Maths.EpsilonCpp32 || contour < -Maths.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled ? 2.0 * ((System.Math.Pow(contourScaled, (mono + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0 : mono;
   }
 
   public class CurvatureStereo

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp", "WpfApp\WpfApp.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{69FA5514-FDD4-4307-A0F4-5F23E01D6EE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseLibraryMst", "BaseLibraryMst\BaseLibraryMst.csproj", "{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,26 @@ Global
 		{69FA5514-FDD4-4307-A0F4-5F23E01D6EE2}.Release|x64.Build.0 = Release|Any CPU
 		{69FA5514-FDD4-4307-A0F4-5F23E01D6EE2}.Release|x86.ActiveCfg = Release|Any CPU
 		{69FA5514-FDD4-4307-A0F4-5F23E01D6EE2}.Release|x86.Build.0 = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|ARM.Build.0 = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|ARM64.Build.0 = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|x64.Build.0 = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

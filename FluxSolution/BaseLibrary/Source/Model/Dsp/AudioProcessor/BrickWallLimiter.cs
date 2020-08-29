@@ -31,8 +31,7 @@ namespace Flux.Dsp.AudioProcessor
       return sample * m_autoAttenuation;
     }
 
-    public static double Limit(double sample)
-      => Flux.Maths.Clamp(sample, -1.0, 1.0);
+    public static double Limit(double sample) => Flux.Maths.Clamp(sample, -1.0, 1.0);
 
     public MonoSample ProcessAudio(MonoSample sample)
     {

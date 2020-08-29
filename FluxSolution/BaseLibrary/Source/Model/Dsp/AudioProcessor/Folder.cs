@@ -33,10 +33,7 @@ namespace Flux.Dsp.AudioProcessor
 
       Multiplier = multiplier;
     }
-    public FolderMono()
-      : this(0, 0)
-    {
-    }
+    public FolderMono() : this(0, 0) { }
 
     public MonoSample ProcessAudio(MonoSample sample)
       => new MonoSample(Maths.Fold(m_multiplier * (sample.FrontCenter + m_polarBias), -1, 1));

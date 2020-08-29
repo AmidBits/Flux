@@ -1,6 +1,7 @@
 namespace Flux.Dsp
 {
-  public class Oscillator : IOscillator
+  public class Oscillator
+    : IOscillator
   {
     private double _amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>
@@ -161,7 +162,8 @@ namespace Flux.Dsp
       return Current;
     }
 
-    public MonoSample NextSample() => new MonoSample(Next(null));
+    public MonoSample NextSample()
+      => new MonoSample(Next(null));
 
     /// <summary>Returns a sequence of the specified number of samples.</summary>
     public System.Collections.Generic.IEnumerable<double> GetNext(int count)
