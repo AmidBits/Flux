@@ -4,8 +4,8 @@
   public class RampWave
     : IWaveGenerator
   {
-    public MonoSample GenerateWave(double phase)
-      => new MonoSample(-1 + phase * 2);
+    public double GenerateWave(double phase)
+      => (-1 + phase * 2);
 
     // public static double Sample(double phase) => -1.0 + phase * 2.0;
   }

@@ -60,7 +60,7 @@ namespace Flux.Dsp.AudioFilter
       return buf4;
     }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public double ProcessAudio(double sample)
+      => (FilterAudioMono(sample));
   }
 }

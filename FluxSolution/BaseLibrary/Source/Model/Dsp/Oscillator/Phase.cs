@@ -74,7 +74,7 @@ namespace Flux.Dsp
 
       if (FrequencyModulator != null && m_frequencyModulation > Flux.Maths.EpsilonCpp32)
       {
-        shift += normalizedFrequency.Value * FrequencyModulator.NextSample().FrontCenter * m_frequencyModulation;
+        shift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
       }
 
       if (Reverse)

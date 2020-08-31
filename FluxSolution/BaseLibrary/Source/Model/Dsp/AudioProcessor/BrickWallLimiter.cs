@@ -33,22 +33,22 @@ namespace Flux.Dsp.AudioProcessor
 
     public static double Limit(double sample) => Flux.Maths.Clamp(sample, -1.0, 1.0);
 
-    public MonoSample ProcessAudio(MonoSample sample)
+    public double ProcessAudio(double sample)
     {
       if (m_autoAttenuation < 1.0)
       {
         m_autoAttenuation = Maths.Clamp(m_autoAttenuation + m_release, Maths.EpsilonCpp32, 1);
       }
 
-      if (sample.FrontCenter < -1 || sample.FrontCenter > 1)
+      if (sample < -1 || sample > 1)
       {
-        if (1 / System.Math.Abs(sample.FrontCenter) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
+        if (1 / System.Math.Abs(sample) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
         {
           m_autoAttenuation = attenuationRequired;
         }
       }
 
-      return new MonoSample(sample.FrontCenter * m_autoAttenuation);
+      return (sample * m_autoAttenuation);
     }
   }
 

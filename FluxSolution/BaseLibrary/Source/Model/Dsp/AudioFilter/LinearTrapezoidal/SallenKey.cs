@@ -69,7 +69,7 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
       return v2;
     }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public double ProcessAudio(double sample)
+      => (FilterAudioMono(sample));
   }
 }

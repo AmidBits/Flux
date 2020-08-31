@@ -7,11 +7,11 @@
     protected System.Random Rng { get; set; }
 
     public WhiteNoise(System.Random? rng)
-      => this.Rng = rng ?? new Flux.Random.Xoshiro256SS();
+      => Rng = rng ?? Flux.Random.NumberGenerator.Crypto;
     public WhiteNoise()
       => Rng = new Flux.Random.Xoshiro256SS();
 
-    public virtual MonoSample GenerateWave(double phase2Pi)
-      => new MonoSample(Rng.NextDouble() * 2 - 1);
+    public virtual double GenerateWave(double phase2Pi)
+      => (Rng.NextDouble() * 2 - 1);
   }
 }

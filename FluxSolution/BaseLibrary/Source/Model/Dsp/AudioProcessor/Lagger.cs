@@ -16,8 +16,8 @@ namespace Flux.Dsp.AudioProcessor
     {
     }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.InterpolateCosine(sample.FrontCenter, m_previousSample, m_amount) : sample.FrontCenter);
+    public double ProcessAudio(double sample)
+      => (m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.InterpolateCosine(sample, m_previousSample, m_amount) : sample);
   }
 
   public class LaggerStereo
@@ -44,6 +44,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

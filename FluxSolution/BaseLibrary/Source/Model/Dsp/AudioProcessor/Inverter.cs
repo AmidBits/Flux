@@ -25,14 +25,14 @@
     {
     }
 
-    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(Mode switch
+    public double ProcessAudio(double sample) => (Mode switch
     {
-      InverterMode.PeekToPeek => (-sample.FrontCenter),
-      InverterMode.PeeksIndependently when sample.FrontCenter < 0 => (-sample.FrontCenter - 1),
-      InverterMode.NegativePeekOnly when sample.FrontCenter < 0 => (-sample.FrontCenter - 1),
-      InverterMode.PeeksIndependently when sample.FrontCenter > 0 => (-sample.FrontCenter + 1),
-      InverterMode.PositivePeekOnly when sample.FrontCenter > 0 => (-sample.FrontCenter + 1),
-      _ => (sample.FrontCenter),
+      InverterMode.PeekToPeek => (-sample),
+      InverterMode.PeeksIndependently when sample < 0 => (-sample - 1),
+      InverterMode.NegativePeekOnly when sample < 0 => (-sample - 1),
+      InverterMode.PeeksIndependently when sample > 0 => (-sample + 1),
+      InverterMode.PositivePeekOnly when sample > 0 => (-sample + 1),
+      _ => (sample),
     });
 
     public static double InvertNegativePeekOnly(double sample) => sample < 0.0 ? -sample - 1.0 : sample;
@@ -65,6 +65,6 @@
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

@@ -19,9 +19,9 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       {
         if (Processors[i] as IAudioProcessorMono is var processor && processor != null)
         {
-          var sampleM = processor.ProcessAudio(new MonoSample(mono.FrontCenter));
+          var sampleM = processor.ProcessAudio(mono);
 
-          var stereo = StereoPan.ApplyStereoPan(-1.0 + gapSize * i, new StereoSample(sampleM.FrontCenter, sampleM.FrontCenter));
+          var stereo = StereoPan.ApplyStereoPan(-1.0 + gapSize * i, new StereoSample(sampleM, sampleM));
 
           left += stereo.FrontLeft;
           right += stereo.FrontRight;

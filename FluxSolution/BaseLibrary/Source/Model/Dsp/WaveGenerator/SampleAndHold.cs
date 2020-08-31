@@ -15,7 +15,7 @@ namespace Flux.Dsp.WaveGenerator
     {
     }
 
-    public override MonoSample GenerateWave(double phase)
+    public override double GenerateWave(double phase)
     {
       if (phase < m_hold)
       {
@@ -24,7 +24,7 @@ namespace Flux.Dsp.WaveGenerator
 
       m_hold = phase;
 
-      return new MonoSample(m_sample);
+      return (m_sample);
     }
   }
 

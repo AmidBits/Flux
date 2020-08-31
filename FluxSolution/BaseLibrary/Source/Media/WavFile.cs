@@ -258,12 +258,12 @@ namespace Flux.Media.WaveFile
 
       for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
       {
-        var sampleL = unchecked((ushort)(short)(oscillatorL.NextSample().FrontCenter * short.MaxValue));
+        var sampleL = unchecked((ushort)(short)(oscillatorL.NextSample() * short.MaxValue));
 
         fileStream.WriteByte((byte)(sampleL & 0xFF));
         fileStream.WriteByte((byte)(sampleL >> 0x8));
 
-        var sampleR = unchecked((ushort)(short)(oscillatorR.NextSample().FrontCenter * short.MaxValue));
+        var sampleR = unchecked((ushort)(short)(oscillatorR.NextSample() * short.MaxValue));
 
         fileStream.WriteByte((byte)(sampleR & 0xFF));
         fileStream.WriteByte((byte)(sampleR >> 0x8));

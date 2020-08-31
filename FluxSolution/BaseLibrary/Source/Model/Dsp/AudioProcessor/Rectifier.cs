@@ -33,14 +33,14 @@ namespace Flux.Dsp.AudioProcessor
     {
     }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(Mode switch
+    public double ProcessAudio(double sample)
+      => (Mode switch
       {
-        RectifierMode.NegativeFullWave when sample.FrontCenter > m_threshold => (System.Math.Max(m_threshold - (sample.FrontCenter - m_threshold), -1)),
-        RectifierMode.NegativeHalfWave when sample.FrontCenter > m_threshold => (m_threshold),
-        RectifierMode.FullWave when sample.FrontCenter < m_threshold => (System.Math.Min(m_threshold + (m_threshold - sample.FrontCenter), 1)),
-        RectifierMode.HalfWave when sample.FrontCenter < m_threshold => (m_threshold),
-        _ => (sample.FrontCenter),
+        RectifierMode.NegativeFullWave when sample > m_threshold => (System.Math.Max(m_threshold - (sample - m_threshold), -1)),
+        RectifierMode.NegativeHalfWave when sample > m_threshold => (m_threshold),
+        RectifierMode.FullWave when sample < m_threshold => (System.Math.Min(m_threshold + (m_threshold - sample), 1)),
+        RectifierMode.HalfWave when sample < m_threshold => (m_threshold),
+        _ => (sample),
       });
 
     public static double RectifyFullWave(double sample, double threshold = 0.0)
@@ -76,6 +76,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

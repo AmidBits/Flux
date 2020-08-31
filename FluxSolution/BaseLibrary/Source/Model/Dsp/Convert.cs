@@ -38,8 +38,8 @@ namespace Flux.Dsp
     public static StereoSample MonoToStereo(double sampleM)
       => new StereoSample(sampleM, sampleM);
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
-    public static MonoSample StereoToMono(double sampleL, double sampleR)
-      => new MonoSample((sampleL + sampleR) / 2);
+    public static double StereoToMono(double sampleL, double sampleR)
+      => ((sampleL + sampleR) / 2);
 
     /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals.</summary>
     /// <param name="sampleFl">Front left.</param>

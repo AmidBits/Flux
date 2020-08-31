@@ -12,7 +12,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Mono.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Mono.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Mono.ProcessAudio(sample.FrontLeft), Mono.ProcessAudio(sample.FrontRight));
   }
 
   /// <summary>Process a stereo signal using two mono audio processors (IAudioProcessorMono).</summary>
@@ -29,6 +29,6 @@ namespace Flux.Dsp.AudioProcessor.Adapter
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

@@ -25,8 +25,8 @@ namespace Flux.Dsp.AudioProcessor
     {
     }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(2 * ((System.Math.Pow(m_contourScaled, (sample.FrontCenter + 1) * 50) - 1) / (System.Math.Pow(m_contourScaled, 100) - 1)) - 1);
+    public double ProcessAudio(double sample)
+      => (2 * ((System.Math.Pow(m_contourScaled, (sample + 1) * 50) - 1) / (System.Math.Pow(m_contourScaled, 100) - 1)) - 1);
 
     /// <summary>Apply curvature with the specified contour to an arbitrary mono signal sample.</summary>
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>
@@ -58,6 +58,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

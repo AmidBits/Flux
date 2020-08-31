@@ -19,7 +19,7 @@
 
     /// <summary>A bipolar (-1 to 1) pink noise sample. The phase is ignored.</summary>
     /// <returns>A pink noise sample inthe -1 to 1 range.</returns>
-    public override MonoSample GenerateWave(double phase2Pi)
+    public override double GenerateWave(double phase2Pi)
     {
       var white = Rng.NextDouble(phase2Pi); // The variable 'white' was probably intended to be a new random value each time.
 
@@ -34,7 +34,7 @@
 
       m_b6 = white * 0.115926;
 
-      return new MonoSample(pink);
+      return (pink);
     }
   }
 }

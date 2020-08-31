@@ -77,15 +77,15 @@ namespace Flux.Dsp.AudioProcessor
     //  return sample * (_dryMix + _gainCompensation * _wetMix) + (_gain * bufferSample) * _wetMix;
     //}
 
-    public MonoSample ProcessAudio(MonoSample sample)
+    public double ProcessAudio(double sample)
     {
       var bufferSample = m_buffer[m_bufferPosition];
 
-      m_buffer[m_bufferPosition] = (sample.FrontCenter + m_feedback * bufferSample) / m_feedbackCompensation;
+      m_buffer[m_bufferPosition] = (sample + m_feedback * bufferSample) / m_feedbackCompensation;
 
       m_bufferPosition = (m_bufferPosition + 1) % m_timeIndex;
 
-      return new MonoSample(sample.FrontCenter * (m_dryMix + m_gainCompensation * m_wetMix) + (m_gain * bufferSample) * m_wetMix);
+      return (sample * (m_dryMix + m_gainCompensation * m_wetMix) + (m_gain * bufferSample) * m_wetMix);
     }
   }
 
@@ -118,6 +118,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

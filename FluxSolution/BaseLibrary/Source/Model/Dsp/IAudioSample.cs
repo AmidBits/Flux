@@ -36,50 +36,50 @@
   //{
   //}
 
-  public struct MonoSample
-    : IChannelFc, System.IEquatable<MonoSample>
-  {
-    public double FrontCenter { get; }
+  //public struct MonoSample
+  //  : IChannelFc, System.IEquatable<MonoSample>
+  //{
+  //  public double FrontCenter { get; }
 
-    public MonoSample(in double frontCenter)
-    {
-      FrontCenter = frontCenter;
-    }
+  //  public MonoSample(in double frontCenter)
+  //  {
+  //    FrontCenter = frontCenter;
+  //  }
 
-    public StereoSample ToStereo()
-      => new StereoSample(FrontCenter, FrontCenter);
+  //  public StereoSample ToStereo()
+  //    => new StereoSample(FrontCenter, FrontCenter);
 
-    #region Static functions
-    public static StereoSample ToStereoSample(MonoSample mono)
-      => new StereoSample(mono.FrontCenter, mono.FrontCenter);
-    //public static ISampleQuad ToQuadSample(in ISampleMono mono)
-    //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
-    #endregion Static functions
+  //  #region Static functions
+  //  public static StereoSample ToStereoSample(MonoSample mono)
+  //    => new StereoSample(mono.FrontCenter, mono.FrontCenter);
+  //  //public static ISampleQuad ToQuadSample(in ISampleMono mono)
+  //  //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
+  //  #endregion Static functions
 
-    // Operators
-    public static bool operator ==(in MonoSample a, in MonoSample b)
-      => a.Equals(b);
-    public static bool operator !=(in MonoSample a, in MonoSample b)
-      => !a.Equals(b);
-    //public static implicit operator double(MonoSample sample)
-    //  => sample.FrontCenter;
-    //public static implicit operator MonoSample(in double sample)
-    //  => new MonoSample(sample);
-    //public static implicit operator StereoSample(in MonoSample mono)
-    //  => new StereoSample(mono.FrontCenter, mono.FrontCenter);
-    //public static implicit operator QuadSample(in MonoSample mono)
-    //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
-    // IEquatable<T>
-    public bool Equals(MonoSample other)
-      => FrontCenter.Equals(other.FrontCenter);
-    // Object overrides
-    public override bool Equals(object? obj)
-      => obj is MonoSample sample && Equals(sample);
-    public override int GetHashCode()
-      => FrontCenter.GetHashCode();
-    public override string ToString()
-      => $"<Fc:{FrontCenter}>";
-  }
+  //  // Operators
+  //  public static bool operator ==(in MonoSample a, in MonoSample b)
+  //    => a.Equals(b);
+  //  public static bool operator !=(in MonoSample a, in MonoSample b)
+  //    => !a.Equals(b);
+  //  //public static implicit operator double(MonoSample sample)
+  //  //  => sample.FrontCenter;
+  //  //public static implicit operator MonoSample(in double sample)
+  //  //  => new MonoSample(sample);
+  //  //public static implicit operator StereoSample(in MonoSample mono)
+  //  //  => new StereoSample(mono.FrontCenter, mono.FrontCenter);
+  //  //public static implicit operator QuadSample(in MonoSample mono)
+  //  //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
+  //  // IEquatable<T>
+  //  public bool Equals(MonoSample other)
+  //    => FrontCenter.Equals(other.FrontCenter);
+  //  // Object overrides
+  //  public override bool Equals(object? obj)
+  //    => obj is MonoSample sample && Equals(sample);
+  //  public override int GetHashCode()
+  //    => FrontCenter.GetHashCode();
+  //  public override string ToString()
+  //    => $"<Fc:{FrontCenter}>";
+  //}
 
   public struct StereoSample
     : IChannelFl, IChannelFr, System.IEquatable<StereoSample>
@@ -97,12 +97,12 @@
       FrontRight = frontRight;
     }
 
-    public MonoSample ToMono()
-      => new MonoSample((FrontLeft + FrontRight) / 2);
+    public double ToMono()
+      => ((FrontLeft + FrontRight) / 2);
 
     #region Static functions
-    public static MonoSample ToMonoSample(StereoSample stereo)
-      => new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
+    public static double ToMonoSample(StereoSample stereo)
+      => ((stereo.FrontLeft + stereo.FrontRight) / 2);
     //public static ISampleQuad ToQuadSample(in ISampleStereo stereo)
     //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
     #endregion Static functions

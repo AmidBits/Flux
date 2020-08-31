@@ -7,14 +7,14 @@
   {
     static IOscillator Empty => EmptyOscillator.Instance;
 
-    MonoSample NextSample();
+    double NextSample();
 
     private class EmptyOscillator
       : IOscillator
     {
       public static IOscillator Instance = new EmptyOscillator();
 
-      public MonoSample NextSample()
+      public double NextSample()
         => throw new System.NotImplementedException(nameof(EmptyOscillator));
     }
   }

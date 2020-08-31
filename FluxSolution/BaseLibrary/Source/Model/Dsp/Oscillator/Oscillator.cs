@@ -104,7 +104,7 @@ namespace Flux.Dsp
     /// <summary>Generates the next sample for the oscillator (all operational components are integrated in ths process).</summary>
     public double Next(double? normalizedFrequency)
     {
-      Current = Generator?.GenerateWave(_phase).FrontCenter ?? 0;
+      Current = Generator?.GenerateWave(_phase) ?? 0;
 
       if (InvertPolarity)
       {
@@ -113,24 +113,24 @@ namespace Flux.Dsp
 
       foreach (var processor in PreProcessors)
       {
-        Current = processor.ProcessAudio(new MonoSample(Current)).FrontCenter;
+        Current = processor.ProcessAudio(Current);
       }
 
       if (AmplitudeModulator != null && _amplitudeModulation > Maths.EpsilonCpp32)
       {
-        Current *= AmplitudeModulator.NextSample().FrontCenter * _amplitudeModulation + 1;
+        Current *= AmplitudeModulator.NextSample() * _amplitudeModulation + 1;
 
         Current /= _amplitudeModulation + 1; // Reset the amplitude after AM applied.
       }
 
       if (RingModulator != null && _ringModulation > Maths.EpsilonCpp32)
       {
-        Current *= RingModulator.NextSample().FrontCenter * _ringModulation;
+        Current *= RingModulator.NextSample() * _ringModulation;
       }
 
       foreach (var processor in PostProcessors)
       {
-        Current = processor.ProcessAudio(new MonoSample(Current)).FrontCenter;
+        Current = processor.ProcessAudio(Current);
       }
 
       if (!normalizedFrequency.HasValue)
@@ -147,7 +147,7 @@ namespace Flux.Dsp
 
       if (FrequencyModulator != null && _frequencyModulation > Maths.EpsilonCpp32)
       {
-        phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample().FrontCenter * _frequencyModulation;
+        phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample() * _frequencyModulation;
       }
 
       if (ReversePhase)
@@ -162,15 +162,15 @@ namespace Flux.Dsp
       return Current;
     }
 
-    public MonoSample NextSample()
-      => new MonoSample(Next(null));
+    public double NextSample()
+      => (Next(null));
 
     /// <summary>Returns a sequence of the specified number of samples.</summary>
     public System.Collections.Generic.IEnumerable<double> GetNext(int count)
     {
       while (count-- > 1)
       {
-        yield return NextSample().FrontCenter;
+        yield return NextSample();
       }
     }
 

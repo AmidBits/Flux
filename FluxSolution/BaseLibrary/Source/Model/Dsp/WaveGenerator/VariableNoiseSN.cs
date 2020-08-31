@@ -50,7 +50,7 @@
     {
     }
 
-    public override MonoSample GenerateWave(double phase)
+    public override double GenerateWave(double phase)
     {
       // ??? how can this work when it makes -0.5 to 0.5
       var value0 = Rng?.NextDouble() ?? (Rng = new System.Random()).NextDouble() - 0.5;
@@ -66,7 +66,7 @@
 
       m_values[0] = value0;
 
-      return new MonoSample(value0);
+      return (value0);
     }
   }
 }

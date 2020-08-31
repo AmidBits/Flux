@@ -9,7 +9,7 @@
     public CustomWave(System.Func<double, double> function)
       => m_function = function;
 
-    public MonoSample GenerateWave(double phase)
-      => new MonoSample(m_function(phase));
+    public double GenerateWave(double phase)
+      => (m_function(phase));
   }
 }

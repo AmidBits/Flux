@@ -7,14 +7,14 @@
 
     /// <returns>Process the shaped sample in the [-1, 1] range in mono.</returns>
     //double ProcessAudioMono(double sample);
-    MonoSample ProcessAudio(MonoSample sample);
+    double ProcessAudio(double sample);
 
     private class EmptyAudioProcessorMono
       : IAudioProcessorMono
     {
       public static IAudioProcessorMono Instance = new EmptyAudioProcessorMono();
 
-      public MonoSample ProcessAudio(MonoSample sample)
+      public double ProcessAudio(double sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorMono));
     }
   }

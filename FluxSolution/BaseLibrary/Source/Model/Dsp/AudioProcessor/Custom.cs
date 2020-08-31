@@ -9,8 +9,8 @@ namespace Flux.Dsp.AudioProcessor
     public CustomMono(System.Func<double, double> function)
       => m_function = function;
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(m_function(sample.FrontCenter));
+    public double ProcessAudio(double sample)
+      => (m_function(sample));
   }
 
   public class CustomStereo

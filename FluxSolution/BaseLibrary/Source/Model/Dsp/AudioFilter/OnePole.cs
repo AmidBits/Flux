@@ -35,8 +35,8 @@ namespace Flux.Dsp.AudioFilter
     public double FilterAudioMono(double sample)
       => (m_z1 = sample * m_a0 + m_z1 * m_b1);
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public double ProcessAudio(double sample)
+      => (FilterAudioMono(sample));
   }
 
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
@@ -74,7 +74,7 @@ namespace Flux.Dsp.AudioFilter
     public double FilterAudioMono(double sample)
       => (m_z1 = sample * m_a0 + m_z1 * m_b1);
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(FilterAudioMono(sample.FrontCenter));
+    public double ProcessAudio(double sample)
+      => (FilterAudioMono(sample));
   }
 }

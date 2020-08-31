@@ -16,7 +16,7 @@
     {
     }
 
-    public override MonoSample GenerateWave(double phase)
+    public override double GenerateWave(double phase)
     {
       while (true)
       {
@@ -32,7 +32,7 @@
         m_brown -= r;
       }
 
-      return new MonoSample(m_brown * 0.125);
+      return (m_brown * 0.125);
     }
   }
 }

@@ -5,7 +5,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   {
     public System.Collections.Generic.List<IAudioProcessorMono> Processors { get; } = new System.Collections.Generic.List<IAudioProcessorMono>();
 
-    public MonoSample ProcessAudio(MonoSample sample)
+    public double ProcessAudio(double sample)
     {
       foreach (var processor in Processors)
       {

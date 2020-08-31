@@ -12,8 +12,8 @@
       => _dutyCycle = Maths.Wrap(dutyCycle, 0.0, 1.0);
     public PulseWave() : this(System.Math.PI) { }
 
-    public MonoSample GenerateWave(double phase)
-      => new MonoSample(phase < 0.5 ? 1 : -1);
+    public double GenerateWave(double phase)
+      => (phase < 0.5 ? 1 : -1);
 
     // public static double Sample(double phase, double dutyCycle) => phase < dutyCycle ? 1.0 : -1.0;
   }

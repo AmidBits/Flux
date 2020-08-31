@@ -24,7 +24,7 @@
     {
     }
 
-    public override MonoSample GenerateWave(double phase)
+    public override double GenerateWave(double phase)
     {
       var temp1 = Rng.NextDouble();
       m_state0 = P0 * (m_state0 - temp1) + temp1;
@@ -35,7 +35,7 @@
       var temp3 = Rng.NextDouble();
       m_state2 = P2 * (m_state2 - temp3) + temp3;
 
-      return new MonoSample((A0 * m_state0 + A1 * m_state1 + A2 * m_state2) * RMI2 - Offset);
+      return ((A0 * m_state0 + A1 * m_state1 + A2 * m_state2) * RMI2 - Offset);
     }
   }
 }

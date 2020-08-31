@@ -35,7 +35,7 @@ namespace Flux.Dsp
     {
       if (Modulator != null && _modulation > Maths.EpsilonCpp32)
       {
-        _value = Modulator.NextSample().FrontCenter * _modulation;
+        _value = Modulator.NextSample() * _modulation;
       }
       else
       {

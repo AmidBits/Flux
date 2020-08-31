@@ -4,8 +4,8 @@
   public class SquareWave
     : IWaveGenerator
   {
-    public MonoSample GenerateWave(double phase)
-      => new MonoSample(phase < 0.5 ? 1 : -1);
+    public double GenerateWave(double phase)
+      => (phase < 0.5 ? 1 : -1);
 
     // public static double Sample(double phase) => phase < 0.5 ? 1.0 : -1.0;
   }

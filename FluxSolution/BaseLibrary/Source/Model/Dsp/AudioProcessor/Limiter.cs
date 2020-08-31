@@ -82,11 +82,11 @@ namespace Flux.Dsp.AudioProcessor
       m_computedSoftClipMult = System.Math.Abs((m_computedCeilingDecibel - m_computedSoftClip) / (m_computedPeakDecibel - m_computedSoftClip));
     }
 
-    public MonoSample ProcessAudio(MonoSample mono)
+    public double ProcessAudio(double mono)
     {
       // var peak = System.Math.Abs(sample);
 
-      var sample = mono.FrontCenter;
+      var sample = mono;
 
       sample *= m_computedMakeup;
 
@@ -100,7 +100,7 @@ namespace Flux.Dsp.AudioProcessor
         sample = sign * (m_computedSoftClipV + System.Math.Exp(overdB * m_computedSoftClipMult) * Convert.Decibel2Logarithm);
       }
 
-      return new MonoSample(System.Math.Min(m_computedCeiling, System.Math.Abs(sample)) * sign);
+      return (System.Math.Min(m_computedCeiling, System.Math.Abs(sample)) * sign);
     }
   }
 
@@ -116,6 +116,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

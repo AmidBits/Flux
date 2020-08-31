@@ -35,8 +35,8 @@ namespace Flux.Dsp.AudioProcessor
     }
     public FolderMono() : this(0, 0) { }
 
-    public MonoSample ProcessAudio(MonoSample sample)
-      => new MonoSample(Maths.Fold(m_multiplier * (sample.FrontCenter + m_polarBias), -1, 1));
+    public double ProcessAudio(double sample)
+      => (Maths.Fold(m_multiplier * (sample + m_polarBias), -1, 1));
   }
 
   public class FolderStereo
@@ -66,6 +66,6 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

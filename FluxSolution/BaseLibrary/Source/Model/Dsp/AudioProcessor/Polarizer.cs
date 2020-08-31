@@ -21,13 +21,13 @@
     }
     public PolarizerMono() : this(PolarizerMode.BipolarToUnipolarPositive) { }
 
-    public MonoSample ProcessAudio(MonoSample sample) => new MonoSample(Mode switch
+    public double ProcessAudio(double sample) => (Mode switch
     {
-      PolarizerMode.BipolarToUnipolarNegative => (sample.FrontCenter / 2.0 - 0.5),
-      PolarizerMode.BipolarToUnipolarPositive => (sample.FrontCenter / 2.0 + 0.5),
-      PolarizerMode.UnipolarNegativeToBipolar => (sample.FrontCenter < 0.0 ? sample.FrontCenter * 2.0 + 1.0 : 0.0),
-      PolarizerMode.UnipolarPositiveToBipolar => (sample.FrontCenter > 0.0 ? sample.FrontCenter * 2.0 - 1.0 : 0.0),
-      _ => (sample.FrontCenter),
+      PolarizerMode.BipolarToUnipolarNegative => (sample / 2.0 - 0.5),
+      PolarizerMode.BipolarToUnipolarPositive => (sample / 2.0 + 0.5),
+      PolarizerMode.UnipolarNegativeToBipolar => (sample < 0.0 ? sample * 2.0 + 1.0 : 0.0),
+      PolarizerMode.UnipolarPositiveToBipolar => (sample > 0.0 ? sample * 2.0 - 1.0 : 0.0),
+      _ => (sample),
     });
 
     public static double ApplyBipolarToUnipolarNegative(double sample) => sample / 2.0 - 0.5;
@@ -59,6 +59,6 @@
     }
 
     public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(new MonoSample(sample.FrontLeft)).FrontCenter, Right.ProcessAudio(new MonoSample(sample.FrontRight)).FrontCenter);
+      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }
