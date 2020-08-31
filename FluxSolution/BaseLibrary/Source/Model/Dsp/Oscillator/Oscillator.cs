@@ -56,10 +56,10 @@ namespace Flux.Dsp
     public Oscillator? PhaseModulator { get; set; }
 
     /// <summary>Audio processors applied before AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<IAudioProcessorMono> PreProcessors { get; }
+    public System.Collections.Generic.List<IWaveProcessorMono> PreProcessors { get; }
 
     /// <summary>Audio processors applied after AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<IAudioProcessorMono> PostProcessors { get; }
+    public System.Collections.Generic.List<IWaveProcessorMono> PostProcessors { get; }
 
     /// <summary>Indicates whether the direction of the phase should be reversed.</summary>
     public bool ReversePhase { get; set; }
@@ -91,9 +91,9 @@ namespace Flux.Dsp
     {
       Generator = generator;
 
-      PreProcessors = new System.Collections.Generic.List<IAudioProcessorMono>();
+      PreProcessors = new System.Collections.Generic.List<IWaveProcessorMono>();
 
-      PostProcessors = new System.Collections.Generic.List<IAudioProcessorMono>();
+      PostProcessors = new System.Collections.Generic.List<IWaveProcessorMono>();
 
       Reset(false);
 

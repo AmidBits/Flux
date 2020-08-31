@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public class LaggerMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private double m_amount;
     /// <summary>The amount of lag desired in the range [0, 1], where 0 is none and 1 is the most.</summary>
@@ -21,7 +21,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class LaggerStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public LaggerMono Left { get; }
     public LaggerMono Right { get; }

@@ -1,18 +1,18 @@
 ﻿namespace Flux.Dsp
 {
   /// <summary>A bipolar [-1, 1] sample audio processor in mono.</summary>
-  public interface IAudioProcessorMono
+  public interface IWaveProcessorMono
   {
-    static IAudioProcessorMono Empty => EmptyAudioProcessorMono.Instance;
+    static IWaveProcessorMono Empty => EmptyAudioProcessorMono.Instance;
 
     /// <returns>Process the shaped sample in the [-1, 1] range in mono.</returns>
     //double ProcessAudioMono(double sample);
     double ProcessAudio(double sample);
 
     private class EmptyAudioProcessorMono
-      : IAudioProcessorMono
+      : IWaveProcessorMono
     {
-      public static IAudioProcessorMono Instance = new EmptyAudioProcessorMono();
+      public static IWaveProcessorMono Instance = new EmptyAudioProcessorMono();
 
       public double ProcessAudio(double sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorMono));
@@ -20,16 +20,16 @@
   }
 
   /// <summary>A bipolar [-1, 1] sample audio processor in stereo.</summary>
-  public interface IAudioProcessorStereo
+  public interface IWaveProcessorStereo
   {
     /// <returns>Process the shaped samples in the [-1, 1] range in stereo.</returns>
     //(double left, double right) ProcessAudioStereo(double left, double right);
     StereoSample ProcessAudio(StereoSample sample);
 
     private class EmptyAudioProcessorStereo
-      : IAudioProcessorStereo
+      : IWaveProcessorStereo
     {
-      public static IAudioProcessorStereo Instance = new EmptyAudioProcessorStereo();
+      public static IWaveProcessorStereo Instance = new EmptyAudioProcessorStereo();
 
       public StereoSample ProcessAudio(StereoSample sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorStereo));

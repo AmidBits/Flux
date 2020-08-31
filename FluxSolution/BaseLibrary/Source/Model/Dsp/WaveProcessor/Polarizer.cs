@@ -11,7 +11,7 @@
 
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
   public class PolarizerMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     public PolarizerMode Mode { get; }
 
@@ -37,7 +37,7 @@
   }
 
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
-  public class PolarizerStereo : IAudioProcessorStereo
+  public class PolarizerStereo : IWaveProcessorStereo
   {
     public PolarizerMono Left { get; }
     public PolarizerMono Right { get; }

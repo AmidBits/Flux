@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public class FolderMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private double m_polarBias;
     /// <summary>The (polar) bias can be set within the range of [-1, 1].</summary>
@@ -40,7 +40,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class FolderStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public FolderMono Left { get; }
     public FolderMono Right { get; }

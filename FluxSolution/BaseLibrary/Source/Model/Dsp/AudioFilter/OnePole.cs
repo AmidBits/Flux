@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioFilter
 {
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
   public class HighPass1P
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <summary>The cutoff frequency is a boundary at which point the frequencies begins to be reduced (attenuated or reflected) rather than passing through.</summary>
@@ -41,7 +41,7 @@ namespace Flux.Dsp.AudioFilter
 
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
   public class LowPass1P
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <summary>Sets the cutoff frequency for the filter.</summary>

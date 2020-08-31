@@ -15,7 +15,7 @@ namespace Flux.Dsp.AudioProcessor
 
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
   public class RectifierMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     public RectifierMode Mode { get; }
 
@@ -51,7 +51,7 @@ namespace Flux.Dsp.AudioProcessor
 
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
   public class RectifierStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public RectifierMono Left { get; }
     public RectifierMono Right { get; }

@@ -4,7 +4,7 @@ namespace Flux.Dsp.AudioFilter
 	/// <see cref="http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/"/>
   /// <seealso cref="http://www.earlevel.com/main/2003/02/28/biquads/"/>
 	public sealed class BiQuad
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     public FrequencyFunction FilterType { get; private set; }
 

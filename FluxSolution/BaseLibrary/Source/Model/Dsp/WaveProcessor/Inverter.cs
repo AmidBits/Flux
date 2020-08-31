@@ -14,7 +14,7 @@
   }
 
   public class InverterMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     public InverterMode Mode { get; internal set; }
 
@@ -42,7 +42,7 @@
   }
 
   public class InverterStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public InverterMono Left { get; }
     public InverterMono Right { get; }

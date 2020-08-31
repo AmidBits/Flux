@@ -15,7 +15,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class QuadraticMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     public QuadraticMode Mode { get; internal set; }
 
@@ -59,7 +59,7 @@ namespace Flux.Dsp.AudioProcessor
       });
   }
 
-  public class QuadraticStereo : IAudioProcessorStereo
+  public class QuadraticStereo : IWaveProcessorStereo
   {
     public QuadraticMono Left { get; private set; }
     public QuadraticMono Right { get; private set; }

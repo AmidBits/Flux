@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public class StereoFieldRotator
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     private double m_cosC = 1, m_sinC; // The coefficients of the transformation matrix (used for processing speed).
 

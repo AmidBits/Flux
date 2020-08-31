@@ -6,7 +6,7 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
   public class SallenKey
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 and 20,000 Hz, but no restrictions are enforced.</value>

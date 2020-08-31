@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public class CurvatureMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private double m_contour, m_contourScaled;
     /// <summary>The quadratic exponent can be set within the constrained range [-1, 1]. Below</summary>
@@ -35,7 +35,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class CurvatureStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public CurvatureMono Left { get; }
     public CurvatureMono Right { get; }

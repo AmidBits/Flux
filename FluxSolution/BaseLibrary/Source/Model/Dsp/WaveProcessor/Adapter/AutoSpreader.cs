@@ -2,9 +2,9 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
   public class AutoSpreader
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
-    public System.Collections.Generic.List<IAudioProcessorMono> Processors { get; } = new System.Collections.Generic.List<IAudioProcessorMono>();
+    public System.Collections.Generic.List<IWaveProcessorMono> Processors { get; } = new System.Collections.Generic.List<IWaveProcessorMono>();
 
     public StereoSample ProcessAudio(StereoSample sample)
     {
@@ -13,11 +13,13 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 
       var mono = Convert.StereoToMono(left, right);
 
-      var gapSize = 2.0 / (Processors.Count - 1); // Compute a distribution gap size spread evenly across the stereo field.
+      var processorCount = Processors.Count;
 
-      for (var i = 0; i < Processors.Count; i++)
+      var gapSize = 2.0 / (processorCount - 1); // Compute a distribution gap size spread evenly across the stereo field.
+
+      for (var i = 0; i < processorCount; i++)
       {
-        if (Processors[i] as IAudioProcessorMono is var processor && processor != null)
+        if (Processors[i] as IWaveProcessorMono is var processor && processor != null)
         {
           var sampleM = processor.ProcessAudio(mono);
 

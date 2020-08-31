@@ -4,7 +4,7 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
   public class SingleSVF
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     public enum FrequencyFunction
     {

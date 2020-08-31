@@ -2,7 +2,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public class CustomMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private readonly System.Func<double, double> m_function;
 
@@ -14,7 +14,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class CustomStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     private readonly System.Func<double, double, (double left, double right)> m_function;
 

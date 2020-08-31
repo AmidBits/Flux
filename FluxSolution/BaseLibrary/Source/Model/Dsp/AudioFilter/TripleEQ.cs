@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioFilter
 {
   public class TripleEQ
-    : IAudioFilterMono, IAudioProcessorMono
+    : IAudioFilterMono, IWaveProcessorMono
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
 

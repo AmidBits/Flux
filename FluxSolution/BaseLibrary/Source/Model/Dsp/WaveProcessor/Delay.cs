@@ -3,7 +3,7 @@ namespace Flux.Dsp.AudioProcessor
   // https://creatingsound.com/2013/06/dsp-audio-programming-series-part-1/
   // https://stackoverflow.com/questions/11793310/how-to-add-echo-effect-on-audio-file-using-objective-c
   public class DelayMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private readonly double[] m_buffer;
 
@@ -90,7 +90,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class DelayStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public DelayMono Left { get; }
     public DelayMono Right { get; }

@@ -3,7 +3,7 @@ namespace Flux.Dsp.AudioProcessor
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
   public class BrickWallLimiterMono
-    : IAudioProcessorMono
+    : IWaveProcessorMono
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
@@ -53,7 +53,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   public class BrickWallLimiterStereo
-    : IAudioProcessorStereo
+    : IWaveProcessorStereo
   {
     public BrickWallLimiterMono Left { get; }
     public BrickWallLimiterMono Right { get; }
