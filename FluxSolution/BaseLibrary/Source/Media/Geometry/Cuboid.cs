@@ -23,10 +23,10 @@ namespace Flux.Media.Geometry
       => X == other.X && Y == other.Y && Z == other.Z && Width == other.Width && Height == other.Height && Depth == other.Depth;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<Cuboid {X}, {Y}, {Z} : {Width}, {Height}, {Depth}>";
+      => $"<{nameof(Cuboid)} {X}, {Y}, {Z}, {Width}, {Height}, {Depth}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Cuboid s && Equals(s);
+      => obj is Cuboid o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(0);
     public override string? ToString()

@@ -7,6 +7,9 @@ namespace Flux.Media.Geometry
     public float Height { get; set; }
     public float Depth { get; set; }
 
+    public Vector3D Center()
+      => new Vector3D(Width / 2, Height / 2, Depth / 2, 0);
+
     // Operators
     public static bool operator ==(Size a, Size b)
       => a.Equals(b);
@@ -17,7 +20,7 @@ namespace Flux.Media.Geometry
       => Width == other.Width && Height == other.Height && Depth == other.Depth;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<Size>";
+      => $"<{nameof(Size)} {Width}, {Height}, {Depth}>";
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Size s && Equals(s);

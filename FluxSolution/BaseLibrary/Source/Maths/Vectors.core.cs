@@ -15,23 +15,34 @@ namespace Flux
   public struct Vector3D
     : System.IEquatable<Vector3D>, System.IFormattable
   {
-    //public static Vector3D Empty = new Vector3D();
+    public static readonly Vector3D Empty = new Vector3D(0, 0, 0, 0);
 
-    public double X { get; set; }
-    public double Y { get; set; }
-    public double Z { get; set; }
-    public double W { get; set; }
+    private Vector256<double> m_v256;
 
+    public Vector256<double> V256
+      => m_v256;
+
+    public double X => m_v256.GetElement(0);
+    public double Y => m_v256.GetElement(1);
+    public double Z => m_v256.GetElement(2);
+    public double W => m_v256.GetElement(3);
+
+    public Vector3D(in Vector256<double> xyzw)
+      => m_v256 = xyzw;
     public Vector3D(double x, double y, double z, double w)
-    {
-      X = x;
-      Y = y;
-      Z = z;
-      W = w;
-    }
+      => m_v256 = Vector256.Create(x, y, z, w);
+    public Vector3D(double x, double y, double z)
+      => m_v256 = Vector256.Create(x, y, z, 1);
+    public Vector3D(double x, double y)
+      => m_v256 = Vector256.Create(x, y, 1, 1);
 
     public static Vector3D FromVector256(Vector256<double> v) => new Vector3D(v.GetElement(0), v.GetElement(1), v.GetElement(2), v.GetElement(3));
-    public Vector256<double> ToVector256() => Vector256.Create(X, Y, Z, W);
+    public Vector256<double> ToVector256() => Vector256.Create(m_v256.GetElement(0), m_v256.GetElement(1), m_v256.GetElement(2), m_v256.GetElement(3));
+
+    public double Length()
+      => System.Math.Sqrt(LengthSquared());
+    public double LengthSquared()
+      => DotProduct3D(m_v256, m_v256).GetElement(0);
 
     #region Static members (implementations using intrinsics if applicable)
     //public static readonly Vector256<double> Epsilon = Vector256.Create(double.Epsilon);
@@ -184,7 +195,8 @@ namespace Flux
     /// <param name="y">The vector to be multiplied with <paramref name="x"/></param>
     /// <param name="z">The vector to be added to to the infinite precision multiplication of <paramref name="x"/> and <paramref name="y"/></param>
     /// <returns>(x * y) + z on each element, rounded as one ternary operation</returns>
-    public static Vector256<double> MultiplyAdd(Vector256<double> x, Vector256<double> y, Vector256<double> z) => System.Runtime.Intrinsics.X86.Fma.IsSupported ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(x, y, z) : Vector256.Create(x.GetElement(0) * y.GetElement(0) + z.GetElement(0), x.GetElement(1) * y.GetElement(1) + z.GetElement(1), x.GetElement(2) * y.GetElement(2) + z.GetElement(2), x.GetElement(3) * y.GetElement(3) + z.GetElement(3));
+    public static Vector256<double> MultiplyAdd(in Vector256<double> x, in Vector256<double> y, in Vector256<double> z)
+      => System.Runtime.Intrinsics.X86.Fma.IsSupported ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(x, y, z) : Vector256.Create(x.GetElement(0) * y.GetElement(0) + z.GetElement(0), x.GetElement(1) * y.GetElement(1) + z.GetElement(1), x.GetElement(2) * y.GetElement(2) + z.GetElement(2), x.GetElement(3) * y.GetElement(3) + z.GetElement(3));
     public static Vector256<double> Negate(in Vector256<double> v)
       => System.Runtime.Intrinsics.X86.Avx.Xor(MaskNotSign, v);
     /// <summary>Scales the Vector2D to unit length.</summary>
