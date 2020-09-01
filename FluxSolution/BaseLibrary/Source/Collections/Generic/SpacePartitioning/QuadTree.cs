@@ -16,12 +16,14 @@ namespace Flux.Collections.Generic
     public Flux.Model.Vector2I BoundaryLow { get; private set; }
 
     private System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+    /// <summary>A list of items in this tree.</summary>
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 
     public int MaximumItems { get; set; }
 
-    private System.Collections.Generic.IList<Quadtree<T>> m_subNodes = new System.Collections.Generic.List<Quadtree<T>>();
-    public System.Collections.Generic.IReadOnlyList<Quadtree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Quadtree<T>>)m_subNodes;
+    private System.Collections.Generic.IList<Quadtree<T>> m_nodes = new System.Collections.Generic.List<Quadtree<T>>();
+    /// <summary>A list of sub-trees.</summary>
+    public System.Collections.Generic.IReadOnlyList<Quadtree<T>> Nodes => (System.Collections.Generic.IReadOnlyList<Quadtree<T>>)m_nodes;
 
     public Quadtree(Flux.Model.Vector2I boundaryLow, Flux.Model.Vector2I boundaryHigh)
     {
@@ -31,14 +33,20 @@ namespace Flux.Collections.Generic
       MaximumItems = 1;
     }
 
+    public void Clear()
+    {
+      m_items.Clear();
+      m_nodes.Clear();
+    }
+
     public bool InScope(Flux.Model.Vector2I position)
       => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y;
 
-    public bool InsertItem(T item)
+    public bool Insert(T item)
     {
       if (InScope(item.Position))
       {
-        if (m_subNodes.Count == 0)
+        if (m_nodes.Count == 0)
         {
           m_items.Add(item);
 
@@ -48,16 +56,16 @@ namespace Flux.Collections.Generic
             {
               if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1)
               {
-                SubDistributeItems();
+                Split();
               }
             }
           }
         }
         else
         {
-          foreach (var node in m_subNodes)
+          foreach (var node in m_nodes)
           {
-            if (node.InsertItem(item))
+            if (node.Insert(item))
             {
               break;
             }
@@ -76,9 +84,9 @@ namespace Flux.Collections.Generic
 
       seed = aggregator(this, seed);
 
-      if (m_subNodes.Count > 0)
+      if (m_nodes.Count > 0)
       {
-        foreach (var node in m_subNodes)
+        foreach (var node in m_nodes)
         {
           seed = node.SearchNodes(seed, aggregator);
         }
@@ -87,13 +95,13 @@ namespace Flux.Collections.Generic
       return seed;
     }
 
-    public void SubDistributeItems()
+    public void Split()
     {
-      if (m_subNodes is null)
+      if (m_nodes is null)
       {
         var midPoint = new Flux.Model.Vector2I((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
 
-        m_subNodes = new System.Collections.Generic.List<Quadtree<T>>()
+        m_nodes = new System.Collections.Generic.List<Quadtree<T>>()
         {
            new Quadtree<T>(new Flux.Model.Vector2I(midPoint.X, midPoint.Y), new Flux.Model.Vector2I(BoundaryHigh.X, BoundaryHigh.Y)),
            new Quadtree<T>(new Flux.Model.Vector2I(BoundaryLow.X, midPoint.Y), new Flux.Model.Vector2I(midPoint.X - 1, BoundaryHigh.Y)),
@@ -108,9 +116,9 @@ namespace Flux.Collections.Generic
         {
           var item = m_items.ElementAt(0);
 
-          foreach (var node in m_subNodes)
+          foreach (var node in m_nodes)
           {
-            if (node.InsertItem(item))
+            if (node.Insert(item))
             {
               m_items.RemoveAt(0);
 

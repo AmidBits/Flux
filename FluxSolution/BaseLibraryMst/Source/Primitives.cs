@@ -100,7 +100,7 @@ namespace Primitives
     [TestMethod]
     public void Variance()
     {
-      Assert.AreEqual(810, d.Variance().variance);
+      Assert.AreEqual(810, d.Variance().sampleVariance);
     }
   }
 }

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Media.Shapes
+namespace Flux.Media.Geometry.Shapes
 {
   public struct Polygon
     : System.IEquatable<Polygon>, System.IFormattable
@@ -736,7 +736,7 @@ namespace Flux.Media.Shapes
       => $"<{string.Join(@", ", Vectors.Select(v => v.ToString(format, provider)))}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Polygon && Equals(obj);
+      => obj is Polygon o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Vectors);
     public override string? ToString()

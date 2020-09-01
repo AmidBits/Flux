@@ -1,4 +1,4 @@
-namespace Flux.Media.Shapes
+namespace Flux.Media.Geometry
 {
   public struct ViewPort
     : System.IEquatable<ViewPort>, System.IFormattable
@@ -31,8 +31,8 @@ namespace Flux.Media.Shapes
 
     /// <summary>Convert from normalize device coordinate (NDC) to pixel coordinate, with the Y coordinate inverted. (Why is that?)</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformToRaster(System.Numerics.Vector2 source, float rasterHeight, float rasterWidth)
-      => new System.Numerics.Vector2(source.X * rasterWidth, (1F - source.Y) * rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
+    public static System.Numerics.Vector2 TransformToRaster(System.Numerics.Vector2 ndc, float rasterHeight, float rasterWidth)
+      => new System.Numerics.Vector2(ndc.X * rasterWidth, (1F - ndc.Y) * rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
 
     // Operators
     public static bool operator ==(ViewPort a, ViewPort b)
@@ -47,7 +47,7 @@ namespace Flux.Media.Shapes
       => $"<ViewPort>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is ViewPort && Equals(obj);
+      => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(0);
     public override string? ToString()

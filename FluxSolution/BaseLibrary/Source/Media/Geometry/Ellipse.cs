@@ -1,4 +1,4 @@
-namespace Flux.Media.Shapes
+namespace Flux.Media.Geometry.Shapes
 {
   public struct Ellipse
     : System.IEquatable<Ellipse>, System.IFormattable
@@ -124,7 +124,7 @@ namespace Flux.Media.Shapes
       => $"<{Width.ToString(format, provider)}, {Height.ToString(format, provider)}, {Angle.ToString(format, provider)}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Ellipse && Equals(obj);
+      => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Angle, Height, Width);
     public override string? ToString()

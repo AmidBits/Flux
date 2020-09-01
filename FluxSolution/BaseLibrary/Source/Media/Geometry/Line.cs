@@ -1,4 +1,4 @@
-namespace Flux.Media.Shapes
+namespace Flux.Media.Geometry.Shapes
 {
   public enum TestOutcome
   {
@@ -164,7 +164,7 @@ namespace Flux.Media.Shapes
       => $"<{m_p1.ToString(format, provider)}, {m_p2.ToString(format, provider)}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Line && Equals(obj);
+      => obj is Line o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(m_p1, m_p2);
     public override string? ToString()
