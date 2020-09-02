@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public class CurvatureMono
+  public class MonoCurvature
     : IWaveProcessorMono
   {
     private double m_contour, m_contourScaled;
@@ -16,11 +16,11 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public CurvatureMono(double contour)
+    public MonoCurvature(double contour)
     {
       Contour = contour;
     }
-    public CurvatureMono()
+    public MonoCurvature()
       : this(0)
     {
     }
@@ -32,32 +32,5 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>
     /// <param name="mono">The mono sample in the range [-1, 1].</param>
     public static double ApplyCurvature(double contour, double mono) => (contour > Maths.EpsilonCpp32 || contour < -Maths.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled ? 2.0 * ((System.Math.Pow(contourScaled, (mono + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0 : mono;
-  }
-
-  public class CurvatureStereo
-    : IWaveProcessorStereo
-  {
-    public CurvatureMono Left { get; }
-    public CurvatureMono Right { get; }
-
-    /// <summary>The quadratic exponent can be set within the constrained range [0, 10]. Below</summary>
-    public double Exponent { get => Left.Contour; set => Right.Contour = Left.Contour = Maths.Clamp(value, -1.0, 1.0); }
-
-    public CurvatureStereo(double contourL, double contourR)
-    {
-      Left = new CurvatureMono(contourL);
-      Right = new CurvatureMono(contourR);
-    }
-    public CurvatureStereo(double contour)
-      : this(contour, contour)
-    {
-    }
-    public CurvatureStereo()
-      : this(0.0)
-    {
-    }
-
-    public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

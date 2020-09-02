@@ -4,14 +4,41 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   public class AutoSpreader
     : IWaveProcessorStereo
   {
+    private double _mix, m_dryMix, m_wetMix;
+    /// <summary>The balance of dry (source audio) and wet (delay/feedback line) mix.</summary>
+    public double DryWetMix
+    {
+      get => _mix;
+      set
+      {
+        _mix = Maths.Clamp(value, -1.0, 1.0);
+
+        if (_mix > Flux.Maths.EpsilonCpp32)
+        {
+          m_wetMix = 0.5 * (1.0 + _mix);
+          m_dryMix = 1.0 - m_wetMix;
+        }
+        else if (_mix < -Flux.Maths.EpsilonCpp32)
+        {
+          m_dryMix = 0.5 * (1.0 - _mix);
+          m_wetMix = 1.0 - m_dryMix;
+        }
+        else
+        {
+          m_dryMix = 0.5;
+          m_wetMix = 0.5;
+        }
+      }
+    }
+
     public System.Collections.Generic.List<IWaveProcessorMono> Processors { get; } = new System.Collections.Generic.List<IWaveProcessorMono>();
 
-    public StereoSample ProcessAudio(StereoSample sample)
+    public StereoSample ProcessAudio(StereoSample stereo)
     {
-      var left = sample.FrontLeft;
-      var right = sample.FrontRight;
+      var left = 0d;
+      var right = 0d;
 
-      var mono = Convert.StereoToMono(left, right);
+      var mono = Convert.StereoToMono(stereo.FrontLeft, stereo.FrontRight);
 
       var processorCount = Processors.Count;
 
@@ -23,14 +50,17 @@ namespace Flux.Dsp.AudioProcessor.Adapter
         {
           var sampleM = processor.ProcessAudio(mono);
 
-          var stereo = StereoPan.ApplyStereoPan(-1.0 + gapSize * i, new StereoSample(sampleM, sampleM));
+          var (frontLeft, frontRight) = StereoPan.Apply(-1.0 + gapSize * i, sampleM, sampleM);
 
-          left += stereo.FrontLeft;
-          right += stereo.FrontRight;
+          left += frontLeft;
+          right += frontRight;
         }
       }
 
-      return new StereoSample(left / Processors.Count, right / Processors.Count);
+      left /= Processors.Count;
+      right /= Processors.Count;
+
+      return new StereoSample(stereo.FrontLeft * m_dryMix + left * m_wetMix, stereo.FrontRight * m_dryMix + right * m_wetMix);
     }
   }
 }

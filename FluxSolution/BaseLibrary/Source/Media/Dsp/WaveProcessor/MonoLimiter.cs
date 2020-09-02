@@ -1,7 +1,8 @@
 namespace Flux.Dsp.AudioProcessor
 {
   /// <see cref="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>
-  public class LimiterMono : IWaveProcessorMono
+  public class MonoLimiter
+    : IWaveProcessorMono
   {
     private double m_threshold;
     public double Threshold
@@ -102,20 +103,5 @@ namespace Flux.Dsp.AudioProcessor
 
       return (System.Math.Min(m_computedCeiling, System.Math.Abs(sample)) * sign);
     }
-  }
-
-  public class LimiterStereo : IWaveProcessorStereo
-  {
-    public LimiterMono Left { get; }
-    public LimiterMono Right { get; }
-
-    public LimiterStereo()
-    {
-      Left = new LimiterMono();
-      Right = new LimiterMono();
-    }
-
-    public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

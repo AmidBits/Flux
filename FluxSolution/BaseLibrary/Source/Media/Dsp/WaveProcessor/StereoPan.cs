@@ -3,26 +3,49 @@ namespace Flux.Dsp.AudioProcessor
   public class StereoPan
     : IWaveProcessorStereo
   {
-    private double m_position;
-    // The position of the pan across the stereo field in the range [-1, 1], where -1 is left and 1 is right.
+    private double m_position, m_positionInvAbs, m_scaledAbs, m_scaledAbsInv;
+    /// <summary>The position of the pan across the stereo field in the range [-1, 1], where -1 means more stereo signal to the left, 1 means more stereo signal to the right, and 0 means no change.</summary>
     public double Position
     {
-      get => m_position; set
+      get => m_position;
+      set
       {
         m_position = Maths.Clamp(value, -1, 1);
+
+        if (m_position > Maths.EpsilonCpp32)
+        {
+          m_positionInvAbs = 1 - m_position;
+          m_scaledAbs = m_position * 0.5;
+        }
+        else if (m_position < -Maths.EpsilonCpp32)
+        {
+          m_positionInvAbs = -1 + m_position;
+          m_scaledAbs = m_position * -0.5;
+        }
+        else
+        {
+          m_positionInvAbs = 1;
+          m_scaledAbs = 0;
+        }
+
+        m_scaledAbsInv = 1 - m_scaledAbs;
       }
     }
 
-    public StereoSample ProcessAudio(StereoSample sample)
-      => ApplyStereoPan(m_position, sample);
-    //public StereoSample ProcessAudio2(StereoSample sample) => (_position > Flux.Math.EpsilonCpp32 && _position * 0.5 is var scaledR) ? new StereoSample(sample.FrontLeft * (1.0 - _position), sample.FrontLeft * scaledR + sample.FrontRight * (1.0 - scaledR)) : (_position < -Flux.Math.EpsilonCpp32 && _position * -0.5 is var scaledL) ? new StereoSample(sample.FrontLeft * (1.0 - scaledL) + sample.FrontRight * scaledL, sample.FrontRight * (1.0 + _position)) : sample;
+    public StereoSample ProcessAudio(StereoSample stereo)
+      => (m_position > Flux.Maths.EpsilonCpp32)
+      ? new StereoSample(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
+      : (m_position < -Flux.Maths.EpsilonCpp32)
+      ? new StereoSample(stereo.FrontLeft * m_scaledAbsInv + stereo.FrontRight * m_scaledAbs, stereo.FrontRight * m_positionInvAbs)
+      : stereo;
 
-    /// <summary>Apply stereo pan using the specified position to an arbitrary stereo signal sample</summary>
-    /// <param name="position">The pan position of the stereo samples [-1, 1] across the stereo field, where negative is to the left, positive is to the right and 0 is the center.</param>
-    /// <param name="left">The left stereo sample in the range [-1, 1].</param>
-    ///// <param name="right">The right stereo sample in the range [-1, 1].</param>
-    //public static (double left, double right) ApplyStereoPan(double position, double left, double right) => (position > Flux.Math.EpsilonCpp32 && position * 0.5 is var scaledR) ? (left * (1.0 - position), left * scaledR + right * (1.0 - scaledR)) : (position < -Flux.Math.EpsilonCpp32 && position * -0.5 is var scaledL) ? (left * (1.0 - scaledL) + right * scaledL, right * (1.0 + position)) : (left, right);
-    public static StereoSample ApplyStereoPan(double position, StereoSample sample)
-      => (position > Flux.Maths.EpsilonCpp32 && position * 0.5 is var scaledR) ? new StereoSample(sample.FrontLeft * (1.0 - position), sample.FrontLeft * scaledR + sample.FrontRight * (1.0 - scaledR)) : (position < -Flux.Maths.EpsilonCpp32 && position * -0.5 is var scaledL) ? new StereoSample(sample.FrontLeft * (1.0 - scaledL) + sample.FrontRight * scaledL, sample.FrontRight * (1.0 + position)) : sample;
+    /// <summary>Apply stereo pan across the stereo field.</summary>
+    /// <param name="position">Pan position in the range [-1, 1], where -1 means more of the stereo to the left, 1 means more of the stereo to the right and 0 means no change.</param>
+    public static (double left, double right) Apply(double position, double left, double right)
+      => (position > Flux.Maths.EpsilonCpp32 && position * 0.5 is var scaledRightAbs)
+      ? (left * (1 - position), left * scaledRightAbs + right * (1 - scaledRightAbs))
+      : (position < -Flux.Maths.EpsilonCpp32 && position * -0.5 is var scaledLeftAbs)
+      ? (left * (1 - scaledLeftAbs) + right * scaledLeftAbs, right * (-1 + position))
+      : (left, right);
   }
 }

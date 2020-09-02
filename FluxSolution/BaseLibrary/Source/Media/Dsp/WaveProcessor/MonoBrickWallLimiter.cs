@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor
 {
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
-  public class BrickWallLimiterMono
+  public class MonoBrickWallLimiter
     : IWaveProcessorMono
   {
     private double m_release = 0.001;
@@ -50,23 +50,5 @@ namespace Flux.Dsp.AudioProcessor
 
       return (sample * m_autoAttenuation);
     }
-  }
-
-  public class BrickWallLimiterStereo
-    : IWaveProcessorStereo
-  {
-    public BrickWallLimiterMono Left { get; }
-    public BrickWallLimiterMono Right { get; }
-
-    public double Release { get => Left.Release; set => Right.Release = Left.Release = value; }
-
-    public BrickWallLimiterStereo()
-    {
-      Left = new BrickWallLimiterMono();
-      Right = new BrickWallLimiterMono();
-    }
-
-    public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudioMono(sample.FrontLeft), Right.ProcessAudioMono(sample.FrontRight));
   }
 }

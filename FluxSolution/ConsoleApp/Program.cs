@@ -30,22 +30,22 @@ namespace ConsoleApp
 
     static double[] aad = new double[] { 2, 2, 3, 4, 14 };
 
-    public class Test
-      : Flux.Collections.Generic.IQuadtree
-    {
-      public Rectangle Bounds { get; set; }
-    }
+    //public class Test
+    //  : Flux.Collections.Generic.IQuadtree
+    //{
+    //  public Rectangle Bounds { get; set; }
+    //}
 
     private static void TimedMain(string[] args)
     {
-      var quad = new Flux.Collections.Generic.Quadtree<Test>(new Rectangle(0, 0, 600, 600));
+      //var quad = new Flux.Collections.Generic.Quadtree<Test>(new Rectangle(0, 0, 600, 600));
 
-      quad.Insert(new Test() { Bounds = new Rectangle(450, 150, 10, 10) });
-      quad.Insert(new Test() { Bounds = new Rectangle(150, 350, 10, 10) });
-      quad.Insert(new Test() { Bounds = new Rectangle(400, 250, 10, 10) });
-      quad.Insert(new Test() { Bounds = new Rectangle(425, 125, 10, 10) });
+      //quad.Insert(new Test() { Bounds = new Rectangle(450, 150, 10, 10) });
+      //quad.Insert(new Test() { Bounds = new Rectangle(150, 350, 10, 10) });
+      //quad.Insert(new Test() { Bounds = new Rectangle(400, 250, 10, 10) });
+      //quad.Insert(new Test() { Bounds = new Rectangle(425, 125, 10, 10) });
 
-      var q = quad.Retrieve(new Rectangle(301,301, 298, 298));
+      //var q = quad.Retrieve(new Rectangle(301,301, 298, 298));
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => aad.AverageAbsoluteDeviationFromMean()));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => aad.AverageAbsoluteDeviationFromMedian()));

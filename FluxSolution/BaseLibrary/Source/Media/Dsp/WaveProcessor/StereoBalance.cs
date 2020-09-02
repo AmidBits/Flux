@@ -31,14 +31,14 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(sample.FrontLeft * m_peakL, sample.FrontRight * m_peakR);
+    public StereoSample ProcessAudio(StereoSample stereo)
+      => new StereoSample(stereo.FrontLeft * m_peakL, stereo.FrontRight * m_peakR);
 
-    /// <summary>Apply stereo balance using the specified position to an arbitrary stereo signal sample</summary>
-    /// <param name="position">The balance position of the stereo samples [-1, 1] across the stereo field, where negative means to the left, positive means to the right and 0 means center.</param>
-    /// <param name="left">The left stereo sample in the range [-1, 1].</param>
-    /// <param name="right">The right stereo sample in the range [-1, 1].</param>
-    public static (double left, double right) ApplyStereoBalance(double position, double left, double right)
+    /// <summary>Apply balance across the stereo field.</summary>
+    /// <param name="position">Balance position in the range [-1, 1], where -1 = more left, 1 means more right and 0 means no change.</param>
+    /// <param name="left">Left stereo sample.</param>
+    /// <param name="right">Right stereo sample.</param>
+    public static (double left, double right) Apply(double position, double left, double right)
       => position > Maths.EpsilonCpp32 ? (left * (1.0 - position), right) : position < Maths.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
   }
 }
