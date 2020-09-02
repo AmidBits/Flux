@@ -34,8 +34,8 @@ namespace Flux.Model
   /// <summary>Chess helpers. A vector is a chess board as a grid of [0, 7] for both files (columns, or x) and ranks (rows, or y). A (unique) index is a row-major order set [0, 63] for a chess board. The typical [a1, h8] are used for labels.</summary>
   public static class Chess // Correlated from top/left to bottom/right.
   {
-    public static string[] Files => new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
-    public static string[] Ranks => new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
+    public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
+    public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 

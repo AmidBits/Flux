@@ -25,8 +25,10 @@ namespace Flux
     /// <summary>Optimized routines for 3 values.</summary>
     public static long Max(long a, long b, long c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
+    [System.CLSCompliant(false)]
     public static uint Max(uint a, uint b, uint c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
+    [System.CLSCompliant(false)]
     public static ulong Max(ulong a, ulong b, ulong c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
 
     /// <summary>Optimized routines for 4 values.</summary>
@@ -36,8 +38,10 @@ namespace Flux
     /// <summary>Optimized routines for 4 values.</summary>
     public static long Max(long a, long b, long c, long d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
+    [System.CLSCompliant(false)]
     public static uint Max(uint a, uint b, uint c, uint d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
+    [System.CLSCompliant(false)]
     public static ulong Max(ulong a, ulong b, ulong c, ulong d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     #endregion Max(a, b), Max(a, b, c) & Max(a, b, c, d) (All Intrinsic Types)
   }

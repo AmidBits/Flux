@@ -7,7 +7,7 @@
     // private const ulong m_ntpTimestampDelta = 2208988800UL;
 
     /// <summary>Default DNS entries of NTP server hosts.</summary>
-    public System.Collections.Generic.IReadOnlyList<string> DefaultNtpHosts
+    public static System.Collections.Generic.IReadOnlyList<string> DefaultNtpHosts
       => new System.Collections.Generic.List<string> { @"pool.ntp.org", @"time.nist.gov", @"time-a.nist.gov", @"time-b.nist.gov" };
 
     /// <summary>The 48 byte NTP data structure.</summary>
@@ -50,7 +50,9 @@
       foreach (string ntpHost in DefaultNtpHosts)
       {
         try { return Request(ntpHost); }
+#pragma warning disable CA1031 // Do not catch general exception types
         catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
       }
 
       throw new System.Exception($"Unable to reach any (tried {DefaultNtpHosts.Count}) NTP servers.");

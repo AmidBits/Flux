@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Data
 {
-  public static class SqlMerge
+  public static class TsqlMerge
   {
     public static string BootStrap(bool highFrequency) => $"DECLARE @GetDate [datetime] = GETDATE(); DECLARE @ProcessDate {(highFrequency ? "[bigint]" : "[int]")} = CONVERT({(highFrequency ? "[bigint]" : "[int]")}, FORMAT(@GetDate, '{(highFrequency ? "yyyyMMddHHmmss" : "yyyyMMdd")}')); DECLARE @PriorProcessDate {(highFrequency ? "[bigint]" : "[int]")} = CONVERT({(highFrequency ? "[bigint]" : "[int]")}, FORMAT(DATEADD({(highFrequency ? "second" : "day")}, -1, @GetDate), '{(highFrequency ? "yyyyMMddHHmmss" : "yyyyMMdd")}')); DECLARE @EndDate {(highFrequency ? "[bigint]" : "[int]")} = {(highFrequency ? "29990101010101" : "29990101")} ";
     public static string IntoTarget(TsqlName targetTable3, params string[] targetColumnNames) => $";WITH T AS (SELECT {string.Join(",", targetColumnNames.Select(name => $"[{name}]"))} FROM {targetTable3.QualifiedNameQuoted(3)} WHERE[EffectiveEndDate] = @EndDate) MERGE INTO T ";

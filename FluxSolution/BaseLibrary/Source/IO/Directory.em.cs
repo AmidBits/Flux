@@ -11,6 +11,8 @@ namespace Flux
 
     public static void DeleteDirectories(this System.IO.DirectoryInfo directoryInfo, string searchPattern, System.IO.SearchOption searchOption, bool recursiveDelete)
     {
+      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+
       foreach (var directory in directoryInfo.EnumerateDirectories(searchPattern, searchOption))
       {
         directory.Delete(recursiveDelete);
@@ -18,6 +20,8 @@ namespace Flux
     }
     public static void DeleteFiles(this System.IO.DirectoryInfo directoryInfo, string searchPattern, System.IO.SearchOption searchOption)
     {
+      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+
       foreach (var file in directoryInfo.EnumerateFiles(searchPattern, searchOption))
       {
         file.Delete();
@@ -26,8 +30,12 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<System.IO.FileInfo> DirectorySearch(this System.IO.DirectoryInfo directoryInfo, System.Func<System.IO.FileInfo, bool> predicateFile, System.Func<System.IO.DirectoryInfo, bool> predicateDirectory)
     {
-      System.IO.FileInfo[] GetFileInfos() { try { return directoryInfo.GetFiles(); } catch { return new System.IO.FileInfo[0]; } }
-      System.IO.DirectoryInfo[] GetDirectoryInfos() { try { return directoryInfo.GetDirectories(); } catch { return new System.IO.DirectoryInfo[0]; } }
+      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+
+#pragma warning disable CA1031 // Do not catch general exception types
+      System.IO.FileInfo[] GetFileInfos() { try { return directoryInfo.GetFiles(); } catch { return System.Array.Empty<System.IO.FileInfo>(); } }
+      System.IO.DirectoryInfo[] GetDirectoryInfos() { try { return directoryInfo.GetDirectories(); } catch { return System.Array.Empty<System.IO.DirectoryInfo>(); } }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       if (directoryInfo.Exists)
       {

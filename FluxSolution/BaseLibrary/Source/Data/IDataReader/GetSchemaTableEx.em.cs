@@ -121,9 +121,11 @@ namespace Flux
     {
       var schemaTable = source.GetSchemaTableEx();
 
+#pragma warning disable CA1031 // Do not catch general exception types
       try { tsqlCurrentDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionCurrent]).ToArray(); } catch { tsqlCurrentDefinitions = null; }
       try { tsqlDefaultDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionDefault]).ToArray(); } catch { tsqlDefaultDefinitions = null; }
       try { tsqlAdaptedDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionAdapted]).ToArray(); } catch { tsqlAdaptedDefinitions = null; }
+#pragma warning restore CA1031 // Do not catch general exception types
 
       return schemaTable;
     }

@@ -9,7 +9,10 @@ namespace Flux
 
     public static void GetRelativeFrequencyOfLetters(this System.Globalization.CultureInfo source)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var table = new System.Collections.Generic.Dictionary<char, double>();
+
       if (source.Name.StartsWith("en", System.StringComparison.Ordinal))
       {
       }
@@ -20,7 +23,7 @@ namespace Flux
 
   public static class QwertyProximity
   {
-    public static System.Collections.Generic.Dictionary<char, string> English = new System.Collections.Generic.Dictionary<char, string>()
+    public static readonly System.Collections.Generic.Dictionary<char, string> English = new System.Collections.Generic.Dictionary<char, string>()
     {
       { 'a', "swqz" },
       { 'b', "nhgv " },

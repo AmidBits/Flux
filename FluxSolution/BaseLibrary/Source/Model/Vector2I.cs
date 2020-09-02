@@ -27,12 +27,12 @@ namespace Flux.Model
 
     #region Static Instances
     /// <summary>Returns the vector (1,0,0).</summary>
-    public readonly static Vector2I UnitX = new Vector2I(1, 0);
+    public static readonly Vector2I UnitX = new Vector2I(1, 0);
     /// <summary>Returns the vector (0,1,0).</summary>
-    public readonly static Vector2I UnitY = new Vector2I(0, 1);
+    public static readonly Vector2I UnitY = new Vector2I(0, 1);
 
     /// <summary>Returns the vector (0,0).</summary>
-    public readonly static Vector2I Zero = new Vector2I();
+    public static readonly Vector2I Zero;
 
     /// <summary>Returns the vector (0,1).</summary>
     public static Vector2I North => new Vector2I(0, 1);
@@ -50,7 +50,7 @@ namespace Flux.Model
     public static Vector2I West => new Vector2I(-1, 0);
     /// <summary>Returns the vector (-1,1).</summary>
     public static Vector2I NorthWest => new Vector2I(-1, 1);
-    #endregion Static Instances (Zero, One, UnitX, UnitY and negative variations)
+    #endregion Static Instances
 
     public Vector2I(int value)
       : this(value, value) { }
@@ -68,15 +68,14 @@ namespace Flux.Model
     }
 
     /// <summary>Convert the vector to a unique index using the length of the X axis.</summary>
-    public int ToUniqueIndex(int lengthX)
-      => X * Y * lengthX;
     public (string column, string row) ToLabels(System.Collections.Generic.IList<string> columnLabels, System.Collections.Generic.IList<string> rowLabels)
       => (columnLabels.ElementAt(X), rowLabels.ElementAt(Y));
-
-    #region Explicit  Conversions
-    public static explicit operator int[](Vector2I value) => new int[] { value.X, value.Y };
-    public static explicit operator System.Numerics.Vector2(Vector2I value) => new System.Numerics.Vector2(value.X, value.Y);
-    #endregion Explicit  Conversions
+    public int ToUniqueIndex(int lengthX)
+      => X * Y * lengthX;
+    public System.Numerics.Vector2 ToVector2()
+      => new System.Numerics.Vector2(X, Y);
+    public int[] ToArray()
+      => new int[] { X, Y };
 
     #region Static members
     /// <summary>Create a new vector with the sum from the vector added to the other.</summary>
@@ -86,10 +85,10 @@ namespace Flux.Model
     public static Vector2I Add(in Vector2I v, in int value)
       => new Vector2I(v.X + value, v.Y + value);
     /// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-    public static Vector2I BitShiftLeft(in Vector2I v, in int count)
+    public static Vector2I LeftShift(in Vector2I v, in int count)
       => new Vector2I(v.X << count, v.Y << count);
     /// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-    public static Vector2I BitShiftRight(in Vector2I v, in int count)
+    public static Vector2I RightShift(in Vector2I v, in int count)
       => new Vector2I(v.X >> count, v.Y >> count);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
@@ -100,14 +99,14 @@ namespace Flux.Model
       => new Vector2I(v.X & value, v.Y & value);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-    public static Vector2I BitwiseExclusiveOr(in Vector2I v1, in Vector2I v2)
+    public static Vector2I Xor(in Vector2I v1, in Vector2I v2)
       => new Vector2I(v1.X ^ v2.X, v1.Y ^ v2.Y);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-    public static Vector2I BitwiseExclusiveOr(in Vector2I v, in int value)
+    public static Vector2I Xor(in Vector2I v, in int value)
       => new Vector2I(v.X ^ value, v.Y ^ value);
     /// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-    public static Vector2I BitwiseNot(in Vector2I v)
+    public static Vector2I OnesComplement(in Vector2I v)
       => new Vector2I(~v.X, ~v.Y); // .NET performs a one's complement (bitwise logical NOT) on integral types.
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
@@ -215,7 +214,7 @@ namespace Flux.Model
     #region Overloaded Operators
     public static Vector2I operator -(in Vector2I v) => Negate(v);
 
-    public static Vector2I operator ~(in Vector2I v) => BitwiseNot(v);
+    public static Vector2I operator ~(in Vector2I v) => OnesComplement(v);
 
     public static Vector2I operator --(in Vector2I v) => Subtract(v, 1);
     public static Vector2I operator ++(in Vector2I v) => Add(v, 1);
@@ -243,29 +242,29 @@ namespace Flux.Model
     public static Vector2I operator |(in Vector2I v1, in Vector2I v2) => BitwiseOr(v1, v2);
     public static Vector2I operator |(in Vector2I v1, in int v2) => BitwiseOr(v1, v2);
 
-    public static Vector2I operator ^(in Vector2I v1, in Vector2I v2) => BitwiseExclusiveOr(v1, v2);
-    public static Vector2I operator ^(in Vector2I v1, in int v2) => BitwiseExclusiveOr(v1, v2);
+    public static Vector2I operator ^(in Vector2I v1, in Vector2I v2) => Xor(v1, v2);
+    public static Vector2I operator ^(in Vector2I v1, in int v2) => Xor(v1, v2);
 
-    public static Vector2I operator <<(in Vector2I v1, in int v2) => BitShiftLeft(v1, v2);
-    public static Vector2I operator >>(in Vector2I v1, in int v2) => BitShiftRight(v1, v2);
+    public static Vector2I operator <<(in Vector2I v1, in int v2) => LeftShift(v1, v2);
+    public static Vector2I operator >>(in Vector2I v1, in int v2) => RightShift(v1, v2);
 
     public static bool operator ==(in Vector2I v1, in Vector2I v2) => v1.Equals(v2);
     public static bool operator !=(in Vector2I v1, in Vector2I v2) => !v1.Equals(v2);
     #endregion Overloaded Operators
 
-    #region System.IEquatable<Vector2>
-    public bool Equals(Vector2I other) => X == other.X && Y == other.Y;
-    #endregion System.IEquatable<Vector2>
-
-    #region Overrides
+    // System.IEquatable<Vector2>
+    public bool Equals(Vector2I other)
+      => X == other.X && Y == other.Y;
+    // System.IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => $"<{X.ToString(format, formatProvider)}, {Y.ToString(format, formatProvider)}>";
+    // Overrides
+    public override bool Equals(object? obj)
+       => obj is Vector3I o && Equals(o);
     public override int GetHashCode()
-    {
-      var hash = X.GetHashCode();
-      hash = ((hash << 5) + hash) ^ Y.GetHashCode();
-      return hash;
-    }
-    public override bool Equals(object? obj) => !(obj is null) && obj is Vector2I && Equals((Vector2I)obj);
-    #endregion Overrides
+      => Flux.HashCode.CombineCore(X, Y);
+    public override string ToString()
+      => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
 
     #region "Unique" Index
     /// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
@@ -274,11 +273,5 @@ namespace Flux.Model
     /// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
     public static long ToUniqueIndex(in Vector3I vector, in Vector2I size) => vector.X + (vector.Y * size.X);
     #endregion "Unique" Index
-
-    #region System.IFormattable
-    public override string ToString() => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
-    public string ToString(string format) => ToString(format, System.Globalization.CultureInfo.CurrentCulture);
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => $"<{((System.IFormattable)X).ToString(format, formatProvider)}, {((System.IFormattable)Y).ToString(format, formatProvider)}>";
-    #endregion System.IFormattable
   }
 }

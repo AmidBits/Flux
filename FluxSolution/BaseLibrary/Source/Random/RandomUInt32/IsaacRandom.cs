@@ -56,7 +56,7 @@ namespace Flux.Random
       }
     }
 
-    private void Mix(ref uint a, ref uint b, ref uint c, ref uint d, ref uint e, ref uint f, ref uint g, ref uint h)
+    private static void Mix(ref uint a, ref uint b, ref uint c, ref uint d, ref uint e, ref uint f, ref uint g, ref uint h)
     {
       unchecked
       {
@@ -137,7 +137,7 @@ namespace Flux.Random
 
     public IsaacRandom(string seed) => Seed(seed, true);
     [System.CLSCompliant(false)]
-    public IsaacRandom(ulong seed) : this(seed.ToString("x2")) { }
+    public IsaacRandom(ulong seed) : this(seed.ToString("x2", System.Globalization.CultureInfo.InvariantCulture)) { }
     public IsaacRandom(long seed) : this(unchecked((ulong)seed)) { }
     public IsaacRandom() : this(System.Diagnostics.Stopwatch.GetTimestamp()) { }
   }

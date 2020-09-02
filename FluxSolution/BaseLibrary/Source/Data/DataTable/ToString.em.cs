@@ -18,7 +18,8 @@ namespace Flux
 
       var format = string.Join(horizontalSeparator, columnWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
-      sb.AppendLine(string.Format(format, source.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ToArray()));
+      sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, format, source.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ToArray());
+      sb.AppendLine();
 
       for (var row = 0; row < source.Rows.Count; row++)
       {
@@ -27,7 +28,8 @@ namespace Flux
           sb.AppendLine(string.Join(horizontalSeparator, columnWidths.Select((width, index) => new string(verticalSeparator, width))));
         }
 
-        sb.AppendLine(string.Format(format, source.Rows[row].ItemArray));
+        sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, format, source.Rows[row].ItemArray);
+        sb.AppendLine();
       }
 
       return sb.ToString();

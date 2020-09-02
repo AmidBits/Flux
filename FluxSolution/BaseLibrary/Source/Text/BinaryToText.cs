@@ -15,7 +15,7 @@ namespace Flux.Text
     /// <summary>Base 8</summary>
     public static char[] Octal() => new char[] { '0', '1', '2', '3', '4', '5', '6', '7' };
     /// <summary>Base 10</summary>
-    public static char[] Decimal() => new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    public static char[] DecimalSystem() => new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     /// <summary>Base 12</summary>
     public static char[] Duodecimal() => new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B' };
     /// <summary>Base 16</summary>

@@ -94,13 +94,15 @@ namespace Primitives
     [TestMethod]
     public void StandardDeviation()
     {
-      Assert.AreEqual("28.460498941515414", d.StandardDeviation().ToString());
+      Assert.AreEqual(32.863353450309965, d.StandardDeviation());
+      
     }
 
     [TestMethod]
     public void Variance()
     {
-      Assert.AreEqual(810, d.Variance().sampleVariance);
+      Assert.AreEqual(810, d.Variance().populationVariance);
+      Assert.AreEqual(1080, d.Variance().sampleVariance);
     }
   }
 }

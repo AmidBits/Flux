@@ -18,6 +18,8 @@ namespace Flux.Resources.W3c
 #if NETCOREAPP || NETSTANDARD2_1
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<string>> GetData(System.Uri uri)
     {
+      if (uri is null) throw new System.ArgumentNullException(nameof(uri));
+
       var s = string.Empty;
 
       if (uri.Equals(LocalUri))

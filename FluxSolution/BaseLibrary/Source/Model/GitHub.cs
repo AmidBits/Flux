@@ -11,7 +11,7 @@ namespace Flux.Model
   {
     public int Size { get; set; }
     public GitHubType Type { get; set; }
-    public System.Uri Url { get; set; }
+    public System.Uri Url { get; set; } = new System.Uri(string.Empty);
 
     public override string ToString()
       => Type switch

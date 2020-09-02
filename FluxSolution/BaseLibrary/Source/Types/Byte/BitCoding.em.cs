@@ -2,14 +2,12 @@ namespace Flux
 {
   public static partial class XtendByte
   {
-    public const string CsCannotExceedNumberOfBitsInByte = @"Cannot exceed the number of bits in a byte.";
-
     /// <summary>Decodes chunks of bitsPerByte to bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitDecode(this System.Collections.Generic.IEnumerable<byte> source, int bitsPerByte = 6)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte), CsCannotExceedNumberOfBitsInByte);
+      if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 
       uint bitBuffer = 0;
       var bitIndex = 32;
@@ -37,7 +35,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(CsCannotExceedNumberOfBitsInByte);
+      if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 
       uint bitBuffer = 0;
       var bitIndex = 32;

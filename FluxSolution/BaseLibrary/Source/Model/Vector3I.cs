@@ -135,14 +135,15 @@ namespace Flux.Model
     : System.IEquatable<Vector3I>, System.IFormattable
   {
     #region Static Instances
-    /// <summary>Returns the vector (0,0,0).</summary>
-    public static Vector3I Zero => new Vector3I();
     /// <summary>Returns the vector (1,0,0).</summary>
-    public static Vector3I UnitX => new Vector3I(1, 0, 0);
+    public static readonly Vector3I UnitX = new Vector3I(1, 0, 0);
     /// <summary>Returns the vector (0,1,0).</summary>
-    public static Vector3I UnitY => new Vector3I(0, 1, 0);
+    public static readonly Vector3I UnitY = new Vector3I(0, 1, 0);
     /// <summary>Returns the vector (0,0,1).</summary>
-    public static Vector3I UnitZ => new Vector3I(0, 0, 1);
+    public static readonly Vector3I UnitZ = new Vector3I(0, 0, 1);
+
+    /// <summary>Returns the vector (0,0,0).</summary>
+    public static readonly Vector3I Zero;
     #endregion Static Instances
 
     public int X { get; set; }
@@ -175,11 +176,10 @@ namespace Flux.Model
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
     public int ToUniqueIndex(int lengthX, int lengthY)
       => X + Y * lengthX + Z * lengthX * lengthY;
-
-    #region Explicit Conversions
-    public static explicit operator int[](in Vector3I v) => new int[] { v.X, v.Y, v.Z };
-    public static explicit operator System.Numerics.Vector3(in Vector3I v) => new System.Numerics.Vector3(v.X, v.Y, v.Z);
-    #endregion Explicit Conversions
+    public System.Numerics.Vector3 ToVector3()
+      => new System.Numerics.Vector3(X, Y, Z);
+    public int[] ToArray()
+      => new int[] { X, Y, Z };
 
     #region Static Members
     /// <summary>Create a new vector with the sum from the vector added by the other.</summary>
@@ -189,10 +189,10 @@ namespace Flux.Model
     public static Vector3I Add(in Vector3I v, int value)
       => new Vector3I(v.X + value, v.Y + value, v.Z + value);
     /// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-    public static Vector3I BitShiftLeft(in Vector3I v, int count)
+    public static Vector3I LeftShift(in Vector3I v, int count)
       => new Vector3I(v.X << count, v.Y << count, v.Z << count);
     /// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-    public static Vector3I BitShiftRight(in Vector3I v, int count)
+    public static Vector3I RightShift(in Vector3I v, int count)
       => new Vector3I(v.X << count, v.Y << count, v.Z << count);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
@@ -203,14 +203,14 @@ namespace Flux.Model
       => new Vector3I(v.X & value, v.Y & value, v.Z & value);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-    public static Vector3I BitwiseExclusiveOr(in Vector3I v1, in Vector3I v2)
+    public static Vector3I Xor(in Vector3I v1, in Vector3I v2)
       => new Vector3I(v1.X ^ v2.X, v1.Y ^ v2.Y, v1.Z ^ v2.Z);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-    public static Vector3I BitwiseExclusiveOr(in Vector3I v, int value)
+    public static Vector3I Xor(in Vector3I v, int value)
       => new Vector3I(v.X ^ value, v.Y ^ value, v.Z ^ value);
     /// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-    public static Vector3I BitwiseNot(in Vector3I v)
+    public static Vector3I OnesComplement(in Vector3I v)
       => new Vector3I(~v.X, ~v.Y, ~v.Z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
@@ -318,7 +318,7 @@ namespace Flux.Model
     #region Overloaded Operators
     public static Vector3I operator -(in Vector3I v) => Negate(v);
 
-    public static Vector3I operator ~(in Vector3I v) => BitwiseNot(v);
+    public static Vector3I operator ~(in Vector3I v) => OnesComplement(v);
 
     public static Vector3I operator --(in Vector3I v) => Subtract(v, 1);
     public static Vector3I operator ++(in Vector3I v) => Add(v, 1);
@@ -346,30 +346,29 @@ namespace Flux.Model
     public static Vector3I operator |(in Vector3I v1, in Vector3I v2) => BitwiseOr(v1, v2);
     public static Vector3I operator |(in Vector3I v1, in int i) => BitwiseOr(v1, i);
 
-    public static Vector3I operator ^(in Vector3I v1, in Vector3I v2) => BitwiseExclusiveOr(v1, v2);
-    public static Vector3I operator ^(in Vector3I v1, in int i) => BitwiseExclusiveOr(v1, i);
+    public static Vector3I operator ^(in Vector3I v1, in Vector3I v2) => Xor(v1, v2);
+    public static Vector3I operator ^(in Vector3I v1, in int i) => Xor(v1, i);
 
-    public static Vector3I operator <<(in Vector3I v1, in int i) => BitShiftLeft(v1, i);
-    public static Vector3I operator >>(in Vector3I v1, in int i) => BitShiftRight(v1, i);
+    public static Vector3I operator <<(in Vector3I v1, in int i) => LeftShift(v1, i);
+    public static Vector3I operator >>(in Vector3I v1, in int i) => RightShift(v1, i);
 
     public static bool operator ==(in Vector3I v1, in Vector3I v2) => v1.Equals(v2);
     public static bool operator !=(in Vector3I v1, in Vector3I v2) => !v1.Equals(v2);
     #endregion Overloaded Operators
 
-    #region System.IEquatable<Vector3>
-    public bool Equals(Vector3I other) => X == other.X && Y == other.Y && Z == other.Z;
-    #endregion
-
-    #region Overrides
+    // System.IEquatable<Vector3>
+    public bool Equals(Vector3I other)
+      => X == other.X && Y == other.Y && Z == other.Z;
+    // System.IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => $"<{X.ToString(format, formatProvider)}, {Y.ToString(format, formatProvider)}, {Z.ToString(format, formatProvider)}>";
+    // Overrides
+    public override bool Equals(object? obj)
+      => obj is Vector3I o && Equals(o);
     public override int GetHashCode()
-    {
-      var hash = X.GetHashCode();
-      hash = ((hash << 5) + hash) ^ Y.GetHashCode();
-      hash = ((hash << 5) + hash) ^ Z.GetHashCode();
-      return hash;
-    }
-    public override bool Equals(object? obj) => obj is Vector3I && Equals((Vector3I)obj);
-    #endregion Overrides
+      => Flux.HashCode.CombineCore(X, Y, Z);
+    public override string ToString()
+      => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
 
     #region "Unique" Index
     /// <summary>Convert a "mapped" index to a 3D vector. This index is uniquely mapped using the specified size vector.</summary>
@@ -383,11 +382,5 @@ namespace Flux.Model
     /// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
     public static long ToUniqueIndex(in Vector3I vector, in Vector3I length) => vector.X + (vector.Y * length.X) + (vector.Z * length.X * length.Y);
     #endregion "Unique" Index
-
-    #region System.IFormattable
-    public override string ToString() => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
-    public string ToString(string format) => ToString(format, System.Globalization.CultureInfo.CurrentCulture);
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => $"<{((System.IFormattable)X).ToString(format, formatProvider)}, {((System.IFormattable)Y).ToString(format, formatProvider)}, {((System.IFormattable)Z).ToString(format, formatProvider)}>";
-    #endregion System.IFormattable
   }
 }

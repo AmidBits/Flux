@@ -7,7 +7,7 @@ namespace Flux.Model
     public const string AlphaLower = "abcdefghijklmnopqrstuvwxyz";
     public const string AlphaUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public const string Numeric = "0123456789";
-    public const string Space = " ";
+    public const string Space = @" ";
     public const string Symbols1 = "!\"#$%&'()*+,-./"; // Note the escaped double quote.
     public const string Symbols2 = ":;<=>?@";
     public const string Symbols3 = "[\\]^_`"; // Note the escaped slash.
@@ -32,7 +32,9 @@ namespace Flux.Model
 
         if (allowNumeric) characterPool.Append(Numeric);
 
+#pragma warning disable CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
         if (allowSpace) characterPool.Append(Space);
+#pragma warning restore CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
 
         if (allowSymbols1) characterPool.Append(Symbols1);
         if (allowSymbols2) characterPool.Append(Symbols2);

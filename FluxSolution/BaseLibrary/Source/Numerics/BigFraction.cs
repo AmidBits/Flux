@@ -1,3 +1,4 @@
+#if Experimental
 namespace Flux.Numerics
 {
   /// <summary></summary>
@@ -535,3 +536,4 @@ namespace Flux.Numerics
       => Numerator.Equals(other.Numerator) && Denominator.Equals(other.Denominator);
   }
 }
+#endif

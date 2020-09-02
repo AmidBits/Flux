@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Data
 {
-  public static class SqlSys
+  public static class TsqlSys
   {
     public static string SelectColumnTSqlDefinitions(TsqlName table3)
       => $"{SelectColumns(table3, "'[' + C.[name] +'] ['+ CT.[name] +']'+ CASE WHEN CT.[name] IN ('datetime2', 'datetimeoffset', 'time') THEN '(' + CONVERT([varchar](10), COALESCE(C.[scale], 7)) + ')' WHEN CT.[name] IN ('decimal', 'numeric') THEN '(' + CONVERT([varchar](10), COALESCE(C.[precision], 18)) + ',' + CONVERT([varchar](10), COALESCE(C.[scale], 0)) + ')' WHEN (CT.[name] LIKE '%binary' OR CT.[name] LIKE '%char') THEN CASE WHEN C.[max_length] = -1 THEN '(MAX)' WHEN CT.[name] LIKE 'n%' THEN '(' + CONVERT([nvarchar](10), C.[max_length] / 2) + ')' ELSE '(' + CONVERT([nvarchar](10), C.[max_length]) + ')' END ELSE '' END +' '+ (CASE WHEN C.[is_nullable] = 0 then 'NOT NULL' ELSE 'NULL' END) AS [TSqlDefinition] INTO #Columns")}; {Tsql.Select(Tsql.Stuff("(SELECT N', ' + [TSqlDefinition] FROM #Columns FOR XML PATH(''))", 1, 2))}";

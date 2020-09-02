@@ -6,7 +6,7 @@ namespace Flux.Data
   public abstract class TabularDataReader
     : DataReader
   {
-    protected System.Collections.Generic.IList<string>? m_fieldNames = null;
+    protected System.Collections.Generic.IList<string>? m_fieldNames;
     /// <summary>An array of the field names for the result.</summary>
     public System.Collections.Generic.IList<string> FieldNames
     {
@@ -14,7 +14,7 @@ namespace Flux.Data
       set => m_fieldNames = value;
     }
 
-    protected System.Collections.Generic.IList<bool>? m_fieldsAllowNull = null;
+    protected System.Collections.Generic.IList<bool>? m_fieldsAllowNull;
     /// <summary>An array of whether the fields FieldNulls is an optional functionality and each field will default to true (as in, this field allows null values).</summary>
     public System.Collections.Generic.IList<bool> FieldsAllowNull
     {
@@ -22,7 +22,7 @@ namespace Flux.Data
       set => m_fieldsAllowNull = value;
     }
 
-    protected System.Collections.Generic.IList<System.Type>? m_fieldTypes = null;
+    protected System.Collections.Generic.IList<System.Type>? m_fieldTypes;
     /// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
     public System.Collections.Generic.IList<System.Type> FieldTypes
     {
@@ -30,7 +30,7 @@ namespace Flux.Data
       set => m_fieldTypes = value;
     }
 
-    protected System.Collections.Generic.IList<object>? m_fieldValues = null;
+    protected System.Collections.Generic.IList<object>? m_fieldValues;
     /// <summary>An array of field values for the result.</summary>
     public System.Collections.Generic.IList<object> FieldValues
       => m_fieldValues ?? throw new System.Exception($"Missing {nameof(FieldValues)}.");

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Static
 {
   [TestClass]
-  public class Math
+  public class Maths
   {
     readonly System.Numerics.BigInteger[] nbi = System.Linq.Enumerable.Range(0, 255).Select(i => -(System.Numerics.BigInteger)i).ToArray();
     readonly short[] ns = System.Linq.Enumerable.Range(0, 127).Select(i => (short)-i).ToArray();

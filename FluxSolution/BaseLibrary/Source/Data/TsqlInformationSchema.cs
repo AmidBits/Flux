@@ -2,7 +2,7 @@ namespace Flux.Data
 {
   /// <summary></summary>
   /// <seealso cref="https://stackoverflow.com/questions/7419225/build-column-definition-from-information-schema-columns-table" />
-  public static class SqlInformationSchema
+  public static class TsqlInformationSchema
   {
     private static readonly string[] m_columns = new string[] { @"TABLE_CATALOG", @"TABLE_SCHEMA", @"TABLE_NAME", @"COLUMN_NAME", @"ORDINAL_POSITION", @"COLUMN_DEFAULT", @"IS_NULLABLE", @"DATA_TYPE", @"CHARACTER_MAXIMUM_LENGTH", @"CHARACTER_OCTET_LENGTH", @"NUMERIC_PRECISION", @"NUMERIC_SCALE", @"DATETIME_PRECISION" };
 

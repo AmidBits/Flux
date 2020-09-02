@@ -162,41 +162,41 @@ namespace Flux.Text.Tokenization.Rune
 
         unicodeCategoryCounts[unicodeCategory]++;
 
-        switch (unicodeCategory.ToCategoryMajor())
+        switch (unicodeCategory.ToMajorCode())
         {
-          case Flux.Unicode.CategoryMajor.Letter:
+          case UnicodeCategoryMajorCode.Letter:
             yield return new TokenLetter(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Mark:
+          case UnicodeCategoryMajorCode.Mark:
             yield return new TokenMark(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Number:
+          case UnicodeCategoryMajorCode.Number:
             yield return new TokenNumber(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Other:
+          case UnicodeCategoryMajorCode.Other:
             yield return new TokenOther(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.OpenPunctuation:
+          case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.OpenPunctuation:
             punctuationBracketGroups.Push(++punctuationBracketGroup);
             yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationBracketDepth, punctuationBracketGroups.Peek());
             break;
-          case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.InitialQuotePunctuation:
+          case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.InitialQuotePunctuation:
             punctuationQuotationGroups.Push(++punctuationQuotationGroup);
             yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
             break;
-          case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.ClosePunctuation:
+          case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.ClosePunctuation:
             yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
             break;
-          case Flux.Unicode.CategoryMajor.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.FinalQuotePunctuation:
+          case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.FinalQuotePunctuation:
             yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
             break;
-          case Flux.Unicode.CategoryMajor.Punctuation:
+          case UnicodeCategoryMajorCode.Punctuation:
             yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Separator:
+          case UnicodeCategoryMajorCode.Separator:
             yield return new TokenSeparator(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
-          case Flux.Unicode.CategoryMajor.Symbol:
+          case UnicodeCategoryMajorCode.Symbol:
             yield return new TokenSymbol(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
           default:

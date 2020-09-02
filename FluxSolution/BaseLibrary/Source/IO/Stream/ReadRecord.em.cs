@@ -57,7 +57,7 @@ namespace Flux
     /// <summary>Reads a sequence of records (comma delimted and double quoted CSVs) from the System.IO.StreamReader.</summary>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<string?>> ReadRecords(this System.IO.StreamReader source)
     {
-      while (source.ReadRecord() is var record && record != null && record.Count() > 0)
+      while (source.ReadRecord() is var record && record != null && record.Any())
       {
         yield return record;
       }
