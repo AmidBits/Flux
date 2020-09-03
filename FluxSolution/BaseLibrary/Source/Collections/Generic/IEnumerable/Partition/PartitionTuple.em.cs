@@ -3,90 +3,61 @@ namespace Flux
   public static partial class XtendCollections
   {
     /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
-    /// <param name="n">The number of elements in each tuple.</param>
-    /// <param name="overlap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
+    /// <param name="size">The number of elements in each tuple.</param>
+    /// <param name="wrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int n, int overlap, System.Func<System.Collections.Generic.IEnumerable<T>, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int size, int wrap, System.Func<System.Collections.Generic.IEnumerable<T>, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (n < 2) throw new System.ArgumentOutOfRangeException(nameof(overlap));
-      if (overlap < 0 || overlap >= n) throw new System.ArgumentOutOfRangeException(nameof(overlap));
+      if (size < 2) throw new System.ArgumentOutOfRangeException(nameof(size));
 
-      using var e = source.GetEnumerator();
-
-      var index = 0;
-
-      var start = new System.Collections.Generic.Queue<T>(n);
-
-      if (e.MoveNext())
+      if (wrap >= 0 && wrap < size)
       {
-        do
+        using var e = source.GetEnumerator();
+
+        var index = 0;
+
+        var start = new System.Collections.Generic.Queue<T>(size);
+
+        if (e.MoveNext())
         {
-          start.Enqueue(e.Current);
-        }
-        while (start.Count < n && e.MoveNext());
-
-        if (start.Count == n)
-        {
-          var tuple = new System.Collections.Generic.Queue<T>(start);
-
-          yield return resultSelector(tuple, index++);
-
-          while (e.MoveNext())
+          do
           {
-            tuple.Dequeue();
-            tuple.Enqueue(e.Current);
-            yield return resultSelector(tuple, index++);
+            start.Enqueue(e.Current);
           }
+          while (start.Count < size && e.MoveNext());
 
-          while (overlap-- > 0)
+          if (start.Count == size)
           {
-            tuple.Dequeue();
-            tuple.Enqueue(start.Dequeue());
+            var tuple = new System.Collections.Generic.Queue<T>(start);
+
             yield return resultSelector(tuple, index++);
+
+            while (e.MoveNext())
+            {
+              tuple.Dequeue();
+              tuple.Enqueue(e.Current);
+              yield return resultSelector(tuple, index++);
+            }
+
+            while (wrap-- > 0)
+            {
+              tuple.Dequeue();
+              tuple.Enqueue(start.Dequeue());
+              yield return resultSelector(tuple, index++);
+            }
           }
+          else throw new System.ArgumentException($@"The sequence has only {start.Count} elements.", nameof(source));
         }
-        else throw new System.ArgumentException(@"Insufficient number of elements.", nameof(source));
+        else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
       }
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-
-      //while (--n > 0)
-      //{
-      //  if (e.MoveNext())
-      //  {
-      //    start.Enqueue(e.Current);
-      //  }
-      //  else throw new System.ArgumentException(start.Count == 0 ? @"The sequence is empty." : $"Insufficient number of elements.", nameof(source));
-      //}
-
-      //var tuple = new System.Collections.Generic.Queue<T>(start);
-
-      //if (e.MoveNext())
-      //{
-      //  do
-      //  {
-      //    tuple.Enqueue(e.Current);
-      //    yield return resultSelector(tuple, index++);
-      //    tuple.Dequeue();
-      //  }
-      //  while (e.MoveNext());
-      //}
-
-      //while (overlap-- > 0)
-      //{
-      //  tuple.Enqueue(start.Dequeue());
-      //  yield return resultSelector(tuple, index++);
-      //  tuple.Dequeue();
-      //}
+      else throw new System.ArgumentException($@"A {size}-tuple can only wrap up to {size - 1} elements.");
     }
 
-    //[System.Obsolete()]
-    //public static System.Collections.Generic.IEnumerable<(T leading, T trailing)> PartitionPairs<T>(this System.Collections.Generic.IEnumerable<T> source, bool includeLastAndFirstPair)
-    //  => source.PartitionTuple(includeLastAndFirstPair, (a, b, i) => (a, b));
     /// <summary>Create a new sequence of 2-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, bool overlap, System.Func<T, T, int, TResult> resultSelector)
@@ -121,9 +92,6 @@ namespace Flux
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
-    //[System.Obsolete()]
-    //public static System.Collections.Generic.IEnumerable<(T leading, T midling, T trailing)> PartitionTriplets<T>(this System.Collections.Generic.IEnumerable<T> source, int overlap)
-    //  => source.PartitionTuple(overlap, (a, b, c, i) => (a, b, c));
     /// <summary>Create a new sequence of 3-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first or the second element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, int, TResult> resultSelector)

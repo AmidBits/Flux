@@ -21,6 +21,6 @@ namespace Flux.Resources.Scowl
       => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+"));
 
     public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames) { FieldTypes = FieldNames.Select(fn => typeof(string)).ToList() };
+      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
   }
 }

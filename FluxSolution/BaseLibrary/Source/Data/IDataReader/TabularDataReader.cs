@@ -6,46 +6,27 @@ namespace Flux.Data
   public abstract class TabularDataReader
     : DataReader
   {
-    protected System.Collections.Generic.IList<string>? m_fieldNames;
     /// <summary>An array of the field names for the result.</summary>
-    public System.Collections.Generic.IList<string> FieldNames
-    {
-      get => m_fieldNames ?? throw new System.Exception($"Missing {nameof(FieldNames)}.");
-      set => m_fieldNames = value;
-    }
-
-    protected System.Collections.Generic.IList<bool>? m_fieldsAllowNull;
+    public System.Collections.Generic.List<string> FieldNames { get; } = new System.Collections.Generic.List<string>();
     /// <summary>An array of whether the fields FieldNulls is an optional functionality and each field will default to true (as in, this field allows null values).</summary>
-    public System.Collections.Generic.IList<bool> FieldsAllowNull
-    {
-      get => m_fieldsAllowNull ??= System.Linq.Enumerable.Repeat(true, FieldNames.Count).ToList();
-      set => m_fieldsAllowNull = value;
-    }
-
-    protected System.Collections.Generic.IList<System.Type>? m_fieldTypes;
-    /// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
-    public System.Collections.Generic.IList<System.Type> FieldTypes
-    {
-      get => m_fieldTypes ??= System.Linq.Enumerable.Repeat(typeof(object), FieldNames.Count).ToList();
-      set => m_fieldTypes = value;
-    }
-
-    protected System.Collections.Generic.IList<object>? m_fieldValues;
+    public System.Collections.Generic.List<bool> FieldsAllowNull { get; } = new System.Collections.Generic.List<bool>();
+    ///// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
+    public System.Collections.Generic.List<System.Type> FieldTypes { get; } = new System.Collections.Generic.List<System.Type>();
     /// <summary>An array of field values for the result.</summary>
-    public System.Collections.Generic.IList<object> FieldValues
-      => m_fieldValues ?? throw new System.Exception($"Missing {nameof(FieldValues)}.");
+    public System.Collections.Generic.List<object> FieldValues { get; } = new System.Collections.Generic.List<object>();
 
-    public TabularDataReader(System.Collections.Generic.IEnumerable<string>? fieldNames)
+    public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames)
     {
-      m_fieldNames = fieldNames?.ToList();
-      m_fieldsAllowNull = null;
-      m_fieldTypes = null;
+      FieldNames.AddRange(fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames)));
 
-      m_fieldValues = null;
+      FieldsAllowNull.AddRange(System.Linq.Enumerable.Repeat(true, FieldNames.Count));
+      FieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(object), FieldNames.Count));
+
+      FieldValues.Clear();
     }
     /// <summary>This will create the tabular data reader with the specified number of field names preset to "Column_N" where N is the ordinal index.</summary>
     public TabularDataReader(int fieldCount)
-      : this(System.Linq.Enumerable.Range(1, fieldCount).Select(i => $"Column{i}").ToArray())
+      : this(System.Linq.Enumerable.Range(1, fieldCount).Select(i => $"Column_{i}").ToArray())
     {
     }
     /// <summary>This will create the tabular data reader with everything being null.</summary>
@@ -55,7 +36,7 @@ namespace Flux.Data
 
     // IDataReader
     public override bool IsClosed
-      => m_fieldValues is null || m_fieldValues.Count == 0;
+      => !FieldValues.Any();
     public override System.Data.DataTable GetSchemaTable()
     {
       var dt = base.GetSchemaTable();
@@ -92,11 +73,10 @@ namespace Flux.Data
     // IDisposable
     protected override void DisposeManaged()
     {
-      m_fieldNames = null;
-      m_fieldsAllowNull = null;
-      m_fieldTypes = null;
-
-      m_fieldValues = null;
+      FieldNames.Clear();
+      FieldsAllowNull.Clear();
+      FieldTypes.Clear();
+      FieldValues.Clear();
     }
   }
 }

@@ -6,6 +6,7 @@ namespace Flux.Data
   public struct TsqlDataType
     : System.IEquatable<TsqlDataType>
   {
+#pragma warning disable CA1720 // Identifier contains type name
     #region SQL Data Type Names
     public const string Bigint = @"bigint";
     public const string Binary = @"binary";
@@ -41,6 +42,7 @@ namespace Flux.Data
     public const string Varchar = @"varchar";
     public const string Xml = @"xml";
     #endregion SQL Data Type Names
+#pragma warning restore CA1720 // Identifier contains type name
 
     public string Name { get; private set; }
     public System.Collections.Generic.IReadOnlyList<string> Arguments { get; private set; }

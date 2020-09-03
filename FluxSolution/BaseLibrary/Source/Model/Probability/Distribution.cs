@@ -7,6 +7,8 @@ namespace Flux.Probability
   {
     public static System.Collections.Generic.IEnumerable<T> Samples<T>(this IDistribution<T> d)
     {
+      if (d is null) throw new System.ArgumentNullException(nameof(d));
+
       while (true)
         yield return d.Sample();
     }

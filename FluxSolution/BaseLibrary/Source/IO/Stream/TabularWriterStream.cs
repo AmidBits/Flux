@@ -83,7 +83,7 @@ namespace Flux.IO
         case string s:
           return s;
         case System.DateTime dt:
-          return dt.ToString(@"yyyy-MM-ddTHH:mm:ss.fffffff"); // Convert datetime objects to a ISO8601 format in order to retain detail.
+          return dt.ToString(@"yyyy-MM-ddTHH:mm:ss.fffffff", System.Globalization.CultureInfo.InvariantCulture); // Convert datetime objects to a ISO8601 format in order to retain detail.
         case byte[] ba:
           return System.Convert.ToBase64String(ba); // Convert binary data to base64 in order to store as text.
         default:

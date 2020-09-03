@@ -9,9 +9,8 @@ namespace Flux.IO
 
     private readonly char m_fieldSeparator;
 
-    private System.Collections.Generic.IList<string>? m_fieldProviderTypes;
     /// <summary>An array of the field provider types for the result.</summary>
-    public System.Collections.Generic.IList<string> FieldProviderTypes { get => m_fieldProviderTypes?.ToList() ?? throw new System.Exception(@"No field provider types exist."); set { m_fieldProviderTypes = value.ToArray(); } }
+    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = new System.Collections.Generic.List<string>();
 
     public int RecordIndex { get; private set; }
 
@@ -39,26 +38,32 @@ namespace Flux.IO
     /// <summary>Use this constructor to read up to three rows by specifying headerCount 1 (field names), 2 (field types) or 3 (field provider types) with the option to specify them individually (this will override what is read).</summary>
     public void Initialize(int headerCount, System.Collections.Generic.IList<string>? fieldNames, System.Collections.Generic.IList<System.Type>? fieldTypes, System.Collections.Generic.IList<string>? fieldProviderTypes)
     {
-      m_fieldNames = (headerCount >= 1 && ReadFieldValues().ToList() is var streamFieldNames)
+      FieldNames.AddRange(
+        (headerCount >= 1 && ReadFieldValues().ToList() is var streamFieldNames)
         ? fieldNames ?? streamFieldNames!
-        : fieldNames; // ?? throw new System.ArgumentNullException(nameof(fieldNames), @"Missing field names.");
+        : fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames), @"Missing field names.")
+      );
 
-      m_fieldTypes = (headerCount >= 2 && ReadFieldValues().Select(typeName => System.Type.GetType(typeName ?? @"Object")).ToList() is var streamFieldTypes)
+      FieldTypes.AddRange(
+        (headerCount >= 2 && ReadFieldValues().Select(typeName => System.Type.GetType(typeName ?? @"Object")).ToList() is var streamFieldTypes)
         ? fieldTypes ?? streamFieldTypes!
-        : fieldTypes; // ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field types.");
+        : fieldTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field types.")
+      );
 
-      if (FieldTypes != null && FieldNames != null && FieldTypes?.Count != FieldNames.Count)
+      if (FieldTypes.Any() && FieldNames.Any() && FieldTypes.Count != FieldNames.Count)
       {
-        throw new System.DataMisalignedException($"The number of field types ({FieldTypes?.Count ?? -1}) does not match the number of field names ({FieldNames.Count}).");
+        throw new System.DataMisalignedException($"The number of field types ({FieldTypes.Count}) does not match the number of field names ({FieldNames.Count}).");
       }
 
-      m_fieldProviderTypes = (headerCount >= 3 && ReadFieldValues().ToList() is var streamFieldProviderTypes)
+      FieldProviderTypes.AddRange(
+        (headerCount >= 3 && ReadFieldValues().ToList() is var streamFieldProviderTypes)
         ? fieldProviderTypes ?? streamFieldProviderTypes!
-        : fieldProviderTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field provider types.");
+        : fieldProviderTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field provider types.")
+      );
 
-      if (FieldProviderTypes != null && FieldNames != null && FieldProviderTypes.Count != FieldNames.Count)
+      if (FieldProviderTypes.Any() && FieldNames.Any() && FieldProviderTypes.Count != FieldNames.Count)
       {
-        throw new System.DataMisalignedException($"The number of field provider types ({FieldProviderTypes?.Count}) does not match the number of field types ({FieldNames.Count}).");
+        throw new System.DataMisalignedException($"The number of field provider types ({FieldProviderTypes.Count}) does not match the number of field types ({FieldNames.Count}).");
       }
     }
 
@@ -175,11 +180,12 @@ namespace Flux.IO
     /// <summary>Converts the string values into appropriately parsed object types. Requires GetFieldType(index) to be implemented, and therefore FieldTypes needs to be initialized.</summary>
     public override bool Read()
     {
-      m_fieldValues = ReadFieldValues().Select((value, index) => ConvertToObject(value, GetFieldType(index))).ToArray();
+      FieldValues.Clear();
+      FieldValues.Add(ReadFieldValues().Select((value, index) => ConvertToObject(value, GetFieldType(index))));
 
-      if (m_fieldValues.Count > 0)
+      if (FieldValues.Count > 0)
       {
-        if (m_fieldValues.Count != (m_fieldNames?.Count ?? -1))
+        if (FieldValues.Count != FieldNames.Count)
         {
           throw new System.InvalidOperationException("The number of field values does not match the number of field names.");
         }
@@ -194,7 +200,7 @@ namespace Flux.IO
 
     protected override void DisposeManaged()
     {
-      m_fieldProviderTypes = null;
+      FieldProviderTypes.Clear();
 
       m_streamReader.Dispose();
 

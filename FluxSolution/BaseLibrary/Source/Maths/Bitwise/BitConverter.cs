@@ -17,15 +17,9 @@ namespace Flux
     /// <param name="index">The first index into the array to copy the bytes into</param>
     void CopyBytes(long value, int bytes, byte[] buffer, int index)
     {
-      if (buffer == null)
-      {
-        throw new System.ArgumentNullException("buffer", "Byte array must not be null");
-      }
+      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer), "Byte array must not be null");
 
-      if (buffer.Length < index + bytes)
-      {
-        throw new System.ArgumentOutOfRangeException("Buffer not big enough for value");
-      }
+      if (buffer.Length < index + bytes) throw new System.ArgumentOutOfRangeException(nameof(buffer), "Buffer not big enough for value");
 
       CopyBytesImpl(value, bytes, buffer, index);
     }

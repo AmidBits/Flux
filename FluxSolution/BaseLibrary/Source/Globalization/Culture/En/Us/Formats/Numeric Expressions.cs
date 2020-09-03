@@ -1,6 +1,6 @@
 namespace Flux.Globalization
 {
-  public static partial class Common
+  public static partial class Number
   {
     /// <summary>This regular expression matches an optional sign, that is either followed by zero or more digits followed by a dot and one or more digits (a floating point number with optional integer part), or that is followed by one or more digits (an integer).</summary>
     public const string RegexDecimalNumber = @"[-+]?[0-9]*\.?[0-9]+";

@@ -61,6 +61,6 @@ namespace Flux.Resources.ProjectGutenberg
 
     /// <summary>Returns an IDataReader with keywords, synonyms and antonyms.</summary>
     public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames) { FieldTypes = FieldNames.Select(fn => typeof(object)).ToList() };
+      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
   }
 }

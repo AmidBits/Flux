@@ -63,7 +63,7 @@ namespace Flux.Resources.ProjectGutenberg
       var reWord = new System.Text.RegularExpressions.Regex(@"^[A-Z \-';]+$");
       var reSplitWords = new System.Text.RegularExpressions.Regex(@"\s*;\s*");
 
-      return new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames) { FieldTypes = FieldNames.Select(fn => typeof(string)).ToList() };
+      return new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
     }
   }
 }

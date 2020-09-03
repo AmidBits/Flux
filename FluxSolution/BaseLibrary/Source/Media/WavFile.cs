@@ -6,7 +6,7 @@ namespace Flux.Media.WaveFile
   {
     public byte[] Buffer = System.Array.Empty<byte>();
 
-    public string ChunkID { get => System.Text.Encoding.ASCII.GetString(Buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes(value.Substring(0, 4)).CopyTo(Buffer, 0); } }
+    public string ChunkID { get => System.Text.Encoding.ASCII.GetString(Buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(Buffer, 0); } }
     [System.CLSCompliant(false)] public uint ChunkSize { get => System.BitConverter.ToUInt32(Buffer, 4); set { System.BitConverter.GetBytes(value).CopyTo(Buffer, 4); } }
 
     public long PositionInStream { get; set; }
@@ -21,12 +21,14 @@ namespace Flux.Media.WaveFile
       ChunkSize = chunkDataSize - 8;
     }
     public Chunk(byte[] bytes)
-      : this((uint)bytes.Length)
+      : this((uint)(bytes ?? throw new System.ArgumentNullException(nameof(bytes))).Length)
       => bytes.CopyTo(Buffer, 0);
     public Chunk(System.IO.Stream stream, int count) => Read(stream, count);
 
     public byte[] Read(System.IO.Stream stream, int byteCount)
     {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
       if (Buffer.Length == 0)
       {
         PositionInStream = stream.Position;
@@ -47,12 +49,17 @@ namespace Flux.Media.WaveFile
 
     [System.CLSCompliant(false)] public virtual uint FileSize => this is TypeChunk ? ChunkSize : ChunkSize + 8;
 
-    public virtual void WriteTo(System.IO.Stream stream) => stream.Write(Buffer, 0, Buffer.Length);
+    public virtual void WriteTo(System.IO.Stream stream)
+    {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
+      stream.Write(Buffer, 0, Buffer.Length);
+    }
   }
 
   public class TypeChunk : Chunk
   {
-    public string Type { get => System.Text.Encoding.ASCII.GetString(Buffer, 8, 4); set { System.Text.Encoding.ASCII.GetBytes(value.Substring(0, 4)).CopyTo(Buffer, 8); } }
+    public string Type { get => System.Text.Encoding.ASCII.GetString(Buffer, 8, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(Buffer, 8); } }
 
     public TypeChunk(string typeChunkID) : base(typeChunkID, 12) { }
     public TypeChunk(byte[] bytes) : base(bytes) { }
@@ -68,6 +75,8 @@ namespace Flux.Media.WaveFile
 
     public override void WriteTo(System.IO.Stream stream)
     {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
       if (ChunkSize <= 4)
       {
         throw new System.Exception("The RIFF property 'ChunkSize' represents the overall file size in bytes - 8 bytes.");
@@ -144,6 +153,8 @@ namespace Flux.Media.WaveFile
 
     public void SetSampleBuffer(FormatChunk format, int samples)
     {
+      if (format is null) throw new System.ArgumentNullException(nameof(format));
+
       System.Array.Resize(ref Buffer, 8 + (format.SampleBitDepth / 8 * format.SampleChannels) * samples);
 
       ChunkSize = (uint)Buffer.Length - 8;
@@ -170,10 +181,20 @@ namespace Flux.Media.WaveFile
   [System.CLSCompliant(false)]
   public static class WavFile
   {
-    public static uint CalculateFileSize(TypeChunk type, FormatChunk format, DataChunk data) => (uint)(type.Buffer.Length + format.Buffer.Length + data.Buffer.Length + (format.SampleChannels * data.ChunkSize * 2));
+    public static uint CalculateFileSize(TypeChunk type, FormatChunk format, DataChunk data)
+    {
+      if (format is null) throw new System.ArgumentNullException(nameof(format));
+
+      if (type is null) throw new System.ArgumentNullException(nameof(type));
+      if (data is null) throw new System.ArgumentNullException(nameof(data));
+
+      return (uint)(type.Buffer.Length + format.Buffer.Length + data.Buffer.Length + (format.SampleChannels * data.ChunkSize * 2));
+    }
 
     public static System.Collections.Generic.IEnumerable<Chunk> GetChunks(System.IO.Stream stream, bool onlyAdvanceOnDataChunk)
     {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
       while (stream.Position < stream.Length)
       {
         yield return ReadChunk(stream, onlyAdvanceOnDataChunk);
@@ -182,6 +203,8 @@ namespace Flux.Media.WaveFile
 
     public static Chunk ReadChunk(System.IO.Stream stream, bool onlyAdvanceOnDataChunk)
     {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
       var chunk = new Chunk(stream, 8);
 
       if (chunk.ChunkID.Equals(RiffTypeChunk.ID, System.StringComparison.OrdinalIgnoreCase))
@@ -219,6 +242,8 @@ namespace Flux.Media.WaveFile
 
     public static void CreateFile16BitMono(string path, Flux.Dsp.Oscillator oscillator, int sampleCount)
     {
+      if (oscillator is null) throw new System.ArgumentNullException(nameof(oscillator));
+
       var fileName = System.IO.Path.Combine(path, $"{oscillator}.wav");
 
       using var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Create);
@@ -242,6 +267,9 @@ namespace Flux.Media.WaveFile
 
     public static void CreateFile16BitStereo(string path, Flux.Dsp.Oscillator oscillatorL, Flux.Dsp.Oscillator oscillatorR, uint sampleCount)
     {
+      if (oscillatorL is null) throw new System.ArgumentNullException(nameof(oscillatorL));
+      if (oscillatorR is null) throw new System.ArgumentNullException(nameof(oscillatorR));
+
       var fileName = System.IO.Path.Combine(path, $"{oscillatorL}_{oscillatorR}.wav");
 
       using var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Create);

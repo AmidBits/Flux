@@ -5,15 +5,18 @@ namespace Flux
   public static partial class XtendCollections
   {
     /// <summary>Partition the sequence into a specified number of list. The last partition may contain less elements than the other partitions.</summary>
-    /// <remarks>Enumerates the sequence twice, because it needs the Count() to compute the partition size, FYI.</remarks>
+    /// <remarks>Enumerates the entire sequence to a list.</remarks>
+    /// <param name="resultSelector">Receives the elements in the partition and partition index.</param>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionByCount<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int countOfPartitions, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (countOfPartitions <= 0) throw new System.ArgumentOutOfRangeException(nameof(countOfPartitions), $"Must be greater than or equal to 1 ({countOfPartitions}).");
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      var quotient = System.Math.DivRem(source?.Count() ?? throw new System.ArgumentNullException(nameof(source)), countOfPartitions, out var remainder);
+      var list = source?.ToList() ?? throw new System.ArgumentNullException(nameof(source));
 
-      return source.PartitionBySize(quotient + System.Math.Sign(remainder), resultSelector);
+      var quotient = System.Math.DivRem(list.Count, countOfPartitions, out var remainder);
+
+      return list.PartitionBySize(quotient + System.Math.Sign(remainder), resultSelector);
     }
   }
 }

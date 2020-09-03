@@ -11,7 +11,7 @@ namespace Flux
       null => nullString,
       System.DBNull _ => nullString,
       System.String s => s,
-      System.DateTime dt => dt.Millisecond >= 1000 ? dt.ToString(@"yyyy-MM-dd HH:mm:ss.fffffff") : dt.Millisecond >= 1 ? dt.ToString(@"yyyy-MM-dd HH:mm:ss.fff") : dt.ToString(@"yyyy-MM-dd HH:mm:ss"),
+      System.DateTime dt => dt.Millisecond >= 1000 ? dt.ToString(@"yyyy-MM-dd HH:mm:ss.fffffff", System.Globalization.CultureInfo.InvariantCulture) : dt.Millisecond >= 1 ? dt.ToString(@"yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture) : dt.ToString(@"yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
       System.Byte[] ba => System.Convert.ToBase64String(ba),
       System.Object o => o.ToString() ?? nullString
     };

@@ -1,6 +1,6 @@
 namespace Flux.Data
 {
-  public static class SqlServer
+  public static class SqlEx
   {
     public enum ColumnMappingEnum
     {

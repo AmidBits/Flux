@@ -90,6 +90,9 @@ namespace Flux.Model
 
     public static int MaxValue(int weightCapacity, int[] weight, int[] value, int numberOfDistinctItems)
     {
+      if (weight is null) throw new System.ArgumentNullException(nameof(weight));
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+
       var K = new int[numberOfDistinctItems + 1, weightCapacity + 1];
 
       for (int i = 0; i <= numberOfDistinctItems; i++)
@@ -108,8 +111,8 @@ namespace Flux.Model
 
     public class Item
     {
-      public int Value;
-      public int Weight;
+      public int Value { get; set; }
+      public int Weight { get; set; }
 
       public Item(int value, int weight)
       {
@@ -120,6 +123,8 @@ namespace Flux.Model
 
     public static int MaxValue2(int weightCapacity, Item[] items)
     {
+      if (items is null) throw new System.ArgumentNullException(nameof(items));
+
       var K = new int[items.Length + 1, weightCapacity + 1];
 
       for (int i = 0; i <= items.Length; i++)

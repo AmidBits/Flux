@@ -33,14 +33,14 @@ namespace Flux.Model
   [System.Serializable]
   public class Item : Dynamics.RigidBody
   {
-    public System.Guid Guid { get; set; }
-    public string Name { get; set; }
+    public System.Guid Id { get; set; } = System.Guid.NewGuid();
+    public string Name { get; set; } = string.Empty;
 
-    public System.Collections.Generic.List<Container> Containers { get; set; }
+    public System.Collections.Generic.List<Container> Containers { get; } = new System.Collections.Generic.List<Container>();
 
-    public System.Collections.Generic.Dictionary<Attribute, double> Attributes = new System.Collections.Generic.Dictionary<Model.Attribute, double>();
+    public System.Collections.Generic.Dictionary<Attribute, double> Attributes { get; } = new System.Collections.Generic.Dictionary<Model.Attribute, double>();
 
-    public System.Collections.Generic.List<Item> Items = new System.Collections.Generic.List<Item>();
+    public System.Collections.Generic.List<Item> Items { get; private set; } = new System.Collections.Generic.List<Item>();
 
     //public void AddItem(string path, Item item)
     //{
@@ -111,7 +111,7 @@ namespace Flux.Model
         {
           return this;
         }
-        else if (this.Items.Any(t => t.Name == nameOrID || t.Guid.ToString() == nameOrID))
+        else if (this.Items.Any(t => t.Name == nameOrID || t.Id.ToString() == nameOrID))
         {
           return this;
         }
@@ -126,7 +126,7 @@ namespace Flux.Model
       {
         foreach (var item in this.Items)
         {
-          if (item.Name == nameOrID || item.Guid.ToString() == nameOrID)
+          if (item.Name == nameOrID || item.Id.ToString() == nameOrID)
           {
             return item;
           }

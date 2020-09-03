@@ -6,6 +6,10 @@ namespace Flux
   {
     /// <summary>Partition the sequence into one or more lists of a specified size. The last partition may contain less elements than requested.</summary>
     /// <remarks>The integers passed to the predicates contains (in order) elementCount (within partition), elementIndex (within partition) and partitionIndex.</remarks>
+    /// <param name="elementPredicate">Receives the element, the element index with the partition and the number of elements in the partition.</param>
+    /// <param name="partitionPredicate">Receives the partition index, the element within the partition and the number of elements in the partition.</param>
+    /// <param name="resultSelector">Receives a sequence of elements in the partition and the partition index.</param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionByPredicate<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int, bool> elementPredicate, System.Func<int, int, int, bool> partitionPredicate, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (elementPredicate is null) throw new System.ArgumentNullException(nameof(elementPredicate));

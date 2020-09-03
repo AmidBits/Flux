@@ -24,6 +24,6 @@ namespace Flux.Resources.Ucd
     /// <see cref="https://unicode.org/Public/"/>
     // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
     public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames) { FieldTypes = FieldNames.Select(fn => typeof(string)).ToList() };
+      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
   }
 }

@@ -46,7 +46,7 @@ namespace Flux.Resources.W3c
     }
 
     public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr) { FieldNames = FieldNames, FieldTypes = FieldNames.Select(fn => typeof(string)).ToArray() };
+      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
 #endif
   }
 }

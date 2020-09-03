@@ -17,6 +17,6 @@ namespace Flux.Resources.ProjectGutenberg
       => uri.ReadLines(System.Text.Encoding.UTF8).Where(s => s.Length == 78 && System.Text.RegularExpressions.Regex.IsMatch(s, @"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$")).Select(s => System.Text.RegularExpressions.Regex.Split(s, @"(?<=^.+)\s{2,}(?=\d+$)"));
 
     public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames) { FieldTypes = FieldNames.Select(fn => typeof(string)).ToArray() };
+      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
   }
 }

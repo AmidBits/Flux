@@ -4,6 +4,8 @@ namespace Flux
   {
     public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinary<TArgL, TArgR, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
       var a = System.Linq.Expressions.Expression.Parameter(typeof(TArgL), @"a");
       var b = System.Linq.Expressions.Expression.Parameter(typeof(TArgR), @"b");
 
@@ -18,6 +20,8 @@ namespace Flux
     }
     public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinaryWithCast<TArgL, TArgR, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
       var a = System.Linq.Expressions.Expression.Parameter(typeof(TArgL), @"a");
       var b = System.Linq.Expressions.Expression.Parameter(typeof(TArgR), @"b");
 
@@ -47,6 +51,8 @@ namespace Flux
 
     public static System.Func<TArg, TResult> CreateExpressionUnary<TArg, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.UnaryExpression> body)
     {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+
       System.Linq.Expressions.ParameterExpression v = System.Linq.Expressions.Expression.Parameter(typeof(TArg), "v");
 
       return System.Linq.Expressions.Expression.Lambda<System.Func<TArg, TResult>>(body(v), v).Compile();

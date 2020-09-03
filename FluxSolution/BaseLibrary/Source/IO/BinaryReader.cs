@@ -4,6 +4,8 @@
   {
     public static System.Numerics.BigInteger ReadBigInteger(this System.IO.BinaryReader source, int numberOfBytes, bool reverseBytes)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var bytes = new byte[numberOfBytes];
 
       source.Read(bytes, 0, numberOfBytes);

@@ -2,25 +2,19 @@
 {
   public class GameObject
   {
-    public System.Collections.Generic.List<GameObject> Children { get; set; }
+    public System.Collections.Generic.List<GameObject> Children { get; } = new System.Collections.Generic.List<GameObject>();
 
     public System.Guid ID { get; protected set; } = System.Guid.NewGuid();
 
     public string Name { get; protected set; }
 
-    public System.Collections.Generic.Dictionary<string, object> Properties { get; set; }
+    public System.Collections.Generic.Dictionary<string, object> Properties { get; } = new System.Collections.Generic.Dictionary<string, object>();
 
-    public Dynamics.RigidBody RigidBody { get; set; }
+    public Dynamics.RigidBody RigidBody { get; set; } = new Dynamics.RigidBody();
 
     public GameObject(string name)
     {
-      Children = new System.Collections.Generic.List<GameObject>();
-
       Name = name;
-
-      Properties = new System.Collections.Generic.Dictionary<string, object>();
-
-      RigidBody = new Dynamics.RigidBody();
     }
 
     /// <summary>This is the object delta updater.</summary>
@@ -36,103 +30,100 @@
     public bool UpdateDisabled { get; set; }
   }
 
-  public class Core
+  public class Timer
   {
-    public class Timer
+    #region Fields and Properties
+    private long _deltaCounter;
+    /// <summary>The delta counter represents the total number of calls to the Update() function.</summary>
+    public long DeltaCounter => _deltaCounter;
+
+    private System.TimeSpan _deltaTime;
+    /// <summary>The delta time is accumulated from all calls to the Update() function.</summary>
+    public System.TimeSpan DeltaTime => _deltaTime;
+
+    private System.TimeSpan _effectiveTime;
+    /// <summary>Effective time is accumulated from the delta times from each call to the Update() function.</summary>
+    public System.TimeSpan EffectiveTime => _effectiveTime;
+
+    /// <summary>Total time is a directly calculated value, since the restarted time to the updated time, or paused time if paused.</summary>
+    public System.TimeSpan TotalTime => IsPaused ? (_paused - _restarted) : (_updated - _restarted);
+
+    /// <summary>Indicates whether the timer is paused.</summary>
+    public bool IsPaused => _paused.Ticks > 0;
+
+    private System.DateTime _paused;
+    /// <summary>Indicates when the timer was last paused, or System.DateTime(0) if not.</summary>
+    public System.DateTime Paused => _paused;
+
+    private System.DateTime _restarted;
+    /// <summary>Indicates when the timer was last restarted.</summary>
+    public System.DateTime Restarted => _restarted;
+
+    private System.DateTime _updated;
+    /// <summary>Indicates when the timer was last updated.</summary>
+    public System.DateTime Updated => _updated;
+    #endregion
+
+    public Timer() => Restart();
+
+    /// <summary>Takes the timer out of paused mode, if paused.</summary>
+    public void Continue()
     {
-      #region Fields and Properties
-      private long _deltaCounter;
-      /// <summary>The delta counter represents the total number of calls to the Update() function.</summary>
-      public long DeltaCounter => _deltaCounter;
-
-      private System.TimeSpan _deltaTime;
-      /// <summary>The delta time is accumulated from all calls to the Update() function.</summary>
-      public System.TimeSpan DeltaTime => _deltaTime;
-
-      private System.TimeSpan _effectiveTime;
-      /// <summary>Effective time is accumulated from the delta times from each call to the Update() function.</summary>
-      public System.TimeSpan EffectiveTime => _effectiveTime;
-
-      /// <summary>Total time is a directly calculated value, since the restarted time to the updated time, or paused time if paused.</summary>
-      public System.TimeSpan TotalTime => IsPaused ? (_paused - _restarted) : (_updated - _restarted);
-
-      /// <summary>Indicates whether the timer is paused.</summary>
-      public bool IsPaused => _paused.Ticks > 0;
-
-      private System.DateTime _paused;
-      /// <summary>Indicates when the timer was last paused, or System.DateTime(0) if not.</summary>
-      public System.DateTime Paused => _paused;
-
-      private System.DateTime _restarted;
-      /// <summary>Indicates when the timer was last restarted.</summary>
-      public System.DateTime Restarted => _restarted;
-
-      private System.DateTime _updated;
-      /// <summary>Indicates when the timer was last updated.</summary>
-      public System.DateTime Updated => _updated;
-      #endregion
-
-      public Timer() => Restart();
-
-      /// <summary>Takes the timer out of paused mode, if paused.</summary>
-      public void Continue()
+      if (IsPaused)
       {
-        if (IsPaused)
-        {
-          _paused = new System.DateTime(0);
-        }
-      }
-
-      /// <summary>Enters the timer into paused mode, unless already paused.</summary>
-      public void Pause()
-      {
-        if (!IsPaused)
-        {
-          _paused = System.DateTime.Now;
-        }
-      }
-
-      /// <summary>Restart the timer, setting all values to initital values.</summary>
-      public void Restart()
-      {
-        _deltaCounter = 0;
-        _deltaTime = new System.TimeSpan(0);
-
-        _effectiveTime = new System.TimeSpan(0);
-
         _paused = new System.DateTime(0);
-        _restarted = System.DateTime.Now;
-        _updated = _restarted;
       }
+    }
 
-      /// <summary>Updates the timer values, as long as the timer is not paused. This version of Update() is made for when the delta value is calculated elsewhere.</summary>
-      public void Update(System.TimeSpan deltaTime)
+    /// <summary>Enters the timer into paused mode, unless already paused.</summary>
+    public void Pause()
+    {
+      if (!IsPaused)
       {
-        if (!IsPaused)
-        {
-          _updated = System.DateTime.Now;
-
-          _deltaTime = deltaTime;
-          _deltaCounter++;
-
-          _effectiveTime += deltaTime;
-        }
+        _paused = System.DateTime.Now;
       }
+    }
 
-      /// <summary>Updates the timer values, as long as the timer is not paused.</summary>
-      public void Update()
+    /// <summary>Restart the timer, setting all values to initital values.</summary>
+    public void Restart()
+    {
+      _deltaCounter = 0;
+      _deltaTime = new System.TimeSpan(0);
+
+      _effectiveTime = new System.TimeSpan(0);
+
+      _paused = new System.DateTime(0);
+      _restarted = System.DateTime.Now;
+      _updated = _restarted;
+    }
+
+    /// <summary>Updates the timer values, as long as the timer is not paused. This version of Update() is made for when the delta value is calculated elsewhere.</summary>
+    public void Update(System.TimeSpan deltaTime)
+    {
+      if (!IsPaused)
       {
-        if (!IsPaused)
-        {
-          long updatedTicks = _updated.Ticks;
+        _updated = System.DateTime.Now;
 
-          _updated = System.DateTime.Now;
+        _deltaTime = deltaTime;
+        _deltaCounter++;
 
-          _deltaTime = new System.TimeSpan(_updated.Ticks - updatedTicks);
-          _deltaCounter++;
+        _effectiveTime += deltaTime;
+      }
+    }
 
-          _effectiveTime = _effectiveTime.Add(_deltaTime);
-        }
+    /// <summary>Updates the timer values, as long as the timer is not paused.</summary>
+    public void Update()
+    {
+      if (!IsPaused)
+      {
+        long updatedTicks = _updated.Ticks;
+
+        _updated = System.DateTime.Now;
+
+        _deltaTime = new System.TimeSpan(_updated.Ticks - updatedTicks);
+        _deltaCounter++;
+
+        _effectiveTime = _effectiveTime.Add(_deltaTime);
       }
     }
 

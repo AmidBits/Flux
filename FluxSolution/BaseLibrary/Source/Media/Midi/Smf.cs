@@ -21,7 +21,7 @@ namespace Flux.Media.Midi.Smf
 
   public class Chunk
   {
-    public byte[] Buffer = System.Array.Empty<byte>();
+    protected byte[] Buffer = System.Array.Empty<byte>();
 
     public string ChunkID { get => System.Text.Encoding.ASCII.GetString(Buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(Buffer, 0); } }
     [System.CLSCompliant(false)]

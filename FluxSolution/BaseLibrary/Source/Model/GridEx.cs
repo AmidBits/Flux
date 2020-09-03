@@ -100,13 +100,13 @@ namespace Flux.Model
       {
         var squareLabel = new string(new char[] { columnLabel, rowLabel });
 
-        return Slots.Contains(squareLabel) ? Items[Slots.IndexOf(squareLabel)] : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
+        return Slots.Contains(squareLabel) ? Items[Slots.IndexOf(squareLabel)] : throw new System.ArgumentException($"{columnLabel} or {rowLabel}");
       }
       set
       {
         var squareLabel = new string(new char[] { columnLabel, rowLabel });
 
-        Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
+        Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentException($"{columnLabel} or {rowLabel}");
       }
     }
     public TValue this[string squareLabel]
@@ -184,7 +184,7 @@ namespace Flux.Model
       {
         var places = unit.Where(s => values[s].Contains(digit, System.StringComparison.Ordinal));
 
-        if (places.Count() == 0) // contradiction; there is no place for this digit
+        if (places.Any()) // contradiction; there is no place for this digit
         {
           return null;
         }
@@ -464,13 +464,13 @@ namespace Flux.Model
       {
         var squareLabel = new string(new char[] { columnLabel, rowLabel });
 
-        return Slots.Contains(squareLabel) ? Items[Slots.IndexOf(squareLabel)] : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
+        return Slots.Contains(squareLabel) ? Items[Slots.IndexOf(squareLabel)] : throw new System.ArgumentException($"{columnLabel} or {rowLabel}");
       }
       set
       {
         var squareLabel = new string(new char[] { columnLabel, rowLabel });
 
-        Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentOutOfRangeException(nameof(squareLabel));
+        Items[Slots.IndexOf(squareLabel)] = Slots.Contains(squareLabel) ? value : throw new System.ArgumentException($"{columnLabel} or {rowLabel}");
       }
     }
     public TValue this[string squareLabel]

@@ -11,6 +11,8 @@ namespace Flux
   {
     public System.Xml.Schema.XmlSchema? GetSchema() => null;
 
+    //protected SerializableDictionary(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw new System.NotImplementedException();
+
     public void ReadXml(System.Xml.XmlReader reader)
     {
       var keySerializer = new System.Xml.Serialization.XmlSerializer(typeof(TKey));
