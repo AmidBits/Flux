@@ -3,7 +3,7 @@ namespace Flux
   public static partial class XtendCollections
   {
     /// <summary>Creates a new sequence of equal (based on the specified keySelector) consecutive (adjacent) items grouped together as a key and a list. Uses the specified equality comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupConsecutive<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer)
+    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer)
     {
       comparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
 
@@ -13,7 +13,7 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var goa = new ConsecutiveGrouping<TKey, TSource>(keySelector(e.Current), e.Current);
+        var goa = new AdjacentGrouping<TKey, TSource>(keySelector(e.Current), e.Current);
 
         while (e.MoveNext())
         {
@@ -27,7 +27,7 @@ namespace Flux
           {
             yield return goa;
 
-            goa = new ConsecutiveGrouping<TKey, TSource>(key, e.Current);
+            goa = new AdjacentGrouping<TKey, TSource>(key, e.Current);
           }
         }
 
@@ -35,10 +35,10 @@ namespace Flux
       }
     }
     /// <summary>Creates a new sequence of equal (based on the specified keySelector) consecutive (adjacent) items grouped together as a key and a list. Uses the default equality comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupConsecutive<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector)
-      => GroupConsecutive(source, keySelector, System.Collections.Generic.EqualityComparer<TKey>.Default);
+    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector)
+      => GroupAdjacent(source, keySelector, System.Collections.Generic.EqualityComparer<TKey>.Default);
 
-    private class ConsecutiveGrouping<TKey, TSource> : System.Collections.Generic.IEnumerable<TSource>, System.Linq.IGrouping<TKey, TSource>
+    private class AdjacentGrouping<TKey, TSource> : System.Collections.Generic.IEnumerable<TSource>, System.Linq.IGrouping<TKey, TSource>
     {
       public TKey Key { get; }
 
@@ -51,7 +51,7 @@ namespace Flux
       }
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.Generic.IEnumerable<TSource>)this).GetEnumerator();
 
-      public ConsecutiveGrouping(TKey key, TSource source)
+      public AdjacentGrouping(TKey key, TSource source)
       {
         Key = key;
         Consecutive.Add(source);

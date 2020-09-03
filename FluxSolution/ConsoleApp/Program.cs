@@ -38,6 +38,10 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      var ja = thoughtco.ToJaggedArray((e, i) => new object[] { e, e * e });
+      var tda = ja.ToTwoDimensionalArray();
+
+      System.Console.WriteLine(tda.ToConsoleString());
       //var quad = new Flux.Collections.Generic.Quadtree<Test>(new Rectangle(0, 0, 600, 600));
 
       //quad.Insert(new Test() { Bounds = new Rectangle(450, 150, 10, 10) });
