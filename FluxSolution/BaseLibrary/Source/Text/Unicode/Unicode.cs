@@ -1,60 +1,124 @@
 using System.Linq;
 
-namespace Flux.Text
+namespace Flux
 {
-  /// <summary>This is an aggregate derivation of the System.Globalization.UnicodeCategory (or MajorMinorCode) enum value.</summary>
-  /// <example>var allCharactersByCategoryMajorLabel = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
-  public enum UnicodeCategoryMajorCode
+  public static partial class XtendUnicode
   {
-    Letter = 'L',
-    Mark = 'M',
-    Number = 'N',
-    Other = 'C',
-    Punctuation = 'P',
-    Separator = 'Z',
-    Symbol = 'S',
+    /// <summary>Translates a System.Globalization.UnicodeCategory enum value into a MajorLabel enum value.</summary>
+    /// <example>var allCharactersByCategoryMajorLabel = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    public static Text.UnicodeCategoryMajorCode ToMajorCode(this System.Globalization.UnicodeCategory unicodeCategory)
+    {
+      switch (unicodeCategory)
+      {
+        case System.Globalization.UnicodeCategory.LowercaseLetter:
+        case System.Globalization.UnicodeCategory.ModifierLetter:
+        case System.Globalization.UnicodeCategory.OtherLetter:
+        case System.Globalization.UnicodeCategory.TitlecaseLetter:
+        case System.Globalization.UnicodeCategory.UppercaseLetter:
+          return Text.UnicodeCategoryMajorCode.Letter;
+        case System.Globalization.UnicodeCategory.SpacingCombiningMark:
+        case System.Globalization.UnicodeCategory.EnclosingMark:
+        case System.Globalization.UnicodeCategory.NonSpacingMark:
+          return Text.UnicodeCategoryMajorCode.Mark;
+        case System.Globalization.UnicodeCategory.DecimalDigitNumber:
+        case System.Globalization.UnicodeCategory.LetterNumber:
+        case System.Globalization.UnicodeCategory.OtherNumber:
+          return Text.UnicodeCategoryMajorCode.Number;
+        case System.Globalization.UnicodeCategory.Control:
+        case System.Globalization.UnicodeCategory.Format:
+        case System.Globalization.UnicodeCategory.OtherNotAssigned:
+        case System.Globalization.UnicodeCategory.PrivateUse:
+        case System.Globalization.UnicodeCategory.Surrogate:
+          return Text.UnicodeCategoryMajorCode.Other;
+        case System.Globalization.UnicodeCategory.ConnectorPunctuation:
+        case System.Globalization.UnicodeCategory.DashPunctuation:
+        case System.Globalization.UnicodeCategory.ClosePunctuation:
+        case System.Globalization.UnicodeCategory.FinalQuotePunctuation:
+        case System.Globalization.UnicodeCategory.InitialQuotePunctuation:
+        case System.Globalization.UnicodeCategory.OtherPunctuation:
+        case System.Globalization.UnicodeCategory.OpenPunctuation:
+          return Text.UnicodeCategoryMajorCode.Punctuation;
+        case System.Globalization.UnicodeCategory.LineSeparator:
+        case System.Globalization.UnicodeCategory.ParagraphSeparator:
+        case System.Globalization.UnicodeCategory.SpaceSeparator:
+          return Text.UnicodeCategoryMajorCode.Separator;
+        case System.Globalization.UnicodeCategory.CurrencySymbol:
+        case System.Globalization.UnicodeCategory.ModifierSymbol:
+        case System.Globalization.UnicodeCategory.MathSymbol:
+        case System.Globalization.UnicodeCategory.OtherSymbol:
+          return Text.UnicodeCategoryMajorCode.Symbol;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unicodeCategory));
+      }
+    }
+
+    /// <summary>Converts a UnicodeCategory enum value to a MajorMinorCode enum value.</summary>
+    /// <example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    public static Text.UnicodeCategoryMajorMinorCode ToMajorMinorCode(this System.Globalization.UnicodeCategory unicodeCategory)
+      => (Text.UnicodeCategoryMajorMinorCode)unicodeCategory;
+
+    /// <summary>Converts a MajorMinorCode enum to a UnicodeCategory enum.</summary>
+    public static System.Globalization.UnicodeCategory ToUnicodeCategory(this Text.UnicodeCategoryMajorMinorCode categoryCode)
+      => (System.Globalization.UnicodeCategory)categoryCode;
   }
 
-  /// <summary>This is a directly correlated enum of System.Globalization.UnicodeCategory to ease translation to the abbreviated two character code for the major and minor parts of the System.Globalization.UnicodeCategory enum values.</summary>
-  /// <example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
-  public enum UnicodeCategoryMajorMinorCode
+  namespace Text
   {
-    Cc = System.Globalization.UnicodeCategory.Control,
-    Cf = System.Globalization.UnicodeCategory.Format,
-    Cn = System.Globalization.UnicodeCategory.OtherNotAssigned,
-    Co = System.Globalization.UnicodeCategory.PrivateUse,
-    Cs = System.Globalization.UnicodeCategory.Surrogate,
+    /// <summary>This is an aggregate derivation of the System.Globalization.UnicodeCategory (or MajorMinorCode) enum value.</summary>
+    /// <example>var allCharactersByCategoryMajorLabel = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    public enum UnicodeCategoryMajorCode
+    {
+      Letter = 'L',
+      Mark = 'M',
+      Number = 'N',
+      Other = 'C',
+      Punctuation = 'P',
+      Separator = 'Z',
+      Symbol = 'S',
+    }
 
-    Ll = System.Globalization.UnicodeCategory.LowercaseLetter,
-    Lm = System.Globalization.UnicodeCategory.ModifierLetter,
-    Lo = System.Globalization.UnicodeCategory.OtherLetter,
-    Lt = System.Globalization.UnicodeCategory.TitlecaseLetter,
-    Lu = System.Globalization.UnicodeCategory.UppercaseLetter,
+    /// <summary>This is a directly correlated enum of System.Globalization.UnicodeCategory to ease translation to the abbreviated two character code for the major and minor parts of the System.Globalization.UnicodeCategory enum values.</summary>
+    /// <example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    public enum UnicodeCategoryMajorMinorCode
+    {
+      Cc = System.Globalization.UnicodeCategory.Control,
+      Cf = System.Globalization.UnicodeCategory.Format,
+      Cn = System.Globalization.UnicodeCategory.OtherNotAssigned,
+      Co = System.Globalization.UnicodeCategory.PrivateUse,
+      Cs = System.Globalization.UnicodeCategory.Surrogate,
 
-    Mc = System.Globalization.UnicodeCategory.SpacingCombiningMark,
-    Me = System.Globalization.UnicodeCategory.EnclosingMark,
-    Mn = System.Globalization.UnicodeCategory.NonSpacingMark,
+      Ll = System.Globalization.UnicodeCategory.LowercaseLetter,
+      Lm = System.Globalization.UnicodeCategory.ModifierLetter,
+      Lo = System.Globalization.UnicodeCategory.OtherLetter,
+      Lt = System.Globalization.UnicodeCategory.TitlecaseLetter,
+      Lu = System.Globalization.UnicodeCategory.UppercaseLetter,
 
-    Nd = System.Globalization.UnicodeCategory.DecimalDigitNumber,
-    Nl = System.Globalization.UnicodeCategory.LetterNumber,
-    No = System.Globalization.UnicodeCategory.OtherNumber,
+      Mc = System.Globalization.UnicodeCategory.SpacingCombiningMark,
+      Me = System.Globalization.UnicodeCategory.EnclosingMark,
+      Mn = System.Globalization.UnicodeCategory.NonSpacingMark,
 
-    Pc = System.Globalization.UnicodeCategory.ConnectorPunctuation,
-    Pd = System.Globalization.UnicodeCategory.DashPunctuation,
-    Pe = System.Globalization.UnicodeCategory.ClosePunctuation,
-    Pf = System.Globalization.UnicodeCategory.FinalQuotePunctuation,
-    Pi = System.Globalization.UnicodeCategory.InitialQuotePunctuation,
-    Po = System.Globalization.UnicodeCategory.OtherPunctuation,
-    Ps = System.Globalization.UnicodeCategory.OpenPunctuation,
+      Nd = System.Globalization.UnicodeCategory.DecimalDigitNumber,
+      Nl = System.Globalization.UnicodeCategory.LetterNumber,
+      No = System.Globalization.UnicodeCategory.OtherNumber,
 
-    Sc = System.Globalization.UnicodeCategory.CurrencySymbol,
-    Sk = System.Globalization.UnicodeCategory.ModifierSymbol,
-    Sm = System.Globalization.UnicodeCategory.MathSymbol,
-    So = System.Globalization.UnicodeCategory.OtherSymbol,
+      Pc = System.Globalization.UnicodeCategory.ConnectorPunctuation,
+      Pd = System.Globalization.UnicodeCategory.DashPunctuation,
+      Pe = System.Globalization.UnicodeCategory.ClosePunctuation,
+      Pf = System.Globalization.UnicodeCategory.FinalQuotePunctuation,
+      Pi = System.Globalization.UnicodeCategory.InitialQuotePunctuation,
+      Po = System.Globalization.UnicodeCategory.OtherPunctuation,
+      Ps = System.Globalization.UnicodeCategory.OpenPunctuation,
 
-    Zl = System.Globalization.UnicodeCategory.LineSeparator,
-    Zp = System.Globalization.UnicodeCategory.ParagraphSeparator,
-    Zs = System.Globalization.UnicodeCategory.SpaceSeparator,
+      Sc = System.Globalization.UnicodeCategory.CurrencySymbol,
+      Sk = System.Globalization.UnicodeCategory.ModifierSymbol,
+      Sm = System.Globalization.UnicodeCategory.MathSymbol,
+      So = System.Globalization.UnicodeCategory.OtherSymbol,
+
+      Zl = System.Globalization.UnicodeCategory.LineSeparator,
+      Zp = System.Globalization.UnicodeCategory.ParagraphSeparator,
+      Zs = System.Globalization.UnicodeCategory.SpaceSeparator,
+    }
+
   }
 
   /// <summary></summary>
