@@ -1,5 +1,35 @@
+using System.Linq;
+
 namespace Flux.Dsp
 {
+  public class PhaseEngine
+  {
+    private readonly double[] m_midiNotePhaseShift;
+
+    private readonly double m_phaseLength;
+
+    private readonly int m_sampleRate;
+
+    public PhaseEngine(double phaseLength, int sampleRate)
+    {
+      m_phaseLength = phaseLength;
+
+      m_sampleRate = sampleRate;
+
+      m_midiNotePhaseShift = System.Linq.Enumerable.Range(0, 128).Select(note => m_phaseLength * Media.Midi.Note.ToFrequency((byte)note) / sampleRate).ToArray();
+    }
+    public PhaseEngine()
+      : this(Maths.PiX2, 44100)
+    {
+    }
+
+    public double UpdatePhase(double phasePosition, int midiNote)
+      => midiNote >= 0 && midiNote <= 127 ? (phasePosition + m_midiNotePhaseShift[midiNote]) % m_phaseLength : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
+
+    public double UpdatePhase(double phasePosition, double arbitraryFrequency)
+      => (phasePosition + (m_phaseLength * arbitraryFrequency / m_sampleRate)) % m_phaseLength;
+  }
+
   public class Phase
   {
     private double m_frequencyModulation;

@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class Maths
   {
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static System.Numerics.BigInteger Fold(System.Numerics.BigInteger value, System.Numerics.BigInteger minimum, System.Numerics.BigInteger maximum)
     {
       if (value > maximum)
@@ -18,20 +18,22 @@ namespace Flux
       return value;
     }
 
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static decimal Fold(decimal value, decimal minimum, decimal maximum)
     {
+      decimal magnitude, range;
+
       if (value > maximum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
       }
       else if (value < minimum)
       {
-        var magnitude = minimum - value;
-        var range = maximum - minimum;
+        magnitude = minimum - value;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
       }
@@ -39,48 +41,52 @@ namespace Flux
       return value;
     }
 
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static float Fold(float value, float minimum, float maximum)
     {
+      float magnitude, range;
+
       if (value > maximum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
       }
       else if (value < minimum)
       {
-        var magnitude = minimum - value;
-        var range = maximum - minimum;
+        magnitude = minimum - value;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
       }
 
       return value;
     }
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static double Fold(double value, double minimum, double maximum)
     {
+      double magnitude, range;
+
       if (value > maximum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
       }
       else if (value < minimum)
       {
-        var magnitude = minimum - value;
-        var range = maximum - minimum;
+        magnitude = minimum - value;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
       }
 
       return value;
     }
-    
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static int Fold(int value, int minimum, int maximum)
     {
       if (value > maximum)
@@ -94,7 +100,7 @@ namespace Flux
 
       return value;
     }
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     public static long Fold(long value, long minimum, long maximum)
     {
       if (value > maximum)
@@ -108,43 +114,47 @@ namespace Flux
 
       return value;
     }
-    
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     [System.CLSCompliant(false)]
     public static uint Fold(uint value, uint minimum, uint maximum)
     {
+      uint magnitude, range;
+
       if (value > maximum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
       }
       else if (value < minimum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
       }
 
       return value;
     }
-    /// <summary>Folds out-of-bound values over across the range, back and forth, until the value is in range.</summary>
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
     [System.CLSCompliant(false)]
     public static ulong Fold(ulong value, ulong minimum, ulong maximum)
     {
+      ulong magnitude, range;
+
       if (value > maximum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
       }
       else if (value < minimum)
       {
-        var magnitude = value - maximum;
-        var range = maximum - minimum;
+        magnitude = value - maximum;
+        range = maximum - minimum;
 
         return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
       }
