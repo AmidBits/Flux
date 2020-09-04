@@ -1,4 +1,4 @@
-#if Experimental
+#if !Experimental
 namespace Flux.Numerics
 {
   /// <summary></summary>
@@ -12,40 +12,57 @@ namespace Flux.Numerics
     //public static BigFraction Ten = new BigFraction(BigInteger.TEN, BigInteger.ONE, Reduced.YES);
 
     //public enum Reduced { Yes, No };
-    public enum FareyMode { NEXT, PREV, CLOSEST };
+    //    public enum FareyMode { NEXT, PREV, CLOSEST };
+
+    /// <summary>Represents a BigFraction value of 5.</summary>
+    public static readonly BigFraction Five = new BigFraction(5, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of -1.</summary>
+    public static readonly BigFraction MinusOne = new BigFraction(-1, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of -1.</summary>
+    public static readonly BigFraction MinusTwo = new BigFraction(-2, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of 1.</summary>
+    public static readonly BigFraction One = new BigFraction(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of 10.</summary>
+    public static readonly BigFraction Ten = new BigFraction(10, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of 2.</summary>
+    public static readonly BigFraction Two = new BigFraction(2, System.Numerics.BigInteger.One, true);
+    /// <summary>Represents a BigFraction value of 0.</summary>
+    public static readonly BigFraction Zero = new BigFraction(0, System.Numerics.BigInteger.One, true);
 
     public System.Numerics.BigInteger Numerator { get; private set; }
     public System.Numerics.BigInteger Denominator { get; private set; }
 
-    /// <summary>Returns whether the number is a whole integer, i.e. no fractional residue.</summary>
+    /// <summary>Indicates whether the number is a whole integer, i.e. no fractional residue.</summary>
     public bool IsInteger
       => Denominator.IsOne;
-    /// <summary>Returns whether the number is -1.</summary>
+    /// <summary>Indicates whether the number is -1.</summary>
     public bool IsMinusOne
       => Numerator == System.Numerics.BigInteger.MinusOne && Denominator.IsOne;
-    /// <summary>Returns whether the number is 1.</summary>
+    /// <summary>Indicates whether the number is 1.</summary>
     public bool IsOne
       => Numerator.IsOne && Denominator.IsOne;
-    /// <summary>Returns whether the number is 0.</summary>
+    /// <summary>Indicates whether the number is 0.</summary>
     public bool IsZero
       => Numerator.IsZero && Denominator.IsOne;
-    /// <summary>Returns the sign of the number, i.e. 1, 0 or -1.</summary>
+
+    /// <summary>Indicates the sign of the number, i.e. 1, 0 or -1.</summary>
     public int Sign
       => Numerator.Sign;
 
-    private BigFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, bool reduced)
+    private BigFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, bool isReduced)
     {
       if (denominator.IsZero) throw new System.DivideByZeroException();
 
-      if (denominator.Sign < 0) // Only the numerator should be negative.
+      if (denominator.Sign < 0)
       {
         numerator = -numerator;
         denominator = -denominator;
       }
 
-      if (!reduced)
+      if (!isReduced)
       {
-        if (numerator.IsZero) denominator = System.Numerics.BigInteger.One;
+        if (numerator.IsZero)
+          denominator = System.Numerics.BigInteger.One;
         else if (!denominator.IsOne && System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator) is var gcd && !gcd.Equals(System.Numerics.BigInteger.One))
         {
           numerator /= gcd;
@@ -61,14 +78,18 @@ namespace Flux.Numerics
       : this(numerator, denominator, false)
     {
     }
-    public BigFraction(System.Numerics.BigInteger value)
-      : this(value, System.Numerics.BigInteger.One, false) { }
+    public BigFraction(System.Numerics.BigInteger integer)
+      : this(integer, System.Numerics.BigInteger.One, false)
+    {
+    }
     public BigFraction(decimal value)
     {
       var countDecimalPlaces = System.BitConverter.GetBytes(decimal.GetBits(value)[3])[2];
 
-      Numerator = new System.Numerics.BigInteger(value * (System.Decimal)Maths.Pow(10, countDecimalPlaces));
-      Denominator = new System.Numerics.BigInteger(Maths.Pow(10, countDecimalPlaces));
+      var pow10DecimalPlaces = Maths.Pow(10, countDecimalPlaces);
+
+      Numerator = new System.Numerics.BigInteger(value * pow10DecimalPlaces);
+      Denominator = new System.Numerics.BigInteger(pow10DecimalPlaces);
     }
     public BigFraction(double value, double accuracy = 1E-15)
     {
@@ -111,21 +132,25 @@ namespace Flux.Numerics
       }
     }
     public BigFraction(long value)
-      : this(value, System.Numerics.BigInteger.One, false) { }
+      : this(value, System.Numerics.BigInteger.One, false)
+    {
+    }
     public BigFraction(int value)
-      : this(value, System.Numerics.BigInteger.One, false) { }
+      : this(value, System.Numerics.BigInteger.One, false)
+    {
+    }
 
     #region Operators
     public static explicit operator System.Numerics.BigInteger(BigFraction value)
-      => value.Numerator / value.Denominator;
+      => value.ToBigInteger();
     public static explicit operator decimal(BigFraction value)
-      => (decimal)value.Numerator / (decimal)value.Denominator;
+      => value.ToDecimal();
     public static explicit operator double(BigFraction value)
-      => (double)value.Numerator / (double)value.Denominator;
+      => value.ToDouble();
     public static explicit operator long(BigFraction value)
-      => (long)(value.Numerator / value.Denominator);
+      => value.ToInt64();
     public static explicit operator int(BigFraction value)
-      => (int)(value.Numerator / value.Denominator);
+      => value.ToInt32();
 
     public static implicit operator BigFraction(System.Numerics.BigInteger value)
       => new BigFraction(value);
@@ -155,10 +180,10 @@ namespace Flux.Numerics
     public static bool operator >(BigFraction a, BigFraction b)
       => a.CompareTo(b) > 0;
 
-    public static BigFraction operator -(BigFraction a, BigFraction b)
-      => Subtract(a, b);
     public static BigFraction operator +(BigFraction a, BigFraction b)
       => Add(a, b);
+    public static BigFraction operator -(BigFraction a, BigFraction b)
+      => Subtract(a, b);
     public static BigFraction operator *(BigFraction a, BigFraction b)
       => Multiply(a, b);
     public static BigFraction operator /(BigFraction a, BigFraction b)
@@ -171,9 +196,10 @@ namespace Flux.Numerics
 
       var gcd = System.Numerics.BigInteger.GreatestCommonDivisor(remainder, Denominator);
 
-      remainder = remainder / gcd;
+      remainder /= gcd;
 
-      Denominator = Denominator / gcd;
+      Denominator /= gcd;
+
       Numerator = (quotient * Denominator) + remainder;
     }
 
@@ -195,26 +221,17 @@ namespace Flux.Numerics
       }
     }
     public double ToDouble()
-  => (double)Numerator / (double)Denominator;
+      => (double)Numerator / (double)Denominator;
     public float ToFloat()
       => (float)Numerator / (float)Denominator;
+    public int ToInt32()
+      => (int)(Numerator / Denominator);
+    public long ToInt64()
+      => (long)(Numerator / Denominator);
 
-    #region Static
+    //#region Static
     private static readonly System.Numerics.BigInteger MaxDecimal = new System.Numerics.BigInteger(decimal.MaxValue);
     private static readonly System.Numerics.BigInteger MinDecimal = new System.Numerics.BigInteger(decimal.MinValue);
-
-    /// <summary>Represents a BigFraction value of 5.</summary>
-    public static readonly BigFraction Five = new BigFraction(5, System.Numerics.BigInteger.One, true);
-    /// <summary>Represents a BigFraction value of -1.</summary>
-    public static readonly BigFraction MinusOne = new BigFraction(-1, System.Numerics.BigInteger.One, true);
-    /// <summary>Represents a BigFraction value of 1.</summary>
-    public static readonly BigFraction One = new BigFraction(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
-    /// <summary>Represents a BigFraction value of 10.</summary>
-    public static readonly BigFraction Ten = new BigFraction(10, System.Numerics.BigInteger.One, true);
-    /// <summary>Represents a BigFraction value of 2.</summary>
-    public static readonly BigFraction Two = new BigFraction(2, System.Numerics.BigInteger.One, true);
-    /// <summary>Represents a BigFraction value of 0.</summary>
-    public static readonly BigFraction Zero = new BigFraction(0, System.Numerics.BigInteger.One, true);
 
     /// <summary>Returns the absolute value a value.</summary>
     public static BigFraction Abs(BigFraction value)
@@ -227,7 +244,22 @@ namespace Flux.Numerics
     /// <summary>Returns the quotient of two values.</summary>
     public static BigFraction Divide(BigFraction a, BigFraction b)
       => new BigFraction(a.Numerator * b.Denominator, a.Denominator * b.Numerator, false);
+    /// <summary>Convert from long to fraction.</summary>
+    public static BigFraction FromBigInteger(System.Numerics.BigInteger value)
+      => new BigFraction(value);
     /// <summary>Convert from decimal to fraction.</summary>
+    public static BigFraction FromDecimal(decimal value)
+      => new BigFraction(value);
+    /// <summary>Convert from double to fraction.</summary>
+    public static BigFraction FromDouble(double value, double accuracy = 1E-15)
+      => new BigFraction(value, accuracy);
+    /// <summary>Convert from int to fraction.</summary>
+    public static BigFraction FromInt32(int value)
+      => new BigFraction(value);
+    /// <summary>Convert from long to fraction.</summary>
+    public static BigFraction FromInt64(long value)
+      => new BigFraction(value);
+
     //public static BigFraction FromDouble(double value, double accuracy) // Accuracy is used to convert recurring decimals into fractions (eg. 0.166667 -> 1/6).
     //{
     //  if (accuracy <= 0.0 || accuracy >= 1.0) throw new System.ArgumentOutOfRangeException(nameof(accuracy), @"Must be > 0 and < 1.");
@@ -271,24 +303,34 @@ namespace Flux.Numerics
     //    else return new BigFraction((n * middle_d + middle_n) * sign, middle_d);  // Middle is our best fraction.
     //  }
     //}
+
     /// <summary>Returns the greatest common divisor (GCD) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: (gcd(a,c) * gcd(b,d)) / (|b*d|), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>gcd((a/b),(c/d)) = gcd(a,c) / lcm(b,d) = gcd(a,c) / (|b*d|/gcd(b,d))</example>
     public static BigFraction GreatestCommonDivisor(BigFraction a, BigFraction b)
     {
-      return a.IsZero ? Abs(b) : b.IsZero ? Abs(a) : new BigFraction(
-             System.Numerics.BigInteger.GreatestCommonDivisor(a.Numerator, b.Numerator),
-             System.Numerics.BigInteger.Abs(a.Denominator * b.Denominator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.Denominator, b.Denominator),
-             true);
+      if (a.IsZero) return Abs(b);
+      if (b.IsZero) return Abs(a);
+
+      var numerator = System.Numerics.BigInteger.GreatestCommonDivisor(a.Numerator, b.Numerator);
+      var denominator = System.Numerics.BigInteger.Abs(a.Denominator * b.Denominator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.Denominator, b.Denominator);
+
+      return new BigFraction(numerator, denominator, true);
     }
+
     /// <summary>Returns the least common multiple (LCM) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: |a*c| / (gcd(a,c) * gcd(b,d)), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>lcm((a/b),(c/d)) = lcm(a,c) / gcd(b,d) = (|a*c| / gcd(a,c)) / gcd(b,d)</example>
     public static BigFraction LeastCommonMultiple(BigFraction a, BigFraction b)
-      => a.IsZero || b.IsZero ? Zero : new BigFraction(
-          System.Numerics.BigInteger.Abs(a.Numerator * b.Numerator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.Numerator, b.Numerator),
-          System.Numerics.BigInteger.GreatestCommonDivisor(a.Denominator, b.Denominator),
-          true);
+    {
+      if (a.IsZero || b.IsZero) return Zero;
+
+      var numerator = System.Numerics.BigInteger.Abs(a.Numerator * b.Numerator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.Numerator, b.Numerator);
+      var denominator = System.Numerics.BigInteger.GreatestCommonDivisor(a.Denominator, b.Denominator);
+
+      return new BigFraction(numerator, denominator, true);
+    }
+
     /// <summary>Returns the maximum of two values.</summary>
     public static BigFraction Max(BigFraction a, BigFraction b)
       => a.CompareTo(b) >= 0 ? a : b;
@@ -409,16 +451,19 @@ namespace Flux.Numerics
         return (a - lowerPow).CompareTo(upperPow - a) < 0 ? (lowerX, false) : (upperX, false);
       }
     }
-    public static BigFraction Parse(string s, int radix)
+    /// <summary>Returns a BigFraction from the parsed expression.</summary>
+    public static BigFraction Parse(string expression, int radix)
     {
-      var index = s.IndexOf(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, System.StringComparison.Ordinal);
+      if (expression is null) throw new System.ArgumentNullException(nameof(expression));
 
-      if (index <= -1) return new BigFraction(s.FromRadixString(radix), System.Numerics.BigInteger.One, true);
+      var index = expression.IndexOf(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, System.StringComparison.Ordinal);
 
-      var num = s.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty, System.StringComparison.Ordinal).FromRadixString(radix);
-      var den = System.Numerics.BigInteger.Pow(radix, s.Length - index - 1);
+      if (index <= -1) return new BigFraction(expression.FromRadixString(radix), System.Numerics.BigInteger.One, true);
 
-      return new BigFraction(num, den, false);
+      var numerator = expression.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty, System.StringComparison.Ordinal).FromRadixString(radix);
+      var denominator = System.Numerics.BigInteger.Pow(radix, expression.Length - index - 1);
+
+      return new BigFraction(numerator, denominator, false);
     }
     /// <summary>Returns this^exponent. Note: 0^0 will return 1/1.</summary>
     public static BigFraction Pow(BigFraction value, int exponent)
@@ -436,7 +481,10 @@ namespace Flux.Numerics
       else return new BigFraction(System.Numerics.BigInteger.Pow(value.Numerator, exponent), System.Numerics.BigInteger.Pow(value.Denominator, exponent), true);
     }
     /// <summary>Returns the reciprocal of a value.</summary>
-    public static BigFraction Reciprocal(BigFraction value) => value.IsZero ? throw new System.DivideByZeroException(@"Reciprocal of zero.") : new BigFraction(value.Denominator, value.Numerator, true);
+    public static BigFraction Reciprocal(BigFraction value)
+      => value.IsZero 
+      ? throw new System.DivideByZeroException(@"Reciprocal of zero.") 
+      : new BigFraction(value.Denominator, value.Numerator, true);
     /// <summary>Returns the difference of two values.</summary>
     public static BigFraction Subtract(BigFraction a, BigFraction b)
       => new BigFraction(a.Numerator * b.Denominator - b.Numerator * a.Denominator, a.Denominator * b.Denominator, false);
@@ -461,38 +509,39 @@ namespace Flux.Numerics
 
       return new BigFraction(numerator, denominator);
     }
-    public static BigFraction Create(System.Numerics.BigInteger integer) => new BigFraction(integer, System.Numerics.BigInteger.One);
+    //public static BigFraction Create(System.Numerics.BigInteger integer)
+    //  => new BigFraction(integer, System.Numerics.BigInteger.One);
     /// <summary>Create a new BigFraction from the double .</summary>
     /// <param name="value">The value to convert to BigFraction.</param>
     /// <param name="accuracy">Used to convert recurring decimals into fractions (eg. 0.166667 -> 1/6).</param>
-    public static BigFraction Create(double value, double accuracy)
-    {
-      if (accuracy <= 0.0 || accuracy >= 1.0) throw new System.ArgumentOutOfRangeException(nameof(accuracy), @"Must be > 0 and < 1.");
+    //public static BigFraction Create(double value, double accuracy)
+    //{
+    //  if (accuracy <= 0.0 || accuracy >= 1.0) throw new System.ArgumentOutOfRangeException(nameof(accuracy), @"Must be > 0 and < 1.");
 
-      var sign = System.Math.Sign(value);
+    //  var sign = System.Math.Sign(value);
 
-      if (sign == -1) value = System.Math.Abs(value);
+    //  if (sign == -1) value = System.Math.Abs(value);
 
-      var epsilon = sign == 0 ? accuracy : value * accuracy; // Accuracy is the maximum relative error; convert to absolute maxError
+    //  var epsilon = sign == 0 ? accuracy : value * accuracy; // Accuracy is the maximum relative error; convert to absolute maxError
 
-      var n = new System.Numerics.BigInteger(value);
-      value -= System.Math.Floor(value);
+    //  var n = new System.Numerics.BigInteger(value);
+    //  value -= System.Math.Floor(value);
 
-      if (value < epsilon) return new BigFraction(sign * n, System.Numerics.BigInteger.One);
-      if (1 - epsilon < value) return new BigFraction(sign * (n + 1), System.Numerics.BigInteger.One);
+    //  if (value < epsilon) return new BigFraction(sign * n, System.Numerics.BigInteger.One);
+    //  if (1 - epsilon < value) return new BigFraction(sign * (n + 1), System.Numerics.BigInteger.One);
 
-      var lower = (numerator: 0, denominator: 1); // The lower fraction is 0/1
-      var upper = (numerator: 1, denominator: 1); // The upper fraction is 1/1
+    //  var lower = (numerator: 0, denominator: 1); // The lower fraction is 0/1
+    //  var upper = (numerator: 1, denominator: 1); // The upper fraction is 1/1
 
-      while (true)
-      {
-        var middle = (numerator: lower.numerator + upper.numerator, denominator: lower.denominator + upper.denominator); // The middle fraction is (lower_n + upper_n) / (lower_d + upper_d)
+    //  while (true)
+    //  {
+    //    var middle = (numerator: lower.numerator + upper.numerator, denominator: lower.denominator + upper.denominator); // The middle fraction is (lower_n + upper_n) / (lower_d + upper_d)
 
-        if (middle.denominator * (value + epsilon) < middle.numerator) upper = middle; // real + error < middle : middle is our new upper.
-        else if (middle.numerator < (value - epsilon) * middle.denominator) lower = middle; // middle < real - error : middle is our new lower.
-        else return new BigFraction((n * middle.denominator + middle.numerator) * sign, middle.denominator);  // Middle is our best fraction.
-      }
-    }
+    //    if (middle.denominator * (value + epsilon) < middle.numerator) upper = middle; // real + error < middle : middle is our new upper.
+    //    else if (middle.numerator < (value - epsilon) * middle.denominator) lower = middle; // middle < real - error : middle is our new lower.
+    //    else return new BigFraction((n * middle.denominator + middle.numerator) * sign, middle.denominator);  // Middle is our best fraction.
+    //  }
+    //}
     /// <summary>Create a new BigFraction from the numerator and denominator.</summary>
     public static bool TryCreate(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out BigFraction result)
     {
@@ -508,32 +557,29 @@ namespace Flux.Numerics
       result = default;
       return false;
     }
-    #endregion Static
-
-    #region Overrides
-    public override bool Equals(object? obj)
-      => obj is BigFraction ? Equals((BigFraction)obj) : false;
-
-    public override int GetHashCode()
-      => Numerator.GetHashCode() / Denominator.GetHashCode();
-
-    public override string ToString()
-      => $"{Numerator}/{Denominator}";
-    #endregion Overrides
+    //#endregion Static
 
     // System.IComparable
     public int CompareTo(BigFraction other)
     {
-      if (Sign != other.Sign) return Sign - other.Sign;
+      if (Sign != other.Sign)
+        return Sign - other.Sign;
 
-      if (Denominator.Equals(other.Denominator)) return Numerator.CompareTo(other.Numerator);
+      if (Denominator.Equals(other.Denominator))
+        return Numerator.CompareTo(other.Numerator);
 
       return (Numerator * other.Denominator).CompareTo(Denominator * other.Numerator);
     }
-
     // System.IEquatable
     public bool Equals(BigFraction other)
       => Numerator.Equals(other.Numerator) && Denominator.Equals(other.Denominator);
+    // Overrides
+    public override bool Equals(object? obj)
+      => obj is BigFraction o && Equals(o);
+    public override int GetHashCode()
+      => HashCode.CombineCore(Numerator, Denominator);
+    public override string ToString()
+      => $"{Numerator}/{Denominator}";
   }
 }
 #endif
