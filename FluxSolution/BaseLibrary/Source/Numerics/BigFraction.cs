@@ -18,7 +18,9 @@ namespace Flux.Numerics
     /// <summary>Represents a BigFraction value of 0.</summary>
     public static readonly BigFraction Zero = new BigFraction(0, System.Numerics.BigInteger.One, true);
 
+    /// <summary>Represents a BigFraction value of the Golden Ratio.</summary>
     public static readonly BigFraction GoldenRatio = new BigFraction(7540113804746346429L, 4660046610375530309L, true);
+    /// <summary>Represents a BigFraction value of PI.</summary>
     public static readonly BigFraction PI = new BigFraction(2646693125139304345L, 842468587426513207L, true);
 
     public System.Numerics.BigInteger Numerator { get; private set; }
