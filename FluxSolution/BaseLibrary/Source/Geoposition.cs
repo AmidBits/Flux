@@ -385,6 +385,7 @@ namespace Flux
       => a.Equals(b);
     public static bool operator !=(Geoposition a, Geoposition b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Geoposition other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
