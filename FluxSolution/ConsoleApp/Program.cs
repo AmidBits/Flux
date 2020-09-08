@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,6 +39,19 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      var ns = Flux.Maths.PercentRanks(100, 90.0);
+      foreach (var n in ns)
+        System.Console.WriteLine($"{n}");
+      System.Console.WriteLine($"={ns.Sum()}");
+      return;
+      var v = 7;
+      var v1 = new System.Numerics.Vector2(0, v);
+      var v2 = new System.Numerics.Vector2(v, 0);
+      var cd = v1.ChebyshevDistanceTo(v2);
+      var ed = v1.EuclideanDistanceTo(v2);
+      var md = v1.ManhattanDistanceTo(v2);
+
+      System.Console.WriteLine($"({v1}, {v2}) = CD({cd}) = ED({ed}) = MD({md})");
 
       //var ttt = new Flux.Model.TicTacToe.Board();
       //System.Console.WriteLine(ttt.ToString());

@@ -21,6 +21,7 @@ namespace Flux
     public const double CubeRootExponent = 1.0 / 3.0;
 
     /// <summary>Returns the cube root of an arbitrary base value.</summary>
-    public static double CubeRootOf(double radicand) => CopySign(System.Math.Pow(System.Math.Abs(radicand), CubeRootExponent), radicand);
+    public static double CubeRootOf(double radicand)
+      => CopySign(System.Math.Pow(System.Math.Abs(radicand), CubeRootExponent), radicand);
   }
 }

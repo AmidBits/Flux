@@ -27,19 +27,21 @@ namespace Flux
     /// </summary>
     public static double AngleBetween(in double ax, in double ay, in double az, in double bx, in double by, in double bz) => System.Math.Acos(DotProduct(NormalizeVector(ax, ay, az), NormalizeVector(bx, by, bz)));
 
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1) => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1) => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
+    ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    //public static double ChebyshevDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1) => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
+    ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    //public static double ChebyshevDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1) => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(in (double x, double y, double z) a, in (double x, double y, double z) b) => System.Math.Max(System.Math.Max(b.x - a.x, b.y - a.y), b.z - a.z);
+    public static double ChebyshevDistance(in (double x, double y, double z) a, in (double x, double y, double z) b)
+      => Maths.Max(b.x - a.x, b.y - a.y, b.z - a.z);
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(in (double x, double y, double z) a, in (double x, double y, double z) b, double edgeLength = 1) => System.Math.Max(System.Math.Max((b.x - a.x) / edgeLength, (b.y - a.y) / edgeLength), (b.z - a.z) / edgeLength);
+    public static double ChebyshevDistance(in (double x, double y, double z) a, in (double x, double y, double z) b, double edgeLength = 1)
+      => Maths.Max((b.x - a.x) / edgeLength, (b.y - a.y) / edgeLength, (b.z - a.z) / edgeLength);
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in double ax, in double ay, in double az, in double bx, in double by, in double bz) => System.Math.Max(System.Math.Max(bx - ax, by - ay), bz - az);
@@ -75,12 +77,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanLength(in double x, in double y, in double z) => System.Math.Sqrt(x * x + y * y + z * z);
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1) => System.Math.Abs((b.X - a.X) / edgeLength) + System.Math.Abs((b.Y - a.Y) / edgeLength);
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1) => System.Math.Abs((b.X - a.X) / edgeLength) + System.Math.Abs((b.Y - a.Y) / edgeLength) + System.Math.Abs((b.Z - a.Z) / edgeLength);
+    ///// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    //public static double ManhattanDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1) => System.Math.Abs((b.X - a.X) / edgeLength) + System.Math.Abs((b.Y - a.Y) / edgeLength);
+    ///// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    //public static double ManhattanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1) => System.Math.Abs((b.X - a.X) / edgeLength) + System.Math.Abs((b.Y - a.Y) / edgeLength) + System.Math.Abs((b.Z - a.Z) / edgeLength);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>

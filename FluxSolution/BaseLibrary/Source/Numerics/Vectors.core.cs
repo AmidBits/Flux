@@ -1,6 +1,6 @@
 using System.Runtime.Intrinsics;
 
-namespace Flux
+namespace Flux.Numerics
 {
   //public static class ExtensionMethodsIntrinsics
   //{

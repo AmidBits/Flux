@@ -22,9 +22,9 @@ namespace Flux.Model
   public class ChessPiece
   {
     public ChessPieceType Type { get; }
-    public System.Collections.Generic.List<Vector2I> Position { get; } = new System.Collections.Generic.List<Vector2I>();
+    public System.Collections.Generic.List<Numerics.Vector2I> Position { get; } = new System.Collections.Generic.List<Numerics.Vector2I>();
 
-    public ChessPiece(ChessPieceType type, Vector2I vector)
+    public ChessPiece(ChessPieceType type, Numerics.Vector2I vector)
     {
       Type = type;
       Position.Add(vector);
@@ -43,135 +43,135 @@ namespace Flux.Model
       => index >= 0 && index <= 63;
     public static bool IsValidLabel(string column, string row)
       => System.Array.Exists(Files, f => f.Equals(column, System.StringComparison.Ordinal)) && System.Array.Exists(Ranks, f => f.Equals(row, System.StringComparison.Ordinal));
-    public static bool IsValidVector(Vector2I vector)
+    public static bool IsValidVector(Numerics.Vector2I vector)
       => vector.X >= 0 && vector.X <= 7 && vector.Y >= 0 && vector.Y <= 7;
 
     public static (string column, string row) IndexToLabel(int index)
-      => Vector2I.FromUniqueIndex(index, Files.Length).ToLabels(Files, Ranks);
-    public static Vector2I IndexToVector(int index)
-      => Vector2I.FromUniqueIndex(index, Files.Length);
+      => Numerics.Vector2I.FromUniqueIndex(index, Files.Length).ToLabels(Files, Ranks);
+    public static Numerics.Vector2I IndexToVector(int index)
+      => Numerics.Vector2I.FromUniqueIndex(index, Files.Length);
 
     public static int LabelToIndex(string column, string row)
-      => Vector2I.FromLabels(column, row, Files, Ranks).ToUniqueIndex(Files.Length);
-    public static Vector2I LabelToVector(string column, string row)
-      => Vector2I.FromLabels(column, row, Files, Ranks);
+      => Numerics.Vector2I.FromLabels(column, row, Files, Ranks).ToUniqueIndex(Files.Length);
+    public static Numerics.Vector2I LabelToVector(string column, string row)
+      => Numerics.Vector2I.FromLabels(column, row, Files, Ranks);
 
-    public static int VectorToIndex(Vector2I vector)
+    public static int VectorToIndex(Numerics.Vector2I vector)
       => vector.ToUniqueIndex(Files.Length);
-    public static (string column, string row) VectorToLabel(Vector2I vector)
+    public static (string column, string row) VectorToLabel(Numerics.Vector2I vector)
       => vector.ToLabels(Files, Ranks);
 
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfBishop(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfBishop(Numerics.Vector2I vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlankMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new Vector2I(vector.X + i, vector.Y + i);
-          yield return new Vector2I(vector.X + i, vector.Y - i);
-          yield return new Vector2I(vector.X - i, vector.Y - i);
-          yield return new Vector2I(vector.X - i, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y + i);
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfKing(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfKing(Numerics.Vector2I vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlankMoves()
       {
-        yield return new Vector2I(vector.X + 1, vector.Y + 1);
-        yield return new Vector2I(vector.X + 1, vector.Y);
-        yield return new Vector2I(vector.X + 1, vector.Y - 1);
-        yield return new Vector2I(vector.X, vector.Y - 1);
-        yield return new Vector2I(vector.X - 1, vector.Y - 1);
-        yield return new Vector2I(vector.X - 1, vector.Y);
-        yield return new Vector2I(vector.X - 1, vector.Y + 1);
-        yield return new Vector2I(vector.X, vector.Y + 1);
+        yield return new Numerics.Vector2I(vector.X + 1, vector.Y + 1);
+        yield return new Numerics.Vector2I(vector.X + 1, vector.Y);
+        yield return new Numerics.Vector2I(vector.X + 1, vector.Y - 1);
+        yield return new Numerics.Vector2I(vector.X, vector.Y - 1);
+        yield return new Numerics.Vector2I(vector.X - 1, vector.Y - 1);
+        yield return new Numerics.Vector2I(vector.X - 1, vector.Y);
+        yield return new Numerics.Vector2I(vector.X - 1, vector.Y + 1);
+        yield return new Numerics.Vector2I(vector.X, vector.Y + 1);
       }
     }
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfKnight(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfKnight(Numerics.Vector2I vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlankMoves()
       {
-        yield return new Vector2I(vector.X + 1, vector.Y + 2);
-        yield return new Vector2I(vector.X + 2, vector.Y + 1);
-        yield return new Vector2I(vector.X + 2, vector.Y - 1);
-        yield return new Vector2I(vector.X + 1, vector.Y - 2);
-        yield return new Vector2I(vector.X - 1, vector.Y - 2);
-        yield return new Vector2I(vector.X - 2, vector.Y - 1);
-        yield return new Vector2I(vector.X - 2, vector.Y + 1);
-        yield return new Vector2I(vector.X - 1, vector.Y + 2);
+        yield return new Numerics.Vector2I(vector.X + 1, vector.Y + 2);
+        yield return new Numerics.Vector2I(vector.X + 2, vector.Y + 1);
+        yield return new Numerics.Vector2I(vector.X + 2, vector.Y - 1);
+        yield return new Numerics.Vector2I(vector.X + 1, vector.Y - 2);
+        yield return new Numerics.Vector2I(vector.X - 1, vector.Y - 2);
+        yield return new Numerics.Vector2I(vector.X - 2, vector.Y - 1);
+        yield return new Numerics.Vector2I(vector.X - 2, vector.Y + 1);
+        yield return new Numerics.Vector2I(vector.X - 1, vector.Y + 2);
       }
     }
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfQueen(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfQueen(Numerics.Vector2I vector)
     {
       return BlankerMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlankerMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlankerMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new Vector2I(vector.X + i, vector.Y + i);
-          yield return new Vector2I(vector.X + i, vector.Y);
-          yield return new Vector2I(vector.X + i, vector.Y - i);
-          yield return new Vector2I(vector.X, vector.Y - i);
-          yield return new Vector2I(vector.X - i, vector.Y - i);
-          yield return new Vector2I(vector.X - i, vector.Y);
-          yield return new Vector2I(vector.X - i, vector.Y + i);
-          yield return new Vector2I(vector.X, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X, vector.Y + i);
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfPawn(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfPawn(Numerics.Vector2I vector)
     {
       return BlanketMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlanketMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlanketMoves()
       {
         // Moves going "upwards" on the board.
         {
-          yield return new Vector2I(vector.X, vector.Y + 1);
+          yield return new Numerics.Vector2I(vector.X, vector.Y + 1);
 
           if (vector.Y == 1)
           {
-            yield return new Vector2I(vector.X, vector.Y + 2); // Initial optional move (up).
+            yield return new Numerics.Vector2I(vector.X, vector.Y + 2); // Initial optional move (up).
           }
 
-          yield return new Vector2I(vector.X - 1, vector.Y + 1); // Capture move (up).
-          yield return new Vector2I(vector.X + 1, vector.Y + 1); // Capture move (up).
+          yield return new Numerics.Vector2I(vector.X - 1, vector.Y + 1); // Capture move (up).
+          yield return new Numerics.Vector2I(vector.X + 1, vector.Y + 1); // Capture move (up).
         }
 
         // Moves going "downwards" on the board.
         {
-          yield return new Vector2I(vector.X, vector.Y - 1);
+          yield return new Numerics.Vector2I(vector.X, vector.Y - 1);
 
           if (vector.Y == 6)
           {
-            yield return new Vector2I(vector.X, vector.Y - 2); // Initial optional move (down).
+            yield return new Numerics.Vector2I(vector.X, vector.Y - 2); // Initial optional move (down).
           }
 
-          yield return new Vector2I(vector.X + 1, vector.Y - 1); // Capture move (down).
-          yield return new Vector2I(vector.X - 1, vector.Y - 1); // Capture move (down).
+          yield return new Numerics.Vector2I(vector.X + 1, vector.Y - 1); // Capture move (down).
+          yield return new Numerics.Vector2I(vector.X - 1, vector.Y - 1); // Capture move (down).
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<Vector2I> GetMovesOfRook(Vector2I vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.Vector2I> GetMovesOfRook(Numerics.Vector2I vector)
     {
       return BlanketMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<Vector2I> BlanketMoves()
+      System.Collections.Generic.IEnumerable<Numerics.Vector2I> BlanketMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new Vector2I(vector.X + i, vector.Y);
-          yield return new Vector2I(vector.X, vector.Y - i);
-          yield return new Vector2I(vector.X - i, vector.Y);
-          yield return new Vector2I(vector.X, vector.Y + i);
+          yield return new Numerics.Vector2I(vector.X + i, vector.Y);
+          yield return new Numerics.Vector2I(vector.X, vector.Y - i);
+          yield return new Numerics.Vector2I(vector.X - i, vector.Y);
+          yield return new Numerics.Vector2I(vector.X, vector.Y + i);
         }
       }
     }

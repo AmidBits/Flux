@@ -4,7 +4,7 @@ namespace Flux.Collections.Generic
 {
   public interface IQuadtree
   {
-    Flux.Model.Vector2I Position { get; set; }
+    Numerics.Vector2I Position { get; set; }
   }
 
   /// <summary></summary>
@@ -12,8 +12,8 @@ namespace Flux.Collections.Generic
   /// <seealso cref="https://jimkang.com/quadtreevis/"/>
   public class Quadtree<T> where T : IQuadtree
   {
-    public Flux.Model.Vector2I BoundaryHigh { get; private set; }
-    public Flux.Model.Vector2I BoundaryLow { get; private set; }
+    public Numerics.Vector2I BoundaryHigh { get; private set; }
+    public Numerics.Vector2I BoundaryLow { get; private set; }
 
     private System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     /// <summary>A list of items in this tree.</summary>
@@ -25,7 +25,7 @@ namespace Flux.Collections.Generic
     /// <summary>A list of sub-trees.</summary>
     public System.Collections.Generic.IReadOnlyList<Quadtree<T>> Nodes => (System.Collections.Generic.IReadOnlyList<Quadtree<T>>)m_nodes;
 
-    public Quadtree(Flux.Model.Vector2I boundaryLow, Flux.Model.Vector2I boundaryHigh)
+    public Quadtree(Numerics.Vector2I boundaryLow, Numerics.Vector2I boundaryHigh)
     {
       BoundaryLow = boundaryLow;
       BoundaryHigh = boundaryHigh;
@@ -39,7 +39,7 @@ namespace Flux.Collections.Generic
       m_nodes.Clear();
     }
 
-    public bool InScope(Flux.Model.Vector2I position)
+    public bool InScope(Numerics.Vector2I position)
       => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y;
 
     public bool Insert(T item)
@@ -99,14 +99,14 @@ namespace Flux.Collections.Generic
     {
       if (m_nodes is null)
       {
-        var midPoint = new Flux.Model.Vector2I((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
+        var midPoint = new Numerics.Vector2I((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
 
         m_nodes = new System.Collections.Generic.List<Quadtree<T>>()
         {
-           new Quadtree<T>(new Flux.Model.Vector2I(midPoint.X, midPoint.Y), new Flux.Model.Vector2I(BoundaryHigh.X, BoundaryHigh.Y)),
-           new Quadtree<T>(new Flux.Model.Vector2I(BoundaryLow.X, midPoint.Y), new Flux.Model.Vector2I(midPoint.X - 1, BoundaryHigh.Y)),
-           new Quadtree<T>(new Flux.Model.Vector2I(BoundaryLow.X, BoundaryLow.Y), new Flux.Model.Vector2I(midPoint.X - 1, midPoint.Y - 1)),
-           new Quadtree<T>(new Flux.Model.Vector2I(midPoint.X, BoundaryLow.Y), new Flux.Model.Vector2I(BoundaryHigh.X, midPoint.Y - 1))
+           new Quadtree<T>(new  Numerics.Vector2I(midPoint.X, midPoint.Y), new  Numerics.Vector2I(BoundaryHigh.X, BoundaryHigh.Y)),
+           new Quadtree<T>(new  Numerics.Vector2I(BoundaryLow.X, midPoint.Y), new  Numerics.Vector2I(midPoint.X - 1, BoundaryHigh.Y)),
+           new Quadtree<T>(new  Numerics.Vector2I(BoundaryLow.X, BoundaryLow.Y), new  Numerics.Vector2I(midPoint.X - 1, midPoint.Y - 1)),
+           new Quadtree<T>(new  Numerics.Vector2I(midPoint.X, BoundaryLow.Y), new Numerics.Vector2I(BoundaryHigh.X, midPoint.Y - 1))
         };
       }
 

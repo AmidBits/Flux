@@ -254,26 +254,16 @@ namespace Flux.Numerics
       => q1.X != q2.X || q1.Y != q2.Y || q1.Z != q2.Z || q1.W != q2.W;
 
     // System.Equatable
-    /// <summary>Returns a boolean indicating whether the given Quaternion is equal to this Quaternion instance.</summary>
     public bool Equals(Quaternion q)
       => X == q.X && Y == q.Y && Z == q.Z && W == q.W;
     // System.Formattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-    {
-      provider ??= System.Globalization.CultureInfo.CurrentCulture;
-
-      return string.Format(provider, @"<X:{0} Y:{1} Z:{2} W:{3}>", X.ToString(format, provider), Y.ToString(format, provider), Z.ToString(format, provider), W.ToString(format, provider));
-    }
-    public string ToString(string? format)
-      => ToString(format, System.Globalization.CultureInfo.CurrentCulture);
-
-    /// <summary>Returns a boolean indicating whether the given Object is equal to this Quaternion instance.</summary>
+    public string ToString(string? format, System.IFormatProvider? provider) 
+      => $"<{X.ToString(format, provider)}, {Y.ToString(format, provider)}, {Z.ToString(format, provider)}, {W.ToString(format, provider)}>";
+    // Overrides
     public override bool Equals(object? obj)
-      => (obj is Quaternion) ? Equals((Quaternion)obj) : false;
-    /// <summary>Returns the hash code for this instance.</summary>
+      => obj is Quaternion o && Equals(o);
     public override int GetHashCode()
-      => X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
-    /// <summary>Returns a String representing this Quaternion instance.</summary>
+      => Flux.HashCode.CombineCore(X, Y, Z, W);
     public override string ToString()
       => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);
   }

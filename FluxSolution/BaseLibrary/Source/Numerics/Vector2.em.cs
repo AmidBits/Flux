@@ -2,17 +2,32 @@ namespace Flux
 {
   public static partial class XtendNumerics
   {
+    /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
+    public static System.Numerics.Vector2 AlongPathTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float scalar = 0.5f)
+      => (source + target) * scalar;
+
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
-    public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
+    public static double AngleTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
       => System.Math.Acos(Flux.Maths.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
-    /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
-    public static System.Numerics.Vector2 IntermediaryPoint(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float scalar = 0.5f)
-      => (source + target) * scalar;
+    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1)
+      => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
+
+    public static double EuclideanDistanceSquaredTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b)
+      => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
+    public static double EuclideanDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b)
+      => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanDistanceTo(this in System.Numerics.Vector2 a, in System.Numerics.Vector2 b, float edgeLength = 1)
+      => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength;
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
@@ -28,7 +43,7 @@ namespace Flux
     public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
-    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
 

@@ -2,6 +2,10 @@ namespace Flux
 {
   public static partial class XtendNumerics
   {
+    /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
+    public static System.Numerics.Vector3 AlongPathTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float scalar = 0.5f)
+      => (source + target) * scalar;
+
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
       => (before - source).AngleTo(after - source);
@@ -21,9 +25,20 @@ namespace Flux
     public static double AngleToAxisZ(this System.Numerics.Vector3 source)
       => System.Math.Atan2(System.Math.Sqrt(source.X * source.X + source.Y * source.Y), source.Z);
 
-    /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
-    public static System.Numerics.Vector3 IntermediaryPointTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float scalar = 0.5f)
-      => (source + target) * scalar;
+    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1)
+      => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
+
+    public static double EuclideanDistanceSquaredTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
+      => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);
+    public static double EuclideanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
+      => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1)
+      => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength + System.Math.Abs(b.Z - a.Z) / edgeLength;
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>

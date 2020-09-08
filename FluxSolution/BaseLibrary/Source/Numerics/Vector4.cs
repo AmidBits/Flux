@@ -74,34 +74,34 @@ namespace Flux.Numerics
       => X * X + Y * Y + Z * Z + W * W;
 
     /// <summary>Adds two vectors together.</summary>
-    public static Vector4 operator +(Vector4 v1, Vector4 v2)
+    public static Vector4 operator +(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
     /// <summary>Subtracts the second vector from the first.</summary>
-    public static Vector4 operator -(Vector4 v1, Vector4 v2)
+    public static Vector4 operator -(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
     /// <summary>Multiplies two vectors together.</summary>
-    public static Vector4 operator *(Vector4 v1, Vector4 v2)
+    public static Vector4 operator *(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
     /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(Vector4 v, double scalar)
+    public static Vector4 operator *(in Vector4 v, double scalar)
       => new Vector4(v.X * scalar, v.Y * scalar, v.Z * scalar, v.W * scalar);
     /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(double scalar, Vector4 v)
+    public static Vector4 operator *(double scalar, in Vector4 v)
       => new Vector4(scalar * v.X, scalar * v.Y, scalar * v.Z, scalar * v.W);
     /// <summary>Divides the first vector by the second.</summary>
-    public static Vector4 operator /(Vector4 v1, Vector4 v2)
+    public static Vector4 operator /(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
     /// <summary>Divides the vector by the given scalar.</summary>
-    public static Vector4 operator /(Vector4 v, double divisor)
+    public static Vector4 operator /(in Vector4 v, double divisor)
       => new Vector4(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
     /// <summary>Negates a given vector.</summary>
-    public static Vector4 operator -(Vector4 v)
+    public static Vector4 operator -(in Vector4 v)
       => new Vector4(-v.X, -v.Y, -v.Z, -v.W);
     /// <summary>Returns a boolean indicating whether the two given vectors are equal.</summary>
-    public static bool operator ==(Vector4 v1, Vector4 v2)
+    public static bool operator ==(in Vector4 v1, in Vector4 v2)
       => v1.Equals(v2);
     /// <summary>Returns a boolean indicating whether the two given vectors are not equal.</summary>
-    public static bool operator !=(Vector4 v1, Vector4 v2)
+    public static bool operator !=(in Vector4 v1, in Vector4 v2)
       => !v1.Equals(v2);
 
     /// <summary>Returns a vector whose elements are the absolute values of each of the source vector's elements.</summary>
@@ -130,7 +130,7 @@ namespace Flux.Numerics
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Vector4 a, in Vector4 b, double edgeLength = 1)
-      => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
+      => Maths.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength, (b.Z - a.Z) / edgeLength);
     /// <summary>Restricts a vector between a min and max value.</summary>
     public static Vector4 Clamp(in Vector4 v, in Vector4 min, in Vector4 max)
     {
@@ -192,58 +192,58 @@ namespace Flux.Numerics
     public static Vector4 Divide(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
     /// <summary>Divides the vector by the given scalar.</summary>
-    public static Vector4 Divide(Vector4 v, double divisor)
+    public static Vector4 Divide(in Vector4 v, double divisor)
       => new Vector4(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
     /// <summary>Returns the dot product of two vectors.</summary>
-    public static double Dot(Vector4 v1, Vector4 v2)
+    public static double Dot(in Vector4 v1, in Vector4 v2)
       => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
     /// <summary>Linearly interpolates between two vectors based on the given weighting.</summary>
     /// <param name="amount">Value between 0 and 1 indicating the weight of the second source vector.</param>
-    public static Vector4 Lerp(Vector4 v1, Vector4 v2, double amount)
+    public static Vector4 Lerp(in Vector4 v1, in Vector4 v2, double amount)
       => new Vector4(v1.X + (v2.X - v1.X) * amount, v1.Y + (v2.Y - v1.Y) * amount, v1.Z + (v2.Z - v1.Z) * amount, v1.W + (v2.W - v1.W) * amount);
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistance(in Vector4 v1, in Vector4 v2, double edgeLength = 1)
-      => System.Math.Abs((v2.X - v1.X) / edgeLength) + System.Math.Abs((v2.Y - v1.Y) / edgeLength) + System.Math.Abs((v2.Z - v1.Z) / edgeLength);
+      => System.Math.Abs(v2.X - v1.X) / edgeLength + System.Math.Abs(v2.Y - v1.Y) / edgeLength + System.Math.Abs(v2.Z - v1.Z) / edgeLength;
     /// <summary>Returns a vector whose elements are the maximum of each of the pairs of elements in the two source vectors.</summary>
-    public static Vector4 Max(Vector4 v1, Vector4 v2)
+    public static Vector4 Max(in Vector4 v1, in Vector4 v2)
       => new Vector4((v1.X > v2.X) ? v1.X : v2.X, (v1.Y > v2.Y) ? v1.Y : v2.Y, (v1.Z > v2.Z) ? v1.Z : v2.Z, (v1.W > v2.W) ? v1.W : v2.W);
     /// <summary>Returns a vector whose elements are the minimum of each of the pairs of elements in the two source vectors.</summary>
-    public static Vector4 Min(Vector4 v1, Vector4 v2)
+    public static Vector4 Min(in Vector4 v1, in Vector4 v2)
       => new Vector4((v1.X < v2.X) ? v1.X : v2.X, (v1.Y < v2.Y) ? v1.Y : v2.Y, (v1.Z < v2.Z) ? v1.Z : v2.Z, (v1.W < v2.W) ? v1.W : v2.W);
     /// <summary>Multiplies two vectors together.</summary>
-    public static Vector4 Multiply(Vector4 v1, Vector4 v2)
+    public static Vector4 Multiply(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
     /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 Multiply(Vector4 v1, double v2)
+    public static Vector4 Multiply(in Vector4 v1, double v2)
       => v1 * new Vector4(v2, v2, v2, v2);
     /// <summary>Multiplies a vector by the given scalar.</summary>
     public static Vector4 Multiply(double v1, Vector4 v2)
       => new Vector4(v1, v1, v1, v1) * v2;
     /// <summary>Returns a vector with the same direction as the given vector, but with a length of 1.</summary>
-    public static Vector4 Normalize(Vector4 vector)
+    public static Vector4 Normalize(in Vector4 vector)
       => Multiply(vector, 1 / vector.LengthSquared());
     /// <summary>Negates a given vector.</summary>
-    public static Vector4 Negate(Vector4 v)
+    public static Vector4 Negate(in Vector4 v)
       => new Vector4(-v.X, -v.Y, -v.Z, -v.W);
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static double ScalarTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c) => Dot(a, Cross(b, c));
     /// <summary>Returns a vector whose elements are the square root of each of the source vector's elements.</summary>
-    public static Vector4 Sqrt(Vector4 v)
+    public static Vector4 Sqrt(in Vector4 v)
       => new Vector4(System.Math.Sqrt(v.X), System.Math.Sqrt(v.Y), System.Math.Sqrt(v.Z), System.Math.Sqrt(v.W));
     /// <summary>Subtracts the second vector from the first.</summary>
-    public static Vector4 Subtract(Vector4 v1, Vector4 v2)
+    public static Vector4 Subtract(in Vector4 v1, in Vector4 v2)
       => new Vector4(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
     /// <summary>Transforms a vector by the given matrix.</summary>
-    public static Vector4 Transform(Vector4 v, Matrix4x4 m) => new Vector4(
+    public static Vector4 Transform(in Vector4 v, in Matrix4x4 m) => new Vector4(
       v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + v.W * m.M41,
       v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + v.W * m.M42,
       v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + v.W * m.M43,
       v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + v.W * m.M44
     );
     /// <summary>Transforms a vector by the given Quaternion rotation value.</summary>
-    public static Vector4 Transform(Vector4 v, Quaternion q)
+    public static Vector4 Transform(in Vector4 v, in Quaternion q)
     {
       var x2 = q.X + q.X;
       var y2 = q.Y + q.Y;
@@ -288,7 +288,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Vector4 ? Equals((Vector4)obj) : false;
     /// <summary>Returns the hash code for this instance.</summary>
-    public override int GetHashCode() 
+    public override int GetHashCode()
       => Flux.HashCode.Combine(System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W));
     /// <summary>Returns a String representing this Quaternion instance.</summary>
     public override string ToString()

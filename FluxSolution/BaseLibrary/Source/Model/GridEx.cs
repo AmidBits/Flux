@@ -11,7 +11,7 @@ namespace Flux.Model
   {
     public TValue[] Items { get; private set; }
 
-    public Vector3I Length { get; private set; }
+    public Numerics.Vector3I Length { get; private set; }
 
     //public int LengthX { get; private set; }
     //public int LengthY { get; private set; }
@@ -36,7 +36,7 @@ namespace Flux.Model
 
     public GridFixed(int x, int y, int z = 1)
     {
-      Length = new Vector3I(x, y, z);
+      Length = new Numerics.Vector3I(x, y, z);
       //LengthX = x;
       //LengthY = y;
       //LengthXY = x * y;

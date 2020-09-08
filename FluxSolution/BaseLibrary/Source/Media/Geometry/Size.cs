@@ -7,8 +7,8 @@ namespace Flux.Media.Geometry
     public float Height { get; set; }
     public float Depth { get; set; }
 
-    public Vector3D Center()
-      => new Vector3D(Width / 2, Height / 2, Depth / 2, 0);
+    public Numerics.Vector3D Center()
+      => new Numerics.Vector3D(Width / 2, Height / 2, Depth / 2, 0);
 
     // Operators
     public static bool operator ==(Size a, Size b)

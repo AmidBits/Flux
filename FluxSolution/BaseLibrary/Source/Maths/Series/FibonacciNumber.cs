@@ -21,7 +21,7 @@ namespace Flux
       }
     }
 
-    /// <summary>Determines whether the number if a Fibonacci number.</summary>
+    /// <summary>Determines whether the number is a Fibonacci number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     public static bool IsFibonacciNumber(System.Numerics.BigInteger number)
     {
@@ -31,7 +31,7 @@ namespace Flux
       var fourn = fiver - 4;
       var fourns = fourn.Sqrt();
 
-      return (fourps * fourps == fourp || fourns * fourns == fourn);
+      return fourps * fourps == fourp || fourns * fourns == fourn;
     }
   }
 }

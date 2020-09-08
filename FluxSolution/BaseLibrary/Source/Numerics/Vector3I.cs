@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Flux.Model
+namespace Flux.Numerics
 {
   public static partial class ExtensionMethods
   {
@@ -219,7 +217,7 @@ namespace Flux.Model
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
     public static Vector3I BitwiseOr(in Vector3I v, int value)
       => new Vector3I(v.X | value, v.Y | value, v.Z | value);
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Vector3I v1, in Vector3I v2)
       => System.Math.Max(System.Math.Max(System.Math.Abs(v2.X - v1.X), System.Math.Abs(v2.Y - v1.Y)), System.Math.Abs(v2.Z - v1.Z));
@@ -243,10 +241,14 @@ namespace Flux.Model
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
     public static int DotProduct(in Vector3I v1, in Vector3I v2)
       => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
-    /// <summary>Compute the euclidean length (or magnitude) of the vector.</summary>
+    /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(in Vector3I v)
-      => System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+    public static double EuclideanDistance(in Vector3I v1, in Vector3I v2)
+      => GetLength(v1 - v2);
+    /// <summary>Compute the euclidean distance squared of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanDistanceSquare(in Vector3I v1, in Vector3I v2)
+      => GetLengthSquared(v1 - v2);
     /// <summary>Create a new vector from the index and the length of the X and the length of the Y axes.</summary>
     public static Vector3I FromUniqueIndex(int index, int lengthX, int lengthY)
       => index % (lengthX * lengthY) is var irxy ? new Vector3I(irxy % lengthX, irxy / lengthX, index / (lengthX * lengthY)) : throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -258,10 +260,10 @@ namespace Flux.Model
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLengthSquared(in Vector3I v)
       => v.X * v.X + v.Y * v.Y + v.Z * v.Z;
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int RectilinearDistance(in Vector3I a, in Vector3I b)
-      => System.Math.Abs(b.X - a.X) + System.Math.Abs(b.Y - a.Y) + System.Math.Abs(b.Z - a.Z);
+    public static int ManhattanDistance(in Vector3I v1, in Vector3I v2)
+      => System.Math.Abs(v2.X - v1.X) + System.Math.Abs(v2.Y - v1.Y) + System.Math.Abs(v2.Z - v1.Z);
     /// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
     public static Vector3I Multiply(in Vector3I v1, in Vector3I v2)
       => new Vector3I(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
