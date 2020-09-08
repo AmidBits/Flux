@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace IEnumerable
+namespace Collections.Generic
 {
   [TestClass]
-  public class ExtensionMethodsCollectionsGenericMetric
+  public class IEnumerable_SequenceMetrics
   {
     string m_text1a = "CA";
     string m_text1b = "ABC";

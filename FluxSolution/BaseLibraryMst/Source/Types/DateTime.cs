@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace DateTime
+namespace Types
 {
   [TestClass]
   public class DateTime

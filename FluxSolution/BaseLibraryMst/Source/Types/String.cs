@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace String
+namespace Types
 {
   [TestClass]
-  public class Em
+  public class String
   {
     readonly string s1 = "something <oh well> else";
     readonly string s2 = "something <oh <well> else";

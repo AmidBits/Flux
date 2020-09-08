@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace Array
+namespace Types
 {
   [TestClass]
-  public class Extensions
+  public class Array
   {
     readonly int[,] original = new int[3, 3] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
@@ -19,7 +19,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmFill0()
+    public void EmFillDim0()
     {
       var clone = (int[,])original.Clone();
 
@@ -33,7 +33,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmFill1()
+    public void EmFillDim1()
     {
       var clone = (int[,])original.Clone();
 
@@ -47,7 +47,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmInsert0()
+    public void EmInsertDim0()
     {
       var copy0 = (int[,])original.Insert(0, 1, -1, -2, -3);
 
@@ -57,7 +57,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmInsert1()
+    public void EmInsertDim1()
     {
       var copy1 = (int[,])original.Insert(1, 1, -1, -2, -3);
 
@@ -67,7 +67,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmRemove0()
+    public void EmRemoveDim0()
     {
       var copy0 = original.Remove(0, 1);
 
@@ -77,7 +77,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmRemove1()
+    public void EmRemoveDim1()
     {
       var copy1 = original.Remove(1, 1);
 
@@ -87,7 +87,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmReverse0()
+    public void EmReverseDim0()
     {
       var copy0 = original.Reverse(0);
 
@@ -97,7 +97,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmReverse1()
+    public void EmReverseDim1()
     {
       var copy1 = original.Reverse(1);
 
@@ -107,7 +107,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmReverseInPlace0()
+    public void EmReverseInPlaceDim0()
     {
       var copy0 = ((int[,])original.Clone()).ReverseInPlace(0);
 
@@ -117,7 +117,7 @@ namespace Array
     }
 
     [TestMethod]
-    public void EmReverseInPlace1()
+    public void EmReverseInPlaceDim1()
     {
       var copy1 = ((int[,])original.Clone()).ReverseInPlace(1);
 

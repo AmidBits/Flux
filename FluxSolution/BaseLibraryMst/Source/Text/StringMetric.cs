@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Text
 {
   [TestClass]
-  public partial class SequenceMetrics2
+  public partial class SequenceMetrics
   {
     readonly string source = "Senor Hugo";
     readonly string target = "señor hugo";
