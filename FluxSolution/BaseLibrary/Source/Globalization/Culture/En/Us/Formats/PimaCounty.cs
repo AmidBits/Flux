@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 
 namespace Flux.Globalization.EnUs.PimaCounty
 {
@@ -37,6 +37,8 @@ namespace Flux.Globalization.EnUs.PimaCounty
       { @"TR", new string[] { @"Trail", @"Trl" } },
       { @"WY", new string[] { @"Way" } },
     };
+
+    //public static readonly string ReOrTypes = string.Join('|', Types.SelectMany(kvp => new stringkvp.Value.AsEnumerable().Prepend(kvp.Key)));
 
     public string Number { get; private set; }
     public string Direction { get; private set; }
