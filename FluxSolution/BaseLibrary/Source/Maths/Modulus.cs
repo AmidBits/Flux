@@ -4,11 +4,14 @@ namespace Flux
   public static partial class Maths
   {
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static System.Numerics.BigInteger Mod(System.Numerics.BigInteger dividend, System.Numerics.BigInteger divisor) => ((dividend % divisor) + divisor) % divisor;
+    public static System.Numerics.BigInteger Mod(System.Numerics.BigInteger dividend, System.Numerics.BigInteger divisor)
+      => ((dividend % divisor) + divisor) % divisor;
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static long Mod(long dividend, long divisor) => ((dividend % divisor) + divisor) % divisor;
+    public static long Mod(long dividend, long divisor)
+      => ((dividend % divisor) + divisor) % divisor;
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static long Mod(int dividend, int divisor) => ((dividend % divisor) + divisor) % divisor;
+    public static long Mod(int dividend, int divisor)
+      => ((dividend % divisor) + divisor) % divisor;
 
     /// <summary>Results in a inverse modulo.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Modular_multiplicative_inverse"/>
@@ -118,10 +121,13 @@ namespace Flux
     }
 
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static System.Numerics.BigInteger ModRem(System.Numerics.BigInteger dividend, System.Numerics.BigInteger divisor, out System.Numerics.BigInteger remainder) => ((remainder = dividend % divisor) + divisor) % divisor;
+    public static System.Numerics.BigInteger ModRem(System.Numerics.BigInteger dividend, System.Numerics.BigInteger divisor, out System.Numerics.BigInteger remainder)
+      => ((remainder = dividend % divisor) + divisor) % divisor;
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static long ModRem(long dividend, long divisor, out long remainder) => ((remainder = dividend % divisor) + divisor) % divisor;
+    public static long ModRem(long dividend, long divisor, out long remainder)
+      => ((remainder = dividend % divisor) + divisor) % divisor;
     /// <summary>Canonical modulus. The result has the sign of the divisor.</summary>
-    public static int ModRem(int dividend, int divisor, out int remainder) => ((remainder = dividend % divisor) + divisor) % divisor;
+    public static int ModRem(int dividend, int divisor, out int remainder)
+      => ((remainder = dividend % divisor) + divisor) % divisor;
   }
 }

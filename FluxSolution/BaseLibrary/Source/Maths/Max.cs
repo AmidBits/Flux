@@ -17,40 +17,52 @@ namespace Flux
       where T : System.IComparable<T>
       => a.CompareTo(b) >= 0 ? (a.CompareTo(c) >= 0 ? (a.CompareTo(d) >= 0 ? a : d) : (c.CompareTo(d) >= 0 ? c : d)) : (b.CompareTo(c) >= 0 ? (b.CompareTo(d) >= 0 ? b : d) : (c.CompareTo(d) >= 0 ? c : d));
 
-    #region Max(a, b), Max(a, b, c) & Max(a, b, c, d) (All Intrinsic Types)
     /// <summary>Optimized routines for 3 values.</summary>
-    public static System.Numerics.BigInteger Max(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+    public static System.Numerics.BigInteger Max(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
-    public static double Max(double a, double b, double c) => System.Math.Max(System.Math.Max(a, b), c);
+    public static double Max(double a, double b, double c)
+      => System.Math.Max(System.Math.Max(a, b), c);
     /// <summary>Optimized routines for 3 values.</summary>
-    public static float Max(float a, float b, float c) => System.Math.Max(System.Math.Max(a, b), c);
+    public static float Max(float a, float b, float c)
+      => System.Math.Max(System.Math.Max(a, b), c);
     /// <summary>Optimized routines for 3 values.</summary>
-    public static int Max(int a, int b, int c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+    public static int Max(int a, int b, int c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
-    public static long Max(long a, long b, long c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+    public static long Max(long a, long b, long c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
     [System.CLSCompliant(false)]
-    public static uint Max(uint a, uint b, uint c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+    public static uint Max(uint a, uint b, uint c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
     /// <summary>Optimized routines for 3 values.</summary>
     [System.CLSCompliant(false)]
-    public static ulong Max(ulong a, ulong b, ulong c) => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+    public static ulong Max(ulong a, ulong b, ulong c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
 
     /// <summary>Optimized routines for 4 values.</summary>
-    public static System.Numerics.BigInteger Max(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c, System.Numerics.BigInteger d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
+    public static System.Numerics.BigInteger Max(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c, System.Numerics.BigInteger d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
-    public static double Max(double a, double b, double c, double d) => System.Math.Max(System.Math.Max(a, b), System.Math.Max(c, d));
+    public static double Max(double a, double b, double c, double d)
+      => System.Math.Max(System.Math.Max(a, b), System.Math.Max(c, d));
     /// <summary>Optimized routines for 4 values.</summary>
-    public static float Max(float a, float b, float c, float d) => System.Math.Max(System.Math.Max(a, b), System.Math.Max(c, d));
+    public static float Max(float a, float b, float c, float d)
+      => System.Math.Max(System.Math.Max(a, b), System.Math.Max(c, d));
     /// <summary>Optimized routines for 4 values.</summary>
-    public static int Max(int a, int b, int c, int d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
+    public static int Max(int a, int b, int c, int d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
-    public static long Max(long a, long b, long c, long d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
+    public static long Max(long a, long b, long c, long d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
     [System.CLSCompliant(false)]
-    public static uint Max(uint a, uint b, uint c, uint d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
+    public static uint Max(uint a, uint b, uint c, uint d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
     /// <summary>Optimized routines for 4 values.</summary>
     [System.CLSCompliant(false)]
-    public static ulong Max(ulong a, ulong b, ulong c, ulong d) => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
-    #endregion Max(a, b), Max(a, b, c) & Max(a, b, c, d) (All Intrinsic Types)
+    public static ulong Max(ulong a, ulong b, ulong c, ulong d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
   }
 }
