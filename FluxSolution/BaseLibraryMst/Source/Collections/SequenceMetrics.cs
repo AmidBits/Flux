@@ -6,7 +6,7 @@ using Flux;
 namespace Collections.Generic
 {
   [TestClass]
-  public class IEnumerable_SequenceMetrics
+  public class SequenceMetrics
   {
     string m_text1a = "CA";
     string m_text1b = "ABC";

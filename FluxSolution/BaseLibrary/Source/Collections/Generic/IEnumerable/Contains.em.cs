@@ -18,28 +18,34 @@ namespace Flux
     public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, params T[] subset)
       => subset.Any(source.Contains);
 
-    public const int FewMaximum = 9, FewMinimum = 3;
+    public const int FewMaximum = 8, FewMinimum = 3;
 
-    /// <summary>Returns whether the source contains a few (3-9) of the items in the subset, using the specified comparer.</summary>
+    /// <summary>Returns whether the source contains a few (3-8) of the items in the subset, using the specified comparer. NOTE! Elements are counted as many times as they exists in the source.</summary>
     public static bool ContainsFew<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> subset, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (subset is null) throw new System.ArgumentNullException(nameof(subset));
 
-      switch (source)
+      using var e = source.GetEnumerator();
+
+      for (int counter = 0, fewCutoff = FewMaximum + FewMinimum; counter < fewCutoff && e.MoveNext();)
       {
-        case null: throw new System.ArgumentNullException(nameof(source));
-        case System.Collections.Generic.ICollection<T> ict: return ict.Count >= FewMinimum && ict.Count <= FewMaximum;
-        case System.Collections.ICollection ic: return ic.Count >= FewMinimum && ic.Count <= FewMaximum;
-        default:
-          var e = source.GetEnumerator();
-          int counter = 0, fewCutoff = FewMaximum + FewMinimum;
-          while (counter < fewCutoff && e.MoveNext() && subset.Contains(e.Current, comparer))
-            counter++;
-          return counter >= FewMinimum && counter <= FewMaximum;
+        if (subset.Contains(e.Current, comparer))
+        {
+          counter++;
+
+          if (counter >= FewMinimum && counter <= FewMaximum)
+            return true;
+        }
       }
+
+      return false;
     }
+    /// <summary>Returns whether the source contains a few (3-8) of the items in the subset, using the specified comparer. NOTE! Elements are counted as many times as they exists in the source.</summary>
+    public static bool ContainsFew<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> subset)
+      => ContainsFew(source, subset, System.Collections.Generic.EqualityComparer<T>.Default);
     /// <summary>Returns whether the source contains a few (3-9) of the items in the subset.</summary>
     public static bool ContainsFew<T>(this System.Collections.Generic.IEnumerable<T> source, params T[] subset)
-      => ContainsFew(source, subset);
+      => ContainsFew(source, subset, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

@@ -11,10 +11,10 @@ namespace Flux
     /// <summary>Computes the percentile of the specified percentile rank within the source distribution.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile"/>
     public static double Percentile(this System.Collections.Generic.IEnumerable<double> source, double percentileRank)
-      => source.OrderBy(k => k).Percentile(percentileRank);
+      => Percentile(source.OrderBy(k => k), percentileRank);
     /// <summary>Computes the percentile of the percentile rank within the specified source distribution.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile"/>
     public static double Percentile(this double source, params double[] distribution)
-      => distribution.Percentile(source);
+      => Percentile(distribution, source);
   }
 }

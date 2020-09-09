@@ -11,7 +11,7 @@ namespace Flux
 
       foreach (var element in source)
       {
-        var (chosen, result) = ifAndResultSelector(element, index);
+        var (chosen, result) = ifAndResultSelector(element, index++);
 
         if (chosen) yield return result;
       }

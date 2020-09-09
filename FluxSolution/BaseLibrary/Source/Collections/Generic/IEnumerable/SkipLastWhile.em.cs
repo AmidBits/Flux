@@ -20,10 +20,7 @@ namespace Flux
     }
 #endif
 
-    /// <summary>Returns all elements in a sequence except those at the end that satisfies a specified condition.</summary>
-    public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)
-      => source.SkipLastWhile((t, i) => predicate(t));
-    /// <summary>Returns all elements in a sequence except those at the end that satisfies a specified condition. The element's index is used in the logic of the predicate function.</summary>
+    /// <summary>Creates a new sequence by skipping the last elements that satisfies the predicate. This version also passes the source index into the predicate.</summary>
     public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -50,5 +47,8 @@ namespace Flux
         }
       }
     }
+    /// <summary>Creates a new sequence by skipping the last elements that satisfies the predicate.</summary>
+    public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)
+      => source.SkipLastWhile((t, i) => predicate(t));
   }
 }

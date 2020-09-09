@@ -9,7 +9,6 @@ namespace Flux
       if (x is null) throw new System.ArgumentNullException(nameof(x));
       if (y is null) throw new System.ArgumentNullException(nameof(y));
 
-
       var sumX = 0.0;
       var sumX2 = 0.0;
       var sumY = 0.0;
