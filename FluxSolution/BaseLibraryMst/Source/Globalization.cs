@@ -35,7 +35,7 @@ namespace Globalization
     [TestMethod]
     public void PimaCounty_StreetAddress()
     {
-      var parsed = Flux.Globalization.EnUs.PimaCounty.StreetAddress.Parse("10250 N Krauswood LN");
+      var parsed = Flux.Globalization.EnUs.PimaCounty.StreetAddress.Parse("10250 North Krauswood LN");
 
       Assert.AreEqual(@"F91234563-001AB", parsed.ToString());
     }

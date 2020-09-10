@@ -5,9 +5,15 @@ namespace Flux.Globalization.EnUs.PimaCounty
   public struct StreetAddress
     : System.IEquatable<StreetAddress>
   {
+    private const string ReNumber = @"(?<Number>\d+)";
+    private const string ReDirection = @"(?<Direction>N|E|S|W)";
+    private const string ReName = @"(?<Name>.+)";
+    = @"(?<Number>\d+)?(?:\s*(?<Direction>N|E|S|W)[^\s]+)?(?:\s*(?<Name>.+))?(?:(?:\s+(?<Type>AV|BL|CI|CT|DR|HY|LN|LP|PL|PW|RD|SQ|ST|SV|TE|TR|WY)\.?)(?:\s+(?<Unit>.*))?)?";
+
+
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>
-    public const string Regex = @"(?<Number>\d+)?(?:\s*(?<Direction>N|E|S|W)\.?)?(?:\s*(?<Intersection>CL|EPI|PI|SPI)\s+)?(?:\s*(?<Name>.*?))?(?:(?:\s+(?<Type>AV|BL|CI|CT|DR|HY|LN|LP|PL|PW|RD|SQ|ST|SV|TE|TR|WY)\.?)(?:\s+(?<Unit>.*))?)?";
+    public const string Regex = @"(?<Number>\d+)?(?:\s*(?<Direction>N|E|S|W)[^\s]+)?(?:\s*(?<Name>.+))?(?:(?:\s+(?<Type>AV|BL|CI|CT|DR|HY|LN|LP|PL|PW|RD|SQ|ST|SV|TE|TR|WY)\.?)(?:\s+(?<Unit>.*))?)?";
 
     public static readonly System.Collections.Generic.Dictionary<string, string> Directions = new System.Collections.Generic.Dictionary<string, string>()
     {
