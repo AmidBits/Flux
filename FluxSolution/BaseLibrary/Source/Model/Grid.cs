@@ -1,3 +1,4 @@
+using System.Data;
 using System.Linq;
 
 namespace Flux.Model
@@ -44,102 +45,102 @@ namespace Flux.Model
   //  }
   //}
 
-  public interface INode<TValue, TNexus>
-  {
-    bool IsEmpty { get; }
-    TValue Value { get; }
-  }
+  //public interface INode<TValue, TNexus>
+  //{
+  //  bool IsEmpty { get; }
+  //  TValue Value { get; }
+  //}
 
-  public class Node<TValue, TNexus>
-    : INode<TValue, TNexus>
-    where TNexus : notnull
-  {
-    public static INode<TValue, TNexus> Empty = new EmptyNode();
+  //public class Node<TValue, TNexus>
+  //  : INode<TValue, TNexus>
+  //  where TNexus : notnull
+  //{
+  //  public static INode<TValue, TNexus> Empty = new EmptyNode();
 
-    public bool IsEmpty => false;
-    public TValue Value { get; set; }
+  //  public bool IsEmpty => false;
+  //  public TValue Value { get; set; }
 
-    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Edges { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Edges { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
 
-    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Gates { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Gates { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
 
-    public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithoutPaths() => Gates.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-    public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithPaths() => Gates.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+  //  public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithoutPaths() => Gates.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+  //  public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithPaths() => Gates.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
 
-    public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Paths { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
+  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Paths { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
 
 
-    public Node(TValue value)
-    {
-      Value = value;
-    }
+  //  public Node(TValue value)
+  //  {
+  //    Value = value;
+  //  }
 
-    public void CreatePath(Node<TValue, TNexus> node, bool biDirectional)
-    {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
+  //  public void CreatePath(Node<TValue, TNexus> node, bool biDirectional)
+  //  {
+  //    if (node is null) throw new System.ArgumentNullException(nameof(node));
 
-      try
-      {
-        var key = Gates.Where(kvp => kvp.Value.Equals(node)).First().Key;
+  //    try
+  //    {
+  //      var key = Gates.Where(kvp => kvp.Value.Equals(node)).First().Key;
 
-        Paths[key] = node;
+  //      Paths[key] = node;
 
-        if (biDirectional) node.CreatePath(this, false);
-      }
-      catch { }
-    }
-    public void DestroyPath(Node<TValue, TNexus> node, bool biDirectional)
-    {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
+  //      if (biDirectional) node.CreatePath(this, false);
+  //    }
+  //    catch { }
+  //  }
+  //  public void DestroyPath(Node<TValue, TNexus> node, bool biDirectional)
+  //  {
+  //    if (node is null) throw new System.ArgumentNullException(nameof(node));
 
-      try
-      {
-        var key = Gates.Where(e => e.Value.Equals(node)).First().Key;
+  //    try
+  //    {
+  //      var key = Gates.Where(e => e.Value.Equals(node)).First().Key;
 
-        Paths.Remove(key);
+  //      Paths.Remove(key);
 
-        if (biDirectional) node.DestroyPath(this, false);
-      }
-      catch { }
-    }
-    public void ResetPaths(bool asCreated)
-    {
-      Paths.Clear();
+  //      if (biDirectional) node.DestroyPath(this, false);
+  //    }
+  //    catch { }
+  //  }
+  //  public void ResetPaths(bool asCreated)
+  //  {
+  //    Paths.Clear();
 
-      if (asCreated)
-        foreach (var gate in Gates)
-          Paths[gate.Key] = gate.Value;
-    }
+  //    if (asCreated)
+  //      foreach (var gate in Gates)
+  //        Paths[gate.Key] = gate.Value;
+  //  }
 
-    private class EmptyNode
-      : INode<TValue, TNexus>
-    {
-      public bool IsEmpty => true;
-      public TValue Value => throw new System.ArgumentException(nameof(EmptyNode));
-    }
-  }
+  //  private class EmptyNode
+  //    : INode<TValue, TNexus>
+  //  {
+  //    public bool IsEmpty => true;
+  //    public TValue Value => throw new System.ArgumentException(nameof(EmptyNode));
+  //  }
+  //}
 
-  public class Travel
-  {
-    public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
+  //public class Travel
+  //{
+  //  public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
 
-    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+  //  public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
+  //  public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
 
-    public System.Collections.Generic.Dictionary<int, Cell> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
-  }
+  //  public System.Collections.Generic.Dictionary<int, Cell> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
+  //}
 
   public class Cell
   {
-    public int Column { get; set; }
-    public int Row { get; set; }
+    //public int Column { get; set; }
+    //public int Row { get; set; }
 
     public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
 
     public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
     public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
 
-    public System.Collections.Generic.Dictionary<int, Cell> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
+    public System.Collections.Generic.Dictionary<int, Cell?> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell?>();
 
     public Cell ConnectPath(Cell cell, bool biDirectional)
     {
@@ -166,7 +167,7 @@ namespace Flux.Model
       {
         var index = Edges.Where(e => e.Value.Equals(cell)).First().Key;
 
-        Paths[index] = null;
+        Paths[index] = default;
 
         if (biDirectional)
           cell.DisconnectPath(this, false);
@@ -186,30 +187,81 @@ namespace Flux.Model
     public float Weight { get; private set; } = 1;
   }
 
-  public class Grid
+  public class Grid<TValue>
   {
-    public System.Collections.Generic.List<Cell> Cells = new System.Collections.Generic.List<Cell>();
+    private System.Collections.Generic.List<TValue> m_values = new System.Collections.Generic.List<TValue>();
+    public System.Collections.Generic.IReadOnlyList<TValue> Cells => m_values;
 
     public int Columns { get; set; }
     public int Rows { get; set; }
 
-    public Cell this[int row, int column] => (row >= 0 && row < Rows) ? (column >= 0 && column < Columns) ? Cells[row * Columns + column] : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+    public (int Row, int Column) IndexToRowColumn(int index)
+    {
+      if (index < 0 || index >= Rows * Columns) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      return (index / Columns, index % Columns);
+    }
+
+    public int RowColumnToIndex(int row, int column)
+    {
+      if (row < 0 && row >= Rows) throw new System.ArgumentOutOfRangeException(nameof(row));
+      if (column < 0 && column >= Columns) throw new System.ArgumentOutOfRangeException(nameof(column));
+
+      return row * Columns + column;
+    }
+
+    public TValue this[int row, int column]
+    {
+      get => m_values[RowColumnToIndex(row, column)];
+      set => m_values[RowColumnToIndex(row, column)] = value;
+    }
 
     public Grid(int rows, int columns)
     {
       Columns = columns;
       Rows = rows;
 
-      Cells.Clear();
+      Clear();
+    }
+
+    public void Clear()
+    {
+      m_values.Clear();
 
       for (var r = 0; r < Rows; r++)
-      {
         for (var c = 0; c < Columns; c++)
-        {
-          Cells.Add(new Cell() { Column = c, Row = r });
-        }
-      }
+          m_values.Add(default!);
     }
+  }
+
+  public class Grid
+    : Grid<Cell>
+  {
+    public Grid(int rows, int columns)
+      : base(rows, columns)
+    {
+    }
+
+    //public int Columns { get; set; }
+    //public int Rows { get; set; }
+
+    //public Cell this[int row, int column] => (row >= 0 && row < Rows) ? (column >= 0 && column < Columns) ? Cells[row * Columns + column] : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+
+    //public Grid(int rows, int columns)
+    //{
+    //  Columns = columns;
+    //  Rows = rows;
+
+    //  Cells.Clear();
+
+    //  for (var r = 0; r < Rows; r++)
+    //  {
+    //    for (var c = 0; c < Columns; c++)
+    //    {
+    //      Cells.Add(new Cell() { Column = c, Row = r });
+    //    }
+    //  }
+    //}
 
     /// <summary>Returns a sequence with all dead end (singly linked) cells.</summary>
     public System.Collections.Generic.IEnumerable<Cell> GetDeadEnds() => Cells.Where(c => c.Paths.Count == 1);
@@ -260,10 +312,10 @@ namespace Flux.Model
         cell.ResetPaths(asConnected);
     }
 
-    public static (int Row, int Column) IndexToRowColumn(int index, int rows, int columns)
-      => (index < rows * columns) ? (index / columns, index % columns) : throw new System.ArgumentOutOfRangeException(nameof(index));
-    public static int RowColumnToIndex(int row, int column, int rows, int columns)
-      => (row < 0 || row >= rows) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (column < 0 || column >= columns) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (row * columns + column);
+    //public static (int Row, int Column) IndexToRowColumn(int index, int rows, int columns)
+    //  => (index < rows * columns) ? (index / columns, index % columns) : throw new System.ArgumentOutOfRangeException(nameof(index));
+    //public static int RowColumnToIndex(int row, int column, int rows, int columns)
+    //  => (row < 0 || row >= rows) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (column < 0 || column >= columns) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (row * columns + column);
   }
 #pragma warning restore CA1031 // Do not catch general exception types
 

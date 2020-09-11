@@ -1,36 +1,6 @@
 ﻿namespace Flux.Model.Gaming
 {
-  public class GameObject
-  {
-    public System.Collections.Generic.List<GameObject> Children { get; } = new System.Collections.Generic.List<GameObject>();
-
-    public System.Guid ID { get; protected set; } = System.Guid.NewGuid();
-
-    public string Name { get; protected set; }
-
-    public System.Collections.Generic.Dictionary<string, object> Properties { get; } = new System.Collections.Generic.Dictionary<string, object>();
-
-    public Dynamics.RigidBody RigidBody { get; set; } = new Dynamics.RigidBody();
-
-    public GameObject(string name)
-    {
-      Name = name;
-    }
-
-    /// <summary>This is the object delta updater.</summary>
-    public virtual void Update(float deltaTime)
-    {
-      if (!UpdateDisabled)
-      {
-        RigidBody.Integrate(deltaTime);
-      }
-    }
-
-    /// <summary>Disables updating, if set to true.</summary>
-    public bool UpdateDisabled { get; set; }
-  }
-
-  public class Timer
+  public class GameTimer
   {
     #region Fields and Properties
     private long _deltaCounter;
@@ -64,7 +34,7 @@
     public System.DateTime Updated => _updated;
     #endregion
 
-    public Timer() => Restart();
+    public GameTimer() => Restart();
 
     /// <summary>Takes the timer out of paused mode, if paused.</summary>
     public void Continue()

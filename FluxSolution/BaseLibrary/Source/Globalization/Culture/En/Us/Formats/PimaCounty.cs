@@ -5,29 +5,33 @@ namespace Flux.Globalization.EnUs.PimaCounty
   public struct StreetAddress
     : System.IEquatable<StreetAddress>
   {
-    private const string ReNumber = @"(?<Number>\d+)";
-    private const string ReDirection = @"(?<Direction>N|E|S|W)";
-    private const string ReName = @"(?<Name>.+)";
-    = @"(?<Number>\d+)?(?:\s*(?<Direction>N|E|S|W)[^\s]+)?(?:\s*(?<Name>.+))?(?:(?:\s+(?<Type>AV|BL|CI|CT|DR|HY|LN|LP|PL|PW|RD|SQ|ST|SV|TE|TR|WY)\.?)(?:\s+(?<Unit>.*))?)?";
-
-
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>
-    public const string Regex = @"(?<Number>\d+)?(?:\s*(?<Direction>N|E|S|W)[^\s]+)?(?:\s*(?<Name>.+))?(?:(?:\s+(?<Type>AV|BL|CI|CT|DR|HY|LN|LP|PL|PW|RD|SQ|ST|SV|TE|TR|WY)\.?)(?:\s+(?<Unit>.*))?)?";
-
-    public static readonly System.Collections.Generic.Dictionary<string, string> Directions = new System.Collections.Generic.Dictionary<string, string>()
+    public static System.Text.RegularExpressions.Regex Regex
     {
-      { @"E", @"East" },
-      { @"N", @"North" },
-      { @"S", @"South" },
-      { @"W", @"West" }
+      get
+      {
+        var directions = string.Join('|', DirectionAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Append(kvp.Key) : kvp.Value.Prepend(kvp.Key)));
+        var intersections = @"CL|EPI|PI|SPI";
+        var types = string.Join('|', TypeAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Append(kvp.Key) : kvp.Value.Prepend(kvp.Key)));
+
+        return new System.Text.RegularExpressions.Regex(@"(?<Number>\d+)\s+(?<Direction>" + directions + @")(?:\s+(?<Intersection>" + intersections + @"))?\s+(?<Name>.+?)\s+(?<Type>" + types + @")(?:\s+(?<Unit>.*))?");
+      }
+    }
+
+    public static readonly System.Collections.Generic.Dictionary<string, string[]> DirectionAliases = new System.Collections.Generic.Dictionary<string, string[]>()
+    {
+      { @"E", new string[] { @"East" } },
+      { @"N", new string[] { @"North" } },
+      { @"S", new string[] { @"South" } },
+      { @"W", new string[] { @"West" } }
     };
 
-    public static readonly System.Collections.Generic.Dictionary<string, string[]> Types = new System.Collections.Generic.Dictionary<string, string[]>()
+    public static readonly System.Collections.Generic.Dictionary<string, string[]> TypeAliases = new System.Collections.Generic.Dictionary<string, string[]>()
     {
-      { @"AV", new string[] { @"Avenue" } },
+      { @"AV", new string[] { @"Avenue", @"Ave" } },
       { @"BL", new string[] { @"Boulevard", @"Blvd" } },
-      { @"CI", new string[] { @"Circle" } },
+      { @"CI", new string[] { @"Circle", @"Cir" } },
       { @"CT", new string[] { @"Court", @"Crt" } },
       { @"DR", new string[] { @"Drive" } },
       { @"HY", new string[] { @"Highway", @"Hwy" } },
@@ -37,14 +41,12 @@ namespace Flux.Globalization.EnUs.PimaCounty
       { @"PW", new string[] { @"Parkway", @"Pkwy" } },
       { @"RD", new string[] { @"Road" } },
       { @"SQ", new string[] { @"Square" } },
-      { @"ST", new string[] { @"Street" } },
+      { @"ST", new string[] { @"Street", "Str" } },
       { @"SV", new string[] { @"Stravenue" } },
       { @"TE", new string[] { @"Terrace" } },
       { @"TR", new string[] { @"Trail", @"Trl" } },
       { @"WY", new string[] { @"Way" } },
     };
-
-    //public static readonly string ReOrTypes = string.Join('|', Types.SelectMany(kvp => new stringkvp.Value.AsEnumerable().Prepend(kvp.Key)));
 
     public string Number { get; private set; }
     public string Direction { get; private set; }
@@ -56,11 +58,11 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public bool IsEmpty
       => string.IsNullOrEmpty(Number) && string.IsNullOrEmpty(Direction) && string.IsNullOrEmpty(Intersection) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Type) && string.IsNullOrEmpty(Unit);
     public bool IsValid
-      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
+      => Regex.IsMatch(ToString());
 
     public static StreetAddress Parse(string text)
     {
-      var re = new System.Text.RegularExpressions.Regex(Regex);
+      var re = Regex;
 
       if (re.Match(text) is var match && match.Success)
       {
@@ -73,6 +75,12 @@ namespace Flux.Globalization.EnUs.PimaCounty
           Type = match.Groups[nameof(Type)].Value,
           Unit = match.Groups[nameof(Unit)].Value
         };
+
+        if (!DirectionAliases.ContainsKey(sa.Direction) && sa.Direction.Any())
+          sa.Direction = DirectionAliases.First(kvp => kvp.Value.Contains(sa.Direction, System.StringComparer.InvariantCultureIgnoreCase)).Key;
+
+        if (!TypeAliases.ContainsKey(sa.Type) && sa.Type.Any())
+          sa.Type = TypeAliases.First(kvp => kvp.Value.Contains(sa.Type, System.StringComparer.InvariantCultureIgnoreCase)).Key;
 
         return sa;
       }
@@ -104,7 +112,7 @@ namespace Flux.Globalization.EnUs.PimaCounty
       => Number == other.Number && Direction == other.Direction && Intersection == other.Intersection && Name == other.Name && Type == other.Type && Unit == other.Unit;
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is StreetAddress sa && Equals(sa);
+      => obj is StreetAddress o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()

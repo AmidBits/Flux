@@ -122,6 +122,9 @@ namespace Flux.Numerics
     /// <summary>Computes the closest cartesian coordinate vector at the specified angle and distance from the vector.</summary>
     public static Vector2I ComputeVector(in Vector2I v, in double angle, in double distance = 1)
       => new Vector2I((int)(distance * System.Math.Sin(angle)) + v.X, (int)(distance * System.Math.Cos(angle)) + v.Y);
+    /// <summary>Create a new vector with each member subtracted by 1.</summary>
+    public static Vector2I Decrement(in Vector2I v1)
+      => Subtract(v1, 1);
     /// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
     public static Vector2I Divide(in Vector2I v1, in Vector2I v2)
       => new Vector2I(v1.X / v2.X, v1.Y / v2.Y);
@@ -160,6 +163,9 @@ namespace Flux.Numerics
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLengthSquared(in Vector2I v)
       => v.X * v.X + v.Y * v.Y;
+    /// <summary>Create a new vector with 1 added to each member.</summary>
+    public static Vector2I Increment(in Vector2I v1)
+      => Add(v1, 1);
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(in Vector2I v1, in Vector2I v2)

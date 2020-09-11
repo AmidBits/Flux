@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Flux.Model.PlayingCards
@@ -110,6 +111,7 @@ namespace Flux.Model.PlayingCards
   }
 
   public struct Card
+    : System.IEquatable<Card>
   {
     public const int BackOfCard = 0x1F0A0;
 
@@ -125,6 +127,22 @@ namespace Flux.Model.PlayingCards
     }
 
     //public static System.Collections.Generic.IEnumerable<int> CreateCards(int decks = 1) => System.Linq.Enumerable.Range<int>(1, decks).SelectMany(i=>PlayingCard.CreateDeckOfCards().Select(c=>);))
+
+    // Operators
+    public static bool operator ==(Card a, Card b)
+      => a.Equals(b);
+    public static bool operator !=(Card a, Card b)
+      => !a.Equals(b);
+    // Equatable
+    public bool Equals([AllowNull] Card other)
+      => Deck == other.Deck && Rank == other.Rank && Suit == other.Suit;
+    // Overrides
+    public override bool Equals(object? obj)
+      => obj is Card o && Equals(o);
+    public override int GetHashCode()
+      => HashCode.CombineCore(Deck, Rank, Suit);
+    public override string ToString()
+      => $"<{Deck}, {Rank}, {Suit}>";
   }
 
   public static class PlayingCard

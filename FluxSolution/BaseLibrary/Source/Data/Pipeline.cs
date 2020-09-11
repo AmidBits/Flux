@@ -21,10 +21,10 @@ ON (S.schema_id = T.schema_id)
 ORDER BY S.[name], T.[name]
 */
     /// <summary>The required Export method for the IDataExport interface.</summary>
-    /// <param name="export">The XML element for the source.</param>
-    /// <param name="writer">This is the output stream for the </param>
+    /// <param name="metaData">The XML element for the source.</param>
+    /// <param name="writer">This is the output stream for the data.</param>
     /// <param name="log"></param>
-    void Export(System.Xml.Linq.XElement export, Flux.IO.TabularWriterStream writer, Flux.Diagnostics.FileLog log);
+    void Export(System.Xml.Linq.XElement metaData, Flux.IO.TabularWriterStream writer, Flux.Diagnostics.FileLog log);
   }
 
   public interface IDataImport
@@ -44,10 +44,10 @@ WHERE T.[name] LIKE '%[_]DE'
 ORDER BY S.[name], T.[name]
 */
     /// <summary>The required Import method for the IDataImport interface.</summary>
-    /// <param name="import">The XML element for the source.</param>
-    /// <param name="reader">This is the output stream for the </param>
+    /// <param name="metaData">The XML element for the source.</param>
+    /// <param name="reader">This is the input stream for the data.</param>
     /// <param name="log"></param>
-    void Import(System.Xml.Linq.XElement target, Flux.IO.TabularReaderStream reader, Flux.Diagnostics.FileLog log);
+    void Import(System.Xml.Linq.XElement metaData, Flux.IO.TabularReaderStream reader, Flux.Diagnostics.FileLog log);
   }
 
   //class Program

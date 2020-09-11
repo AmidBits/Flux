@@ -1,18 +1,19 @@
 namespace Flux.Collections.Generic
 {
-  public sealed class BinaryHeapMaxCollection<T>
-    : IHeapCollection<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  public sealed class BinaryHeapMax<T>
+    : IHeap<T>, IHeapMax<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
 
-    public BinaryHeapMaxCollection() { }
-    public BinaryHeapMaxCollection(System.Collections.Generic.IEnumerable<T> collection)
+    public BinaryHeapMax() { }
+    public BinaryHeapMax(System.Collections.Generic.IEnumerable<T> collection)
     {
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
-      System.Diagnostics.Contracts.Contract.EndContractBlock();
 
-      foreach (var item in collection ?? throw new System.ArgumentNullException(nameof(collection)))
+      foreach (var item in collection)
       {
         Insert(item);
       }
@@ -20,7 +21,7 @@ namespace Flux.Collections.Generic
 
     // IBinaryHeap<T>
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((BinaryHeapMaxCollection<T>)Clone()).ExtractAll().GetEnumerator();
+      => ((BinaryHeapMax<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     public T Extract()
@@ -41,6 +42,8 @@ namespace Flux.Collections.Generic
         yield return Extract();
       }
     }
+    public T ExtractMax()
+      => Extract();
     public void Insert(T item)
     {
       m_data.Add(item);
@@ -53,7 +56,7 @@ namespace Flux.Collections.Generic
       => m_data[0];
     // IClonable<T>
     public object Clone()
-      => new BinaryHeapMaxCollection<T>(m_data);
+      => new BinaryHeapMax<T>(m_data);
     // IReadOnlyCollection<T>
     public int Count
       => m_data.Count;
@@ -134,17 +137,18 @@ namespace Flux.Collections.Generic
     }
   }
 
-  public sealed class BinaryHeapMinCollection<T>
-    : IHeapCollection<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  public sealed class BinaryHeapMin<T>
+    : IHeap<T>, IHeapMin<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
 
-    public BinaryHeapMinCollection() { }
-    public BinaryHeapMinCollection(System.Collections.Generic.IEnumerable<T> collection)
+    public BinaryHeapMin() { }
+    public BinaryHeapMin(System.Collections.Generic.IEnumerable<T> collection)
     {
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
-      System.Diagnostics.Contracts.Contract.EndContractBlock();
 
       foreach (var item in collection)
       {
@@ -154,7 +158,7 @@ namespace Flux.Collections.Generic
 
     // IBinaryHeap<T>
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((BinaryHeapMinCollection<T>)Clone()).ExtractAll().GetEnumerator();
+      => ((BinaryHeapMin<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     public T Extract()
@@ -175,6 +179,8 @@ namespace Flux.Collections.Generic
         yield return Extract();
       }
     }
+    public T ExtractMin()
+      => Extract();
     public void Insert(T item)
     {
       m_data.Add(item);
@@ -187,7 +193,7 @@ namespace Flux.Collections.Generic
       => m_data[0];
     // IClonable<T>
     public object Clone()
-      => new BinaryHeapMinCollection<T>(m_data);
+      => new BinaryHeapMin<T>(m_data);
     // IReadOnlyCollection<T>
     public int Count
       => m_data.Count;

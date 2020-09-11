@@ -1,9 +1,9 @@
-namespace Flux
+namespace Flux.Globalization
 {
   public static partial class General
   {
-    /// <summary>Indicates whether the string content is considered of slavo/germanic origin.</summary>
+    /// <summary>Indicates whether the name in the string can be considered of slavo/germanic origin.</summary>
     public static bool IsSlavoGermanic(this string source)
-      => (source.IndexOfAny(System.StringComparison.OrdinalIgnoreCase, @"w", @"k", @"cz", @"witz") > -1);
+      => XtendString.IndexOfAny(source, System.StringComparison.OrdinalIgnoreCase, @"w", @"k", @"cz", @"witz") > -1;
   }
 }

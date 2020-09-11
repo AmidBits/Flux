@@ -8,44 +8,44 @@ namespace Flux.Globalization.EnUs
       switch (source)
       {
         case 'b':
-        case 'B':
         case 'c':
-        case 'C':
         case 'd':
-        case 'D':
         case 'f':
-        case 'F':
         case 'g':
-        case 'G':
         case 'h':
-        case 'H':
         case 'j':
-        case 'J':
         case 'k':
-        case 'K':
         case 'l':
-        case 'L':
         case 'm':
-        case 'M':
         case 'n':
-        case 'N':
         case 'p':
-        case 'P':
         case 'q':
-        case 'Q':
         case 'r':
-        case 'R':
         case 's':
-        case 'S':
         case 't':
-        case 'T':
         case 'v':
-        case 'V':
         case 'w':
-        case 'W':
         case 'x':
-        case 'X':
         case 'z':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'F':
+        case 'G':
+        case 'H':
+        case 'J':
+        case 'K':
+        case 'L':
+        case 'M':
+        case 'N':
+        case 'P':
+        case 'Q':
+        case 'R':
+        case 'S':
+        case 'T':
+        case 'V':
+        case 'W':
+        case 'X':
         case 'Z':
           return true;
         case 'y':
@@ -58,7 +58,7 @@ namespace Flux.Globalization.EnUs
 
     /// <summary>Indicates whether the char is an English letter.</summary>
     public static bool IsEnglishLetter(this char source)
-      => Globalization.EnUs.Language.IsEnglishLetterLower(source) || Globalization.EnUs.Language.IsEnglishLetterUpper(source);
+      => IsEnglishLetterLower(source) || IsEnglishLetterUpper(source);
     /// <summary>Indicates whether the char is an English lower case letter.</summary>
     public static bool IsEnglishLetterLower(this char source)
       => source >= 'a' && source <= 'z';

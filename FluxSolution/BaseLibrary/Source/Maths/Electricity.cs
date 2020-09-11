@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static class Electrical
+  public static class Electricity
   {
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static double ParallelResistors(double[] resistors)

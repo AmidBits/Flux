@@ -1,24 +1,25 @@
 namespace Flux.Collections.Generic
 {
-  public sealed class DarityHeapMaxCollection<T>
-    : IHeapCollection<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  public sealed class DarityHeapMax<T>
+    : IHeap<T>, IHeapMax<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly int m_arity;
 
     private System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
 
-    public DarityHeapMaxCollection(int arity)
+    public DarityHeapMax(int arity)
     {
       m_arity = arity;
     }
-    public DarityHeapMaxCollection(int arity, System.Collections.Generic.IEnumerable<T> collection)
+    public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<T> collection)
       : this(arity)
     {
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
-      System.Diagnostics.Contracts.Contract.EndContractBlock();
 
-      foreach (var t in collection ?? throw new System.ArgumentNullException(nameof(collection)))
+      foreach (var t in collection)
       {
         Insert(t);
       }
@@ -43,8 +44,10 @@ namespace Flux.Collections.Generic
         yield return Extract();
       }
     }
+    public T ExtractMax()
+      => Extract();
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((DarityHeapMaxCollection<T>)Clone()).ExtractAll().GetEnumerator();
+      => ((DarityHeapMax<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     public void Insert(T item)
@@ -64,7 +67,7 @@ namespace Flux.Collections.Generic
       => m_data[0];
     // ICloneable
     public object Clone()
-      => new DarityHeapMaxCollection<T>(m_arity, m_data);
+      => new DarityHeapMax<T>(m_arity, m_data);
     // IReadOnlyCollection<T>
     public int Count
       => m_data.Count;
@@ -145,23 +148,24 @@ namespace Flux.Collections.Generic
     }
   }
 
-  public sealed class DarityHeapMinCollection<T>
-    : IHeapCollection<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  public sealed class DarityHeapMin<T>
+    : IHeap<T>, IHeapMin<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly int m_arity;
 
     private System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
 
-    public DarityHeapMinCollection(int arity)
+    public DarityHeapMin(int arity)
     {
       m_arity = arity;
     }
-    public DarityHeapMinCollection(int arity, System.Collections.Generic.IEnumerable<T> collection)
+    public DarityHeapMin(int arity, System.Collections.Generic.IEnumerable<T> collection)
       : this(arity)
     {
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
-      System.Diagnostics.Contracts.Contract.EndContractBlock();
 
       foreach (var t in collection)
       {
@@ -188,8 +192,10 @@ namespace Flux.Collections.Generic
         yield return Extract();
       }
     }
+    public T ExtractMin()
+      => Extract();
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((DarityHeapMinCollection<T>)Clone()).ExtractAll().GetEnumerator();
+      => ((DarityHeapMin<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     public void Insert(T item)
@@ -209,7 +215,7 @@ namespace Flux.Collections.Generic
       => m_data[0];
     // ICloneable
     public object Clone()
-      => new DarityHeapMinCollection<T>(m_arity, m_data);
+      => new DarityHeapMin<T>(m_arity, m_data);
     // IReadOnlyCollection<T>
     public int Count
       => m_data.Count;

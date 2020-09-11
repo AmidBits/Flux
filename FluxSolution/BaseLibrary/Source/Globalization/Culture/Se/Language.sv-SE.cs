@@ -55,7 +55,7 @@ namespace Flux.Globalization.Se
 
     /// <summary>Indicates whether the char is a Swedish letter.</summary>
     public static bool IsSwedishLetter(this char source)
-      => source.IsSwedishLetterLower() || source.IsSwedishLetterUpper();
+      => IsSwedishLetterLower(source) || IsSwedishLetterUpper(source);
     /// <summary>Indicates whether the char is a Swedish lower case letter.</summary>
     public static bool IsSwedishLetterLower(this char source)
       => (source >= 'a' && source <= 'z') || source == '\u00E5' || source == '\u00E4' || source == '\u00F6';

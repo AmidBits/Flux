@@ -1,6 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Markup;
+
 namespace Flux
 {
-  public static partial class Angles
+  public static partial class Angle
   {
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     public static double CartesianToRotationAngle(double x, double y)

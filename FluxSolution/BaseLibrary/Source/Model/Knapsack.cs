@@ -32,11 +32,12 @@ namespace Flux.Model
   public class Knapsack
   {
     public int WeightCapacity { get; set; }
-    public Item[] Items;
 
-    public int[,] Value;
+    private KnapsackItem[] Items;
 
-    public Knapsack(int weightCapacity, Item[] items)
+    private int[,] Value;
+
+    public Knapsack(int weightCapacity, KnapsackItem[] items)
     {
       WeightCapacity = weightCapacity;
       Items = items;
@@ -73,7 +74,7 @@ namespace Flux.Model
       return Value[i, j];
     }
 
-    public static void MaxValue2(int W, int[] w, int[] v, int n)
+    public static void MaxValue2(int W, int n)
     {
       var value = new int[n + 1, W + 1];
 
@@ -108,20 +109,7 @@ namespace Flux.Model
       return K[numberOfDistinctItems, weightCapacity];
     }
 
-
-    public class Item
-    {
-      public int Value { get; set; }
-      public int Weight { get; set; }
-
-      public Item(int value, int weight)
-      {
-        Value = value;
-        Weight = weight;
-      }
-    }
-
-    public static int MaxValue2(int weightCapacity, Item[] items)
+    public static int MaxValue2(int weightCapacity, KnapsackItem[] items)
     {
       if (items is null) throw new System.ArgumentNullException(nameof(items));
 
@@ -138,6 +126,18 @@ namespace Flux.Model
       }
 
       return K[items.Length, weightCapacity];
+    }
+  }
+
+  public class KnapsackItem
+  {
+    public int Value { get; set; }
+    public int Weight { get; set; }
+
+    public KnapsackItem(int value, int weight)
+    {
+      Value = value;
+      Weight = weight;
     }
   }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional

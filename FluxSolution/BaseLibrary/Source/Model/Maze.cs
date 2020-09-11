@@ -130,10 +130,10 @@ namespace Flux.Model
   public class GrowingTreeMaze
     : Maze
   {
-    public System.Func<System.Collections.Generic.List<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
-      {
-        return list.RandomElement(); // Prim's algorithm by default
-      };
+    public System.Func<System.Collections.Generic.IReadOnlyList<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
+    {
+      return list.RandomElement(); // Prim's algorithm by default
+    };
 
     public override void Build(Grid grid)
     {

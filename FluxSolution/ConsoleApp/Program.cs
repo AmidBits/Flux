@@ -16,43 +16,8 @@ namespace ConsoleApp
 {
   class Program
   {
-    static double[] felix = new double[] { 0.003027523, 0.002012256, -0.001369238, -0.001737660, -0.001647287,
-        0.000275154, 0.002017238, 0.001372621, 0.000274148, -0.000913576, 0.001920263, 0.001186456, -0.000364631,
-        0.000638337, 0.000182266, -0.001275626, -0.000821093, 0.001186998, -0.000455996, -0.000547445, -0.000182582,
-        -0.000547845, 0.001279006, 0.000456204, 0.000000000, -0.001550388, 0.001552795, 0.000729594, -0.000455664,
-        -0.002188184, 0.000639620, 0.000091316, 0.001552228, -0.001002826, 0.000182515, -0.000091241, -0.000821243,
-        -0.002009132, 0.000000000, 0.000823572, 0.001920088, -0.001368863, 0.000000000, 0.002101800, 0.001094291,
-        0.001639643, 0.002637323, 0.000000000, -0.000172336, -0.000462665, -0.000136141 };
-
-    static double[] kahn1 = new double[] { 2, 2, 4, 4 };
-    static double[] kahn2 = new double[] { 1, 1, 6, 4 };
-
-    static double[] thoughtco = new double[] { 1, 2, 2, 3, 5, 7, 7, 7, 7, 9 };
-
-    static double[] aad = new double[] { 2, 2, 3, 4, 14 };
-
-    //public class Test
-    //  : Flux.Collections.Generic.IQuadtree
-    //{
-    //  public Rectangle Bounds { get; set; }
-    //}
-
     private static void TimedMain(string[] args)
     {
-      var ns = Flux.Maths.PercentRanks(100, 90.0);
-      foreach (var n in ns)
-        System.Console.WriteLine($"{n}");
-      System.Console.WriteLine($"={ns.Sum()}");
-      return;
-      var v = 7;
-      var v1 = new System.Numerics.Vector2(0, v);
-      var v2 = new System.Numerics.Vector2(v, 0);
-      var cd = v1.ChebyshevDistanceTo(v2);
-      var ed = v1.EuclideanDistanceTo(v2);
-      var md = v1.ManhattanDistanceTo(v2);
-
-      System.Console.WriteLine($"({v1}, {v2}) = CD({cd}) = ED({ed}) = MD({md})");
-
       //var ttt = new Flux.Model.TicTacToe.Board();
       //System.Console.WriteLine(ttt.ToString());
 
@@ -120,20 +85,6 @@ namespace ConsoleApp
       //player = opponent;
       //opponent = tmp;
       //turn = !turn;
-
-
-
-      var a = new Flux.Numerics.BigFraction(5.ToBigInteger(), 6.ToBigInteger());
-      a = Flux.Numerics.BigFraction.Negate(a);
-      System.Console.WriteLine(a);
-      var b = new Flux.Numerics.BigFraction(3.ToBigInteger(), 8.ToBigInteger());
-      b = Flux.Numerics.BigFraction.Negate(b);
-      System.Console.WriteLine(b);
-
-      var gcd = Flux.Numerics.BigFraction.GreatestCommonDivisor(a, b);
-      System.Console.WriteLine(gcd);
-      var lcm = Flux.Numerics.BigFraction.LeastCommonMultiple(a, b);
-      System.Console.WriteLine(lcm);
 
       //foreach (var dr in Flux.Resources.Ucd.UnicodeData.GetDataReader(Flux.Resources.Ucd.UnicodeData.LocalUri))
       //  System.Console.WriteLine(string.Join(", ", dr.GetValues()));

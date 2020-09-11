@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Temperature
   {
     public const double CelsiusAbsoluteZero = -273.15;
     public const double CelsiusBoilingPoint = 99.9839;

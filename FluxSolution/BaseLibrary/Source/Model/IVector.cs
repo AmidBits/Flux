@@ -1,7 +1,7 @@
-namespace Flux.Model
-{
-  public interface IVectorMagnitude
-  {
-    double GetMagnitude();
-  }
-}
+//namespace Flux.Model
+//{
+//  public interface IVectorMagnitude
+//  {
+//    double GetMagnitude();
+//  }
+//}

@@ -225,6 +225,9 @@ namespace Flux.Numerics
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
     public static Vector3I CrossProduct(in Vector3I v1, in Vector3I v2)
       => new Vector3I(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+    /// <summary>Create a new vector with each member subtracted by 1.</summary>
+    public static Vector3I Decrement(in Vector3I v1)
+      => Subtract(v1, 1);
     /// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
     public static Vector3I Divide(in Vector3I v1, in Vector3I v2)
       => new Vector3I(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
@@ -260,6 +263,9 @@ namespace Flux.Numerics
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLengthSquared(in Vector3I v)
       => v.X * v.X + v.Y * v.Y + v.Z * v.Z;
+    /// <summary>Create a new vector with 1 added to each member.</summary>
+    public static Vector3I Increment(in Vector3I v1)
+      => Add(v1, 1);
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(in Vector3I v1, in Vector3I v2)
@@ -322,8 +328,8 @@ namespace Flux.Numerics
 
     public static Vector3I operator ~(in Vector3I v) => OnesComplement(v);
 
-    public static Vector3I operator --(in Vector3I v) => Subtract(v, 1);
-    public static Vector3I operator ++(in Vector3I v) => Add(v, 1);
+    public static Vector3I operator --(in Vector3I v) => Decrement(v);
+    public static Vector3I operator ++(in Vector3I v) => Increment(v);
 
     public static Vector3I operator +(in Vector3I v1, in Vector3I v2) => Add(v1, v2);
     public static Vector3I operator +(in Vector3I v1, in int i) => Add(v1, i);
