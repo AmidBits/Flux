@@ -1,10 +1,20 @@
 ﻿namespace Flux.Model.Gaming.Gauntlet
 {
-  public class Creature : GauntletObject
+  public enum CreatureType
   {
-    public Creature(string name)
-      : base(name)
+    Scorpion,
+    Troll
+  }
+
+  public class Creature
+    : GauntletObject
+  {
+    public CreatureType Type { get; set; }
+
+    public Creature(CreatureType type)
+      : base(type.ToString())
     {
+      Type = type;
     }
   }
 }

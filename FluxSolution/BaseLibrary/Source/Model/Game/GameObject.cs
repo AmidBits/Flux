@@ -10,7 +10,7 @@
 
     public System.Collections.Generic.Dictionary<string, object> Properties { get; } = new System.Collections.Generic.Dictionary<string, object>();
 
-    public Dynamics.RigidBody RigidBody { get; set; } = new Dynamics.RigidBody();
+    public Dynamics.RigidBody Dynamics { get; set; } = new Dynamics.RigidBody();
 
     public GameObject(string name)
     {
@@ -22,7 +22,7 @@
     {
       if (!UpdateDisabled)
       {
-        RigidBody.Integrate(deltaTime);
+        Dynamics.Integrate(deltaTime);
       }
     }
 

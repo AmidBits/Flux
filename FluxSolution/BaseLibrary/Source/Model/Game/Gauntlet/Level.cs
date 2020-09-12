@@ -4,14 +4,14 @@
   public class Level : GauntletObject
   {
     public System.Collections.Generic.List<Hero> Heros { get; private set; }
-    public System.Collections.Generic.List<Hive> Hives { get; private set; }
+    public System.Collections.Generic.List<CreatureHive> Hives { get; private set; }
     public System.Collections.Generic.List<Portal> Portals { get; private set; }
 
     public Level()
       : base(nameof(Level))
     {
       Heros = new System.Collections.Generic.List<Hero>();
-      Hives = new System.Collections.Generic.List<Hive>();
+      Hives = new System.Collections.Generic.List<CreatureHive>();
       Portals = new System.Collections.Generic.List<Portal>();
     }
 
