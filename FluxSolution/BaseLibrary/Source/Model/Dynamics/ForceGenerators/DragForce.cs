@@ -1,14 +1,14 @@
 namespace Flux.Model.Dynamics.ForceGenerators
 {
   public class DragForce
-    : ForceGenerator
+    : IForceGenerator
   {
     public const float DensityOfAir = 1.29F;
     public const float DensityOfWater = 1.94F;
 
     public float DragDensity { get; set; } = DensityOfAir;
 
-    public override void ApplyForce(RigidBody body, System.Collections.Generic.IEnumerable<RigidBody> bodies)
+    public void ApplyForce(RigidBody body)
     {
       if (body is null) throw new System.ArgumentNullException(nameof(body));
 

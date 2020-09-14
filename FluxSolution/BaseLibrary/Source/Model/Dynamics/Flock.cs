@@ -2,172 +2,233 @@
 //using System.Collections.Generic;
 //using System.Linq;
 
-//namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
-//{
-//  //public class Neighborhood
-//  //  : RigidBody
-//  //{
-//  //  public System.Numerics.Vector2 AverageDifference = new System.Numerics.Vector2();
-//  //  public System.Numerics.Vector2 AverageVelocity = new System.Numerics.Vector2();
-//  //  public System.Numerics.Vector2 AveragePosition = new System.Numerics.Vector2();
+using Flux.Media.Geometry.Shapes;
+using System.Diagnostics;
+using System.Linq;
 
-//  //  public RigidBody2D ClosestNeighbor = null;
-//  //  public float ClosestNeighborDistance = float.NaN;
-//  //  public System.Numerics.Vector2 ClosestNeighborVector = default(System.Numerics.Vector2);
+namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
+{
+  //  //public class Neighborhood
+  //  //  : RigidBody
+  //  //{
+  //  //  public System.Numerics.Vector2 AverageDifference = new System.Numerics.Vector2();
+  //  //  public System.Numerics.Vector2 AverageVelocity = new System.Numerics.Vector2();
+  //  //  public System.Numerics.Vector2 AveragePosition = new System.Numerics.Vector2();
 
-//  //  public bool Enabled { get; set; }
+  //  //  public RigidBody2D ClosestNeighbor = null;
+  //  //  public float ClosestNeighborDistance = float.NaN;
+  //  //  public System.Numerics.Vector2 ClosestNeighborVector = default(System.Numerics.Vector2);
 
-//  //  public System.Numerics.Vector2 PositionDifference = new System.Numerics.Vector2();
-//  //  public System.Numerics.Vector2 PositionSum = new System.Numerics.Vector2();
-//  //  public System.Numerics.Vector2 VelocitySum = new System.Numerics.Vector2();
+  //  //  public bool Enabled { get; set; }
 
-//  //  public float PerimeterRadius = 21.5f;
+  //  //  public System.Numerics.Vector2 PositionDifference = new System.Numerics.Vector2();
+  //  //  public System.Numerics.Vector2 PositionSum = new System.Numerics.Vector2();
+  //  //  public System.Numerics.Vector2 VelocitySum = new System.Numerics.Vector2();
 
-//  //  public void FindNeighbors(RigidBody2D body, RigidBodies2D bodies)
-//  //  {
-//  //    if (!Enabled)
-//  //      return;
+  //  //  public float PerimeterRadius = 21.5f;
 
-//  //    Clear();
+  //  //  public void FindNeighbors(RigidBody2D body, RigidBodies2D bodies)
+  //  //  {
+  //  //    if (!Enabled)
+  //  //      return;
 
-//  //    AverageVelocity = default(System.Numerics.Vector2);
-//  //    AveragePosition = default(System.Numerics.Vector2);
+  //  //    Clear();
 
-//  //    ClosestNeighbor = null;
-//  //    ClosestNeighborDistance = float.MaxValue;
-//  //    ClosestNeighborVector = default(System.Numerics.Vector2);
+  //  //    AverageVelocity = default(System.Numerics.Vector2);
+  //  //    AveragePosition = default(System.Numerics.Vector2);
 
-//  //    foreach (RigidBody2D boid in bodies)
-//  //    {
-//  //      if (!boid.Equals(body))
-//  //      {
-//  //        System.Numerics.Vector2 point = boid.Position - body.Position;
-//  //        float distance = point.Length();
+  //  //    ClosestNeighbor = null;
+  //  //    ClosestNeighborDistance = float.MaxValue;
+  //  //    ClosestNeighborVector = default(System.Numerics.Vector2);
 
-//  //        if (distance < PerimeterRadius)
-//  //        {
-//  //          Add(boid);
-//  //          PositionDifference -= point;
-//  //          PositionSum += boid.Velocity;
-//  //          VelocitySum += boid.Velocity;
-//  //        }
+  //  //    foreach (RigidBody2D boid in bodies)
+  //  //    {
+  //  //      if (!boid.Equals(body))
+  //  //      {
+  //  //        System.Numerics.Vector2 point = boid.Position - body.Position;
+  //  //        float distance = point.Length();
 
-//  //        if (distance < ClosestNeighborDistance)
-//  //        {
-//  //          ClosestNeighbor = boid;
-//  //          ClosestNeighborDistance = distance;
-//  //          ClosestNeighborVector = point;
-//  //        }
-//  //      }
-//  //    }
+  //  //        if (distance < PerimeterRadius)
+  //  //        {
+  //  //          Add(boid);
+  //  //          PositionDifference -= point;
+  //  //          PositionSum += boid.Velocity;
+  //  //          VelocitySum += boid.Velocity;
+  //  //        }
 
-//  //    if (Count == 0)
-//  //      Add(ClosestNeighbor);
+  //  //        if (distance < ClosestNeighborDistance)
+  //  //        {
+  //  //          ClosestNeighbor = boid;
+  //  //          ClosestNeighborDistance = distance;
+  //  //          ClosestNeighborVector = point;
+  //  //        }
+  //  //      }
+  //  //    }
 
-//  //    AveragePosition = PositionSum / Count;
-//  //    AverageVelocity = VelocitySum / Count;
-//  //  }
-//  //}
-//  public class FlockBehavior
-//    : IForceGenerator
-//  {
-//    public bool Disabled { get; set; }
+  //  //    if (Count == 0)
+  //  //      Add(ClosestNeighbor);
 
-//    public float PerimeterRadius = 21.5f;
+  //  //    AveragePosition = PositionSum / Count;
+  //  //    AverageVelocity = VelocitySum / Count;
+  //  //  }
+  //  //}
+  //  public class FlockBehavior
+  //    : IForceGenerator
+  //  {
+  //    public bool Disabled { get; set; }
 
-//    public float CohesionWeight { get; set; }
+  //    public float PerimeterRadius = 21.5f;
 
-//    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//    {
-//      var neighbors = bodies;
-//      var centroidOfNeighbors = Media.Geometry.Shapes.Polygon.SurfaceCentroid(neighbors.Select(rb => rb.Position));
+  //    public float CohesionWeight { get; set; }
 
-//      // Flock cohesion (centering).
-//      body.Force += ((centroidOfNeighbors - body.Position) * (CohesionWeight * body.Mass));
-//      //body.Force += ((body.Neighborhood.AveragePosition - body.Position) * CohesionWeight);
+  //    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
+  //    {
+  //      var neighbors = bodies;
+  //      var centroidOfNeighbors = Media.Geometry.Shapes.Polygon.SurfaceCentroid(neighbors.Select(rb => rb.Position));
 
-//      // Flock separation (distancing).
-//      body.Force += neighbors.AverageDifference * (SeparationWeight * body.Mass);
-//    }
-//  }
+  //      // Flock cohesion (centering).
+  //      body.Force += ((centroidOfNeighbors - body.Position) * (CohesionWeight * body.Mass));
+  //      //body.Force += ((body.Neighborhood.AveragePosition - body.Position) * CohesionWeight);
 
-//  //public class FlockCentering
-//  //  : IForceGenerator
-//  //{
-//  //  public bool Disabled { get; set; }
+  //      // Flock separation (distancing).
+  //      body.Force += neighbors.AverageDifference * (SeparationWeight * body.Mass);
+  //    }
+  //  }
 
-//  //  public float CohesionWeight { get; set; }
+  //public class FlockCentering
+  //  : IForceGenerator
+  //{
+  //  public bool Disabled { get; set; }
 
-//  //  public FlockCentering(float cohesionWeight = 0.01f) { CohesionWeight = cohesionWeight; }
+  //  public float CohesionWeight { get; set; }
 
-//  //  public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//  //  {
-//  //    body.Force += ((bodies.Centroid - body.Position) * (CohesionWeight * body.Mass));
-//  //    //body.Force += ((body.Neighborhood.AveragePosition - body.Position) * CohesionWeight);
-//  //  }
-//  //}
+  //  public FlockCentering(float cohesionWeight = 0.01f) { CohesionWeight = cohesionWeight; }
 
-//  public class NeighborhoodDistancing
-//    : IForceGenerator
-//  {
-//    public bool Disabled { get; set; }
-//    public float SeparationWeight { get; set; }
+  //  public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
+  //  {
+  //    body.Force += ((bodies.Centroid - body.Position) * (CohesionWeight * body.Mass));
+  //    //body.Force += ((body.Neighborhood.AveragePosition - body.Position) * CohesionWeight);
+  //  }
+  //}
 
-//    public NeighborhoodDistancing(float separationWeight = 15f) { SeparationWeight = separationWeight; }
+  //public class AlignAverageDistancing
+  //  : IForceGenerator
+  //{
+  //  public bool Disabled { get; set; }
 
-//    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//    {
-//      if (!Disabled)
-//        body.Force += (body.Neighborhood.AverageDifference * (SeparationWeight * body.Mass));
-//    }
-//  }
+  //  public System.Numerics.Vector3 AverageDifference { get; set; }
+  //  public float Weight { get; set; } = 15f;
 
-//  public class NeighborhoodVelocityAlignment
-//      : IForceGenerator
-//  {
-//    public float AlignmentWeight { get; set; }
-//    public bool Disabled { get; set; }
+  //  public void ApplyForce(RigidBody body)
+  //  {
+  //    if (body is null) throw new System.ArgumentNullException(nameof(body));
+  //    if (Disabled) return;
 
-//    public NeighborhoodVelocityAlignment(float alignmentWeigth = 0.00125f) { AlignmentWeight = alignmentWeigth; }
+  //    body.Force += AverageDifference * (Weight * body.Mass);
+  //  }
+  //}
 
-//    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//    {
-//      if (!Disabled)
-//        body.Force += body.Neighborhood.AverageVelocity * AlignmentWeight;
-//    }
-//  }
+  //public class AlignAverageSpeed
+  //    : IForceGenerator
+  //{
+  //  public bool Disabled { get; set; }
 
-//  public class PointOfInterest
-//    : IForceGenerator
-//  {
-//    public bool Disabled { get; set; }
-//    public System.Numerics.Vector3 POI { get; set; }
-//    public float Ratio { get; set; }
+  //  public System.Numerics.Vector3 AverageLinearVelocity { get; set; }
+  //  public float Weight { get; set; } = 0.00125f;
 
-//    public PointOfInterest(float ratio = 0.017f)
-//    {
-//      Ratio = ratio;
-//    }
+  //  public void ApplyForce(RigidBody body)
+  //  {
+  //    if (body is null) throw new System.ArgumentNullException(nameof(body));
+  //    if (Disabled) return;
 
-//    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//    {
-//      if (!Disabled)
-//        body.Force += ((POI - body.Position) * (Ratio * body.Mass));
-//    }
-//  }
+  //    body.Force += AverageLinearVelocity * Weight;
+  //  }
+  //}
 
-//  public class RandomWandering
-//   : IForceGenerator
-//  {
-//    public bool Disabled { get; set; }
-//    public float WanderingWeight { get; set; }
+  /// <summary>Align direction and speed with local mates.</summary>
+  public class BoidAlignment
+  : IForceGenerator
+  {
+    public bool Disabled { get; set; }
 
-//    public RandomWandering(float wanderingWeight = 1f) { WanderingWeight = wanderingWeight; }
+    public System.Numerics.Vector3 AverageLinearVelocity { get; set; }
+    public float Weight { get; set; } = 0.00125f;
 
-//    public void ApplyForce(RigidBody body, IEnumerable<RigidBody> bodies)
-//    {
-//      if (!Disabled)
-//        body.Force += (WanderingWeight * body.Mass) * new System.Numerics.Vector3((float)NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Flux.Random.NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Flux.Random.NumberGenerator.Crypto.NextDouble() - 0.5f);
-//    }
-//  }
-//}
+    public void ApplyForce(RigidBody body)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      if (Disabled) return;
+
+      body.Force += AverageLinearVelocity * Weight;
+    }
+  }
+
+  /// <summary>Strive for cohesion of centroid with local mates.</summary>
+  public class BoidCohesion
+    : IForceGenerator
+  {
+    public bool Disabled { get; set; }
+
+    public System.Numerics.Vector3 Centroid { get; set; }
+    public float Weight { get; set; } = 0.00125f;
+
+    public void ApplyForce(RigidBody body)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      if (Disabled) return;
+
+      body.Force += (Centroid - body.Position) * (Weight * body.Mass);
+    }
+  }
+
+  /// <summary>Maintain separation with local mates.</summary>
+  public class BoidSeparation
+    : IForceGenerator
+  {
+    public bool Disabled { get; set; }
+
+    public System.Numerics.Vector3 AverageDifference { get; set; }
+    public float Weight { get; set; } = 15f;
+
+    public void ApplyForce(RigidBody body)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      if (Disabled) return;
+
+      body.Force += AverageDifference * (Weight * body.Mass);
+    }
+  }
+
+  public class PointOfInterest
+    : IForceGenerator
+  {
+    public bool Disabled { get; set; }
+
+    public System.Numerics.Vector3 Point { get; set; }
+    public float Weight { get; set; } = 0.017f;
+
+    public void ApplyForce(RigidBody body)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      if (Disabled) return;
+
+      body.Force += ((Point - body.Position) * (Weight * body.Mass));
+    }
+  }
+
+  public class RandomWandering
+   : IForceGenerator
+  {
+    public bool Disabled { get; set; }
+
+    public float Weight { get; set; } = 1f;
+
+    public void ApplyForce(RigidBody body)
+    {
+      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      if (Disabled) return;
+
+      body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Flux.Random.NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Flux.Random.NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Flux.Random.NumberGenerator.Crypto.NextDouble() - 0.5f);
+    }
+  }
+}

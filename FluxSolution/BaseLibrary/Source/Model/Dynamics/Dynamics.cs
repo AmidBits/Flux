@@ -209,69 +209,69 @@ using System.Linq;
 //  }
 //}
 
-namespace Flux.Model.Dynamics
-{
-  // http://www.enchantedage.com/node/68
-  public class RigidBody
-  {
-    public System.Collections.Generic.List<ForceGenerators.ForceGenerator> ForceGenerators { get; } = new System.Collections.Generic.List<ForceGenerators.ForceGenerator>();
+//namespace Flux.Model.Dynamics
+//{
+//  // http://www.enchantedage.com/node/68
+//  public class RigidBody
+//  {
+//    public System.Collections.Generic.List<ForceGenerators.ForceGenerator> ForceGenerators { get; } = new System.Collections.Generic.List<ForceGenerators.ForceGenerator>();
 
-    public float CoefficientOfDrag { get; set; } = 0.35F;
-    public float CoefficientOfRestitution { get; set; } = 0.95F;
+//    public float CoefficientOfDrag { get; set; } = 0.35F;
+//    public float CoefficientOfRestitution { get; set; } = 0.95F;
 
-    public float Mass { get; set; } = 7F;
+//    public float Mass { get; set; } = 7F;
 
-    public System.Numerics.Vector3 LinearVelocity;
-    public System.Numerics.Vector3 Force { get; set; }
+//    public System.Numerics.Vector3 LinearVelocity;
+//    public System.Numerics.Vector3 Force { get; set; }
 
-    public System.Numerics.Vector3 AngularVelocity { get; set; }
-    public System.Numerics.Vector3 Torque { get; set; }
+//    public System.Numerics.Vector3 AngularVelocity { get; set; }
+//    public System.Numerics.Vector3 Torque { get; set; }
 
-    public System.Numerics.Vector3 Position;
+//    public System.Numerics.Vector3 Position;
 
-    public System.Numerics.Quaternion Orientation { get; set; } = System.Numerics.Quaternion.Identity;
+//    public System.Numerics.Quaternion Orientation { get; set; } = System.Numerics.Quaternion.Identity;
 
-    public System.Numerics.Vector3 Volume { get; set; } = new System.Numerics.Vector3(0.5F, 2F, 0.25F);
+//    public System.Numerics.Vector3 Volume { get; set; } = new System.Numerics.Vector3(0.5F, 2F, 0.25F);
 
-    public void Integrate(float deltaTime)
-    {
-      foreach (var forceGenerator in ForceGenerators.Where(fg => !fg.Disabled))
-      {
-        forceGenerator.ApplyForce(this, System.Linq.Enumerable.Empty<RigidBody>());
-      }
+//    public void Integrate(float deltaTime)
+//    {
+//      foreach (var forceGenerator in ForceGenerators.Where(fg => !fg.Disabled))
+//      {
+//        forceGenerator.ApplyForce(this, System.Linq.Enumerable.Empty<RigidBody>());
+//      }
 
-      var linearAcceleration = Force / Mass;
-      LinearVelocity += linearAcceleration * deltaTime;
-      Force = System.Numerics.Vector3.Zero;
+//      var linearAcceleration = Force / Mass;
+//      LinearVelocity += linearAcceleration * deltaTime;
+//      Force = System.Numerics.Vector3.Zero;
 
-      var angularAcceleration = Torque / Mass;
-      AngularVelocity += angularAcceleration * deltaTime;
-      Torque = System.Numerics.Vector3.Zero;
+//      var angularAcceleration = Torque / Mass;
+//      AngularVelocity += angularAcceleration * deltaTime;
+//      Torque = System.Numerics.Vector3.Zero;
 
-      Position += LinearVelocity * deltaTime;
+//      Position += LinearVelocity * deltaTime;
 
-      Orientation += new System.Numerics.Quaternion((AngularVelocity * deltaTime), 0) * Orientation;
-      System.Numerics.Quaternion.Normalize(Orientation);
-    }
+//      Orientation += new System.Numerics.Quaternion((AngularVelocity * deltaTime), 0) * Orientation;
+//      System.Numerics.Quaternion.Normalize(Orientation);
+//    }
 
-    public void ApplyForce(System.Numerics.Vector3 forcePosition, System.Numerics.Vector3 directionMagnitude)
-    {
-      if (directionMagnitude.LengthSquared() is float lengthSquared && lengthSquared > float.Epsilon * 100)
-      {
-        Force += directionMagnitude;
+//    public void ApplyForce(System.Numerics.Vector3 forcePosition, System.Numerics.Vector3 directionMagnitude)
+//    {
+//      if (directionMagnitude.LengthSquared() is float lengthSquared && lengthSquared > float.Epsilon * 100)
+//      {
+//        Force += directionMagnitude;
 
-        if (forcePosition != default)
-        {
-          Torque += System.Numerics.Vector3.Cross(directionMagnitude, forcePosition - Position);
-        }
-      }
-    }
+//        if (forcePosition != default)
+//        {
+//          Torque += System.Numerics.Vector3.Cross(directionMagnitude, forcePosition - Position);
+//        }
+//      }
+//    }
 
-    public System.Numerics.Vector3 PointVelocity(System.Numerics.Vector3 worldPoint) => System.Numerics.Vector3.Cross(AngularVelocity, worldPoint - Position) + LinearVelocity;
+//    public System.Numerics.Vector3 PointVelocity(System.Numerics.Vector3 worldPoint) => System.Numerics.Vector3.Cross(AngularVelocity, worldPoint - Position) + LinearVelocity;
 
-    public override string ToString() => $"P:{Position}, O:{Orientation}, LV:{LinearVelocity}, AV:{AngularVelocity}";
-  }
-}
+//    public override string ToString() => $"P:{Position}, O:{Orientation}, LV:{LinearVelocity}, AV:{AngularVelocity}";
+//  }
+//}
 
 //namespace Flux.Model.Dynamics
 //{
