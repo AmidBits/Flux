@@ -21,7 +21,7 @@
         HeroType.Valkyrie => @"Thyra",
         HeroType.Warrior => @"Thor",
         HeroType.Wizard => @"Merlin",
-        _ => throw new System.ArgumentOutOfRangeException(nameof(type));
+        _ => throw new System.ArgumentOutOfRangeException(nameof(type))
       })
     {
       Type = type;

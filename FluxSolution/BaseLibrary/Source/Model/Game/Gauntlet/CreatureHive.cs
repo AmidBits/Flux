@@ -5,23 +5,21 @@
     : GauntletObject
   {
     public int HiveSize { get; set; }
+    public CreatureType HiveType { get; set; }
 
     public System.TimeSpan SpawnInterval { get; set; }
-    public float SpawnTriggerRadius { get; set; }
+    public System.Collections.Generic.List<Creature> SpawnPopulation { get; private set; }
+    public float SpawnRadius { get; set; }
 
-    public System.Collections.Generic.List<Creature> CreaturePopulation { get; private set; }
-    public Creature.CreatureType CreatureType { get; set; }
-
-    public CreatureHive(Creature.CreatureType type, int size)
+    public CreatureHive(CreatureType type, int size)
       : base(type.ToString())
     {
       HiveSize = size;
+      HiveType = type;
 
       SpawnInterval = new System.TimeSpan(0, 0, size * 3);
-      SpawnTriggerRadius = size * 2;
-
-      CreaturePopulation = new System.Collections.Generic.List<Creature>(size);
-      CreatureType = type;
+      SpawnPopulation = new System.Collections.Generic.List<Creature>(size);
+      SpawnRadius = size * 2;
     }
   }
 }
