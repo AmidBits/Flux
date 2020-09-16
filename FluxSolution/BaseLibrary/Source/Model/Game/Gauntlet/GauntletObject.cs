@@ -5,7 +5,10 @@
     public GauntletObject(string name)
       : base(name)
     {
+    }
 
+    public virtual void Update(float deltaTime)
+    {
     }
   }
 }

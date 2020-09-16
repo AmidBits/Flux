@@ -1,6 +1,12 @@
 ﻿namespace Flux.Model.Gaming
 {
+  public interface IGameUpdater
+  {
+    public void UpdateGame(float deltaTime);
+  }
+
   public class GameObject
+    : IGameUpdater
   {
     public System.Collections.Generic.List<GameObject> Children { get; } = new System.Collections.Generic.List<GameObject>();
 
@@ -18,12 +24,11 @@
     }
 
     /// <summary>This is the object delta updater.</summary>
-    public virtual void Update(float deltaTime)
+    public virtual void UpdateGame(float deltaTime)
     {
-      if (!UpdateDisabled)
-      {
-        Dynamics.Integrate(deltaTime);
-      }
+      if (UpdateDisabled) return;
+
+      Dynamics.Integrate(deltaTime);
     }
 
     /// <summary>Disables updating, if set to true.</summary>
