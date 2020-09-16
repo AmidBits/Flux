@@ -35,7 +35,9 @@ namespace Flux.Model
       ulong hash = 0;
 
       for (var d0i = 0; d0i < td0l; d0i++)
+      {
         for (var d1i = 0; d1i < td1l; d1i++)
+        {
           if (board[d0i, d1i] is var value && predicate(value))
           {
             var permutation = selector(value);
@@ -44,6 +46,8 @@ namespace Flux.Model
 
             hash ^= m_table[d0i, d1i, permutation];
           }
+        }
+      }
 
       return (long)hash;
     }

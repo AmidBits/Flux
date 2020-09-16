@@ -18,6 +18,12 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      foreach (var move in Flux.Model.TowerOfHanoi.SolveForThreeRods(4, 1, 2, 3))
+      {
+        System.Console.WriteLine(move);
+      }
+
+
       //var ttt = new Flux.Model.TicTacToe.Board();
       //System.Console.WriteLine(ttt.ToString());
 

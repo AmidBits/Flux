@@ -18,27 +18,6 @@ namespace Flux.Model
     /// <summary>A list of all squares and their respective list of 20 peer squares, e.g. ["A2", "B2", "D2", "E2", "F2", "G2", "H2", "I2", "C1", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "A1", "A3", "B1", "B3"].</summary>
     public static readonly System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers = Squares.Select(i => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();
 
-    //static Sudoku()
-    //{
-    //  Squares = new System.Collections.Generic.List<int>(81);
-
-    //  Units = new System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>>();
-
-    //  Peers = new System.Collections.Generic.List<System.Collections.Generic.List<int>>();
-
-    //  for (var index = 0; index < 81; index++)
-    //  {
-    //    Squares.Add(index);
-
-    //    Units.Add(System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(index).ToList(), GetUnitRow(index).ToList(), GetUnitBox(index).ToList()).ToList());
-
-    //    Peers.Add(Units[index].SelectMany(l => l).Distinct().Where(sx => sx != index).ToList());
-    //  }
-
-
-    //  Squares.Select(i => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList());
-    //}
-
     /// <summary>Assign a single digit to a square, by eliminating all the other values (except the specified digit) from values[square] and propagate.</summary>
     /// <returns>Null in case of failure to assign, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string>? Assign(System.Collections.Generic.List<string> values, int square, string digit)
