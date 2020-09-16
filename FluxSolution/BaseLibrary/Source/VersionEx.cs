@@ -5,6 +5,9 @@ namespace Flux
   public struct VersionEx
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>, System.IFormattable
   {
+    public static readonly VersionEx Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private static readonly char[] m_separatorsArray = new char[] { '.' };
     private readonly int[] m_parts;
 

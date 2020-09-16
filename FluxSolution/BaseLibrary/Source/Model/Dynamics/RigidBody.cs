@@ -1,6 +1,3 @@
-using Flux.Media.Geometry.Shapes;
-using System.Linq;
-
 namespace Flux.Model.Dynamics
 {
   // http://www.enchantedage.com/node/68
