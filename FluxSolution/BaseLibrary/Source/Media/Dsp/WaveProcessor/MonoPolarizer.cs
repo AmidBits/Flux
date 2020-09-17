@@ -30,9 +30,13 @@
       _ => (sample),
     });
 
-    public static double ApplyBipolarToUnipolarNegative(double sample) => sample / 2.0 - 0.5;
-    public static double ApplyBipolarToUnipolarPositive(double sample) => sample / 2.0 + 0.5;
-    public static double ApplyUnipolarNegativeToBipolar(double sample) => sample < 0.0 ? sample * 2.0 + 1.0 : 0.0;
-    public static double ApplyUnipolarPositiveToBipolar(double sample) => sample > 0.0 ? sample * 2.0 - 1.0 : 0.0;
+    public static double ApplyBipolarToUnipolarNegative(double sample)
+      => sample / 2.0 - 0.5;
+    public static double ApplyBipolarToUnipolarPositive(double sample)
+      => sample / 2.0 + 0.5;
+    public static double ApplyUnipolarNegativeToBipolar(double sample)
+      => sample < 0.0 ? sample * 2.0 + 1.0 : 0.0;
+    public static double ApplyUnipolarPositiveToBipolar(double sample)
+      => sample > 0.0 ? sample * 2.0 - 1.0 : 0.0;
   }
 }

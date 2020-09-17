@@ -35,9 +35,13 @@
       _ => (sample),
     });
 
-    public static double InvertNegativePeekOnly(double sample) => sample < 0.0 ? -sample - 1.0 : sample;
-    public static double InvertPeeksIndependently(double sample) => sample < 0.0 ? -sample - 1.0 : sample > 0.0 ? -sample + 1.0 : sample;
-    public static double InvertPeekToPeek(double sample) => -sample;
-    public static double InvertPositivePeekOnly(double sample) => sample > 0.0 ? -sample + 1.0 : sample;
+    public static double InvertNegativePeekOnly(double sample)
+      => sample < 0.0 ? -sample - 1.0 : sample;
+    public static double InvertPeeksIndependently(double sample)
+      => sample < 0.0 ? -sample - 1.0 : sample > 0.0 ? -sample + 1.0 : sample;
+    public static double InvertPeekToPeek(double sample)
+      => -sample;
+    public static double InvertPositivePeekOnly(double sample)
+      => sample > 0.0 ? -sample + 1.0 : sample;
   }
 }

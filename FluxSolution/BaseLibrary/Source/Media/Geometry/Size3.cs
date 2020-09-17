@@ -1,7 +1,7 @@
 namespace Flux.Media.Geometry
 {
-  public struct Size
-    : System.IEquatable<Size>, System.IFormattable
+  public struct Size3
+    : System.IEquatable<Size3>, System.IFormattable
   {
     public float Width { get; set; }
     public float Height { get; set; }
@@ -11,22 +11,22 @@ namespace Flux.Media.Geometry
       => new Numerics.Vector3D(Width / 2, Height / 2, Depth / 2, 0);
 
     // Operators
-    public static bool operator ==(Size a, Size b)
+    public static bool operator ==(Size3 a, Size3 b)
       => a.Equals(b);
-    public static bool operator !=(Size a, Size b)
+    public static bool operator !=(Size3 a, Size3 b)
       => !a.Equals(b);
     // IEquatable
-    public bool Equals(Size other)
+    public bool Equals(Size3 other)
       => Width == other.Width && Height == other.Height && Depth == other.Depth;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{nameof(Size)} {Width}, {Height}, {Depth}>";
+      => $"<{nameof(Size3)}: {Width}, {Height}, {Depth}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Size s && Equals(s);
+      => obj is Size3 o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(0);
+      => Flux.HashCode.CombineCore(Width, Height, Depth);
     public override string? ToString()
-      => base.ToString();
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

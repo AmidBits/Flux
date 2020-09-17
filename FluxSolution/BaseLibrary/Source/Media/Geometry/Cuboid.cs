@@ -23,13 +23,13 @@ namespace Flux.Media.Geometry
       => X == other.X && Y == other.Y && Z == other.Z && Width == other.Width && Height == other.Height && Depth == other.Depth;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{nameof(Cuboid)} {X}, {Y}, {Z}, {Width}, {Height}, {Depth}>";
+      => $"<{nameof(Cuboid)}: {X}, {Y}, {Z}, {Width}, {Height}, {Depth}>";
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Cuboid o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(0);
+      => Flux.HashCode.CombineCore(X, Y, Z, Width, Height, Depth);
     public override string? ToString()
-      => base.ToString();
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

@@ -1,5 +1,7 @@
 namespace Flux.Media.Geometry
 {
+  /// <summary></summary>
+  /// <remarks>NOTE! ViewPort does not currently have any properties.</remarks>
   public struct ViewPort
     : System.IEquatable<ViewPort>, System.IFormattable
   {
@@ -41,16 +43,16 @@ namespace Flux.Media.Geometry
       => !a.Equals(b);
     // IEquatable
     public bool Equals(ViewPort other)
-      => ToString() == other.ToString(); // NOTE THAT ViewPort does not currently have any properties.
+      => ToString() == other.ToString();
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<ViewPort>";
+      => $"<ViewPort:>";
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(0);
     public override string? ToString()
-      => base.ToString();
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

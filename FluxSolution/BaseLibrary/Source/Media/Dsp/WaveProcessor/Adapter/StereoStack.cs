@@ -9,9 +9,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
     public StereoSample ProcessAudio(StereoSample sample)
     {
       foreach (var processor in Processors)
-      {
         sample = processor.ProcessAudio(sample);
-      }
 
       return sample;
     }

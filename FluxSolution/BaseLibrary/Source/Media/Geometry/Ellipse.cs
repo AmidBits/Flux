@@ -121,13 +121,13 @@ namespace Flux.Media.Geometry.Shapes
       => Angle == other.Angle && Height == other.Height && Width == other.Width;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{Width.ToString(format, provider)}, {Height.ToString(format, provider)}, {Angle.ToString(format, provider)}>";
+      => $"<{nameof(Ellipse)}: {Width.ToString(format, provider)}, {Height.ToString(format, provider)}, {Angle.ToString(format, provider)}>";
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Angle, Height, Width);
     public override string? ToString()
-      => base.ToString();
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

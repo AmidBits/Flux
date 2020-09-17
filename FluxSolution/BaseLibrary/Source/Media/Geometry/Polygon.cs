@@ -104,14 +104,14 @@ namespace Flux.Media.Geometry.Shapes
 
         if (a.Y <= point.Y)
         {
-          if (b.Y > point.Y && Line.SideTest(point, a, b) > 0)
+          if (b.Y > point.Y && Line3.SideTest(point, a, b) > 0)
           {
             wn++;
           }
         }
         else
         {
-          if (b.Y <= point.Y && Line.SideTest(point, a, b) < 0)
+          if (b.Y <= point.Y && Line3.SideTest(point, a, b) < 0)
           {
             wn--;
           }
@@ -377,7 +377,7 @@ namespace Flux.Media.Geometry.Shapes
 
       if (half2.Count < 3)
       {
-        var midpoint = Line.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
+        var midpoint = Line3.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
 
         half1.Add(midpoint);
         half2.Insert(0, midpoint);
@@ -410,7 +410,7 @@ namespace Flux.Media.Geometry.Shapes
       for (var i = startIndex; i < count; i++)
       {
         var triplet = angles[i % angles.Count];
-        var midpoint23 = Line.IntermediaryPoint(triplet.Item2, triplet.Item3);
+        var midpoint23 = Line3.IntermediaryPoint(triplet.Item2, triplet.Item3);
 
         yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, triplet.Item2, midpoint23 };
         yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, midpoint23, triplet.Item3 };
@@ -723,7 +723,8 @@ namespace Flux.Media.Geometry.Shapes
     // IEquatable
     public bool Equals(Polygon other)
     {
-      if (Vectors.Count != other.Vectors.Count) return false;
+      if (Vectors.Count != other.Vectors.Count)
+        return false;
 
       for (var index = Vectors.Count; index >= 0; index--)
         if (Vectors[index] != other.Vectors[index])
@@ -733,13 +734,13 @@ namespace Flux.Media.Geometry.Shapes
     }
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{string.Join(@", ", Vectors.Select(v => v.ToString(format, provider)))}>";
+      => $"<{nameof(Polygon)}: {string.Join(@", ", Vectors.Select(v => v.ToString(format, provider)))}>";
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(Vectors);
     public override string? ToString()
-      => base.ToString();
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

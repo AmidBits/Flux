@@ -5,7 +5,11 @@ namespace Flux.Dsp.AudioProcessor
   {
     private double m_polarBias;
     /// <summary>The (polar) bias can be set within the range of [-1, 1].</summary>
-    public double PolarBias { get => m_polarBias; set => m_polarBias = Maths.Clamp(value, -1.0, 1.0); }
+    public double PolarBias
+    {
+      get => m_polarBias;
+      set => m_polarBias = Maths.Clamp(value, -1.0, 1.0);
+    }
 
     private double m_multiplier;
     /// <summary>The multiplier can be set within the range of [-1, 1].</summary>
@@ -36,6 +40,9 @@ namespace Flux.Dsp.AudioProcessor
     public MonoFolder() : this(0, 0) { }
 
     public double ProcessAudio(double sample)
-      => (Maths.Fold(m_multiplier * (sample + m_polarBias), -1, 1));
+      => Maths.Fold(m_multiplier * (sample + m_polarBias), -1, 1);
+
+    public static double ApplyFolder(double sample, double polarBias, double multiplier)
+      => Maths.Fold(multiplier * (sample + polarBias), -1, 1);
   }
 }
