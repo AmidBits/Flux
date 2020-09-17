@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   public class CsvWriter
@@ -21,141 +23,107 @@ namespace Flux.Text
     public int FieldCount { get; private set; } = -1;
     public int FieldIndex { get; private set; } = -1;
 
-    private bool m_inField;
-    private bool m_inLine;
+    public int LineIndex { get; private set; } = -1;
 
     private readonly System.Text.StringBuilder m_fieldValue = new System.Text.StringBuilder();
 
-    private void FlushFieldValue()
+    private bool m_inField;
+    private bool m_inLine;
+
+    public void Flush()
     {
-      FlushFieldValue(m_fieldValue.ToString());
+      if (m_inField)
+        WriteEndField();
+      if (m_inLine)
+        WriteEndLine();
+
+      m_streamWriter.Flush();
+    }
+
+    public void WriteStartLine()
+    {
+      if (m_inLine) throw new System.InvalidOperationException(@"Invalid context (already in line).");
+
+      m_inLine = true;
+
+      LineIndex++;
+    }
+    public void WriteEndLine()
+    {
+      if (m_inField) throw new System.InvalidOperationException(@"Invalid context (in field).");
+      if (!m_inLine) throw new System.InvalidOperationException(@"Invalid context (not in line).");
+
+      m_streamWriter.Write(System.Environment.NewLine);
+
+      if (LineIndex > 0 && FieldIndex != FieldCount - 1) throw new System.InvalidOperationException(@"Inconsistent field count.");
+
+      FieldIndex = -1;
+
+      m_inLine = false;
+    }
+
+    public void WriteStartField()
+    {
+      if (!m_inLine) throw new System.InvalidOperationException(@"Invalid context (not in line).");
+      if (m_inField) throw new System.InvalidOperationException(@"Invalid context (already in field).");
+
+      m_inField = true;
+
+      FieldIndex++;
+
+      if (LineIndex == 0)
+        FieldCount = FieldIndex + 1;
+    }
+    public void WriteEndField()
+    {
+      if (!m_inField) throw new System.InvalidOperationException(@"Invalid field context (not in field).");
+
+      if (FieldIndex > 0)
+        m_streamWriter.Write(m_options.FieldSeparator);
+
+      var value = m_fieldValue.ToString();
 
       m_fieldValue.Clear();
-    }
-    private void FlushFieldValue(string value)
-    {
-      if (FieldIndex > 0)
-      {
-        m_streamWriter.Write(m_options.FieldSeparator);
-      }
 
-      if (value.IndexOfAny(m_escapeCharacters) > -1)
+      if (m_options.AlwaysEnquote || value.IndexOfAny(m_escapeCharacters) > -1)
       {
         m_streamWriter.Write('"');
         m_streamWriter.Write(value.Contains("\"", System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
         m_streamWriter.Write('"');
       }
       else
-      {
         m_streamWriter.Write(value);
-      }
+
+      m_inField = false;
     }
 
-    public int LineNumber { get; private set; } = -1;
-
-    public void WriteStartField()
-    {
-      if (m_inLine && !m_inField)
-      {
-        m_inField = true;
-
-        FieldIndex++;
-
-        if (LineNumber == 0) FieldCount = FieldIndex + 1;
-      }
-      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
-    }
-    public void WriteChars(char[] buffer, int index, int count)
-    {
-      if (m_inField)
-      {
-        m_fieldValue.Append(buffer, index, count);
-      }
-      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
-    }
-    public void WriteFieldString(string value)
-    {
-      if (!m_inField && m_inLine)
-      {
-        FieldIndex++;
-
-        if (LineNumber == 0) FieldCount = FieldIndex + 1;
-
-        FlushFieldValue(value ?? string.Empty);
-      }
-      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
-    }
     public void WriteString(string value)
     {
-      if (m_inField)
-      {
-        m_fieldValue.Append(value);
-      }
-      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
-    }
-    public void WriteEndField()
-    {
-      if (m_inField)
-      {
-        FlushFieldValue();
+      if (!m_inField) throw new System.InvalidOperationException(@"Invalid field context (not in field).");
 
-        m_inField = false;
-      }
-      else throw new System.InvalidOperationException(@"Invalid field context (not in field).");
-
+      m_fieldValue.Append(value);
     }
 
-    public void WriteStartLine()
+    public void WriteFieldString(string value)
     {
-      if (!m_inField && !m_inLine)
-      {
-        m_inLine = true;
-
-        LineNumber++;
-      }
-      else throw new System.InvalidOperationException(@"Invalid context (in field or in line).");
-    }
-    public void WriteEndLine()
-    {
-      if (!m_inField && m_inLine)
-      {
-        m_streamWriter.WriteLine();
-
-        //if (LineNumber== 0) FieldCount = FieldIndex + 1;
-        //else if (FieldIndex != FieldCount - 1) throw new System.InvalidOperationException(@"Inconsistent field count.");
-
-        FieldIndex = -1;
-
-        m_inLine = false;
-      }
-      else throw new System.InvalidOperationException(@"Invalid context (in field or not in line).");
+      WriteStartField();
+      WriteString(value);
+      WriteEndField();
     }
 
-    public void WriteArray(string[] values)
+    public void WriteArray(System.Collections.Generic.IEnumerable<string> values)
     {
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
       WriteStartLine();
-      foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
-      {
+      foreach (var value in values)
         WriteFieldString(value);
-
-        //WriteStartField();
-        //WriteString(value);
-        //WriteEndField();
-      }
       WriteEndLine();
     }
-    public void WriteArrays(System.Collections.Generic.IEnumerable<string[]> arrays)
-    {
-      foreach (var array in arrays ?? throw new System.ArgumentNullException(nameof(arrays)))
-      {
-        WriteArray(array);
-      }
-    }
+    public void WriteArray(params string[] values)
+      => WriteArray(values.AsEnumerable());
 
     protected override void DisposeManaged()
-    {
-      m_streamWriter.Flush();
-      m_streamWriter.Dispose();
-    }
+      => Flush();
   }
 }
