@@ -4,11 +4,20 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
-    /// <summary>Returns a random element from the sequence, based on the specified RNG.</summary>
-    public static T RandomElement<T>(this System.Collections.Generic.IList<T> source, System.Random rng)
-      => source.ThrowOnNull().Any() ? source[(rng ?? throw new System.ArgumentNullException(nameof(rng))).Next(source.Count)] : throw new System.ArgumentException(@"The sequence is empty.");
-    /// <summary>Returns a random element from the sequence.</summary>
-    public static T RandomElement<T>(this System.Collections.Generic.IList<T> source)
-      => RandomElement(source,Flux.Random.NumberGenerator.Crypto);
+    /// <summary>Returns a random element from the list in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
+    public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result, System.Random rng)
+    {
+      if (source.ThrowOnNull().Any())
+      {
+        result = source[(rng ?? Flux.Random.NumberGenerator.Crypto).Next(source.Count)];
+        return true;
+      }
+
+      result = default!;
+      return false;
+    }
+    /// <summary>Returns a random element from the list in the output variable. Uses the .NET cryptographic random number generator.</summary>
+    public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result)
+      => RandomElement(source, out result, Flux.Random.NumberGenerator.Crypto);
   }
 }

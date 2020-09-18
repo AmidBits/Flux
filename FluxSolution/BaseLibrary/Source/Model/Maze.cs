@@ -24,11 +24,11 @@ namespace Flux.Model
         {
           var unlinkedNeighbors = cell.Edges.Where(kvp => !cell.Paths.ContainsValue(kvp.Value));
 
-          var preferedNeighbors = unlinkedNeighbors.OrderBy(kvp => kvp.Value.Paths.Count);
+          var preferredNeighbors = unlinkedNeighbors.OrderBy(kvp => kvp.Value.Paths.Count);
 
-          var neighbor = preferedNeighbors.RandomElement(Rng).Value;
+          preferredNeighbors.RandomElement(out var neighbor, Rng);
 
-          cell.ConnectPath(neighbor, true);
+          cell.ConnectPath(neighbor.Value, true);
         }
       }
     }
@@ -43,13 +43,13 @@ namespace Flux.Model
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      var current = grid.Cells.RandomElement(Rng);
+      grid.Cells.RandomElement(out var current, Rng);
 
       var unvisitedCount = grid.Cells.Count - 1;
 
       while (unvisitedCount > 0)
       {
-        var neighbor = current.Edges.Select(kvp => kvp.Value).RandomElement(Rng);
+        current.Edges.Select(kvp => kvp.Value).RandomElement(out var neighbor, Rng);
 
         if (!neighbor.Paths.Any())
         {
@@ -71,12 +71,15 @@ namespace Flux.Model
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
       var stack = new System.Collections.Generic.Stack<Cell>();
-      stack.Push(grid.Cells.RandomElement(Rng));
+      grid.Cells.RandomElement(out var element, Rng);
+      stack.Push(element);
       while (stack.Any())
       {
         if (stack.Peek() is Cell current && current.GetEdgesWithoutPaths() is System.Collections.Generic.IEnumerable<Cell> unvisited && unvisited.Any())
         {
-          stack.Push(current.ConnectPath(unvisited.RandomElement(Rng), true));
+          unvisited.RandomElement(out var unvisitedElement, Rng);
+
+          stack.Push(current.ConnectPath(unvisitedElement, true));
         }
         else
         {
@@ -121,7 +124,9 @@ namespace Flux.Model
         var direction = cell.Edges.Where(kvp => kvp.Key == direction1 || kvp.Key == direction2);
         if (direction.Any())
         {
-          cell.ConnectPath(direction.RandomElement(Rng).Value, true);
+          direction.RandomElement(out var element, Rng);
+
+          cell.ConnectPath(element.Value, true);
         }
       }
     }
@@ -132,7 +137,9 @@ namespace Flux.Model
   {
     public System.Func<System.Collections.Generic.IReadOnlyList<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
     {
-      return list.RandomElement(); // Prim's algorithm by default
+      list.RandomElement(out var element);
+
+      return element; // Prim's algorithm by default
     };
 
     public override void Build(Grid grid)
@@ -148,7 +155,9 @@ namespace Flux.Model
         var unvisited = cell.GetEdgesWithoutPaths();
         if (unvisited.Any())
         {
-          active.Add(cell.ConnectPath(unvisited.RandomElement(Rng), true));
+          unvisited.RandomElement(out var element, Rng);
+
+          active.Add(cell.ConnectPath(element, true));
         }
         else
         {
@@ -165,14 +174,16 @@ namespace Flux.Model
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      Cell? current = grid.Cells.RandomElement(Rng);
+      grid.Cells.RandomElement(out var current, Rng);
 
       while (current != null)
       {
         var unvisited = current.GetEdgesWithoutPaths();
         if (unvisited.Any())
         {
-          current = current.ConnectPath(unvisited.RandomElement(Rng), true);
+          unvisited.RandomElement(out var unvisitedElement, Rng);
+
+          current = current.ConnectPath(unvisitedElement, true);
         }
         else
         {
@@ -181,9 +192,12 @@ namespace Flux.Model
           foreach (var cell in grid.Cells.Where(c => !c.Paths.Any()))
           {
             var visited = cell.GetEdgesWithPaths();
+
             if (visited.Any())
             {
-              cell.ConnectPath(visited.RandomElement(Rng), true);
+              visited.RandomElement(out var visitedElement, Rng);
+
+              cell.ConnectPath(visitedElement, true);
 
               current = cell;
 
@@ -307,7 +321,7 @@ namespace Flux.Model
 
           if (atBoundary2 || (!atBoundary1 && Rng.Next(2) == 0)) // should close out
           {
-            if (run.RandomElement(Rng) is var member && member.Edges.ContainsKey(direction1))
+            if (run.RandomElement(out var member, Rng) && member.Edges.ContainsKey(direction1))
             {
               member.ConnectPath(member.Edges[direction1], true);
             }
@@ -333,18 +347,19 @@ namespace Flux.Model
       var path = new System.Collections.Generic.List<Cell>();
 
       var unvisited = grid.Cells.ToList();
-      unvisited.Remove(unvisited.RandomElement(Rng));
+      unvisited.RandomElement(out var unvisitedElement, Rng);
+      unvisited.Remove(unvisitedElement);
 
       while (unvisited.Any())
       {
-        var cell = unvisited.RandomElement(Rng);
+        unvisited.RandomElement(out var cell, Rng);
 
         path.Clear();
         path.Add(cell);
 
         while (unvisited.Contains(cell))
         {
-          cell = cell.Edges.Select(kvp => kvp.Value).RandomElement(Rng);
+          cell.Edges.Select(kvp => kvp.Value).RandomElement(out cell, Rng);
 
           if (path.IndexOf(cell) is int position && position > -1)
           {

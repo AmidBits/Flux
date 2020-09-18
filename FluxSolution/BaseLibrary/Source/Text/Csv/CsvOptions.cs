@@ -9,5 +9,3 @@ namespace Flux.Text
     public char FieldSeparator { get; set; } = ',';
   }
 }
-
-// ticket 43745 for whitelisting of PowerBI things, sent to security team

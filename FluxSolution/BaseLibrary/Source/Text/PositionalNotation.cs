@@ -4,8 +4,6 @@ namespace Flux.Text
   /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
   public static class PositionalNotation
   {
-    public const string CsGraphemesMustBeUnique = @"Graphemes must be unique.";
-
     /// <summary>Decimal unicode subscript</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Subscript_and_superscript"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Decimal"/>

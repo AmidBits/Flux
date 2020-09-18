@@ -18,14 +18,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var i = -123.ToBigInteger();
+      var ri = Flux.Maths.ReverseDigits(i, 10);
+      System.Console.WriteLine($"{i} = {ri}");
 
-      foreach (var collection in System.Linq.Enumerable.Range(1, 99).GetByProbability(0.1))
-      {
-        System.Console.WriteLine(collection);
-      }
-
-      return;
-
+      /*
       var ttt = new Flux.Model.TicTacToe.Board();
 
       for (var index = 0; index < 9; index++)
@@ -45,7 +42,7 @@ namespace ConsoleApp
           var myTopMoves = allMyMoves.Where(m => m.Score == allMyMoves.Max(m => m.Score)).ToList();
           if (myTopMoves.Count > 0)
           {
-            var myTopMove = myTopMoves.RandomElement();
+            myTopMoves.RandomElement(out var myTopMove);
             if (myTopMove.Score == -10) break;
             System.Console.WriteLine($"Your top move: {myTopMove}");
           }
@@ -87,7 +84,7 @@ namespace ConsoleApp
 
           if (topMoves.Count == 0) break;
 
-          var topMove = topMoves.RandomElement();
+          topMoves.RandomElement(out var topMove);
           if (topMove.Score == 10) break;
 
           if (!(topMove.Row == -1 || topMove.Column == -1))
@@ -96,29 +93,7 @@ namespace ConsoleApp
           System.Console.WriteLine(ttt.ToString());
         }
       }
-      //if (move.Score == +10 || move.Score == -10) break;
-
-      //var tmp = player;
-      //player = opponent;
-      //opponent = tmp;
-      //turn = !turn;
-
-      //foreach (var dr in Flux.Resources.Ucd.UnicodeData.GetDataReader(Flux.Resources.Ucd.UnicodeData.LocalUri))
-      //  System.Console.WriteLine(string.Join(", ", dr.GetValues()));
-
-      //var quad = new Flux.Collections.Generic.Quadtree<Test>(new Rectangle(0, 0, 600, 600));
-
-      //quad.Insert(new Test() { Bounds = new Rectangle(450, 150, 10, 10) });
-      //quad.Insert(new Test() { Bounds = new Rectangle(150, 350, 10, 10) });
-      //quad.Insert(new Test() { Bounds = new Rectangle(400, 250, 10, 10) });
-      //quad.Insert(new Test() { Bounds = new Rectangle(425, 125, 10, 10) });
-
-      //var q = quad.Retrieve(new Rectangle(301,301, 298, 298));
-
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => aad.AverageAbsoluteDeviationFromMean()));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => aad.AverageAbsoluteDeviationFromMedian()));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => aad.AverageAbsoluteDeviationFromMode()));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => felix.Variance()));
+      */
     }
 
     static void Main(string[] args)

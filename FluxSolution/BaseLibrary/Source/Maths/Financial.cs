@@ -16,7 +16,7 @@ namespace Flux
     {
       var r = fixedYearlyNominalInterestRate / 100.0 / 12.0;
 
-      return (r / (1.0 - System.Math.Pow((1.0 + r), (-numberOfYears * 12.0)))) * loanAmount;
+      return r / (1.0 - System.Math.Pow(1.0 + r, -numberOfYears * 12.0)) * loanAmount;
     }
   }
 }

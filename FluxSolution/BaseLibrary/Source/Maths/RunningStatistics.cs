@@ -204,13 +204,13 @@
       => m_count == other.m_count && m_hm == other.m_hm && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_max_abs == other.m_max_abs && m_min == other.m_min && m_min_abs == other.m_min_abs && m_product == other.m_product && m_sum == other.m_sum;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Empty;
+      => $"<{GetType().Name}(count: {m_count}, sum: {m_sum}, m1: {m_m1}, m2: {m_m2}, m3: {m_m3}, m4: {m_m4}, min/max:[{m_min}, {m_max}][|{m_min_abs}|, |{m_max_abs}|])>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is VersionEx ? Equals((VersionEx)obj) : false;
+      => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => Flux.HashCode.CombineCore(m_count, m_hm, m_m1, m_m2, m_m3, m_m4);
     public override string? ToString()
-      => $"{this.GetType().Name}(count: {m_count}, sum: {m_sum}, m1: {m_m1}, m2: {m_m2}, m3: {m_m3}, m4: {m_m4}, min/max:[{m_min}, {m_max}][|{m_min_abs}|, |{m_max_abs}|])";
+      => ToString(null, null);
   }
 }

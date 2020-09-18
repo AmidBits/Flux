@@ -128,9 +128,11 @@ namespace Flux.Model
     {
       var values = Squares.Select(i => ColumnLabels).ToList();
 
-      foreach (var square in Squares.Randomize())
+      foreach (var square in Squares.Shuffle())
       {
-        if (Assign(values, square, values[square].RandomElement().ToString()) == null)
+        values[square].RandomElement(out var value);
+
+        if (Assign(values, square, value.ToString()) == null)
         {
           break;
         }

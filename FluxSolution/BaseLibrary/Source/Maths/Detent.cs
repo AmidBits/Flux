@@ -3,7 +3,6 @@ namespace Flux
   public static partial class Maths
   {
     #region DetentInterval(value, interval, distance)
-
     /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval.</summary>
     public static System.Numerics.BigInteger DetentInterval(in System.Numerics.BigInteger value, in System.Numerics.BigInteger interval, in System.Numerics.BigInteger distance)
       => (value / interval) * interval is var nearestInterval && System.Numerics.BigInteger.Abs(nearestInterval - value) < distance ? nearestInterval : value;
@@ -34,11 +33,9 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong DetentInterval(ulong value, ulong interval, ulong distance)
       => (value / interval) * interval is var nearestInterval && (ulong)System.Math.Abs((long)(nearestInterval - value)) < distance ? nearestInterval : value;
-
     #endregion DetentInterval(value, interval, distance)
 
     #region DetentPosition(value, position, distance)
-
     /// <summary>Determines whether a value is within a specified distance of the position, and if so, snaps the value to the position.</summary>
     public static System.Numerics.BigInteger DetentPosition(System.Numerics.BigInteger value, System.Numerics.BigInteger position, System.Numerics.BigInteger distance)
       => System.Numerics.BigInteger.Abs(position - value) > System.Numerics.BigInteger.Abs(distance) ? value : position;
@@ -69,11 +66,9 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong DetentPosition(ulong value, ulong position, ulong distance)
       => value >= position - distance && value <= position + distance ? position : value;
-
     #endregion DetentPosition(value, position, distance)
 
     #region DetentZero(value, distance)
-
     /// <summary>Snaps the value to zero if it's within the specified distance of zero.</summary>
     public static System.Numerics.BigInteger DetentZero(System.Numerics.BigInteger value, System.Numerics.BigInteger distance)
       => value < -distance || value > distance ? value : 0;
@@ -104,7 +99,6 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong DetentZero(ulong value, ulong distance)
       => value > distance ? value : 0;
-
     #endregion DetentZero(value, distance)
   }
 }
