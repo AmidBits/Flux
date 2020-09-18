@@ -16,9 +16,9 @@ namespace Flux.Random
     public override void NextBytes(byte[] buffer) => System.Security.Cryptography.RandomNumberGenerator.Fill(buffer);
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
-    public override double NextDouble() => (System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (1UL << 53);
+    public override double NextDouble() => (double)(System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (double)(1UL << 53);
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
-    protected override double Sample() => (System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (1UL << 53);
+    protected override double Sample() => (double)(System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (double)(1UL << 53);
   }
 }

@@ -18,73 +18,84 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      foreach (var move in Flux.Model.TowerOfHanoi.SolveForThreeRods(4, 1, 2, 3))
+
+      foreach (var collection in System.Linq.Enumerable.Range(1, 99).GetByProbability(0.1))
       {
-        System.Console.WriteLine(move);
+        System.Console.WriteLine(collection);
       }
 
+      return;
 
-      //var ttt = new Flux.Model.TicTacToe.Board();
-      //System.Console.WriteLine(ttt.ToString());
+      var ttt = new Flux.Model.TicTacToe.Board();
 
-      //for (var index = 0; index < 9; index++)
-      //{
-      //  {
-      //    var myAllMoves = ttt.GetOptionsForPlayer2().ToList();
-      //    if (myAllMoves.Count > 0)
-      //      System.Console.WriteLine(string.Join(System.Environment.NewLine, myAllMoves));
-      //    var myTopMoves = myAllMoves.Where(m => m.Score == myAllMoves.Max(m => m.Score)).ToList();
-      //    if (myTopMoves.Count > 0)
-      //    {
-      //      var myTopMove = myTopMoves.RandomElement();
-      //      if (myTopMove.Score == -10) break;
-      //      System.Console.WriteLine($"Your top move: {myTopMove}");
-      //    }
+      for (var index = 0; index < 9; index++)
+      {
+        System.Console.Clear();
 
-      //    System.Console.Write("Enter row: ");
-      //    var rowChar = System.Console.ReadKey().KeyChar;
-      //    System.Console.Write("\r\nEnter column: ");
-      //    var columnChar = System.Console.ReadKey().KeyChar;
+        {
+          System.Console.WriteLine(ttt.ToString());
 
-      //    if (rowChar == '\u001b' || columnChar == '\u001b')
-      //    {
-      //      ttt.Clear();
-      //      System.Console.Clear();
-      //      continue;
-      //    }
-      //    else System.Console.Clear();
+          var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
+          if (allMoves1.Count > 0) System.Console.WriteLine("a1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
+          var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
+          if (allMoves2.Count > 0) System.Console.WriteLine("a2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
 
-      //    var row = int.Parse(rowChar.ToString());
-      //    var column = int.Parse(columnChar.ToString());
+          var allMyMoves = allMoves1;
 
-      //    System.Console.WriteLine($"\r\nYour move: {row}, {column}");
+          var myTopMoves = allMyMoves.Where(m => m.Score == allMyMoves.Max(m => m.Score)).ToList();
+          if (myTopMoves.Count > 0)
+          {
+            var myTopMove = myTopMoves.RandomElement();
+            if (myTopMove.Score == -10) break;
+            System.Console.WriteLine($"Your top move: {myTopMove}");
+          }
 
-      //    ttt[row, column] = Flux.Model.TicTacToe.State.Player2;
+          System.Console.Write("Enter row: ");
+          var rowChar = System.Console.ReadKey().KeyChar;
+          System.Console.Write("\r\nEnter column: ");
+          var columnChar = System.Console.ReadKey().KeyChar;
 
-      //    System.Console.WriteLine(ttt.ToString());
-      //  }
+          if (rowChar == '\u001b' || columnChar == '\u001b')
+          {
+            ttt.Clear();
+            System.Console.Clear();
+            continue;
+          }
 
-      //  {
-      //    var allMoves = ttt.GetOptionsForPlayer1().ToList();
+          var row = int.Parse(rowChar.ToString());
+          var column = int.Parse(columnChar.ToString());
 
-      //    if (allMoves.Count == 0) break;
+          System.Console.WriteLine($"\r\nYour move: {row}, {column}");
 
-      //    foreach (var m in allMoves)
-      //      System.Console.WriteLine(m);
+          ttt[row, column] = Flux.Model.TicTacToe.State.Player2;
+        }
 
-      //    var topMoves = allMoves.Where(m => m.Score == allMoves.Max(m => m.Score)).ToList();
+        {
+          var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
+          if (allMoves1.Count > 0) System.Console.WriteLine("b1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
+          var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
+          if (allMoves2.Count > 0) System.Console.WriteLine("b2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
 
-      //    if (topMoves.Count == 0) break;
+          var allMoves = allMoves2;
 
-      //    var topMove = topMoves.RandomElement();
-      //    if (topMove.Score == 10) break;
+          if (allMoves.Count == 0) break;
 
-      //    if (!(topMove.Row == -1 || topMove.Column == -1))
-      //      ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.State.Player1;//turn ? player : opponent;
+          foreach (var m in allMoves)
+            System.Console.WriteLine(m);
 
-      //    System.Console.WriteLine(ttt.ToString());
-      //  }
-      //}
+          var topMoves = allMoves.Where(m => m.Score == allMoves.Min(m => m.Score)).ToList();
+
+          if (topMoves.Count == 0) break;
+
+          var topMove = topMoves.RandomElement();
+          if (topMove.Score == 10) break;
+
+          if (!(topMove.Row == -1 || topMove.Column == -1))
+            ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.State.Player1;//turn ? player : opponent;
+
+          System.Console.WriteLine(ttt.ToString());
+        }
+      }
       //if (move.Score == +10 || move.Score == -10) break;
 
       //var tmp = player;
