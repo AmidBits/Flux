@@ -6,9 +6,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var i = -123.ToBigInteger();
-      var ri = Flux.Maths.ReverseDigits(i, 10);
-      System.Console.WriteLine($"{i} = {ri}");
+
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();

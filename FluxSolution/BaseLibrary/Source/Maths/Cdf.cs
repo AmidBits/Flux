@@ -16,13 +16,13 @@ namespace Flux
       // Save the sign of x
       var sign = x < 0 ? -1 : 1;
 
-      x = System.Math.Abs(x) / System.Math.Sqrt(2.0);
+      x = System.Math.Abs(x) / System.Math.Sqrt(2d);
 
       // A&S formula 7.1.26
-      var t = 1.0 / (1.0 + p * x);
-      var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * System.Math.Exp(-x * x);
+      var t = 1d / (1d + p * x);
+      var y = 1d - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * System.Math.Exp(-x * x);
 
-      return 0.5 * (1.0 + sign * y);
+      return 0.5 * (1d + sign * y);
     }
 
     public static double RationalApproximation(double t)
@@ -32,13 +32,13 @@ namespace Flux
       double[] c = { 2.515517, 0.802853, 0.010328 };
       double[] d = { 1.432788, 0.189269, 0.001308 };
 
-      return t - ((c[2] * t + c[1]) * t + c[0]) / (((d[2] * t + d[1]) * t + d[0]) * t + 1.0);
+      return t - ((c[2] * t + c[1]) * t + c[0]) / (((d[2] * t + d[1]) * t + d[0]) * t + 1d);
     }
 
     /// <summary>Compute the inverse of the normal (Gaussian) CDF. </summary>
     public static double NormalCdfInverse(double p)
     {
-      if (p <= 0.0 || p >= 1.0)
+      if (p <= 0d || p >= 1d)
       {
         throw new System.ArgumentOutOfRangeException(nameof(p));
       }
@@ -47,12 +47,12 @@ namespace Flux
       if (p < 0.5)
       {
         // F^-1(p) = - G^-1(p)
-        return -RationalApproximation(System.Math.Sqrt(-2.0 * System.Math.Log(p)));
+        return -RationalApproximation(System.Math.Sqrt(-2d * System.Math.Log(p)));
       }
       else
       {
         // F^-1(p) = G^-1(1-p)
-        return RationalApproximation(System.Math.Sqrt(-2.0 * System.Math.Log(1.0 - p)));
+        return RationalApproximation(System.Math.Sqrt(-2d * System.Math.Log(1d - p)));
       }
     }
   }

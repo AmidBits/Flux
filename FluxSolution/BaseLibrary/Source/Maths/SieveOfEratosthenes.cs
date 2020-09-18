@@ -70,9 +70,10 @@ namespace Flux.Model
       return ba;
     }
 
-    #region interface implementation System.Collections.Generic.IEnumerable<int>
-    public System.Collections.Generic.IEnumerator<int> GetEnumerator() => m_sieve.Cast<bool>().IndicesOf(e => e).GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-    #endregion interface implementation System.Collections.Generic.IEnumerable<int>
+    // IEnumerable<int>, IEnumerable
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator() 
+      => m_sieve.Cast<bool>().IndicesOf(e => e).GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() 
+      => GetEnumerator();
   }
 }

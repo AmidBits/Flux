@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static double ParallelResistors(double[] resistors)
-      => 1.0 / resistors.Sum(r => 1.0 / r);
+      => 1d / resistors.Sum(r => 1d / r);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static double SerialResistors(double[] resistors)
       => resistors.Sum();
