@@ -2,114 +2,13 @@ namespace Flux
 {
   public static class Serialize
   {
-    ///// <summary>Constructs a string representing a JSON array from IEnumerable.</summary>
-    //public static string JsonArray(System.Collections.IEnumerable source)
-    //{
-    //  var sb = new System.Text.StringBuilder(@"[");
-
-    //  foreach (var t in source)
-    //  {
-    //    sb.Append(JsonValue(t));
-    //    sb.Append(',');
-    //  }
-
-    //  sb[sb.Length - 1] = ']';
-
-    //  return sb.ToString();
-    //}
-    ///// <summary>Constructs a new string with any characters not in the 32-127 range (as well as " and \) escaped according to JSON.</summary>
-    //public static string JsonEscape(object source)
-    //{
-    //  var sb = new System.Text.StringBuilder();
-
-    //  foreach (var c in source?.ToString() ?? string.Empty)
-    //  {
-    //    switch (c)
-    //    {
-    //      case '\"':
-    //        sb.Append(@"\""");
-    //        break;
-    //      case '\\':
-    //        sb.Append(@"\\");
-    //        break;
-    //      case '/':
-    //        sb.Append(@"\/");
-    //        break;
-    //      case '\b':
-    //        sb.Append(@"\b");
-    //        break;
-    //      case '\f':
-    //        sb.Append(@"\f");
-    //        break;
-    //      case '\n':
-    //        sb.Append(@"\n");
-    //        break;
-    //      case '\r':
-    //        sb.Append(@"\r");
-    //        break;
-    //      case '\t':
-    //        sb.Append(@"\t");
-    //        break;
-    //      case char u when u < 32 || u > 127:
-    //        sb.Append(u.ToUnicodeEscapeSequence());
-    //        break;
-    //      default:
-    //        sb.Append(c);
-    //        break;
-    //    }
-    //  }
-
-    //  return sb.ToString();
-    //}
-    ///// <summary>Constructs a string representing a JSON object from IDictionary.</summary>
-    //public static string JsonObject(System.Collections.IDictionary source)
-    //{
-    //  var sb = new System.Text.StringBuilder(@"{");
-
-    //  foreach (var key in source.Keys)
-    //  {
-    //    sb.Append(JsonValue(key.ToString()));
-    //    sb.Append(':');
-    //    sb.Append(JsonValue(source[key]));
-    //    sb.Append(',');
-    //  }
-
-    //  sb[sb.Length - 1] = '}';
-
-    //  return sb.ToString();
-    //}
-    ///// <summary>Constructs a string representing a JSON value.</summary>
-    //public static string JsonValue(object source)
-    //{
-    //  switch (source)
-    //  {
-    //    case null:
-    //    case System.DBNull dbn:
-    //      return @"null";
-    //    case bool b:
-    //      return b.ToString().ToLower();
-    //    case char c:
-    //      return JsonEscape(c.ToString()).Wrap('"', '"');
-    //    case string s:
-    //      return JsonEscape(s).Wrap('"', '"');
-    //    case object n when n.GetType().IsPrimitive && !(n is System.IntPtr) && !(n is System.UIntPtr):
-    //      return n.ToString();
-    //    case System.Collections.DictionaryEntry de:
-    //      return $"{JsonValue(de.Key)}:{JsonValue(de.Value)}";
-    //    case System.Collections.IDictionary id:
-    //      return JsonObject(id);
-    //    case System.Collections.IEnumerable ie:
-    //      return JsonArray(ie);
-    //    default:
-    //      return source.ToString();
-    //  }
-    //}
-
     /// <summary>Use the binary serializer to deep clone the source of type T.</summary>
-    public static TTarget CloneBinary<TTarget>(object source) => FromBinary<TTarget>(ToBinary(source));
+    public static TTarget CloneBinary<TTarget>(object source)
+      => FromBinary<TTarget>(ToBinary(source));
     /// <summary>Use the JSON serializer to deep clone the source of type TSource to a TTarget.</summary>
     /// <remarks>In contrast to the XML serializer, the JSON serializer does not expose the type name in its structure, so no need to rename anything.</remarks>
-    public static TTarget CloneJson<TTarget>(object source) => FromJson<TTarget>(ToJson(source));
+    public static TTarget CloneJson<TTarget>(object source)
+      => FromJson<TTarget>(ToJson(source));
     /// <summary>Use the XML serializer to deep clone the source of type TSource to a TTarget.</summary>
     /// <remarks>Because the XML serializer uses the type name for the root element name, it needs to be renamed.</remarks>
     public static TTarget CloneXml<TTarget>(object source)
@@ -127,17 +26,8 @@ namespace Flux
       return (TTarget)(new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter().Deserialize(ms));
     }
     /// <summary>Serialize the source from a JSON string to T.</summary>
-#if NETCOREAPP3_1 || NETCOREAPP || NETSTANDARD2_1
-    public static TTarget FromJson<TTarget>(string source) => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source);
-#else
-    [System.Obsolete(@"This method is obsolete in favor of the NetFX optimized version.")]
     public static TTarget FromJson<TTarget>(string source)
-    {
-      //return Newtonsoft.Json.JsonConvert.DeserializeObject<TTarget>(source);
-      using var ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(source));
-      return (TTarget)new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(TTarget)).ReadObject(ms);
-    }
-#endif
+      => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source);
     /// <summary>Serialize the source from an XML string to T.</summary>
     public static TTarget FromXml<TTarget>(string source)
     {
@@ -154,7 +44,8 @@ namespace Flux
       return ms.ToArray();
     }
     /// <summary>Serialize the source to a JSON string.</summary>
-    public static string ToJson(object source) => System.Text.Json.JsonSerializer.Serialize(source);
+    public static string ToJson(object source)
+      => System.Text.Json.JsonSerializer.Serialize(source);
     /// <summary>Serialize the source to an XML string.</summary>
     public static string ToXml(object source)
     {

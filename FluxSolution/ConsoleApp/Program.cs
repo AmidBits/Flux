@@ -1,16 +1,4 @@
 ﻿using Flux;
-using Flux.Model;
-using Flux.Text;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Dynamic;
-using System.Linq;
-using System.Net;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
 
 namespace ConsoleApp
 {
@@ -44,7 +32,7 @@ namespace ConsoleApp
           {
             myTopMoves.RandomElement(out var myTopMove);
             if (myTopMove.Score == -10) break;
-            System.Console.WriteLine($"Your top move: {myTopMove}");
+            System.Console.WriteLine($"Your top move: {myTopMove}"); 
           }
 
           System.Console.Write("Enter row: ");
