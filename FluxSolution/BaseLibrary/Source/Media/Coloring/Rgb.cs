@@ -177,14 +177,14 @@ namespace Flux.Media.Coloring
       => Alpha == other.Alpha && Red == other.Red && Green == other.Green && Blue == other.Blue;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{Alpha}, {Red}, {Green}, {Blue}";
+      => $"<{Alpha}, {Red}, {Green}, {Blue}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Rgb rgb && Equals(rgb);
+      => obj is Rgb o && Equals(o);
     public override int GetHashCode()
       => HashCode.CombineCore(Alpha, Red, Green, Blue);
     public override string ToString()
-      => ToString(null, null);
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 
   internal static class Color

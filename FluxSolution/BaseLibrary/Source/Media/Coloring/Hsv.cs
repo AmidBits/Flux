@@ -81,13 +81,13 @@ namespace Flux.Media.Coloring
       => Alpha == other.Alpha && Hue == other.Hue && Saturation == other.Saturation && Value == other.Value;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{Alpha}, {Hue}, {Saturation}, {Value}";
+      => $"<{Alpha}, {Hue}, {Saturation}, {Value}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Hsv hsv && Equals(hsv);
+      => obj is Hsv o && Equals(o);
     public override int GetHashCode()
       => HashCode.CombineCore(Alpha, Hue, Saturation, Value);
     public override string ToString()
-      => ToString(null, null);
+      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 }

@@ -26,39 +26,9 @@ namespace Flux
     }
 
     public static System.Collections.Generic.IList<T> SwapFirstWith<T>(this System.Collections.Generic.IList<T> source, int index)
-    {
-      if (source == null)
-        throw new System.ArgumentNullException(nameof(source));
-      else if (source.Count == 0)
-        throw new System.ArgumentException(@"The sequence is empty.");
-      else if (index <= 0 || index >= source.Count)
-        throw new System.ArgumentOutOfRangeException(nameof(index));
-      else
-      {
-        var tmp = source[index];
-        source[index] = source[0];
-        source[0] = tmp;
-      }
-
-      return source;
-    }
+      => Swap(source, 0, index);
 
     public static System.Collections.Generic.IList<T> SwapLastWith<T>(this System.Collections.Generic.IList<T> source, int index)
-    {
-      if (source == null)
-        throw new System.ArgumentNullException(nameof(source));
-      else if (source.Count == 0)
-        throw new System.ArgumentException(@"The sequence is empty.");
-      else if (index < 0 || (source.Count - 1 is var lastIndex && index >= lastIndex))
-        throw new System.ArgumentOutOfRangeException(nameof(index));
-      else
-      {
-        var tmp = source[index];
-        source[index] = source[lastIndex];
-        source[lastIndex] = tmp;
-      }
-
-      return source;
-    }
+      => Swap(source, index, source.Count - 1);
   }
 }
