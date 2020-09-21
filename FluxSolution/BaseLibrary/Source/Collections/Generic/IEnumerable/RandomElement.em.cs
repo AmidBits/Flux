@@ -1,3 +1,5 @@
+using System.Threading.Tasks.Dataflow;
+
 namespace Flux
 {
   public static partial class XtendCollections
@@ -8,24 +10,22 @@ namespace Flux
     public static bool RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, out T result, System.Random rng)
     {
       rng ??= Flux.Random.NumberGenerator.Crypto;
-
       result = default!;
 
-      var count = 1;
+      using var e = source.ThrowOnNull().GetEnumerator();
 
-      using (var e = source.ThrowOnNull().GetEnumerator())
+      if (e.MoveNext())
       {
-        if (e.MoveNext())
-        {
-          do
-          {
-            if (rng.Next(count++) == 0)
-              result = e.Current;
-          }
-          while (e.MoveNext());
+        var count = 1;
 
-          return true;
+        do
+        {
+          if (rng.Next(count++) == 0)
+            result = e.Current;
         }
+        while (e.MoveNext());
+
+        return true;
       }
 
       return false;

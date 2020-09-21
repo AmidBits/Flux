@@ -10,8 +10,7 @@ namespace Flux
 
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
-      if (leftIndex == rightIndex)
-        return source[leftIndex];
+      if (leftIndex == rightIndex) return source[leftIndex];
 
       while (true)
       {

@@ -5,18 +5,18 @@ namespace Flux
   public static partial class XtendCollections
   {
     /// <summary>Invokes a transform on each element of a generic sequence and returns the index of the maximum value. Uses the specified comparer.</summary>
-    public static int IndexOfMax<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, TResult> selector, System.Collections.Generic.IComparer<TResult> comparer)
+    public static int IndexOfMax<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> selector, out TValue maxValue, System.Collections.Generic.IComparer<TValue> comparer)
     {
       if (source is null) throw new System.ArgumentOutOfRangeException(nameof(source));
       else if (selector is null) throw new System.ArgumentNullException(nameof(selector));
 
-      comparer ??= System.Collections.Generic.Comparer<TResult>.Default;
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var maxIndex = -1;
-      var maxValue = default(TResult)!;
+      maxValue = default(TValue)!;
 
       var index = -1;
-      foreach (var value in source.Select(v => selector(v)))
+      foreach (var value in source.Select(selector))
       {
         if (index++ == -1 || comparer.Compare(value, maxValue) > 0)
         {
@@ -28,22 +28,22 @@ namespace Flux
       return maxIndex;
     }
     /// <summary>Invokes a transform on each element of a generic sequence and returns the index of the maximum value. Uses the default comparer.</summary>
-    public static int IndexOfMax<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, TResult> selector)
-      => IndexOfMax(source, selector, System.Collections.Generic.Comparer<TResult>.Default);
+    public static int IndexOfMax<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> selector, out TValue maxValue)
+      => IndexOfMax(source, selector, out maxValue, System.Collections.Generic.Comparer<TValue>.Default);
 
     /// <summary>Invokes a transform on each element of a generic sequence and returns the index of the minimum value. Uses the specified comparer.</summary>
-    public static int IndexOfMin<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, TResult> selector, System.Collections.Generic.IComparer<TResult> comparer)
+    public static int IndexOfMin<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> selector, out TValue maxValue, System.Collections.Generic.IComparer<TValue> comparer)
     {
       if (source is null) throw new System.ArgumentOutOfRangeException(nameof(source));
       else if (selector is null) throw new System.ArgumentNullException(nameof(selector));
 
-      comparer ??= System.Collections.Generic.Comparer<TResult>.Default;
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var maxIndex = -1;
-      var maxValue = default(TResult)!;
+      maxValue = default(TValue)!;
 
       var index = -1;
-      foreach (var value in source.Select(v => selector(v)))
+      foreach (var value in source.Select(selector))
       {
         if (index++ == -1 || comparer.Compare(value, maxValue) < 0)
         {
@@ -55,7 +55,7 @@ namespace Flux
       return maxIndex;
     }
     /// <summary>Invokes a transform on each element of a generic sequence and returns the index of the minimum value. Uses the default comparer.</summary>
-    public static int IndexOfMin<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, TResult> selector)
-      => IndexOfMin(source, selector, System.Collections.Generic.Comparer<TResult>.Default);
+    public static int IndexOfMin<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> selector, out TValue maxValue)
+      => IndexOfMin(source, selector, out maxValue, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

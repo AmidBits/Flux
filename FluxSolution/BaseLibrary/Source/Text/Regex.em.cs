@@ -1,11 +1,15 @@
+using System.Linq;
+
 namespace Flux
 {
   /// <summary>All expressions are unanchored (for now).</summary>
   public static partial class XtendText
   {
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> GetNamedGroups(this System.Text.RegularExpressions.Match source)
+    public static System.Collections.Generic.IDictionary<string, string> GetNamedGroups(this System.Text.RegularExpressions.Match source)
     {
       if (source is null) throw new System.Exception(nameof(source));
+
+      var dictionary = new System.Collections.Generic.Dictionary<string, string>();
 
       for (var index = 0; index < source.Groups.Count; index++)
       {
@@ -13,9 +17,11 @@ namespace Flux
 
         if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
         {
-          yield return new System.Collections.Generic.KeyValuePair<string, string>(group.Name, group.Value);
+          dictionary.Add(group.Name, group.Value);
         }
       }
+
+      return dictionary;
     }
   }
 }
