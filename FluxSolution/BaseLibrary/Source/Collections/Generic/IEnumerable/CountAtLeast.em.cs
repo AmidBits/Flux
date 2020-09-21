@@ -6,6 +6,7 @@ namespace Flux
     public static bool CountAtLeast<T>(this System.Collections.Generic.IEnumerable<T> source, int count, System.Func<T, int, bool>? predicate = null)
     {
       if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
       switch (source)
       {
@@ -20,7 +21,7 @@ namespace Flux
           {
             int counter = 0, index = 0;
             while (counter < count && e.MoveNext())
-              if (predicate?.Invoke(e.Current, index++) ?? true)
+              if (predicate(e.Current, index++))
                 counter++;
             return counter >= count;
           }

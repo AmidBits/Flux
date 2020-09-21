@@ -12,9 +12,9 @@ namespace Flux
 
       comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      using var e = source.GetEnumerator();
+      using var se = source.GetEnumerator();
 
-      return target.Count(item => e.MoveNext() && comparer.Equals(e.Current, item));
+      return target.Count(te => se.MoveNext() && comparer.Equals(se.Current, te));
     }
     /// <summary>Determines whether the beginning of the first sequence is equivalent to the second sequence. Uses the specified equality comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
