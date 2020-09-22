@@ -11,8 +11,8 @@ namespace ConsoleApp
       var span = new Span<int>(list);
 
       System.Console.WriteLine($"{string.Join(',', list)}");
-      list.SelectionSort();
-      System.Console.WriteLine($"{string.Join(',', list)}");
+      span.SelectionSort();
+      System.Console.WriteLine($"{string.Join(',', span.ToArray())}");
 
       System.Console.WriteLine($"63 = {Flux.Maths.PowerOf(63, 2)}");
 
