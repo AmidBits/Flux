@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class XtendCollections
   {
+    /// <summary>Return a new sequence of elements based on the selector (with indexed parameter).</summary>
     public static System.Collections.Generic.IEnumerable<TResult> Choose<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, (bool, TResult)> ifAndResultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -16,6 +17,7 @@ namespace Flux
         if (chosen) yield return result;
       }
     }
+    /// <summary>Return a new sequence of elements based on the selector (without indexed parameter).</summary>
     public static System.Collections.Generic.IEnumerable<TResult> Choose<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, (bool, TResult)> ifAndResultSelector)
       => Choose(source, (element, index) => ifAndResultSelector(element));
   }

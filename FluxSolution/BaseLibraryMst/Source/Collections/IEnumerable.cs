@@ -85,12 +85,12 @@ namespace Collections.Generic
     [TestMethod]
     public void IndexOfMax()
     {
-      Assert.AreEqual(5, integers.IndexOfMax(v => v));
+      Assert.AreEqual(5, integers.IndexOfMax(v => v, out var _));
     }
     [TestMethod]
     public void IndexOfMin()
     {
-      Assert.AreEqual(0, integers.IndexOfMin(v => v));
+      Assert.AreEqual(0, integers.IndexOfMin(v => v, out var _));
     }
 
     [TestMethod]

@@ -6,14 +6,14 @@ namespace Flux
   {
     public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
-      if (count > 0)
-      {
-        var list = source.ThrowOnNull().ToList();
+      var list = source.ThrowOnNull().ToList();
 
-        while (count-- >= 0)
-          foreach (var item in list)
-            yield return item;
-      }
+      if (count < 0)
+        count = 0;
+
+      while (count-- >= 0)
+        foreach (var item in list)
+          yield return item;
     }
   }
 }
