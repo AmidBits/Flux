@@ -1,28 +1,38 @@
-using System;
+using System.Linq;
 
 namespace Flux
 {
   public static partial class XtendSequenceMetrics
   {
     /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
     /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
     /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
-    /// <param name="comparer"></param>
     /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
     /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
-    public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.JaroWinklerDistance<T>().GetNormalizedSimilarity(source, target, comparer);
+    public static double JaroWinklerDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer, double boostThreshold = 0.7, int prefixSize = 4)
+      => new SequenceMetrics.JaroWinklerDistance<T>(comparer) { BoostThreshold = boostThreshold, PrefixSize = prefixSize }.GetNormalizedDistance(source.ToArray(), target.ToArray());
     /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
     /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
     /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
     /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
-    public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new SequenceMetrics.JaroWinklerDistance<T>().GetNormalizedSimilarity(source, target);
+    public static double JaroWinklerDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, double boostThreshold = 0.7, int prefixSize = 4)
+      => new SequenceMetrics.JaroWinklerDistance<T>() { BoostThreshold = boostThreshold, PrefixSize = prefixSize }.GetNormalizedDistance(source.ToArray(), target.ToArray());
+
+    /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
+    /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
+    /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
+    /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
+    /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
+    public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, double boostThreshold = 0.7, int prefixSize = 4)
+      => new SequenceMetrics.JaroWinklerDistance<T>(comparer) { BoostThreshold = boostThreshold, PrefixSize = prefixSize }.GetNormalizedSimilarity(source, target);
+    /// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
+    /// <param name="boostThreshold">The minimum score for a string that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
+    /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
+    /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
+    /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
+    public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double boostThreshold = 0.7, int prefixSize = 4)
+      => new SequenceMetrics.JaroWinklerDistance<T>() { BoostThreshold = boostThreshold, PrefixSize = prefixSize }.GetNormalizedSimilarity(source, target);
   }
 
   namespace SequenceMetrics
@@ -40,15 +50,20 @@ namespace Flux
       /// <summary>PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</summary>
       public int PrefixSize { get; set; } = 4;
 
-      public double GetNormalizedDistance(ReadOnlySpan<T> source, ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-        => 1 - GetNormalizedSimilarity(source, target, comparer);
-      public double GetNormalizedDistance(ReadOnlySpan<T> source, ReadOnlySpan<T> target)
-        => GetNormalizedDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
 
-      public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
+      public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
+      public JaroWinklerDistance()
+        : this(System.Collections.Generic.EqualityComparer<T>.Default)
       {
-        comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      }
 
+      public double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+        => 1 - GetNormalizedSimilarity(source, target);
+
+      public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
         var sourceCount = source.Length;
         var targetCount = target.Length;
 
@@ -70,7 +85,7 @@ namespace Flux
 
           for (var j = start; j < end; j++)
           {
-            if (targetMatches[j] || !comparer.Equals(source[i], target[j])) continue;
+            if (targetMatches[j] || !m_equalityComparer.Equals(source[i], target[j])) continue;
 
             sourceMatches[i] = true;
             targetMatches[j] = true;
@@ -93,7 +108,7 @@ namespace Flux
 
           while (!targetMatches[j]) j++;
 
-          if (!comparer.Equals(source[i], target[j])) transpositions++;
+          if (!m_equalityComparer.Equals(source[i], target[j])) transpositions++;
 
           j++;
         }
@@ -110,14 +125,12 @@ namespace Flux
         // If the Jaro score is below the boost threshold, or if the prefixCount is zero, the Jaro score is returned unadjusted.
 
         int initialMatches = 0, maxLength = System.Math.Min(System.Math.Min(PrefixSize, sourceCount), targetCount);
-        while (initialMatches < maxLength && comparer.Equals(source[initialMatches], target[initialMatches])) initialMatches++;
+        while (initialMatches < maxLength && m_equalityComparer.Equals(source[initialMatches], target[initialMatches])) initialMatches++;
 
         if (initialMatches == 0) return score; // No initial match, return Jaro distance score unmodified.
 
         return score + 0.1 * initialMatches * (1 - score); // Return the Winkler modified distance score.
       }
-      public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetNormalizedSimilarity(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
     }
   }
 }

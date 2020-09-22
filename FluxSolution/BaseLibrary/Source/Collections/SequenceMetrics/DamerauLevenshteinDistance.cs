@@ -1,28 +1,31 @@
-using Flux.SequenceMetrics;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Common;
+using System.Linq;
 
 namespace Flux
 {
   public static partial class XtendSequenceMetrics
   {
-    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences, using the specified comparer. Implemented based on the Wiki article.</summary>
-    /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
+    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
+    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+      where T : notnull
+      => new SequenceMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source.ToArray(), target.ToArray());
+    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
+    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
+      where T : notnull
+      => new SequenceMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source.ToArray(), target.ToArray());
+
+    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : notnull
-      => new DamerauLevenshteinDistance<T>().GetMetricDistance(source, target, comparer);
-    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences, using the specified comparer. Implemented based on the Wiki article.</summary>
-    /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
+      => new SequenceMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
+    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => new DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
+      => new SequenceMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
   }
 
   namespace SequenceMetrics
   {
-    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences, using the specified comparer.</summary>
+    /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
@@ -31,11 +34,18 @@ namespace Flux
       : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
       where T : notnull
     {
-      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      {
-        comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
 
-        Helper.OptimizeEnds(source, target, comparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+      public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
+      public DamerauLevenshteinDistance()
+        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+
+      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
@@ -59,7 +69,7 @@ namespace Flux
           matrix[0, j] = maxDistance;
         }
 
-        var dr = new System.Collections.Generic.Dictionary<T, int>(maxDistance, comparer); // Unique list of all items in both lists.
+        var dr = new System.Collections.Generic.Dictionary<T, int>(maxDistance, m_equalityComparer); // Unique list of all items in both lists.
         for (var si = source.Length - 1; si >= 0; si--) dr[source[si]] = 0; // Add items from source.
         for (var ti = target.Length - 1; ti >= 0; ti--) dr[target[ti]] = 0; // Add items from target.
 
@@ -75,7 +85,7 @@ namespace Flux
 
             var lsi = dr[targetItem]; // Last source index of source item.
 
-            var cost = comparer.Equals(sourceItem, targetItem) ? 0 : 1; // Cost of substitution.
+            var cost = m_equalityComparer.Equals(sourceItem, targetItem) ? 0 : 1; // Cost of substitution.
 
             matrix[si + 1, ti + 1] = Maths.Min(
               matrix[si, ti + 1] + 1, // Deletion.
@@ -92,18 +102,12 @@ namespace Flux
 
         return matrix[sourceCount + 1, targetCount + 1];
       }
-      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetMetricDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
 
-      public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-        => 1.0 - GetSimpleMatchingDistance(source, target, comparer);
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetSimpleMatchingCoefficient(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+        => 1 - GetSimpleMatchingDistance(source, target);
 
-      public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-        => (double)GetMetricDistance(source, target, comparer) / (double)System.Math.Max(source.Length, target.Length);
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetSimpleMatchingDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+        => (double)GetMetricDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
     }
   }
 }

@@ -7,13 +7,7 @@ namespace Flux.SequenceMetrics
     /// <summary>Compute a normalized distance score [0, 1] between the two sequences.</summary>
     /// <param name="source">The source sequence.</param>
     /// <param name="target">The target sequence.</param>
-    /// <param name="comparer">The equality comparer to use when comparing elements in the sequences.</param>
     /// <returns>A normalized distance score [0, 1]. Closer to 0 means more alike and closer to 1 means more unlike.</returns>
-		double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer);
-    /// <summary>Compute a normalized distance score [0, 1] between the two sequences. Uses the default equality comparer.</summary>
-    /// <param name="source">The source sequence.</param>
-    /// <param name="target">The target sequence.</param>
-    /// <returns>A normalized distance score [0, 1]. Closer to 0 means more alike and closer to 1 means more unlike.</returns>
-    double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
+		double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
   }
 }

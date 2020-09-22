@@ -2,17 +2,17 @@ namespace Flux
 {
   public static partial class XtendSpan
   {
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using insertion sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public static void InsertionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new InsertionSort<T>(comparer).Sort(source);
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using insertion sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public static void InsertionSort<T>(this System.Span<T> source)
       => InsertionSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  /// <summary>Sorts the content of the list using bubble sort. Uses the specified comparer.</summary>
+  /// <summary>Sorts the content of the sequence using insertion sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
   public class InsertionSort<T>
     : ISortable<T>
@@ -26,6 +26,16 @@ namespace Flux
     {
     }
 
+    public void Sort(System.Collections.Generic.List<T> source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var sourceLength = source.Count;
+
+      for (var i = 1; i < sourceLength; i++)
+        for (var j = i; j > 0 && m_comparer.Compare(source[j - 1], source[j]) > 0; j--)
+          source.Swap(j, j - 1);
+    }
     public void Sort(System.Span<T> source)
     {
       var sourceLength = source.Length;

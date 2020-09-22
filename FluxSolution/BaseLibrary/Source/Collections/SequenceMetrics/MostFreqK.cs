@@ -24,32 +24,35 @@ namespace Flux.SequenceMetrics
     /// <summary>Specifies the scoring behavior to employ when computing the measured distance.</summary>
     public SimilarityScoringBehavior ScoringBehavior { get; set; } = SimilarityScoringBehavior.OnlyOneFrequencyWhenEqual;
 
-    public MostFreqK(int k, int maxDistance)
+    private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
+
+    public MostFreqK(int k, int maxDistance, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       K = k;
-
       MaxDistance = maxDistance;
+
+      m_equalityComparer = equalityComparer;
+    }
+    public MostFreqK(int k, int maxDistance)
+      : this(k, maxDistance, System.Collections.Generic.EqualityComparer<T>.Default)
+    {
     }
 
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source)
     {
-      foreach (var kvp in source.GroupBy(c => c, comparer).Select(g => new System.Collections.Generic.KeyValuePair<T, int>(g.Key, g.Count())).OrderByDescending(g => g.Value).Take(K))
+      foreach (var kvp in source.GroupBy(c => c, m_equalityComparer).Select(g => new System.Collections.Generic.KeyValuePair<T, int>(g.Key, g.Count())).OrderByDescending(g => g.Value).Take(K))
       {
         yield return kvp;
       }
     }
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source)
-      => Hashing(source, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
+    public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       var similarity = 0;
 
       foreach (var kvp1 in hashing1 ?? throw new System.ArgumentNullException(nameof(hashing2)))
         foreach (var kvp2 in hashing2 ?? throw new System.ArgumentNullException(nameof(hashing2)))
-          if (comparer.Equals(kvp1.Key, kvp2.Key))
+          if (m_equalityComparer.Equals(kvp1.Key, kvp2.Key))
           {
             switch (ScoringBehavior)
             {
@@ -64,12 +67,8 @@ namespace Flux.SequenceMetrics
 
       return similarity;
     }
-    public int GetSimilarity(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing1, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> hashing2)
-      => GetSimilarity(hashing1, hashing2, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    public int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => MaxDistance - GetSimilarity(Hashing(source.ToArray(), comparer), Hashing(target.ToArray(), comparer), comparer);
     public int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetMeasuredDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+      => MaxDistance - GetSimilarity(Hashing(source.ToArray()), Hashing(target.ToArray()));
   }
 }

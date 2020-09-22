@@ -2,17 +2,17 @@ namespace Flux
 {
   public static partial class XtendSpan
   {
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using quick sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public static void QuickSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new QuickSort<T>(comparer).Sort(source);
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using quick sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public static void QuickSort<T>(this System.Span<T> source)
       => QuickSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  /// <summary>Sorts the content of the list using quick sort. Uses the specified comparer.</summary>
+  /// <summary>Sorts the content of the sequence using quick sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
   public class QuickSort<T>
     : ISortable<T>
@@ -26,9 +26,15 @@ namespace Flux
     {
     }
 
+    //public void Sort(System.Collections.Generic.List<T> source)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+    //  QuickSortImpl(source, 0, source.Count - 1);
+    //}
     public void Sort(System.Span<T> source)
     {
-      QuickSortImpl(source, m_comparer, 0, source.Length - 1);
+      QuickSortImpl(source, 0, source.Length - 1);
     }
 
     #region QuickSort helper functions

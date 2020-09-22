@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class XtendSpan
   {
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using merge sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public static void MergeSort<T>(this System.Span<T> source, MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
       => new MergeSort<T>(type, comparer).Sort(source);
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <summary>Sorts the content of the sequence using merge sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public static void MergeSort<T>(this System.Span<T> source, MergeSortType type)
       => MergeSort(source, type, System.Collections.Generic.Comparer<T>.Default);
   }
@@ -18,7 +18,7 @@ namespace Flux
     TopDown
   }
 
-  /// <summary>Sorts the content of the list using merge sort. Uses the specified comparer.</summary>
+  /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
   public class MergeSort<T>
     : ISortable<T>
@@ -36,6 +36,25 @@ namespace Flux
     {
     }
 
+
+    //public void Sort(System.Collections.Generic.List<T> source)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+    //  var target = new T[source.Count];
+
+    //  switch (m_type)
+    //  {
+    //    case MergeSortType.BottomUp:
+    //      BottomUpMergeSort(source, target, source.Count);
+    //      break;
+    //    case MergeSortType.TopDown:
+    //      TopDownMergeSort(source, target, source.Count);
+    //      break;
+    //    default:
+    //      throw new System.Exception(nameof(m_type));
+    //  }
+    //}
     public void Sort(System.Span<T> source)
     {
       var target = new T[source.Length];
@@ -43,10 +62,10 @@ namespace Flux
       switch (m_type)
       {
         case MergeSortType.BottomUp:
-          BottomUpMergeSort(source, target, m_comparer, source.Length);
+          BottomUpMergeSort(source, target, source.Length);
           break;
         case MergeSortType.TopDown:
-          TopDownMergeSort(source, target, m_comparer, source.Length);
+          TopDownMergeSort(source, target, source.Length);
           break;
         default:
           throw new System.Exception(nameof(m_type));

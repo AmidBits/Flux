@@ -9,6 +9,7 @@ namespace ConsoleApp
     {
       var list = new int[] { 5, 7, 3, 6, 2, 9, 1, 4, 0, 8 };
       var span = new Span<int>(list);
+      var ros = new ReadOnlySpan<int>(list);
 
       System.Console.WriteLine($"{string.Join(',', list)}");
       span.SelectionSort();

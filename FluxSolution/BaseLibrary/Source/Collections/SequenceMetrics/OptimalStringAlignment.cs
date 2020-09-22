@@ -1,12 +1,23 @@
+using System.Linq;
+
 namespace Flux
 {
   public static partial class XtendSequenceMetrics
   {
+    /// <summary>Computes the optimal string alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
+    public static int OptimalStringAlignmentDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+      => new SequenceMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance(source.ToArray(), target.ToArray());
+    /// <summary>Computes the optimal string alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
+    public static int OptimalStringAlignmentDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
+      => new SequenceMetrics.OptimalStringAlignment<T>().GetMetricDistance(source.ToArray(), target.ToArray());
+
     /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     public static int OptimalStringAlignment<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.OptimalStringAlignment<T>().GetMetricDistance(source, target, comparer);
+      => new SequenceMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance(source, target);
     /// <summary>Computes the optimal sequence alignment (OSA) using the default comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
@@ -23,11 +34,18 @@ namespace Flux
     public class OptimalStringAlignment<T>
       : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      {
-        comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
 
-        Helper.OptimizeEnds(source, target, comparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+      public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
+      public OptimalStringAlignment()
+        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+
+      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
@@ -50,9 +68,9 @@ namespace Flux
           {
             var targetItem = target[ti - 1];
 
-            var cost = comparer.Equals(sourceItem, targetItem) ? 0 : 1;
+            var cost = m_equalityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
 
-            if (si > 1 && ti > 1 && comparer.Equals(sourceItem, target[ti - 2]) && comparer.Equals(source[si - 2], targetItem))
+            if (si > 1 && ti > 1 && m_equalityComparer.Equals(sourceItem, target[ti - 2]) && m_equalityComparer.Equals(source[si - 2], targetItem))
             {
               v0[ti] = Maths.Min(
                 v1[ti] + 1, // Deletion.
@@ -74,18 +92,12 @@ namespace Flux
 
         return v0[targetCount];
       }
-      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetMetricDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
 
-      public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-        => 1.0 - GetSimpleMatchingDistance(source, target, comparer);
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetSimpleMatchingCoefficient(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+        => 1.0 - GetSimpleMatchingDistance(source, target);
 
-      public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-        => (double)GetMetricDistance(source, target, comparer) / (double)System.Math.Max(source.Length, target.Length);
       public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => GetSimpleMatchingDistance(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+        => (double)GetMetricDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
     }
   }
 }
