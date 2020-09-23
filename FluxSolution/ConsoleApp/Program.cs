@@ -7,15 +7,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var list = new int[] { 5, 7, 3, 6, 2, 9, 1, 4, 0, 8 };
-      var span = new Span<int>(list);
-      var ros = new ReadOnlySpan<int>(list);
 
-      System.Console.WriteLine($"{string.Join(',', list)}");
-      span.SelectionSort();
-      System.Console.WriteLine($"{string.Join(',', span.ToArray())}");
-
-      System.Console.WriteLine($"63 = {Flux.Maths.PowerOf(63, 2)}");
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();

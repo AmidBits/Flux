@@ -1,13 +1,11 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class XtendSequencing
   {
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public static void InsertionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new InsertionSort<T>(comparer).Sort(source);
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public static void InsertionSort<T>(this System.Span<T> source)
       => InsertionSort(source, System.Collections.Generic.Comparer<T>.Default);
   }

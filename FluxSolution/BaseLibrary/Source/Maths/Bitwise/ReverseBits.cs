@@ -20,7 +20,7 @@ namespace Flux
     {
       if (value >= 0 && value <= 255) return ByteReverseBits[(int)value];
 
-      var sourceArray = value.ToByteArrayEx(out var sourceIndex, out var sourceValue);
+      var sourceArray = value.ToByteArrayEx(out var sourceIndex, out var _);
 
       var targetBytes = new byte[sourceIndex + 1];
       var targetIndex = 0;

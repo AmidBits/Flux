@@ -1,13 +1,11 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class XtendSequencing
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public static void BingoSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new BingoSort<T>(comparer).Sort(source);
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public static void BingoSort<T>(this System.Span<T> source)
       => BingoSort(source, System.Collections.Generic.Comparer<T>.Default);
   }

@@ -1,13 +1,11 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class XtendSequencing
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public static void QuickSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new QuickSort<T>(comparer).Sort(source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public static void QuickSort<T>(this System.Span<T> source)
       => QuickSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
@@ -26,18 +24,14 @@ namespace Flux
     {
     }
 
-    //public void Sort(System.Collections.Generic.List<T> source)
-    //{
-    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-    //  QuickSortImpl(source, 0, source.Count - 1);
-    //}
+    public void Sort(System.Collections.Generic.List<T> source)
+      => Sort(new System.Span<T>((source ?? throw new System.ArgumentNullException(nameof(source))).ToArray()));
     public void Sort(System.Span<T> source)
     {
       QuickSortImpl(source, 0, source.Length - 1);
     }
 
-    #region QuickSort helper functions
+    #region Quick sort helpers
     private void QuickSortImpl(System.Span<T> source, int lowIndex, int highIndex)
     {
       if (lowIndex < highIndex)
@@ -67,6 +61,6 @@ namespace Flux
 
       return i;
     }
-    #endregion QuickSort helper functions
+    #endregion Quick sort helpers
   }
 }

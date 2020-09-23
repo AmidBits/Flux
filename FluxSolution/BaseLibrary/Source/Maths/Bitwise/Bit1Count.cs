@@ -6,7 +6,6 @@ namespace Flux
   {
     private static System.Collections.Generic.IReadOnlyList<int>? m_byteBit1Count;
     /// <summary></summary>
-    /// <remarks>System.Console.WriteLine(string.Join(@",", System.Linq.Enumerable.Range(0, 256).Select(n => Flux.Math.Bit1Count(n))));</remarks>
     public static System.Collections.Generic.IReadOnlyList<int> ByteBit1Count
       => m_byteBit1Count ??= System.Linq.Enumerable.Range(0, 256).Select(n => Bit1Count(n)).ToList();
 

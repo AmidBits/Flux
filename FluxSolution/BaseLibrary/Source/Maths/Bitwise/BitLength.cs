@@ -4,6 +4,11 @@ namespace Flux
 {
   public static partial class Bitwise
   {
+    private static System.Collections.Generic.IReadOnlyList<int>? m_byteBitLength;
+    /// <summary></summary>
+    public static System.Collections.Generic.IReadOnlyList<int> ByteBitLength
+      => m_byteBitLength ??= System.Linq.Enumerable.Range(0, 256).Select(n => BitLength(n)).ToList();
+
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Bit-length"/>

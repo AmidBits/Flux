@@ -1,13 +1,11 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class XtendSequencing
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public static void MergeSort<T>(this System.Span<T> source, MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
       => new MergeSort<T>(type, comparer).Sort(source);
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public static void MergeSort<T>(this System.Span<T> source, MergeSortType type)
       => MergeSort(source, type, System.Collections.Generic.Comparer<T>.Default);
   }
@@ -36,25 +34,8 @@ namespace Flux
     {
     }
 
-
-    //public void Sort(System.Collections.Generic.List<T> source)
-    //{
-    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-    //  var target = new T[source.Count];
-
-    //  switch (m_type)
-    //  {
-    //    case MergeSortType.BottomUp:
-    //      BottomUpMergeSort(source, target, source.Count);
-    //      break;
-    //    case MergeSortType.TopDown:
-    //      TopDownMergeSort(source, target, source.Count);
-    //      break;
-    //    default:
-    //      throw new System.Exception(nameof(m_type));
-    //  }
-    //}
+    public void Sort(System.Collections.Generic.List<T> source)
+      => Sort(new System.Span<T>((source ?? throw new System.ArgumentNullException(nameof(source))).ToArray()));
     public void Sort(System.Span<T> source)
     {
       var target = new T[source.Length];
@@ -72,7 +53,7 @@ namespace Flux
       }
     }
 
-    #region MergeSort bottom-up helper functions
+    #region MergeSort bottom-up helpers
     // array A[] has the items to sort; array B[] is a work array
     private void BottomUpMergeSort(System.Span<T> source, System.Span<T> target, int n)
     {
@@ -122,9 +103,9 @@ namespace Flux
       for (var i = 0; i < n; i++)
         source[i] = target[i];
     }
-    #endregion MergeSort bottom-up helper functions
+    #endregion MergeSort bottom-up helpers
 
-    #region MergeSort top-down helper functions
+    #region MergeSort top-down helpers
     private void TopDownMergeSort(System.Span<T> source, System.Span<T> target, int n)
     {
       CopyArray(source, target, 0, n);           // one time copy of A[] to B[]
@@ -175,6 +156,6 @@ namespace Flux
       for (var k = iBegin; k < iEnd; k++)
         target[k] = source[k];
     }
-    #endregion MergeSort top-down helper functions
+    #endregion MergeSort top-down helpers
   }
 }

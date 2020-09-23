@@ -10,7 +10,7 @@ namespace Random.NumberGenerator
     [TestMethod]
     public void BigInteger()
     {
-        for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 0; i < short.MaxValue; i++)
       {
         var rv = Flux.Random.NumberGenerator.Crypto.NextBigInteger(i);
 
@@ -80,21 +80,21 @@ namespace Random.NumberGenerator
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.Random.NumberGenerator.Crypto.Next(i);
+        var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
 
         Assert.IsTrue(rv >= 0 && rv < int.MaxValue);
       }
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.Random.NumberGenerator.Crypto.Next(i);
+        var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.Random.NumberGenerator.Crypto.Next(i, 0);
+        var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i, 0);
 
         Assert.IsTrue(rv >= i && rv < 0);
       }
