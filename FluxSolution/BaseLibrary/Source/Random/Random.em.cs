@@ -2,7 +2,7 @@
 
 namespace Flux
 {
-  public static partial class XtendRandom
+  public static partial class Xtensions
   {
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 

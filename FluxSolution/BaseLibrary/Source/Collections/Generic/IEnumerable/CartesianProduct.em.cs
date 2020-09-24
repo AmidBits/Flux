@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>This version of CartesianProduct runs over all elements in all sequences.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> CartesianProduct<T1, T2, TResult>(this System.Collections.Generic.IEnumerable<T1> source, System.Collections.Generic.IEnumerable<T2> other, System.Func<(T1, T2), int, TResult> resultSelector)

@@ -2,12 +2,12 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Swap two elements by the specified indices.</summary>
     public static System.Collections.Generic.IList<T> Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
     {
-      if (source == null)
+      if (source is null)
         throw new System.ArgumentNullException(nameof(source));
       else if (source.Count == 0)
         throw new System.ArgumentException(@"The sequence is empty.");
@@ -29,6 +29,6 @@ namespace Flux
       => Swap(source, 0, index);
 
     public static System.Collections.Generic.IList<T> SwapLastWith<T>(this System.Collections.Generic.IList<T> source, int index)
-      => Swap(source, index, source.Count - 1);
+      => Swap(source, index, (source ?? throw new System.ArgumentNullException(nameof(source))).Count - 1);
   }
 }

@@ -1,87 +1,90 @@
 namespace Flux
 {
-  public static partial class XtendSequencing
+  public static partial class Xtensions
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void BingoSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new BingoSort<T>(comparer).Sort(source);
+      => new Sorting.BingoSort<T>(comparer).Sort(source);
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void BingoSort<T>(this System.Span<T> source)
       => BingoSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
-  public class BingoSort<T>
-    : ISortable<T>
+  namespace Sorting
   {
-    private System.Collections.Generic.IComparer<T> m_comparer;
-
-    public BingoSort(System.Collections.Generic.IComparer<T>? comparer)
-      => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
-    public BingoSort()
-      : this(null)
+    /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
+    public class BingoSort<T>
+      : ISortable<T>
     {
-    }
+      private System.Collections.Generic.IComparer<T> m_comparer;
 
-    public void Sort(System.Collections.Generic.List<T> source)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      var max = source.Count - 1;
-
-      var nextValue = source[max];
-
-      for (var i = max - 1; i >= 0; i--)
-        if (m_comparer.Compare(source[i], nextValue) > 0)
-          nextValue = source[i];
-
-      while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
-
-      while (max > 0)
+      public BingoSort(System.Collections.Generic.IComparer<T>? comparer)
+        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public BingoSort()
+        : this(null)
       {
-        var value = nextValue;
-        nextValue = source[max];
-
-        for (var i = max - 1; i >= 0; i--)
-          if (m_comparer.Compare(source[i], value) == 0)
-          {
-            source.Swap(i, max);
-            max--;
-          }
-          else if (m_comparer.Compare(source[i], nextValue) > 0)
-            nextValue = source[i];
-
-        while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
       }
-    }
-    public void Sort(System.Span<T> source)
-    {
-      var max = source.Length - 1;
 
-      var nextValue = source[max];
-
-      for (var i = max - 1; i >= 0; i--)
-        if (m_comparer.Compare(source[i], nextValue) > 0)
-          nextValue = source[i];
-
-      while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
-
-      while (max > 0)
+      public void Sort(System.Collections.Generic.List<T> source)
       {
-        var value = nextValue;
-        nextValue = source[max];
+        if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+        var max = source.Count - 1;
+
+        var nextValue = source[max];
 
         for (var i = max - 1; i >= 0; i--)
-          if (m_comparer.Compare(source[i], value) == 0)
-          {
-            source.Swap(i, max);
-            max--;
-          }
-          else if (m_comparer.Compare(source[i], nextValue) > 0)
+          if (m_comparer.Compare(source[i], nextValue) > 0)
             nextValue = source[i];
 
         while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
+
+        while (max > 0)
+        {
+          var value = nextValue;
+          nextValue = source[max];
+
+          for (var i = max - 1; i >= 0; i--)
+            if (m_comparer.Compare(source[i], value) == 0)
+            {
+              source.Swap(i, max);
+              max--;
+            }
+            else if (m_comparer.Compare(source[i], nextValue) > 0)
+              nextValue = source[i];
+
+          while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
+        }
+      }
+      public void Sort(System.Span<T> source)
+      {
+        var max = source.Length - 1;
+
+        var nextValue = source[max];
+
+        for (var i = max - 1; i >= 0; i--)
+          if (m_comparer.Compare(source[i], nextValue) > 0)
+            nextValue = source[i];
+
+        while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
+
+        while (max > 0)
+        {
+          var value = nextValue;
+          nextValue = source[max];
+
+          for (var i = max - 1; i >= 0; i--)
+            if (m_comparer.Compare(source[i], value) == 0)
+            {
+              source.Swap(i, max);
+              max--;
+            }
+            else if (m_comparer.Compare(source[i], nextValue) > 0)
+              nextValue = source[i];
+
+          while (max > 0 && m_comparer.Compare(source[max], nextValue) == 0) max--;
+        }
       }
     }
   }

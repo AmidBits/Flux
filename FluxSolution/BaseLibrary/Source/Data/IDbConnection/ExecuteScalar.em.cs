@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     /// <summary>Executes the specified command text and returns the value in the first column of the first row in the first resultset returned by the query. Additional columns, rows and resultsets are ignored.</summary>
     /// <returns>The value in the first column of the first row in the first resultset.</returns>

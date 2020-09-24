@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Move the first element in the list to the specified index.</summary>
     public static System.Collections.Generic.IList<T> MoveFirst<T>(this System.Collections.Generic.IList<T> source, int newIndex)

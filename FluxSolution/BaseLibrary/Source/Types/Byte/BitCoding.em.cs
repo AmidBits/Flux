@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendByte
+  public static partial class Xtensions
   {
     /// <summary>Decodes chunks of bitsPerByte to bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitDecode(this System.Collections.Generic.IEnumerable<byte> source, int bitsPerByte = 6)

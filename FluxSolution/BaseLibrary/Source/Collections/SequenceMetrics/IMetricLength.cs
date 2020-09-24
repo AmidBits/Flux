@@ -1,4 +1,4 @@
-namespace Flux.SequenceMetrics
+namespace Flux
 {
   /// <summary>Represents a metric of length.</summary>
 	public interface IMetricLength<T>

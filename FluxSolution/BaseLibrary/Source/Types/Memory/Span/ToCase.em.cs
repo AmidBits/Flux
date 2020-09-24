@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class Xtensions
   {
     /// <summary>Replace (in-place) all characters with their lower case equivalents. Uses the specified culture.</summary>
     public static void ToLowerCase(this System.Span<char> source, System.Globalization.CultureInfo culture)

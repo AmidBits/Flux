@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Returns the number of equal elements at the end of the sequences. Uses the specified equality comparer.</summary>
     public static int CountEqualAtEnd<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)

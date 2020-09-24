@@ -21,7 +21,7 @@ namespace Flux.Dsp.AudioProcessor
 
     private double m_threshold;
     /// <summary>The recifier threshold can be set within the constrained range [-1, 1].</summary>
-    public double Threshold { get => m_threshold; set => m_threshold = Maths.Clamp(value, -1.0, 1.0); }
+    public double Threshold { get => m_threshold; set => m_threshold = System.Math.Clamp(value, -1.0, 1.0); }
 
     public MonoRectifier(MonoRectifierMode mode, double threshold)
     {

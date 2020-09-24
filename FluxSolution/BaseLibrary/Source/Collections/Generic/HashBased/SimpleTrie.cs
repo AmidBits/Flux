@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Delete a text element word.</summary>
     public static void Delete(this Collections.Generic.SimpleTrie<string> source, System.Collections.Generic.IEnumerable<string> entry)

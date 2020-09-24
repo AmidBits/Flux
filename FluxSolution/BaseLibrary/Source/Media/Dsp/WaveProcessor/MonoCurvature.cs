@@ -10,7 +10,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_contour;
       set
       {
-        m_contour = Maths.Clamp(value, -1.0, 1.0);
+        m_contour = System.Math.Clamp(value, -1.0, 1.0);
 
         m_contourScaled = m_contour > Maths.EpsilonCpp32 || m_contour < -Maths.EpsilonCpp32 ? m_contour * 0.1 + 1 : 0;
       }

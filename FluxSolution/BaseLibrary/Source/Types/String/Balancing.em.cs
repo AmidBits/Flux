@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendString
+  public static partial class Xtensions
   {
     /// <summary>Checks whether the string has balanced pairs (e.g. parenthesis).</summary>
     public static bool IsBalanced(this string source, char open, char close)

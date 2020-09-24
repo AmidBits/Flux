@@ -13,25 +13,25 @@ namespace Collections.Generic
     [TestMethod]
     public void CumulativeMassFunction()
     {
-      Assert.AreEqual(0.4, d.CumulativeMassFunction(45), nameof(Flux.XtendCollections.CumulativeMassFunction));
+      Assert.AreEqual(0.4, d.CumulativeMassFunction(45), nameof(Flux.Xtensions.CumulativeMassFunction));
     }
 
     [TestMethod]
     public void PercentRank()
     {
-      CollectionAssert.AreEqual(new double[] { 10, 30, 50, 70, 90 }, d.PercentRank().ToArray(), nameof(Flux.XtendCollections.PercentileRank));
+      CollectionAssert.AreEqual(new double[] { 10, 30, 50, 70, 90 }, d.PercentRank().ToArray(), nameof(Flux.Xtensions.PercentileRank));
     }
 
     [TestMethod]
     public void PercentileRank()
     {
-      Assert.AreEqual(60, d.PercentileRank(65.0), nameof(Flux.XtendCollections.PercentileRank));
+      Assert.AreEqual(60, d.PercentileRank(65.0), nameof(Flux.Xtensions.PercentileRank));
     }
 
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.6, d.ProbabilityMassFunction(65, out var _, out var _), nameof(Flux.XtendCollections.ProbabilityMassFunction));
+      Assert.AreEqual(0.6, d.ProbabilityMassFunction(65, out var _, out var _), nameof(Flux.Xtensions.ProbabilityMassFunction));
     }
   }
 }

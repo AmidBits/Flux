@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     /// <summary>Results in a string array of all column values in the current row.</summary>
     public static string GetString(this System.Data.IDataRecord source, int index, string nullString) => (source ?? throw new System.ArgumentNullException(nameof(source))).IsDBNull(index) ? nullString : source.GetValue(index).ToString() ?? nullString;

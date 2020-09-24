@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     public static System.Collections.Generic.IEnumerable<TResult> GetFields<TResult>(this System.Data.IDataRecord source, System.Func<System.Data.IDataRecord, int, TResult> resultSelector)
     {

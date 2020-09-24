@@ -4,7 +4,7 @@ namespace Flux
 {
   // http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(System.IO.Stream);k(Stream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5.1);k(DevLang-csharp)&rd=true
 
-  public static partial class XtendStream
+  public static partial class Xtensions
   {
     /// <summary>Write a record (comma delimted and double quoted CSVs) to the System.IO.StreamWriter.</summary>
     public static void WriteRecord(this System.IO.StreamWriter source, params object[] values)

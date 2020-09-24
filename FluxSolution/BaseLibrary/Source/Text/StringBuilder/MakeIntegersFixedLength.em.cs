@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendStringBuilder
+  public static partial class Xtensions
   {
     public static System.Text.StringBuilder MakeIntegersFixedLength(this System.Text.StringBuilder source, int minLength)
     {

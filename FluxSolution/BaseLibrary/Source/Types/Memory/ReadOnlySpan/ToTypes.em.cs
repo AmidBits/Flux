@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class Xtensions
   {
     /// <summary>Creates a Span from the source.</summary>
     public static System.Span<T> ToSpan<T>(this System.ReadOnlySpan<T> source)

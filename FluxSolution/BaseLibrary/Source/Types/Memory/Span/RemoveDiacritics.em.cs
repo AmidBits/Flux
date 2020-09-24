@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class Xtensions
   {
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
     public static void RemoveDiacriticalLatinStrokes(this System.Span<char> source)
@@ -9,7 +9,7 @@ namespace Flux
       {
         var c = source[index];
 
-        if (XtendChar.RemoveDiacriticalLatinStroke(c) != c)
+        if (RemoveDiacriticalLatinStroke(c) != c)
         {
           source[index] = c;
         }
@@ -42,6 +42,6 @@ namespace Flux
 
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
     public static System.Span<char> RemoveDiacriticalMarksAndStrokes(this System.Span<char> source)
-      => RemoveDiacriticalMarks(source, XtendChar.RemoveDiacriticalLatinStroke);
+      => RemoveDiacriticalMarks(source, RemoveDiacriticalLatinStroke);
   }
 }

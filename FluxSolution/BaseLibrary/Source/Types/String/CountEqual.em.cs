@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendString
+  public static partial class Xtensions
   {
     /// <summary>Reports the length (or count) of equality at both the start and the end of the sequence. Using the specified comparer.</summary>
     public static int CountEqualOnBothSides(this string source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)

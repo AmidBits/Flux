@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendImmutable
+  public static partial class Xtensions
   {
     /// <summary>Finds all sub-nodes matching the specified key.</summary>
     public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> FindAllNodes<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey key)

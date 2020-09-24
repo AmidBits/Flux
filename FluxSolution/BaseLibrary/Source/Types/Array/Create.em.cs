@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class XtendArray
+  public static partial class Xtensions
   {
     /// <summary>Create and return a new array with data from the current array.</summary>
     /// <param name="absoluteLength0">The length of dimension 0 in the new array.</param>

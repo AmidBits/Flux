@@ -2,7 +2,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Returns a random element from the sequence. Slightly more random than the above, but a bit slower too. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     /// <seealso cref="http://stackoverflow.com/questions/648196/random-row-from-linq-to-sql/648240#648240"/>

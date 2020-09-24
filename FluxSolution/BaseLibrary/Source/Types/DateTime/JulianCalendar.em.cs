@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <seealso cref="https://en.wikipedia.org/wiki/Julian_day"/>
-  public static partial class XtendDateTime
+  public static partial class Xtensions
   {
     public static System.DateTime FromJulianDate(this double julianDay)
       => System.DateTime.FromOADate(julianDay - 2415018.5);

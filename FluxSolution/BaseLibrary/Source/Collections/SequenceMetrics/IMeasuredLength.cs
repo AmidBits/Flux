@@ -1,4 +1,4 @@
-namespace Flux.SequenceMetrics
+namespace Flux
 {
   /// <summary>Represents some arbitrary measure of length between two sequences. Some cannot be used to derive direct metrics. E.g. the longest common substring, since there can be many between two strings.</summary>
 	public interface IMeasuredLength<T>

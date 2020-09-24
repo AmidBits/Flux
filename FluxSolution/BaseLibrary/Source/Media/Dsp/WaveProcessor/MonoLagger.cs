@@ -5,7 +5,7 @@ namespace Flux.Dsp.AudioProcessor
   {
     private double m_amount;
     /// <summary>The amount of lag desired in the range [0, 1], where 0 is none and 1 is the most.</summary>
-    public double Amount { get => m_amount; set => m_amount = Maths.Clamp(value, 0.0, 1.0); }
+    public double Amount { get => m_amount; set => m_amount = System.Math.Clamp(value, 0.0, 1.0); }
 
     private double m_previousSample;
 

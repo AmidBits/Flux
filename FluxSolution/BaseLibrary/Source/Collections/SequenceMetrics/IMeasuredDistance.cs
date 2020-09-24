@@ -1,4 +1,4 @@
-namespace Flux.SequenceMetrics
+namespace Flux
 {
   /// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
 	public interface IMeasuredDistance<T>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendByteArray
+  public static partial class Xtensions
   {
     /// <summary>Creates a new byte[count] of bitwise AND values using source[sourceStartAt..count] and other[otherStartAt..count].</summary>
     public static byte[] BitwiseAnd(this byte[] source, int startAt, byte[] other, int otherStartAt, int count)

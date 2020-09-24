@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Returns whether the sequence has at least the specified count (number of elements) matching the predicate.</summary>
     public static bool CountAtLeast<T>(this System.Collections.Generic.IEnumerable<T> source, int count, System.Func<T, int, bool> predicate)

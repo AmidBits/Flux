@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendStringBuilder
+  public static partial class Xtensions
   {
     /// <summary>Reverse all characters in-place.</summary>
     public static System.Text.StringBuilder Reverse(this System.Text.StringBuilder source)

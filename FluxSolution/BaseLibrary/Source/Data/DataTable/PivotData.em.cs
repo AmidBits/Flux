@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data pivoted.</summary>
     /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>

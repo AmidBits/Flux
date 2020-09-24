@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendArray
+  public static partial class Xtensions
   {
     public static T[] Append<T>(this T[] source, params T[] append)
     {

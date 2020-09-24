@@ -11,7 +11,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       get => _mix;
       set
       {
-        _mix = Maths.Clamp(value, -1.0, 1.0);
+        _mix = System.Math.Clamp(value, -1.0, 1.0);
 
         if (_mix > Flux.Maths.EpsilonCpp32)
         {

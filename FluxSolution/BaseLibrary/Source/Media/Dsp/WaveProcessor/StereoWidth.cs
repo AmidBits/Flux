@@ -12,7 +12,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_width;
       set
       {
-        m_width = Maths.Clamp(value, -1.0, 1.0);
+        m_width = System.Math.Clamp(value, -1.0, 1.0);
 
         var tmp = 1 / System.Math.Max(m_width + 1, 2);
 

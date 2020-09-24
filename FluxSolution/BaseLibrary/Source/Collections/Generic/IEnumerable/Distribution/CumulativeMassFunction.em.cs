@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>The Cumulative Distribution Function (CDF) is the function that maps values to their percentile rank in a distribution. Uses the specified comparer.</summary>
     /// <returns>Basically the percentile rank but as a probability in the range [0, 1], rather than a percentile rank which is in the range [0, 100].</returns>

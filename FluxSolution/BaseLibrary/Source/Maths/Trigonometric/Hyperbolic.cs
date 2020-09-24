@@ -27,30 +27,27 @@ namespace Flux
     public static double Coth(double value, out double exp, out double expn)
       => ((exp = System.Math.Exp(value)) + (expn = System.Math.Exp(-value))) / (exp - expn);
 
-    /// <summary>Returns the inverse hyperbolic sine of the specified angle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-    static public double Asinh(double value)
-#if NETCOREAPP
-      => System.Math.Asinh(value);
-#else
-      => System.Math.Log(value + System.Math.Sqrt(value * value + 1));
-#endif
-    /// <summary>Returns the inverse hyperbolic cosine of the specified angle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-    static public double Acosh(double value)
-#if NETCOREAPP
-      => System.Math.Acosh(value);
-#else
-      => System.Math.Log(value + System.Math.Sqrt(value * value - 1));
-#endif
-    /// <summary>Returns the inverse hyperbolic tangent of the specified angle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-    static public double Atanh(double value)
-#if NETCOREAPP
-      => System.Math.Atanh(value);
-#else
-      => System.Math.Log((1 + value) / (1 - value)) / 2;
-#endif
+    //    /// <summary>Returns the inverse hyperbolic sine of the specified angle.</summary>
+    //    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    //#if NETCOREAPP
+    //    [System.Obsolete("Use from System.Math instead.", true)]
+    //#endif
+    //    static public double Asinh(double value)
+    //      => System.Math.Log(value + System.Math.Sqrt(value * value + 1));
+    //    /// <summary>Returns the inverse hyperbolic cosine of the specified angle.</summary>
+    //    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    //#if NETCOREAPP
+    //    [System.Obsolete("Use from System.Math instead.", true)]
+    //#endif
+    //    static public double Acosh(double value)
+    //      => System.Math.Log(value + System.Math.Sqrt(value * value - 1));
+    //    /// <summary>Returns the inverse hyperbolic tangent of the specified angle.</summary>
+    //    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    //#if NETCOREAPP
+    //    [System.Obsolete("Use from System.Math instead.", true)]
+    //#endif
+    //    static public double Atanh(double value)
+    //      => System.Math.Log((1 + value) / (1 - value)) / 2;
 
     /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>

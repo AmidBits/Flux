@@ -28,14 +28,8 @@ namespace Maths
     public void Clamp()
     {
       Assert.AreEqual(pbi[9], Flux.Maths.Clamp(pbi[19], pbi[3], pbi[9]));
-      Assert.AreEqual(pb[9], Flux.Maths.Clamp(pb[19], pb[3], pb[9]));
-      Assert.AreEqual(pi[9], Flux.Maths.Clamp(pi[19], pi[3], pi[9]));
-      Assert.AreEqual(pl[9], Flux.Maths.Clamp(pl[19], pl[3], pl[9]));
-      Assert.AreEqual(psb[9], Flux.Maths.Clamp(psb[19], psb[3], psb[9]));
-      Assert.AreEqual(ps[9], Flux.Maths.Clamp(ps[19], ps[3], ps[9]));
       Assert.AreEqual(pui[9], Flux.Maths.Clamp(pui[19], pui[3], pui[9]));
       Assert.AreEqual(pul[9], Flux.Maths.Clamp(pul[19], pul[3], pul[9]));
-      Assert.AreEqual(pus[9], Flux.Maths.Clamp(pus[19], pus[3], pus[9]));
     }
     [TestMethod]
     public void Distance()

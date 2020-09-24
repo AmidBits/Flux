@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendDateTime
+  public static partial class Xtensions
   {
     public static string GetPeriodOfDay(this System.DateTime source)
       => source.Hour switch

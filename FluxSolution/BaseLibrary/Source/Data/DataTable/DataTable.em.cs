@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     public static System.Collections.Generic.IEnumerable<object> GetColumn(this System.Data.DataTable source, int columnIndex)
       => source.GetDataColumn(columnIndex).Prepend(source.Columns[columnIndex].ColumnName);

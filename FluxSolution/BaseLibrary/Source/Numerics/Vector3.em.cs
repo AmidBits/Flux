@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendNumerics
+  public static partial class Xtensions
   {
     /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
     public static System.Numerics.Vector3 AlongPathTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float scalar = 0.5f)

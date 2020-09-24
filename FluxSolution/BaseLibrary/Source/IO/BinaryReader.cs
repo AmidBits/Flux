@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtendIo
+  public static partial class Xtensions
   {
     public static System.Numerics.BigInteger ReadBigInteger(this System.IO.BinaryReader source, int numberOfBytes, bool reverseBytes)
     {

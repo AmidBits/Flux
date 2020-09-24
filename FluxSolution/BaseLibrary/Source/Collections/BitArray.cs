@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public sealed class BitArrayCollection
+  public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {
     private readonly long[] m_bitArray;
@@ -8,7 +8,7 @@
 
     public bool this[long index] { get => Get(index); set => Set(index, value); }
 
-    public BitArrayCollection(long length, bool defaultValue)
+    public BitArray(long length, bool defaultValue)
     {
       if (length < 0) throw new System.ArgumentOutOfRangeException(nameof(length));
 
@@ -24,7 +24,7 @@
         System.Array.Clear(m_bitArray, 0, m_bitArray.Length);
       }
     }
-    public BitArrayCollection(int length)
+    public BitArray(int length)
       : this(length, false)
     {
     }
@@ -68,13 +68,13 @@
     private class BitArrayEnumerator
       : Flux.Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
     {
-      private readonly BitArrayCollection m_bitArray;
+      private readonly BitArray m_bitArray;
 
       private long m_index;
 
       private bool m_current;
 
-      internal BitArrayEnumerator(BitArrayCollection bitArray)
+      internal BitArrayEnumerator(BitArray bitArray)
       {
         m_bitArray = bitArray;
 

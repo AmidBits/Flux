@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendIo
+  public static partial class Xtensions
   {
     public static void DeleteContent(this System.IO.DirectoryInfo directoryInfo)
     {

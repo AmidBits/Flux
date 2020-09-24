@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Creates a seqeuence of indices for elements when the predicate is met.</summary>
     public static System.Collections.Generic.IEnumerable<int> IndicesOf<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)

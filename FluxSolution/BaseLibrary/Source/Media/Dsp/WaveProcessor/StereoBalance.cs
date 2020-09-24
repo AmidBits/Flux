@@ -11,7 +11,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_position;
       set
       {
-        m_position = Maths.Clamp(value, -1.0, 1.0);
+        m_position = System.Math.Clamp(value, -1.0, 1.0);
 
         if (m_position > Maths.EpsilonCpp32)
         {

@@ -1,10 +1,10 @@
 namespace Flux
 {
-  public static partial class XtendString
+  public static partial class Xtensions
   {
     /// <summary>Returns a new string with ordinal extensions (e.g. 3rd, 12th, etc.) for all numeric substrings surrounded by spaces (or the beginning and end of the string).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
-    public static string InsertOrdinalIndicator(this string source) 
+    public static string InsertOrdinalIndicator(this string source)
       => source.InsertOrdinalIndicator(match => true);
     /// <summary>Returns a new string with ordinal extensions (e.g. 3rd, 12th, etc.) for all numeric substrings surrounded by spaces (or the beginning and end of the string), if the predicate(leftOfMatch, matchedDigits, rightOfMatch, matchIndex) is satisfied.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
@@ -12,7 +12,7 @@ namespace Flux
     {
       var index = 0;
 
-      return System.Text.RegularExpressions.Regex.Replace(source, @"(?<=^|\s|\,)\d+(?=\s|$)", (match) =>
+      return System.Text.RegularExpressions.Regex.Replace(source, @"(?<=^|[^\d])\d+(?=[^\d]|$)", (match) =>
       {
         if (predicate((source.Substring(0, match.Index), match.Value, source.Substring(match.Index + match.Length), index++)))
         {

@@ -12,7 +12,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_angle;
       set
       {
-        m_angle = Maths.Clamp(value, -1.0, 1.0);
+        m_angle = System.Math.Clamp(value, -1.0, 1.0);
 
         if (m_angle > Maths.EpsilonCpp32 || m_angle < -Maths.EpsilonCpp32)
         {

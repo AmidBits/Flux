@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
     public static string GetDefaultTsqlDefinition(this System.Data.IDataRecord source, int index)
     {

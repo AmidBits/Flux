@@ -10,7 +10,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_threshold;
       set
       {
-        m_threshold = Maths.Clamp(value, -30.0, 0.0);
+        m_threshold = System.Math.Clamp(value, -30.0, 0.0);
 
         SetState();
       }
@@ -22,7 +22,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_ceiling;
       set
       {
-        m_ceiling = Maths.Clamp(value, -20.0, 0.0);
+        m_ceiling = System.Math.Clamp(value, -20.0, 0.0);
 
         SetState();
       }
@@ -34,7 +34,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_softClipDecibel;
       set
       {
-        m_softClipDecibel = Maths.Clamp(value, 0.0, 6.0);
+        m_softClipDecibel = System.Math.Clamp(value, 0.0, 6.0);
 
         SetState();
       }
@@ -46,7 +46,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_softClipRatio;
       set
       {
-        m_softClipRatio = Maths.Clamp(System.Math.Round(value), 3.0, 20.0);
+        m_softClipRatio = System.Math.Clamp(System.Math.Round(value), 3.0, 20.0);
 
         SetState();
       }

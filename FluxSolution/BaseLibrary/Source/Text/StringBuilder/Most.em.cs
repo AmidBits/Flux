@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendStringBuilder
+  public static partial class Xtensions
   {
     /// <summary>Returns a string containing the right most specified number of characters, if available, otherwise as many as there are.</summary>
     public static string LeftMost(this System.Text.StringBuilder source, int maxCount)

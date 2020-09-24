@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Partition the sequence into a specified number of list. The last partition may contain less elements than the other partitions.</summary>
     /// <remarks>Enumerates the entire sequence to a list.</remarks>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendText
+  public static partial class Xtensions
   {
     public static System.Xml.Linq.XElement Copy(this System.Xml.Linq.XElement source)
     {

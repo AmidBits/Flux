@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendChar
+  public static partial class Xtensions
   {
     /// <summary>Indicates whether the char is a printable character.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/ASCII#Printable_characters"/>

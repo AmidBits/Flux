@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendString
+  public static partial class Xtensions
   {
     /// <summary>Forms a new ReadOnlySpan from the source.</summary>
     public static System.ReadOnlySpan<char> ToReadOnlySpan(this string source)

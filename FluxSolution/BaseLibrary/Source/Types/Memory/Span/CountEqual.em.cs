@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendSpan
+  public static partial class Xtensions
   {
     /// <summary>Reports the length (or count) of equality at the end of the sequence. Using the specified comparer.</summary>
     public static int CountEqualAtEnd<T>(this System.Span<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)

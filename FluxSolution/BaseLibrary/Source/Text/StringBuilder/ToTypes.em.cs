@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendStringBuilder
+  public static partial class Xtensions
   {
     /// <summary>Returns a Span of char from the string builder.</summary>
     public static System.ReadOnlySpan<char> ToReadOnlySpan(this System.Text.StringBuilder source, int startIndex, int length)

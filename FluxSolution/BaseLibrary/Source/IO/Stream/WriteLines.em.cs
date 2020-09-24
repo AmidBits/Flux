@@ -4,7 +4,7 @@ namespace Flux
 {
   // http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(System.IO.Stream);k(Stream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5.1);k(DevLang-csharp)&rd=true
 
-  public static partial class XtendStream
+  public static partial class Xtensions
   {
     /// <summary>Writes an string[] or a params of strings to a stream.</summary>
     public static void WriteLines(this System.IO.Stream target, params string[] lines)

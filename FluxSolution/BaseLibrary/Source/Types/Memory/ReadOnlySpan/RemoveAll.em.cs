@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendReadOnlySpan
+  public static partial class Xtensions
   {
     /// <summary>Remove all <typeparamref name="T"/>'s satisfying the predicate.</summary>
     public static T[] RemoveAll<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendDouble
+  public static partial class Xtensions
   {
     /// <summary>Computes the percentile of the specified percentile rank within the ordered source distribution.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile"/>

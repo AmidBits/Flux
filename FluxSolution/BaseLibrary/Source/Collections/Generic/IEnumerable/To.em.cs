@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Creates a new data table from the sequence using the value selector and the column names.</summary>
     public static System.Data.DataTable ToDataTable<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, object[]> valuesSelector, params string[] columnNames)

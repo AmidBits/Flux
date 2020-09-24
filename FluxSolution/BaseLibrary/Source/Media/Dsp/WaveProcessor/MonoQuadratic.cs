@@ -26,7 +26,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_exponent;
       set
       {
-        m_exponent = Maths.Clamp(value, -1.0, 1.0);
+        m_exponent = System.Math.Clamp(value, -1.0, 1.0);
 
         m_exponentExpanded = (-m_exponent) switch
         {

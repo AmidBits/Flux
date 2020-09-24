@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>Returns a new dictionary with a fill inventory of items.<summary>
     /// <typeparam name="TKey">Inventory items.</typeparam>

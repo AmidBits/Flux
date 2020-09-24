@@ -1,5 +1,7 @@
 ﻿using Flux;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp
 {
@@ -7,7 +9,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();

@@ -8,7 +8,7 @@ namespace Flux.Dsp.AudioProcessor
     public double PolarBias
     {
       get => m_polarBias;
-      set => m_polarBias = Maths.Clamp(value, -1.0, 1.0);
+      set => m_polarBias = System.Math.Clamp(value, -1.0, 1.0);
     }
 
     private double m_multiplier;
@@ -18,7 +18,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_multiplier > 1.0 ? (m_multiplier - 1.0) / 9.0 : m_multiplier - 1.0;
       set
       {
-        m_multiplier = Maths.Clamp(value, -1.0, 1.0);
+        m_multiplier = System.Math.Clamp(value, -1.0, 1.0);
 
         if (m_multiplier > Maths.EpsilonCpp32)
         {

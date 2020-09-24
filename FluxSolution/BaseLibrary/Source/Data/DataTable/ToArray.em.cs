@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendData
+  public static partial class Xtensions
   {
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static object[,] ToArray(this System.Data.DataTable source, bool includeColumnName)

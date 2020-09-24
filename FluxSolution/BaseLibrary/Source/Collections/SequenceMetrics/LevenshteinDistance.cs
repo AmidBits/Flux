@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendSequenceMetrics
+  public static partial class Xtensions
   {
     /// <summary>The Levenshtein distance between two words is the minimum number of single-character edits(insertions, deletions or substitutions) required to change one word into the other. Uses the specified comparer, or default if null.</summary>
     public static int LevenshteinDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
@@ -16,7 +16,7 @@ namespace Flux
       => new SequenceMetrics.LevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
     /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other. Uses the default comparer.</summary>
     public static int LevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => ((SequenceMetrics.IMetricDistance<T>)new SequenceMetrics.LevenshteinDistance<T>()).GetMetricDistance(source, target);
+      => ((IMetricDistance<T>)new SequenceMetrics.LevenshteinDistance<T>()).GetMetricDistance(source, target);
   }
 
   namespace SequenceMetrics

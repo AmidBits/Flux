@@ -13,14 +13,14 @@ namespace Flux.Dsp
   {
     private double _modulation;
     /// <summary>The amount of modulation to apply when computing the value.</summary>
-    public double Modulation { get => _modulation; set => _modulation = Maths.Clamp(value, 0.0, 1.0); }
+    public double Modulation { get => _modulation; set => _modulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The modulator to use when automating the computation of values. Values can still be manipulated.</summary>
     public IOscillator Modulator { get; set; }
 
     private double _value;
     /// <summary>The value (manually set or automatically calculated on call to the MoveNext method) of the parameter.</summary>
-    public double Value { get => _value; set => _value = Maths.Clamp(value, -1.0, 1.0); }
+    public double Value { get => _value; set => _value = System.Math.Clamp(value, -1.0, 1.0); }
 
     public ModulatedValue(double modulation, IOscillator modulator, double value)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendText
+  public static partial class Xtensions
   {
     /// <summary>Convert an XmlElement into an XElement.</summary>
     /// <param name="source">The XmlElement to convert.</param>

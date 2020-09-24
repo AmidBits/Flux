@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendNumerics
+  public static partial class Xtensions
   {
     /// <summary>Indicates whether the specified number is a square of the specified root.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>

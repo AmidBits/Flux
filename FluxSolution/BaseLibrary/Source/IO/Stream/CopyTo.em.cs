@@ -1,10 +1,8 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   // http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(System.IO.Stream);k(Stream);k(TargetFrameworkMoniker-.NETCore,Version%3Dv4.5.1);k(DevLang-csharp)&rd=true
 
-  public static partial class XtendStream
+  public static partial class Xtensions
   {
     /// <summary>Copies a chunk of bytes from one stream to another.</summary>
     static public int CopyTo(this System.IO.Stream source, System.IO.Stream target, int bufferSize = 8192)

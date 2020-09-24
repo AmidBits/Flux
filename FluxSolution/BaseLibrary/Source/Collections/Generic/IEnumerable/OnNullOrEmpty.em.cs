@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     public static System.Collections.Generic.IEnumerable<T> EmptyOnNull<T>(this System.Collections.Generic.IEnumerable<T>? source)
       => source ?? System.Linq.Enumerable.Empty<T>();

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class XtendCollections
+  public static partial class Xtensions
   {
     /// <summary>The percent rank, in the range [0, 100], for the specified sequence. Percent rank is based on index, not values.</summary>
     /// <param name="source">A sequence of <typeparamref name="T"/>.</param>

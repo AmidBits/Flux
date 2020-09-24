@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendNumerics
+  public static partial class Xtensions
   {
     public static System.Numerics.Vector3 EulerAngles(this System.Numerics.Quaternion source)
     {

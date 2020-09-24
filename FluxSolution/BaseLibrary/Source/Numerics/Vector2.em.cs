@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendNumerics
+  public static partial class Xtensions
   {
     /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
     public static System.Numerics.Vector2 AlongPathTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float scalar = 0.5f)
@@ -12,7 +12,7 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static double AngleTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
-      => System.Math.Acos(Flux.Maths.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
+      => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>

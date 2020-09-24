@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtendString
+  public static partial class Xtensions
   {
     /// <summary>Returns whether the expression is a valid Social Security Number (SSN).</summary>
     public static bool IsSocialSecurityNumber(this string text)
