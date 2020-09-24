@@ -1,5 +1,21 @@
 namespace Flux
 {
+  /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
+  public enum CardinalDirection { N, E, S, W }
+  /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
+  public enum InterCardinalDirection { NE, SE, SW, NW }
+  /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
+  public enum EightWindCompassRose { N, NE, E, SE, S, SW, W, NW }
+  /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#16-wind_compass_rose"/>
+  public enum SixteenWindCompassRose { N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW }
+  /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
+  public enum ThirtyTwoWindCompassRose { N, NbE, NNE, NEbN, NE, NEbE, ENE, EbN, E, EbS, ESE, SEbE, SE, SEbS, SSE, SbE, S, SbW, SSW, SWbS, SW, SWbW, WSW, WbS, W, WbN, WNW, NWbW, NW, NWbN, NNW, NbW }
+
+  /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
+  public enum PointsOfTheCompass { CardinalDirections = 4, EightWinds = 8, SixteenWinds = 16, ThirtyTwoWinds = 32 }
+
   public static class EarthRadii
   {
     public const double EquatorialInKilometers = 6378.1370;
@@ -169,23 +185,6 @@ namespace Flux
       return System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat2 * System.Math.Sin(lonD), 2) + System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), (sinLat1 * sinLat2 + cosLat1 * cosLat2LonD));
     }
 
-    #region Compass Direction/Points
-    /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-    public enum CardinalDirection { N, E, S, W }
-    /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-		public enum IntercardinalDirection { NE, SE, SW, NW }
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
-		public enum EightWindCompassRose { N, NE, E, SE, S, SW, W, NW }
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#16-wind_compass_rose"/>
-		public enum SixteenWindCompassRose { N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW }
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
-		public enum ThirtyTwoWindCompassRose { N, NbE, NNE, NEbN, NE, NEbE, ENE, EbN, E, EbS, ESE, SEbE, SE, SEbS, SSE, SbE, S, SbW, SSW, SWbS, SW, SWbW, WSW, WbS, W, WbN, WNW, NWbW, NW, NWbN, NNW, NbW }
-
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-		public enum PointsOfTheCompass { CardinalDirections = 4, EightWinds = 8, SixteenWinds = 16, ThirtyTwoWinds = 32 }
-
     /// <summary>Compass point (to given precision) for specified bearing.</summary>
     /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
     /// <param name="bearing">The direction in radians.</param>
@@ -204,7 +203,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(precision), $"Precision must be one of {string.Join(", ", System.Enum.GetNames(typeof(PointsOfTheCompass)))}."),
       };
     }
-    #endregion Compass Direction/Points
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>

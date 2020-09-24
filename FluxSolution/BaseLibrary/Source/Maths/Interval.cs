@@ -1,6 +1,17 @@
-
 namespace Flux
 {
+  public enum IntervalRoundingBehavior
+  {
+    /// <summary>Rounds an interval further from zero.</summary>
+    AwayFromZero = RoundingBehavior.RoundAwayFromZero,
+    /// <summary>Rounds an interval to the next lower integer.</summary>
+    Ceiling = RoundingBehavior.RoundCeiling,
+    /// <summary>Rounds an interval to the next greater integer.</summary>
+    Floor = RoundingBehavior.RoundFloor,
+    /// <summary>Rounds every number with a fraction part to the surrounding integer that is closer to zero.</summary>
+    TowardZero = RoundingBehavior.RoundTowardZero
+  }
+
   public static partial class Maths
   {
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when equally distant between two intervals.</summary>
@@ -10,17 +21,6 @@ namespace Flux
     public static double ToInterval(double value, double interval, RoundingBehavior mode)
       => RoundToNearest(value / interval, mode) * interval;
 
-    public enum IntervalRoundingBehavior
-    {
-      /// <summary>Rounds an interval further from zero.</summary>
-      AwayFromZero = RoundingBehavior.RoundAwayFromZero,
-      /// <summary>Rounds an interval to the next lower integer.</summary>
-      Ceiling = RoundingBehavior.RoundCeiling,
-      /// <summary>Rounds an interval to the next greater integer.</summary>
-      Floor = RoundingBehavior.RoundFloor,
-      /// <summary>Rounds every number with a fraction part to the surrounding integer that is closer to zero.</summary>
-      TowardZero = RoundingBehavior.RoundTowardZero
-    }
 
     /// <summary></summary>
     public static int ToInterval(int value, int multiple, IntervalRoundingBehavior mode)

@@ -12,6 +12,23 @@ namespace Flux.Text
   /// <remarks>A .NET System.Text.Rune represents a Unicode code point.</remarks>
   public static partial class UnicodeEx
   {
+    public static System.Collections.Generic.IReadOnlyList<(UnicodeBlock block, int firstCodePoint, int lastCodePoint)> BlockRanges
+      => ((long[])System.Enum.GetValues(typeof(UnicodeBlock))).Cast<long>().Select(v => ((UnicodeBlock)v, (int)(v >> 32 & 0x7FFFFFFF), (int)(v & 0x7FFFFFFF))).ToList();
+
+    public static int GetBlockCodePointFirst(UnicodeBlock block)
+      => (int)((long)block >> 32 & 0x7FFFFFFF);
+    public static int GetBlockCodePointLast(UnicodeBlock block)
+      => (int)((long)block & 0x7FFFFFFF);
+
+    public static UnicodeBlock GetBlockFromUtf32(int utf32)
+    {
+      foreach (var (block, firstCodePoint, lastCodePoint) in BlockRanges)
+        if (utf32 >= firstCodePoint && utf32 <= lastCodePoint)
+          return block;
+
+      throw new System.ArgumentOutOfRangeException(nameof(utf32));
+    }
+
     public static System.Collections.Generic.IDictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>> GetCharactersByUnicodeCategory()
     {
       var unicodeCategoryCharacters = new System.Collections.Generic.Dictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>>();

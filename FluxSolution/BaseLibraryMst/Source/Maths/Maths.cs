@@ -61,7 +61,7 @@ namespace Maths
     [TestMethod]
     public void ToInterval()
     {
-      Assert.AreEqual(1.8, Flux.Maths.ToInterval(1.75, 0.45, Flux.Maths.RoundingBehavior.RoundAwayFromZero), $"{nameof(Flux.Maths.ToInterval)} {Flux.Maths.RoundingBehavior.HalfAwayFromZero}");
+      Assert.AreEqual(1.8, Flux.Maths.ToInterval(1.75, 0.45, RoundingBehavior.RoundAwayFromZero), $"{nameof(Flux.Maths.ToInterval)} {RoundingBehavior.HalfAwayFromZero}");
     }
 
     [TestMethod]

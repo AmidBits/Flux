@@ -9,7 +9,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-
+      var dt = Flux.Resources.Ucd.Blocks.GetDataTable(Flux.Resources.Ucd.Blocks.LocalUri);
+      foreach (var b in dt.Rows)
+      {
+        System.Console.WriteLine($"{b}");
+      }
       /*
       var ttt = new Flux.Model.TicTacToe.Board();
 
