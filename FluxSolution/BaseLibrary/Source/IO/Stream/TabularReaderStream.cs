@@ -10,7 +10,7 @@ namespace Flux.IO
     private readonly char m_fieldSeparator;
 
     /// <summary>An array of the field provider types for the result.</summary>
-    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = new System.Collections.Generic.List<string>();
+    public System.Collections.Generic.List<string> FieldProviderTypes { get; set; } = new System.Collections.Generic.List<string>();
 
     public int RecordIndex { get; private set; }
 
@@ -38,13 +38,13 @@ namespace Flux.IO
     /// <summary>Use this constructor to read up to three rows by specifying headerCount 1 (field names), 2 (field types) or 3 (field provider types) with the option to specify them individually (this will override what is read).</summary>
     public void Initialize(int headerCount, System.Collections.Generic.IList<string>? fieldNames, System.Collections.Generic.IList<System.Type>? fieldTypes, System.Collections.Generic.IList<string>? fieldProviderTypes)
     {
-      FieldNames.AddRange(
+      FieldNames = new System.Collections.Generic.List<string>(
         (headerCount >= 1 && ReadFieldValues().ToList() is var streamFieldNames)
         ? fieldNames ?? streamFieldNames!
         : fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames), @"Missing field names.")
       );
 
-      FieldTypes.AddRange(
+      FieldTypes = new System.Collections.Generic.List<System.Type>(
         (headerCount >= 2 && ReadFieldValues().Select(typeName => System.Type.GetType(typeName ?? @"Object")).ToList() is var streamFieldTypes)
         ? fieldTypes ?? streamFieldTypes!
         : fieldTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field types.")
@@ -55,7 +55,7 @@ namespace Flux.IO
         throw new System.DataMisalignedException($"The number of field types ({FieldTypes.Count}) does not match the number of field names ({FieldNames.Count}).");
       }
 
-      FieldProviderTypes.AddRange(
+      FieldProviderTypes = new System.Collections.Generic.List<string>(
         (headerCount >= 3 && ReadFieldValues().ToList() is var streamFieldProviderTypes)
         ? fieldProviderTypes ?? streamFieldProviderTypes!
         : fieldProviderTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field provider types.")

@@ -3,18 +3,22 @@ using System.Linq;
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
+  /// <remarks>Returns keywords, synonyms and antonyms.</summary>
   /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
-  public static partial class SynonymsAndAntonymsSamuelFallows
+  public class SynonymsAndAntonymsSamuelFallows
+    : DataShaper
   {
-    private static readonly System.Text.RegularExpressions.Regex m_reSections = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-    public static System.Collections.Generic.IList<string> FieldNames
-      => new string[] { "Keywords", "Synonyms", "Antonyms" };
-
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\ProjectGutenberg\51155-0.txt");
     public static System.Uri SourceUri
       => new System.Uri(@"http://www.gutenberg.org/files/51155/51155-0.txt");
+
+    public override System.Collections.Generic.IList<string> FieldNames
+      => new string[] { "Keywords", "Synonyms", "Antonyms" };
+    public override System.Collections.Generic.IList<System.Type> FieldTypes
+      => new System.Type[] { typeof(string), typeof(string), typeof(string) };
+
+    private static readonly System.Text.RegularExpressions.Regex m_reSections = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
     public static System.Collections.Generic.IEnumerable<string[][]> GetArrays(System.Uri uri)
     {
@@ -51,16 +55,7 @@ namespace Flux.Resources.ProjectGutenberg
     }
 
     /// <summary>Returns an IEnumerable<string[]> with keywords, synonyms and antonyms.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<string>> GetData(System.Uri uri)
-    {
-      foreach (var data in GetArrays(uri))
-      {
-        yield return new string[] { string.Join(@",", data[0]), string.Join(@",", data[1]), string.Join(@",", data[2]) };
-      }
-    }
-
-    /// <summary>Returns an IDataReader with keywords, synonyms and antonyms.</summary>
-    public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
+    public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
+      => GetArrays(uri).Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) });
   }
 }

@@ -3,20 +3,22 @@ using System.Linq;
 namespace Flux.Resources.W3c
 {
   /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
-  public static partial class NamedCharacterReferences
+  public class NamedCharacterReferences
+    : DataShaper
   {
-    private static readonly System.Text.RegularExpressions.Regex m_reUnicode = new System.Text.RegularExpressions.Regex(@"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})", System.Text.RegularExpressions.RegexOptions.Compiled);
-
-    public static System.Collections.Generic.IList<string> FieldNames
-      => new string[] { "Name", "CodePoints", "Characters", "charactersAsString" };
-
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\W3c\NamedCharacterReferences.json");
     public static System.Uri SourceUri
       => new System.Uri(@"https://html.spec.whatwg.org/entities.json");
 
-#if NETCOREAPP || NETSTANDARD2_1
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<string>> GetData(System.Uri uri)
+    public override System.Collections.Generic.IList<string> FieldNames
+      => new string[] { "Name", "CodePoints", "Characters", "charactersAsString" };
+    public override System.Collections.Generic.IList<System.Type> FieldTypes
+      => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string) };
+
+    private static readonly System.Text.RegularExpressions.Regex m_reUnicode = new System.Text.RegularExpressions.Regex(@"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       if (uri is null) throw new System.ArgumentNullException(nameof(uri));
 
@@ -44,9 +46,5 @@ namespace Flux.Resources.W3c
         yield return new string[] { jp.Name, codepoints, characters, charactersAsString };
       }
     }
-
-    public static Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<System.Collections.Generic.IList<string>>(GetData(uri), dr => (System.Collections.Generic.IList<object>)dr, FieldNames);
-#endif
   }
 }

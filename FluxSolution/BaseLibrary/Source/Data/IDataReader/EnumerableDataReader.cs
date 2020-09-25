@@ -7,8 +7,8 @@ namespace Flux.Data
     private System.Collections.Generic.IEnumerator<T>? m_enumerator;
     private readonly System.Func<T, System.Collections.Generic.IList<object>> m_valuesSelector;
 
-    public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, System.Collections.Generic.IEnumerable<string> fieldNames)
-      : base(fieldNames)
+    public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type>? fieldTypes = null)
+      : base(fieldNames, fieldTypes)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -28,8 +28,7 @@ namespace Flux.Data
     {
       if (m_enumerator?.MoveNext() ?? false)
       {
-        FieldValues.Clear();
-        FieldValues.AddRange(m_valuesSelector(m_enumerator.Current) ?? throw new System.NullReferenceException($"Unexpected null from 'valuesSelector'."));
+        FieldValues = new System.Collections.Generic.List<object>(m_valuesSelector(m_enumerator.Current) ?? throw new System.NullReferenceException($"Unexpected null from 'valuesSelector'."));
 
         if (FieldValues.Count != FieldCount)
         {

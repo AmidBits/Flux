@@ -8,11 +8,15 @@ namespace ConsoleApp
   class Program
   {
     private static void TimedMain(string[] args)
-    {
-      var dt = Flux.Resources.Ucd.Blocks.GetDataTable(Flux.Resources.Ucd.Blocks.LocalUri);
-      foreach (var b in dt.Rows)
+    {//http://www.gutenberg.org/ebooks/45849.txt.utf-8
+      var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
+      var index = 0;
+      foreach (var b in dt.Rows.Cast<System.Data.DataRow>())
       {
-        System.Console.WriteLine($"{b}");
+        System.Console.WriteLine();
+        System.Console.WriteLine(++index);
+        System.Console.WriteLine($"{string.Join('|', b.ItemArray)}");
+        System.Console.ReadKey();
       }
       /*
       var ttt = new Flux.Model.TicTacToe.Board();

@@ -7,20 +7,20 @@ namespace Flux.Data
     : DataReader
   {
     /// <summary>An array of the field names for the result.</summary>
-    public System.Collections.Generic.List<string> FieldNames { get; } = new System.Collections.Generic.List<string>();
+    public System.Collections.Generic.IList<string> FieldNames { get; set; } = new System.Collections.Generic.List<string>();
     /// <summary>An array of whether the fields FieldNulls is an optional functionality and each field will default to true (as in, this field allows null values).</summary>
-    public System.Collections.Generic.List<bool> FieldsAllowNull { get; } = new System.Collections.Generic.List<bool>();
+    public System.Collections.Generic.IList<bool> FieldsAllowNull { get; set; } = new System.Collections.Generic.List<bool>();
     ///// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
-    public System.Collections.Generic.List<System.Type> FieldTypes { get; } = new System.Collections.Generic.List<System.Type>();
+    public System.Collections.Generic.IList<System.Type> FieldTypes { get; set; } = new System.Collections.Generic.List<System.Type>();
     /// <summary>An array of field values for the result.</summary>
-    public System.Collections.Generic.List<object> FieldValues { get; } = new System.Collections.Generic.List<object>();
+    public System.Collections.Generic.IList<object> FieldValues { get; set; } = new System.Collections.Generic.List<object>();
 
-    public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames)
+    public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type>? fieldTypes = null)
     {
-      FieldNames.AddRange(fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames)));
+      FieldNames = new System.Collections.Generic.List<string>(fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames)));
 
-      FieldsAllowNull.AddRange(System.Linq.Enumerable.Repeat(true, FieldNames.Count));
-      FieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(object), FieldNames.Count));
+      FieldsAllowNull = new System.Collections.Generic.List<bool>(System.Linq.Enumerable.Repeat(true, FieldNames.Count));
+      FieldTypes = new System.Collections.Generic.List<System.Type>(fieldTypes ?? System.Linq.Enumerable.Repeat(typeof(object), FieldNames.Count));
 
       FieldValues.Clear();
     }

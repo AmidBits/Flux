@@ -40,6 +40,6 @@ namespace Flux
     }
     /// <summary>Indicates whether the source starts with value. Uses the default comparer.</summary>
     public static bool StartsWith(this System.Text.StringBuilder source, string value)
-       => EndsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
+       => StartsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }
