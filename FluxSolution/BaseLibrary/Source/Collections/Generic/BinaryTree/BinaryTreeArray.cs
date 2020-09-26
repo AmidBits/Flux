@@ -39,7 +39,7 @@ namespace Flux
       {
         var index = m_data.Length - 1;
 
-        while (value.CompareTo(m_data[index].Value) != 0)
+        while (index >= 0 && value.CompareTo(m_data[index].Value) != 0)
         {
           index--;
         }
@@ -67,7 +67,24 @@ namespace Flux
       public void Insert(TValue value)
       {
         if (m_data[0].IsEmpty) m_data[0] = new BinaryTreeArrayValue(value);
-        if (value.CompareTo(m_data[0].Value) > 0) Insert(value, 1);
+        else if (value.CompareTo(m_data[0].Value) > 0) Insert(value, 1);
+        else throw new System.InvalidOperationException();
+      }
+      public int Search(TValue value, int index)
+      {
+        if (index > m_data.Length - 1)
+          return -1;
+
+        var node = m_data[index];
+
+        if (!node.IsEmpty && value.CompareTo(node.Value) == 0)
+          return index;
+
+        var indexLeft = Search(value, BinaryTreeArray.ChildIndexLeft(index));
+        if (indexLeft > -1) return indexLeft;
+
+        var indexRight = Search(value, BinaryTreeArray.ChildIndexRight(index));
+        if (indexRight > -1) return indexRight;
       }
       public void Search(TValue value)
       {
@@ -87,17 +104,20 @@ namespace Flux
       private class BinaryTreeArrayValue
         : IBinaryTreeArrayNode<TValue>
       {
-        public bool IsEmpty => false;
         private readonly TValue m_value;
+
+        public bool IsEmpty => false;
         public TValue Value => m_value;
-        public BinaryTreeArrayValue(TValue value) => m_value = value;
+
+        public BinaryTreeArrayValue(TValue value)
+          => m_value = value;
       }
 
       private class BinaryTreeArrayEmpty
         : IBinaryTreeArrayNode<TValue>
       {
         public bool IsEmpty => true;
-        public TValue Value => throw new System.InvalidOperationException();
+        public TValue Value => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
       }
     }
   }
