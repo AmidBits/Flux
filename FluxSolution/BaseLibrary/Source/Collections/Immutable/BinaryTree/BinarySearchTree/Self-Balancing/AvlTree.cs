@@ -149,6 +149,12 @@ namespace Flux.Collections.Immutable
       IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key)
         => Remove(key);
       #endregion IMap Implementation
+
+      public override string ToString()
+        => $"<{GetType().Name}>";
     }
+
+    public override string ToString()
+      => $"<{GetType().Name}: {m_key}, {m_value}>";
   }
 }

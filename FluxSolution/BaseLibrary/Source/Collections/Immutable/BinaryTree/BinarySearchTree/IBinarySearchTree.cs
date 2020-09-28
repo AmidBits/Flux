@@ -1,18 +1,9 @@
-using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Finds all sub-nodes matching the specified key.</summary>
-    public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> FindAllNodes<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey key)
-      where TKey : System.IComparable<TKey>
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetNodesInOrder().Where(node => node.Key.CompareTo(key) == 0);
-    /// <summary>Finds the first sub-node matching the specified key.</summary>
-    public static Collections.Immutable.IBinarySearchTree<TKey, TValue> FindOneNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey key)
-      where TKey : System.IComparable<TKey>
-      => (key.CompareTo((source ?? throw new System.ArgumentNullException(nameof(source))).Key)) switch { var gt when gt > 0 => source.Right.Search(key), var lt when lt < 0 => source.Left.Search(key), _ => source };
-
     /// <summary>Gets the maximum (with the greatest key) node.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
@@ -22,7 +13,8 @@ namespace Flux
       if (source.IsEmpty) return source;
 
       var node = source;
-      while (!node.Right.IsEmpty) node = node.Right;
+      while (!node.Right.IsEmpty)
+        node = node.Right;
       return node;
     }
     /// <summary>Gets the minimum (with the least key) node.</summary>
@@ -34,7 +26,8 @@ namespace Flux
       if (source.IsEmpty) return source;
 
       var node = source;
-      while (!node.Left.IsEmpty) node = node.Left;
+      while (!node.Left.IsEmpty)
+        node = node.Left;
       return node;
     }
 
@@ -111,25 +104,31 @@ namespace Flux
     /// <summary>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, int maxDepth)
       where TKey : System.IComparable<TKey>
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       if (source.IsEmpty) yield break;
 
-      var queue = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+      var level = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+      level.Enqueue(source);
 
-      queue.Enqueue(source);
-
-      while (queue.Count > 0)
+      for (var depth = 0; level.Count > 0 && depth < maxDepth; depth++)
       {
-        var node = queue.Dequeue();
+        var nextLevel = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
 
-        yield return node;
+        while (level.Count > 0)
+        {
+          var node = level.Dequeue();
 
-        if (!node.Left.IsEmpty) queue.Enqueue(node.Left);
-        if (!node.Right.IsEmpty) queue.Enqueue(node.Right);
+          yield return node;
+
+          if (!node.Left.IsEmpty) nextLevel.Enqueue(node.Left);
+          if (!node.Right.IsEmpty) nextLevel.Enqueue(node.Right);
+        }
+
+        level = nextLevel;
       }
     }
     /// <summary>Breadth-first search (BFS), chunked level order. Traversal yields the binary tree levels, in chunks, starting with the root, then its two children, then their children, and so on "in generations".</summary>

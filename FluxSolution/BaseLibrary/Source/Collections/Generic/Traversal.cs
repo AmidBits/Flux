@@ -2,36 +2,76 @@ namespace Flux.Collections.Generic
 {
   public static partial class Traversal
   {
-    public enum BinaryTreeSearchOrder
+    public enum BinaryTreeSearchDepthOrder
     {
       InOrder,
       PostOrder,
-      PreOrder
+      PreOrder,
+      ReverseInOrder,
     }
 
     /// <summary>Perform a binary search on a binary tree type hierarchy.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
-    public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearch<T>(T node, System.Func<T, T> leftChildSelector, System.Func<T, T> rightChildSelector, BinaryTreeSearchOrder order)
+    public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsr<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeSearchDepthOrder order, System.Func<T, bool> predicate)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
-      if (leftChildSelector is null) throw new System.ArgumentNullException(nameof(leftChildSelector));
-      if (rightChildSelector is null) throw new System.ArgumentNullException(nameof(rightChildSelector));
+      if (selectorChildLeft is null) throw new System.ArgumentNullException(nameof(selectorChildLeft));
+      if (selectorChildRight is null) throw new System.ArgumentNullException(nameof(selectorChildRight));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      if (order == BinaryTreeSearchOrder.PreOrder) yield return node;
+      if (!predicate(node))
+        yield break;
 
-      foreach (var subNode in BinaryTreeSearch(leftChildSelector(node), leftChildSelector, rightChildSelector, order))
+      if (order == BinaryTreeSearchDepthOrder.PreOrder) yield return node;
+
+      if (order == BinaryTreeSearchDepthOrder.ReverseInOrder)
+        foreach (var subNode in BinaryTreeSearchDfsr(selectorChildRight(node), selectorChildLeft, selectorChildRight, order, predicate))
+          yield return subNode;
+      else
+        foreach (var subNode in BinaryTreeSearchDfsr(selectorChildLeft(node), selectorChildLeft, selectorChildRight, order, predicate))
+          yield return subNode;
+
+      if (order == BinaryTreeSearchDepthOrder.InOrder || order == BinaryTreeSearchDepthOrder.ReverseInOrder) yield return node;
+
+      if (order == BinaryTreeSearchDepthOrder.ReverseInOrder)
+        foreach (var subNode in BinaryTreeSearchDfsr(selectorChildLeft(node), selectorChildLeft, selectorChildRight, order, predicate))
+          yield return subNode;
+      else
+        foreach (var subNode in BinaryTreeSearchDfsr(selectorChildRight(node), selectorChildLeft, selectorChildRight, order, predicate))
+          yield return subNode;
+
+      if (order == BinaryTreeSearchDepthOrder.PostOrder) yield return node;
+    }
+
+    /// <summary>Perform a breadth first search (BFS) on a tree hierarchy.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    public static System.Collections.Generic.IEnumerable<(int depth, T value)> BinaryTreeSearchBfs<T>(T value, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, int maxDepth, System.Func<(int depth, T value), bool> predicate)
+    {
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+      if (selectorChildLeft is null) throw new System.ArgumentNullException(nameof(selectorChildLeft));
+      if (selectorChildRight is null) throw new System.ArgumentNullException(nameof(selectorChildRight));
+      if (maxDepth <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxDepth));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
+      var items = new System.Collections.Generic.List<(int depth, T value)>();
+      if ((0, value) is var element && predicate(element)) items.Add(element);
+
+      for (var depth = 0; items.Count > 0 && depth < maxDepth; depth++)
       {
-        yield return subNode;
+        var nextItems = new System.Collections.Generic.List<(int depth, T value)>();
+
+        foreach (var item in items)
+        {
+          yield return item;
+
+          if ((depth + 1, selectorChildLeft(item.value)) is var itemL && predicate(itemL))
+            nextItems.Add(itemL);
+          if ((depth + 1, selectorChildRight(item.value)) is var itemR && predicate(itemR))
+            nextItems.Add(itemR);
+        }
+
+        items = nextItems;
       }
-
-      if (order == BinaryTreeSearchOrder.InOrder) yield return node;
-
-      foreach (var subNode in BinaryTreeSearch(rightChildSelector(node), leftChildSelector, rightChildSelector, order))
-      {
-        yield return subNode;
-      }
-
-      if (order == BinaryTreeSearchOrder.PostOrder) yield return node;
     }
 
     /// <summary>Perform a breadth first search (BFS) on a tree hierarchy.</summary>

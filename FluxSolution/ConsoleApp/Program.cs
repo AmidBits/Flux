@@ -13,29 +13,41 @@ namespace ConsoleApp
       //for (var i = 0; i < 10; i++)
       //  System.Console.WriteLine($"{i} = ({Flux.Bitwise.Log2(i)}) = {System.Math.Ceiling(System.Math.Log(i, 2))} = {System.Math.Pow(2, System.Math.Ceiling(System.Math.Log(i, 2)))}");
 
-      //var bta = new Flux.Collections.Generic.BinaryTreeArray<int, string>(0);
-      //bta.Insert(6, "Pqr");
-      //bta.Insert(2, "Def");
-      //bta.Insert(1, "Abc");
-      //bta.Insert(3, "Ghi");
-      //bta.Insert(4, "Jkl");
-      //bta.Insert(5, "Mno");
-      //bta.Insert(8, "Vwx");
-      //bta.Insert(7, "Stu");
-      //bta.Insert(9, "Yz");
+      var bta = Flux.Collections.Immutable.AvlTree<char, string>.Empty;
+      bta = bta.Add('F', "10");
+      bta = bta.Add('B', "7");
+      bta = bta.Add('G', "14");
+      bta = bta.Add('A', "20");
+      bta = bta.Add('D', "1");
+      bta = bta.Add('D', "2");
+      bta = bta.Add('I', "5");
+      bta = bta.Add('C', "8");
+      bta = bta.Add('E', "31");
+      bta = bta.Add('H', "23");
+      //System.Console.WriteLine(bta.IsBST(0, 'A', 'Z'));
+      //System.Console.WriteLine(bta.IsBT(0));
       //System.Console.WriteLine(bta.Search(6));
       //System.Console.WriteLine(bta.Delete(7));
+      //System.Console.WriteLine(bta.Delete(7));
+      foreach (var item in bta.GetNodesPreOrder())
+        System.Console.WriteLine($"{item.Key} = {item.Value}");
 
-      //http://www.gutenberg.org/ebooks/45849.txt.utf-8
-      var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
-      var index = 0;
-      foreach (var b in dt.Rows.Cast<System.Data.DataRow>())
-      {
-        System.Console.WriteLine();
-        System.Console.WriteLine(++index);
-        System.Console.WriteLine($"{string.Join('|', b.ItemArray)}");
-        System.Console.ReadKey();
-      }
+      var search = bta.Search('F');
+      var predecessor = search.GetPredecessorNode();
+      System.Console.WriteLine($"{predecessor}");
+      var successor = search.GetSuccessorNode();
+      System.Console.WriteLine($"{successor}");
+
+      ////http://www.gutenberg.org/ebooks/45849.txt.utf-8
+      //var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
+      //var index = 0;
+      //foreach (var b in dt.Rows.Cast<System.Data.DataRow>())
+      //{
+      //  System.Console.WriteLine();
+      //  System.Console.WriteLine(++index);
+      //  System.Console.WriteLine($"{string.Join('|', b.ItemArray)}");
+      //  System.Console.ReadKey();
+      //}
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();
