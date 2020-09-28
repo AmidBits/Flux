@@ -29,14 +29,12 @@ namespace Flux.Resources.ProjectGutenberg
         if (e.Current.Equals(@"TEN THOUSAND WONDERFUL THINGS.", System.StringComparison.Ordinal)) // This is where we start enumerating lines from the text.
           break;
 
-      var count = 1;
-
       while (e.MoveNext())
       {
         if (e.Current.Equals(@"  PRINTED BY WILLIAM CLOWES AND SONS, LIMITED, LONDON AND DECCLES.", System.StringComparison.Ordinal)) // This is where we stop enumerating lines from the text.
           break;
 
-        if (thing.EndsWith("\r\n\r\n\r\n") && System.Text.RegularExpressions.Regex.IsMatch(e.Current, @"^[\!\-\:\;\'\,\.\? A-Z0-9]+$"))
+        if (thing.EndsWith("\r\n\r\n\r\n") && System.Text.RegularExpressions.Regex.IsMatch(e.Current, @"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$"))
         {
           var text = thing.ToString().Trim();
           var index = text.IndexOf("\r\n", System.StringComparison.Ordinal);
