@@ -1,123 +1,161 @@
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
+
 namespace Flux
 {
   namespace Collections.Generic
   {
-    public interface IBinaryTreeArrayNode<TValue>
-      where TValue : System.IComparable<TValue>
+    public interface IBinaryTreeArrayNode<TKey, TValue>
+      where TKey : System.IComparable<TKey>
     {
       bool IsEmpty { get; }
+      TKey Key { get; }
       TValue Value { get; }
     }
 
-    public static class BinaryTreeArray
+    public class BinaryTreeArray<TKey, TValue>
+      where TKey : System.IComparable<TKey>
     {
-      public static int ChildIndexLeft(int index) => (index << 1) + 1;
-      public static int ChildIndexRight(int index) => (index << 1) + 2;
-      public static int ParentIndex(int index) => (index - 1) >> 1;
-    }
+      private static readonly IBinaryTreeArrayNode<TKey, TValue> Empty = new BinaryTreeArrayEmpty();
 
-    public class BinaryTreeArray<TValue>
-      where TValue : System.IComparable<TValue>
-    {
-      private static readonly IBinaryTreeArrayNode<TValue> Empty = new BinaryTreeArrayEmpty();
+      private IBinaryTreeArrayNode<TKey, TValue>[] m_data;
 
-      private IBinaryTreeArrayNode<TValue>[] m_data;
+      public int Count { get; private set; }
+
+      /// <summary>Yields the count of descendants plus this node.</summary>
+      public int GetCount(int index)
+        => index > m_data.Length - 1 || m_data[index] is var indexItem && indexItem.IsEmpty
+        ? 0
+        : 1 + GetCount(ChildIndexLeft(index)) + GetCount(ChildIndexRight(index));
 
       public BinaryTreeArray(int size)
       {
-        m_data = new IBinaryTreeArrayNode<TValue>[size];
+        m_data = new IBinaryTreeArrayNode<TKey, TValue>[size];
 
         for (var index = 0; index < m_data.Length; index++)
         {
           m_data[index] = Empty;
         }
       }
-
-      public bool IsEmpty => false;
-
-      public void Delete(TValue value)
+      public BinaryTreeArray()
+        : this(1)
       {
-        var index = m_data.Length - 1;
-
-        while (index >= 0 && value.CompareTo(m_data[index].Value) != 0)
-        {
-          index--;
-        }
-
-        if (index > 0)
-        {
-          m_data[index] = Empty;
-        }
       }
-      private void Insert(TValue value, int index)
+
+      private static int ChildIndexLeft(int index)
+        => (index << 1) + 1;
+      private static int ChildIndexRight(int index)
+        => (index << 1) + 2;
+      private static int ParentIndex(int index)
+        => (index - 1) >> 1;
+
+      public bool Delete(TKey key, int index)
       {
-        if (index >= m_data.Length)
+        if (Search(key, index) is var deleteIndex && deleteIndex > -1)
+        {
+          Count--;
+
+          m_data[deleteIndex] = Empty;
+
+          for (var replaceIndex = m_data.Length - 1; replaceIndex >= 0 && replaceIndex > deleteIndex; replaceIndex--)
+            if (!m_data[replaceIndex].IsEmpty)
+            {
+              m_data[deleteIndex] = m_data[replaceIndex];
+              break;
+            }
+
+          return true;
+        }
+
+        return false;
+      }
+      public bool Delete(TKey key)
+        => Delete(key, 0);
+
+      private void Insert(TKey key, TValue value, int index)
+      {
+        if (index >= m_data.Length) // Extend array if needed.
         {
           var newIndices = m_data.Length;
           System.Array.Resize(ref m_data, index + 1);
           while (newIndices < m_data.Length) m_data[newIndices++] = Empty;
         }
 
-        var element = m_data[index];
+        if (m_data[index] is var indexItem && indexItem.IsEmpty)
+        {
+          m_data[index] = new BinaryTreeArrayValue(key, value);
 
-        if (element.IsEmpty) m_data[index] = new BinaryTreeArrayValue(value);
-        else if (value.CompareTo(element.Value) < 0) Insert(value, BinaryTreeArray.ChildIndexLeft(index));
-        else Insert(value, BinaryTreeArray.ChildIndexRight(index));
+          Count++;
+        }
+        else if (key.CompareTo(indexItem.Key) > 0)
+          Insert(key, value, ChildIndexRight(index));
+        else
+          Insert(key, value, ChildIndexLeft(index));
       }
-      public void Insert(TValue value)
+      public void Insert(TKey key, TValue value)
+        => Insert(key, value, 0);
+
+      private int Search(TKey key, int index)
       {
-        if (m_data[0].IsEmpty) m_data[0] = new BinaryTreeArrayValue(value);
-        else if (value.CompareTo(m_data[0].Value) > 0) Insert(value, 1);
-        else throw new System.InvalidOperationException();
-      }
-      public int Search(TValue value, int index)
-      {
-        if (index > m_data.Length - 1)
+        if (index >= m_data.Length)
           return -1;
 
-        var node = m_data[index];
+        var indexItem = m_data[index];
 
-        if (!node.IsEmpty && value.CompareTo(node.Value) == 0)
+        if (indexItem.IsEmpty)
+          return -1;
+
+        if (indexItem.Key.CompareTo(key) == 0)
           return index;
 
-        var indexLeft = Search(value, BinaryTreeArray.ChildIndexLeft(index));
-        if (indexLeft > -1) return indexLeft;
+        var indexLeft = Search(key, ChildIndexLeft(index));
+        if (indexLeft > -1)
+          return indexLeft;
 
-        var indexRight = Search(value, BinaryTreeArray.ChildIndexRight(index));
-        if (indexRight > -1) return indexRight;
+        var indexRight = Search(key, ChildIndexRight(index));
+        if (indexRight > -1)
+          return indexRight;
+
+        return -1;
       }
-      public void Search(TValue value)
-      {
-        var index = m_data.Length - 1;
-
-        while (value.CompareTo(m_data[index].Value) != 0)
-        {
-          index--;
-        }
-
-        if (index > 0)
-        {
-          m_data[index] = Empty;
-        }
-      }
+      public IBinaryTreeArrayNode<TKey, TValue> Search(TKey key)
+        => Search(key, 0) is var index && index > -1 ? m_data[index] : Empty;
 
       private class BinaryTreeArrayValue
-        : IBinaryTreeArrayNode<TValue>
+        : IBinaryTreeArrayNode<TKey, TValue>
       {
+        private readonly TKey m_key;
         private readonly TValue m_value;
 
-        public bool IsEmpty => false;
-        public TValue Value => m_value;
+        public bool IsEmpty
+          => false;
+        public TKey Key
+          => m_key;
+        public TValue Value
+          => m_value;
 
-        public BinaryTreeArrayValue(TValue value)
-          => m_value = value;
+        public BinaryTreeArrayValue(TKey key, TValue value)
+        {
+          m_key = key;
+          m_value = value;
+        }
+
+        public override string ToString()
+          => $"<{nameof(BinaryTreeArrayValue)} : \"{m_key}\" = \"{m_value}\">";
       }
 
       private class BinaryTreeArrayEmpty
-        : IBinaryTreeArrayNode<TValue>
+        : IBinaryTreeArrayNode<TKey, TValue>
       {
-        public bool IsEmpty => true;
-        public TValue Value => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
+        public bool IsEmpty
+          => true;
+        public TKey Key
+          => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
+        public TValue Value
+          => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
+
+        public override string ToString()
+          => $"<{nameof(BinaryTreeArrayEmpty)}>";
       }
     }
   }

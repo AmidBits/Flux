@@ -1,4 +1,5 @@
 ﻿using Flux;
+using Flux.Probability;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,24 @@ namespace ConsoleApp
   class Program
   {
     private static void TimedMain(string[] args)
-    {//http://www.gutenberg.org/ebooks/45849.txt.utf-8
+    {
+      //for (var i = 0; i < 10; i++)
+      //  System.Console.WriteLine($"{i} = ({Flux.Bitwise.Log2(i)}) = {System.Math.Ceiling(System.Math.Log(i, 2))} = {System.Math.Pow(2, System.Math.Ceiling(System.Math.Log(i, 2)))}");
+
+      //var bta = new Flux.Collections.Generic.BinaryTreeArray<int, string>(0);
+      //bta.Insert(6, "Pqr");
+      //bta.Insert(2, "Def");
+      //bta.Insert(1, "Abc");
+      //bta.Insert(3, "Ghi");
+      //bta.Insert(4, "Jkl");
+      //bta.Insert(5, "Mno");
+      //bta.Insert(8, "Vwx");
+      //bta.Insert(7, "Stu");
+      //bta.Insert(9, "Yz");
+      //System.Console.WriteLine(bta.Search(6));
+      //System.Console.WriteLine(bta.Delete(7));
+
+      //http://www.gutenberg.org/ebooks/45849.txt.utf-8
       var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
       var index = 0;
       foreach (var b in dt.Rows.Cast<System.Data.DataRow>())
@@ -18,6 +36,7 @@ namespace ConsoleApp
         System.Console.WriteLine($"{string.Join('|', b.ItemArray)}");
         System.Console.ReadKey();
       }
+
       /*
       var ttt = new Flux.Model.TicTacToe.Board();
 
