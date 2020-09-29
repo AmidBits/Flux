@@ -5,7 +5,7 @@ namespace Flux.Model
   /// <summary>The Sieve of Eratosthenes is a simple, ancient algorithm for finding all prime numbers up to any given limit.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"/>
   public class SieveOfEratosthenes
-  : System.Collections.Generic.IEnumerable<int>
+    : System.Collections.Generic.IEnumerable<int>
   {
     private System.Collections.BitArray m_sieve = new System.Collections.BitArray(0);
     /// <summary>Holds the boolean values for each index. Each index represents a number (true means it is a prime number, and false that it is not).</summary>
@@ -31,9 +31,9 @@ namespace Flux.Model
     }
 
     public System.Collections.Generic.IEnumerable<int> GetCompositeNumbers()
-      => m_sieve.Cast<bool>().IndicesOf(e => !e);
+      => m_sieve.Cast<bool>().IndicesOf(b => !b);
     public System.Collections.Generic.IEnumerable<int> GetPrimeNumbers()
-      => m_sieve.Cast<bool>().IndicesOf(e => e);
+      => m_sieve.Cast<bool>().IndicesOf(b => b);
 
     public static System.Collections.BitArray CreateBitArray(int length)
     {
@@ -70,10 +70,10 @@ namespace Flux.Model
       return ba;
     }
 
-    // IEnumerable<int>, IEnumerable
-    public System.Collections.Generic.IEnumerator<int> GetEnumerator() 
-      => m_sieve.Cast<bool>().IndicesOf(e => e).GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() 
+    // IEnumerable<int>
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
+      => m_sieve.Cast<bool>().IndicesOf(b => b).GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }
 }

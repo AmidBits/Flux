@@ -49,7 +49,7 @@ namespace Flux
     }
     /// <summary>Creates a new sequence by skipping the last elements that satisfies the predicate.</summary>
     public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)
-      => source.SkipLastWhile((t, i) => predicate(t));
+      => SkipLastWhile(source, (t, i) => predicate(t));
 
     /// <summary>Creates a new sequence by skipping elements in the sequence until the predicate is satisfied, and also skips the first element that satisfies the predicate. This version also passes the source index into the predicate.</summary>
     public static System.Collections.Generic.IEnumerable<TSource> SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate)

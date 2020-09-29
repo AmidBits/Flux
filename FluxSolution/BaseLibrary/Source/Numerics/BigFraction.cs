@@ -5,7 +5,7 @@ namespace Flux.Numerics
   /// <seealso cref="https://github.com/kiprobinson/BigFraction"/>
   /// <seealso cref="https://github.com/bazzilic/BigFraction"/>
   public struct BigFraction
-    : System.IComparable<BigFraction>, System.IEquatable<BigFraction>
+    : System.IComparable, System.IComparable<BigFraction>, /*System.IConvertible,*/ System.IEquatable<BigFraction>
   {
     /// <summary>Represents a BigFraction value of -1.</summary>
     public static readonly BigFraction MinusOne = new BigFraction(-1, System.Numerics.BigInteger.One, true);
@@ -124,12 +124,12 @@ namespace Flux.Numerics
         }
       }
     }
-    public BigFraction(long value)
-      : this(value, System.Numerics.BigInteger.One, false)
+    public BigFraction(long numerator)
+      : this(numerator, System.Numerics.BigInteger.One, false)
     {
     }
-    public BigFraction(int value)
-      : this(value, System.Numerics.BigInteger.One, false)
+    public BigFraction(int numerator)
+      : this(numerator, System.Numerics.BigInteger.One, false)
     {
     }
 
@@ -316,9 +316,7 @@ namespace Flux.Numerics
           upperPow = System.Numerics.BigInteger.Pow(upperX, n);
         }
 
-        //if we happened to find the exact answer, just return it
-
-        if (upperPow.Equals(a)) return (upperX, true);
+        if (upperPow.Equals(a)) return (upperX, true); // If it's the exact answer, return it.
 
         //now we know lowerX < x < upperX
         //next do binary search between lowerX and upperX
@@ -332,7 +330,8 @@ namespace Flux.Numerics
 
           var testPow = System.Numerics.BigInteger.Pow(testX, n);
 
-          if (testPow.Equals(a)) return (testX, true); // We found an exact answer.
+          if (testPow.Equals(a))
+            return (testX, true); // We found an exact answer.
           else if (testPow.CompareTo(a) > 0) // Still too high so set upper to the test value.
           {
             upperX = testX;
@@ -442,6 +441,10 @@ namespace Flux.Numerics
     #endregion Operators
 
     // System.IComparable
+    public int CompareTo(object? obj)
+      => obj is BigFraction o && CompareTo(o) is var cmp ? cmp : 1;
+
+    // System.IComparable<BigFraction>
     public int CompareTo(BigFraction other)
     {
       if (Sign != other.Sign)
@@ -452,16 +455,18 @@ namespace Flux.Numerics
 
       return (Numerator * other.Denominator).CompareTo(Denominator * other.Numerator);
     }
-    // System.IEquatable
+
+    // System.IEquatable<BigFraction>
     public bool Equals(BigFraction other)
       => Numerator.Equals(other.Numerator) && Denominator.Equals(other.Denominator);
+
     // Overrides
     public override bool Equals(object? obj)
       => obj is BigFraction o && Equals(o);
     public override int GetHashCode()
       => HashCode.CombineCore(Numerator, Denominator);
     public override string ToString()
-      => $"{Numerator}/{Denominator}";
+      => $"<{Numerator}/{Denominator} ({Numerator / Denominator})>";
   }
 }
 #endif

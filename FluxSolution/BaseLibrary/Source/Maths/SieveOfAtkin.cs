@@ -1,17 +1,20 @@
+using System.Linq;
+
 namespace Flux.Model
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Atkin"/>
   public class SieveOfAtkin
+    : System.Collections.Generic.IEnumerable<int>
   {
-    private System.Collections.BitArray _sieve;
+    private System.Collections.BitArray m_sieve;
     /// <summary>Holds the boolean values for each index. Each index represents a number (true means it is a prime number, and false that it is not).</summary>
-    public System.Collections.BitArray Sieve => _sieve;
+    public System.Collections.BitArray Sieve => m_sieve;
 
     public System.Collections.Generic.IEnumerable<int> GetPrimes()
     {
-      for (var index = 2; index < _sieve.Length; index++)
+      for (var index = 2; index < m_sieve.Length; index++)
       {
-        if (_sieve[index])
+        if (m_sieve[index])
         {
           yield return index;
         }
@@ -20,16 +23,16 @@ namespace Flux.Model
 
     public bool IsPrime(int number)
     {
-      if (number > _sieve.Length)
+      if (number > m_sieve.Length)
       {
-        _sieve = CreateBitArray(number);
+        m_sieve = CreateBitArray(number);
       }
 
-      return _sieve[number];
+      return m_sieve[number];
     }
 
     public SieveOfAtkin(int length)
-      => _sieve = CreateBitArray(length);
+      => m_sieve = CreateBitArray(length);
 
     public static System.Collections.BitArray CreateBitArray(int length)
     {
@@ -81,5 +84,11 @@ namespace Flux.Model
 
       return bits;
     }
+
+    // IEnumerable<int>
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
+      => m_sieve.Cast<bool>().IndicesOf(b => b).GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 namespace Flux.Model
 {
   public class SieveOfEratosthenesSegmented
+    : System.Collections.Generic.IEnumerable<long>
   {
     private const int m_segmentSize = int.MaxValue - 1;
 
@@ -146,5 +147,11 @@ namespace Flux.Model
             yield return i;
       }
     }
+
+    // IEnumerable<long>
+    public System.Collections.Generic.IEnumerator<long> GetEnumerator()
+      => m_sieveOfEratosthenes.Cast<bool>().LongIndicesOf(b => b).GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 }

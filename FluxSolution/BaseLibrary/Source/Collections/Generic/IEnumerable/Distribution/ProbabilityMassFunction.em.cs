@@ -38,7 +38,7 @@ namespace Flux
     /// <param name="frequencySelector">Selector of the frequency for each <typeparam name="TSource"/> in <paramref name="source"/>.</param>
     /// <param name="factor">Scale value for the resulting percentile rank.</param>
     /// <returns>A sequence of key-value-pair where the value is the PMF corresponding to the key in the <paramref name="source"/>.</returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> ProbabilityMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TSource>> source, System.Func<TKey, TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> ProbabilityMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
@@ -53,11 +53,13 @@ namespace Flux
 
       foreach (var kvp in source)
       {
-        var count = frequencySelector(kvp.Key, kvp.Value, index++);
+        var count = frequencySelector(kvp, index);
 
         sumOfFrequencies += count;
 
-        pmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(kvp.Key, count));
+        pmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(keySelector(kvp, index), count));
+
+        index++;
       }
 
       while (--index >= 0)

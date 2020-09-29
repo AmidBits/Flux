@@ -10,6 +10,7 @@ namespace Flux
     public static bool RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, out T result, System.Random rng)
     {
       rng ??= Flux.Random.NumberGenerator.Crypto;
+
       result = default!;
 
       using var e = source.ThrowOnNull().GetEnumerator();
@@ -39,6 +40,8 @@ namespace Flux
     /// <param name="rng">The random number generator to use.</param>
     public static System.Collections.Generic.IEnumerable<T> RandomElements<T>(this System.Collections.Generic.IEnumerable<T> source, double percent, System.Random rng)
     {
+      if (percent <= 0 && percent > 1) throw new System.ArgumentOutOfRangeException(nameof(percent));
+
       rng ??= Flux.Random.NumberGenerator.Crypto;
 
       foreach (var element in source.EmptyOnNull())

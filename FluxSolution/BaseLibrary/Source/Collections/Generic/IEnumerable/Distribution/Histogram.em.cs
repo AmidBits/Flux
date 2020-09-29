@@ -7,12 +7,12 @@ namespace Flux
 
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> countSelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
+    public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
       where TKey : notnull
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
-      if (countSelector is null) throw new System.ArgumentNullException(nameof(countSelector));
+      if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
 
       var histogram = new System.Collections.Generic.SortedDictionary<TKey, int>(comparer);
 
@@ -20,19 +20,19 @@ namespace Flux
       foreach (var item in source)
       {
         var key = keySelector(item, index);
-        var count = countSelector(item, index++);
+        var frequency = frequencySelector(item, index++);
 
-        if (histogram.ContainsKey(key)) histogram[key] += count;
-        else histogram.Add(key, count);
+        if (histogram.ContainsKey(key)) histogram[key] += frequency;
+        else histogram.Add(key, frequency);
       }
 
       return histogram;
     }
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the default comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> countSelector)
+    public static System.Collections.Generic.SortedDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector)
       where TKey : notnull
-      => Histogram(source, keySelector, countSelector, System.Collections.Generic.Comparer<TKey>.Default);
+      => Histogram(source, keySelector, frequencySelector, System.Collections.Generic.Comparer<TKey>.Default);
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the default comparer and a count of 1 for each element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
     public static System.Collections.Generic.IDictionary<TKey, int> Histogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector)

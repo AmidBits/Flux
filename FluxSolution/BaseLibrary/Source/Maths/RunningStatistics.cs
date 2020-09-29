@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.ComponentModel;
+
+namespace Flux
 {
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable
@@ -11,42 +13,33 @@
     public long Count
       => m_count;
 
-    private double m_hm;
+    private double m_max;
+    private double m_min;
 
     private double m_m1;
     private double m_m2;
     private double m_m3;
     private double m_m4;
 
-    private double m_max;// = double.NegativeInfinity;
+    private double m_product; // The product of all values. Initialized to 1 when the first value is added.
+    private double m_reciprocalSum; // The sum of reciprocal of all values.
+    private double m_sum; // The sum of all values.
+
     /// <summary>Returns the maximum value of all samples, or NaN if no data/any entry is NaN.</summary>
     public double Maximum
       => m_count > 0 ? m_max : double.NaN;
 
-    private double m_max_abs;// = double.NegativeInfinity;
-    /// <summary>Returns the largest absolute value of all samples. Returns NaN if data is empty or any entry is NaN.</summary>
-    public double MaximumAbsolute
-      => m_count > 0 ? m_max_abs : double.NaN;
-
-    private double m_min;// = double.PositiveInfinity;
     /// <summary>Returns the minimum value of all samples. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Minimum
       => m_count > 0 ? m_min : double.NaN;
 
-    private double m_min_abs;// = double.PositiveInfinity;
-    /// <summary>Returns the smallest absolute value of all samples. Returns NaN if data is empty or any entry is NaN.</summary>
-    public double MinimumAbsolute
-      => m_count > 0 ? m_min_abs : double.NaN;
-
-    private double m_sum;
-    /// <summary>The sum of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    public double SumOfSamples
-      => m_count > 0 ? m_sum : double.NaN;
-
-    private double m_product;//= 1;
     /// <summary>The product of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    public double ProductOfSamples
+    public double Product
       => m_count > 0 ? m_product : double.NaN;
+
+    /// <summary>The sum of all samples. Returns NaN if no data or any sample is NaN.</summary>
+    public double Sum
+      => m_count > 0 ? m_sum : double.NaN;
 
     /// <summary>Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Mean
@@ -58,7 +51,7 @@
 
     /// <summary>Evaluates the harmonic mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>
     public double HarmonicMean
-      => m_count > 0 ? m_count / m_hm : double.NaN;
+      => m_count > 0 ? m_count / m_reciprocalSum : double.NaN;
 
     /// <summary>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
     public double Variance
@@ -92,9 +85,17 @@
     public double PopulationKurtosis
       => m_count < 3 ? double.NaN : m_count * m_m4 / (m_m2 * m_m2) - 3.0;
 
-    /// <summary>Update the running statistics by adding another observed sample (in-place).</summary>
-    public void Push(double value)
+    /// <summary>Update the running statistics by adding an observed sample (in-place).</summary>
+    public void Add(double value)
     {
+      if (m_count == 0)
+      {
+        m_max = double.NegativeInfinity;
+        m_min = double.PositiveInfinity;
+
+        m_product = 1;
+      }
+
       m_count++;
 
       var d = value - m_m1;
@@ -102,36 +103,32 @@
       var s2 = s * s;
       var t = d * s * (m_count - 1);
 
-      m_hm += 1.0 / value;
-
       m_m1 += s;
       m_m4 += t * s2 * (m_count * m_count - 3 * m_count + 3) + 6 * s2 * m_m2 - 4 * s * m_m3;
       m_m3 += t * s * (m_count - 2) - 3 * s * m_m2;
       m_m2 += t;
 
+      if (value > m_max || double.IsNaN(value)) m_max = value;
+      if (value < m_min || double.IsNaN(value)) m_min = value;
+
       m_product *= value;
-
+      m_reciprocalSum += 1.0 / value;
       m_sum += value;
-
-      var isNaN = double.IsNaN(value);
-
-      if (value > m_max || isNaN) m_max = value;
-      if (value < m_min || isNaN) m_min = value;
-
-      var abs = System.Math.Abs(value);
-
-      if (abs > m_max_abs || isNaN) m_max_abs = abs;
-      if (abs < m_min_abs || isNaN) m_min_abs = abs;
     }
+    /// <summary>Update the running statistics by adding observed samples (in-place).</summary>
+    public void Add(params double[] values)
+      => AddRange(values);
 
     /// <summary>Update the running statistics by adding a sequence of observed sample (in-place).</summary>
-    public void PushRange(System.Collections.Generic.IEnumerable<double> values)
+    public void AddRange(System.Collections.Generic.IEnumerable<double> values)
     {
       foreach (double value in values ?? throw new System.ArgumentNullException(nameof(values)))
       {
-        Push(value);
+        Add(value);
       }
     }
+
+    #region Static members
 
     /// <summary>Create a new running statistics over the combined samples of two existing running statistics.</summary>
     public static RunningStatistics Combine(RunningStatistics a, RunningStatistics b)
@@ -154,35 +151,33 @@
       return new RunningStatistics
       {
         m_count = count,
-        m_hm = a.m_hm + b.m_hm,
+
         m_m1 = m1,
         m_m2 = m2,
         m_m3 = m3,
         m_m4 = m4,
+
         m_max = System.Math.Max(a.m_max, b.m_max),
-        m_max_abs = System.Math.Max(a.m_max_abs, b.m_max_abs),
         m_min = System.Math.Min(a.m_min, b.m_min),
-        m_min_abs = System.Math.Min(a.m_min_abs, b.m_min_abs),
+
         m_product = a.m_product * b.m_product,
-        m_sum = a.m_sum + b.m_sum
+        m_reciprocalSum = a.m_reciprocalSum + b.m_reciprocalSum,
+        m_sum = a.m_sum + b.m_sum,
       };
     }
-    //public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b) => Combine(a, b);
 
     public static RunningStatistics Create()
     {
       return new RunningStatistics()
       {
         m_count = 0,
-        m_hm = 0,
+        m_reciprocalSum = 0,
         m_m1 = 0,
         m_m2 = 0,
         m_m3 = 0,
         m_m4 = 0,
         m_max = double.NegativeInfinity,
-        m_max_abs = double.NegativeInfinity,
         m_min = double.PositiveInfinity,
-        m_min_abs = double.PositiveInfinity,
         m_sum = 0,
         m_product = 1
       };
@@ -190,26 +185,34 @@
     public static RunningStatistics Create(System.Collections.Generic.IEnumerable<double> values)
     {
       var rs = Create();
-      rs.PushRange(values);
+      rs.AddRange(values);
       return rs;
     }
 
     // Operators
+
     public static bool operator ==(in RunningStatistics a, in RunningStatistics b)
       => a.Equals(b);
     public static bool operator !=(in RunningStatistics a, in RunningStatistics b)
       => !a.Equals(b);
-    // IEquatable
+    public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b)
+      => Combine(a, b);
+
+    #endregion Static members
+
+    // IEquatable<RunningStatistics>
     public bool Equals(RunningStatistics other)
-      => m_count == other.m_count && m_hm == other.m_hm && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_max_abs == other.m_max_abs && m_min == other.m_min && m_min_abs == other.m_min_abs && m_product == other.m_product && m_sum == other.m_sum;
+      => m_count == other.m_count && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_min == other.m_min && m_product == other.m_product && m_reciprocalSum == other.m_reciprocalSum && m_sum == other.m_sum;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{GetType().Name}(count: {m_count}, sum: {m_sum}, m1: {m_m1}, m2: {m_m2}, m3: {m_m3}, m4: {m_m4}, min/max:[{m_min}, {m_max}][|{m_min_abs}|, |{m_max_abs}|])>";
+      => $"<{GetType().Name}: count={m_count}, m=[{m_m1}, {m_m2}, {m_m3}, {m_m4}], min/max=[{m_min}, {m_max}], product={m_product}, sum={m_sum}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(m_count, m_hm, m_m1, m_m2, m_m3, m_m4);
+      => Flux.HashCode.CombineCore(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4);
     public override string? ToString()
       => ToString(null, null);
   }

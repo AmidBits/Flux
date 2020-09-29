@@ -15,7 +15,7 @@ namespace Flux
 
         do
         {
-          if (predicate?.Invoke(e.Current, index++) ?? true)
+          if (predicate(e.Current, index++))
             return e.Current;
         }
         while (e.MoveNext());
@@ -43,7 +43,7 @@ namespace Flux
 
         do
         {
-          if (predicate?.Invoke(e.Current, index++) ?? true)
+          if (predicate(e.Current, index++))
             value = e.Current;
         }
         while (e.MoveNext());

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Xtensions
@@ -7,7 +5,7 @@ namespace Flux
     /// <summary>Returns a random element from the list in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result, System.Random rng)
     {
-      if (source.ThrowOnNull().Any())
+      if ((source ?? throw new System.ArgumentNullException(nameof(source))).Count > 0)
       {
         result = source[(rng ?? Flux.Random.NumberGenerator.Crypto).Next(source.Count)];
         return true;

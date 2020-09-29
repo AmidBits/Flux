@@ -128,7 +128,8 @@ namespace Flux
       return new Geoposition(Angle.RadianToDegree(lat), Angle.RadianToDegree(lon), Altitude);
     }
 
-    #region Static Members
+    #region Static members
+
     /// <summary>right-handed vector: x -> 0°E,0°N; y -> 90°E,0°N, z -> 90°N</summary>
     //public static System.Numerics.Vector3 ToVector3RH(double latitudeR, double longitudeR) => new System.Numerics.Vector3((float)System.Math.Cos(latitudeR) * (float)System.Math.Cos(longitudeR), (float)System.Math.Cos(latitudeR) * (float)System.Math.Sin(longitudeR), (float)System.Math.Sin(latitudeR));
     //public static Geoposition FromVector3RH(double x, double y, double z) => new Geoposition() { Latitude = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y)), Longitude = System.Math.Atan2(y, x) };
@@ -382,13 +383,15 @@ namespace Flux
       result = Empty;
       return false;
     }
-    #endregion Static Members
 
     // Operators
+
     public static bool operator ==(Geoposition a, Geoposition b)
       => a.Equals(b);
     public static bool operator !=(Geoposition a, Geoposition b)
       => !a.Equals(b);
+
+    #endregion Static members
 
     // IEquatable
     public bool Equals(Geoposition other)

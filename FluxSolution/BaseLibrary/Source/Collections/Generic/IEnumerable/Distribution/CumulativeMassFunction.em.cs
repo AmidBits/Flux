@@ -36,9 +36,10 @@ namespace Flux
     /// <param name="factor">Scale value for the resulting percentile rank.</param>
     /// <returns>A list of CMF values corresponding to the <paramref name="source"/>.</returns>
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> CumulativeMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TSource>> source, System.Func<TKey, TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> CumulativeMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
 
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
@@ -51,9 +52,11 @@ namespace Flux
 
       foreach (var kvp in source)
       {
-        sumOfFrequencies += frequencySelector(kvp.Key, kvp.Value, index++);
+        sumOfFrequencies += frequencySelector(kvp, index);
 
-        cmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(kvp.Key, sumOfFrequencies));
+        cmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(keySelector(kvp, index), sumOfFrequencies));
+
+        index++;
       }
 
       while (--index >= 0)

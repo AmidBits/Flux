@@ -4,20 +4,34 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Returns a new dictionary with a fill inventory of items.<summary>
-    /// <typeparam name="TKey">Inventory items.</typeparam>
+    /// <summary>Returns a new dictionary with a fill inventory of items, where source items are added and target items are subtracted. The counts are aggregated by <typeparamref name="TKey"/> into a new inventory dictionary.<summary>
     /// <param name="source">Count of items in stock, can be scattered.</param>
     /// <param name="target">Count of items in stock, can be scattered.</param>
     /// <returns>A dictionary with negative values for understock (missing/expected items), zero for even tally, and positive values above zero for overstock (too many).</returns>
-    public static System.Collections.Generic.Dictionary<TKey, int> Inventory<TKey>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>> source, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>> target)
+    public static System.Collections.Generic.Dictionary<TKey, int> Inventory<TValue, TKey>(this System.Collections.Generic.IEnumerable<TValue> source, System.Collections.Generic.IEnumerable<TValue> target, System.Func<TValue, TKey> keySelector, System.Func<TValue, int> countSelector)
       where TKey : notnull
     {
-      var inventory = source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
+      if (countSelector is null) throw new System.ArgumentNullException(nameof(countSelector));
 
-      foreach (var kvp in target.ThrowOnNull(nameof(target)))
+      var inventory = new System.Collections.Generic.Dictionary<TKey, int>();
+
+      foreach (var value in source.ThrowOnNull(nameof(source)))
       {
-        if (inventory.ContainsKey(kvp.Key)) inventory[kvp.Key] -= kvp.Value;
-        else inventory.Add(kvp.Key, kvp.Value);
+        var key = keySelector(value);
+        var count = countSelector(value);
+
+        if (inventory.ContainsKey(key)) inventory[key] += count;
+        else inventory.Add(key, count);
+      }
+
+      foreach (var value in target.ThrowOnNull(nameof(target)))
+      {
+        var key = keySelector(value);
+        var count = countSelector(value);
+
+        if (inventory.ContainsKey(key)) inventory[key] -= count;
+        else inventory.Add(key, count);
       }
 
       return inventory;

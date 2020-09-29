@@ -41,6 +41,6 @@ namespace Flux
     /// <see cref="http://en.wikipedia.org/wiki/Medoid"/>
     /// <remarks>This is an extension method of convenience.</remarks>
     public static T Medoid<T>(this System.Collections.Generic.IEnumerable<T> source)
-      => source.Medoid(out var _, out var _);
+      => Medoid(source, out var _, out var _);
   }
 }

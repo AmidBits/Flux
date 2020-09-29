@@ -45,6 +45,8 @@ namespace Flux
       m_parts = result.m_parts;
     }
 
+    #region Static members
+
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
     public static VersionEx Parse(string version)
@@ -65,6 +67,7 @@ namespace Flux
     }
 
     // Operators
+
     public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
     public static bool operator !=(VersionEx a, VersionEx b)
@@ -77,6 +80,9 @@ namespace Flux
       => a.CompareTo(b) < 0;
     public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
+
+    #endregion Static members
+
     // IComparable
     public int CompareTo(VersionEx other)
     {

@@ -1,27 +1,30 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Returns whether the source contains all of the items in subset, using the default comparer.</summary>
-    public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array, int arrayIndex)
+    /// <summary>Copies the elements from the sequence into the array starting at the specified index.</summary>
+    public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array, int startIndex, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (array is null) throw new System.ArgumentNullException(nameof(array));
 
-      if (arrayIndex < 0 || arrayIndex >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(arrayIndex));
+      if (startIndex < 0 || startIndex >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (startIndex + count >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var count = 0;
+      var offset = 0;
 
       foreach (var item in source)
       {
-        array.SetValue(item, arrayIndex);
+        if (count-- == 0)
+          break;
 
-        count++;
+        array.SetValue(item, startIndex + offset++);
       }
 
-      return count;
+      return offset;
     }
+    /// <summary>Copies the elements from the sequence into the array starting at the specified index.</summary>
+    public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array)
+      => CopyTo(source, array, 0, -1);
   }
 }

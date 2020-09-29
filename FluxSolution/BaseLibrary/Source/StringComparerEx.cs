@@ -27,19 +27,19 @@ namespace Flux
     private StringComparerEx(System.StringComparer stringComparer)
       => m_stringComparer = stringComparer; // Public instances must specify settings on creation.
 
-    // IComparer
+    // IComparer<string>
     public override int Compare(string? x, string? y)
       => m_stringComparer.Compare(x, y);
-    // IEqualityComparer
+    // IEqualityComparer<string>
     public override bool Equals(string? x, string? y)
       => m_stringComparer.Equals(x, y);
     public override int GetHashCode(string s)
       => m_stringComparer.GetHashCode(s);
 
-    // IComparer
+    // IComparer<char>
     public int Compare(char x, char y)
       => m_stringComparer.Compare(x.ToString(), y.ToString());
-    // IEqualityComparer
+    // IEqualityComparer<char>
     public bool Equals(char x, char y)
       => m_stringComparer.Equals(x.ToString(), y.ToString());
     public int GetHashCode(char c)
