@@ -26,13 +26,6 @@ namespace Flux.Resources.Ucd
       => uri.ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line));
 
     public override object ConvertStringToObject(int index, string value)
-    {
-      return index switch
-      {
-        0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
-        1 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
-        _ => value
-      };
-    }
+      => Convert.ChangeType(value, null, FieldTypes[index]);
   }
 }

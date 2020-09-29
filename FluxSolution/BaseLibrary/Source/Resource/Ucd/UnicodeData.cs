@@ -24,12 +24,6 @@ namespace Flux.Resources.Ucd
       => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => s.Split(';'));
 
     public override object ConvertStringToObject(int index, string value)
-    {
-      return index switch
-      {
-        0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
-        _ => value
-      };
-    }
+      => Convert.ChangeType(value, null, FieldTypes[index]);
   }
 }

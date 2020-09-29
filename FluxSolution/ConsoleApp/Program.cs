@@ -1,7 +1,6 @@
 ﻿using Flux;
-using Flux.Probability;
 using System;
-using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace ConsoleApp
@@ -10,35 +9,56 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var source = new System.Collections.Generic.List<(string, int)>
-      {
-        ("Milk", 2),
-        ("Cream", 6),
-        ("Milk", 1),
-        ("Chicken", 1),
-        ("Chicken", 1),
-        ("OJ", 3),
-        ("OJ", 3),
-        ("Cheese", 5),
-      };
+      var census = new Flux.Resources.Census.CountiesAllData();
 
-      System.Console.WriteLine(string.Join('|', source));
-      var sd = source.Histogram((e, i) => e.Item1, (e, i) => e.Item2);
-      System.Console.WriteLine(string.Join('|', sd.Select(kvp => $"{kvp}")));
+      var columnNames = new string[] { "CTYNAME", "YEAR", "AGEGRP", "TOT_POP" };
 
-      var target = new System.Collections.Generic.List<(string, int)>
-      {
-        ("Milk", 4),
-        ("Cream", 4),
-        ("Chicken", 4),
-        ("OJ", 4),
-        ("Cheese", 4),
-      };
+      var dt = census.GetDataTable(Flux.Resources.Census.CountiesAllData.LocalUri);
 
-      var st = source.Inventory(target, vt => vt.Item1, vt => vt.Item2);
+      //dt.Columns.Cast<System.Data.DataColumn>().Where(dc => !columnNames.Contains(dc.ColumnName)).ToList().ForEach(dc => dt.Columns.Remove(dc));
+      dt.GetColumnNames().Except(columnNames).ToList().ForEach(cn => dt.Columns.Remove(cn));
+      //dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" || (int)dr["AGEGRP"] != 0).ToList().ForEach(dr => dt.Rows.Remove(dr));
+      //dt.Rows.Cast<System.Data.DataRow>().ToList().ForEach(dr => dr["YEAR"] = (int)dr["YEAR"] + 2000);
+      //dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" && (int)dr["AGEGRP"] != 0).ToArray();
+      //foreach (var dr in dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" && (int)dr["AGEGRP"] != 0).ToArray())
+      //  dt.Rows.Remove(dr);
 
-      foreach (var kvp in st)
-        System.Console.WriteLine($"{kvp}");
+      System.Console.WriteLine(census.FieldNames.Count);
+      System.Console.WriteLine(census.FieldTypes.Count);
+
+      //      foreach (var dr in census.GetDataReader(Flux.Resources.Census.CountiesAllData.LocalUri).Where(dr => dr["CTYNAME"].ToString().Equals("Pima County", StringComparison.OrdinalIgnoreCase)))
+      foreach (var dr in dt.Select("CTYNAME = 'Pima County' AND AGEGRP = 0"))
+        System.Console.WriteLine(string.Join('|', dr.ItemArray));
+
+      //var source = new System.Collections.Generic.List<(string, int)>
+      //{
+      //  ("Milk", 2),
+      //  ("Cream", 6),
+      //  ("Milk", 1),
+      //  ("Chicken", 1),
+      //  ("Chicken", 1),
+      //  ("OJ", 3),
+      //  ("OJ", 3),
+      //  ("Cheese", 5),
+      //};
+
+      //System.Console.WriteLine(string.Join('|', source));
+      //var sd = source.Histogram((e, i) => e.Item1, (e, i) => e.Item2);
+      //System.Console.WriteLine(string.Join('|', sd.Select(kvp => $"{kvp}")));
+
+      //var target = new System.Collections.Generic.List<(string, int)>
+      //{
+      //  ("Milk", 4),
+      //  ("Cream", 4),
+      //  ("Chicken", 4),
+      //  ("OJ", 4),
+      //  ("Cheese", 4),
+      //};
+
+      //var st = source.Inventory(target, vt => vt.Item1, vt => vt.Item2);
+
+      //foreach (var kvp in st)
+      //  System.Console.WriteLine($"{kvp}");
 
       //for (var i = 0; i < 10; i++)
       //  System.Console.WriteLine($"{i} = ({Flux.Bitwise.Log2(i)}) = {System.Math.Ceiling(System.Math.Log(i, 2))} = {System.Math.Pow(2, System.Math.Ceiling(System.Math.Log(i, 2)))}");
