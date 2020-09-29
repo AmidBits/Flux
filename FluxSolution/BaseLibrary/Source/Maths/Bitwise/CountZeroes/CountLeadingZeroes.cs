@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Count Leading Zeros (clz) counts the number of zero bits preceding the most significant one bit.</summary>
     /// <remarks>Returns a number representing the number of leading zeros of the binary representation of the value. Since BigInteger is arbitrary in size there is a required bit width to measure against.</remarks>

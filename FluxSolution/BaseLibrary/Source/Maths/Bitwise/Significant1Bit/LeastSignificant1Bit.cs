@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, (value & -value) is the least significant 1 bit.</summary>
     /// <remarks>The implementation is extremely fast for huge BigInteger values.</remarks>

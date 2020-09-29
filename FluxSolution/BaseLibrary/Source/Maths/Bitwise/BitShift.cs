@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     public static bool BitShiftLeft(ref int value)
     {

@@ -151,7 +151,7 @@
       if (data is null) throw new System.ArgumentNullException(nameof(data));
 
       var n = data.Length;
-      var m = (int)Bitwise.Log2(n);
+      var m = (int)Maths.Log2(n);
 
       ReorderData(data); // reorder data first
 
@@ -207,7 +207,7 @@
       var k = data.GetLength(0);
       var n = data.GetLength(1);
 
-      if ((!Bitwise.IsPowerOf2(k)) || (!Bitwise.IsPowerOf2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
+      if ((!Maths.IsPowerOf2(k)) || (!Maths.IsPowerOf2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
@@ -323,12 +323,12 @@
       var len = data.Length;
 
       // check data length
-      if ((len < minLength) || (len > maxLength) || (!Bitwise.IsPowerOf2(len)))
+      if ((len < minLength) || (len > maxLength) || (!Maths.IsPowerOf2(len)))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
 
-      var rBits = GetReversedBits((int)Bitwise.Log2(len));
+      var rBits = GetReversedBits((int)Maths.Log2(len));
 
       for (var i = 0; i < len; i++)
       {

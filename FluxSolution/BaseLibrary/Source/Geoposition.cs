@@ -1,18 +1,24 @@
 namespace Flux
 {
+  /// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum CardinalDirection { N, E, S, W }
+  /// <summary>The intercardinal (intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum InterCardinalDirection { NE, SE, SW, NW }
+  /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 45° from its two neighbours.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
   public enum EightWindCompassRose { N, NE, E, SE, S, SW, W, NW }
+  /// <summary>The eight principal winds and the eight half-winds together form the 16-wind compass rose, with each compass point at a ​22 1⁄2° angle from its two neighbours.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#16-wind_compass_rose"/>
   public enum SixteenWindCompassRose { N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW }
+  /// <summary>The 32-wind compass rose is yielded from the eight principal winds, eight half-winds and sixteen quarter-winds combined together, with each compass direction point at an ​11 1⁄4° angle from the next.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
   public enum ThirtyTwoWindCompassRose { N, NbE, NNE, NEbN, NE, NEbE, ENE, EbN, E, EbS, ESE, SEbE, SE, SEbS, SSE, SbE, S, SbW, SSW, SWbS, SW, SWbW, WSW, WbS, W, WbN, WNW, NWbW, NW, NWbN, NNW, NbW }
 
+  /// <summary>The compass point directions.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum PointsOfTheCompass { CardinalDirections = 4, EightWinds = 8, SixteenWinds = 16, ThirtyTwoWinds = 32 }
 
@@ -34,7 +40,7 @@ namespace Flux
     public const double PolarInNauticalMiles = 3430.1920370562;
   }
 
-  /// <summary></summary>
+  /// <summary>Represents a geographic position, using latotide, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
   public struct Geoposition
