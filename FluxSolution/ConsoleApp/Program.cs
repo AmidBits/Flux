@@ -9,26 +9,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var census = new Flux.Resources.Census.CountiesAllData();
+      var dataTable = new Flux.Resources.Scrape.ZipCodes().GetDataTable(Flux.Resources.Scrape.ZipCodes.LocalUri);
 
-      var columnNames = new string[] { "CTYNAME", "YEAR", "AGEGRP", "TOT_POP" };
-
-      var dt = census.GetDataTable(Flux.Resources.Census.CountiesAllData.LocalUri);
-
-      //dt.Columns.Cast<System.Data.DataColumn>().Where(dc => !columnNames.Contains(dc.ColumnName)).ToList().ForEach(dc => dt.Columns.Remove(dc));
-      dt.GetColumnNames().Except(columnNames).ToList().ForEach(cn => dt.Columns.Remove(cn));
-      //dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" || (int)dr["AGEGRP"] != 0).ToList().ForEach(dr => dt.Rows.Remove(dr));
-      //dt.Rows.Cast<System.Data.DataRow>().ToList().ForEach(dr => dr["YEAR"] = (int)dr["YEAR"] + 2000);
-      //dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" && (int)dr["AGEGRP"] != 0).ToArray();
-      //foreach (var dr in dt.Rows.Cast<System.Data.DataRow>().Where(dr => (string)dr["CTYNAME"] != "Pima County" && (int)dr["AGEGRP"] != 0).ToArray())
-      //  dt.Rows.Remove(dr);
-
-      System.Console.WriteLine(census.FieldNames.Count);
-      System.Console.WriteLine(census.FieldTypes.Count);
-
-      //      foreach (var dr in census.GetDataReader(Flux.Resources.Census.CountiesAllData.LocalUri).Where(dr => dr["CTYNAME"].ToString().Equals("Pima County", StringComparison.OrdinalIgnoreCase)))
-      foreach (var dr in dt.Select("CTYNAME = 'Pima County' AND AGEGRP = 0"))
-        System.Console.WriteLine(string.Join('|', dr.ItemArray));
+      foreach (var dataRow in dataTable.Select())
+        System.Console.WriteLine(string.Join('|', dataRow.ItemArray));
 
       //var source = new System.Collections.Generic.List<(string, int)>
       //{
