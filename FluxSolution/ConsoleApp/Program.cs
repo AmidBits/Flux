@@ -37,6 +37,10 @@ namespace ConsoleApp
       System.Console.WriteLine($"{predecessor}");
       var successor = search.GetSuccessorNode();
       System.Console.WriteLine($"{successor}");
+      var max = search.GetMaximumNode();
+      System.Console.WriteLine($"{max}");
+      var min = search.GetMinimumNode();
+      System.Console.WriteLine($"{min}");
 
       ////http://www.gutenberg.org/ebooks/45849.txt.utf-8
       //var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
