@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Determines the index position of the specified power-of-two bit value.</summary>
     /// <remarks>The value must be power of two, i.e. only a single bit set, or the result will be -1. For the same result of an arbitrary number, use Log2() or MostSignificant1Bit().</remarks>

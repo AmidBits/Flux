@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     public static int LeastSignificantBitMaskInt32(in int bitCount)
       => unchecked((int)(uint.MaxValue >> (32 - bitCount)));

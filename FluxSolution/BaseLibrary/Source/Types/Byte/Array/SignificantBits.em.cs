@@ -16,7 +16,7 @@ namespace Flux
         {
           for (byte mask = 0xFE; mask > 0; mask <<= 1)
             if ((value & mask) == (bits & mask))
-              return (index * 8) + Bitwise.ByteBit1Count[mask];
+              return (index * 8) + Maths.ByteBit1Count[mask];
 
           return (index * 8);
         }
@@ -38,7 +38,7 @@ namespace Flux
         {
           for (byte mask = 0x7F; mask > 0; mask >>= 1)
             if ((value & mask) == (bits & mask))
-              return (source.Length - index - 1) * 8 + Bitwise.ByteBit1Count[mask];
+              return (source.Length - index - 1) * 8 + Maths.ByteBit1Count[mask];
 
           return (source.Length - index - 1) * 8;
         }

@@ -29,15 +29,7 @@ namespace ConsoleApp
       //System.Console.WriteLine(bta.Search(6));
       //System.Console.WriteLine(bta.Delete(7));
       //System.Console.WriteLine(bta.Delete(7));
-      foreach (var item in bta.GetNodesPreOrder())
-        System.Console.WriteLine($"{item.Key} = {item.Value}");
-
-      var search = bta.Search('F');
-      var predecessor = search.GetPredecessorNode();
-      System.Console.WriteLine($"{predecessor}");
-      var successor = search.GetSuccessorNode();
-      System.Console.WriteLine($"{successor}");
-
+//      Flux.Text.
       ////http://www.gutenberg.org/ebooks/45849.txt.utf-8
       //var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
       //var index = 0;

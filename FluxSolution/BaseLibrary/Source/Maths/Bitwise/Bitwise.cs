@@ -1,8 +1,9 @@
 namespace Flux
 {
-  /// <summary>A collection of functions to perform typical 'bit' operations.</summary>
-  public static partial class Bitwise
+  public static partial class Maths
   {
+    // A collection of functions to perform typical 'bit' operations.
+
     // And: a & b
 
     // 1 And 1 = 1

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     private static System.Collections.Generic.IReadOnlyList<int>? m_byteBit1Count;
     /// <summary></summary>

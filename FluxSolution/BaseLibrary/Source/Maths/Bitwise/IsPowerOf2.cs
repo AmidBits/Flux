@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Determines if the number is a power of 2. A non-negative binary integer value x is a power of 2 iff (x&(x-1)) is 0 using 2's complement arithmetic.</summary>
     /// <remarks>The implementation is extremely fast for huge BigInteger values.</remarks>

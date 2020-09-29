@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set) by clearing the least significant 1 bit in each iteration of a loop.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bit_numbering#Most_significant_bit"/>

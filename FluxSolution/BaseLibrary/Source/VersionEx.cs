@@ -2,6 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
+  /// <summary>Represents a general version implementation, similar to the built-in Version.</summary>
   public struct VersionEx
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>, System.IFormattable
   {

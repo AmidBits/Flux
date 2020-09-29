@@ -1,5 +1,6 @@
 namespace Flux
 {
+  /// <summary>Represents the available interval rounding behaviors.</summary>
   public enum IntervalRoundingBehavior
   {
     /// <summary>Rounds an interval further from zero.</summary>

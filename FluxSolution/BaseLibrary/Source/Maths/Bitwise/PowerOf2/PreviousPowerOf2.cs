@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Computes the next power of 2 greater than or optionally equal to the specified number.</summary>
     /// <param name="strictlyLessThan">If true, the result will always be greater than value. If false, it could be greater than or equal to value.</param>

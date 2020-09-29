@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class Bitwise
+  public static partial class Maths
   {
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     /// <remarks>Given the Least Significant 1 Bit and Population Count (Ones Count) algorithms, it is trivial to combine them to construct a trailing zero count.</remarks>
