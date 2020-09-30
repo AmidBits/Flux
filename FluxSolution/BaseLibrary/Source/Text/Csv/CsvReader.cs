@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Text
 {
   public class CsvReader
-    : Flux.Disposable
+    : Flux.Disposable, System.Collections.Generic.IEnumerable<string[]>
   {
     private readonly CsvOptions m_options;
 
@@ -16,23 +16,23 @@ namespace Flux.Text
       m_streamReader = new System.IO.StreamReader(stream, m_options.Encoding);
     }
 
-    private bool m_inField;
+    private bool m_inDoubleQuotes;
 
     public string[] ReadArray()
     {
       var sb = new System.Text.StringBuilder(8192);
 
-      return (m_streamReader?.EndOfStream ?? true) ? System.Array.Empty<string>() : GetFields().ToArray();
+      return m_streamReader.EndOfStream ? System.Array.Empty<string>() : GetFields().ToArray();
 
       System.Collections.Generic.IEnumerable<string> GetFields()
       {
         for (int read = m_streamReader.Read(), peek = m_streamReader.Peek(); read != -1; read = m_streamReader.Read(), peek = m_streamReader.Peek())
         {
-          if (!m_inField)
+          if (!m_inDoubleQuotes)
           {
             if (read == '"')
             {
-              m_inField = true; // Enter quoted field.
+              m_inDoubleQuotes = true; // Enter double quoted field.
             }
             else if (read == m_options.FieldSeparator) // Between fields?
             {
@@ -62,13 +62,13 @@ namespace Flux.Text
               sb.Append(char.ConvertFromUtf32(read));
             }
           }
-          else if (m_inField)
+          else if (m_inDoubleQuotes)
           {
             if (read == '"')
             {
               if (peek != '"')
               {
-                m_inField = false; // Exit quoted field.
+                m_inDoubleQuotes = false; // Exit double quoted field.
               }
               else // Peek is a DoubleQuote, so this is an escape sequence.
               {
@@ -88,15 +88,19 @@ namespace Flux.Text
 
     public System.Collections.Generic.IEnumerable<string[]> ReadArrays()
     {
-      while (!(m_streamReader?.EndOfStream ?? true))
+      while (!m_streamReader.EndOfStream)
       {
         yield return ReadArray();
       }
     }
 
     protected override void DisposeManaged()
-    {
-      m_streamReader?.Dispose();
-    }
+      => m_streamReader?.Dispose();
+
+    // IEnumerable<string[]>
+    public System.Collections.Generic.IEnumerator<string[]> GetEnumerator()
+      => ReadArrays().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 }

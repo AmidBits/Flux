@@ -2,7 +2,6 @@ namespace Flux.Resources
 {
   /// <summary></summary>
   public abstract class DataFactory
-    : Disposable
   {
     public abstract System.Collections.Generic.IList<string> FieldNames { get; }
     public abstract System.Collections.Generic.IList<System.Type> FieldTypes { get; }
@@ -23,8 +22,8 @@ namespace Flux.Resources
       }
     }
 
-    public Flux.Data.EnumerableDataReader<object[]> GetDataReader(System.Uri uri)
-      => new Flux.Data.EnumerableDataReader<object[]>(GetObjects(uri), dr => dr, FieldNames, FieldTypes);
+    public Data.EnumerableDataReader<object[]> GetDataReader(System.Uri uri)
+      => new Data.EnumerableDataReader<object[]>(GetObjects(uri), dr => dr, FieldNames, FieldTypes);
 
     public System.Data.DataTable GetDataTable(System.Uri uri)
     {

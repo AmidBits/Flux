@@ -5,6 +5,38 @@ namespace Flux.Data
   public abstract class DataReader
     : Disposable, System.Data.IDataReader, System.Collections.Generic.IEnumerable<System.Data.IDataRecord>
   {
+    /// <summary>Indicates whether the field at the specified index allows nulls.</summary>
+    public virtual bool GetAllowDBNull(int index)
+      => true;
+    /// <summary>Returns a complete (with type arguments if needed) T-SQL data type the field at the specified index corresponds to.</summary>
+    public virtual string GetTsqlDataType(int index)
+    {
+      var type = GetFieldType(index);
+
+      if (type == typeof(bool))
+        return @"bit";
+      else if (type == typeof(byte))
+        return @"tinyint";
+      else if (type == typeof(System.DateTime))
+        return @"datetime";
+      else if (type == typeof(double))
+        return @"float";
+      else if (type == typeof(float))
+        return @"real";
+      else if (type == typeof(System.Guid))
+        return @"uniqueidentifier";
+      else if (type == typeof(int))
+        return @"int";
+      else if (type == typeof(long))
+        return @"bigint";
+      else if (type == typeof(short))
+        return @"smallint";
+      else if (type == typeof(string))
+        return @"nvarchar(max)";
+      else
+        return @"sql_variant";
+    }
+
     // IDataReader
     public virtual int Depth { get; protected set; }
     public virtual bool IsClosed { get; protected set; }
@@ -20,13 +52,14 @@ namespace Flux.Data
             { @"ColumnName", typeof(string) },
             { @"DataType", typeof(System.Type) },
             { @"ColumnSize", typeof(int) },
-            { @"AllowDBNull", typeof(bool) }
+            { @"AllowDBNull", typeof(bool) },
+            { @"TsqlDataType", typeof(string) }
           }
       };
 
       for (var index = 0; index < FieldCount; index++)
       {
-        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, true });
+        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, GetAllowDBNull(index), GetTsqlDataType(index) });
       }
 
       return dt;
@@ -113,7 +146,8 @@ namespace Flux.Data
     /// <summary>Gets the Type information corresponding to the type of Object that would be returned from GetValue(Int32).</summary>
     /// <remarks>This information can be used to increase performance by indicating the strongly-typed accessor to call. 
     /// (For example, using GetInt32 is roughly ten times faster than using GetValue.)</remarks>
-    public abstract System.Type GetFieldType(int index);
+    public virtual System.Type GetFieldType(int index)
+      => typeof(object);
     public virtual float GetFloat(int index)
       => (float)GetValue(index);
     public virtual System.Guid GetGuid(int index)

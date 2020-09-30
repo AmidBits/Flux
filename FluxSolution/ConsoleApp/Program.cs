@@ -9,81 +9,35 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      //using var dataTable = new Flux.Resources.Scrape.ZipCodes().GetDataTable(Flux.Resources.Scrape.ZipCodes.LocalUri);
+      //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
+      ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";
+      //var array = line.ParseCsv(',');
+      //System.Console.WriteLine(string.Join("|", array));
 
-      //foreach (var dataRow in dataTable.Select())
-      //  System.Console.WriteLine(string.Join('|', dataRow.ItemArray));
-
-      //var source = new System.Collections.Generic.List<(string, int)>
+      //using var dataReader = new Flux.Resources.Scrape.ZipCodes().GetDataReader(Flux.Resources.Scrape.ZipCodes.LocalUri);
+      //foreach (var dataRecord in dataReader)
       //{
-      //  ("Milk", 2),
-      //  ("Cream", 6),
-      //  ("Milk", 1),
-      //  ("Chicken", 1),
-      //  ("Chicken", 1),
-      //  ("OJ", 3),
-      //  ("OJ", 3),
-      //  ("Cheese", 5),
-      //};
-
-      //System.Console.WriteLine(string.Join('|', source));
-      //var sd = source.Histogram((e, i) => e.Item1, (e, i) => e.Item2);
-      //System.Console.WriteLine(string.Join('|', sd.Select(kvp => $"{kvp}")));
-
-      //var target = new System.Collections.Generic.List<(string, int)>
-      //{
-      //  ("Milk", 4),
-      //  ("Cream", 4),
-      //  ("Chicken", 4),
-      //  ("OJ", 4),
-      //  ("Cheese", 4),
-      //};
-
-      //var st = source.Inventory(target, vt => vt.Item1, vt => vt.Item2);
-
-      //foreach (var kvp in st)
-      //  System.Console.WriteLine($"{kvp}");
-
-      //for (var i = 0; i < 10; i++)
-      //  System.Console.WriteLine($"{i} = ({Flux.Bitwise.Log2(i)}) = {System.Math.Ceiling(System.Math.Log(i, 2))} = {System.Math.Pow(2, System.Math.Ceiling(System.Math.Log(i, 2)))}");
-
-      //var rsA = new Flux.RunningStatistics();
-      //rsA.Add(1, 3, 5, 7, 9);
-      //var rsB = new Flux.RunningStatistics();
-      //rsB.Add(2, 4, 6, 8);
-      //var rsC = new Flux.RunningStatistics();
-      //rsC.Add(0.85, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3, 8.2, 9.1, 10.15);
-      //var rsT = rsA + rsB + rsC;
-
-
-      //var bta = Flux.Collections.Immutable.AvlTree<char, string>.Empty;
-      //bta = bta.Add('F', "10");
-      //bta = bta.Add('B', "7");
-      //bta = bta.Add('G', "14");
-      //bta = bta.Add('A', "20");
-      //bta = bta.Add('D', "1");
-      //bta = bta.Add('D', "2");
-      //bta = bta.Add('I', "5");
-      //bta = bta.Add('C', "8");
-      //bta = bta.Add('E', "31");
-      //bta = bta.Add('H', "23");
-
-      //System.Console.WriteLine(bta.IsBST(0, 'A', 'Z'));
-      //System.Console.WriteLine(bta.IsBT(0));
-      //System.Console.WriteLine(bta.Search(6));
-      //System.Console.WriteLine(bta.Delete(7));
-      //System.Console.WriteLine(bta.Delete(7));
-      //      Flux.Text.
-      ////http://www.gutenberg.org/ebooks/45849.txt.utf-8
-      //var dt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataTable(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
-      //var index = 0;
-      //foreach (var b in dt.Rows.Cast<System.Data.DataRow>())
-      //{
+      //  System.Console.WriteLine(string.Join('|', dataRecord.GetValues()));
       //  System.Console.WriteLine();
-      //  System.Console.WriteLine(++index);
-      //  System.Console.WriteLine($"{string.Join('|', b.ItemArray)}");
-      //  System.Console.ReadKey();
       //}
+      //System.Console.WriteLine(dataReader.GetSchemaTable().ToArray(true).ToConsoleString());
+
+      //using var dataTable = new Flux.Resources.Scrape.ZipCodes().GetDataTable(Flux.Resources.Scrape.ZipCodes.LocalUri);
+      //foreach (var dataRow in dataTable.Select())
+      //{
+      //  System.Console.WriteLine(string.Join('|', dataRow.ItemArray));
+      //  System.Console.WriteLine();
+      //}
+      //System.Console.WriteLine(dataTable.CreateDataReader().GetSchemaTable().ToArray(true).ToConsoleString());
+
+      var dataReader = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataReader(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
+      var index = 0;
+      foreach (var dataRow in dataReader)
+      {
+        System.Console.WriteLine(++index);
+        System.Console.WriteLine($"{string.Join('|', dataRow.GetValues())}");
+        System.Console.WriteLine();
+      }
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();

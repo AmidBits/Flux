@@ -1,4 +1,3 @@
-using Flux.Text;
 using System.Linq;
 
 namespace Flux.Resources.Census
@@ -19,28 +18,21 @@ namespace Flux.Resources.Census
     public override System.Collections.Generic.IList<System.Type> FieldTypes
       => new System.Type[] { typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) };
 
-    private CsvReader? m_csvReader;
-
-    private CsvReader Setup(System.Uri uri)
-    {
-      Reset();
-
-      m_csvReader = new CsvReader(uri.GetStream(), new CsvOptions());
-      return m_csvReader;
-    }
-    private void Reset()
-    {
-      if (!(m_csvReader is null))
-        m_csvReader.Dispose();
-    }
-
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => Setup(uri).ReadArrays().Skip(1);
+    {
+      using var r = new Text.CsvReader(uri.GetStream(), new Text.CsvOptions());
+      using var e = r.ReadArrays().GetEnumerator();
+
+      if (e.MoveNext()) // Skip the column headers.
+      {
+        while (e.MoveNext())
+        {
+          yield return e.Current;
+        }
+      }
+    }
 
     public override object ConvertStringToObject(int index, string value)
       => Convert.ChangeType(value, null, FieldTypes[index]);
-
-    protected override void DisposeManaged()
-      => Reset();
   }
 }

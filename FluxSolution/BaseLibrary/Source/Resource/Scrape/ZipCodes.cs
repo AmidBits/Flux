@@ -1,4 +1,3 @@
-using Flux.Text;
 using System.Linq;
 
 namespace Flux.Resources.Scrape
@@ -7,7 +6,7 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public class ZipCodes
-    : DataFactory // Add Disposable to DataShaper (e.g. for CSV below)!
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");
@@ -21,10 +20,18 @@ namespace Flux.Resources.Scrape
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
-      using var csv = new CsvReader(uri.GetStream(), new CsvOptions());
+      using var r = new Text.CsvReader(uri.GetStream(), new Text.CsvOptions());
+      using var e = r.ReadArrays().GetEnumerator();
 
-      return csv.ReadArrays().Skip(1).ToList();
+      if (e.MoveNext()) // Skip the column headers.
+      {
+        while (e.MoveNext())
+        {
+          yield return e.Current;
+        }
+      }
     }
+
     public override object ConvertStringToObject(int index, string value)
       => value is null || value.Length == 0 ? default! : Convert.ChangeType(value, null, FieldTypes[index]);
   }
