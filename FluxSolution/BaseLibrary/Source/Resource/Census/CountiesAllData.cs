@@ -1,3 +1,4 @@
+using Flux.Text;
 using System.Linq;
 
 namespace Flux.Resources.Census
@@ -6,7 +7,7 @@ namespace Flux.Resources.Census
   /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
   // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
   public class CountiesAllData
-    : DataShaper
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Census\cc-est2019-alldata-04.csv");
@@ -18,10 +19,28 @@ namespace Flux.Resources.Census
     public override System.Collections.Generic.IList<System.Type> FieldTypes
       => new System.Type[] { typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) };
 
+    private CsvReader? m_csvReader;
+
+    private CsvReader Setup(System.Uri uri)
+    {
+      Reset();
+
+      m_csvReader = new CsvReader(uri.GetStream(), new CsvOptions());
+      return m_csvReader;
+    }
+    private void Reset()
+    {
+      if (!(m_csvReader is null))
+        m_csvReader.Dispose();
+    }
+
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.ReadLines(System.Text.Encoding.UTF8).Skip(1).Select(line => line.Split(','));
+      => Setup(uri).ReadArrays().Skip(1);
 
     public override object ConvertStringToObject(int index, string value)
       => Convert.ChangeType(value, null, FieldTypes[index]);
+
+    protected override void DisposeManaged()
+      => Reset();
   }
 }

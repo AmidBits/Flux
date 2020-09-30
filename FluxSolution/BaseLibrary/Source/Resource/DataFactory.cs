@@ -1,7 +1,8 @@
 namespace Flux.Resources
 {
   /// <summary></summary>
-  public abstract class DataShaper
+  public abstract class DataFactory
+    : Disposable
   {
     public abstract System.Collections.Generic.IList<string> FieldNames { get; }
     public abstract System.Collections.Generic.IList<System.Type> FieldTypes { get; }

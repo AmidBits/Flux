@@ -8,7 +8,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://unicode.org/Public/"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
   public class UnicodeData
-    : DataShaper
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
@@ -24,6 +24,12 @@ namespace Flux.Resources.Ucd
       => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => s.Split(';'));
 
     public override object ConvertStringToObject(int index, string value)
-      => Convert.ChangeType(value, null, FieldTypes[index]);
+    {
+      return index switch
+      {
+        0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
+        _ => value
+      };
+    }
   }
 }

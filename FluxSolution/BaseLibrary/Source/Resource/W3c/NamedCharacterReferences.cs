@@ -4,7 +4,7 @@ namespace Flux.Resources.W3c
 {
   /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
   public class NamedCharacterReferences
-    : DataShaper
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\W3c\NamedCharacterReferences.json");

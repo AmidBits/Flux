@@ -8,7 +8,7 @@ namespace Flux.Resources.Scowl
   /// <seealso cref="http://wordlist.aspell.net/"/>
   /// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
   public class TwoOfTwelveFull
-    : DataShaper
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scowl\2of12full.txt");

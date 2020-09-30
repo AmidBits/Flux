@@ -7,7 +7,7 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public class ZipCodes
-    : DataShaper // Add Disposable to DataShaper (e.g. for CSV below)!
+    : DataFactory // Add Disposable to DataShaper (e.g. for CSV below)!
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");

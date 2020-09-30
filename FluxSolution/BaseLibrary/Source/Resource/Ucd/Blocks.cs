@@ -8,7 +8,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
   public class Blocks
-    : DataShaper
+    : DataFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Ucd\Blocks.txt");
@@ -26,6 +26,13 @@ namespace Flux.Resources.Ucd
       => uri.ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line));
 
     public override object ConvertStringToObject(int index, string value)
-      => Convert.ChangeType(value, null, FieldTypes[index]);
+    {
+      return index switch
+      {
+        0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
+        1 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
+        _ => value
+      };
+    }
   }
 }

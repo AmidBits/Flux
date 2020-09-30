@@ -9,7 +9,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var dataTable = new Flux.Resources.Scrape.ZipCodes().GetDataTable(Flux.Resources.Scrape.ZipCodes.LocalUri);
+      using var dataTable = new Flux.Resources.Scrape.ZipCodes().GetDataTable(Flux.Resources.Scrape.ZipCodes.LocalUri);
 
       foreach (var dataRow in dataTable.Select())
         System.Console.WriteLine(string.Join('|', dataRow.ItemArray));
