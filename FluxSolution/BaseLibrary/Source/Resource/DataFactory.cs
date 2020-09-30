@@ -10,7 +10,7 @@ namespace Flux.Resources
     public abstract System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri);
 
     public virtual object ConvertStringToObject(int index, string value)
-      => value;
+      => FieldTypes is null || index < 0 || index >= FieldTypes.Count ? value : Convert.ChangeType(value, null, FieldTypes[index]);
 
     public virtual System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
     {
