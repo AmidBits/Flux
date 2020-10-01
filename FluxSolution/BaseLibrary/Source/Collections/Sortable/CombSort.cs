@@ -5,14 +5,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void CombSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new Sorting.CombSort<T>(comparer).Sort(source);
-    /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
+    /// <summary>Sorts the content of the sequence using comb sort.</summary>
     public static void CombSort<T>(this System.Span<T> source)
       => CombSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
   namespace Sorting
   {
-    /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
+    /// <summary>Sorts the content of the sequence using comb sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class CombSort<T>
     : ISortable<T>
