@@ -9,13 +9,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-      var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-      var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
-
-      System.Console.WriteLine($"a=b : {a.SequenceContentEqualOrderBy(b)} : {a.SequenceContentEqualByXor(b)}");
-      System.Console.WriteLine($"a=c : {a.SequenceContentEqualOrderBy(c)} : {a.SequenceContentEqualByXor(c)}");
-      System.Console.WriteLine($"b=c : {b.SequenceContentEqualOrderBy(c)} : {b.SequenceContentEqualByXor(c)}");
 
       //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
       ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";

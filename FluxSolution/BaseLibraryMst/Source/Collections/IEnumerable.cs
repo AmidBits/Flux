@@ -122,6 +122,30 @@ namespace Collections.Generic
     }
 
     [TestMethod]
+    public void SequenceContentEqualOrderBy()
+    {
+      var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+      var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
+
+      Assert.IsTrue(a.SequenceContentEqualOrderBy(b));
+      Assert.IsTrue(a.SequenceContentEqualOrderBy(c));
+      Assert.IsTrue(b.SequenceContentEqualOrderBy(c));
+    }
+
+    [TestMethod]
+    public void SequenceContentEqualByXor()
+    {
+      var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+      var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
+
+      Assert.IsTrue(a.SequenceContentEqualByXor(b));
+      Assert.IsTrue(a.SequenceContentEqualByXor(c));
+      Assert.IsTrue(b.SequenceContentEqualByXor(c));
+    }
+
+    [TestMethod]
     public void SkipLastWhile()
     {
       CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23 }, integers.SkipLastWhile((e, i) => (i & 1) == 1).ToArray());
