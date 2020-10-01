@@ -33,10 +33,10 @@ namespace Flux.Data
     }
 
     // DataReader
-    public override bool GetAllowDBNull(int index)
-      => index >= 0 && index < FieldAllowDBNulls.Count ? FieldAllowDBNulls[index] : base.GetAllowDBNull(index);
-    public override string GetTsqlDataType(int index)
-      => index >= 0 && index < FieldTsqlDataTypes.Count ? FieldTsqlDataTypes[index] : base.GetTsqlDataType(index);
+    public override bool GetSchemaTableAllowDBNull(int index)
+      => index >= 0 && index < FieldAllowDBNulls.Count ? FieldAllowDBNulls[index] : base.GetSchemaTableAllowDBNull(index);
+    public override string GetSchemaTableTsqlDataTypeDefinition(int index)
+      => index >= 0 && index < FieldTsqlDataTypes.Count ? FieldTsqlDataTypes[index] : base.GetSchemaTableTsqlDataTypeDefinition(index);
 
     // IDataReader
     public override bool IsClosed

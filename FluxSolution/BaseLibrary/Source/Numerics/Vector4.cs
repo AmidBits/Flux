@@ -289,7 +289,7 @@ namespace Flux.Numerics
       => obj is Vector4 ? Equals((Vector4)obj) : false;
     /// <summary>Returns the hash code for this instance.</summary>
     public override int GetHashCode()
-      => Flux.HashCode.Combine(System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W));
+      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
     /// <summary>Returns a String representing this Quaternion instance.</summary>
     public override string ToString()
       => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);

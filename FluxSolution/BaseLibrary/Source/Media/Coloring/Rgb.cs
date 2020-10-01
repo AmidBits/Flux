@@ -182,7 +182,7 @@ namespace Flux.Media.Coloring
     public override bool Equals(object? obj)
       => obj is Rgb o && Equals(o);
     public override int GetHashCode()
-      => HashCode.CombineCore(Alpha, Red, Green, Blue);
+      => System.Linq.Enumerable.Empty<object>().Append(Alpha, Red, Green, Blue).CombineHashDefault();
     public override string ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

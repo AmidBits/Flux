@@ -113,7 +113,7 @@ namespace Flux
     public override bool Equals(object? obj)
       => obj is VersionEx ve && Equals(ve);
     public override int GetHashCode()
-      => Flux.HashCode.Combine(m_parts.Cast<object>().AsEnumerable());
+      => m_parts.CombineHashDefault();
     public override string? ToString()
       => ToString();
   }

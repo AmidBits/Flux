@@ -6,7 +6,7 @@ namespace Flux
     TowardsMean
   }
 
-  public static partial class LinqEx
+  public static partial class LinqX
   {
     /// <summary>Produces a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> AlternatingRange(System.Numerics.BigInteger mean, int count, System.Numerics.BigInteger step, AlternatingRangeDirection direction)

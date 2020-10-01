@@ -65,7 +65,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is DeaRegistrationNumber drn && Equals(drn);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID);
+      => System.Linq.Enumerable.Empty<object>().Append(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID).CombineHashDefault();
     public override string? ToString()
       => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }

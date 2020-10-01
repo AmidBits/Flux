@@ -126,7 +126,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(Angle, Height, Width);
+      => System.Linq.Enumerable.Empty<object>().Append(Angle, Height, Width).CombineHashDefault();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

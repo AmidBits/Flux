@@ -263,7 +263,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Quaternion o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(X, Y, Z, W);
+      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
     public override string ToString()
       => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);
   }

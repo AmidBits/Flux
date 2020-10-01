@@ -25,7 +25,7 @@ namespace Flux.Media.Geometry
     public override bool Equals(object? obj)
       => obj is Size3 o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(Width, Height, Depth);
+      => System.Linq.Enumerable.Empty<object>().Append(Width, Height, Depth).CombineHashDefault();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

@@ -53,7 +53,7 @@ namespace Flux.IO.Checksum
     public override bool Equals(object? obj)
       => obj is Luhn luhn && Equals(luhn);
     public override int GetHashCode()
-      => HashCode.CombineCore(m_sequence.Append(unchecked((int)m_checkDigit)));
+      => m_sequence.Append(unchecked((int)m_checkDigit)).CombineHashDefault();
     public override string ToString()
       => ToString(null, null);
   }

@@ -739,7 +739,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(Vectors);
+      => System.Linq.Enumerable.Empty<object>().Append(Vectors).CombineHashDefault();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

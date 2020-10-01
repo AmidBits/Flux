@@ -28,7 +28,7 @@ namespace Flux.Media.Geometry
     public override bool Equals(object? obj)
       => obj is Cuboid o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(X, Y, Z, Width, Height, Depth);
+      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, Width, Height, Depth).CombineHashDefault();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

@@ -5,37 +5,19 @@ namespace Flux.Data
   public abstract class DataReader
     : Disposable, System.Data.IDataReader, System.Collections.Generic.IEnumerable<System.Data.IDataRecord>
   {
+    public const string ColumnOrdinal = nameof(ColumnOrdinal);
+    public const string ColumnName = nameof(ColumnName);
+    public const string DataType = nameof(DataType);
+    public const string ColumnSize = nameof(ColumnSize);
+    public const string AllowDBNull = nameof(AllowDBNull);
+    public const string TsqlDataTypeDefinition = nameof(TsqlDataTypeDefinition);
+
     /// <summary>Indicates whether the field at the specified index allows nulls.</summary>
-    public virtual bool GetAllowDBNull(int index)
+    public virtual bool GetSchemaTableAllowDBNull(int index)
       => true;
     /// <summary>Returns a complete (with type arguments if needed) T-SQL data type the field at the specified index corresponds to.</summary>
-    public virtual string GetTsqlDataType(int index)
-    {
-      var type = GetFieldType(index);
-
-      if (type == typeof(bool))
-        return @"bit";
-      else if (type == typeof(byte))
-        return @"tinyint";
-      else if (type == typeof(System.DateTime))
-        return @"datetime";
-      else if (type == typeof(double))
-        return @"float";
-      else if (type == typeof(float))
-        return @"real";
-      else if (type == typeof(System.Guid))
-        return @"uniqueidentifier";
-      else if (type == typeof(int))
-        return @"int";
-      else if (type == typeof(long))
-        return @"bigint";
-      else if (type == typeof(short))
-        return @"smallint";
-      else if (type == typeof(string))
-        return @"nvarchar(max)";
-      else
-        return @"sql_variant";
-    }
+    public virtual string GetSchemaTableTsqlDataTypeDefinition(int index)
+      => TsqlDataType.NameFromType(GetFieldType(index)) is var tsqlTypeName ? tsqlTypeName + TsqlDataType.GetDefaultArgument(tsqlTypeName) : throw new System.Exception(@"Could not construct T-SQL data type.");
 
     // IDataReader
     public virtual int Depth { get; protected set; }
@@ -48,18 +30,18 @@ namespace Flux.Data
       var dt = new System.Data.DataTable(@"SchemaTable")
       {
         Columns = {
-            { @"ColumnOrdinal", typeof(int) },
-            { @"ColumnName", typeof(string) },
-            { @"DataType", typeof(System.Type) },
-            { @"ColumnSize", typeof(int) },
-            { @"AllowDBNull", typeof(bool) },
-            { @"TsqlDataType", typeof(string) }
+            { ColumnOrdinal, typeof(int) },
+            { ColumnName, typeof(string) },
+            { DataType, typeof(System.Type) },
+            { ColumnSize, typeof(int) },
+            { AllowDBNull, typeof(bool) },
+            { TsqlDataTypeDefinition, typeof(string) }
           }
       };
 
       for (var index = 0; index < FieldCount; index++)
       {
-        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, GetAllowDBNull(index), GetTsqlDataType(index) });
+        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, GetSchemaTableAllowDBNull(index), GetSchemaTableTsqlDataTypeDefinition(index) });
       }
 
       return dt;

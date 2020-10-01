@@ -403,7 +403,7 @@ namespace Flux
     public override bool Equals(object? obj)
       => obj is Geoposition gp && Equals(gp);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(System.Linq.Enumerable.Empty<object>().Append(Altitude, Latitude, Longitude));
+      => System.Linq.Enumerable.Empty<object>().Append(Altitude, Latitude, Longitude).CombineHashDefault();
     public override string ToString()
       => ToString(null, null);
   }

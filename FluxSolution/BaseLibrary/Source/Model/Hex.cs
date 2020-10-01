@@ -164,7 +164,7 @@ namespace Flux.Media
     public static bool operator !=(in Hex v1, in Hex v2) => !v1.Equals(v2);
     #endregion System.IEquatable
 
-    public override int GetHashCode() => Flux.HashCode.Combine(Q, R, S);
+    public override int GetHashCode() => System.Linq.Enumerable.Empty<object>().Append(Q, R, S).CombineHashDefault();
     public override bool Equals(object? obj) => obj is Hex && Equals((Hex)obj);
     public override string ToString() => $"<{Q}, {R}, {S}>";
   }

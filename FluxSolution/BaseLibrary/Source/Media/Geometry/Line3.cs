@@ -45,7 +45,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is TestResult o && Equals(o);
     public override int GetHashCode()
-      => Point.HasValue ? Flux.HashCode.CombineCore(Outcome, Point) : Outcome.GetHashCode();
+      => Point.HasValue ? System.Linq.Enumerable.Empty<object>().Append(Outcome, Point).CombineHashDefault() : Outcome.GetHashCode();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
@@ -168,7 +168,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Line3 o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(m_p1, m_p2);
+      => System.Linq.Enumerable.Empty<object>().Append(m_p1, m_p2).CombineHashDefault();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

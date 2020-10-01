@@ -67,7 +67,7 @@ namespace Flux.Data
       => !left.Equals(right);
     // System.IEquatable<SqlDefinitionNullability>
     public bool Equals(TsqlDataType other)
-      => Name == other.Name;
+      => Name == other.Name && Arguments.SequenceEqual(other.Arguments);
     // System.Object Overrides
     public override bool Equals(object? obj)
       => obj is TsqlDataType dt && this.Equals(dt);
@@ -143,30 +143,26 @@ namespace Flux.Data
     public static string NameFromType(System.Type type)
     {
       if (type is null) throw new System.ArgumentNullException(nameof(type));
-
-      if (type == typeof(System.Boolean)) return Bit;
-      if (type == typeof(System.Byte)) return Tinyint;
-      if (type == typeof(System.Byte[])) return Varbinary;
-      if (type == typeof(System.DateTime)) return Datetime;
-      if (type == typeof(System.DateTimeOffset)) return Datetimeoffset;
-      if (type == typeof(System.Decimal)) return Decimal;
-      if (type == typeof(System.Double)) return Float;
-      if (type == typeof(System.Guid)) return Uniqueidentifier;
-      if (type == typeof(System.Int16)) return Smallint;
-      if (type == typeof(System.Int32)) return Int;
-      if (type == typeof(System.Int64)) return Bigint;
-      if (type == typeof(System.String)) return Nvarchar;
-      if (type == typeof(System.SByte)) return Tinyint;
-      if (type == typeof(System.Single)) return Real;
-      if (type == typeof(System.Xml.Linq.XNode)) return Xml;
-      if (type == typeof(System.Xml.XmlNode)) return Xml;
-      if (type == typeof(System.Object)) return SqlVariant; // Convert any type.
-
-      throw new System.ArgumentOutOfRangeException(type.FullName);
+      else if (type == typeof(System.Boolean)) return Bit;
+      else if (type == typeof(System.Byte)) return Tinyint;
+      else if (type == typeof(System.Byte[])) return Varbinary;
+      else if (type == typeof(System.DateTime)) return Datetime;
+      else if (type == typeof(System.Decimal)) return Decimal;
+      else if (type == typeof(System.Double)) return Float;
+      else if (type == typeof(System.Guid)) return Uniqueidentifier;
+      else if (type == typeof(System.Int16)) return Smallint;
+      else if (type == typeof(System.Int32)) return Int;
+      else if (type == typeof(System.Int64)) return Bigint;
+      else if (type == typeof(System.String)) return Nvarchar;
+      else if (type == typeof(System.SByte)) return Tinyint; // Smallest type it can fit into.
+      else if (type == typeof(System.Single)) return Real;
+      else if (type == typeof(System.UInt16)) return Int; // Smallest type it can fit into.
+      else if (type == typeof(System.UInt32)) return Bigint; // Smallest type it can fit into.
+      else return SqlVariant; // Hybrid or variant type.
     }
     /// <summary>Returns the T-SQL data type name corresponding to <typeparamref name="T"/>.</summary>
     public static string NameFromType<T>()
-      => NameFromType(typeof(T));
+        => NameFromType(typeof(T));
     /// <summary>Returns the T-SQL data type name corresponding to the type of <paramref name="value"/>.</summary>
     public static string NameFromValueType(object? value) => value switch
     {

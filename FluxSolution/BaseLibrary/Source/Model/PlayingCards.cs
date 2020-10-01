@@ -140,7 +140,7 @@ namespace Flux.Model.PlayingCards
     public override bool Equals(object? obj)
       => obj is Card o && Equals(o);
     public override int GetHashCode()
-      => HashCode.CombineCore(Deck, Rank, Suit);
+      => System.Linq.Enumerable.Empty<object>().Append(Deck, Rank, Suit).CombineHashDefault();
     public override string ToString()
       => $"<{Deck}, {Rank}, {Suit}>";
   }

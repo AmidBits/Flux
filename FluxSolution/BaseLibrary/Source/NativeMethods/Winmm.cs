@@ -413,7 +413,7 @@
     public override bool Equals(object? obj)
       => obj is MidiInCapabilities mic && Equals(mic);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(DriverVersion, Manufacturer, Name, ProductIdentifier, Support);
+      => System.Linq.Enumerable.Empty<object>().Append(DriverVersion, Manufacturer, Name, ProductIdentifier, Support).CombineHashDefault();
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   }
@@ -455,7 +455,7 @@
     public override bool Equals(object? obj)
       => obj is MidiOutCapabilities moc && Equals(moc);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices);
+      => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashDefault();
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   };

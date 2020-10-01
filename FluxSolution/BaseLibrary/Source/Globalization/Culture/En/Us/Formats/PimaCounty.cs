@@ -114,7 +114,7 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public override bool Equals(object? obj)
       => obj is StreetAddress o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(Number, Direction, Intersection, Name, Type, Unit);
+      => System.Linq.Enumerable.Empty<object>().Append(Number, Direction, Intersection, Name, Type, Unit).CombineHashDefault();
     public override string? ToString()
       => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpan().NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }

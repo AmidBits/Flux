@@ -374,7 +374,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Vector3I o && Equals(o);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(X, Y, Z);
+      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z).CombineHashDefault();
     public override string ToString()
       => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
 

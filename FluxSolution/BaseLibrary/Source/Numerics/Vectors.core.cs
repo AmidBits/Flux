@@ -265,7 +265,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Vector3D && Equals(obj);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(X, Y, Z, W);
+      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
     public override string ToString()
       => ToString("G", System.Globalization.CultureInfo.CurrentCulture);
   }

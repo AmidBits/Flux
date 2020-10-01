@@ -123,7 +123,7 @@
     public override bool Equals(object? obj)
       => obj is StereoSample sample && Equals(sample);
     public override int GetHashCode()
-      => Flux.HashCode.Combine(FrontLeft, FrontRight);
+      => System.Linq.Enumerable.Empty<object>().Append(FrontLeft, FrontRight).CombineHashDefault();
     public override string ToString()
       => $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
   }

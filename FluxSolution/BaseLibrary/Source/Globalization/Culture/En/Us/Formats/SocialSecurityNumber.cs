@@ -61,7 +61,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is SocialSecurityNumber nanp && Equals(nanp);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(AAA, GG, SSSS);
+      => System.Linq.Enumerable.Empty<object>().Append(AAA, GG, SSSS).CombineHashDefault();
     public override string? ToString()
       => $"{AAA}-{GG}-{SSSS}";
   }

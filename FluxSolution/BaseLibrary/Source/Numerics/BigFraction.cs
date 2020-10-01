@@ -464,7 +464,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is BigFraction o && Equals(o);
     public override int GetHashCode()
-      => HashCode.CombineCore(Numerator, Denominator);
+      => System.Linq.Enumerable.Empty<object>().Append(Numerator, Denominator).CombineHashDefault();
     public override string ToString()
       => $"<{Numerator}/{Denominator} ({Numerator / Denominator})>";
   }

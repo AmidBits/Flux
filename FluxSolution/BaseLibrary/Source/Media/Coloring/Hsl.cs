@@ -86,7 +86,7 @@ namespace Flux.Media.Coloring
     public override bool Equals(object? obj)
       => obj is Hsl o && Equals(o);
     public override int GetHashCode()
-      => HashCode.CombineCore(Alpha, Hue, Saturation, Lightness);
+      => System.Linq.Enumerable.Empty<object>().Append(Alpha, Hue, Saturation, Lightness).CombineHashDefault();
     public override string ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

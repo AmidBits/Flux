@@ -88,7 +88,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is NorthAmericanNumberingPlan nanp && Equals(nanp);
     public override int GetHashCode()
-      => Flux.HashCode.CombineCore(CC, NPA, NXX, XXXX);
+      => System.Linq.Enumerable.Empty<object>().Append(CC, NPA, NXX, XXXX).CombineHashDefault();
     public override string? ToString()
       => $"{CC}-{NPA}-{NXX}-{XXXX}";
   }
