@@ -18,9 +18,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Census\" />
-    <Folder Include="Resources\Scrape\" />
-  </ItemGroup>
-
 </Project>
