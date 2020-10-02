@@ -31,7 +31,7 @@ namespace Flux
 
       void AppendCurrentDefinitions()
       {
-        if (schemaTable.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ContainsAll(CsAllowDBNull, CsColumnName, CsColumnSize, CsDataTypeName, CsNumericPrecision, CsNumericScale))
+        if (schemaTable.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ContainsAll(System.Linq.Enumerable.Empty<string>().Append(CsAllowDBNull, CsColumnName, CsColumnSize, CsDataTypeName, CsNumericPrecision, CsNumericScale)))
         {
           if (!schemaTable.Columns.Contains(CsTsqlDefinitionCurrent)) schemaTable.Columns.Add(CsTsqlDefinitionCurrent, typeof(string));
 
@@ -97,7 +97,7 @@ namespace Flux
 
       void AppendDefaultDefinitions()
       {
-        if (schemaTable.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ContainsAll(CsColumnName, CsColumnOrdinal, CsDataType))
+        if (schemaTable.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ContainsAll(System.Linq.Enumerable.Empty<string>().Append(CsColumnName, CsColumnOrdinal, CsDataType)))
         {
           if (!schemaTable.Columns.Contains(CsTsqlDefinitionDefault)) schemaTable.Columns.Add(CsTsqlDefinitionDefault, typeof(string));
 

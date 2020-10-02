@@ -450,9 +450,11 @@ namespace Flux.Media.Geometry.Shapes
       => System.Math.Abs(System.Numerics.Vector3.Dot(source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Aggregate(System.Numerics.Vector3.Zero, (acc, pair) => acc + System.Numerics.Vector3.Cross(pair.leading, pair.trailing)), System.Numerics.Vector3.Normalize(ComputeNormal(source))) / 2);
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public static System.Numerics.Vector2 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source) => source.Aggregate(System.Numerics.Vector2.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+    public static System.Numerics.Vector2 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => source.Aggregate(System.Numerics.Vector2.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public static System.Numerics.Vector3 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source) => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+    public static System.Numerics.Vector3 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
 
     /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
     //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf

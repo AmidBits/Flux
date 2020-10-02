@@ -25,20 +25,20 @@ namespace Collections.Generic
     [TestMethod]
     public void ContainsAll()
     {
-      Assert.IsTrue(integers.ContainsAll(17, 23, 57));
+      Assert.IsTrue(integers.ContainsAll(new int[] { 17, 23, 57 }));
     }
 
     [TestMethod]
     public void ContainsAny()
     {
-      Assert.IsTrue(integers.ContainsAny(23, 57));
+      Assert.IsTrue(integers.ContainsAny(new int[] { 23, 57 }));
     }
 
     [TestMethod]
     public void ContainsFew()
     {
-      Assert.IsFalse(integers.ContainsFew(19, 57));
-      Assert.IsTrue(integers.ContainsFew(17, 23));
+      Assert.IsFalse(integers.ContainsFew(new int[] { 19, 57 }));
+      Assert.IsTrue(integers.ContainsFew(new int[] { 17, 23 }));
     }
 
     [TestMethod]
