@@ -9,6 +9,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+
       //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
       ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";
       //var array = line.ParseCsv(',');
@@ -30,14 +31,14 @@ namespace ConsoleApp
       //}
       //System.Console.WriteLine(dataTable.CreateDataReader().GetSchemaTable().ToArray(true).ToConsoleString());
 
-      //var dataReader = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataReader(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
-      //var index = 0;
-      //foreach (var dataRow in dataReader)
-      //{
-      //  System.Console.WriteLine(++index);
-      //  System.Console.WriteLine($"{string.Join('|', dataRow.GetValues())}");
-      //  System.Console.WriteLine();
-      //}
+      var dataReader = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataReader(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
+      var index = 0;
+      foreach (var dataRow in dataReader)
+      {
+        System.Console.WriteLine(++index);
+        System.Console.WriteLine($"{string.Join('|', dataRow.GetValues())}");
+        System.Console.WriteLine();
+      }
 
       /*
       var ttt = new Flux.Model.TicTacToe.Board();
@@ -111,6 +112,22 @@ namespace ConsoleApp
         }
       }
       */
+
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ClrVersion)} = \"{Flux.Locale.ClrVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkDescription)} = \"{Flux.Locale.FrameworkDescription}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemDescription)} = \"{Flux.Locale.OperatingSystemDescription}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+      System.Console.WriteLine($"{nameof(System.Environment.OSVersion)} = \"{System.Environment.OSVersion}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.)} = \"{Flux.Locale.}\"");
+      //System.Console.WriteLine($"{} = \"{}\"");
     }
 
     static void Main(string[] args)

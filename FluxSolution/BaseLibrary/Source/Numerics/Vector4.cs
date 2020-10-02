@@ -1,3 +1,4 @@
+#if FluxNumerics
 namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating four double precision floating point values and provides hardware accelerated methods.</summary>
@@ -295,3 +296,4 @@ namespace Flux.Numerics
       => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);
   }
 }
+#endif

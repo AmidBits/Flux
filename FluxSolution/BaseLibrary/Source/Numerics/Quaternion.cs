@@ -1,3 +1,4 @@
+#if FluxNumerics
 namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating a four-dimensional vector (x,y,z,w), which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).</summary>
@@ -268,3 +269,4 @@ namespace Flux.Numerics
       => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);
   }
 }
+#endif

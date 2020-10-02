@@ -1,3 +1,4 @@
+#if FluxNumerics
 namespace Flux.Numerics
 {
   /// <summary>
@@ -1377,3 +1378,4 @@ namespace Flux.Numerics
       => ToString(@"N3", null);
   }
 }
+#endif

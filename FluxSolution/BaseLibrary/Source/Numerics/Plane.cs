@@ -1,3 +1,4 @@
+#if FluxNumerics
 namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating a 3D Plane.</summary>
@@ -173,3 +174,4 @@ namespace Flux.Numerics
     }
   }
 }
+#endif
