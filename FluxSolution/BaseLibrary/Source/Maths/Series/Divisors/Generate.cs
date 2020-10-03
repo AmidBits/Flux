@@ -2,6 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
+  // https://codeforces.com/blog/entry/22229
   public static partial class Maths
   {
     /// <summary>Creates a sieve of divisors up to the specified number.</summary>
