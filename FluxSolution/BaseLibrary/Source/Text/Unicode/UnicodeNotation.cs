@@ -1,9 +1,9 @@
 namespace Flux.Text
 {
-  /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
+  /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
   public static class UnicodeNotation
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"(?<=U\+)[0-9A-Fa-f]{4,}");
+    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"(?<=U\+)1?[0-9A-F]{4,}", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
     public static int Parse(string expression)
       => ParseRegex.Match(expression) is var m && m.Success && int.TryParse(m.Value, System.Globalization.NumberStyles.HexNumber, null, out var number) ? number : throw new System.ArgumentException($"Could not parse \"{expression}\" as unicode notation.");

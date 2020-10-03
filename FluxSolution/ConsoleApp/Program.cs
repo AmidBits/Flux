@@ -9,6 +9,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var sieve = Flux.Maths.SieveOfDivisors(60);
 
       //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
       ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";
