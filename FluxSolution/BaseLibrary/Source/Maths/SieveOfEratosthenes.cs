@@ -57,15 +57,9 @@ namespace Flux.Model
       var sqrt = (int)System.Math.Sqrt(length);
 
       for (var odd = 3; odd <= sqrt; odd += 2) // Since only odd numbers were set in the previous loop, there can only be odd numbers to clear.
-      {
         if (ba[odd]) // This is a prime number, so all multiples of its square cannot be prime numbers.
-        {
           for (int sqr = odd * odd, oddX2 = odd * 2; sqr <= length; sqr += oddX2)
-          {
             ba[sqr] = false;
-          }
-        }
-      }
 
       return ba;
     }

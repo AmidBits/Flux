@@ -36,11 +36,16 @@ namespace Flux
     public static string ComputerPrimaryDnsName
       => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
 
-    ///// <summary>Returns the description of the hosting operating system.</summary>
-    //public static string EnvironmentOperatingSystemDescription
-    //  => System.Environment.OSVersion;
+    /// <summary>Returns the description of the hosting operating system.</summary>
+    public static System.OperatingSystem EnvironmentOperatingSystem
+      => System.Environment.OSVersion;
     //public static System.Version OperatingSystemVersion
     //  => System.Version.TryParse(OperatingSystemDescription.Substring(OperatingSystemDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+
+    public static System.PlatformID EnvironmentOsPlatform
+      => System.Environment.OSVersion.Platform;
+    public static System.Version EnvironmentOsVersion
+      => System.Environment.OSVersion.Version;
 
     /// <summary>Returns the description of the hosting framework.</summary>
     public static string FrameworkDescription

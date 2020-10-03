@@ -26,9 +26,7 @@ namespace Flux.Model
       if (segmentIndex == 0)
       {
         foreach (var primeNumber in m_primeNumbersOfSegment0)
-        {
           yield return primeNumber;
-        }
       }
       else if (segmentIndex > 0)
       {
@@ -43,23 +41,15 @@ namespace Flux.Model
           var loLimit = lo / primeNumber * primeNumber;
 
           if (loLimit < lo)
-          {
             loLimit += primeNumber;
-          }
 
           for (var j = loLimit; j < hi; j += primeNumber)
-          {
             bits[(int)(j - lo)] = false;
-          }
         }
 
         for (var i = lo; i < hi; i++)
-        {
           if (bits[(int)(i - lo)])
-          {
             yield return i;
-          }
-        }
       }
       else throw new System.ArgumentOutOfRangeException(nameof(segmentIndex));
     }
@@ -74,9 +64,7 @@ namespace Flux.Model
       var primes = new SieveOfEratosthenes(segmentSize).ToList();
 
       foreach (var p in primes)
-      {
         yield return p;
-      }
 
       System.Numerics.BigInteger lo = segmentSize;
       System.Numerics.BigInteger hi = segmentSize << 1;
