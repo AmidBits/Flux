@@ -167,7 +167,7 @@ namespace WpfApp
       //properties.Add(new KeyValuePair<string, object>(@"User Domain Name", Locale.UserDomainName));
       properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"User Name", Flux.Locale.UserName));
 
-      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Operating System", Flux.Locale.OperatingSystemDescription));
+      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Operating System", Flux.Locale.OperatingSystemName));
 
       var nicsUpWithGateways = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().Where(nic => nic.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up && nic.GetIPProperties().GatewayAddresses.Any()).ToArray();
 

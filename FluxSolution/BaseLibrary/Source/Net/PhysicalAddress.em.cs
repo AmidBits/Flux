@@ -26,7 +26,7 @@ namespace Flux
     public static void SendWakeOnLan(this System.Net.NetworkInformation.PhysicalAddress macAddress, System.Net.IPAddress ipAddress, System.Net.IPAddress subnetMask, int port = 0)
       => SendWakeOnLan(macAddress, new System.Net.IPEndPoint(ipAddress.GetBroadcastAddress(subnetMask), port));
 
-    public static string ToStringMAC(this System.Net.NetworkInformation.PhysicalAddress source, char separator = ':')
+    public static string ToStringMAC(this System.Net.NetworkInformation.PhysicalAddress source, char separator = '-')
       => string.Join(separator.ToString(), (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().Select(b => b.ToString(@"X2", System.Globalization.CultureInfo.InvariantCulture)));
   }
 }

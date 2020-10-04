@@ -10,7 +10,7 @@ namespace Flux
 
       for (var index = System.Numerics.BigInteger.One; ; index++)
       {
-        if (GetCountOfDivisors(index) is var countOfDivisors && countOfDivisors > largestCountOfDivisors)
+        if (GetDivisorCount(index) is var countOfDivisors && countOfDivisors > largestCountOfDivisors)
         {
           yield return new System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>(index, countOfDivisors);
 

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 
 namespace Flux
 {
@@ -36,22 +37,19 @@ namespace Flux
     public static string ComputerPrimaryDnsName
       => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
 
-    /// <summary>Returns the description of the hosting operating system.</summary>
-    public static System.OperatingSystem EnvironmentOperatingSystem
-      => System.Environment.OSVersion;
-    //public static System.Version OperatingSystemVersion
-    //  => System.Version.TryParse(OperatingSystemDescription.Substring(OperatingSystemDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+    /// <summary>Returns the descriptive text of the current platform identifier.</summary>
+    public static string PlatformName
+      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().LastIndexOf(' '));
+    /// <summary>Returns the version of the current platform identifier.</summary>
+    public static System.Version PlatformVersion
+      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
-    public static System.PlatformID EnvironmentOsPlatform
-      => System.Environment.OSVersion.Platform;
-    public static System.Version EnvironmentOsVersion
-      => System.Environment.OSVersion.Version;
-
-    /// <summary>Returns the description of the hosting framework.</summary>
-    public static string FrameworkDescription
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
+    /// <summary>Returns the descriptive text of the hosting framework.</summary>
+    public static string FrameworkName
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' '));
+    /// <summary>Returns the version of the hosting framework.</summary>
     public static System.Version FrameworkVersion
-      => System.Version.TryParse(FrameworkDescription.Substring(FrameworkDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     public static System.IO.DirectoryInfo? GetDirectoryInfo(AppDataStore store)
       => store switch
@@ -69,11 +67,19 @@ namespace Flux
     public static string MachineName
       => System.Environment.MachineName;
 
-    /// <summary>Returns the description of the hosting operating system.</summary>
-    public static string OperatingSystemDescription
-      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim();
+    /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
+    public static string OperatingSystemName
+      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' '));
+    /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version OperatingSystemVersion
-      => System.Version.TryParse(OperatingSystemDescription.Substring(OperatingSystemDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+
+    /// <summary>Returns the number of ticks in the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
+    public static long TimerTickCounter
+      => System.Diagnostics.Stopwatch.GetTimestamp();
+    /// <summary>Returns the number of ticks per seconds of the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
+    public static long TimerTickResolution
+      => System.Diagnostics.Stopwatch.Frequency;
 
     /// <summary>Returns the user domain name from <see cref="System.Environment"/>.</summary>
     public static string UserDomainName
