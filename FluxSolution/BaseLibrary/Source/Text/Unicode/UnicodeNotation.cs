@@ -20,7 +20,7 @@ namespace Flux.Text
       catch { }
 #pragma warning restore CA1031 // Do not catch general exception types
 
-      result = default;
+      result = default!;
       return false;
     }
 

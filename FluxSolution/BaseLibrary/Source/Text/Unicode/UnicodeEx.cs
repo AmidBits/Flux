@@ -17,9 +17,7 @@ namespace Flux.Text
       var unicodeCategoryCharacters = new System.Collections.Generic.Dictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>>();
 
       foreach (var unicodeCategoryValue in System.Enum.GetValues(typeof(System.Globalization.UnicodeCategory)).Cast<System.Globalization.UnicodeCategory>())
-      {
         unicodeCategoryCharacters.Add(unicodeCategoryValue, new System.Collections.Generic.List<char>());
-      }
 
       var charValue = char.MinValue;
 
@@ -27,7 +25,8 @@ namespace Flux.Text
       {
         unicodeCategoryCharacters[System.Globalization.CharUnicodeInfo.GetUnicodeCategory(charValue)].Add(charValue);
 
-        if (charValue++ == char.MaxValue) break;
+        if (charValue++ == char.MaxValue)
+          break;
       }
 
       return unicodeCategoryCharacters;
@@ -39,9 +38,7 @@ namespace Flux.Text
       if (characters is null) throw new System.ArgumentNullException(nameof(characters));
 
       for (var index = 0; index < characters.Length; index += char.IsSurrogatePair(characters, index) ? 2 : 1)
-      {
         yield return char.ConvertToUtf32(characters, index);
-      }
     }
   }
 }

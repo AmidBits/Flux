@@ -22,8 +22,10 @@ namespace Flux
         var key = keySelector(item, index);
         var frequency = frequencySelector(item, index++);
 
-        if (histogram.ContainsKey(key)) histogram[key] += frequency;
-        else histogram.Add(key, frequency);
+        if (histogram.ContainsKey(key)) 
+          histogram[key] += frequency;
+        else 
+          histogram.Add(key, frequency);
       }
 
       return histogram;
@@ -64,9 +66,7 @@ namespace Flux
         totalFrequency += frequency;
 
         while (histogram.Count <= bin)
-        {
           histogram.Add(0);
-        }
 
         histogram[bin] += frequency;
 

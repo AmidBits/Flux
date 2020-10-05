@@ -32,10 +32,10 @@ namespace Flux
       public int Count { get; private set; }
 
       /// <summary>Yields the count of descendants plus this node.</summary>
-      public int GetCount(int index)
+      public int GetTreeCount(int index)
         => index > m_data.Length - 1 || m_data[index] is var indexItem && indexItem.IsEmpty
         ? 0
-        : 1 + GetCount(ChildIndexLeft(index)) + GetCount(ChildIndexRight(index));
+        : 1 + GetTreeCount(ChildIndexLeft(index)) + GetTreeCount(ChildIndexRight(index));
 
       public BinaryTreeArray(int size)
       {

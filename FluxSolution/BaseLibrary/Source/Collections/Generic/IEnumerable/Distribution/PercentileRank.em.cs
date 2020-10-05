@@ -13,7 +13,6 @@ namespace Flux
       foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
       {
         countTotal++;
-
         if (comparer.Compare(item, value) <= 0) countLessOrEqual++;
       }
 
@@ -44,16 +43,13 @@ namespace Flux
       foreach (var kvp in source)
       {
         sumOfFrequencies += frequencySelector(kvp, index);
-
         pr.Add(new System.Collections.Generic.KeyValuePair<TKey, int>(keySelector(kvp, index), 100 * sumOfFrequencies));
-
         index++;
       }
 
       while (--index >= 0)
       {
         var kvp = pr[index];
-
         pr[index] = new System.Collections.Generic.KeyValuePair<TKey, int>(kvp.Key, System.Math.Min(100, System.Convert.ToInt32(System.Math.Ceiling((double)kvp.Value / (double)sumOfFrequencies))));
       }
 
@@ -79,14 +75,11 @@ namespace Flux
       foreach (var item in source)
       {
         sumOfFrequencies += frequencySelector(item, index++);
-
         pr.Add(100 * sumOfFrequencies);
       }
 
       while (--index >= 0)
-      {
         pr[index] = System.Math.Min(100, System.Convert.ToInt32(System.Math.Ceiling((double)pr[index] / (double)sumOfFrequencies)));
-      }
 
       return pr;
     }

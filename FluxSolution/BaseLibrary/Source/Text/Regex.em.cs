@@ -16,9 +16,7 @@ namespace Flux
         var group = source.Groups[index];
 
         if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
-        {
           dictionary.Add(group.Name, group.Value);
-        }
       }
 
       return dictionary;

@@ -15,16 +15,12 @@ namespace Flux
       var index = 0;
 
       foreach (var item in source)
-      {
         pr.Add(++index - 0.5);
-      }
 
       var multiplier = 100 / (double)pr.Count;
 
       while (--index >= 0)
-      {
         pr[index] *= multiplier;
-      }
 
       return pr;
     }

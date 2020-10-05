@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Xtensions
@@ -18,8 +16,8 @@ namespace Flux
 
       foreach (var item in source)
       {
-        if (comparer.Compare(item, value) <= 0) countLessOrEqual++;
-
+        if (comparer.Compare(item, value) <= 0)
+          countLessOrEqual++;
         countTotal++;
       }
 
@@ -38,11 +36,11 @@ namespace Flux
     /// <param name="frequencySelector">Selector of the frequency for each <typeparam name="TSource"/> in <paramref name="source"/>.</param>
     /// <param name="factor">Scale value for the resulting percentile rank.</param>
     /// <returns>A sequence of key-value-pair where the value is the PMF corresponding to the key in the <paramref name="source"/>.</returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> ProbabilityMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, double>> ProbabilityMassFunction<TKey, TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
-
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var pmf = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<TKey, double>>();
@@ -54,18 +52,14 @@ namespace Flux
       foreach (var kvp in source)
       {
         var count = frequencySelector(kvp, index);
-
         sumOfFrequencies += count;
-
         pmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(keySelector(kvp, index), count));
-
         index++;
       }
 
       while (--index >= 0)
       {
         var kvp = pmf[index];
-
         pmf[index] = new System.Collections.Generic.KeyValuePair<TKey, double>(kvp.Key, kvp.Value / sumOfFrequencies * factor);
       }
 
@@ -79,11 +73,10 @@ namespace Flux
     /// <param name="factor">Scale value for the resulting percentile rank.</param>
     /// <returns>A list of PMF values corresponding to the order of <paramref name="source"/>.</returns>
     /// <seealso cref="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static System.Collections.Generic.IList<double> ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1.0)
+    public static System.Collections.Generic.IList<double> ProbabilityMassFunction<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> frequencySelector, out int sumOfFrequencies, double factor = 1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
-
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var cmf = new System.Collections.Generic.List<double>();
@@ -95,16 +88,12 @@ namespace Flux
       foreach (var item in source)
       {
         var count = frequencySelector(item, index++);
-
         sumOfFrequencies += count;
-
         cmf.Add(count);
       }
 
       while (--index >= 0)
-      {
         cmf[index] = cmf[index] / sumOfFrequencies * factor;
-      }
 
       return cmf;
     }

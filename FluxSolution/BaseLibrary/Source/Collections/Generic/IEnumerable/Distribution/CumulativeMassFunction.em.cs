@@ -12,14 +12,13 @@ namespace Flux
       comparer ??= System.Collections.Generic.Comparer<TSource>.Default;
 
       var countTotal = 0;
-
       var countLessOrEqual = 0;
 
       foreach (var item in source)
       {
         countTotal++;
-
-        if (comparer.Compare(item, value) <= 0) countLessOrEqual++;
+        if (comparer.Compare(item, value) <= 0)
+          countLessOrEqual++;
       }
 
       return (double)countLessOrEqual / (double)countTotal;
@@ -41,7 +40,6 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
-
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var cmf = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<TKey, double>>();
@@ -53,16 +51,13 @@ namespace Flux
       foreach (var kvp in source)
       {
         sumOfFrequencies += frequencySelector(kvp, index);
-
         cmf.Add(new System.Collections.Generic.KeyValuePair<TKey, double>(keySelector(kvp, index), sumOfFrequencies));
-
         index++;
       }
 
       while (--index >= 0)
       {
         var kvp = cmf[index];
-
         cmf[index] = new System.Collections.Generic.KeyValuePair<TKey, double>(kvp.Key, kvp.Value / sumOfFrequencies * factor);
       }
 
@@ -79,7 +74,6 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
-
       if (factor <= 0) throw new System.ArgumentOutOfRangeException(nameof(factor));
 
       var cmf = new System.Collections.Generic.List<double>();
@@ -91,14 +85,11 @@ namespace Flux
       foreach (var item in source)
       {
         sumOfFrequencies += frequencySelector(item, index++);
-
         cmf.Add(sumOfFrequencies);
       }
 
       while (--index >= 0)
-      {
         cmf[index] = cmf[index] / sumOfFrequencies * factor;
-      }
 
       return cmf;
     }

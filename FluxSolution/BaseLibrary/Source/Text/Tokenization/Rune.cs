@@ -142,7 +142,7 @@ namespace Flux.Text.Tokenization.Rune
     {
       if (expression is null) throw new System.ArgumentNullException(nameof(expression));
 
-      if (Normalize) expression = expression.Normalize() ?? throw new System.NullReferenceException(nameof(expression.Normalize));
+      if (Normalize) expression = expression.Normalize();
 
       var unicodeCategoryCounts = ((System.Globalization.UnicodeCategory[])System.Enum.GetValues(typeof(System.Globalization.UnicodeCategory))).ToDictionary(uc => uc, uc => 0);
 
