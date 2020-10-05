@@ -38,14 +38,14 @@ namespace Flux
       => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
-    public static string PlatformName
+    public static string PlatformTitle
       => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().LastIndexOf(' '));
     /// <summary>Returns the version of the current platform identifier.</summary>
     public static System.Version PlatformVersion
       => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
-    public static string FrameworkName
+    public static string FrameworkTitle
       => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' '));
     /// <summary>Returns the version of the hosting framework.</summary>
     public static System.Version FrameworkVersion
@@ -68,7 +68,7 @@ namespace Flux
       => System.Environment.MachineName;
 
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
-    public static string OperatingSystemName
+    public static string OperatingSystemTitle
       => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' '));
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version OperatingSystemVersion
