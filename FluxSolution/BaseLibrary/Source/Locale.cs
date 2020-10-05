@@ -1,6 +1,4 @@
-using System.Linq;
-using System.Reflection;
-using System.Resources;
+using System.Runtime.CompilerServices;
 
 namespace Flux
 {
@@ -17,12 +15,15 @@ namespace Flux
 
   public static class Locale
   {
-    /// <summary>Returns the file name of the process executable.</summary>
+    /// <summary>Returns the file name (without extension) of the process executable.</summary>
     public static string AppDomainName
       => System.AppDomain.CurrentDomain.FriendlyName;
+    /// <summary>Returns the file path of the process executable.</summary>
+    public static System.Uri AppDomainPath
+      => new System.Uri(System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName);
 
     /// <summary>Returns the version of the common language runtime.</summary>
-    public static System.Version ClrVersion
+    public static System.Version CommonLanguageRuntimeVersion
       => System.Environment.Version;
 
     /// <summary>Returns the computer domain namn, or string.Empty if the computer is not registered in a domain.</summary>
@@ -37,13 +38,6 @@ namespace Flux
     public static string ComputerPrimaryDnsName
       => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
 
-    /// <summary>Returns the descriptive text of the current platform identifier.</summary>
-    public static string PlatformTitle
-      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().LastIndexOf(' '));
-    /// <summary>Returns the version of the current platform identifier.</summary>
-    public static System.Version PlatformVersion
-      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
-
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
       => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' '));
@@ -51,15 +45,17 @@ namespace Flux
     public static System.Version FrameworkVersion
       => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
+    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo? GetDirectoryInfo(AppDataStore store)
       => store switch
       {
-        AppDataStore.Local => new System.IO.DirectoryInfo("ms-appdata:///local/"),
-        AppDataStore.Roaming => new System.IO.DirectoryInfo("ms-appdata:///roaming/"),
-        AppDataStore.Temp => new System.IO.DirectoryInfo("ms-appdata:///temp/"),
+        AppDataStore.Local => new System.IO.DirectoryInfo(@"ms-appdata:///local/"),
+        AppDataStore.Roaming => new System.IO.DirectoryInfo(@"ms-appdata:///roaming/"),
+        AppDataStore.Temp => new System.IO.DirectoryInfo(@"ms-appdata:///temp/"),
         _ => throw new System.ArgumentOutOfRangeException(nameof(store))
       };
 
+    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="System.Environment.SpecialFolder"/>.</summary>
     public static System.IO.DirectoryInfo? GetDirectoryInfo(System.Environment.SpecialFolder specialFolder)
       => System.Environment.GetFolderPath(specialFolder) is var fp && string.IsNullOrEmpty(fp) ? default : new System.IO.DirectoryInfo(fp);
 
@@ -73,6 +69,13 @@ namespace Flux
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version OperatingSystemVersion
       => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+
+    /// <summary>Returns the descriptive text of the current platform identifier.</summary>
+    public static string PlatformTitle
+      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().LastIndexOf(' '));
+    /// <summary>Returns the version of the current platform identifier.</summary>
+    public static System.Version PlatformVersion
+      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns the number of ticks in the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
     public static long TimerTickCounter
