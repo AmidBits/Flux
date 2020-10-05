@@ -35,16 +35,6 @@ namespace ConsoleApp
       //}
       //System.Console.WriteLine(dataTable.CreateDataReader().GetSchemaTable().ToArray(true).ToConsoleString());
 
-      //var dataReader = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetDataReader(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalUri);
-      //var index = 0;
-      //foreach (var dataRow in dataReader)
-      //{
-      //  System.Console.WriteLine(++index);
-      //  System.Console.WriteLine($"{string.Join('|', dataRow.GetValues())}");
-      //  System.Console.WriteLine();
-      //  System.Console.ReadKey();
-      //}
-
       /*
       var ttt = new Flux.Model.TicTacToe.Board();
 
