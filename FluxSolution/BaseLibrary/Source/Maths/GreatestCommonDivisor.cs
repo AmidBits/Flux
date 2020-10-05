@@ -31,10 +31,12 @@ namespace Flux
 
     /// <summary>Returns the greatest common divisor of a and b. Both a and b must be positive.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static int GreatestCommonDivisor(int a, int b) => unchecked((int)(a < 0 || b < 0 ? GreatestCommonDivisor((uint)System.Math.Abs(a), (uint)System.Math.Abs(b)) : GreatestCommonDivisor((uint)a, (uint)b)));
+    public static int GreatestCommonDivisor(int a, int b)
+      => unchecked((int)(a < 0 || b < 0 ? GreatestCommonDivisor((uint)System.Math.Abs(a), (uint)System.Math.Abs(b)) : GreatestCommonDivisor((uint)a, (uint)b)));
     /// <summary>Returns the greatest common divisor of a and b. Both a and b must be positive.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static long GreatestCommonDivisor(long a, long b) => unchecked((long)(a < 0 || b < 0 ? GreatestCommonDivisor((ulong)System.Math.Abs(a), (ulong)System.Math.Abs(b)) : GreatestCommonDivisor((ulong)a, (ulong)b)));
+    public static long GreatestCommonDivisor(long a, long b)
+      => unchecked((long)(a < 0 || b < 0 ? GreatestCommonDivisor((ulong)System.Math.Abs(a), (ulong)System.Math.Abs(b)) : GreatestCommonDivisor((ulong)a, (ulong)b)));
 
     /// <summary>Returns the greatest common divisor of a and b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
@@ -43,8 +45,10 @@ namespace Flux
     {
       while (a != 0 && b != 0)
       {
-        if (a > b) a %= b;
-        else b %= a;
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
       }
 
       return a == 0 ? b : a;
@@ -56,8 +60,10 @@ namespace Flux
     {
       while (a != 0 && b != 0)
       {
-        if (a > b) a %= b;
-        else b %= a;
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
       }
 
       return a == 0 ? b : a;

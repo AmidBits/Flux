@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Angle
   {
-    public const double MultiplierDegreeToRadian = System.Math.PI / 180d;
+    public const double MultiplierDegreeToRadian = System.Math.PI / 180;
     public const double MultiplierDegreeToGradian = 10d / 9d;
     public const double MultiplierGradianToDegree = 9d / 10d;
-    public const double MultiplierGradianToRadian = System.Math.PI / 200d;
-    public const double MultiplierRadianToDegree = 180d / System.Math.PI;
-    public const double MultiplierRadianToGradian = 200d / System.Math.PI;
+    public const double MultiplierGradianToRadian = System.Math.PI / 200;
+    public const double MultiplierRadianToDegree = 180 / System.Math.PI;
+    public const double MultiplierRadianToGradian = 200 / System.Math.PI;
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>

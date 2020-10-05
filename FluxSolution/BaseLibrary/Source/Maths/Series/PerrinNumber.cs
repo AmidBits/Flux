@@ -8,9 +8,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
     public static System.Numerics.BigInteger GetPerrinNumber(System.Numerics.BigInteger value)
     {
-      var a = (System.Numerics.BigInteger)3;
-      var b = System.Numerics.BigInteger.Zero;
-      var c = (System.Numerics.BigInteger)2;
+      System.Numerics.BigInteger a = 3, b = 0, c = 2;
 
       if (value == 0) return a;
       if (value == 1) return b;

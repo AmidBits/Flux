@@ -11,8 +11,11 @@ namespace Flux
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
       if (value < 0) throw new System.ArgumentOutOfRangeException(nameof(value));
-      if (value == radix) return true;
-      if (radix == 2) return (value > 0) && ((value & unchecked(value - 1)) == 0);
+
+      if (value == radix)
+        return true;
+      if (radix == 2)
+        return (value > 0) && ((value & unchecked(value - 1)) == 0);
 
       if (value > 1)
         while (System.Numerics.BigInteger.DivRem(value, radix, out var remainder) is var quotient && remainder == 0)
@@ -27,8 +30,11 @@ namespace Flux
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
       if (value < 0) throw new System.ArgumentOutOfRangeException(nameof(value));
-      if (value == radix) return true;
-      if (radix == 2) return (value != 0) && ((value & unchecked(value - 1)) == 0);
+
+      if (value == radix)
+        return true;
+      if (radix == 2)
+        return (value != 0) && ((value & unchecked(value - 1)) == 0);
 
       if (value > 1)
         while (value % radix == 0)
@@ -42,8 +48,11 @@ namespace Flux
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
       if (value < 0) throw new System.ArgumentOutOfRangeException(nameof(value));
-      if (value == radix) return true;
-      if (radix == 2) return (value != 0) && ((value & unchecked(value - 1)) == 0);
+
+      if (value == radix)
+        return true;
+      if (radix == 2)
+        return (value != 0) && ((value & unchecked(value - 1)) == 0);
 
       if (value > 1)
         while (value % radix == 0)
@@ -58,8 +67,11 @@ namespace Flux
     public static bool IsPowerOf(uint value, int radix)
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
-      if (value == (uint)radix) return true;
-      if (radix == 2) return (value != 0) && ((value & unchecked(value - 1)) == 0);
+
+      if (value == (uint)radix)
+        return true;
+      if (radix == 2)
+        return (value != 0) && ((value & unchecked(value - 1)) == 0);
 
       if (value > 1)
         while (value % (uint)radix == 0)
@@ -73,8 +85,11 @@ namespace Flux
     public static bool IsPowerOf(ulong value, int radix)
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
-      if (value == (ulong)radix) return true;
-      if (radix == 2) return (value != 0) && ((value & unchecked(value - 1)) == 0);
+
+      if (value == (ulong)radix)
+        return true;
+      if (radix == 2)
+        return (value != 0) && ((value & unchecked(value - 1)) == 0);
 
       if (value > 1)
         while (value % (ulong)radix == 0)

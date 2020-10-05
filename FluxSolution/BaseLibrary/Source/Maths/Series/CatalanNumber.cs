@@ -13,9 +13,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCatalanSequence()
     {
       for (var number = System.Numerics.BigInteger.Zero; ; number++)
-      {
         yield return GetCatalanNumber(number);
-      }
     }
   }
 }

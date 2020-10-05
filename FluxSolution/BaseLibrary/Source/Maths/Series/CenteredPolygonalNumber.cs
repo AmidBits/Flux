@@ -9,9 +9,7 @@ namespace Flux
       yield return (1, 1, 1);
 
       foreach (var v in Flux.Maths.GetCenteredPolygonalSequence(numberOfSides).PartitionTuple(false, (min, max, index) => (min, max)))
-      {
         yield return (v.min + 1, v.max, v.max - v.min);
-      }
     }
 
     /// <summary></summary>
@@ -25,9 +23,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<int> GetCenteredPolygonalSequence(int numberOfSides)
     {
       for (var index = 0; ; index++)
-      {
         yield return GetCenteredPolygonalNumber(index, numberOfSides);
-      }
     }
   }
 }

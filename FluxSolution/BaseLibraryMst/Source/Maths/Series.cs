@@ -26,6 +26,38 @@ namespace Maths
     readonly ulong[] pul = System.Linq.Enumerable.Range(0, 255).Select(i => (ulong)i).ToArray();
 
     [TestMethod]
+    public void GenerateCountOfDivisors()
+    {
+      var expected = new int[] { 0, 1, 2, 2, 3, 2, 4, 2, 4, 3, 4, 2, 6, 2, 4, 4, 5, 2, 6, 2, 6, 4, 4, 2, 8, 3, 4, 4, 6, 2, 8, 2, 6, 4, 4, 4, 9, 2, 4, 4, 8, 2, 8, 2, 6, 6, 4, 2, 10, 3, 6, 4, 6, 2, 8, 4, 8, 4, 4, 2, 12, 2, 4, 6, 7 };
+      var actual = Flux.Maths.GenerateCountOfDivisors(64).ToArray();
+      CollectionAssert.AreEqual(actual, expected);
+    }
+
+    [TestMethod]
+    public void GenerateEulerTotient()
+    {
+      var expected = new int[] { 0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8, 12, 10, 22, 8, 20, 12, 18, 12, 28, 8, 30, 16, 20, 16, 24, 12, 36, 18, 24, 16, 40, 12, 42, 20, 24, 22, 46, 16, 42, 20, 32, 24, 52, 18, 40, 24, 36, 28, 58, 16, 60, 30, 36, 32 };
+      var actual = Flux.Maths.GenerateEulerTotient(64).ToArray();
+      CollectionAssert.AreEqual(actual, expected);
+    }
+
+    [TestMethod]
+    public void GenerateLargestPrimeFactor()
+    {
+      var expected = new int[] { 1, 1, 2, 3, 2, 5, 3, 7, 2, 3, 5, 11, 3, 13, 7, 5, 2, 17, 3, 19, 5, 7, 11, 23, 3, 5, 13, 3, 7, 29, 5, 31, 2, 11, 17, 7, 3, 37, 19, 13, 5, 41, 7, 43, 11, 5, 23, 47, 3, 7, 5, 17, 13, 53, 3, 11, 7, 19, 29, 59, 5, 61, 31, 7, 2 };
+      var actual = Flux.Maths.GenerateLargestPrimeFactor(64).ToArray();
+      CollectionAssert.AreEqual(actual, expected);
+    }
+
+    [TestMethod]
+    public void GenerateSumOfDivisors()
+    {
+      var expected = new int[] { 0, 1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127 };
+      var actual = Flux.Maths.GenerateSumOfDivisors(64).ToArray();
+      CollectionAssert.AreEqual(actual, expected);
+    }
+
+    [TestMethod]
     public void GetHighlyAbundantNumbers()
     {
       var expected = new System.Numerics.BigInteger[] { 1, 2, 3, 4, 6, 8, 10, 12, 16, 18, 20, 24, 30, 36, 42, 48, 60, 72, 84, 90, 96, 108, 120, 144, 168, 180, 210, 216, 240, 288, 300, 336, 360, 420, 480, 504, 540, 600, 630, 660, 720, 840, 960, 1008, 1080, 1200, 1260, 1440, 1560, 1620, 1680, 1800, 1920, 1980, 2100 };
@@ -145,14 +177,6 @@ namespace Maths
       var expected = new (System.Numerics.BigInteger, System.Numerics.BigInteger)[] { (3, 5), (5, 7), (11, 13), (17, 19), (29, 31) };
       var actual = Flux.Maths.GetTwinPrimes().Take(expected.Length).ToArray();
       CollectionAssert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void SieveOfDivisors()
-    {
-      var expected = new int[] { 1, 2, 3, 5, 6, 7, 10, 14, 15, 21, 30, 31, 35, 42, 62, 70, 93, 103, 105, 155, 186, 206, 210, 217, 309, 310, 434, 465, 515, 618, 651, 721, 930, 1030, 1085, 1302, 1442, 1545, 2163, 2170, 3090, 3193, 3255, 3605, 4326, 6386, 6510, 7210, 9579, 10815, 15965, 19158, 21630, 22351, 31930, 44702, 47895, 67053, 95790, 111755, 134106, 223510, 335265, 670530 };
-      var actual = Flux.Maths.SieveOfDivisors(expected.Last() + 1).ToArray();
-      Assert.AreEqual(actual.Last(), expected.Length);
     }
 
     [TestMethod]

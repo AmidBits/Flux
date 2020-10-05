@@ -7,16 +7,12 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyAbundantNumbers()
     {
       var largestSumOfDivisors = System.Numerics.BigInteger.Zero;
-
       for (var index = System.Numerics.BigInteger.One; ; index++)
-      {
         if (GetSumOfDivisors(index) is var sumOfDivisors && sumOfDivisors > largestSumOfDivisors)
         {
           yield return new System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>(index, sumOfDivisors);
-
           largestSumOfDivisors = sumOfDivisors;
         }
-      }
     }
 
     /// <summary></summary>
@@ -24,16 +20,12 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetSuperAbundantNumbers()
     {
       var largestValue = 0.0;
-
       foreach (var kvp in GetHighlyAbundantNumbers())
-      {
         if ((double)kvp.Value / (double)kvp.Key is var value && value > largestValue)
         {
           yield return kvp;
-
           largestValue = value;
         }
-      }
     }
 
     /// <summary>Determines whether the number is an abundant number.</summary>

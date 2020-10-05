@@ -14,9 +14,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetMersenneNumbers()
     {
       for (var number = 1; number <= int.MaxValue; number++)
-      {
         yield return GetMersenneNumber(number);
-      }
     }
 
     /// <summary>Results in a sequence of mersenne primes.</summary>

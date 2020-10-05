@@ -37,18 +37,19 @@ namespace Flux
       if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
 
       var i = b;
-
-      while (b % a != 0) b += i;
-
+      while (b % a != 0)
+        b += i;
       return b;
     }
 
     /// <summary>Returns the least common multiple of the two specified values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
-    public static int LeastCommonMultiple(int a, int b) => a < 0 ? throw new System.ArgumentOutOfRangeException(nameof(a)) : b < 0 ? throw new System.ArgumentOutOfRangeException(nameof(b)) : unchecked((int)LeastCommonMultiple((uint)a, (uint)b));
+    public static int LeastCommonMultiple(int a, int b)
+      => a < 0 ? throw new System.ArgumentOutOfRangeException(nameof(a)) : b < 0 ? throw new System.ArgumentOutOfRangeException(nameof(b)) : unchecked((int)LeastCommonMultiple((uint)a, (uint)b));
     /// <summary>Returns the least common multiple of the two specified values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
-    public static long LeastCommonMultiple(long a, long b) => a < 0 ? throw new System.ArgumentOutOfRangeException(nameof(a)) : b < 0 ? throw new System.ArgumentOutOfRangeException(nameof(b)) : unchecked((long)LeastCommonMultiple((ulong)a, (ulong)b));
+    public static long LeastCommonMultiple(long a, long b)
+      => a < 0 ? throw new System.ArgumentOutOfRangeException(nameof(a)) : b < 0 ? throw new System.ArgumentOutOfRangeException(nameof(b)) : unchecked((long)LeastCommonMultiple((ulong)a, (ulong)b));
 
     /// <summary>Returns the least common multiple of the two specified values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
@@ -56,9 +57,8 @@ namespace Flux
     public static uint LeastCommonMultiple(uint a, uint b)
     {
       var i = b;
-
-      while (b % a != 0) b += i;
-
+      while (b % a != 0)
+        b += i;
       return b;
     }
     /// <summary>Returns the least common multiple of the two specified values.</summary>
@@ -67,9 +67,8 @@ namespace Flux
     public static ulong LeastCommonMultiple(ulong a, ulong b)
     {
       var i = b;
-
-      while (b % a != 0) b += i;
-
+      while (b % a != 0)
+        b += i;
       return b;
     }
   }

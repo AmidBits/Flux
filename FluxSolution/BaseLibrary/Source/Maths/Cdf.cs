@@ -38,22 +38,12 @@ namespace Flux
     /// <summary>Compute the inverse of the normal (Gaussian) CDF. </summary>
     public static double NormalCdfInverse(double p)
     {
-      if (p <= 0d || p >= 1d)
-      {
-        throw new System.ArgumentOutOfRangeException(nameof(p));
-      }
+      if (p <= 0 || p >= 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
       // See article above for explanation of the following section.
-      if (p < 0.5)
-      {
-        // F^-1(p) = - G^-1(p)
-        return -RationalApproximation(System.Math.Sqrt(-2d * System.Math.Log(p)));
-      }
-      else
-      {
-        // F^-1(p) = G^-1(1-p)
-        return RationalApproximation(System.Math.Sqrt(-2d * System.Math.Log(1d - p)));
-      }
+      return (p < 0.5)
+        ? -RationalApproximation(System.Math.Sqrt(-2 * System.Math.Log(p))) // F^-1(p) = - G^-1(p)
+        : RationalApproximation(System.Math.Sqrt(-2 * System.Math.Log(1 - p))); // F^-1(p) = G^-1(1-p)
     }
   }
 }

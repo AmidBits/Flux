@@ -11,8 +11,10 @@ namespace Flux
       {
         value = System.Numerics.BigInteger.DivRem(value, radix, out var remainder);
 
-        if (value == 0) break; // All digits checked.
-        else if (System.Numerics.BigInteger.Abs((value % radix) - remainder) > 1) return false; // If the previous digit minus current digit is greater than 1, then the number is not jumbled.
+        if (value == 0)
+          break; // All digits checked.
+        else if (System.Numerics.BigInteger.Abs((value % radix) - remainder) > 1)
+          return false; // If the previous digit minus current digit is greater than 1, then the number is not jumbled.
       }
 
       return true;
@@ -26,8 +28,10 @@ namespace Flux
       {
         value = System.Math.DivRem(value, radix, out var digit);
 
-        if (value == 0) break; // All digits checked.
-        else if (System.Math.Abs((value % radix) - digit) > 1) return false;// If the previous digit minus current digit is greater than 1, then the number is not jumbled.
+        if (value == 0)
+          break; // All digits checked.
+        else if (System.Math.Abs((value % radix) - digit) > 1)
+          return false;// If the previous digit minus current digit is greater than 1, then the number is not jumbled.
       }
 
       return true;
@@ -40,8 +44,10 @@ namespace Flux
       {
         value = System.Math.DivRem(value, radix, out var digit);
 
-        if (value == 0) break; // All digits checked.
-        else if (System.Math.Abs((value % radix) - digit) > 1) return false; // If the previous digit minus current digit is greater than 1, then the number is not jumbled.
+        if (value == 0)
+          break; // All digits checked.
+        else if (System.Math.Abs((value % radix) - digit) > 1)
+          return false; // If the previous digit minus current digit is greater than 1, then the number is not jumbled.
       }
 
       return true;

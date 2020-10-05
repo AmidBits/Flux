@@ -1,4 +1,3 @@
-
 namespace Flux
 {
   public static partial class Maths
@@ -9,11 +8,9 @@ namespace Flux
     /// <returns>The probability, which is in the range [0, 1].</returns>
     public static double ProbabilityOfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
     {
-      double accumulation = 1;
-
+      var accumulation = 1d;
       for (var index = ofTotalCount - whenCount + 1; index < ofTotalCount; index++)
         accumulation *= (double)index / (double)ofTotalCount;
-
       return accumulation;
     }
     /// <summary>Returns the probability that at least 2 events are equal.</summary>

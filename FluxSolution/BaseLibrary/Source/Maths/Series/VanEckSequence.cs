@@ -10,24 +10,22 @@ namespace Flux
       if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
 
       var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
-
       var last = startWith;
-      var next = System.Numerics.BigInteger.Zero;
 
       for (var index = System.Numerics.BigInteger.Zero; ; index++)
       {
         yield return last;
 
+        System.Numerics.BigInteger next;
+
         if (lasts.ContainsKey(last))
         {
           next = index - lasts[last];
-
           lasts[last] = index;
         }
         else // The last was new.
         {
           next = 0;
-
           lasts.Add(last, index);
         }
 
@@ -43,24 +41,22 @@ namespace Flux
       else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var lasts = new System.Collections.Generic.Dictionary<int, int>();
-
       var last = startWith;
-      var next = 0;
 
       for (var index = 0; index < count; index++)
       {
         yield return last;
 
+        int next;
+
         if (lasts.ContainsKey(last))
         {
           next = index - lasts[last];
-
           lasts[last] = index;
         }
         else // The last was new.
         {
           next = 0;
-
           lasts.Add(last, index);
         }
 
@@ -75,24 +71,22 @@ namespace Flux
       else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var lasts = new System.Collections.Generic.Dictionary<long, long>();
-
       var last = startWith;
-      var next = 0L;
 
       for (var index = 0L; index <= count; index++)
       {
         yield return last;
 
+        long next;
+
         if (lasts.ContainsKey(last))
         {
           next = index - lasts[last];
-
           lasts[last] = index;
         }
         else // The last was new.
         {
           next = 0;
-
           lasts.Add(last, index);
         }
 

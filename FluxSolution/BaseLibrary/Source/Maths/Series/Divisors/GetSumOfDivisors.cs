@@ -15,7 +15,6 @@ namespace Flux
         if (number % counter == 0)
         {
           sum += counter;
-
           if (number / counter is var quotient && quotient != counter) sum += quotient;
         }
       return sum;
@@ -32,7 +31,6 @@ namespace Flux
         if (number % counter == 0)
         {
           sum += counter;
-
           if (number / counter is var quotient && quotient != counter) sum += quotient;
         }
       return sum;
@@ -48,7 +46,6 @@ namespace Flux
         if (number % counter == 0)
         {
           sum += counter;
-
           if (number / counter is var quotient && quotient != counter) sum += quotient;
         }
       return sum;
@@ -65,7 +62,6 @@ namespace Flux
         if (number % counter == 0)
         {
           sum += counter;
-
           if (number / counter is var quotient && quotient != counter) sum += quotient;
         }
       return sum;
@@ -81,7 +77,6 @@ namespace Flux
         if (number % counter == 0)
         {
           sum += counter;
-
           if (number / counter is var quotient && quotient != counter) sum += quotient;
         }
       return sum;

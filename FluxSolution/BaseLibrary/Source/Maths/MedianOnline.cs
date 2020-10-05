@@ -44,9 +44,7 @@ namespace Flux
     public void AddRange(params double[] values)
     {
       foreach (var value in values)
-      {
         Add(value);
-      }
     }
 
     public double EffectiveMedian()

@@ -9,12 +9,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var s = "These are U+0041, U+0043, U+10FFFF, \\u0042 and \\u0044 all in all.";
-
-      Flux.Text.UnicodeNotation.TryParse(s, out var un);
-      Flux.Text.UnicodeStringLiteral.TryParse(s, out var usl);
-
-      System.Console.WriteLine($"\"{string.Join('|', un)}\", \"{string.Join('|', usl)}\"");
+      //var s = "These are U+0041, U+0043, U+10FFFF, \\u0042 and \\u0044 all in all.";
+      //Flux.Text.UnicodeNotation.TryParse(s, out var un);
+      //Flux.Text.UnicodeStringLiteral.TryParse(s, out var usl);
+      //System.Console.WriteLine($"\"{string.Join('|', un)}\", \"{string.Join('|', usl)}\"");
 
       //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
       ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";
@@ -119,9 +117,9 @@ namespace ConsoleApp
         }
       }
       */
-
-      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
+      
       System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");

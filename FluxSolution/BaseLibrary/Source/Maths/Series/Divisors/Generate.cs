@@ -1,11 +1,10 @@
-using System.Linq;
+// https://codeforces.com/blog/entry/22229
 
 namespace Flux
 {
-  // https://codeforces.com/blog/entry/22229
   public static partial class Maths
   {
-    /// <summary>Generates an array of divisor counts for numbers up to the specified number.</summary>
+    /// <summary>Generates an array of divisor counts of all numbers less than or equal to the specified number. This is done as with the sum of divisors, only increase by 1 instead of by the divisor.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     public static int[] GenerateCountOfDivisors(int number)
     {
@@ -14,17 +13,6 @@ namespace Flux
         for (var j = i; j <= number; j += i)
           counts[j]++;
       return counts;
-    }
-
-    /// <summary>Generates an array of divisor sums for numbers up to the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static int[] GenerateSumOfDivisors(int number)
-    {
-      var sums = new int[number + 1];
-      for (var i = 1; i <= number; i++)
-        for (var j = i; j <= number; j += i)
-          sums[j] += i;
-      return sums;
     }
 
     /// <summary>Generates am array of Euler totient values for numbers up to the specified number.</summary>
@@ -52,6 +40,17 @@ namespace Flux
           for (var j = i; j <= number; j += i)
             factor[j] = i;
       return factor;
+    }
+
+    /// <summary>Generates an array of divisor sums of all numbers less than or equal to the specified number. This is done as the count of divisors, only we increase by the divisor instead of by 1.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    public static int[] GenerateSumOfDivisors(int number)
+    {
+      var sums = new int[number + 1];
+      for (var i = 1; i <= number; i++)
+        for (var j = i; j <= number; j += i)
+          sums[j] += i;
+      return sums;
     }
   }
 }

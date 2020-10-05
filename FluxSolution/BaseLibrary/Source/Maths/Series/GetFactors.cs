@@ -10,14 +10,12 @@ namespace Flux
       yield return value;
 
       for (System.Numerics.BigInteger divisor = 2, partner = value; divisor < partner; divisor++)
-      {
         if (value % divisor == 0)
         {
           yield return divisor;
-
-          if ((partner = value / divisor) != divisor) yield return partner;
+          if ((partner = value / divisor) != divisor)
+            yield return partner;
         }
-      }
     }
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
@@ -28,19 +26,12 @@ namespace Flux
       yield return value;
 
       for (int factor = 2, cutoff = value; factor < cutoff; factor++)
-      {
         if (value % factor == 0)
         {
           yield return factor;
-
-          cutoff = value / factor;
-
-          if (cutoff != factor)
-          {
+          if ((cutoff = value / factor) != factor)
             yield return cutoff;
-          }
         }
-      }
     }
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
@@ -50,19 +41,12 @@ namespace Flux
       yield return value;
 
       for (long factor = 2, cutoff = value; factor < cutoff; factor++)
-      {
         if (value % factor == 0)
         {
           yield return factor;
-
-          cutoff = value / factor;
-
-          if (cutoff != factor)
-          {
+          if ((cutoff = value / factor) != factor)
             yield return cutoff;
-          }
         }
-      }
     }
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
@@ -74,19 +58,12 @@ namespace Flux
       yield return value;
 
       for (uint factor = 2, cutoff = value; factor < cutoff; factor++)
-      {
         if (value % factor == 0)
         {
           yield return factor;
-
-          cutoff = value / factor;
-
-          if (cutoff != factor)
-          {
+          if ((cutoff = value / factor) != factor)
             yield return cutoff;
-          }
         }
-      }
     }
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
@@ -97,19 +74,12 @@ namespace Flux
       yield return value;
 
       for (ulong factor = 2, cutoff = value; factor < cutoff; factor++)
-      {
         if (value % factor == 0)
         {
           yield return factor;
-
-          cutoff = value / factor;
-
-          if (cutoff != factor)
-          {
+          if ((cutoff = value / factor) != factor)
             yield return cutoff;
-          }
         }
-      }
     }
   }
 }

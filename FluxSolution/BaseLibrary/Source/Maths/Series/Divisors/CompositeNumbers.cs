@@ -7,16 +7,12 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyCompositeNumbers()
     {
       var largestCountOfDivisors = System.Numerics.BigInteger.Zero;
-
       for (var index = System.Numerics.BigInteger.One; ; index++)
-      {
         if (GetDivisorCount(index) is var countOfDivisors && countOfDivisors > largestCountOfDivisors)
         {
           yield return new System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>(index, countOfDivisors);
-
           largestCountOfDivisors = countOfDivisors;
         }
-      }
     }
   }
 }

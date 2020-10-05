@@ -14,9 +14,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Fixed-rate_mortgage"/>
     static public double FixedRateMortgageMonthlyPayment(double loanAmount, double fixedYearlyNominalInterestRate, double numberOfYears)
     {
-      var r = fixedYearlyNominalInterestRate / 100d / 12d;
+      var r = fixedYearlyNominalInterestRate / 100 / 12;
 
-      return r / (1d - System.Math.Pow(1d + r, -numberOfYears * 12d)) * loanAmount;
+      return r / (1 - System.Math.Pow(1 + r, -numberOfYears * 12)) * loanAmount;
     }
   }
 }

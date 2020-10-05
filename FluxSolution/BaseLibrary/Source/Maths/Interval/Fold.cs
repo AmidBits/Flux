@@ -7,14 +7,9 @@ namespace Flux
     public static System.Numerics.BigInteger Fold(System.Numerics.BigInteger value, System.Numerics.BigInteger minimum, System.Numerics.BigInteger maximum)
     {
       if (value > maximum)
-      {
         return (System.Numerics.BigInteger.DivRem(value - maximum, maximum - minimum, out var remainder) & 1) == 0 ? maximum - remainder : minimum + remainder;
-      }
       else if (value < minimum)
-      {
         return (System.Numerics.BigInteger.DivRem(minimum - value, maximum - minimum, out var remainder) & 1) == 0 ? minimum + remainder : maximum - remainder;
-      }
-
       return value;
     }
 
@@ -90,13 +85,9 @@ namespace Flux
     public static int Fold(int value, int minimum, int maximum)
     {
       if (value > maximum)
-      {
         return (System.Math.DivRem(value - maximum, maximum - minimum, out var remainder) & 1) == 0 ? maximum - remainder : minimum + remainder;
-      }
       else if (value < minimum)
-      {
         return (System.Math.DivRem(minimum - value, maximum - minimum, out var remainder) & 1) == 0 ? minimum + remainder : maximum - remainder;
-      }
 
       return value;
     }
@@ -104,13 +95,9 @@ namespace Flux
     public static long Fold(long value, long minimum, long maximum)
     {
       if (value > maximum)
-      {
         return (System.Math.DivRem(value - maximum, maximum - minimum, out var remainder) & 1L) == 0L ? maximum - remainder : minimum + remainder;
-      }
       else if (value < minimum)
-      {
         return (System.Math.DivRem(minimum - value, maximum - minimum, out var remainder) & 1L) == 0L ? minimum + remainder : maximum - remainder;
-      }
 
       return value;
     }

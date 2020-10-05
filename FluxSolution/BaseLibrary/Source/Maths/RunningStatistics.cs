@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Flux
+﻿namespace Flux
 {
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable

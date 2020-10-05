@@ -13,19 +13,16 @@ namespace Flux
     {
       if (exponent >= 1)
       {
-        var result = 1;
-
         checked
         {
+          var result = 1;
           while (exponent > 0)
           {
-            if ((exponent & 1) == 1) result *= value;
-
+            if ((exponent & 1) == 1)
+              result *= value;
             value *= value;
-
             exponent >>= 1;
           }
-
           return result;
         }
       }
@@ -39,22 +36,16 @@ namespace Flux
     {
       if (exponent >= 1)
       {
-        var result = 1L;
-
         checked
         {
+          var result = 1L;
           while (exponent > 0)
           {
             if ((exponent & 1) == 1)
-            {
               result *= value;
-            }
-
             value *= value;
-
             exponent >>= 1;
           }
-
           return result;
         }
       }
@@ -70,23 +61,15 @@ namespace Flux
       if (exponent >= 1)
       {
         var result = 1U;
-
-        checked
-        {
-          while (exponent > 0)
+        while (exponent > 0)
+          checked
           {
             if ((exponent & 1) == 1)
-            {
               result *= value;
-            }
-
             value *= value;
-
             exponent >>= 1;
           }
-
-          return result;
-        }
+        return result;
       }
       else if (exponent == 0) return 1;
 
@@ -99,23 +82,17 @@ namespace Flux
       if (exponent >= 1)
       {
         var result = 1UL;
-
-        checked
+        while (exponent > 0)
         {
-          while (exponent > 0)
+          checked
           {
             if ((exponent & 1) == 1)
-            {
               result *= value;
-            }
-
             value *= value;
-
             exponent >>= 1;
           }
-
-          return result;
         }
+        return result;
       }
       else if (exponent == 0) return 1;
 

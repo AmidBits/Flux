@@ -26,6 +26,6 @@ namespace Flux
       => System.Math.Log(Odds(probability));
 
     public static double Odds(double probability)
-      => probability / (1.0 - probability);
+      => probability / (1 - probability);
   }
 }
