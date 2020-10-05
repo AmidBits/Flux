@@ -1,17 +1,19 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
   public static class UnicodeStringLiteral
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-    public static int Parse(string expression)
-      => ParseRegex.Match(expression) is var m && m.Success && int.TryParse(m.Value, System.Globalization.NumberStyles.HexNumber, null, out var number) ? number : throw new System.ArgumentException($"Could not parse \"{expression}\" as unicode notation.");
-    public static bool TryParse(string text, out int result)
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string expression)
+      => ParseRegex.Matches(expression).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null)));
+    public static bool TryParse(string text, out System.Collections.Generic.List<System.Text.Rune> result)
     {
       try
       {
-        result = Parse(text);
+        result = Parse(text).ToList();
         return true;
       }
 #pragma warning disable CA1031 // Do not catch general exception types

@@ -1,17 +1,19 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
   public static class UnicodeNotation
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"(?<=U\+)1?[0-9A-F]{4,}", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"(?<=U\+)[0-9A-F]{4,6}", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
-    public static int Parse(string expression)
-      => ParseRegex.Match(expression) is var m && m.Success && int.TryParse(m.Value, System.Globalization.NumberStyles.HexNumber, null, out var number) ? number : throw new System.ArgumentException($"Could not parse \"{expression}\" as unicode notation.");
-    public static bool TryParse(string text, out int result)
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string expression)
+      => ParseRegex.Matches(expression).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null)));
+    public static bool TryParse(string text, out System.Collections.Generic.List<System.Text.Rune> result)
     {
       try
       {
-        result = Parse(text);
+        result = Parse(text).ToList();
         return true;
       }
 #pragma warning disable CA1031 // Do not catch general exception types
