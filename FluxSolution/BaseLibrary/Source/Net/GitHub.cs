@@ -38,15 +38,15 @@ namespace Flux.Model
 
       foreach (var content in System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, object>[]>(hc.GetStringAsync(uri).Result, null))
       {
-        var ghe = new GitHubEntry();
-
-        ghe.Size = int.Parse($"{content["size"]}", System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture);
-
-        ghe.Type = $"{content["type"]}" switch
+        var ghe = new GitHubEntry
         {
-          var s when nameof(GitHubType.Directory).StartsWith(s, System.StringComparison.OrdinalIgnoreCase) => GitHubType.Directory,
-          var s when nameof(GitHubType.File).StartsWith(s, System.StringComparison.OrdinalIgnoreCase) => GitHubType.File,
-          _ => GitHubType.Unknown
+          Size = int.Parse($"{content["size"]}", System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture),
+          Type = $"{content["type"]}" switch
+          {
+            var s when nameof(GitHubType.Directory).StartsWith(s, System.StringComparison.OrdinalIgnoreCase) => GitHubType.Directory,
+            var s when nameof(GitHubType.File).StartsWith(s, System.StringComparison.OrdinalIgnoreCase) => GitHubType.File,
+            _ => GitHubType.Unknown
+          }
         };
 
         ghe.Url = ghe.Type switch
@@ -67,7 +67,7 @@ namespace Flux.Model
     {
       return GetFiles(CreateUri(repo, branch));
 
-      System.Collections.Generic.IEnumerable<GitHubEntry> GetFiles(System.Uri uri)
+      static System.Collections.Generic.IEnumerable<GitHubEntry> GetFiles(System.Uri uri)
       {
         foreach (var ghe in GetEntries(uri))
         {

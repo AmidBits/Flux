@@ -89,7 +89,7 @@ namespace Flux
 
     /// <summary>Determintes whether the address is an IPv4 multicast address.</summary>
     public static bool IsIPv4Multicast(this System.Net.IPAddress source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? source.GetAddressBytes() is var bytes && bytes[0] >= 224 && bytes[0] <= 239 : throw new System.ArgumentOutOfRangeException(nameof(source), $"Not an IPv4 address ({source.AddressFamily.ToString()}).");
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? source.GetAddressBytes() is var bytes && bytes[0] >= 224 && bytes[0] <= 239 : throw new System.ArgumentOutOfRangeException(nameof(source), $"Not an IPv4 address ({source.AddressFamily}).");
 
     public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
       => (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().Reverse().ToBigInteger();

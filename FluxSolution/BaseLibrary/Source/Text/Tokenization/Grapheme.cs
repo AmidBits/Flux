@@ -31,7 +31,7 @@ namespace Flux.Text.Tokenization.Grapheme
     }
 
     public override string ToString()
-      => $"<\"{Value}\" @{Index}{(string.Concat(Forms./*Where(kvp => !kvp.Value.Equals(Text)).*/Select((kvp, i) => $"[{kvp.Key.ToString()}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : s)}>";
+      => $"<\"{Value}\" @{Index}{(string.Concat(Forms./*Where(kvp => !kvp.Value.Equals(Text)).*/Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : s)}>";
   }
 
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>

@@ -350,9 +350,11 @@ namespace Flux.Model
       unvisited.RandomElement(out var unvisitedElement, Rng);
       unvisited.Remove(unvisitedElement);
 
+      Cell cell;
+
       while (unvisited.Any())
       {
-        unvisited.RandomElement(out var cell, Rng);
+        unvisited.RandomElement(out cell, Rng);
 
         path.Clear();
         path.Add(cell);

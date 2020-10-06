@@ -31,7 +31,8 @@ namespace Flux.Model
   }
 
   [System.Serializable]
-  public class Item : Dynamics.RigidBody
+  public class Item
+    : Dynamics.RigidBody
   {
     public System.Guid Id { get; set; } = System.Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
@@ -73,18 +74,16 @@ namespace Flux.Model
     //  leaf.Items.Add(item);
     //}
 
-    public Item AddItem(string path, Item item)
+    public Item? AddItem(string path, Item item)
     {
       if (path is null) throw new System.ArgumentNullException(nameof(path));
 
-      Item parent = this, child = null;
+      Item? parent = this, child = null;
 
       foreach (var split in path.Split('/'))
       {
         if (parent.Items is null)
-        {
           parent.Items = new System.Collections.Generic.List<Item>();
-        }
 
         child = int.TryParse(split, out var index) ? parent.Items[index] : parent.Items.FirstOrDefault(t => t.Name == split);
 
@@ -103,48 +102,40 @@ namespace Flux.Model
       return parent;
     }
 
-    public Item ChildItem(string nameOrID)
+    public Item? ChildItem(string nameOrID)
     {
-      if (this.Items != null && this.Items.Count > 0)
+      if (!(Items is null) && Items.Count > 0)
       {
-        if (int.TryParse(nameOrID, out var index) && index >= 0 && index < this.Items.Count)
-        {
+        if (int.TryParse(nameOrID, out var index) && index >= 0 && index < Items.Count)
           return this;
-        }
-        else if (this.Items.Any(t => t.Name == nameOrID || t.Id.ToString() == nameOrID))
-        {
+        else if (Items.Any(t => t.Name == nameOrID || t.Id.ToString() == nameOrID))
           return this;
-        }
       }
 
       return null;
     }
 
-    public Item FindItem(string nameOrID)
+    public Item? FindItem(string nameOrID)
     {
-      if (this.Items != null && this.Items.Count > 0)
+      if (!(Items is null) && Items.Count > 0)
       {
-        foreach (var item in this.Items)
+        foreach (var item in Items)
         {
           if (item.Name == nameOrID || item.Id.ToString() == nameOrID)
-          {
             return item;
-          }
           else if (item.FindItem(nameOrID) is Item subItem && subItem != null)
-          {
             return item;
-          }
         }
       }
 
       return null;
     }
 
-    public Item RemoveItem(string path, string nameOrID)
+    public Item? RemoveItem(string path, string nameOrID)
     {
       if (path is null) throw new System.ArgumentNullException(nameof(path));
 
-      Item child = this, current = null;
+      Item? child = this, current = null;
 
       foreach (var split in path.Split('/'))
       {
@@ -153,12 +144,10 @@ namespace Flux.Model
         child = current.ChildItem(nameOrID);
 
         if (child == null)
-        {
           return null;
-        }
       }
 
-      current.Items.Remove(child);
+      current?.Items.Remove(child);
 
       return child;
     }

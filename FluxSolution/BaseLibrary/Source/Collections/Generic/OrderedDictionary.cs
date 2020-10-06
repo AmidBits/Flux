@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Flux.Collections.Generic
 {
   public interface IIndexedDictionary<TKey, TValue>
-    : System.Collections.Specialized.IOrderedDictionary//, System.Collections.Generic.IList<TValue>, System.Collections.Generic.IDictionary<TKey, TValue>
+    : System.Collections.Specialized.IOrderedDictionary //, System.Collections.Generic.IList<TValue>, System.Collections.Generic.IDictionary<TKey, TValue>
   {
   }
 
@@ -152,19 +152,23 @@ namespace Flux.Collections.Generic
     public object this[int index] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public object this[object key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public bool IsFixedSize => false;
+    public bool IsFixedSize
+      => false;
+    public bool IsReadOnly
+      => false;
 
-    public bool IsReadOnly => false;
+    public System.Collections.ICollection Keys
+      => m_byKey.Keys;
+    public System.Collections.ICollection Values
+      => m_byKey.Values;
 
-    public System.Collections.ICollection Keys => m_byKey.Keys;
-
-    public System.Collections.ICollection Values => m_byKey.Values;
-
-    public int Count => m_byIndex.Count;
+    public int Count
+      => m_byIndex.Count;
 
     public bool IsSynchronized => true;
 
-    public object SyncRoot => m_syncRoot;
+    public object SyncRoot
+      => m_syncRoot;
 
     public void Add(object key, object value)
     {
@@ -180,7 +184,6 @@ namespace Flux.Collections.Generic
         m_byKey.Add((TKey)key, (TValue)value);
       }
     }
-
     public void Clear()
     {
       lock (m_syncRoot)
@@ -189,23 +192,18 @@ namespace Flux.Collections.Generic
         m_byKey.Clear();
       }
     }
-
     public bool Contains(object key)
     {
       if (key is null) throw new System.ArgumentNullException(nameof(key));
+      if (!(key is TKey)) throw new System.ArgumentException(@"Type mismatch.", nameof(key));
 
-      if (key is TKey)
-        lock (m_syncRoot)
-        {
-          return m_byKey.ContainsKey((TKey)key);
-        }
-      else throw new System.ArgumentException(@"Type mismatch.", nameof(key));
+      lock (m_syncRoot)
+      {
+        return m_byKey.ContainsKey((TKey)key);
+      }
     }
-
-    public void CopyTo(System.Array array, int index) => throw new System.NotImplementedException();
-
-    public System.Collections.IDictionaryEnumerator GetEnumerator() => new IndexedDictionaryEnumerator(this);
-
+    public void CopyTo(System.Array array, int index)
+      => throw new System.NotImplementedException();
     public void Insert(int index, object key, object value)
     {
       if (index < 0 || index >= m_byIndex.Count) throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -221,7 +219,6 @@ namespace Flux.Collections.Generic
         m_byKey.Add((TKey)key, (TValue)value);
       }
     }
-
     public void Remove(object key)
     {
       if (key is null) throw new System.ArgumentNullException(nameof(key));
@@ -230,7 +227,6 @@ namespace Flux.Collections.Generic
 
       Delete((TKey)key);
     }
-
     public void RemoveAt(int index)
     {
       if (index < 0 || index >= m_byIndex.Count) throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -238,6 +234,7 @@ namespace Flux.Collections.Generic
       Delete(index);
     }
 
+    public System.Collections.IDictionaryEnumerator GetEnumerator() => new IndexedDictionaryEnumerator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion IOrderedDictionary
 
@@ -245,13 +242,10 @@ namespace Flux.Collections.Generic
       : System.Collections.IDictionaryEnumerator
     {
       private readonly IndexedDictionary<TKey, TValue> m_id;
-
       private int m_index = -1;
 
       public IndexedDictionaryEnumerator(IndexedDictionary<TKey, TValue> id)
-      {
-        m_id = id;
-      }
+        => m_id = id;
 
       public object Current
         => m_index >= 0 && m_index < m_id.Count ? m_id.m_byIndex[m_index] : throw new System.InvalidOperationException(@"Enumerator is out of sync.");

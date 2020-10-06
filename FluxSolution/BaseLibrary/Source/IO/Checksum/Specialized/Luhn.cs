@@ -7,7 +7,7 @@ namespace Flux.IO.Checksum
   public struct Luhn
     : System.IEquatable<Luhn>, System.IFormattable
   {
-    private int[] m_sequence;
+    private readonly int[] m_sequence;
 
     private uint m_checkDigit;
 
