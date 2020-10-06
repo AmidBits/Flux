@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public enum MonoRectifierMode
+  public enum RectifierMode
   {
     Bypass,
     /// <summary>Perform a positive full wave rectification.</summary>
@@ -17,29 +17,29 @@ namespace Flux.Dsp.AudioProcessor
   public class MonoRectifier
     : IWaveProcessorMono
   {
-    public MonoRectifierMode Mode { get; }
+    public RectifierMode Mode { get; }
 
     private double m_threshold;
     /// <summary>The recifier threshold can be set within the constrained range [-1, 1].</summary>
     public double Threshold { get => m_threshold; set => m_threshold = System.Math.Clamp(value, -1.0, 1.0); }
 
-    public MonoRectifier(MonoRectifierMode mode, double threshold)
+    public MonoRectifier(RectifierMode mode, double threshold)
     {
       Mode = mode;
       Threshold = threshold;
     }
     public MonoRectifier()
-      : this(MonoRectifierMode.FullWave, 0.0)
+      : this(RectifierMode.FullWave, 0.0)
     {
     }
 
     public double ProcessAudio(double sample)
       => (Mode switch
       {
-        MonoRectifierMode.NegativeFullWave when sample > m_threshold => (System.Math.Max(m_threshold - (sample - m_threshold), -1)),
-        MonoRectifierMode.NegativeHalfWave when sample > m_threshold => (m_threshold),
-        MonoRectifierMode.FullWave when sample < m_threshold => (System.Math.Min(m_threshold + (m_threshold - sample), 1)),
-        MonoRectifierMode.HalfWave when sample < m_threshold => (m_threshold),
+        RectifierMode.NegativeFullWave when sample > m_threshold => (System.Math.Max(m_threshold - (sample - m_threshold), -1)),
+        RectifierMode.NegativeHalfWave when sample > m_threshold => (m_threshold),
+        RectifierMode.FullWave when sample < m_threshold => (System.Math.Min(m_threshold + (m_threshold - sample), 1)),
+        RectifierMode.HalfWave when sample < m_threshold => (m_threshold),
         _ => (sample),
       });
 
