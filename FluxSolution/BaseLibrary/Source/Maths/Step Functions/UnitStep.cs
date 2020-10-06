@@ -1,4 +1,3 @@
-
 namespace Flux
 {
   public static partial class Maths
@@ -37,7 +36,6 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
     public static long UnitStep(long value)
       => value < 0L ? 0L : 1L;
-
 
     /// <summary>Returns the discrete unit step of the specified value, i.e. 0 when less than zero (negative), and 1 when greater than or equal to zero.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Heaviside_step_function"/>

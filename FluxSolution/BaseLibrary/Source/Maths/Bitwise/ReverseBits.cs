@@ -18,7 +18,8 @@ namespace Flux
     /// <remarks></remarks>
     public static System.Numerics.BigInteger ReverseBits(System.Numerics.BigInteger value)
     {
-      if (value >= 0 && value <= 255) return ByteReverseBits[(int)value];
+      if (value >= 0 && value <= 255)
+        return ByteReverseBits[(int)value];
 
       var sourceArray = value.ToByteArrayEx(out var sourceIndex, out var _);
 
@@ -26,9 +27,7 @@ namespace Flux
       var targetIndex = 0;
 
       while (sourceIndex >= 0)
-      {
         targetBytes[targetIndex++] = (byte)ByteReverseBits[sourceArray[sourceIndex--]];
-      }
 
       return new System.Numerics.BigInteger(targetBytes);
     }

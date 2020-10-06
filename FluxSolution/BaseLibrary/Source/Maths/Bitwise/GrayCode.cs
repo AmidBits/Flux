@@ -29,7 +29,6 @@ namespace Flux
         while (mask != 0)
         {
           value ^= mask;
-
           mask >>= 1;
         }
       }

@@ -30,15 +30,17 @@ namespace Flux
 
       var rounded = quotient * multiple;
 
-      if (remainder == 0) return rounded;
-      else return mode switch
-      {
-        IntervalRoundingBehavior.AwayFromZero => rounded < 0 ? rounded - multiple : rounded + multiple,
-        IntervalRoundingBehavior.Ceiling => rounded > 0 ? rounded + multiple : rounded,
-        IntervalRoundingBehavior.Floor => rounded < 0 ? rounded - multiple : rounded,
-        IntervalRoundingBehavior.TowardZero => rounded,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(mode))
-      };
+      if (remainder == 0)
+        return rounded;
+      else
+        return mode switch
+        {
+          IntervalRoundingBehavior.AwayFromZero => rounded < 0 ? rounded - multiple : rounded + multiple,
+          IntervalRoundingBehavior.Ceiling => rounded > 0 ? rounded + multiple : rounded,
+          IntervalRoundingBehavior.Floor => rounded < 0 ? rounded - multiple : rounded,
+          IntervalRoundingBehavior.TowardZero => rounded,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(mode))
+        };
     }
     /// <summary></summary>
     public static long ToInterval(long value, long multiple, IntervalRoundingBehavior mode)
@@ -47,15 +49,17 @@ namespace Flux
 
       var rounded = quotient * multiple;
 
-      if (remainder == 0) return rounded;
-      else return mode switch
-      {
-        IntervalRoundingBehavior.AwayFromZero => rounded < 0 ? rounded - multiple : rounded + multiple,
-        IntervalRoundingBehavior.Ceiling => rounded > 0 ? rounded + multiple : rounded,
-        IntervalRoundingBehavior.Floor => rounded < 0 ? rounded - multiple : rounded,
-        IntervalRoundingBehavior.TowardZero => rounded,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(mode))
-      };
+      if (remainder == 0)
+        return rounded;
+      else
+        return mode switch
+        {
+          IntervalRoundingBehavior.AwayFromZero => rounded < 0 ? rounded - multiple : rounded + multiple,
+          IntervalRoundingBehavior.Ceiling => rounded > 0 ? rounded + multiple : rounded,
+          IntervalRoundingBehavior.Floor => rounded < 0 ? rounded - multiple : rounded,
+          IntervalRoundingBehavior.TowardZero => rounded,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(mode))
+        };
     }
   }
 }

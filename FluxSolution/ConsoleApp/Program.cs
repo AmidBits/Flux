@@ -125,7 +125,7 @@ namespace ConsoleApp
       //System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
 
-      
+
     }
 
     static void Main(string[] args)

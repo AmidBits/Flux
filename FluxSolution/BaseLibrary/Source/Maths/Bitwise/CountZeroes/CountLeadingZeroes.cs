@@ -47,7 +47,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int CountLeadingZeros(uint value)
     {
-      if (value == 0) return 32;
+      if (value == 0)
+        return 32;
 
       var count = 0;
 
@@ -78,9 +79,7 @@ namespace Flux
         }
 
         if ((value & 0x80000000) == 0)
-        {
           count += 1;
-        }
       }
 
       return count;
@@ -94,7 +93,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int CountLeadingZeros(ulong value)
     {
-      if (value == 0) return 64;
+      if (value == 0)
+        return 64;
 
       var count = 0;
 
@@ -131,9 +131,7 @@ namespace Flux
         }
 
         if ((value & 0x8000000000000000) == 0)
-        {
           count += 1;
-        }
       }
 
       return count;

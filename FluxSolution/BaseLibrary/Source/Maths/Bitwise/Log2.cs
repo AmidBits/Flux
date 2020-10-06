@@ -74,7 +74,8 @@ namespace Flux
     /// <seealso cref="http://aggregate.org/MAGIC/#Log2%20of%20an%20Integer"/>
     public static int Log2(int value)
     {
-      if (value <= 0) return -1;
+      if (value <= 0)
+        return -1;
 
       unchecked
       {
@@ -104,7 +105,8 @@ namespace Flux
           value >>= 2;
         }
 
-        if (value > 0x1) count++;
+        if (value > 0x1)
+          count++;
 
         return count;
       }
@@ -116,7 +118,8 @@ namespace Flux
     /// <seealso cref="http://aggregate.org/MAGIC/#Log2%20of%20an%20Integer"/>
     public static int Log2(long value)
     {
-      if (value <= 0) return -1;
+      if (value <= 0)
+        return -1;
 
       unchecked
       {
@@ -152,7 +155,8 @@ namespace Flux
           value >>= 2;
         }
 
-        if (value > 0x1) count++;
+        if (value > 0x1)
+          count++;
 
         return count;
       }
@@ -165,7 +169,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int Log2(uint value)
     {
-      if (value == 0) return -1;
+      if (value == 0)
+        return -1;
 
       unchecked
       {
@@ -195,7 +200,8 @@ namespace Flux
           value >>= 2;
         }
 
-        if (value > 0x1) count++;
+        if (value > 0x1)
+          count++;
 
         return count;
       }
@@ -207,7 +213,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int Log2(ulong value)
     {
-      if (value == 0) return -1;
+      if (value == 0)
+        return -1;
 
       unchecked
       {
@@ -243,7 +250,8 @@ namespace Flux
           value >>= 2;
         }
 
-        if (value > 0x1) count++;
+        if (value > 0x1)
+          count++;
 
         return count;
       }

@@ -15,16 +15,15 @@ namespace Flux
     /// <seealso cref="http://aggregate.org/MAGIC/#Population%20Count%20(Ones%20Count)"/>
     public static int Bit1Count(System.Numerics.BigInteger value)
     {
-      if (value >= 0 && value <= 255) return ByteBit1Count[(int)value];
+      if (value >= 0 && value <= 255)
+        return ByteBit1Count[(int)value];
 
       var byteArray = value.ToByteArrayEx(out var msbIndex, out var msbValue);
 
       var count = ByteBit1Count[msbValue];
 
       for (var index = msbIndex - 1; index >= 0; index--)
-      {
         count += ByteBit1Count[byteArray[index]];
-      }
 
       return count;
     }

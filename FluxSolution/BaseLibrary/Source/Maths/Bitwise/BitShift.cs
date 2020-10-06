@@ -5,9 +5,7 @@ namespace Flux
     public static bool BitShiftLeft(ref int value)
     {
       var carryFlag = ((uint)value & (1UL << 31)) > 0;
-
       value = (int)((uint)value << 1);
-
       return carryFlag;
     }
 
@@ -15,9 +13,7 @@ namespace Flux
     public static bool BitShiftRight(ref uint value)
     {
       var carryFlag = (value & 1) > 0;
-
       value >>= 1;
-
       return carryFlag;
     }
 
@@ -27,9 +23,7 @@ namespace Flux
     public static bool BitShiftLeft(ref ulong value)
     {
       var carryFlag = (value & (1UL << 63)) > 0;
-
       value <<= 1;
-
       return carryFlag;
     }
     /// <summary>Shifts the bits one position to the right.</summary>
@@ -38,9 +32,7 @@ namespace Flux
     public static bool BitShiftRight(ref ulong value)
     {
       var carryFlag = (value & 1) > 0;
-
       value >>= 1;
-
       return carryFlag;
     }
 
@@ -50,9 +42,7 @@ namespace Flux
     public static bool BitShiftLeft(ref uint value, int count)
     {
       var carryFlag = (value & (1UL << 31)) > 0;
-
       value <<= count;
-
       return carryFlag;
     }
     /// <summary>Shifts the bits one position to the right.</summary>
@@ -61,9 +51,7 @@ namespace Flux
     public static bool BitShiftRight(ref uint value, int count)
     {
       var carryFlag = (value & 1) > 0;
-
       value >>= count;
-
       return carryFlag;
     }
 
@@ -73,9 +61,7 @@ namespace Flux
     public static bool BitShiftLeft(ref ulong value, int count)
     {
       var carryFlag = (value & (1UL << 63)) > 0;
-
       value <<= count;
-
       return carryFlag;
     }
     /// <summary>Shifts the bits one position to the right.</summary>
@@ -84,9 +70,7 @@ namespace Flux
     public static bool BitShiftRight(ref ulong value, int count)
     {
       var carryFlag = (value & 1) > 0;
-
       value >>= count;
-
       return carryFlag;
     }
   }

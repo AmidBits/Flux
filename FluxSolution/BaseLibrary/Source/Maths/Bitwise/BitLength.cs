@@ -68,7 +68,8 @@ namespace Flux
             value >>= 1;
           }
 
-          if (value > 0x00000000) count++;
+          if (value > 0x00000000)
+            count++;
         }
       }
 
@@ -122,7 +123,8 @@ namespace Flux
             value >>= 1;
           }
 
-          if (value > 0x00000000) count++;
+          if (value > 0x00000000)
+            count++;
         }
       }
 

@@ -26,7 +26,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int BitIndex(uint value)
     {
-      if (value == 0 || (value & unchecked(value - 1)) != 0) return -1;
+      if (value == 0 || (value & unchecked(value - 1)) != 0)
+        return -1;
 
       var count = 0;
 
@@ -54,7 +55,8 @@ namespace Flux
         value >>= 2;
       }
 
-      if (value > 0x1) count++;
+      if (value > 0x1)
+        count++;
 
       return count;
     }
@@ -63,7 +65,8 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int BitIndex(ulong value)
     {
-      if (value == 0 || (value & unchecked(value - 1)) != 0) return -1;
+      if (value == 0 || (value & unchecked(value - 1)) != 0)
+        return -1;
 
       var count = 0;
 
@@ -97,7 +100,8 @@ namespace Flux
         value >>= 2;
       }
 
-      if (value > 0x1) count++;
+      if (value > 0x1)
+        count++;
 
       return count;
     }
