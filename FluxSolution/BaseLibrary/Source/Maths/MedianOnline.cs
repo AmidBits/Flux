@@ -4,8 +4,8 @@ namespace Flux
   /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
   public class MedianOnline
   {
-    private Flux.Collections.Generic.IHeapMax<double> m_maxHeap = new Flux.Collections.Generic.BinaryHeapMax<double>();
-    private Flux.Collections.Generic.IHeapMin<double> m_minHeap = new Flux.Collections.Generic.BinaryHeapMin<double>();
+    private Collections.Generic.IHeap<double> m_maxHeap = new Collections.Generic.BinaryHeapMax<double>();
+    private Collections.Generic.IHeap<double> m_minHeap = new Collections.Generic.BinaryHeapMin<double>();
 
     public int MaxCount => m_maxHeap.Count;
     public int MinCount => m_minHeap.Count;
@@ -27,7 +27,7 @@ namespace Flux
         if (maxCount - minCount > 1)
         {
           m_minHeap.Insert(maxRoot);
-          m_maxHeap.ExtractMax();
+          m_maxHeap.Extract();
         }
       }
       else
@@ -37,7 +37,7 @@ namespace Flux
         if (minCount - maxCount > 1)
         {
           m_maxHeap.Insert(m_minHeap.Peek());
-          m_minHeap.ExtractMin();
+          m_minHeap.Extract();
         }
       }
     }
