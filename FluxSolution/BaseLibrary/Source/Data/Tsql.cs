@@ -79,48 +79,88 @@ namespace Flux.Data
     //  }
     //}
 
-    public static string All(string subquery) => $"ALL ( {subquery} )";
-    public static string And(params string[] booleanExpressions) => $"({string.Join(" AND ", booleanExpressions)})";
-    public static string Any(string subquery) => $"ANY ( {subquery} )";
-    public static string Between(string leftExpression, string rightExpression) => $"BETWEEN {leftExpression} AND {rightExpression}";
-    public static string BeginEnd(string statementOrBlock) => $"BEGIN {statementOrBlock} END";
-    public static string Cast(string expression, string dataType) => $"CAST({expression} AS {dataType})";
-    public static string Coalesce(params string[] expressions) => $"COALESCE({string.Join(", ", expressions)})";
-    public static string Convert(string dataType, string expression) => $"CONVERT({dataType}, {expression})";
-    public static string Convert(string dataType, string expression, string style) => $"CONVERT({dataType}, {expression}, {style})";
-    public static string Equal(string leftExpression, string rightExpression) => $"{leftExpression} = {rightExpression}";
-    public static string Exists(string subquery) => $"EXISTS ( {subquery} )";
-    public static System.Collections.Generic.IEnumerable<string> Exists(params string[] subqueries) => subqueries.Select(subquery => Exists(subquery));
-    public static string If(string booleanExpression) => $"IF {booleanExpression}";
-    public static string If(string booleanExpression, string statementOrBlock) => $"{If(booleanExpression)} {statementOrBlock}";
-    public static string In(string subqueryOrExpression) => $"IN ( {subqueryOrExpression} )";
-    public static string In(params string[] expressions) => In(string.Join(", ", expressions));
-    public static string IsNotNull(string expression) => $"{expression} IS NOT NULL";
-    public static System.Collections.Generic.IEnumerable<string> IsNotNull(params string[] expressions) => expressions.Select(expression => IsNotNull(expression));
-    public static string IsNull(string expression) => $"{expression} IS NULL";
-    public static System.Collections.Generic.IEnumerable<string> IsNull(params string[] expressions) => expressions.Select(expression => IsNull(expression));
-    public static string N(string expression) => $"N'{expression}'";
-    public static string Not(string booleanExpression) => $"NOT {booleanExpression}";
-    public static System.Collections.Generic.IEnumerable<string> Not(params string[] booleanExpressions) => booleanExpressions.Select(boolean_expression => Not(boolean_expression));
-    public static string NotEqual(string leftExpression, string rightExpression) => $"{leftExpression} != {rightExpression}";
-    public static string NullIf(string ifExpression, string replacementExpression) => $"NULLIF({ifExpression}, {replacementExpression})";
-    public static string Or(params string[] booleanExpression) => $"({string.Join(" OR ", booleanExpression)})";
-    public static string Raiserror(string msgStrOrLocalVariable, int severity = -1, int state = -1, params string[] args) => $"RAISERROR( {msgStrOrLocalVariable}, {severity}, {state}{(args.Length > 0 ? $", {string.Join(@", ", args)}" : string.Empty)} )";
-    public static string Some(string subquery) => $"SOME ( {subquery} )";
-    public static string Stuff(string characterExpression, int start, int length, string replacementExpression = "") => $"STUFF({characterExpression}, {start}, {length}, '{replacementExpression}')";
-    public static string Throw(int errorNumber, string messageOrLocalVariable, byte state = 1) => $"THROW {errorNumber}, {messageOrLocalVariable}, {state}";
-    public static string TryCatch(string tryStatementOrBlock, string catchStatementOrBlock) => $"BEGIN TRY {tryStatementOrBlock} END TRY BEGIN CATCH {catchStatementOrBlock} END CATCH";
-    public static string WaitforDelay(System.TimeSpan timeToPass) => $"WAITFOR DELAY '{timeToPass:hh:mm}'";
-    public static string WaitforTime(System.DateTime timeToExecute) => $"WAITFOR TIME '{timeToExecute:HH:mm}'";
-    public static string While(string booleanExpression) => $"WHILE {booleanExpression}";
-    public static string While(string booleanExpression, string statementOrBlock) => $"{While(booleanExpression)} {statementOrBlock}";
+    public static string All(string subquery)
+      => $"ALL ( {subquery} )";
+    public static string And(params string[] booleanExpressions)
+      => $"({string.Join(" AND ", booleanExpressions)})";
+    public static string Any(string subquery)
+      => $"ANY ( {subquery} )";
+    public static string Between(string leftExpression, string rightExpression)
+      => $"BETWEEN {leftExpression} AND {rightExpression}";
+    public static string BeginEnd(string statementOrBlock)
+      => $"BEGIN {statementOrBlock} END";
+    public static string Cast(string expression, string dataType)
+      => $"CAST({expression} AS {dataType})";
+    public static string Coalesce(params string[] expressions)
+      => $"COALESCE({string.Join(", ", expressions)})";
+    public static string Convert(string dataType, string expression)
+      => $"CONVERT({dataType}, {expression})";
+    public static string Convert(string dataType, string expression, string style)
+      => $"CONVERT({dataType}, {expression}, {style})";
+    public static string Equal(string leftExpression, string rightExpression)
+      => $"{leftExpression} = {rightExpression}";
+    public static string Exists(string subquery)
+      => $"EXISTS ( {subquery} )";
+    public static System.Collections.Generic.IEnumerable<string> Exists(params string[] subqueries)
+      => subqueries.Select(subquery => Exists(subquery));
+    public static string If(string booleanExpression)
+      => $"IF {booleanExpression}";
+    public static string If(string booleanExpression, string statementOrBlock)
+      => $"{If(booleanExpression)} {statementOrBlock}";
+    public static string In(string subqueryOrExpression)
+      => $"IN ( {subqueryOrExpression} )";
+    public static string In(params string[] expressions)
+      => In(string.Join(", ", expressions));
+    public static string IsNotNull(string expression)
+      => $"{expression} IS NOT NULL";
+    public static System.Collections.Generic.IEnumerable<string> IsNotNull(params string[] expressions)
+      => expressions.Select(expression => IsNotNull(expression));
+    public static string IsNull(string expression)
+      => $"{expression} IS NULL";
+    public static System.Collections.Generic.IEnumerable<string> IsNull(params string[] expressions)
+      => expressions.Select(expression => IsNull(expression));
+    public static string N(string expression)
+      => $"N'{expression}'";
+    public static string Not(string booleanExpression)
+      => $"NOT {booleanExpression}";
+    public static System.Collections.Generic.IEnumerable<string> Not(params string[] booleanExpressions)
+      => booleanExpressions.Select(boolean_expression => Not(boolean_expression));
+    public static string NotEqual(string leftExpression, string rightExpression)
+      => $"{leftExpression} != {rightExpression}";
+    public static string NullIf(string ifExpression, string replacementExpression)
+      => $"NULLIF({ifExpression}, {replacementExpression})";
+    public static string Or(params string[] booleanExpression)
+      => $"({string.Join(" OR ", booleanExpression)})";
+    public static string Raiserror(string msgStrOrLocalVariable, int severity = -1, int state = -1, params string[] args)
+      => $"RAISERROR( {msgStrOrLocalVariable}, {severity}, {state}{(args.Length > 0 ? $", {string.Join(@", ", args)}" : string.Empty)} )";
+    public static string Some(string subquery)
+      => $"SOME ( {subquery} )";
+    public static string Stuff(string characterExpression, int start, int length, string replacementExpression = "")
+      => $"STUFF({characterExpression}, {start}, {length}, '{replacementExpression}')";
+    public static string Throw(int errorNumber, string messageOrLocalVariable, byte state = 1)
+      => $"THROW {errorNumber}, {messageOrLocalVariable}, {state}";
+    public static string TryCatch(string tryStatementOrBlock, string catchStatementOrBlock)
+      => $"BEGIN TRY {tryStatementOrBlock} END TRY BEGIN CATCH {catchStatementOrBlock} END CATCH";
+    public static string WaitforDelay(System.TimeSpan timeToPass)
+      => $"WAITFOR DELAY '{timeToPass:hh:mm}'";
+    public static string WaitforTime(System.DateTime timeToExecute)
+      => $"WAITFOR TIME '{timeToExecute:HH:mm}'";
+    public static string While(string booleanExpression)
+      => $"WHILE {booleanExpression}";
+    public static string While(string booleanExpression, string statementOrBlock)
+      => $"{While(booleanExpression)} {statementOrBlock}";
 
-    public static string DeclareGetDate() => @"DECLARE @DateTime [datetime] = GETDATE();DECLARE @Date [date] = CAST(@DateTime AS [date]);";
-    public static string DeclareEffectiveDate(bool highFrequency) => $"DECLARE @iStartDate [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}] = CAST(FORMAT(GETDATE(), '{(highFrequency ? "yyyyMMddHHmmss" : "yyyyMMdd")}') AS [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}])";
-    public static string DeclareEndDate(bool highFrequency) => $"DECLARE @iEndDate [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}] = {(highFrequency ? @"29990101010101" : @"29990101")}";
+    public static string DeclareGetDate()
+      => @"DECLARE @DateTime [datetime] = GETDATE();DECLARE @Date [date] = CAST(@DateTime AS [date]);";
+    public static string DeclareEffectiveDate(bool highFrequency)
+      => $"DECLARE @iStartDate [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}] = CAST(FORMAT(GETDATE(), '{(highFrequency ? "yyyyMMddHHmmss" : "yyyyMMdd")}') AS [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}])";
+    public static string DeclareEndDate(bool highFrequency)
+      => $"DECLARE @iEndDate [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}] = {(highFrequency ? @"29990101010101" : @"29990101")}";
 
-    public static string CreateMergeTable(TsqlName mergeName3, string[] providerTypes, bool mergeDense) => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
-    public static string CreateTable(TsqlName tableName3, string[] providerTypes) => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)})";
+    public static string CreateMergeTable(TsqlName mergeName3, string[] providerTypes, bool mergeDense)
+      => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
+    public static string CreateTable(TsqlName tableName3, string[] providerTypes)
+      => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)})";
     public static string MergeTable(bool highFrequency, TsqlName mergeName3, TsqlName sourceName3, string[] fieldNames, string[] fieldProviderTypes)
     {
       var sb = new System.Text.StringBuilder();
@@ -135,8 +175,10 @@ namespace Flux.Data
       sb.Append(';');
       return sb.ToString();
     }
-    public static string SelectIntoMergeTable(TsqlName mergeName3, TsqlName sourceName3, bool mergeDense) => $"SELECT *, CAST(0 AS {(mergeDense ? "[bigint]" : "[int]")}) AS [EffectiveStartDate], CAST(0 AS {(mergeDense ? "[bigint]" : "[int]")}) AS [EffectiveEndDate] \nINTO {mergeName3.QualifiedNameQuoted(3)} \nFROM {sourceName3.QualifiedNameQuoted(3)} (NOLOCK) WHERE 1 = 0; ";
-    public static string TableExists(TsqlName tableName3) => Exists($"SELECT 1 FROM sys.schemas S INNER JOIN sys.tables T ON (S.[schema_id] = T.[schema_id]) WHERE DB_NAME() = '{tableName3.DatabaseName}' AND S.[name] = '{tableName3.SchemaName}' AND T.[name] = '{tableName3.ObjectName}'");
+    public static string SelectIntoMergeTable(TsqlName mergeName3, TsqlName sourceName3, bool mergeDense)
+      => $"SELECT *, CAST(0 AS {(mergeDense ? "[bigint]" : "[int]")}) AS [EffectiveStartDate], CAST(0 AS {(mergeDense ? "[bigint]" : "[int]")}) AS [EffectiveEndDate] \nINTO {mergeName3.QualifiedNameQuoted(3)} \nFROM {sourceName3.QualifiedNameQuoted(3)} (NOLOCK) WHERE 1 = 0; ";
+    public static string TableExists(TsqlName tableName3)
+      => Exists($"SELECT 1 FROM sys.schemas S INNER JOIN sys.tables T ON (S.[schema_id] = T.[schema_id]) WHERE DB_NAME() = '{tableName3.DatabaseName}' AND S.[name] = '{tableName3.SchemaName}' AND T.[name] = '{tableName3.ObjectName}'");
 
     //public static string CompareCastNvarcharMax(string columnLeft, string columnRight, bool allowDBNull) => allowDBNull ? $"(({CompareCastNvarcharMax(columnLeft, columnRight, false)}) OR ({And(IsNull(columnLeft), IsNull(columnRight))}))" : Equal(Cast(columnLeft, DataTypeNvarcharMax), Cast(columnRight, DataTypeNvarcharMax));
     //public static string CompareCastVarbinaryMax(string columnLeft, string columnRight, bool allowDBNull) => allowDBNull ? $"(({CompareCastNvarcharMax(columnLeft, columnRight, false)}) OR ({And(IsNull(columnLeft), IsNull(columnRight))}))" : Equal(Cast(columnLeft, DataTypeVarbinaryMax), Cast(columnRight, DataTypeVarbinaryMax));
@@ -165,22 +207,36 @@ namespace Flux.Data
     //}
 
     /// <summary>Concatenates a single column expression SELECT statement over multiple rows using the delimiter into a single string result.</summary>
-    public static string ConcatColumnOverRows(string statement, char delimiter = ',') => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"{statement.Insert(7, $"'{delimiter}' + ")} FOR XML PATH('')" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
+    public static string ConcatColumnOverRows(string statement, char delimiter = ',')
+      => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"{statement.Insert(7, $"'{delimiter}' + ")} FOR XML PATH('')" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
     /// <summary>Creates a variable and concatenates a single column expression SELECT statement over multiple rows using the delimiter into the variable.</summary>
-    public static string ConcatColumnOverRows(string variableName, string statement, char delimiter = ',') => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"DECLARE @{variableName} [nvarchar](MAX) {statement.Insert(7, $"@{variableName} = COALESCE(@{variableName} + '{delimiter}', '') + ")}" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
+    public static string ConcatColumnOverRows(string variableName, string statement, char delimiter = ',')
+      => (statement ?? throw new System.ArgumentNullException(nameof(statement))).StartsWith("SELECT ", System.StringComparison.OrdinalIgnoreCase) ? $"DECLARE @{variableName} [nvarchar](MAX) {statement.Insert(7, $"@{variableName} = COALESCE(@{variableName} + '{delimiter}', '') + ")}" : throw new System.ArgumentException("Must be a SELECT stament with a single resulting column.");
 
-    public static string Combine(System.Collections.Generic.IEnumerable<string> columnNames, string? tableAlias = null) => string.Join(@", ", columnNames.SubstituteOnNullOrEmpty(@"*").Select(cn => (tableAlias?.Length ?? 0) > 0 ? $"{tableAlias}.{cn}" : cn));
-    public static string DropTable(TsqlName table3) => $"DROP TABLE {table3.QualifiedNameQuoted(3)}";
-    public static string DropTableIfExists(TsqlName table3) => $"DROP TABLE IF EXISTS {table3.QualifiedNameQuoted(3)}";
-    public static string From(TsqlName table3) => $"FROM {table3.QualifiedNameQuoted(3)} (NOLOCK)";
-    public static string FromSubquery(string subquery) => $"FROM ( {subquery} ) AS SQ";
-    public static string InsertInto(TsqlName table3, params string[] columnNames) => $"INSERT INTO {table3.QualifiedNameQuoted(3)} ( {string.Join(@", ", columnNames)} )";
-    public static string Select(params string[] columnNames) => $"SELECT {Combine(columnNames)}";
-    public static string Select(System.Collections.Generic.IEnumerable<string> columnNames) => $"SELECT {Combine(columnNames)}";
-    public static string SelectTop(double percent, params string[] columnNames) => $"SELECT TOP ( {percent} ) PERCENT {Combine(columnNames)}";
-    public static string SelectTop(int rowCount, params string[] columnNames) => $"SELECT TOP ( {rowCount} ) {Combine(columnNames)}";
-    public static string TruncateTable(TsqlName table3) => $"TRUNCATE TABLE {table3.QualifiedNameQuoted(3)}";
-    public static string Values(params string[] columnValues) => $"VALUES ( {string.Join(@", ", columnValues)} )";
+    public static string Combine(System.Collections.Generic.IEnumerable<string> columnNames, string? tableAlias = null)
+      => string.Join(@", ", columnNames.SubstituteOnNullOrEmpty(@"*").Select(cn => (tableAlias?.Length ?? 0) > 0 ? $"{tableAlias}.{cn}" : cn));
+    public static string DropTable(TsqlName table3)
+      => $"DROP TABLE {table3.QualifiedNameQuoted(3)}";
+    public static string DropTableIfExists(TsqlName table3)
+      => $"DROP TABLE IF EXISTS {table3.QualifiedNameQuoted(3)}";
+    public static string From(TsqlName table3)
+      => $"FROM {table3.QualifiedNameQuoted(3)} (NOLOCK)";
+    public static string FromSubquery(string subquery)
+      => $"FROM ( {subquery} ) AS SQ";
+    public static string InsertInto(TsqlName table3, params string[] columnNames)
+      => $"INSERT INTO {table3.QualifiedNameQuoted(3)} ( {string.Join(@", ", columnNames)} )";
+    public static string Select(params string[] columnNames)
+      => $"SELECT {Combine(columnNames)}";
+    public static string Select(System.Collections.Generic.IEnumerable<string> columnNames)
+      => $"SELECT {Combine(columnNames)}";
+    public static string SelectTop(double percent, params string[] columnNames)
+      => $"SELECT TOP ( {percent} ) PERCENT {Combine(columnNames)}";
+    public static string SelectTop(int rowCount, params string[] columnNames)
+      => $"SELECT TOP ( {rowCount} ) {Combine(columnNames)}";
+    public static string TruncateTable(TsqlName table3)
+      => $"TRUNCATE TABLE {table3.QualifiedNameQuoted(3)}";
+    public static string Values(params string[] columnValues)
+      => $"VALUES ( {string.Join(@", ", columnValues)} )";
   }
 
   //public static class TSql
