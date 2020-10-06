@@ -39,15 +39,18 @@ namespace Flux.IO.Hash
       => a.Equals(b);
     public static bool operator !=(Fnv1a a, Fnv1a b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fnv1a other)
       => m_hash == other.m_hash && m_primeMultiplier == other.m_primeMultiplier;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Fnv1a fnv1a && Equals(fnv1a);
+      => obj is Fnv1a o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()

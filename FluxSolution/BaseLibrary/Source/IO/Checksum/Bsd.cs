@@ -31,15 +31,18 @@ namespace Flux.IO.Checksum
       => a.Equals(b);
     public static bool operator !=(Bsd a, Bsd b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Bsd other)
       => m_hash == other.m_hash;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Bsd bsd && Equals(bsd);
+      => obj is Bsd o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()

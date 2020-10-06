@@ -37,15 +37,18 @@ namespace Flux.IO.Hash
       => a.Equals(b);
     public static bool operator !=(Oat a, Oat b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Oat other)
       => m_hash == other.m_hash;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Oat oat && Equals(oat);
+      => obj is Oat o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()

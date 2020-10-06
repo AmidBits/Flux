@@ -396,12 +396,14 @@ namespace Flux
     // IEquatable
     public bool Equals(Geoposition other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new IFormatProvider.DmsFormatter(), $"<{{0:{format ?? @"DMS"}NS}}, {{1:{format ?? @"DMS"}EW}}, {{2}} m>", Latitude, Longitude, Altitude);
+
     // Object (override)
     public override bool Equals(object? obj)
-      => obj is Geoposition gp && Equals(gp);
+      => obj is Geoposition o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(Altitude, Latitude, Longitude).CombineHashDefault();
     public override string ToString()

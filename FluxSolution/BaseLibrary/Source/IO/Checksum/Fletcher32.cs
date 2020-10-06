@@ -36,15 +36,18 @@ namespace Flux.IO.Checksum
       => a.Equals(b);
     public static bool operator !=(Fletcher32 a, Fletcher32 b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fletcher32 other)
       => m_hash == other.m_hash;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Fletcher32 f32 && Equals(f32);
+      => obj is Fletcher32 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()

@@ -45,15 +45,18 @@ namespace Flux.IO.Checksum
       => a.Equals(b);
     public static bool operator !=(Adler32 a, Adler32 b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
       => m_hash == other.m_hash;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{m_hash}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Adler32 a32 && Equals(a32);
+      => obj is Adler32 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()

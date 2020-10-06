@@ -43,15 +43,18 @@ namespace Flux.IO.Checksum
       => a.Equals(b);
     public static bool operator !=(Luhn a, Luhn b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Luhn other)
       => m_checkDigit == other.m_checkDigit;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"{string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit}";
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Luhn luhn && Equals(luhn);
+      => obj is Luhn o && Equals(o);
     public override int GetHashCode()
       => m_sequence.Append(unchecked((int)m_checkDigit)).CombineHashDefault();
     public override string ToString()

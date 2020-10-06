@@ -67,7 +67,6 @@ namespace Flux
     }
 
     // Operators
-
     public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
     public static bool operator !=(VersionEx a, VersionEx b)
@@ -95,6 +94,7 @@ namespace Flux
 
       return 0;
     }
+
     // IEquatable
     public bool Equals(VersionEx other)
     {
@@ -106,12 +106,14 @@ namespace Flux
 
       return true;
     }
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Join(m_separatorsArray[0].ToString(formatProvider), m_parts.Select(i => i.ToString(format, formatProvider)));
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is VersionEx ve && Equals(ve);
+      => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => m_parts.CombineHashDefault();
     public override string? ToString()
