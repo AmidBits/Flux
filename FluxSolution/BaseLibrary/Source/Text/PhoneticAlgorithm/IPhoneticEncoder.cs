@@ -6,6 +6,6 @@ namespace Flux.Text
   {
     /// <summary>Represents the method that computes a code value representing the source (word) reduced to its phonetic properties as interpreted by the algorithm.</summary>
     /// <param name="expression">The string to encode.</param>
-    string Encode(System.ReadOnlySpan<char> expression);
+    string EncodePhonetic(System.ReadOnlySpan<char> expression);
   }
 }

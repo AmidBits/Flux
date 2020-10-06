@@ -54,12 +54,14 @@ namespace Flux.Globalization.EnUs
       => a.Equals(b);
     public static bool operator !=(SocialSecurityNumber a, SocialSecurityNumber b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(SocialSecurityNumber other)
       => AAA == other.AAA && GG == other.GG && SSSS == other.SSSS;
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is SocialSecurityNumber nanp && Equals(nanp);
+      => obj is SocialSecurityNumber o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(AAA, GG, SSSS).CombineHashDefault();
     public override string? ToString()

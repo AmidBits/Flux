@@ -13,6 +13,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<string> ExecuteStrings(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<string, int, string> nameSelector, System.Func<object, int, string> valueSelector, string nullValue = "\u2400", string fieldSeparator = "\u241F", string recordSeparator = "\u241E", string resultSeparator = "\u241D")
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (nameSelector is null) throw new System.ArgumentNullException(nameof(nameSelector));
+      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
 
       using var c = source.CreateCommand();
 
@@ -26,18 +28,14 @@ namespace Flux
       do
       {
         if (resultIndex++ > 0)
-        {
           yield return resultSeparator;
-        }
 
         for (var fieldIndex = 0; fieldIndex < idr.FieldCount; fieldIndex++)
         {
           if (fieldIndex > 0)
-          {
             yield return fieldSeparator;
-          }
 
-          yield return nameSelector?.Invoke(idr.GetName(fieldIndex), fieldIndex) ?? idr.GetNameEx(fieldIndex);
+          yield return nameSelector(idr.GetName(fieldIndex), fieldIndex) ?? GetNameEx(idr, fieldIndex);
         }
 
         yield return recordSeparator;
@@ -47,18 +45,14 @@ namespace Flux
         while (idr.Read())
         {
           if (recordIndex++ > 0)
-          {
             yield return recordSeparator;
-          }
 
           for (var fieldIndex = 0; fieldIndex < idr.FieldCount; fieldIndex++)
           {
             if (fieldIndex > 0)
-            {
               yield return fieldSeparator;
-            }
 
-            yield return valueSelector?.Invoke(idr.GetValue(fieldIndex), fieldIndex) ?? idr.GetStringEx(fieldIndex, nullValue);
+            yield return valueSelector(idr.GetValue(fieldIndex), fieldIndex) ?? GetStringEx(idr, fieldIndex, nullValue);
           }
         }
       }

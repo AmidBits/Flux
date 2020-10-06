@@ -10,10 +10,9 @@ namespace Flux
       length = byteArray.Length - 1;
 
       if (length > 0 && byteArray[length] == 0)
-      {
         System.Array.Resize(ref byteArray, length);
-      }
-      else length++;
+      else
+        length++;
 
       return byteArray;
     }
@@ -28,9 +27,7 @@ namespace Flux
       msbValue = byteArray[msbIndex];
 
       if (msbIndex > 0 && msbValue == 0)
-      {
         msbValue = byteArray[--msbIndex];
-      }
 
       return byteArray;
     }

@@ -20,7 +20,10 @@ namespace Flux.Random
       m_w = seed1;
       m_z = seed2;
     }
-    public SimpleRng(int seed1, int seed2) : this(unchecked((uint)seed1), unchecked((uint)seed2)) { }
+    public SimpleRng(int seed1, int seed2)
+      : this(unchecked((uint)seed1), unchecked((uint)seed2))
+    {
+    }
     public SimpleRng(SeedEnum seed)
     {
       switch (seed)
@@ -35,8 +38,12 @@ namespace Flux.Random
           break;
       }
     }
-    public SimpleRng() : this(SeedEnum.TimerMechanism) { }
+    public SimpleRng()
+      : this(SeedEnum.TimerMechanism)
+    {
+    }
 
-    internal override uint SampleUInt32() => unchecked(((m_z = 36969 * (m_z & 65535) + (m_z >> 16)) << 16) + (m_w = 18000 * (m_w & 65535) + (m_w >> 16)));
+    internal override uint SampleUInt32()
+      => unchecked(((m_z = 36969 * (m_z & 65535) + (m_z >> 16)) << 16) + (m_w = 18000 * (m_w & 65535) + (m_w >> 16)));
   }
 }

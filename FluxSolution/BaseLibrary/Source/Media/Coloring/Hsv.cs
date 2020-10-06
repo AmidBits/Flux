@@ -76,12 +76,15 @@ namespace Flux.Media.Coloring
       => a.Equals(b);
     public static bool operator !=(Hsv a, Hsv b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
       => Alpha == other.Alpha && Hue == other.Hue && Saturation == other.Saturation && Value == other.Value;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{Alpha}, {Hue}, {Saturation}, {Value}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Hsv o && Equals(o);

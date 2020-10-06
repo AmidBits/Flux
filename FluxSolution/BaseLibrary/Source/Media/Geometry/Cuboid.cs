@@ -18,12 +18,15 @@ namespace Flux.Media.Geometry
       => a.Equals(b);
     public static bool operator !=(Cuboid a, Cuboid b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Cuboid other)
       => X == other.X && Y == other.Y && Z == other.Z && Width == other.Width && Height == other.Height && Depth == other.Depth;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{nameof(Cuboid)}: {X}, {Y}, {Z}, {Width}, {Height}, {Depth}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Cuboid o && Equals(o);

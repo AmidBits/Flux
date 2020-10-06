@@ -41,6 +41,7 @@ namespace Flux
     }
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data pivoted.</summary>
     /// <param name="targetColumnNames">If no target column names are specified, "Column_[ordinalIndex]" will be used.</param>
-    public static System.Data.DataTable PivotData(this System.Data.DataTable source, params string[] targetColumnNames) => source.PivotData(out var sourceColumnNames, targetColumnNames);
+    public static System.Data.DataTable PivotData(this System.Data.DataTable source, params string[] targetColumnNames)
+      => source.PivotData(out var sourceColumnNames, targetColumnNames);
   }
 }

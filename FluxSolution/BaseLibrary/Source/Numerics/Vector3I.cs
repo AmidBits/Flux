@@ -323,6 +323,19 @@ namespace Flux.Numerics
       => CrossProduct(a, CrossProduct(b, c));
     #endregion Static Members
 
+    #region "Unique" Index
+    /// <summary>Convert a "mapped" index to a 3D vector. This index is uniquely mapped using the specified size vector.</summary>
+    public static Vector3I FromUniqueIndex(long index, in Vector3I length)
+    {
+      var xy = (long)length.X * (long)length.Y;
+      var irxy = index % xy;
+
+      return new Vector3I((int)(irxy % length.X), (int)(irxy / length.X), (int)(index / xy));
+    }
+    /// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
+    public static long ToUniqueIndex(in Vector3I vector, in Vector3I length) => vector.X + (vector.Y * length.X) + (vector.Z * length.X * length.Y);
+    #endregion "Unique" Index
+
     #region Overloaded Operators
     public static Vector3I operator -(in Vector3I v) => Negate(v);
 
@@ -367,9 +380,11 @@ namespace Flux.Numerics
     // System.IEquatable<Vector3>
     public bool Equals(Vector3I other)
       => X == other.X && Y == other.Y && Z == other.Z;
+
     // System.IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{X.ToString(format, formatProvider)}, {Y.ToString(format, formatProvider)}, {Z.ToString(format, formatProvider)}>";
+
     // Overrides
     public override bool Equals(object? obj)
       => obj is Vector3I o && Equals(o);
@@ -377,18 +392,5 @@ namespace Flux.Numerics
       => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z).CombineHashDefault();
     public override string ToString()
       => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
-
-    #region "Unique" Index
-    /// <summary>Convert a "mapped" index to a 3D vector. This index is uniquely mapped using the specified size vector.</summary>
-    public static Vector3I FromUniqueIndex(long index, in Vector3I length)
-    {
-      var xy = (long)length.X * (long)length.Y;
-      var irxy = index % xy;
-
-      return new Vector3I((int)(irxy % length.X), (int)(irxy / length.X), (int)(index / xy));
-    }
-    /// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
-    public static long ToUniqueIndex(in Vector3I vector, in Vector3I length) => vector.X + (vector.Y * length.X) + (vector.Z * length.X * length.Y);
-    #endregion "Unique" Index
   }
 }

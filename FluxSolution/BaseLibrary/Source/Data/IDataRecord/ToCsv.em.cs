@@ -14,23 +14,17 @@ namespace Flux
       for (var index = 0; index < source.FieldCount; index++)
       {
         if (index > 0)
-        {
           sb.Append(',');
-        }
 
         if (quotes)
-        {
           sb.Append('"');
-        }
 
         var value = source.GetStringEx(index, nullValue);
 
         sb.Append(value.Contains('"', System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
 
         if (quotes)
-        {
           sb.Append('"');
-        }
       }
 
       return sb.ToString();

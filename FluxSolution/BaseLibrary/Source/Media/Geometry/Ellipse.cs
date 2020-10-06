@@ -116,12 +116,15 @@ namespace Flux.Media.Geometry.Shapes
       => a.Equals(b);
     public static bool operator !=(Ellipse a, Ellipse b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Ellipse other)
       => Angle == other.Angle && Height == other.Height && Width == other.Width;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{nameof(Ellipse)}: {Width.ToString(format, provider)}, {Height.ToString(format, provider)}, {Angle.ToString(format, provider)}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);

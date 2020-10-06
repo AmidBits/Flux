@@ -60,21 +60,7 @@ namespace Flux.Data
     {
     }
 
-    // Operators
-    public static bool operator ==(TsqlDataType left, TsqlDataType right)
-      => left.Equals(right);
-    public static bool operator !=(TsqlDataType left, TsqlDataType right)
-      => !left.Equals(right);
-    // System.IEquatable<SqlDefinitionNullability>
-    public bool Equals(TsqlDataType other)
-      => Name == other.Name && Arguments.SequenceEqual(other.Arguments);
-    // System.Object Overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlDataType dt && this.Equals(dt);
-    public override int GetHashCode()
-      => Name.GetHashCode(System.StringComparison.Ordinal);
-    public override string ToString()
-      => Name;
+    #region Static members
 
     /// <summary>Returns the default argument of the specified dataTypeName.</summary>
     public static string GetDefaultArgument(string dataTypeName, bool beExplicit = false)
@@ -114,7 +100,7 @@ namespace Flux.Data
     public static TsqlDataType Parse(string expression)
     {
       var match = m_reParse.Match(expression);
-      var dataTypeName = match.Groups[@"DataTypeName"].Value.UnquoteTsql();
+      var dataTypeName = match.Groups[@"DataTypeName"].Value.TsqlUnenquote();
       var dataTypeArguments = ToArguments(match.Groups[@"DataTypeArguments"].Value);
       return new TsqlDataType(dataTypeName, dataTypeArguments);
     }
@@ -153,24 +139,23 @@ namespace Flux.Data
       else if (type == typeof(System.Int16)) return Smallint;
       else if (type == typeof(System.Int32)) return Int;
       else if (type == typeof(System.Int64)) return Bigint;
-      else if (type == typeof(System.String)) return Nvarchar;
-      else if (type == typeof(System.SByte)) return Tinyint; // Smallest type it can fit into.
+      else if (type == typeof(System.SByte)) return Smallint; // Smallest type it can fit into.
       else if (type == typeof(System.Single)) return Real;
+      else if (type == typeof(System.String)) return Nvarchar;
       else if (type == typeof(System.UInt16)) return Int; // Smallest type it can fit into.
       else if (type == typeof(System.UInt32)) return Bigint; // Smallest type it can fit into.
       else return SqlVariant; // Hybrid or variant type.
     }
     /// <summary>Returns the T-SQL data type name corresponding to <typeparamref name="T"/>.</summary>
-    public static string NameFromType<T>()
+    public static string NameFromTypeOfT<T>()
         => NameFromType(typeof(T));
     /// <summary>Returns the T-SQL data type name corresponding to the type of <paramref name="value"/>.</summary>
     public static string NameFromValueType(object? value) => value switch
     {
       System.Boolean _ => Bit,
-      System.Byte _ => Smallint,
+      System.Byte _ => Tinyint,
       System.Byte[] _ => Varbinary,
       System.DateTime _ => Datetime,
-      System.DateTimeOffset _ => Datetimeoffset,
       System.Decimal _ => Decimal,
       System.Double _ => Float,
       System.Guid _ => Uniqueidentifier,
@@ -184,10 +169,8 @@ namespace Flux.Data
       System.UInt16 _ => Smallint,
       System.UInt32 _ => Int,
       System.UInt64 _ => Bigint,
-      System.Xml.Linq.XNode _ => Xml,
-      System.Xml.XmlNode _ => Xml,
       System.Object _ => SqlVariant,
-      _ => throw new System.ArgumentOutOfRangeException(nameof(value)),
+      _ => throw new System.ArgumentOutOfRangeException(nameof(value))
     };
 
     /// <summary>Returns the <see cref="System.Data.DbType"/> corresponding to the specified <paramref name="tsqlDataTypeName"/>.</summary>
@@ -224,7 +207,7 @@ namespace Flux.Data
       Varbinary => System.Data.DbType.Binary,
       Varchar => System.Data.DbType.AnsiString,
       Xml => System.Data.DbType.Xml,
-      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName)),
+      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName))
     };
     /// <summary>Returns the <see cref="System.Data.SqlTypes"/> corresponding to the specified <paramref name="tsqlDataTypeName"/>.</summary>
     public static System.Type NameToSqlType(string tsqlDataTypeName) => (tsqlDataTypeName?.ToLower(System.Globalization.CultureInfo.CurrentCulture) ?? throw new System.ArgumentNullException(nameof(tsqlDataTypeName))) switch
@@ -235,7 +218,7 @@ namespace Flux.Data
       Char => typeof(System.Data.SqlTypes.SqlChars),
       Date => typeof(System.Data.SqlTypes.SqlDateTime),
       Datetime => typeof(System.Data.SqlTypes.SqlDateTime),
-      Datetime2 => typeof(System.DateTime),
+      Datetime2 => typeof(System.Data.SqlTypes.SqlDateTime), // Closest fit of the SqlTypes.
       Datetimeoffset => typeof(System.DateTimeOffset),
       Decimal => typeof(System.Data.SqlTypes.SqlDecimal),
       Float => typeof(System.Data.SqlTypes.SqlDouble),
@@ -252,7 +235,7 @@ namespace Flux.Data
       Smallint => typeof(System.Data.SqlTypes.SqlInt16),
       Smallmoney => typeof(System.Data.SqlTypes.SqlMoney),
       Text => typeof(System.Data.SqlTypes.SqlChars),
-      Time => typeof(System.TimeSpan),
+      Time => typeof(System.Data.SqlTypes.SqlDateTime),
       Timestamp => typeof(System.Data.SqlTypes.SqlBinary),
       Tinyint => typeof(System.Data.SqlTypes.SqlByte),
       Uniqueidentifier => typeof(System.Data.SqlTypes.SqlGuid),
@@ -260,7 +243,7 @@ namespace Flux.Data
       Varchar => typeof(System.Data.SqlTypes.SqlChars),
       Xml => typeof(System.Data.SqlTypes.SqlXml),
       SqlVariant => typeof(System.Object),
-      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName)),
+      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName))
     };
     /// <summary>Returns the <see cref="System.Type"/> corresponding to the specified <paramref name="tsqlDataTypeName"/>.</summary>
     public static System.Type NameToType(string tsqlDataTypeName) => (tsqlDataTypeName?.ToLower(System.Globalization.CultureInfo.CurrentCulture) ?? throw new System.ArgumentNullException(nameof(tsqlDataTypeName))) switch
@@ -296,8 +279,26 @@ namespace Flux.Data
       Varbinary => typeof(System.Byte[]),
       Varchar => typeof(System.String),
       Xml => typeof(System.String),
-      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName)),
+      _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName))
     };
+
+    #endregion Static members
+
+    // Operators
+    public static bool operator ==(TsqlDataType left, TsqlDataType right)
+      => left.Equals(right);
+    public static bool operator !=(TsqlDataType left, TsqlDataType right)
+      => !left.Equals(right);
+    // System.IEquatable<SqlDefinitionNullability>
+    public bool Equals(TsqlDataType other)
+      => Name == other.Name && Arguments.SequenceEqual(other.Arguments);
+    // System.Object Overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlDataType o && Equals(o);
+    public override int GetHashCode()
+      => Name.GetHashCode(System.StringComparison.Ordinal);
+    public override string ToString()
+      => Name;
   }
 
   /// <summary>SQL data type name functionality</summary>

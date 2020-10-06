@@ -58,12 +58,14 @@ namespace Flux.Globalization.EnUs
       => a.Equals(b);
     public static bool operator !=(DeaRegistrationNumber a, DeaRegistrationNumber b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(DeaRegistrationNumber other)
       => RegistrantType == other.RegistrantType && RegistrantLastNameOr9 == other.RegistrantLastNameOr9 && Digits == other.Digits && Checksum == other.Checksum && AffixedID == other.AffixedID;
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is DeaRegistrationNumber drn && Equals(drn);
+      => obj is DeaRegistrationNumber o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID).CombineHashDefault();
     public override string? ToString()

@@ -18,7 +18,7 @@ namespace Flux.Text.PhoneticAlgorithm
     private int __pos;
 
     /// <summary>Encodes the given text using the Metaphone algorithm.</summary>
-    public string Encode(System.ReadOnlySpan<char> text)
+    public string EncodePhonetic(System.ReadOnlySpan<char> text)
     {
       _output = new System.Text.StringBuilder();
 

@@ -172,12 +172,15 @@ namespace Flux.Media.Coloring
       => a.Equals(b);
     public static bool operator !=(Rgb a, Rgb b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
       => Alpha == other.Alpha && Red == other.Red && Green == other.Green && Blue == other.Blue;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{Alpha}, {Red}, {Green}, {Blue}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Rgb o && Equals(o);

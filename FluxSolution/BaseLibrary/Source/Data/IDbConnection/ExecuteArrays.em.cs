@@ -14,10 +14,10 @@ namespace Flux
       {
         if (index == 0 && includeNames)
         {
-          yield return idr.GetNames().ToArray();
+          yield return GetNames(idr).ToArray();
         }
 
-        yield return idr.GetValues();
+        yield return GetValues(idr);
       }
     }
   }

@@ -38,7 +38,9 @@ namespace Flux
       {
         source.NextBytes(maxValueBytes);
 
-        if (hasPaddingByte) maxValueBytes[maxIndex] = 0; // Zero out the highest byte, if needed.
+        if (hasPaddingByte)
+          maxValueBytes[maxIndex] = 0; // Zero out the highest byte, if needed.
+
         maxValueBytes[msbIndex] &= maxByteBitMask; // Constrain the random value by masking the most significant byte of the array.
 
         value = new System.Numerics.BigInteger(maxValueBytes);

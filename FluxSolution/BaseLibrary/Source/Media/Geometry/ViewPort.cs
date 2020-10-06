@@ -41,12 +41,15 @@ namespace Flux.Media.Geometry
       => a.Equals(b);
     public static bool operator !=(ViewPort a, ViewPort b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(ViewPort other)
       => ToString() == other.ToString();
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<ViewPort:>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);

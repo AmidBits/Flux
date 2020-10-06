@@ -2,18 +2,22 @@ using System.Linq;
 
 namespace Flux.Data
 {
-  public static partial class ExtensionMethodsData
+  public static partial class Xtensions
   {
     /// System.Data.SqlClient is not in .NetStandard OBVIOUSLY! :)
     /// static System.Reflection.FieldInfo _rowsCopiedField = null;
     //public static int TotalRowsCopied(this System.Data.SqlClient.SqlBulkCopy bulkCopy)
     //  => (int)typeof(System.Data.SqlClient.SqlBulkCopy).GetField(@"_rowsCopied", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance).GetValue(bulkCopy);
 
-    public static string EscapeTsql(this string source) => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("'", "''", System.StringComparison.Ordinal);
-    public static string UnescapeTsql(this string source) => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("''", "'", System.StringComparison.Ordinal);
+    public static string TsqlEscapeSingleQuotes(this string source)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("'", "''", System.StringComparison.Ordinal);
+    public static string TsqlUnescapeSingleQuotes(this string source)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Replace("''", "'", System.StringComparison.Ordinal);
 
-    public static string QuoteTsql(this string source, bool ansi = false) => ansi ? source.Wrap('"', '"') : source.Wrap('[', ']');
-    public static string UnquoteTsql(this string source) => source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source;
+    public static string TsqlEnquote(this string source, bool ansi = false)
+      => ansi ? source.Wrap('"', '"') : source.Wrap('[', ']');
+    public static string TsqlUnenquote(this string source, bool ansi = false)
+      => ansi ? (source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source) : (source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source);
   }
 
   public struct TsqlName
@@ -22,33 +26,33 @@ namespace Flux.Data
     private readonly string[] m_parts;
 
     /// <summary>Returns the sql instance.</summary>
-    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.UnquoteTsql(); }
+    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.TsqlUnenquote(); }
     /// <summary>Returns the sql instance qouted.</summary>
     public string ServerNameQuoted
-      => m_parts[0].QuoteTsql();
+      => m_parts[0].TsqlEnquote();
 
     /// <summary>Returns the database name.</summary>
-    public string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.UnquoteTsql(); }
+    public string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.TsqlUnenquote(); }
     /// <summary>Returns the database name quoted.</summary>
     public string DatabaseNameQuoted
-      => m_parts[1].QuoteTsql();
+      => m_parts[1].TsqlEnquote();
 
     /// <summary>Returns the schema name.</summary>
-    public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.UnquoteTsql(); }
+    public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.TsqlUnenquote(); }
     /// <summary>Returns the schema name quoted.</summary>
     public string SchemaNameQuoted
-      => m_parts[2].QuoteTsql();
+      => m_parts[2].TsqlEnquote();
 
     /// <summary>Returns the object name.</summary>
-    public string ObjectName { get => m_parts[3]; set => m_parts[3] = value.UnquoteTsql(); }
+    public string ObjectName { get => m_parts[3]; set => m_parts[3] = value.TsqlUnenquote(); }
     /// <summary>Returns the object name quoted.</summary>
     public string ObjectNameQuoted
-      => m_parts[3].QuoteTsql();
+      => m_parts[3].TsqlEnquote();
 
     public string QualifiedName(int count)
       => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count)) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
     public string QualifiedNameQuoted(int count)
-      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.QuoteTsql())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
+      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.TsqlEnquote())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
 
     /// <summary></summary>
     public string? ApplicationName { get; set; }
@@ -84,8 +88,10 @@ namespace Flux.Data
           { CsDatabase, DatabaseName },
           { CsTrustedConnection, @"Yes" }
         };
-        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        if (!(ApplicationName is null))
+          csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null))
+          csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }
     }
@@ -102,8 +108,10 @@ namespace Flux.Data
           { CsInitialCatalog, DatabaseName },
           { CsTrustedConnection, @"Yes" }
         };
-        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        if (!(ApplicationName is null))
+          csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null))
+          csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }
     }
@@ -119,15 +127,17 @@ namespace Flux.Data
           { CsInitialCatalog, DatabaseName },
           { CsIntegratedSecurity, @"True" }
         };
-        if (!(ApplicationName is null)) csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null)) csb.Add(CsWorkstationID, WorkstationID);
+        if (!(ApplicationName is null))
+          csb.Add(CsApplicationName, ApplicationName);
+        if (!(WorkstationID is null))
+          csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }
     }
 
     public TsqlName(string serverName, string databaseName, string schemaName, string objectName)
     {
-      m_parts = new string[4] { serverName.UnquoteTsql(), databaseName.UnquoteTsql(), schemaName.UnquoteTsql(), objectName.UnquoteTsql() };
+      m_parts = new string[4] { serverName.TsqlUnenquote(), databaseName.TsqlUnenquote(), schemaName.TsqlUnenquote(), objectName.TsqlUnenquote() };
 
       ApplicationName = Flux.Reflection.AssemblyInfo.EntryAssembly.Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
       WorkstationID = System.Environment.MachineName;
@@ -140,12 +150,8 @@ namespace Flux.Data
       var names = m_reQualifiedNameSplitter.Split(qualifiedName);
 
       if (names.Length >= 1 && names.Length <= 4)
-      {
         if (names.Length < 4)
-        {
-          names = names.Select(n => n.UnquoteTsql()).Prepend(new string[4 - names.Length]).Select(n => n is null ? string.Empty : n).ToArray();
-        }
-      }
+          names = names.Select(n => n.TsqlUnenquote()).Prepend(new string[4 - names.Length]).Select(n => n is null ? string.Empty : n).ToArray();
       else throw new System.ArgumentOutOfRangeException(nameof(qualifiedName), "The name cannot be parsed.");
 
       return new TsqlName(names[0], names[1], names[2], names[3]);
@@ -171,12 +177,14 @@ namespace Flux.Data
       => left.Equals(right);
     public static bool operator !=(TsqlName left, TsqlName right)
       => !left.Equals(right);
+
     // System.IEquatable<SqlName>
     public bool Equals(TsqlName other)
       => ToString() == other.ToString();
+
     // Object overrides
     public override bool Equals(object? obj)
-      => obj is TsqlName n && this.Equals(n);
+      => obj is TsqlName o && Equals(o);
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()

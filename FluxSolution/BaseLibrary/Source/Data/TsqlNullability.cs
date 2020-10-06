@@ -34,20 +34,22 @@ namespace Flux.Data
       return false;
     }
 
-    // System.IEquatable<SqlDefinitionNullability>
-    public bool Equals(TsqlNullability other)
-      => IsNullable == other.IsNullable;
-    // System.Object Overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlNullability ? this.Equals((TsqlNullability)obj) : false;
-    public override int GetHashCode()
-      => IsNullable.GetHashCode();
-    public override string ToString()
-      => IsNullable ? CsNull : CsNotNull;
     // Operators
     public static bool operator ==(TsqlNullability left, TsqlNullability right)
       => left.Equals(right);
     public static bool operator !=(TsqlNullability left, TsqlNullability right)
       => !left.Equals(right);
+
+    // System.IEquatable<SqlDefinitionNullability>
+    public bool Equals(TsqlNullability other)
+      => IsNullable == other.IsNullable;
+
+    // System.Object Overrides
+    public override bool Equals(object? obj)
+      => obj is TsqlNullability o && Equals(o);
+    public override int GetHashCode()
+      => IsNullable.GetHashCode();
+    public override string ToString()
+      => IsNullable ? CsNull : CsNotNull;
   }
 }

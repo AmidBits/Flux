@@ -20,9 +20,7 @@ namespace Flux
       do
       {
         while (idr.Read())
-        {
           yield return idr;
-        }
       }
       while (idr.NextResult());
     }
@@ -43,12 +41,10 @@ namespace Flux
 
       do
       {
-        var dt = idr.GetSchemaTableEx();
+        var dt = GetSchemaTableEx(idr);
 
         while (idr.Read())
-        {
           yield return recordSelector(idr, dt);
-        }
       }
       while (idr.NextResult());
     }

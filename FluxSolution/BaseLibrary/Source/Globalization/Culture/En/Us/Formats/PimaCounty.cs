@@ -107,9 +107,11 @@ namespace Flux.Globalization.EnUs.PimaCounty
       => a.Equals(b);
     public static bool operator !=(StreetAddress a, StreetAddress b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(StreetAddress other)
       => Number == other.Number && Direction == other.Direction && Intersection == other.Intersection && Name == other.Name && Type == other.Type && Unit == other.Unit;
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is StreetAddress o && Equals(o);

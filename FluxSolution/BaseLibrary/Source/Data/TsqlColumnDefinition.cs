@@ -19,8 +19,8 @@ namespace Flux.Data
 
     public TsqlColumnDefinition(string columnName, string dataTypeName, System.Collections.Generic.IEnumerable<string> dataTypeArguments, TsqlNullability nullability)
     {
-      ColumnName = columnName.UnquoteTsql();
-      DataTypeName = dataTypeName.UnquoteTsql();
+      ColumnName = columnName.TsqlUnenquote();
+      DataTypeName = dataTypeName.TsqlUnenquote();
       DataTypeArguments = dataTypeArguments.Select(s => s.ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToString()).ToList();
       Nullability = nullability;
     }
@@ -72,19 +72,21 @@ namespace Flux.Data
     }
 
     public string ToString(bool ansi)
-      => $"{ColumnName.QuoteTsql(ansi)} {DataTypeName.QuoteTsql(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability}";
+      => $"{ColumnName.TsqlEnquote(ansi)} {DataTypeName.TsqlEnquote(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability}";
 
     // Operators
     public static bool operator ==(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => left.Equals(right);
     public static bool operator !=(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => !left.Equals(right);
+
     // System.IEquatable<SqlName>
     public bool Equals(TsqlColumnDefinition other)
       => ColumnName == other.ColumnName && DataTypeName == other.DataTypeName && DataTypeArguments == other.DataTypeArguments && Nullability == other.Nullability;
+
     // System.Object Overrides
     public override bool Equals(object? obj)
-      => obj is TsqlColumnDefinition cd && this.Equals(cd);
+      => obj is TsqlColumnDefinition o && Equals(o);
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()

@@ -35,12 +35,15 @@ namespace Flux.Media.Geometry.Shapes
       => a.Equals(b);
     public static bool operator !=(TestResult a, TestResult b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(TestResult other)
       => Outcome == other.Outcome && Point!.HasValue == other.Point!.HasValue && Point!.Value == other.Point!.Value;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{Outcome}{(Point!.HasValue ? $", {Point!.Value.ToString(format, provider)}" : string.Empty)}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is TestResult o && Equals(o);

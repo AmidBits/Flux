@@ -77,12 +77,15 @@ namespace Flux.Media.Coloring
       => a.Equals(b);
     public static bool operator !=(Hsi a, Hsi b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsi other)
       => Alpha == other.Alpha && Hue == other.Hue && Saturation == other.Saturation && Intensity == other.Intensity;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{Alpha}, {Hue}, {Saturation}, {Intensity}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Hsi o && Equals(o);

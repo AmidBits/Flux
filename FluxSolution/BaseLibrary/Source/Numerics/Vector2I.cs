@@ -221,6 +221,14 @@ namespace Flux.Numerics
       => new Vector2I(v.X - value, v.Y - value);
     #endregion Static members
 
+    #region "Unique" Index
+    /// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
+    public static Vector2I FromUniqueIndex(long index, in Vector2I size) => unchecked(new Vector2I((int)(index % size.X), (int)(index / size.X)));
+
+    /// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
+    public static long ToUniqueIndex(in Vector3I vector, in Vector2I size) => vector.X + (vector.Y * size.X);
+    #endregion "Unique" Index
+
     #region Overloaded Operators
     public static Vector2I operator -(in Vector2I v) => Negate(v);
 
@@ -265,9 +273,11 @@ namespace Flux.Numerics
     // System.IEquatable<Vector2>
     public bool Equals(Vector2I other)
       => X == other.X && Y == other.Y;
+
     // System.IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{X.ToString(format, formatProvider)}, {Y.ToString(format, formatProvider)}>";
+
     // Overrides
     public override bool Equals(object? obj)
        => obj is Vector2I o && Equals(o);
@@ -275,13 +285,5 @@ namespace Flux.Numerics
       => System.Linq.Enumerable.Empty<object>().Append(X, Y).CombineHashDefault();
     public override string ToString()
       => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
-
-    #region "Unique" Index
-    /// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
-    public static Vector2I FromUniqueIndex(long index, in Vector2I size) => unchecked(new Vector2I((int)(index % size.X), (int)(index / size.X)));
-
-    /// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
-    public static long ToUniqueIndex(in Vector3I vector, in Vector2I size) => vector.X + (vector.Y * size.X);
-    #endregion "Unique" Index
   }
 }

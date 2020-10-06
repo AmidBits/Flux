@@ -3,7 +3,8 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Results in a string array of all column values in the current row.</summary>
-    public static string GetString(this System.Data.IDataRecord source, int index, string nullString) => (source ?? throw new System.ArgumentNullException(nameof(source))).IsDBNull(index) ? nullString : source.GetValue(index).ToString() ?? nullString;
+    public static string GetString(this System.Data.IDataRecord source, int index, string nullString)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).IsDBNull(index) ? nullString : source.GetValue(index).ToString() ?? nullString;
 
     /// <summary>Results in a string of a value in the current row. This version will also format some data types so that they can be appropriately reconstituted.</summary>
     public static string GetStringEx(this System.Data.IDataRecord source, int index, string nullString) => ((source ?? throw new System.ArgumentNullException(nameof(source))).GetValue(index)) switch
@@ -22,9 +23,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       for (var index = 0; index < source.FieldCount; index++)
-      {
-        yield return source.GetString(index, nullString);
-      }
+        yield return GetString(source, index, nullString);
     }
   }
 }

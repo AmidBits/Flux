@@ -250,9 +250,11 @@ namespace Flux.Numerics
       => a.Equals(b);
     public static bool operator !=(Vector3D a, Vector3D b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Vector3D other)
       => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
     {
@@ -261,9 +263,10 @@ namespace Flux.Numerics
 
       return $"<{X.ToString(format, provider)}, {Y.ToString(format, provider)}, {Z.ToString(format, provider)}, {W.ToString(format, provider)}>";
     }
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Vector3D && Equals(obj);
+      => obj is Vector3D o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
     public override string ToString()

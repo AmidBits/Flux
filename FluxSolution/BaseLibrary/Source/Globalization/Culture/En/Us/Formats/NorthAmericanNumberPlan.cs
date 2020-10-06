@@ -81,12 +81,14 @@ namespace Flux.Globalization.EnUs
       => a.Equals(b);
     public static bool operator !=(NorthAmericanNumberingPlan a, NorthAmericanNumberingPlan b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(NorthAmericanNumberingPlan other)
       => CC == other.CC && NPA == other.NPA && NXX == other.NXX && XXXX == other.XXXX;
+
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is NorthAmericanNumberingPlan nanp && Equals(nanp);
+      => obj is NorthAmericanNumberingPlan o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(CC, NPA, NXX, XXXX).CombineHashDefault();
     public override string? ToString()

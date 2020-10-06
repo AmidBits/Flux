@@ -14,9 +14,7 @@ namespace Flux
     public static System.Numerics.BigInteger Sqrt(this System.Numerics.BigInteger source)
     {
       if (source == 0)
-      {
         return 0;
-      }
 
       if (source > 0)
       {
@@ -27,7 +25,6 @@ namespace Flux
         while (!source.IsSqrt(root))
         {
           root += (source / root);
-
           root >>= 1;
         }
 
@@ -45,9 +42,7 @@ namespace Flux
     public static System.Numerics.BigInteger SqrtByJavaAdoption(this System.Numerics.BigInteger source)
     {
       if (source == 0)
-      {
         return 0;
-      }
 
       if (source > System.Numerics.BigInteger.Zero)
       {
@@ -58,7 +53,6 @@ namespace Flux
         while (!source.IsSqrt(root))
         {
           root += source / root;
-
           root /= 2;
         }
 

@@ -34,10 +34,10 @@ namespace Flux
 
     /// <summary>Removes (as in deletes) all DataColumn objects matching the specified names.</summary>
     public static void RemoveAllColumnsEqualTo(this System.Data.DataTable source, params string[] columnNames)
-      => source.GetColumnNames().Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
+      => GetColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
     /// <summary>Removes (as in deletes) all DataColumn objects NOT matching the specified names.</summary>
     public static void RemoveAllColumnsNotEqualTo(this System.Data.DataTable source, params string[] columnNames)
-      => source.GetColumnNames().Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
+      => GetColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
 
     /// <summary>Removes (as in deletes) all DataRow objects matching the specified filter expression.</summary>
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>

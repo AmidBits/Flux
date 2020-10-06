@@ -12,9 +12,7 @@ namespace Flux
 
       var columnWidths = new int[source.Columns.Count];
       for (var columnIndex = 0; columnIndex < columnWidths.Length; columnIndex++)
-      {
         columnWidths[columnIndex] = source.Rows.Cast<System.Data.DataRow>().Max(dr => dr[columnIndex].ToString()?.Length ?? 0);
-      }
 
       var format = string.Join(horizontalSeparator, columnWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
@@ -24,9 +22,7 @@ namespace Flux
       for (var row = 0; row < source.Rows.Count; row++)
       {
         if (verticalSeparator != '\0')
-        {
           sb.AppendLine(string.Join(horizontalSeparator, columnWidths.Select((width, index) => new string(verticalSeparator, width))));
-        }
 
         sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, format, source.Rows[row].ItemArray);
         sb.AppendLine();

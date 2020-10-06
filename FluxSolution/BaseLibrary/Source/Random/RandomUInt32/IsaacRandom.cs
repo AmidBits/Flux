@@ -135,10 +135,20 @@ namespace Flux.Random
     }
     #endregion
 
-    public IsaacRandom(string seed) => Seed(seed, true);
+    public IsaacRandom(string seed)
+      => Seed(seed, true);
     [System.CLSCompliant(false)]
-    public IsaacRandom(ulong seed) : this(seed.ToString("x2", System.Globalization.CultureInfo.InvariantCulture)) { }
-    public IsaacRandom(long seed) : this(unchecked((ulong)seed)) { }
-    public IsaacRandom() : this(System.Diagnostics.Stopwatch.GetTimestamp()) { }
+    public IsaacRandom(ulong seed)
+      : this(seed.ToString("x2", System.Globalization.CultureInfo.InvariantCulture))
+    {
+    }
+    public IsaacRandom(long seed)
+      : this(unchecked((ulong)seed))
+    {
+    }
+    public IsaacRandom()
+      : this(System.Diagnostics.Stopwatch.GetTimestamp())
+    {
+    }
   }
 }

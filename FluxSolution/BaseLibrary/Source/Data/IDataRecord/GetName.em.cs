@@ -13,9 +13,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       for (var index = 0; index < source.FieldCount; index++)
-      {
         yield return source.GetName(index);
-      }
     }
     /// <summary>Results in a string array of all column names.</summary>
     public static System.Collections.Generic.IEnumerable<string> GetNamesEx(this System.Data.IDataRecord source)
@@ -23,9 +21,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       for (var index = 0; index < source.FieldCount; index++)
-      {
         yield return source.GetNameEx(index);
-      }
     }
   }
 }

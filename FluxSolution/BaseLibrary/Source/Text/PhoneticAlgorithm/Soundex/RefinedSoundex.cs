@@ -6,7 +6,7 @@ namespace Flux
     /// <returns>Returns a variable length refined soundex code.</returns>
     /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
     public static string EncodeRefinedSoundex(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.RefinedSoundex().Encode(source);
+      => new Text.PhoneticAlgorithm.RefinedSoundex().EncodePhonetic(source);
   }
 
   namespace Text.PhoneticAlgorithm
@@ -21,7 +21,7 @@ namespace Flux
 
       public int CodeLength { get; set; } = 10;
 
-      public string Encode(System.ReadOnlySpan<char> name)
+      public string EncodePhonetic(System.ReadOnlySpan<char> name)
       {
         var refinedSoundex = new System.Text.StringBuilder(20);
 

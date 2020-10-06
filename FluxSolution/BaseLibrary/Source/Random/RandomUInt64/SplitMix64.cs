@@ -8,9 +8,16 @@ namespace Flux.Random
     private ulong m_state;
 
     [System.CLSCompliant(false)]
-    public SplitMix64(ulong seed) => m_state = seed;
-    public SplitMix64(long seed) : this(unchecked((ulong)seed)) { }
-    public SplitMix64() : this(System.Diagnostics.Stopwatch.GetTimestamp()) { }
+    public SplitMix64(ulong seed)
+      => m_state = seed;
+    public SplitMix64(long seed)
+      : this(unchecked((ulong)seed))
+    {
+    }
+    public SplitMix64()
+      : this(System.Diagnostics.Stopwatch.GetTimestamp())
+    {
+    }
 
     internal override ulong SampleUInt64()
     {

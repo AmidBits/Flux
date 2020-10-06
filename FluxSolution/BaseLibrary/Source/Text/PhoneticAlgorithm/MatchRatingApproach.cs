@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>The match rating approach (MRA) is a phonetic algorithm developed by Western Airlines in 1977 for the indexation and comparison of homophonous names.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Match_rating_approach"/>
     public static string EncodeMatchRatingApproach(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.MatchRatingApproach().Encode(source);
+      => new Text.PhoneticAlgorithm.MatchRatingApproach().EncodePhonetic(source);
   }
 
   namespace Text.PhoneticAlgorithm
@@ -15,7 +15,7 @@ namespace Flux
     public class MatchRatingApproach
       : IPhoneticEncoder
     {
-      public string Encode(System.ReadOnlySpan<char> name)
+      public string EncodePhonetic(System.ReadOnlySpan<char> name)
       {
         var soundex = new System.Text.StringBuilder();
 

@@ -15,12 +15,15 @@ namespace Flux.Media.Geometry
       => a.Equals(b);
     public static bool operator !=(Size3 a, Size3 b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Size3 other)
       => Width == other.Width && Height == other.Height && Depth == other.Depth;
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{nameof(Size3)}: {Width}, {Height}, {Depth}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Size3 o && Equals(o);

@@ -17,8 +17,14 @@ namespace Flux.Random
       m_state2 = sm64.SampleUInt64();
       m_state3 = sm64.SampleUInt64();
     }
-    public Xoshiro256P(long seed) : this(unchecked((ulong)seed)) { }
-    public Xoshiro256P() : this(System.Diagnostics.Stopwatch.GetTimestamp()) { }
+    public Xoshiro256P(long seed)
+      : this(unchecked((ulong)seed))
+    {
+    }
+    public Xoshiro256P()
+      : this(System.Diagnostics.Stopwatch.GetTimestamp())
+    {
+    }
 
     internal override ulong SampleUInt64()
     {

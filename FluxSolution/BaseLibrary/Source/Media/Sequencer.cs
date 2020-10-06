@@ -15,7 +15,10 @@ namespace Flux.Media.Sequencer
       m_beatsPerBar = beatsPerBar;
       m_noteValuePerBeat = noteValuePerBeat;
     }
-    public MeterEvent() : this(4, 4) { }
+    public MeterEvent()
+      : this(4, 4)
+    {
+    }
   }
 
   // http://www.petesqbsite.com/sections/express/issue20/midifilespart3.html
@@ -39,6 +42,9 @@ namespace Flux.Media.Sequencer
       m_beatsPerMinute = beatsPerMinute;
       m_pulsesPerQuarterNote = pulsesPerQuarterNote;
     }
-    public TempoEvent() : this(120, 480) { }
+    public TempoEvent()
+      : this(120, 480)
+    {
+    }
   }
 }

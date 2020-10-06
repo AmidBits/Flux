@@ -8,9 +8,7 @@ namespace Flux
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       for (var index = 0; index < source.FieldCount; index++)
-      {
         yield return resultSelector(source, index);
-      }
     }
   }
 }

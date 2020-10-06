@@ -722,6 +722,7 @@ namespace Flux.Media.Geometry.Shapes
       => a.Equals(b);
     public static bool operator !=(Polygon a, Polygon b)
       => !a.Equals(b);
+
     // IEquatable
     public bool Equals(Polygon other)
     {
@@ -734,9 +735,11 @@ namespace Flux.Media.Geometry.Shapes
 
       return true;
     }
+
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{nameof(Polygon)}: {string.Join(@", ", Vectors.Select(v => v.ToString(format, provider)))}>";
+
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
