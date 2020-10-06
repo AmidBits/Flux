@@ -135,7 +135,7 @@ namespace ConsoleApp
 
       System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
 
-      System.Console.WriteLine(System.Environment.NewLine + @"Press any key to exit...");
+      System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
       System.Console.ReadKey();
     }
   }
