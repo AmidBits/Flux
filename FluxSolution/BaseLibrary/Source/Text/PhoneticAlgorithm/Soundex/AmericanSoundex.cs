@@ -30,9 +30,9 @@ namespace Flux
 
         for (var index = 0; index < name.Length; index++)
         {
-          if (char.ToLower(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'a' && letter <= 'z')
+          if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
           {
-            var code = LetterCodeMap[letter - 'a'];
+            var code = LetterCodeMap[letter - 'A'];
 
             if (soundex.Length == 0)
             {
@@ -46,7 +46,7 @@ namespace Flux
               lastUsedCode = code;
             }
 
-            wasLastLetterHW = letter == 'h' || letter == 'w';
+            wasLastLetterHW = letter == 'H' || letter == 'W';
           }
         }
 

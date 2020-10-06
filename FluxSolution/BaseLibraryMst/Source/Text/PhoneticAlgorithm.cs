@@ -5,7 +5,27 @@ namespace Text
 {
 	[TestClass]
 	public class PhoneticAlgorithm
-  {
+	{
+		[TestMethod]
+		public void AmericanSoundex_Default()
+		{
+			Assert.AreEqual("S620", new Flux.Text.PhoneticAlgorithm.AmericanSoundex().EncodePhonetic("Señor Hugo"));
+		}
+
+		[TestMethod]
+		public void AmericanSoundex_WikiSamples()
+		{
+			var soundex = new Flux.Text.PhoneticAlgorithm.AmericanSoundex();
+
+			Assert.AreEqual("R163", soundex.EncodePhonetic("Robert"));
+			Assert.AreEqual("R163", soundex.EncodePhonetic("Rupert"));
+			Assert.AreEqual("R150", soundex.EncodePhonetic("Rubin"));
+			Assert.AreEqual("A261", soundex.EncodePhonetic("Ashcraft"));
+			Assert.AreEqual("A261", soundex.EncodePhonetic("Ashcroft"));
+			Assert.AreEqual("T522", soundex.EncodePhonetic("Tymczak"));
+			Assert.AreEqual("P236", soundex.EncodePhonetic("Pfister"));
+		}
+
 		[TestMethod]
 		public void Metaphone_Default()
 		{
@@ -67,26 +87,6 @@ namespace Text
 			Assert.AreEqual("L7081096", refinedSoundex.EncodePhonetic("Lombard"));
 			Assert.AreEqual("N807608", refinedSoundex.EncodePhonetic("Nolton"));
 			Assert.AreEqual("N807608", refinedSoundex.EncodePhonetic("Noulton"));
-		}
-
-    [TestMethod]
-		public void Soundex_Default()
-		{
-			Assert.AreEqual("S620", new Flux.Text.PhoneticAlgorithm.AmericanSoundex().EncodePhonetic("Señor Hugo"));
-		}
-
-		[TestMethod]
-		public void Soundex_WikiSamples()
-		{
-			var soundex = new Flux.Text.PhoneticAlgorithm.AmericanSoundex();
-
-			Assert.AreEqual("R163", soundex.EncodePhonetic("Robert"));
-			Assert.AreEqual("R163", soundex.EncodePhonetic("Rupert"));
-			Assert.AreEqual("R150", soundex.EncodePhonetic("Rubin"));
-			Assert.AreEqual("A261", soundex.EncodePhonetic("Ashcraft"));
-			Assert.AreEqual("A261", soundex.EncodePhonetic("Ashcroft"));
-			Assert.AreEqual("T522", soundex.EncodePhonetic("Tymczak"));
-			Assert.AreEqual("P236", soundex.EncodePhonetic("Pfister"));
 		}
 	}
 }
