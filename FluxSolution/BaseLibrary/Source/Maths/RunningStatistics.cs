@@ -208,7 +208,7 @@
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is VersionEx o && Equals(o);
+      => obj is VersionX o && Equals(o);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4).CombineHashDefault();
     public override string? ToString()

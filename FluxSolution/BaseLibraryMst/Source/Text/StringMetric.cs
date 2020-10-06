@@ -8,9 +8,9 @@ namespace Text
     readonly string source = "Senor Hugo";
     readonly string target = "señor hugo";
 
-    readonly System.Collections.Generic.IEqualityComparer<char> comparerIgnoreCase = Flux.StringComparerEx.CurrentCultureIgnoreCase;
-    readonly System.Collections.Generic.IEqualityComparer<char> comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
-    readonly System.Collections.Generic.IEqualityComparer<char> comparerNone = Flux.StringComparerEx.Ordinal;
+    readonly System.Collections.Generic.IEqualityComparer<char> comparerIgnoreCase = Flux.StringComparerX.CurrentCultureIgnoreCase;
+    readonly System.Collections.Generic.IEqualityComparer<char> comparerIgnoreNonSpace = Flux.StringComparerX.CurrentCultureIgnoreNonSpace;
+    readonly System.Collections.Generic.IEqualityComparer<char> comparerNone = Flux.StringComparerX.Ordinal;
 
     [TestMethod]
     public void DamerauLevenstein_Default()

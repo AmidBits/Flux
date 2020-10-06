@@ -15,7 +15,7 @@ namespace ConsoleApp
 
       //var line = "1,\"00704\",\"STANDARD\"\"\",\"PARC PARQUE\",\"PR\",\"NOT ACCEPTABLE\",17.96,-66.22,0.38,-0.87,0.30,\"NA\",\"US\",\"Parc Parque, PR\",\"NA - US - PR - PARC PARQUE\",\"false\",,,,";
       ////var line = "\"\"\"A\",\"\"\"B\"\"D\"\"\",c,\"D\"\"\"";
-      //var array = line.ParseCsv(',');
+      //var array = line.ParseCsvLine(',');
       //System.Console.WriteLine(string.Join("|", array));
 
       //using var dataReader = new Flux.Resources.Scrape.ZipCodes().GetDataReader(Flux.Resources.Scrape.ZipCodes.LocalUri);
@@ -106,7 +106,7 @@ namespace ConsoleApp
         }
       }
       */
-      
+
       //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
@@ -124,6 +124,8 @@ namespace ConsoleApp
       //System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+
+      
     }
 
     static void Main(string[] args)

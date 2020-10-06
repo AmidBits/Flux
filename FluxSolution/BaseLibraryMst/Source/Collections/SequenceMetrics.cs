@@ -18,12 +18,12 @@ namespace Collections.Generic
     string m_text3b = "ShaneTest2";
 
 
-    Flux.StringComparerEx m_comparisonOrdinal = Flux.StringComparerEx.Ordinal;
-    Flux.StringComparerEx m_comparisonOrdinalIgnoreCase = Flux.StringComparerEx.OrdinalIgnoreCase;
+    Flux.StringComparerX m_comparisonOrdinal = Flux.StringComparerX.Ordinal;
+    Flux.StringComparerX m_comparisonOrdinalIgnoreCase = Flux.StringComparerX.OrdinalIgnoreCase;
 
-    Flux.StringComparerEx m_comparableIgnoreNonSpace = new Flux.StringComparerEx(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
+    Flux.StringComparerX m_comparableIgnoreNonSpace = new Flux.StringComparerX(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
 
-    Flux.StringComparerEx m_comparerDoNotIgnoreCase = Flux.StringComparerEx.CurrentCulture;
+    Flux.StringComparerX m_comparerDoNotIgnoreCase = Flux.StringComparerX.CurrentCulture;
 
     [TestMethod]
     public void DamerauLevenshteinDistance()

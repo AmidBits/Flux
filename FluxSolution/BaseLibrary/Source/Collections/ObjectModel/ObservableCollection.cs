@@ -1,10 +1,9 @@
-
 using System.Linq;
 
 namespace Flux
 {
   /// <summary>An ObservableCollection class with added functionality for items PropertyChanged causing OnCollectionChanged to be fired when item fields/properties are changed.</summary>
-  public class ObservableCollectionEx<T>
+  public class ObservableCollectionX<T>
     : System.Collections.ObjectModel.ObservableCollection<T>
     where T : System.ComponentModel.INotifyPropertyChanged
   {
@@ -54,7 +53,7 @@ namespace Flux
     /// <summary>Event handler hooked to all items PropertyChanged.</summary>
     private void OnItemPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      OnPropertyChanged(new PropertyChangedExEventArgs(e.PropertyName, sender));
+      OnPropertyChanged(new PropertyChangedEventArgsX(e.PropertyName, sender));
     }
   }
 }
