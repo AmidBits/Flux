@@ -6,7 +6,7 @@ namespace Flux.Probability
   {
     public static IDiscreteDistribution<int> Distribution(int zero, int one)
     {
-      if (zero < 0 || one < 0 || zero == 0 && one == 0) throw new System.ArgumentException();
+      if (zero < 0 || one < 0 || zero == 0 && one == 0) throw new System.ArgumentException(@"Both zero and one must be greater than 0.");
  
       if (zero == 0) return Singleton<int>.Distribution(1);
       if (one == 0) return Singleton<int>.Distribution(0);

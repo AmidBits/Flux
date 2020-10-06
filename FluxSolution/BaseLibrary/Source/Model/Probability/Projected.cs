@@ -11,6 +11,8 @@ namespace Flux.Probability
 
     public static IDiscreteDistribution<R> Distribution(IDiscreteDistribution<A> underlying, System.Func<A, R> projection)
     {
+      if (underlying is null) throw new System.ArgumentNullException(nameof(underlying));
+
       var result = new Projected<A, R>(underlying, projection);
       if (result.Support().Count() == 1)
         return Singleton<R>.Distribution(result.Support().First());
