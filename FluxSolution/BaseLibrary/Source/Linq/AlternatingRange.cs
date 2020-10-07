@@ -36,60 +36,7 @@ namespace Flux
           break;
       }
     }
-    public static System.Collections.Generic.IEnumerable<decimal> AlternatingRange(decimal mean, int count, decimal step, AlternatingRangeDirection direction)
-    {
-      switch (direction)
-      {
-        case AlternatingRangeDirection.AwayFromMean:
-          for (var index = 1; index <= count; index++)
-          {
-            yield return mean;
 
-            mean += step * index;
-            step *= -1;
-          }
-          break;
-        case AlternatingRangeDirection.TowardsMean:
-          if ((count & 1) == 1) step *= -1;
-          mean += step * (count / 2);
-
-          for (var index = count - 1; index >= 0; index--)
-          {
-            yield return mean;
-
-            mean -= step * index;
-            step *= -1;
-          }
-          break;
-      }
-    }
-    public static System.Collections.Generic.IEnumerable<double> AlternatingRange(double mean, int count, double step, AlternatingRangeDirection direction)
-    {
-      switch (direction)
-      {
-        case AlternatingRangeDirection.AwayFromMean:
-          for (var index = 1; index <= count; index++)
-          {
-            yield return mean;
-
-            mean += step * index;
-            step *= -1;
-          }
-          break;
-        case AlternatingRangeDirection.TowardsMean:
-          if ((count & 1) == 1) step *= -1;
-          mean += step * (count / 2);
-
-          for (var index = count - 1; index >= 0; index--)
-          {
-            yield return mean;
-
-            mean -= step * index;
-            step *= -1;
-          }
-          break;
-      }
-    }
     public static System.Collections.Generic.IEnumerable<int> AlternatingRange(int mean, int count, int step, AlternatingRangeDirection direction)
     {
       switch (direction)
@@ -144,7 +91,63 @@ namespace Flux
           break;
       }
     }
+
+    public static System.Collections.Generic.IEnumerable<double> AlternatingRange(double mean, int count, double step, AlternatingRangeDirection direction)
+    {
+      switch (direction)
+      {
+        case AlternatingRangeDirection.AwayFromMean:
+          for (var index = 1; index <= count; index++)
+          {
+            yield return mean;
+
+            mean += step * index;
+            step *= -1;
+          }
+          break;
+        case AlternatingRangeDirection.TowardsMean:
+          if ((count & 1) == 1) step *= -1;
+          mean += step * (count / 2);
+
+          for (var index = count - 1; index >= 0; index--)
+          {
+            yield return mean;
+
+            mean -= step * index;
+            step *= -1;
+          }
+          break;
+      }
+    }
     public static System.Collections.Generic.IEnumerable<float> AlternatingRange(float mean, int count, float step, AlternatingRangeDirection direction)
+    {
+      switch (direction)
+      {
+        case AlternatingRangeDirection.AwayFromMean:
+          for (var index = 1; index <= count; index++)
+          {
+            yield return mean;
+
+            mean += step * index;
+            step *= -1;
+          }
+          break;
+        case AlternatingRangeDirection.TowardsMean:
+          if ((count & 1) == 1) step *= -1;
+          mean += step * (count / 2);
+
+          for (var index = count - 1; index >= 0; index--)
+          {
+            yield return mean;
+
+            mean -= step * index;
+            step *= -1;
+          }
+          break;
+      }
+    }
+
+    public static System.Collections.Generic.IEnumerable<decimal> AlternatingRange(decimal mean, int count, decimal step, AlternatingRangeDirection direction)
     {
       switch (direction)
       {

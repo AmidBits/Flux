@@ -12,16 +12,24 @@ namespace Flux
       for (var value = start; count > 0; count--, value += step)
         yield return value;
     }
+
     public static System.Collections.Generic.IEnumerable<decimal> Range(decimal start, decimal count, decimal step)
     {
       for (var value = start; count > 0; count--, value += step)
         yield return value;
     }
+
     public static System.Collections.Generic.IEnumerable<double> Range(double start, double count, double step)
     {
       for (var value = start; count > 0; count--, value += step)
         yield return value;
     }
+    public static System.Collections.Generic.IEnumerable<float> Range(float start, float count, float step)
+    {
+      for (var value = start; count > 0; count--, value += step)
+        yield return value;
+    }
+
     public static System.Collections.Generic.IEnumerable<int> Range(int start, int count, int step)
     {
       for (var value = start; count > 0; count--, value += step)
@@ -32,11 +40,7 @@ namespace Flux
       for (var value = start; count > 0; count--, value += step)
         yield return value;
     }
-    public static System.Collections.Generic.IEnumerable<float> Range(float start, float count, float step)
-    {
-      for (var value = start; count > 0; count--, value += step)
-        yield return value;
-    }
+
     [System.CLSCompliant(false)]
     public static System.Collections.Generic.IEnumerable<uint> Range(uint start, uint count, uint step)
     {
