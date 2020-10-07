@@ -8,6 +8,47 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var bc = new Flux.Model.Game.BattleShip.BattleshipCompetition(new Flux.Model.Game.BattleShip.Dreadnought(), new Flux.Model.Game.BattleShip.Dreadnought(), new TimeSpan(0, 0, 10), 1, true, new System.Drawing.Size(10, 10), new int[] { 2, 3, 3, 4, 5 });
+      //var cr = bc.RunCompetition();
+
+      //foreach (var kvp in cr)
+      //  System.Console.WriteLine(kvp);
+
+      var grid = new System.Drawing.Size(10, 10);
+
+      System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = new System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship>();
+
+      foreach (var size in new int[] { 2, 3, 3, 4, 5 })
+      {
+        do
+        {
+          var ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
+        }
+        while (!ship.IsValid(grid));
+        if (ships.Count == 0)
+      }
+
+
+      var d = new Flux.Model.Game.BattleShip.Dreadnought();
+      d.NewGame(new System.Drawing.Size(10, 10), new TimeSpan(0, 0, 10), new int[] { 2, 3, 3, 4, 5 });
+      //foreach (var ship in d.PlaceShips())
+      //  System.Console.WriteLine(ship);
+      //d.ShotMiss(new System.Drawing.Point(4, 4));
+      //d.OpponentShot(new System.Drawing.Point(1, 1));
+      //d.OpponentShot(new System.Drawing.Point(2, 2));
+      ((Flux.Model.Game.BattleShip.Defense)d.defense).print_placement(ships);
+      //System.Console.WriteLine(d.GetShot());
+
+      //System.Console.WriteLine((((Flux.Model.Game.BattleShip.Offense)d.offense).state.state).ToConsoleString());
+      //var g = new int[10, 10];
+      //System.Array.Clear(g, 0, 100);
+
+      //var g2 = new Flux.Model.Grid2Fixed<int>(10, 10);
+      //foreach (var p in g2.AdjacentOrthogonal(new System.Drawing.Point(0, 5)))
+      //{
+      //  System.Console.WriteLine(p);
+      //}
+
       //var s = "These are U+0041, U+0043, U+10FFFF, \\u0042 and \\u0044 all in all.";
       //Flux.Text.UnicodeNotation.TryParse(s, out var un);
       //Flux.Text.UnicodeStringLiteral.TryParse(s, out var usl);

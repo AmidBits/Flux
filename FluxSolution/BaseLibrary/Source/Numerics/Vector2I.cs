@@ -226,7 +226,7 @@ namespace Flux.Numerics
     public static Vector2I FromUniqueIndex(long index, in Vector2I size) => unchecked(new Vector2I((int)(index % size.X), (int)(index / size.X)));
 
     /// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
-    public static long ToUniqueIndex(in Vector3I vector, in Vector2I size) => vector.X + (vector.Y * size.X);
+    public static long ToUniqueIndex(in Vector2I vector, in Vector2I size) => vector.X + (vector.Y * size.X);
     #endregion "Unique" Index
 
     #region Overloaded Operators
