@@ -6,37 +6,116 @@ namespace ConsoleApp
 {
   class Program
   {
+    public static bool AreShipsAdjacent(Flux.Model.Game.BattleShip.Ship s, Flux.Model.Game.BattleShip.Ship t)
+    {
+      foreach (System.Drawing.Point p in s.GetAllLocations())
+      {
+        if (t.IsAt(new System.Drawing.Point(p.X + 1, p.Y + 0))) return true;
+        if (t.IsAt(new System.Drawing.Point(p.X + -1, p.Y + 0))) return true;
+        if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + 1))) return true;
+        if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
+      }
+      return false;
+    }
+    public static void ConsolePlacement(System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, System.Drawing.Size size)
+    {
+      System.Console.SetCursorPosition(0, 3);
+
+      var adj = 0;
+      for (var i = 0; i < ships.Count; i++)
+      {
+        Flux.Model.Game.BattleShip.Ship s = ships[i];
+        for (var j = i + 1; j < ships.Count; j++)
+        {
+          Flux.Model.Game.BattleShip.Ship t = ships[j];
+          if (AreShipsAdjacent(s, t)) adj++;
+        }
+      }
+
+      var placement = new char[size.Height, size.Width];
+      for (int x = 0; x < size.Width; x++)
+      {
+        for (int y = 0; y < size.Height; y++)
+        {
+          placement[y, x] = '.';
+        }
+      }
+      foreach (Flux.Model.Game.BattleShip.Ship s in ships)
+      {
+        foreach (System.Drawing.Point p in s.GetAllLocations())
+        {
+          placement[p.Y, p.X] = (char)('0' + s.Length);
+        }
+      }
+      Console.WriteLine("placement {0}:", adj);
+      //for (int y = 0; y < size.Height; y++)
+      //{
+      //  Console.Write("  ");
+      //  for (int x = 0; x < size.Width; x++)
+      //  {
+      //    Console.Write(placement[y, x]);
+      //  }
+      //  Console.WriteLine();
+      //}
+      System.Console.WriteLine(placement.ToConsoleString(true, '\0', '\0'));
+    }
+
     private static void TimedMain(string[] args)
     {
-      var bc = new Flux.Model.Game.BattleShip.BattleshipCompetition(new Flux.Model.Game.BattleShip.Dreadnought(), new Flux.Model.Game.BattleShip.Dreadnought(), new TimeSpan(0, 0, 10), 1, true, new System.Drawing.Size(10, 10), new int[] { 2, 3, 3, 4, 5 });
-      //var cr = bc.RunCompetition();
+      var nums = new int[] { 1,2,3 };
 
-      //foreach (var kvp in cr)
-      //  System.Console.WriteLine(kvp);
+      foreach (var num in nums.Permute())
+        System.Console.WriteLine($"{string.Join('|', num)}");
 
-      var grid = new System.Drawing.Size(10, 10);
+      return;
+
+      var grid = new System.Drawing.Size(10, 5);
 
       System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = new System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship>();
 
       foreach (var size in new int[] { 2, 3, 3, 4, 5 })
       {
+        Flux.Model.Game.BattleShip.Ship ship;
+
         do
         {
-          var ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
+          ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
         }
-        while (!ship.IsValid(grid));
-        if (ships.Count == 0)
+        while (!ship.IsValid(grid) || ships.Any(s => ship.ConflictsWith(s)));
+
+        ships.Add(ship);
       }
 
+      while (true)
+      {
+        ConsolePlacement(ships, grid);
 
-      var d = new Flux.Model.Game.BattleShip.Dreadnought();
-      d.NewGame(new System.Drawing.Size(10, 10), new TimeSpan(0, 0, 10), new int[] { 2, 3, 3, 4, 5 });
+        System.Console.Write("X=");
+        var x = System.Console.ReadKey().KeyChar;
+        if (!char.IsDigit(x)) break;
+        System.Console.Write(", Y=");
+        var y = System.Console.ReadKey().KeyChar;
+        if (!char.IsDigit(y)) break;
+
+        System.Console.WriteLine();
+
+        var p = new System.Drawing.Point(y - '0', x - '0');
+        System.Console.WriteLine($"@{p}");
+
+        if (ships.Any(ship => ship.IsAt(p)) && ships.Single(ship => ship.IsAt(p)) is var ship)
+          System.Console.WriteLine($"Yes, #{ship.Length}.");
+        else
+          System.Console.WriteLine($"No.".PadRight(80));
+      }
+
+      //var d = new Flux.Model.Game.BattleShip.Dreadnought();
+      //d.NewGame(new System.Drawing.Size(10, 10), new TimeSpan(0, 0, 10), new int[] { 2, 3 });
       //foreach (var ship in d.PlaceShips())
       //  System.Console.WriteLine(ship);
       //d.ShotMiss(new System.Drawing.Point(4, 4));
       //d.OpponentShot(new System.Drawing.Point(1, 1));
       //d.OpponentShot(new System.Drawing.Point(2, 2));
-      ((Flux.Model.Game.BattleShip.Defense)d.defense).print_placement(ships);
+      //((Flux.Model.Game.BattleShip.Defense)d.defense).print_placement(ships);
       //System.Console.WriteLine(d.GetShot());
 
       //System.Console.WriteLine((((Flux.Model.Game.BattleShip.Offense)d.offense).state.state).ToConsoleString());

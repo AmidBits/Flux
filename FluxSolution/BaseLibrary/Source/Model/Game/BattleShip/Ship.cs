@@ -10,37 +10,38 @@ namespace Flux.Model.Game.BattleShip
 
   public sealed class Ship
   {
-    private readonly System.Drawing.Point m_location;
-    public System.Drawing.Point Location => m_location;
+    private readonly System.Collections.Generic.List<System.Drawing.Point> m_locations = new System.Collections.Generic.List<System.Drawing.Point>();
+    public System.Drawing.Point Location => m_locations[0];
+    public System.Collections.Generic.IReadOnlyList<System.Drawing.Point> Locations => m_locations;
 
     private readonly ShipOrientation m_orientation;
     public ShipOrientation Orientation => m_orientation;
 
-    private readonly int m_length;
-    public int Length => m_length;
+    public int Length => m_locations.Count;
 
     public Ship(int length, System.Drawing.Point location, ShipOrientation orientation)
     {
       if (length <= 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
-      m_length = length;
-      m_location = location;
       m_orientation = orientation;
+
+      for (int i = 0; i < length; i++)
+        m_locations.Add(Orientation == ShipOrientation.Horizontal ? new System.Drawing.Point(location.X + i, location.Y) : new System.Drawing.Point(location.X, location.Y + i));
     }
 
     public bool IsValid(System.Drawing.Size boardSize)
     {
-      if (m_location.X < 0 || m_location.Y < 0)
+      if (m_locations[0].X < 0 || m_locations[0].Y < 0)
         return false;
 
       if (m_orientation == ShipOrientation.Horizontal)
       {
-        if (m_location.Y >= boardSize.Height || m_location.X + m_length > boardSize.Width)
+        if (m_locations[0].Y >= boardSize.Height || m_locations[0].X + m_locations.Count > boardSize.Width)
           return false;
       }
       else
       {
-        if (m_location.X >= boardSize.Width || m_location.Y + m_length > boardSize.Height)
+        if (m_locations[0].X >= boardSize.Width || m_locations[0].Y + m_locations.Count > boardSize.Height)
           return false;
       }
 
@@ -48,61 +49,41 @@ namespace Flux.Model.Game.BattleShip
     }
 
     public bool IsAt(System.Drawing.Point location)
-    {
-      if (Orientation == ShipOrientation.Horizontal)
-        return (m_location.Y == location.Y) && (m_location.X <= location.X) && (m_location.X + m_length > location.X);
-      else
-        return (m_location.X == location.X) && (m_location.Y <= location.Y) && (m_location.Y + m_length > location.Y);
-    }
+      => Orientation == ShipOrientation.Horizontal
+      ? (m_locations[0].Y == location.Y) && (m_locations[0].X <= location.X) && (m_locations[0].X + m_locations.Count > location.X)
+      : (m_locations[0].X == location.X) && (m_locations[0].Y <= location.Y) && (m_locations[0].Y + m_locations.Count > location.Y);
 
-    public System.Collections.Generic.IEnumerable<System.Drawing.Point> GetAllLocations()
-    {
-      if (Orientation == ShipOrientation.Horizontal)
-        for (int i = 0; i < m_length; i++)
-          yield return new System.Drawing.Point(m_location.X + i, m_location.Y);
-      else
-        for (int i = 0; i < m_length; i++)
-          yield return new System.Drawing.Point(m_location.X, m_location.Y + i);
-    }
+    public System.Collections.Generic.IReadOnlyList<System.Drawing.Point> GetAllLocations()
+      => m_locations;
 
     public bool ConflictsWith(Ship other)
     {
+      if (other is null) throw new System.ArgumentNullException(nameof(other));
+
       if (m_orientation == ShipOrientation.Horizontal && other.m_orientation == ShipOrientation.Horizontal)
       {
-        if (m_location.Y != other.m_location.Y)
-          return false;
-
-        return (other.m_location.X < (m_location.X + m_length)) && (m_location.X < (other.m_location.X + other.m_length));
+        return m_locations[0].Y != other.m_locations[0].Y
+          ? false
+          : (other.m_locations[0].X < (m_locations[0].X + m_locations.Count)) && (m_locations[0].X < (other.m_locations[0].X + other.m_locations.Count));
       }
       else if (m_orientation == ShipOrientation.Vertical && other.m_orientation == ShipOrientation.Vertical)
       {
-        if (m_location.X != other.m_location.X)
-          return false;
-
-        return (other.m_location.Y < (m_location.Y + m_length)) && (m_location.Y < (other.m_location.Y + other.m_length));
+        return m_locations[0].X != other.m_locations[0].X
+          ? false
+          : (other.m_locations[0].Y < (m_locations[0].Y + m_locations.Count)) && (m_locations[0].Y < (other.m_locations[0].Y + other.m_locations.Count));
       }
       else
       {
-        Ship h, v;
+        Ship h = m_orientation == ShipOrientation.Horizontal ? this : other;
+        Ship v = m_orientation == ShipOrientation.Horizontal ? other : this;
 
-        if (m_orientation == ShipOrientation.Horizontal)
-        {
-          h = this;
-          v = other;
-        }
-        else
-        {
-          h = other;
-          v = this;
-        }
-
-        return (h.m_location.Y >= v.m_location.Y) && (h.m_location.Y < (v.m_location.Y + v.m_length)) && (v.m_location.X >= h.m_location.X) && (v.m_location.X < (h.m_location.X + h.m_length));
+        return (h.m_locations[0].Y >= v.m_locations[0].Y) && (h.m_locations[0].Y < (v.m_locations[0].Y + v.m_locations.Count)) && (v.m_locations[0].X >= h.m_locations[0].X) && (v.m_locations[0].X < (h.m_locations[0].X + h.m_locations.Count));
       }
     }
 
     public bool IsSunk(System.Collections.Generic.IEnumerable<System.Drawing.Point> shots)
     {
-      foreach (System.Drawing.Point location in GetAllLocations())
+      foreach (var location in m_locations)
         if (!shots.Where(s => s.X == location.X && s.Y == location.Y).Any())
           return false;
 

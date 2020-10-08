@@ -21,12 +21,13 @@ namespace Flux
 
       var verticalSeparatorRow = verticalSeparator != '\0' ? string.Join(horizontalSeparator.ToString(), columnMaxWidths.Select((width, index) => new string(verticalSeparator, width))) : null;
 
+      var length0 = source.GetLength(0);
+      var length1 = source.GetLength(1);
+
       for (int d0 = 0; d0 < source.GetLength(0); d0++)
       {
         if (d0 > 0 && verticalSeparator != '\0')
-        {
           sb.AppendLine(verticalSeparatorRow);
-        }
 
         sb.AppendLine(string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, d0).Select(e => (object?)e.item).ToArray()));
       }
