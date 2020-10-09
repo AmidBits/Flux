@@ -6,17 +6,17 @@ namespace ConsoleApp
 {
   class Program
   {
-    public static bool AreShipsAdjacent(Flux.Model.Game.BattleShip.Ship s, Flux.Model.Game.BattleShip.Ship t)
-    {
-      foreach (System.Drawing.Point p in s.GetAllLocations())
-      {
-        if (t.IsAt(new System.Drawing.Point(p.X + 1, p.Y + 0))) return true;
-        if (t.IsAt(new System.Drawing.Point(p.X + -1, p.Y + 0))) return true;
-        if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + 1))) return true;
-        if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
-      }
-      return false;
-    }
+    //public static bool AreShipsAdjacent(Flux.Model.Game.BattleShip.Ship s, Flux.Model.Game.BattleShip.Ship t)
+    //{
+    //  foreach (System.Drawing.Point p in s.GetAllLocations())
+    //  {
+    //    if (t.IsAt(new System.Drawing.Point(p.X + 1, p.Y + 0))) return true;
+    //    if (t.IsAt(new System.Drawing.Point(p.X + -1, p.Y + 0))) return true;
+    //    if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + 1))) return true;
+    //    if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
+    //  }
+    //  return false;
+    //}
     public static void ConsolePlacement(System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, System.Drawing.Size size)
     {
       System.Console.SetCursorPosition(0, 3);

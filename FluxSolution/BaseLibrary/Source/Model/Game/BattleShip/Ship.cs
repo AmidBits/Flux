@@ -90,7 +90,7 @@ namespace Flux.Model.Game.BattleShip
       return true;
     }
 
-    public static bool AreAdjacent(Ship a, Ship b)
+    public static bool IsAdjacent(Ship a, Ship b)
     {
      foreach (System.Drawing.Point p in a.Locations)
       {
@@ -100,6 +100,26 @@ namespace Flux.Model.Game.BattleShip
         if (b.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
       }
       return false;
+    }
+
+    public static System.Collections.Generic.List<Ship> ConstructShips(System.Drawing.Size gridSize)
+    {
+      var ships = new System.Collections.Generic.List<Ship>();
+
+      foreach (var size in new int[] { 2, 3, 3, 4, 5 })
+      {
+        Ship ship;
+
+        do
+        {
+          ship = new Ship(size, new System.Drawing.Point(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (ShipOrientation)Random.NumberGenerator.Crypto.Next(2));
+        }
+        while (!ship.IsValid(gridSize) || ships.Any(s => ship.ConflictsWith(s)));
+
+        ships.Add(ship);
+      }
+
+      return ships;
     }
   }
 }
