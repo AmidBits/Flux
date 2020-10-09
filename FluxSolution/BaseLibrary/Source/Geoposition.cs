@@ -47,6 +47,7 @@ namespace Flux
     : System.IEquatable<Geoposition>, System.IFormattable
   {
     public static readonly Geoposition Empty;
+    public bool IsEmpty => Equals(Empty);
 
     public const string SymbolDegrees = "\u00B0";
     public const string SymbolMinutes = "\u2032";
@@ -405,7 +406,7 @@ namespace Flux
     public override bool Equals(object? obj)
       => obj is Geoposition o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Altitude, Latitude, Longitude).CombineHashDefault();
+      => System.HashCode.Combine(Altitude, Latitude, Longitude);
     public override string ToString()
       => ToString(null, null);
   }

@@ -67,7 +67,7 @@ namespace Flux.Genetics
     public override bool Equals(object? obj)
       => obj is Nucleoside o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Nucleobase, FiveCarbonSugar).CombineHashDefault();
+      => System.HashCode.Combine(Nucleobase, FiveCarbonSugar);
     public override string ToString()
       => $"<{Nucleobase.ToString()}, {FiveCarbonSugar.ToString()}>";
   }
@@ -112,7 +112,7 @@ namespace Flux.Genetics
     public override bool Equals(object? obj)
       => obj is Nucleotide o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Nucleobase, FiveCarbonSugar, Phosphate).CombineHashDefault();
+      => System.HashCode.Combine(Nucleobase, FiveCarbonSugar, Phosphate);
     public override string ToString()
       => $"<{Nucleobase.ToString()}, {FiveCarbonSugar.ToString()}, {Phosphate.ToString()}>";
   }

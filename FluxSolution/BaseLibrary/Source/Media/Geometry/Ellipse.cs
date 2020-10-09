@@ -3,6 +3,9 @@ namespace Flux.Media.Geometry.Shapes
   public struct Ellipse
     : System.IEquatable<Ellipse>, System.IFormattable
   {
+    public static readonly Ellipse Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <summary>The height (Y axis) of the ellipse.</summary>
     public double Height { get; set; }
     /// <summary>The width (X axis) of the ellipse.</summary>
@@ -129,7 +132,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Angle, Height, Width).CombineHashDefault();
+      => System.HashCode.Combine(Angle, Height, Width);
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

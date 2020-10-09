@@ -3,6 +3,9 @@ namespace Flux.Data
   public struct TsqlNullability
     : System.IEquatable<TsqlNullability>
   {
+    public static readonly TsqlNullability Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public const string CsNotNull = @"NOT NULL";
     public const string CsNull = @"NULL";
 

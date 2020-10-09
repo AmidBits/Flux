@@ -23,6 +23,9 @@ namespace Flux.Data
   public struct TsqlName
     : System.IEquatable<TsqlName>
   {
+    public static readonly TsqlName Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private readonly string[] m_parts;
 
     /// <summary>Returns the sql instance.</summary>

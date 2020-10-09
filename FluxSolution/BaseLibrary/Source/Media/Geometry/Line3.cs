@@ -13,6 +13,9 @@ namespace Flux.Media.Geometry.Shapes
   public struct TestResult
     : System.IEquatable<TestResult>, System.IFormattable
   {
+    public static readonly TestResult Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public TestOutcome Outcome { get; set; }
 
     public System.Numerics.Vector2? Point { get; set; }
@@ -48,7 +51,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is TestResult o && Equals(o);
     public override int GetHashCode()
-      => Point.HasValue ? System.Linq.Enumerable.Empty<object>().Append(Outcome, Point).CombineHashDefault() : Outcome.GetHashCode();
+      => System.HashCode.Combine(Outcome, Point);
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
@@ -56,6 +59,9 @@ namespace Flux.Media.Geometry.Shapes
   public struct Line3
     : System.IEquatable<Line3>, System.IFormattable
   {
+    public static readonly Line3 Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private System.Numerics.Vector3 m_p1;
     private System.Numerics.Vector3 m_p2;
 
@@ -171,7 +177,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Line3 o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(m_p1, m_p2).CombineHashDefault();
+      => System.HashCode.Combine(m_p1, m_p2);
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

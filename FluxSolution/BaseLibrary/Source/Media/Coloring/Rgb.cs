@@ -3,6 +3,9 @@ namespace Flux.Media.Coloring
   public struct Rgb
     : System.IEquatable<Rgb>, System.IFormattable
   {
+    public static readonly Rgb Empty;
+    public bool IsEmpty => Equals(Empty);
+
     #region Properties
     private int? m_alpha;
     public int Alpha { get => m_alpha ?? 255; set => m_alpha = value >= 0 && value <= 255 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
@@ -185,7 +188,7 @@ namespace Flux.Media.Coloring
     public override bool Equals(object? obj)
       => obj is Rgb o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Alpha, Red, Green, Blue).CombineHashDefault();
+      => System.HashCode.Combine(Alpha, Red, Green, Blue);
     public override string ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

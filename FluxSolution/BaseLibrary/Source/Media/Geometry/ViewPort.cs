@@ -54,7 +54,7 @@ namespace Flux.Media.Geometry
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(0).CombineHashDefault();
+      => System.HashCode.Combine(typeof(ViewPort));
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

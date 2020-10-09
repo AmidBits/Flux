@@ -44,10 +44,10 @@ namespace Flux.Collections.Generic
       => SetCapacity(capacity);
     public Deque(System.Collections.Generic.ICollection<T> collection)
     {
-      foreach (var item in collection ?? throw new System.ArgumentNullException(nameof(collection)))
-      {
+      if (collection is null) throw new System.ArgumentNullException(nameof(collection));
+
+      foreach (var item in collection)
         Enqueue(item);
-      }
     }
 
     public bool IsEmpty => m_size == 0;

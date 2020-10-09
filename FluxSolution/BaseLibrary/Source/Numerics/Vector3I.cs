@@ -132,6 +132,9 @@ namespace Flux.Numerics
   public struct Vector3I
     : System.IEquatable<Vector3I>, System.IFormattable
   {
+    public static readonly Vector3I Empty;
+    public bool IsEmpty => Equals(Empty);
+
     #region Static Instances
     /// <summary>Returns the vector (1,0,0).</summary>
     public static readonly Vector3I UnitX = new Vector3I(1, 0, 0);
@@ -389,7 +392,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Vector3I o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z).CombineHashDefault();
+      => System.HashCode.Combine(X, Y, Z);
     public override string ToString()
       => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
   }

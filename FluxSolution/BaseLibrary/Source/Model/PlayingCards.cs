@@ -113,6 +113,9 @@ namespace Flux.Model.PlayingCards
   public struct Card
     : System.IEquatable<Card>
   {
+    public static readonly Card Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public const int BackOfCard = 0x1F0A0;
 
     public int Deck { get; private set; }
@@ -140,7 +143,7 @@ namespace Flux.Model.PlayingCards
     public override bool Equals(object? obj)
       => obj is Card o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Deck, Rank, Suit).CombineHashDefault();
+      => System.HashCode.Combine(Deck, Rank, Suit);
     public override string ToString()
       => $"<{Deck}, {Rank}, {Suit}>";
   }

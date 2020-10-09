@@ -5,6 +5,9 @@ namespace Flux.Data
   public struct TsqlColumnDefinition
     : System.IEquatable<TsqlColumnDefinition>
   {
+    public static readonly TsqlColumnDefinition Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <summary>Returns the column name.</summary>
     public string ColumnName { get; private set; }
 

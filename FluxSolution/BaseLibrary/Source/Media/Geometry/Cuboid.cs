@@ -3,6 +3,9 @@ namespace Flux.Media.Geometry
   public struct Cuboid
     : System.IEquatable<Cuboid>, System.IFormattable
   {
+    public static readonly Cuboid Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public float X { get; set; }
     public float Y { get; set; }
     public float Z { get; set; }
@@ -31,7 +34,7 @@ namespace Flux.Media.Geometry
     public override bool Equals(object? obj)
       => obj is Cuboid o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, Width, Height, Depth).CombineHashDefault();
+      => System.HashCode.Combine(X, Y, Z, Width, Height, Depth);
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

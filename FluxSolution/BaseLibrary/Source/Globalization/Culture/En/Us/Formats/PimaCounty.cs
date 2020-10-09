@@ -5,6 +5,9 @@ namespace Flux.Globalization.EnUs.PimaCounty
   public struct StreetAddress
     : System.IEquatable<StreetAddress>
   {
+    public static readonly StreetAddress Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>
     public static System.Text.RegularExpressions.Regex Regex
@@ -55,8 +58,6 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public string Type { get; private set; }
     public string Unit { get; private set; }
 
-    public bool IsEmpty
-      => string.IsNullOrEmpty(Number) && string.IsNullOrEmpty(Direction) && string.IsNullOrEmpty(Intersection) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Type) && string.IsNullOrEmpty(Unit);
     public bool IsValid
       => Regex.IsMatch(ToString());
 
@@ -116,7 +117,7 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public override bool Equals(object? obj)
       => obj is StreetAddress o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Number, Direction, Intersection, Name, Type, Unit).CombineHashDefault();
+      => System.HashCode.Combine(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()
       => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpan().NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }

@@ -7,6 +7,9 @@ namespace Flux.IO.Checksum
   public struct Luhn
     : System.IEquatable<Luhn>, System.IFormattable
   {
+    public static readonly Luhn Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private readonly int[] m_sequence;
 
     private uint m_checkDigit;
@@ -56,7 +59,7 @@ namespace Flux.IO.Checksum
     public override bool Equals(object? obj)
       => obj is Luhn o && Equals(o);
     public override int GetHashCode()
-      => m_sequence.Append(unchecked((int)m_checkDigit)).CombineHashDefault();
+      => System.HashCode.Combine(m_sequence.CombineHashCore(), m_checkDigit);
     public override string ToString()
       => ToString(null, null);
   }

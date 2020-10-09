@@ -84,6 +84,9 @@
   public struct StereoSample
     : IChannelFl, IChannelFr, System.IEquatable<StereoSample>
   {
+    public static readonly StereoSample Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public double FrontLeft { get; }
     public double FrontRight { get; }
 
@@ -123,7 +126,7 @@
     public override bool Equals(object? obj)
       => obj is StereoSample sample && Equals(sample);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(FrontLeft, FrontRight).CombineHashDefault();
+      => System.HashCode.Combine(FrontLeft, FrontRight);
     public override string ToString()
       => $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
   }

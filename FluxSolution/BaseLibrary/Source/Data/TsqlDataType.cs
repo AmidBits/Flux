@@ -6,6 +6,9 @@ namespace Flux.Data
   public struct TsqlDataType
     : System.IEquatable<TsqlDataType>
   {
+    public static readonly TsqlDataType Empty;
+    public bool IsEmpty => Equals(Empty);
+
 #pragma warning disable CA1720 // Identifier contains type name
     #region SQL Data Type Names
     public const string Bigint = @"bigint";

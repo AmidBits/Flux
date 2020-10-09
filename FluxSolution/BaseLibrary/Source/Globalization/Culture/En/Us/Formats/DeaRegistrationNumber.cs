@@ -3,6 +3,9 @@ namespace Flux.Globalization.EnUs
   public struct DeaRegistrationNumber
     : System.IEquatable<DeaRegistrationNumber>
   {
+    public static readonly DeaRegistrationNumber Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>
     public const string Regex = @"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?";
@@ -13,8 +16,6 @@ namespace Flux.Globalization.EnUs
     public string Checksum { get; private set; }
     public string AffixedID { get; private set; }
 
-    public bool IsEmpty
-      => string.IsNullOrEmpty(RegistrantType) && string.IsNullOrEmpty(RegistrantLastNameOr9) && string.IsNullOrEmpty(Digits) && string.IsNullOrEmpty(Checksum) && string.IsNullOrEmpty(AffixedID);
     public bool IsValid
       => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
 
@@ -67,7 +68,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is DeaRegistrationNumber o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID).CombineHashDefault();
+      => System.HashCode.Combine(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID);
     public override string? ToString()
       => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }

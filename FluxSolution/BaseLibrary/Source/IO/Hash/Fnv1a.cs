@@ -5,6 +5,9 @@ namespace Flux.IO.Hash
   public struct Fnv1a
     : ISimpleHash32, System.IEquatable<Fnv1a>, System.IFormattable
   {
+    public static readonly Fnv1a Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash; // = 2166136261U;
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }
 

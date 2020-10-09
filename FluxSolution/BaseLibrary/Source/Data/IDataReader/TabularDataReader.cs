@@ -17,10 +17,10 @@ namespace Flux.Data
     public System.Collections.Generic.List<object> FieldValues { get; private set; } = new System.Collections.Generic.List<object>();
 
     public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames)
-      => FieldNames.AddRange(fieldNames.EmptyOnNull());
+      => FieldNames.AddRange(fieldNames ?? System.Linq.Enumerable.Empty<string>());
     public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type>? fieldTypes)
       : this(fieldNames)
-      => FieldTypes.AddRange(fieldTypes.EmptyOnNull());
+      => FieldTypes.AddRange(fieldTypes ?? System.Linq.Enumerable.Empty<System.Type>());
     /// <summary>This will create the tabular data reader with the specified number of field names preset to "Column_N" where N is the ordinal index.</summary>
     public TabularDataReader(int fieldCount)
     {

@@ -4,6 +4,9 @@ namespace Flux.Globalization.EnUs
   public struct NorthAmericanNumberingPlan
     : System.IEquatable<NorthAmericanNumberingPlan>
   {
+    public static readonly NorthAmericanNumberingPlan Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <see cref="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
     public const string Regex = @"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)";
 
@@ -12,8 +15,6 @@ namespace Flux.Globalization.EnUs
     public string NXX { get; private set; }
     public string XXXX { get; private set; }
 
-    public bool IsEmpty
-      => string.IsNullOrEmpty(CC) && string.IsNullOrEmpty(NPA) && string.IsNullOrEmpty(NXX) && string.IsNullOrEmpty(XXXX);
     public bool IsValid
       => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
 
@@ -90,7 +91,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is NorthAmericanNumberingPlan o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(CC, NPA, NXX, XXXX).CombineHashDefault();
+      => System.HashCode.Combine(CC, NPA, NXX, XXXX);
     public override string? ToString()
       => $"{CC}-{NPA}-{NXX}-{XXXX}";
   }

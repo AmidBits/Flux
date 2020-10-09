@@ -5,9 +5,10 @@ namespace Flux
     /// <summary>Returns the first element in the sequence that satisfies the predicate, or the specified value if no such element is found.</summary>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate, T value)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -33,9 +34,10 @@ namespace Flux
     /// <summary>Returns the last element in the sequence that satisfies the predicate, or the specified value if no such element is found.</summary>
     public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate, T value)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      using var e = (source ?? throw new System.ArgumentNullException(nameof(source))).GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {

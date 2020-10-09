@@ -11,12 +11,14 @@ namespace Flux
     public static System.Collections.Generic.Dictionary<TKey, int> Inventory<TValue, TKey>(this System.Collections.Generic.IEnumerable<TValue> source, System.Collections.Generic.IEnumerable<TValue> target, System.Func<TValue, TKey> keySelector, System.Func<TValue, int> countSelector)
       where TKey : notnull
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (countSelector is null) throw new System.ArgumentNullException(nameof(countSelector));
 
       var inventory = new System.Collections.Generic.Dictionary<TKey, int>();
 
-      foreach (var value in source.ThrowOnNull(nameof(source)))
+      foreach (var value in source)
       {
         var key = keySelector(value);
         var count = countSelector(value);
@@ -25,7 +27,7 @@ namespace Flux
         else inventory.Add(key, count);
       }
 
-      foreach (var value in target.ThrowOnNull(nameof(target)))
+      foreach (var value in target)
       {
         var key = keySelector(value);
         var count = countSelector(value);

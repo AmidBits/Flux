@@ -413,7 +413,7 @@
     public override bool Equals(object? obj)
       => obj is MidiInCapabilities mic && Equals(mic);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(DriverVersion, Manufacturer, Name, ProductIdentifier, Support).CombineHashDefault();
+      => System.HashCode.Combine(DriverVersion, Manufacturer, Name, ProductIdentifier, Support);
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   }
@@ -455,7 +455,7 @@
     public override bool Equals(object? obj)
       => obj is MidiOutCapabilities moc && Equals(moc);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashDefault();
+      => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashCore();
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   };

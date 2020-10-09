@@ -3,6 +3,9 @@ namespace Flux.Globalization.EnUs
   public struct SocialSecurityNumber
     : System.IEquatable<SocialSecurityNumber>
   {
+    public static readonly SocialSecurityNumber Empty;
+    public bool IsEmpty => Equals(Empty);
+
     /// <summary>A regular expression that complies with SSN regulations.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Social_Security_number#Structure"/>
     public const string Regex = @"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)";
@@ -11,8 +14,6 @@ namespace Flux.Globalization.EnUs
     public string GG { get; private set; }
     public string SSSS { get; private set; }
 
-    public bool IsEmpty
-      => string.IsNullOrEmpty(AAA) && string.IsNullOrEmpty(GG) && string.IsNullOrEmpty(SSSS);
     public bool IsValid
       => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
 
@@ -63,7 +64,7 @@ namespace Flux.Globalization.EnUs
     public override bool Equals(object? obj)
       => obj is SocialSecurityNumber o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(AAA, GG, SSSS).CombineHashDefault();
+      => System.HashCode.Combine(AAA, GG, SSSS);
     public override string? ToString()
       => $"{AAA}-{GG}-{SSSS}";
   }

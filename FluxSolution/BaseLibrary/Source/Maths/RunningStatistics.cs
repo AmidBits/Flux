@@ -3,8 +3,8 @@
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable
   {
-    private static RunningStatistics m_empty = Create();
-    public static RunningStatistics Empty => m_empty;
+    public static readonly RunningStatistics Empty = Create();
+    public bool IsEmpty => Equals(Empty);
 
     private long m_count;
     /// <summary>The number of samples.</summary>
@@ -210,7 +210,7 @@
     public override bool Equals(object? obj)
       => obj is VersionX o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4).CombineHashDefault();
+      => System.HashCode.Combine(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4);
     public override string? ToString()
       => ToString(null, null);
   }

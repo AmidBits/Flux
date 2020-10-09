@@ -14,9 +14,7 @@ namespace Flux.Collections.Generic
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
 
       foreach (var item in collection)
-      {
         Insert(item);
-      }
     }
 
     // IBinaryHeap<T>
@@ -71,7 +69,8 @@ namespace Flux.Collections.Generic
     }
     public bool IsConsistent()
     {
-      if (m_data.Count == 0) return true;
+      if (m_data.Count == 0)
+        return true;
 
       int m1 = 0, z = 0, p1 = 0;
 

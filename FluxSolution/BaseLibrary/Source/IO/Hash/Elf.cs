@@ -5,6 +5,9 @@ namespace Flux.IO.Hash
   public struct Elf
     : ISimpleHash32, System.IEquatable<Elf>, System.IFormattable
   {
+    public static readonly Elf Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash;
 
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }

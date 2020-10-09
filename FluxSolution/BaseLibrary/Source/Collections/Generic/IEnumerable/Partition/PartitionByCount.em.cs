@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Xtensions
@@ -12,7 +10,7 @@ namespace Flux
       if (countOfPartitions <= 0) throw new System.ArgumentOutOfRangeException(nameof(countOfPartitions), $"Must be greater than or equal to 1 ({countOfPartitions}).");
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      var list = source?.ToList() ?? throw new System.ArgumentNullException(nameof(source));
+      var list = new System.Collections.Generic.List<TSource>(source);
 
       var quotient = System.Math.DivRem(list.Count, countOfPartitions, out var remainder);
 

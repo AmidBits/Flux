@@ -16,6 +16,7 @@ namespace Flux.Numerics
     : System.IEquatable<Vector3D>, System.IFormattable
   {
     public static readonly Vector3D Empty = new Vector3D(0, 0, 0, 0);
+    public bool IsEmpty => Equals(Empty);
 
     private Vector256<double> m_v256;
 
@@ -268,7 +269,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
       => obj is Vector3D o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
+      => System.HashCode.Combine(X, Y, Z, W);
     public override string ToString()
       => ToString("G", System.Globalization.CultureInfo.CurrentCulture);
   }

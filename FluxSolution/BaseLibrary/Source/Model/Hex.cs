@@ -43,6 +43,9 @@ namespace Flux.Media
   public struct Hex
     : System.IEquatable<Hex>
   {
+    public static readonly Hex Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public static readonly Hex[] HexagonDiagonals = new Hex[] { new Hex(2, -1, -1), new Hex(1, -2, 1), new Hex(-1, -1, 2), new Hex(-2, 1, 1), new Hex(-1, 2, -1), new Hex(1, 1, -2) };
     public static readonly Hex[] HexagonDirections = new Hex[] { new Hex(1, 0, -1), new Hex(1, -1, 0), new Hex(0, -1, 1), new Hex(-1, 0, 1), new Hex(-1, 1, 0), new Hex(0, 1, -1) };
 
@@ -158,15 +161,21 @@ namespace Flux.Media
     public static Hex operator -(in Hex v1, in Hex v2) => Subtract(v1, v2);
     #endregion Static Members
 
-    #region System.IEquatable
-    public bool Equals(Hex other) => Q == other.Q && R == other.R && S == other.S;
+    // Operators
     public static bool operator ==(in Hex v1, in Hex v2) => v1.Equals(v2);
     public static bool operator !=(in Hex v1, in Hex v2) => !v1.Equals(v2);
-    #endregion System.IEquatable
 
-    public override int GetHashCode() => System.Linq.Enumerable.Empty<object>().Append(Q, R, S).CombineHashDefault();
-    public override bool Equals(object? obj) => obj is Hex && Equals((Hex)obj);
-    public override string ToString() => $"<{Q}, {R}, {S}>";
+    // System.IEquatable<Hex>
+    public bool Equals(Hex other) 
+      => Q == other.Q && R == other.R && S == other.S;
+
+    // Overrides
+    public override int GetHashCode() 
+      => System.HashCode.Combine(Q, R, S);
+    public override bool Equals(object? obj)
+      => obj is Hex o && Equals(o);
+    public override string ToString() 
+      => $"<{Q}, {R}, {S}>";
   }
 
   //  struct Point

@@ -3,6 +3,9 @@ namespace Flux.Media.Coloring
   public struct Hsv
     : System.IEquatable<Hsv>, System.IFormattable
   {
+    public static readonly Hsv Empty;
+    public bool IsEmpty => Equals(Empty);
+
     #region Properties
     private double? m_alpha;
     public double Alpha { get => m_alpha ?? 1; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
@@ -89,7 +92,7 @@ namespace Flux.Media.Coloring
     public override bool Equals(object? obj)
       => obj is Hsv o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Alpha, Hue, Saturation, Value).CombineHashDefault();
+      => System.HashCode.Combine(Alpha, Hue, Saturation, Value);
     public override string ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

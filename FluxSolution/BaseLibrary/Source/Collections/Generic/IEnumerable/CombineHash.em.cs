@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Combines the hash codes for the elements in the sequence. This is the 'boost' version from C++.</summary>
     public static int CombineHashBoost<T>(this System.Collections.Generic.IEnumerable<T> source, int seed = 0)
-      => source.ThrowOnNull().Aggregate(seed, (hash, e) => unchecked(hash ^ ((e?.GetHashCode() ?? 0) + (int)0x9e3779b9 + (hash << 6) + (hash >> 2))), (hash) => hash);
+      => ThrowOnNull(source).Aggregate(seed, (hash, e) => unchecked(hash ^ ((e?.GetHashCode() ?? 0) + (int)0x9e3779b9 + (hash << 6) + (hash >> 2))), (hash) => hash);
 
     /// <summary>Combines the hash codes for the elements in the sequence, using the .NET core hash combiner.</summary>
     public static int CombineHashCore<T>(this System.Collections.Generic.IEnumerable<T> source)
@@ -22,11 +22,6 @@ namespace Flux
     /// <summary>Combines the hash codes for the elements in the sequence, using a custom simplicity by Custom Sauce (see link).</summary>
     /// <see cref="https://stackoverflow.com/a/34006336/3178666"/>
     public static int CombineHashCustom<T>(this System.Collections.Generic.IEnumerable<T> source, int seed, int factor)
-      => source.ThrowOnNull().Aggregate(seed, (hash, e) => unchecked(hash * factor + (e?.GetHashCode() ?? 0)), (hash) => hash);
-
-    /// <summary>Combines the hash codes for the elements in the sequence, using one of the three hash combinators above.</summary>
-    /// <remarks>This is an internal method only.</remarks>
-    internal static int CombineHashDefault<T>(this System.Collections.Generic.IEnumerable<T> source)
-      => CombineHashCore(source);
+      => ThrowOnNull(source).Aggregate(seed, (hash, e) => unchecked(hash * factor + (e?.GetHashCode() ?? 0)), (hash) => hash);
   }
 }

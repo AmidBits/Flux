@@ -7,6 +7,9 @@ namespace Flux.IO.Checksum
   public struct Crc32
     : IChecksum32, System.IEquatable<Crc32>, System.IFormattable
   {
+    public static readonly Crc32 Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private readonly uint[] m_lookupTable;
 
     private uint m_hash;

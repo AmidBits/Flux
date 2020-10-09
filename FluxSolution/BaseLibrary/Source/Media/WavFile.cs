@@ -23,7 +23,8 @@ namespace Flux.Media.WaveFile
     public Chunk(byte[] bytes)
       : this((uint)(bytes ?? throw new System.ArgumentNullException(nameof(bytes))).Length)
       => bytes.CopyTo(Buffer, 0);
-    public Chunk(System.IO.Stream stream, int count) => Read(stream, count);
+    public Chunk(System.IO.Stream stream, int count) 
+      => Read(stream, count);
 
     public byte[] Read(System.IO.Stream stream, int byteCount)
     {
@@ -65,7 +66,8 @@ namespace Flux.Media.WaveFile
     public TypeChunk(byte[] bytes) : base(bytes) { }
   }
 
-  public class RiffTypeChunk : TypeChunk
+  public class RiffTypeChunk
+    : TypeChunk
   {
     public const string ID = @"RIFF";
     public const string TypeWave = @"WAVE";
@@ -86,7 +88,8 @@ namespace Flux.Media.WaveFile
     }
   }
 
-  public class FormatChunk : Chunk
+  public class FormatChunk
+    : Chunk
   {
     public const string ID = @"fmt ";
 
@@ -127,7 +130,8 @@ namespace Flux.Media.WaveFile
     [System.CLSCompliant(false)] public uint UpdateAvgBytesPerSec() => AvgBytesPerSec = (SampleRate * BlockAlign);
   }
 
-  public class DataChunk : Chunk
+  public class DataChunk
+    : Chunk
   {
     public const string ID = @"data";
 

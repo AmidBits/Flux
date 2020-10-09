@@ -20,9 +20,7 @@ namespace Flux.Collections.Generic
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
 
       foreach (var t in collection)
-      {
         Insert(t);
-      }
     }
 
     // IDarityHeap<T>
@@ -82,7 +80,8 @@ namespace Flux.Collections.Generic
     }
     public bool IsConsistent()
     {
-      if (m_data.Count == 0) return true;
+      if (m_data.Count == 0)
+        return true;
 
       int m1 = 0, z = 0, p1 = 0;
 

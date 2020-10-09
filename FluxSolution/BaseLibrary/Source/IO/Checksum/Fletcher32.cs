@@ -5,6 +5,9 @@ namespace Flux.IO.Checksum
   public struct Fletcher32
     : IChecksum32, System.IEquatable<Fletcher32>, System.IFormattable
   {
+    public static readonly Fletcher32 Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash;
 
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }

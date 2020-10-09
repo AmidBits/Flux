@@ -6,6 +6,7 @@ namespace Flux
     public static System.Collections.Generic.SortedDictionary<TKey, TValue> ToSortedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, TValue> valueSelector, System.Collections.Generic.IComparer<TKey> comparer)
       where TKey : notnull
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
 
@@ -13,7 +14,7 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
+      foreach (var item in source)
       {
         sd.Add(keySelector(item, index), valueSelector(item, index));
 

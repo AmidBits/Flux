@@ -1,6 +1,7 @@
 ﻿using Flux;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
@@ -28,7 +29,7 @@ namespace ConsoleApp
         for (var j = i + 1; j < ships.Count; j++)
         {
           Flux.Model.Game.BattleShip.Ship t = ships[j];
-          if (AreShipsAdjacent(s, t)) adj++;
+          if (Flux.Model.Game.BattleShip.Ship.Intersect(s, t)) adj++;
         }
       }
 
@@ -42,7 +43,7 @@ namespace ConsoleApp
       }
       foreach (Flux.Model.Game.BattleShip.Ship s in ships)
       {
-        foreach (System.Drawing.Point p in s.GetAllLocations())
+        foreach (System.Drawing.Point p in s.Locations)
         {
           placement[p.Y, p.X] = (char)('0' + s.Length);
         }
@@ -62,13 +63,34 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var nums = new int[] { 1, 2, 3 };
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => nums.Permute().SelectMany(e => e).ToList(), 1000000));
+      var path = @"C:\Test\Canimate.avi";
+      path = @"C:\Test\Chimes.wav";
+      var fs = System.IO.File.OpenRead(path);
 
-      foreach (var num in nums.Permute())
-        System.Console.WriteLine($"{string.Join('|', num)}");
+      var index = 0;
+      foreach (var chunk in Flux.Media.Riff.File.GetChunks(fs))
+      {
+        System.Console.WriteLine($"{index++}: {chunk.GetType().Name}, {chunk.ChunkID} ({chunk.ChunkSize}) : {chunk}");
+      }
+
+      fs.Dispose();
 
       return;
+
+      //path = @"C:\WaveForms\(060 (C4), SawtoothWave, FM=(003 (D#-Eb-1), SampleAndHold)).wav";
+      //fs = System.IO.File.OpenRead(path);
+      //var riffChunk = Flux.Media.Riff.RiffChunk.ReadChunk(fs);
+      //if (riffChunk.ChunkID != Flux.Media.Riff.RiffChunk.ID || riffChunk.Type != Flux.Media.Riff.RiffChunk.TypeWave) throw new System.InvalidOperationException();
+      //var frm_Chunk = Flux.Media.Riff.Wave.FormatChunk.ReadChunk(fs);
+      //var dataChunk = Flux.Media.Riff.Wave.DataChunk.ReadChunk(fs);
+      //fs.Dispose();
+
+      //path = @"C:\Test\SomeWave.wav";
+      //fs = System.IO.File.OpenWrite(path);
+      //riffChunk.WriteTo(fs);
+      //frm_Chunk.WriteTo(fs);
+      //dataChunk.WriteTo(fs);
+      //fs.Dispose();
 
       var grid = new System.Drawing.Size(10, 5);
 
@@ -82,7 +104,7 @@ namespace ConsoleApp
         {
           ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
         }
-        while (!ship.IsValid(grid) || ships.Any(s => ship.ConflictsWith(s)));
+        while (!ship.IsValid(grid) || ships.Any(s => Flux.Model.Game.BattleShip.Ship.Intersect(ship, s)));
 
         ships.Add(ship);
       }
@@ -100,10 +122,10 @@ namespace ConsoleApp
 
         System.Console.WriteLine();
 
-        var p = new System.Drawing.Point(y - '0', x - '0');
+        var p = new System.Drawing.Point(x - '0', y - '0');
         System.Console.WriteLine($"@{p}");
 
-        if (ships.Any(ship => ship.IsAt(p)) && ships.Single(ship => ship.IsAt(p)) is var ship)
+        if (ships.Any(ship => Flux.Model.Game.BattleShip.Ship.Intersect(ship, p)) && ships.Single(ship => Flux.Model.Game.BattleShip.Ship.Intersect(ship, p)) is var ship)
           System.Console.WriteLine($"Yes, #{ship.Length}.");
         else
           System.Console.WriteLine($"No.".PadRight(80));

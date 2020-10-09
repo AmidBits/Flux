@@ -1,5 +1,3 @@
-using System.Threading.Tasks.Dataflow;
-
 namespace Flux
 {
   public static partial class Xtensions
@@ -9,11 +7,13 @@ namespace Flux
     /// <param name="rng">The random number generator to use.</param>
     public static bool RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, out T result, System.Random rng)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       rng ??= Flux.Random.NumberGenerator.Crypto;
 
       result = default!;
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -44,7 +44,7 @@ namespace Flux
 
       rng ??= Flux.Random.NumberGenerator.Crypto;
 
-      foreach (var element in source.EmptyOnNull())
+      foreach (var element in source ?? System.Linq.Enumerable.Empty<T>())
         if (rng.NextDouble() < percent)
           yield return element;
     }

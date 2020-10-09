@@ -22,6 +22,9 @@ namespace Flux.Numerics
   public struct Vector2I
     : System.IEquatable<Vector2I>, System.IFormattable
   {
+    public static readonly Vector2I Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public int X { get; set; }
     public int Y { get; set; }
 
@@ -282,7 +285,7 @@ namespace Flux.Numerics
     public override bool Equals(object? obj)
        => obj is Vector2I o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(X, Y).CombineHashDefault();
+      => System.HashCode.Combine(X, Y);
     public override string ToString()
       => ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
   }

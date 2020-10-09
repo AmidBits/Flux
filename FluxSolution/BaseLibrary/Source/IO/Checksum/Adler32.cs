@@ -7,6 +7,9 @@ namespace Flux.IO.Checksum
   public struct Adler32
     : IChecksum32, System.IEquatable<Adler32>, System.IFormattable
   {
+    public static readonly Adler32 Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash;// = 1;
 
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }

@@ -5,6 +5,9 @@ namespace Flux.IO.Hash
   public struct Oat
     : ISimpleHash32, System.IEquatable<Oat>, System.IFormattable
   {
+    public static readonly Oat Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash;
 
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }

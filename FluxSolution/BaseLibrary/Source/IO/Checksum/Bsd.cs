@@ -5,6 +5,9 @@ namespace Flux.IO.Checksum
   public struct Bsd
     : IChecksum32, System.IEquatable<Bsd>, System.IFormattable
   {
+    public static readonly Bsd Empty;
+    public bool IsEmpty => Equals(Empty);
+
     private uint m_hash;
 
     public int Code { get => (int)m_hash; set => m_hash = (uint)value; }

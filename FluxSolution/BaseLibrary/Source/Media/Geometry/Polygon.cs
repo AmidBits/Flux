@@ -48,6 +48,9 @@ namespace Flux.Media.Geometry.Shapes
   public struct Polygon
     : System.IEquatable<Polygon>, System.IFormattable
   {
+    public static readonly Polygon Empty;
+    public bool IsEmpty => Equals(Empty);
+
     public static void CreateEnumType100()
     {
       string[] NameOfOnes = new string[] { string.Empty, @"hena", @"di", @"tri", @"tetra", @"penta", @"hexa", @"hepta", @"octa", @"ennea" };
@@ -744,7 +747,7 @@ namespace Flux.Media.Geometry.Shapes
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(Vectors).CombineHashDefault();
+      => Vectors.CombineHashCore();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
