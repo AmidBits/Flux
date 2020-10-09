@@ -89,5 +89,17 @@ namespace Flux.Model.Game.BattleShip
 
       return true;
     }
+
+    public static bool AreAdjacent(Ship a, Ship b)
+    {
+     foreach (System.Drawing.Point p in a.Locations)
+      {
+        if (b.IsAt(new System.Drawing.Point(p.X + 1, p.Y + 0))) return true;
+        if (b.IsAt(new System.Drawing.Point(p.X + -1, p.Y + 0))) return true;
+        if (b.IsAt(new System.Drawing.Point(p.X + 0, p.Y + 1))) return true;
+        if (b.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
+      }
+      return false;
+    }
   }
 }
