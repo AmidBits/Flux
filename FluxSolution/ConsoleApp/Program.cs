@@ -62,7 +62,8 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var nums = new int[] { 1,2,3 };
+      var nums = new int[] { 1, 2, 3 };
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => nums.Permute().SelectMany(e => e).ToList(), 1000000));
 
       foreach (var num in nums.Permute())
         System.Console.WriteLine($"{string.Join('|', num)}");
