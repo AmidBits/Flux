@@ -20,7 +20,8 @@ namespace Flux.Model.Game.BattleShip
 
     public ShipOrientation Orientation { get; set; }
 
-    public int Length => m_locations.Count;
+    public int Length
+      => m_locations.Count;
 
     public Ship(int length, System.Drawing.Point location, ShipOrientation orientation)
     {
@@ -52,72 +53,38 @@ namespace Flux.Model.Game.BattleShip
       return true;
     }
 
-    //public bool IsAt(System.Drawing.Point location)
-    //  => Orientation == ShipOrientation.Horizontal
-    //  ? (m_locations[0].Y == location.Y) && (m_locations[0].X <= location.X) && (m_locations[0].X + m_locations.Count > location.X)
-    //  : (m_locations[0].X == location.X) && (m_locations[0].Y <= location.Y) && (m_locations[0].Y + m_locations.Count > location.Y);
-
-    //public System.Collections.Generic.IReadOnlyList<System.Drawing.Point> GetAllLocations()
-    //  => m_locations;
-
-    //public bool ConflictsWith(Ship other)
-    //{
-    //  if (other is null) throw new System.ArgumentNullException(nameof(other));
-
-    //  if (m_orientation == ShipOrientation.Horizontal && other.m_orientation == ShipOrientation.Horizontal)
-    //  {
-    //    return m_locations[0].Y != other.m_locations[0].Y
-    //      ? false
-    //      : (other.m_locations[0].X < (m_locations[0].X + m_locations.Count)) && (m_locations[0].X < (other.m_locations[0].X + other.m_locations.Count));
-    //  }
-    //  else if (m_orientation == ShipOrientation.Vertical && other.m_orientation == ShipOrientation.Vertical)
-    //  {
-    //    return m_locations[0].X != other.m_locations[0].X
-    //      ? false
-    //      : (other.m_locations[0].Y < (m_locations[0].Y + m_locations.Count)) && (m_locations[0].Y < (other.m_locations[0].Y + other.m_locations.Count));
-    //  }
-    //  else
-    //  {
-    //    Ship h = m_orientation == ShipOrientation.Horizontal ? this : other;
-    //    Ship v = m_orientation == ShipOrientation.Horizontal ? other : this;
-
-    //    return (h.m_locations[0].Y >= v.m_locations[0].Y) && (h.m_locations[0].Y < (v.m_locations[0].Y + v.m_locations.Count)) && (v.m_locations[0].X >= h.m_locations[0].X) && (v.m_locations[0].X < (h.m_locations[0].X + h.m_locations.Count));
-    //  }
-    //}
-
-    public static bool IsSunk(Ship ship, System.Collections.Generic.IEnumerable<System.Drawing.Point> shots)
+    public static bool IsSunk(Ship ship, System.Collections.Generic.IEnumerable<System.Drawing.Point> allShots)
     {
       foreach (var location in ship.m_locations)
-        if (!shots.Any(s => s.X == location.X && s.Y == location.Y))
+        if (!allShots.Any(s => s.X == location.X && s.Y == location.Y))
           return false;
 
       return true;
     }
 
-    public static bool IsAdjacent(Ship a, Ship b)
+    public static bool AreAdjacent(Ship a, Ship b)
     {
       foreach (System.Drawing.Point p in a.Locations)
       {
-        if (Flux.Model.Game.BattleShip.Ship.Intersect(b, new System.Drawing.Point(p.X + 1, p.Y + 0)))
+        if (Intersects(b, new System.Drawing.Point(p.X + 1, p.Y + 0)))
           return true;
-        if (Flux.Model.Game.BattleShip.Ship.Intersect(b, new System.Drawing.Point(p.X + -1, p.Y + 0)))
+        if (Intersects(b, new System.Drawing.Point(p.X + -1, p.Y + 0)))
           return true;
-        if (Flux.Model.Game.BattleShip.Ship.Intersect(b, new System.Drawing.Point(p.X + 0, p.Y + 1)))
+        if (Intersects(b, new System.Drawing.Point(p.X + 0, p.Y + 1)))
           return true;
-        if (Flux.Model.Game.BattleShip.Ship.Intersect(b, new System.Drawing.Point(p.X + 0, p.Y + -1)))
+        if (Intersects(b, new System.Drawing.Point(p.X + 0, p.Y + -1)))
           return true;
       }
       return false;
     }
 
-    public static bool Intersect(Ship ship, System.Drawing.Point position)
+    public static bool Intersects(Ship ship, System.Drawing.Point position)
     {
       return ship.Orientation == ShipOrientation.Horizontal
       ? (ship.m_locations[0].Y == position.Y) && (ship.m_locations[0].X <= position.X) && (ship.m_locations[0].X + ship.m_locations.Count > position.X)
       : (ship.m_locations[0].X == position.X) && (ship.m_locations[0].Y <= position.Y) && (ship.m_locations[0].Y + ship.m_locations.Count > position.Y);
     }
-
-    public static bool Intersect(Ship a, Ship b)
+    public static bool Intersects(Ship a, Ship b)
     {
       if (a.Orientation == ShipOrientation.Horizontal && b.Orientation == ShipOrientation.Horizontal)
       {
@@ -152,7 +119,7 @@ namespace Flux.Model.Game.BattleShip
         {
           ship = new Ship(size, new System.Drawing.Point(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (ShipOrientation)Random.NumberGenerator.Crypto.Next(2));
         }
-        while (!ship.IsValid(gridSize) || ships.Any(s => Intersect(ship, s)));
+        while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 
         ships.Add(ship);
       }

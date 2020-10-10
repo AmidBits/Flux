@@ -29,7 +29,7 @@ namespace ConsoleApp
         for (var j = i + 1; j < ships.Count; j++)
         {
           Flux.Model.Game.BattleShip.Ship t = ships[j];
-          if (Flux.Model.Game.BattleShip.Ship.Intersect(s, t)) adj++;
+          if (Flux.Model.Game.BattleShip.Ship.Intersects(s, t)) adj++;
         }
       }
 
@@ -104,7 +104,7 @@ namespace ConsoleApp
         {
           ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
         }
-        while (!ship.IsValid(grid) || ships.Any(s => Flux.Model.Game.BattleShip.Ship.Intersect(ship, s)));
+        while (!ship.IsValid(grid) || ships.Any(s => Flux.Model.Game.BattleShip.Ship.Intersects(ship, s)));
 
         ships.Add(ship);
       }
@@ -125,7 +125,7 @@ namespace ConsoleApp
         var p = new System.Drawing.Point(x - '0', y - '0');
         System.Console.WriteLine($"@{p}");
 
-        if (ships.Any(ship => Flux.Model.Game.BattleShip.Ship.Intersect(ship, p)) && ships.Single(ship => Flux.Model.Game.BattleShip.Ship.Intersect(ship, p)) is var ship)
+        if (ships.Any(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) && ships.Single(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) is var ship)
           System.Console.WriteLine($"Yes, #{ship.Length}.");
         else
           System.Console.WriteLine($"No.".PadRight(80));
