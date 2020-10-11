@@ -65,6 +65,7 @@ namespace ConsoleApp
     {
       var path = @"C:\Test\Canimate.avi";
       path = @"C:\Test\Chimes.wav";
+      path = @"D:\Hi-Hat Legend 808 05 Open.wav";
       var fs = System.IO.File.OpenRead(path);
 
       var index = 0;
