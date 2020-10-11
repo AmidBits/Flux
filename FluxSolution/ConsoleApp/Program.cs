@@ -65,13 +65,14 @@ namespace ConsoleApp
     {
       var path = @"C:\Test\Canimate.avi";
       path = @"C:\Test\Chimes.wav";
+
       path = @"D:\Hi-Hat Legend 808 05 Open.wav";
       var fs = System.IO.File.OpenRead(path);
 
       var index = 0;
       foreach (var chunk in Flux.Media.Riff.File.GetChunks(fs))
       {
-        System.Console.WriteLine($"{index++}: {chunk.GetType().Name}, {chunk.ChunkID} ({chunk.ChunkSize}) : {chunk}");
+        System.Console.WriteLine($"{index++}: {chunk}");
       }
 
       fs.Dispose();
