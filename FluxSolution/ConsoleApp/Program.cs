@@ -9,47 +9,47 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var grid = new System.Drawing.Size(10, 5);
+      //var grid = new System.Drawing.Size(10, 5);
 
-      System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = new System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship>();
+      //System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = new System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship>();
 
-      foreach (var size in new int[] { 2, 3, 3, 4, 5 })
-      {
-        Flux.Model.Game.BattleShip.Ship ship;
+      //foreach (var size in new int[] { 2, 3, 3, 4, 5 })
+      //{
+      //  Flux.Model.Game.BattleShip.Ship ship;
 
-        do
-        {
-          ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
-        }
-        while (!ship.IsValid(grid) || ships.Any(s => Flux.Model.Game.BattleShip.Ship.Intersects(ship, s)));
+      //  do
+      //  {
+      //    ship = new Flux.Model.Game.BattleShip.Ship(size, new System.Drawing.Point(Flux.Random.NumberGenerator.Crypto.Next(grid.Width), Flux.Random.NumberGenerator.Crypto.Next(grid.Height)), (Flux.Model.Game.BattleShip.ShipOrientation)Flux.Random.NumberGenerator.Crypto.Next(2));
+      //  }
+      //  while (!ship.IsValid(grid) || ships.Any(s => Flux.Model.Game.BattleShip.Ship.Intersects(ship, s)));
 
-        ships.Add(ship);
-      }
+      //  ships.Add(ship);
+      //}
 
-      while (true)
-      {
-        System.Console.Write(ships.ToConsoleString(grid));
+      //while (true)
+      //{
+      //  System.Console.Write(ships.ToConsoleString(grid));
 
-        System.Console.Write("X=");
-        var x = System.Console.ReadKey().KeyChar;
-        if (!char.IsDigit(x)) break;
+      //  System.Console.Write("X=");
+      //  var x = System.Console.ReadKey().KeyChar;
+      //  if (!char.IsDigit(x)) break;
 
-        System.Console.Write(", ");
+      //  System.Console.Write(", ");
 
-        System.Console.Write("Y=");
-        var y = System.Console.ReadKey().KeyChar;
-        if (!char.IsDigit(y)) break;
+      //  System.Console.Write("Y=");
+      //  var y = System.Console.ReadKey().KeyChar;
+      //  if (!char.IsDigit(y)) break;
 
-        System.Console.WriteLine();
+      //  System.Console.WriteLine();
 
-        var p = new System.Drawing.Point(x - '0', y - '0');
-        System.Console.WriteLine($"@{p}");
+      //  var p = new System.Drawing.Point(x - '0', y - '0');
+      //  System.Console.WriteLine($"@{p}");
 
-        if (ships.Any(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) && ships.Single(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) is var ship)
-          System.Console.WriteLine($"Yes, #{ship.Length}.");
-        else
-          System.Console.WriteLine($"No.".PadRight(80));
-      }
+      //  if (ships.Any(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) && ships.Single(ship => Flux.Model.Game.BattleShip.Ship.Intersects(ship, p)) is var ship)
+      //    System.Console.WriteLine($"Yes, #{ship.Length}.");
+      //  else
+      //    System.Console.WriteLine($"No.".PadRight(80));
+      //}
 
       //var d = new Flux.Model.Game.BattleShip.Dreadnought();
       //d.NewGame(new System.Drawing.Size(10, 10), new TimeSpan(0, 0, 10), new int[] { 2, 3 });
@@ -97,7 +97,7 @@ namespace ConsoleApp
       //}
       //System.Console.WriteLine(dataTable.CreateDataReader().GetSchemaTable().ToArray(true).ToConsoleString());
 
-      /*
+
       var ttt = new Flux.Model.TicTacToe.Board();
 
       for (var index = 0; index < 9; index++)
@@ -119,7 +119,7 @@ namespace ConsoleApp
           {
             myTopMoves.RandomElement(out var myTopMove);
             if (myTopMove.Score == -10) break;
-            System.Console.WriteLine($"Your top move: {myTopMove}"); 
+            System.Console.WriteLine($"Your top move: {myTopMove}");
           }
 
           System.Console.Write("Enter row: ");
@@ -168,7 +168,7 @@ namespace ConsoleApp
           System.Console.WriteLine(ttt.ToString());
         }
       }
-      */
+
 
       //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
       //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
