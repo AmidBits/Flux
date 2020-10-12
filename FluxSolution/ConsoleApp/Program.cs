@@ -7,93 +7,8 @@ namespace ConsoleApp
 {
   class Program
   {
-    //public static bool AreShipsAdjacent(Flux.Model.Game.BattleShip.Ship s, Flux.Model.Game.BattleShip.Ship t)
-    //{
-    //  foreach (System.Drawing.Point p in s.GetAllLocations())
-    //  {
-    //    if (t.IsAt(new System.Drawing.Point(p.X + 1, p.Y + 0))) return true;
-    //    if (t.IsAt(new System.Drawing.Point(p.X + -1, p.Y + 0))) return true;
-    //    if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + 1))) return true;
-    //    if (t.IsAt(new System.Drawing.Point(p.X + 0, p.Y + -1))) return true;
-    //  }
-    //  return false;
-    //}
-    public static void ConsolePlacement(System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, System.Drawing.Size size)
-    {
-      System.Console.SetCursorPosition(0, 3);
-
-      var adj = 0;
-      for (var i = 0; i < ships.Count; i++)
-      {
-        Flux.Model.Game.BattleShip.Ship s = ships[i];
-        for (var j = i + 1; j < ships.Count; j++)
-        {
-          Flux.Model.Game.BattleShip.Ship t = ships[j];
-          if (Flux.Model.Game.BattleShip.Ship.Intersects(s, t)) adj++;
-        }
-      }
-
-      var placement = new char[size.Height, size.Width];
-      for (int x = 0; x < size.Width; x++)
-      {
-        for (int y = 0; y < size.Height; y++)
-        {
-          placement[y, x] = '.';
-        }
-      }
-      foreach (Flux.Model.Game.BattleShip.Ship s in ships)
-      {
-        foreach (System.Drawing.Point p in s.Locations)
-        {
-          placement[p.Y, p.X] = (char)('0' + s.Length);
-        }
-      }
-      Console.WriteLine("placement {0}:", adj);
-      //for (int y = 0; y < size.Height; y++)
-      //{
-      //  Console.Write("  ");
-      //  for (int x = 0; x < size.Width; x++)
-      //  {
-      //    Console.Write(placement[y, x]);
-      //  }
-      //  Console.WriteLine();
-      //}
-      System.Console.WriteLine(placement.ToConsoleString(true, '\0', '\0'));
-    }
-
     private static void TimedMain(string[] args)
     {
-      var path = @"C:\Test\Canimate.avi";
-      path = @"C:\Test\Chimes.wav";
-
-      path = @"D:\Hi-Hat Legend 808 05 Open.wav";
-      var fs = System.IO.File.OpenRead(path);
-
-      var index = 0;
-      foreach (var chunk in Flux.Media.Riff.File.GetChunks(fs))
-      {
-        System.Console.WriteLine($"{index++}: {chunk}");
-      }
-
-      fs.Dispose();
-
-      return;
-
-      //path = @"C:\WaveForms\(060 (C4), SawtoothWave, FM=(003 (D#-Eb-1), SampleAndHold)).wav";
-      //fs = System.IO.File.OpenRead(path);
-      //var riffChunk = Flux.Media.Riff.RiffChunk.ReadChunk(fs);
-      //if (riffChunk.ChunkID != Flux.Media.Riff.RiffChunk.ID || riffChunk.Type != Flux.Media.Riff.RiffChunk.TypeWave) throw new System.InvalidOperationException();
-      //var frm_Chunk = Flux.Media.Riff.Wave.FormatChunk.ReadChunk(fs);
-      //var dataChunk = Flux.Media.Riff.Wave.DataChunk.ReadChunk(fs);
-      //fs.Dispose();
-
-      //path = @"C:\Test\SomeWave.wav";
-      //fs = System.IO.File.OpenWrite(path);
-      //riffChunk.WriteTo(fs);
-      //frm_Chunk.WriteTo(fs);
-      //dataChunk.WriteTo(fs);
-      //fs.Dispose();
-
       var grid = new System.Drawing.Size(10, 5);
 
       System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = new System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship>();
@@ -113,12 +28,15 @@ namespace ConsoleApp
 
       while (true)
       {
-        ConsolePlacement(ships, grid);
+        System.Console.Write(ships.ToConsoleString(grid));
 
         System.Console.Write("X=");
         var x = System.Console.ReadKey().KeyChar;
         if (!char.IsDigit(x)) break;
-        System.Console.Write(", Y=");
+
+        System.Console.Write(", ");
+
+        System.Console.Write("Y=");
         var y = System.Console.ReadKey().KeyChar;
         if (!char.IsDigit(y)) break;
 

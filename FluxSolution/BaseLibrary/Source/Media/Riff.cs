@@ -1,15 +1,15 @@
 using System.Linq;
 
+/// <summary>Contains classes to read and evaluate RIFF files, which includes *.WAV files.</summary>
+/// <seealso cref="http://tiny.systems/software/soundProgrammer/WavFormatDocs.pdf"/>
+/// <seealso cref="http://soundfile.sapp.org/doc/WaveFormat/"/>
+/// <seealso cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ee415713(v=vs.85).aspx"/>
+/// <seealso cref="https://sharkysoft.com/jwave/docs/javadocs/lava/riff/wave/doc-files/riffwave-frameset.htm"/>
+/// <seealso cref="https://sites.google.com/site/musicgapi/technical-documents/wav-file-format"/>
+/// <seealso cref="https://joenord.com/audio-wav-file-format"/>
+/// <seealso cref="https://johnloomis.org/cpe102/asgn/asgn1/riff.html"/>
 namespace Flux.Media.Riff
 {
-  /// <summary></summary>
-  /// <seealso cref="http://tiny.systems/software/soundProgrammer/WavFormatDocs.pdf"/>
-  /// <seealso cref="http://soundfile.sapp.org/doc/WaveFormat/"/>
-  /// <seealso cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ee415713(v=vs.85).aspx"/>
-  /// <seealso cref="https://sharkysoft.com/jwave/docs/javadocs/lava/riff/wave/doc-files/riffwave-frameset.htm"/>
-  /// <seealso cref="https://sites.google.com/site/musicgapi/technical-documents/wav-file-format"/>
-  /// <seealso cref="https://joenord.com/audio-wav-file-format"/>
-  /// <seealso cref="https://johnloomis.org/cpe102/asgn/asgn1/riff.html"/>
   public static class File
   {
     public static void CreateFile16BitMono(string path, Flux.Dsp.Oscillator oscillator, int sampleCount)
@@ -73,7 +73,14 @@ namespace Flux.Media.Riff
     {
       if (stream is null) throw new System.ArgumentNullException(nameof(stream));
 
-      while (stream.Position < stream.Length)
+      while (ReadChunk(stream) is var chunk && !(chunk is null))
+        yield return chunk;
+    }
+    public static Chunk? ReadChunk(System.IO.Stream stream)
+    {
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+
+      try
       {
         var chunk = new Chunk(stream, 8);
 
@@ -104,7 +111,11 @@ namespace Flux.Media.Riff
             break;
         }
 
-        yield return chunk;
+        return chunk;
+      }
+      catch (System.IO.EndOfStreamException _)
+      {
+        return null;
       }
     }
   }
@@ -148,20 +159,24 @@ namespace Flux.Media.Riff
     {
       if (stream is null) throw new System.ArgumentNullException(nameof(stream));
 
+      var read = -1;
+
       if (m_buffer is null || m_buffer.Length == 0)
       {
         PositionInStream = stream.Position;
 
         m_buffer = new byte[count];
 
-        stream.Read(m_buffer, 0, count);
+        read = stream.Read(m_buffer, 0, count);
       }
       else if (m_buffer.Length is var offset)
       {
         System.Array.Resize(ref m_buffer, offset + (int)count);
 
-        stream.Read(m_buffer, offset, count);
+        read = stream.Read(m_buffer, offset, count);
       }
+
+      if (read == 0) throw new System.IO.EndOfStreamException();
     }
 
     public virtual void WriteBytes(System.IO.Stream targetStream, int offset, int count)
