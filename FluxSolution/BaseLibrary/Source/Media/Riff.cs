@@ -24,7 +24,7 @@ namespace Flux.Media.Riff
       var fc = new Wave.FormatChunk(1, (uint)oscillator.SampleRate, 16);
       var dc = new Wave.DataChunk((int)(fc.BytesPerSample * sampleCount));
 
-      rc.ChunkSize = rc.GetChunkSizeForFile() + fc.GetChunkSizeForFile() + dc.GetChunkSizeForFile();
+      rc.ChunkSize = rc.ChunkSizeForFile + fc.ChunkSizeForFile + dc.ChunkSizeForFile;
 
       rc.WriteTo(fileStream);
       fc.WriteTo(fileStream);
@@ -49,7 +49,7 @@ namespace Flux.Media.Riff
       var fc = new Wave.FormatChunk(2, (uint)oscillatorL.SampleRate, 16);
       var dc = new Wave.DataChunk((int)(fc.BytesPerSample * sampleCount));
 
-      rc.ChunkSize = rc.GetChunkSizeForFile() + fc.GetChunkSizeForFile() + dc.GetChunkSizeForFile();
+      rc.ChunkSize = rc.ChunkSizeForFile + fc.ChunkSizeForFile + dc.ChunkSizeForFile;
 
       rc.WriteTo(fileStream);
       fc.WriteTo(fileStream);
@@ -142,9 +142,7 @@ namespace Flux.Media.Riff
       PositionInStream = chunk.PositionInStream;
     }
 
-    [System.CLSCompliant(false)]
-    public uint GetChunkSizeForFile()
-      => this is FormTypeChunk ? ChunkSize : ChunkSize + 8;
+    [System.CLSCompliant(false)] public uint ChunkSizeForFile => this is FormTypeChunk ? ChunkSize : ChunkSize + 8;
 
     public void ReadBytes(System.IO.Stream stream, int count)
     {
@@ -166,6 +164,12 @@ namespace Flux.Media.Riff
       }
     }
 
+    public virtual void WriteBytes(System.IO.Stream targetStream, int offset, int count)
+    {
+      if (targetStream is null) throw new System.ArgumentNullException(nameof(targetStream));
+
+      targetStream.Write(m_buffer, offset, count);
+    }
     public virtual void WriteTo(System.IO.Stream stream)
     {
       if (stream is null) throw new System.ArgumentNullException(nameof(stream));
@@ -174,7 +178,7 @@ namespace Flux.Media.Riff
     }
 
     public override string ToString()
-      => $"<{GetType().Name} (\"{ChunkID}\", 8+{ChunkSize} bytes)>";
+      => $"<{GetType().Name} \"{ChunkID}\", 8+{ChunkSize} bytes>";
   }
 
   public class FormTypeChunk

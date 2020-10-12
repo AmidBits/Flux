@@ -11,6 +11,9 @@ namespace Flux.Model.Game.BattleShip
   public struct Ship
     : System.IEquatable<Ship>
   {
+    private static double[] m_proximityProbabilities = new double[] { 1.0, 0.5, 0.3333333333333333, 0.25, 0.2, 0.1666666666666666 };
+    public static System.Collections.Generic.IReadOnlyList<double> ProximityProbabilities => m_proximityProbabilities;
+
     public static readonly Ship Empty;
     public bool IsEmpty => Equals(Empty);
 
