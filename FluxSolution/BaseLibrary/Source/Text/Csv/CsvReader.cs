@@ -28,59 +28,47 @@ namespace Flux.Text
       {
         for (int read = m_streamReader.Read(), peek = m_streamReader.Peek(); read != -1; read = m_streamReader.Read(), peek = m_streamReader.Peek())
         {
-          if (!m_inDoubleQuotes)
+          if (!m_inDoubleQuotes) // We are not inside a double quoted field, and so various characters are important.
           {
-            if (read == '"')
+            if (read == '"') // Read is a double quote.
             {
               m_inDoubleQuotes = true; // Enter double quoted field.
             }
-            else if (read == m_options.FieldSeparator) // Between fields?
+            else if (read == m_options.FieldSeparator) // Read is a field separator.
             {
               yield return sb.ToString();
 
               sb.Clear();
             }
-            else if (read == '\r') // End of line by CR?
+            else if (read == '\r' || read == '\n') // If read is either a CR or an LF, we have reached the end of line (EOL).
             {
-              if (peek == '\n')  // End of line contains LF?
-              {
-                m_streamReader.Read();  // Discard LF.
-              }
+              if (read == '\r' && peek == '\n') // If read was a CR and peek is an LF (standard for CSV files)...
+                m_streamReader.Read();  // We remove the peek LF from the stream.
 
-              yield return sb.ToString();
+              yield return sb.ToString(); // Return the accumulated characters as a field value.
 
-              yield break;
-            }
-            else if (read == '\n') // End of line by LF?
-            {
-              yield return sb.ToString();
-
-              yield break;
+              yield break; // Since this was the EOL we can break to denote a set of fields.
             }
             else
-            {
               sb.Append(char.ConvertFromUtf32(read));
-            }
           }
-          else if (m_inDoubleQuotes)
+          else // We are inside a double quoted field, so really the only 'important' character will be an 'exit field' double quote.
           {
-            if (read == '"')
+            if (read == '"') // Read is a double quote.
             {
               if (peek != '"')
               {
                 m_inDoubleQuotes = false; // Exit double quoted field.
               }
-              else // Peek is a DoubleQuote, so this is an escape sequence.
+              else // Peek is a double quote, so this is, or should be, an escape sequence.
               {
-                m_streamReader.Read(); // Discard one of the double quotes.
+                m_streamReader.Read(); // Remove the peek double quote from the stream.
 
-                sb.Append(char.ConvertFromUtf32(read));
+                sb.Append(char.ConvertFromUtf32(read)); // Keep the other double quote (since it was escaped as one).
               }
             }
             else
-            {
-              sb.Append(char.ConvertFromUtf32(read));
-            }
+              sb.Append(char.ConvertFromUtf32(read)); // Anything else goes, for a double quoted field.
           }
         }
       }
