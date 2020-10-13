@@ -88,9 +88,11 @@ namespace Flux.Media.Geometry.Shapes
       => Vectors = new System.Collections.Generic.List<System.Numerics.Vector3>(vectors);
 
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source) => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => System.Linq.Enumerable.Empty<System.Numerics.Vector2>().Append(edge.leading, (edge.trailing + edge.leading) / 2));
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => System.Linq.Enumerable.Empty<System.Numerics.Vector2>().Append(edge.leading, (edge.trailing + edge.leading) / 2));
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon. (2D/3D)</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source) => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
 
     /// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
@@ -137,13 +139,17 @@ namespace Flux.Media.Geometry.Shapes
       }
     }
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius) => Ellipse.Create(6, radius, radius, Maths.PiOver2).Select(v2 => v2.ToVector3());
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonHorizontalXY(float radius)
+      => Ellipse.Create(6, radius, radius, Maths.PiOver2).Select(v2 => v2.ToVector3());
     /// <summary>Creates a hexagon with the specified radius, starting point up.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonVerticalXY(float radius) => Ellipse.Create(6, radius, radius).Select(v2 => v2.ToVector3());
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateHexagonVerticalXY(float radius)
+      => Ellipse.Create(6, radius, radius).Select(v2 => v2.ToVector3());
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY1(float radius) => Ellipse.Create(8, radius, radius).Select(v2 => v2.ToVector3());
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY1(float radius)
+      => Ellipse.Create(8, radius, radius).Select(v2 => v2.ToVector3());
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius) => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).Select(v2 => v2.ToVector3());
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius)
+      => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).Select(v2 => v2.ToVector3());
     /// <summary>Creates a square with the specified radius, starting point 45 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateSquareXY(float radius)
       => Ellipse.Create(4, radius, radius, Flux.Maths.PiOver4).Select(v2 => v2.ToVector3());
@@ -167,11 +173,8 @@ namespace Flux.Media.Geometry.Shapes
     {
       bool negative = false, positive = false;
 
-      foreach (var triplet in source.PartitionTuple(2, (leading, midling, trailing, index) => (leading, midling, trailing)))
+      foreach (var angle in source.PartitionTuple(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
       {
-        //var angle = Angle(triplet.leading, triplet.midling, triplet.trailing);
-        var angle = triplet.midling.AngleBetween(triplet.leading, triplet.trailing);
-
         if (angle < 0) negative = true;
         else positive = true;
 
@@ -352,11 +355,13 @@ namespace Flux.Media.Geometry.Shapes
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source) => ComputeCentroid(source) is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Select(t => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, t.leading.midpoint, t.leading.pair.Item2, t.trailing.midpoint }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => ComputeCentroid(source) is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source) => ComputeCentroid(source) is System.Numerics.Vector3 sc ? source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Select(pair => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, pair.leading, pair.trailing }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => ComputeCentroid(source) is System.Numerics.Vector3 sc ? source.PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>

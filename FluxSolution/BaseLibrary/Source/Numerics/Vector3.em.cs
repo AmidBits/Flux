@@ -29,17 +29,81 @@ namespace Flux
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1)
+    public static double ChebyshevDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b, float edgeLength = 1)
       => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
 
-    public static double EuclideanDistanceSquaredTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
+    /// <summary>Compute the surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
+    public static float ComputeAreaSigned(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
+    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    public static float ComputeArea(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+      => System.Math.Abs(ComputeAreaSigned(source));
+    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    //public static float ComputeArea(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+    //  => System.Math.Abs(System.Numerics.Vector3.Dot(source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Aggregate(System.Numerics.Vector3.Zero, (acc, pair) => acc + System.Numerics.Vector3.Cross(pair.leading, pair.trailing)), System.Numerics.Vector3.Normalize(ComputeNormal(source))) / 2);
+
+    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    public static System.Numerics.Vector3 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+
+    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
+    //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
+    public static System.Numerics.Vector3 ComputeNormal(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+      => source is null ? throw new System.ArgumentNullException(nameof(source)) : System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]);
+
+    /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
+    public static float ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Sum(pair => (pair.trailing - pair.leading).Length());
+
+    public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
       => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);
-    public static double EuclideanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
+    public static double EuclideanDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
       => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
+
+    /// <summary>Returns a sequence triplet angles.</summary>
+    public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => PartitionTuple(source, 2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing));
+    /// <summary>Returns a sequence triplet angles.</summary>
+    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => PartitionTuple(source, 2, (leading, midling, trailing, index) => (leading, midling, trailing, index, AngleBetween(midling, leading, trailing)));
+
+    /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => PartitionTuple(source, true, (leading, trailing, index) => (trailing + leading) / 2);
+    /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
+    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 leading, System.Numerics.Vector3 midpoint, System.Numerics.Vector3 trailing, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => PartitionTuple(source, true, (leading, trailing, index) => (leading, (trailing + leading) / 2, trailing, index));
+
+    /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
+    public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    {
+      bool negative = false, positive = false;
+
+      foreach (var angle in GetAngles(source))
+      {
+        if (angle < 0)
+          negative = true;
+        else
+          positive = true;
+
+        if (negative && positive)
+          return false;
+      }
+
+      return negative ^ positive;
+    }
+
+    /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.PartitionTuple(2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing)).AllEqual(out _);
+
+    /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).AllEqual(out _);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanDistanceTo(this in System.Numerics.Vector3 a, in System.Numerics.Vector3 b, float edgeLength = 1)
+    public static double ManhattanDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b, float edgeLength = 1)
       => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength + System.Math.Abs(b.Z - a.Z) / edgeLength;
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
@@ -54,6 +118,10 @@ namespace Flux
     public static System.Numerics.Vector3 RotateAroundWorldAxes(this System.Numerics.Vector3 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector3.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
+    /// <summary>Convert a 3D vector to a point.</summary>
+    public static System.Drawing.Point ToPoint(this in System.Numerics.Vector3 source)
+      => new System.Drawing.Point((int)source.X, (int)source.Y);
+    /// <summary>Convert a 3D vector to a 2D vector.</summary>
     public static System.Numerics.Vector2 ToVector2(this System.Numerics.Vector3 source)
       => new System.Numerics.Vector2(source.X, source.Y);
 

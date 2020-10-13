@@ -4,8 +4,11 @@ namespace Flux
 {
   public static partial class Xtensions
   {
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, System.Drawing.Size size)
     {
+      if (ships is null) throw new System.ArgumentNullException(nameof(ships));
+
       System.Console.SetCursorPosition(0, 3);
 
       var countAdjacentShips = 0;
@@ -34,13 +37,13 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
-      sb.AppendFormat("placement {0}:", countAdjacentShips);
-      sb.AppendLine();
+      sb.AppendLine($"Placement {countAdjacentShips}:");
       sb.AppendLine(placement.ToConsoleString(true, '\0', '\0'));
 
       return sb.ToString();
     }
   }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
   namespace Model.Game.BattleShip
   {

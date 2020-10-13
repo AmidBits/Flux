@@ -113,7 +113,7 @@ namespace Flux.Media.Riff
 
         return chunk;
       }
-      catch (System.IO.EndOfStreamException _)
+      catch (System.IO.EndOfStreamException)
       {
         return null;
       }
@@ -209,7 +209,9 @@ namespace Flux.Media.Riff
     public FormTypeChunk(Chunk chunk)
       : base(12)
     {
-      chunk.m_buffer.CopyTo(m_buffer, 0);
+      if (chunk is null) throw new System.ArgumentNullException(nameof(chunk));
+
+      chunk.m_buffer.CopyTo(m_buffer, 0, 12);
 
       PositionInStream = chunk.PositionInStream;
     }
