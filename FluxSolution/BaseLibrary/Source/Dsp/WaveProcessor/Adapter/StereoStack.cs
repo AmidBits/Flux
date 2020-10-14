@@ -6,7 +6,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   {
     public System.Collections.Generic.IReadOnlyList<IWaveProcessorStereo> Processors { get; } = new System.Collections.Generic.List<IWaveProcessorStereo>();
 
-    public StereoSample ProcessAudio(StereoSample sample)
+    public SampleStereo ProcessAudio(SampleStereo sample)
     {
       foreach (var processor in Processors)
         sample = processor.ProcessAudio(sample);

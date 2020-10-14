@@ -1,8 +1,8 @@
-﻿namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
+﻿namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>Calculates all filter frequency functions akk at once.</summary>
   public class MultiSVF
-    : IAudioFilterMono, IWaveProcessorMono
+    : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>

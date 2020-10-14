@@ -1,26 +1,5 @@
 ﻿namespace Flux.Dsp
 {
-  public interface IChannelBl
-  {
-    double BackLeft { get; }
-  }
-  public interface IChannelBr
-  {
-    double BackRight { get; }
-  }
-  public interface IChannelFc
-  {
-    double FrontCenter { get; }
-  }
-  public interface IChannelFl
-  {
-    double FrontLeft { get; }
-  }
-  public interface IChannelFr
-  {
-    double FrontRight { get; }
-  }
-
   //public interface ISampleMono
   //  : IChannelFc
   //{
@@ -80,56 +59,6 @@
   //  public override string ToString()
   //    => $"<Fc:{FrontCenter}>";
   //}
-
-  public struct StereoSample
-    : IChannelFl, IChannelFr, System.IEquatable<StereoSample>
-  {
-    public static readonly StereoSample Empty;
-    public bool IsEmpty => Equals(Empty);
-
-    public double FrontLeft { get; }
-    public double FrontRight { get; }
-
-    public StereoSample(in double monoSample)
-      : this(monoSample, monoSample)
-    {
-    }
-    public StereoSample(in double frontLeft, in double frontRight)
-    {
-      FrontLeft = frontLeft;
-      FrontRight = frontRight;
-    }
-
-    public double ToMono()
-      => ((FrontLeft + FrontRight) / 2);
-
-    #region Static functions
-    public static double ToMonoSample(StereoSample stereo)
-      => ((stereo.FrontLeft + stereo.FrontRight) / 2);
-    //public static ISampleQuad ToQuadSample(in ISampleStereo stereo)
-    //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
-    #endregion Static functions
-
-    // Operators
-    public static bool operator ==(in StereoSample a, in StereoSample b)
-      => a.Equals(b);
-    public static bool operator !=(in StereoSample a, in StereoSample b)
-      => !a.Equals(b);
-    //public static implicit operator MonoSample(in StereoSample stereo) 
-    //  => new MonoSample((stereo.FrontLeft + stereo.FrontRight) / 2);
-    //public static implicit operator QuadSample(in StereoSample stereo)
-    //  => new QuadSample(stereo.FrontLeft, stereo.FrontRight, stereo.FrontLeft, stereo.FrontRight);
-    // IEquatable<T>
-    public bool Equals(StereoSample other)
-      => FrontLeft == other.FrontLeft && FrontRight == other.FrontRight;
-    // Object overrides
-    public override bool Equals(object? obj)
-      => obj is StereoSample sample && Equals(sample);
-    public override int GetHashCode()
-      => System.HashCode.Combine(FrontLeft, FrontRight);
-    public override string ToString()
-      => $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
-  }
 
   //public struct QuadSample
   //  : ISampleQuad, System.IEquatable<QuadSample>

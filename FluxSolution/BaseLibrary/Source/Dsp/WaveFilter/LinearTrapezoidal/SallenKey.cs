@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
+namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>A linear trapezoidal integrated Sallen Key filter (SKF) collection</summary>
   /// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
@@ -6,7 +6,7 @@ namespace Flux.Dsp.AudioFilter.LinearTrapezoidal
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
   public class SallenKey
-    : IAudioFilterMono, IWaveProcessorMono
+    : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 and 20,000 Hz, but no restrictions are enforced.</value>

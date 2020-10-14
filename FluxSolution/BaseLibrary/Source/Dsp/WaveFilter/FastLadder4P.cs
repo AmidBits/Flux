@@ -1,11 +1,11 @@
-namespace Flux.Dsp.AudioFilter
+namespace Flux.Dsp.WaveFilter
 {
   // https://github.com/vinniefalco/DSPFilters/blob/master/shared/DSPFilters/source/PoleFilter.cpp
   // http://musicdsp.org/files/Audio-EQ-Cookbook.txt
 
   // http://musicdsp.org/showArchiveComment.php?ArchiveID=240 // Karlsen 24 dB Ladder
   public class FastLadder4P
-    : IAudioFilterMono, IWaveProcessorMono
+    : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>

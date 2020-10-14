@@ -33,7 +33,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 
     public System.Collections.Generic.List<IWaveProcessorMono> WaveProcessors { get; } = new System.Collections.Generic.List<IWaveProcessorMono>();
 
-    public StereoSample ProcessAudio(StereoSample stereo)
+    public SampleStereo ProcessAudio(SampleStereo stereo)
     {
       var left = 0d;
       var right = 0d;
@@ -60,7 +60,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       left /= processorCount;
       right /= processorCount;
 
-      return new StereoSample(stereo.FrontLeft * m_dryMix + left * m_wetMix, stereo.FrontRight * m_dryMix + right * m_wetMix);
+      return new SampleStereo(stereo.FrontLeft * m_dryMix + left * m_wetMix, stereo.FrontRight * m_dryMix + right * m_wetMix);
     }
   }
 }

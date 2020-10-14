@@ -32,11 +32,11 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public StereoSample ProcessAudio(StereoSample stereo)
+    public SampleStereo ProcessAudio(SampleStereo stereo)
       => (m_position > Flux.Maths.EpsilonCpp32)
-      ? new StereoSample(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
+      ? new SampleStereo(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
       : (m_position < -Flux.Maths.EpsilonCpp32)
-      ? new StereoSample(stereo.FrontLeft * m_scaledAbsInv + stereo.FrontRight * m_scaledAbs, stereo.FrontRight * m_positionInvAbs)
+      ? new SampleStereo(stereo.FrontLeft * m_scaledAbsInv + stereo.FrontRight * m_scaledAbs, stereo.FrontRight * m_positionInvAbs)
       : stereo;
 
     /// <summary>Apply stereo pan across the stereo field.</summary>

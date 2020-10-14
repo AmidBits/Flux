@@ -20,12 +20,12 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public StereoSample ProcessAudio(StereoSample stereo)
+    public SampleStereo ProcessAudio(SampleStereo stereo)
     {
       var m = (stereo.FrontLeft + stereo.FrontRight) / 2;
       var s = (stereo.FrontRight - stereo.FrontLeft) * m_stereoCoefficient;
 
-      return new StereoSample(m - s, m + s);
+      return new SampleStereo(m - s, m + s);
     }
 
     /// <summary>Apply stereo width to the sample.</summary>

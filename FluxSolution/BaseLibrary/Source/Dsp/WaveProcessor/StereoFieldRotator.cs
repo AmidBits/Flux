@@ -29,8 +29,8 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public StereoSample ProcessAudio(StereoSample stereo)
-      => new StereoSample(stereo.FrontLeft * m_cosC - stereo.FrontRight * m_sinC, stereo.FrontLeft * m_sinC + stereo.FrontRight * m_cosC);
+    public SampleStereo ProcessAudio(SampleStereo stereo)
+      => new SampleStereo(stereo.FrontLeft * m_cosC - stereo.FrontRight * m_sinC, stereo.FrontLeft * m_sinC + stereo.FrontRight * m_cosC);
 
     /// <summary>Apply rotatation of the stereo sample across the stereo field.</summary>
     /// <param name="angle">Rotational angle of the stereo samples [-1, 1] across the stereo field, where -1 = -180 degrees (left), 1 = 180 degrees (right) and 0 = no change.</param>

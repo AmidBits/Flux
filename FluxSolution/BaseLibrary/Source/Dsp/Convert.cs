@@ -35,8 +35,8 @@ namespace Flux.Dsp
       => quantityScalar * System.Math.Log10(ratio / referenceFactor);
 
     /// <summary>Convert a mono sample into a set of stereo samples.</summary>
-    public static StereoSample MonoToStereo(double sampleM)
-      => new StereoSample(sampleM, sampleM);
+    public static SampleStereo MonoToStereo(double sampleM)
+      => new SampleStereo(sampleM, sampleM);
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
     public static double StereoToMono(double sampleL, double sampleR)
       => ((sampleL + sampleR) / 2);

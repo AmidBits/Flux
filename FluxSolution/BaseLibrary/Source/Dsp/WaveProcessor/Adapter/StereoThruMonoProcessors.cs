@@ -13,7 +13,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       Right = right;
     }
 
-    public StereoSample ProcessAudio(StereoSample sample)
-      => new StereoSample(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
+    public SampleStereo ProcessAudio(SampleStereo sample)
+      => new SampleStereo(Left.ProcessAudio(sample.FrontLeft), Right.ProcessAudio(sample.FrontRight));
   }
 }

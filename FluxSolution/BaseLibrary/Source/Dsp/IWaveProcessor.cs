@@ -24,14 +24,14 @@
   {
     /// <returns>Process the shaped samples in the [-1, 1] range in stereo.</returns>
     //(double left, double right) ProcessAudioStereo(double left, double right);
-    StereoSample ProcessAudio(StereoSample sample);
+    SampleStereo ProcessAudio(SampleStereo sample);
 
     private class EmptyAudioProcessorStereo
       : IWaveProcessorStereo
     {
       public static IWaveProcessorStereo Instance = new EmptyAudioProcessorStereo();
 
-      public StereoSample ProcessAudio(StereoSample sample)
+      public SampleStereo ProcessAudio(SampleStereo sample)
         => throw new System.NotImplementedException(nameof(EmptyAudioProcessorStereo));
     }
   }
