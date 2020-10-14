@@ -4,10 +4,6 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
-    public static System.Numerics.Vector3 AlongPathTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float scalar = 0.5f)
-      => (source + target) * scalar;
-
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
       => (before - source).AngleTo(after - source);
@@ -101,10 +97,16 @@ namespace Flux
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).AllEqual(out _);
 
+    public static System.Numerics.Vector3 LerpTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
+      => System.Numerics.Vector3.Lerp(source, target, percent);
+
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b, float edgeLength = 1)
       => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength + System.Math.Abs(b.Z - a.Z) / edgeLength;
+
+    public static System.Numerics.Vector3 NlerpTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
+      => System.Numerics.Vector3.Normalize(System.Numerics.Vector3.Lerp(source, target, percent));
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
@@ -117,6 +119,15 @@ namespace Flux
     /// <summary>Rotate the vector around the world axes.</summary>
     public static System.Numerics.Vector3 RotateAroundWorldAxes(this System.Numerics.Vector3 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector3.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
+
+    /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    public static System.Numerics.Vector3 SlerpTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
+    {
+      var dot = System.Math.Clamp(System.Numerics.Vector3.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
+      var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
+      var relative = System.Numerics.Vector3.Normalize(target - source * dot);
+      return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+    }
 
     /// <summary>Convert a 3D vector to a point.</summary>
     public static System.Drawing.Point ToPoint(this in System.Numerics.Vector3 source)

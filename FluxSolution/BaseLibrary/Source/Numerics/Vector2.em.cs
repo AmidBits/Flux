@@ -118,10 +118,16 @@ namespace Flux
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).AllEqual(out _);
 
+    public static System.Numerics.Vector2 LerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+      => System.Numerics.Vector2.Lerp(source, target, percent);
+
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
       => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength;
+
+    public static System.Numerics.Vector2 NlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+      => System.Numerics.Vector2.Normalize(System.Numerics.Vector2.Lerp(source, target, percent));
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
@@ -140,6 +146,15 @@ namespace Flux
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
+
+    /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    public static System.Numerics.Vector2 SlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+    {
+      var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
+      var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
+      var relative = System.Numerics.Vector2.Normalize(target - source * dot);
+      return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+    }
 
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
