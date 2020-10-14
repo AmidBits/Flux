@@ -12,7 +12,11 @@ namespace ConsoleApp
       //var x = new System.Numerics.Vector2[4] { new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 1), new System.Numerics.Vector2(1, 1), new System.Numerics.Vector2(1, 0) };
       var x = new System.Numerics.Vector2[5] { new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 1), new System.Numerics.Vector2(1, 1), new System.Numerics.Vector2(1, 0), new System.Numerics.Vector2(1, -1) };
 
-      var xy = x.SplitInHalf().ToArray();
+      var a = new long[] { 2, 3, 5, 7 };
+
+      var b = a.AggregateTuple(0L, 2, 1, (a, e, i) => a + e[0], (e, i) => e / i);
+
+      //var xy = x.SplitInHalf().ToArray();
 
       //var grid = new System.Drawing.Size(10, 5);
 

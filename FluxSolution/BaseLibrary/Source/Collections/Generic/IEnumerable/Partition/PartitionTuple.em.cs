@@ -3,59 +3,57 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
-    /// <param name="size">The number of elements in each tuple.</param>
-    /// <param name="wrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
+    /// <param name="tupleSize">The number of elements in each tuple.</param>
+    /// <param name="tupleWrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int size, int wrap, System.Func<System.Collections.Generic.IEnumerable<T>, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int tupleSize, int tupleWrap, System.Func<System.Collections.Generic.IReadOnlyList<TSource>, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (size < 2) throw new System.ArgumentOutOfRangeException(nameof(size));
+      if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
+      if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap up to {tupleSize - 1} elements.");
 
-      if (wrap >= 0 && wrap < size)
+      using var e = source.GetEnumerator();
+
+      var start = new System.Collections.Generic.List<TSource>(tupleSize);
+
+      if (e.MoveNext())
       {
-        using var e = source.GetEnumerator();
-
-        var index = 0;
-
-        var start = new System.Collections.Generic.Queue<T>(size);
-
-        if (e.MoveNext())
+        do
         {
-          do
-          {
-            start.Enqueue(e.Current);
-          }
-          while (start.Count < size && e.MoveNext());
-
-          if (start.Count == size)
-          {
-            var tuple = new System.Collections.Generic.Queue<T>(start);
-
-            yield return resultSelector(tuple, index++);
-
-            while (e.MoveNext())
-            {
-              tuple.Dequeue();
-              tuple.Enqueue(e.Current);
-              yield return resultSelector(tuple, index++);
-            }
-
-            while (wrap-- > 0)
-            {
-              tuple.Dequeue();
-              tuple.Enqueue(start.Dequeue());
-              yield return resultSelector(tuple, index++);
-            }
-          }
-          else throw new System.ArgumentException($@"The sequence has only {start.Count} elements.", nameof(source));
+          start.Add(e.Current);
         }
-        else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+        while (start.Count < tupleSize && e.MoveNext());
+
+        if (start.Count == tupleSize)
+        {
+          var tuple = new System.Collections.Generic.List<TSource>(start);
+
+          var index = 0;
+
+          yield return resultSelector(tuple, index++);
+
+          while (e.MoveNext())
+          {
+            tuple.RemoveAt(0);
+            tuple.Add(e.Current);
+            yield return resultSelector(tuple, index++);
+          }
+
+          while (tupleWrap-- > 0)
+          {
+            tuple.RemoveAt(0);
+            tuple.Add(start[0]);
+            start.RemoveAt(0);
+            yield return resultSelector(tuple, index++);
+          }
+        }
+        else throw new System.ArgumentException($@"The sequence has only {start.Count} elements.", nameof(source));
       }
-      else throw new System.ArgumentException($@"A {size}-tuple can only wrap up to {size - 1} elements.");
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
     /// <summary>Create a new sequence of 2-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first element.</summary>

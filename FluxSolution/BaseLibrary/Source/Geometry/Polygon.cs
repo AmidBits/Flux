@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Media.Geometry.Shapes
+namespace Flux.Geometry
 {
   public enum PolygonType
   {
@@ -80,12 +80,26 @@ namespace Flux.Media.Geometry.Shapes
       System.Console.WriteLine(string.Join(",\r\n", names.Where((e, i) => i > 0).Select((e, i) => $"{e} = {i + 1}")));
     }
 
-    public System.Collections.Generic.List<System.Numerics.Vector3> Vectors { get; }
+    public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> Vertices { get; }
 
-    public Polygon(System.Collections.Generic.List<System.Numerics.Vector3> vectors)
-      => Vectors = new System.Collections.Generic.List<System.Numerics.Vector3>(vectors);
-    public Polygon(params System.Numerics.Vector3[] vectors)
-      => Vectors = new System.Collections.Generic.List<System.Numerics.Vector3>(vectors);
+    public Polygon(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> vertices)
+    {
+      var list = new System.Collections.Generic.List<System.Numerics.Vector3>(vertices);
+
+      Vertices = list;
+
+      SurfaceAreaSigned = Polygon.ComputeAreaSigned(list);
+    }
+    public Polygon(params System.Numerics.Vector3[] vertices)
+      : this(vertices.AsEnumerable())
+    {
+    }
+
+    /// <summary>Compute the surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
+    public double SurfaceAreaSigned { get; }
+    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    public double SurfaceArea
+      => System.Math.Abs(SurfaceAreaSigned);
 
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
@@ -109,14 +123,14 @@ namespace Flux.Media.Geometry.Shapes
 
         if (a.Y <= point.Y)
         {
-          if (b.Y > point.Y && Line3.SideTest(point, a, b) > 0)
+          if (b.Y > point.Y && Line.SideTest(point, a, b) > 0)
           {
             wn++;
           }
         }
         else
         {
-          if (b.Y <= point.Y && Line3.SideTest(point, a, b) < 0)
+          if (b.Y <= point.Y && Line.SideTest(point, a, b) < 0)
           {
             wn--;
           }
@@ -385,7 +399,7 @@ namespace Flux.Media.Geometry.Shapes
 
       if (half2.Count < 3)
       {
-        var midpoint = Line3.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
+        var midpoint = Line.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
 
         half1.Add(midpoint);
         half2.Insert(0, midpoint);
@@ -418,7 +432,7 @@ namespace Flux.Media.Geometry.Shapes
       for (var i = startIndex; i < count; i++)
       {
         var triplet = angles[i % angles.Count];
-        var midpoint23 = Line3.IntermediaryPoint(triplet.Item2, triplet.Item3);
+        var midpoint23 = Line.IntermediaryPoint(triplet.Item2, triplet.Item3);
 
         yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, triplet.Item2, midpoint23 };
         yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, midpoint23, triplet.Item3 };
@@ -453,6 +467,10 @@ namespace Flux.Media.Geometry.Shapes
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static float ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector2> source)
       => System.Math.Abs(ComputeAreaSigned(source));
+
+    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    public static double ComputeAreaSigned(System.Collections.Generic.IList<System.Numerics.Vector3> source)
+      => source.PartitionTuple(true, (leading, trailing, index) => (trailing.X - leading.X) * (trailing.Y + leading.Y) / 2).Sum();
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static float ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector3> source)
       => System.Math.Abs(System.Numerics.Vector3.Dot(source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Aggregate(System.Numerics.Vector3.Zero, (acc, pair) => acc + System.Numerics.Vector3.Cross(pair.leading, pair.trailing)), System.Numerics.Vector3.Normalize(ComputeNormal(source))) / 2);
@@ -734,11 +752,11 @@ namespace Flux.Media.Geometry.Shapes
     // IEquatable
     public bool Equals(Polygon other)
     {
-      if (Vectors.Count != other.Vectors.Count)
+      if (Vertices.Count != other.Vertices.Count)
         return false;
 
-      for (var index = Vectors.Count; index >= 0; index--)
-        if (Vectors[index] != other.Vectors[index])
+      for (var index = Vertices.Count; index >= 0; index--)
+        if (Vertices[index] != other.Vertices[index])
           return false;
 
       return true;
@@ -746,13 +764,13 @@ namespace Flux.Media.Geometry.Shapes
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{nameof(Polygon)}: {string.Join(@", ", Vectors.Select(v => v.ToString(format, provider)))}>";
+      => $"<{nameof(Polygon)}: {string.Join(@", ", Vertices.Select(v => v.ToString(format, provider)))}>";
 
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
-      => Vectors.CombineHashCore();
+      => Vertices.CombineHashCore();
     public override string? ToString()
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }

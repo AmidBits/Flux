@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
-
-namespace Flux.Media.Geometry.Shapes
+namespace Flux.Geometry
 {
   public enum TestOutcome
   {
@@ -56,10 +54,10 @@ namespace Flux.Media.Geometry.Shapes
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 
-  public struct Line3
-    : System.IEquatable<Line3>, System.IFormattable
+  public struct Line
+    : System.IEquatable<Line>, System.IFormattable
   {
-    public static readonly Line3 Empty;
+    public static readonly Line Empty;
     public bool IsEmpty => Equals(Empty);
 
     private System.Numerics.Vector3 m_p1;
@@ -76,16 +74,16 @@ namespace Flux.Media.Geometry.Shapes
     public float Y2 { get => m_p2.Y; set => m_p2.Y = value; }
     public float Z2 { get => m_p2.Z; set => m_p2.Z = value; }
 
-    public Line3(System.Numerics.Vector3 p1, System.Numerics.Vector3 p2)
+    public Line(System.Numerics.Vector3 p1, System.Numerics.Vector3 p2)
     {
       m_p1 = p1;
       m_p2 = p2;
     }
-    public Line3(float x1, float y1, float z1, float x2, float y2, float z2)
+    public Line(float x1, float y1, float z1, float x2, float y2, float z2)
       : this(new System.Numerics.Vector3(x1, y1, z1), new System.Numerics.Vector3(x2, y2, z2))
     {
     }
-    public Line3(float x1, float y1, float x2, float y2)
+    public Line(float x1, float y1, float x2, float y2)
       : this(new System.Numerics.Vector3(x1, y1, default), new System.Numerics.Vector3(x2, y2, default))
     {
     }
@@ -163,19 +161,19 @@ namespace Flux.Media.Geometry.Shapes
     // https://keisan.casio.com/exec/system/1223508685
 
     // Operators
-    public static bool operator ==(Line3 a, Line3 b)
+    public static bool operator ==(Line a, Line b)
       => a.Equals(b);
-    public static bool operator !=(Line3 a, Line3 b)
+    public static bool operator !=(Line a, Line b)
       => !a.Equals(b);
     // IEquatable
-    public bool Equals(Line3 other)
+    public bool Equals(Line other)
       => m_p1 == other.m_p1 && m_p2 == other.m_p2;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? provider)
       => $"<{m_p1.ToString(format, provider)}, {m_p2.ToString(format, provider)}>";
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is Line3 o && Equals(o);
+      => obj is Line o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_p1, m_p2);
     public override string? ToString()

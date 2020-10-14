@@ -1,5 +1,3 @@
-using System;
-
 namespace Flux
 {
   public static partial class Xtensions
@@ -12,10 +10,12 @@ namespace Flux
       if (computor is null) throw new System.ArgumentNullException(nameof(computor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
+      using var e = source.GetEnumerator();
+
       var index = 0;
 
-      foreach (var element in source)
-        seed = computor(seed, element, index++);
+      while (e.MoveNext())
+        seed = computor(seed, e.Current, index++);
 
       return resultSelector(seed, index);
     }

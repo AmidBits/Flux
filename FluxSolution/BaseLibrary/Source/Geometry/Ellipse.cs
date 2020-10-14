@@ -1,4 +1,4 @@
-namespace Flux.Media.Geometry.Shapes
+namespace Flux.Geometry
 {
   public struct Ellipse
     : System.IEquatable<Ellipse>, System.IFormattable
@@ -11,7 +11,7 @@ namespace Flux.Media.Geometry.Shapes
     /// <summary>The width (X axis) of the ellipse.</summary>
     public double Width { get; set; }
 
-    /// <summary>The angle (in radians) of tilt of the ellipse.</summary>
+    /// <summary>The angle (in radians) of rotational tilt.</summary>
     public double Angle { get; set; }
 
     public Ellipse(double height, double width, double angle)
@@ -67,19 +67,26 @@ namespace Flux.Media.Geometry.Shapes
     }
 
     /// Flux.Media.Geometry.Ellipse.Create(7, 100, 100, Flux.Math.Pi.DivBy7); // heptagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHeptagon(double width, double height, double offsetRadians = Flux.Maths.PiOver7) => Create(7, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHeptagon(double width, double height, double offsetRadians = Flux.Maths.PiOver7)
+      => Create(7, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHexagon(double width, double height, double offsetRadians = Flux.Maths.PiOver6) => Create(6, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHexagon(double width, double height, double offsetRadians = Flux.Maths.PiOver6)
+      => Create(6, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(9, 100, 100, Flux.Math.Pi.DivBy9); // nonagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateNonagon(double width, double height, double offsetRadians = Flux.Maths.PiOver9) => Create(9, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateNonagon(double width, double height, double offsetRadians = Flux.Maths.PiOver9)
+      => Create(9, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateOctagon(double width, double height, double offsetRadians = Flux.Maths.PiOver8) => Create(8, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateOctagon(double width, double height, double offsetRadians = Flux.Maths.PiOver8)
+      => Create(8, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(5, 100, 100, Flux.Math.Pi.DivBy5); // pentagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreatePentagon(double width, double height, double offsetRadians = Flux.Maths.PiOver5) => Create(5, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreatePentagon(double width, double height, double offsetRadians = Flux.Maths.PiOver5)
+      => Create(5, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(4, 100, 100, Flux.Math.Pi.DivBy4); // square, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateSquare(double width, double height, double offsetRadians = Flux.Maths.PiOver4) => Create(4, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateSquare(double width, double height, double offsetRadians = Flux.Maths.PiOver4)
+      => Create(4, width, height, offsetRadians);
     /// Flux.Media.Geometry.Ellipse.Create(3, 100, 100, Flux.Math.Pi.DivBy3); // triangle, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateTriangle(double width, double height, double offsetRadians = Flux.Maths.PiOver3) => Create(3, width, height, offsetRadians);
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateTriangle(double width, double height, double offsetRadians = Flux.Maths.PiOver3)
+      => Create(3, width, height, offsetRadians);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public static double SurfaceArea(double radiusA, double radiusB) => System.Math.PI * radiusA * radiusB;
@@ -107,12 +114,15 @@ namespace Flux.Media.Geometry.Shapes
       return System.Math.PI * aPlusB * (1.0 + h / (10.0 + System.Math.Sqrt(4.0 - h)));
     }
 
-    /// <summary>returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as humans may expect.</summary>
-    public static Ellipse FromCartesian(double x, double y) => new Ellipse(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    /// <summary>Returns a vector from the specified elliptical (circular) properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as humans may expect.</summary>
-    public static System.Numerics.Vector2 ToCartesian(double radius, double angle) => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radius), (float)(System.Math.Sin(angle) * radius));
-    /// <summary>Returns a vector from the specified elliptical properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as humans may expect.</summary>
-    public static System.Numerics.Vector2 ToCartesian(double radiusX, double radiusY, double angle) => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radiusX), (float)(System.Math.Sin(angle) * radiusY));
+    /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
+    public static Ellipse FromCartesian(double x, double y)
+      => new Ellipse(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+    /// <summary>Returns a vector from the specified elliptical (circular) properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
+    public static System.Numerics.Vector2 ToCartesian(double radius, double angle)
+      => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radius), (float)(System.Math.Sin(angle) * radius));
+    /// <summary>Returns a vector from the specified elliptical properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
+    public static System.Numerics.Vector2 ToCartesian(double radiusX, double radiusY, double angle)
+      => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radiusX), (float)(System.Math.Sin(angle) * radiusY));
 
     // Operators
     public static bool operator ==(Ellipse a, Ellipse b)

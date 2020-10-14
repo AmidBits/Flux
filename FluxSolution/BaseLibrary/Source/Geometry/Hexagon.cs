@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Media.Geometry.Shapes
+namespace Flux.Geometry
 {
   public enum HexagonOrientation
   {
@@ -55,13 +55,13 @@ namespace Flux.Media.Geometry.Shapes
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceArea(double length) => 3 * length * length * RatioOfOuterToInnerDiameter;
+    public static double SurfaceArea(double length) => 3 * length * length * Maths.SquareRootOf3 / 2.0;
     /// <summary>Calculates the surface inner diameter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
     public static double SurfaceInnerDiameter(double length) => length * Maths.SquareRootOf3;
     /// <summary>Calculates the surface inner radius for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceInnerRadius(double length) => length * RatioOfOuterToInnerDiameter;
+    public static double SurfaceInnerRadius(double length) => length * Maths.SquareRootOf3 / 2.0;
     /// <summary>Calculates the surface outer diameter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
     public static double SurfaceOuterDiameter(double length) => length * 2;

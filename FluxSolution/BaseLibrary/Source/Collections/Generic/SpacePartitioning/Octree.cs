@@ -4,14 +4,14 @@ namespace Flux.Collections.Generic
 {
   public interface IOctree
   {
-    Numerics.Vector3I Position { get; set; }
+    Geometry.Point3 Position { get; set; }
   }
 
   /// <summary></summary>
   public class Octree<T> where T : IOctree
   {
-    public Numerics.Vector3I BoundaryHigh { get; private set; }
-    public Numerics.Vector3I BoundaryLow { get; private set; }
+    public Geometry.Point3 BoundaryHigh { get; private set; }
+    public Geometry.Point3 BoundaryLow { get; private set; }
 
     private System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
@@ -21,7 +21,7 @@ namespace Flux.Collections.Generic
     private System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
     public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
 
-    public Octree(Numerics.Vector3I boundaryLow, Numerics.Vector3I boundaryHigh)
+    public Octree(Geometry.Point3 boundaryLow, Geometry.Point3 boundaryHigh)
     {
       BoundaryLow = boundaryLow;
       BoundaryHigh = boundaryHigh;
@@ -29,7 +29,7 @@ namespace Flux.Collections.Generic
       MaximumItems = 1;
     }
 
-    public bool InScope(Numerics.Vector3I position)
+    public bool InScope(Geometry.Point3 position)
       => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
 
     public bool InsertItem(T item)
@@ -89,16 +89,16 @@ namespace Flux.Collections.Generic
     {
       if (m_subNodes.Count == 0)
       {
-        var midPoint = new Numerics.Vector3I((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
+        var midPoint = new Geometry.Point3((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
 
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(midPoint.X, midPoint.Y, midPoint.Z), new Numerics.Vector3I(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(BoundaryLow.X, midPoint.Y, midPoint.Z), new Numerics.Vector3I(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Numerics.Vector3I(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(midPoint.X, BoundaryLow.Y, midPoint.Z), new Numerics.Vector3I(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(midPoint.X, midPoint.Y, BoundaryLow.Z), new Numerics.Vector3I(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Numerics.Vector3I(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Numerics.Vector3I(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Numerics.Vector3I(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Numerics.Vector3I(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(midPoint.X, midPoint.Y, midPoint.Z), new Geometry.Point3(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(BoundaryLow.X, midPoint.Y, midPoint.Z), new Geometry.Point3(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Geometry.Point3(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(midPoint.X, BoundaryLow.Y, midPoint.Z), new Geometry.Point3(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(midPoint.X, midPoint.Y, BoundaryLow.Z), new Geometry.Point3(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Geometry.Point3(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.Point3(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new Geometry.Point3(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.Point3(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
       }
 
       if (m_items.Count > 0)
