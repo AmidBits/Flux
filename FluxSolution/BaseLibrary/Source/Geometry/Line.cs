@@ -1,30 +1,30 @@
 namespace Flux.Geometry
 {
-  public enum TestOutcome
+  public enum LineTestOutcome
   {
+    Unknown = 0,
     CoincidentLines,
     LinesIntersecting,
     ParallelLines,
-    Unknown
   }
 
-  public struct TestResult
-    : System.IEquatable<TestResult>, System.IFormattable
+  public struct LineTestResult
+    : System.IEquatable<LineTestResult>, System.IFormattable
   {
-    public static readonly TestResult Empty;
+    public static readonly LineTestResult Empty;
     public bool IsEmpty => Equals(Empty);
 
-    public TestOutcome Outcome { get; set; }
+    public LineTestOutcome Outcome { get; set; }
 
     public System.Numerics.Vector2? Point { get; set; }
 
-    public TestResult(TestOutcome outcome, System.Numerics.Vector2 point)
+    public LineTestResult(LineTestOutcome outcome, System.Numerics.Vector2 point)
     {
       Outcome = outcome;
 
       Point = point;
     }
-    public TestResult(TestOutcome outcome)
+    public LineTestResult(LineTestOutcome outcome)
     {
       Outcome = outcome;
 
@@ -32,13 +32,13 @@ namespace Flux.Geometry
     }
 
     // Operators
-    public static bool operator ==(TestResult a, TestResult b)
+    public static bool operator ==(LineTestResult a, LineTestResult b)
       => a.Equals(b);
-    public static bool operator !=(TestResult a, TestResult b)
+    public static bool operator !=(LineTestResult a, LineTestResult b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals(TestResult other)
+    public bool Equals(LineTestResult other)
       => Outcome == other.Outcome && Point!.HasValue == other.Point!.HasValue && Point!.Value == other.Point!.Value;
 
     // IFormattable
@@ -47,7 +47,7 @@ namespace Flux.Geometry
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is TestResult o && Equals(o);
+      => obj is LineTestResult o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Outcome, Point);
     public override string? ToString()
@@ -97,7 +97,7 @@ namespace Flux.Geometry
     public static System.Numerics.Vector3 IntermediaryPoint(System.Numerics.Vector3 a, System.Numerics.Vector3 b, float scalar = 0.5f) => (a + b) * scalar;
 
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static TestResult IntersectionTest(float aX1, float aY1, float aX2, float aY2, float bX1, float bY1, float bX2, float bY2)
+    public static LineTestResult IntersectionTest(float aX1, float aY1, float aX2, float aY2, float bX1, float bY1, float bX2, float bY2)
     {
       var p13x = aX1 - bX1;
       var p13y = aY1 - bY1;
@@ -117,22 +117,22 @@ namespace Flux.Geometry
 
         if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
         {
-          return new TestResult(TestOutcome.LinesIntersecting, new System.Numerics.Vector2(aX1 + a * (aX2 - aX1), aY1 + a * (aY2 - aY1)));
+          return new LineTestResult(LineTestOutcome.LinesIntersecting, new System.Numerics.Vector2(aX1 + a * (aX2 - aX1), aY1 + a * (aY2 - aY1)));
         }
         else // Not intersecting.
         {
-          return new TestResult(TestOutcome.Unknown);
+          return new LineTestResult(LineTestOutcome.Unknown);
         }
       }
       else
       {
         if (a == 0 || b == 0) // Coincident.
         {
-          return new TestResult(TestOutcome.CoincidentLines);
+          return new LineTestResult(LineTestOutcome.CoincidentLines);
         }
         else // Parallel.
         {
-          return new TestResult(TestOutcome.ParallelLines);
+          return new LineTestResult(LineTestOutcome.ParallelLines);
         }
       }
     }
