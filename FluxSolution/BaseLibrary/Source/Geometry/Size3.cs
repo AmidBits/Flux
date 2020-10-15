@@ -51,6 +51,9 @@ namespace Flux
       /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size3'/>.</summary>
       public static Size3 Subtract(int a, Size3 b)
         => new Size3(unchecked(a - b.Width), unchecked(a - b.Height), unchecked(a - b.Depth));
+      /// <summary>Creates a <see cref='Point3'/> from a <see cref='Size3'/>.</summary>
+      public static Point3 ToPoint3(Size3 size)
+        => new Point3(size.Width, size.Height, size.Depth);
 
       // Operators
 

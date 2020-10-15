@@ -231,6 +231,9 @@ namespace Flux
       /// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
       public static Point2 Subtract(in Point2 v, in int value)
         => new Point2(v.X - value, v.Y - value);
+      /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
+      public static Size2 ToSize2(Point2 point)
+        => new Size2(point.X, point.Y);
       #endregion Static members
 
       #region "Unique" Index

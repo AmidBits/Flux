@@ -329,6 +329,9 @@ namespace Flux
       /// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
       public static Point3 Subtract(in Point3 v, in int value)
         => new Point3(v.X - value, v.Y - value, v.Z - value);
+      /// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
+      public static Size3 ToSize3(Point3 point)
+        => new Size3(point.X, point.Y, point.Z);
       /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
       public static Point3 VectorTripleProduct(in Point3 a, in Point3 b, in Point3 c)
