@@ -1,7 +1,5 @@
 ﻿using Flux;
-using System;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
@@ -10,11 +8,12 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //var x = new System.Numerics.Vector2[4] { new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 1), new System.Numerics.Vector2(1, 1), new System.Numerics.Vector2(1, 0) };
-      var x = new System.Numerics.Vector2[5] { new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 1), new System.Numerics.Vector2(1, 1), new System.Numerics.Vector2(1, 0), new System.Numerics.Vector2(1, -1) };
+      //var x2 = new System.Numerics.Vector2[5] { new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 1), new System.Numerics.Vector2(1, 1), new System.Numerics.Vector2(1, 0), new System.Numerics.Vector2(1, -1) };
+      //var x2as = new Flux.Geometry.Polygon(x2);
+      var x3 = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, 0, 0), new System.Numerics.Vector3(0, 1, 0), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, 0, 0) };
+      var x3as = new Flux.Geometry.Polygon(x3);
 
-      var a = new long[] { 2, 3, 5, 7 };
-
-      var b = a.AggregateTuple(0L, 2, 1, (a, e, i) => a + e[0], (e, i) => e / i);
+      var x1 = x3as;
 
       //var xy = x.SplitInHalf().ToArray();
 

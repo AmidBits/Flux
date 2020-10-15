@@ -4,10 +4,6 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
-    public static System.Numerics.Vector2 AlongPathTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float scalar = 0.5f)
-      => (source + target) * scalar;
-
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
@@ -25,7 +21,7 @@ namespace Flux
     public static double ChebyshevDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
       => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
 
-    /// <summary>Compute the surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
     public static float ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
     /// <summary>Compute the surface area of the polygon.</summary>
@@ -173,61 +169,15 @@ namespace Flux
       yield return midpointPolygon;
     }
 
-    /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
-    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple(GetMidpoints(source), true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, leading, trailing }) : throw new System.InvalidOperationException();
-
-    /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
-    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple(source, true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, leading, trailing }) : throw new System.InvalidOperationException();
-
-    /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
-    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    {
-      var half1 = new System.Collections.Generic.List<System.Numerics.Vector2>();
-      var half2 = new System.Collections.Generic.List<System.Numerics.Vector2>();
-
-      foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
-      {
-        half2.Add(item);
-
-        if (half2.Count > half1.Count)
-        {
-          half1.Add(half2[0]);
-          half2.RemoveAt(0);
-        }
-      }
-
-      if (half1.Count > half2.Count)
-      {
-        var midway = AlongPathTo(half1[half1.Count - 1], half2[0]);
-
-        half1.Add(midway);
-        half2.Insert(0, midway);
-      }
-      else if (half1.Count == half2.Count)
-      {
-        half1.Add(half2[0]);
-      }
-
-      half2.Add(half1[0]);
-
-      yield return half1;
-      yield return half2;
-    }
-
-    public enum TriangulationType
-    {
-      Sequential,
-      SmallestAngle,
-      LargestAngle,
-      MostSquare,
-      LeastSquare,
-      Randomized,
-    }
+    //public enum TriangulationType
+    //{
+    //  Sequential,
+    //  SmallestAngle,
+    //  LargestAngle,
+    //  MostSquare,
+    //  LeastSquare,
+    //  Randomized,
+    //}
 
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
@@ -272,6 +222,52 @@ namespace Flux
 
         copy.RemoveAt((triplet.index + 1) % copy.Count);
       }
+    }
+
+    /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => ComputeCentroid(source) is var c ? PartitionTuple(GetMidpoints(source), true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, leading, trailing }) : throw new System.InvalidOperationException();
+
+    /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => ComputeCentroid(source) is var c ? PartitionTuple(source, true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, leading, trailing }) : throw new System.InvalidOperationException();
+
+    /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    {
+      var half1 = new System.Collections.Generic.List<System.Numerics.Vector2>();
+      var half2 = new System.Collections.Generic.List<System.Numerics.Vector2>();
+
+      foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
+      {
+        half2.Add(item);
+
+        if (half2.Count > half1.Count)
+        {
+          half1.Add(half2[0]);
+          half2.RemoveAt(0);
+        }
+      }
+
+      if (half1.Count > half2.Count)
+      {
+        var midpoint = System.Numerics.Vector2.Lerp(half1[half1.Count - 1], half2[0], 0.5f);
+
+        half1.Add(midpoint);
+        half2.Insert(0, midpoint);
+      }
+      else if (half1.Count == half2.Count)
+      {
+        half1.Add(half2[0]);
+      }
+
+      half2.Add(half1[0]);
+
+      yield return half1;
+      yield return half2;
     }
 
     /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>

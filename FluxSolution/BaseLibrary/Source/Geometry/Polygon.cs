@@ -88,18 +88,31 @@ namespace Flux.Geometry
 
       Vertices = list;
 
-      SurfaceAreaSigned = Polygon.ComputeAreaSigned(list);
+      SurfaceAreaSigned = list.ComputeAreaSigned();
+      SurfaceCentroid = list.ComputeCentroid();
+      SurfaceNormal = list.ComputeNormal();
+      SurfacePerimeter = list.ComputePerimeter();
     }
     public Polygon(params System.Numerics.Vector3[] vertices)
       : this(vertices.AsEnumerable())
     {
     }
 
-    /// <summary>Compute the surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
+    /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
     public double SurfaceAreaSigned { get; }
-    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    /// <summary>The surface area of the polygon. (2D/3D)</summary>
     public double SurfaceArea
       => System.Math.Abs(SurfaceAreaSigned);
+
+    /// <summary>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    public System.Numerics.Vector3 SurfaceCentroid { get; }
+
+    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
+    //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
+    public System.Numerics.Vector3 SurfaceNormal { get; }
+
+    /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
+    public double SurfacePerimeter { get; }
 
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
@@ -370,12 +383,12 @@ namespace Flux.Geometry
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
+      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is System.Numerics.Vector3 sc ? source.PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
+      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? source.PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
@@ -461,38 +474,38 @@ namespace Flux.Geometry
       }
     }
 
-    /// <summary>Compute the surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
-    public static float ComputeAreaSigned(System.Collections.Generic.IList<System.Numerics.Vector2> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
-    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
-    public static float ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector2> source)
-      => System.Math.Abs(ComputeAreaSigned(source));
+    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon. With the vertices numbered in a counterclockwise direction, the signed area is the area, otherwise it's the area negative.</summary>
+    //public static double ComputeAreaSigned(System.Collections.Generic.IList<System.Numerics.Vector2> source)
+    //  => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
+    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon.</summary>
+    //public static double ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector2> source)
+    //  => System.Math.Abs(ComputeAreaSigned(source));
 
-    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
-    public static double ComputeAreaSigned(System.Collections.Generic.IList<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (trailing.X - leading.X) * (trailing.Y + leading.Y) / 2).Sum();
-    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
-    public static float ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector3> source)
-      => System.Math.Abs(System.Numerics.Vector3.Dot(source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Aggregate(System.Numerics.Vector3.Zero, (acc, pair) => acc + System.Numerics.Vector3.Cross(pair.leading, pair.trailing)), System.Numerics.Vector3.Normalize(ComputeNormal(source))) / 2);
+    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon. With the vertices numbered in a counterclockwise direction, the signed area is the area, otherwise it's the area negative.</summary>
+    //public static double ComputeAreaSigned(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
+    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon.</summary>
+    //public static double ComputeArea(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => System.Math.Abs(ComputeAreaSigned(source));
 
-    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public static System.Numerics.Vector2 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.Aggregate(System.Numerics.Vector2.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
-    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public static System.Numerics.Vector3 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+    ///// <summary>Returns the surface centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    //public static System.Numerics.Vector2 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => source.Aggregate(System.Numerics.Vector2.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+    ///// <summary>Returns the surface centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    //public static System.Numerics.Vector3 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
 
-    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
-    //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
-    public static System.Numerics.Vector3 ComputeNormal(System.Collections.Generic.IList<System.Numerics.Vector3> source)
-      => source is null ? throw new System.ArgumentNullException(nameof(source)) : System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]);
+    ///// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
+    ////  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
+    //public static System.Numerics.Vector3 ComputeNormal(System.Collections.Generic.IList<System.Numerics.Vector3> source)
+    //  => source is null ? throw new System.ArgumentNullException(nameof(source)) : System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]);
 
-    /// <summary>Compute the perimeter length of the polygon.</summary>
-    public static float ComputePerimeter(System.Collections.Generic.IList<System.Numerics.Vector2> source) => source.PartitionTuple(true, (leading, trailing, index)
-      => (trailing - leading).Length()).Sum();
-    /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
-    public static float ComputePerimeter(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Sum(pair => (pair.trailing - pair.leading).Length());
+    ///// <summary>Compute the perimeter length of the polygon.</summary>
+    //public static double ComputePerimeter(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).Sum();
+    ///// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
+    //public static double ComputePerimeter(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).Sum();
 
     ///// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon.</summary>
     //public static System.Numerics.Vector2 Centroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> polygon)
