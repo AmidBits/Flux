@@ -29,16 +29,16 @@ namespace Flux
       public static Size2 Add(Size2 a, int b)
         => new Size2(unchecked(a.Width + b), unchecked(a.Height + b));
       /// <summary>Divides the components of the <see cref="Size2"/> by the corresponding components of another <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-      private static Size2 Divide(Size2 dividend, Size2 divisor)
+      public static Size2 Divide(Size2 dividend, Size2 divisor)
         => new Size2(unchecked(dividend.Width / divisor.Width), unchecked(dividend.Height / divisor.Height));
       /// <summary>Divides the components of the <see cref="Size2"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-      private static Size2 Divide(Size2 dividend, int divisor)
+      public static Size2 Divide(Size2 dividend, int divisor)
         => new Size2(unchecked(dividend.Width / divisor), unchecked(dividend.Height / divisor));
       /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-      private static Size2 Divide(int dividend, Size2 divisors)
+      public static Size2 Divide(int dividend, Size2 divisors)
         => new Size2(unchecked(dividend / divisors.Width), unchecked(dividend / divisors.Height));
       /// <summary>Multiplies <see cref="Size2"/> by an <see cref="int"/> producing <see cref="Size2"/>.</summary>
-      private static Size2 Multiply(Size2 size, int multiplier)
+      public static Size2 Multiply(Size2 size, int multiplier)
         => new Size2(unchecked(size.Width * multiplier), unchecked(size.Height * multiplier));
       /// <summary>Subtracts a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
       public static Size2 Subtract(Size2 a, Size2 b)

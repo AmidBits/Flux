@@ -31,16 +31,16 @@ namespace Flux
       public static Size3 Add(Size3 a, int b)
         => new Size3(unchecked(a.Width + b), unchecked(a.Height + b), unchecked(a.Depth + b));
       /// <summary>Divides the components of the <see cref="Size3"/> by the corresponding components of another <see cref="Size3"/> producing two quotients as a new <see cref="Size3"/>.</summary>
-      private static Size3 Divide(Size3 dividend, Size3 divisor)
+      public static Size3 Divide(Size3 dividend, Size3 divisor)
         => new Size3(unchecked(dividend.Width / divisor.Width), unchecked(dividend.Height / divisor.Height), unchecked(dividend.Depth / divisor.Depth));
       /// <summary>Divides the components of the <see cref="Size3"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size3"/>.</summary>
-      private static Size3 Divide(Size3 dividend, int divisor)
+      public static Size3 Divide(Size3 dividend, int divisor)
         => new Size3(unchecked(dividend.Width / divisor), unchecked(dividend.Height / divisor), unchecked(dividend.Depth / divisor));
       /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size3"/> producing two quotients as a new <see cref="Size3"/>.</summary>
-      private static Size3 Divide(int dividend, Size3 divisors)
+      public static Size3 Divide(int dividend, Size3 divisors)
         => new Size3(unchecked(dividend / divisors.Width), unchecked(dividend / divisors.Height), unchecked(dividend / divisors.Depth));
       /// <summary>Multiplies <see cref="Size3"/> by an <see cref="int"/> producing <see cref="Size3"/>.</summary>
-      private static Size3 Multiply(Size3 size, int multiplier)
+      public static Size3 Multiply(Size3 size, int multiplier)
         => new Size3(unchecked(size.Width * multiplier), unchecked(size.Height * multiplier), unchecked(size.Depth * multiplier));
       /// <summary>Subtracts a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
       public static Size3 Subtract(Size3 a, Size3 b)

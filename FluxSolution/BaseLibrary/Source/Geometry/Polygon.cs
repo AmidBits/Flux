@@ -384,210 +384,168 @@ namespace Flux.Geometry
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitAlongMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    {
-      var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector3>();
+      => source.SplitAlongMidpoints();
+    //{
+    //  var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector3>();
 
-      foreach (var pair in GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
-      {
-        midpointPolygon.Add(pair.leading.midpoint);
+    //  foreach (var pair in GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
+    //  {
+    //    midpointPolygon.Add(pair.leading.midpoint);
 
-        yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { pair.leading.pair.Item2, pair.trailing.midpoint, pair.leading.midpoint };
-      }
+    //    yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { pair.leading.pair.Item2, pair.trailing.midpoint, pair.leading.midpoint };
+    //  }
 
-      yield return midpointPolygon;
-    }
+    //  yield return midpointPolygon;
+    //}
 
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitByTriangulation(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, TriangulationType mode)
-    {
-      var rng = new System.Random();
+      => source.SplitByTriangulation(mode);
+    //{
+    //  var rng = new System.Random();
 
-      var copy = source.ToList();
+    //  var copy = source.ToList();
 
-      (System.Numerics.Vector3 leading, System.Numerics.Vector3 midling, System.Numerics.Vector3 trailing, int index) triplet = default;
+    //  (System.Numerics.Vector3 leading, System.Numerics.Vector3 midling, System.Numerics.Vector3 trailing, int index) triplet = default;
 
-      while (copy.Count >= 3)
-      {
-        switch (mode)
-        {
-          case TriangulationType.Sequential:
-            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
-            break;
-          case TriangulationType.Randomized:
-            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(rng.Next(copy.Count - 1)).First();
-            break;
-          case TriangulationType.SmallestAngle:
-            var ascendingAngle = GetAngles(copy).Aggregate((a, b) => a.angle < b.angle ? a : b);
-            triplet = (ascendingAngle.Item1, ascendingAngle.Item2, ascendingAngle.Item3, ascendingAngle.index);
-            break;
-          case TriangulationType.LargestAngle:
-            var descendingAngle = GetAngles(copy).Aggregate((a, b) => a.angle > b.angle ? a : b);
-            triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
-            break;
-          case TriangulationType.LeastSquare:
-            var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
-            triplet = (leastSquare.Item1, leastSquare.Item2, leastSquare.Item3, leastSquare.index);
-            break;
-          case TriangulationType.MostSquare:
-            var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
-            triplet = (mostSquare.Item1, mostSquare.Item2, mostSquare.Item3, mostSquare.index);
-            break;
-          default:
-            throw new System.Exception();
-        }
+    //  while (copy.Count >= 3)
+    //  {
+    //    switch (mode)
+    //    {
+    //      case TriangulationType.Sequential:
+    //        triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
+    //        break;
+    //      case TriangulationType.Randomized:
+    //        triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(rng.Next(copy.Count - 1)).First();
+    //        break;
+    //      case TriangulationType.SmallestAngle:
+    //        var ascendingAngle = GetAngles(copy).Aggregate((a, b) => a.angle < b.angle ? a : b);
+    //        triplet = (ascendingAngle.Item1, ascendingAngle.Item2, ascendingAngle.Item3, ascendingAngle.index);
+    //        break;
+    //      case TriangulationType.LargestAngle:
+    //        var descendingAngle = GetAngles(copy).Aggregate((a, b) => a.angle > b.angle ? a : b);
+    //        triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
+    //        break;
+    //      case TriangulationType.LeastSquare:
+    //        var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+    //        triplet = (leastSquare.Item1, leastSquare.Item2, leastSquare.Item3, leastSquare.index);
+    //        break;
+    //      case TriangulationType.MostSquare:
+    //        var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+    //        triplet = (mostSquare.Item1, mostSquare.Item2, mostSquare.Item3, mostSquare.index);
+    //        break;
+    //      default:
+    //        throw new System.Exception();
+    //    }
 
-        yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { triplet.midling, triplet.trailing, triplet.leading };
+    //    yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { triplet.midling, triplet.trailing, triplet.leading };
 
-        copy.RemoveAt((triplet.index + 1) % copy.Count);
-      }
-    }
+    //    copy.RemoveAt((triplet.index + 1) % copy.Count);
+    //  }
+    //}
 
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
+      => source.SplitCentroidToMidpoints();
+    //=> source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? source.PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
+      => source.SplitCentroidToVertices();
+    //=> source.ComputeCentroid() is System.Numerics.Vector3 sc ? source.PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 2 if odd count vertices and figure 9 if even count vertices, in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitInHalf(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    {
-      var half1 = new System.Collections.Generic.List<System.Numerics.Vector3>();
-      var half2 = new System.Collections.Generic.List<System.Numerics.Vector3>();
+      => source.SplitInHalf();
+    //{
+    //  var half1 = new System.Collections.Generic.List<System.Numerics.Vector3>();
+    //  var half2 = new System.Collections.Generic.List<System.Numerics.Vector3>();
 
-      foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
-      {
-        if (half1.Count > half2.Count)
-        {
-          half2.Add(half1[0]);
+    //  foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
+    //  {
+    //    if (half1.Count > half2.Count)
+    //    {
+    //      half2.Add(half1[0]);
 
-          half1.RemoveAt(0);
-        }
+    //      half1.RemoveAt(0);
+    //    }
 
-        half1.Add(item);
-      }
+    //    half1.Add(item);
+    //  }
 
-      if (half2.Count < 3)
-      {
-        var midpoint = Line.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
+    //  if (half2.Count < 3)
+    //  {
+    //    var midpoint = Line.IntermediaryPoint(half1[half1.Count - 1], half2[0]);
 
-        half1.Add(midpoint);
-        half2.Insert(0, midpoint);
-      }
+    //    half1.Add(midpoint);
+    //    half2.Insert(0, midpoint);
+    //  }
 
-      half1.Add(half2[0]);
-      half2.Add(half1[0]);
+    //  half1.Add(half2[0]);
+    //  half2.Add(half1[0]);
 
-      yield return half1;
-      yield return half2;
-    }
+    //  yield return half1;
+    //  yield return half2;
+    //}
 
     /// <summary>Returns a sequence of triangles from the specified polygon index to all midpoints, splitting all triangles at their midpoint along the polygon perimeter. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 2, in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitVertexToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
-    {
-      var angles = GetAngles(source).ToList();
+      => source.SplitVertexToMidpoints(index);
+    //{
+    //  var angles = GetAngles(source).ToList();
 
-      if (index < 0 || index > angles.Count - 1)
-      {
-        index = (index == -1) ? angles.Aggregate((a, b) => (a.angle > b.angle) ? a : b).index : throw new System.ArgumentOutOfRangeException(nameof(index));
-      }
+    //  if (index < 0 || index > angles.Count - 1)
+    //  {
+    //    index = (index == -1) ? angles.Aggregate((a, b) => (a.angle > b.angle) ? a : b).index : throw new System.ArgumentOutOfRangeException(nameof(index));
+    //  }
 
-      var vertex = angles[index].Item2;
+    //  var vertex = angles[index].Item2;
 
-      var startIndex = index + 1;
-      var count = startIndex + angles.Count - 2;
+    //  var startIndex = index + 1;
+    //  var count = startIndex + angles.Count - 2;
 
-      for (var i = startIndex; i < count; i++)
-      {
-        var triplet = angles[i % angles.Count];
-        var midpoint23 = Line.IntermediaryPoint(triplet.Item2, triplet.Item3);
+    //  for (var i = startIndex; i < count; i++)
+    //  {
+    //    var triplet = angles[i % angles.Count];
+    //    var midpoint23 = Line.IntermediaryPoint(triplet.Item2, triplet.Item3);
 
-        yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, triplet.Item2, midpoint23 };
-        yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, midpoint23, triplet.Item3 };
-      }
-    }
+    //    yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, triplet.Item2, midpoint23 };
+    //    yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, midpoint23, triplet.Item3 };
+    //  }
+    //}
     /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitVertexToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
-    {
-      var angles = GetAngles(source).ToList();
-
-      if (index < 0 || index > angles.Count - 1)
-      {
-        index = (index == -1) ? (angles.Aggregate((a, b) => (a.angle > b.angle) ? a : b).index - 1 + angles.Count) % angles.Count : throw new System.ArgumentOutOfRangeException(nameof(index));
-      }
-
-      var vertex = angles[index].Item2;
-
-      var startIndex = index + 1;
-      var count = startIndex + angles.Count - 2;
-
-      for (var i = startIndex; i < count; i++)
-      {
-        yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, angles[i % angles.Count].Item2, angles[(i + 1) % angles.Count].Item2 };
-      }
-    }
-
-    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon. With the vertices numbered in a counterclockwise direction, the signed area is the area, otherwise it's the area negative.</summary>
-    //public static double ComputeAreaSigned(System.Collections.Generic.IList<System.Numerics.Vector2> source)
-    //  => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
-    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon.</summary>
-    //public static double ComputeArea(System.Collections.Generic.IList<System.Numerics.Vector2> source)
-    //  => System.Math.Abs(ComputeAreaSigned(source));
-
-    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon. With the vertices numbered in a counterclockwise direction, the signed area is the area, otherwise it's the area negative.</summary>
-    //public static double ComputeAreaSigned(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //  => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
-    ///// <summary>Compute the signed surface area of a simple (non-intersecting sides) polygon.</summary>
-    //public static double ComputeArea(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //  => System.Math.Abs(ComputeAreaSigned(source));
-
-    ///// <summary>Returns the surface centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    //public static System.Numerics.Vector2 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    //  => source.Aggregate(System.Numerics.Vector2.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
-    ///// <summary>Returns the surface centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    //public static System.Numerics.Vector3 ComputeCentroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //  => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
-
-    ///// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
-    ////  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
-    //public static System.Numerics.Vector3 ComputeNormal(System.Collections.Generic.IList<System.Numerics.Vector3> source)
-    //  => source is null ? throw new System.ArgumentNullException(nameof(source)) : System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]);
-
-    ///// <summary>Compute the perimeter length of the polygon.</summary>
-    //public static double ComputePerimeter(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    //  => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).Sum();
-    ///// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
-    //public static double ComputePerimeter(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //  => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).Sum();
-
-    ///// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon.</summary>
-    //public static System.Numerics.Vector2 Centroid(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> polygon)
+      => source.SplitVertexToVertices(index);
     //{
-    //  System.Numerics.Vector2 centroid = System.Numerics.Vector2.Zero;
+    //  var angles = GetAngles(source).ToList();
 
-    //  int count = 0;
-
-    //  foreach (System.Numerics.Vector2 point in polygon)
+    //  if (index < 0 || index > angles.Count - 1)
     //  {
-    //    centroid += point;
-
-    //    count++;
+    //    index = (index == -1) ? (angles.Aggregate((a, b) => (a.angle > b.angle) ? a : b).index - 1 + angles.Count) % angles.Count : throw new System.ArgumentOutOfRangeException(nameof(index));
     //  }
 
-    //  return (centroid / count);
+    //  var vertex = angles[index].Item2;
+
+    //  var startIndex = index + 1;
+    //  var count = startIndex + angles.Count - 2;
+
+    //  for (var i = startIndex; i < count; i++)
+    //  {
+    //    yield return new System.Collections.Generic.List<System.Numerics.Vector3>() { vertex, angles[i % angles.Count].Item2, angles[(i + 1) % angles.Count].Item2 };
+    //  }
     //}
+
     ///// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     ///// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
     //public static int InclusionTest(System.Collections.Generic.IList<System.Numerics.Vector2> polygon, System.Numerics.Vector2 point)

@@ -9,6 +9,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var p = new System.Numerics.Vector3[] { new System.Numerics.Vector3(-1, -1, 0), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, -1, 0) };
+
+      System.Console.WriteLine($"AS  : {p.AngleSum(System.Numerics.Vector3.Zero)}");
+      System.Console.WriteLine($"ASpb: {p.AngleSumPB(System.Numerics.Vector3.Zero)}");
+
       var size = new Flux.Geometry.Size2(10, 10);
 
       var ships = Flux.Model.Game.BattleShip.Ship.StageFleet(size, 2, 3, 3, 4, 5);
