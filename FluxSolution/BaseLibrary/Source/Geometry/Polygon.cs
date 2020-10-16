@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Linq;
 
 namespace Flux.Geometry
 {
   public enum PolygonType
   {
+    #region Enumeration of polygon types named from the number of edges or vertices it consists of.
     Monogon = 1,
     Digon = 2,
     Trigon = 3,
@@ -24,15 +26,87 @@ namespace Flux.Geometry
     Octadecagon = 18,
     Enneadecagon = 19,
     Icosagon = 20,
+    Icosihenagon = 21,
+    Icosidigon = 22,
+    Icositrigon = 23,
     Icositetragon = 24,
+    Icosipentagon = 25,
+    Icosihexagon = 26,
+    Icosiheptagon = 27,
+    Icosioctagon = 28,
+    Icosienneagon = 29,
     Triacontagon = 30,
+    Triacontahenagon = 31,
+    Triacontadigon = 32,
+    Triacontatrigon = 33,
+    Triacontatetragon = 34,
+    Triacontapentagon = 35,
+    Triacontahexagon = 36,
+    Triacontaheptagon = 37,
+    Triacontaoctagon = 38,
+    Triacontaenneagon = 39,
     Tetracontagon = 40,
+    Tetracontahenagon = 41,
+    Tetracontadigon = 42,
+    Tetracontatrigon = 43,
+    Tetracontatetragon = 44,
+    Tetracontapentagon = 45,
+    Tetracontahexagon = 46,
+    Tetracontaheptagon = 47,
+    Tetracontaoctagon = 48,
+    Tetracontaenneagon = 49,
     Pentacontagon = 50,
+    Pentacontahenagon = 51,
+    Pentacontadigon = 52,
+    Pentacontatrigon = 53,
+    Pentacontatetragon = 54,
+    Pentacontapentagon = 55,
+    Pentacontahexagon = 56,
+    Pentacontaheptagon = 57,
+    Pentacontaoctagon = 58,
+    Pentacontaenneagon = 59,
     Hexacontagon = 60,
+    Hexacontahenagon = 61,
+    Hexacontadigon = 62,
+    Hexacontatrigon = 63,
+    Hexacontatetragon = 64,
+    Hexacontapentagon = 65,
+    Hexacontahexagon = 66,
+    Hexacontaheptagon = 67,
+    Hexacontaoctagon = 68,
+    Hexacontaenneagon = 69,
     Heptacontagon = 70,
+    Heptacontahenagon = 71,
+    Heptacontadigon = 72,
+    Heptacontatrigon = 73,
+    Heptacontatetragon = 74,
+    Heptacontapentagon = 75,
+    Heptacontahexagon = 76,
+    Heptacontaheptagon = 77,
+    Heptacontaoctagon = 78,
+    Heptacontaenneagon = 79,
     Octacontagon = 80,
+    Octacontahenagon = 81,
+    Octacontadigon = 82,
+    Octacontatrigon = 83,
+    Octacontatetragon = 84,
+    Octacontapentagon = 85,
+    Octacontahexagon = 86,
+    Octacontaheptagon = 87,
+    Octacontaoctagon = 88,
+    Octacontaenneagon = 89,
     Enneacontagon = 90,
+    Enneacontahenagon = 91,
+    Enneacontadigon = 92,
+    Enneacontatrigon = 93,
+    Enneacontatetragon = 94,
+    Enneacontapentagon = 95,
+    Enneacontahexagon = 96,
+    Enneacontaheptagon = 97,
+    Enneacontaoctagon = 98,
+    Enneacontaenneagon = 99,
     Hectogon = 100
+    #endregion Enumeration of polygon types named from the number of edges or vertices it consists of.
   }
 
   public enum TriangulationType
@@ -51,16 +125,23 @@ namespace Flux.Geometry
     public static readonly Polygon Empty;
     public bool IsEmpty => Equals(Empty);
 
-    public static void CreateEnumType100()
+    public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> Vertices { get; }
+
+    public Polygon(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> vertices)
+      => Vertices = new System.Collections.Generic.List<System.Numerics.Vector3>(vertices);
+    public Polygon(params System.Numerics.Vector3[] vertices)
+      : this(vertices.AsEnumerable())
+    {
+    }
+
+    public static System.Collections.Generic.IEnumerable<string> GetOneHundredPolygonNames()
     {
       string[] NameOfOnes = new string[] { string.Empty, @"hena", @"di", @"tri", @"tetra", @"penta", @"hexa", @"hepta", @"octa", @"ennea" };
       string[] NameOfTens = new string[] { string.Empty, @"deca", @"icosi", @"triaconta", @"tetraconta", @"pentaconta", @"hexaconta", @"heptaconta", @"octaconta", @"enneaconta" };
 
-      string[] names = new string[101];
-
-      for (var index = 1; index < names.Length; index++)
+      for (var index = 1; index < 100; index++)
       {
-        names[index] = index switch
+        var name = index switch
         {
           1 => @"mono",
           2 => @"di",
@@ -74,52 +155,36 @@ namespace Flux.Geometry
           _ => $"{NameOfTens[index / 10]}{NameOfOnes[index % 10]}",
         };
 
-        names[index] = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(names[index] + @"gon");
+        yield return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name + @"gon");
       }
-
-      System.Console.WriteLine(string.Join(",\r\n", names.Where((e, i) => i > 0).Select((e, i) => $"{e} = {i + 1}")));
     }
 
-    public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> Vertices { get; }
-
-    public Polygon(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> vertices)
-    {
-      var list = new System.Collections.Generic.List<System.Numerics.Vector3>(vertices);
-
-      Vertices = list;
-
-      SurfaceAreaSigned = list.ComputeAreaSigned();
-      SurfaceCentroid = list.ComputeCentroid();
-      SurfaceNormal = list.ComputeNormal();
-      SurfacePerimeter = list.ComputePerimeter();
-    }
-    public Polygon(params System.Numerics.Vector3[] vertices)
-      : this(vertices.AsEnumerable())
-    {
-    }
-
-    /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
-    public double SurfaceAreaSigned { get; }
-    /// <summary>The surface area of the polygon. (2D/3D)</summary>
+    /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    public double SurfaceAreaSigned
+      => Vertices.ComputeAreaSigned();
+    /// <summary>The surface area of the polygon.</summary>
     public double SurfaceArea
-      => System.Math.Abs(SurfaceAreaSigned);
+      => Vertices.ComputeArea();
 
     /// <summary>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public System.Numerics.Vector3 SurfaceCentroid { get; }
+    public System.Numerics.Vector3 SurfaceCentroid
+      => Vertices.ComputeCentroid();
 
-    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
+    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon).</summary>
     //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
-    public System.Numerics.Vector3 SurfaceNormal { get; }
+    public System.Numerics.Vector3 SurfaceNormal
+      => Vertices.ComputeNormal();
 
-    /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
-    public double SurfacePerimeter { get; }
+    /// <summary>Compute the perimeter length of the polygon.</summary>
+    public double SurfacePerimeter
+      => Vertices.ComputePerimeter();
 
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => System.Linq.Enumerable.Empty<System.Numerics.Vector2>().Append(edge.leading, (edge.trailing + edge.leading) / 2));
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => System.Linq.Enumerable.Empty<System.Numerics.Vector2>().Append(edge.leading, (edge.trailing + edge.leading) / 2));
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
 
     /// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
@@ -186,21 +251,21 @@ namespace Flux.Geometry
 
     /// <summary>Returns a sequence of triplets, their angles and ordinal indices. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)> GetAngles(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(2, (leading, midling, trailing, index) => (leading, midling, trailing, index, midling.AngleBetween(leading, trailing)));
+      => source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing, index, midling.AngleBetween(leading, trailing)));
 
     /// <summary>Returns all midpoints (halfway) points of the polygon.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / 2);
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / 2);
     /// <summary>Returns all midpoints (halfway) points of the polygon. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 midpoint, (System.Numerics.Vector3, System.Numerics.Vector3) pair)> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => ((trailing + leading) / 2, (leading, trailing)));
+      => source.PartitionTuple2(true, (leading, trailing, index) => ((trailing + leading) / 2, (leading, trailing)));
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvex(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     {
       bool negative = false, positive = false;
 
-      foreach (var angle in source.PartitionTuple(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
+      foreach (var angle in source.PartitionTuple3(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
       {
         if (angle < 0) negative = true;
         else positive = true;
@@ -243,7 +308,7 @@ namespace Flux.Geometry
     {
       var angle = double.NaN;
 
-      foreach (var triplet in source.PartitionTuple(2, (leading, midling, trailing, index) => (leading, midling, trailing)))
+      foreach (var triplet in source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing)))
       {
         if (double.IsNaN(angle)) angle = triplet.midling.AngleBetween(triplet.leading, triplet.trailing);
         else if (angle != triplet.midling.AngleBetween(triplet.leading, triplet.trailing)) return false;
@@ -257,7 +322,7 @@ namespace Flux.Geometry
     {
       var length = double.NaN;
 
-      foreach (var pair in source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)))
+      foreach (var pair in source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
       {
         if (double.IsNaN(length)) length = (pair.trailing - pair.leading).Length();
         else if (length != (pair.trailing - pair.leading).Length()) return false;
@@ -322,7 +387,7 @@ namespace Flux.Geometry
     {
       var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector3>();
 
-      foreach (var pair in GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => (leading, trailing)))
+      foreach (var pair in GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
       {
         midpointPolygon.Add(pair.leading.midpoint);
 
@@ -348,10 +413,10 @@ namespace Flux.Geometry
         switch (mode)
         {
           case TriangulationType.Sequential:
-            triplet = copy.PartitionTuple(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
+            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
             break;
           case TriangulationType.Randomized:
-            triplet = copy.PartitionTuple(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(rng.Next(copy.Count - 1)).First();
+            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(rng.Next(copy.Count - 1)).First();
             break;
           case TriangulationType.SmallestAngle:
             var ascendingAngle = GetAngles(copy).Aggregate((a, b) => a.angle < b.angle ? a : b);
@@ -383,12 +448,12 @@ namespace Flux.Geometry
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
+      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpoints(source).PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? source.PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
+      => source.ComputeCentroid() is System.Numerics.Vector3 sc ? source.PartitionTuple2(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading, trailing }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>

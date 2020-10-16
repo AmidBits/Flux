@@ -58,5 +58,137 @@ namespace Flux
       }
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
+
+    /// <summary>Creates a sequence of staggered (by one element) 2-tuple elements.</summary>
+    /// <returns>A sequence of 2-tuples staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext() && e.Current is var item1)
+      {
+        if (e.MoveNext())
+        {
+          var back1 = item1;
+
+          var index = 0;
+
+          do
+          {
+            seed = computor(seed, back1, e.Current, index++);
+
+            back1 = e.Current;
+          }
+          while (e.MoveNext());
+
+          if (wrap) seed = computor(seed, e.Current, item1, index++);
+
+          return resultSelector(seed, index);
+        }
+        else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
+      }
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    }
+
+    /// <summary>Creates a sequence of staggered (by one element) 3-tuple elements.</summary>
+    /// <returns>A sequence of 3-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
+      if (wrap < 0 || wrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(wrap));
+
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext() && e.Current is var item1)
+      {
+        if (e.MoveNext() && e.Current is var item2)
+        {
+          if (e.MoveNext())
+          {
+            var back2 = item1;
+            var back1 = item2;
+
+            var index = 0;
+
+            do
+            {
+              seed = computor(seed, back2, back1, e.Current, index++);
+
+              back2 = back1;
+              back1 = e.Current;
+            }
+            while (e.MoveNext());
+
+            if (wrap >= 1) seed = computor(seed, back1, e.Current, item1, index++);
+            if (wrap == 2) seed = computor(seed, e.Current, item1, item2, index++);
+
+            return resultSelector(seed, index);
+          }
+          else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
+        }
+        else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
+      }
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    }
+
+    /// <summary>Creates a sequence of staggered (by one element) 4-tuple elements.</summary>
+    /// <returns>A sequence of 4-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
+      if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
+
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext() && e.Current is var item1)
+      {
+        if (e.MoveNext() && e.Current is var item2)
+        {
+          if (e.MoveNext() && e.Current is var item3)
+          {
+            if (e.MoveNext())
+            {
+              var back3 = item1;
+              var back2 = item2;
+              var back1 = item3;
+
+              var index = 0;
+
+              do
+              {
+                seed = computor(seed, back2, back1, e.Current, index++);
+
+                back3 = back2;
+                back2 = back1;
+                back1 = e.Current;
+              }
+              while (e.MoveNext());
+
+              if (wrap >= 1) seed = computor(seed, back1, e.Current, item1, index++);
+              if (wrap == 2) seed = computor(seed, e.Current, item1, item2, index++);
+
+              return resultSelector(seed, index);
+            }
+            else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
+          }
+          else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
+        }
+        else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
+      }
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    }
   }
 }

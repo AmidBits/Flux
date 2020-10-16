@@ -4,6 +4,21 @@ namespace Flux
 {
   public static partial class Xtensions
   {
+    /// <summary>Creates a new sequence with the midpoints added in-between the vertices in the sequence.</summary>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      using var ev = source.GetEnumerator();
+      using var em = source.GetMidpoints().GetEnumerator();
+
+      while (ev.MoveNext() && em.MoveNext())
+      {
+        yield return ev.Current;
+        yield return em.Current;
+      }
+    }
+
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
       => (before - source).AngleTo(after - source);
@@ -26,13 +41,14 @@ namespace Flux
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b, float edgeLength = 1)
-      => System.Math.Max(System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength), (b.Z - a.Z) / edgeLength);
+      => Maths.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength, (b.Z - a.Z) / edgeLength);
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
-    public static float ComputeAreaSigned(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
+    public static float ComputeAreaSigned(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
+      => source.AggregateTuple2(0f, true, (a, v0, v1, i) => (v0.X * v1.Y - v1.X * v0.Y) / 2, (a, i) => a);
+    //      => source.PartitionTuple(true, (leading, trailing, index) => (leading.X * trailing.Y - trailing.X * leading.Y) / 2).Sum();
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
-    public static float ComputeArea(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+    public static float ComputeArea(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
       => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
@@ -41,12 +57,12 @@ namespace Flux
 
     /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
     //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
-    public static System.Numerics.Vector3 ComputeNormal(this System.Collections.Generic.IList<System.Numerics.Vector3> source)
+    public static System.Numerics.Vector3 ComputeNormal(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
       => source is null ? throw new System.ArgumentNullException(nameof(source)) : (source.Count >= 3 ? System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]) : throw new System.ArgumentOutOfRangeException(nameof(source)));
 
     /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
     public static float ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (leading, trailing)).Sum(pair => (pair.trailing - pair.leading).Length());
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Sum(pair => (pair.trailing - pair.leading).Length());
 
     public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
       => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);
@@ -55,17 +71,17 @@ namespace Flux
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple(source, 2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing));
+      => PartitionTuple3(source, 2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing));
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple(source, 2, (leading, midling, trailing, index) => (leading, midling, trailing, index, AngleBetween(midling, leading, trailing)));
+    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 leading, System.Numerics.Vector3 midling, System.Numerics.Vector3 trailing, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => PartitionTuple3(source, 2, (leading, midling, trailing, index) => (leading, midling, trailing, index, AngleBetween(midling, leading, trailing)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple(source, true, (leading, trailing, index) => (trailing + leading) / 2);
+      => PartitionTuple2(source, true, (leading, trailing, index) => (trailing + leading) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 leading, System.Numerics.Vector3 midpoint, System.Numerics.Vector3 trailing, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple(source, true, (leading, trailing, index) => (leading, (trailing + leading) / 2, trailing, index));
+      => PartitionTuple2(source, true, (leading, trailing, index) => (leading, (trailing + leading) / 2, trailing, index));
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
@@ -88,11 +104,11 @@ namespace Flux
 
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
     public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing)).AllEqual(out _);
+      => source.PartitionTuple3(2, (leading, midling, trailing, index) => AngleBetween(midling, leading, trailing)).AllEqual(out _);
 
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple(true, (leading, trailing, index) => (trailing - leading).Length()).AllEqual(out _);
+      => source.PartitionTuple2(true, (leading, trailing, index) => (trailing - leading).Length()).AllEqual(out _);
 
     public static System.Numerics.Vector3 LerpTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
       => System.Numerics.Vector3.Lerp(source, target, percent);
@@ -117,6 +133,12 @@ namespace Flux
     public static System.Numerics.Vector3 RotateAroundWorldAxes(this System.Numerics.Vector3 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector3.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
+    /// <summary>Create a new scalar by computing the scalar triple product, i.e. the dot product of one of the vectors with the cross product of the other two.</summary>
+    /// <remarks>This is the signed volume of the parallelepiped defined by the three vectors given.</remarks>
+    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+    public static double ScalarTripleProduct(System.Numerics.Vector3 a, System.Numerics.Vector3 b, System.Numerics.Vector3 c)
+      => System.Numerics.Vector3.Dot(a, System.Numerics.Vector3.Cross(b, c));
+
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static System.Numerics.Vector3 SlerpTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
     {
@@ -133,7 +155,7 @@ namespace Flux
     {
       var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector3>();
 
-      foreach (var pair in GetMidpointsEx(source).PartitionTuple(true, (leading, trailing, index) => (leading, trailing)))
+      foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
       {
         midpointPolygon.Add(pair.leading.midpoint);
 
@@ -167,10 +189,10 @@ namespace Flux
         switch (mode)
         {
           case TriangulationType.Sequential:
-            triplet = copy.PartitionTuple(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
+            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).First();
             break;
           case TriangulationType.Randomized:
-            triplet = copy.PartitionTuple(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(Random.NumberGenerator.Crypto.Next(copy.Count - 1)).First();
+            triplet = copy.PartitionTuple3(2, (leading, midling, trailing, i) => (leading, midling, trailing, i)).Skip(Random.NumberGenerator.Crypto.Next(copy.Count - 1)).First();
             break;
           case TriangulationType.SmallestAngle:
             var ascendingAngle = GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b);
@@ -202,13 +224,13 @@ namespace Flux
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple(GetMidpoints(source), true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, leading, trailing }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? PartitionTuple2(GetMidpoints(source), true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, leading, trailing }) : throw new System.InvalidOperationException();
     //=> source.ComputeCentroid() is System.Numerics.Vector3 sc ? GetMidpointsEx(source).PartitionTuple(true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { sc, leading.midpoint, leading.pair.Item2, trailing.midpoint }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple(source, true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, leading, trailing }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? PartitionTuple2(source, true, (leading, trailing, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, leading, trailing }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
@@ -300,6 +322,11 @@ namespace Flux
     /// <summary>Convert a 3D vector to a 2D vector.</summary>
     public static System.Numerics.Vector2 ToVector2(this System.Numerics.Vector3 source)
       => new System.Numerics.Vector2(source.X, source.Y);
+
+    /// <summary>Create a new vector by computing the vector triple product (Lagrange's formula), i.e. the cross product of one vector with the cross product of the other two.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+    public static System.Numerics.Vector3 VectorTripleProduct(System.Numerics.Vector3 a, System.Numerics.Vector3 b, System.Numerics.Vector3 c)
+      => System.Numerics.Vector3.Cross(a, System.Numerics.Vector3.Cross(b, c));
 
     /// <summary>Determines the inclusion of a point in the 3D planar polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside. (2D/3D)</summary>
     //public static int InsidePolygon(this System.Numerics.Vector3 source, System.Collections.Generic.IList<System.Numerics.Vector3> polygon)

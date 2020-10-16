@@ -9,10 +9,29 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var ships = Flux.Model.Game.BattleShip.Ship.StageFleet(new Flux.Geometry.Size2(10, 10), 2, 3, 3, 4, 5);
-      var shots = new System.Collections.Generic.List<Flux.Geometry.Point2>() { new Flux.Geometry.Point2(2, 2), new Flux.Geometry.Point2(3, 3), new Flux.Geometry.Point2(4, 4) };
+      var size = new Flux.Geometry.Size2(10, 10);
 
-      var any = Flux.Model.Game.BattleShip.Ship.AnyHits(ships, shots);
+      var ships = Flux.Model.Game.BattleShip.Ship.StageFleet(size, 2, 3, 3, 4, 5);
+
+      do
+      {
+        System.Console.SetCursorPosition(0, 0);
+
+        var shots = System.Linq.Enumerable.Range(0, 25).Select(n => new Flux.Geometry.Point2(Flux.Random.NumberGenerator.Crypto.Next(size.Width), Flux.Random.NumberGenerator.Crypto.Next(size.Height))).ToList();
+
+        var any = Flux.Model.Game.BattleShip.Ship.AnyHits(ships, shots);
+
+        System.Console.WriteLine(ships.ToConsoleString(size));
+
+        foreach (var ship in ships)
+          System.Console.WriteLine($" Ship: {string.Join(' ', ship.Locations)} (Sunk? {Flux.Model.Game.BattleShip.Ship.IsSunk(ship, shots)})");
+
+        System.Console.WriteLine($"Shots: {string.Join(' ', shots)}");
+
+        System.Console.WriteLine($"Any hits? {any}");
+      }
+      while (System.Console.ReadKey().Key != System.ConsoleKey.Escape);
+
       //var ttt = new Flux.Model.TicTacToe.Board();
 
       //for (var index = 0; index < 9; index++)

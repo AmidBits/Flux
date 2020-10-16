@@ -58,32 +58,32 @@ namespace Flux
 
     /// <summary>Create a new sequence of 2-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, bool overlap, System.Func<T, T, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple2<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, bool wrap, System.Func<TSource, TSource, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       using var e = source.GetEnumerator();
 
-      var index = 0;
-
-      if (e.MoveNext() && e.Current is var t1st)
+      if (e.MoveNext() && e.Current is var item1)
       {
-        var t1 = t1st;
-
         if (e.MoveNext())
         {
+          var back1 = item1;
+
+          var index = 0;
+
           do
           {
-            var tc = e.Current;
+            var current = e.Current;
 
-            yield return resultSelector(t1, tc, index++);
+            yield return resultSelector(back1, current, index++);
 
-            t1 = tc;
+            back1 = current;
           }
           while (e.MoveNext());
 
-          if (overlap) yield return resultSelector(t1, t1st, index++);
+          if (wrap) yield return resultSelector(back1, item1, index++);
         }
         else throw new System.ArgumentException(@"The sequence has only one element.", nameof(source));
       }
@@ -92,102 +92,95 @@ namespace Flux
 
     /// <summary>Create a new sequence of 3-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first or the second element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple3<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (overlap >= 0 && overlap <= 2)
+      if (wrap < 0 || wrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(wrap));
+
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext() && e.Current is var item1)
       {
-        using var e = source.GetEnumerator();
-
-        var index = 0;
-
-        if (e.MoveNext() && e.Current is T t1st)
+        if (e.MoveNext() && e.Current is var item2)
         {
-          var t1 = t1st;
-
-          if (e.MoveNext() && e.Current is T t2nd)
+          if (e.MoveNext())
           {
-            var t2 = t2nd;
+            var back2 = item1;
+            var back1 = item2;
 
-            if (e.MoveNext())
+            var index = 0;
+
+            do
             {
-              do
-              {
-                var tc = e.Current;
+              var current = e.Current;
 
-                yield return resultSelector(t1, t2, tc, index++);
+              yield return resultSelector(back2, back1, current, index++);
 
-                t1 = t2;
-                t2 = tc;
-              }
-              while (e.MoveNext());
-
-              if (overlap >= 1) yield return resultSelector(t1, t2, t1st, index++);
-              if (overlap == 2) yield return resultSelector(t2, t1st, t2nd, index++);
+              back2 = back1;
+              back1 = current;
             }
-            else throw new System.ArgumentException(@"The sequence has only two elements.", nameof(source));
+            while (e.MoveNext());
+
+            if (wrap >= 1) yield return resultSelector(back2, back1, item1, index++);
+            if (wrap == 2) yield return resultSelector(back1, item1, item2, index++);
           }
-          else throw new System.ArgumentException(@"The sequence has only one element.", nameof(source));
+          else throw new System.ArgumentException(@"The sequence has only two elements.", nameof(source));
         }
-        else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+        else throw new System.ArgumentException(@"The sequence has only one element.", nameof(source));
       }
-      else throw new System.ArgumentException(@"A 3-tuple can only overlap 0, 1 or 2 elements.", nameof(overlap));
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
     /// <summary>Create a new sequence of 4-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the third element.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple4<T, TResult>(this System.Collections.Generic.IEnumerable<T> source, int overlap, System.Func<T, T, T, T, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (overlap >= 0 && overlap <= 3)
+      if (overlap < 0 || overlap > 3) throw new System.ArgumentException(@"A 4-tuple can only overlap up to 3 elements.", nameof(overlap));
+
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext() && e.Current is var item1)
       {
-        using var e = source.GetEnumerator();
-
-        var index = 0;
-
-        if (e.MoveNext() && e.Current is T t1st)
+        if (e.MoveNext() && e.Current is var item2)
         {
-          var t1 = t1st;
-
-          if (e.MoveNext() && e.Current is T t2nd)
+          if (e.MoveNext() && e.Current is var item3)
           {
-            var t2 = t2nd;
-
-            if (e.MoveNext() && e.Current is T t3rd)
+            if (e.MoveNext())
             {
-              var t3 = t3rd;
+              var back3 = item1;
+              var back2 = item2;
+              var back1 = item3;
 
-              if (e.MoveNext())
+              var index = 0;
+
+              do
               {
-                do
-                {
-                  var tc = e.Current;
+                var current = e.Current;
 
-                  yield return resultSelector(t1, t2, t3, tc, index++);
+                yield return resultSelector(back3, back2, back1, current, index++);
 
-                  t1 = t2;
-                  t2 = t3;
-                  t3 = tc;
-                }
-                while (e.MoveNext());
-
-                if (overlap >= 1) yield return resultSelector(t1, t2, t3, t1st, index++);
-                if (overlap >= 2) yield return resultSelector(t2, t3, t1st, t2nd, index++);
-                if (overlap >= 3) yield return resultSelector(t3, t1st, t2nd, t3rd, index++);
+                back3 = back2;
+                back2 = back1;
+                back1 = current;
               }
-              else throw new System.ArgumentException(@"The sequence has only three elements.", nameof(source));
+              while (e.MoveNext());
+
+              if (overlap >= 1) yield return resultSelector(back3, back2, back1, item1, index++);
+              if (overlap >= 2) yield return resultSelector(back2, back1, item1, item2, index++);
+              if (overlap >= 3) yield return resultSelector(back1, item1, item2, item3, index++);
             }
-            else throw new System.ArgumentException(@"The sequence has only two elements.", nameof(source));
+            else throw new System.ArgumentException(@"The sequence has only three elements.", nameof(source));
           }
-          else throw new System.ArgumentException(@"The sequence has only one element.", nameof(source));
+          else throw new System.ArgumentException(@"The sequence has only two elements.", nameof(source));
         }
-        else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+        else throw new System.ArgumentException(@"The sequence has only one element.", nameof(source));
       }
-      else throw new System.ArgumentException(@"A 4-tuple can only overlap up to 3 elements.", nameof(overlap));
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
     /// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>

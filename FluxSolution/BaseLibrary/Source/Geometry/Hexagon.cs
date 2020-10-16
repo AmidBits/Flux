@@ -25,7 +25,7 @@ namespace Flux.Geometry
 
     /// <summary></summary>
     public static System.Collections.Generic.IEnumerable<(int centeredRing, int startCenteredNumber, int endCenteredNumber, int count)> GetCenteredRings(int count)
-      => GetCenteredNumbers(int.MaxValue).Take(count).PartitionTuple(false, (leading, trailing, index) => (leading, trailing)).Select((n, i) => (i + 1, n.leading + 1, n.trailing, n.trailing - n.leading)).Prepend((0, 1, 1, 1));
+      => GetCenteredNumbers(int.MaxValue).Take(count).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Select((n, i) => (i + 1, n.leading + 1, n.trailing, n.trailing - n.leading)).Prepend((0, 1, 1, 1));
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>

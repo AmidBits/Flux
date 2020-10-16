@@ -10,7 +10,7 @@ namespace Flux
     {
       var counter = 0;
 
-      foreach (var (leading, midling, trailing) in GetAscendingPrimes(SmallestPrime).PartitionTuple(0, (leading, midling, trailing, index) => (leading, midling, trailing)))
+      foreach (var (leading, midling, trailing) in GetAscendingPrimes(SmallestPrime).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)))
       {
         if (midling - leading == 4)
         {
