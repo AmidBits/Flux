@@ -29,11 +29,11 @@ namespace ConsoleApp
 
       //    var myTopMoves = allMyMoves.Where(m => m.Score == allMyMoves.Max(m => m.Score)).ToList();
       //    if (myTopMoves.Count > 0)
-      //    {
+      //    {ddd11
       //      myTopMoves.RandomElement(out var myTopMove);
       //      if (myTopMove.Score == -10) break;
       //      System.Console.WriteLine($"Your top move: {myTopMove}");
-      //    }
+      //    }11w
 
       //    System.Console.Write("Enter row: ");
       //    var rowChar = System.Console.ReadKey().KeyChar;
