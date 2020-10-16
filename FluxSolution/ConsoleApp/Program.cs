@@ -1,4 +1,5 @@
 ﻿using Flux;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -8,9 +9,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var ships = Flux.Model.Game.BattleShip.Ship.StageFleet(new Flux.Geometry.Size2(10, 10), 2, 3, 3, 4, 5);
+      var shots = new System.Collections.Generic.List<Flux.Geometry.Point2>() { new Flux.Geometry.Point2(2, 2), new Flux.Geometry.Point2(3, 3), new Flux.Geometry.Point2(4, 4) };
 
-
-
+      var any = Flux.Model.Game.BattleShip.Ship.AnyHits(ships, shots);
       //var ttt = new Flux.Model.TicTacToe.Board();
 
       //for (var index = 0; index < 9; index++)

@@ -5,7 +5,7 @@ namespace Flux
   public static partial class Xtensions
   {
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-    public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, System.Drawing.Size size)
+    public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, Geometry.Size2 size)
     {
       if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -32,7 +32,7 @@ namespace Flux
           placement[y, x] = '.';
 
       foreach (Flux.Model.Game.BattleShip.Ship s in ships)
-        foreach (System.Drawing.Point p in s.Locations)
+        foreach (Geometry.Point2 p in s.Locations)
           placement[p.Y, p.X] = (char)('0' + s.Length);
 
       var sb = new System.Text.StringBuilder();
@@ -62,27 +62,27 @@ namespace Flux
       public static readonly Ship Empty;
       public bool IsEmpty => Equals(Empty);
 
-      private readonly System.Collections.Generic.List<System.Drawing.Point> m_locations;
-      public System.Drawing.Point Location => m_locations.Count > 0 ? m_locations[0] : throw new System.InvalidOperationException(nameof(Empty));
-      public System.Collections.Generic.IReadOnlyList<System.Drawing.Point> Locations => m_locations;
+      private readonly System.Collections.Generic.List<Geometry.Point2> m_locations;
+      public Geometry.Point2 Location => m_locations.Count > 0 ? m_locations[0] : throw new System.InvalidOperationException(nameof(Empty));
+      public System.Collections.Generic.IReadOnlyList<Geometry.Point2> Locations => m_locations;
 
       public ShipOrientation Orientation { get; set; }
 
       public int Length
         => m_locations.Count;
 
-      public Ship(int length, System.Drawing.Point location, ShipOrientation orientation)
+      public Ship(int length, Geometry.Point2 location, ShipOrientation orientation)
       {
         if (length <= 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
         Orientation = orientation;
 
-        m_locations = new System.Collections.Generic.List<System.Drawing.Point>();
+        m_locations = new System.Collections.Generic.List<Geometry.Point2>();
         for (int i = 0; i < length; i++)
-          m_locations.Add(Orientation == ShipOrientation.Horizontal ? new System.Drawing.Point(location.X + i, location.Y) : new System.Drawing.Point(location.X, location.Y + i));
+          m_locations.Add(Orientation == ShipOrientation.Horizontal ? new Geometry.Point2(location.X + i, location.Y) : new Geometry.Point2(location.X, location.Y + i));
       }
 
-      public bool IsValid(System.Drawing.Size boardSize)
+      public bool IsValid(Geometry.Size2 boardSize)
       {
         if (m_locations[0].X < 0 || m_locations[0].Y < 0)
           return false;
@@ -101,32 +101,32 @@ namespace Flux
         return true;
       }
 
-      public static bool IsSunk(Ship ship, System.Collections.Generic.IEnumerable<System.Drawing.Point> allShots)
+      public static bool AnyHits(System.Collections.Generic.IEnumerable<Ship> ships, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
       {
-        foreach (var location in ship.m_locations)
-          if (!allShots.Any(s => s.X == location.X && s.Y == location.Y))
-            return false;
-
-        return true;
+        return ships.Any(ship => ship.m_locations.Any(location => shots.Any(shot => shot == location)));
+      }
+      public static bool IsSunk(Ship ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
+      {
+        return ship.m_locations.All(l => shots.Any(s => s == l));
       }
 
       public static bool AreAdjacent(Ship a, Ship b)
       {
-        foreach (System.Drawing.Point p in a.Locations)
+        foreach (Geometry.Point2 p in a.Locations)
         {
-          if (Intersects(b, new System.Drawing.Point(p.X + 1, p.Y + 0)))
+          if (Intersects(b, new Geometry.Point2(p.X + 1, p.Y + 0)))
             return true;
-          if (Intersects(b, new System.Drawing.Point(p.X + -1, p.Y + 0)))
+          if (Intersects(b, new Geometry.Point2(p.X + -1, p.Y + 0)))
             return true;
-          if (Intersects(b, new System.Drawing.Point(p.X + 0, p.Y + 1)))
+          if (Intersects(b, new Geometry.Point2(p.X + 0, p.Y + 1)))
             return true;
-          if (Intersects(b, new System.Drawing.Point(p.X + 0, p.Y + -1)))
+          if (Intersects(b, new Geometry.Point2(p.X + 0, p.Y + -1)))
             return true;
         }
         return false;
       }
 
-      public static bool Intersects(Ship ship, System.Drawing.Point position)
+      public static bool Intersects(Ship ship, Geometry.Point2 position)
       {
         return ship.Orientation == ShipOrientation.Horizontal
         ? (ship.m_locations[0].Y == position.Y) && (ship.m_locations[0].X <= position.X) && (ship.m_locations[0].X + ship.m_locations.Count > position.X)
@@ -155,7 +155,7 @@ namespace Flux
         }
       }
 
-      public static System.Collections.Generic.List<Ship> StageFleet(System.Drawing.Size gridSize, params int[] shipSizes)
+      public static System.Collections.Generic.List<Ship> StageFleet(Geometry.Size2 gridSize, params int[] shipSizes)
       {
         var ships = new System.Collections.Generic.List<Ship>();
 
@@ -165,7 +165,7 @@ namespace Flux
 
           do
           {
-            ship = new Ship(size, new System.Drawing.Point(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (ShipOrientation)Random.NumberGenerator.Crypto.Next(2));
+            ship = new Ship(size, new Geometry.Point2(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (ShipOrientation)Random.NumberGenerator.Crypto.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 
