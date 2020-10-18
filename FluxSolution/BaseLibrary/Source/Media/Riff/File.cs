@@ -94,6 +94,14 @@ namespace Flux.Media.Riff
             chunk.ReadBytes(stream, 4);
             chunk = new ListChunk(chunk);
             break;
+          case Smf.HeaderChunk.ID:
+            chunk.ReadBytes(stream, (int)chunk.ChunkSize);
+            chunk = new Smf.HeaderChunk(chunk);
+            break;
+          case Smf.TrackChunk.ID:
+            chunk.ReadBytes(stream, (int)chunk.ChunkSize);
+            chunk = new Smf.TrackChunk(chunk);
+            break;
           case Wave.FormatChunk.ID:
             chunk.ReadBytes(stream, (int)chunk.ChunkSize);
             chunk = new Wave.FormatChunk(chunk);
@@ -118,6 +126,16 @@ namespace Flux.Media.Riff
         return null;
       }
     }
+  }
+
+
+  [System.CLSCompliant(false)]
+  public interface IChunk
+  {
+    public System.Collections.Generic.IReadOnlyList<byte> Buffer { get; }
+
+    public string ChunkID { get; set; }
+    [System.CLSCompliant(false)] public uint ChunkSize { get; set; }
   }
 
   public class Chunk

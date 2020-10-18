@@ -29,9 +29,9 @@ namespace Flux.Probability
       string ToLabel(T t) => t?.ToString()?.PadLeft(labelMax) ?? throw new System.ArgumentNullException(nameof(T));
     }
 
-    public static IDiscreteDistribution<R> Select<A, R>(this IDiscreteDistribution<A> d, System.Func<A, R> projection)
-      where R : notnull
-      => Projected<A, R>.Distribution(d, projection);
+    public static IDiscreteDistribution<TR> Select<TA, TR>(this IDiscreteDistribution<TA> d, System.Func<TA, TR> projection)
+      where TR : notnull
+      => Projected<TA, TR>.Distribution(d, projection);
 
     public static IDiscreteDistribution<T> ToUniform<T>(this System.Collections.Generic.IEnumerable<T> items)
       where T : notnull

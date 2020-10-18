@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Coloring
 {
   public struct Rgb
     : System.IEquatable<Rgb>, System.IFormattable

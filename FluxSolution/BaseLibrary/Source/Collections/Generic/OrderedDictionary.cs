@@ -10,12 +10,16 @@ using System.Collections.Generic;
 
 namespace Flux.Collections.Generic
 {
+#pragma warning disable CA1010 // Generic interface should also be implemented
   public interface IIndexedDictionary<TKey, TValue>
+#pragma warning restore CA1010 // Generic interface should also be implemented
     : System.Collections.Specialized.IOrderedDictionary //, System.Collections.Generic.IList<TValue>, System.Collections.Generic.IDictionary<TKey, TValue>
   {
   }
 
+#pragma warning disable CA1010 // Generic interface should also be implemented
   public class IndexedDictionary<TKey, TValue>
+#pragma warning restore CA1010 // Generic interface should also be implemented
     : IIndexedDictionary<TKey, TValue>
     where TKey : notnull, System.Collections.Generic.IEqualityComparer<TKey>
     where TValue : notnull
@@ -149,8 +153,10 @@ namespace Flux.Collections.Generic
     }
 
     #region IIndexedDictionary
+#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
     public object this[int index] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public object this[object key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public object? this[object key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
 
     public bool IsFixedSize
       => false;
@@ -170,7 +176,7 @@ namespace Flux.Collections.Generic
     public object SyncRoot
       => m_syncRoot;
 
-    public void Add(object key, object value)
+    public void Add(object key, object? value)
     {
       if (key is null) throw new System.ArgumentNullException(nameof(key));
       if (!(key is TKey)) throw new System.ArgumentException(@"Type mismatch.", nameof(key));

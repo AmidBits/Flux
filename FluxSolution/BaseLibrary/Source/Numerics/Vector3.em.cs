@@ -27,6 +27,8 @@ namespace Flux
       => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
     public static double AngleSumPB(this System.Collections.Generic.IList<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var anglesum = 0d;
 
       var count = source.Count;
@@ -283,7 +285,7 @@ namespace Flux
 
       if (polygon2.Count < 3)
       {
-        var midpoint = System.Numerics.Vector3.Lerp(polygon1[polygon1.Count - 1], polygon2[0], 0.5f);
+        var midpoint = System.Numerics.Vector3.Lerp(polygon1[^1], polygon2[0], 0.5f);
 
         polygon1.Add(midpoint);
         polygon2.Insert(0, midpoint);

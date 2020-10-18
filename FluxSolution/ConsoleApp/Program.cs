@@ -7,9 +7,9 @@ namespace ConsoleApp
 {
   class Program
   {
-    private static void TimedMain(string[] args)
+    private static void TimedMain(string[] _)
     {
-Flux.Media.HexSide
+
       var p = new System.Numerics.Vector3[] { new System.Numerics.Vector3(-1, -1, 0), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, -1, 0) };
 
       System.Console.WriteLine($"AS  : {p.AngleSum(System.Numerics.Vector3.Zero)}");

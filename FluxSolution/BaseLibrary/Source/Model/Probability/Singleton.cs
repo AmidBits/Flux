@@ -3,7 +3,9 @@ namespace Flux.Probability
   public sealed class Singleton<T> : IDiscreteDistribution<T>
   {
     private readonly T t;
+#pragma warning disable CA1000 // Do not declare static members on generic types
     public static Singleton<T> Distribution(T t)
+#pragma warning restore CA1000 // Do not declare static members on generic types
       => new Singleton<T>(t);
     private Singleton(T t) => this.t = t;
     public T Sample() => t;

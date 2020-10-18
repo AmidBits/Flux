@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Coloring
 {
   public struct Hsv
     : System.IEquatable<Hsv>, System.IFormattable
