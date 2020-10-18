@@ -4,18 +4,22 @@ namespace Flux.Media
 {
   public enum HexSide
   {
-    /// <summary>The hexside on the top of the hex.</summary>
-    North = 0,
-    /// <summary>The hexside on the upper-right of the hex.</summary>
+    /// <summary>The hexside on the right of a 'pointy' hexagon.</summary>
+    East = 0,
+    /// <summary>The hexside on the upper-right of a hexagon.</summary>
     NorthEast = 1,
-    /// <summary>The hexside on the lower-right of the hex</summary>
-    SouthEast = 2,
-    /// <summary>The hexside on the bottom of the hex.</summary>
-    South = 3,
-    /// <summary>The hexside on the lower-left of the hex.</summary>
-    SouthWest = 4,
-    /// <summary>The hexside on the upper-left of the hex.</summary>
-    NorthWest = 5
+    /// <summary>The hexside on the top of a 'flat' hexagon.</summary>
+    North = 2,
+    /// <summary>The hexside on the upper-left of a hexagon.</summary>
+    NorthWest = 3,
+    /// <summary>The hexside on the left of a 'pointy' hexagon.</summary>
+    West = 4,
+    /// <summary>The hexside on the lower-left of a hexagon.</summary>
+    SouthWest = 5,
+    /// <summary>The hexside on the bottom of a 'flat' hexagon.</summary>
+    South = 6,
+    /// <summary>The hexside on the lower-right of a hexagon</summary>
+    SouthEast = 7
   }
 
   [System.Flags]
@@ -23,47 +27,51 @@ namespace Flux.Media
   {
     /// <summary>The selection of no hexsides.</summary>
     None = 0,
-    /// <summary>The hexside on the top of the hex.</summary>
-    North = 1 << HexSide.North,
-    /// <summary>The hexside on the upper-right of the hex.</summary>
+    /// <summary>The hexside on the top of a hexagon.</summary>
+    East = 1 << HexSide.East,
+    /// <summary>The hexside on the upper-right of a hexagon.</summary>
     NorthEast = 1 << HexSide.NorthEast,
-    /// <summary>The hexside on the lower-right of the hex</summary>
-    SouthEast = 1 << HexSide.SouthEast,
-    /// <summary>The hexside on the bottom of the hex.</summary>
-    South = 1 << HexSide.South,
-    /// <summary>The hexside on the lower-left of the hex.</summary>
-    SouthWest = 1 << HexSide.SouthWest,
-    /// <summary>The hexside on the upper-left of the hex.</summary>
+    /// <summary>The hexside on the top of a hexagon.</summary>
+    North = 1 << HexSide.North,
+    /// <summary>The hexside on the upper-left of a hexagon.</summary>
     NorthWest = 1 << HexSide.NorthWest,
+    /// <summary>The hexside on the top of a hexagon.</summary>
+    West = 1 << HexSide.West,
+    /// <summary>The hexside on the lower-left of a hexagon.</summary>
+    SouthWest = 1 << HexSide.SouthWest,
+    /// <summary>The hexside on the bottom of a hexagon.</summary>
+    South = 1 << HexSide.South,
+    /// <summary>The hexside on the lower-right of a hexagon.</summary>
+    SouthEast = 1 << HexSide.SouthEast,
     /// <summary>All hexsides.</summary>
-    All = North | NorthEast | SouthEast | South | SouthWest | NorthWest
+    All = East | NorthEast | North | NorthWest | West | SouthWest | South | SouthEast
   }
 
   //// Generated code -- CC0 -- No Rights Reserved -- http://www.redblobgames.com/grids/hexagons/
-  public struct Hex
-    : System.IEquatable<Hex>
+  public struct HexTile
+    : System.IEquatable<HexTile>
   {
-    public static readonly Hex Empty;
+    public static readonly HexTile Empty;
     public bool IsEmpty => Equals(Empty);
 
-    public static readonly Hex[] HexagonDiagonals = new Hex[] { new Hex(2, -1, -1), new Hex(1, -2, 1), new Hex(-1, -1, 2), new Hex(-2, 1, 1), new Hex(-1, 2, -1), new Hex(1, 1, -2) };
-    public static readonly Hex[] HexagonDirections = new Hex[] { new Hex(1, 0, -1), new Hex(1, -1, 0), new Hex(0, -1, 1), new Hex(-1, 0, 1), new Hex(-1, 1, 0), new Hex(0, 1, -1) };
+    public static readonly HexTile[] HexagonDiagonals = new HexTile[] { new HexTile(2, -1, -1), new HexTile(1, -2, 1), new HexTile(-1, -1, 2), new HexTile(-2, 1, 1), new HexTile(-1, 2, -1), new HexTile(1, 1, -2) };
+    public static readonly HexTile[] HexagonDirections = new HexTile[] { new HexTile(1, 0, -1), new HexTile(1, -1, 0), new HexTile(0, -1, 1), new HexTile(-1, 0, 1), new HexTile(-1, 1, 0), new HexTile(0, 1, -1) };
 
     public int Q { get; private set; }
     public int R { get; private set; }
     public int S { get; private set; }
 
-    public Hex(int q, int r, int s)
+    public HexTile(int q, int r, int s)
     {
       Q = q;
       R = r;
       S = s;
     }
-    public Hex(int q, int r)
+    public HexTile(int q, int r)
       : this(q, r, -q - r)
     {
     }
-    public Hex(double x, double y, double z)
+    public HexTile(double x, double y, double z)
     {
       Q = (int)System.Math.Round(x);
       R = (int)System.Math.Round(y);
@@ -80,18 +88,18 @@ namespace Flux.Media
 
     #region Static Members
     /// <summary>Create a new hex with the sum from the two specified hexes.</summary>
-    public static Hex Add(in Hex h1, in Hex h2) => new Hex(h1.Q + h2.Q, h1.R + h2.R, h1.S + h2.S);
-    public static Hex operator +(in Hex v1, in Hex v2) => Add(v1, v2);
+    public static HexTile Add(in HexTile h1, in HexTile h2) => new HexTile(h1.Q + h2.Q, h1.R + h2.R, h1.S + h2.S);
+    public static HexTile operator +(in HexTile v1, in HexTile v2) => Add(v1, v2);
 
     /// <summary>Returns one of the six possible 'diagonal' neighbors on the 'pointy' side of a heaxagon.</summary>
-    public static Hex DiagonalNeighbor(in Hex source, in HexSide direction) => source + HexagonDiagonals[(int)direction];
+    public static HexTile DiagonalNeighbor(in HexTile source, in HexSide direction) => source + HexagonDiagonals[(int)direction];
     /// <summary>Yields all six possible 'diagonal' neighbors of a heaxagon.</summary>
-    public static System.Collections.Generic.IEnumerable<Hex> DiagonalNeighbors(Hex source) => HexagonDiagonals.Select(diagonal => source + diagonal);
+    public static System.Collections.Generic.IEnumerable<HexTile> DiagonalNeighbors(HexTile source) => HexagonDiagonals.Select(diagonal => source + diagonal);
 
     /// <summary>Compute the distance between the two hexes.</summary>
-    public static int Distance(in Hex h1, in Hex h2) => Length(Subtract(h1, h2));
+    public static int Distance(in HexTile h1, in HexTile h2) => Length(Subtract(h1, h2));
 
-    public static System.Collections.Generic.IEnumerable<Hex> GetRing(Hex center, int radius)
+    public static System.Collections.Generic.IEnumerable<HexTile> GetRing(HexTile center, int radius)
     {
       if (radius == 0) throw new System.ArgumentOutOfRangeException(nameof(radius));
 
@@ -108,7 +116,7 @@ namespace Flux.Media
       }
     }
 
-    public static System.Collections.Generic.IEnumerable<Hex> GetSpiral(Hex center, int radius)
+    public static System.Collections.Generic.IEnumerable<HexTile> GetSpiral(HexTile center, int radius)
     {
       yield return center;
 
@@ -122,20 +130,20 @@ namespace Flux.Media
     }
 
     /// <summary>Compute the length (or magnitude) of the hex.</summary>
-    public static int Length(in Hex h) => (int)((System.Math.Abs(h.Q) + System.Math.Abs(h.R) + System.Math.Abs(h.S)) / 2.0);
+    public static int Length(in HexTile h) => (int)((System.Math.Abs(h.Q) + System.Math.Abs(h.R) + System.Math.Abs(h.S)) / 2.0);
 
     /// <summary>Create a new hex with the difference from the specified hex and the k multiplier.</summary>
-    public static Hex Multiply(in Hex h1, in int k) => new Hex(h1.Q * k, h1.R * k, h1.S * k);
+    public static HexTile Multiply(in HexTile h1, in int k) => new HexTile(h1.Q * k, h1.R * k, h1.S * k);
 
     /// <summary>Returns one of the six possible neighbors on the 'flat' side of a heaxagon.</summary>
-    public static Hex Neighbor(in Hex source, in HexSide direction) => source + HexagonDirections[(int)direction];
+    public static HexTile Neighbor(in HexTile source, in HexSide direction) => source + HexagonDirections[(int)direction];
     /// <summary>Returns all six possible 'flat' neighbors of a heaxagon.</summary>
-    public static System.Collections.Generic.IEnumerable<Hex> Neighbors(Hex source) => HexagonDirections.Select(direction => source + direction);
+    public static System.Collections.Generic.IEnumerable<HexTile> Neighbors(HexTile source) => HexagonDirections.Select(direction => source + direction);
 
     /// <summary>Rotate the heaxagon vector to point to the vector on the left side of the source.</summary>
-    public static Hex RotateLeft(in Hex hex) => new Hex(-hex.S, -hex.Q, -hex.R);
+    public static HexTile RotateLeft(in HexTile hex) => new HexTile(-hex.S, -hex.Q, -hex.R);
     /// <summary>Rotate the heaxagon vector to point to the vector on the right side of the source.</summary>
-    public static Hex RotateRight(in Hex hex) => new Hex(-hex.R, -hex.S, -hex.Q);
+    public static HexTile RotateRight(in HexTile hex) => new HexTile(-hex.R, -hex.S, -hex.Q);
 
     /// <summary>Ensures that computed hex cube coordinates are x+y+z=0 and that midpoint hex points gets rounded to one side if in the middle.</summary>
     /// <see cref="https://www.redblobgames.com/grids/hexagons/#rounding"/>
@@ -157,24 +165,24 @@ namespace Flux.Media
     }
 
     /// <summary>Create a new hex with the difference from the two specified hexes.</summary>
-    public static Hex Subtract(in Hex h1, in Hex h2) => new Hex(h1.Q - h2.Q, h1.R - h2.R, h1.S - h2.S);
-    public static Hex operator -(in Hex v1, in Hex v2) => Subtract(v1, v2);
+    public static HexTile Subtract(in HexTile h1, in HexTile h2) => new HexTile(h1.Q - h2.Q, h1.R - h2.R, h1.S - h2.S);
+    public static HexTile operator -(in HexTile v1, in HexTile v2) => Subtract(v1, v2);
     #endregion Static Members
 
     // Operators
-    public static bool operator ==(in Hex v1, in Hex v2) => v1.Equals(v2);
-    public static bool operator !=(in Hex v1, in Hex v2) => !v1.Equals(v2);
+    public static bool operator ==(in HexTile v1, in HexTile v2) => v1.Equals(v2);
+    public static bool operator !=(in HexTile v1, in HexTile v2) => !v1.Equals(v2);
 
     // System.IEquatable<Hex>
-    public bool Equals(Hex other) 
+    public bool Equals(HexTile other)
       => Q == other.Q && R == other.R && S == other.S;
 
     // Overrides
-    public override int GetHashCode() 
+    public override int GetHashCode()
       => System.HashCode.Combine(Q, R, S);
     public override bool Equals(object? obj)
-      => obj is Hex o && Equals(o);
-    public override string ToString() 
+      => obj is HexTile o && Equals(o);
+    public override string ToString()
       => $"<{Q}, {R}, {S}>";
   }
 
