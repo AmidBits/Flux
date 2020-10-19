@@ -20,37 +20,25 @@ namespace Flux
     }
 
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
-    public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
+    public static float AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
       => (before - source).AngleTo(after - source);
 
     public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
       => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
-    public static double AngleSumPB(this System.Collections.Generic.IList<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      var anglesum = 0d;
-
-      foreach (var (p1, p2) in source.PartitionTuple2(true, (e1, e2, i) => (e1 - vector, e2 - vector)))
-      {
-        var m1m2 = p1.Length() * p2.Length();
-
-        if (m1m2 <= float.Epsilon) 
-          return Maths.PiX2; // We are on a node, consider this inside, and short circuit.
-
-        anglesum += System.Math.Acos((p1.X * p2.X + p1.Y * p2.Y + p1.Z * p2.Z) / m1m2); // Add up all acos(costheta) angles.
-      }
-
-      return anglesum;
-    }
 
     /// <summary>Calculate the angle between the source vector and the specified target vector. (2D/3D)
     /// when dot eq 0 then the vectors are perpendicular
     /// when dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction)
     /// when dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction)
     /// </summary>
-    public static double AngleTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
-      => System.Numerics.Vector3.Cross(source, target) is var cross ? System.Math.Atan2(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(cross), cross), System.Numerics.Vector3.Dot(source, target)) : throw new System.Exception();
+    /// <see cref="https://en.wikipedia.org/wiki/Dot_product#Geometric_definition"/>
+    public static float AngleTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
+      => System.MathF.Acos(System.Numerics.Vector3.Dot(source, target) / (source.Length() * target.Length()));
+    //{
+    //  var cross = System.Numerics.Vector3.Cross(source, target);
+
+    //  return System.Math.Atan2(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(cross), cross), System.Numerics.Vector3.Dot(source, target));
+    //}
 
     public static double AngleToAxisX(this System.Numerics.Vector3 source)
       => System.Math.Atan2(System.Math.Sqrt(source.Y * source.Y + source.Z * source.Z), source.X);
@@ -66,7 +54,7 @@ namespace Flux
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
-      => source.AggregateTuple2(0d, true, (a, va, vb, i) => a + ((va.X * vb.Y - vb.X * va.Y) / 2), (a, i) => a);
+      => source.AggregateTuple2(0d, true, (a, va, vb, i) => a + (va.X * vb.Y - vb.X * va.Y), (a, i) => a / 2);
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static double ComputeArea(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
       => System.Math.Abs(ComputeAreaSigned(source));
@@ -90,10 +78,11 @@ namespace Flux
       => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
 
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<float> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 v2, System.Numerics.Vector3 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 v2, System.Numerics.Vector3 v3, int index, float angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
@@ -134,11 +123,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var tolerance = Maths.Epsilon1E7;
         var angle1 = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.AreAlmostEqual(angle1, e.Current, tolerance))
+          if (angle1 != e.Current)
             return false;
       }
 
@@ -154,11 +142,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var tolerance = Maths.Epsilon1E7;
         var length1 = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.AreAlmostEqual(length1, e.Current, tolerance))
+          if (length1 != e.Current)
             return false;
       }
 

@@ -9,12 +9,25 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, -1, 1), new System.Numerics.Vector3(1, -1, 0), new System.Numerics.Vector3(1, 0, -1), new System.Numerics.Vector3(0, 1, -1), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(-1, 0, 1) };
+      hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, 1, 0), new System.Numerics.Vector3(2, 3, 0), new System.Numerics.Vector3(4, 7, 0) };
 
+      System.Console.WriteLine($"{hex.IsEquiangularPolygon()}");
+      System.Console.WriteLine($"{hex.IsEquilateralPolygon()}");
 
-      var p = new System.Numerics.Vector3[] { new System.Numerics.Vector3(-9, -1, 3), new System.Numerics.Vector3(-1, 91, 20), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, -1, 0) };
+      var index = 0;
+      var sum = 0d;
+      foreach (var angle in hex.GetAngles())
+      {
+        sum += angle;
+        System.Console.WriteLine($"{++index} = {Flux.Angle.RadianToDegree(angle)} ({sum} : {Flux.Angle.RadianToDegree(sum)})");
+      }
 
-      System.Console.WriteLine($"AS  : {p.AngleSum(System.Numerics.Vector3.Zero)}");
-      System.Console.WriteLine($"ASpb: {p.AngleSumPB(System.Numerics.Vector3.Zero)}");
+      var pas = hex.AngleSum(new System.Numerics.Vector3(0, 0, 1f));
+
+      System.Console.WriteLine($"AngleSum: {pas} ({Flux.Angle.RadianToDegree(pas)}) ({Flux.Maths.PiX2 - pas} = {Maths.IsPracticallyEqual(pas, Maths.PiX2, Maths.Epsilon1E7, Maths.Epsilon1E7)})");
+      System.Console.WriteLine($"Area: {hex.ComputeAreaSigned()}");
+      return;
 
       var size = new Flux.Geometry.Size2(10, 10);
 

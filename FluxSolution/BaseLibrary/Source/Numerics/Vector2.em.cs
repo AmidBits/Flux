@@ -145,7 +145,7 @@ namespace Flux
         var angle1 = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.AreAlmostEqual(angle1, e.Current, tolerance))
+          if (!Maths.IsAlmostEqual(angle1, e.Current, tolerance))
             return false;
       }
 
@@ -162,11 +162,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var tolerance = Maths.Epsilon1E7;
         var length1 = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.AreAlmostEqual(length1, e.Current, tolerance))
+          if (!Maths.IsPracticallyEqual(length1, e.Current, 1e-6f, 1e-6f))
             return false;
       }
 

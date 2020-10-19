@@ -250,31 +250,31 @@ namespace Flux.Geometry
       => Ellipse.Create(3, radius, radius).Select(v2 => v2.ToVector3());
 
     /// <summary>Returns a sequence of triplets, their angles and ordinal indices. (2D/3D)</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)> GetAngles(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing, index, midling.AngleBetween(leading, trailing)));
+    //public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, float angle)> GetAngles(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing, index, midling.AngleBetween(leading, trailing)));
 
     /// <summary>Returns all midpoints (halfway) points of the polygon.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / 2);
+    //public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / 2);
     /// <summary>Returns all midpoints (halfway) points of the polygon. (2D/3D)</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 midpoint, (System.Numerics.Vector3, System.Numerics.Vector3) pair)> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => ((trailing + leading) / 2, (leading, trailing)));
+    //public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 midpoint, (System.Numerics.Vector3, System.Numerics.Vector3) pair)> GetMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //  => source.PartitionTuple2(true, (leading, trailing, index) => ((trailing + leading) / 2, (leading, trailing)));
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
-    public static bool IsConvex(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    {
-      bool negative = false, positive = false;
+    //public static bool IsConvex(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //{
+    //  bool negative = false, positive = false;
 
-      foreach (var angle in source.PartitionTuple3(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
-      {
-        if (angle < 0) negative = true;
-        else positive = true;
+    //  foreach (var angle in source.PartitionTuple3(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
+    //  {
+    //    if (angle < 0) negative = true;
+    //    else positive = true;
 
-        if (negative && positive) return false;
-      }
+    //    if (negative && positive) return false;
+    //  }
 
-      return negative ^ positive;
-    }
+    //  return negative ^ positive;
+    //}
     //public static bool IsConvex2(System.Collections.Generic.IList<System.Numerics.Vector3> polygon)
     //{
     //  bool negative = false, positive = false;
@@ -304,32 +304,32 @@ namespace Flux.Geometry
     //}
 
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangular(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    {
-      var angle = double.NaN;
+    //public static bool IsEquiangular(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //{
+    //  var angle = double.NaN;
 
-      foreach (var triplet in source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing)))
-      {
-        if (double.IsNaN(angle)) angle = triplet.midling.AngleBetween(triplet.leading, triplet.trailing);
-        else if (angle != triplet.midling.AngleBetween(triplet.leading, triplet.trailing)) return false;
-      }
+    //  foreach (var triplet in source.PartitionTuple3(2, (leading, midling, trailing, index) => (leading, midling, trailing)))
+    //  {
+    //    if (double.IsNaN(angle)) angle = triplet.midling.AngleBetween(triplet.leading, triplet.trailing);
+    //    else if (angle != triplet.midling.AngleBetween(triplet.leading, triplet.trailing)) return false;
+    //  }
 
-      return true;
-    }
+    //  return true;
+    //}
 
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length. (2D/3D)</summary>
-    public static bool IsEquilateral(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    {
-      var length = double.NaN;
+    //public static bool IsEquilateral(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    //{
+    //  var length = double.NaN;
 
-      foreach (var pair in source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
-      {
-        if (double.IsNaN(length)) length = (pair.trailing - pair.leading).Length();
-        else if (length != (pair.trailing - pair.leading).Length()) return false;
-      }
+    //  foreach (var pair in source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)))
+    //  {
+    //    if (double.IsNaN(length)) length = (pair.trailing - pair.leading).Length();
+    //    else if (length != (pair.trailing - pair.leading).Length()) return false;
+    //  }
 
-      return true;
-    }
+    //  return true;
+    //}
 
     //#region Potential base interface and class for splitter framework.
     //interface ISplitter
