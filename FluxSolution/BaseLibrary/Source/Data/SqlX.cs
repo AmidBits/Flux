@@ -2,50 +2,30 @@ namespace Flux.Data
 {
   public static class SqlX
   {
-    public enum ColumnMappingEnum
+    public static System.Data.Common.DataColumnMappingCollection CreateColumnMappings(System.Collections.Generic.IList<string> sourceNames, System.Collections.Generic.IList<string> targetNames)
     {
-      IndexToIndex,
-      IndexToName,
-      NameToIndex,
-      NameToName,
+      if (sourceNames is null) throw new System.ArgumentNullException(nameof(sourceNames));
+      if (targetNames is null) throw new System.ArgumentNullException(nameof(targetNames));
+
+      var dcmc = new System.Data.Common.DataColumnMappingCollection();
+      for (var index = 0; index < sourceNames.Count && index < targetNames.Count; index++)
+        dcmc.Add(sourceNames[index], targetNames[index]);
+      return dcmc;
     }
 
-    public static System.Collections.Generic.Dictionary<TSource, TTarget> CreateColumnMappings<TSource, TTarget>(System.Collections.Generic.IDictionary<int, string> source, System.Collections.Generic.IDictionary<int, string> target, ColumnMappingEnum mappingType)
-      where TSource : notnull
-    {
-      var dictionary = new System.Collections.Generic.Dictionary<TSource, TTarget>();
+    //public static System.Collections.Generic.IEnumerable<(TResultLeft, TResultRight)> CreateColumnMappings<TResultLeft, TResultRight>(System.Collections.Generic.IDictionary<int, string> source, System.Collections.Generic.IDictionary<int, string> target, System.Func<System.Collections.Generic.KeyValuePair<int, string>, System.Collections.Generic.KeyValuePair<int, string>, (TResultLeft, TResultRight)> selector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (target is null) throw new System.ArgumentNullException(nameof(target));
+    //  if (selector is null) throw new System.ArgumentNullException(nameof(selector));
 
-      var sourceEnumerator = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
-      var targetEnumerator = target?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
+    //  using var sourceEnumerator = source.GetEnumerator();
+    //  using var targetEnumerator = target.GetEnumerator();
 
-      while (sourceEnumerator.MoveNext() && targetEnumerator.MoveNext())
-      {
-        //var (sourceColumn, targetColumn) = selector(sourceEnumerator.Current, targetEnumerator.Current);
-
-        //dictionary.Add(sourceColumn, targetColumn);
-      }
-
-      return dictionary;
-    }
-
-    public static System.Collections.Generic.Dictionary<TSource, TTarget> CreateColumnMappings<TSource, TTarget>(System.Collections.Generic.IDictionary<int, string> source, System.Collections.Generic.IDictionary<int, string> target, System.Func<System.Collections.Generic.KeyValuePair<int, string>, System.Collections.Generic.KeyValuePair<int, string>, (TSource sourceColumn, TTarget targetColumn)> selector)
-      where TSource : notnull
-    {
-      if (selector is null) throw new System.ArgumentNullException(nameof(selector));
-
-      var dictionary = new System.Collections.Generic.Dictionary<TSource, TTarget>();
-
-      var sourceEnumerator = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
-      var targetEnumerator = target?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
-
-      while (sourceEnumerator.MoveNext() && targetEnumerator.MoveNext())
-      {
-        var (sourceColumn, targetColumn) = selector(sourceEnumerator.Current, targetEnumerator.Current);
-
-        dictionary.Add(sourceColumn, targetColumn);
-      }
-
-      return dictionary;
-    }
+    //  while (sourceEnumerator.MoveNext() && targetEnumerator.MoveNext())
+    //  {
+    //    yield return selector(sourceEnumerator.Current, targetEnumerator.Current);
+    //  }
+    //}
   }
 }
