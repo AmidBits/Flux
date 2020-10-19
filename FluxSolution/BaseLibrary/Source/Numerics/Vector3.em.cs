@@ -31,16 +31,12 @@ namespace Flux
 
       var anglesum = 0d;
 
-      var count = source.Count;
-
-      for (var i = 0; i < count; i++)
+      foreach (var (p1, p2) in source.PartitionTuple2(true, (e1, e2, i) => (e1 - vector, e2 - vector)))
       {
-        var p1 = new System.Numerics.Vector3(source[i].X - vector.X, source[i].Y - vector.Y, source[i].Z - vector.Z);
-        var p2 = new System.Numerics.Vector3(source[(i + 1) % count].X - vector.X, source[(i + 1) % count].Y - vector.Y, source[(i + 1) % count].Z - vector.Z);
-
         var m1m2 = p1.Length() * p2.Length();
 
-        if (m1m2 <= float.Epsilon) return Maths.PiX2; // We are on a node, consider this inside.
+        if (m1m2 <= float.Epsilon) 
+          return Maths.PiX2; // We are on a node, consider this inside, and short circuit.
 
         anglesum += System.Math.Acos((p1.X * p2.X + p1.Y * p2.Y + p1.Z * p2.Z) / m1m2); // Add up all acos(costheta) angles.
       }

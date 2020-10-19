@@ -11,7 +11,7 @@ namespace ConsoleApp
     {
 
 
-      var p = new System.Numerics.Vector3[] { new System.Numerics.Vector3(-1, -1, 0), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, -1, 0) };
+      var p = new System.Numerics.Vector3[] { new System.Numerics.Vector3(-9, -1, 3), new System.Numerics.Vector3(-1, 91, 20), new System.Numerics.Vector3(1, 1, 0), new System.Numerics.Vector3(1, -1, 0) };
 
       System.Console.WriteLine($"AS  : {p.AngleSum(System.Numerics.Vector3.Zero)}");
       System.Console.WriteLine($"ASpb: {p.AngleSumPB(System.Numerics.Vector3.Zero)}");
