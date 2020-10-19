@@ -91,8 +91,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 vm, System.Numerics.Vector3 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => PartitionTuple2(source, true, (v1, v2, index) => (v1, (v2 + v1) / 2, v2, index));
 
-    public static bool InsidePolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
-      => System.Math.Abs(AngleSum(source, vector)) > 1;
+    //public static bool InsidePolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
+    //  => System.Math.Abs(AngleSum(source, vector)) > 1;
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)

@@ -27,7 +27,7 @@ namespace ConsoleApp
 
       System.Console.WriteLine($"AngleSum: {pas} ({Flux.Angle.RadianToDegree(pas)}) ({Flux.Maths.PiX2 - pas} = {Maths.IsPracticallyEqual(pas, Maths.PiX2, Maths.Epsilon1E7, Maths.Epsilon1E7)})");
       System.Console.WriteLine($"        : {Maths.PiX2}");
-      System.Console.WriteLine($"In: {hex.InsidePolygon(new System.Numerics.Vector3(0, 3, 0))}");
+      //System.Console.WriteLine($"In: {hex.InsidePolygon(new System.Numerics.Vector3(0, 3, 0))}");
       System.Console.WriteLine($"Area: {hex.ComputeAreaSigned()}");
       return;
 
