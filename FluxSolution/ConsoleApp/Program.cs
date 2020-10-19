@@ -10,7 +10,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       var hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, -1, 1), new System.Numerics.Vector3(1, -1, 0), new System.Numerics.Vector3(1, 0, -1), new System.Numerics.Vector3(0, 1, -1), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(-1, 0, 1) };
-      hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, 1, 0), new System.Numerics.Vector3(2, 3, 0), new System.Numerics.Vector3(4, 7, 0) };
+      //hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, 1, 0), new System.Numerics.Vector3(2, 3, 0), new System.Numerics.Vector3(4, 7, 0) };
 
       System.Console.WriteLine($"{hex.IsEquiangularPolygon()}");
       System.Console.WriteLine($"{hex.IsEquilateralPolygon()}");
@@ -23,9 +23,11 @@ namespace ConsoleApp
         System.Console.WriteLine($"{++index} = {Flux.Angle.RadianToDegree(angle)} ({sum} : {Flux.Angle.RadianToDegree(sum)})");
       }
 
-      var pas = hex.AngleSum(new System.Numerics.Vector3(0, 0, 1f));
+      var pas = hex.AngleSum(new System.Numerics.Vector3(0, 0, 0));
 
       System.Console.WriteLine($"AngleSum: {pas} ({Flux.Angle.RadianToDegree(pas)}) ({Flux.Maths.PiX2 - pas} = {Maths.IsPracticallyEqual(pas, Maths.PiX2, Maths.Epsilon1E7, Maths.Epsilon1E7)})");
+      System.Console.WriteLine($"        : {Maths.PiX2}");
+      System.Console.WriteLine($"In: {hex.InsidePolygon(new System.Numerics.Vector3(0, 3, 0))}");
       System.Console.WriteLine($"Area: {hex.ComputeAreaSigned()}");
       return;
 
