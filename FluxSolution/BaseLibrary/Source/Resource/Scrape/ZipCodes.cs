@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Resources.Scrape
 {
   /// <summary>A free zip code file.</summary>

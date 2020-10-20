@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Resources.Census
 {
   /// <summary>The Unicode block database.</summary>

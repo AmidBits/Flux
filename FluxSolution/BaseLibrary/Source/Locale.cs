@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace Flux
 {
@@ -40,10 +40,10 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' '));
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim().LastIndexOf(' '));
     /// <summary>Returns the version of the hosting framework.</summary>
     public static System.Version FrameworkVersion
-      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo? GetDirectoryInfo(AppDataStore store)
@@ -65,17 +65,40 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string OperatingSystemTitle
-      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' '));
+      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' '));
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version OperatingSystemVersion
-      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
     public static string PlatformTitle
-      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().LastIndexOf(' '));
+      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().Trim().LastIndexOf(' '));
     /// <summary>Returns the version of the current platform identifier.</summary>
     public static System.Version PlatformVersion
-      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+
+    /// <summary>Returns a dictionary of special folder names and they respective directory info paths.</summary>
+    public static System.Collections.Specialized.OrderedDictionary SpecialFolders
+    {
+      get
+      {
+        var dictionary = new System.Collections.Specialized.OrderedDictionary();
+
+        var ec = new System.ComponentModel.EnumConverter(typeof(System.Environment.SpecialFolder));
+
+        foreach (var name in System.Enum.GetNames(typeof(System.Environment.SpecialFolder)))
+        {
+          var ev = (System.Environment.SpecialFolder)ec.ConvertFromString(name);
+
+          var fp = System.Environment.GetFolderPath(ev);
+
+          if (!string.IsNullOrEmpty(fp))
+            dictionary.Add(name, new System.IO.DirectoryInfo(fp));
+        }
+
+        return dictionary;
+      }
+    }
 
     /// <summary>Returns the number of ticks in the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
     public static long TimerTickCounter

@@ -26,3 +26,4 @@ Clear-Host
 # Sample use from Flux BaseLibrary:
 
 [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=$([Flux.Locale]::"$($_.Name)")" }
+[Flux.Locale]::SpecialFolders
