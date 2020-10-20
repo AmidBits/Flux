@@ -101,6 +101,10 @@ namespace Flux
         return true;
       }
 
+      public static bool AnyHits(Ship ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
+      {
+        return ship.m_locations.Any(location => shots.Any(shot => shot == location));
+      }
       public static bool AnyHits(System.Collections.Generic.IEnumerable<Ship> ships, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
       {
         return ships.Any(ship => ship.m_locations.Any(location => shots.Any(shot => shot == location)));

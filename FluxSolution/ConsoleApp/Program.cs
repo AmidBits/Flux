@@ -1,7 +1,6 @@
 ﻿using Flux;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace ConsoleApp
 {
@@ -9,142 +8,137 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, -1, 1), new System.Numerics.Vector3(1, -1, 0), new System.Numerics.Vector3(1, 0, -1), new System.Numerics.Vector3(0, 1, -1), new System.Numerics.Vector3(-1, 1, 0), new System.Numerics.Vector3(-1, 0, 1) };
-      //hex = new System.Numerics.Vector3[] { new System.Numerics.Vector3(0, 1, 0), new System.Numerics.Vector3(2, 3, 0), new System.Numerics.Vector3(4, 7, 0) };
-
-      System.Console.WriteLine($"{hex.IsEquiangularPolygon()}");
-      System.Console.WriteLine($"{hex.IsEquilateralPolygon()}");
-
-      var index = 0;
-      var sum = 0d;
-      foreach (var angle in hex.GetAngles())
-      {
-        sum += angle;
-        System.Console.WriteLine($"{++index} = {Flux.Angle.RadianToDegree(angle)} ({sum} : {Flux.Angle.RadianToDegree(sum)})");
-      }
-
-      var pas = hex.AngleSum(new System.Numerics.Vector3(0, 0, 0));
-
-      System.Console.WriteLine($"AngleSum: {pas} ({Flux.Angle.RadianToDegree(pas)}) ({Flux.Maths.PiX2 - pas} = {Maths.IsPracticallyEqual(pas, Maths.PiX2, Maths.Epsilon1E7, Maths.Epsilon1E7)})");
-      System.Console.WriteLine($"        : {Maths.PiX2}");
-      //System.Console.WriteLine($"In: {hex.InsidePolygon(new System.Numerics.Vector3(0, 3, 0))}");
-      System.Console.WriteLine($"Area: {hex.ComputeAreaSigned()}");
-      return;
-
-      var size = new Flux.Geometry.Size2(10, 10);
-
-      var ships = Flux.Model.Game.BattleShip.Ship.StageFleet(size, 2, 3, 3, 4, 5);
-
-      do
-      {
-        System.Console.SetCursorPosition(0, 0);
-
-        var shots = System.Linq.Enumerable.Range(0, 25).Select(n => new Flux.Geometry.Point2(Flux.Random.NumberGenerator.Crypto.Next(size.Width), Flux.Random.NumberGenerator.Crypto.Next(size.Height))).ToList();
-
-        var any = Flux.Model.Game.BattleShip.Ship.AnyHits(ships, shots);
-
-        System.Console.WriteLine(ships.ToConsoleString(size));
-
-        foreach (var ship in ships)
-          System.Console.WriteLine($" Ship: {string.Join(' ', ship.Locations)} (Sunk? {Flux.Model.Game.BattleShip.Ship.IsSunk(ship, shots)})");
-
-        System.Console.WriteLine($"Shots: {string.Join(' ', shots)}");
-
-        System.Console.WriteLine($"Any hits? {any}");
-      }
-      while (System.Console.ReadKey().Key != System.ConsoleKey.Escape);
-
-      //var ttt = new Flux.Model.TicTacToe.Board();
-
-      //for (var index = 0; index < 9; index++)
-      //{
-      //  System.Console.Clear();
-
-      //  {
-      //    System.Console.WriteLine(ttt.ToString());
-
-      //    var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
-      //    if (allMoves1.Count > 0) System.Console.WriteLine("a1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
-      //    var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
-      //    if (allMoves2.Count > 0) System.Console.WriteLine("a2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
-
-      //    var allMyMoves = allMoves1;
-
-      //    var myTopMoves = allMyMoves.Where(m => m.Score == allMyMoves.Max(m => m.Score)).ToList();
-      //    if (myTopMoves.Count > 0)
-      //    {ddd11
-      //      myTopMoves.RandomElement(out var myTopMove);
-      //      if (myTopMove.Score == -10) break;
-      //      System.Console.WriteLine($"Your top move: {myTopMove}");
-      //    }11w
-
-      //    System.Console.Write("Enter row: ");
-      //    var rowChar = System.Console.ReadKey().KeyChar;
-      //    System.Console.Write("\r\nEnter column: ");
-      //    var columnChar = System.Console.ReadKey().KeyChar;
-
-      //    if (rowChar == '\u001b' || columnChar == '\u001b')
-      //    {
-      //      ttt.Clear();
-      //      System.Console.Clear();
-      //      continue;
-      //    }
-
-      //    var row = int.Parse(rowChar.ToString());
-      //    var column = int.Parse(columnChar.ToString());
-
-      //    System.Console.WriteLine($"\r\nYour move: {row}, {column}");
-
-      //    ttt[row, column] = Flux.Model.TicTacToe.State.Player2;
-      //  }
-
-      //  {
-      //    var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
-      //    if (allMoves1.Count > 0) System.Console.WriteLine("b1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
-      //    var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
-      //    if (allMoves2.Count > 0) System.Console.WriteLine("b2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
-
-      //    var allMoves = allMoves2;
-
-      //    if (allMoves.Count == 0) break;
-
-      //    foreach (var m in allMoves)
-      //      System.Console.WriteLine(m);
-
-      //    var topMoves = allMoves.Where(m => m.Score == allMoves.Min(m => m.Score)).ToList();
-
-      //    if (topMoves.Count == 0) break;
-
-      //    topMoves.RandomElement(out var topMove);
-      //    if (topMove.Score == 10) break;
-
-      //    if (!(topMove.Row == -1 || topMove.Column == -1))
-      //      ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.State.Player1;//turn ? player : opponent;
-
-      //    System.Console.WriteLine(ttt.ToString());
-      //  }
-      //}
 
 
+      /*
+        var size = new Flux.Geometry.Size2(10, 10);
 
-      //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemTitle)} = \"{Flux.Locale.OperatingSystemTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.PlatformTitle)} = \"{Flux.Locale.PlatformTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.PlatformVersion)} = \"{Flux.Locale.PlatformVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+        int shotCount = 17;
 
+        System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships = default;
+        System.Collections.Generic.List<Flux.Geometry.Point2> shots = default;
+
+        System.ConsoleKey key = System.ConsoleKey.Escape;
+
+        do
+        {
+          if (key == System.ConsoleKey.F || key == System.ConsoleKey.Escape)
+            ships = Flux.Model.Game.BattleShip.Ship.StageFleet(size, 2, 3, 3, 4, 5);
+          if (key == System.ConsoleKey.S || key == System.ConsoleKey.Escape)
+            shots = System.Linq.Enumerable.Range(0, shotCount).Select(n => new Flux.Geometry.Point2(Flux.Random.NumberGenerator.Crypto.Next(size.Width), Flux.Random.NumberGenerator.Crypto.Next(size.Height))).ToList();
+
+          System.Console.SetCursorPosition(0, 0);
+
+          System.Console.WriteLine(ships.ToConsoleString(size));
+
+          foreach (var ship in ships)
+            System.Console.WriteLine($"Ship{ship.Locations.Count}: {string.Join(' ', ship.Locations)} ({(Flux.Model.Game.BattleShip.Ship.IsSunk(ship, shots) ? @"Sunk!" : Flux.Model.Game.BattleShip.Ship.AnyHits(ship, shots) ? @"Hit!" : @"Miss!")}) ");
+
+          System.Console.WriteLine($"Shots: {string.Join(' ', shots)}");
+
+          System.Console.WriteLine($"Any hits at all? {Flux.Model.Game.BattleShip.Ship.AnyHits(ships, shots)} ");
+
+          key = System.Console.ReadKey().Key;
+        }
+        while (key != System.ConsoleKey.Escape);
+      */
+
+
+      /*
+        var ttt = new Flux.Model.TicTacToe.Board();
+
+        for (var index = 0; index < 9; index++)
+        {
+          System.Console.Clear();
+
+          {
+            System.Console.WriteLine(ttt.ToString());
+
+            var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
+            if (allMoves1.Count > 0) System.Console.WriteLine("a1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
+            var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
+            if (allMoves2.Count > 0) System.Console.WriteLine("a2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
+
+            var allMyMoves = allMoves1;
+
+            var myTopMoves = allMyMoves.Where(m => m.Score == allMyMoves.Max(m => m.Score)).ToList();
+            if (myTopMoves.Count > 0)
+            {
+              ddd11
+              myTopMoves.RandomElement(out var myTopMove);
+              if (myTopMove.Score == -10) break;
+              System.Console.WriteLine($"Your top move: {myTopMove}");
+            }
+            11w
+
+            System.Console.Write("Enter row: ");
+            var rowChar = System.Console.ReadKey().KeyChar;
+            System.Console.Write("\r\nEnter column: ");
+            var columnChar = System.Console.ReadKey().KeyChar;
+
+            if (rowChar == '\u001b' || columnChar == '\u001b')
+            {
+              ttt.Clear();
+              System.Console.Clear();
+              continue;
+            }
+
+            var row = int.Parse(rowChar.ToString());
+            var column = int.Parse(columnChar.ToString());
+
+            System.Console.WriteLine($"\r\nYour move: {row}, {column}");
+
+            ttt[row, column] = Flux.Model.TicTacToe.State.Player2;
+          }
+
+          {
+            var allMoves1 = ttt.GetOptionsForPlayer1().ToList();
+            if (allMoves1.Count > 0) System.Console.WriteLine("b1" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves1));
+            var allMoves2 = ttt.GetOptionsForPlayer2().ToList();
+            if (allMoves2.Count > 0) System.Console.WriteLine("b2" + System.Environment.NewLine + string.Join(System.Environment.NewLine, allMoves2));
+
+            var allMoves = allMoves2;
+
+            if (allMoves.Count == 0) break;
+
+            foreach (var m in allMoves)
+              System.Console.WriteLine(m);
+
+            var topMoves = allMoves.Where(m => m.Score == allMoves.Min(m => m.Score)).ToList();
+
+            if (topMoves.Count == 0) break;
+
+            topMoves.RandomElement(out var topMove);
+            if (topMove.Score == 10) break;
+
+            if (!(topMove.Row == -1 || topMove.Column == -1))
+              ttt[topMove.Row, topMove.Column] = Flux.Model.TicTacToe.State.Player1;//turn ? player : opponent;
+
+            System.Console.WriteLine(ttt.ToString());
+          }
+        }
+      */
+
+
+      /*
+        System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemTitle)} = \"{Flux.Locale.OperatingSystemTitle}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.PlatformTitle)} = \"{Flux.Locale.PlatformTitle}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.PlatformVersion)} = \"{Flux.Locale.PlatformVersion}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
+        System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+      */
 
 
     }

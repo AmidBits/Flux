@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 		<Nullable>enable</Nullable>
 		<Authors>Robert Hugo</Authors>
-		<Company>Private</Company>
+		<Company></Company>
 		<PackageId>BaseLibrary</PackageId>
 		<Product>Flux</Product>
-		<Description>Flux is a .NET extension API with various functionalities.</Description>
+		<Description>Flux is a free .NET extension API with various functionalities.</Description>
 		<Copyright></Copyright>
 		<PackageProjectUrl>https://github.com/AmidBits/Flux</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/AmidBits/Flux</RepositoryUrl>
