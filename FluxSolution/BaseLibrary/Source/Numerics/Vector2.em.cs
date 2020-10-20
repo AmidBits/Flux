@@ -23,18 +23,18 @@ namespace Flux
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.AggregateTuple2(0d, true, (a, va, vb, i) => a + ((va.X * vb.Y - vb.X * va.Y) / 2), (a, i) => a);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, i) => a / 2);
     /// <summary>Compute the surface area of the polygon.</summary>
     public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector2 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.Aggregate(System.Numerics.Vector2.Zero, (a, v, i) => a + v, (a, c) => a / c);
+      => source.Aggregate(System.Numerics.Vector2.Zero, (a, e, i) => a + e, (a, c) => a / c);
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + (v2 - v1).Length(), (a, i) => a);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
 
     public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
@@ -173,7 +173,7 @@ namespace Flux
     }
 
     public static System.Numerics.Vector2 LerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
-          => System.Numerics.Vector2.Lerp(source, target, percent);
+      => System.Numerics.Vector2.Lerp(source, target, percent);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>

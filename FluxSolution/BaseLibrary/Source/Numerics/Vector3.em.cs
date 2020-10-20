@@ -54,14 +54,14 @@ namespace Flux
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
-      => source.AggregateTuple2(0d, true, (a, va, vb, i) => a + (va.X * vb.Y - vb.X * va.Y), (a, i) => a / 2);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e1.X * e2.Y - e2.X * e1.Y), (a, i) => a / 2);
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static double ComputeArea(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
       => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector3 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.Aggregate(System.Numerics.Vector3.Zero, (acc, vector, index) => acc + vector, (acc, count) => acc / count);
+      => source.Aggregate(System.Numerics.Vector3.Zero, (a, e, i) => a + e, (a, count) => a / count);
 
     /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
     //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
@@ -70,7 +70,7 @@ namespace Flux
 
     /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + (v2 - v1).Length(), (a, i) => a);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
 
     public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
       => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);
@@ -86,10 +86,10 @@ namespace Flux
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple2(source, true, (v1, v2, index) => (v2 + v1) / 2);
+      => PartitionTuple2(source, true, (e1, e2, index) => (e2 + e1) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 vm, System.Numerics.Vector3 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => PartitionTuple2(source, true, (v1, v2, index) => (v1, (v2 + v1) / 2, v2, index));
+      => PartitionTuple2(source, true, (e1, e2, index) => (e1, (e2 + e1) / 2, e2, index));
 
     //public static bool InsidePolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
     //  => System.Math.Abs(AngleSum(source, vector)) > 1;
