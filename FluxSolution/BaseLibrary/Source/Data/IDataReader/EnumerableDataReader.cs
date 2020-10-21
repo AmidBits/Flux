@@ -1,28 +1,16 @@
+using System.Linq;
+
 namespace Flux.Data
 {
   /// <summary>An implementation of a System.Data.IDataReader over a System.Collection.Generic.IEnumerable<T>.</summary>
-  public class EnumerableDataReader<T>
+  public class EnumerableDataReader
     : TabularDataReader
   {
-    private System.Collections.Generic.IEnumerator<T>? m_enumerator;
-    private readonly System.Func<T, System.Collections.Generic.IList<object>> m_valuesSelector;
+    private System.Collections.Generic.IEnumerator<System.Collections.Generic.IList<object>> m_enumerator;
 
-    public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type>? fieldTypes)
+    public EnumerableDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<object>> source, System.Collections.Generic.IList<string> fieldNames, System.Collections.Generic.IList<System.Type> fieldTypes)
       : base(fieldNames, fieldTypes)
-    {
-      m_enumerator = source is null ? throw new System.ArgumentNullException(nameof(source)) : source.GetEnumerator();
-      m_valuesSelector = valueSelector is null ? throw new System.ArgumentNullException(nameof(valueSelector)) : valueSelector;
-    }
-    public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, System.Collections.Generic.IEnumerable<string> fieldNames)
-      : this(source, valueSelector, fieldNames, null)
-    {
-    }
-    public EnumerableDataReader(System.Collections.Generic.IEnumerable<T> source, System.Func<T, System.Collections.Generic.IList<object>> valueSelector, int fieldCount)
-      : base(fieldCount)
-    {
-      m_enumerator = source is null ? throw new System.ArgumentNullException(nameof(source)) : source.GetEnumerator();
-      m_valuesSelector = valueSelector is null ? throw new System.ArgumentNullException(nameof(valueSelector)) : valueSelector;
-    }
+      => m_enumerator = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
 
     public override bool Read()
     {
@@ -30,7 +18,7 @@ namespace Flux.Data
 
       if (m_enumerator?.MoveNext() ?? false)
       {
-        FieldValues.AddRange(m_valuesSelector(m_enumerator.Current) ?? throw new System.NullReferenceException($"Unexpected null from 'valuesSelector'."));
+        FieldValues.AddRange(m_enumerator.Current);
 
         if (FieldValues.Count != FieldCount) throw new System.Exception($"Mismatch between the count of field values and FieldCount.");
 
@@ -41,10 +29,12 @@ namespace Flux.Data
 
     protected override void DisposeManaged()
     {
-      m_enumerator?.Dispose();
-      m_enumerator = null;
+      m_enumerator.Dispose();
 
       base.DisposeManaged();
     }
+
+    public static EnumerableDataReader Create<TSource>(System.Collections.Generic.IEnumerable<TSource> collection, System.Collections.Generic.IList<string> fieldNames, System.Collections.Generic.IList<System.Type> fieldTypes, System.Func<TSource, System.Collections.Generic.IList<object>> valueSelector)
+      => new EnumerableDataReader(collection.Select(ts => valueSelector(ts)), fieldNames, fieldTypes);
   }
 }

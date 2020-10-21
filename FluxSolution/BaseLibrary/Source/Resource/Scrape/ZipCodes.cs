@@ -4,7 +4,7 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public class ZipCodes
-    : DataFactory
+    : Conversions
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");
@@ -29,8 +29,5 @@ namespace Flux.Resources.Scrape
         }
       }
     }
-
-    public override object ConvertStringToObject(int index, string value)
-      => value is null || value.Length == 0 ? default! : Convert.ChangeType(value, null, FieldTypes[index]);
   }
 }

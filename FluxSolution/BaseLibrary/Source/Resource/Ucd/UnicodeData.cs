@@ -8,7 +8,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://unicode.org/Public/"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
   public class UnicodeData
-    : DataFactory
+    : Conversions
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
@@ -23,13 +23,11 @@ namespace Flux.Resources.Ucd
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
       => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => s.Split(';'));
 
-    public override object ConvertStringToObject(int index, string value)
-    {
-      return index switch
+    public override System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
+      => GetStrings(uri).ToTypedObjects((value, index) => index switch
       {
         0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
         _ => value
-      };
-    }
+      });
   }
 }

@@ -4,7 +4,7 @@ namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
   public class TableOfContents
-    : DataFactory
+    : Conversions
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\ProjectGutenberg\GUTINDEX.ALL");

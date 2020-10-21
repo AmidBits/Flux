@@ -120,26 +120,80 @@ namespace ConsoleApp
         }
       */
 
+      /*
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemTitle)} = \"{Flux.Locale.OperatingSystemTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.PlatformTitle)} = \"{Flux.Locale.PlatformTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.PlatformVersion)} = \"{Flux.Locale.PlatformVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+      */
 
-      //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemTitle)} = \"{Flux.Locale.OperatingSystemTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.PlatformTitle)} = \"{Flux.Locale.PlatformTitle}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.PlatformVersion)} = \"{Flux.Locale.PlatformVersion}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
-      //System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+      //System.Console.WriteLine(nameof(Flux.Resources.Census.CountiesAllData));
+      //foreach (var strings in new Flux.Resources.Census.CountiesAllData().GetStrings(Flux.Resources.Census.CountiesAllData.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
 
+      //System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows));
+      //foreach (var strings in new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows().GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+      //System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.TableOfContents));
+      //foreach (var strings in new Flux.Resources.ProjectGutenberg.TableOfContents().GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+      //System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings));
+      //foreach (var strings in new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+      //System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary));
+      //foreach (var strings in new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary().GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
 
+      //System.Console.WriteLine(nameof(Flux.Resources.Scowl.TwoOfTwelveFull));
+      //foreach (var strings in new Flux.Resources.Scowl.TwoOfTwelveFull().GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+
+      //System.Console.WriteLine(nameof(Flux.Resources.Scrape.ZipCodes));
+      //foreach (var strings in new Flux.Resources.Scrape.ZipCodes().GetStrings(Flux.Resources.Scrape.ZipCodes.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+
+      //System.Console.WriteLine(nameof(Flux.Resources.Ucd.Blocks));
+      //foreach (var strings in new Flux.Resources.Ucd.Blocks().GetStrings(Flux.Resources.Ucd.Blocks.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+      //System.Console.WriteLine(nameof(Flux.Resources.Ucd.UnicodeData));
+      //foreach (var strings in new Flux.Resources.Ucd.UnicodeData().GetStrings(Flux.Resources.Ucd.UnicodeData.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+
+      //System.Console.WriteLine(nameof(Flux.Resources.W3c.NamedCharacterReferences));
+      //foreach (var strings in new Flux.Resources.W3c.NamedCharacterReferences().GetStrings(Flux.Resources.W3c.NamedCharacterReferences.SourceUri))
+      //  System.Console.WriteLine(string.Join('|', strings));
+
+      var dt = new System.Data.DataTable(@"My Table");
+      dt.Columns.Add("A");
+      dt.Columns.Add("B");
+      dt.Columns.Add("C");
+      dt.Rows.Add(new object[] { 1, 2, 3 });
+      dt.Rows.Add(new object[] { 4, 5, 6 });
+      dt.Rows.Add(new object[] { 7, 8, 9 });
+      System.Console.WriteLine(dt.ToArray(true).ToConsoleString());
+
+      var pt = dt.Transpose(out var tn1, out var cn1, "Test", "X", "Y", "Z");
+      var originalTableName = (string)pt.ExtendedProperties["OriginalTableName"];
+      var originalColumnNames = (string[])pt.ExtendedProperties["OriginalColumnNames"];
+      System.Console.WriteLine(originalTableName);
+      System.Console.WriteLine(string.Join('|', originalColumnNames));
+      System.Console.WriteLine(pt.ToArray(true).ToConsoleString());
+
+      var ot = pt.Transpose(out var tn2, out var cn2, originalTableName, originalColumnNames);
+      System.Console.WriteLine(ot.ToArray(true).ToConsoleString());
     }
 
     static void Main(string[] args)

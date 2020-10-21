@@ -12,12 +12,12 @@ namespace Flux.Data
     public const string AllowDBNull = nameof(AllowDBNull);
     public const string TsqlDataTypeDefinition = nameof(TsqlDataTypeDefinition);
 
-    /// <summary>Indicates whether the field at the specified index allows nulls.</summary>
+    /// <summary>DataReader extension, which indicates whether the field at the specified index allows nulls. By default, true is returned for any index (field).</summary>
     public virtual bool GetSchemaTableAllowDBNull(int index)
       => true;
-    /// <summary>Returns a complete (with type arguments if needed) T-SQL data type the field at the specified index corresponds to.</summary>
+    /// <summary>DataReader extension, which returns a complete T-SQL data type (with type arguments as needed/desired) the field at the specified index corresponds to. By default, the type returned by GetFieldType() is System.Object, which results in "sql_variant" being returned.</summary>
     public virtual string GetSchemaTableTsqlDataTypeDefinition(int index)
-      => TsqlDataType.NameFromType(GetFieldType(index)) is var tsqlTypeName ? tsqlTypeName + TsqlDataType.GetDefaultArgument(tsqlTypeName) : throw new System.Exception(@"Could not construct T-SQL data type.");
+      => TsqlDataType.NameFromType(GetFieldType(index)) is var tsqlTypeName ? tsqlTypeName + TsqlDataType.GetDefaultArgument(tsqlTypeName) : throw new System.Exception(@"Could not construct T-SQL data type definition.");
 
     // IDataReader
     public virtual int Depth { get; protected set; }

@@ -5,7 +5,7 @@ namespace Flux.Resources.ProjectGutenberg
   /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
   // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
   public class WebstersUnabridgedDictionary
-    : DataFactory
+    : Conversions
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\ProjectGutenberg\pg29765.txt");

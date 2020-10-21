@@ -4,6 +4,7 @@ namespace Flux.Data
   public abstract class TabularDataReader
     : DataReader
   {
+
     /// <summary>An array of whether the fields FieldNulls is an optional functionality and each field will default to true (as in, this field allows null values).</summary>
     public System.Collections.Generic.List<bool> FieldAllowDBNulls { get; private set; } = new System.Collections.Generic.List<bool>();
     /// <summary>An array of the T-SQL data types for the result.</summary>
@@ -18,7 +19,7 @@ namespace Flux.Data
 
     public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames)
       => FieldNames.AddRange(fieldNames ?? System.Linq.Enumerable.Empty<string>());
-    public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type>? fieldTypes)
+    public TabularDataReader(System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type> fieldTypes)
       : this(fieldNames)
       => FieldTypes.AddRange(fieldTypes ?? System.Linq.Enumerable.Empty<System.Type>());
     /// <summary>This will create the tabular data reader with the specified number of field names preset to "Column_N" where N is the ordinal index.</summary>
