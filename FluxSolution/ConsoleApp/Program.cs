@@ -183,6 +183,7 @@ namespace ConsoleApp
       dt.Rows.Add(new object[] { 1, 2, 3 });
       dt.Rows.Add(new object[] { 4, 5, 6 });
       dt.Rows.Add(new object[] { 7, 8, 9 });
+      dt.Rows.Add(new object[] { 10, 11, 12 });
       System.Console.WriteLine(dt.ToArray(true).ToConsoleString());
 
       var pt = dt.Transpose(out var tn1, out var cn1, "Test", "X", "Y", "Z");
@@ -194,6 +195,19 @@ namespace ConsoleApp
 
       var ot = pt.Transpose(out var tn2, out var cn2, originalTableName, originalColumnNames);
       System.Console.WriteLine(ot.ToArray(true).ToConsoleString());
+
+      var rc = ot.ReverseColumns();
+      System.Console.WriteLine(rc.ToArray(true).ToConsoleString());
+
+      System.Console.WriteLine("ReverseRows");
+      var rr = rc.ReverseRows();
+      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
+
+      rr.ReverseColumnsInline();
+      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
+
+      rr.ReverseRowsInline();
+      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
     }
 
     static void Main(string[] args)

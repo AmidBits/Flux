@@ -14,15 +14,23 @@ namespace Flux
       for (var index = source.Columns.Count - 1; index >= 0; index--)
         target.Columns.Add(source.Columns[index].ColumnName, source.Columns[index].DataType);
 
-      for (var index = source.Rows.Count-1; index >=0; index--)
+      for (var rowIndex = 0; rowIndex < source.Rows.Count; rowIndex++)
       {
         var values = new object[source.Columns.Count];
-        //for (var index = source.Columns.Count - 1; index >= 0; index--)
-        //  values[columnIndex] = source.Rows[rowIndex][columnIndex];
+        System.Array.Copy(source.Rows[rowIndex].ItemArray, values, values.Length);
+        System.Array.Reverse(values);
         target.Rows.Add(values);
       }
 
       return target;
+    }
+
+    public static void ReverseColumnsInline(this System.Data.DataTable source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      for (int columnIndex = source.Columns.Count - 1; columnIndex >= 0; columnIndex--)
+        source.Columns[0].SetOrdinal(columnIndex);
     }
 
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivot).</summary>
@@ -34,18 +42,29 @@ namespace Flux
 
       var target = new System.Data.DataTable(source.TableName);
 
-      //for (var index = 0; index < source.Rows.Count; index++)
-      //  target.Columns.Add(index < targetColumnNames.Length ? targetColumnNames[index] : $"Column_{index + 1}"); // Add as many specified column names as available, then, if needed, create new column names.
+      for (var index = 0; index < source.Columns.Count; index++)
+        target.Columns.Add(source.Columns[index].ColumnName, source.Columns[index].DataType);
 
-      //for (var columnIndex = 0; columnIndex < source.Columns.Count; columnIndex++)
-      //{
-      //  var values = new object[columnNames.Length];
-      //  for (var rowIndex = 0; rowIndex < values.Length; rowIndex++)
-      //    values[rowIndex] = source.Rows[rowIndex][columnIndex];
-      //  target.Rows.Add(values);
-      //}
+      for (var rowIndex = source.Rows.Count - 1; rowIndex >= 0; rowIndex--)
+      {
+        var values = new object[source.Columns.Count];
+        System.Array.Copy(source.Rows[rowIndex].ItemArray, values, values.Length);
+        target.Rows.Add(values);
+      }
 
       return target;
+    }
+
+    public static void ReverseRowsInline(this System.Data.DataTable source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      for (int sourceRowIndex = 0, targetRowIndex = source.Rows.Count - 1; sourceRowIndex < targetRowIndex; sourceRowIndex++, targetRowIndex--)
+      {
+        var itemArray = source.Rows[sourceRowIndex].ItemArray;
+        source.Rows[sourceRowIndex].ItemArray = source.Rows[targetRowIndex].ItemArray;
+        source.Rows[targetRowIndex].ItemArray = itemArray;
+      }
     }
   }
 }
