@@ -34,9 +34,9 @@ Clear-Host
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=$([Flux.Locale]::"$($_.Name)")" }
 # [Flux.Locale]::SpecialFolders
 
-# $cad = New-Object Flux.Resources.Census.CountiesAllData
-# $uri =  ConvertTo-BinUri([Flux.Resources.Census.CountiesAllData]::LocalUri)
-# $cad.GetDataTable($uri) | Select-Object -First 1
+ $cad = New-Object Flux.Resources.Census.CountiesAllData
+ $uri =  ConvertTo-BinUri([Flux.Resources.Census.CountiesAllData]::LocalUri)
+ $cad.GetDataTable($uri) | Select-Object -First 1
 #[Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
 #[Flux.Locale].Assembly.GetTypes() | Where-Object { $_.Name -imatch '^I.+' }
 
