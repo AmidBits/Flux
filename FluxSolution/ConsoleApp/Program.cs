@@ -176,6 +176,9 @@ namespace ConsoleApp
       //foreach (var strings in new Flux.Resources.W3c.NamedCharacterReferences().GetStrings(Flux.Resources.W3c.NamedCharacterReferences.SourceUri))
       //  System.Console.WriteLine(string.Join('|', strings));
 
+      var cad = new Flux.Resources.Census.CountiesAllData();
+      cad.GetDataTable(Flux.Resources.Census.CountiesAllData.LocalUri);
+      return;
       var dt = new System.Data.DataTable(@"My Table");
       dt.Columns.Add("A");
       dt.Columns.Add("B");

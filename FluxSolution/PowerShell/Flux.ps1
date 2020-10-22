@@ -25,5 +25,24 @@ Clear-Host
 
 # Sample use from Flux BaseLibrary:
 
-[Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=$([Flux.Locale]::"$($_.Name)")" }
-[Flux.Locale]::SpecialFolders
+// Converts a relative file: URI into a new relative file: URI, based on the specified solution name, project name, cofiguration and target framework. Used to find resource files.
+function ConvertTo-BinUri ( [uri]$Uri, [string]$SolutionName = 'FluxSolution', [string]$ProjectName = 'BaseLibrary', [string]$Configuration = 'Debug', [string]$TargetFramework = 'netcoreapp3.1' )
+{ New-Object System.Uri ($Uri.OriginalString.Replace("/\", "/\$SolutionName\$ProjectName\bin\$Configuration\$TargetFramework\")) }
+
+Clear-Host
+
+# [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=$([Flux.Locale]::"$($_.Name)")" }
+# [Flux.Locale]::SpecialFolders
+
+# $cad = New-Object Flux.Resources.Census.CountiesAllData
+# $uri =  ConvertTo-BinUri([Flux.Resources.Census.CountiesAllData]::LocalUri)
+# $cad.GetDataTable($uri) | Select-Object -First 1
+#[Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
+#[Flux.Locale].Assembly.GetTypes() | Where-Object { $_.Name -imatch '^I.+' }
+
+# [Flux.Locale].Assembly.GetTypes() | 
+#     #Where-Object { [Flux.IMetricDistance`1].IsAssignableFrom($_) -and -not $_.IsInterface }
+#     #Select-Object ImplementedInterfaces) -join '|'
+#     #Where-Object { $_.ImplementedInterfaces.Name -eq 'IMetricDistance`1' }
+#     #Where-Object { ([type[]]$_.ImplementedInterfaces).Contains([Flux.IMetricDistance`1]) }
+#     Where-Object { $_.ImplementedInterfaces.Contains([Flux.IMetricDistance]) }
