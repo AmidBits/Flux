@@ -176,9 +176,10 @@ namespace ConsoleApp
       //foreach (var strings in new Flux.Resources.W3c.NamedCharacterReferences().GetStrings(Flux.Resources.W3c.NamedCharacterReferences.SourceUri))
       //  System.Console.WriteLine(string.Join('|', strings));
 
-      var cad = new Flux.Resources.Census.CountiesAllData();
-      cad.GetDataTable(Flux.Resources.Census.CountiesAllData.LocalUri);
-      return;
+      //var cad = new Flux.Resources.Census.CountiesAllData();
+      //cad.GetDataTable(Flux.Resources.Census.CountiesAllData.LocalUri);
+      //return;
+
       var dt = new System.Data.DataTable(@"My Table");
       dt.Columns.Add("A");
       dt.Columns.Add("B");
@@ -189,6 +190,7 @@ namespace ConsoleApp
       dt.Rows.Add(new object[] { 10, 11, 12 });
       System.Console.WriteLine(dt.ToArray(true).ToConsoleString());
 
+      System.Console.WriteLine("Transpose");
       var pt = dt.Transpose(out var tn1, out var cn1, "Test", "X", "Y", "Z");
       var originalTableName = (string)pt.ExtendedProperties["OriginalTableName"];
       var originalColumnNames = (string[])pt.ExtendedProperties["OriginalColumnNames"];
@@ -196,9 +198,11 @@ namespace ConsoleApp
       System.Console.WriteLine(string.Join('|', originalColumnNames));
       System.Console.WriteLine(pt.ToArray(true).ToConsoleString());
 
+      System.Console.WriteLine("Transpose");
       var ot = pt.Transpose(out var tn2, out var cn2, originalTableName, originalColumnNames);
       System.Console.WriteLine(ot.ToArray(true).ToConsoleString());
 
+      System.Console.WriteLine("ReverseColumns");
       var rc = ot.ReverseColumns();
       System.Console.WriteLine(rc.ToArray(true).ToConsoleString());
 
@@ -206,9 +210,11 @@ namespace ConsoleApp
       var rr = rc.ReverseRows();
       System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
 
+      System.Console.WriteLine("ReverseColumnsInline");
       rr.ReverseColumnsInline();
       System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
 
+      System.Console.WriteLine("ReverseRowsInline");
       rr.ReverseRowsInline();
       System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
     }

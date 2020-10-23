@@ -25,6 +25,7 @@ namespace Flux
       return target;
     }
 
+    /// <summary>Reverse the columns the data in-line.</summary>
     public static void ReverseColumnsInline(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -55,6 +56,7 @@ namespace Flux
       return target;
     }
 
+    /// <summary>Reverse the rows the data in-line.</summary>
     public static void ReverseRowsInline(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
