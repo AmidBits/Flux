@@ -23,13 +23,15 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Reverse the columns the <see cref="System.Data.DataTable"/> in-line. The process simply re-order the columns by repeatedly calling the method SetOrdinal() for each columns.</summary>
-    public static void ReverseColumnsInline(this System.Data.DataTable source)
+    /// <summary>Reverse the columns of the <see cref="System.Data.DataTable"/> in-line. The process re-orders the columns (using the SetOrdinal() method) within the data table.</summary>
+    public static void ReverseColumnsInline(this System.Data.DataTable source, int startIndex, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (startIndex < 0 || startIndex > source.Columns.Count - 2) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (count < 1 || startIndex + count > source.Columns.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      for (int columnIndex = source.Columns.Count - 1; columnIndex >= 0; columnIndex--)
-        source.Columns[0].SetOrdinal(columnIndex);
+      for (int columnIndex = startIndex + count - 1; columnIndex >= startIndex; columnIndex--)
+        source.Columns[startIndex].SetOrdinal(columnIndex);
     }
 
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rows reversed (mirrored).</summary>
@@ -52,12 +54,14 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Reverse the rows the <see cref="System.Data.DataTable"/> in-line. The process swaps the itemArray of 0 and last, 1 and next to last, etc.</summary>
-    public static void ReverseRowsInline(this System.Data.DataTable source)
+    /// <summary>Reverse the rows of the <see cref="System.Data.DataTable"/> in-line. The process swaps itemArray's within the data table.</summary>
+    public static void ReverseRowsInline(this System.Data.DataTable source, int startIndex, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (startIndex < 0 || startIndex > source.Rows.Count - 2) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (count < 1 || startIndex + count > source.Rows.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      for (int sourceRowIndex = 0, targetRowIndex = source.Rows.Count - 1; sourceRowIndex < targetRowIndex; sourceRowIndex++, targetRowIndex--)
+      for (int sourceRowIndex = startIndex, targetRowIndex = startIndex + count - 1; sourceRowIndex < targetRowIndex; sourceRowIndex++, targetRowIndex--)
       {
         var itemArray = source.Rows[sourceRowIndex].ItemArray;
         source.Rows[sourceRowIndex].ItemArray = source.Rows[targetRowIndex].ItemArray;

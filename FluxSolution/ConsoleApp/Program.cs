@@ -184,18 +184,29 @@ namespace ConsoleApp
       dt.Columns.Add("A");
       dt.Columns.Add("B");
       dt.Columns.Add("C");
-      dt.Rows.Add(new object[] { 1, 2, 3 });
-      dt.Rows.Add(new object[] { 4, 5, 6 });
-      dt.Rows.Add(new object[] { 7, 8, 9 });
-      dt.Rows.Add(new object[] { 10, 11, 12 });
+      dt.Columns.Add("D");
+      dt.Columns.Add("E");
+      dt.Rows.Add(new object[] { 1, 2, 3, 4, 5 });
+      dt.Rows.Add(new object[] { 6, 7, 8, 9, 10 });
+      dt.Rows.Add(new object[] { 11, 12, 13, 14, 15 });
+      dt.Rows.Add(new object[] { 16, 17, 18, 19, 20 });
+      dt.Rows.Add(new object[] { 21, 22, 23, 24, 25 });
       System.Console.WriteLine(dt.ToFormattedString());
 
       System.Console.WriteLine("ReverseColumns");
       var reversedColumns = dt.ReverseColumns();
       System.Console.WriteLine(reversedColumns.ToFormattedString());
 
+      System.Console.WriteLine("ReverseColumnsInline");
+      reversedColumns.ReverseColumnsInline(1, 2);
+      System.Console.WriteLine(reversedColumns.ToFormattedString());
+
       System.Console.WriteLine("ReverseRows");
       var reversedRows = dt.ReverseRows();
+      System.Console.WriteLine(reversedRows.ToFormattedString());
+
+      System.Console.WriteLine("ReverseRowsInline");
+      reversedRows.ReverseRowsInline(1, 2);
       System.Console.WriteLine(reversedRows.ToFormattedString());
 
       System.Console.WriteLine("Transposed");
@@ -209,6 +220,11 @@ namespace ConsoleApp
       System.Console.WriteLine("RotateRight");
       var rotatedRight = dt.RotateRight(out var _, "X", "Y", "Z");
       System.Console.WriteLine(rotatedRight.ToFormattedString());
+
+      var a1 = new object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      System.Console.WriteLine(string.Join('|', a1));
+      var a2 = a1.ToNewArray(3, 3, 3, 3);
+      System.Console.WriteLine(string.Join('|', a2));
     }
 
     static void Main(string[] args)
