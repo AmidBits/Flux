@@ -2,9 +2,7 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivot).</summary>
-    /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>
-    /// <param name="targetColumnNames">If no target column names are specified, "Column_[ordinalIndex]" will be used.</param>
+    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source columns reversed (mirrored).</summary>
     public static System.Data.DataTable ReverseColumns(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -25,7 +23,7 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Reverse the columns the data in-line.</summary>
+    /// <summary>Reverse the columns the <see cref="System.Data.DataTable"/> in-line. The process simply re-order the columns by repeatedly calling the method SetOrdinal() for each columns.</summary>
     public static void ReverseColumnsInline(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -34,9 +32,7 @@ namespace Flux
         source.Columns[0].SetOrdinal(columnIndex);
     }
 
-    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivot).</summary>
-    /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>
-    /// <param name="targetColumnNames">If no target column names are specified, "Column_[ordinalIndex]" will be used.</param>
+    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rows reversed (mirrored).</summary>
     public static System.Data.DataTable ReverseRows(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -56,7 +52,7 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Reverse the rows the data in-line.</summary>
+    /// <summary>Reverse the rows the <see cref="System.Data.DataTable"/> in-line. The process swaps the itemArray of 0 and last, 1 and next to last, etc.</summary>
     public static void ReverseRowsInline(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

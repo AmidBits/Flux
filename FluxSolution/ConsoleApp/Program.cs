@@ -188,35 +188,27 @@ namespace ConsoleApp
       dt.Rows.Add(new object[] { 4, 5, 6 });
       dt.Rows.Add(new object[] { 7, 8, 9 });
       dt.Rows.Add(new object[] { 10, 11, 12 });
-      System.Console.WriteLine(dt.ToArray(true).ToConsoleString());
-
-      System.Console.WriteLine("Transpose");
-      var pt = dt.Transpose(out var tn1, out var cn1, "Test", "X", "Y", "Z");
-      var originalTableName = (string)pt.ExtendedProperties["OriginalTableName"];
-      var originalColumnNames = (string[])pt.ExtendedProperties["OriginalColumnNames"];
-      System.Console.WriteLine(originalTableName);
-      System.Console.WriteLine(string.Join('|', originalColumnNames));
-      System.Console.WriteLine(pt.ToArray(true).ToConsoleString());
-
-      System.Console.WriteLine("Transpose");
-      var ot = pt.Transpose(out var tn2, out var cn2, originalTableName, originalColumnNames);
-      System.Console.WriteLine(ot.ToArray(true).ToConsoleString());
+      System.Console.WriteLine(dt.ToFormattedString());
 
       System.Console.WriteLine("ReverseColumns");
-      var rc = ot.ReverseColumns();
-      System.Console.WriteLine(rc.ToArray(true).ToConsoleString());
+      var reversedColumns = dt.ReverseColumns();
+      System.Console.WriteLine(reversedColumns.ToFormattedString());
 
       System.Console.WriteLine("ReverseRows");
-      var rr = rc.ReverseRows();
-      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
+      var reversedRows = dt.ReverseRows();
+      System.Console.WriteLine(reversedRows.ToFormattedString());
 
-      System.Console.WriteLine("ReverseColumnsInline");
-      rr.ReverseColumnsInline();
-      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
+      System.Console.WriteLine("Transposed");
+      var transposed = dt.Transpose(out var _, "X", "Y", "Z");
+      System.Console.WriteLine(transposed.ToFormattedString());
 
-      System.Console.WriteLine("ReverseRowsInline");
-      rr.ReverseRowsInline();
-      System.Console.WriteLine(rr.ToArray(true).ToConsoleString());
+      System.Console.WriteLine("RotateLeft");
+      var rotatedLeft = dt.RotateLeft(out var _, "X", "Y", "Z");
+      System.Console.WriteLine(rotatedLeft.ToFormattedString());
+
+      System.Console.WriteLine("RotateRight");
+      var rotatedRight = dt.RotateRight(out var _, "X", "Y", "Z");
+      System.Console.WriteLine(rotatedRight.ToFormattedString());
     }
 
     static void Main(string[] args)
