@@ -40,16 +40,16 @@ namespace Flux.Model.TicTacToe
     /// <summary>Gets or sets the state of the specified [row, column] square on the board.</summary>
     public State this[int row, int column]
     {
-      get 
+      get
         => m_state[row * 3 + column];
-      set 
+      set
         => m_state[row * 3 + column] = value;
     }
 
-    public Board() 
+    public Board()
       => Clear();
 
-    public void Clear() 
+    public void Clear()
       => System.Array.Fill(m_state, State.Empty);
 
     public int Evaluate(bool isMax)
@@ -140,12 +140,12 @@ namespace Flux.Model.TicTacToe
     {
       int score = Evaluate(isMax);
 
-      if (score == 10) 
+      if (score == 10)
         return score - depth; // Maximizer won.
-      if (score == -10) 
+      if (score == -10)
         return score + depth; // Minimizer won.
 
-      if (!HasEmptySquares()) 
+      if (!HasEmptySquares())
         return 0; // No more moves and no winner, it's a tie.
 
       var best = isMax ? int.MinValue : int.MaxValue;
@@ -178,7 +178,7 @@ namespace Flux.Model.TicTacToe
     //  =>
 
     public override string ToString()
-      => GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).ToConsoleString(false, '\0', '\0');
+      => GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).ToConsoleString('\0', '\0', false);
 
     // This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
     //public static int EvaluateBoard(char[,] board, char player, char opponent)

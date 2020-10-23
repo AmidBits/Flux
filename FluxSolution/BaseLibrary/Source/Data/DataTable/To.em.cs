@@ -5,52 +5,64 @@ namespace Flux
   public static partial class Xtensions
   {
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-    public static object[,] ToArray(this System.Data.DataTable source, bool includeColumnName)
+    public static object[,] ToArray(this System.Data.DataTable source, int columnStartIndex, int columnCount, int rowStartIndex, int rowCount)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var offset = includeColumnName ? 1 : 0;
+      var array = new object[rowCount, columnCount];
 
-      var array = new object[source.Rows.Count + offset, source.Columns.Count];
+      for (var row = rowStartIndex + rowCount - 1; row >= rowStartIndex; row--)
+        for (var column = columnStartIndex + columnCount - 1; column >= columnStartIndex; column--)
+          array[row - rowStartIndex, column - columnStartIndex] = source.Rows[row][column];
 
-      if (includeColumnName)
+      return array;
+    }
+    public static object[,] ToArray(this System.Data.DataTable source, bool includeColumnNames)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var rowStartIndex = includeColumnNames ? 1 : 0;
+
+      var array = new object[rowStartIndex + source.Rows.Count, source.Columns.Count];
+
+      if (includeColumnNames)
         for (var column = 0; column < source.Columns.Count; column++)
           array[0, column] = source.Columns[column].ColumnName;
 
-      for (var row = 0; row < source.Rows.Count; row++)
-        for (var column = 0; column < source.Columns.Count; column++)
-          array[row + offset, column] = source.Rows[row][column];
+      for (var row = source.Rows.Count - 1; row >= 0; row--)
+        for (var column = source.Columns.Count - 1; column >= 0; column--)
+          array[rowStartIndex + row, column] = source.Rows[row][column];
 
       return array;
     }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
-    public static string ToFormattedString(this System.Data.DataTable source, string horizontalSeparator = @"|", char verticalSeparator = '\0')
+    /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
+    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings(this System.Data.DataTable source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool includeColumnNames = true)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var sb = new System.Text.StringBuilder();
+      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.Columns.Count).Select(i => includeColumnNames ? System.Math.Max(source.Columns[i].ColumnName.Length, source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length)) : source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length));
+      if (uniformMaxWidth) columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToArray(); // If used, replace all with total max width.
 
-      var columnWidths = new int[source.Columns.Count];
-      for (var columnIndex = 0; columnIndex < columnWidths.Length; columnIndex++)
-        columnWidths[columnIndex] = source.Rows.Cast<System.Data.DataRow>().Max(dr => dr[columnIndex].ToString()?.Length ?? 0);
+      var format = string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
-      var format = string.Join(horizontalSeparator, columnWidths.Select((width, index) => $"{{{index},-{width}}}"));
+      var verticalSeparatorRow = verticalSeparator == '\0' ? null : string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => new string(verticalSeparator, width)));
 
-      sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, format, source.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ToArray());
-      sb.AppendLine();
+      if (includeColumnNames)
+        yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, format, source.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ToArray());
 
       for (var row = 0; row < source.Rows.Count; row++)
       {
-        if (verticalSeparator != '\0')
-          sb.AppendLine(string.Join(horizontalSeparator, columnWidths.Select((width, index) => new string(verticalSeparator, width))));
+        if (!(verticalSeparatorRow is null) && (row > 0 || includeColumnNames))
+          yield return string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => new string(verticalSeparator, width)));
 
-        sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, format, source.Rows[row].ItemArray);
-        sb.AppendLine();
+        yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, format, source.Rows[row].ItemArray);
       }
-
-      return sb.ToString();
     }
+    /// <summary>Returns the data table as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
+    public static string ToConsoleString(this System.Data.DataTable source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool includeColumnNames = true)
+      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformMaxWidth, includeColumnNames));
 
     /// <summary>Creates a new XDocument with the data from the DataTable.</summary>
     public static System.Xml.Linq.XDocument ToXDocument(this System.Data.DataTable source)

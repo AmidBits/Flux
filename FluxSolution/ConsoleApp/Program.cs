@@ -191,35 +191,39 @@ namespace ConsoleApp
       dt.Rows.Add(new object[] { 11, 12, 13, 14, 15 });
       dt.Rows.Add(new object[] { 16, 17, 18, 19, 20 });
       dt.Rows.Add(new object[] { 21, 22, 23, 24, 25 });
-      System.Console.WriteLine(dt.ToFormattedString());
+      System.Console.WriteLine(dt.ToConsoleString());
+
+      System.Console.WriteLine("ToArray");
+      var mda = dt.ToArray(1, 3, 1, 3);
+      System.Console.WriteLine(mda.ToConsoleString());
 
       System.Console.WriteLine("ReverseColumns");
       var reversedColumns = dt.ReverseColumns();
-      System.Console.WriteLine(reversedColumns.ToFormattedString());
+      System.Console.WriteLine(reversedColumns.ToConsoleString());
 
       System.Console.WriteLine("ReverseColumnsInline");
       reversedColumns.ReverseColumnsInline(1, 2);
-      System.Console.WriteLine(reversedColumns.ToFormattedString());
+      System.Console.WriteLine(reversedColumns.ToConsoleString());
 
       System.Console.WriteLine("ReverseRows");
       var reversedRows = dt.ReverseRows();
-      System.Console.WriteLine(reversedRows.ToFormattedString());
+      System.Console.WriteLine(reversedRows.ToConsoleString());
 
       System.Console.WriteLine("ReverseRowsInline");
       reversedRows.ReverseRowsInline(1, 2);
-      System.Console.WriteLine(reversedRows.ToFormattedString());
+      System.Console.WriteLine(reversedRows.ToConsoleString());
 
       System.Console.WriteLine("Transposed");
       var transposed = dt.Transpose(out var _, "X", "Y", "Z");
-      System.Console.WriteLine(transposed.ToFormattedString());
+      System.Console.WriteLine(transposed.ToConsoleString());
 
       System.Console.WriteLine("RotateLeft");
       var rotatedLeft = dt.RotateLeft(out var _, "X", "Y", "Z");
-      System.Console.WriteLine(rotatedLeft.ToFormattedString());
+      System.Console.WriteLine(rotatedLeft.ToConsoleString());
 
       System.Console.WriteLine("RotateRight");
       var rotatedRight = dt.RotateRight(out var _, "X", "Y", "Z");
-      System.Console.WriteLine(rotatedRight.ToFormattedString());
+      System.Console.WriteLine(rotatedRight.ToConsoleString());
 
       var a1 = new object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       System.Console.WriteLine(string.Join('|', a1));

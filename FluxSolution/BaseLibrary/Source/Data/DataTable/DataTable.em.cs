@@ -25,16 +25,9 @@ namespace Flux
       return array;
     }
 
-    /// <summary>Returns a sequence of DataColumn objects from the DataTable.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Data.DataColumn> GetDataColumns(this System.Data.DataTable source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Columns.Cast<System.Data.DataColumn>();
-    /// <summary>Returns a sequence of DataRow objects from the DataTable.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Data.DataRow> GetDataRows(this System.Data.DataTable source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Rows.Cast<System.Data.DataRow>();
-
     /// <summary>Removes (as in deletes) all DataColumn objects matching the specified names.</summary>
     public static void RemoveAllColumnsEqualTo(this System.Data.DataTable source, params string[] columnNames)
-      => GetColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
+      => GetColumnNames(source).Join(columnNames, s => s, cn => cn, (s, cn) => cn).ToList().ForEach(cn => source.Columns.Remove(cn));
     /// <summary>Removes (as in deletes) all DataColumn objects NOT matching the specified names.</summary>
     public static void RemoveAllColumnsNotEqualTo(this System.Data.DataTable source, params string[] columnNames)
       => GetColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));

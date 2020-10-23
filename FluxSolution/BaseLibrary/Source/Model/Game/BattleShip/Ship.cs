@@ -38,7 +38,7 @@ namespace Flux
       var sb = new System.Text.StringBuilder();
 
       sb.AppendLine($"Placement {countAdjacentShips}:");
-      sb.AppendLine(placement.ToConsoleString(true, '\0', '\0'));
+      sb.AppendLine(ToConsoleString(placement, '\0', '\0', true));
 
       return sb.ToString();
     }
@@ -56,7 +56,7 @@ namespace Flux
     public struct Ship
       : System.IEquatable<Ship>
     {
-      private static double[] m_proximityProbabilities = new double[] { 1.0, 0.5, 0.3333333333333333, 0.25, 0.2, 0.1666666666666666 };
+      private static readonly double[] m_proximityProbabilities = new double[] { 1.0, 0.5, 0.3333333333333333, 0.25, 0.2, 0.1666666666666666 };
       public static System.Collections.Generic.IReadOnlyList<double> ProximityProbabilities => m_proximityProbabilities;
 
       public static readonly Ship Empty;
@@ -140,15 +140,11 @@ namespace Flux
       {
         if (a.Orientation == ShipOrientation.Horizontal && b.Orientation == ShipOrientation.Horizontal)
         {
-          return a.m_locations[0].Y != b.m_locations[0].Y
-            ? false
-            : (b.m_locations[0].X < (a.m_locations[0].X + a.m_locations.Count)) && (a.m_locations[0].X < (b.m_locations[0].X + b.m_locations.Count));
+          return a.m_locations[0].Y == b.m_locations[0].Y && (b.m_locations[0].X < (a.m_locations[0].X + a.m_locations.Count)) && (a.m_locations[0].X < (b.m_locations[0].X + b.m_locations.Count));
         }
         else if (a.Orientation == ShipOrientation.Vertical && b.Orientation == ShipOrientation.Vertical)
         {
-          return a.m_locations[0].X != b.m_locations[0].X
-            ? false
-            : (b.m_locations[0].Y < (a.m_locations[0].Y + a.m_locations.Count)) && (a.m_locations[0].Y < (b.m_locations[0].Y + b.m_locations.Count));
+          return a.m_locations[0].X == b.m_locations[0].X && (b.m_locations[0].Y < (a.m_locations[0].Y + a.m_locations.Count)) && (a.m_locations[0].Y < (b.m_locations[0].Y + b.m_locations.Count));
         }
         else
         {
