@@ -194,8 +194,8 @@ namespace ConsoleApp
       System.Console.WriteLine(dt.ToConsoleString());
 
       System.Console.WriteLine("ToArray");
-      var mda = dt.ToArray(1, 3, 1, 3);
-      System.Console.WriteLine(mda.ToConsoleString());
+      var mda = dt.To2dArray(1, 3, 1, 3);
+      System.Console.WriteLine(mda.ToConsoleString2d());
 
       System.Console.WriteLine("ReverseColumns");
       var reversedColumns = dt.ReverseColumns();

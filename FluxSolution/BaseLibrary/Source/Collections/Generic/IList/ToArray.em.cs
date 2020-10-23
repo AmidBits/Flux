@@ -10,12 +10,9 @@ namespace Flux
       if (count < 0 || count + offset >= source.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var target = new T[count];
-      if (source.GetType().IsArray) System.Array.Copy((System.Array)source, offset, target, 0, count);
-      else
-      {
-        offset += count;
-        while (count > 0) target[--count] = source[--offset];
-      }
+      offset += count;
+      while (count > 0)
+        target[--count] = source[--offset];
       return target;
     }
 
