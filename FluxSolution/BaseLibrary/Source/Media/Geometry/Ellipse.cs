@@ -45,15 +45,15 @@ namespace Flux.Geometry
     /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, 0); // octagon, horizontally and vertically pointy
     /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, vertically and horizontally flat
     /// </summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> Create(double segments, double radiusX, double radiusY, double offsetRadians = 0, double randomnessUnitInterval = 0)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> Create(double segmentCount, double radiusX, double radiusY, double offsetRadians = 0, double randomnessUnitInterval = 0)
     {
       offsetRadians += -Flux.Maths.PiOver2;
 
-      var segmentRadian = Flux.Maths.PiX2 / segments;
+      var segmentRadian = Flux.Maths.PiX2 / segmentCount;
 
       var rng = new System.Random();
 
-      for (var segment = 0; segment < segments; segment++)
+      for (var segment = 0; segment < segmentCount; segment++)
       {
         var angle = offsetRadians + segment * segmentRadian;
 
