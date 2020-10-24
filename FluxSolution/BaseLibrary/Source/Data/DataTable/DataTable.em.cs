@@ -4,8 +4,8 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Returns an array of column names.</summary>
-    public static string[] GetColumnNames(this System.Data.DataTable source)
+    /// <summary>Returns a new array with all column names from the data table.</summary>
+    public static string[] AllColumnNames(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -14,8 +14,8 @@ namespace Flux
         array[index] = source.Columns[index].ColumnName;
       return array;
     }
-    /// <summary>Returns an array of column types.</summary>
-    public static System.Type[] GetColumnTypes(this System.Data.DataTable source)
+    /// <summary>Returns a new array of all column types in the data table.</summary>
+    public static System.Type[] AllColumnTypes(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -25,12 +25,26 @@ namespace Flux
       return array;
     }
 
+    /// <summary>Returns a new sequence with all values for that column.</summary>
+    public static System.Collections.Generic.IEnumerable<object> GetValuesInColumn(this System.Data.DataTable source, int columnIndex, bool inReverseOrder = false)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (columnIndex < 0 || columnIndex >= source.Columns.Count) throw new System.ArgumentOutOfRangeException(nameof(source));
+
+      if (inReverseOrder)
+        for (var rowIndex = source.Rows.Count - 1; rowIndex >= 0; rowIndex--)
+          yield return source.Rows[rowIndex][columnIndex];
+      else
+        for (var rowIndex = 0; rowIndex < source.Rows.Count; rowIndex++)
+          yield return source.Rows[rowIndex][columnIndex];
+    }
+
     /// <summary>Removes (as in deletes) all DataColumn objects matching the specified names.</summary>
     public static void RemoveAllColumnsEqualTo(this System.Data.DataTable source, params string[] columnNames)
-      => GetColumnNames(source).Join(columnNames, s => s, cn => cn, (s, cn) => cn).ToList().ForEach(cn => source.Columns.Remove(cn));
+      => AllColumnNames(source).Join(columnNames, s => s, cn => cn, (s, cn) => cn).ToList().ForEach(cn => source.Columns.Remove(cn));
     /// <summary>Removes (as in deletes) all DataColumn objects NOT matching the specified names.</summary>
     public static void RemoveAllColumnsNotEqualTo(this System.Data.DataTable source, params string[] columnNames)
-      => GetColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
+      => AllColumnNames(source).Except(columnNames).ToList().ForEach(cn => source.Columns.Remove(cn));
 
     /// <summary>Removes (as in deletes) all DataRow objects matching the specified filter expression.</summary>
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>
