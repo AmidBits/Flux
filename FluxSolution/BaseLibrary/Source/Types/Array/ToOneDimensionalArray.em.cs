@@ -8,21 +8,15 @@ namespace Flux
     /// <summary>Returns the jagged array (i.e. an array of arrays) as a two-dimensional array.</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[] ToOneDimensionalArray<T>(this T[,] source)
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       var array = new T[source.Length];
       var index = 0;
-
       foreach (var item in source)
-      {
-        if (index >= array.Length) break;
-
         array[index++] = item;
-      }
-
       return array;
     }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }
