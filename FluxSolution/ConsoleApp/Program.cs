@@ -5,6 +5,33 @@ using System.Reflection;
 
 namespace ConsoleApp
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
+  public struct Bits32
+  {
+    [System.Runtime.InteropServices.FieldOffset(0)] public byte[] Bytes;
+    [System.Runtime.InteropServices.FieldOffset(0)] public byte Byte0;
+    [System.Runtime.InteropServices.FieldOffset(1)] public byte Byte1;
+    [System.Runtime.InteropServices.FieldOffset(2)] public byte Byte2;
+    [System.Runtime.InteropServices.FieldOffset(3)] public byte Byte3;
+    [System.Runtime.InteropServices.FieldOffset(0)] public int Int;
+  }
+
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
+  public struct Bits64
+  {
+    [System.Runtime.InteropServices.FieldOffset(0)] public byte Byte0;
+    [System.Runtime.InteropServices.FieldOffset(1)] public byte Byte1;
+    [System.Runtime.InteropServices.FieldOffset(2)] public byte Byte2;
+    [System.Runtime.InteropServices.FieldOffset(3)] public byte Byte3;
+    [System.Runtime.InteropServices.FieldOffset(4)] public byte Byte4;
+    [System.Runtime.InteropServices.FieldOffset(5)] public byte Byte5;
+    [System.Runtime.InteropServices.FieldOffset(6)] public byte Byte6;
+    [System.Runtime.InteropServices.FieldOffset(7)] public byte Byte7;
+    [System.Runtime.InteropServices.FieldOffset(0)] public int Int0;
+    [System.Runtime.InteropServices.FieldOffset(4)] public int Int1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public long Long;
+  }
+
   class Program
   {
     private static void TimedMain(string[] _)
