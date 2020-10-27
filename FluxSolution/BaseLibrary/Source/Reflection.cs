@@ -57,11 +57,15 @@ namespace Flux.Reflection
 
   public class AssemblyInfo
   {
-    public static AssemblyInfo CallingAssembly => new AssemblyInfo(System.Reflection.Assembly.GetCallingAssembly());
-    public static AssemblyInfo EntryAssembly => new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
-    public static AssemblyInfo ExecutingAssembly => new AssemblyInfo(System.Reflection.Assembly.GetExecutingAssembly());
+    public static AssemblyInfo CallingAssembly
+      => new AssemblyInfo(System.Reflection.Assembly.GetCallingAssembly());
+    public static AssemblyInfo EntryAssembly
+      => new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
+    public static AssemblyInfo ExecutingAssembly
+      => new AssemblyInfo(System.Reflection.Assembly.GetExecutingAssembly());
 
-    public static AssemblyInfo FluxAssembly => new AssemblyInfo(typeof(AssemblyInfo).Assembly);
+    public static AssemblyInfo FluxAssembly
+      => new AssemblyInfo(typeof(AssemblyInfo).Assembly);
 
     public string? Company
       => GetAssemblyAttribute<System.Reflection.AssemblyCompanyAttribute>(a => a.Company);
@@ -85,7 +89,7 @@ namespace Flux.Reflection
       => GetAssemblyAttribute<System.Reflection.AssemblyTrademarkAttribute>(a => a is null ? string.Empty : a.Trademark);
 
     public System.Version Version
-      => _assembly.GetName().Version ?? throw new System.NotSupportedException();
+      => m_assembly.GetName().Version ?? throw new System.NotSupportedException();
 
     public string VersionBuild
       => Version.Build.ToString(System.Globalization.CultureInfo.CurrentCulture);
@@ -102,13 +106,13 @@ namespace Flux.Reflection
     public string VersionString
       => Version.ToString();
 
-    private readonly System.Reflection.Assembly _assembly;
+    private readonly System.Reflection.Assembly m_assembly;
 
     public AssemblyInfo(System.Reflection.Assembly assembly)
-      => _assembly = assembly;
+      => m_assembly = assembly;
 
     private string? GetAssemblyAttribute<T>(System.Func<T, string> selector) where T : System.Attribute
-      => selector.Invoke((T)System.Attribute.GetCustomAttribute(_assembly, typeof(T))!).NullIfEmpty();
+      => selector.Invoke((T)System.Attribute.GetCustomAttribute(m_assembly, typeof(T))!) is var value && string.IsNullOrEmpty(value) ? null : value;
   }
 
   // public static class TypeBuilder

@@ -15,7 +15,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      return source.IsWrapped(left, right) ? source.Remove(0, 1).Remove(source.Length - 1, 1) : source;
+      return IsWrapped(source, left, right) ? source.Remove(0, 1).Remove(source.Length - 1, 1) : source;
     }
 
     /// <summary>Add the specified characters to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped. E.g. in SQL brackets, or parenthesis.</summary>
@@ -23,7 +23,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      return force || !source.IsWrapped(left, right) ? source.Insert(0, left).Append(right) : source;
+      return force || !IsWrapped(source, left, right) ? source.Insert(0, left).Append(right) : source;
     }
 
     /// <summary>Indicates whether the source is already wrapped in the strings.</summary>
@@ -33,7 +33,7 @@ namespace Flux
       if (left is null) throw new System.ArgumentNullException(nameof(left));
       if (right is null) throw new System.ArgumentNullException(nameof(right));
 
-      return source.Length >= (left.Length + right.Length) && source.StartsWith(left) && source.EndsWith(right);
+      return source.Length >= (left.Length + right.Length) && StartsWith(source, left) && EndsWith(source, right);
     }
 
     /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
@@ -43,7 +43,7 @@ namespace Flux
       if (left is null) throw new System.ArgumentNullException(nameof(left));
       if (right is null) throw new System.ArgumentNullException(nameof(right));
 
-      return source.IsWrapped(left, right) ? source.Remove(0, left.Length).Remove(source.Length - right.Length, right.Length) : source;
+      return IsWrapped(source, left, right) ? source.Remove(0, left.Length).Remove(source.Length - right.Length, right.Length) : source;
     }
 
     /// <summary>Add the specified wrap strings to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped.</summary>
@@ -51,7 +51,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      return force || !source.IsWrapped(left, right) ? source.Insert(0, left).Append(right) : source;
+      return force || !IsWrapped(source, left, right) ? source.Insert(0, left).Append(right) : source;
     }
   }
 }

@@ -8,6 +8,6 @@ namespace Flux
 
     /// <summary>Creates a string builder from the source.</summary>
     public static System.Text.StringBuilder ToStringBuilder(this System.ReadOnlySpan<char> source)
-      => new System.Text.StringBuilder(new string(source.ToArray()));
+      => new System.Text.StringBuilder().Append(source);
   }
 }

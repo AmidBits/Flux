@@ -27,7 +27,8 @@ namespace Flux
 
       foreach (var value in values)
       {
-        if (count >= 0 && value.Length >= count) continue;
+        if (count >= 0 && value.Length >= count)
+          continue;
 
         var valueIndex = count < 0 ? value.Length : count; // Value index starts at specified positive count or value length if negative.
         var sourceIndex = startAt + valueIndex;

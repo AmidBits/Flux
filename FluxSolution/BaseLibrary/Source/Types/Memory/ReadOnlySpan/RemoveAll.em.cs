@@ -29,6 +29,6 @@ namespace Flux
       => RemoveAll(source, t => remove.Contains(t, comparer));
     /// <summary>Remove the specified elements. Uses the default comparer.</summary>
     public static T[] RemoveAll<T>(this System.ReadOnlySpan<T> source, params T[] remove)
-      => RemoveAll(source, t => remove.Contains(t));
+      => RemoveAll(source, remove.Contains);
   }
 }

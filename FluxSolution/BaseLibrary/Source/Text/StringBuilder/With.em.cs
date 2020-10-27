@@ -3,43 +3,51 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Indicates whether the source ends with value. Uses the specified comparer.</summary>
-    public static bool EndsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static bool EndsWith(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
 
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
-      else if (source.Length < value.Length) return false;
+      var sourceIndex = source.Length;
+      var targetIndex = target.Length;
 
-      for (int sourceIndex = source.Length - 1, valueIndex = value.Length - 1; sourceIndex >= 0 && valueIndex >= 0; sourceIndex--, valueIndex--)
-        if (!comparer.Equals(source[sourceIndex], value[valueIndex]))
+      if (sourceIndex < targetIndex)
+        return false;
+
+      while (--sourceIndex >= 0 && --targetIndex >= 0)
+        if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
           return false;
 
       return true;
     }
     /// <summary>Indicates whether the source ends with value. Uses the default comparer.</summary>
-    public static bool EndsWith(this System.Text.StringBuilder source, string value)
-      => EndsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
+    public static bool EndsWith(this System.Text.StringBuilder source, string target)
+      => EndsWith(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
 
     /// <summary>Indicates whether the source starts with value. Uses the specified comparer.</summary>
-    public static bool StartsWith(this System.Text.StringBuilder source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static bool StartsWith(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (target is null) throw new System.ArgumentNullException(nameof(target));
 
       comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
-      else if (source.Length < value.Length) return false;
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      for (var index = 0; index < value.Length; index++)
-        if (!comparer.Equals(source[index], value[index]))
+      if (sourceLength < targetLength)
+        return false;
+
+      for (var index = 0; index < targetLength; index++)
+        if (!comparer.Equals(source[index], target[index]))
           return false;
 
       return true;
     }
     /// <summary>Indicates whether the source starts with value. Uses the default comparer.</summary>
-    public static bool StartsWith(this System.Text.StringBuilder source, string value)
-       => StartsWith(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
+    public static bool StartsWith(this System.Text.StringBuilder source, string target)
+       => StartsWith(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

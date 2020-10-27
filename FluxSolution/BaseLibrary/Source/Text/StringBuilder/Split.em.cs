@@ -19,7 +19,8 @@ namespace Flux
         }
       }
 
-      if (startIndex < source.Length) yield return source.ToString(startIndex, source.Length - startIndex);
+      if (startIndex < source.Length)
+        yield return source.ToString(startIndex, source.Length - startIndex);
     }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using Flux;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +35,19 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var html = "<h2 class=\"ofscreen\">Webontwikkeling leren</h2><h1>Regular Expressions</h1><p>\"Alle onderdelen van MDN(documenten en de website zelf) worden gemaakt door een open gemeenschap.\"</p><br/>";
 
+      System.Console.WriteLine(html);
+
+      var text = System.Text.RegularExpressions.Regex.Replace(html, @"(<[^>]+>)+", @" ").Trim();
+
+      System.Console.WriteLine(text);
+
+      var original = "ABCDEFGHI";
+      var padding = "123456789";
+      System.Console.WriteLine(original.PadLeft(11, @"987654321"));
+      System.Console.WriteLine(original.PadRight(11, @"123456789"));
+      System.Console.WriteLine(original.PadEven(11, @"987654321", @"123456789"));
 
       /*
         var size = new Flux.Geometry.Size2(10, 10);
