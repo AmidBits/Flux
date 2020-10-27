@@ -1,6 +1,3 @@
-using Flux.Reflection;
-using System.Linq;
-
 namespace Flux
 {
   /// <summary>Represents the types of stores available for application data.</summary>
