@@ -7,7 +7,6 @@ namespace ConsoleApp
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Bits32
   {
-    [System.Runtime.InteropServices.FieldOffset(0)] public byte[] Bytes;
     [System.Runtime.InteropServices.FieldOffset(0)] public byte Byte0;
     [System.Runtime.InteropServices.FieldOffset(1)] public byte Byte1;
     [System.Runtime.InteropServices.FieldOffset(2)] public byte Byte2;
@@ -18,7 +17,6 @@ namespace ConsoleApp
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Bits64
   {
-    [System.Runtime.InteropServices.FieldOffset(0)] public byte[] Bytes;
     [System.Runtime.InteropServices.FieldOffset(0)] public byte Byte0;
     [System.Runtime.InteropServices.FieldOffset(1)] public byte Byte1;
     [System.Runtime.InteropServices.FieldOffset(2)] public byte Byte2;

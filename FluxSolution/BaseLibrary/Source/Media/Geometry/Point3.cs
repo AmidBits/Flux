@@ -138,6 +138,7 @@ namespace Flux
 
   namespace Geometry
   {
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public struct Point3
       : System.IEquatable<Point3>, System.IFormattable
     {
