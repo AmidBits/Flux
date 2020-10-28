@@ -403,6 +403,19 @@
     public int ProductIdentifier => wPid;
     public long Support => dwSupport;
 
+    // Statics
+    public static MidiInCaps[] GetMidiIns()
+    {
+      var mica = new MidiInCaps[NativeMethods.midiInGetNumDevs()];
+      for (var index = 0; index < mica.Length; index++)
+      {
+        var mic = default(MidiInCaps);
+        NativeMethods.ErrorHandled(NativeMethods.midiInGetDevCaps(new System.IntPtr(index), out mic, (uint)System.Runtime.InteropServices.Marshal.SizeOf(mic)));
+        mica[index] = mic;
+      }
+      return mica;
+    }
+
     // Operators
     public static bool operator ==(MidiInCaps a, MidiInCaps b)
       => a.Equals(b);
@@ -449,6 +462,19 @@
     public int Technology => wTechnology;
     public int Voices => wVoices;
 
+    // Statics
+    public static MidiOutCaps[] GetMidiOuts()
+    {
+      var moca = new MidiOutCaps[NativeMethods.midiOutGetNumDevs()];
+      for (var index = 0; index < moca.Length; index++)
+      {
+        var moc = default(MidiOutCaps);
+        NativeMethods.ErrorHandled(NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
+        moca[index] = moc;
+      }
+      return moca;
+    }
+
     // Operators
     public static bool operator ==(MidiOutCaps a, MidiOutCaps b)
       => a.Equals(b);
@@ -470,6 +496,10 @@
 
   internal class NativeMethods
   {
+    public const int MmSysErrNoError = 0;
+    internal static bool ErrorHandled(uint mmsyserr)
+      => mmsyserr == MmSysErrNoError ? true : throw new System.InvalidOperationException();
+
 #pragma warning disable IDE1006 // Naming Styles
     public delegate void MidiInProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInClose(System.IntPtr hMidiIn);

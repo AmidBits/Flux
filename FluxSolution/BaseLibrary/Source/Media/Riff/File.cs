@@ -128,15 +128,6 @@ namespace Flux.Media.Riff
     }
   }
 
-  //[System.CLSCompliant(false)]
-  //public interface IChunk
-  //{
-  //  public System.Collections.Generic.IReadOnlyList<byte> Buffer { get; }
-
-  //  public string ChunkID { get; set; }
-  //  [System.CLSCompliant(false)] public uint ChunkSize { get; set; }
-  //}
-
   public class Chunk
   {
     internal byte[] m_buffer = System.Array.Empty<byte>();

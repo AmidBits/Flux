@@ -90,7 +90,7 @@
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern int GetMouseMovePointsEx(uint cbSize, [System.Runtime.InteropServices.In] ref MouseMovePoint lppt, [System.Runtime.InteropServices.Out] MouseMovePoint[] lpptBuf, int nBufPoints, uint resolution);
     /// <summary>Retrieves a history of up to 64 previous coordinates of the mouse or pen.</summary>
-    public static MouseMovePoint[] GetMouseMovePointsEx(GmmpResolution resolution, int numberOfPointsToRetrieve = 20)
+    public static MouseMovePoint[] GetMouseMovePoints(GmmpResolution resolution, int numberOfPointsToRetrieve = 16)
     {
       var mp_in = new MouseMovePoint();
       var mp_out = new MouseMovePoint[numberOfPointsToRetrieve];
@@ -101,8 +101,10 @@
 
       System.Array.Copy(mp_out, mp, mp.Length);
 
-      return mp_out;
+      return mp;
     }
+
+    public static int MouseEventState { get; set; }
 
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mouse_event
     [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -110,12 +112,21 @@
     private static extern void mouse_event(int flags, int dx, int dy, uint data, System.UIntPtr extraInfo);
 #pragma warning restore IDE1006 // Naming Styles
     /// <summary>Synthesize mouse motion and button clicks.</summary>
-    public static void MouseEvent(MouseEventFlags flags, int x = 0, int y = 0, int data = 0)
-      => mouse_event((int)flags, x, y, unchecked((uint)data), System.UIntPtr.Zero);
+    public static void InvokeMouseEvent(MouseEventFlags flags)
+      => InvokeMouseEvent(flags, 0, 0, 0, System.UIntPtr.Zero);
+    /// <summary>Synthesize mouse motion and button clicks.</summary>
+    public static void InvokeMouseEvent(MouseEventFlags flags, int x = 0, int y = 0)
+      => InvokeMouseEvent(flags, x, y, 0, System.UIntPtr.Zero);
+    /// <summary>Synthesize mouse motion and button clicks.</summary>
+    public static void InvokeMouseEvent(MouseEventFlags flags, int x = 0, int y = 0, int data = 0)
+      => InvokeMouseEvent(flags, x, y, data, System.UIntPtr.Zero);
     /// <summary>Synthesize mouse motion and button clicks.</summary>
     [System.CLSCompliant(false)]
-    public static void MouseEvent(MouseEventFlags flags, int x, int y, int data, System.UIntPtr extraInfo)
-    => mouse_event((int)flags, x, y, unchecked((uint)data), extraInfo);
+    public static void InvokeMouseEvent(MouseEventFlags flags, int x, int y, int data, System.UIntPtr extraInfo)
+    {
+      MouseEventState ^= (int)flags;
 
+      mouse_event((int)flags, x, y, unchecked((uint)data), extraInfo);
+    }
   }
 }
