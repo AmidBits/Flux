@@ -2,13 +2,6 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    /// <summary>Parses the string for a Unicode notation expression.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> ParseUnicodeNotation(this string source)
-      => Text.UnicodeNotation.Parse(source);
-    /// <summary>Parses the string for a Unicode notation expression.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> ParseUnicodeStringLiterals(this string source)
-      => Text.UnicodeStringLiteral.Parse(source);
-
     /// <summary>Parses the string as a CSV 'line' and creates a list of sub-strings representing the comma separated values (or fields).</summary>
     /// <remarks>Uses a more </remarks>
     public static System.Collections.Generic.List<string> ParseCsvLine(this string source, char separator = ',')

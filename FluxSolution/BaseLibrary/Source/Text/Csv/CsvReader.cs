@@ -15,6 +15,12 @@ namespace Flux.Text
 
       m_streamReader = new System.IO.StreamReader(stream, m_options.Encoding);
     }
+    //public CsvReader(string csv, CsvOptions options)
+    //{
+    //  m_options = options ?? new CsvOptions();
+
+    //  m_streamReader = csv.ToStream();
+    //}
 
     private bool m_inDoubleQuotes;
 

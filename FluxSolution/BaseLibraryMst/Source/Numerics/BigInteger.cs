@@ -123,14 +123,14 @@ namespace Numerics
       Assert.AreEqual("24th", bi24.ToString().InsertOrdinalIndicator());
     }
 
-    [TestMethod]
-    public void BinaryToText()
-    {
-      Assert.AreEqual("Y", Flux.Text.BinaryToText.Encode(bi24, Flux.Text.BinaryToText.Base64()));
-      Assert.AreEqual(bi24, Flux.Text.BinaryToText.Decode("Y", Flux.Text.BinaryToText.Base64()));
+    //[TestMethod]
+    //public void BinaryToText()
+    //{
+    //  Assert.AreEqual("Y", Flux.Text.BinaryToText.Encode(bi24, Flux.Text.BinaryToText.Base64()));
+    //  Assert.AreEqual(bi24, Flux.Text.BinaryToText.Decode("Y", Flux.Text.BinaryToText.Base64()));
 
-      Assert.AreEqual("2", Flux.Text.BinaryToText.Encode(bi54, Flux.Text.BinaryToText.Base64()));
-      Assert.AreEqual(bi54, Flux.Text.BinaryToText.Decode("2", Flux.Text.BinaryToText.Base64()));
-    }
+    //  Assert.AreEqual("2", Flux.Text.BinaryToText.Encode(bi54, Flux.Text.BinaryToText.Base64()));
+    //  Assert.AreEqual(bi54, Flux.Text.BinaryToText.Decode("2", Flux.Text.BinaryToText.Base64()));
+    //}
   }
 }

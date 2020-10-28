@@ -7,7 +7,7 @@
     public double Sigma { get; }
     //public double μ => Mean;
     //public double σ => Sigma;
-    public readonly static Normal Standard = Distribution(0, 1);
+    public static readonly Normal Standard = Distribution(0, 1);
 
     public static Normal Distribution(double mean, double sigma)
       => new Normal(mean, sigma);

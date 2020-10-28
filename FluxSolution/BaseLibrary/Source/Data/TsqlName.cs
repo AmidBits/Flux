@@ -146,7 +146,7 @@ namespace Flux.Data
       WorkstationID = System.Environment.MachineName;
     }
 
-    private readonly static System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new System.Text.RegularExpressions.Regex(@"(?<!\[[^\]])\.(?![^\[]*\])");
+    private static readonly System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new System.Text.RegularExpressions.Regex(@"(?<!\[[^\]])\.(?![^\[]*\])");
 
     public static TsqlName Parse(string qualifiedName)
     {

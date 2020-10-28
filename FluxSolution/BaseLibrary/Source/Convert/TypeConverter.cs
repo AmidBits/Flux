@@ -51,8 +51,7 @@ namespace Flux
       return false;
     }
 
-    private static System.Reflection.MethodInfo m_typeConverterOfT
-      => typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(TypeConverter), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
+    private static readonly System.Reflection.MethodInfo m_typeConverterOfT = typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(TypeConverter), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
 
     /// <summary>Complement the built-in TypeConverter system.</summary>
     public static object TypeConverter(object value, System.Globalization.CultureInfo? culture, params System.Type[] conversionSequence)

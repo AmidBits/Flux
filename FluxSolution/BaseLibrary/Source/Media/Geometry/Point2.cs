@@ -47,22 +47,22 @@ namespace Flux
       /// <summary>Returns the vector (0,0).</summary>
       public static readonly Point2 Zero;
 
-      /// <summary>Returns the vector (0,1).</summary>
-      public static Point2 North => new Point2(0, 1);
-      /// <summary>Returns the vector (1,1).</summary>
-      public static Point2 NorthEast => new Point2(1, 1);
-      /// <summary>Returns the vector (1,0).</summary>
-      public static Point2 East => new Point2(1, 0);
-      /// <summary>Returns the vector (1,-1).</summary>
-      public static Point2 SouthEast => new Point2(1, -1);
-      /// <summary>Returns the vector (0,-1).</summary>
-      public static Point2 South => new Point2(0, -1);
-      /// <summary>Returns the vector (-1,-1).</summary>
-      public static Point2 SouthWest => new Point2(-1, -1);
-      /// <summary>Returns the vector (-1,0).</summary>
-      public static Point2 West => new Point2(-1, 0);
-      /// <summary>Returns the vector (-1,1).</summary>
-      public static Point2 NorthWest => new Point2(-1, 1);
+      ///// <summary>Returns the vector (0,1).</summary>
+      //public static Point2 North => new Point2(0, 1);
+      ///// <summary>Returns the vector (1,1).</summary>
+      //public static Point2 NorthEast => new Point2(1, 1);
+      ///// <summary>Returns the vector (1,0).</summary>
+      //public static Point2 East => new Point2(1, 0);
+      ///// <summary>Returns the vector (1,-1).</summary>
+      //public static Point2 SouthEast => new Point2(1, -1);
+      ///// <summary>Returns the vector (0,-1).</summary>
+      //public static Point2 South => new Point2(0, -1);
+      ///// <summary>Returns the vector (-1,-1).</summary>
+      //public static Point2 SouthWest => new Point2(-1, -1);
+      ///// <summary>Returns the vector (-1,0).</summary>
+      //public static Point2 West => new Point2(-1, 0);
+      ///// <summary>Returns the vector (-1,1).</summary>
+      //public static Point2 NorthWest => new Point2(-1, 1);
       #endregion Static Instances
 
       public Point2(int value)

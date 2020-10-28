@@ -28,8 +28,7 @@ namespace Flux
       return false;
     }
 
-    private static System.Reflection.MethodInfo m_changeTypeOfT
-      => typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
+    private static readonly System.Reflection.MethodInfo m_changeTypeOfT = typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
 
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain.</summary>
     [System.CLSCompliant(false)]

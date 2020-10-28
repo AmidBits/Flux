@@ -4,7 +4,7 @@ namespace Flux.Probability
   // Still not great, but a slight improvement.
   public static class Pseudorandom
   {
-    private readonly static System.Threading.ThreadLocal<System.Random> prng = new System.Threading.ThreadLocal<System.Random>(() => new System.Random(BetterRandom.NextInt()));
+    private static readonly System.Threading.ThreadLocal<System.Random> prng = new System.Threading.ThreadLocal<System.Random>(() => new System.Random(BetterRandom.NextInt()));
 
     public static int NextInt() => (prng.Value ?? throw new System.NullReferenceException()).Next();
 

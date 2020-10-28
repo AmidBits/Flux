@@ -46,6 +46,7 @@ namespace Flux.IO
       TotalBits += bitCount;
 
       m_bitCount -= bitCount;
+
       return (uint)((m_bitBuffer >> m_bitCount) & ((1UL << bitCount) - 1UL));
     }
     [System.CLSCompliant(false)]

@@ -253,8 +253,8 @@
     private const int maxLength = 16384;
     private const int minBits = 1;
     private const int maxBits = 14;
-    private readonly static int[][] reversedBits = new int[maxBits][];
-    private readonly static System.Numerics.Complex[,][] complexRotation = new System.Numerics.Complex[maxBits, 2][];
+    private static readonly int[][] reversedBits = new int[maxBits][];
+    private static readonly System.Numerics.Complex[,][] complexRotation = new System.Numerics.Complex[maxBits, 2][];
 
     /// <summary>Get array, indicating which data members should be swapped before FFT.</summary>
     private static int[] GetReversedBits(int numberOfBits)
@@ -277,7 +277,7 @@
           for (var j = 0; j < numberOfBits; j++)
           {
             newBits = (newBits << 1) | (oldBits & 1);
-            oldBits = (oldBits >> 1);
+            oldBits >>= 1;
           }
 
           rBits[i] = newBits;
