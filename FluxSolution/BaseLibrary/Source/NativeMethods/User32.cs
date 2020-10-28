@@ -51,7 +51,6 @@
     public int Time { get => unchecked((int)m_time); set => m_time = unchecked((uint)value); }
     [System.CLSCompliant(false)] public System.UIntPtr ExtraInfo { get => m_dwExtraInfo; set => m_dwExtraInfo = value; }
 
-
     // Operators
     public static bool operator ==(MouseMovePoint a, MouseMovePoint b)
       => a.Equals(b);

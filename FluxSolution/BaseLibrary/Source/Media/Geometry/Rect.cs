@@ -59,7 +59,6 @@ namespace Flux
       }
 
       // Statics
-
       private static Rect Create(int left, int top, int right, int bottom)
         => left < right && top < bottom ? new Rect() { m_left = left, m_top = top, m_right = right, m_bottom = bottom } : Empty;
       /// <summary>Determines the Rectangle structure that represents the intersection of two rectangles. Empty if there is no intersection.</summary>
@@ -73,7 +72,6 @@ namespace Flux
         => new Size2(size.Width, size.Height);
 
       // Operators
-
       public static bool operator ==(Rect a, Rect b)
         => a.Equals(b);
       public static bool operator !=(Rect a, Rect b)
