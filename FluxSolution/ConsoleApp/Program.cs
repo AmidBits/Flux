@@ -12,7 +12,17 @@ namespace ConsoleApp
     [System.Runtime.InteropServices.FieldOffset(1)] public byte Byte1;
     [System.Runtime.InteropServices.FieldOffset(2)] public byte Byte2;
     [System.Runtime.InteropServices.FieldOffset(3)] public byte Byte3;
-    [System.Runtime.InteropServices.FieldOffset(0)] public int Int;
+    [System.Runtime.InteropServices.FieldOffset(0)] public short Int16_0;
+    [System.Runtime.InteropServices.FieldOffset(2)] public short Int16_1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public int Int32;
+    [System.Runtime.InteropServices.FieldOffset(0)] public sbyte SByte0;
+    [System.Runtime.InteropServices.FieldOffset(1)] public sbyte SByte1;
+    [System.Runtime.InteropServices.FieldOffset(2)] public sbyte SByte2;
+    [System.Runtime.InteropServices.FieldOffset(3)] public sbyte SByte3;
+    [System.Runtime.InteropServices.FieldOffset(0)] public float Single;
+    [System.Runtime.InteropServices.FieldOffset(0)] public ushort UInt16_0;
+    [System.Runtime.InteropServices.FieldOffset(2)] public ushort UInt16_1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public uint UInt32;
   }
 
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
@@ -26,9 +36,33 @@ namespace ConsoleApp
     [System.Runtime.InteropServices.FieldOffset(5)] public byte Byte5;
     [System.Runtime.InteropServices.FieldOffset(6)] public byte Byte6;
     [System.Runtime.InteropServices.FieldOffset(7)] public byte Byte7;
-    [System.Runtime.InteropServices.FieldOffset(0)] public int Int0;
-    [System.Runtime.InteropServices.FieldOffset(4)] public int Int1;
-    [System.Runtime.InteropServices.FieldOffset(0)] public long Long;
+    [System.Runtime.InteropServices.FieldOffset(0)] public double Double;
+    [System.Runtime.InteropServices.FieldOffset(0)] public short Int16_0;
+    [System.Runtime.InteropServices.FieldOffset(2)] public short Int16_1;
+    [System.Runtime.InteropServices.FieldOffset(4)] public short Int16_2;
+    [System.Runtime.InteropServices.FieldOffset(6)] public short Int16_3;
+    [System.Runtime.InteropServices.FieldOffset(0)] public int Int32_0;
+    [System.Runtime.InteropServices.FieldOffset(4)] public int Int32_1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public long Int64;
+    [System.Runtime.InteropServices.FieldOffset(0)] public sbyte SByte0;
+    [System.Runtime.InteropServices.FieldOffset(1)] public sbyte SByte1;
+    [System.Runtime.InteropServices.FieldOffset(2)] public sbyte SByte2;
+    [System.Runtime.InteropServices.FieldOffset(3)] public sbyte SByte3;
+    [System.Runtime.InteropServices.FieldOffset(4)] public sbyte SByte4;
+    [System.Runtime.InteropServices.FieldOffset(5)] public sbyte SByte5;
+    [System.Runtime.InteropServices.FieldOffset(6)] public sbyte SByte6;
+    [System.Runtime.InteropServices.FieldOffset(7)] public sbyte SByte7;
+    [System.Runtime.InteropServices.FieldOffset(0)] public float Single0;
+    [System.Runtime.InteropServices.FieldOffset(4)] public float Single1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public ushort UInt16_0;
+    [System.Runtime.InteropServices.FieldOffset(2)] public ushort UInt16_1;
+    [System.Runtime.InteropServices.FieldOffset(4)] public ushort UInt16_2;
+    [System.Runtime.InteropServices.FieldOffset(6)] public ushort UInt16_3;
+    [System.Runtime.InteropServices.FieldOffset(0)] public uint UInt32_0;
+    [System.Runtime.InteropServices.FieldOffset(4)] public uint UInt32_1;
+    [System.Runtime.InteropServices.FieldOffset(0)] public uint UInt64;
+
+
   }
 
   class Program
