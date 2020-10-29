@@ -1,10 +1,12 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
-  public static class SignValueNotation
+  public class SignValueNotation
   {
     /// <see cref="https://en.wikipedia.org/wiki/Egyptian_numerals"/>
-    public static readonly System.Collections.Generic.Dictionary<string, int> AncientEgyptianNumeralSystemUnicode = new System.Collections.Generic.Dictionary<string, int>()
+    public static readonly SignValueNotation AncientEgyptianNumeralSystemUnicode = new SignValueNotation(new System.Collections.Generic.Dictionary<string, int>()
       {
         { "\U00013060", 1000000 },
         { "\U00013190", 100000 },
@@ -13,10 +15,10 @@ namespace Flux.Text
         { "\U00013362", 100 },
         { "\U00013386", 10 },
         { "\U000133FA", 1 }
-      };
+      });
 
     /// <see cref="https://en.wikipedia.org/wiki/Roman_numerals"/>
-    public static readonly System.Collections.Generic.Dictionary<string, int> RomanNumeralSystem = new System.Collections.Generic.Dictionary<string, int>()
+    public static readonly SignValueNotation RomanNumeralSystem = new SignValueNotation(new System.Collections.Generic.Dictionary<string, int>()
       {
         { "M", 1000 },
         { "CM", 900 },
@@ -31,19 +33,24 @@ namespace Flux.Text
         { "V", 5 },
         { "IV", 4 },
         { "I", 1 }
-      };
+      });
+
+    public System.Collections.Generic.Dictionary<string, int> SignValueSystem { get; }
+
+    public SignValueNotation(System.Collections.Generic.Dictionary<string, int> signValueSystem)
+     => SignValueSystem = signValueSystem;
+    public SignValueNotation(params System.Collections.Generic.KeyValuePair<string, int>[] signValueSystem)
+      => SignValueSystem = signValueSystem.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
     /// <summary>Convert a number into a sign-value notaion string.</summary>
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public static string NumberToString(System.Numerics.BigInteger number, System.Collections.Generic.Dictionary<string, int> dictionarySignValueSystem)
+    public string NumberToString(System.Numerics.BigInteger number)
     {
-      if (dictionarySignValueSystem is null) throw new System.ArgumentNullException(nameof(dictionarySignValueSystem));
-
       var sb = new System.Text.StringBuilder();
 
-      foreach (var item in dictionarySignValueSystem)
+      foreach (var item in SignValueSystem)
       {
         while (number >= item.Value)
         {
@@ -60,14 +67,13 @@ namespace Flux.Text
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public static System.Numerics.BigInteger StringToNumber(string number, System.Collections.Generic.Dictionary<string, int> dictionarySignValueSystem)
+    public System.Numerics.BigInteger StringToNumber(string number)
     {
       if (number is null) throw new System.ArgumentNullException(nameof(number));
-      if (dictionarySignValueSystem is null) throw new System.ArgumentNullException(nameof(dictionarySignValueSystem));
 
       var bi = new System.Numerics.BigInteger();
 
-      foreach (var item in dictionarySignValueSystem)
+      foreach (var item in SignValueSystem)
       {
         while (number.StartsWith(item.Key, System.StringComparison.Ordinal))
         {

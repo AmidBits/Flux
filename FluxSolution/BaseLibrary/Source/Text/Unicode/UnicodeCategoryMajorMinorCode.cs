@@ -17,12 +17,6 @@ namespace Flux
     /// <example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
     public enum UnicodeCategoryMajorMinorCode
     {
-      Cc = System.Globalization.UnicodeCategory.Control,
-      Cf = System.Globalization.UnicodeCategory.Format,
-      Cn = System.Globalization.UnicodeCategory.OtherNotAssigned,
-      Co = System.Globalization.UnicodeCategory.PrivateUse,
-      Cs = System.Globalization.UnicodeCategory.Surrogate,
-
       Ll = System.Globalization.UnicodeCategory.LowercaseLetter,
       Lm = System.Globalization.UnicodeCategory.ModifierLetter,
       Lo = System.Globalization.UnicodeCategory.OtherLetter,
@@ -53,6 +47,12 @@ namespace Flux
       Zl = System.Globalization.UnicodeCategory.LineSeparator,
       Zp = System.Globalization.UnicodeCategory.ParagraphSeparator,
       Zs = System.Globalization.UnicodeCategory.SpaceSeparator,
+
+      Cc = System.Globalization.UnicodeCategory.Control,
+      Cf = System.Globalization.UnicodeCategory.Format,
+      Cn = System.Globalization.UnicodeCategory.OtherNotAssigned,
+      Co = System.Globalization.UnicodeCategory.PrivateUse,
+      Cs = System.Globalization.UnicodeCategory.Surrogate,
     }
 
     /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>

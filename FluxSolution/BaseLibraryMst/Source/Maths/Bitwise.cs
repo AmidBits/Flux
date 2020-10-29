@@ -8,11 +8,11 @@ namespace Maths
   [TestClass]
   public class Bitwise
   {
-    readonly System.Numerics.BigInteger[] nbi = System.Linq.Enumerable.Range(0, 255).Select(i => -(System.Numerics.BigInteger)i).ToArray();
-    readonly short[] ns = System.Linq.Enumerable.Range(0, 255).Select(i => (short)-i).ToArray();
-    readonly int[] ni = System.Linq.Enumerable.Range(0, 255).Select(i => (int)-i).ToArray();
-    readonly long[] nl = System.Linq.Enumerable.Range(0, 255).Select(i => -(long)i).ToArray();
-    readonly sbyte[] nsb = System.Linq.Enumerable.Range(0, 127).Select(i => (sbyte)-i).ToArray(); // Restricted to -127.
+    //readonly System.Numerics.BigInteger[] nbi = System.Linq.Enumerable.Range(0, 255).Select(i => -(System.Numerics.BigInteger)i).ToArray();
+    //readonly short[] ns = System.Linq.Enumerable.Range(0, 255).Select(i => (short)-i).ToArray();
+    //readonly int[] ni = System.Linq.Enumerable.Range(0, 255).Select(i => (int)-i).ToArray();
+    //readonly long[] nl = System.Linq.Enumerable.Range(0, 255).Select(i => -(long)i).ToArray();
+    //readonly sbyte[] nsb = System.Linq.Enumerable.Range(0, 127).Select(i => (sbyte)-i).ToArray(); // Restricted to -127.
 
     readonly System.Numerics.BigInteger[] pbi = System.Linq.Enumerable.Range(0, 255).Select(i => (System.Numerics.BigInteger)i).ToArray();
     readonly byte[] pb = System.Linq.Enumerable.Range(0, 255).Select(i => (byte)i).ToArray();
@@ -66,7 +66,7 @@ namespace Maths
     {
       var value = System.Numerics.BigInteger.Parse("670530");
 
-      var expected = Flux.Text.PositionalNotation.NumberToText(value, Flux.Text.PositionalNotation.Base62.Take(2).ToArray()).Count(c => c == '1');
+      var expected = Flux.Text.PositionalNotation.GetFromRadix(2).NumberToText(value).Count(c => c == '1');
 
       Flux.Diagnostics.Performance.Measure(() => (System.Numerics.BigInteger)Flux.Maths.Bit1Count(value), 500000).Assert((System.Numerics.BigInteger)expected, 0.7); // Large discrepancy between Debug and Release code. Not a problem.
       if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.Bit1Count((int)value), 500000).Assert(expected, 0.20);

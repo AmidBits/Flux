@@ -10,6 +10,21 @@ namespace Flux
     public static bool IsUnicodeCategory(this char source, params System.Globalization.UnicodeCategory[] category)
       => System.Array.Exists(category, uc => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == uc);
 
+    public static bool IsUnicodeLetter(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Letter;
+    public static bool IsUnicodeMark(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Mark;
+    public static bool IsUnicodeNumber(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Number;
+    public static bool IsUnicodePunctuation(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Punctuation;
+    public static bool IsUnicodeSymbol(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Symbol;
+    public static bool IsUnicodeSeparator(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Separator;
+    public static bool IsUnicodeOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Other;
+
     public static bool IsUnicodeLowercaseLetter(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.LowercaseLetter;
     public static bool IsUnicodeModifierLetter(this char source)
@@ -35,17 +50,6 @@ namespace Flux
     public static bool IsUnicodeOtherNumber(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.OtherNumber;
 
-    public static bool IsUnicodeControlOther(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Control;
-    public static bool IsUnicodeFormatOther(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Format;
-    public static bool IsUnicodeNotAssignedOther(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.OtherNotAssigned;
-    public static bool IsUnicodePrivateUseOther(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.PrivateUse;
-    public static bool IsUnicodeSurrogateOther(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Surrogate;
-
     public static bool IsUnicodeClosePunctuation(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.ClosePunctuation;
     public static bool IsUnicodeConnectorPunctuation(this char source)
@@ -61,13 +65,6 @@ namespace Flux
     public static bool IsUnicodeOtherPunctuation(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.OtherPunctuation;
 
-    public static bool IsUnicodeLineSeparator(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.LineSeparator;
-    public static bool IsUnicodeParagraphSeparator(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.ParagraphSeparator;
-    public static bool IsUnicodeSpaceSeparator(this char source)
-      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.SpaceSeparator;
-
     public static bool IsUnicodeCurrencySymbol(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.CurrencySymbol;
     public static bool IsUnicodeMathSymbol(this char source)
@@ -76,5 +73,23 @@ namespace Flux
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.ModifierSymbol;
     public static bool IsUnicodeOtherSymbol(this char source)
       => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.OtherSymbol;
+
+    public static bool IsUnicodeLineSeparator(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.LineSeparator;
+    public static bool IsUnicodeParagraphSeparator(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.ParagraphSeparator;
+    public static bool IsUnicodeSpaceSeparator(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.SpaceSeparator;
+
+    public static bool IsUnicodeControlOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Control;
+    public static bool IsUnicodeFormatOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Format;
+    public static bool IsUnicodeNotAssignedOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.OtherNotAssigned;
+    public static bool IsUnicodePrivateUseOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.PrivateUse;
+    public static bool IsUnicodeSurrogateOther(this char source)
+      => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.Surrogate;
   }
 }

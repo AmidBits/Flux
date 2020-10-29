@@ -8,11 +8,11 @@ namespace Numerics
   [TestClass]
   public class BigInteger
   {
-    System.Numerics.BigInteger bi4 = new System.Numerics.BigInteger(4);
-    System.Numerics.BigInteger bi6 = new System.Numerics.BigInteger(6);
+    readonly System.Numerics.BigInteger bi4 = new System.Numerics.BigInteger(4);
+    readonly System.Numerics.BigInteger bi6 = new System.Numerics.BigInteger(6);
 
-    System.Numerics.BigInteger bi24 = new System.Numerics.BigInteger(24);
-    System.Numerics.BigInteger bi54 = new System.Numerics.BigInteger(54);
+    readonly System.Numerics.BigInteger bi24 = new System.Numerics.BigInteger(24);
+    readonly System.Numerics.BigInteger bi54 = new System.Numerics.BigInteger(54);
 
     [TestMethod]
     public void Gcd()
@@ -123,14 +123,14 @@ namespace Numerics
       Assert.AreEqual("24th", bi24.ToString().InsertOrdinalIndicator());
     }
 
-    //[TestMethod]
-    //public void BinaryToText()
-    //{
-    //  Assert.AreEqual("Y", Flux.Text.BinaryToText.Encode(bi24, Flux.Text.BinaryToText.Base64()));
-    //  Assert.AreEqual(bi24, Flux.Text.BinaryToText.Decode("Y", Flux.Text.BinaryToText.Base64()));
+    [TestMethod]
+    public void BinaryToText()
+    {
+      Assert.AreEqual("Y", Flux.Text.PositionalNotation.Base64.NumberToText(bi24));
+      Assert.AreEqual(bi24, Flux.Text.PositionalNotation.Base64.TextToNumber("Y"));
 
-    //  Assert.AreEqual("2", Flux.Text.BinaryToText.Encode(bi54, Flux.Text.BinaryToText.Base64()));
-    //  Assert.AreEqual(bi54, Flux.Text.BinaryToText.Decode("2", Flux.Text.BinaryToText.Base64()));
-    //}
+      Assert.AreEqual("2", Flux.Text.PositionalNotation.Base64.NumberToText(bi54));
+      Assert.AreEqual(bi54, Flux.Text.PositionalNotation.Base64.TextToNumber("2"));
+    }
   }
 }

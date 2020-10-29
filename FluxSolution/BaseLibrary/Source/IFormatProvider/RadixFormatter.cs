@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.IFormatProvider
 {
   /// <summary>Enables formatting of any number base (radix) with any characters desired.</summary>
-  public class RadixFormatter 
+  public class RadixFormatter
     : FormatProvider
   {
     public const string FormatIdentifier = @"RADIX";
@@ -30,7 +30,8 @@ namespace Flux.IFormatProvider
     {
       try
       {
-        result = Flux.Text.PositionalNotation.NumberToText(number, radixNumerals.Select(c => c.ToString()).ToArray());
+        var pn = new Flux.Text.PositionalNotation(radixNumerals);
+        result = pn.NumberToText(number);
         return true;
       }
 #pragma warning disable CA1031 // Do not catch general exception types.
