@@ -24,9 +24,10 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var fs = System.IO.File.OpenText(@"C:\Test\nScript2.cs");
-
-      foreach (var rune in fs.ReadRunes())
+      using var fs = System.IO.File.OpenRead(@"C:\Test\Geoposition.cs");
+      using var sr = new System.IO.StreamReader(fs, System.Text.Encoding.UTF8);
+      //      System.Console.Write((fs is System.IO.Stream).ToString());
+      foreach (var rune in sr.ReadRunes())
         System.Console.Write(rune.ToString());
 
 

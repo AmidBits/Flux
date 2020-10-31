@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Flux
 {
@@ -12,6 +14,27 @@ namespace Flux
 
       while (sri.MoveNext())
         yield return sri.Current;
+    }
+
+    private class StreamRuneEnumerator
+      : System.Collections.Generic.IEnumerable<System.Text.Rune>
+    {
+      private readonly System.IO.Stream m_source;
+      private readonly int m_bufferSize;
+
+      public StreamRuneEnumerator(System.IO.Stream source, int bufferSize = 8192)
+      {
+        m_source = source;
+        m_bufferSize = bufferSize;
+      }
+
+      public void Dispose()
+        => m_source.Dispose();
+
+      public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator()
+        => new StreamRuneIterator(new System.IO.StreamReader(m_source), m_bufferSize);
+      IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
     }
 
     private class StreamRuneIterator
