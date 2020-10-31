@@ -9,13 +9,13 @@ namespace ConsoleApp
 {
   class Program
   {
-    public interface CharReaderBuffer
+    public interface ICharReaderBuffer
     {
       char Peek(int offset);
       bool PeekContains(string value);
       bool PeekStartsWith(string value);
     }
-    public interface CharWriterBuffer
+    public interface ICharWriterBuffer
     {
       char Recall(int offset);
       bool RecallContains(string value);
@@ -25,9 +25,9 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       using var fs = System.IO.File.OpenRead(@"C:\Test\Geoposition.cs");
-      using var sr = new System.IO.StreamReader(fs, System.Text.Encoding.UTF8);
+      //using var sr = new System.IO.StreamReader(fs, System.Text.Encoding.UTF8);
       //      System.Console.Write((fs is System.IO.Stream).ToString());
-      foreach (var rune in sr.ReadRunes())
+      foreach (var rune in fs.ReadRunes(System.Text.Encoding.UTF8))
         System.Console.Write(rune.ToString());
 
 
