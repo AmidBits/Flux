@@ -28,7 +28,6 @@ namespace ConsoleApp
       using var ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(@"𐓏𐓘𐓻𐓘𐓻𐓟 𐒻𐓟"));
       using var sr = new System.IO.StreamReader(ms, System.Text.Encoding.UTF8);
       var index = 0;
-      "".IndexOf()
       foreach (var rune in sr.ReadRunes())
         System.Console.WriteLine($"{++index} {rune}");
 
