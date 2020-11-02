@@ -6,8 +6,7 @@ namespace Flux
     public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] characters)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var index = 0;
       var previous = '\0';

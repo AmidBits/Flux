@@ -36,14 +36,14 @@ namespace Flux
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public class LongestCommonSubsequence<T>
-      : IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : SequenceMetric<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public LongestCommonSubsequence()
-        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+        : base(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
@@ -52,7 +52,7 @@ namespace Flux
 
       public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
-        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var equalAtStart, out var equalAtEnd);
+        OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var equalAtStart, out var equalAtEnd);
 
         var v1 = new int[targetCount + 1];
         var v0 = new int[targetCount + 1];
@@ -61,9 +61,9 @@ namespace Flux
         {
           var swap = v1; v1 = v0; v0 = swap;
 
-          for (var j = target.Length - 1; j >= 0; j--)
+          for (var j = targetCount - 1; j >= 0; j--)
           {
-            v0[j] = m_equalityComparer.Equals(source[i], target[j]) ? v1[j + 1] + 1 : System.Math.Max(v1[j], v0[j + 1]);
+            v0[j] = EqualityComparer.Equals(source[i], target[j]) ? v1[j + 1] + 1 : System.Math.Max(v1[j], v0[j + 1]);
           }
         }
 

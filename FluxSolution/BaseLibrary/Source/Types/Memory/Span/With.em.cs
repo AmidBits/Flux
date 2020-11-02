@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool EndsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       if (source.Length < other.Length) return false;
 
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool StartsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       if (source.Length < other.Length) return false;
 

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
     public static bool Equals(this System.Text.StringBuilder source, int sourceIndex, string target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       if (source is null || target is null || sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length) return ReferenceEquals(source, target);
 

@@ -8,14 +8,17 @@ namespace Collections.Generic
   [TestClass]
   public class SequenceMetrics
   {
-    string m_text1a = "CA";
-    string m_text1b = "ABC";
+    private readonly string m_text1a = "CA";
+    private readonly string m_text1b = "ABC";
 
-    string m_text2a = "àèìòùÀÈÌÒÙ äëïöüÄËÏÖÜ âêîôûÂÊÎÔÛ áéíóúÁÉÍÓÚðÐýÝ ãñõÃÑÕšŠžŽçÇåÅøØ";
-    string m_text2b = "aeiouAEIOU aeiouAEIOU aeiouAEIOU aeiouAEIOUdDyY anoANOsSzZcCaAoO";
+    private readonly string m_text2a = "àèìòùÀÈÌÒÙ äëïöüÄËÏÖÜ âêîôûÂÊÎÔÛ áéíóúÁÉÍÓÚðÐýÝ ãñõÃÑÕšŠžŽçÇåÅøØ";
+    private readonly string m_text2b = "aeiouAEIOU aeiouAEIOU aeiouAEIOU aeiouAEIOUdDyY anoANOsSzZcCaAoO";
 
-    string m_text3a = "SħoñeTets1";
-    string m_text3b = "ShaneTest2";
+    private readonly string m_text3a = "SħoñeTets1";
+    private readonly string m_text3b = "ShaneTest2";
+
+    private readonly string m_text4a = "Aaaaaaaaaa";
+    private readonly string m_text4b = "aaaaaaaaa";
 
 
     Flux.StringComparerX m_comparisonOrdinal = Flux.StringComparerX.Ordinal;
@@ -36,6 +39,9 @@ namespace Collections.Generic
 
       Assert.AreEqual(5, new Flux.SequenceMetrics.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
       Assert.AreEqual(3, new Flux.SequenceMetrics.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+
+      Assert.AreEqual(1, new Flux.SequenceMetrics.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.SequenceMetrics.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
     }
 
     [TestMethod]
@@ -72,6 +78,9 @@ namespace Collections.Generic
 
       Assert.AreEqual(6, new Flux.SequenceMetrics.LevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
       Assert.AreEqual(4, new Flux.SequenceMetrics.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+
+      Assert.AreEqual(1, new Flux.SequenceMetrics.LevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.SequenceMetrics.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
     }
 
     [TestMethod]
@@ -85,6 +94,9 @@ namespace Collections.Generic
 
       Assert.AreEqual(5, new Flux.SequenceMetrics.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetMetricLength(m_text3a, m_text3b));
       Assert.AreEqual(7, new Flux.SequenceMetrics.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetMetricLength(m_text3a, m_text3b));
+
+      Assert.AreEqual(9, new Flux.SequenceMetrics.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetMetricLength(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.SequenceMetrics.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetMetricLength(m_text4a, m_text4b));
     }
 
     [TestMethod]
@@ -98,6 +110,9 @@ namespace Collections.Generic
 
       Assert.AreEqual(3, new Flux.SequenceMetrics.LongestCommonSubstring<char>(m_comparisonOrdinal).GetMeasuredLength(m_text3a, m_text3b));
       Assert.AreEqual(4, new Flux.SequenceMetrics.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetMeasuredLength(m_text3a, m_text3b));
+
+      Assert.AreEqual(9, new Flux.SequenceMetrics.LongestCommonSubstring<char>(m_comparisonOrdinal).GetMeasuredLength(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.SequenceMetrics.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetMeasuredLength(m_text4a, m_text4b));
     }
 
     [TestMethod]
@@ -111,6 +126,9 @@ namespace Collections.Generic
 
       Assert.AreEqual(5, new Flux.SequenceMetrics.OptimalStringAlignment<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
       Assert.AreEqual(3, new Flux.SequenceMetrics.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+
+      Assert.AreEqual(1, new Flux.SequenceMetrics.OptimalStringAlignment<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.SequenceMetrics.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
     }
   }
 }

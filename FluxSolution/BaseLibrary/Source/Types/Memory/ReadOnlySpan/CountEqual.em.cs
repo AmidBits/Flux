@@ -6,12 +6,12 @@ namespace Flux
     /// <param name="minLength">The smaller length of the two spans.</param>
     public static int CountEqualAtEnd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
 
-      minLength = sourceIndex < targetIndex ? sourceIndex : targetIndex;
+      minLength = System.Math.Min(sourceIndex, targetIndex);
 
       for (var atEnd = 0; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
         if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
@@ -32,12 +32,12 @@ namespace Flux
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the specified comparer.</summary>
     public static int CountEqualAtStart<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceLength = source.Length;
       var targetLength = target.Length;
 
-      minLength = sourceLength < targetLength ? sourceLength : targetLength;
+      minLength = System.Math.Min(sourceLength, targetLength);
 
       var index = 0;
       while (index < minLength && comparer.Equals(source[index], target[index]))

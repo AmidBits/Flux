@@ -43,19 +43,19 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
     /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
     public class JaroWinklerDistance<T>
-      : INormalizedDistance<T>
+      : SequenceMetric<T>, INormalizedDistance<T>
     {
       /// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>
       public double BoostThreshold { get; set; } = 0.7;
       /// <summary>PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</summary>
       public int PrefixSize { get; set; } = 4;
 
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public JaroWinklerDistance()
-        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+        : base(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
@@ -85,7 +85,7 @@ namespace Flux
 
           for (var j = start; j < end; j++)
           {
-            if (targetMatches[j] || !m_equalityComparer.Equals(source[i], target[j])) continue;
+            if (targetMatches[j] || !EqualityComparer.Equals(source[i], target[j])) continue;
 
             sourceMatches[i] = true;
             targetMatches[j] = true;
@@ -108,7 +108,7 @@ namespace Flux
 
           while (!targetMatches[j]) j++;
 
-          if (!m_equalityComparer.Equals(source[i], target[j])) transpositions++;
+          if (!EqualityComparer.Equals(source[i], target[j])) transpositions++;
 
           j++;
         }
@@ -125,9 +125,11 @@ namespace Flux
         // If the Jaro score is below the boost threshold, or if the prefixCount is zero, the Jaro score is returned unadjusted.
 
         int initialMatches = 0, maxLength = System.Math.Min(System.Math.Min(PrefixSize, sourceCount), targetCount);
-        while (initialMatches < maxLength && m_equalityComparer.Equals(source[initialMatches], target[initialMatches])) initialMatches++;
+        while (initialMatches < maxLength && EqualityComparer.Equals(source[initialMatches], target[initialMatches]))
+          initialMatches++;
 
-        if (initialMatches == 0) return score; // No initial match, return Jaro distance score unmodified.
+        if (initialMatches == 0)
+          return score; // No initial match, return Jaro distance score unmodified.
 
         return score + 0.1 * initialMatches * (1 - score); // Return the Winkler modified distance score.
       }

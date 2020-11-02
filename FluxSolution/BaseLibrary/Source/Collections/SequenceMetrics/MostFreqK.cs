@@ -5,7 +5,7 @@ namespace Flux.SequenceMetrics
   /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
   public class MostFreqK<T>
-    : IMeasuredDistance<T>
+    : SequenceMetric<T>, IMeasuredDistance<T>
   {
     public enum SimilarityScoringBehavior
     {
@@ -24,14 +24,11 @@ namespace Flux.SequenceMetrics
     /// <summary>Specifies the scoring behavior to employ when computing the measured distance.</summary>
     public SimilarityScoringBehavior ScoringBehavior { get; set; } = SimilarityScoringBehavior.OnlyOneFrequencyWhenEqual;
 
-    private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
     public MostFreqK(int k, int maxDistance, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      : base(equalityComparer)
     {
       K = k;
       MaxDistance = maxDistance;
-
-      m_equalityComparer = equalityComparer;
     }
     public MostFreqK(int k, int maxDistance)
       : this(k, maxDistance, System.Collections.Generic.EqualityComparer<T>.Default)
@@ -40,7 +37,7 @@ namespace Flux.SequenceMetrics
 
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source)
     {
-      foreach (var kvp in source.GroupBy(c => c, m_equalityComparer).Select(g => new System.Collections.Generic.KeyValuePair<T, int>(g.Key, g.Count())).OrderByDescending(g => g.Value).Take(K))
+      foreach (var kvp in source.GroupBy(c => c, EqualityComparer).Select(g => new System.Collections.Generic.KeyValuePair<T, int>(g.Key, g.Count())).OrderByDescending(g => g.Value).Take(K))
       {
         yield return kvp;
       }
@@ -52,7 +49,7 @@ namespace Flux.SequenceMetrics
 
       foreach (var kvp1 in hashing1 ?? throw new System.ArgumentNullException(nameof(hashing2)))
         foreach (var kvp2 in hashing2 ?? throw new System.ArgumentNullException(nameof(hashing2)))
-          if (m_equalityComparer.Equals(kvp1.Key, kvp2.Key))
+          if (EqualityComparer.Equals(kvp1.Key, kvp2.Key))
           {
             switch (ScoringBehavior)
             {

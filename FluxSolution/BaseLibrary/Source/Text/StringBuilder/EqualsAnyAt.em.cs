@@ -26,7 +26,7 @@ namespace Flux
       if (startAt < 0 || startAt >= source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startAt));
       if (count <= 0 || startAt + count >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       foreach (var value in values)
       {

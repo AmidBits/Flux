@@ -25,20 +25,20 @@ namespace Flux
     /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class LevenshteinDistance<T>
-      : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : SequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public LevenshteinDistance()
-        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+        : base(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
-        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+        OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
@@ -60,7 +60,7 @@ namespace Flux
             v0[j + 1] = Maths.Min(
               v1[j + 1] + 1, // Deletion.
               v0[j] + 1, // Insertion.
-              m_equalityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + 1 // Substitution.
+              EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + 1 // Substitution.
             );
           }
         }

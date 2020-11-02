@@ -8,10 +8,10 @@ namespace Flux
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
@@ -35,13 +35,13 @@ namespace Flux
 
           var index = 0;
 
-          var value = computor(seed, store, index++);
+          var value = aggregateComputor(seed, store, index++);
 
           while (e.MoveNext())
           {
             store.RemoveAt(0);
             store.Add(e.Current);
-            value = computor(value, store, index++);
+            value = aggregateComputor(value, store, index++);
           }
 
           while (tupleWrap-- > 0)
@@ -49,7 +49,7 @@ namespace Flux
             store.RemoveAt(0);
             store.Add(start[0]);
             start.RemoveAt(0);
-            value = computor(value, store, index++);
+            value = aggregateComputor(value, store, index++);
           }
 
           return resultSelector(value, index);
@@ -62,10 +62,10 @@ namespace Flux
     /// <summary>Creates a sequence of staggered (by one element) 2-tuple elements.</summary>
     /// <returns>A sequence of 2-tuples staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       using var e = source.GetEnumerator();
@@ -82,13 +82,13 @@ namespace Flux
           {
             var current = e.Current;
 
-            seed = computor(seed, back1, current, index++);
+            seed = aggregateComputor(seed, back1, current, index++);
 
             back1 = current;
           }
           while (e.MoveNext());
 
-          if (wrap) seed = computor(seed, back1, item1, index++);
+          if (wrap) seed = aggregateComputor(seed, back1, item1, index++);
 
           return resultSelector(seed, index);
         }
@@ -100,10 +100,10 @@ namespace Flux
     /// <summary>Creates a sequence of staggered (by one element) 3-tuple elements.</summary>
     /// <returns>A sequence of 3-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (wrap < 0 || wrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(wrap));
@@ -125,15 +125,15 @@ namespace Flux
             {
               var current = e.Current;
 
-              seed = computor(seed, back2, back1, current, index++);
+              seed = aggregateComputor(seed, back2, back1, current, index++);
 
               back2 = back1;
               back1 = current;
             }
             while (e.MoveNext());
 
-            if (wrap >= 1) seed = computor(seed, back2, back1, item1, index++);
-            if (wrap == 2) seed = computor(seed, back1, item1, item2, index++);
+            if (wrap >= 1) seed = aggregateComputor(seed, back2, back1, item1, index++);
+            if (wrap == 2) seed = aggregateComputor(seed, back1, item1, item2, index++);
 
             return resultSelector(seed, index);
           }
@@ -147,10 +147,10 @@ namespace Flux
     /// <summary>Creates a sequence of staggered (by one element) 4-tuple elements.</summary>
     /// <returns>A sequence of 4-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
@@ -175,7 +175,7 @@ namespace Flux
               {
                 var current = e.Current;
 
-                seed = computor(seed, back3, back2, back1, current, index++);
+                seed = aggregateComputor(seed, back3, back2, back1, current, index++);
 
                 back3 = back2;
                 back2 = back1;
@@ -183,9 +183,9 @@ namespace Flux
               }
               while (e.MoveNext());
 
-              if (wrap >= 1) seed = computor(seed, back3, back2, back1, item1, index++);
-              if (wrap >= 2) seed = computor(seed, back2, back1, item1, item2, index++);
-              if (wrap == 3) seed = computor(seed, back1, item1, item2, item3, index++);
+              if (wrap >= 1) seed = aggregateComputor(seed, back3, back2, back1, item1, index++);
+              if (wrap >= 2) seed = aggregateComputor(seed, back2, back1, item1, item2, index++);
+              if (wrap == 3) seed = aggregateComputor(seed, back1, item1, item2, item3, index++);
 
               return resultSelector(seed, index);
             }
@@ -201,10 +201,10 @@ namespace Flux
     /// <summary>Creates a sequence of staggered (by one element) 5-tuple elements.</summary>
     /// <returns>A sequence of 5-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple5<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, TSource, int, TAccumulate> computor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple5<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (computor is null) throw new System.ArgumentNullException(nameof(computor));
+      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (wrap < 0 || wrap > 4) throw new System.ArgumentException(@"A 5-tuple can only wrap 0, 1, 2, 3 or 4 elements.", nameof(wrap));
@@ -232,7 +232,7 @@ namespace Flux
                 {
                   var current = e.Current;
 
-                  seed = computor(seed, back4, back3, back2, back1, current, index++);
+                  seed = aggregateComputor(seed, back4, back3, back2, back1, current, index++);
 
                   back4 = back3;
                   back3 = back2;
@@ -241,10 +241,10 @@ namespace Flux
                 }
                 while (e.MoveNext());
 
-                if (wrap >= 1) seed = computor(seed, back4, back3, back2, back1, item1, index++);
-                if (wrap >= 2) seed = computor(seed, back3, back2, back1, item1, item2, index++);
-                if (wrap >= 3) seed = computor(seed, back2, back1, item1, item2, item3, index++);
-                if (wrap == 4) seed = computor(seed, back1, item1, item2, item3, item4, index++);
+                if (wrap >= 1) seed = aggregateComputor(seed, back4, back3, back2, back1, item1, index++);
+                if (wrap >= 2) seed = aggregateComputor(seed, back3, back2, back1, item1, item2, index++);
+                if (wrap >= 3) seed = aggregateComputor(seed, back2, back1, item1, item2, item3, index++);
+                if (wrap == 4) seed = aggregateComputor(seed, back1, item1, item2, item3, item4, index++);
 
                 return resultSelector(seed, index);
               }

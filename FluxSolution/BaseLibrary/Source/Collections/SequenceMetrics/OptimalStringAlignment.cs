@@ -32,20 +32,20 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class OptimalStringAlignment<T>
-      : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : SequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public OptimalStringAlignment()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
-        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+        OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
@@ -68,9 +68,9 @@ namespace Flux
           {
             var targetItem = target[ti - 1];
 
-            var cost = m_equalityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
+            var cost = EqualityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
 
-            if (si > 1 && ti > 1 && m_equalityComparer.Equals(sourceItem, target[ti - 2]) && m_equalityComparer.Equals(source[si - 2], targetItem))
+            if (si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem))
             {
               v0[ti] = Maths.Min(
                 v1[ti] + 1, // Deletion.

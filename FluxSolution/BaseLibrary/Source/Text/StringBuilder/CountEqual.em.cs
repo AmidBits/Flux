@@ -13,8 +13,7 @@ namespace Flux
     public static int CountEqualAtEnd(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
@@ -41,8 +40,7 @@ namespace Flux
     public static int CountEqualAtStart(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, out int minLength)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       minLength = System.Math.Min(source.Length, target.Length);
 

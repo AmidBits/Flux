@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Reports the length (or count) of equality at the end of the sequence. Using the specified comparer.</summary>
     public static int CountEqualAtEnd<T>(this System.Span<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
@@ -31,7 +31,7 @@ namespace Flux
     /// <summary>Reports the length (or count) of equality at the start of the sequence. Using the default comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Span<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, out int minLength)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceLength = source.Length;
       var targetLength = target.Length;

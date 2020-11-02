@@ -25,14 +25,14 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>
     /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
     public class HammingDistance<T>
-      : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : SequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public HammingDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public HammingDistance()
-        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+        : base(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public HammingDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
@@ -43,7 +43,7 @@ namespace Flux
         var equalCount = 0;
 
         for (var index = source.Length - 1; index >= 0; index--)
-          if (!m_equalityComparer.Equals(source[index], target[index]))
+          if (!EqualityComparer.Equals(source[index], target[index]))
             equalCount++;
 
         return equalCount;

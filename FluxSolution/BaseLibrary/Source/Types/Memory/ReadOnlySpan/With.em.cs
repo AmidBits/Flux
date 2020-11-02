@@ -4,7 +4,7 @@ namespace Flux
   {
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceIndex = source.Length;
       var valueIndex = value.Length;
@@ -22,7 +22,7 @@ namespace Flux
 
     public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       if (source.Length < value.Length) return false;
 

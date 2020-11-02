@@ -33,7 +33,8 @@ namespace Flux.Collections.Generic
 
     protected override void DisposeManaged()
     {
-      m_enumerators.Clear();
+      while (m_enumerators.Count > 0)
+        m_enumerators.Dequeue().Dispose();
     }
 
     #region Implementation of IList<T>
@@ -94,8 +95,6 @@ namespace Flux.Collections.Generic
     private class ExhaustEnumerators
       : System.Collections.Generic.IEnumerator<T>
     {
-      private const string ExceptionMessageVersionChanged = @"The list has changed.";
-
       private T m_current;
       private int m_index;
       private readonly object m_lock = new object();
@@ -104,10 +103,10 @@ namespace Flux.Collections.Generic
 
       public ExhaustEnumerators(LazyListCollection<T> source)
       {
-        m_current = default!;
-        m_index = -1;
         m_source = source;
-        m_version = m_source.m_version;
+        m_version = source.m_version;
+        m_index = -1;
+        m_current = default!;
       }
 
       public T Current
@@ -115,13 +114,11 @@ namespace Flux.Collections.Generic
       object? System.Collections.IEnumerator.Current
         => m_current;
 
-      public void Dispose() { }
-
       public bool MoveNext()
       {
         lock (m_lock)
         {
-          if (m_version != m_source.m_version) throw new System.InvalidOperationException(ExceptionMessageVersionChanged);
+          ValidateVersion();
 
           m_index++;
 
@@ -159,9 +156,19 @@ namespace Flux.Collections.Generic
 
       public void Reset()
       {
-        if (m_version != m_source.m_version) throw new System.InvalidOperationException(ExceptionMessageVersionChanged);
+        ValidateVersion();
 
         m_index = -1;
+      }
+
+      private void ValidateVersion()
+      {
+        if (m_version != m_source.m_version)
+          throw new System.InvalidOperationException(@"The list has changed.");
+      }
+
+      public void Dispose() // This class does not yet allocate any resources on its own.
+      {
       }
     }
   }

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Normalize (in-place) the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
     public static System.Span<T> NormalizeAdjacent<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var index = 0;
       var previous = default(T);

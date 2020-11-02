@@ -19,7 +19,7 @@ namespace Flux
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
     public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       for (var index = 0; index < source.Length; index++)
         if (comparer.Equals(source[index], value))
@@ -34,6 +34,8 @@ namespace Flux
     /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
     public static int IndexOf(this System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+
       for (var index = 0; index < source.Length; index++)
       {
         if (Equals(source, index, target, 0, target.Length, comparer)) return index;
@@ -49,7 +51,7 @@ namespace Flux
     /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the specified comparer.</summary>
     public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       for (var index = 0; index < source.Length; index++)
       {
@@ -68,7 +70,7 @@ namespace Flux
     /// <summary>Reports the first index of any of the specified targets within the source, or -1 if none were found. Uses the specified comparer.</summary>
     public static int IndexOfAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
         if (IndexOf(source, values[valueIndex], comparer) is var index && index > -1)
@@ -83,7 +85,7 @@ namespace Flux
     /// <summary>Reports all first indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
     public static int[] IndicesOf<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var indices = new int[values.Length];
 

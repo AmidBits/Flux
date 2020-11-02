@@ -7,8 +7,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
@@ -31,8 +30,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceLength = source.Length;
       var targetLength = target.Length;

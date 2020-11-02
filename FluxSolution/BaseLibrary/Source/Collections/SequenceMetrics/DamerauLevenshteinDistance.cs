@@ -31,21 +31,21 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class DamerauLevenshteinDistance<T>
-      : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : SequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
       where T : notnull
     {
-      private System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-
-      public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-        => m_equalityComparer = equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default;
       public DamerauLevenshteinDistance()
-        : this(System.Collections.Generic.EqualityComparer<T>.Default)
+        : base(System.Collections.Generic.EqualityComparer<T>.Default)
+      {
+      }
+      public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+        : base(equalityComparer)
       {
       }
 
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
-        Helper.OptimizeEnds(source, target, m_equalityComparer, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+        OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
         if (sourceCount == 0) return targetCount;
         else if (targetCount == 0) return sourceCount;
@@ -69,9 +69,9 @@ namespace Flux
           matrix[0, j] = maxDistance;
         }
 
-        var dr = new System.Collections.Generic.Dictionary<T, int>(maxDistance, m_equalityComparer); // Unique list of all items in both lists.
-        for (var si = source.Length - 1; si >= 0; si--) dr[source[si]] = 0; // Add items from source.
-        for (var ti = target.Length - 1; ti >= 0; ti--) dr[target[ti]] = 0; // Add items from target.
+        var dr = new System.Collections.Generic.Dictionary<T, int>(maxDistance, EqualityComparer); // Unique list of all items in both lists.
+        for (var si = sourceCount - 1; si >= 0; si--) dr[source[si]] = 0; // Add items from source.
+        for (var ti = targetCount - 1; ti >= 0; ti--) dr[target[ti]] = 0; // Add items from target.
 
         for (int si = 1; si <= sourceCount; si++)
         {
@@ -85,7 +85,7 @@ namespace Flux
 
             var lsi = dr[targetItem]; // Last source index of source item.
 
-            var cost = m_equalityComparer.Equals(sourceItem, targetItem) ? 0 : 1; // Cost of substitution.
+            var cost = EqualityComparer.Equals(sourceItem, targetItem) ? 0 : 1; // Cost of substitution.
 
             matrix[si + 1, ti + 1] = Maths.Min(
               matrix[si, ti + 1] + 1, // Deletion.
