@@ -19,12 +19,6 @@ namespace Types
     }
 
     [TestMethod]
-    public void CountEqualAtEnd()
-    {
-      Assert.AreEqual(10, s1.CountEqualAtEnd(s2));
-    }
-
-    [TestMethod]
     public void CountEqualAtStart()
     {
       Assert.AreEqual(14, s1.CountEqualAtStart(s2));
