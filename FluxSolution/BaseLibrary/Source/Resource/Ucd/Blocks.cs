@@ -34,3 +34,7 @@ namespace Flux.Resources.Ucd
       });
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.Ucd.Blocks));
+//foreach (var strings in new Flux.Resources.Ucd.Blocks().GetStrings(Flux.Resources.Ucd.Blocks.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

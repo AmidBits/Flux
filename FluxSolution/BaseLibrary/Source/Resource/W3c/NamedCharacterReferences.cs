@@ -48,3 +48,7 @@ namespace Flux.Resources.W3c
     }
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.W3c.NamedCharacterReferences));
+//foreach (var strings in new Flux.Resources.W3c.NamedCharacterReferences().GetStrings(Flux.Resources.W3c.NamedCharacterReferences.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

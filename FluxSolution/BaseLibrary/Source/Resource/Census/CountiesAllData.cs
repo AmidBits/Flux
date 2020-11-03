@@ -31,3 +31,7 @@ namespace Flux.Resources.Census
     }
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.Census.CountiesAllData));
+//foreach (var strings in new Flux.Resources.Census.CountiesAllData().GetStrings(Flux.Resources.Census.CountiesAllData.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

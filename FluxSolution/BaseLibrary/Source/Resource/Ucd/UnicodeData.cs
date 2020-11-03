@@ -31,3 +31,7 @@ namespace Flux.Resources.Ucd
       });
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.Ucd.UnicodeData));
+//foreach (var strings in new Flux.Resources.Ucd.UnicodeData().GetStrings(Flux.Resources.Ucd.UnicodeData.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

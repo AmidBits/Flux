@@ -31,3 +31,7 @@ namespace Flux.Resources.Scrape
     }
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.Scrape.ZipCodes));
+//foreach (var strings in new Flux.Resources.Scrape.ZipCodes().GetStrings(Flux.Resources.Scrape.ZipCodes.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

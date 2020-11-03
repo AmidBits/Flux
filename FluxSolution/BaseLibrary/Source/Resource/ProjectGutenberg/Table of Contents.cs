@@ -20,3 +20,7 @@ namespace Flux.Resources.ProjectGutenberg
       => uri.ReadLines(System.Text.Encoding.UTF8).Where(s => s.Length == 78 && System.Text.RegularExpressions.Regex.IsMatch(s, @"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$")).Select(s => System.Text.RegularExpressions.Regex.Split(s, @"(?<=^.+)\s{2,}(?=\d+$)"));
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.TableOfContents));
+//foreach (var strings in new Flux.Resources.ProjectGutenberg.TableOfContents().GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

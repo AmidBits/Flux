@@ -24,3 +24,7 @@ namespace Flux.Resources.Scowl
       => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+"));
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.Scowl.TwoOfTwelveFull));
+//foreach (var strings in new Flux.Resources.Scowl.TwoOfTwelveFull().GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

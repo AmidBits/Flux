@@ -56,3 +56,7 @@ namespace Flux.Resources.ProjectGutenberg
     }
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings));
+//foreach (var strings in new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings().GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

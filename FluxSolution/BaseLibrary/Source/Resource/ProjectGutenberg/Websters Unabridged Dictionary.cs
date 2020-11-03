@@ -60,3 +60,7 @@ namespace Flux.Resources.ProjectGutenberg
     }
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary));
+//foreach (var strings in new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary().GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));

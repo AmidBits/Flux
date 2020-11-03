@@ -59,3 +59,7 @@ namespace Flux.Resources.ProjectGutenberg
       => GetArrays(uri).Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) });
   }
 }
+
+//System.Console.WriteLine(nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows));
+//foreach (var strings in new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows().GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.SourceUri))
+//  System.Console.WriteLine(string.Join('|', strings));
