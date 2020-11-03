@@ -47,8 +47,59 @@ namespace Flux
       {
       }
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+      /// <summary></summary>
+      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        var lcsg = new int[source.Length + 1, target.Length + 1];
+
+        for (int si = 0; si <= source.Length; si++)
+        {
+          for (int ti = 0; ti <= target.Length; ti++)
+          {
+            if (si == 0 || ti == 0)
+              lcsg[si, ti] = 0;
+            else if (EqualityComparer.Equals(source[si - 1], target[ti - 1]))
+              lcsg[si, ti] = lcsg[si - 1, ti - 1] + 1;
+            else
+              lcsg[si, ti] = System.Math.Max(lcsg[si - 1, ti], lcsg[si, ti - 1]);
+          }
+        }
+
+        return lcsg;
+      }
+
+      /// <summary>Returns the items comprising the longest sub-sequence.</summary>
+      public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        var lcs = new System.Collections.Generic.List<T>();
+
+        var lcsg = GetGrid(source, target);
+
+        var k = source.Length - 1;
+        var l = target.Length - 1;
+
+        while (k >= 0 && l >= 0)
+        {
+          if (EqualityComparer.Equals(source[k], target[l]))
+          {
+            lcs.Insert(0, source[k]);
+
+            k--;
+            l--;
+          }
+          else if (lcsg[k, l + 1] > lcsg[k + 1, l]) // If not same, then go in the direction of the greater one.
+            k--;
+          else
+            l--;
+        }
+
+        return lcs;
+      }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
+
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-        => source.Length + target.Length - 2 * GetMetricLength(source, target);
+      => source.Length + target.Length - 2 * GetMetricLength(source, target);
 
       public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {

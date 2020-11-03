@@ -56,6 +56,61 @@ namespace Flux
       {
       }
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
+      {
+        var lcsg = new int[source.Length + 1, target.Length + 1];
+
+        length = 0;
+
+        sourceMaxIndex = 0;
+        targetMaxIndex = 0;
+
+        for (var si = 0; si <= source.Length; si++)
+        {
+          for (var ti = 0; ti <= target.Length; ti++)
+          {
+            if (si > 0 && ti > 0 && EqualityComparer.Equals(source[si - 1], target[ti - 1]))
+            {
+              var temporaryLength = lcsg[si, ti] = lcsg[si - 1, ti - 1] + 1;
+
+              if (temporaryLength > length)
+              {
+                length = temporaryLength;
+
+                sourceMaxIndex = si;
+                targetMaxIndex = ti;
+              }
+            }
+            else
+              lcsg[si, ti] = 0;
+          }
+        }
+
+        return lcsg;
+      }
+
+      public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        var lcs = new System.Collections.Generic.List<T>();
+
+        var lcsg = GetGrid(source, target, out var length, out var sourceIndex, out var targetIndex);
+
+        if (length > 0)
+        {
+          while (lcsg[sourceIndex, targetIndex] != 0)
+          {
+            lcs.Insert(0, source[sourceIndex - 1]); // Can also use target[targetIndex - 1].
+
+            sourceIndex--;
+            targetIndex--;
+          }
+        }
+
+        return lcs;
+      }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
+
       public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
         var maxLength = 0;

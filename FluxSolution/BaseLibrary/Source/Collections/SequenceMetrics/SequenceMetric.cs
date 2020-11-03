@@ -15,18 +15,16 @@ namespace Flux
         targetSlice = target;
 
         atStart = sourceSlice.CountEqualAtStart(targetSlice);
-        //while (sourceSlice.Length > atStart && targetSlice.Length > atStart && EqualityComparer.Equals(sourceSlice[atStart], targetSlice[atStart]))
-        //  atStart++;
-        if (atStart > 0)
+
+        if (atStart > 0) // If equality exist in the beginning, adjust.
         {
           sourceSlice = sourceSlice.Slice(atStart);
           targetSlice = targetSlice.Slice(atStart);
         }
 
         atEnd = sourceSlice.CountEqualAtEnd(targetSlice);
-        //for (int sourceEnd = sourceSlice.Length - 1, targetEnd = targetSlice.Length - 1; sourceEnd >= 0 && targetEnd >= 0 && EqualityComparer.Equals(sourceSlice[sourceEnd], targetSlice[targetEnd]); sourceEnd--, targetEnd--)
-        //  atEnd++;
-        if (atEnd > 0)
+
+        if (atEnd > 0) // If equality exist at the end, adjust.
         {
           sourceSlice = sourceSlice.Slice(0, sourceSlice.Length - atEnd);
           targetSlice = targetSlice.Slice(0, targetSlice.Length - atEnd);
