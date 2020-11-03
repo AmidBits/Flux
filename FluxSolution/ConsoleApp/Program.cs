@@ -19,10 +19,10 @@ namespace ConsoleApp
       //foreach (var rune in sr.ReadRunes())
       //  System.Console.WriteLine($"{++index} {rune} : 0x{rune.Value:X4}");
 
-      var a = @"zxabcdeZy".EnumerateRunes().ToArray();
-      var b = @"yzabcdezx".EnumerateRunes().ToArray();
+      var a = @"zxabcdeZy";
+      var b = @"yzabcdezx";
 
-      var lcs = new Flux.SequenceMetrics.LongestCommonSubsequence<System.Text.Rune>();
+      var lcs = new Flux.SequenceMetrics.LongestCommonSubsequence<char>();
 
       System.Console.WriteLine(lcs.GetMetricLength(a, b));
       var index = 0;
