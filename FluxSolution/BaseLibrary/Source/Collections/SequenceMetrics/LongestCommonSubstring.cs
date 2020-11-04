@@ -45,7 +45,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
     public class LongestCommonSubstring<T>
-    : SequenceMetric<T>, IMeasuredLength<T>
+    : ASequenceMetric<T>, IMeasuredLength<T>
     {
       public LongestCommonSubstring()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

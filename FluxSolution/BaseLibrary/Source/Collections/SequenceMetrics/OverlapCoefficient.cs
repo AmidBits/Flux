@@ -26,7 +26,7 @@ namespace Flux
   namespace SequenceMetrics
   {
     public class OverlapCoefficient<T>
-      : SequenceMetric<T>
+      : ASequenceMetric<T>
     {
       public OverlapCoefficient()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

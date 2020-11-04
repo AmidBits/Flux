@@ -15,14 +15,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
     public class BubbleSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
-
-      public BubbleSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public BubbleSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      {
+      }
       public BubbleSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -38,7 +38,7 @@ namespace Flux
 
           for (var i = 1; i < length; i++)
           {
-            if (m_comparer.Compare(source[i - 1], source[i]) > 0)
+            if (Comparer.Compare(source[i - 1], source[i]) > 0)
             {
               source.Swap(i - 1, i);
               newLength = i;
@@ -59,7 +59,7 @@ namespace Flux
 
           for (var i = 1; i < length; i++)
           {
-            if (m_comparer.Compare(source[i - 1], source[i]) > 0)
+            if (Comparer.Compare(source[i - 1], source[i]) > 0)
             {
               source.Swap(i - 1, i);
               newLength = i;

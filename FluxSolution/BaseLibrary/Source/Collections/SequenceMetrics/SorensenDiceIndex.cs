@@ -26,7 +26,7 @@ namespace Flux
   namespace SequenceMetrics
   {
     public class SørensenDiceIndex<T>
-      : SequenceMetric<T>
+      : ASequenceMetric<T>
     {
       public SørensenDiceIndex()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

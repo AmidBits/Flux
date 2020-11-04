@@ -33,7 +33,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class OptimalStringAlignment<T>
-      : SequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : ASequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public OptimalStringAlignment()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

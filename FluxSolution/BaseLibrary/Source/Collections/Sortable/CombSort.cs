@@ -15,14 +15,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using comb sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class CombSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
-
-      public CombSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public CombSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      {
+      }
       public CombSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -47,7 +47,7 @@ namespace Flux
           // A single "comb" over the input list
           for (var i = 0; i + gapSize < source.Count; i++) // See Shell sort for a similar idea
           {
-            if (m_comparer.Compare(source[i], source[i + gapSize]) > 0)
+            if (Comparer.Compare(source[i], source[i + gapSize]) > 0)
             {
               source.Swap(i, i + gapSize);
               isSorted = false; // If this assignment never happens within the loop, then there have been no swaps and the list is sorted.
@@ -74,7 +74,7 @@ namespace Flux
           // A single "comb" over the input list
           for (var i = 0; i + gapSize < source.Length; i++) // See Shell sort for a similar idea
           {
-            if (m_comparer.Compare(source[i], source[i + gapSize]) > 0)
+            if (Comparer.Compare(source[i], source[i + gapSize]) > 0)
             {
               source.Swap(i, i + gapSize);
               isSorted = false; // If this assignment never happens within the loop, then there have been no swaps and the list is sorted.

@@ -15,14 +15,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public class QuickSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
-
-      public QuickSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public QuickSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      {
+      }
       public QuickSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -52,7 +52,7 @@ namespace Flux
 
         for (var j = lowIndex; j < highIndex; j++)
         {
-          if (m_comparer.Compare(source[j], pivotValue) < 0)
+          if (Comparer.Compare(source[j], pivotValue) < 0)
           {
             source.Swap(i, j);
             i++;

@@ -2,11 +2,11 @@ namespace Flux
 {
   namespace SequenceMetrics
   {
-    public abstract class SequenceMetric<T>
+    public abstract class ASequenceMetric<T>
     {
       public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
-      public SequenceMetric(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      public ASequenceMetric(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
         => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
 
       public void OptimizeEnds(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.ReadOnlySpan<T> sourceSlice, out System.ReadOnlySpan<T> targetSlice, out int sourceCount, out int targetCount, out int atStart, out int atEnd)

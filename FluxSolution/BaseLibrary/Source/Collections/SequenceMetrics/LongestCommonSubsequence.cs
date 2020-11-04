@@ -36,7 +36,7 @@ namespace Flux
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public class LongestCommonSubsequence<T>
-      : SequenceMetric<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : ASequenceMetric<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public LongestCommonSubsequence()
         : base(System.Collections.Generic.EqualityComparer<T>.Default)

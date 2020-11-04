@@ -43,7 +43,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
     /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
     public class JaroWinklerDistance<T>
-      : SequenceMetric<T>, INormalizedDistance<T>
+      : ASequenceMetric<T>, INormalizedDistance<T>
     {
       /// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>
       public double BoostThreshold { get; set; } = 0.7;

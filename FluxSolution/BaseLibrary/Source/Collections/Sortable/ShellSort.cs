@@ -15,15 +15,16 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
     public class ShellSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
       private int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 
-      public ShellSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public ShellSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      { 
+      }
       public ShellSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -39,7 +40,7 @@ namespace Flux
 
             var temp = source[j];
 
-            while (j >= gap && m_comparer.Compare(source[j - gap], temp) > 0)
+            while (j >= gap && Comparer.Compare(source[j - gap], temp) > 0)
             {
               source[j] = source[j - gap];
 
@@ -60,7 +61,7 @@ namespace Flux
 
             var temp = source[j];
 
-            while (j >= gap && m_comparer.Compare(source[j - gap], temp) > 0)
+            while (j >= gap && Comparer.Compare(source[j - gap], temp) > 0)
             {
               source[j] = source[j - gap];
 

@@ -21,18 +21,17 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public class MergeSort<T>
-      : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
       private MergeSortType m_type;
 
-      public MergeSort(MergeSortType type, System.Collections.Generic.IComparer<T>? comparer)
+      public MergeSort(MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
       {
-        m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
         m_type = type;
       }
       public MergeSort()
-        : this(MergeSortType.TopDown, null)
+        : this(MergeSortType.TopDown, System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -87,7 +86,7 @@ namespace Flux
         for (var k = iLeft; k < iEnd; k++)
         {
           // If left run head exists and is <= existing right run head.
-          if (i < iRight && (j >= iEnd || m_comparer.Compare(source[i], source[j]) <= 0))
+          if (i < iRight && (j >= iEnd || Comparer.Compare(source[i], source[j]) <= 0))
           {
             target[k] = source[i];
             i++;
@@ -140,7 +139,7 @@ namespace Flux
         for (var k = iBegin; k < iEnd; k++)
         {
           // If left run head exists and is <= existing right run head.
-          if (i < iMiddle && (j >= iEnd || m_comparer.Compare(source[i], source[j]) <= 0))
+          if (i < iMiddle && (j >= iEnd || Comparer.Compare(source[i], source[j]) <= 0))
           {
             target[k] = source[i];
             i++;

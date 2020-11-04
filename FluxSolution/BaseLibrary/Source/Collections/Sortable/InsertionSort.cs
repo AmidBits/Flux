@@ -15,14 +15,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public class InsertionSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
-
-      public InsertionSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public InsertionSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      {
+      }
       public InsertionSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -33,7 +33,7 @@ namespace Flux
         var sourceLength = source.Count;
 
         for (var i = 1; i < sourceLength; i++)
-          for (var j = i; j > 0 && m_comparer.Compare(source[j - 1], source[j]) > 0; j--)
+          for (var j = i; j > 0 && Comparer.Compare(source[j - 1], source[j]) > 0; j--)
             source.Swap(j, j - 1);
       }
       public void Sort(System.Span<T> source)
@@ -41,7 +41,7 @@ namespace Flux
         var sourceLength = source.Length;
 
         for (var i = 1; i < sourceLength; i++)
-          for (var j = i; j > 0 && m_comparer.Compare(source[j - 1], source[j]) > 0; j--)
+          for (var j = i; j > 0 && Comparer.Compare(source[j - 1], source[j]) > 0; j--)
             source.Swap(j, j - 1);
       }
     }

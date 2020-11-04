@@ -21,18 +21,17 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
     public class HeapSort<T>
-      : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
       private HeapSortType m_type;
 
-      public HeapSort(HeapSortType type, System.Collections.Generic.IComparer<T>? comparer)
+      public HeapSort(HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
       {
-        m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
         m_type = type;
       }
       public HeapSort()
-        : this(HeapSortType.FloydDown, null)
+        : this(HeapSortType.FloydDown, System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -107,10 +106,10 @@ namespace Flux
           var child = GetLeftChild(root); // (Left child of root)
           var swap = root; // (Keeps track of child to swap with)
 
-          if (m_comparer.Compare(source[swap], source[child]) < 0)
+          if (Comparer.Compare(source[swap], source[child]) < 0)
             swap = child;
           // (If there is a right child and that child is greater)
-          if (child + 1 <= end && m_comparer.Compare(source[swap], source[child + 1]) < 0)
+          if (child + 1 <= end && Comparer.Compare(source[swap], source[child + 1]) < 0)
             swap = child + 1;
           if (swap == root)
             return; // (The root holds the largest element.Since we assume the heaps rooted at the children are valid, this means that we are done.)
@@ -166,7 +165,7 @@ namespace Flux
         var j = i;
         while (GetRightChild(j) <= end)
         {
-          j = (m_comparer.Compare(source[GetRightChild(j)], source[GetLeftChild(j)]) > 0) ? GetRightChild(j) : GetLeftChild(j); // (Determine which of j's two children is the greater)
+          j = (Comparer.Compare(source[GetRightChild(j)], source[GetLeftChild(j)]) > 0) ? GetRightChild(j) : GetLeftChild(j); // (Determine which of j's two children is the greater)
         }
 
         if (GetLeftChild(j) <= end) // (At the last level, there might be only one child)
@@ -179,7 +178,7 @@ namespace Flux
       {
         var j = FloydLeafSearch(source, i, end);
 
-        while (m_comparer.Compare(source[i], source[j]) > 0)
+        while (Comparer.Compare(source[i], source[j]) > 0)
           j = GetParent(j);
 
         var x = source[j];

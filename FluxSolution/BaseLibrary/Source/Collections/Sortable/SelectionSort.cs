@@ -15,14 +15,14 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class SelectionSort<T>
-    : ISortable<T>
+      : ASortable<T>, ISortable<T>
     {
-      private System.Collections.Generic.IComparer<T> m_comparer;
-
-      public SelectionSort(System.Collections.Generic.IComparer<T>? comparer)
-        => m_comparer = comparer ?? System.Collections.Generic.Comparer<T>.Default;
+      public SelectionSort(System.Collections.Generic.IComparer<T> comparer)
+        : base(comparer)
+      {
+      }
       public SelectionSort()
-        : this(null)
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
       }
 
@@ -34,7 +34,7 @@ namespace Flux
         {
           var min = i;
           for (var j = i + 1; j < source.Count; j++)
-            if (m_comparer.Compare(source[j], source[min]) < 0)
+            if (Comparer.Compare(source[j], source[min]) < 0)
               min = j;
 
           var x = source[min];
@@ -49,7 +49,7 @@ namespace Flux
         {
           var min = i;
           for (var j = i + 1; j < source.Length; j++)
-            if (m_comparer.Compare(source[j], source[min]) < 0)
+            if (Comparer.Compare(source[j], source[min]) < 0)
               min = j;
 
           var x = source[min];
