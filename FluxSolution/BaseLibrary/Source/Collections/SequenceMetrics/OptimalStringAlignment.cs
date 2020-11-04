@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux
@@ -27,7 +28,7 @@ namespace Flux
 
   namespace SequenceMetrics
   {
-    /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
+    /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
@@ -44,8 +45,8 @@ namespace Flux
       }
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-      /// <summary></summary>
-      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length)
+      /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
         var ldg = new int[source.Length + 1, target.Length + 1];
 
@@ -56,49 +57,52 @@ namespace Flux
 
         for (int si = 1; si <= source.Length; si++)
         {
-          ldg[si,0] = si; // Edit distance is delete (i) chars from source to match empty target.
-
           var sourceItem = source[si - 1];
 
           for (int ti = 1; ti <= target.Length; ti++)
           {
             var targetItem = target[ti - 1];
 
-            var cost = EqualityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
-
-            if (si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem))
-            {
-              v0[ti] = Maths.Min(
-                v1[ti] + 1, // Deletion.
-                v0[ti - 1] + 1, // Insertion.
-                v1[ti - 1] + cost, // Substitution.
-                v2[ti - 2] + 1 // Transposition.
-              );
-            }
-            else
-            {
-              v0[ti] = Maths.Min(
-                v1[ti] + 1, // Deletion.
-                v0[ti - 1] + 1, // Insertion.
-                v1[ti - 1] + cost // Substitution.
-              );
-            }
+            ldg[si, ti] = ldg[si, ti] = Maths.Min(
+              ldg[si - 1, ti] + 1, // Deletion.
+              ldg[si, ti - 1] + 1, // Insertion.
+              EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + 1 : int.MaxValue // Transposition.
+            );
           }
         }
-
-        length = ldg[source.Length, target.Length];
 
         return ldg;
       }
 
-      /// <summary></summary>
-      public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+      public double[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution, double costOfTransposition)
       {
-        var lds = new System.Collections.Generic.List<T>();
+        var ldg = new double[source.Length + 1, target.Length + 1];
 
-        var ldg = GetGrid(source, target);
+        for (var si = 1; si <= source.Length; si++)
+          ldg[si, 0] = si * costOfInsertion;
+        for (var ti = 1; ti <= target.Length; ti++)
+          ldg[0, ti] = ti * costOfInsertion;
 
-        return lds;
+        for (int si = 1; si <= source.Length; si++)
+        {
+          var sourceItem = source[si - 1];
+
+          for (int ti = 1; ti <= target.Length; ti++)
+          {
+            var targetItem = target[ti - 1];
+
+            ldg[si, ti] = ldg[si, ti] = Maths.Min(
+              ldg[si - 1, ti] + costOfDeletion,
+              ldg[si, ti - 1] + costOfInsertion,
+              EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution,
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + costOfTransposition : double.MaxValue
+            );
+          }
+        }
+
+        return ldg;
       }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
@@ -127,25 +131,12 @@ namespace Flux
           {
             var targetItem = target[ti - 1];
 
-            var cost = EqualityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
-
-            if (si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem))
-            {
-              v0[ti] = Maths.Min(
-                v1[ti] + 1, // Deletion.
-                v0[ti - 1] + 1, // Insertion.
-                v1[ti - 1] + cost, // Substitution.
-                v2[ti - 2] + 1 // Transposition.
-              );
-            }
-            else
-            {
-              v0[ti] = Maths.Min(
-                v1[ti] + 1, // Deletion.
-                v0[ti - 1] + 1, // Insertion.
-                v1[ti - 1] + cost // Substitution.
-              );
-            }
+            v0[ti] = Maths.Min(
+              v1[ti] + 1, // Deletion.
+              v0[ti - 1] + 1, // Insertion.
+              EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
+            );
           }
         }
 

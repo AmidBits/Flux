@@ -32,11 +32,13 @@ namespace Flux
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     // Returns the array elements formatted for the console.
-    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings2d<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
+    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings2d<T>(this T[,] source, System.Func<T, int, string>? formatSelector, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(i => source.GetElements(1, i).Max(o => $"{o.item}".Length)).ToArray();
+      formatSelector ??= (e, i) => $"{e}";
+
+      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(i => source.GetElements(1, i).Select((e, i) => formatSelector(e.item, i)).Max(s => s.Length)).ToArray();
       if (uniformMaxWidth) columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToArray(); // If used, replace all with total max width.
 
       var format = string.Join(horizontalSeparator.ToString(), columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
@@ -48,11 +50,11 @@ namespace Flux
         if (!(verticalSeparatorRow is null) && index0 > 0)
           yield return verticalSeparatorRow;
 
-        yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, index0).Select(e => (object?)e.item).ToArray());
+        yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, index0).Select((e, i) => formatSelector(e.item, i)).ToArray());
       }
     }
-    public static string ToConsoleString2d<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
-      => string.Join(System.Environment.NewLine, ToConsoleStrings2d(source, horizontalSeparator, verticalSeparator, uniformMaxWidth));
+    public static string ToConsoleString2d<T>(this T[,] source, System.Func<T, int, string>? formatSelector, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
+      => string.Join(System.Environment.NewLine, ToConsoleStrings2d(source, formatSelector, horizontalSeparator, verticalSeparator, uniformMaxWidth));
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

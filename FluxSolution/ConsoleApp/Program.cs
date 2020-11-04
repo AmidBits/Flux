@@ -19,15 +19,17 @@ namespace ConsoleApp
       //foreach (var rune in sr.ReadRunes())
       //  System.Console.WriteLine($"{++index} {rune} : 0x{rune.Value:X4}");
 
-      var a = @"zxabcdeZy";
-      var b = @"yzabcdezx";
+      var a = @"a cat";
+      var b = @"a abct";
 
-      var lcs = new Flux.SequenceMetrics.LongestCommonSubsequence<char>();
+      var lcs = new Flux.SequenceMetrics.DamerauLevenshteinDistance<char>();
 
-      System.Console.WriteLine(lcs.GetMetricLength(a, b));
-      var index = 0;
-      foreach (var item in lcs.GetList(a, b))
-        System.Console.WriteLine($"{++index} {item}");
+      System.Console.WriteLine(lcs.GetMetricDistance(a, b));
+      var grid = lcs.GetGrid(a, b, 0.5, 0.5, 0.5, 0.5);
+      System.Console.WriteLine(grid.ToConsoleString2d((e, i) => $"{e:N1}", ' ', '\0'));
+      //var index = 0;
+      //foreach (var item in lcs.GetList(a, b))
+      //  System.Console.WriteLine($"{++index} {item}");
     }
 
     static void Main(string[] args)
