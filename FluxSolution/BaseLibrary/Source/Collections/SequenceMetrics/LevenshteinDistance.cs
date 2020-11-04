@@ -36,7 +36,48 @@ namespace Flux
       {
       }
 
-      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+      /// <summary></summary>
+      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length)
+      {
+        var ldg = new int[source.Length + 1, target.Length + 1];
+
+        for (var si = 1; si <= source.Length; si++)
+          ldg[si, 0] = si;
+        for (var ti = 1; ti <= target.Length; ti++)
+          ldg[0, ti] = ti;
+
+        for (var si = 0; si < source.Length; si++)
+        {
+          ldg[si, 0] = si + 1; // The first element is delete (i + 1) chars from source to match empty target.
+
+          for (var ti = 0; ti < target.Length; ti++)
+          {
+            ldg[si + 1, ti + 1] = Maths.Min(
+              ldg[si, ti + 1] + 1, // Deletion.
+              ldg[si + 1, ti] + 1, // Insertion.
+              EqualityComparer.Equals(source[si], target[ti]) ? ldg[si, ti] : ldg[si, ti] + 1 // Substitution.
+            );
+          }
+        }
+
+        length = ldg[source.Length, target.Length];
+
+        return ldg;
+      }
+
+      /// <summary></summary>
+      public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        var lds = new System.Collections.Generic.List<T>();
+
+        var ldg = GetGrid(source, target);
+
+        return lds;
+      }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
+
+        public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
         OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 

@@ -43,6 +43,65 @@ namespace Flux
       {
       }
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+      /// <summary></summary>
+      public int[,] GetGrid(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length)
+      {
+        var ldg = new int[source.Length + 1, target.Length + 1];
+
+        for (var si = 1; si <= source.Length; si++)
+          ldg[si, 0] = si;
+        for (var ti = 1; ti <= target.Length; ti++)
+          ldg[0, ti] = ti;
+
+        for (int si = 1; si <= source.Length; si++)
+        {
+          ldg[si,0] = si; // Edit distance is delete (i) chars from source to match empty target.
+
+          var sourceItem = source[si - 1];
+
+          for (int ti = 1; ti <= target.Length; ti++)
+          {
+            var targetItem = target[ti - 1];
+
+            var cost = EqualityComparer.Equals(sourceItem, targetItem) ? 0 : 1;
+
+            if (si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem))
+            {
+              v0[ti] = Maths.Min(
+                v1[ti] + 1, // Deletion.
+                v0[ti - 1] + 1, // Insertion.
+                v1[ti - 1] + cost, // Substitution.
+                v2[ti - 2] + 1 // Transposition.
+              );
+            }
+            else
+            {
+              v0[ti] = Maths.Min(
+                v1[ti] + 1, // Deletion.
+                v0[ti - 1] + 1, // Insertion.
+                v1[ti - 1] + cost // Substitution.
+              );
+            }
+          }
+        }
+
+        length = ldg[source.Length, target.Length];
+
+        return ldg;
+      }
+
+      /// <summary></summary>
+      public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      {
+        var lds = new System.Collections.Generic.List<T>();
+
+        var ldg = GetGrid(source, target);
+
+        return lds;
+      }
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
+
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
         OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
