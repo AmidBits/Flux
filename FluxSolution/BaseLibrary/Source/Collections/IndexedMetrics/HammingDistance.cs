@@ -5,27 +5,27 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.HammingDistance<T>(comparer).GetMetricDistance(source.ToArray(), target.ToArray());
+    public static int HammingDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+      => new IndexedMetrics.HammingDistance<T>(comparer).GetMetricDistance((T[])source, (T[])target);
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
-      => new SequenceMetrics.HammingDistance<T>().GetMetricDistance(source.ToArray(), target.ToArray());
+    public static int HammingDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
+      => new IndexedMetrics.HammingDistance<T>().GetMetricDistance((T[])source, (T[])target);
 
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
     public static int HammingDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.HammingDistance<T>(comparer).GetMetricDistance(source, target);
+      => new IndexedMetrics.HammingDistance<T>(comparer).GetMetricDistance(source, target);
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
     public static int HammingDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new SequenceMetrics.HammingDistance<T>().GetMetricDistance(source, target);
+      => new IndexedMetrics.HammingDistance<T>().GetMetricDistance(source, target);
   }
 
-  namespace SequenceMetrics
+  namespace IndexedMetrics
   {
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>
     /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
     public class HammingDistance<T>
-      : ASequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : AIndexedMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public HammingDistance()
         : base(System.Collections.Generic.EqualityComparer<T>.Default)

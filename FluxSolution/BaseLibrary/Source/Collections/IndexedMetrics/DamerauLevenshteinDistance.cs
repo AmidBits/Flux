@@ -5,25 +5,25 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
-    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : notnull
-      => new SequenceMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source.ToArray(), target.ToArray());
+      => new IndexedMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance((T[])source, (T[])target);
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
-    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
+    public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
       where T : notnull
-      => new SequenceMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source.ToArray(), target.ToArray());
+      => new IndexedMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance((T[])source, (T[])target);
 
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : notnull
-      => new SequenceMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
+      => new IndexedMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => new SequenceMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
+      => new IndexedMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
   }
 
-  namespace SequenceMetrics
+  namespace IndexedMetrics
   {
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
@@ -31,7 +31,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class DamerauLevenshteinDistance<T>
-      : ASequenceMetric<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : AIndexedMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
       where T : notnull
     {
       public DamerauLevenshteinDistance()

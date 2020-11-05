@@ -7,27 +7,27 @@ namespace Flux
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences. Uses the specified comparer.</summary>
     /// <remarks>It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
-    public static int LongestCommonSubsequence<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.LongestCommonSubsequence<T>(comparer).GetMetricLength(source.ToArray(), target.ToArray());
+    public static int LongestCommonSubsequence<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+      => new IndexedMetrics.LongestCommonSubsequence<T>(comparer).GetMetricLength((T[])source, (T[])target);
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences. Uses the specified comparer.</summary>
     /// <remarks>It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
-    public static int LongestCommonSubsequence<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
-      => new SequenceMetrics.LongestCommonSubsequence<T>().GetMetricLength(source.ToArray(), target.ToArray());
+    public static int LongestCommonSubsequence<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
+      => new IndexedMetrics.LongestCommonSubsequence<T>().GetMetricLength((T[])source, (T[])target);
 
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences. Uses the specified comparer.</summary>
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static int LongestCommonSubsequence<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SequenceMetrics.LongestCommonSubsequence<T>(comparer).GetMetricLength(source, target);
+      => new IndexedMetrics.LongestCommonSubsequence<T>(comparer).GetMetricLength(source, target);
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences. Uses the default comparer.</summary>
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static int LongestCommonSubsequence<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new SequenceMetrics.LongestCommonSubsequence<T>().GetMetricLength(source, target);
+      => new IndexedMetrics.LongestCommonSubsequence<T>().GetMetricLength(source, target);
   }
 
-  namespace SequenceMetrics
+  namespace IndexedMetrics
   {
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
@@ -36,7 +36,7 @@ namespace Flux
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public class LongestCommonSubsequence<T>
-      : ASequenceMetric<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : AIndexedMetrics<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public LongestCommonSubsequence()
         : base(System.Collections.Generic.EqualityComparer<T>.Default)

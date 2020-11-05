@@ -1,11 +1,11 @@
 using System.Linq;
 
-namespace Flux.SequenceMetrics
+namespace Flux.IndexedMetrics
 {
   /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
   public class MostFreqK<T>
-    : ASequenceMetric<T>, IMeasuredDistance<T>
+    : AIndexedMetrics<T>, IMeasuredDistance<T>
   {
     public enum SimilarityScoringBehavior
     {

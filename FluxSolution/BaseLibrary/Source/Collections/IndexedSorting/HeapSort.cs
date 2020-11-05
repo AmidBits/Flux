@@ -3,14 +3,21 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
-    public static void HeapSort<T>(this System.Span<T> source, Sorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new Sorting.HeapSort<T>(type, comparer).Sort(source);
+    public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
+      => new IndexedSorting.HeapSort<T>(type, comparer).SortInline(source);
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
-    public static void HeapSort<T>(this System.Span<T> source, Sorting.HeapSortType type)
-      => HeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
+    public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.HeapSortType type)
+      => ApplyHeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
+
+    /// <summary>Sorts the content of the sequence using heap sort.</summary>
+    public static void ApplyHeapSort<T>(this System.Span<T> source, IndexedSorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
+      => new IndexedSorting.HeapSort<T>(type, comparer).SortInline(source);
+    /// <summary>Sorts the content of the sequence using heap sort.</summary>
+    public static void ApplyHeapSort<T>(this System.Span<T> source, IndexedSorting.HeapSortType type)
+      => ApplyHeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace Sorting
+  namespace IndexedSorting
   {
     public enum HeapSortType
     {
@@ -21,9 +28,9 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
     public class HeapSort<T>
-      : ASortable<T>, ISortable<T>
+      : AIndexedSorting<T>
     {
-      private HeapSortType m_type;
+      private readonly HeapSortType m_type;
 
       public HeapSort(HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)
@@ -35,9 +42,7 @@ namespace Flux
       {
       }
 
-      public void Sort(System.Collections.Generic.List<T> source)
-        => Sort(new System.Span<T>((source ?? throw new System.ArgumentNullException(nameof(source))).ToArray()));
-      public void Sort(System.Span<T> source)
+      public override void SortInline(System.Span<T> source)
       {
         switch (m_type)
         {
@@ -48,6 +53,12 @@ namespace Flux
             FloydHeapSort(source, source.Length);
             break;
         }
+      }
+      public override T[] SortToCopy(System.ReadOnlySpan<T> source)
+      {
+        var target = source.ToArray();
+        SortInline(new System.Span<T>(target));
+        return target;
       }
 
       #region Heap sort helpers
