@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.ShellSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.ShellSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
     public class ShellSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 

@@ -25,7 +25,7 @@ namespace Flux
     /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class LevenshteinDistance<T>
-      : AIndexedMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : ASpanMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public LevenshteinDistance()
         : base(System.Collections.Generic.EqualityComparer<T>.Default)

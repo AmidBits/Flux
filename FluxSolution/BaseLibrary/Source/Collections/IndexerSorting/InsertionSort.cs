@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.InsertionSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.InsertionSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyInsertionSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public class InsertionSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       public InsertionSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

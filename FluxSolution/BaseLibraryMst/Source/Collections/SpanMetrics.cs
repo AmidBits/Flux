@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Flux;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Collections.Generic
 {
   [TestClass]
-  public class SequenceMetrics
+  public class SpanMetrics
   {
     private readonly string m_text1a = "CA";
     private readonly string m_text1b = "ABC";

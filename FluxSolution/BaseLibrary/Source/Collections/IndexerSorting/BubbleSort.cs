@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.BubbleSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.BubbleSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyBubbleSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
     public class BubbleSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       public BubbleSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

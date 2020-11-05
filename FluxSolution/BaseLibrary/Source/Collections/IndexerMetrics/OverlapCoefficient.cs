@@ -26,7 +26,7 @@ namespace Flux
   namespace IndexedMetrics
   {
     public class OverlapCoefficient<T>
-      : AIndexedMetrics<T>
+      : ASpanMetrics<T>
     {
       public OverlapCoefficient()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

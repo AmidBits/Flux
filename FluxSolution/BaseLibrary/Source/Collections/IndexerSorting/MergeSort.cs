@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.MergeSort<T>(type, comparer).SortInline(source);
+      => new IndexedSorting.MergeSort<T>(type, comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.MergeSortType type)
       => ApplyMergeSort(source, type, System.Collections.Generic.Comparer<T>.Default);
@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public class MergeSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       private readonly MergeSortType m_type;
 

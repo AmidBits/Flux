@@ -2,12 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
-using System;
 
 namespace Collections.Generic
 {
   [TestClass]
-  public class Sortable
+  public class SpanSorting
   {
     private readonly string m_text = "AzByCxDwEvFuGtHsIrJqKpLoMn";
 

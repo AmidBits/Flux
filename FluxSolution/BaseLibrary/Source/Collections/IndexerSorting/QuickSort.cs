@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.QuickSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.QuickSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyQuickSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public class QuickSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       public QuickSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

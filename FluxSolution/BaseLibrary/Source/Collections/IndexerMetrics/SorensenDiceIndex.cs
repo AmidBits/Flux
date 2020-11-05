@@ -26,7 +26,7 @@ namespace Flux
   namespace IndexedMetrics
   {
     public class SørensenDiceIndex<T>
-      : AIndexedMetrics<T>
+      : ASpanMetrics<T>
     {
       public SørensenDiceIndex()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
     public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.HeapSort<T>(type, comparer).SortInline(source);
+      => new IndexedSorting.HeapSort<T>(type, comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
     public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.HeapSortType type)
       => ApplyHeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using heap sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
     public class HeapSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       private readonly HeapSortType m_type;
 

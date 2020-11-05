@@ -31,7 +31,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class DamerauLevenshteinDistance<T>
-      : AIndexedMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : ASpanMetrics<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
       where T : notnull
     {
       public DamerauLevenshteinDistance()

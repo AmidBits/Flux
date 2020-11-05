@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.SelectionSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.SelectionSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplySelectionSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class SelectionSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       public SelectionSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

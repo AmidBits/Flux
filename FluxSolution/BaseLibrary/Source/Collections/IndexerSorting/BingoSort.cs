@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.BingoSort<T>(comparer).SortInline(source);
+      => new IndexedSorting.BingoSort<T>(comparer).SortInline((T[])source);
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyBingoSort(source, System.Collections.Generic.Comparer<T>.Default);
@@ -22,7 +22,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class BingoSort<T>
-      : AIndexedSorting<T>
+      : ASpanSorting<T>
     {
       public BingoSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)
