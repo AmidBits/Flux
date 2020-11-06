@@ -10,7 +10,7 @@ namespace Flux
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
 
-      minLength = sourceIndex < targetIndex ? sourceIndex : targetIndex;
+      minLength = System.Math.Min(sourceIndex, targetIndex);
 
       for (var atEnd = 0; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
         if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
@@ -33,10 +33,7 @@ namespace Flux
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-      var sourceLength = source.Length;
-      var targetLength = target.Length;
-
-      minLength = sourceLength < targetLength ? sourceLength : targetLength;
+      minLength = System.Math.Min(source.Length, target.Length);
 
       var index = 0;
       while (index < minLength && comparer.Equals(source[index], target[index]))

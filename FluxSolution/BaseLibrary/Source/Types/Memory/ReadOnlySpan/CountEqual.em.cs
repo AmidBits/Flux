@@ -34,10 +34,7 @@ namespace Flux
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-      var sourceLength = source.Length;
-      var targetLength = target.Length;
-
-      minLength = System.Math.Min(sourceLength, targetLength);
+      minLength = System.Math.Min(source.Length, target.Length);
 
       var index = 0;
       while (index < minLength && comparer.Equals(source[index], target[index]))
