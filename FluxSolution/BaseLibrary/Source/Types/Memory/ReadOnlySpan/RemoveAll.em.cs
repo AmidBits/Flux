@@ -7,22 +7,9 @@ namespace Flux
     /// <summary>Remove all <typeparamref name="T"/>'s satisfying the predicate.</summary>
     public static T[] RemoveAll<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
     {
-      var sourceLength = source.Length;
-
-      var buffer = new T[sourceLength];
-      var bufferIndex = 0;
-
-      for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
-      {
-        var sourceValue = source[sourceIndex];
-
-        if (!(predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(sourceValue))
-          buffer[bufferIndex++] = sourceValue;
-      }
-
-      System.Array.Resize(ref buffer, bufferIndex);
-
-      return buffer;
+      var target = source.ToArray();
+      RemoveAll(target, predicate);
+      return target;
     }
     /// <summary>Remove the specified elements. Uses the specified comparer.</summary>
     public static T[] RemoveAll<T>(this System.ReadOnlySpan<T> source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, params T[] remove)

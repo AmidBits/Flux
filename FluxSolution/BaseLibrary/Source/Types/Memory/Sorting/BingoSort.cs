@@ -4,25 +4,25 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.BingoSort<T>(comparer).SortInline((T[])source);
+      => new SpanSorting.BingoSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyBingoSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.BingoSort<T>(comparer).SortInline(source);
+      => new SpanSorting.BingoSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyBingoSort<T>(this System.Span<T> source)
       => ApplyBingoSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace IndexedSorting
+  namespace SpanSorting
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class BingoSort<T>
-      : ASpanSorting<T>
+      : ASpanSorting<T>, ISortableInPlace<T>
     {
       public BingoSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)
@@ -33,7 +33,7 @@ namespace Flux
       {
       }
 
-      public override void SortInline(System.Span<T> source)
+      public void SortInPlace(System.Span<T> source)
       {
         var max = source.Length - 1;
 
@@ -65,12 +65,6 @@ namespace Flux
           while (max > 0 && Comparer.Compare(source[max], nextValue) == 0)
             max--;
         }
-      }
-      public override T[] SortToCopy(System.ReadOnlySpan<T> source)
-      {
-        var target = source.ToArray();
-        SortInline(new System.Span<T>(target));
-        return target;
       }
     }
   }

@@ -3,27 +3,29 @@ namespace Flux
   public static partial class Xtensions
   {
     public static System.Collections.Generic.IEnumerable<string> ReadTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
-      => new Text.StreamReaderTextElementEnumerator(source, encoding);
+      => new Text.TextReaderTextElementEnumerator(source, encoding);
     public static System.Collections.Generic.IEnumerable<string> ReadTextElements(this System.IO.StreamReader source)
-      => new Text.StreamReaderTextElementEnumerator(source);
+      => new Text.TextReaderTextElementEnumerator(source);
+    public static System.Collections.Generic.IEnumerable<string> ReadTextElements(this System.IO.TextReader source)
+      => new Text.TextReaderTextElementEnumerator(source);
   }
 
   namespace Text
   {
-    public class StreamReaderTextElementEnumerator
+    public class TextReaderTextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<string>
     {
-      internal readonly System.IO.StreamReader m_streamReader;
+      internal readonly System.IO.TextReader m_textReader;
       internal readonly int m_bufferSize;
 
-      public StreamReaderTextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
+      public TextReaderTextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
       {
-        m_streamReader = new System.IO.StreamReader(stream ?? throw new System.ArgumentNullException(nameof(stream)), encoding);
+        m_textReader = new System.IO.StreamReader(stream ?? throw new System.ArgumentNullException(nameof(stream)), encoding);
         m_bufferSize = bufferSize;
       }
-      public StreamReaderTextElementEnumerator(System.IO.StreamReader streamReader, int bufferSize = 8192)
+      public TextReaderTextElementEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
       {
-        m_streamReader = streamReader ?? throw new System.ArgumentNullException(nameof(streamReader));
+        m_textReader = textReader ?? throw new System.ArgumentNullException(nameof(textReader));
         m_bufferSize = bufferSize;
       }
 
@@ -33,12 +35,12 @@ namespace Flux
         => GetEnumerator();
 
       protected override void DisposeManaged()
-        => m_streamReader.Dispose();
+        => m_textReader.Dispose();
 
       private class StreamReaderTextElementIterator
         : System.Collections.Generic.IEnumerator<string>
       {
-        private readonly StreamReaderTextElementEnumerator m_enumerator;
+        private readonly TextReaderTextElementEnumerator m_enumerator;
 
         private readonly char[] m_charArray;
         private int m_charIndex;
@@ -46,7 +48,7 @@ namespace Flux
 
         private string m_current;
 
-        public StreamReaderTextElementIterator(StreamReaderTextElementEnumerator enumerator)
+        public StreamReaderTextElementIterator(TextReaderTextElementEnumerator enumerator)
         {
           m_enumerator = enumerator;
 
@@ -79,7 +81,7 @@ namespace Flux
 
           if (m_charIndex == 0 && m_charCount < m_charArray.Length)
           {
-            m_charCount += m_enumerator.m_streamReader.Read(m_charArray, m_charCount, m_charArray.Length - m_charCount);
+            m_charCount += m_enumerator.m_textReader.Read(m_charArray, m_charCount, m_charArray.Length - m_charCount);
           }
 
           m_stringInfo.String = new string(m_charArray, m_charIndex, m_charCount - m_charIndex);
@@ -110,14 +112,15 @@ namespace Flux
         }
 
         public void Reset()
-        {
-          m_enumerator.m_streamReader.BaseStream.Position = 0;
+          => throw new System.NotImplementedException();
+        //{
+        //  m_enumerator.m_streamReader.BaseStream.Position = 0;
 
-          m_charIndex = 0;
-          m_charCount = 0;
+        //  m_charIndex = 0;
+        //  m_charCount = 0;
 
-          m_current = default!;
-        }
+        //  m_current = default!;
+        //}
 
         public void Dispose() { }
       }

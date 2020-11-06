@@ -8,12 +8,15 @@ namespace Flux
       if (minIndex < 0 || minIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(minIndex));
       if (maxIndex < 0 || maxIndex >= source.Length || maxIndex < minIndex) throw new System.ArgumentOutOfRangeException(nameof(maxIndex));
 
-      for (; minIndex < maxIndex; minIndex++, maxIndex--)
+      while (minIndex < maxIndex)
       {
         var tmp = source[minIndex];
-        source[minIndex] = source[maxIndex];
-        source[maxIndex] = tmp;
+        source[minIndex++] = source[maxIndex];
+        source[maxIndex--] = tmp;
       }
     }
+    /// <summary>Creates a new array with all elements in reverse order.</summary>
+    public static void Reverse<T>(this System.Span<T> source)
+      => Reverse(source, 0, source.Length - 1);
   }
 }

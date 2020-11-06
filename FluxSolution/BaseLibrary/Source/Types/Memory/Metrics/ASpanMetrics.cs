@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace IndexedMetrics
+  namespace SpanMetrics
   {
     public abstract class ASpanMetrics<T>
     {
@@ -14,7 +14,7 @@ namespace Flux
         sourceSlice = source;
         targetSlice = target;
 
-        atStart = sourceSlice.CountEqualAtStart(targetSlice);
+        atStart = sourceSlice.CountEqualAtStart(targetSlice, out var _);
 
         if (atStart > 0) // If equality exist in the beginning, adjust.
         {
@@ -22,7 +22,7 @@ namespace Flux
           targetSlice = targetSlice.Slice(atStart);
         }
 
-        atEnd = sourceSlice.CountEqualAtEnd(targetSlice);
+        atEnd = sourceSlice.CountEqualAtEnd(targetSlice, out var _);
 
         if (atEnd > 0) // If equality exist at the end, adjust.
         {

@@ -11,7 +11,7 @@ namespace Flux
     /// <param name="target">The secondary string.</param>
     /// <returns>The longest number of consecutive elements common to both source and target.</returns>
     public static int LongestCommonSubstring<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new IndexedMetrics.LongestCommonSubstring<T>(comparer).GetMeasuredLength((T[])source, (T[])target);
+      => new SpanMetrics.LongestCommonSubstring<T>(comparer).GetMeasuredLength((T[])source, (T[])target);
     /// <summary>Finding the longest consecutive sequence of elements common to two or more strings. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
@@ -19,7 +19,7 @@ namespace Flux
     /// <param name="target">The secondary string.</param>
     /// <returns>The longest number of consecutive elements common to both source and target.</returns>
     public static int LongestCommonSubstring<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
-      => new IndexedMetrics.LongestCommonSubstring<T>().GetMeasuredLength((T[])source, (T[])target);
+      => new SpanMetrics.LongestCommonSubstring<T>().GetMeasuredLength((T[])source, (T[])target);
 
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
@@ -28,7 +28,7 @@ namespace Flux
     /// <param name="target">The secondary sequence.</param>
     /// <returns>The longest number of consecutive elements common to both source and target.</returns>
     public static int LongestCommonSubstring<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new IndexedMetrics.LongestCommonSubstring<T>(comparer).GetMeasuredLength(source, target);
+      => new SpanMetrics.LongestCommonSubstring<T>(comparer).GetMeasuredLength(source, target);
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
@@ -36,10 +36,10 @@ namespace Flux
     /// <param name="target">The secondary sequence.</param>
     /// <returns>The longest number of consecutive elements common to both source and target.</returns>
     public static int LongestCommonSubstring<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new IndexedMetrics.LongestCommonSubstring<T>().GetMeasuredLength(source, target);
+      => new SpanMetrics.LongestCommonSubstring<T>().GetMeasuredLength(source, target);
   }
 
-  namespace IndexedMetrics
+  namespace SpanMetrics
   {
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /

@@ -4,25 +4,25 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.QuickSort<T>(comparer).SortInline((T[])source);
+      => new SpanSorting.QuickSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyQuickSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.QuickSort<T>(comparer).SortInline(source);
+      => new SpanSorting.QuickSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Span<T> source)
       => ApplyQuickSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace IndexedSorting
+  namespace SpanSorting
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public class QuickSort<T>
-      : ASpanSorting<T>
+      : ASpanSorting<T>, ISortableInPlace<T>
     {
       public QuickSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)
@@ -33,16 +33,10 @@ namespace Flux
       {
       }
 
-      public override void SortInline(System.Span<T> source)
+      public void SortInPlace(System.Span<T> source)
         => QuickSortImpl(source, 0, source.Length - 1);
-      public override T[] SortToCopy(System.ReadOnlySpan<T> source)
-      {
-        var target = source.ToArray();
-        SortInline(new System.Span<T>(target));
-        return target;
-      }
 
-      #region Quick sort helpers (List)
+      #region Quick sort helpers
       private void QuickSortImpl(System.Span<T> source, int lowIndex, int highIndex)
       {
         if (lowIndex < highIndex)
@@ -72,7 +66,7 @@ namespace Flux
 
         return i;
       }
-      #endregion Quick sort helpers (List)
+      #endregion Quick sort helpers
     }
   }
 }

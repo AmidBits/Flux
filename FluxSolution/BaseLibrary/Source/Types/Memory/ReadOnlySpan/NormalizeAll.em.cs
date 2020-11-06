@@ -7,27 +7,8 @@ namespace Flux
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
     public static T[] NormalizeAll<T>(this System.ReadOnlySpan<T> source, T normalizeWith, System.Func<T, bool> predicate)
     {
-      var sourceLength = source.Length;
-
-      var target = new T[sourceLength];
-      var targetIndex = 0;
-
-      var previous = true; // Set to true in order for trimming to occur on the left.
-
-      for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
-      {
-        var current = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(source[sourceIndex]);
-
-        if (!(previous && current))
-        {
-          target[targetIndex++] = current ? normalizeWith : source[sourceIndex];
-
-          previous = current;
-        }
-      }
-
-      System.Array.Resize(ref target, previous ? targetIndex - 1 : targetIndex);
-
+      var target = source.ToArray();
+      NormalizeAll(target, normalizeWith, predicate);
       return target;
     }
     /// <summary>Normalize all sequences of the specified characters throughout the read only span. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>

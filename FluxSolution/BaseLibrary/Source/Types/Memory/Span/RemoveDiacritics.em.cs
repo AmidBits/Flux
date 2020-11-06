@@ -7,11 +7,11 @@ namespace Flux
     {
       for (var index = source.Length - 1; index >= 0; index--)
       {
-        var c = source[index];
+        var sc = source[index];
 
-        if (RemoveDiacriticalLatinStroke(c) != c)
+        if (RemoveDiacriticalLatinStroke(sc) is var tc && tc != sc)
         {
-          source[index] = c;
+          source[index] = tc;
         }
       }
     }

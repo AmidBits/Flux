@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class Xtensions
   {
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
@@ -17,9 +18,11 @@ namespace Flux
 
       return true;
     }
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
       => EndsWith(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
@@ -32,6 +35,7 @@ namespace Flux
 
       return true;
     }
+    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
     public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
        => EndsWith(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
   }

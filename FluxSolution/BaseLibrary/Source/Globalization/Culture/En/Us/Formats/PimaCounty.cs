@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux.Globalization.EnUs.PimaCounty
@@ -119,6 +120,6 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public override int GetHashCode()
       => System.HashCode.Combine(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()
-      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpan().NormalizeAll(' ', char.IsWhiteSpace).ToString();
+      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".AsSpan().NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }
 }

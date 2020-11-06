@@ -4,25 +4,25 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.ShellSort<T>(comparer).SortInline((T[])source);
+      => new SpanSorting.ShellSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyShellSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.ShellSort<T>(comparer).SortInline(source);
+      => new SpanSorting.ShellSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     public static void ApplyShellSort<T>(this System.Span<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace IndexedSorting
+  namespace SpanSorting
   {
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
     public class ShellSort<T>
-      : ASpanSorting<T>
+      : ASpanSorting<T>, ISortableInPlace<T>
     {
       private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 
@@ -35,7 +35,7 @@ namespace Flux
       {
       }
 
-      public override void SortInline(System.Span<T> source)
+      public void SortInPlace(System.Span<T> source)
       {
         foreach (var gap in m_gaps)
         {
@@ -55,12 +55,6 @@ namespace Flux
             source[j] = temp;
           }
         }
-      }
-      public override T[] SortToCopy(System.ReadOnlySpan<T> source)
-      {
-        var target = source.ToArray();
-        SortInline(new System.Span<T>(target));
-        return target;
       }
     }
   }

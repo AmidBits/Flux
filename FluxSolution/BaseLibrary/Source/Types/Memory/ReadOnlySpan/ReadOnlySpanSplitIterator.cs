@@ -4,7 +4,7 @@ namespace Flux
     where T : System.IEquatable<T>
   {
     private System.ReadOnlySpan<T> m_source;
-    private T m_split;
+    private readonly T m_split;
 
     public System.ReadOnlySpan<T> Current { get; private set; }
 

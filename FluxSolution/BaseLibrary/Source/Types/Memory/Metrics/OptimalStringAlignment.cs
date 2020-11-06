@@ -7,25 +7,25 @@ namespace Flux
     /// <summary>Computes the optimal string alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     public static int OptimalStringAlignmentDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new IndexedMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance((T[])source, (T[])target);
+      => new SpanMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance((T[])source, (T[])target);
     /// <summary>Computes the optimal string alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     public static int OptimalStringAlignmentDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
-      => new IndexedMetrics.OptimalStringAlignment<T>().GetMetricDistance((T[])source, (T[])target);
+      => new SpanMetrics.OptimalStringAlignment<T>().GetMetricDistance((T[])source, (T[])target);
 
     /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     public static int OptimalStringAlignment<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new IndexedMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance(source, target);
+      => new SpanMetrics.OptimalStringAlignment<T>(comparer).GetMetricDistance(source, target);
     /// <summary>Computes the optimal sequence alignment (OSA) using the default comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     public static int OptimalStringAlignment<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new IndexedMetrics.OptimalStringAlignment<T>().GetMetricDistance(source, target);
+      => new SpanMetrics.OptimalStringAlignment<T>().GetMetricDistance(source, target);
   }
 
-  namespace IndexedMetrics
+  namespace SpanMetrics
   {
     /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>

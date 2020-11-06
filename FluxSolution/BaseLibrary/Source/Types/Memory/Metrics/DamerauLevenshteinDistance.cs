@@ -7,23 +7,23 @@ namespace Flux
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : notnull
-      => new IndexedMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance((T[])source, (T[])target);
+      => new SpanMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance((T[])source, (T[])target);
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
       where T : notnull
-      => new IndexedMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance((T[])source, (T[])target);
+      => new SpanMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance((T[])source, (T[])target);
 
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
       where T : notnull
-      => new IndexedMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
+      => new SpanMetrics.DamerauLevenshteinDistance<T>(comparer).GetMetricDistance(source, target);
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     public static int DamerauLevenshteinDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => new IndexedMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
+      => new SpanMetrics.DamerauLevenshteinDistance<T>().GetMetricDistance(source, target);
   }
 
-  namespace IndexedMetrics
+  namespace SpanMetrics
   {
     /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>

@@ -3,21 +3,14 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.MergeSort<T>(type, comparer).SortInline((T[])source);
+    public static System.Collections.Generic.IList<T> ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, SpanSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
+      => new SpanSorting.MergeSort<T>(type, comparer).SortToCopy((T[])source);
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, IndexedSorting.MergeSortType type)
-      => ApplyMergeSort(source, type, System.Collections.Generic.Comparer<T>.Default);
-
-    /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static void ApplyMergeSort<T>(this System.Span<T> source, IndexedSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new IndexedSorting.MergeSort<T>(type, comparer).SortInline(source);
-    /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static void ApplyMergeSort<T>(this System.Span<T> source, IndexedSorting.MergeSortType type)
-      => ApplyMergeSort(source, type, System.Collections.Generic.Comparer<T>.Default);
+    public static System.Collections.Generic.IList<T> ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, SpanSorting.MergeSortType type)
+      => new SpanSorting.MergeSort<T>(type, System.Collections.Generic.Comparer<T>.Default).SortToCopy((T[])source);
   }
 
-  namespace IndexedSorting
+  namespace SpanSorting
   {
     public enum MergeSortType
     {
@@ -28,7 +21,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public class MergeSort<T>
-      : ASpanSorting<T>
+      : ASpanSorting<T>, ISortableToCopy<T>
     {
       private readonly MergeSortType m_type;
 
@@ -42,13 +35,7 @@ namespace Flux
       {
       }
 
-      public override void SortInline(System.Span<T> source)
-      {
-        var target = SortToCopy(new System.ReadOnlySpan<T>(source.ToArray()));
-        for (var i = source.Length - 1; i >= 0; i--)
-          source[i] = target[i];
-      }
-      public override T[] SortToCopy(System.ReadOnlySpan<T> source)
+      public T[] SortToCopy(System.ReadOnlySpan<T> source)
       {
         var target = new T[source.Length];
 
@@ -66,6 +53,8 @@ namespace Flux
 
         return target;
       }
+      public T[] SortToCopy(System.Span<T> source)
+        => SortToCopy(source.ToArray());
 
       #region MergeSort bottom-up helpers (Span)
       // array A[] has the items to sort; array B[] is a work array
