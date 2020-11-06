@@ -71,7 +71,8 @@ namespace Collections.Generic
     public void MergeSort()
     {
       var original = m_text.ToCharArray();
-      var sortable = new Flux.SpanSorting.MergeSort<char>().SortToCopy(original.ToArray());
+      var sortable = new System.Span<char>(original.ToArray());
+      new Flux.SpanSorting.MergeSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }

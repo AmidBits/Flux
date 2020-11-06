@@ -9,8 +9,8 @@ namespace Flux
 
       if (totalWidth > source.Length)
       {
-        source.PadLeft(source.Length + (totalWidth - source.Length) / 2, paddingLeft);
-        source.PadRight(totalWidth, paddingRight);
+        PadLeft(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
+        PadRight(source, totalWidth, paddingRight);
       }
 
       return source;
@@ -22,8 +22,8 @@ namespace Flux
 
       if (totalWidth > source.Length)
       {
-        source.PadLeft(source.Length + (totalWidth - source.Length) / 2, paddingLeft);
-        source.PadRight(totalWidth, paddingRight);
+        PadLeft(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
+        PadRight(source, totalWidth, paddingRight);
       }
 
       return source;
@@ -53,7 +53,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (paddingString is null) throw new System.ArgumentNullException(nameof(paddingString));
 
-      while (source.Length + paddingString.Length < totalWidth) source.Append(paddingString);
+      source.Insert(source.Length, paddingString, (totalWidth - source.Length) / paddingString.Length);
       source.Append(paddingString, 0, totalWidth - source.Length);
 
       return source;

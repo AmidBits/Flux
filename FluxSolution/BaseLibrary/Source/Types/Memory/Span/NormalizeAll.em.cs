@@ -13,11 +13,13 @@ namespace Flux
 
       for (int sourceIndex = 0, sourceLength = source.Length; sourceIndex < sourceLength; sourceIndex++)
       {
-        var current = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(source[sourceIndex]);
+        var character = source[sourceIndex];
+
+        var current = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(character);
 
         if (!(previous && current))
         {
-          source[normalizeIndex++] = current ? normalizeWith : source[sourceIndex];
+          source[normalizeIndex++] = current ? normalizeWith : character;
 
           previous = current;
         }

@@ -86,11 +86,11 @@ namespace Flux.Model
     {
       var values = Squares.Select(i => ColumnLabels).ToList();
 
-      foreach (var sd in Squares.Zip(puzzle, (s, c) => (square: s, character: c)))
+      foreach (var (square, character) in Squares.Zip(puzzle, (s, c) => (square: s, character: c)))
       {
-        if (char.IsDigit(sd.character))
+        if (char.IsDigit(character))
         {
-          if (char.IsDigit(sd.character) && Assign(values, sd.square, sd.character.ToString()) == null)
+          if (char.IsDigit(character) && Assign(values, square, character.ToString()) == null)
           {
             yield return null;
             yield break;
@@ -206,7 +206,7 @@ namespace Flux.Model
       {
         foreach (var c in Flux.Model.Sudoku.ColumnLabels)
         {
-          sb.Append(values[Flux.Model.Sudoku.ToIndex(r.ToString() + c.ToString())].PadEven(width, ' ', ' '));
+          sb.Append(values[Flux.Model.Sudoku.ToIndex(r.ToString() + c.ToString())].ToStringBuilder().PadEven(width, ' ', ' '));
 
           if (c == '9') { sb.AppendLine(); } // After each unit row.
         }
