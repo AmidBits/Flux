@@ -22,7 +22,7 @@ namespace Flux.IO.Checksum
 
       var sum = 0;
 
-      var numbers = m_sequence.Reverse().ToArray();
+      var numbers = m_sequence.AsEnumerable().Reverse().ToArray();
 
       for (var index = 0; index < numbers.Length; index++)
       {

@@ -92,7 +92,7 @@ namespace Flux
       => (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? source.GetAddressBytes() is var bytes && bytes[0] >= 224 && bytes[0] <= 239 : throw new System.ArgumentOutOfRangeException(nameof(source), $"Not an IPv4 address ({source.AddressFamily}).");
 
     public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().Reverse().ToBigInteger();
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().AsEnumerable().Reverse().ToArray().ToBigInteger();
 
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {

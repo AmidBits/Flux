@@ -11,7 +11,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-
     }
 
     static void Main(string[] args)

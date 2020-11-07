@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Xtensions
   {
     /// <summary>Swap two elements by the specified indices.</summary>
-    public static System.Span<T> Swap<T>(this System.Span<T> source, int indexA, int indexB)
+    public static void Swap<T>(this System.Span<T> source, int indexA, int indexB)
     {
       if (source == null)
         throw new System.ArgumentNullException(nameof(source));
@@ -19,14 +19,21 @@ namespace Flux
         source[indexA] = source[indexB];
         source[indexB] = tmp;
       }
-
-      return source;
     }
 
-    public static System.Span<T> SwapFirstWith<T>(this System.Span<T> source, int index)
+    public static void SwapFirstWith<T>(this System.Span<T> source, int index)
       => Swap(source, 0, index);
 
-    public static System.Span<T> SwapLastWith<T>(this System.Span<T> source, int index)
+    public static void SwapLastWith<T>(this System.Span<T> source, int index)
       => Swap(source, index, source.Length - 1);
+
+    /// <summary>Swap two elements by the specified indices.</summary>
+    public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
+      => Swap((System.Span<T>)(T[])source, indexA, indexB);
+    public static void SwapFirstWith<T>(this System.Collections.Generic.IList<T> source, int index)
+      => Swap((System.Span<T>)(T[])source, 0, index);
+
+    public static void SwapLastWith<T>(this System.Collections.Generic.IList<T> source, int index)
+      => Swap((System.Span<T>)(T[])source, index, (source ?? throw new System.ArgumentNullException(nameof(source))).Count - 1);
   }
 }
