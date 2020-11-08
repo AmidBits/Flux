@@ -3,24 +3,104 @@ namespace Flux
   /// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-  public enum CardinalDirection { N, E, S, W }
+  public enum CardinalDirection
+  {
+    E = 0,
+    N = 8,
+    W = 16,
+    S = 24,
+  }
   /// <summary>The intercardinal (intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-  public enum InterCardinalDirection { NE, SE, SW, NW }
+  public enum InterCardinalDirection
+  {
+    NE = 4,
+    NW = 12,
+    SW = 20,
+    SE = 28,
+  }
   /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 45° from its two neighbours.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
-  public enum EightWindCompassRose { N, NE, E, SE, S, SW, W, NW }
+  public enum EightWindCompassRose
+  {
+    E = CardinalDirection.E,
+    NE = InterCardinalDirection.NE,
+    N = CardinalDirection.N,
+    NW = InterCardinalDirection.NW,
+    W = CardinalDirection.W,
+    SW = InterCardinalDirection.SW,
+    S = CardinalDirection.S,
+    SE = InterCardinalDirection.SE,
+  }
   /// <summary>The eight principal winds and the eight half-winds together form the 16-wind compass rose, with each compass point at a ​22 1⁄2° angle from its two neighbours.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#16-wind_compass_rose"/>
-  public enum SixteenWindCompassRose { N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW }
+  public enum SixteenWindCompassRose
+  {
+    E = CardinalDirection.E,
+    ENE = 2,
+    NE = InterCardinalDirection.NE,
+    NNE = 6,
+    N = CardinalDirection.N,
+    NNW = 10,
+    NW = InterCardinalDirection.NW,
+    WNW = 14,
+    W = CardinalDirection.W,
+    WSW = 18,
+    SW = InterCardinalDirection.SW,
+    SSW = 22,
+    S = CardinalDirection.S,
+    SSE = 26,
+    SE = InterCardinalDirection.SE,
+    ESE = 30,
+  }
   /// <summary>The 32-wind compass rose is yielded from the eight principal winds, eight half-winds and sixteen quarter-winds combined together, with each compass direction point at an ​11 1⁄4° angle from the next.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
-  public enum ThirtyTwoWindCompassRose { N, NbE, NNE, NEbN, NE, NEbE, ENE, EbN, E, EbS, ESE, SEbE, SE, SEbS, SSE, SbE, S, SbW, SSW, SWbS, SW, SWbW, WSW, WbS, W, WbN, WNW, NWbW, NW, NWbN, NNW, NbW }
+  public enum ThirtyTwoWindCompassRose
+  {
+    N = SixteenWindCompassRose.N,
+    NbE = 1,
+    NNE = SixteenWindCompassRose.NNE,
+    NEbN = 3,
+    NE = SixteenWindCompassRose.NE,
+    NEbE = 5,
+    ENE = SixteenWindCompassRose.ENE,
+    EbN = 7,
+    E = SixteenWindCompassRose.E,
+    EbS = 9,
+    ESE = SixteenWindCompassRose.ESE,
+    SEbE = 11,
+    SE = SixteenWindCompassRose.SE,
+    SEbS = 13,
+    SSE = SixteenWindCompassRose.SSE,
+    SbE = 15,
+    S = SixteenWindCompassRose.S,
+    SbW = 17,
+    SSW = SixteenWindCompassRose.SSW,
+    SWbS = 19,
+    SW = SixteenWindCompassRose.SW,
+    SWbW = 21,
+    WSW = SixteenWindCompassRose.WSW,
+    WbS = 23,
+    W = SixteenWindCompassRose.W,
+    WbN = 25,
+    WNW = SixteenWindCompassRose.WNW,
+    NWbW = 27,
+    NW = SixteenWindCompassRose.NW,
+    NWbN = 29,
+    NNW = SixteenWindCompassRose.NNW,
+    NbW = 31,
+  }
 
   /// <summary>The compass point directions.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
-  public enum PointsOfTheCompass { CardinalDirections = 4, EightWinds = 8, SixteenWinds = 16, ThirtyTwoWinds = 32 }
+  public enum PointsOfTheCompass
+  {
+    CardinalDirections = 4,
+    EightWinds = 8,
+    SixteenWinds = 16,
+    ThirtyTwoWinds = 32
+  }
 
   public static class EarthRadii
   {
