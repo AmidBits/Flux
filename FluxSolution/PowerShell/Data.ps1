@@ -534,7 +534,7 @@ function Invoke-SqlCreateTableIfNotExists
                 $(@(foreach($dataRow in $schemaTable.Rows) {
                     $columnName = if([string]::IsNullOrWhiteSpace($dataRow.ColumnName)) {"Column_$($dataRow.ColumnOrdinal)"} else {$dataRow.ColumnName}
                     [type]$dataType = if($dataRow.DataType -eq [dbnull]::Value) {$null} else {$dataRow.DataType}
-                    #Determin the SQL data type name for the column.
+                    # Determine the SQL data type name for the column.
                     if($dataType.Name -eq 'boolean') {$dataTypeName = 'bit'}
                     elseif($dataType.Name -eq 'byte') {$dataTypeName = 'tinyint'}
                     elseif($dataType.Name -eq 'byte[]') {$dataTypeName = 'varbinary'}
@@ -554,7 +554,7 @@ function Invoke-SqlCreateTableIfNotExists
                     elseif($dataType.Name -eq 'uint32') {$dataTypeName = 'int'}
                     elseif($dataType.Name -eq 'uint64') {$dataTypeName = 'bigint'}
                     elseif($dataType.Name -eq 'object') {$dataTypeName = 'sql_variant'}
-                    # Determin the SQL data type argument for the column.
+                    # Determine the SQL data type argument for the column.
                     if($dataTypeName -eq 'binary' -or $dataTypeName -eq 'char') {$dataTypeArgument = '(8000)'}
                     elseif($dataTypeName -eq 'datetime2' -or $dataTypeName -eq 'datetimeoffset' -or $dataTypeName -eq 'time') {$dataTypeArgument = '(7)'}
                     elseif($dataTypeName -eq 'decimal' -or $dataTypeName -eq 'numeric') {$dataTypeArgument = '(38,19)'}

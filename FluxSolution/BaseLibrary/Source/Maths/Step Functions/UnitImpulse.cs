@@ -16,11 +16,11 @@ namespace Flux
     /// <summary>Returns the discrete-time unit impulse of the specified value, i.e. 0.0 when not zero, and 1.0 when zero.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
     public static float UnitImpulse(float value)
-      => value != 0 ? 0 : 1;
+      => value != 0 ? 0 : value == 0 ? 1 : throw new System.ArithmeticException();
     /// <summary>Returns the discrete-time unit impulse of the specified value, i.e. 0.0 when not zero, and 1.0 when zero.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
     public static double UnitImpulse(double value)
-      => value != 0 ? 0 : 1;
+      => value != 0 ? 0 : value == 0 ? 1 : throw new System.ArithmeticException();
 
     /// <summary>Returns the discrete-time unit impulse of the specified value, i.e. 0 when not zero, and 1 when zero.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
