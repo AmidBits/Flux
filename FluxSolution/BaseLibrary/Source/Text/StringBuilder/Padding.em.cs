@@ -30,31 +30,31 @@ namespace Flux
     }
 
     /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
-    public static System.Text.StringBuilder PadLeft(this System.Text.StringBuilder source, int totalWidth, char paddingChar)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Insert(0, paddingChar.ToString(), totalWidth - source.Length);
+    public static System.Text.StringBuilder PadLeft(this System.Text.StringBuilder source, int totalWidth, char padding)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Insert(0, padding.ToString(), totalWidth - source.Length);
     /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
-    public static System.Text.StringBuilder PadLeft(this System.Text.StringBuilder source, int totalWidth, string paddingString)
+    public static System.Text.StringBuilder PadLeft(this System.Text.StringBuilder source, int totalWidth, string padding)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (paddingString is null) throw new System.ArgumentNullException(nameof(paddingString));
+      if (padding is null) throw new System.ArgumentNullException(nameof(padding));
 
-      source.Insert(0, paddingString, (totalWidth - source.Length) / paddingString.Length);
-      source.Insert(0, paddingString.Substring(paddingString.Length - (totalWidth - source.Length)));
+      source.Insert(0, padding, (totalWidth - source.Length) / padding.Length);
+      source.Insert(0, padding.Substring(padding.Length - (totalWidth - source.Length)));
 
       return source;
     }
 
     /// <summary>Pads this StringBuilder on the right with the specified padding character.</summary>
-    public static System.Text.StringBuilder PadRight(this System.Text.StringBuilder source, int totalWidth, char paddingChar)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Append(paddingChar, totalWidth - source.Length);
+    public static System.Text.StringBuilder PadRight(this System.Text.StringBuilder source, int totalWidth, char padding)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).Append(padding, totalWidth - source.Length);
     /// <summary>Pads this StringBuilder on the right with the specified padding string.</summary>
-    public static System.Text.StringBuilder PadRight(this System.Text.StringBuilder source, int totalWidth, string paddingString)
+    public static System.Text.StringBuilder PadRight(this System.Text.StringBuilder source, int totalWidth, string padding)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (paddingString is null) throw new System.ArgumentNullException(nameof(paddingString));
+      if (padding is null) throw new System.ArgumentNullException(nameof(padding));
 
-      source.Insert(source.Length, paddingString, (totalWidth - source.Length) / paddingString.Length);
-      source.Append(paddingString, 0, totalWidth - source.Length);
+      source.Insert(source.Length, padding, (totalWidth - source.Length) / padding.Length);
+      source.Append(padding, 0, totalWidth - source.Length);
 
       return source;
     }
