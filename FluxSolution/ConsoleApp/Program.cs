@@ -7,27 +7,50 @@ namespace ConsoleApp
 {
   class Program
   {
-    static double Integral(double range, int steps, System.Func<double, double> function)
-    {
-      var stepSize = range / steps;
-
-      return System.Linq.Enumerable.Range(1, steps).AsParallel().Sum(i => function((double)i / (double)steps) * stepSize);
-
-      var sum = 0d;
-
-      for (var iteration = 1; iteration <= steps; iteration++)
-        sum += function(iteration / steps) * stepSize;
-
-      return sum;
-    }
-
     private static void TimedMain(string[] _)
     {
-      for (var steps = 1; steps < 100; steps++)
+      //RegularForLoop();
+      //ParallelForLoop();
+    }
+
+    static void RegularForLoop()
+    {
+      var startDateTime = DateTime.Now;
+      Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+      for (int i = 0; i < 10; i++)
       {
-        System.Console.WriteLine(Integral(1, steps, v => System.Math.Sqrt(v)));
-        System.Console.WriteLine(System.Linq.Enumerable.Range(1,steps).AsParallel().Sum());
+        var total = ExpensiveTask();
+        System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
       }
+      var endDateTime = DateTime.Now;
+      Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+      var span = endDateTime - startDateTime;
+      Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+    }
+
+    static void ParallelForLoop()
+    {
+      var startDateTime = DateTime.Now;
+      Console.WriteLine($"{nameof(ParallelForLoop)} started at {startDateTime}.");
+      System.Threading.Tasks.Parallel.For(0, 10, i =>
+      {
+        var total = ExpensiveTask();
+        System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+      });
+      var endDateTime = DateTime.Now;
+      Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+      var span = endDateTime - startDateTime;
+      Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+    }
+
+    static long ExpensiveTask()
+    {
+      var total = 0L;
+      for (var i = 1; i < int.MaxValue; i++)
+      {
+        total += i;
+      }
+      return total;
     }
 
     static void Main(string[] args)
