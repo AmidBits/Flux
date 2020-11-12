@@ -2,27 +2,25 @@
 {
 	public interface IGameObject
 	{
+		public System.Guid Identity { get; }
+	
 		public string Name { get; }
 	}
 
-	public interface IParentObject
+	public interface IObjectTimeLinear
 	{
-		System.Collections.Generic.List<IGameObject> Children { get; }
-	}
-
-	public interface IObjectStartable
-	{
-		void StartObject();
-	}
-
-	public interface IObjectUpdatable
-	{
+		void InitializeObject();
 		void UpdateObject(float deltaTime);
 	}
 
-	public interface IObjectTransform
+	public interface IObjectSubHierarchical
 	{
-		System.Numerics.Vector3 ObjectPosition { get; set; }
+		System.Collections.Generic.List<IGameObject> ChildObjects { get; }
+	}
+
+	public interface IObjectTransformable
+	{
+		System.Numerics.Vector3 ObjectLocation { get; set; }
 		System.Numerics.Quaternion ObjectRotation { get; set; }
 		System.Numerics.Vector3 ObjectScale { get; set; }
 	}

@@ -11,6 +11,26 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			do
+			{
+				var ts = Flux.Random.NumberGenerator.Crypto.NextTimeSpan(new System.TimeSpan(-15, 0, 0, 0), new System.TimeSpan(15, 0, 0, 0));
+
+				System.Console.WriteLine($"Xsd:{ts.ToStringXsd()}");
+				System.Console.WriteLine($"XsdB:{ts.ToStringXsdBasic()}");
+				System.Console.WriteLine($"XsdBE:{ts.ToStringXsdBasicExtended()}");
+
+				//System.Console.WriteLine($" T:{ts.Ticks / 10}");
+				//System.Console.WriteLine($" S:{ts.TotalSeconds}");
+				//System.Console.WriteLine($"MS:{ts.TotalMilliseconds}");
+				//System.Console.WriteLine($"1:{ts.ToStringOf()}");
+				//System.Console.WriteLine($"2:{ts.ToStringOfSeconds()}");
+				//System.Console.WriteLine($"ms:{ts.GetTotalMicroseconds()}");
+				//System.Console.WriteLine($"ns:{ts.GetTotalNanoseconds():N20}".Replace(@",", string.Empty));
+
+				System.Console.WriteLine();
+			}
+			while (System.Console.ReadKey().Key != System.ConsoleKey.Escape);
+
 			//RegularForLoop();
 			//ParallelForLoop();
 		}
