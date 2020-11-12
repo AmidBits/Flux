@@ -7,7 +7,7 @@ namespace Flux
       where T : System.IEquatable<T>
       => source.Length >= 2 && left.Equals(source[0]) && right.Equals(source[source.Length - 1]);
     /// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. SQL brackets, or parenthesis.</summary>
-    public static System.Span<T> Unwrap<T>(this System.Span<T> source, T left, T right)
+    public static System.Span<T> Unwrap<T>(this System.Span<T> source)
       where T : System.IEquatable<T>
       => source.Slice(1, source.Length - 2);
     /// <summary>Add the specified characters to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped. E.g. in SQL brackets, or parenthesis.</summary>
