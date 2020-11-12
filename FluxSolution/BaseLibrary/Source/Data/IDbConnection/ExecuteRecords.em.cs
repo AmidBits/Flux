@@ -27,7 +27,7 @@ namespace Flux
 
     /// <summary>Returns a sequence of <see cref="System.Data.IDataRecord"/> and provides a SchemaTable from each of the result sets with all records.</summary>
     /// <returns>A sequence of <typeparamref name="TResult"/>.</returns>
-    public static System.Collections.Generic.IEnumerable<TResult> ExecuteRecords<TResult>(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<System.Data.IDataRecord, System.Data.DataTable, TResult> recordSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> ExecuteRecords<TResult>(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<System.Data.IDataRecord, System.Data.DataTable?, TResult> recordSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (recordSelector is null) throw new System.ArgumentNullException(nameof(recordSelector));
@@ -45,6 +45,8 @@ namespace Flux
 
         while (idr.Read())
           yield return recordSelector(idr, dt);
+
+        dt.Dispose();
       }
       while (idr.NextResult());
     }

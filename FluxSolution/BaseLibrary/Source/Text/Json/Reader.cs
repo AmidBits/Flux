@@ -143,7 +143,7 @@ namespace Flux.Text
 			return tokenStartIndex;
 		}
 
-		public T Deserialize<T>(System.Text.Json.JsonSerializerOptions? options = null)
+		public T? Deserialize<T>(System.Text.Json.JsonSerializerOptions? options = null)
 		{
 			var tokenStartIndex = DeserializePre(out var firstSegment, out var firstSegmentStartIndex);
 
@@ -195,7 +195,7 @@ namespace Flux.Text
 		[System.CLSCompliant(false)]
 		public sbyte GetSByte() => m_jsonReader.GetSByte();
 		public float GetSingle() => m_jsonReader.GetSingle();
-		public string GetString() => m_jsonReader.GetString();
+		public string? GetString() => m_jsonReader.GetString();
 		[System.CLSCompliant(false)]
 		public ushort GetUInt16() => m_jsonReader.GetUInt16();
 		[System.CLSCompliant(false)]
@@ -204,7 +204,7 @@ namespace Flux.Text
 		public ulong GetUInt64() => m_jsonReader.GetUInt64();
 
 		public bool TryGetDecimal(out byte value) => m_jsonReader.TryGetByte(out value);
-		public bool TryGetBytesFromBase64(out byte[] value) => m_jsonReader.TryGetBytesFromBase64(out value);
+		public bool TryGetBytesFromBase64(out byte[]? value) => m_jsonReader.TryGetBytesFromBase64(out value);
 		public bool TryGetDateTime(out System.DateTime value) => m_jsonReader.TryGetDateTime(out value);
 		public bool TryGetDateTimeOffset(out System.DateTimeOffset value) => m_jsonReader.TryGetDateTimeOffset(out value);
 		public bool TryGetDecimal(out decimal value) => m_jsonReader.TryGetDecimal(out value);

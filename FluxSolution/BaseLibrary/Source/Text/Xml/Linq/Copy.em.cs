@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Xtensions
   {
-    public static System.Xml.Linq.XElement Copy(this System.Xml.Linq.XElement source)
+    public static System.Xml.Linq.XElement? Copy(this System.Xml.Linq.XElement source)
     {
       var xd = new System.Xml.Linq.XDocument();
 

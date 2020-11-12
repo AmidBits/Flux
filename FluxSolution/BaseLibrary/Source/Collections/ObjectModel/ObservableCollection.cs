@@ -51,7 +51,7 @@ namespace Flux
     }
 
     /// <summary>Event handler hooked to all items PropertyChanged.</summary>
-    private void OnItemPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       OnPropertyChanged(new PropertyChangedEventArgsX(e.PropertyName, sender));
     }

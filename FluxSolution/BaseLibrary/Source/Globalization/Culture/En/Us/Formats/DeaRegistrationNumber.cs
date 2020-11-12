@@ -17,7 +17,7 @@ namespace Flux.Globalization.EnUs
     public string AffixedID { get; private set; }
 
     public bool IsValid
-      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
+      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString()!);
 
     public static DeaRegistrationNumber Parse(string text)
     {

@@ -21,7 +21,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       var xd = new System.Xml.XmlDocument();
-      using (var writer = xd.CreateNavigator().AppendChild())
+      using (var writer = xd.CreateNavigator()?.AppendChild())
         source.WriteXml(writer);
       return xd;
     }

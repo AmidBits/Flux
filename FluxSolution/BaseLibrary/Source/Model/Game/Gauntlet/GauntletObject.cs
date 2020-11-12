@@ -1,14 +1,26 @@
 ﻿namespace Flux.Model.Gaming.Gauntlet
 {
-  public class GauntletObject : GameObject
-  {
-    public GauntletObject(string name)
-      : base(name)
-    {
-    }
+	public class GameObject
+	{
+		public string Name { get; }
 
-    public virtual void Update(float deltaTime)
-    {
-    }
-  }
+		public GameObject(string name)
+		{
+			Name = name;
+		}
+
+		public bool UpdateDisabled { get; set; }
+	}
+
+	public class GauntletObject : GameObject
+	{
+		public GauntletObject(string name)
+			: base(name)
+		{
+		}
+
+		public virtual void Update(float deltaTime)
+		{
+		}
+	}
 }

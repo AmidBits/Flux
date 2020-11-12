@@ -1,32 +1,34 @@
 namespace Flux.Probability
 {
-  // A crypto-strength, threadsafe, all-static RNG.
-  // Still not a great API. We can do better.
-  public static class BetterRandom
-  {
-    private static readonly System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator> crng = new System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator>(System.Security.Cryptography.RandomNumberGenerator.Create);
-    private static readonly System.Threading.ThreadLocal<byte[]> bytes = new System.Threading.ThreadLocal<byte[]>(() => new byte[sizeof(int)]);
+	// A crypto-strength, threadsafe, all-static RNG.
+	// Still not a great API. We can do better.
+	public static class BetterRandom
+	{
+		private static readonly System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator> crng = new System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator>(System.Security.Cryptography.RandomNumberGenerator.Create);
+		private static readonly System.Threading.ThreadLocal<byte[]> bytes = new System.Threading.ThreadLocal<byte[]>(() => new byte[sizeof(int)]);
 
-    public static int NextInt()
-    {
-      crng.Value!.GetBytes(bytes.Value);
+		public static int NextInt()
+		{
+			if (bytes.Value is null) throw new System.NullReferenceException();
 
-      return System.BitConverter.ToInt32(bytes.Value ?? throw new System.NullReferenceException(), 0) & int.MaxValue;
-    }
+			crng.Value!.GetBytes(bytes.Value);
 
-    public static double NextDouble()
-    {
-      while (true)
-      {
-        long x = NextInt() & 0x001FFFFF;
-        x <<= 31;
-        x |= (long)NextInt();
-        double n = x;
-        const double d = 1L << 52;
-        double q = n / d;
-        if (q != 1.0)
-          return q;
-      }
-    }
-  }
+			return System.BitConverter.ToInt32(bytes.Value, 0) & int.MaxValue;
+		}
+
+		public static double NextDouble()
+		{
+			while (true)
+			{
+				long x = NextInt() & 0x001FFFFF;
+				x <<= 31;
+				x |= (long)NextInt();
+				double n = x;
+				const double d = 1L << 52;
+				double q = n / d;
+				if (q != 1.0)
+					return q;
+			}
+		}
+	}
 }

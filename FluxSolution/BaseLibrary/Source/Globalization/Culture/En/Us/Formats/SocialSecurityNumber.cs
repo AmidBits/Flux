@@ -15,7 +15,7 @@ namespace Flux.Globalization.EnUs
     public string SSSS { get; private set; }
 
     public bool IsValid
-      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
+      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString()!);
 
     public static SocialSecurityNumber Parse(string text)
     {

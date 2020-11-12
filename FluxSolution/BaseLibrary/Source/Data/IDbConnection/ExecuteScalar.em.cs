@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Executes the specified command text and returns the value in the first column of the first row in the first resultset returned by the query. Additional columns, rows and resultsets are ignored.</summary>
     /// <returns>The value in the first column of the first row in the first resultset.</returns>
     /// <see cref="System.Data.IDbCommand.ExecuteScalar"/>
-    public static object ExecuteScalar(this System.Data.IDbConnection source, string commandText, int commandTimeout)
+    public static object? ExecuteScalar(this System.Data.IDbConnection source, string commandText, int commandTimeout)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -16,7 +16,7 @@ namespace Flux
 
       return c.ExecuteScalar();
     }
-    public static bool TryExecuteScalar(this System.Data.IDbConnection source, string commandText, int commandTimeout, out object result)
+    public static bool TryExecuteScalar(this System.Data.IDbConnection source, string commandText, int commandTimeout, out object? result)
     {
       try
       {

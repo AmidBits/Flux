@@ -160,7 +160,6 @@ namespace Flux
     {
       if (Thread != null)
       {
-        Thread.Abort();
         Thread = null!;
       }
 

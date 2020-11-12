@@ -228,9 +228,9 @@ namespace Flux.Collections.Generic
       public Enumerator(Deque<T> source)
       {
         m_current = default!;
-        m_index = m_source.m_head;
+        m_index = source.m_head;
         m_source = source;
-        m_version = m_source.m_version;
+        m_version = source.m_version;
       }
 
       public T Current

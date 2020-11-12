@@ -1,38 +1,38 @@
 namespace Flux
 {
-  public static partial class Xtensions
-  {
-    /// <summary>Decrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
-    public static void Decrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
-    {
-      using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
+	public static partial class Xtensions
+	{
+		/// <summary>Decrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
+		public static void Decrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
+		{
+			using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
 
-      using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm);
-
-#pragma warning disable CA5373 // Do not use obsolete key derivation function
-      algo.Key = pdb.GetBytes(algo.KeySize / 8);
-      algo.IV = pdb.GetBytes(algo.BlockSize / 8);
-#pragma warning restore CA5373 // Do not use obsolete key derivation function
-
-      using var cs = new System.Security.Cryptography.CryptoStream(output, algo.CreateDecryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
-
-      input?.CopyTo(cs); // input.WriteTo(cs);
-    }
-    /// <summary>Encrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
-    public static void Encrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
-    {
-      using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
-
-      using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm);
+			using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm) ?? throw new System.NullReferenceException();
 
 #pragma warning disable CA5373 // Do not use obsolete key derivation function
-      algo.Key = pdb.GetBytes(algo.KeySize / 8);
-      algo.IV = pdb.GetBytes(algo.BlockSize / 8);
+			algo.Key = pdb.GetBytes(algo.KeySize / 8);
+			algo.IV = pdb.GetBytes(algo.BlockSize / 8);
 #pragma warning restore CA5373 // Do not use obsolete key derivation function
 
-      using var cs = new System.Security.Cryptography.CryptoStream(output, algo.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
+			using var cs = new System.Security.Cryptography.CryptoStream(output, algo.CreateDecryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
 
-      input?.CopyTo(cs);
-    }
-  }
+			input?.CopyTo(cs); // input.WriteTo(cs);
+		}
+		/// <summary>Encrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
+		public static void Encrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
+		{
+			using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
+
+			using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm) ?? throw new System.NullReferenceException();
+
+#pragma warning disable CA5373 // Do not use obsolete key derivation function
+			algo.Key = pdb.GetBytes(algo.KeySize / 8);
+			algo.IV = pdb.GetBytes(algo.BlockSize / 8);
+#pragma warning restore CA5373 // Do not use obsolete key derivation function
+
+			using var cs = new System.Security.Cryptography.CryptoStream(output, algo.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
+
+			input?.CopyTo(cs);
+		}
+	}
 }

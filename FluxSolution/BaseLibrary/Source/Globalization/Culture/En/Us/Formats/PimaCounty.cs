@@ -60,7 +60,7 @@ namespace Flux.Globalization.EnUs.PimaCounty
     public string Unit { get; private set; }
 
     public bool IsValid
-      => Regex.IsMatch(ToString());
+      => Regex.IsMatch(ToString()!);
 
     public static StreetAddress Parse(string text)
     {

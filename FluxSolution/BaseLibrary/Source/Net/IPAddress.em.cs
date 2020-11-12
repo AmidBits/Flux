@@ -116,6 +116,9 @@ namespace Flux
 
         socket.Connect(RemoteTest);
 
+        if (socket.LocalEndPoint is null)
+          throw new System.NullReferenceException();
+
         result = ((System.Net.IPEndPoint)socket.LocalEndPoint).Address;
         return true;
       }

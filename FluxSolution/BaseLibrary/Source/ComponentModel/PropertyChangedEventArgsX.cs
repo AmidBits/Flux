@@ -4,9 +4,9 @@ namespace Flux
   public class PropertyChangedEventArgsX
     : System.ComponentModel.PropertyChangedEventArgs
   {
-    public object Sender { get; private set; }
+    public object? Sender { get; private set; }
 
-    public PropertyChangedEventArgsX(string propertyName, object sender)
+    public PropertyChangedEventArgsX(string? propertyName, object? sender)
       : base(propertyName)
     {
       Sender = sender;

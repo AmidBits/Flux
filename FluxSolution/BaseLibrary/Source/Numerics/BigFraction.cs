@@ -261,7 +261,7 @@ namespace Flux.Numerics
         return Negate(NthRoot(Negate(value), n, maxError));
       }
 
-      if (maxError == null || maxError.Sign <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxError), "Epsilon must be positive");
+      if (maxError.Sign <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxError), "Epsilon must be positive");
 
       if (value.IsZero) return Zero;
       if (n == 1) return value;

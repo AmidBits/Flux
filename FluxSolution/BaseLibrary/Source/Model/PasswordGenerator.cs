@@ -86,7 +86,9 @@ namespace Flux.Model
     /// <summary>Creates a new sequence where all chars from the entire set of specified characters are randomly distributed over and over (unbiased).</summary>
     public static System.Collections.Generic.IEnumerable<char> GetRandomUnbiased(string characterPool)
     {
-      for (var index = ushort.MaxValue / characterPool?.Length ?? throw new System.ArgumentNullException(nameof(characterPool)); index > 0; index--)
+      if (characterPool is null) throw new System.ArgumentNullException(nameof(characterPool));
+
+      for (var index = ushort.MaxValue / characterPool.Length ; index > 0; index--)
       {
         foreach (var character in characterPool.Distinct().RandomElements(1))
         {

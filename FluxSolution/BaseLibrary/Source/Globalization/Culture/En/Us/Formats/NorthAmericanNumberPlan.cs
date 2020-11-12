@@ -16,7 +16,7 @@ namespace Flux.Globalization.EnUs
     public string XXXX { get; private set; }
 
     public bool IsValid
-      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString());
+      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString()!);
 
     public static NorthAmericanNumberingPlan Parse(string text)
     {
