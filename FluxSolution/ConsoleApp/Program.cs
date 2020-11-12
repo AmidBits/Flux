@@ -13,7 +13,6 @@ namespace ConsoleApp
 		{
 			//RegularForLoop();
 			//ParallelForLoop();
-
 		}
 
 		static void RegularForLoop()
