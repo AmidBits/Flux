@@ -83,9 +83,9 @@
 
 //    // Operators
 //    public static bool operator ==(MatrixFixed<TValue> a, MatrixFixed<TValue> b)
-//      => !(a is null) && a.Equals(b);
+//      => a is not null && a.Equals(b);
 //    public static bool operator !=(MatrixFixed<TValue> a, MatrixFixed<TValue> b)
-//      => !(a is null) && !a.Equals(b);
+//      => a is not null && !a.Equals(b);
 //    // IEquatable
 //    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] MatrixFixed<TValue> other)
 //    {

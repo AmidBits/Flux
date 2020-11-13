@@ -10,6 +10,6 @@ namespace Flux.IFormatProvider
       => formatType == typeof(System.ICustomFormatter) ? this : null!;
 
     protected static string HandleOtherFormats(string? format, object? arg)
-      => !(arg is null) && arg is System.IFormattable ? ((System.IFormattable)arg).ToString(format, System.Globalization.CultureInfo.CurrentCulture) : arg != null ? arg.ToString() ?? string.Empty : string.Empty;
+      => arg is not null && arg is System.IFormattable ? ((System.IFormattable)arg).ToString(format, System.Globalization.CultureInfo.CurrentCulture) : arg != null ? arg.ToString() ?? string.Empty : string.Empty;
   }
 }

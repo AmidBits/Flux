@@ -63,7 +63,7 @@ namespace Flux
         => ((UnicodeCategoryMajorMinorCode)System.Enum.Parse(typeof(UnicodeCategoryMajorMinorCode), $"{codeMajor}{codeMinor}"));
       /// <summary>Parses a string with both major and minor portions.</summary>
       public static UnicodeCategoryMajorMinorCode Parse(string codeMajorMinor)
-        => (!(codeMajorMinor is null) && codeMajorMinor.Length == 2) ? Parse(codeMajorMinor[0], codeMajorMinor[1]) : throw new System.ArgumentOutOfRangeException(nameof(codeMajorMinor));
+        => (codeMajorMinor is not null && codeMajorMinor.Length == 2) ? Parse(codeMajorMinor[0], codeMajorMinor[1]) : throw new System.ArgumentOutOfRangeException(nameof(codeMajorMinor));
       /// <summary>Try to parse a string with both major and minor portions.</summary>
       public static bool TryParse(string categoryCode, out UnicodeCategoryMajorMinorCode result)
       {

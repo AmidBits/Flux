@@ -13,7 +13,7 @@ namespace Flux.Resources
     public virtual System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
       => GetStrings(uri).ToTypedObjects((string value, int index) =>
       {
-        if (!(FieldTypes is null) && index >= 0 && index < FieldTypes.Count && FieldTypes[index] != typeof(string)) // Are we converting?
+        if (FieldTypes is not null && index >= 0 && index < FieldTypes.Count && FieldTypes[index] != typeof(string)) // Are we converting?
           return string.IsNullOrEmpty(value) ? Reflection.Helper.GetDefaultValue(FieldTypes[index]) ?? System.DBNull.Value : Convert.ChangeType(value, null, FieldTypes[index]); // Either convert the value to the specified field type, or if the value is empty (or externally null) then return the default for the specified type.
 
         return value; // Either we have no field type, or the field type is a string, so we simply return the value, as is.

@@ -21,7 +21,7 @@ namespace Flux
 
       for (int index0 = 0, length0 = source.Length; index0 < length0; index0++)
       {
-        if (!(verticalSeparatorRow is null) && index0 > 0)
+        if (verticalSeparatorRow is not null && index0 > 0)
           yield return verticalSeparatorRow;
 
         yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source[index0].Select(o => (object?)o).ToArray());
@@ -47,7 +47,7 @@ namespace Flux
 
       for (int index0 = 0, length0 = source.GetLength(0); index0 < length0; index0++)
       {
-        if (!(verticalSeparatorRow is null) && index0 > 0)
+        if (verticalSeparatorRow is not null && index0 > 0)
           yield return verticalSeparatorRow;
 
         yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, index0).Select((e, i) => formatSelector(e.item, i)).ToArray());

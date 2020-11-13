@@ -21,7 +21,7 @@ namespace Flux
       using var reader = new System.IO.StreamReader(uri.GetStream(), encoding);
 
       while (!reader.EndOfStream)
-        if (reader.ReadLine() is var line && !(line is null) && line.Length >= 0)
+        if (reader.ReadLine() is var line && line is not null && line.Length >= 0)
           yield return line;
     }
 

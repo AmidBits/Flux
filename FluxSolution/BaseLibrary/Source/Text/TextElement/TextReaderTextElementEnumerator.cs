@@ -90,7 +90,7 @@ namespace Flux
           {
             var grapheme = m_stringInfo.SubstringByTextElements(0, 1);
 
-            if (!(grapheme is null) && grapheme.Length > 0)
+            if (grapheme is not null && grapheme.Length > 0)
             {
               m_charIndex += grapheme.Length;
 

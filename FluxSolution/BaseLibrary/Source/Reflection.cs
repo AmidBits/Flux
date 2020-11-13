@@ -6,7 +6,7 @@ namespace Flux.Reflection
   {
     public static object? GetDefaultValue(System.Type type)
     {
-      if (!(type is null) && type.IsValueType)
+      if (type is not null && type.IsValueType)
         return System.Activator.CreateInstance(type);
 
       return null;
