@@ -15,19 +15,19 @@ namespace Flux.Diagnostics
 
 		public void Write(string message)
 		{
-			System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringISO8601Full()} {message}" });
+			System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} {message}" });
 		}
 
 		public void Write(params string[] messages)
 		{
-			System.IO.File.AppendAllLines(_logFileName, messages.Select((m, i) => i == 0 ? $"{System.DateTime.Now.ToStringISO8601Full()} {m}" : $"{m}"));
+			System.IO.File.AppendAllLines(_logFileName, messages.Select((m, i) => i == 0 ? $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} {m}" : $"{m}"));
 		}
 
 		public void Write(System.Exception exception)
 		{
 			if (exception is null) throw new System.ArgumentNullException(nameof(exception));
 
-			System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringISO8601Full()} EXCEPTION {exception.Message}", exception.StackTrace ?? @"No StackTrace Available." });
+			System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} EXCEPTION {exception.Message}", exception.StackTrace ?? @"No StackTrace Available." });
 		}
 	}
 }

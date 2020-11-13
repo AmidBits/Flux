@@ -11,9 +11,18 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			var dt = System.DateTime.Now;
+
+			System.Console.WriteLine($"TimeZone: {dt.ToStringKind()}");
+			System.Console.WriteLine($"TimeZone: {dt.ToStringSql()}");
+			System.Console.WriteLine($"ISO8601OrdinalDate: {dt.ToStringISO8601OrdinalDate()}");
+			System.Console.WriteLine($"ISO8601WeekDate: {dt.ToStringISO8601WeekDate()}");
+
 			do
 			{
 				var ts = Flux.Random.NumberGenerator.Crypto.NextTimeSpan(new System.TimeSpan(-15, 0, 0, 0), new System.TimeSpan(15, 0, 0, 0));
+
+				System.Console.WriteLine($"Of:{ts.ToStringOf()}");
 
 				System.Console.WriteLine($"Xsd:{ts.ToStringXsd()}");
 				System.Console.WriteLine($"XsdB:{ts.ToStringXsdBasic()}");
@@ -29,7 +38,20 @@ namespace ConsoleApp
 
 				System.Console.WriteLine();
 			}
-			while (System.Console.ReadKey().Key != System.ConsoleKey.Escape);
+			while (System.Console.ReadKey().Key != System.ConsoleKey.A);
+
+			System.Console.WriteLine();
+			var sb = new System.Text.StringBuilder(@"Hello");
+			sb.Append(' ');
+			sb.Append(@"World");
+			System.Console.WriteLine(sb.ToString());
+			sb.ReplaceAll((c) => c == ' ' ? @"-wide-" : string.Empty);
+			System.Console.WriteLine(sb.ToString());
+			sb.ReplaceAll((c) => c == '-' ? @"**" : string.Empty);
+			System.Console.WriteLine(sb.ToString());
+			sb.ReplaceAll((c) => c == '*' ? @"++" : string.Empty);
+			System.Console.WriteLine(sb.ToString());
+			System.Console.WriteLine();
 
 			//RegularForLoop();
 			//ParallelForLoop();

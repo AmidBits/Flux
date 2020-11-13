@@ -26,10 +26,10 @@ namespace Flux
         }
       }
 
-      if (previous) targetIndex--;
+      if (previous) 
+        targetIndex--;
 
-      if (targetIndex == source.Length) return source;
-      else return source.Remove(targetIndex, source.Length - targetIndex);
+      return targetIndex == source.Length ? source : source.Remove(targetIndex, source.Length - targetIndex);
     }
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
     public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] characters)

@@ -49,6 +49,7 @@ namespace Flux
 
 			return sb.ToString();
 		}
+
 		public static string ToStringXsdBasic(this System.TimeSpan source)
 			=> $"{(source.Ticks < 0 ? @"-" : string.Empty)}P000000{System.Math.Abs(source.Days):D2}T{System.Math.Abs(source.Hours):D2}{System.Math.Abs(source.Minutes):D2}{System.Math.Abs(source.Seconds):D2}";
 		public static string ToStringXsdBasicExtended(this System.TimeSpan source)

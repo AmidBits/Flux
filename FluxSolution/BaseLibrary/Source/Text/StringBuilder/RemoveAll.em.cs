@@ -15,8 +15,8 @@ namespace Flux
       var targetIndex = 0;
 
       for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
-        if (source[sourceIndex] is var c && !predicate(c))
-          source[targetIndex++] = c;
+        if (source[sourceIndex] is var character && !predicate(character))
+          source[targetIndex++] = character;
 
       return source.Remove(targetIndex, source.Length - targetIndex);
     }
