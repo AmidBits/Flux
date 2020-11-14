@@ -64,7 +64,7 @@ namespace Flux
         object System.Collections.IEnumerator.Current
           => m_current!;
 
-        System.Globalization.StringInfo m_stringInfo = new System.Globalization.StringInfo();
+        private readonly System.Globalization.StringInfo m_stringInfo = new System.Globalization.StringInfo();
 
         public bool MoveNext()
         {
