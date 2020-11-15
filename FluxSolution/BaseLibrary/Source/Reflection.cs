@@ -5,12 +5,7 @@ namespace Flux.Reflection
   public static class Helper
   {
     public static object? GetDefaultValue(System.Type type)
-    {
-      if (type is not null && type.IsValueType)
-        return System.Activator.CreateInstance(type);
-
-      return null;
-    }
+      => (type?.IsValueType ?? false) ? System.Activator.CreateInstance(type) : null;
 
     /// <summary>Returns all the fields matching the binding attributes.</summary>
     public static System.Collections.Generic.IDictionary<string, object?> GetFields<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)

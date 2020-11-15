@@ -244,10 +244,8 @@ namespace Flux.Text.PhoneticAlgorithm
     }
 
     /// <summary>Indicates if the specified character occurs within the specified string.</summary>
-    protected static bool IsOneOf(char c, string chars)
-    {
-      return chars is not null && chars.IndexOf(c, System.StringComparison.Ordinal) != -1;
-    }
+    protected static bool IsOneOf(char c, string characters)
+      => (characters ?? throw new System.ArgumentNullException(nameof(characters))).IndexOf(c, System.StringComparison.Ordinal) != -1;
 
     //private static readonly System.Text.RegularExpressions.Regex m_notLetters = new System.Text.RegularExpressions.Regex(@"[^A-Z]+");
   }
