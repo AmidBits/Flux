@@ -1,0 +1,348 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Numerics" #>
+
+<# Type[] decimals = new[] { typeof(System.Decimal), typeof(System.Double), typeof(System.Single) };#>
+<# Type[] numerics = new[] { typeof(System.Numerics.BigInteger), typeof(System.Decimal), typeof(System.Double), typeof(System.Single), typeof(System.Int32), typeof(System.Int64) };#>
+<# Type[] integers = new[] { typeof(System.Numerics.BigInteger), typeof(System.Int32), typeof(System.Int64) };#>
+
+// https://stackoverflow.com/questions/32664/is-there-a-constraint-that-restricts-my-generic-method-to-numeric-types?noredirect=1&lq=1
+
+using System.Linq;
+
+namespace Flux
+{
+  public static partial class Maths
+  {
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Returns a number that is clamped between a minimum and a maximum number.</summary>
+    public static <#= type.FullName #> ClampX(<#= type.FullName #> value, <#= type.FullName #> minimum, <#= type.FullName #> maximum)
+      => value < minimum ? minimum : value > maximum ? maximum : value;
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval.</summary>
+    public static <#= type.FullName #> CopySignX(<#= type.FullName #> value, <#= type.FullName #> sign)
+    <# if (type.FullName == "System.Numerics.BigInteger") { #>
+    => System.Numerics.BigInteger.Abs(value) * sign.Sign;
+    <# } else { #>
+    => System.Math.Abs(value) * System.Math.Sign(sign);
+    <# } #>
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval.</summary>
+    public static <#= type.FullName #> DetentIntervalX(<#= type.FullName #> value, <#= type.FullName #> interval, <#= type.FullName #> distance)
+    <# if (type.FullName == "System.Numerics.BigInteger") { #>
+    => (value / interval) * interval is var nearestInterval && System.Numerics.BigInteger.Abs(nearestInterval - value) < distance ? nearestInterval : value;
+    <# } else { #>
+    => value / interval * interval is var nearestInterval && System.Math.Abs(nearestInterval - value) < distance ? nearestInterval : value;
+    <# } #>
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Determines whether a value is within a specified positive distance of the position, and if so, snaps the value to the position.</summary>
+    public static <#= type.FullName #> DetentPositionX(<#= type.FullName #> value, <#= type.FullName #> position, <#= type.FullName #> distance)
+    <# if (type.FullName == "System.Numerics.BigInteger") { #>
+    => System.Numerics.BigInteger.Abs(position - value) > System.Numerics.BigInteger.Abs(distance) ? value : position;
+    <# } else { #>
+    => System.Math.Abs(position - value) > System.Math.Abs(distance) ? value : position;
+    <# } #>
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Snaps the value to zero if it's within the specified distance of zero.</summary>
+    public static <#= type.FullName #> DetentZeroX(<#= type.FullName #> value, <#= type.FullName #> distance)
+      => value < -distance || value > distance ? value : 0;
+
+    <# } #>
+
+    <# foreach (var type in decimals) { #>
+
+    /// <summary>Compute the integral that would include the fractional part, if any. It works like truncate but instead of discarding the fractional part, it picks the "next" integral, if needed.</summary>
+    public static <#= type.FullName #> EnvelopX(<#= type.FullName #> value)
+    <# if (type.FullName == "System.Single") { #>
+    => System.MathF.Sign(value) < 0 ? System.MathF.Floor(value) : System.MathF.Ceiling(value);
+    <# } else { #>
+    => System.Math.Sign(value) < 0 ? System.Math.Floor(value) : System.Math.Ceiling(value);
+    <# } #>
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Folds out-of-bound values over across the range, back and forth (between minimum and maximum), until the value is in range.</summary>
+    public static <#= type.FullName #> FoldX(<#= type.FullName #> value, <#= type.FullName #> minimum, <#= type.FullName #> maximum)
+    {
+      <#= type.FullName #> magnitude, range;
+
+      if (value > maximum)
+      {
+        magnitude = value - maximum;
+        range = maximum - minimum;
+
+        return ((int)(magnitude / range) & 1) == 0 ? maximum - (magnitude % range) : minimum + (magnitude % range);
+      }
+      else if (value < minimum)
+      {
+        magnitude = minimum - value;
+        range = maximum - minimum;
+
+        return ((int)(magnitude / range) & 1) == 0 ? minimum + (magnitude % range) : maximum - (magnitude % range);
+      }
+
+      return value;
+    }
+
+    <# } #>
+
+    <# foreach (var type in integers) { #>
+    /// <summary>Results in a sequence of divisors for the specified number.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    public static <#= type.FullName #> GetDivisorCountX(<#= type.FullName #> number)
+    {
+      <#= type.FullName #> count = 0;
+      var sqrt = <# if (type.FullName == "System.Numerics.BigInteger") { #>number.Sqrt()<# } else { #>System.Math.Sqrt(number)<# } #>;
+      for (<#= type.FullName #> counter = 1; counter <= sqrt; counter++)
+        if (number % counter == 0)
+          count += (number / counter == counter ? 1 : 2);
+      return count;
+    }
+
+    <# } #>
+
+    <# foreach (var type in integers) { #>
+
+    /// <summary>Results in a sequence of divisors for the specified number, with the option of only proper divisors (divisors including 1 but not itself).</summary>
+    /// <remarks>This implementaion does not order the result, and the first element contains the number itself, so if only proper divsors are needed, skip the first element.</remarks>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    public static System.Collections.Generic.IEnumerable<<#= type.FullName #>> GetDivisorsX(<#= type.FullName #> number)
+    {
+      var sqrt = <# if (type.FullName == "System.Numerics.BigInteger") { #>number.Sqrt()<# } else { #>System.Math.Sqrt(number)<# } #>;
+      for (int counter = 1; counter <= sqrt; counter++)
+        if (number % counter == 0)
+        {
+          yield return counter;
+          if (number / counter is var quotient && quotient != counter) yield return quotient;
+        }
+    }
+
+    <# } #>
+
+    <# foreach (var type in integers) { #>
+
+    /// <summary>Results in a sequence of divisors for the specified number, with option of only proper divisors (divisors including 1 but not itself).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
+    public static <#= type.FullName #> GetSumOfDivisorsX(<#= type.FullName #> number)
+    {
+      <#= type.FullName #> sum = 0;
+      var sqrt = <# if (type.FullName == "System.Numerics.BigInteger") { #>number.Sqrt()<# } else { #>System.Math.Sqrt(number)<# } #>;
+      for (var counter = 1; counter <= sqrt; counter++)
+        if (number % counter == 0)
+        {
+          sum += counter;
+          if (number / counter is var quotient && quotient != counter) sum += quotient;
+        }
+      return sum;
+    }
+
+    <# } #>
+
+    <# foreach (var type in integers) { #>
+
+    /// <summary>Returns the greatest common divisor of all (and at least two) values.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    public static <#= type.FullName #> GcdX(params <#= type.FullName #>[] values)
+      => (values?.Length ?? throw new System.ArgumentNullException(nameof(values))) >= 2 ? values.Skip(1).Aggregate(values[0], GreatestCommonDivisorX) : throw new System.ArgumentOutOfRangeException(nameof(values));
+
+    /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of a and b, also the addition the coefficients of Bézout's identity.</summary>
+    /// <remarks>When a and b are coprime (i.e. GCD equals 1), x is the modular multiplicative inverse of a modulo b, and y is the modular multiplicative inverse of b modulo a.</remarks>
+    /// <see cref="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
+    public static <#= type.FullName #> GreatestCommonDivisorExtendedX(<#= type.FullName #> a, <#= type.FullName #> b, out <#= type.FullName #> x, out <#= type.FullName #> y)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      x = 1;
+      y = 0;
+
+      <#= type.FullName #> u = 0;
+      <#= type.FullName #> v = 1;
+
+      while (b != 0)
+      {
+        a = b;
+        b = a % b;
+
+        var q = a / b;
+
+        var u1 = x - q * u;
+        var v1 = y - q * v;
+
+        x = u;
+        y = v;
+
+        u = u1;
+        v = v1;
+      }
+
+      return a;
+    }
+
+    /// <summary>Returns the greatest common divisor of a and b.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    public static <#= type.FullName #> GreatestCommonDivisorX(<#= type.FullName #> a, <#= type.FullName #> b)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      while (a != 0 && b != 0)
+      {
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
+      }
+
+      return a == 0 ? b : a;
+    }
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Returns the unit (or Heaviside) step of the specified value, i.e. 0.0 when less than zero (negative), 1.0 when greater than or equal to zero (positive).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Heaviside_step_function"/>
+    public static double HeavisideX(<#= type.FullName #> value, double whenZero = 0.5)
+      => value < 0 ? 0 : value > 0 ? 1 : value == 0 ? whenZero : throw new System.ArithmeticException();
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>The maximum of the three specified values.</summary>
+    public static <#= type.FullName #> MaxX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c)
+      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+
+    /// <summary>The maximum of the four specified values.</summary>
+    public static <#= type.FullName #> MaxX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c, <#= type.FullName #> d)
+      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
+
+    /// <summary>The minimum of the three specified values.</summary>
+    public static <#= type.FullName #> MinX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c)
+      => (a < b) ? (a < c ? a : c) : (b < c ? b : c);
+
+    /// <summary>The minimum of the four specified values.</summary>
+    public static <#= type.FullName #> MinX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c, <#= type.FullName #> d)
+      => (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+
+    <# } #>
+
+    <# foreach (var type in integers) { #>
+
+    /// <summary>Calculates the power of the specified value and exponent, using exponentiation by repeated squaring. Essentially, we repeatedly double x, and if pow has a 1 bit at that position, we multiply/accumulate that into the return value.</summary>
+    /// <see cref="https://tkramesh.wordpress.com/2011/04/17/numerical-computations-in-c-exponentiation-by-repeated-squaring/"/>
+    public static <#= type.FullName #> PowX(<#= type.FullName #> value, <#= type.FullName #> exponent)
+    {
+      if (exponent >= 1)
+      {
+        checked
+        {
+          <#= type.FullName #> result = 1;
+
+          while (exponent > 0)
+          {
+            if ((exponent & 1) == 1)
+              result *= value;
+            value *= value;
+            exponent >>= 1;
+          }
+
+          return result;
+        }
+      }
+      else if (exponent == 0) return 1;
+
+      throw new System.ArithmeticException(@"Invalid operands, value must be greater or equal to zero and exponent must be greater or equal to one.");
+    }
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+    /// <summary>Returns the probability that specified event count in a group of total event count are all different (or unique). It's complementary (1 - ProbabilityOfNoDuplicates) yields the probability that at least 2 events are the equal.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
+    /// <returns>The probability, which is in the range [0, 1].</returns>
+    public static double ProbabilityOfNoDuplicatesX(<#= type.FullName #> whenCount, <#= type.FullName #> ofTotalCount)
+    {
+      var accumulation = 1d;
+      for (var index = ofTotalCount - whenCount + 1; index < ofTotalCount; index++)
+        accumulation *= (double)index / (double)ofTotalCount;
+      return accumulation;
+    }
+    /// <summary>Returns the probability that at least 2 events are equal.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
+    /// <returns>The probability, which is in the range [0, 1].</returns>
+    public static double ProbabilityOfDuplicatesX(<#= type.FullName #> whenCount, <#= type.FullName #> ofTotalCount)
+      => 1 - ProbabilityOfNoDuplicatesX(whenCount, ofTotalCount);
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Proportionally re-scale a value from within one range (between source minimum and source maximum) to within another (between target minimum and target maximum), i.e. a value retains its ratio from one range to another. E.g. a 5 in the range [0, 10] becomes 200 when rescaled to the range [100, 300].</summary>
+    public static <#= type.FullName #> RescaleX(<#= type.FullName #> value, <#= type.FullName #> sourceMinimum, <#= type.FullName #> sourceMaximum, <#= type.FullName #> targetMinimum, <#= type.FullName #> targetMaximum)
+      => (targetMaximum - targetMinimum) * (value - sourceMinimum) / (sourceMaximum - sourceMinimum) + targetMinimum;
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>In difference from the System.Math.Sign(), this returns only one of two values, -1 when less than zero, otherwise it 1. Zero is never returned.</summary>
+    public static <#= type.FullName #> SignX(<#= type.FullName #> value)
+      => value < 0 ? -1 : 1;
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Returns the discrete-time unit impulse of the specified value, i.e. 0.0 when not zero, and 1.0 when zero.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
+    public static <#= type.FullName #> UnitImpulseX(<#= type.FullName #> value)
+      => value != 0 ? 0 : value == 0 ? 1 : throw new System.ArithmeticException();
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Returns the discrete unit step of the specified value, i.e. 0 when less than zero (negative), and 1 when greater than or equal to zero.</summary>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Heaviside_step_function"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Dirac_delta_function"/>
+    public static <#= type.FullName #> UnitStepX(<#= type.FullName #> value)
+      => value < 0 ? 0 : 1;
+
+    <# } #>
+
+    <# foreach (var type in numerics) { #>
+
+    /// <summary>Returns a value that is wrapped (overflowed) around a minimum and a maximum number.</summary>
+    public static <#= type.FullName #> WrapX(<#= type.FullName #> value, <#= type.FullName #> minimum, <#= type.FullName #> maximum)
+      => value < minimum ? maximum - (minimum - value) % (maximum - minimum) : value > maximum ? minimum + (value - minimum) % (maximum - minimum) : value;
+
+    <# } #>
+
+  }
+}

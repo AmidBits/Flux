@@ -30,4 +30,32 @@
     <Folder Include="Source\Text\Markup\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Source\Maths\Interpolations.cs">
+      <DependentUpon>Interpolations.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Source\Maths\MathsMin.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MathsMin.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Source\Maths\Interpolations.tt">
+      <LastGenOutput>Interpolations.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Source\Maths\MathsMin.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MathsMin.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -25,10 +25,17 @@ namespace Maths
     readonly ulong[] pul = System.Linq.Enumerable.Range(0, 255).Select(i => (ulong)i).ToArray();
 
     [TestMethod]
+    public void ParallelSplitFactorial()
+		{
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeProduct(12));
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeProduct(pbi[12]));
+    }
+
+    [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(120, Flux.Maths.Factorial(5));
-      Assert.AreEqual(362880, Flux.Maths.Factorial(pbi[9]));
+      Assert.AreEqual(479001600, Flux.Maths.Factorial(12));
+      Assert.AreEqual(479001600, Flux.Maths.Factorial(pbi[12]));
     }
 
     [TestMethod]
