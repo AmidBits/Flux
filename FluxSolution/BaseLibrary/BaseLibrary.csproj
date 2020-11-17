@@ -31,30 +31,116 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Source\Maths\AbsX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AbsX.tt</DependentUpon>
+    </None>
+    <None Include="Source\Maths\DetentX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DetentX.tt</DependentUpon>
+    </None>
+    <None Include="Source\Maths\MaxX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MaxX.tt</DependentUpon>
+    </None>
+    <None Include="Source\Maths\MinX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MinX.tt</DependentUpon>
+    </None>
+    <None Include="Source\Maths\Sqrt.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sqrt.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Source\Maths\AbsX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AbsX.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Source\Maths\DetentX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DetentX.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Source\Maths\Gcd.cs">
+      <DependentUpon>Gcd.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Source\Maths\Interpolations.cs">
       <DependentUpon>Interpolations.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Source\Maths\MathsMin.cs">
+    <Compile Update="Source\Maths\Lcm.cs">
+      <DependentUpon>Lcm.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Source\Maths\MathsMin.cs">
       <DependentUpon>MathsMin.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Source\Maths\MinX.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MinX.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Source\Maths\Sqrt.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sqrt.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Source\Maths\AbsX.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AbsX.cs</LastGenOutput>
+    </None>
+    <None Update="Source\Maths\DetentX.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DetentX.cs</LastGenOutput>
+    </None>
+    <None Update="Source\Maths\Gcd.tt">
+      <LastGenOutput>Gcd.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="Source\Maths\Interpolations.tt">
       <LastGenOutput>Interpolations.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Source\Maths\MathsMin.tt">
+    <None Update="Source\Maths\Lcm.tt">
+      <LastGenOutput>Lcm.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Source\Maths\MathsMin.tt">
       <LastGenOutput>MathsMin.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Source\Maths\MaxX.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MaxX.cs</LastGenOutput>
+    </None>
+    <None Update="Source\Maths\MinX.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MinX.cs</LastGenOutput>
+    </None>
+    <None Update="Source\Maths\Sqrt.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Sqrt.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

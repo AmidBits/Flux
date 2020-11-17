@@ -1,0 +1,78 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Numerics" #>
+
+<# Type[] integers = new[] { typeof(System.Numerics.BigInteger), typeof(System.Int32), typeof(System.Int64) };#>
+
+using System.Linq;
+
+namespace Flux
+{
+  public static partial class Maths
+  {
+
+    <# foreach (var type in integers) { #>
+
+    /// <summary>Returns the greatest common divisor of all (and at least two) values.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    public static <#= type.FullName #> GcdX(params <#= type.FullName #>[] values)
+      => (values?.Length ?? throw new System.ArgumentNullException(nameof(values))) >= 2 ? values.Skip(1).Aggregate(values[0], GreatestCommonDivisorX) : throw new System.ArgumentOutOfRangeException(nameof(values));
+
+    /// <summary>Returns the greatest common divisor of a and b.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    public static <#= type.FullName #> GreatestCommonDivisorX(<#= type.FullName #> a, <#= type.FullName #> b)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      while (a != 0 && b != 0)
+      {
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
+      }
+
+      return a == 0 ? b : a;
+    }
+
+    /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of a and b, also the addition the coefficients of Bézout's identity.</summary>
+    /// <remarks>When a and b are coprime (i.e. GCD equals 1), x is the modular multiplicative inverse of a modulo b, and y is the modular multiplicative inverse of b modulo a.</remarks>
+    /// <see cref="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
+    public static <#= type.FullName #> GreatestCommonDivisorExtendedX(<#= type.FullName #> a, <#= type.FullName #> b, out <#= type.FullName #> x, out <#= type.FullName #> y)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      x = 1;
+      y = 0;
+
+      <#= type.FullName #> u = 0;
+      <#= type.FullName #> v = 1;
+
+      while (b != 0)
+      {
+        a = b;
+        b = a % b;
+
+        var q = a / b;
+
+        var u1 = x - q * u;
+        var v1 = y - q * v;
+
+        x = u;
+        y = v;
+
+        u = u1;
+        v = v1;
+      }
+
+      return a;
+    }
+
+    <# } #>
+
+  }
+}

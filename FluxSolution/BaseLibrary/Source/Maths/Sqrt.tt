@@ -1,0 +1,27 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Numerics" #>
+
+<# Type[] signed = new[] { typeof(System.Numerics.BigInteger), typeof(System.Decimal), typeof(System.Double), typeof(System.Single), typeof(System.Int32), typeof(System.Int64) };#>
+
+namespace Flux
+{
+  public static partial class Maths
+  {
+
+    <# foreach (var type in signed) { #>
+
+    /// <summary>Snaps the value to zero if it's within the specified distance of zero.</summary>
+	[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    public static double SqrtX(<#= type.FullName #> value)
+    <# if (type.FullName == "System.Numerics.BigInteger") { #>
+    => System.Numerics.BigInteger.Sqrt(value);
+    <# } else { #>
+    => System.Math.Sqrt((double)value);
+    <# } #>
+
+    <# } #>
+
+  }
+}

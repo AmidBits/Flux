@@ -36,38 +36,6 @@ namespace Flux
 
     <# } #>
 
-    <# foreach (var type in numerics) { #>
-
-    /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval.</summary>
-    public static <#= type.FullName #> DetentIntervalX(<#= type.FullName #> value, <#= type.FullName #> interval, <#= type.FullName #> distance)
-    <# if (type.FullName == "System.Numerics.BigInteger") { #>
-    => (value / interval) * interval is var nearestInterval && System.Numerics.BigInteger.Abs(nearestInterval - value) < distance ? nearestInterval : value;
-    <# } else { #>
-    => value / interval * interval is var nearestInterval && System.Math.Abs(nearestInterval - value) < distance ? nearestInterval : value;
-    <# } #>
-
-    <# } #>
-
-    <# foreach (var type in numerics) { #>
-
-    /// <summary>Determines whether a value is within a specified positive distance of the position, and if so, snaps the value to the position.</summary>
-    public static <#= type.FullName #> DetentPositionX(<#= type.FullName #> value, <#= type.FullName #> position, <#= type.FullName #> distance)
-    <# if (type.FullName == "System.Numerics.BigInteger") { #>
-    => System.Numerics.BigInteger.Abs(position - value) > System.Numerics.BigInteger.Abs(distance) ? value : position;
-    <# } else { #>
-    => System.Math.Abs(position - value) > System.Math.Abs(distance) ? value : position;
-    <# } #>
-
-    <# } #>
-
-    <# foreach (var type in numerics) { #>
-
-    /// <summary>Snaps the value to zero if it's within the specified distance of zero.</summary>
-    public static <#= type.FullName #> DetentZeroX(<#= type.FullName #> value, <#= type.FullName #> distance)
-      => value < -distance || value > distance ? value : 0;
-
-    <# } #>
-
     <# foreach (var type in decimals) { #>
 
     /// <summary>Compute the integral that would include the fractional part, if any. It works like truncate but instead of discarding the fractional part, it picks the "next" integral, if needed.</summary>
@@ -160,94 +128,12 @@ namespace Flux
 
     <# } #>
 
-    <# foreach (var type in integers) { #>
-
-    /// <summary>Returns the greatest common divisor of all (and at least two) values.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static <#= type.FullName #> GcdX(params <#= type.FullName #>[] values)
-      => (values?.Length ?? throw new System.ArgumentNullException(nameof(values))) >= 2 ? values.Skip(1).Aggregate(values[0], GreatestCommonDivisorX) : throw new System.ArgumentOutOfRangeException(nameof(values));
-
-    /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of a and b, also the addition the coefficients of Bézout's identity.</summary>
-    /// <remarks>When a and b are coprime (i.e. GCD equals 1), x is the modular multiplicative inverse of a modulo b, and y is the modular multiplicative inverse of b modulo a.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
-    public static <#= type.FullName #> GreatestCommonDivisorExtendedX(<#= type.FullName #> a, <#= type.FullName #> b, out <#= type.FullName #> x, out <#= type.FullName #> y)
-    {
-      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
-      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
-
-      x = 1;
-      y = 0;
-
-      <#= type.FullName #> u = 0;
-      <#= type.FullName #> v = 1;
-
-      while (b != 0)
-      {
-        a = b;
-        b = a % b;
-
-        var q = a / b;
-
-        var u1 = x - q * u;
-        var v1 = y - q * v;
-
-        x = u;
-        y = v;
-
-        u = u1;
-        v = v1;
-      }
-
-      return a;
-    }
-
-    /// <summary>Returns the greatest common divisor of a and b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static <#= type.FullName #> GreatestCommonDivisorX(<#= type.FullName #> a, <#= type.FullName #> b)
-    {
-      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
-      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
-
-      while (a != 0 && b != 0)
-      {
-        if (a > b)
-          a %= b;
-        else
-          b %= a;
-      }
-
-      return a == 0 ? b : a;
-    }
-
-    <# } #>
-
     <# foreach (var type in numerics) { #>
 
     /// <summary>Returns the unit (or Heaviside) step of the specified value, i.e. 0.0 when less than zero (negative), 1.0 when greater than or equal to zero (positive).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heaviside_step_function"/>
     public static double HeavisideX(<#= type.FullName #> value, double whenZero = 0.5)
       => value < 0 ? 0 : value > 0 ? 1 : value == 0 ? whenZero : throw new System.ArithmeticException();
-
-    <# } #>
-
-    <# foreach (var type in numerics) { #>
-
-    /// <summary>The maximum of the three specified values.</summary>
-    public static <#= type.FullName #> MaxX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c)
-      => (a > b) ? (a > c ? a : c) : (b > c ? b : c);
-
-    /// <summary>The maximum of the four specified values.</summary>
-    public static <#= type.FullName #> MaxX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c, <#= type.FullName #> d)
-      => (a > b) ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d));
-
-    /// <summary>The minimum of the three specified values.</summary>
-    public static <#= type.FullName #> MinX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c)
-      => (a < b) ? (a < c ? a : c) : (b < c ? b : c);
-
-    /// <summary>The minimum of the four specified values.</summary>
-    public static <#= type.FullName #> MinX(<#= type.FullName #> a, <#= type.FullName #> b, <#= type.FullName #> c, <#= type.FullName #> d)
-      => (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
 
     <# } #>
 
