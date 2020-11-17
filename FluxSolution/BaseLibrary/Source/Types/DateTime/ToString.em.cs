@@ -6,9 +6,9 @@ namespace Flux
 		public static string ToStringFileNameFriendly(this System.DateTime source)
 			=> source.ToString("yyyyMMdd HHmmss fffffff", System.Globalization.CultureInfo.InvariantCulture);
 
-		/// <summary>Returns the System.DateTime as a string that complies with ISO 8601. The native 'o' is used to create the value.</summary>
+		/// <summary>Returns the System.DateTime as a string that complies with ISO 8601. The native .ToString("o") is used internally.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/ISO_8601"/>
-		[System.Obsolete(@"Please use the built-in [datetime].ToString(@""o"") instead.")]
+		//[System.Obsolete(@"Please use the built-in [datetime].ToString(@""o"") instead.")]
 		public static string ToStringISO8601(this System.DateTime source)
 			=> source.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
 

@@ -11,7 +11,7 @@ namespace Flux
       else if (source <= 3) return source >= 2;
       else if (source % 2 == 0 || source % 3 == 0) return false;
 
-      var limit = source.Sqrt();
+      var limit = ISqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
       {
@@ -32,7 +32,7 @@ namespace Flux
       if (source <= 3) return source >= 2;
       else if (source % 2 == 0 || source % 3 == 0) return false;
 
-      var limit = (int)System.Math.Sqrt(source);
+      var limit = ISqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
       {
@@ -53,7 +53,7 @@ namespace Flux
       else if (source <= 3) return source >= 2;
       else if (source % 2 == 0 || source % 3 == 0) return false;
 
-      var limit = (long)System.Math.Sqrt(source);
+      var limit = ISqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
       {

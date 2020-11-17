@@ -10,7 +10,7 @@ namespace Flux
     public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number)
     {
       var sum = System.Numerics.BigInteger.Zero;
-      var sqrt = number.Sqrt();
+      var sqrt = ISqrt(number);
       for (var counter = System.Numerics.BigInteger.One; counter <= sqrt; counter++)
         if (number % counter == 0)
         {

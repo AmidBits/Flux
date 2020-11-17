@@ -26,9 +26,9 @@ namespace Flux
     {
       var fiver = 5 * number * number;
       var fourp = fiver + 4;
-      var fourps = fourp.Sqrt();
+      var fourps = ISqrt(fourp);
       var fourn = fiver - 4;
-      var fourns = fourn.Sqrt();
+      var fourns = ISqrt(fourn);
 
       return fourps * fourps == fourp || fourns * fourns == fourn;
     }

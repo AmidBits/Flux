@@ -7,7 +7,7 @@ namespace Flux
     public static System.Numerics.BigInteger GetDivisorCount(System.Numerics.BigInteger value)
     {
       System.Numerics.BigInteger count = 0;
-      var sqrt = value.Sqrt();
+      var sqrt = ISqrt(value);
       for (System.Numerics.BigInteger counter = 1; counter <= sqrt; counter++)
         if (value % counter == 0)
           count += (value / counter == counter ? 1 : 2);

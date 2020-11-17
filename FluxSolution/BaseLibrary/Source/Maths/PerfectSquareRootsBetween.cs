@@ -6,7 +6,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> PerfectSquareRootsBetween(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
     {
-      for (System.Numerics.BigInteger root = IsPerfectSquare(a) ? a.Sqrt() : a.Sqrt() + 1, maxRoot = b.Sqrt() + 1; root < maxRoot; root++)
+      for (System.Numerics.BigInteger root = IsPerfectSquare(a) ? ISqrt(a) : ISqrt(a) + 1, maxRoot = ISqrt(b) + 1; root < maxRoot; root++)
         yield return root;
     }
 

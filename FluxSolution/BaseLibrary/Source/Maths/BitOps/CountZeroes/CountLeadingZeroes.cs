@@ -28,7 +28,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Bit-length"/>
     /// <remarks>Pretty fast.</remarks>
     public static int CountLeadingZeros(int value)
-      => value < 0 ? 0 : CountLeadingZeros(unchecked((uint)value));
+      => System.Numerics.BitOperations.LeadingZeroCount((unchecked((uint)value)));
     /// <summary>Count Leading Zeros (clz) counts the number of zero bits preceding the most significant one bit.</summary>
     /// <remarks>The bit position can easily be calculated by subtracting 1 from the resulting return value.</remarks>
     /// <param name="bitWidth">The number of bits in the set. E.g. 32, 64 or 128 for built-in integer data type sizes.</param>
@@ -36,7 +36,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Bit-length"/>
     /// <remarks>Pretty fast.</remarks>
     public static int CountLeadingZeros(long value)
-      => value < 0 ? 0 : CountLeadingZeros(unchecked((ulong)value));
+      => System.Numerics.BitOperations.LeadingZeroCount((unchecked((ulong)value)));
 
     /// <summary>Count Leading Zeros (clz) counts the number of zero bits preceding the most significant one bit.</summary>
     /// <remarks>The bit position can easily be calculated by subtracting 1 from the resulting return value.</remarks>
@@ -44,97 +44,97 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Find_first_set#CLZ"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bit-length"/>
     /// <remarks>Pretty fast.</remarks>
-    [System.CLSCompliant(false)]
-    public static int CountLeadingZeros(uint value)
-    {
-      if (value == 0)
-        return 32;
+    //[System.CLSCompliant(false)]
+    //public static int CountLeadingZeros(uint value)
+    //{
+    //  if (value == 0)
+    //    return 32;
 
-      var count = 0;
+    //  var count = 0;
 
-      if (value > 0)
-      {
-        if ((value & 0xFFFF0000) == 0)
-        {
-          count += 16;
-          value <<= 16;
-        }
+    //  if (value > 0)
+    //  {
+    //    if ((value & 0xFFFF0000) == 0)
+    //    {
+    //      count += 16;
+    //      value <<= 16;
+    //    }
 
-        if ((value & 0xFF000000) == 0)
-        {
-          count += 8;
-          value <<= 8;
-        }
+    //    if ((value & 0xFF000000) == 0)
+    //    {
+    //      count += 8;
+    //      value <<= 8;
+    //    }
 
-        if ((value & 0xF0000000) == 0)
-        {
-          count += 4;
-          value <<= 4;
-        }
+    //    if ((value & 0xF0000000) == 0)
+    //    {
+    //      count += 4;
+    //      value <<= 4;
+    //    }
 
-        if ((value & 0xC0000000) == 0)
-        {
-          count += 2;
-          value <<= 2;
-        }
+    //    if ((value & 0xC0000000) == 0)
+    //    {
+    //      count += 2;
+    //      value <<= 2;
+    //    }
 
-        if ((value & 0x80000000) == 0)
-          count += 1;
-      }
+    //    if ((value & 0x80000000) == 0)
+    //      count += 1;
+    //  }
 
-      return count;
-    }
+    //  return count;
+    //}
     /// <summary>Count Leading Zeros (clz) counts the number of zero bits preceding the most significant one bit.</summary>
     /// <remarks>The bit position can easily be calculated by subtracting 1 from the resulting return value.</remarks>
     /// <param name="bitWidth">The number of bits in the set. E.g. 32, 64 or 128 for built-in integer data type sizes.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Find_first_set#CLZ"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bit-length"/>
     /// <remarks>Pretty fast.</remarks>
-    [System.CLSCompliant(false)]
-    public static int CountLeadingZeros(ulong value)
-    {
-      if (value == 0)
-        return 64;
+    //[System.CLSCompliant(false)]
+    //public static int CountLeadingZeros(ulong value)
+    //{
+    //  if (value == 0)
+    //    return 64;
 
-      var count = 0;
+    //  var count = 0;
 
-      if (value > 0)
-      {
-        if ((value & 0xFFFFFFFF00000000) == 0)
-        {
-          count += 32;
-          value <<= 32;
-        }
+    //  if (value > 0)
+    //  {
+    //    if ((value & 0xFFFFFFFF00000000) == 0)
+    //    {
+    //      count += 32;
+    //      value <<= 32;
+    //    }
 
-        if ((value & 0xFFFF000000000000) == 0)
-        {
-          count += 16;
-          value <<= 16;
-        }
+    //    if ((value & 0xFFFF000000000000) == 0)
+    //    {
+    //      count += 16;
+    //      value <<= 16;
+    //    }
 
-        if ((value & 0xFF00000000000000) == 0)
-        {
-          count += 8;
-          value <<= 8;
-        }
+    //    if ((value & 0xFF00000000000000) == 0)
+    //    {
+    //      count += 8;
+    //      value <<= 8;
+    //    }
 
-        if ((value & 0xF000000000000000) == 0)
-        {
-          count += 4;
-          value <<= 4;
-        }
+    //    if ((value & 0xF000000000000000) == 0)
+    //    {
+    //      count += 4;
+    //      value <<= 4;
+    //    }
 
-        if ((value & 0xC000000000000000) == 0)
-        {
-          count += 2;
-          value <<= 2;
-        }
+    //    if ((value & 0xC000000000000000) == 0)
+    //    {
+    //      count += 2;
+    //      value <<= 2;
+    //    }
 
-        if ((value & 0x8000000000000000) == 0)
-          count += 1;
-      }
+    //    if ((value & 0x8000000000000000) == 0)
+    //      count += 1;
+    //  }
 
-      return count;
-    }
+    //  return count;
+    //}
   }
 }

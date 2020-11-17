@@ -7,7 +7,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDivisors(System.Numerics.BigInteger number)
     {
-      var sqrt = number.Sqrt();
+      var sqrt = ISqrt(number);
       for (int counter = 1; counter <= sqrt; counter++)
         if (number % counter == 0)
         {

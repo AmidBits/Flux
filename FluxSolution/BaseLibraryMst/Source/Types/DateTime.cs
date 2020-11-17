@@ -8,8 +8,8 @@ namespace Types
 	[TestClass]
 	public class DateTime
 	{
-		System.DateTime source = new System.DateTime(1967, 5, 30);
-		System.DateTime target = new System.DateTime(2017, 5, 30).AddDays(73);
+		private readonly System.DateTime source = new System.DateTime(1967, 5, 30);
+		private readonly System.DateTime target = new System.DateTime(2017, 5, 30).AddDays(73);
 
 		[TestMethod]
 		public void AgeInTotalYears()

@@ -14,6 +14,17 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Bit-length"/>
     public static int BitLength(System.Numerics.BigInteger value)
       => value > 0 ? Log2(value) + 1 : 0;
+    //{
+    //  var bitLength = 0;
+
+    //  do
+    //  {
+    //    bitLength++;
+    //  }
+    //  while ((value >>= 1) != 0);
+
+    //  return bitLength;
+    //}
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>The implementation is relatively fast.</remarks>

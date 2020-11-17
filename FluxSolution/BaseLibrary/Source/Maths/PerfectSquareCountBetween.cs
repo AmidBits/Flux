@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Returns the count of perfect squares between the two specified numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>
     public static System.Numerics.BigInteger PerfectSquareCountBetween(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
-      => b.Sqrt() - (IsPerfectSquare(a) ? a.Sqrt() : a.Sqrt() + 1) + 1;
+      => ISqrt(b) - (IsPerfectSquare(a) ? ISqrt(a) : ISqrt(a) + 1) + 1;
 
     /// <summary>Returns the count of perfect squares between the two specified numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>

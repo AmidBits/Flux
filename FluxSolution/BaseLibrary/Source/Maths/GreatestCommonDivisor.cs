@@ -29,14 +29,41 @@ namespace Flux
     public static ulong Gcd(params ulong[] values)
       => (values?.Length ?? throw new System.ArgumentNullException(nameof(values))) >= 2 ? values.Skip(1).Aggregate(values[0], GreatestCommonDivisor) : throw new System.ArgumentOutOfRangeException(nameof(values));
 
-    /// <summary>Returns the greatest common divisor of a and b. Both a and b must be positive.</summary>
+    /// <summary>Returns the greatest common divisor of a and b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static int GreatestCommonDivisor(int a, int b)
-      => unchecked((int)(a < 0 || b < 0 ? GreatestCommonDivisor((uint)System.Math.Abs(a), (uint)System.Math.Abs(b)) : GreatestCommonDivisor((uint)a, (uint)b)));
-    /// <summary>Returns the greatest common divisor of a and b. Both a and b must be positive.</summary>
+    public static System.Int32 GreatestCommonDivisor(System.Int32 a, System.Int32 b)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      while (a != 0 && b != 0)
+      {
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
+      }
+
+      return a == 0 ? b : a;
+    }
+
+    /// <summary>Returns the greatest common divisor of a and b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static long GreatestCommonDivisor(long a, long b)
-      => unchecked((long)(a < 0 || b < 0 ? GreatestCommonDivisor((ulong)System.Math.Abs(a), (ulong)System.Math.Abs(b)) : GreatestCommonDivisor((ulong)a, (ulong)b)));
+    public static System.Int64 GreatestCommonDivisor(System.Int64 a, System.Int64 b)
+    {
+      if (a < 0) throw new System.ArgumentOutOfRangeException(nameof(a));
+      if (b < 0) throw new System.ArgumentOutOfRangeException(nameof(b));
+
+      while (a != 0 && b != 0)
+      {
+        if (a > b)
+          a %= b;
+        else
+          b %= a;
+      }
+
+      return a == 0 ? b : a;
+    }
 
     /// <summary>Returns the greatest common divisor of a and b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Determines whether the number is a perfect square.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>
     public static bool IsPerfectSquare(System.Numerics.BigInteger value)
-      => value.Sqrt() is var sqrt && sqrt * sqrt == value;
+      => ISqrt(value) is var sqrt && sqrt * sqrt == value;
 
     /// <summary>Determines whether the number is a perfect square.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>

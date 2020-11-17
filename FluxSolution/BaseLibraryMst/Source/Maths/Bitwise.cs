@@ -128,19 +128,13 @@ namespace Maths
     [TestMethod]
     public void CountLeadingZerosInt64()
       => Assert.AreEqual(59, Flux.Maths.CountLeadingZeros(18L));
-    [TestMethod]
-    public void CountLeadingZerosUInt32()
-      => Assert.AreEqual(27, Flux.Maths.CountLeadingZeros(18U));
-    [TestMethod]
-    public void CountLeadingZerosUInt64()
-      => Assert.AreEqual(59, Flux.Maths.CountLeadingZeros(18UL));
 
     [TestMethod]
     public void CountLeadingZeros()
     {
       //Assert.AreEqual(pbi[3], Flux.Math.CountLeadingZeros(pbi[18], 8));
-      Assert.AreEqual(pi[27], Flux.Maths.CountLeadingZeros(pui[18]));
-      Assert.AreEqual(pi[59], Flux.Maths.CountLeadingZeros(pul[18]));
+      Assert.AreEqual(pi[27], Flux.Maths.CountLeadingZeros(pi[18]));
+      Assert.AreEqual(pi[59], Flux.Maths.CountLeadingZeros(pl[18]));
     }
 
     [TestMethod]
@@ -151,8 +145,6 @@ namespace Maths
       //Flux.Diagnostics.Performance.Measure(() => Flux.Math.CountLeadingZeros(value, 128)).Assert(108, 0.75);
       if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.CountLeadingZeros((int)value)).Assert(12, 0.175);
       if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.CountLeadingZeros((long)value)).Assert(44, 0.175);
-      if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.CountLeadingZeros((uint)value)).Assert(12, 0.175);
-      if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.CountLeadingZeros((ulong)value)).Assert(44, 0.175);
     }
 
     [TestMethod]

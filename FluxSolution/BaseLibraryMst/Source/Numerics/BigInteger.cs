@@ -75,16 +75,6 @@ namespace Numerics
       Assert.AreEqual(true, Flux.Maths.IsPrimeNumber(new System.Numerics.BigInteger(3)));
     }
 
-
-    [TestMethod]
-    public void IsSqrt()
-    {
-      Assert.AreEqual(false, bi54.IsSqrt(bi24));
-      Assert.AreEqual(false, bi24.IsSqrt(bi54));
-
-      Assert.AreEqual(true, new System.Numerics.BigInteger(9).IsSqrt(new System.Numerics.BigInteger(3)));
-    }
-
     [TestMethod]
     public void Lcm()
     {
@@ -94,19 +84,7 @@ namespace Numerics
     [TestMethod]
     public void Sqrt()
     {
-      Assert.AreEqual(7, bi54.Sqrt());
-    }
-
-    [TestMethod]
-    public void SqrtByExponentialIdentity()
-    {
-      Assert.AreEqual("7.3484692283495345", bi54.SqrtByExponentialIdentity().ToString());
-    }
-
-    [TestMethod]
-    public void SqrtByJavaAdoption()
-    {
-      Assert.AreEqual(7, bi54.SqrtByJavaAdoption());
+      Assert.AreEqual(7, Flux.Maths.ISqrt(bi54));
     }
 
     [TestMethod]

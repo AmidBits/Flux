@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Numerics" #>
+
+<# Type[] decimalTypes = new[] { typeof(System.Decimal), typeof(System.Double), typeof(System.Single) };#>
+<# Type[] numericTypes = new[] { typeof(System.Numerics.BigInteger), typeof(System.Decimal), typeof(System.Double), typeof(System.Single), typeof(System.Int32), typeof(System.Int64) };#>
+<# Type[] integerTypes = new[] { typeof(System.Numerics.BigInteger), typeof(System.Int32), typeof(System.Int64) };#>
+
+using System.Linq;
+
+namespace Flux
+{
+  public static partial class Maths
+  {
+
+    <# foreach (var type in numericTypes) { #>
+
+    /// <summary>This is a Template Text (.tt) file sample only (<#= type.FullName #>).</summary>
+
+    <# } #>
+
+  }
+}
