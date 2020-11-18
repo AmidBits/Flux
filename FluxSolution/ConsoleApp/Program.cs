@@ -8,8 +8,7 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var a = 0b01000001;
-			System.Console.WriteLine((char)a);
+
 
 			//RegularForLoop();
 			//ParallelForLoop();
