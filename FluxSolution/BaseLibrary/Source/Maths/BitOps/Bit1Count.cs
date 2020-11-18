@@ -4,26 +4,40 @@ namespace Flux
 {
 	public static partial class Maths
 	{
-		private static System.Collections.Generic.IReadOnlyList<int>? m_byteBit1Count;
+		private static System.Collections.Generic.IReadOnlyList<byte>? m_bytePopCount;
 		/// <summary></summary>
-		public static System.Collections.Generic.IReadOnlyList<int> ByteBit1Count
-			=> m_byteBit1Count ??= System.Linq.Enumerable.Range(0, 256).Select(n => Bit1Count(n)).ToList();
+		public static System.Collections.Generic.IReadOnlyList<byte> BytePopCount
+			=> m_bytePopCount ??= System.Linq.Enumerable.Range(0, 256).Select(n => (byte)System.Numerics.BitOperations.PopCount((uint)n)).ToList();
 
 		/// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
 		/// <remarks>The implementation is relatively slow for huge BigInteger values.</remarks>
 		/// <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetNaive"/>
 		/// <seealso cref="http://aggregate.org/MAGIC/#Population%20Count%20(Ones%20Count)"/>
+		public static int PopCount(System.Numerics.BigInteger value)
+		{
+			if (value >= 0 && value <= 255)
+				return BytePopCount[(int)value];
+
+			var byteArray = value.ToByteArray();
+
+			var count = 0;
+
+			for (var index = byteArray.Length - 1; index >= 0; index--)
+				count += BytePopCount[byteArray[index]];
+
+			return count;
+		}
 		public static int Bit1Count(System.Numerics.BigInteger value)
 		{
 			if (value >= 0 && value <= 255)
-				return ByteBit1Count[(int)value];
+				return BytePopCount[(int)value];
 
 			var byteArray = value.ToByteArrayEx(out var msbIndex, out var msbValue);
 
-			var count = ByteBit1Count[msbValue];
+			var count = BytePopCount[msbValue];
 
 			for (var index = msbIndex - 1; index >= 0; index--)
-				count += ByteBit1Count[byteArray[index]];
+				count += BytePopCount[byteArray[index]];
 
 			return count;
 		}

@@ -179,19 +179,19 @@ namespace Maths
 
     [TestMethod]
     public void FoldBitsBI()
-      => Assert.AreEqual(31, Flux.Maths.FoldBits(18.ToBigInteger()));
+      => Assert.AreEqual(31, Flux.Maths.FoldLeastSignificantBits(18.ToBigInteger()));
     [TestMethod]
     public void FoldBitsInt32()
-      => Assert.AreEqual(31, Flux.Maths.FoldBits(18));
+      => Assert.AreEqual(31, Flux.Maths.FoldLeastSignificantBits(18));
     [TestMethod]
     public void FoldBitsInt64()
-      => Assert.AreEqual(31, Flux.Maths.FoldBits(18L));
+      => Assert.AreEqual(31, Flux.Maths.FoldLeastSignificantBits(18L));
     [TestMethod]
     public void FoldBitsUInt32()
-      => Assert.AreEqual(31U, Flux.Maths.FoldBits(18U));
+      => Assert.AreEqual(31U, Flux.Maths.FoldLeastSignificantBits(18U));
     [TestMethod]
     public void FoldBitsUInt64()
-      => Assert.AreEqual(31UL, Flux.Maths.FoldBits(18UL));
+      => Assert.AreEqual(31UL, Flux.Maths.FoldLeastSignificantBits(18UL));
 
     [TestMethod]
     public void FoldBits_Speed()
@@ -200,11 +200,11 @@ namespace Maths
 
       var expected = 1048575;
 
-      Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldBits(value), 500000).Assert((System.Numerics.BigInteger)expected, 2);
-      if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldBits((int)value), 500000).Assert((int)expected, 0.175);
-      if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldBits((long)value), 500000).Assert((long)expected, 0.175);
-      if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldBits((uint)value), 500000).Assert((uint)expected, 0.175);
-      if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldBits((ulong)value), 500000).Assert((ulong)expected, 0.175);
+      Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldLeastSignificantBits(value), 500000).Assert((System.Numerics.BigInteger)expected, 2);
+      if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldLeastSignificantBits((int)value), 500000).Assert((int)expected, 0.175);
+      if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldLeastSignificantBits((long)value), 500000).Assert((long)expected, 0.175);
+      if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldLeastSignificantBits((uint)value), 500000).Assert((uint)expected, 0.175);
+      if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.FoldLeastSignificantBits((ulong)value), 500000).Assert((ulong)expected, 0.175);
     }
 
     [TestMethod]
@@ -292,11 +292,11 @@ namespace Maths
     [TestMethod]
     public void NextPowerOf2()
     {
-      Assert.AreEqual(pbi[8], Flux.Maths.NextPowerOf2(pbi[5], false));
-      Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[17], false));
-      Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[32], false));
+			Assert.AreEqual(pbi[8], Flux.Maths.NextPowerOf2(pbi[5], false));
+			Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[17], false));
+			Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[32], false));
 
-      Assert.AreEqual(pi[8], Flux.Maths.NextPowerOf2(pi[5], false));
+			Assert.AreEqual(pi[8], Flux.Maths.NextPowerOf2(pi[5], false));
       Assert.AreEqual(pi[32], Flux.Maths.NextPowerOf2(pi[17], false));
       Assert.AreEqual(pi[32], Flux.Maths.NextPowerOf2(pi[32], false));
 
@@ -304,11 +304,11 @@ namespace Maths
       Assert.AreEqual(pi[32], Flux.Maths.NextPowerOf2(pl[17], false));
       Assert.AreEqual(pi[32], Flux.Maths.NextPowerOf2(pl[32], false));
 
-      Assert.AreEqual(pbi[8], Flux.Maths.NextPowerOf2(pbi[5], true));
-      Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[17], true));
-      Assert.AreEqual(pbi[64], Flux.Maths.NextPowerOf2(pbi[32], true));
+			Assert.AreEqual(pbi[8], Flux.Maths.NextPowerOf2(pbi[5], true));
+			Assert.AreEqual(pbi[32], Flux.Maths.NextPowerOf2(pbi[17], true));
+			Assert.AreEqual(pbi[64], Flux.Maths.NextPowerOf2(pbi[32], true));
 
-      Assert.AreEqual(pi[8], Flux.Maths.NextPowerOf2(pi[5], true));
+			Assert.AreEqual(pi[8], Flux.Maths.NextPowerOf2(pi[5], true));
       Assert.AreEqual(pi[32], Flux.Maths.NextPowerOf2(pi[17], true));
       Assert.AreEqual(pi[64], Flux.Maths.NextPowerOf2(pi[32], true));
 
@@ -342,11 +342,11 @@ namespace Maths
     [TestMethod]
     public void PreviousPowerOf2()
     {
-      Assert.AreEqual(pbi[8], Flux.Maths.PreviousPowerOf2(pbi[10], false));
-      Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[19], false));
-      Assert.AreEqual(pbi[32], Flux.Maths.PreviousPowerOf2(pbi[32], false));
+			Assert.AreEqual(pbi[8], Flux.Maths.PreviousPowerOf2(pbi[10], false));
+			Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[19], false));
+			Assert.AreEqual(pbi[32], Flux.Maths.PreviousPowerOf2(pbi[32], false));
 
-      Assert.AreEqual(pi[8], Flux.Maths.PreviousPowerOf2(pi[10], false));
+			Assert.AreEqual(pi[8], Flux.Maths.PreviousPowerOf2(pi[10], false));
       Assert.AreEqual(pi[16], Flux.Maths.PreviousPowerOf2(pi[19], false));
       Assert.AreEqual(pi[32], Flux.Maths.PreviousPowerOf2(pi[32], false));
 
@@ -354,11 +354,11 @@ namespace Maths
       Assert.AreEqual(pl[16], Flux.Maths.PreviousPowerOf2(pl[19], false));
       Assert.AreEqual(pl[32], Flux.Maths.PreviousPowerOf2(pl[32], false));
 
-      Assert.AreEqual(pbi[8], Flux.Maths.PreviousPowerOf2(pbi[10], true));
-      Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[19], true));
-      Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[32], true));
+			Assert.AreEqual(pbi[8], Flux.Maths.PreviousPowerOf2(pbi[10], true));
+			Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[19], true));
+			Assert.AreEqual(pbi[16], Flux.Maths.PreviousPowerOf2(pbi[32], true));
 
-      Assert.AreEqual(pi[8], Flux.Maths.PreviousPowerOf2(pi[10], true));
+			Assert.AreEqual(pi[8], Flux.Maths.PreviousPowerOf2(pi[10], true));
       Assert.AreEqual(pi[16], Flux.Maths.PreviousPowerOf2(pi[19], true));
       Assert.AreEqual(pi[16], Flux.Maths.PreviousPowerOf2(pi[32], true));
 

@@ -7,29 +7,53 @@ namespace Flux
 {
 	public static partial class Maths
 	{
-		private static System.Collections.Generic.IReadOnlyList<int>? m_byteFoldBits;
+		private static System.Collections.Generic.IReadOnlyList<byte>? m_byteFoldLeastSignificantBits;
 		/// <summary></summary>
-		public static System.Collections.Generic.IReadOnlyList<int> ByteFoldBits
-			=> m_byteFoldBits ??= System.Linq.Enumerable.Range(0, 256).Select(n => FoldBits(n)).ToList();
+		public static System.Collections.Generic.IReadOnlyList<byte> ByteFoldLeastSignificantBits
+			=> m_byteFoldLeastSignificantBits ??= System.Linq.Enumerable.Range(0, 256).Select(n => (byte)FoldLeastSignificantBits(n)).ToList();
 
 		/// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
 		/// <returns>Returns all ones from the MSB down.</returns>
-		public static System.Numerics.BigInteger FoldBits(System.Numerics.BigInteger value)
+		public static System.Numerics.BigInteger FoldLeastSignificantBits(System.Numerics.BigInteger value)
 			=> (System.Numerics.BigInteger.One << BitLength(value)) - 1;
 
 		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
 		/// <returns>Returns all ones from the MSB down.</returns>
-		public static int FoldBits(int value)
-			=> unchecked((int)FoldBits((uint)value));
+		public static int FoldLeastSignificantBits(int value)
+			=> unchecked((int)FoldLeastSignificantBits((uint)value));
 		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
 		/// <returns>Returns all ones from the MSB down.</returns>
-		public static long FoldBits(long value)
-			=> unchecked((long)FoldBits((ulong)value));
+		public static long FoldLeastSignificantBits(long value)
+			=> unchecked((long)FoldLeastSignificantBits((ulong)value));
 
 		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
 		/// <returns>Returns all ones from the MSB down.</returns>
 		[System.CLSCompliant(false)]
-		public static uint FoldBits(uint value)
+		public static byte FoldLeastSignificantBits(byte value)
+		{
+			value |= (byte)(value >> 1);
+			value |= (byte)(value >> 2);
+			value |= (byte)(value >> 4);
+
+			return value;
+		}
+		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
+		/// <returns>Returns all ones from the MSB down.</returns>
+		[System.CLSCompliant(false)]
+		public static ushort FoldLeastSignificantBits(ushort value)
+		{
+			value |= (ushort)(value >> 1);
+			value |= (ushort)(value >> 2);
+			value |= (ushort)(value >> 4);
+			value |= (ushort)(value >> 8);
+
+			return value;
+		}
+
+		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
+		/// <returns>Returns all ones from the MSB down.</returns>
+		[System.CLSCompliant(false)]
+		public static uint FoldLeastSignificantBits(uint value)
 		{
 			value |= (value >> 1);
 			value |= (value >> 2);
@@ -42,7 +66,7 @@ namespace Flux
 		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
 		/// <returns>Returns all ones from the MSB down.</returns>
 		[System.CLSCompliant(false)]
-		public static ulong FoldBits(ulong value)
+		public static ulong FoldLeastSignificantBits(ulong value)
 		{
 			value |= (value >> 1);
 			value |= (value >> 2);

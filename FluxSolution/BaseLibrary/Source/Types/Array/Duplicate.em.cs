@@ -14,7 +14,7 @@ namespace Flux
     /// <param name="targetIndex1">Insert from this index on.</param>
     /// <returns></returns>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional.
-    public static T[,] Create<T>(this T[,] source, int absoluteLength0, int absoluteLength1, int copyCount0, int copyCount1, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1)
+    public static T[,] Duplicate<T>(this T[,] source, int absoluteLength0, int absoluteLength1, int copyCount0, int copyCount1, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

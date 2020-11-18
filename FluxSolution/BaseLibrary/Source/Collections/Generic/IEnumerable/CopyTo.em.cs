@@ -1,30 +1,33 @@
 namespace Flux
 {
-  public static partial class Xtensions
-  {
-    /// <summary>Copies the elements from the sequence into the array starting at the specified index.</summary>
-    public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array, int startIndex, int count)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (array is null) throw new System.ArgumentNullException(nameof(array));
+	public static partial class Xtensions
+	{
+		/// <summary>Copies the specified number of elements from the sequence into the IList starting at the target index. This implementation copies as much as it can, i.e. the minimum of count, source items or target space.</summary>
+		public static int CopyInto<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IList<T> target, int targetIndex, int count)
+		{
+			if (source is null) throw new System.ArgumentNullException(nameof(source));
+			if (target is null) throw new System.ArgumentNullException(nameof(target));
 
-      if (startIndex < 0 || startIndex >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      if (startIndex + count >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+			if (targetIndex < 0 || targetIndex >= target.Count) throw new System.ArgumentOutOfRangeException(nameof(targetIndex));
+			if (targetIndex + count > target.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var offset = 0;
+			var offset = 0;
 
-      foreach (var item in source)
-      {
-        if (count-- == 0)
-          break;
+			foreach (var item in source)
+			{
+				if (count-- == 0)
+					break;
 
-        array.SetValue(item, startIndex + offset++);
-      }
+				if (targetIndex + offset++ is var index && index >= target.Count)
+					break;
 
-      return offset;
-    }
-    /// <summary>Copies the elements from the sequence into the array starting at the specified index.</summary>
-    public static int CopyTo<T>(this System.Collections.Generic.IEnumerable<T> source, System.Array array)
-      => CopyTo(source, array, 0, -1);
-  }
+				target[index] = item;
+			}
+
+			return offset;
+		}
+		/// <summary>Copies the specified number of elements from the sequence into the IList starting at the target index. This implementation copies as much as it can. If source runs out, or target runs short, the algorithm exists with the number of items copied.</summary>
+		public static int CopyInto<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IList<T> target)
+			=> CopyInto(source, target, 0, (target ?? throw new System.ArgumentNullException(nameof(target))).Count);
+	}
 }
