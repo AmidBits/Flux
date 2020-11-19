@@ -42,6 +42,7 @@ namespace Flux
 			input?.CopyTo(cs);
 		}
 
+#pragma warning disable CA1031 // Do not catch general exception types
 		/// <summary>Attempts to decrypt the source byte array to the output byte array with the specified key, salt and symmetric algorithm.</summary>
 		public static bool TryDecrypt(this System.Security.Cryptography.SymmetricAlgorithm source, byte[] data, out byte[] result)
 		{
@@ -107,5 +108,6 @@ namespace Flux
 			base64 = default!;
 			return false;
 		}
+#pragma warning restore CA1031 // Do not catch general exception types
 	}
 }

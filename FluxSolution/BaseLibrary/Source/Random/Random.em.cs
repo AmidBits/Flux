@@ -28,7 +28,7 @@ namespace Flux
       if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"Maximum value ({maxValue}) must be greater than 0.");
 
       var maxValueBytes = maxValue.ToByteArrayEx(out var msbIndex, out var msbValue); // Already checked for positive integer, so no padding byte is present.
-      var maxByteBitMask = (byte)((1 << Maths.ByteBitLength[msbValue]) - 1);
+      var maxByteBitMask = (byte)((1 << BitOps.BitLength(msbValue)) - 1);
       var maxIndex = maxValueBytes.Length - 1;
       var hasPaddingByte = msbIndex < maxIndex;
 

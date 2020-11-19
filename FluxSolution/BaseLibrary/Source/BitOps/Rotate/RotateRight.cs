@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class BitOps
   {
     [System.CLSCompliant(false)]
     public static System.Numerics.BigInteger RotateRight(System.Numerics.BigInteger value, int bits)

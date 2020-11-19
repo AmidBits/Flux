@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Maths
+	public static partial class BitOps
 	{
 		/// <summary>Converts from reflected binary gray code number to a binary number.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Gray_code"/>

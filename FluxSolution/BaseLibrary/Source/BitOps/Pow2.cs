@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class BitOps
   {
     /// <summary>Calculates the power of 2 and the specified exponent.</summary>
     public static System.Numerics.BigInteger Pow2(int exponent)

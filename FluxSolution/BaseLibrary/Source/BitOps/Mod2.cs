@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class BitOps
   {
     /// <summary>Calculates the mod of a power of 2 specified by the index.</summary>
     public static System.Numerics.BigInteger Mod2(System.Numerics.BigInteger value, int powerOf2Index)
