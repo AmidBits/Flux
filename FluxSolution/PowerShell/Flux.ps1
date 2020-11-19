@@ -3,7 +3,7 @@ Clear-Host
 
 # Various ways to include/use the Flux BaseLibray in PowerShell:
 
-[string]$assemblyFileName = '.\FluxSolution\BaseLibrary\bin\Debug\netcoreapp3.1\BaseLibrary.dll' # The file name of the binary assembly.
+[string]$assemblyFileName = '.\FluxSolution\BaseLibrary\bin\Debug\net5.0\BaseLibrary.dll' # The file name of the binary assembly.
 
 [byte[]]$bytes = [System.IO.File]::ReadAllBytes($assemblyFileName) # Read the binary assembly to a byte array.
 
