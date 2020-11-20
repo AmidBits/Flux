@@ -41,7 +41,6 @@ namespace Flux
 		[System.CLSCompliant(false)]
 		public static int BitLength(uint value)
 		//=> value < 0 ? 32 : /*System.Numerics.BitOperations.*/Log2(value) + 1;
-		#region Code retained for posterity.
 		{
 			var count = 0;
 
@@ -86,7 +85,6 @@ namespace Flux
 
 			return count;
 		}
-		#endregion Code retained for posterity.
 		/// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
 		/// <remarks>The implementation is relatively fast.</remarks>
 		/// <see cref="https://en.wikipedia.org/wiki/Bit-length"/>
@@ -94,7 +92,6 @@ namespace Flux
 		[System.CLSCompliant(false)]
 		public static int BitLength(ulong value)
 		//=> value < 0 ? 64 : /*System.Numerics.BitOperations.*/Log2(value) + 1;
-		#region Code retained for posterity.
 		{
 			var count = 0;
 
@@ -145,6 +142,5 @@ namespace Flux
 
 			return count;
 		}
-		#endregion Code retained for posterity.
 	}
 }

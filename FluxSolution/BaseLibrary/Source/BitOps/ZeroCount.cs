@@ -36,6 +36,9 @@ namespace Flux
 		/// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
 		[System.CLSCompliant(false)]
 		public static int LeadingZeroCount(uint value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.LeadingZeroCount(value);
+#else
 		{
 			if (value == 0)
 				return 32;
@@ -74,9 +77,13 @@ namespace Flux
 
 			return count;
 		}
+#endif
 		/// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
 		[System.CLSCompliant(false)]
 		public static int LeadingZeroCount(ulong value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.LeadingZeroCount(value);
+#else
 		{
 			if (value == 0)
 				return 64;
@@ -121,5 +128,45 @@ namespace Flux
 
 			return count;
 		}
+#endif
+
+		// http://aggregate.org/MAGIC/
+		// http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
+		// https://en.wikipedia.org/wiki/Bit-length
+
+		// https://en.wikipedia.org/wiki/Find_first_set#CTZ
+
+		/// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public static int TrailingZeroCount(System.Numerics.BigInteger value)
+			=> value > 0 ? PopCount((value & -value) - 1) : -1;
+
+		/// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public static int TrailingZeroCount(int value)
+			=> PopCount((value & -value) - 1);
+		/// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		public static int TrailingZeroCount(long value)
+			=> PopCount((value & -value) - 1);
+
+		/// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[System.CLSCompliant(false)]
+		public static int TrailingZeroCount(uint value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.TrailingZeroCount(value);
+#else
+			=> PopCount((value & ((~value) + 1)) - 1);
+#endif
+		/// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[System.CLSCompliant(false)]
+		public static int TrailingZeroCount(ulong value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.TrailingZeroCount(value);
+#else
+			=> PopCount((value & ((~value) + 1)) - 1);
+#endif
 	}
 }

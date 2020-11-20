@@ -13,7 +13,7 @@ namespace Flux
 			{
 				value.ToByteArrayEx(out var byteIndex, out var byteValue);
 
-				return /*System.Numerics.BitOperations.*/Log2(byteValue) + byteIndex * 8;
+				return /*System.Numerics.BitOperations.*/Log2((uint)byteValue) + byteIndex * 8;
 			}
 			else if (value > 0) return /*System.Numerics.BitOperations.*/Log2((uint)value);
 
@@ -34,6 +34,9 @@ namespace Flux
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		[System.CLSCompliant(false)]
 		public static int Log2(uint value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.Log2(value);
+#else
 		{
 			value |= (value >> 1);
 			value |= (value >> 2);
@@ -42,10 +45,14 @@ namespace Flux
 			value |= (value >> 16);
 			return PopCount(value >> 1);
 		}
+#endif
 		/// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it, then uses PopCount().</summary>
 		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		[System.CLSCompliant(false)]
 		public static int Log2(ulong value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.Log2(value);
+#else
 		{
 			value |= (value >> 1);
 			value |= (value >> 2);
@@ -55,5 +62,6 @@ namespace Flux
 			value |= (value >> 32);
 			return PopCount(value >> 1);
 		}
+#endif
 	}
 }

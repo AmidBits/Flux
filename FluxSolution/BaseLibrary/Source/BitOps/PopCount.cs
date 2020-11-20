@@ -14,11 +14,11 @@ namespace Flux
 			{
 				var count = 0;
 				for (var index = byteArray.Length - 1; index >= 0; index--)
-					count += /*System.Numerics.BitOperations.*/PopCount(byteArray[index]);
+					count += PopCount((uint)byteArray[index]);
 				return count;
 			}
 			else if (value >= 0)
-				return /*System.Numerics.BitOperations.*/PopCount((uint)value);
+				return PopCount((uint)value);
 
 			return -1;
 		}
@@ -36,24 +36,32 @@ namespace Flux
 		/// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
 		[System.CLSCompliant(false)]
 		public static int PopCount(uint value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.PopCount(value);
+#else
 		{
 			unchecked
 			{
-				value -= ((value >> 1) & 0x55555555);
-				value = (value & 0x33333333) + ((value >> 2) & 0x33333333);
-				return (int)((((value + (value >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24);
+				value -= ((value >> 1) & 0x55555555U);
+				value = (value & 0x33333333U) + ((value >> 2) & 0x33333333U);
+				return (int)((((value + (value >> 4)) & 0x0F0F0F0FU) * 0x01010101U) >> 24);
 			}
 		}
+#endif
 		/// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
 		[System.CLSCompliant(false)]
 		public static int PopCount(ulong value)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.PopCount(value);
+#else
 		{
 			unchecked
 			{
 				value -= ((value >> 1) & 0x5555555555555555UL);
 				value = (value & 0x3333333333333333UL) + ((value >> 2) & 0x3333333333333333UL);
-				return (int)((((value + (value >> 4)) & 0xF0F0F0F0F0F0F0FUL) * 0x101010101010101UL) >> 56);
+				return (int)((((value + (value >> 4)) & 0x0F0F0F0F0F0F0F0FUL) * 0x0101010101010101UL) >> 56);
 			}
 		}
+#endif
 	}
 }

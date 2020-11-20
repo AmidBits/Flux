@@ -8,42 +8,11 @@ namespace BitOps
 	[TestClass]
 	public class BitOps
 	{
-		//readonly System.Numerics.BigInteger[] nbi = System.Linq.Enumerable.Range(0, 255).Select(i => -(System.Numerics.BigInteger)i).ToArray();
-		//readonly short[] ns = System.Linq.Enumerable.Range(0, 255).Select(i => (short)-i).ToArray();
-		//readonly int[] ni = System.Linq.Enumerable.Range(0, 255).Select(i => (int)-i).ToArray();
-		//readonly long[] nl = System.Linq.Enumerable.Range(0, 255).Select(i => -(long)i).ToArray();
-		//readonly sbyte[] nsb = System.Linq.Enumerable.Range(0, 127).Select(i => (sbyte)-i).ToArray(); // Restricted to -127.
-
 		readonly System.Numerics.BigInteger[] pbi = System.Linq.Enumerable.Range(0, 255).Select(i => (System.Numerics.BigInteger)i).ToArray();
-		//readonly byte[] pb = System.Linq.Enumerable.Range(0, 255).Select(i => (byte)i).ToArray();
-		//readonly short[] ps = System.Linq.Enumerable.Range(0, 255).Select(i => (short)i).ToArray();
 		readonly int[] pi = System.Linq.Enumerable.Range(0, 255).Select(i => (int)i).ToArray();
 		readonly long[] pl = System.Linq.Enumerable.Range(0, 255).Select(i => (long)i).ToArray();
-		//readonly sbyte[] psb = System.Linq.Enumerable.Range(0, 127).Select(i => (sbyte)i).ToArray(); // Restricted to 127.
-		//readonly ushort[] pus = System.Linq.Enumerable.Range(0, 255).Select(i => (ushort)i).ToArray();
 		readonly uint[] pui = System.Linq.Enumerable.Range(0, 255).Select(i => (uint)i).ToArray();
 		readonly ulong[] pul = System.Linq.Enumerable.Range(0, 255).Select(i => (ulong)i).ToArray();
-
-		//[TestMethod]
-		//public void Abs()
-		//{
-		//  Assert.AreEqual(pi[1], Flux.Math.Abs(nsb[1]));
-		//  Assert.AreEqual(pi[1], Flux.Math.Abs(ns[1]));
-		//  Assert.AreEqual(pi[1], Flux.Math.Abs(ni[1]));
-		//  Assert.AreEqual(pl[1], Flux.Math.Abs(nl[1]));
-		//}
-
-		//[TestMethod]
-		//public void Abs_Speed()
-		//{
-		//  var value = System.Numerics.BigInteger.Parse("-670530");
-
-		//  Flux.Diagnostics.Performance.Measure(() => Flux.Math.Abs(value)).Assert((System.Numerics.BigInteger)670530, 0.20);
-		//  if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Math.Abs((int)value)).Assert(670530, 0.175);
-		//  if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Math.Abs((long)value)).Assert(670530L, 0.175);
-
-		//  //      if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => null).Assert(value, 0.175);
-		//}
 
 		[TestMethod]
 		public void BitIndex_BigInteger()
@@ -113,105 +82,105 @@ namespace BitOps
 		}
 
 		[TestMethod]
-		public void FoldLeastSignificantBits_BigInteger()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18.ToBigInteger()));
+		public void FoldHigh_BigInteger()
+			=> Assert.AreEqual(4094.ToBigInteger(), Flux.BitOps.FoldHigh(18.ToBigInteger()));
 		[TestMethod]
-		public void FoldLeastSignificantBits_BigInteger_Speed()
+		public void FoldHigh_BigInteger_Speed()
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
-			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
+			var expected = System.Numerics.BigInteger.Parse("2251799813685246");
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 1.5);
 		}
 		[TestMethod]
-		public void FoldLeastSignificantBits_Int32()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18));
+		public void FoldHigh_Int32()
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldHigh(18));
 		[TestMethod]
-		public void FoldLeastSignificantBits_Int32_Speed()
-		{
-			var value = 670530;
-			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
-		}
-		[TestMethod]
-		public void FoldLeastSignificantBits_Int64()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18L));
-		[TestMethod]
-		public void FoldLeastSignificantBits_Int64_Speed()
-		{
-			var value = 670530L;
-			var expected = 1048575L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
-		}
-		[TestMethod]
-		public void FoldLeastSignificantBits_UInt32()
-			=> Assert.AreEqual(31U, Flux.BitOps.FoldLSB(18U));
-		[TestMethod]
-		public void FoldLeastSignificantBits_UInt32_Speed()
-		{
-			var value = 670530U;
-			var expected = 1048575U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
-		}
-		[TestMethod]
-		public void FoldLeastSignificantBits_UInt64()
-			=> Assert.AreEqual(31UL, Flux.BitOps.FoldLSB(18UL));
-		[TestMethod]
-		public void FoldLeastSignificantBits_UInt64_Speed()
-		{
-			var value = 670530UL;
-			var expected = 1048575UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
-		}
-
-		[TestMethod]
-		public void FoldMostSignificantBits_BigInteger()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldMSB(18.ToBigInteger()));
-		[TestMethod]
-		public void FoldMostSignificantBits_BigInteger_Speed()
-		{
-			var value = System.Numerics.BigInteger.Parse("670530");
-			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
-		}
-		[TestMethod]
-		public void FoldMostSignificantBits_Int32()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldMSB(18));
-		[TestMethod]
-		public void FoldMostSignificantBits_Int32_Speed()
+		public void FoldHigh_Int32_Speed()
 		{
 			var value = 670530;
 			var expected = -2;
-			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
+			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
-		public void FoldMostSignificantBits_Int64()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldMSB(18L));
+		public void FoldHigh_Int64()
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldHigh(18L));
 		[TestMethod]
-		public void FoldMostSignificantBits_Int64_Speed()
+		public void FoldHigh_Int64_Speed()
 		{
 			var value = 670530L;
 			var expected = -2L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
-		public void FoldMostSignificantBits_UInt32()
-			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldMSB(18U));
+		public void FoldHigh_UInt32()
+			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldHigh(18U));
 		[TestMethod]
-		public void FoldMostSignificantBits_UInt32_Speed()
+		public void FoldHigh_UInt32_Speed()
 		{
 			var value = 670530U;
 			var expected = 4294967294U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
-		public void FoldMostSignificantBits_UInt64()
-			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldMSB(18UL));
+		public void FoldHigh_UInt64()
+			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldHigh(18UL));
 		[TestMethod]
-		public void FoldMostSignificantBits_UInt64_Speed()
+		public void FoldHigh_UInt64_Speed()
 		{
 			var value = 670530UL;
 			var expected = 18446744073709551614UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
+		}
+
+		[TestMethod]
+		public void FoldLow_BigInteger()
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18.ToBigInteger()));
+		[TestMethod]
+		public void FoldLow_BigInteger_Speed()
+		{
+			var value = System.Numerics.BigInteger.Parse("670530");
+			var expected = 1048575;
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
+		}
+		[TestMethod]
+		public void FoldLow_Int32()
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18));
+		[TestMethod]
+		public void FoldLow_Int32_Speed()
+		{
+			var value = 670530;
+			var expected = 1048575;
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+		}
+		[TestMethod]
+		public void FoldLow_Int64()
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18L));
+		[TestMethod]
+		public void FoldLow_Int64_Speed()
+		{
+			var value = 670530L;
+			var expected = 1048575L;
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+		}
+		[TestMethod]
+		public void FoldLow_UInt32()
+			=> Assert.AreEqual(31U, Flux.BitOps.FoldLow(18U));
+		[TestMethod]
+		public void FoldLow_UInt32_Speed()
+		{
+			var value = 670530U;
+			var expected = 1048575U;
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+		}
+		[TestMethod]
+		public void FoldLow_UInt64()
+			=> Assert.AreEqual(31UL, Flux.BitOps.FoldLow(18UL));
+		[TestMethod]
+		public void FoldLow_UInt64_Speed()
+		{
+			var value = 670530UL;
+			var expected = 1048575UL;
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
 		}
 
 		[TestMethod]
@@ -425,25 +394,18 @@ namespace BitOps
 		}
 
 		[TestMethod]
-		public void NextPowerOf2_BigInteger()
+		public void NextPowerOf2_UInt32()
 		{
-			Assert.AreEqual(pbi[8], Flux.BitOps.NextPowerOf2(pbi[5]));
-			Assert.AreEqual(pbi[32], Flux.BitOps.NextPowerOf2(pbi[17]));
-			Assert.AreEqual(pbi[64], Flux.BitOps.NextPowerOf2(pbi[32]));
+			Assert.AreEqual(pui[8], Flux.BitOps.NextHighestPowerOf2(pui[5]));
+			Assert.AreEqual(pui[32], Flux.BitOps.NextHighestPowerOf2(pui[17]));
+			Assert.AreEqual(pui[64], Flux.BitOps.NextHighestPowerOf2(pui[32]));
 		}
 		[TestMethod]
-		public void NextPowerOf2_Int32()
+		public void NextPowerOf2_UInt64()
 		{
-			Assert.AreEqual(pi[8], Flux.BitOps.NextPowerOf2(pi[5]));
-			Assert.AreEqual(pi[32], Flux.BitOps.NextPowerOf2(pi[17]));
-			Assert.AreEqual(pi[64], Flux.BitOps.NextPowerOf2(pi[32]));
-		}
-		[TestMethod]
-		public void NextPowerOf2_Int64()
-		{
-			Assert.AreEqual(pi[8], Flux.BitOps.NextPowerOf2(pl[5]));
-			Assert.AreEqual(pi[32], Flux.BitOps.NextPowerOf2(pl[17]));
-			Assert.AreEqual(pi[64], Flux.BitOps.NextPowerOf2(pl[32]));
+			Assert.AreEqual(pul[8], Flux.BitOps.NextHighestPowerOf2(pul[5]));
+			Assert.AreEqual(pul[32], Flux.BitOps.NextHighestPowerOf2(pul[17]));
+			Assert.AreEqual(pul[64], Flux.BitOps.NextHighestPowerOf2(pul[32]));
 		}
 
 		[TestMethod]
@@ -524,44 +486,6 @@ namespace BitOps
 		}
 
 		[TestMethod]
-		public void PowerOf2_BigInteger()
-		{
-			Assert.AreEqual(64.ToBigInteger(), Flux.BitOps.PowerOf2(101.ToBigInteger()));
-		}
-		[TestMethod]
-		public void PowerOf2_Int32()
-		{
-			Assert.AreEqual(64, Flux.BitOps.PowerOf2(101));
-		}
-		[TestMethod]
-		public void PowerOf2_Int64()
-		{
-			Assert.AreEqual(64L, Flux.BitOps.PowerOf2(101L));
-		}
-
-		[TestMethod]
-		public void PreviousPowerOf2_BigInteger()
-		{
-			Assert.AreEqual(pbi[4], Flux.BitOps.PreviousPowerOf2(pbi[10]));
-			Assert.AreEqual(pbi[8], Flux.BitOps.PreviousPowerOf2(pbi[19]));
-			Assert.AreEqual(pbi[16], Flux.BitOps.PreviousPowerOf2(pbi[32]));
-		}
-		[TestMethod]
-		public void PreviousPowerOf2_Int32()
-		{
-			Assert.AreEqual(pi[4], Flux.BitOps.PreviousPowerOf2(pi[10]));
-			Assert.AreEqual(pi[8], Flux.BitOps.PreviousPowerOf2(pi[19]));
-			Assert.AreEqual(pi[16], Flux.BitOps.PreviousPowerOf2(pi[32]));
-		}
-		[TestMethod]
-		public void PreviousPowerOf2_Int64()
-		{
-			Assert.AreEqual(pl[4], Flux.BitOps.PreviousPowerOf2(pl[10]));
-			Assert.AreEqual(pl[8], Flux.BitOps.PreviousPowerOf2(pl[19]));
-			Assert.AreEqual(pl[16], Flux.BitOps.PreviousPowerOf2(pl[32]));
-		}
-
-		[TestMethod]
 		public void ReverseBits_BigInteger()
 		{
 			Assert.AreEqual(pbi[30], Flux.BitOps.ReverseBits(pbi[120]));
@@ -628,6 +552,56 @@ namespace BitOps
 			var value = 670530UL;
 			var expected = 4817813662309810176UL;
 			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.1);
+		}
+
+		[TestMethod]
+		public void RotateLeft_BigInteger()
+		{
+			Assert.AreEqual(254.ToBigInteger(), Flux.BitOps.RotateLeft(pbi[120], 5));
+			Assert.AreEqual(272.ToBigInteger(), Flux.BitOps.RotateLeft(pbi[128], 5));
+			Assert.AreEqual(24.ToBigInteger(), Flux.BitOps.RotateLeft(pbi[12], 5));
+			Assert.AreEqual(254.ToBigInteger(), Flux.BitOps.RotateLeft(pbi[123], 5));
+		}
+		[TestMethod]
+		public void RotateLeft_UInt32()
+		{
+			Assert.AreEqual(3840U, Flux.BitOps.RotateLeft(pui[120], 5));
+			Assert.AreEqual(4096U, Flux.BitOps.RotateLeft(pui[128], 5));
+			Assert.AreEqual(786432U, Flux.BitOps.RotateLeft(pui[12], 16));
+			Assert.AreEqual(3936U, Flux.BitOps.RotateLeft(pui[123], 5));
+		}
+		[TestMethod]
+		public void RotateLeft_UInt64()
+		{
+			Assert.AreEqual(3840UL, Flux.BitOps.RotateLeft(pul[120], 5));
+			Assert.AreEqual(4096UL, Flux.BitOps.RotateLeft(pul[128], 5));
+			Assert.AreEqual(786432UL, Flux.BitOps.RotateLeft(pul[12], 16));
+			Assert.AreEqual(3936UL, Flux.BitOps.RotateLeft(pul[123], 5));
+		}
+
+		[TestMethod]
+		public void RotateRight_BigInteger()
+		{
+			Assert.AreEqual(483.ToBigInteger(), Flux.BitOps.RotateRight(pbi[120], 5));
+			Assert.AreEqual(1028.ToBigInteger(), Flux.BitOps.RotateRight(pbi[128], 5));
+			Assert.AreEqual(6.ToBigInteger(), Flux.BitOps.RotateRight(pbi[12], 5));
+			Assert.AreEqual(495.ToBigInteger(), Flux.BitOps.RotateRight(pbi[123], 5));
+		}
+		[TestMethod]
+		public void RotateRight_UInt32()
+		{
+			Assert.AreEqual(3221225475U, Flux.BitOps.RotateRight(pui[120], 5));
+			Assert.AreEqual(4U, Flux.BitOps.RotateRight(pui[128], 5));
+			Assert.AreEqual(786432U, Flux.BitOps.RotateRight(pui[12], 16));
+			Assert.AreEqual(3623878659U, Flux.BitOps.RotateRight(pui[123], 5));
+		}
+		[TestMethod]
+		public void RotateRight_UInt64()
+		{
+			Assert.AreEqual(13835058055282163715UL, Flux.BitOps.RotateRight(pul[120], 5));
+			Assert.AreEqual(4UL, Flux.BitOps.RotateRight(pul[128], 5));
+			Assert.AreEqual(3377699720527872UL, Flux.BitOps.RotateRight(pul[12], 16));
+			Assert.AreEqual(15564440312192434179UL, Flux.BitOps.RotateRight(pul[123], 5));
 		}
 
 		[TestMethod]
