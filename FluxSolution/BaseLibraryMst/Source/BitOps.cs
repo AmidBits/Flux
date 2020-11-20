@@ -114,104 +114,104 @@ namespace BitOps
 
 		[TestMethod]
 		public void FoldLeastSignificantBits_BigInteger()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLeastSignificantBits(18.ToBigInteger()));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18.ToBigInteger()));
 		[TestMethod]
 		public void FoldLeastSignificantBits_BigInteger_Speed()
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeastSignificantBits(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
 		}
 		[TestMethod]
 		public void FoldLeastSignificantBits_Int32()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLeastSignificantBits(18));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18));
 		[TestMethod]
 		public void FoldLeastSignificantBits_Int32_Speed()
 		{
 			var value = 670530;
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeastSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldLeastSignificantBits_Int64()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLeastSignificantBits(18L));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldLSB(18L));
 		[TestMethod]
 		public void FoldLeastSignificantBits_Int64_Speed()
 		{
 			var value = 670530L;
 			var expected = 1048575L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeastSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldLeastSignificantBits_UInt32()
-			=> Assert.AreEqual(31U, Flux.BitOps.FoldLeastSignificantBits(18U));
+			=> Assert.AreEqual(31U, Flux.BitOps.FoldLSB(18U));
 		[TestMethod]
 		public void FoldLeastSignificantBits_UInt32_Speed()
 		{
 			var value = 670530U;
 			var expected = 1048575U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeastSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldLeastSignificantBits_UInt64()
-			=> Assert.AreEqual(31UL, Flux.BitOps.FoldLeastSignificantBits(18UL));
+			=> Assert.AreEqual(31UL, Flux.BitOps.FoldLSB(18UL));
 		[TestMethod]
 		public void FoldLeastSignificantBits_UInt64_Speed()
 		{
 			var value = 670530UL;
 			var expected = 1048575UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeastSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLSB(value), 1000000).Assert(expected, 0.1);
 		}
 
 		[TestMethod]
 		public void FoldMostSignificantBits_BigInteger()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldMostSignificantBits(18.ToBigInteger()));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldMSB(18.ToBigInteger()));
 		[TestMethod]
 		public void FoldMostSignificantBits_BigInteger_Speed()
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMostSignificantBits(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
 		}
 		[TestMethod]
 		public void FoldMostSignificantBits_Int32()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldMostSignificantBits(18));
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldMSB(18));
 		[TestMethod]
 		public void FoldMostSignificantBits_Int32_Speed()
 		{
 			var value = 670530;
 			var expected = -2;
-			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMostSignificantBits(value), 1000000).Assert(expected, 0.1);
+			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldMostSignificantBits_Int64()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldMostSignificantBits(18L));
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldMSB(18L));
 		[TestMethod]
 		public void FoldMostSignificantBits_Int64_Speed()
 		{
 			var value = 670530L;
 			var expected = -2L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMostSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldMostSignificantBits_UInt32()
-			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldMostSignificantBits(18U));
+			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldMSB(18U));
 		[TestMethod]
 		public void FoldMostSignificantBits_UInt32_Speed()
 		{
 			var value = 670530U;
 			var expected = 4294967294U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMostSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
 		}
 		[TestMethod]
 		public void FoldMostSignificantBits_UInt64()
-			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldMostSignificantBits(18UL));
+			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldMSB(18UL));
 		[TestMethod]
 		public void FoldMostSignificantBits_UInt64_Speed()
 		{
 			var value = 670530UL;
 			var expected = 18446744073709551614UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMostSignificantBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldMSB(value), 1000000).Assert(expected, 0.1);
 		}
 
 		[TestMethod]
