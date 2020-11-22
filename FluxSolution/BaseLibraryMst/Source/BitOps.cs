@@ -15,22 +15,6 @@ namespace BitOps
 		readonly ulong[] pul = System.Linq.Enumerable.Range(0, 255).Select(i => (ulong)i).ToArray();
 
 		[TestMethod]
-		public void BitIndex_BigInteger()
-			=> Assert.AreEqual(4, Flux.BitOps.BitIndex(16.ToBigInteger()));
-		[TestMethod]
-		public void BitIndex_Int32()
-			=> Assert.AreEqual(4, Flux.BitOps.BitIndex(16));
-		[TestMethod]
-		public void BitIndex_Int64()
-			=> Assert.AreEqual(4, Flux.BitOps.BitIndex(16L));
-		[TestMethod]
-		public void BitIndex_UInt32()
-			=> Assert.AreEqual(4, Flux.BitOps.BitIndex(16U));
-		[TestMethod]
-		public void BitIndex_UInt64()
-			=> Assert.AreEqual(4, Flux.BitOps.BitIndex(16UL));
-
-		[TestMethod]
 		public void BitLength_BigInteger()
 			=> Assert.AreEqual(5, Flux.BitOps.BitLength(18.ToBigInteger()));
 		[TestMethod]
@@ -38,7 +22,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 20;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 500000).Assert(expected, 0.75);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 500000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void BitLength_Int32()
@@ -48,7 +32,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 20;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.20);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void BitLength_Int64()
@@ -58,7 +42,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 20;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.20);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void BitLength_UInt32()
@@ -68,7 +52,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 20;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.10);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void BitLength_UInt64()
@@ -78,7 +62,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 20;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.10);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.BitLength(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -89,7 +73,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = System.Numerics.BigInteger.Parse("2251799813685246");
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 1.5);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 4);
 		}
 		[TestMethod]
 		public void FoldHigh_Int32()
@@ -99,7 +83,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = -2;
-			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
+			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_Int64()
@@ -109,7 +93,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = -2L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_UInt32()
@@ -119,7 +103,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 4294967294U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_UInt64()
@@ -129,7 +113,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 18446744073709551614UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -140,7 +124,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert((System.Numerics.BigInteger)expected, 0.5);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert((System.Numerics.BigInteger)expected, 1);
 		}
 		[TestMethod]
 		public void FoldLow_Int32()
@@ -150,7 +134,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_Int64()
@@ -160,7 +144,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 1048575L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_UInt32()
@@ -170,7 +154,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 1048575U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_UInt64()
@@ -180,7 +164,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 1048575UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -191,7 +175,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 108;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value, 128), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value, 128), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void LeadingZeroCount_Int32()
@@ -201,7 +185,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 12;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeadingZeroCount_Int64()
@@ -211,7 +195,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 44;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeadingZeroCount_UInt32()
@@ -221,7 +205,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 12;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeadingZeroCount_UInt64()
@@ -231,7 +215,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 44;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -244,7 +228,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 2.ToBigInteger();
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.150);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void LeastSignificant1Bit_Int32()
@@ -256,7 +240,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 2;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.100);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeastSignificant1Bit_Int64()
@@ -268,7 +252,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 2L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.100);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeastSignificant1Bit_UInt32()
@@ -280,7 +264,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 2U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.100);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void LeastSignificant1Bit_UInt64()
@@ -292,7 +276,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 2UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.100);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.LeastSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -305,7 +289,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 19; // Log2() returns an int.
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.2);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void Log2_UInt32()
@@ -317,7 +301,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 19; // Log2() returns an int.
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void Log2_UInt64()
@@ -329,7 +313,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 19; // Log2() returns an int.
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -342,7 +326,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 524288.ToBigInteger();
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.5);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void MostSignificant1Bit_Int32()
@@ -354,7 +338,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 524288;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void MostSignificant1Bit_Int64()
@@ -366,7 +350,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 524288L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void MostSignificant1Bit_UInt32()
@@ -378,7 +362,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 524288U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void MostSignificant1Bit_UInt64()
@@ -390,7 +374,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 524288UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.MostSignificant1Bit(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -416,7 +400,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 9;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 500000).Assert(expected, 0.1); // Large discrepancy between Debug and Release code. Not a problem.
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 500000).Assert(expected, 0.3); // Large discrepancy between Debug and Release code. Not a problem.
 		}
 		[TestMethod]
 		public void PopCount_Int32()
@@ -426,7 +410,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 9;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.1); // Large discrepancy between Debug and Release code. Not a problem.
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.3); // Large discrepancy between Debug and Release code. Not a problem.
 		}
 		[TestMethod]
 		public void PopCount_Int64()
@@ -436,7 +420,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 9;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.1); // Large discrepancy between Debug and Release code. Not a problem.
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.3); // Large discrepancy between Debug and Release code. Not a problem.
 		}
 		[TestMethod]
 		public void PopCount_UInt32()
@@ -446,7 +430,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 9;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.1); // Large discrepancy between Debug and Release code. Not a problem.
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.3); // Large discrepancy between Debug and Release code. Not a problem.
 		}
 		[TestMethod]
 		public void PopCount_UInt64()
@@ -456,7 +440,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 9;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.1); // Large discrepancy between Debug and Release code. Not a problem.
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.PopCount(value), 1000000).Assert(expected, 0.3); // Large discrepancy between Debug and Release code. Not a problem.
 		}
 
 		[TestMethod]
@@ -499,7 +483,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 4381776.ToBigInteger();
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.4);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void ReverseBits_Int32()
@@ -512,7 +496,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 1121734656;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void ReverseBits_Int64()
@@ -525,7 +509,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 4817813662309810176L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void ReverseBits_UInt32()
@@ -538,7 +522,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 1121734656U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void ReverseBits_UInt64()
@@ -551,7 +535,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 4817813662309810176UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.ReverseBits(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
@@ -612,7 +596,7 @@ namespace BitOps
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 1;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.2);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 1);
 		}
 		[TestMethod]
 		public void TrailingZeroCount_Int32()
@@ -622,7 +606,7 @@ namespace BitOps
 		{
 			var value = 670530;
 			var expected = 1;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void TrailingZeroCount_Int64()
@@ -632,7 +616,7 @@ namespace BitOps
 		{
 			var value = 670530L;
 			var expected = 1;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void TrailingZeroCount_UInt32()
@@ -642,7 +626,7 @@ namespace BitOps
 		{
 			var value = 670530U;
 			var expected = 1;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void TrailingZeroCount_UInt64()
@@ -652,7 +636,7 @@ namespace BitOps
 		{
 			var value = 670530UL;
 			var expected = 1;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.TrailingZeroCount(value), 1000000).Assert(expected, 0.3);
 		}
 	}
 }
