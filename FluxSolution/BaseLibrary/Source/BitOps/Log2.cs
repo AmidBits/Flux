@@ -35,13 +35,13 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int Log2(uint value)
     {
+      if (value == 0) // Ensure undefined returns zero.
+        return 0;
+
 #if NETCOREAPP
       if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
         return 31 - (int)System.Runtime.Intrinsics.X86.Lzcnt.LeadingZeroCount(value);
 #endif
-
-      if (value == 0)
-        return 0;
 
       value |= (value >> 1);
       value |= (value >> 2);
@@ -55,15 +55,15 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int Log2(ulong value)
     {
+      if (value == 0) // Ensure undefined returns zero.
+        return 0;
+
 #if NETCOREAPP
       if (System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
         return 63 - (int)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount(value);
       if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
         return value <= uint.MaxValue ? Log2((uint)value) : 32 + Log2((uint)(value >> 32));
 #endif
-
-      if (value == 0)
-        return 0;
 
       value |= (value >> 1);
       value |= (value >> 2);

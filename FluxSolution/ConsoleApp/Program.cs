@@ -13,9 +13,17 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var ui = unchecked((uint)-10);
-      System.Console.WriteLine($"{System.Numerics.BitOperations.Log2(ui)}");
-      System.Console.WriteLine($"{Flux.BitOps.Log2(ui)}");
+      //System.Linq.ParallelEnumerable.Range(-7, 15).ForAll(i =>
+      //{
+      //  var sb = new System.Text.StringBuilder();
+      //  sb.AppendLine($"Val: {i}");
+      //  sb.AppendLine($"LZC: {System.Numerics.BitOperations.LeadingZeroCount((uint)i)} = {Flux.BitOps.LeadingZeroCount((uint)i)}");
+      //  sb.AppendLine($"Ln2: {System.Numerics.BitOperations.Log2((uint)i)} = {Flux.BitOps.Log2((uint)i)}");
+      //  sb.AppendLine($"Pop: {System.Numerics.BitOperations.PopCount((uint)i)} = {Flux.BitOps.PopCount((uint)i)}");
+      //  sb.AppendLine($"TZC: {System.Numerics.BitOperations.TrailingZeroCount((uint)i)} = {Flux.BitOps.TrailingZeroCount((uint)i)}");
+      //  System.Console.WriteLine($"{sb.ToString()}");
+      //});
+
       //RegularForLoop();
       //ParallelForLoop();
     }
