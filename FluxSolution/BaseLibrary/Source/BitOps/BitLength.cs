@@ -15,17 +15,7 @@ namespace Flux
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int BitLength(System.Numerics.BigInteger value)
-    //  => value >= 0 ? Log2(value) + 1 : 0;
-    {
-      if (value >= 0)
-        return Log2(value) + 1;
-      else
-      {
-        value.ToByteArrayEx(out var msbIndex, out var msbValue);
-
-        return Log2(Log2(msbValue) + 8 * msbIndex);
-      }
-    }
+      => value >= 0 ? Log2(value) + 1 : 0;
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -40,107 +30,115 @@ namespace Flux
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     [System.CLSCompliant(false)]
     public static int BitLength(uint value)
-      => value < 0 ? 32 : Log2(value) + 1;
-    //{
-    //	var count = 0;
+    {
+#if NETCOREAPP
+      if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
+        return value < 0 ? 32 : Log2(value) + 1;
+#endif
 
-    //	if (value > 0)
-    //	{
-    //		unchecked
-    //		{
-    //			if (value > 0x0000FFFF)
-    //			{
-    //				count += 16;
-    //				value >>= 16;
-    //			}
+      var count = 0;
 
-    //			if (value > 0x000000FF)
-    //			{
-    //				count += 8;
-    //				value >>= 8;
-    //			}
+      if (value > 0)
+      {
+        unchecked
+        {
+          if (value > 0x0000FFFF)
+          {
+            count += 16;
+            value >>= 16;
+          }
 
-    //			if (value > 0x0000000F)
-    //			{
-    //				count += 4;
-    //				value >>= 4;
-    //			}
+          if (value > 0x000000FF)
+          {
+            count += 8;
+            value >>= 8;
+          }
 
-    //			if (value > 0x00000003)
-    //			{
-    //				count += 2;
-    //				value >>= 2;
-    //			}
+          if (value > 0x0000000F)
+          {
+            count += 4;
+            value >>= 4;
+          }
 
-    //			if (value > 0x00000001)
-    //			{
-    //				count++;
-    //				value >>= 1;
-    //			}
+          if (value > 0x00000003)
+          {
+            count += 2;
+            value >>= 2;
+          }
 
-    //			if (value > 0x00000000)
-    //				count++;
-    //		}
-    //	}
+          if (value > 0x00000001)
+          {
+            count++;
+            value >>= 1;
+          }
 
-    //	return count;
-    //}
+          if (value > 0x00000000)
+            count++;
+        }
+      }
+
+      return count;
+    }
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>The implementation is relatively fast.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Bit-length"/>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     [System.CLSCompliant(false)]
     public static int BitLength(ulong value)
-      => value < 0 ? 64 : Log2(value) + 1;
-    //{
-    //	var count = 0;
+    {
+#if NETCOREAPP
+      if (System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
+        return value < 0 ? 64 : Log2(value) + 1;
+#endif
 
-    //	if (value > 0)
-    //	{
-    //		unchecked
-    //		{
-    //			if (value > 0x00000000FFFFFFFF)
-    //			{
-    //				count += 32;
-    //				value >>= 32;
-    //			}
+      var count = 0;
 
-    //			if (value > 0x0000FFFF)
-    //			{
-    //				count += 16;
-    //				value >>= 16;
-    //			}
+      if (value > 0)
+      {
+        unchecked
+        {
+          if (value > 0x00000000FFFFFFFF)
+          {
+            count += 32;
+            value >>= 32;
+          }
 
-    //			if (value > 0x000000FF)
-    //			{
-    //				count += 8;
-    //				value >>= 8;
-    //			}
+          if (value > 0x0000FFFF)
+          {
+            count += 16;
+            value >>= 16;
+          }
 
-    //			if (value > 0x0000000F)
-    //			{
-    //				count += 4;
-    //				value >>= 4;
-    //			}
+          if (value > 0x000000FF)
+          {
+            count += 8;
+            value >>= 8;
+          }
 
-    //			if (value > 0x00000003)
-    //			{
-    //				count += 2;
-    //				value >>= 2;
-    //			}
+          if (value > 0x0000000F)
+          {
+            count += 4;
+            value >>= 4;
+          }
 
-    //			if (value > 0x00000001)
-    //			{
-    //				count++;
-    //				value >>= 1;
-    //			}
+          if (value > 0x00000003)
+          {
+            count += 2;
+            value >>= 2;
+          }
 
-    //			if (value > 0x00000000)
-    //				count++;
-    //		}
-    //	}
+          if (value > 0x00000001)
+          {
+            count++;
+            value >>= 1;
+          }
 
-    //	return count;
-    //}
+          if (value > 0x00000000)
+            count++;
+        }
+      }
+
+      return count;
+    }
   }
 }

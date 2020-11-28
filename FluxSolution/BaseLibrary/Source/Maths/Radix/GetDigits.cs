@@ -4,10 +4,10 @@ namespace Flux
 {
   public static partial class Maths
   {
-    /// <summary>Returns the digits of an absolute value.</summary>
+    /// <summary>Returns the digits of a value.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDigits(System.Numerics.BigInteger value, int radix)
       => GetDigitsReversed(value, radix).Reverse();
-    /// <summary>Returns the digits of an absolute value, in reverse order.</summary>
+    /// <summary>Returns the digits of a value, in reverse order.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDigitsReversed(System.Numerics.BigInteger value, int radix)
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
@@ -20,10 +20,10 @@ namespace Flux
       }
     }
 
-    /// <summary>Returns the digits of an absolute value.</summary>
+    /// <summary>Returns the digits of a value.</summary>
     public static System.Collections.Generic.IEnumerable<int> GetDigits(int value, int radix)
       => GetDigitsReversed(value, radix).Reverse();
-    /// <summary>Returns the digits of an absolute value, in reverse order.</summary>
+    /// <summary>Returns the digits of a value, in reverse order.</summary>
     public static System.Collections.Generic.IEnumerable<int> GetDigitsReversed(int value, int radix)
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
@@ -35,10 +35,10 @@ namespace Flux
         value /= radix;
       }
     }
-    /// <summary>Returns the digits of an absolute value.</summary>
+    /// <summary>Returns the digits of a value.</summary>
     public static System.Collections.Generic.IEnumerable<long> GetDigits(long value, int radix)
       => GetDigitsReversed(value, radix).Reverse();
-    /// <summary>Returns the digits of an absolute value, in reverse order.</summary>
+    /// <summary>Returns the digits of a value, in reverse order.</summary>
     public static System.Collections.Generic.IEnumerable<long> GetDigitsReversed(long value, int radix)
     {
       if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
@@ -51,11 +51,11 @@ namespace Flux
       }
     }
 
-    /// <summary>Returns the digits of an absolute value.</summary>
+    /// <summary>Returns the digits of a value.</summary>
     [System.CLSCompliant(false)]
     public static System.Collections.Generic.IEnumerable<uint> GetDigits(uint value, int radix)
       => GetDigitsReversed(value, radix).Reverse();
-    /// <summary>Returns the digits of an absolute value, in reverse order.</summary>
+    /// <summary>Returns the digits of a value, in reverse order.</summary>
     [System.CLSCompliant(false)]
     public static System.Collections.Generic.IEnumerable<uint> GetDigitsReversed(uint value, int radix)
     {
@@ -67,11 +67,11 @@ namespace Flux
         value /= (uint)radix;
       }
     }
-    /// <summary>Returns the digits of an absolute value.</summary>
+    /// <summary>Returns the digits of a value.</summary>
     [System.CLSCompliant(false)]
     public static System.Collections.Generic.IEnumerable<ulong> GetDigits(ulong value, int radix)
       => GetDigitsReversed(value, radix).Reverse();
-    /// <summary>Returns the digits of an absolute value, in reverse order.</summary>
+    /// <summary>Returns the digits of a value, in reverse order.</summary>
     [System.CLSCompliant(false)]
     public static System.Collections.Generic.IEnumerable<ulong> GetDigitsReversed(ulong value, int radix)
     {
@@ -83,6 +83,5 @@ namespace Flux
         value /= (ulong)radix;
       }
     }
-
   }
 }

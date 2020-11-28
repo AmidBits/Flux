@@ -41,6 +41,7 @@ namespace Flux
       if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
         return (int)System.Runtime.Intrinsics.X86.Lzcnt.LeadingZeroCount(value);
 #endif
+
       if (value == 0)
         return 32;
 

@@ -57,25 +57,67 @@ namespace Maths
       => Assert.AreEqual(8, Flux.Maths.DigitSum(53UL, 10));
 
     [TestMethod]
-    public void DigitCount()
+    public void DigitCount_BigInteger()
     {
-      var value = System.Numerics.BigInteger.Parse("670530");
-
-      Assert.AreEqual(20, Flux.Maths.DigitCount(value, 2));
-      Assert.AreEqual(7, Flux.Maths.DigitCount(value, 8));
-      Assert.AreEqual(6, Flux.Maths.DigitCount(value, 10));
-      Assert.AreEqual(5, Flux.Maths.DigitCount(value, 16));
+      for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Random.NumberGenerator.Crypto.NextBigInteger(i) + 1)
+      {
+        var expectedString = i.ToString();
+        var actualCount = Flux.Maths.DigitCount(i, 10);
+        Assert.AreEqual(expectedString.Length, actualCount, $"{i} = {expectedString} ({expectedString.Length}) = {actualCount}");
+      }
     }
     [TestMethod]
-    public void DigitSum()
+    public void DigitCount_Int32()
     {
-      var value = System.Numerics.BigInteger.Parse("670530");
-
-      Assert.AreEqual(9, Flux.Maths.DigitSum(value, 2));
-      Assert.AreEqual(21, Flux.Maths.DigitSum(value, 8));
-      Assert.AreEqual(21, Flux.Maths.DigitSum(value, 10));
-      Assert.AreEqual(30, Flux.Maths.DigitSum(value, 16));
+      for (var i = 1U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.NextInt64((int)i) + 1)
+      {
+        var expectedString = i.ToString();
+        var actualCount = Flux.Maths.DigitCount((int)i, 10);
+        Assert.AreEqual(expectedString.Length, actualCount, $"{i} = {expectedString} ({expectedString.Length}) = {actualCount}");
+      }
     }
+    [TestMethod]
+    public void DigitCount_Int64()
+    {
+      for (var i = 1UL; i < long.MaxValue; i += (ulong)Flux.Random.NumberGenerator.Crypto.NextInt64((long)i) + 1)
+      {
+        var expectedString = i.ToString();
+        var actualCount = Flux.Maths.DigitCount((long)i, 10);
+        Assert.AreEqual(expectedString.Length, actualCount, $"{i} = {expectedString} ({expectedString.Length}) = {actualCount}");
+      }
+    }
+
+    [TestMethod]
+    public void DigitSum_BigInteger()
+    {
+      for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Random.NumberGenerator.Crypto.NextBigInteger(i) + 1)
+      {
+        var expectedSum = Flux.Maths.GetDigits(i, 10).Aggregate(System.Numerics.BigInteger.Zero, (a, e) => a + e);
+        var actualSum = Flux.Maths.DigitSum(i, 10);
+        Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
+      }
+    }
+    [TestMethod]
+    public void DigitSum_Int32()
+    {
+      for (var i = 1U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.NextInt64((int)i) + 1)
+      {
+        var expectedSum = Flux.Maths.GetDigits((int)i, 10).Aggregate(0, (a, e) => a + e);
+        var actualSum = Flux.Maths.DigitSum(i, 10);
+        Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
+      }
+    }
+    [TestMethod]
+    public void DigitSum_Int64()
+    {
+      for (var i = 1UL; i < long.MaxValue; i += (ulong)Flux.Random.NumberGenerator.Crypto.NextInt64((long)i) + 1)
+      {
+        var expectedSum = Flux.Maths.GetDigits((long)i, 10).Aggregate(0L, (a, e) => a + e);
+        var actualSum = (long)Flux.Maths.DigitSum(i, 10);
+        Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
+      }
+    }
+
     [TestMethod]
     public void DropLeadingDigit()
     {
@@ -86,6 +128,7 @@ namespace Maths
       Assert.AreEqual(70530, Flux.Maths.DropLeadingDigit(value, 10)); // 670530 = 70530
       Assert.AreEqual(15170, Flux.Maths.DropLeadingDigit(value, 16)); // A3B42 = 3B42
     }
+
     [TestMethod]
     public void DropTrailingDigit()
     {
@@ -96,6 +139,7 @@ namespace Maths
       Assert.AreEqual(67053, Flux.Maths.DropTrailingDigit(value, 10)); // dec 670530 = dec 67053
       Assert.AreEqual(41908, Flux.Maths.DropTrailingDigit(value, 16)); // hex A3B42 = hex A3B4 = dec 41908
     }
+
     [TestMethod]
     public void GetComponents()
     {
@@ -103,6 +147,7 @@ namespace Maths
       CollectionAssert.AreEqual(new int[] { 0, 30, 500, 0, 70000, 600000 }, Flux.Maths.GetComponents(670530, 10).ToArray(), nameof(Flux.Maths.GetComponents) + ".Radix=10");
       CollectionAssert.AreEqual(new int[] { 2, 64, 2816, 12288, 655360 }, Flux.Maths.GetComponents(670530, 16).ToArray(), nameof(Flux.Maths.GetComponents) + ".Radix=16");
     }
+
     [TestMethod]
     public void GetDigits()
     {
@@ -110,6 +155,7 @@ namespace Maths
       CollectionAssert.AreEqual(new int[] { 6, 7, 0, 5, 3, 0 }, Flux.Maths.GetDigits(670530, 10).ToArray(), nameof(Flux.Maths.GetDigits) + ".Radix=10");
       CollectionAssert.AreEqual(new int[] { 10, 3, 11, 4, 2 }, Flux.Maths.GetDigits(670530, 16).ToArray(), nameof(Flux.Maths.GetDigits) + ".Radix=16");
     }
+
     [TestMethod]
     public void GetDigitsReversed()
     {
@@ -117,6 +163,7 @@ namespace Maths
       CollectionAssert.AreEqual(new int[] { 0, 3, 5, 0, 7, 6 }, Flux.Maths.GetDigitsReversed(670530, 10).ToArray(), nameof(Flux.Maths.GetDigitsReversed) + ".Radix=10");
       CollectionAssert.AreEqual(new int[] { 2, 4, 11, 3, 10 }, Flux.Maths.GetDigitsReversed(670530, 16).ToArray(), nameof(Flux.Maths.GetDigitsReversed) + ".Radix=16");
     }
+
     [TestMethod]
     public void IsJumbled()
     {
@@ -124,6 +171,7 @@ namespace Maths
       Assert.AreEqual(true, Flux.Maths.IsJumbled(1223, 10), nameof(Flux.Maths.IsJumbled) + ".Radix=10");
       Assert.AreEqual(false, Flux.Maths.IsJumbled(0x123F, 16), nameof(Flux.Maths.IsJumbled) + ".Radix=16");
     }
+
     [TestMethod]
     public void IsPowerOf()
     {
@@ -139,6 +187,7 @@ namespace Maths
       Assert.AreEqual(true, Flux.Maths.IsPowerOf(100, 10));
       Assert.AreEqual(true, Flux.Maths.IsPowerOf(256, 16));
     }
+
     [TestMethod]
     public void Radix_PowerOf()
     {
@@ -147,6 +196,7 @@ namespace Maths
       Assert.AreEqual(10, Flux.Maths.PowerOf(30, 10));
       Assert.AreEqual(16, Flux.Maths.PowerOf(30, 16));
     }
+
     [TestMethod]
     public void Radix_ReverseDigits()
     {
@@ -161,6 +211,7 @@ namespace Maths
       Assert.AreEqual(pul[21], Flux.Maths.ReverseDigits(pul[12], pi[10]));
       Assert.AreEqual(pul[27], Flux.Maths.ReverseDigits(pul[72], pi[10]));
     }
+
     [TestMethod]
     public void Radix_ReverseDigits_Speed()
     {

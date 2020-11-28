@@ -51,6 +51,11 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static uint MostSignificant1Bit(uint value)
     {
+#if NETCOREAPP
+      if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
+        return 1U << (LeadingZeroCount(value) ^ 31);
+#endif
+
       value |= (value >> 1);
       value |= (value >> 2);
       value |= (value >> 4);
@@ -62,6 +67,11 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong MostSignificant1Bit(ulong value)
     {
+#if NETCOREAPP
+      if (System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
+        return 1UL << (LeadingZeroCount(value) ^ 63);
+#endif
+
       value |= (value >> 1);
       value |= (value >> 2);
       value |= (value >> 4);

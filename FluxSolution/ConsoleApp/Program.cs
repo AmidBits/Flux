@@ -13,16 +13,24 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //System.Linq.ParallelEnumerable.Range(-7, 15).ForAll(i =>
+      //for (var i = 100; i >= 0; i--)
+      ////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
       //{
+      //  var number = (uint)Flux.Random.NumberGenerator.Crypto.Next(4000);
       //  var sb = new System.Text.StringBuilder();
-      //  sb.AppendLine($"Val: {i}");
-      //  sb.AppendLine($"LZC: {System.Numerics.BitOperations.LeadingZeroCount((uint)i)} = {Flux.BitOps.LeadingZeroCount((uint)i)}");
-      //  sb.AppendLine($"Ln2: {System.Numerics.BitOperations.Log2((uint)i)} = {Flux.BitOps.Log2((uint)i)}");
-      //  sb.AppendLine($"Pop: {System.Numerics.BitOperations.PopCount((uint)i)} = {Flux.BitOps.PopCount((uint)i)}");
-      //  sb.AppendLine($"TZC: {System.Numerics.BitOperations.TrailingZeroCount((uint)i)} = {Flux.BitOps.TrailingZeroCount((uint)i)}");
-      //  System.Console.WriteLine($"{sb.ToString()}");
-      //});
+      //  sb.AppendLine($"Value: {number} (0x{number.ToString(@"X2")}, {System.Convert.ToString(number, 2)})");
+      //  sb.AppendLine($"  LZC: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
+      //  sb.AppendLine($"  Ln2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
+      //  sb.AppendLine($"  Pop: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
+      //  sb.AppendLine($"  TZC: {System.Numerics.BitOperations.TrailingZeroCount(number)} = {Flux.BitOps.TrailingZeroCount(number)}");
+      //  sb.AppendLine($"   BL: {Flux.BitOps.BitLength(number)}");
+      //  sb.AppendLine($" LS1B: {Flux.BitOps.LeastSignificant1Bit(number)}");
+      //  sb.AppendLine($" MS1B: {Flux.BitOps.MostSignificant1Bit(number)}");
+      //  System.Console.WriteLine($"{sb}");
+      //  System.Console.ReadKey();
+      //  System.Console.Clear();
+      //}
+      ////);
 
       //RegularForLoop();
       //ParallelForLoop();

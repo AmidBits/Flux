@@ -15,7 +15,7 @@ namespace Flux
       var t = 1.0 / (1.0 + p * absoluteOfX);
       var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * System.Math.Exp(-absoluteOfX * absoluteOfX);
 
-      return CopySign(y, x);
+      return System.Math.CopySign(y, x);
     }
   }
 }
