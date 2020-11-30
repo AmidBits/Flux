@@ -41,7 +41,7 @@ namespace Flux.Random
 
         m_state2 ^= m_t;
 
-        m_state3 = ((m_state3 << 45) | (m_state3 >> 19));
+        m_state3 = (m_state3 << 45) | (m_state3 >> 19);
 
         return result;
       }
