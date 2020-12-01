@@ -54,29 +54,53 @@ namespace ConsoleApp
 
 		private static void TimedMain(string[] _)
 		{
-			//			System.Console.WriteLine(string.Join('|', System.Linq.Enumerable.Range(999995, 10).Where(i => Flux.Maths.IsSelfNumber(i, 10)).ToArray()));
-			var radix = 10;
-			for (var i = 999995; i < 1000005; i++)
+			//System.Console.WriteLine(Flux.Convert.ToRadixString(256, 2));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(2).NumberToText(670530));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(8).NumberToText(670530));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(10).NumberToText(670530));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(16).NumberToText(670530));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(20).NumberToText(670530));
+			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(62).NumberToText(670530));
+			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.Base64).NumberToText(670530));
+			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.DecimalSubscript.Slice(0, 10)).NumberToText(670530));
+			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.DecimalSuperscript.Slice(0, 2)).NumberToText(670530));
+
+			foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
 			{
-				System.Console.WriteLine($"{i} : {Flux.Maths.IsSelfNumber(i, radix)} : {Flux.Maths.SelfNumberLowBound(i, radix)}   ({i - Flux.Maths.SelfNumberLowBound(i, radix)})");
+				foreach (var mi in type.GetMethods())
+				{
+					foreach (var pi in mi.GetParameters())
+					{
+						if (pi.ParameterType.IsArray)
+						{
+							System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition}) : ({pi.Name})");
+						}
+					}
+				}
 			}
+
+			//for (var i = 48; i < 128; i++)
+			//{
+			//	System.Console.Write($"'{(char)i}'");
+			//	System.Console.WriteLine(',');
+			//}
 
 			//for (var i = 100; i >= 0; i--)
 			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
 			//{
-			//  var number = (uint)Flux.Random.NumberGenerator.Crypto.Next(4000);
-			//  var sb = new System.Text.StringBuilder();
-			//  sb.AppendLine($"Value: {number} (0x{number.ToString(@"X2")}, {System.Convert.ToString(number, 2)})");
-			//  sb.AppendLine($"  LZC: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
-			//  sb.AppendLine($"  Ln2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
-			//  sb.AppendLine($"  Pop: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
-			//  sb.AppendLine($"  TZC: {System.Numerics.BitOperations.TrailingZeroCount(number)} = {Flux.BitOps.TrailingZeroCount(number)}");
-			//  sb.AppendLine($"   BL: {Flux.BitOps.BitLength(number)}");
-			//  sb.AppendLine($" LS1B: {Flux.BitOps.LeastSignificant1Bit(number)}");
-			//  sb.AppendLine($" MS1B: {Flux.BitOps.MostSignificant1Bit(number)}");
-			//  System.Console.WriteLine($"{sb}");
-			//  System.Console.ReadKey();
-			//  System.Console.Clear();
+			//	var number = (uint)Flux.Random.NumberGenerator.Crypto.Next(4000);
+			//	var sb = new System.Text.StringBuilder();
+			//	sb.AppendLine($"Value: {number} (0x{number.ToString(@"X2")}, {System.Convert.ToString(number, 2)})");
+			//	sb.AppendLine($"  LZC: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
+			//	sb.AppendLine($"  Ln2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
+			//	sb.AppendLine($"  Pop: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
+			//	sb.AppendLine($"  TZC: {System.Numerics.BitOperations.TrailingZeroCount(number)} = {Flux.BitOps.TrailingZeroCount(number)}");
+			//	sb.AppendLine($"   BL: {Flux.BitOps.BitLength(number)}");
+			//	sb.AppendLine($" LS1B: {Flux.BitOps.LeastSignificant1Bit(number)}");
+			//	sb.AppendLine($" MS1B: {Flux.BitOps.MostSignificant1Bit(number)}");
+			//	System.Console.WriteLine($"{sb}");
+			//	System.Console.ReadKey();
+			//	System.Console.Clear();
 			//}
 			////);
 

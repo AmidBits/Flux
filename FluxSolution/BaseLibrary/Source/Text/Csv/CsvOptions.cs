@@ -6,6 +6,6 @@ namespace Flux.Text
 
     public System.Text.Encoding Encoding { get; set; } = System.Text.Encoding.UTF8;
 
-    public char FieldSeparator { get; set; } = ',';
+    public char FieldSeparator { get; set; } = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator[0];
   }
 }

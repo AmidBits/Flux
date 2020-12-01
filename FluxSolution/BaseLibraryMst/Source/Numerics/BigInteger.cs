@@ -101,14 +101,14 @@ namespace Numerics
       Assert.AreEqual("24th", bi24.ToString().InsertOrdinalIndicator());
     }
 
-    [TestMethod]
-    public void BinaryToText()
-    {
-      Assert.AreEqual("Y", Flux.Text.PositionalNotation.Base64.NumberToText(bi24));
-      Assert.AreEqual(bi24, Flux.Text.PositionalNotation.Base64.TextToNumber("Y"));
+    //[TestMethod]
+    //public void BinaryToText()
+    //{
+    //  Assert.AreEqual("Y", Flux.Text.PositionalNotation.Base64.NumberToText(bi24));
+    //  Assert.AreEqual(bi24, Flux.Text.PositionalNotation.Base64.TextToNumber("Y"));
 
-      Assert.AreEqual("2", Flux.Text.PositionalNotation.Base64.NumberToText(bi54));
-      Assert.AreEqual(bi54, Flux.Text.PositionalNotation.Base64.TextToNumber("2"));
-    }
+    //  Assert.AreEqual("2", Flux.Text.PositionalNotation.Base64.NumberToText(bi54));
+    //  Assert.AreEqual(bi54, Flux.Text.PositionalNotation.Base64.TextToNumber("2"));
+    //}
   }
 }

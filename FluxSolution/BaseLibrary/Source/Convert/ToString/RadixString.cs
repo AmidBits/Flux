@@ -6,10 +6,10 @@ namespace Flux
   {
     /// <summary>Returns the string formatted using the specified base, 2 for binary, 10 for decimal, 16 for hexadecimal, etc.</summary>
     public static System.Numerics.BigInteger FromRadixString(this string text, int radix)
-      => Text.PositionalNotation.GetFromRadix(radix).TextToNumber(text);
+      => Text.PositionalNotation.ForRadix(radix).TextToNumber(text);
     /// <summary>Returns the string formatted using the specified base, 2 for binary, 10 for decimal, 16 for hexadecimal, etc.</summary>
     public static string ToRadixString(this System.Numerics.BigInteger number, int radix)
-      => Text.PositionalNotation.GetFromRadix(radix).NumberToText(number);
+      => Text.PositionalNotation.ForRadix(radix).NumberToText(number);
 
     ///// <summary>Convert from decimal unicode subscript.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts"/>
