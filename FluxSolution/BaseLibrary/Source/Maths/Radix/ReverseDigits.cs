@@ -17,31 +17,9 @@ namespace Flux
     }
 
     public static int ReverseDigits(int value, int radix)
-    {
-      if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
-      if (value < 0) return -ReverseDigits(-value, radix);
-
-      var reverse = 0;
-      while (value > 0)
-      {
-        value = System.Math.DivRem(value, radix, out var remainder);
-        reverse = reverse * radix + remainder;
-      }
-      return reverse;
-    }
+      => value < 0 ? -(int)ReverseDigits((uint)-value, radix) : (int)ReverseDigits((uint)value, radix);
     public static long ReverseDigits(long value, int radix)
-    {
-      if (radix < 2) throw new System.ArgumentOutOfRangeException(nameof(radix));
-      if (value < 0) return -ReverseDigits(-value, radix);
-
-      var reverse = 0L;
-      while (value > 0)
-      {
-        value = System.Math.DivRem(value, radix, out var remainder);
-        reverse = reverse * radix + remainder;
-      }
-      return reverse;
-    }
+      => value < 0 ? -(long)ReverseDigits((ulong)-value, radix) : (long)ReverseDigits((ulong)value, radix);
 
     [System.CLSCompliant(false)]
     public static uint ReverseDigits(uint value, int radix)
