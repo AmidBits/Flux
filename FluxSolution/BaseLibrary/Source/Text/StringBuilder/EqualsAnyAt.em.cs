@@ -16,8 +16,7 @@ namespace Flux
     /// <summary>Determines whether this instance has the same value as any in the specified params array of strings when compared using the specified comparison option. The comparison starts at a specified character position and examines a specified number of characters.</summary>
     public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startAt, int count, System.Collections.Generic.IEqualityComparer<char> comparer, params string[] values)
       => EqualsAnyAt(source, startAt, count, comparer, values.AsEnumerable());
-    /// <summary>Determines whether this string has the same value as any in the specified sequence when compared using the specified comparison option. The comparison starts at a specified character position and examines a specified number of characters.</summary>
-		// public static bool EqualsAnyAt(this string source, int startAt, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> values) => values.Any(value => source.IndexOf(value, startAt, count > -1 ? count : System.Math.Min(source.Length - startAt, value.Length), comparisonType) == startAt);
+    /// <summary>Determines whether this instance has the same value as any in the specified sequence when compared using the specified comparison option. The comparison starts at a specified character position and examines a specified number of characters.</summary>
     public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startAt, int count, System.Collections.Generic.IEqualityComparer<char> comparer, System.Collections.Generic.IEnumerable<string> values)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

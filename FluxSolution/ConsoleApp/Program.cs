@@ -11,46 +11,6 @@ namespace ConsoleApp
 {
 	class Program
 	{
-		//{
-		//	int sum = targetNumber;
-		//	int cipher = (int)Math.Log10(targetNumber);
-		//	for (int i = 0; i <= cipher; i++)
-		//	{
-		//		sum += targetNumber % 10;
-		//		targetNumber /= 10;
-		//	}
-		//	return sum;
-		//}
-
-		//static int GetGeneratorNumber(int targetNumber)
-		//{
-		//	int minPossipleNumber = Flux.Maths.SelfNumberLowBound(targetNumber, 10);
-		//	int minCipher = (int)Math.Log10(minPossipleNumber);
-		//	int minNumber = 0;
-		//	for (int i = 1; i <= minCipher; i++)
-		//	{
-		//		minNumber += minPossipleNumber / (int)Math.Pow(10, i);
-		//	}
-		//	int maxCipher = (int)Math.Log10(targetNumber);
-		//	int maxNumber = 0;
-		//	for (int i = 1; i <= maxCipher; i++)
-		//	{
-		//		maxNumber += targetNumber / (int)Math.Pow(10, i);
-		//	}
-
-
-		//	for (int i = minNumber; i <= maxNumber; i++)
-		//	{
-		//		int generatorNumber = (targetNumber + (9 * i)) / 2;
-		//		int generator = generatorNumber + Flux.Math.DigitSum(generatorNumber,10);
-		//		if (generator == targetNumber)
-		//		{
-		//			return generatorNumber;
-		//		}
-		//	}
-		//	return -1;
-		//}
-
 		private static void TimedMain(string[] _)
 		{
 			foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
@@ -60,12 +20,6 @@ namespace ConsoleApp
 					System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition})");
 				}
 			}
-
-			//for (var i = 48; i < 128; i++)
-			//{
-			//	System.Console.Write($"'{(char)i}'");
-			//	System.Console.WriteLine(',');
-			//}
 
 			//for (var i = 100; i >= 0; i--)
 			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
