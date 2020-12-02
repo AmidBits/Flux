@@ -1,12 +1,12 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class ArrayInPlace
+  public static partial class Array
   {
     /// <summary>Transpose the two-dimensional array, in-place. Both dimensions must be equal in length, i.e. it has to be a square two-dimensional array. The array is also returned.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Transpose"/>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-    public static void Transpose<T>(ref T[,] source)
+    public static void TransposeInPlace<T>(ref T[,] source)
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

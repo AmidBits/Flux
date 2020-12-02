@@ -1,11 +1,11 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class ArrayInPlace
+  public static partial class Array
   {
-    /// <summary>Reverse the order of all elements, in-place, along the specified dimension of the two-dimensional array.</summary>
+    /// <summary>Reverse the order of all elements, in-place, along the specified dimension of the two-dimensional array. I.e. like mirror.</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-    public static void Flip<T>(ref T[,] source, int dimension)
+    public static void FlipInPlace<T>(ref T[,] source, int dimension)
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

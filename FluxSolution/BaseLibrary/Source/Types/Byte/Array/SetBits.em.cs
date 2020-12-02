@@ -27,10 +27,13 @@ namespace Flux
       }
       else // Or in 2 or more bytes?
       {
-        if (startRemainder > 0) source[startQuotient] = (byte)((source[startQuotient] & (~startMask & 0xFF)) | (bitState & startMask));
-        if (endRemainder > 0) source[endQuotient] = (byte)((source[endQuotient] & (~endMask & 0xFF)) | (bitState & endMask));
+        if (startRemainder > 0) 
+          source[startQuotient] = (byte)((source[startQuotient] & (~startMask & 0xFF)) | (bitState & startMask));
+        if (endRemainder > 0) 
+          source[endQuotient] = (byte)((source[endQuotient] & (~endMask & 0xFF)) | (bitState & endMask));
 
-        for (var index = startRemainder > 0 ? startQuotient + 1 : startQuotient; index < endQuotient; index++) source[index] = bitState; // Set whole bytes if needed.
+        for (var index = startRemainder > 0 ? startQuotient + 1 : startQuotient; index < endQuotient; index++) 
+          source[index] = bitState; // Set whole bytes if needed.
       }
 
       return source;
