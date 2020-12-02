@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Xtensions
+//  public static partial class Strings
 //  {
 //    /// <summary>Returns a string padded evenly on both sides to the specified width by the specified padding characters for left and right respectively. Padding is right biased, in case of uneveness.</summary>
 //    public static string PadEven(this string source, int totalWidth, char paddingLeft, char paddingRight)

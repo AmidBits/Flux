@@ -2,7 +2,7 @@
 
 //namespace Flux
 //{
-//  public static partial class XtendDouble
+//  public static partial class DoubleEm
 //  {
 //    /// <summary>Computes the percentile rank of the specified value within the source distribution.</summary>
 //    /// <see cref="https://en.wikipedia.org/wiki/Percentile_rank"/>

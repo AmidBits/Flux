@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IEnumerableEm
   {
 #if !NETCOREAPP
     /// <summary>Returns all elements in a sequence except a specified number of elements at the end.</summary>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanEm
   {
     /// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
     public static void Shuffle<T>(this System.Span<T> source, System.Random rng)

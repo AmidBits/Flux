@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringBuilderEm
   {
     /// <summary>Determines whether this instance has the same value as any in the specified params array of strings when compared using the ordial comparison. The comparison starts at a specified character position.</summary>
     public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startAt, params string[] values)

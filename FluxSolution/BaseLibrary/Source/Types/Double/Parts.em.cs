@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DoubleEm
   {
     /// <summary>Strips the integer part of the floating point value, resulting in only the fractional part.</summary>
     public static double FractionalPart(this double source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class BigIntegerEm
   {
     public static System.Numerics.BigInteger DecimalMaxValue
       => (System.Numerics.BigInteger)decimal.MaxValue;

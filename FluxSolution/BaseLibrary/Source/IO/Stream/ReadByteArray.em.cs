@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StreamEm
   {
     /// <summary>Returns a <see cref="System.Byte[]"/> from the stream. The array will always be the size of actually read bytes.</summary>
     public static byte[] ReadByteArray(this System.IO.Stream source, int size)

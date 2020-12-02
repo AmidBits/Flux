@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class ILists
 	{
 		/// <summary>Returns the IList cast as a ReadOnlySpan. No allocations are needed.</summary>
 		public static System.ReadOnlySpan<T> AsReadOnlySpan<T>(this System.Collections.Generic.IList<T> source)

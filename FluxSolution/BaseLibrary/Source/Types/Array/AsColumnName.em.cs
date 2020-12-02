@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Array
+  public static partial class ArrayEm
   {
     // Should be a resource!
     private static string DefaultIndexedColumnFormat = @"Column_{0}";

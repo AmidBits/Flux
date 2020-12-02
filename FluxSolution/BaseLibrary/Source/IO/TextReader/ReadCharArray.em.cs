@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class TextReaderEm
   {
     /// <summary>Returns a <see cref="System.Byte[]"/> from the stream. The array will always be the size of actually read bytes.</summary>
     public static char[] ReadCharArray(this System.IO.TextReader source, int size)

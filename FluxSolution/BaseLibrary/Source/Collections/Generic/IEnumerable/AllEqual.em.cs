@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IEnumerableEm
   {
     public static bool AllEqual<T>(this System.Collections.Generic.IEnumerable<T> source, out T value, System.Collections.Generic.IEqualityComparer<T> comparer)
     {

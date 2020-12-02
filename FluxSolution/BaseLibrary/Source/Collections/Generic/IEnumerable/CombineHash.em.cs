@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IEnumerableEm
   {
     /// <summary>Combines the hash codes for the elements in the sequence. This is the 'boost' version from C++.</summary>
     public static int CombineHashBoost<T>(this System.Collections.Generic.IEnumerable<T> source, int seed = 0)

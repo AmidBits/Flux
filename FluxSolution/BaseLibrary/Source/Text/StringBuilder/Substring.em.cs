@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringBuilderEm
   {
     /// <summary>Returns a string containing the left specified number of characters.</summary>
     public static string Left(this System.Text.StringBuilder source, int count)

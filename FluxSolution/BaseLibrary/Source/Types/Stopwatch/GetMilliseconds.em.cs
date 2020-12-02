@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class StopwatchEm
 	{
 		/// <summary>Compute how many milliseconds has elapsed.</summary>
 		public static double GetTotalMilliseconds(this System.Diagnostics.Stopwatch source)

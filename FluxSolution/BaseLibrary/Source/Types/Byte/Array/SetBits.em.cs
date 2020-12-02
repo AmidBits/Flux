@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class ByteEm
   {
     public static byte[] SetBits(this byte[] source, long startBitIndex, long bitCount, bool state)
     {

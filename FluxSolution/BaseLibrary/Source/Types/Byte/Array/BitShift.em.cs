@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class ByteEm
   {
     /// <summary>Performs an in-place one bit shift to the left on all bytes, and returns whether the MSB or overflow bit was set.</summary>
     public static bool BitShiftLeft(this byte[] source)

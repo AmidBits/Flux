@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IEnumerableEm
   {
     /// <summary>Indicates whether the sequence contains the same elements (in any order) as the specified sequence, by ordering and using the built-in SequenceEqual extension method.</summary>
     public static bool SequenceContentEqualOrderBy<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)

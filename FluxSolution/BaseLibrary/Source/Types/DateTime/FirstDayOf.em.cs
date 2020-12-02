@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DateTimeEm
   {
     /// <summary>Determines the first day of the month in the source.</summary>
     public static System.DateTime FirstDayOfMonth(this System.DateTime source)

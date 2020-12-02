@@ -2,7 +2,7 @@
 
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class BattleshipEm
 	{
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 		public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, Geometry.Size2 size)
@@ -193,7 +193,7 @@ namespace Flux
 
 			// Object (overrides)
 			public override bool Equals(object? obj)
-				=> obj is VersionX o && Equals(o);
+				=> obj is VersionEx o && Equals(o);
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_locations.CombineHashCore(), Orientation);
 			public override string? ToString()

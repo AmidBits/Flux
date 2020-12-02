@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringEm
   {
     /// <summary>Returns a (decoded) string from the Base64 (encoded) string.</summary>
     public static string Base64Decode(this string source)

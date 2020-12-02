@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DoubleEm
   {
     /// <summary>Computes the percentile of the specified percentile rank within the ordered source distribution.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile"/>

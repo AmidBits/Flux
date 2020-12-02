@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IDictionaryEm
   {
     /// <summary></summary>
     public static string ToPropertiesJson(this System.Collections.Generic.IDictionary<string, object> properties, System.Func<object, string> valueSelector)

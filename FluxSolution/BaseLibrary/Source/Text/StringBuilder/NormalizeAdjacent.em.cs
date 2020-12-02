@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringBuilderEm
   {
     /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
     public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] characters)

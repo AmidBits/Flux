@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class Int32Em
   {
     public static System.Collections.Generic.IList<int> ToOrdinalRange(this System.Collections.Generic.IEnumerable<int> source, int maxNumber)
     {

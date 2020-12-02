@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DrawingPointEm
   {
     /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
     public static System.Drawing.Point AlongPathTo2(this System.Drawing.Point source, System.Drawing.Point target, float scalar = 0.5f)
@@ -12,7 +12,7 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static double AngleTo(this System.Drawing.Point source, System.Drawing.Point target)
-      => AngleTo(source.ToVector2(), target.ToVector2());  // Delegate to the Vector2 implementation.
+      => Vector2Em.AngleTo(source.ToVector2(), target.ToVector2());  // Delegate to the Vector2 implementation.
 
     /// <summary>Compute the Chebyshev distance between point a and point b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
@@ -37,6 +37,14 @@ namespace Flux
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     public static System.Drawing.Point PerpendicularCw(this System.Drawing.Point source)
       => new System.Drawing.Point(source.Y, -source.X);
+
+    /// <summary>Convert a 2D vector to a point.</summary>
+    public static System.Drawing.Point ToPoint(this in System.Numerics.Vector2 source)
+      => new System.Drawing.Point((int)source.X, (int)source.Y);
+
+    /// <summary>Convert a 3D vector to a point.</summary>
+    public static System.Drawing.Point ToPoint(this in System.Numerics.Vector3 source)
+      => new System.Drawing.Point((int)source.X, (int)source.Y);
 
     /// <summary>Convert a point to a 2D vector.</summary>
     public static System.Numerics.Vector2 ToVector2(this in System.Drawing.Point source)

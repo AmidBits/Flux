@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IDataRecordEm
   {
     public static string ToCsv(this System.Data.IDataRecord source, string nullValue, bool quotes)
     {

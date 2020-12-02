@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DataRowEm
   {
     /// <summary>Returns an array (copied) of the data from the specified columns.</summary>
     public static object[] GetValues(this System.Data.DataRow source, params string[] columnNames)

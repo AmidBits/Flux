@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class EnumEm
   {
     /// <summary>Attempts to convert the source name string to an enum type (T).</summary>
     public static TEnum ToEnumFromString<TEnum>(this string source)

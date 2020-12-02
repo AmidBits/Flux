@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringEm
   {
     /// <summary>Replicates the string a specified number of times.</summary>
     public static System.Text.StringBuilder Replicate(this string source, int count)

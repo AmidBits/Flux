@@ -24,7 +24,7 @@ namespace Flux
   }
 
   /// <summary>Extended implementation of System.ComponentModel.INotifyPropertyChanged.</summary>
-  public abstract class NotifyPropertyChangedX
+  public abstract class NotifyPropertyChangedEx
     : NotifyPropertyChanged
   {
     protected System.Collections.Generic.List<System.Reflection.MethodInfo> Explicit { get; private set; }
@@ -32,7 +32,7 @@ namespace Flux
     private readonly System.Collections.Generic.IDictionary<string, string[]> m_mapMiExplicit;
     private readonly System.Collections.Generic.IDictionary<string, string[]> m_mapPiNotICommand;
 
-    public NotifyPropertyChangedX()
+    public NotifyPropertyChangedEx()
     {
       Explicit = GetType().GetTypeInfo().DeclaredMethods.Where(mi => !mi.IsSpecialName).ToList(); // Explicit methods, i.e. not accessor, etc.
 

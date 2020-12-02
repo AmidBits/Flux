@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
-
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IBinarySearchTreeEm
   {
     /// <summary>Gets the maximum (with the greatest key) node.</summary>
     public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)

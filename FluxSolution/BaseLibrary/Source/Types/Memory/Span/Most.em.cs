@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanEm
   {
     /// <summary>Returns a subset containing the right most specified number of elements, if available, otherwise as many as there are.</summary>
     public static System.Span<T> LeftMost<T>(this System.Span<T> source, int maxCount)

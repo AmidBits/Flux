@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanSortingEm
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)

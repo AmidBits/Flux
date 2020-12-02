@@ -55,15 +55,9 @@ namespace ConsoleApp
 		{
 			foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
 			{
-				foreach (var mi in type.GetMethods())
+				foreach (var mi in type.GetMethods().Where(mi => mi.GetParameters().Any(pi => pi.ParameterType.IsArray)))
 				{
-					foreach (var pi in mi.GetParameters())
-					{
-						if (pi.ParameterType.IsArray)
-						{
-							System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition}) : ({pi.Name})");
-						}
-					}
+					System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition})");
 				}
 			}
 

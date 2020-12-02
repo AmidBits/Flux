@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class CharEm
   {
     /// <summary>Determines whether the character is a latin diacritical stroke.</summary>
     public static bool IsDiacriticalStroke(this char source)

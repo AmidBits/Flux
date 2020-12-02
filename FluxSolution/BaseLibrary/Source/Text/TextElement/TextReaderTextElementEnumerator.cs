@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class TextElementEm
   {
     public static System.Collections.Generic.IEnumerable<string> ReadTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
       => new Text.TextReaderTextElementEnumerator(source, encoding);

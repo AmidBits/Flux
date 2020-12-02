@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringEm
   {
     /// <summary>Matches palindromes of any length.</summary>
     /// <see cref="https://www.regular-expressions.info/balancing.html"/>

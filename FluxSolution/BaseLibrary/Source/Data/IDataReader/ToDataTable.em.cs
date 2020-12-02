@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IDataReaderEm
   {
     /// <summary>Creates a new data table from the IDataReader using the specified column names.</summary>
     public static System.Data.DataTable ToDataTable(this System.Data.IDataReader source, params string[] columnNames)

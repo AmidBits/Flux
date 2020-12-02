@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class UnicodeEm
 	{
 		public static string ToUnicodeStringLiteral(this System.Text.Rune source)
 			=> Text.UnicodeStringLiteral.ToString(source.Value);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanEm
   {
     /// <summary>Indicates whether the specified part of the target is found at the specified index in the source, using the specified comparer.</summary>
     public static bool Equals<T>(this System.Span<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T> comparer)

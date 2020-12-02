@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class RuneEm
 	{
 		public static string ToUnicodeNotation(this System.Text.Rune source)
 			=> Text.UnicodeNotation.ToString(source.Value);

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanMetricsEm
   {
     /// <summary>The Levenshtein distance between two words is the minimum number of single-character edits(insertions, deletions or substitutions) required to change one word into the other. Uses the specified comparer, or default if null.</summary>
     public static int LevenshteinDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)

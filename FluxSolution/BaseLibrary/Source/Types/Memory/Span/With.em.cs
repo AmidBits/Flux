@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class SpanEm
   {
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool EndsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)

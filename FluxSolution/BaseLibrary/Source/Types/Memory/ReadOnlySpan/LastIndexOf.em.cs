@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class ReadOnlySpanEm
   {
     /// <summary>Reports the index of the last occurence that satisfies the predicate.</summary>
     public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

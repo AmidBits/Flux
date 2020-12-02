@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class HttpEm
   {
     /// <summary>Change any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
     public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ChangeInQueryStringDictionary(this System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> change, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)

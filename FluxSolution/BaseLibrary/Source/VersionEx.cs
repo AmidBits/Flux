@@ -3,10 +3,10 @@ using System.Linq;
 namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version.</summary>
-  public struct VersionX
-    : System.IComparable<VersionX>, System.IEquatable<VersionX>, System.IFormattable
+  public struct VersionEx
+    : System.IComparable<VersionEx>, System.IEquatable<VersionEx>, System.IFormattable
   {
-    public static readonly VersionX Empty;
+    public static readonly VersionEx Empty;
     public bool IsEmpty => Equals(Empty);
 
     private static readonly char[] m_separatorsArray = new char[] { '.' };
@@ -32,13 +32,13 @@ namespace Flux
         _ => throw new System.NotSupportedException()
       };
 
-    public VersionX(params int[] parts)
+    public VersionEx(params int[] parts)
     {
       if (parts.Length < 1) throw new System.ArgumentOutOfRangeException(nameof(parts));
 
       m_parts = (int[])parts.Clone();
     }
-    public VersionX(string version)
+    public VersionEx(string version)
     {
       if (!TryParse(version, out var result)) throw new System.ArgumentException(@"Failed to parse.", nameof(version));
 
@@ -47,11 +47,11 @@ namespace Flux
 
     #region Static members
 
-    public static VersionX FromVersion(System.Version version)
-      => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionX(version.Major, version.Minor, version.Build, version.Revision);
-    public static VersionX Parse(string version)
-      => new VersionX((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
-    public static bool TryParse(string version, out VersionX result)
+    public static VersionEx FromVersion(System.Version version)
+      => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
+    public static VersionEx Parse(string version)
+      => new VersionEx((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
+    public static bool TryParse(string version, out VersionEx result)
     {
       try
       {
@@ -67,23 +67,23 @@ namespace Flux
     }
 
     // Operators
-    public static bool operator ==(VersionX a, VersionX b)
+    public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
-    public static bool operator !=(VersionX a, VersionX b)
+    public static bool operator !=(VersionEx a, VersionEx b)
       => !a.Equals(b);
-    public static bool operator <(VersionX a, VersionX b)
+    public static bool operator <(VersionEx a, VersionEx b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(VersionX a, VersionX b)
+    public static bool operator <=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(VersionX a, VersionX b)
+    public static bool operator >(VersionEx a, VersionEx b)
       => a.CompareTo(b) < 0;
-    public static bool operator >=(VersionX a, VersionX b)
+    public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
 
     #endregion Static members
 
     // IComparable
-    public int CompareTo(VersionX other)
+    public int CompareTo(VersionEx other)
     {
       if (m_parts.Length != other.m_parts.Length)
         return m_parts.Length > other.m_parts.Length ? 1 : -1;
@@ -96,7 +96,7 @@ namespace Flux
     }
 
     // IEquatable
-    public bool Equals(VersionX other)
+    public bool Equals(VersionEx other)
     {
       if (m_parts.Length != other.m_parts.Length) return false;
 
@@ -113,7 +113,7 @@ namespace Flux
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is VersionX o && Equals(o);
+      => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => m_parts.CombineHashCore();
     public override string? ToString()

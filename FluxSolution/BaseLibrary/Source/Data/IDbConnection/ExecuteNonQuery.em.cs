@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class IDbConnectionEm
   {
     /// <summary>Executes the specified <paramref name="commandText"/> and returns the number of rows affected.</summary>
     /// <returns>The number of rows affected.</returns>

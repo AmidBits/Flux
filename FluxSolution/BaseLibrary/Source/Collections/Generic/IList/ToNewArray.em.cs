@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class ILists
 	{
 		/// <summary>Creates a new array from the specified array from the specified offset and count.</summary>
 		public static T[] ToNewArray<T>(this System.Collections.Generic.IList<T> source, int offset, int count)

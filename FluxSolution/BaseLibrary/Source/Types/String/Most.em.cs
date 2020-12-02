@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class StringEm
   {
     /// <summary>Returns a string containing the right most specified number of characters, if available, otherwise as many as there are.</summary>
     public static string LeftMost(this string source, int maxCount)

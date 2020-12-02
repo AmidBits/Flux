@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Xtensions
+	public static partial class CryptographyEm
 	{
 		public static System.Security.Cryptography.SymmetricAlgorithm SetKeyIV(this System.Security.Cryptography.SymmetricAlgorithm source, byte[] key, byte[] iv)
 		{

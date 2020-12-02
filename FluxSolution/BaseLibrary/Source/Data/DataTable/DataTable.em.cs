@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DataTableEm
   {
     /// <summary>Returns a new array with all column names from the data table.</summary>
     public static string[] AllColumnNames(this System.Data.DataTable source)

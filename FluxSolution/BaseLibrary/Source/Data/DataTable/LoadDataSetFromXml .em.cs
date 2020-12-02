@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DataTableEm
   {
     public static System.Data.DataSet LoadDataSetFromXml(System.Xml.XmlReader xmlReader)
     {

@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class RuneEm
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> ReadRunes(this System.IO.Stream source, System.Text.Encoding encoding)
       => new Text.StreamReaderRuneEnumerator(source, encoding);

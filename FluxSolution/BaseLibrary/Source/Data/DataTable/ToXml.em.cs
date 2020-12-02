@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class Xtensions
+  public static partial class DataTableEm
   {
     /// <summary>Creates a new XDocument with the data from the DataTable.</summary>
     public static System.Xml.Linq.XDocument ToXDocument(this System.Data.DataTable source)
