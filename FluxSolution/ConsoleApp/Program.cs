@@ -53,26 +53,6 @@ namespace ConsoleApp
 
 		private static void TimedMain(string[] _)
 		{
-			// Can you see?
-			var v = int.MaxValue;
-			System.Console.WriteLine($"The value (number) {v} in base 10 with different symbols for the 'ones' = {new Flux.Text.PositionalNotation(Flux.Text.Sequences.Subscript0Through9).NumberToText(v)}");
-
-			for (var i = 2; i <= 62; i++)
-			{
-				System.Console.WriteLine($"The value (number) {v} in base {i.ToString().PadLeft(2, ' ')} = {Flux.Convert.ToRadixString(v, i)}");
-			}
-			return;
-			//System.Console.WriteLine(Flux.Convert.ToRadixString(256, 2));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(2).NumberToText(670530));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(8).NumberToText(670530));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(10).NumberToText(670530));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(16).NumberToText(670530));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(20).NumberToText(670530));
-			//System.Console.WriteLine(Flux.Text.PositionalNotation.ForRadix(62).NumberToText(670530));
-			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.Base64).NumberToText(670530));
-			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.DecimalSubscript.Slice(0, 10)).NumberToText(670530));
-			//System.Console.WriteLine(new Flux.Text.PositionalNotation(Flux.Text.Sequences.DecimalSuperscript.Slice(0, 2)).NumberToText(670530));
-
 			foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
 			{
 				foreach (var mi in type.GetMethods())
