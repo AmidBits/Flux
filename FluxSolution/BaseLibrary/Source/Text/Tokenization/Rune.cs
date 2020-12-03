@@ -27,53 +27,17 @@ namespace Flux.Text.Tokenization.Rune
       => $"<{UnicodeCategory}#{CategoryOrdinal}=\"{Value}\"@{Index}+{Value.Utf16SequenceLength}>";
   }
 
-  public class TokenLetter
-  : Token
-  {
-    public TokenLetter(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenMark
-    : Token
-  {
-    public TokenMark(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenNumber
-    : Token
-  {
-    public TokenNumber(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenOther
-    : Token
-  {
-    public TokenOther(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenPunctuation
+  public class TokenRange
     : Token
   {
     public int? Depth { get; set; }
     public int? Group { get; set; }
 
-    public TokenPunctuation(int index, System.Text.Rune value, int categoryOrdinal)
+    public TokenRange(int index, System.Text.Rune value, int categoryOrdinal)
       : base(index, value, categoryOrdinal)
     {
     }
-    public TokenPunctuation(int index, System.Text.Rune value, int categoryOrdinal, int depth, int group)
+    public TokenRange(int index, System.Text.Rune value, int categoryOrdinal, int depth, int group)
       : base(index, value, categoryOrdinal)
     {
       Depth = depth;
@@ -102,33 +66,6 @@ namespace Flux.Text.Tokenization.Rune
       }
 
       return sb.ToString();
-    }
-  }
-
-  public class TokenSeparator
-    : Token
-  {
-    public TokenSeparator(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenSymbol
-    : Token
-  {
-    public TokenSymbol(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
-    }
-  }
-
-  public class TokenUnrecognized
-  : Token
-  {
-    public TokenUnrecognized(int index, System.Text.Rune rune, int categoryOrdinal)
-      : base(index, rune, categoryOrdinal)
-    {
     }
   }
 
@@ -164,43 +101,22 @@ namespace Flux.Text.Tokenization.Rune
 
         switch (unicodeCategory.ToMajorCode())
         {
-          case UnicodeCategoryMajorCode.Letter:
-            yield return new TokenLetter(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Mark:
-            yield return new TokenMark(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Number:
-            yield return new TokenNumber(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Other:
-            yield return new TokenOther(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.OpenPunctuation:
+           case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.OpenPunctuation:
             punctuationBracketGroups.Push(++punctuationBracketGroup);
-            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationBracketDepth, punctuationBracketGroups.Peek());
+            yield return new TokenRange(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationBracketDepth, punctuationBracketGroups.Peek());
             break;
           case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.InitialQuotePunctuation:
             punctuationQuotationGroups.Push(++punctuationQuotationGroup);
-            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
+            yield return new TokenRange(index, rune, unicodeCategoryCounts[unicodeCategory], ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
             break;
           case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.ClosePunctuation:
-            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
+            yield return new TokenRange(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
             break;
           case UnicodeCategoryMajorCode.Punctuation when unicodeCategory == System.Globalization.UnicodeCategory.FinalQuotePunctuation:
-            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
-            break;
-          case UnicodeCategoryMajorCode.Punctuation:
-            yield return new TokenPunctuation(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Separator:
-            yield return new TokenSeparator(index, rune, unicodeCategoryCounts[unicodeCategory]);
-            break;
-          case UnicodeCategoryMajorCode.Symbol:
-            yield return new TokenSymbol(index, rune, unicodeCategoryCounts[unicodeCategory]);
+            yield return new TokenRange(index, rune, unicodeCategoryCounts[unicodeCategory], punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
             break;
           default:
-            yield return new TokenUnrecognized(index, rune, unicodeCategoryCounts[unicodeCategory]);
+            yield return new Token(index, rune, unicodeCategoryCounts[unicodeCategory]);
             break;
         }
 

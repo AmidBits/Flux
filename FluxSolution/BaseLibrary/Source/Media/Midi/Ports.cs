@@ -437,7 +437,7 @@ namespace Flux.Media.Midi
 
     public const int CallbackFunction = 0x00030000;
 
-    private Winmm.NativeMethods.MidiInProc m_midiInProc;
+    private Winmm.MidiInProc m_midiInProc;
 
     private System.IntPtr m_id;
 
@@ -447,7 +447,7 @@ namespace Flux.Media.Midi
 
     private MidiIn(int index, Winmm.MidiInCaps capabilities)
     {
-      m_midiInProc = new Winmm.NativeMethods.MidiInProc(MidiProc);
+      m_midiInProc = new Winmm.MidiInProc(MidiProc);
 
       Index = index;
       Capabilities = capabilities;

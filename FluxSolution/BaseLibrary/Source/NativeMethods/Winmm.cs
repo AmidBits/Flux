@@ -494,6 +494,9 @@
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   };
 
+  public delegate void MidiInProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
+  public delegate void MidiOutProc(System.IntPtr hmo, int wMsg, in System.IntPtr dwInstance, in int dwParam1, in int dwParam2);
+
   internal class NativeMethods
   {
     public const int MmSysErrNoError = 0;
@@ -501,7 +504,6 @@
       => mmsyserr == MmSysErrNoError ? true : throw new System.InvalidOperationException();
 
 #pragma warning disable IDE1006 // Naming Styles
-    public delegate void MidiInProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInClose(System.IntPtr hMidiIn);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInGetDevCaps(System.IntPtr uDeviceID, out MidiInCaps pmic, uint cbmic);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] internal static extern uint midiInGetErrorText(uint wError, System.Text.StringBuilder lpText, uint cchText);
@@ -511,7 +513,6 @@
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInStart(System.IntPtr hMidiIn);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInStop(System.IntPtr hMidiIn);
 
-    public delegate void MidiOutProc(System.IntPtr hmo, int wMsg, in System.IntPtr dwInstance, in int dwParam1, in int dwParam2);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutClose(System.IntPtr hmo);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutGetDevCaps(System.IntPtr uDeviceID, out MidiOutCaps pmoc, uint cbmoc);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] internal static extern uint midiOutGetErrorText(uint mmrError, System.Text.StringBuilder pszText, uint cchText);

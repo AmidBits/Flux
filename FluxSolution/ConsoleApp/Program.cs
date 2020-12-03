@@ -13,13 +13,22 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
-			{
-				foreach (var mi in type.GetMethods().Where(mi => mi.GetParameters().Any(pi => pi.ParameterType.IsArray)))
-				{
-					System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition})");
-				}
-			}
+			var text = "This is some (clear) text.";
+
+			var tokenizer = new Flux.Text.Tokenization.Rune.Tokenizer();
+
+			var tokens = tokenizer.GetTokens(text);
+
+			foreach (var token in tokens)
+				System.Console.WriteLine(token);
+
+			//foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
+			//{
+			//	foreach (var mi in type.GetMethods().Where(mi => mi.GetParameters().Any(pi => pi.ParameterType.IsArray)))
+			//	{
+			//		System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition})");
+			//	}
+			//}
 
 			//for (var i = 100; i >= 0; i--)
 			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
