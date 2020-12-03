@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Scrape
 {
   /// <summary>A free zip code file.</summary>
@@ -17,18 +19,7 @@ namespace Flux.Resources.Scrape
       => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(double), typeof(double), typeof(double), typeof(double), typeof(double), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(long), typeof(long), typeof(string) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-    {
-      using var r = new Text.CsvReader(uri.GetStream(), new Text.CsvOptions());
-      using var e = r.ReadArrays().GetEnumerator();
-
-      if (e.MoveNext()) // Skip the column headers.
-      {
-        while (e.MoveNext())
-        {
-          yield return e.Current;
-        }
-      }
-    }
+      => uri.ReadCsv(new Text.CsvOptions()).Skip(1);
   }
 }
 

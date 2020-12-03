@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Census
 {
   /// <summary>The Unicode block database.</summary>
@@ -17,18 +19,7 @@ namespace Flux.Resources.Census
       => new System.Type[] { typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-    {
-      using var r = new Text.CsvReader(uri.GetStream(), new Text.CsvOptions());
-      using var e = r.ReadArrays().GetEnumerator();
-
-      if (e.MoveNext()) // Skip the column headers.
-      {
-        while (e.MoveNext())
-        {
-          yield return e.Current;
-        }
-      }
-    }
+      => uri.ReadCsv(new Text.CsvOptions()).Skip(1);
   }
 }
 

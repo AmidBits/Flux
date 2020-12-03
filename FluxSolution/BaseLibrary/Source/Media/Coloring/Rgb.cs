@@ -156,16 +156,13 @@ namespace Flux.Coloring
 
       if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
       {
-        switch (colorString.Substring(3).Split(','))
-        {
-          case var s4 when s4.Length == 4:
-            return new Rgb((byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255));
-          case var s3 when s3.Length == 3:
-            return new Rgb(255, (byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255));
-          default:
-            throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB).");
-        }
-      }
+				return (colorString.Substring(3).Split(',')) switch
+				{
+					var s4 when s4.Length == 4 => new Rgb((byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
+					var s3 when s3.Length == 3 => new Rgb(255, (byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
+					_ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
+				};
+			}
 
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
@@ -193,33 +190,33 @@ namespace Flux.Coloring
       => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
   }
 
+  public enum GrayscaleMethod
+  {
+    /// <summary>Plain average of all colors.</summary>
+    Average,
+    /// <summary>Averages the most prominent and least prominent colors.</summary>
+    Lightness,
+    /// <summary>Weighted average based on human perception.</summary>
+    Luminosity
+  }
+
   internal static class Color
   {
-    public enum ColorToGrayscaleMethod
-    {
-      /// <summary>Plain average of all colors.</summary>
-      Average,
-      /// <summary>Averages the most prominent and least prominent colors.</summary>
-      Lightness,
-      /// <summary>Weighted average based on human perception.</summary>
-      Luminosity
-    }
-
     /// <summary>Convert the specified color to a shade of gray.</summary>
     /// <seealso cref="https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/"/>
-    public static (byte alpha, byte red, byte green, byte blue) ColorToGrayscale(byte alpha, byte red, byte green, byte blue, ColorToGrayscaleMethod method)
+    public static (byte alpha, byte red, byte green, byte blue) ColorToGrayscale(byte alpha, byte red, byte green, byte blue, GrayscaleMethod method)
     {
       var gray = 0;
 
       switch (method)
       {
-        case ColorToGrayscaleMethod.Average:
+        case GrayscaleMethod.Average:
           gray = (red + green + blue) / 3;
           break;
-        case ColorToGrayscaleMethod.Lightness:
+        case GrayscaleMethod.Lightness:
           gray = (System.Math.Max(System.Math.Max(red, green), blue) + System.Math.Min(System.Math.Min(red, green), blue)) / 2;
           break;
-        case ColorToGrayscaleMethod.Luminosity:
+        case GrayscaleMethod.Luminosity:
           gray = (int)(red * 0.21 + green * 0.72 + blue * 0.07);
           break;
       }
@@ -426,16 +423,13 @@ namespace Flux.Coloring
 
       if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
       {
-        switch (colorString.Substring(3).Split(','))
-        {
-          case var s4 when s4.Length == 4:
-            return ((byte)(double.Parse(s4[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.CultureInfo.CurrentCulture) * 255));
-          case var s3 when s3.Length == 3:
-            return (255, (byte)(double.Parse(s3[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.CultureInfo.CurrentCulture) * 255));
-          default:
-            throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB).");
-        }
-      }
+				return (colorString.Substring(3).Split(',')) switch
+				{
+					var s4 when s4.Length == 4 => ((byte)(double.Parse(s4[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.CultureInfo.CurrentCulture) * 255)),
+					var s3 when s3.Length == 3 => (255, (byte)(double.Parse(s3[0], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.CultureInfo.CurrentCulture) * 255)),
+					_ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
+				};
+			}
 
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }

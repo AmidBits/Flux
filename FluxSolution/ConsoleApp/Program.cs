@@ -9,103 +9,82 @@ using System.Linq;
 
 namespace ConsoleApp
 {
-  class Program
-  {
-    private static void TimedMain(string[] _)
-    {
-      var text = "This is some (clear) text.";
+	class Program
+	{
+		private static void TimedMain(string[] _)
+		{
+			//for (var i = 100; i >= 0; i--)
+			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
+			//{
+			//	var number = (uint)Flux.Random.NumberGenerator.Crypto.Next(4000);
+			//	var sb = new System.Text.StringBuilder();
+			//	sb.AppendLine($"Value: {number} (0x{number.ToString(@"X2")}, {System.Convert.ToString(number, 2)})");
+			//	sb.AppendLine($"  LZC: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
+			//	sb.AppendLine($"  Ln2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
+			//	sb.AppendLine($"  Pop: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
+			//	sb.AppendLine($"  TZC: {System.Numerics.BitOperations.TrailingZeroCount(number)} = {Flux.BitOps.TrailingZeroCount(number)}");
+			//	sb.AppendLine($"   BL: {Flux.BitOps.BitLength(number)}");
+			//	sb.AppendLine($" LS1B: {Flux.BitOps.LeastSignificant1Bit(number)}");
+			//	sb.AppendLine($" MS1B: {Flux.BitOps.MostSignificant1Bit(number)}");
+			//	System.Console.WriteLine($"{sb}");
+			//	System.Console.ReadKey();
+			//	System.Console.Clear();
+			//}
+			////);
 
-      var tokenizer = new Flux.Text.Tokenization.Grapheme.Tokenizer();
+			//RegularForLoop();
+			//ParallelForLoop();
+		}
 
-      var tokens = tokenizer.GetTokens(text);
+		static void RegularForLoop()
+		{
+			var startDateTime = DateTime.Now;
+			System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+			for (int i = 0; i < 10; i++)
+			{
+				var total = ExpensiveTask();
+				System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+			}
+			var endDateTime = DateTime.Now;
+			System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+			var span = endDateTime - startDateTime;
+			System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+			System.Console.WriteLine();
+		}
 
-      foreach (var token in tokens)
-        System.Console.WriteLine(token);
+		static void ParallelForLoop()
+		{
+			var startDateTime = DateTime.Now;
+			System.Console.WriteLine($"{nameof(ParallelForLoop)} started at {startDateTime}.");
+			System.Threading.Tasks.Parallel.For(0, 10, i =>
+			{
+				var total = ExpensiveTask();
+				System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+			});
+			var endDateTime = DateTime.Now;
+			System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+			var span = endDateTime - startDateTime;
+			System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+			System.Console.WriteLine();
+		}
 
-      //System.Console.WriteLine($"Words: {tokens.GroupAdjacent(t => System.Text.Rune.GetUnicodeCategory(t.Value).ToMajorCode()).Where((e, i) => e.Key == Flux.Text.UnicodeCategoryMajorCode.Letter).Count()}");
-      //System.Console.WriteLine($"Letters: {tokens.Where((e, i) => System.Text.Rune.GetUnicodeCategory(e.Value).ToMajorCode() == Flux.Text.UnicodeCategoryMajorCode.Letter).Count()}");
-      //System.Console.WriteLine(tokens.GroupAdjacent(t => System.Text.Rune.GetUnicodeCategory(t.Value)).Count());
+		static long ExpensiveTask()
+		{
+			var total = 0L;
+			for (var i = 1; i < int.MaxValue; i++)
+				total += i;
+			return total;
+		}
 
-      //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
-      //{
-      //	foreach (var mi in type.GetMethods().Where(mi => mi.GetParameters().Any(pi => pi.ParameterType.IsArray)))
-      //	{
-      //		System.Console.WriteLine($"{type.IsGenericType} {type.FullName} : {mi.Name} ({mi.IsGenericMethodDefinition})");
-      //	}
-      //}
+		static void Main(string[] args)
+		{
+			System.Console.InputEncoding = System.Text.Encoding.UTF8;
+			System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-      //for (var i = 100; i >= 0; i--)
-      ////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
-      //{
-      //	var number = (uint)Flux.Random.NumberGenerator.Crypto.Next(4000);
-      //	var sb = new System.Text.StringBuilder();
-      //	sb.AppendLine($"Value: {number} (0x{number.ToString(@"X2")}, {System.Convert.ToString(number, 2)})");
-      //	sb.AppendLine($"  LZC: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
-      //	sb.AppendLine($"  Ln2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
-      //	sb.AppendLine($"  Pop: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
-      //	sb.AppendLine($"  TZC: {System.Numerics.BitOperations.TrailingZeroCount(number)} = {Flux.BitOps.TrailingZeroCount(number)}");
-      //	sb.AppendLine($"   BL: {Flux.BitOps.BitLength(number)}");
-      //	sb.AppendLine($" LS1B: {Flux.BitOps.LeastSignificant1Bit(number)}");
-      //	sb.AppendLine($" MS1B: {Flux.BitOps.MostSignificant1Bit(number)}");
-      //	System.Console.WriteLine($"{sb}");
-      //	System.Console.ReadKey();
-      //	System.Console.Clear();
-      //}
-      ////);
+			System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
 
-      //RegularForLoop();
-      //ParallelForLoop();
-    }
-
-    static void RegularForLoop()
-    {
-      var startDateTime = DateTime.Now;
-      System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
-      for (int i = 0; i < 10; i++)
-      {
-        var total = ExpensiveTask();
-        System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      }
-      var endDateTime = DateTime.Now;
-      System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
-      var span = endDateTime - startDateTime;
-      System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
-      System.Console.WriteLine();
-    }
-
-    static void ParallelForLoop()
-    {
-      var startDateTime = DateTime.Now;
-      System.Console.WriteLine($"{nameof(ParallelForLoop)} started at {startDateTime}.");
-      System.Threading.Tasks.Parallel.For(0, 10, i =>
-      {
-        var total = ExpensiveTask();
-        System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      });
-      var endDateTime = DateTime.Now;
-      System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
-      var span = endDateTime - startDateTime;
-      System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
-      System.Console.WriteLine();
-    }
-
-    static long ExpensiveTask()
-    {
-      var total = 0L;
-      for (var i = 1; i < int.MaxValue; i++)
-        total += i;
-      return total;
-    }
-
-    static void Main(string[] args)
-    {
-      System.Console.InputEncoding = System.Text.Encoding.UTF8;
-      System.Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
-
-      System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
-      System.Console.ReadKey();
-    }
-  }
+			System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
+			System.Console.ReadKey();
+		}
+	}
 }
