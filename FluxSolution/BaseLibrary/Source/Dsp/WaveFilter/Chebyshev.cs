@@ -19,7 +19,12 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
     /// <see cref="http://www.dspguide.com/CH20.PDF"/>
     public static (double[] A, double[] B) Calculate(FrequencyFunction frequencyFunction, double cutoffFrequency, double rippleInUnitInterval, int evenNumberOfPoles, double sampleRate = 44100.0)
     {
-      var function = frequencyFunction == FrequencyFunction.LowPass ? 0 : frequencyFunction == FrequencyFunction.HighPass ? 1 : throw new System.ArgumentOutOfRangeException(nameof(frequencyFunction));
+      var function = frequencyFunction switch
+      {
+        FrequencyFunction.LowPass => 0,
+        FrequencyFunction.HighPass => 1,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(frequencyFunction))
+      };
       var normalizedFrequency = cutoffFrequency / sampleRate;
       var ripple = rippleInUnitInterval * 29; // Max 29%
       var poleCount = (evenNumberOfPoles & 1) == 0 ? evenNumberOfPoles : throw new System.ArgumentOutOfRangeException(nameof(evenNumberOfPoles));
