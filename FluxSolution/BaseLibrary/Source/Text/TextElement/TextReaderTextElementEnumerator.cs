@@ -13,7 +13,7 @@ namespace Flux
   namespace Text
   {
     public class TextReaderTextElementEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<string>
+      : Disposable, System.Collections.Generic.IEnumerable<string>
     {
       internal readonly System.IO.TextReader m_textReader;
       internal readonly int m_bufferSize;
