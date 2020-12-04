@@ -172,17 +172,24 @@ namespace Flux.Model.TicTacToe
 			return best;
 		}
 
-		public int Negamax(int nodeIndex, int depth, int color)
+		/// <summary></summary>
+		/// <param name="node">The index of the root node.</param>
+		/// <param name="depth">This is the depth allowed (the depth decrease by one each recursion).</param>
+		/// <param name="color">The player, either 1 or -1.</param>
+		/// <param name="availableMovesSelector">The possible moves (e.g. empty indices).</param>
+		/// <param name="heuristicValueSelector">The heuristic value of node (i.e. some form of evaluation function).</param>
+		/// <returns></returns>
+		public static int Negamax(int node, int depth, int color, System.Func<int, int[]> availableMovesSelector, System.Func<int, int> heuristicValueSelector)
 		{
-			if (depth == 0 || nodeIndex == -1)
-				return color * 1;
+			var moves = availableMovesSelector?.Invoke(node) ?? throw new System.ArgumentNullException(nameof(availableMovesSelector));
 
-			var value = double.MinValue;
+			if (depth == 0 || moves.Length == 0)
+				return color * heuristicValueSelector?.Invoke(node) ?? throw new System.ArgumentNullException(nameof(availableMovesSelector));
 
-			var emptyIndices = new int[]; // Build this somehow.
+			var value = int.MinValue;
 
-			foreach (var next in emptyIndices)
-				value = System.Math.Max(value, -Negamax(next, depth - 1, -color));
+			foreach (var next in moves)
+				value = System.Math.Max(value, -Negamax(next, depth - 1, -color, availableMovesSelector, heuristicValueSelector));
 
 			return value;
 		}
