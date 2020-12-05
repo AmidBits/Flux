@@ -2,19 +2,21 @@ using System.Linq;
 
 namespace Flux.Model
 {
-  public interface IMaze
+  public interface IMazeCarvable
   {
-    void Braid(Grid grid, double threshold);
-
-    void Build(Grid grid);
+    void CarveMaze(Grid grid);
+  }
+  public interface IMazeBraidable
+  {
+    void BraidMaze(Grid grid, double threshold);
   }
 
-  public abstract class Maze
-    : IMaze
+  public abstract class AMaze
+    : IMazeBraidable, IMazeCarvable
   {
     protected System.Random Rng { get; set; } = new System.Random();
 
-    public virtual void Braid(Grid grid, double threshold = 0.5)
+    public virtual void BraidMaze(Grid grid, double threshold = 0.5)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -33,13 +35,13 @@ namespace Flux.Model
       }
     }
 
-    public abstract void Build(Grid grid);
+    public abstract void CarveMaze(Grid grid);
   }
 
   public class AldusBroderMaze
-    : Maze
+    : AMaze
   {
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -64,9 +66,9 @@ namespace Flux.Model
   }
 
   public class BacktrackerMaze
-    : Maze
+    : AMaze
   {
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -90,7 +92,7 @@ namespace Flux.Model
   }
 
   public class BinaryTreeMaze
-    : Maze
+    : AMaze
   {
     private DirectionEnum _diagonal = DirectionEnum.NorthEast;
     public DirectionEnum Diagonal
@@ -112,7 +114,7 @@ namespace Flux.Model
       }
     }
 
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -133,7 +135,7 @@ namespace Flux.Model
   }
 
   public class GrowingTreeMaze
-    : Maze
+    : AMaze
   {
     public System.Func<System.Collections.Generic.IReadOnlyList<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
     {
@@ -142,7 +144,7 @@ namespace Flux.Model
       return element; // Prim's algorithm by default
     };
 
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -168,9 +170,9 @@ namespace Flux.Model
   }
 
   public class HuntAndKillMaze
-    : Maze
+    : AMaze
   {
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -210,9 +212,9 @@ namespace Flux.Model
   }
 
   public class RecursiveDivisionMaze
-    : Maze
+    : AMaze
   {
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -277,7 +279,7 @@ namespace Flux.Model
   }
 
   public class SidewinderMaze
-    : Maze
+    : AMaze
   {
     private DirectionEnum _diagonal = DirectionEnum.NorthEast;
     public DirectionEnum Diagonal
@@ -299,7 +301,7 @@ namespace Flux.Model
       }
     }
 
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -338,9 +340,9 @@ namespace Flux.Model
   }
 
   public class WilsonsMaze
-    : Maze
+    : AMaze
   {
-    public override void Build(Grid grid)
+    public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
