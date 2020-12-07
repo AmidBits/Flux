@@ -1,530 +1,393 @@
-using System.Data;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Flux.Model
 {
-#pragma warning disable CA1031 // Do not catch general exception types
-  public enum DirectionEnum
-  {
-    North = 0,
-    NorthEast = 45,
-    East = 90,
-    SouthEast = 135,
-    South = 180,
-    SouthWest = 225,
-    West = 270,
-    NorthWest = 315
-  }
-
-  //public class Cells
-  //  : System.Collections.Generic.Dictionary<int, Cell>
-  //{
-  //  private System.Collections.Generic.Dictionary<int, Cell> _cells { get; set; }
-
-  //  new public Cell this[int direction]
-  //  {
-  //    get
-  //    {
-  //      if (_cells.ContainsKey(direction))
-  //        return _cells[direction];
-
-  //      return null;
-  //    }
-  //    set
-  //    {
-  //      if (_cells.ContainsKey(direction))
-  //      {
-  //        if (value != null)
-  //          _cells[direction] = value;
-  //        else
-  //          _cells.Remove(direction);
-  //      }
-  //      else if (value != null)
-  //        _cells.Add(direction, value);
-  //    }
-  //  }
-  //}
-
-  //public interface INode<TValue, TNexus>
-  //{
-  //  bool IsEmpty { get; }
-  //  TValue Value { get; }
-  //}
-
-  //public class Node<TValue, TNexus>
-  //  : INode<TValue, TNexus>
-  //  where TNexus : notnull
-  //{
-  //  public static INode<TValue, TNexus> Empty = new EmptyNode();
-
-  //  public bool IsEmpty => false;
-  //  public TValue Value { get; set; }
-
-  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Edges { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
-
-  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Gates { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
-
-  //  public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithoutPaths() => Gates.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-  //  public System.Collections.Generic.IEnumerable<Node<TValue, TNexus>> GetGatesWithPaths() => Gates.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-
-  //  public System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>> Paths { get; private set; } = new System.Collections.Generic.Dictionary<TNexus, Node<TValue, TNexus>>();
-
-
-  //  public Node(TValue value)
-  //  {
-  //    Value = value;
-  //  }
-
-  //  public void CreatePath(Node<TValue, TNexus> node, bool biDirectional)
-  //  {
-  //    if (node is null) throw new System.ArgumentNullException(nameof(node));
-
-  //    try
-  //    {
-  //      var key = Gates.Where(kvp => kvp.Value.Equals(node)).First().Key;
-
-  //      Paths[key] = node;
-
-  //      if (biDirectional) node.CreatePath(this, false);
-  //    }
-  //    catch { }
-  //  }
-  //  public void DestroyPath(Node<TValue, TNexus> node, bool biDirectional)
-  //  {
-  //    if (node is null) throw new System.ArgumentNullException(nameof(node));
-
-  //    try
-  //    {
-  //      var key = Gates.Where(e => e.Value.Equals(node)).First().Key;
-
-  //      Paths.Remove(key);
-
-  //      if (biDirectional) node.DestroyPath(this, false);
-  //    }
-  //    catch { }
-  //  }
-  //  public void ResetPaths(bool asCreated)
-  //  {
-  //    Paths.Clear();
-
-  //    if (asCreated)
-  //      foreach (var gate in Gates)
-  //        Paths[gate.Key] = gate.Value;
-  //  }
-
-  //  private class EmptyNode
-  //    : INode<TValue, TNexus>
-  //  {
-  //    public bool IsEmpty => true;
-  //    public TValue Value => throw new System.ArgumentException(nameof(EmptyNode));
-  //  }
-  //}
-
-  //public class Travel
-  //{
-  //  public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
-
-  //  public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-  //  public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-
-  //  public System.Collections.Generic.Dictionary<int, Cell> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
-  //}
-
-  public class Cell
-  {
-    //public int Column { get; set; }
-    //public int Row { get; set; }
-
-    public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
-
-    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths() => Edges.Where(kvp => !kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-    public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths() => Edges.Where(kvp => kvp.Value.Paths.Any()).Select(kvp => kvp.Value);
-
-    public System.Collections.Generic.Dictionary<int, Cell?> Paths { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell?>();
-
-    public Cell ConnectPath(Cell cell, bool biDirectional)
-    {
-      if (cell is null) throw new System.ArgumentNullException(nameof(cell));
-
-      try
-      {
-        var index = Edges.Where(kvp => kvp.Value.Equals(cell)).First().Key;
-
-        Paths[index] = cell;
-
-        if (biDirectional)
-          cell.ConnectPath(this, false);
-      }
-      catch { }
-
-      return cell;
-    }
-    public void DisconnectPath(Cell cell, bool biDirectional)
-    {
-      if (cell is null) throw new System.ArgumentNullException(nameof(cell));
-
-      try
-      {
-        var index = Edges.Where(e => e.Value.Equals(cell)).First().Key;
-
-        Paths[index] = default;
-
-        if (biDirectional)
-          cell.DisconnectPath(this, false);
-      }
-      catch { }
-    }
-
-    public void ResetPaths(bool asConnected)
-    {
-      Paths.Clear();
-
-      if (asConnected)
-        foreach (var edge in Edges)
-          Paths[edge.Key] = edge.Value;
-    }
-
-    public float Weight { get; private set; } = 1;
-  }
-
-  public class Grid<TValue>
-  {
-    private System.Collections.Generic.List<TValue> m_values = new System.Collections.Generic.List<TValue>();
-    public System.Collections.Generic.IReadOnlyList<TValue> Cells => m_values;
-
-    public int Columns { get; set; }
-    public int Rows { get; set; }
-
-    public (int Row, int Column) IndexToRowColumn(int index)
-    {
-      if (index < 0 || index >= Rows * Columns) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-      return (index / Columns, index % Columns);
-    }
-
-    public int RowColumnToIndex(int row, int column)
-    {
-      if (row < 0 && row >= Rows) throw new System.ArgumentOutOfRangeException(nameof(row));
-      if (column < 0 && column >= Columns) throw new System.ArgumentOutOfRangeException(nameof(column));
-
-      return row * Columns + column;
-    }
-
-    public TValue this[int row, int column]
-    {
-      get => m_values[RowColumnToIndex(row, column)];
-      set => m_values[RowColumnToIndex(row, column)] = value;
-    }
-
-    public Grid(int rows, int columns)
-    {
-      Columns = columns;
-      Rows = rows;
-
-      Clear();
-    }
-
-    public void Clear()
-    {
-      m_values.Clear();
-
-      for (var r = 0; r < Rows; r++)
-        for (var c = 0; c < Columns; c++)
-          m_values.Add(default!);
-    }
-  }
-
-  public class Grid
-    : Grid<Cell>
-  {
-    public Grid(int rows, int columns)
-      : base(rows, columns)
-    {
-    }
-
-    //public int Columns { get; set; }
-    //public int Rows { get; set; }
-
-    //public Cell this[int row, int column] => (row >= 0 && row < Rows) ? (column >= 0 && column < Columns) ? Cells[row * Columns + column] : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
-
-    //public Grid(int rows, int columns)
-    //{
-    //  Columns = columns;
-    //  Rows = rows;
-
-    //  Cells.Clear();
-
-    //  for (var r = 0; r < Rows; r++)
-    //  {
-    //    for (var c = 0; c < Columns; c++)
-    //    {
-    //      Cells.Add(new Cell() { Column = c, Row = r });
-    //    }
-    //  }
-    //}
-
-    /// <summary>Returns a sequence with all dead end (singly linked) cells.</summary>
-    public System.Collections.Generic.IEnumerable<Cell> GetDeadEnds() => Cells.Where(c => c.Paths.Count == 1);
-
-    /// <summary>Reset edges with one optional 4-way N,E,S,W and/or one 4-way NE,SE,SW,NW.</summary>
-    public void ResetEdges(bool orthogonal, bool diagonal)
-    {
-      for (var r = 0; r < Rows; r++)
-      {
-        for (var c = 0; c < Columns; c++)
-        {
-          var cell = this[r, c];
-
-          cell.Edges.Clear();
-
-          if (orthogonal || diagonal)
-          {
-            var north = (r > 0);
-            var east = (c < (Columns - 1));
-            var south = (r < (Rows - 1));
-            var west = (c > 0);
-
-            if (orthogonal && north) { cell.Edges.Add((int)DirectionEnum.North, this[r - 1, c]); }
-            if (diagonal && north && east) { cell.Edges.Add((int)DirectionEnum.NorthEast, this[r - 1, c + 1]); }
-            if (orthogonal && east) { cell.Edges.Add((int)DirectionEnum.East, this[r, c + 1]); }
-            if (diagonal && south && east) { cell.Edges.Add((int)DirectionEnum.SouthEast, this[r + 1, c + 1]); }
-            if (orthogonal && south) { cell.Edges.Add((int)DirectionEnum.South, this[r + 1, c]); }
-            if (diagonal && south && west) { cell.Edges.Add((int)DirectionEnum.SouthWest, this[r + 1, c - 1]); }
-            if (orthogonal && west) { cell.Edges.Add((int)DirectionEnum.West, this[r, c - 1]); }
-            if (diagonal && north && west) { cell.Edges.Add((int)DirectionEnum.NorthWest, this[r - 1, c - 1]); }
-            //if (orthogonal && north) { cell.Edges[(int)DirectionIndexEnum.North] = this[r - 1, c]; }
-            //if (diagonal && north && east) { cell.Edges[(int)DirectionIndexEnum.NorthEast] = this[r - 1, c + 1]; }
-            //if (orthogonal && east) { cell.Edges[(int)DirectionIndexEnum.East] = this[r, c + 1]; }
-            //if (diagonal && south && east) { cell.Edges[(int)DirectionIndexEnum.SouthEast] = this[r + 1, c + 1]; }
-            //if (orthogonal && south) { cell.Edges[(int)DirectionIndexEnum.South] = this[r + 1, c]; }
-            //if (diagonal && south && west) { cell.Edges[(int)DirectionIndexEnum.SouthWest] = this[r + 1, c - 1]; }
-            //if (orthogonal && west) { cell.Edges[(int)DirectionIndexEnum.West] = this[r, c - 1]; }
-            //if (diagonal && north && west) { cell.Edges[(int)DirectionIndexEnum.NorthWest] = this[r - 1, c - 1]; }
-          }
-        }
-      }
-    }
-
-    /// <summary>Reset all pathway connections to either connected state or not.</summary>
-    public void ResetPaths(bool asConnected)
-    {
-      foreach (var cell in Cells)
-        cell.ResetPaths(asConnected);
-    }
-
-    //public static (int Row, int Column) IndexToRowColumn(int index, int rows, int columns)
-    //  => (index < rows * columns) ? (index / columns, index % columns) : throw new System.ArgumentOutOfRangeException(nameof(index));
-    //public static int RowColumnToIndex(int row, int column, int rows, int columns)
-    //  => (row < 0 || row >= rows) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (column < 0 || column >= columns) ? throw new System.ArgumentOutOfRangeException(nameof(row)) : (row * columns + column);
-  }
-#pragma warning restore CA1031 // Do not catch general exception types
-
-  //public class Grid
-  //{
-  //	public System.Collections.Generic.List<Cell> Cells = new System.Collections.Generic.List<Cell>();
-
-  //	public int Columns { get; private set; }
-  //	public int Rows { get; private set; }
-
-  //	public Cell this[int row, int column]
-  //	{
-  //		get
-  //		{
-  //			if (row < 0 || column < 0 || row >= Rows || column >= Columns)
-  //				return null;
-
-  //			return Cells[row * Columns + column];
-  //		}
-  //	}
-
-  //	public Grid(int rows, int columns)
-  //	{
-  //		Initialize(rows, columns);
-  //	}
-
-  //	/// <summary>Returns a sequence with all dead end (singly linked) cells.</summary>
-  //	public System.Collections.Generic.IEnumerable<Cell> GetDeadEnds()
-  //	{
-  //		foreach (var cell in Cells)
-  //			if (cell.GetPaths().Count() == 1)
-  //				yield return cell;
-  //	}
-
-  //	/// <summary>Reset the entire grid, with the option to resize it as well.</summary>
-  //	public virtual void Initialize(int? rows = null, int? columns = null)
-  //	{
-  //		Cells.Clear();
-
-  //		if (rows.HasValue)
-  //			Rows = rows.Value;
-  //		if (columns.HasValue)
-  //			Columns = columns.Value;
-
-  //		for (int r = 0; r < Rows; r++)
-  //		{
-  //			for (int c = 0; c < Columns; c++)
-  //			{
-  //				Cells.Add(new Cell(r, c));
-  //			}
-  //		}
-  //	}
-
-  //	public void ResetEdges(bool orthogonal = true, bool diagonal = false)
-  //	{
-  //		for (int r = 0; r < Rows; r++)
-  //		{
-  //			for (int c = 0; c < Columns; c++)
-  //			{
-  //				var cell = this[r, c];
-
-  //				cell.ClearEdges();
-
-  //				if (orthogonal || diagonal)
-  //				{
-  //					var north = (r > 0);
-  //					var east = (c < (Columns - 1));
-  //					var south = (r < (Rows - 1));
-  //					var west = (c > 0);
-
-  //					if (orthogonal && north) { cell.Edges[(int)DirectionIndexEnum.North] = this[r - 1, c]; }
-  //					if (diagonal && north && east) { cell.Edges[(int)DirectionIndexEnum.NorthEast] = this[r - 1, c]; }
-  //					if (orthogonal && east) { cell.Edges[(int)DirectionIndexEnum.East] = this[r, c + 1]; }
-  //					if (diagonal && south && east) { cell.Edges[(int)DirectionIndexEnum.SouthEast] = this[r - 1, c]; }
-  //					if (orthogonal && south) { cell.Edges[(int)DirectionIndexEnum.South] = this[r + 1, c]; }
-  //					if (diagonal && south && west) { cell.Edges[(int)DirectionIndexEnum.SouthWest] = this[r - 1, c]; }
-  //					if (orthogonal && west) { cell.Edges[(int)DirectionIndexEnum.West] = this[r, c - 1]; }
-  //					if (diagonal && north && west) { cell.Edges[(int)DirectionIndexEnum.NorthWest] = this[r - 1, c]; }
-  //				}
-  //			}
-  //		}
-  //	}
-
-  //	public void ResetPaths(bool asConnected)
-  //	{
-  //		foreach (var cell in Cells)
-  //			cell.ResetPaths(asConnected);
-  //	}
-
-  //	public class Cell
-  //	{
-  //		public int Row { get; private set; }
-  //		public int Column { get; private set; }
-
-  //		public Cell[] Edges { get; private set; }
-  //		public Cell[] Paths { get; private set; }
-
-  //		public float Weight { get; private set; }
-
-  //		#region EdgeTo.. properties
-  //		public Cell EdgeToNorth { get { return Edges[0]; } set { Edges[0] = value; } }
-  //		public Cell EdgeToNorthEast { get { return Edges[1]; } set { Edges[1] = value; } }
-  //		public Cell EdgeToEast { get { return Edges[2]; } set { Edges[2] = value; } }
-  //		public Cell EdgeToSouthEast { get { return Edges[3]; } set { Edges[3] = value; } }
-  //		public Cell EdgeToSouth { get { return Edges[4]; } set { Edges[4] = value; } }
-  //		public Cell EdgeToSouthWest { get { return Edges[5]; } set { Edges[5] = value; } }
-  //		public Cell EdgeToWest { get { return Edges[6]; } set { Edges[6] = value; } }
-  //		public Cell EdgeToNorthWest { get { return Edges[7]; } set { Edges[7] = value; } }
-  //		#endregion
-
-  //		public void ClearEdges()
-  //		{
-  //			Edges = new Cell[] { null, null, null, null, null, null, null, null };
-  //		}
-
-  //		public System.Collections.Generic.IEnumerable<Cell> GetEdges()
-  //		{
-  //			return Edges.Where(e => e != null);
-  //		}
-  //		public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithoutPaths()
-  //		{
-  //			return GetEdges().Where(e => !e.GetPaths().Any());
-  //		}
-  //		public System.Collections.Generic.IEnumerable<Cell> GetEdgesWithPaths()
-  //		{
-  //			return GetEdges().Where(e => e.GetPaths().Any());
-  //		}
-
-  //		#region PathTo.. properties
-  //		public Cell PathToNorth { get { return Paths[0]; } set { Paths[0] = value; } }
-  //		public Cell PathToNorthEast { get { return Paths[1]; } set { Paths[1] = value; } }
-  //		public Cell PathToEast { get { return Paths[2]; } set { Paths[2] = value; } }
-  //		public Cell PathToSouthEast { get { return Paths[3]; } set { Paths[3] = value; } }
-  //		public Cell PathToSouth { get { return Paths[4]; } set { Paths[4] = value; } }
-  //		public Cell PathToSouthWest { get { return Paths[5]; } set { Paths[5] = value; } }
-  //		public Cell PathToWest { get { return Paths[6]; } set { Paths[6] = value; } }
-  //		public Cell PathToNorthWest { get { return Paths[7]; } set { Paths[7] = value; } }
-  //		#endregion
-
-  //		public void ResetPaths(bool asConnected)
-  //		{
-  //			Paths = new Cell[] { null, null, null, null, null, null, null, null };
-
-  //			for (int i = 0; i < 8; i++)
-  //				Paths[i] = (asConnected ? Edges[i] : null);
-  //		}
-
-  //		public Cell ConnectPath(Cell cell, bool biDirectional)
-  //		{
-  //			int index = System.Array.IndexOf(Edges, cell);
-  //			Paths[index] = cell;
-  //			if (biDirectional)
-  //				cell.ConnectPath(this, false);
-  //			return cell;
-  //		}
-  //		public void DisconnectPath(Cell cell, bool biDirectional)
-  //		{
-  //			int index = System.Array.IndexOf(Edges, cell);
-  //			Paths[index] = null;
-  //			if (biDirectional)
-  //				cell.DisconnectPath(this, false);
-  //		}
-
-  //		public System.Collections.Generic.IEnumerable<Cell> GetPaths()
-  //		{
-  //			return Paths.Where(p => p != null);
-  //		}
-
-  //		//			public System.Collections.Generic.Dictionary<DirectionEnum, Cell> Neighbors = new System.Collections.Generic.Dictionary<DirectionEnum, Cell>();
-
-  //		//			public System.Collections.Generic.List<Cell> LinksTo = new System.Collections.Generic.List<Cell>();
-
-  //		//public Cell()
-  //		//{
-  //		//	ClearEdges();
-
-  //		//	ResetPaths(false);
-  //		//}
-  //		public Cell(int row, int column, float weight = 1F)
-  //		//: this()
-  //		{
-  //			Row = row;
-  //			Column = column;
-
-  //			Weight = weight;
-  //		}
-
-  //		//public System.Collections.Generic.IEnumerable<Cell> GetUnlinkedNeighbors()
-  //		//{
-  //		//	return Neighbors.Select(a => a.Value).Where(c => !c.LinksTo.Any());
-  //		//}
-  //		//public System.Collections.Generic.IEnumerable<Cell> GetLinkedNeighbors()
-  //		//{
-  //		//	return Neighbors.Select(a => a.Value).Where(c => c.LinksTo.Any());
-  //		//}
-
-  //		//public Cell Link(Cell cell, bool biDirectional = true)
-  //		//{
-  //		//	LinksTo.Add(cell);
-  //		//	if (biDirectional)
-  //		//		cell.Link(this, false);
-  //		//	return cell;
-  //		//}
-  //		//public void Unlink(Cell cell, bool biDirectional = true)
-  //		//{
-  //		//	LinksTo.Remove(cell);
-  //		//	if (biDirectional)
-  //		//		cell.Unlink(this, false);
-  //		//}
-  //	}
-  //}
+	public class Grid<TValue>
+	{
+		public System.Collections.Generic.IList<TValue> Values { get; internal set; }
+
+		public int Columns { get; }
+		public int Rows { get; }
+
+		public (int row, int column) IndexToRowColumn(int index)
+			=> index < 0 || index >= Rows * Columns ? throw new System.ArgumentOutOfRangeException(nameof(index)) : (index / Columns, index % Columns);
+		public int RowColumnToIndex(int row, int column)
+			=> row < 0 || row >= Rows ? throw new System.ArgumentOutOfRangeException(nameof(row)) : column < 0 || column >= Columns ? throw new System.ArgumentOutOfRangeException(nameof(column)) : row * Columns + column;
+
+		public TValue this[int index]
+		{
+			get => Values[index];
+			set => Values[index] = value;
+		}
+		public TValue this[int row, int column]
+		{
+			get => Values[RowColumnToIndex(row, column)];
+			set => Values[RowColumnToIndex(row, column)] = value;
+		}
+
+		public Grid(int rows, int columns)
+		{
+			Columns = columns;
+			Rows = rows;
+
+			Values = new TValue[Rows * Columns];
+		}
+
+		public void Reset()
+		{
+			for (var index = 0; index < Values.Count; index++)
+				Values[index] = default!;
+		}
+	}
+
+	public class SampleTTT
+		: Grid<int>
+	{
+		public SampleTTT()
+			: base(3, 3)
+		{
+		}
+	}
+
+	namespace Sample
+	{
+		public sealed class Move
+		{
+			public int Row { get; set; }
+			public int Column { get; set; }
+
+			public int Score { get; set; }
+
+			public Move(int row, int column, int score)
+			{
+				Row = row;
+				Column = column;
+
+				Score = score;
+			}
+
+			public override string ToString()
+				=> $"<({Row}, {Column}) {Score}>";
+		}
+
+		public enum State
+		{
+			Empty,
+			Player1,
+			Player2
+		}
+
+		public class Board
+			: Grid<State>, System.Collections.Generic.IEnumerable<State>
+		{
+			//private readonly State[] m_state = new State[9];
+
+			///// <summary>Gets or sets the state of the specified [row, column] square on the board.</summary>
+			//public State this[int row, int column]
+			//{
+			//	get
+			//		=> m_state[row * 3 + column];
+			//	set
+			//		=> m_state[row * 3 + column] = value;
+			//}
+
+			public Board()
+				: base(3, 3)
+				=> Clear();
+
+			public void Clear()
+				=> Reset();
+
+			public int Evaluate(bool isMax)
+			{
+				var player1 = isMax ? State.Player1 : State.Player2;
+				var player2 = isMax ? State.Player2 : State.Player1;
+
+				for (int row = 0; row < 3; row++) // Any row winner?
+				{
+					var boardR1 = this[row, 1];
+					if (this[row, 0] == boardR1 && boardR1 == this[row, 2])
+					{
+						if (boardR1 == player1) return +10;
+						else if (boardR1 == player2) return -10;
+					}
+				}
+
+				for (int col = 0; col < 3; col++) // Any column winner?
+				{
+					var board1C = this[1, col];
+					if (this[0, col] == board1C && board1C == this[2, col])
+					{
+						if (board1C == player1) return +10;
+						else if (board1C == player2) return -10;
+					}
+				}
+
+				var board11 = this[1, 1];
+
+				if ((this[0, 0] == board11 && board11 == this[2, 2]) || (this[0, 2] == board11 && board11 == this[2, 0])) // Any diagonal winner?
+				{
+					if (board11 == player1) return +10;
+					else if (board11 == player2) return -10;
+				}
+
+				return 0; // No winner yet.
+			}
+
+			public System.Collections.Generic.IList<Move> GetOptionsForPlayer1()
+			{
+				var moves = new System.Collections.Generic.List<Move>();
+
+				for (var r = 0; r < 3; r++)
+				{
+					for (var c = 0; c < 3; c++)
+					{
+						if (this[r, c] == State.Empty)
+						{
+							this[r, c] = State.Player1;
+							moves.Add(new Move(r, c, Minimax(0, false)));
+							this[r, c] = State.Empty;
+						}
+					}
+				}
+
+				return moves;
+			}
+			public System.Collections.Generic.IList<Move> GetOptionsForPlayer2()
+			{
+				var moves = new System.Collections.Generic.List<Move>();
+
+				for (var r = 0; r < 3; r++)
+				{
+					for (var c = 0; c < 3; c++)
+					{
+						if (this[r, c] == State.Empty)
+						{
+							this[r, c] = State.Player2;
+							moves.Add(new Move(r, c, Minimax(0, true)));
+							this[r, c] = State.Empty;
+						}
+					}
+				}
+
+				return moves;
+			}
+
+			public bool HasEmptySquares()
+			{
+				foreach (var state in this)
+					if (state == State.Empty)
+						return true;
+
+				return false;
+			}
+
+			public int Minimax(int depth, bool isMax)
+			{
+				int score = Evaluate(isMax);
+
+				if (score == 10)
+					return score - depth; // Maximizer won.
+				if (score == -10)
+					return score + depth; // Minimizer won.
+
+				if (!HasEmptySquares())
+					return 0; // No more moves and no winner, it's a tie.
+
+				var best = isMax ? int.MinValue : int.MaxValue;
+
+				for (int i = 0; i < 3; i++)
+					for (int j = 0; j < 3; j++)
+						if (this[i, j] == State.Empty)
+						{
+							if (isMax)
+							{
+								this[i, j] = State.Player1;
+								best = System.Math.Max(best, Minimax(depth + 1, !isMax));
+							}
+							else
+							{
+								this[i, j] = State.Player2;
+								best = System.Math.Min(best, Minimax(depth + 1, isMax));
+							}
+
+							this[i, j] = State.Empty;
+						}
+
+				return best;
+			}
+
+			/// <summary></summary>
+			/// <param name="node">The index of the root node.</param>
+			/// <param name="depth">This is the depth allowed (the depth decrease by one each recursion).</param>
+			/// <param name="color">The player, either 1 or -1.</param>
+			/// <param name="availableMovesSelector">The possible moves (e.g. empty indices).</param>
+			/// <param name="heuristicValueSelector">The heuristic value of node (i.e. some form of evaluation function).</param>
+			/// <returns></returns>
+			public static int Negamax(int node, int depth, int color, System.Func<int, int[]> availableMovesSelector, System.Func<int, int> heuristicValueSelector)
+			{
+				var moves = availableMovesSelector?.Invoke(node) ?? throw new System.ArgumentNullException(nameof(availableMovesSelector));
+
+				if (depth == 0 || moves.Length == 0)
+					return color * heuristicValueSelector?.Invoke(node) ?? throw new System.ArgumentNullException(nameof(availableMovesSelector));
+
+				var value = int.MinValue;
+
+				foreach (var next in moves)
+					value = System.Math.Max(value, -Negamax(next, depth - 1, -color, availableMovesSelector, heuristicValueSelector));
+
+				return value;
+			}
+
+			public System.Collections.Generic.IDictionary<State, int> StateCounts()
+				=> Values.GroupBy(s => s).ToDictionary(g => g.Key, g => g.Count());
+
+			//public override string ToString<T>(System.Func<State, T> selector)
+			//  =>
+
+			public override string ToString()
+				=> GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).ToConsoleString2d(null, '\0', '\0', false);
+
+			// This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
+			//public static int EvaluateBoard(char[,] board, char player, char opponent)
+			//{
+			//  if (board is null) throw new System.ArgumentNullException(nameof(board));
+
+			//  for (int row = 0; row < 3; row++) // Any row winner?
+			//  {
+			//    var boardR1 = board[row, 1];
+			//    if (board[row, 0] == boardR1 && boardR1 == board[row, 2])
+			//    {
+			//      if (boardR1 == player) return +10;
+			//      else if (boardR1 == opponent) return -10;
+			//    }
+			//  }
+
+			//  for (int col = 0; col < 3; col++) // Any column winner?
+			//  {
+			//    var board1C = board[1, col];
+			//    if (board[0, col] == board1C && board1C == board[2, col])
+			//    {
+			//      if (board1C == player) return +10;
+			//      else if (board1C == opponent) return -10;
+			//    }
+			//  }
+
+			//  var board11 = board[1, 1];
+
+			//  if ((board[0, 0] == board11 && board11 == board[2, 2]) || (board[0, 2] == board11 && board11 == board[2, 0])) // Any diagonal winner?
+			//  {
+			//    if (board11 == player) return +10;
+			//    else if (board11 == opponent) return -10;
+			//  }
+
+			//  return 0; // No winner.
+			//}
+
+			/// <summary>This will return the best possible move for the player.</summary>
+			//public static System.Collections.Generic.IEnumerable<Move> GetMoves(char[,] board, char player, char opponent, char empty)
+			//{
+			//  if (board is null) throw new System.ArgumentNullException(nameof(board));
+
+			//  for (int i = 0; i < 3; i++)
+			//    for (int j = 0; j < 3; j++)
+			//      if (board[i, j] == empty)
+			//      {
+			//        board[i, j] = player;
+			//        int score = Minimax(board, 0, false, player, opponent, empty);
+			//        board[i, j] = empty;
+
+			//        yield return new Move(i, j, score);
+			//      }
+			//}
+
+			//public static bool HasEmptySquares(char[,] board, char empty)
+			//{
+			//  if (board is null) throw new System.ArgumentNullException(nameof(board));
+
+			//  foreach (var square in board)
+			//    if (square == empty)
+			//      return true;
+
+			//  return false;
+			//}
+
+			//public static bool IsEmpty(char[,] board, char empty)
+			//{
+			//  if (board is null) throw new System.ArgumentNullException(nameof(board));
+
+			//  foreach (var square in board)
+			//    if (square != empty)
+			//      return false;
+
+			//  return true;
+			//}
+
+			/// <summary>This is the minimax function. It considers all the possible ways the game can go and returns the value of the board.</summary>
+			//public static int Minimax(char[,] board, int depth, bool isMax, char player, char opponent, char empty)
+			//{
+			//  int score = EvaluateBoard(board, player, opponent);
+
+			//  if (score == 10) return score - depth; // Maximizer won.
+			//  if (score == -10) return score + depth; // Minimizer won.
+
+			//  if (!HasEmptySquares(board, empty)) return 0; // No more moves and no winner, it's a tie.
+
+			//  var best = isMax ? int.MinValue : int.MaxValue;
+
+			//  for (int i = 0; i < 3; i++)
+			//  {
+			//    for (int j = 0; j < 3; j++)
+			//    {
+			//      if (board[i, j] == empty)
+			//      {
+			//        if (isMax)
+			//        {
+			//          board[i, j] = player;
+			//          best = System.Math.Max(best, Minimax(board, depth + 1, !isMax, player, opponent, empty));
+			//          board[i, j] = empty;
+			//        }
+			//        else
+			//        {
+			//          board[i, j] = opponent;
+			//          best = System.Math.Min(best, Minimax(board, depth + 1, !isMax, player, opponent, empty));
+			//          board[i, j] = empty;
+			//        }
+			//      }
+			//    }
+			//  }
+
+			//  return best;
+			//}
+
+			/// <summary>Returns the optimal value a maximizer can obtain.</summary>
+			/// <param name="depth">The current depth in game tree.</param>
+			/// <param name="nodeIndex">The index of current node in scores[].</param>
+			/// <param name="isMax">True if current move is of maximizer, else false if minimizer.</param>
+			/// <param name="scores">The leaves of Game tree.</param>
+			/// <param name="maxHeight">The maximum height of Game tree.</param>
+			/// <returns></returns>
+			public static int Minimax(int depth, int nodeIndex, bool isMax, int[] scores, int maxHeight)
+			{
+				if (scores is null) throw new System.ArgumentNullException(nameof(scores));
+
+				if (depth == maxHeight) return scores[nodeIndex]; // Terminating condition.
+
+				if (isMax) return System.Math.Max(Minimax(depth + 1, nodeIndex * 2, false, scores, maxHeight), Minimax(depth + 1, nodeIndex * 2 + 1, false, scores, maxHeight));
+				else return System.Math.Min(Minimax(depth + 1, nodeIndex * 2, true, scores, maxHeight), Minimax(depth + 1, nodeIndex * 2 + 1, true, scores, maxHeight));
+			}
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+			public T[,] GetRowMajorOrder2D<T>(System.Func<State, T> selector)
+				=> Values.Select(selector).ToArray().ToTwoDimensionalArray(3, 3);
+#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
+
+			// IEnumerable<State>
+			public System.Collections.Generic.IEnumerator<State> GetEnumerator()
+				=> Values.ToList().GetEnumerator();
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+				=> GetEnumerator();
+		}
+
+	}
 }
