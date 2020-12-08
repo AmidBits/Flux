@@ -5,7 +5,7 @@ namespace Flux
 	public static partial class BattleshipEm
 	{
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-		public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Ship> ships, Geometry.Size2 size)
+		public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Game.BattleShip.Vessel> ships, Geometry.Size2 size)
 		{
 			if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -15,13 +15,13 @@ namespace Flux
 
 			for (var i = 0; i < ships.Count; i++)
 			{
-				Flux.Model.Game.BattleShip.Ship s = ships[i];
+				Flux.Model.Game.BattleShip.Vessel s = ships[i];
 
 				for (var j = i + 1; j < ships.Count; j++)
 				{
-					Flux.Model.Game.BattleShip.Ship t = ships[j];
+					Flux.Model.Game.BattleShip.Vessel t = ships[j];
 
-					if (Flux.Model.Game.BattleShip.Ship.Intersects(s, t))
+					if (Flux.Model.Game.BattleShip.Vessel.Intersects(s, t))
 						countAdjacentShips++;
 				}
 			}
@@ -31,7 +31,7 @@ namespace Flux
 				for (int y = 0; y < size.Height; y++)
 					placement[y, x] = '.';
 
-			foreach (Flux.Model.Game.BattleShip.Ship s in ships)
+			foreach (Flux.Model.Game.BattleShip.Vessel s in ships)
 				foreach (Geometry.Point2 p in s.Locations)
 					placement[p.Y, p.X] = (char)('0' + s.Length);
 
@@ -47,31 +47,25 @@ namespace Flux
 
 	namespace Model.Game.BattleShip
 	{
-		public enum ShipOrientation
-		{
-			Horizontal = 0,
-			Vertical = 1
-		}
-
-		public struct Ship
-			: System.IEquatable<Ship>
+		public struct Vessel
+			: System.IEquatable<Vessel>
 		{
 			private static readonly double[] m_proximityProbabilities = new double[] { 1.0, 0.5, 0.3333333333333333, 0.25, 0.2, 0.1666666666666666 };
 			public static System.Collections.Generic.IReadOnlyList<double> ProximityProbabilities => m_proximityProbabilities;
 
-			public static readonly Ship Empty;
+			public static readonly Vessel Empty;
 			public bool IsEmpty => Equals(Empty);
 
 			private readonly System.Collections.Generic.List<Geometry.Point2> m_locations;
 			public Geometry.Point2 Location => m_locations.Count > 0 ? m_locations[0] : throw new System.InvalidOperationException(nameof(Empty));
 			public System.Collections.Generic.IReadOnlyList<Geometry.Point2> Locations => m_locations;
 
-			public ShipOrientation Orientation { get; set; }
+			public VesselOrientation Orientation { get; set; }
 
 			public int Length
 				=> m_locations.Count;
 
-			public Ship(int length, Geometry.Point2 location, ShipOrientation orientation)
+			public Vessel(int length, Geometry.Point2 location, VesselOrientation orientation)
 			{
 				if (length <= 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
@@ -79,7 +73,7 @@ namespace Flux
 
 				m_locations = new System.Collections.Generic.List<Geometry.Point2>();
 				for (int i = 0; i < length; i++)
-					m_locations.Add(Orientation == ShipOrientation.Horizontal ? new Geometry.Point2(location.X + i, location.Y) : new Geometry.Point2(location.X, location.Y + i));
+					m_locations.Add(Orientation == VesselOrientation.Horizontal ? new Geometry.Point2(location.X + i, location.Y) : new Geometry.Point2(location.X, location.Y + i));
 			}
 
 			public bool IsValid(Geometry.Size2 boardSize)
@@ -87,7 +81,7 @@ namespace Flux
 				if (m_locations[0].X < 0 || m_locations[0].Y < 0)
 					return false;
 
-				if (Orientation == ShipOrientation.Horizontal)
+				if (Orientation == VesselOrientation.Horizontal)
 				{
 					if (m_locations[0].Y >= boardSize.Height || m_locations[0].X + m_locations.Count > boardSize.Width)
 						return false;
@@ -101,14 +95,14 @@ namespace Flux
 				return true;
 			}
 
-			public static bool AnyHitsOn(Ship ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
+			public static bool AnyHitsOn(Vessel ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
 				=> ship.m_locations.Any(location => shots.Any(shot => shot == location));
-			public static bool AnyHits(System.Collections.Generic.IEnumerable<Ship> ships, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
+			public static bool AnyHits(System.Collections.Generic.IEnumerable<Vessel> ships, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
 				=> ships.Any(ship => ship.m_locations.Any(location => shots.Any(shot => shot == location)));
-			public static bool IsSunk(Ship ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
+			public static bool IsSunk(Vessel ship, System.Collections.Generic.IEnumerable<Geometry.Point2> shots)
 				=> ship.m_locations.All(l => shots.Any(s => s == l));
 
-			public static bool AreAdjacent(Ship a, Ship b)
+			public static bool AreAdjacent(Vessel a, Vessel b)
 			{
 				foreach (Geometry.Point2 p in a.Locations)
 				{
@@ -124,42 +118,42 @@ namespace Flux
 				return false;
 			}
 
-			public static bool Intersects(Ship ship, Geometry.Point2 position)
+			public static bool Intersects(Vessel ship, Geometry.Point2 position)
 			{
-				return ship.Orientation == ShipOrientation.Horizontal
+				return ship.Orientation == VesselOrientation.Horizontal
 				? (ship.m_locations[0].Y == position.Y) && (ship.m_locations[0].X <= position.X) && (ship.m_locations[0].X + ship.m_locations.Count > position.X)
 				: (ship.m_locations[0].X == position.X) && (ship.m_locations[0].Y <= position.Y) && (ship.m_locations[0].Y + ship.m_locations.Count > position.Y);
 			}
-			public static bool Intersects(Ship a, Ship b)
+			public static bool Intersects(Vessel a, Vessel b)
 			{
-				if (a.Orientation == ShipOrientation.Horizontal && b.Orientation == ShipOrientation.Horizontal)
+				if (a.Orientation == VesselOrientation.Horizontal && b.Orientation == VesselOrientation.Horizontal)
 				{
 					return a.m_locations[0].Y == b.m_locations[0].Y && (b.m_locations[0].X < (a.m_locations[0].X + a.m_locations.Count)) && (a.m_locations[0].X < (b.m_locations[0].X + b.m_locations.Count));
 				}
-				else if (a.Orientation == ShipOrientation.Vertical && b.Orientation == ShipOrientation.Vertical)
+				else if (a.Orientation == VesselOrientation.Vertical && b.Orientation == VesselOrientation.Vertical)
 				{
 					return a.m_locations[0].X == b.m_locations[0].X && (b.m_locations[0].Y < (a.m_locations[0].Y + a.m_locations.Count)) && (a.m_locations[0].Y < (b.m_locations[0].Y + b.m_locations.Count));
 				}
 				else
 				{
-					Ship h = a.Orientation == ShipOrientation.Horizontal ? a : b;
-					Ship v = a.Orientation == ShipOrientation.Horizontal ? b : a;
+					Vessel h = a.Orientation == VesselOrientation.Horizontal ? a : b;
+					Vessel v = a.Orientation == VesselOrientation.Horizontal ? b : a;
 
 					return (h.m_locations[0].Y >= v.m_locations[0].Y) && (h.m_locations[0].Y < (v.m_locations[0].Y + v.m_locations.Count)) && (v.m_locations[0].X >= h.m_locations[0].X) && (v.m_locations[0].X < (h.m_locations[0].X + h.m_locations.Count));
 				}
 			}
 
-			public static System.Collections.Generic.List<Ship> StageFleet(Geometry.Size2 gridSize, params int[] shipSizes)
+			public static System.Collections.Generic.List<Vessel> StageFleet(Geometry.Size2 gridSize, params int[] shipSizes)
 			{
-				var ships = new System.Collections.Generic.List<Ship>();
+				var ships = new System.Collections.Generic.List<Vessel>();
 
 				foreach (var size in shipSizes)
 				{
-					Ship ship;
+					Vessel ship;
 
 					do
 					{
-						ship = new Ship(size, new Geometry.Point2(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (ShipOrientation)Random.NumberGenerator.Crypto.Next(2));
+						ship = new Vessel(size, new Geometry.Point2(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerator.Crypto.Next(2));
 					}
 					while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 
@@ -170,13 +164,13 @@ namespace Flux
 			}
 
 			// Operators
-			public static bool operator ==(Ship a, Ship b)
+			public static bool operator ==(Vessel a, Vessel b)
 				=> a.Equals(b);
-			public static bool operator !=(Ship a, Ship b)
+			public static bool operator !=(Vessel a, Vessel b)
 				=> !a.Equals(b);
 
 			// IEquatable
-			public bool Equals(Ship other)
+			public bool Equals(Vessel other)
 			{
 				if (Orientation != other.Orientation)
 					return false;
@@ -197,7 +191,7 @@ namespace Flux
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_locations.CombineHashCore(), Orientation);
 			public override string? ToString()
-				=> $"<{nameof(Ship)} {m_locations.Count}, {Orientation}>";
+				=> $"<{nameof(Vessel)} {m_locations.Count}, {Orientation}>";
 		}
 	}
 }
