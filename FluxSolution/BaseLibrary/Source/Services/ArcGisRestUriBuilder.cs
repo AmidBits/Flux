@@ -1,4 +1,4 @@
-﻿namespace Flux.Services.Esri.ArcGis
+﻿namespace Flux.Services.ArcGis
 {
 	/// <summary></summary>
 	// https://developers.arcgis.com/rest/services-reference/get-started-with-the-services-directory.htm

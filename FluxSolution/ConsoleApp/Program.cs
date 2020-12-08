@@ -13,10 +13,6 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var eagrub = new Flux.Services.Esri.ArcGis.RestUriBuilder("maximogistest.central.pima.gov", "Utilities", "Geometry", "GeometryServer");
-			System.Console.WriteLine(eagrub.Uri);
-			System.Console.WriteLine(eagrub.ToString());
-
 			//for (var i = 100; i >= 0; i--)
 			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
 			//{

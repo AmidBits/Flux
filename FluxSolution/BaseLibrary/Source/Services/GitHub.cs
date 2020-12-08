@@ -1,4 +1,4 @@
-namespace Flux.Model
+namespace Flux.Services.GitHub
 {
 	public enum GitHubType
 	{
