@@ -14,13 +14,14 @@ namespace Flux.Dsp.AudioProcessor
     SymmetricInverse
   }
 
+  /// <summary></summary>
   public class MonoQuadratic
     : IWaveProcessorMono
   {
     public QuadraticMode Mode { get; internal set; }
 
     private double m_exponent, m_exponentExpanded;
-    /// <summary>The quadratic exponent can be set within the constrained range [-1, 1].</summary>
+    /// <summary>The quadratic exponent is clamped in the range [-1, 1] and is used to transform the sample resulting in a narrower or wider based on the signal amplitude.</summary>
     public double Exponent
     {
       get => m_exponent;

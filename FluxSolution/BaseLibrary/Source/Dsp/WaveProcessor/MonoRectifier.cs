@@ -3,16 +3,17 @@ namespace Flux.Dsp.AudioProcessor
   public enum RectifierMode
   {
     Bypass,
-    /// <summary>Perform a positive full wave rectification.</summary>
+    /// <summary>Perform a positive full (the wave signal below the threshold is mirrored above the threshold) wave rectification.</summary>
     FullWave,
-    /// <summary>Perform a positive half wave rectification.</summary>
+    /// <summary>Perform a positive half (the wave signal below the threshold is removed) wave rectification.</summary>
     HalfWave,
-    /// <summary>Perform a negative full wave rectification.</summary>
+    /// <summary>Perform a negative full (the wave signal above the threshold is mirrored below the threshold) wave rectification.</summary>
     NegativeFullWave,
-    /// <summary>Perform a negative half wave rectification.</summary>
+    /// <summary>Perform a negative half (the wave signal above the threshold is removed) wave rectification.</summary>
     NegativeHalfWave,
   }
 
+  /// <summary>Rectifies (cuts or mirrors) the wave signal above or below a threshold.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
   public class MonoRectifier
     : IWaveProcessorMono

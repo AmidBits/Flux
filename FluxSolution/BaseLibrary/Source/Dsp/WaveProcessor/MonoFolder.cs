@@ -1,5 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
+  /// <summary>Folds the wave by overscaling the wave range [-1, 1] and folding the remainder like an accordion.</summary>
   public class MonoFolder
     : IWaveProcessorMono
   {

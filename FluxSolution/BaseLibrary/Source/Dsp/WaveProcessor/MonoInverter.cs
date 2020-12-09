@@ -13,6 +13,7 @@
     PositivePeekOnly
   }
 
+  /// <summary>Inverts the wave signal.</summary>
   public class MonoInverter
     : IWaveProcessorMono
   {
