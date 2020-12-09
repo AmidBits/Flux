@@ -4,12 +4,9 @@ namespace Flux
 {
 	public static partial class UnicodeEm
 	{
+		/// <summary>Returns a string representing the <see cref="System.Text.Rune"/> as a Unicode literal (e.g. as used in C#).</summary>
 		public static string ToUnicodeStringLiteral(this System.Text.Rune source)
-			=> Text.UnicodeStringLiteral.ToString(source.Value);
-
-		/// <summary>Parses the string for a Unicode notation expression.</summary>
-		public static System.Collections.Generic.IEnumerable<System.Text.Rune> ParseUnicodeStringLiterals(this string source)
-			=> Text.UnicodeStringLiteral.Parse(source);
+			=> Text.UnicodeStringLiteral.ToString(source);
 	}
 
 	namespace Text
@@ -37,8 +34,8 @@ namespace Flux
 			}
 
 			/// <summary>Convert the Unicode codepoint to a string literal format, i.e. "\uxxxx" (four hex characters) or "\UXXXXXXXX" (eight hex characters).</summary>
-			public static string ToString(int codePoint)
-				=> codePoint < 0 ? throw new System.ArgumentOutOfRangeException(nameof(codePoint)) : codePoint <= 0xFFFF ? $@"\u{codePoint:x4}" : $@"\U{codePoint:X8}";
+			public static string ToString(System.Text.Rune rune)
+				=> rune.Value <= 0xFFFF ? $@"\u{rune.Value:x4}" : $@"\U{rune.Value:X8}";
 		}
 	}
 }
