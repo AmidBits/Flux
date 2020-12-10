@@ -4,17 +4,17 @@ namespace Flux
 {
   namespace Geometry
   {
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
     public struct Rect
       : System.IEquatable<Rect>, System.IFormattable
     {
       public static readonly Rect Empty;
       public bool IsEmpty => Equals(Empty);
 
-      private int m_left;
-      private int m_top;
-      private int m_right;
-      private int m_bottom;
+      [System.Runtime.InteropServices.FieldOffset(0)] private int m_left;
+      [System.Runtime.InteropServices.FieldOffset(4)] private int m_top;
+      [System.Runtime.InteropServices.FieldOffset(8)] private int m_right;
+      [System.Runtime.InteropServices.FieldOffset(0)] private int m_bottom;
 
       public int Left { get => m_left; set => m_left = value; }
       public int Top { get => m_top; set => m_top = value; }
