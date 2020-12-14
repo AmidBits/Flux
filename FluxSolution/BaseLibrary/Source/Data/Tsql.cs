@@ -229,6 +229,8 @@ namespace Flux.Data
       => $"SELECT {Combine(columnNames)}";
     public static string Select(System.Collections.Generic.IEnumerable<string> columnNames)
       => $"SELECT {Combine(columnNames)}";
+    public static string SelectCount() 
+      => Select("COUNT(1)");
     public static string SelectTop(double percent, params string[] columnNames)
       => $"SELECT TOP ( {percent} ) PERCENT {Combine(columnNames)}";
     public static string SelectTop(int rowCount, params string[] columnNames)

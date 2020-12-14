@@ -31,8 +31,8 @@ namespace Flux.Dsp.WaveFilter
 
     public TripleEQ(double lpfCutoff = 880.0, double hpfCutoff = 5000.0, double sampleRate = 44100.0)
     {
-      m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * ((double)lpfCutoff / (double)sampleRate));
-      m_hpfCutoff = 2 * System.Math.Sin(System.Math.PI * ((double)hpfCutoff / (double)sampleRate));
+      m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * (lpfCutoff / sampleRate));
+      m_hpfCutoff = 2 * System.Math.Sin(System.Math.PI * (hpfCutoff / sampleRate));
     }
 
     public double FilterAudioMono(double value)

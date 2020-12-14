@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.AudioProcessor
 {
-  public enum PolarizerMode
+  public enum MonoPolarizerMode
   {
     Bypass,
     BipolarToUnipolarNegative,
@@ -14,20 +14,20 @@
   public class MonoPolarizer
     : IWaveProcessorMono
   {
-    public PolarizerMode Mode { get; }
+    public MonoPolarizerMode Mode { get; }
 
-    public MonoPolarizer(PolarizerMode mode)
+    public MonoPolarizer(MonoPolarizerMode mode)
     {
       Mode = mode;
     }
-    public MonoPolarizer() : this(PolarizerMode.BipolarToUnipolarPositive) { }
+    public MonoPolarizer() : this(MonoPolarizerMode.BipolarToUnipolarPositive) { }
 
     public double ProcessAudio(double sample) => (Mode switch
     {
-      PolarizerMode.BipolarToUnipolarNegative => (sample / 2.0 - 0.5),
-      PolarizerMode.BipolarToUnipolarPositive => (sample / 2.0 + 0.5),
-      PolarizerMode.UnipolarNegativeToBipolar => (sample < 0.0 ? sample * 2.0 + 1.0 : 0.0),
-      PolarizerMode.UnipolarPositiveToBipolar => (sample > 0.0 ? sample * 2.0 - 1.0 : 0.0),
+      MonoPolarizerMode.BipolarToUnipolarNegative => (sample / 2.0 - 0.5),
+      MonoPolarizerMode.BipolarToUnipolarPositive => (sample / 2.0 + 0.5),
+      MonoPolarizerMode.UnipolarNegativeToBipolar => (sample < 0.0 ? sample * 2.0 + 1.0 : 0.0),
+      MonoPolarizerMode.UnipolarPositiveToBipolar => (sample > 0.0 ? sample * 2.0 - 1.0 : 0.0),
       _ => (sample),
     });
 

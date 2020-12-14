@@ -1,7 +1,6 @@
-
 namespace Flux.Dsp.AudioProcessor
 {
-  public enum QuadraticMode
+  public enum MonoQuadraticMode
   {
     Bypass,
     /// <summary>Apply the quadratic exponent asymmetrically (both peeks will mathematically react differently to the exponent) to the signal.</summary>
@@ -18,7 +17,7 @@ namespace Flux.Dsp.AudioProcessor
   public class MonoQuadratic
     : IWaveProcessorMono
   {
-    public QuadraticMode Mode { get; internal set; }
+    public MonoQuadraticMode Mode { get; internal set; }
 
     private double m_exponent, m_exponentExpanded;
     /// <summary>The quadratic exponent is clamped in the range [-1, 1] and is used to transform the sample resulting in a narrower or wider based on the signal amplitude.</summary>
@@ -38,24 +37,24 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public MonoQuadratic(QuadraticMode mode, double exponent)
+    public MonoQuadratic(MonoQuadraticMode mode, double exponent)
     {
       Mode = mode;
 
       Exponent = exponent;
     }
     public MonoQuadratic()
-      : this(QuadraticMode.Asymmetric, 0)
+      : this(MonoQuadraticMode.Asymmetric, 0)
     {
     }
 
     public double ProcessAudio(double sample)
       => (Mode switch
       {
-        QuadraticMode.Asymmetric => (System.Math.Pow(sample / 2 + 0.5, m_exponentExpanded) * 2 - 1),
-        QuadraticMode.InvertedAsymmetric => (-(System.Math.Pow(-sample / 2 + 0.5, m_exponentExpanded) * 2 - 1)),
-        QuadraticMode.Symmetric => (2.0 * ((System.Math.Pow(m_exponent, sample + 1) - 1) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1),
-        QuadraticMode.SymmetricInverse => (sample < 0 ? -(2 * ((System.Math.Pow(m_exponent, -sample + 1) - 1) / (System.Math.Pow(m_exponent, 2) - 1.0)) - 1) : 2.0 * ((System.Math.Pow(m_exponent, sample + 1.0) - 1.0) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1),
+        MonoQuadraticMode.Asymmetric => (System.Math.Pow(sample / 2 + 0.5, m_exponentExpanded) * 2 - 1),
+        MonoQuadraticMode.InvertedAsymmetric => (-(System.Math.Pow(-sample / 2 + 0.5, m_exponentExpanded) * 2 - 1)),
+        MonoQuadraticMode.Symmetric => (2.0 * ((System.Math.Pow(m_exponent, sample + 1) - 1) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1),
+        MonoQuadraticMode.SymmetricInverse => (sample < 0 ? -(2 * ((System.Math.Pow(m_exponent, -sample + 1) - 1) / (System.Math.Pow(m_exponent, 2) - 1.0)) - 1) : 2.0 * ((System.Math.Pow(m_exponent, sample + 1.0) - 1.0) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1),
         _ => (sample),
       });
   }

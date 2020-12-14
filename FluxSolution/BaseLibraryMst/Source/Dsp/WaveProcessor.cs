@@ -15,8 +15,8 @@ namespace Dsp
     private Flux.Dsp.AudioProcessor.MonoInverter _inverter = new Flux.Dsp.AudioProcessor.MonoInverter();
     private Flux.Dsp.AudioProcessor.MonoLagger _lagger = new Flux.Dsp.AudioProcessor.MonoLagger();
     private Flux.Dsp.AudioProcessor.MonoQuadratic _quadratic = new Flux.Dsp.AudioProcessor.MonoQuadratic() { Exponent = 2 };
-    private Flux.Dsp.AudioProcessor.MonoRectifier _fullWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.RectifierMode.FullWave, 0);
-    private Flux.Dsp.AudioProcessor.MonoRectifier _halfWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.RectifierMode.HalfWave, 0);
+    private Flux.Dsp.AudioProcessor.MonoRectifier _fullWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.MonoRectifierMode.FullWave, 0);
+    private Flux.Dsp.AudioProcessor.MonoRectifier _halfWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.MonoRectifierMode.HalfWave, 0);
 
     private const double _hiPhase = System.Math.PI * 0.75;
     private const double _loPhase = System.Math.PI * 0.25;

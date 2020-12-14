@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.AudioProcessor
 {
-  public enum InverterMode
+  public enum MonoInverterMode
   {
     Bypass,
     /// <summary>Invert the negative polarity only.</summary>
@@ -17,22 +17,22 @@
   public class MonoInverter
     : IWaveProcessorMono
   {
-    public InverterMode Mode { get; internal set; }
+    public MonoInverterMode Mode { get; internal set; }
 
-    public MonoInverter(InverterMode mode)
+    public MonoInverter(MonoInverterMode mode)
       => Mode = mode;
     public MonoInverter()
-      : this(InverterMode.PeekToPeek)
+      : this(MonoInverterMode.PeekToPeek)
     {
     }
 
     public double ProcessAudio(double sample) => (Mode switch
     {
-      InverterMode.PeekToPeek => (-sample),
-      InverterMode.PeeksIndependently when sample < 0 => (-sample - 1),
-      InverterMode.NegativePeekOnly when sample < 0 => (-sample - 1),
-      InverterMode.PeeksIndependently when sample > 0 => (-sample + 1),
-      InverterMode.PositivePeekOnly when sample > 0 => (-sample + 1),
+      MonoInverterMode.PeekToPeek => (-sample),
+      MonoInverterMode.PeeksIndependently when sample < 0 => (-sample - 1),
+      MonoInverterMode.NegativePeekOnly when sample < 0 => (-sample - 1),
+      MonoInverterMode.PeeksIndependently when sample > 0 => (-sample + 1),
+      MonoInverterMode.PositivePeekOnly when sample > 0 => (-sample + 1),
       _ => (sample),
     });
 

@@ -67,10 +67,6 @@ namespace Flux
     }
 
     // Operators
-    public static bool operator ==(VersionEx a, VersionEx b)
-      => a.Equals(b);
-    public static bool operator !=(VersionEx a, VersionEx b)
-      => !a.Equals(b);
     public static bool operator <(VersionEx a, VersionEx b)
       => a.CompareTo(b) < 0;
     public static bool operator <=(VersionEx a, VersionEx b)
@@ -79,6 +75,10 @@ namespace Flux
       => a.CompareTo(b) < 0;
     public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
+    public static bool operator ==(VersionEx a, VersionEx b)
+      => a.Equals(b);
+    public static bool operator !=(VersionEx a, VersionEx b)
+      => !a.Equals(b);
 
     #endregion Static members
 

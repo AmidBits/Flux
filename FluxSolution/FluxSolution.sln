@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseLibraryMst", "BaseLibraryMst\BaseLibraryMst.csproj", "{FB735BA2-0CC9-4432-9AD2-82628FD1EAB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WfLibrary", "WfLibrary\WfLibrary.csproj", "{933D1871-357F-4822-8EB1-B33AC746C57A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WfLibrary", "WfLibrary\WfLibrary.csproj", "{933D1871-357F-4822-8EB1-B33AC746C57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WfApp", "WfApp\WfApp.csproj", "{EA9C4B63-A07B-413F-8CB1-E495A0B5CBBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WfApp", "WfApp\WfApp.csproj", "{EA9C4B63-A07B-413F-8CB1-E495A0B5CBBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wormhole", "Wormhole\Wormhole.csproj", "{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +173,26 @@ Global
 		{EA9C4B63-A07B-413F-8CB1-E495A0B5CBBC}.Release|x64.Build.0 = Release|Any CPU
 		{EA9C4B63-A07B-413F-8CB1-E495A0B5CBBC}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA9C4B63-A07B-413F-8CB1-E495A0B5CBBC}.Release|x86.Build.0 = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|ARM.Build.0 = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|ARM64.Build.0 = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|x64.Build.0 = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB5DBDCF-EC49-4F68-BEB4-AB9CBAA12621}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
