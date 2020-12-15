@@ -242,10 +242,10 @@ namespace Flux
 
 			#region "Unique" Index
 			/// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
-			public static Point2 FromUniqueIndex(long index, in Point2 size) => unchecked(new Point2((int)(index % size.m_x), (int)(index / size.m_x)));
+			public static Point2 FromUniqueIndex(long index, in Size2 bounds) => unchecked(new Point2((int)(index % bounds.Width), (int)(index / bounds.Width)));
 
 			/// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
-			public static long ToUniqueIndex(in Point2 vector, in Point2 size) => vector.m_x + (vector.m_y * size.m_x);
+			public static long ToUniqueIndex(in Point2 vector, in Size2 bounds) => vector.m_x + (vector.m_y * bounds.Width);
 			#endregion "Unique" Index
 
 			#region Overloaded Operators

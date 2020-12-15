@@ -333,15 +333,16 @@ namespace Flux
 
 			#region "Unique" Index
 			/// <summary>Convert a "mapped" index to a 3D vector. This index is uniquely mapped using the specified size vector.</summary>
-			public static Point3 FromUniqueIndex(long index, in Point3 length)
+			public static Point3 FromUniqueIndex(long index, in Size3 bounds)
 			{
-				var xy = (long)length.m_x * (long)length.m_y;
+				var xy = (long)bounds.Width * (long)bounds.Height;
 				var irxy = index % xy;
 
-				return new Point3((int)(irxy % length.m_x), (int)(irxy / length.m_x), (int)(index / xy));
+				return new Point3((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
 			}
 			/// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
-			public static long ToUniqueIndex(in Point3 vector, in Point3 length) => vector.m_x + (vector.m_y * length.m_x) + (vector.m_z * length.m_x * length.m_y);
+			public static long ToUniqueIndex(in Point3 vector, in Size3 bounds) 
+				=> vector.m_x + (vector.m_y * bounds.Width) + (vector.m_z * bounds.Width * bounds.Height);
 			#endregion "Unique" Index
 
 			#region Overloaded Operators
