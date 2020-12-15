@@ -2,8 +2,6 @@ namespace Flux.Media.Music
 {
   public static class Note
   {
-    public static readonly double ReferenceTuning = 440.0;
-
     public const char SignFlat = '\u266D';
     public const char SignSharp = '\u266F';
 

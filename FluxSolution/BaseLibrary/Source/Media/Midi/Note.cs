@@ -2,16 +2,22 @@ using System.Linq;
 
 namespace Flux.Media.Midi
 {
-  /// <summary>This note library enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
+  /// <summary>A MIDI note is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-  public static class Note
+  public class Note
   {
-    public const double ReferenceFrequency = 440.0;
+    public const double ReferenceFrequency = 440;
     public const byte ReferenceNote = 69;
 
-    /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
-    public static byte FromFrequency(double frequency) 
+    public int Value { get; set; }
+
+    public Note(int value)
+      => Value = value;
+
+		#region Statics
+		/// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
+		public static byte FromFrequency(double frequency) 
       => (byte)((int)(ReferenceNote + (System.Math.Log(frequency / ReferenceFrequency, 2.0) * 12.0)) is var midiNote && midiNote >= 0 && midiNote <= 127 ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency), @"The frequency cannot be translated into a MIDI note number."));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
     public static bool TryFromFrequency(double frequency, out byte result)
@@ -29,11 +35,14 @@ namespace Flux.Media.Midi
     }
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
-    public static string GetName(byte note)
+    public static string GetName(int note)
       => Music.Note.Names.ElementAt(note % 12);
     /// <summary>Determines the octave of the specified MIDI note.</summary>
-    public static int GetOctave(byte note)
-      => ((note / 12) - 1);
+    public static int GetOctave(int note)
+      => (note / 12) - 1;
+
+    public static bool IsNoteNumber(int noteNumber)
+      => noteNumber >= 0 && noteNumber <= 127 ? true : false;
 
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
@@ -61,7 +70,7 @@ namespace Flux.Media.Midi
 
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-    public static string ToString(byte note)
+    public static string ToString(int note)
       => $"{GetName(note)}{GetOctave(note)}";
 
     /// <summary>Attempts to parse the specified SPN string into a MIDI note.</summary>
@@ -79,8 +88,6 @@ namespace Flux.Media.Midi
       result = default;
       return false;
     }
-
-    public static bool IsValid(int noteNumber)
-      => (noteNumber >= 0 && noteNumber <= 127) ? true : throw new System.ArgumentOutOfRangeException(nameof(noteNumber));
+    #endregion Statics
   }
 }

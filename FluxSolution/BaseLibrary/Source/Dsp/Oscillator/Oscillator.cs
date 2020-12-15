@@ -1,4 +1,4 @@
-namespace Flux.Dsp
+namespace Flux.Dsp.Synthesis
 {
   public class Oscillator
     : IOscillator

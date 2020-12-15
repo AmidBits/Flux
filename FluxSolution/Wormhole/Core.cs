@@ -85,7 +85,7 @@ namespace Wormhole
 
 		public static void Create(System.Xml.Linq.XElement xmlWork, string pathWork)
 		{
-			WriteEventLog($"Wormhole is opening.");
+			WriteEventLogInformation($"Wormhole is opening.");
 
 			try
 			{
@@ -100,12 +100,12 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Create: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Create: {ex.Message}, {ex.StackTrace}");
 			}
 
 			Clean(xmlWork, WorkDirectory);
 
-			WriteEventLog($"Wormhole is closing.");
+			WriteEventLogInformation($"Wormhole is closing.");
 		}
 
 		public static void Clean(System.Xml.Linq.XElement xmlWork, System.IO.DirectoryInfo workDirectory)
@@ -124,7 +124,7 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Clean: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Clean: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Proxy: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Proxy: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Process Parallel: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Process Parallel: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Process Serial: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Process Serial: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace Wormhole
 			}
 			catch (System.Exception ex)
 			{
-				WriteEventLog($"Wormhole Process Export: {ex.Message}, {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+				WriteEventLogError($"Wormhole Process Export: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
@@ -329,11 +329,13 @@ namespace Wormhole
 			return true;
 		}
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 		#region Windows EventLog functionality
 		public const string EventSource = nameof(Wormhole) + @" Service";
 		public const string EventLogName = @"Application";
 
-		public static void WriteEventLog(string message, System.Diagnostics.EventLogEntryType type = System.Diagnostics.EventLogEntryType.Information, int eventID = 0, short category = 0)
+		public static void WriteEventLog(string message, System.Diagnostics.EventLogEntryType type, int eventID = 0, short category = 0)
 		{
 			try
 			{
@@ -350,7 +352,13 @@ namespace Wormhole
 			}
 			catch { }
 		}
+		public static void WriteEventLogError(string message, int eventID = 0, short category = 0)
+			=> WriteEventLog(message, System.Diagnostics.EventLogEntryType.Error, eventID, category);
+		public static void WriteEventLogInformation(string message, int eventID = 0, short category = 0)
+			=> WriteEventLog(message, System.Diagnostics.EventLogEntryType.Information, eventID, category);
 		#endregion Windows EventLog functionality
+
+#pragma warning restore CA1416 // Validate platform compatibility
 
 		#region File/Sql Log functionality
 		public class Log
@@ -398,7 +406,7 @@ namespace Wormhole
 			{
 				if (message.Length == 0)
 				{
-					Core.WriteEventLog($"Log.Write: \"{nameof(message)}[] is empty.\"", System.Diagnostics.EventLogEntryType.Error);
+					Core.WriteEventLogError($"Log.Write: \"{nameof(message)}[] is empty.\"");
 
 					return;
 				}
@@ -411,7 +419,7 @@ namespace Wormhole
 				}
 				catch (System.Exception ex)
 				{
-					Core.WriteEventLog($"Log.Write(FILE={_logFileName}): {ex.Message} \"{messages}\"; {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+					Core.WriteEventLogError($"Log.Write(FILE={_logFileName}): {ex.Message} \"{messages}\"; {ex.StackTrace}");
 				}
 
 				try
@@ -420,7 +428,7 @@ namespace Wormhole
 				}
 				catch (System.Exception ex)
 				{
-					Core.WriteEventLog($"Log.Write(SQL={LogTableName}): {ex.Message} \"{messages}\"; {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+					Core.WriteEventLogError($"Log.Write(SQL={LogTableName}): {ex.Message} \"{messages}\"; {ex.StackTrace}");
 				}
 			}
 			public void Write(System.Exception exception)
@@ -467,7 +475,7 @@ namespace Wormhole
 				}
 				catch (System.Exception ex)
 				{
-					WriteEventLog($"ActivityLog: {ex.Message} \"{statement}\"; {ex.StackTrace}", System.Diagnostics.EventLogEntryType.Error);
+					WriteEventLogError($"ActivityLog: {ex.Message} \"{statement}\"; {ex.StackTrace}");
 				}
 
 				//System.Threading.Thread.Sleep(rng.Next(499, 1499));

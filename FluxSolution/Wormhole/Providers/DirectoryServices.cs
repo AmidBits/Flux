@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using System.Linq;
 
 namespace Wormhole
 {
@@ -203,3 +204,4 @@ namespace Wormhole
 		}
 	}
 }
+#pragma warning restore CA1416 // Validate platform compatibility

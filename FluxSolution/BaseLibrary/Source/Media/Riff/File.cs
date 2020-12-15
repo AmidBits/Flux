@@ -12,7 +12,7 @@ namespace Flux.Media.Riff
 {
 	public static class File
 	{
-		public static void CreateFile16BitMono(string path, Flux.Dsp.Oscillator oscillator, int sampleCount)
+		public static void CreateFile16BitMono(string path, Dsp.Synthesis.Oscillator oscillator, int sampleCount)
 		{
 			if (oscillator is null) throw new System.ArgumentNullException(nameof(oscillator));
 
@@ -36,7 +36,7 @@ namespace Flux.Media.Riff
 				fileStream.WriteByte((byte)(amplitudeSample >> 0x8));
 			}
 		}
-		public static void CreateFile16BitStereo(string path, Flux.Dsp.Oscillator oscillatorL, Flux.Dsp.Oscillator oscillatorR, int sampleCount)
+		public static void CreateFile16BitStereo(string path, Dsp.Synthesis.Oscillator oscillatorL, Dsp.Synthesis.Oscillator oscillatorR, int sampleCount)
 		{
 			if (oscillatorL is null) throw new System.ArgumentNullException(nameof(oscillatorL));
 			if (oscillatorR is null) throw new System.ArgumentNullException(nameof(oscillatorR));
