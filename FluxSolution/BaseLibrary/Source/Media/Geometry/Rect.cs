@@ -6,7 +6,7 @@ namespace Flux
   {
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
     public struct Rect
-      : System.IEquatable<Rect>, System.IFormattable
+      : System.IEquatable<Rect>
     {
       public static readonly Rect Empty;
       public bool IsEmpty => Equals(Empty);
@@ -81,17 +81,13 @@ namespace Flux
       public bool Equals(Rect other)
         => m_left == other.m_left && m_top == other.m_top && m_right == other.m_right && m_bottom == other.m_bottom;
 
-      // IFormattable
-      public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{nameof(Rect)}: {m_left}, {m_top}, {m_right}, {m_bottom}>";
-
       // Object (overrides)
       public override bool Equals(object? obj)
         => obj is Rect o && Equals(o);
       public override int GetHashCode()
         => System.HashCode.Combine(m_left, m_top, m_right, m_bottom);
       public override string? ToString()
-        => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+        => $"<{nameof(Rect)}: {m_left}, {m_top}, {m_right}, {m_bottom}>";
     }
   }
 }

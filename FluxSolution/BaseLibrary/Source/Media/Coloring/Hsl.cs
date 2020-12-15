@@ -1,7 +1,7 @@
 namespace Flux.Coloring
 {
   public struct Hsl
-    : System.IEquatable<Hsl>, System.IFormattable
+    : System.IEquatable<Hsl>
   {
     public static readonly Hsl Empty;
     public bool IsEmpty => Equals(Empty);
@@ -84,16 +84,12 @@ namespace Flux.Coloring
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsl other)
       => Alpha == other.Alpha && Hue == other.Hue && Saturation == other.Saturation && Lightness == other.Lightness;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Alpha}, {Hue}, {Saturation}, {Lightness}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Hsl o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Alpha, Hue, Saturation, Lightness);
     public override string ToString()
-      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{nameof(Hsl)}: {Alpha}, {Hue}, {Saturation}, {Lightness}>";
   }
 }

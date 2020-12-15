@@ -5,7 +5,7 @@ namespace Flux.IO.Checksum
   /// <summary>Luhn is a specific purpose checksum algorithm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luhn_algorithm"/>
   public struct Luhn
-    : System.IEquatable<Luhn>, System.IFormattable
+    : System.IEquatable<Luhn>
   {
     public static readonly Luhn Empty;
     public bool IsEmpty => Equals(Empty);
@@ -51,16 +51,12 @@ namespace Flux.IO.Checksum
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Luhn other)
       => m_checkDigit == other.m_checkDigit;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit}";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Luhn o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_sequence.CombineHashCore(), m_checkDigit);
     public override string ToString()
-      => ToString(null, null);
+      => $"<{nameof(Luhn)}: {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit}>";
   }
 }

@@ -1,7 +1,7 @@
 namespace Flux.Coloring
 {
   public struct Rgb
-    : System.IEquatable<Rgb>, System.IFormattable
+    : System.IEquatable<Rgb>
   {
     public static readonly Rgb Empty;
     public bool IsEmpty => Equals(Empty);
@@ -177,17 +177,13 @@ namespace Flux.Coloring
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
       => Alpha == other.Alpha && Red == other.Red && Green == other.Green && Blue == other.Blue;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Alpha}, {Red}, {Green}, {Blue}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Rgb o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Alpha, Red, Green, Blue);
     public override string ToString()
-      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{Alpha}, {Red}, {Green}, {Blue}>";
   }
 
   public enum GrayscaleMethod

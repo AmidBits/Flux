@@ -5,7 +5,7 @@ namespace Flux.IO.Checksum
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
   public struct Crc32
-    : IChecksum32, System.IEquatable<Crc32>, System.IFormattable
+    : IChecksum32, System.IEquatable<Crc32>
   {
     public static readonly Crc32 Empty;
     public bool IsEmpty => Equals(Empty);
@@ -60,16 +60,12 @@ namespace Flux.IO.Checksum
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Crc32 other)
       => m_hash == other.m_hash;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{m_hash}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Crc32 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+       => $"<{nameof(Crc32)}: {m_hash}>";
   }
 }

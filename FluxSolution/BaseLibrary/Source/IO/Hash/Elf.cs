@@ -3,7 +3,7 @@ namespace Flux.IO.Hash
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/PJW_hash_function"/>
   public struct Elf
-    : ISimpleHash32, System.IEquatable<Elf>, System.IFormattable
+    : ISimpleHash32, System.IEquatable<Elf>
   {
     public static readonly Elf Empty;
     public bool IsEmpty => Equals(Empty);
@@ -45,16 +45,12 @@ namespace Flux.IO.Hash
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Elf other)
       => m_hash == other.m_hash;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{m_hash}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Elf o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{nameof(Elf)}: {m_hash}>";
   }
 }

@@ -4,7 +4,7 @@ Clear-Host
 $vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net5.0' }
 
 # Converts a local project URI to a 'binary' URI, for debugging purposes.
-function ConvertTo-BinUri ( [uri]$VsUri, [hashtable]$VsReference ) { New-Object System.Uri ($VsUri.OriginalString.Replace("/\", "/\$($VsReference.SolutionName)\$($VsReference.ProjectName)\bin\$($VsReference.Configuration)\$($VsReference.TargetFramework)\")) }
+function ConvertTo-BinUri ( [uri]$VsUri, [hashtable]$VsReference ) { New-Object System.Uri $VsUri.OriginalString.Replace("/\", "/\$($VsReference.SolutionName)\$($VsReference.ProjectName)\bin\$($VsReference.Configuration)\$($VsReference.TargetFramework)\") }
 # Expand a relative solution resource reference to a file path.
 function Expand-FileToPath ( [string]$VsRelativeFileName, [hashtable]$VsReference ) { ".$((ConvertTo-BinUri (New-Object System.Uri "file://\$VsRelativeFileName") $VsReference).LocalPath.Replace('/', '\'))" }
 # Tests whether a pipeline contains any objects. 
@@ -38,20 +38,20 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 # Sample use from Flux BaseLibrary:
 
+ # $PSVersionTable
+
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
 # [Flux.Locale]::SpecialFolders | Format-Table
 
-# [Flux.Resources.Census.CountiesAllData]::LocalUri
-# $cad = New-Object Flux.Resources.Census.CountiesAllData
-# $uri =  ConvertTo-BinUri([Flux.Resources.Census.CountiesAllData]::LocalUri)
-# $cad.GetDataTable($uri) | Select-Object -First 10 | Format-Table
+# $cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
+# $uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
+# $cad.GetDataTable($uri) | Where-Object {$_."Word" -cmatch '^[a-z]{2,}$' -and $_."NonAmerican" -eq '-&'} | Select-Object -Unique -First 1000 Word | Format-Table
 
 # [Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
-# [Flux.Locale].Assembly.GetTypes() | Where-Object { $_.Name -imatch '^I.+' }
+# [Flux.Locale].Assembly.GetTypes() | Select-Object FullName
 
-# [Flux.Locale].Assembly.GetTypes() | 
-#     #Where-Object { [Flux.IMetricDistance`1].IsAssignableFrom($_) -and -not $_.IsInterface }
-#     #Select-Object ImplementedInterfaces) -join '|'
-#     #Where-Object { $_.ImplementedInterfaces.Name -eq 'IMetricDistance`1' }
-#     #Where-Object { ([type[]]$_.ImplementedInterfaces).Contains([Flux.IMetricDistance`1]) }
-#     Where-Object { $_.ImplementedInterfaces.Contains([Flux.IMetricDistance]) }
+[Flux.Locale].Assembly.GetTypes() | 
+    Where-Object { $_.IsPublic } |
+    Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any } |
+    Select-Object FullName, ImplementedInterfaces |
+    Sort-Object FullName

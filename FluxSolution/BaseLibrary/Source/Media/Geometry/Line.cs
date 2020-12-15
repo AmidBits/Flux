@@ -9,7 +9,7 @@ namespace Flux.Geometry
 	}
 
 	public struct LineTestResult
-		: System.IEquatable<LineTestResult>, System.IFormattable
+		: System.IEquatable<LineTestResult>
 	{
 		public static readonly LineTestResult Empty;
 		public bool IsEmpty => Equals(Empty);
@@ -36,27 +36,21 @@ namespace Flux.Geometry
 			=> a.Equals(b);
 		public static bool operator !=(LineTestResult a, LineTestResult b)
 			=> !a.Equals(b);
-
 		// IEquatable
 		public bool Equals(LineTestResult other)
 			=> Outcome == other.Outcome && Point!.HasValue == other.Point!.HasValue && Point!.Value == other.Point!.Value;
-
-		// IFormattable
-		public string ToString(string? format, System.IFormatProvider? provider)
-			=> $"<{Outcome}{(Point!.HasValue ? $", {Point!.Value.ToString(format, provider)}" : string.Empty)}>";
-
 		// Object (overrides)
 		public override bool Equals(object? obj)
 			=> obj is LineTestResult o && Equals(o);
 		public override int GetHashCode()
 			=> System.HashCode.Combine(Outcome, Point);
 		public override string? ToString()
-			=> ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+			=> $"<{Outcome}{(Point!.HasValue ? $", {Point!.Value.ToString()}" : string.Empty)}>";
 	}
 
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
 	public struct Line
-		: System.IEquatable<Line>, System.IFormattable
+		: System.IEquatable<Line>
 	{
 		public static readonly Line Empty;
 		public bool IsEmpty => Equals(Empty);
@@ -209,15 +203,12 @@ namespace Flux.Geometry
 		// IEquatable
 		public bool Equals(Line other)
 			=> m_p1 == other.m_p1 && m_p2 == other.m_p2;
-		// IFormattable
-		public string ToString(string? format, System.IFormatProvider? provider)
-			=> $"<{m_p1.ToString(format, provider)}, {m_p2.ToString(format, provider)}>";
 		// Object (overrides)
 		public override bool Equals(object? obj)
 			=> obj is Line o && Equals(o);
 		public override int GetHashCode()
 			=> System.HashCode.Combine(m_p1, m_p2);
 		public override string? ToString()
-			=> ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+			=> $"<{nameof(Line)}: ({m_p1}, {m_p2})>";
 	}
 }

@@ -3,7 +3,7 @@ namespace Flux.IO.Hash
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function"/>
   public struct Fnv1
-    : ISimpleHash32, System.IEquatable<Fnv1>, System.IFormattable
+    : ISimpleHash32, System.IEquatable<Fnv1>
   {
     public static readonly Fnv1 Empty;
     public bool IsEmpty => Equals(Empty);
@@ -47,16 +47,12 @@ namespace Flux.IO.Hash
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fnv1 other)
       => m_hash == other.m_hash && m_primeMultiplier == other.m_primeMultiplier;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{m_hash}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Fnv1 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{nameof(Fnv1)}: {m_hash}>";
   }
 }

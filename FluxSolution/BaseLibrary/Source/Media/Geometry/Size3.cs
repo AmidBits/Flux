@@ -4,7 +4,7 @@ namespace Flux
 	{
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
 		public struct Size3
-			: System.IEquatable<Size3>, System.IFormattable
+			: System.IEquatable<Size3>
 		{
 			public static readonly Size3 Empty;
 			public bool IsEmpty => Equals(Empty);
@@ -92,17 +92,13 @@ namespace Flux
 			public bool Equals(Size3 other)
 				=> m_width == other.m_width && m_height == other.m_height && m_depth == other.m_depth;
 
-			// IFormattable
-			public string ToString(string? format, System.IFormatProvider? provider)
-				=> $"<{nameof(Size3)}: {m_width}, {m_height}, {m_depth}>";
-
 			// Object (overrides)
 			public override bool Equals(object? obj)
 				=> obj is Size3 o && Equals(o);
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_width, m_height, m_depth);
 			public override string? ToString()
-				=> ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+				=> $"<{nameof(Size3)}: {m_width}, {m_height}, {m_depth}>";
 		}
 	}
 }

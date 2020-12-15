@@ -3,7 +3,7 @@ namespace Flux.Geometry
   /// <summary></summary>
   /// <remarks>NOTE! ViewPort does not currently have any properties.</remarks>
   public struct ViewPort
-    : System.IEquatable<ViewPort>, System.IFormattable
+    : System.IEquatable<ViewPort>
   {
     private float? m_canvasHeight;
     public float CanvasHeight { get => m_canvasHeight ??= 2f; set => m_canvasHeight = value; }
@@ -68,16 +68,12 @@ namespace Flux.Geometry
     public bool Equals(ViewPort other)
       => ToString() == other.ToString();
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<ViewPort:>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(typeof(ViewPort));
     public override string? ToString()
-      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+      => $"<ViewPort:>";
   }
 }

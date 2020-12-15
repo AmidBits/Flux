@@ -14,10 +14,58 @@ using System.Threading;
 
 namespace ConsoleApp
 {
+	public class User
+	{
+		public int Age { get; set; }
+		public string Name { get; set; }
+		public double TotalAge { get; set; }
+
+		public override string ToString()
+		{
+			return $"<{nameof(User)}: {Name}, {Age} ({TotalAge})>";
+		}
+	}
+
 	class Program
 	{
 		private static void TimedMain(string[] _)
 		{
+			var rules = new Flux.Model.RuleCollection<User>();
+			rules.Add(new Flux.Model.Rule("Age", "GreaterThan", "20"));
+			rules.Add(new Flux.Model.Rule("Name", "Equal", "John"));
+			rules.Add(new Flux.Model.Rule("TotalAge", "Equal", "32.90000000000"));
+
+			foreach (var rule in rules.m_rules)
+				System.Console.WriteLine(rule);
+
+			var user1 = new User()
+			{
+				Age = 43,
+				Name = "royi",
+				TotalAge = 43.1
+			};
+			var user2 = new User
+			{
+				Age = 33,
+				Name = "John",
+				TotalAge = 32.9
+			};
+			var user3 = new User
+			{
+				Age = 19,
+				Name = "John",
+				TotalAge = 19
+			};
+
+			System.Console.WriteLine(rules.Evaluate(user1));
+			System.Console.WriteLine(rules.Evaluate(user2));
+			System.Console.WriteLine(rules.Evaluate(user3));
+
+			//;
+			//var rule = new Flux.Model.Rule("Age", "GreaterThan", "20");
+			//Func<User, bool> compiledRule = Flux.Model.RulesEngine.CompileRule<User>(rule);
+			//rules.ForEach(r => r(user1).Dump());
+
 			//for (var i = 100; i >= 0; i--)
 			////System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
 			//{

@@ -3,7 +3,7 @@ namespace Flux.IO.Checksum
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/BSD_checksum"/>
   public struct Bsd
-    : IChecksum32, System.IEquatable<Bsd>, System.IFormattable
+    : IChecksum32, System.IEquatable<Bsd>
   {
     public static readonly Bsd Empty;
     public bool IsEmpty => Equals(Empty);
@@ -39,16 +39,12 @@ namespace Flux.IO.Checksum
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Bsd other)
       => m_hash == other.m_hash;
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{m_hash}>";
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Bsd o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{nameof(Bsd)}: {m_hash}>";
   }
 }

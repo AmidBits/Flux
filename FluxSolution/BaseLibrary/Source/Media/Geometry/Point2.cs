@@ -30,7 +30,7 @@ namespace Flux
 	{
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
 		public struct Point2
-			: System.IEquatable<Point2>, System.IFormattable
+			: System.IEquatable<Point2>
 		{
 			public static readonly Point2 Empty;
 			public bool IsEmpty => Equals(Empty);
@@ -293,17 +293,13 @@ namespace Flux
 			public bool Equals(Point2 other)
 				=> m_x == other.m_x && m_y == other.m_y;
 
-			// System.IFormattable
-			public string ToString(string? format, System.IFormatProvider? formatProvider)
-				=> $"<{m_x.ToString(format, formatProvider)}, {m_y.ToString(format, formatProvider)}>";
-
 			// Overrides
 			public override bool Equals(object? obj)
 				 => obj is Point2 o && Equals(o);
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_x, m_y);
 			public override string ToString()
-				=> ToString(@"D", System.Globalization.CultureInfo.CurrentCulture);
+				=> $"<{nameof(Point2)}: {m_x}, {m_y}>";
 		}
 	}
 }

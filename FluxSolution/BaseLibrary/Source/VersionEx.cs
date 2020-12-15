@@ -4,7 +4,7 @@ namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version.</summary>
   public struct VersionEx
-    : System.IComparable<VersionEx>, System.IEquatable<VersionEx>, System.IFormattable
+    : System.IComparable<VersionEx>, System.IEquatable<VersionEx>
   {
     public static readonly VersionEx Empty;
     public bool IsEmpty => Equals(Empty);
@@ -107,16 +107,12 @@ namespace Flux
       return true;
     }
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Join(m_separatorsArray[0].ToString(formatProvider), m_parts.Select(i => i.ToString(format, formatProvider)));
-
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => m_parts.CombineHashCore();
     public override string? ToString()
-      => ToString();
+      => $"{nameof(VersionEx)}: {string.Join(m_separatorsArray[0], m_parts)}";
   }
 }
