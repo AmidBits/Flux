@@ -15,23 +15,23 @@ namespace Flux.Model
 		}
 
 		// Statics
-		public static bool IsBinaryBoolean(string value)
-		{
-			try
-			{
-				if (System.Linq.Expressions.ExpressionType.TryParse(value, out System.Linq.Expressions.ExpressionType expressionType))
-				{
-					var binaryExpression = System.Linq.Expressions.Expression.MakeBinary(expressionType, System.Linq.Expressions.Expression.Constant(0), System.Linq.Expressions.Expression.Constant(0));
+		//public static bool IsBinaryBoolean(string value)
+		//{
+		//	try
+		//	{
+		//		if (System.Linq.Expressions.ExpressionType.TryParse(value, out System.Linq.Expressions.ExpressionType expressionType))
+		//		{
+		//			var binaryExpression = System.Linq.Expressions.Expression.MakeBinary(expressionType, System.Linq.Expressions.Expression.Constant(0), System.Linq.Expressions.Expression.Constant(0));
 
-					var lambda = System.Linq.Expressions.Expression.Lambda(binaryExpression, null);
+		//			var lambda = System.Linq.Expressions.Expression.Lambda(binaryExpression, null);
 
-					return lambda.ReturnType == typeof(bool);
-				}
-			}
-			catch { }
+		//			return lambda.ReturnType == typeof(bool);
+		//		}
+		//	}
+		//	catch { }
 
-			return false;
-		}
+		//	return false;
+		//}
 
 		// Operators
 		public static bool operator ==(Rule a, Rule b)
