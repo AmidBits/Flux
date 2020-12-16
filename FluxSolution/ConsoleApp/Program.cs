@@ -18,11 +18,11 @@ namespace ConsoleApp
 	{
 		public int Age { get; set; }
 		public string Name { get; set; }
-		public double TotalAge { get; set; }
+		public string BirthCountry { get; set; }
 
 		public override string ToString()
 		{
-			return $"<{nameof(User)}: {Name}, {Age} ({TotalAge})>";
+			return $"<{nameof(User)}: {Name}, {Age} ({BirthCountry})>";
 		}
 	}
 
@@ -30,36 +30,38 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var rules = new Flux.Model.RuleCollection<User>();
-			rules.Add(new Flux.Model.Rule("Age", "GreaterThan", "20"));
-			rules.Add(new Flux.Model.Rule("Name", "Equal", "John"));
-			rules.Add(new Flux.Model.Rule("TotalAge", "Equal", "32.90000000000"));
+			var rules = new Flux.Model.RulesDictionary();
+			rules.Add("AgeLimit", new Flux.Model.Rule("Age", "GreaterThan", "20"));
+			rules.Add("FirstNameRequirement", new Flux.Model.Rule("Name", "Equal", "John"));
+			rules.Add("CountryOfBirth", new Flux.Model.Rule("BirthCountry", "Equal", "Canada"));
 
-			foreach (var rule in rules.m_rules)
+			var compiledRules = rules.CompileRules<User>();
+
+			foreach (var rule in rules)
 				System.Console.WriteLine(rule);
 
 			var user1 = new User()
 			{
 				Age = 43,
 				Name = "royi",
-				TotalAge = 43.1
+				BirthCountry = "Australia"
 			};
 			var user2 = new User
 			{
 				Age = 33,
 				Name = "John",
-				TotalAge = 32.9
+				BirthCountry = "England"
 			};
 			var user3 = new User
 			{
 				Age = 19,
 				Name = "John",
-				TotalAge = 19
+				BirthCountry = "Canada"
 			};
 
-			System.Console.WriteLine(rules.Evaluate(user1));
-			System.Console.WriteLine(rules.Evaluate(user2));
-			System.Console.WriteLine(rules.Evaluate(user3));
+			compiledRules.RulesEvaluation(user1).Dump();
+			compiledRules.RulesEvaluation(user2).Dump();
+			compiledRules.RulesEvaluation(user3).Dump();
 
 			//;
 			//var rule = new Flux.Model.Rule("Age", "GreaterThan", "20");

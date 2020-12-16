@@ -44,13 +44,13 @@ namespace Collections.Generic
 		[TestMethod]
 		public void CountAtLeast()
 		{
-			Assert.IsTrue(integers.CountAtLeast(4));
+			Assert.IsTrue(integers.IsCountAtLeast(4, (e, i) => true));
 		}
 
 		[TestMethod]
 		public void CountAtMost()
 		{
-			Assert.IsTrue(integers.CountAtMost(4000));
+			Assert.IsTrue(integers.IsCountAtMost(4000, (e, i) => true));
 		}
 
 		[TestMethod]
