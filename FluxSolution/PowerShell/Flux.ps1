@@ -51,7 +51,7 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # [Flux.Locale].Assembly.GetTypes() | Select-Object FullName
 
 [Flux.Locale].Assembly.GetTypes() | 
-    Where-Object { $_.IsPublic } |
-    Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any } |
-    Select-Object FullName, ImplementedInterfaces |
+    Where-Object { $_.IsPublic -and $_.IsInterface } |
+    # Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any } |
+    # Select-Object FullName, ImplementedInterfaces |
     Sort-Object FullName

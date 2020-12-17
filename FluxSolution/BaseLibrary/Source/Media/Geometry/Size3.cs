@@ -98,7 +98,7 @@ namespace Flux
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_width, m_height, m_depth);
 			public override string? ToString()
-				=> $"<{nameof(Size3)}: {m_width}, {m_height}, {m_depth}>";
+				=> $"<Size {m_width}, {m_height}, {m_depth}>";
 		}
 	}
 }

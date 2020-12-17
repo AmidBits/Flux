@@ -2,6 +2,7 @@ namespace Flux.Model.Dynamics
 {
   // http://www.enchantedage.com/node/68
   public class RigidBody
+    : Game.Engine.IObjectPositionable, Game.Engine.IObjectRotatable, Game.Engine.IObjectScalable
   {
     public System.Collections.Generic.List<ForceGenerators.IForceGenerator> ForceGenerators { get; } = new System.Collections.Generic.List<ForceGenerators.IForceGenerator>();
 
@@ -16,9 +17,9 @@ namespace Flux.Model.Dynamics
     public System.Numerics.Vector3 AngularVelocity { get; set; }
     public System.Numerics.Vector3 Torque { get; set; }
 
-    public System.Numerics.Vector3 Position { get; set; }
-
-    public System.Numerics.Quaternion Orientation { get; set; } = System.Numerics.Quaternion.Identity;
+    public System.Numerics.Vector3 ObjectPosition { get; set; }
+    public System.Numerics.Quaternion ObjectRotation { get; set; } = System.Numerics.Quaternion.Identity;
+    public System.Numerics.Vector3 ObjectScale { get; set; } = System.Numerics.Vector3.One;
 
     public System.Numerics.Vector3 Volume { get; set; } = new System.Numerics.Vector3(0.5F, 2F, 0.25F);
 
@@ -35,10 +36,10 @@ namespace Flux.Model.Dynamics
       AngularVelocity += angularAcceleration * deltaTime;
       Torque = System.Numerics.Vector3.Zero;
 
-      Position += LinearVelocity * deltaTime;
+      ObjectPosition += LinearVelocity * deltaTime;
 
-      Orientation += new System.Numerics.Quaternion(AngularVelocity * deltaTime, 0) * Orientation;
-      System.Numerics.Quaternion.Normalize(Orientation);
+      ObjectRotation += new System.Numerics.Quaternion(AngularVelocity * deltaTime, 0) * ObjectRotation;
+      System.Numerics.Quaternion.Normalize(ObjectRotation);
     }
 
     public void ApplyForce(System.Numerics.Vector3 forcePosition, System.Numerics.Vector3 directionMagnitude)
@@ -48,15 +49,15 @@ namespace Flux.Model.Dynamics
         Force += directionMagnitude;
 
         if (forcePosition != default)
-          Torque += System.Numerics.Vector3.Cross(directionMagnitude, forcePosition - Position);
+          Torque += System.Numerics.Vector3.Cross(directionMagnitude, forcePosition - ObjectPosition);
       }
     }
 
     public System.Numerics.Vector3 PointVelocity(System.Numerics.Vector3 worldPoint)
-      => System.Numerics.Vector3.Cross(AngularVelocity, worldPoint - Position) + LinearVelocity;
+      => System.Numerics.Vector3.Cross(AngularVelocity, worldPoint - ObjectPosition) + LinearVelocity;
 
     public override string ToString() 
-      => $"P:{Position}, O:{Orientation}, LV:{LinearVelocity}, AV:{AngularVelocity}";
+      => $"P:{ObjectPosition}, O:{ObjectRotation}, LV:{LinearVelocity}, AV:{AngularVelocity}";
   }
 
   //public class RigidBodyList

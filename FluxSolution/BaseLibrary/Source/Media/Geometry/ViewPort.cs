@@ -74,6 +74,6 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(typeof(ViewPort));
     public override string? ToString()
-      => $"<ViewPort:>";
+      => $"<ViewPort>";
   }
 }

@@ -87,7 +87,7 @@ namespace Flux
       public override int GetHashCode()
         => System.HashCode.Combine(m_left, m_top, m_right, m_bottom);
       public override string? ToString()
-        => $"<{nameof(Rect)}: {m_left}, {m_top}, {m_right}, {m_bottom}>";
+        => $"<Rect {m_left}, {m_top}, {m_right}, {m_bottom}>";
     }
   }
 }

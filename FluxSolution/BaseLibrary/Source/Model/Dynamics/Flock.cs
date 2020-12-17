@@ -177,7 +177,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
       if (body is null) throw new System.ArgumentNullException(nameof(body));
       if (Disabled) return;
 
-      body.Force += (Centroid - body.Position) * (Weight * body.Mass);
+      body.Force += (Centroid - body.ObjectPosition) * (Weight * body.Mass);
     }
   }
 
@@ -212,7 +212,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
       if (body is null) throw new System.ArgumentNullException(nameof(body));
       if (Disabled) return;
 
-      body.Force += ((Point - body.Position) * (Weight * body.Mass));
+      body.Force += ((Point - body.ObjectPosition) * (Weight * body.Mass));
     }
   }
 

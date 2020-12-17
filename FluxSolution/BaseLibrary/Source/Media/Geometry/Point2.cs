@@ -202,6 +202,12 @@ namespace Flux
 			/// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
 			public static Point2 Negate(in Point2 v)
 				=> new Point2(-v.m_x, -v.m_y); // Negate the members of the vector.
+			public static Point2 Parse(string point)
+			{
+				var points = point.ToStringBuilder().RemoveAll(System.Char.IsWhiteSpace).Split(System.StringSplitOptions.None, ',').Select(p => int.Parse(p, System.Globalization.NumberStyles.Integer, null)).ToArray();
+
+				return new Point2(points[0], points[1]);
+			}
 			/// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only m_x and m_y.</summary>
 			public static Point2 PerpendicularCcw(in Point2 v)
 				=> new Point2(-v.m_y, v.m_x);
@@ -299,7 +305,7 @@ namespace Flux
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_x, m_y);
 			public override string ToString()
-				=> $"<{nameof(Point2)}: {m_x}, {m_y}>";
+				=> $"<Point {m_x}, {m_y}>";
 		}
 	}
 }

@@ -394,7 +394,7 @@ namespace Flux
 			public override int GetHashCode()
 				=> System.HashCode.Combine(m_x, m_y, m_z);
 			public override string ToString()
-				=> $"<{nameof(Point3)}: {m_x}, {m_y}, {m_z}>";
+				=> $"<Point {m_x}, {m_y}, {m_z}>";
 		}
 	}
 }
