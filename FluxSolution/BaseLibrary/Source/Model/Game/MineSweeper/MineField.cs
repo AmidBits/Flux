@@ -224,11 +224,14 @@ namespace Flux.Model.Game.MineSweeper
 
 			while (System.Console.ReadLine() is var line && !string.IsNullOrEmpty(line))
 			{
-				gameState.CursorPosition = Flux.Geometry.Point2.Parse(line);
+				if (Flux.Geometry.Point2.TryParse(line, out var point))
+				{
+					gameState.CursorPosition = point;
 
-				gameState = Flux.Model.Game.MineSweeper.Game.Uncover(gameState, mineField);
+					gameState = Flux.Model.Game.MineSweeper.Game.Uncover(gameState, mineField);
 
-				gameResult = gameState.Evaluate(mineField.Mines);
+					gameResult = gameState.Evaluate(mineField.Mines);
+				}
 
 				RenderInConsole(gameState, mineField);
 			}

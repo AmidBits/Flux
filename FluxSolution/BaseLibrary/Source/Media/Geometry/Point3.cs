@@ -291,6 +291,26 @@ namespace Flux
 			/// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
 			public static Point3 Negate(in Point3 v)
 				=> new Point3(-v.m_x, -v.m_y, -v.m_z); // Negate the members of the vector.
+			private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
+			public static Point3 Parse(string point)
+				=> m_regexParse.Match(point) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
+				? new Point3(x, y)
+				: throw new System.ArgumentOutOfRangeException(nameof(point));
+			public static bool TryParse(string point, out Point3 result)
+			{
+				try
+				{
+					result = Parse(point);
+					return true;
+				}
+#pragma warning disable CA1031 // Do not catch general exception types
+				catch
+#pragma warning restore CA1031 // Do not catch general exception types
+				{
+					result = default!;
+					return false;
+				}
+			}
 			/// <summary>Create a new random vector using the crypto-grade rng.</summary>
 			public static Point3 Random(in int toExlusiveX, in int toExclusiveY, in int toExclusiveZ)
 				=> new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ));
@@ -341,7 +361,7 @@ namespace Flux
 				return new Point3((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
 			}
 			/// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
-			public static long ToUniqueIndex(in Point3 vector, in Size3 bounds) 
+			public static long ToUniqueIndex(in Point3 vector, in Size3 bounds)
 				=> vector.m_x + (vector.m_y * bounds.Width) + (vector.m_z * bounds.Width * bounds.Height);
 			#endregion "Unique" Index
 

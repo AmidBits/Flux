@@ -202,11 +202,25 @@ namespace Flux
 			/// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
 			public static Point2 Negate(in Point2 v)
 				=> new Point2(-v.m_x, -v.m_y); // Negate the members of the vector.
+			private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
 			public static Point2 Parse(string point)
+				=> m_regexParse.Match(point) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
+				? new Point2(x, y)
+				: throw new System.ArgumentOutOfRangeException(nameof(point));
+			public static bool TryParse(string point, out Point2 result)
 			{
-				var points = point.ToStringBuilder().RemoveAll(System.Char.IsWhiteSpace).Split(System.StringSplitOptions.None, ',').Select(p => int.Parse(p, System.Globalization.NumberStyles.Integer, null)).ToArray();
-
-				return new Point2(points[0], points[1]);
+				try
+				{
+					result = Parse(point);
+					return true;
+				}
+#pragma warning disable CA1031 // Do not catch general exception types
+				catch
+#pragma warning restore CA1031 // Do not catch general exception types
+				{
+					result = default!;
+					return false;
+				}
 			}
 			/// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only m_x and m_y.</summary>
 			public static Point2 PerpendicularCcw(in Point2 v)

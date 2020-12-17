@@ -30,6 +30,8 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			Flux.Model.Game.MineSweeper.Game.PlayInConsole();
+
 			var rules = new Flux.Model.RulesDictionary();
 			rules.Add("AgeLimit", new Flux.Model.Rule("Age", "GreaterThan", "20"));
 			rules.Add("FirstNameRequirement", new Flux.Model.Rule("Name", "Equal", "John"));
