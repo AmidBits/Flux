@@ -3,12 +3,14 @@ using System.Linq;
 namespace Flux.Probability
 {
   // Weighted integer distribution using alias method.
-  public sealed class WeightedInteger : IDiscreteDistribution<int>
+  public sealed class WeightedInteger
+    : IDiscreteDistribution<int>
   {
     private readonly System.Collections.Generic.List<int> weights;
     private readonly IDistribution<int>[] distributions;
 
-    public static IDiscreteDistribution<int> Distribution(params int[] weights) => Distribution((System.Collections.Generic.IEnumerable<int>)weights);
+    public static IDiscreteDistribution<int> Distribution(params int[] weights)
+      => Distribution((System.Collections.Generic.IEnumerable<int>)weights);
 
     public static IDiscreteDistribution<int> Distribution(System.Collections.Generic.IEnumerable<int> weights)
     {
@@ -34,7 +36,7 @@ namespace Flux.Probability
       {
         int w = this.weights[i] * n;
         if (w == s)
-          this.distributions[i] = Singleton<int>.Distribution(i);
+          distributions[i] = Singleton<int>.Distribution(i);
         else if (w < s)
           lows.Add(i, w);
         else
@@ -50,8 +52,7 @@ namespace Flux.Probability
         this.distributions[low.Key] = Bernoulli.Distribution(low.Value, lowNeeds).Select(x => x == 0 ? low.Key : high.Key);
         int newHigh = high.Value - lowNeeds;
         if (newHigh == s)
-          this.distributions[high.Key] =
-            Singleton<int>.Distribution(high.Key);
+          this.distributions[high.Key] = Singleton<int>.Distribution(high.Key);
         else if (newHigh < s)
           lows[high.Key] = newHigh;
         else

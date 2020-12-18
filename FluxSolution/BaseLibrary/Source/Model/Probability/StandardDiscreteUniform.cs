@@ -1,6 +1,7 @@
 namespace Flux.Probability
 {
-  public sealed class StandardDiscreteUniform : IDiscreteDistribution<int>
+  public sealed class StandardDiscreteUniform 
+    : IDiscreteDistribution<int>
   {
     public static StandardDiscreteUniform Distribution(int min, int max)
     {

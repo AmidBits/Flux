@@ -37,13 +37,17 @@ namespace Flux
       string Bar(TKey t) => new string('*', (int)((dict ?? throw new System.NullReferenceException())[t] * scale));
     }
 
-    public static string Separated<T>(this System.Collections.Generic.IEnumerable<T> items, string s) => string.Join(s, items);
+    public static string Separated<T>(this System.Collections.Generic.IEnumerable<T> items, string s)
+      => string.Join(s, items);
 
-    public static string Concatenated<T>(this System.Collections.Generic.IEnumerable<T> items) => string.Join("", items);
+    public static string Concatenated<T>(this System.Collections.Generic.IEnumerable<T> items)
+      => string.Join("", items);
 
-    public static string CommaSeparated<T>(this System.Collections.Generic.IEnumerable<T> items) => items.Separated(",");
+    public static string CommaSeparated<T>(this System.Collections.Generic.IEnumerable<T> items)
+      => items.Separated(",");
 
-    public static string NewlineSeparated<T>(this System.Collections.Generic.IEnumerable<T> items) => items.Separated("\n");
+    public static string NewlineSeparated<T>(this System.Collections.Generic.IEnumerable<T> items)
+      => items.Separated("\n");
   }
 
 }

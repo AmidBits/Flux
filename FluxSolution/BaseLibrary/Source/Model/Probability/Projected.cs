@@ -2,7 +2,8 @@ using System.Linq;
 
 namespace Flux.Probability
 {
-  public sealed class Projected<TA, TR> : IDiscreteDistribution<TR>
+  public sealed class Projected<TA, TR> 
+    : IDiscreteDistribution<TR>
     where TR : notnull
   {
     private readonly IDiscreteDistribution<TA> underlying;

@@ -1,6 +1,7 @@
 namespace Flux.Probability
 {
-  public sealed class StandardContinuousUniform : IDistribution<double>
+  public sealed class StandardContinuousUniform 
+    : IDistribution<double>
   {
     public static readonly StandardContinuousUniform Distribution = new StandardContinuousUniform();
 

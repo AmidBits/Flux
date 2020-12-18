@@ -2,14 +2,17 @@ using System.Linq;
 
 namespace Flux.Probability
 {
-  public sealed class Bernoulli : IDiscreteDistribution<int>
+  public sealed class Bernoulli
+    : IDiscreteDistribution<int>
   {
     public static IDiscreteDistribution<int> Distribution(int zero, int one)
     {
       if (zero < 0 || one < 0 || zero == 0 && one == 0) throw new System.ArgumentException(@"Both zero and one must be greater than 0.");
- 
-      if (zero == 0) return Singleton<int>.Distribution(1);
-      if (one == 0) return Singleton<int>.Distribution(0);
+
+      if (zero == 0)
+        return Singleton<int>.Distribution(1);
+      if (one == 0)
+        return Singleton<int>.Distribution(0);
 
       return new Bernoulli(zero, one);
     }
@@ -24,12 +27,16 @@ namespace Flux.Probability
       this.One = one;
     }
 
-    public int Sample() => (StandardContinuousUniform.Distribution.Sample() <= ((double)Zero) / (Zero + One)) ? 0 : 1;
+    public int Sample()
+      => (StandardContinuousUniform.Distribution.Sample() <= ((double)Zero) / (Zero + One)) ? 0 : 1;
 
-    public System.Collections.Generic.IEnumerable<int> Support() => Enumerable.Range(0, 2);
+    public System.Collections.Generic.IEnumerable<int> Support()
+      => Enumerable.Range(0, 2);
 
-    public int Weight(int x) => x == 0 ? Zero : x == 1 ? One : 0;
+    public int Weight(int x)
+      => x == 0 ? Zero : x == 1 ? One : 0;
 
-    public override string ToString() => $"Bernoulli[{this.Zero}, {this.One}]";
+    public override string ToString()
+      => $"Bernoulli[{this.Zero}, {this.One}]";
   }
 }
