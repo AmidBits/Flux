@@ -10,6 +10,8 @@ namespace Flux.Reflection
     /// <summary>Returns all the fields matching the binding attributes.</summary>
     public static System.Collections.Generic.IDictionary<string, object?> GetFields<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
       => typeof(T).GetFields(bindingAttr).ToDictionary(fi => fi.Name, fi => fi.GetValue(source));
+    public static System.Collections.Generic.IDictionary<string, object?> GetFields(System.Type source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetFields(bindingAttr).ToDictionary(fi => fi.Name, fi => fi.GetValue(null));
 
     /// <summary>Get the current method name without using reflection.</summary>
     /// <remarks>Using reflection System.Reflection.MethodInfo.GetCurrentMethod() also works.</remarks>
@@ -19,10 +21,15 @@ namespace Flux.Reflection
     /// <summary>Returns all the properties matching the binding attributes.</summary>
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties<T>(T source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
       => typeof(T).GetProperties(bindingAttr).ToDictionary(pi => pi.Name, pi => pi.GetValue(source, System.Array.Empty<object>()));
+    public static System.Collections.Generic.IDictionary<string, object?> GetProperties(System.Type source, System.Reflection.BindingFlags bindingAttr = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+      => (source ?? throw new System.ArgumentNullException(nameof(source))).GetProperties(bindingAttr).ToDictionary(pi => pi.Name, pi => pi.GetValue(null, null));
 
     /// <summary>Returns whether the source type is a reference type. Determined by typeof(T), not source.</summary>
     public static bool IsReferenceType<T>(T source)
       => default(T)! == null && !IsSystemNullable(source);
+
+    public static bool IsStatic<T>(T source)
+      => typeof(T) is var t && t.IsClass && t.IsAbstract && t.IsSealed;
 
     /// <summary>Returns whether the source type is System.Nullable<T>. Determined by typeof(T), not source.</summary>
     /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>

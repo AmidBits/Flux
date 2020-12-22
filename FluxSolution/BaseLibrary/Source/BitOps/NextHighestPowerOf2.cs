@@ -2,8 +2,7 @@ namespace Flux
 {
 	public static partial class BitOps
 	{
-		/// <summary>Computes the next power of 2 greater than or optionally equal to the specified number.</summary>
-		/// <param name="strictlyLessThan">If true, the result will always be greater than value. If false, it could be greater than or equal to value.</param>
+		/// <summary>Computes the next power of 2 greater than or optionally equal to the specified number. This is equivalent to (MSB << 1).</summary>
 		[System.CLSCompliant(false)]
 		public static uint NextHighestPowerOf2(uint value)
 		{
@@ -14,8 +13,7 @@ namespace Flux
 			value |= (value >> 16);
 			return value + 1;
 		}
-		/// <summary>Computes the next power of 2 greater than or optionally equal to the specified number.</summary>
-		/// <param name="strictlyLessThan">If true, the result will always be greater than value. If false, it could be greater than or equal to value.</param>
+		/// <summary>Computes the next power of 2 greater than or optionally equal to the specified number. This is equivalent to (MSB << 1).</summary>
 		[System.CLSCompliant(false)]
 		public static ulong NextHighestPowerOf2(ulong value)
 		{
