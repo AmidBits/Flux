@@ -1,4 +1,4 @@
-﻿namespace Flux.Model.Game.BattleShip
+﻿namespace Flux.Model.Gaming.BattleShip
 {
 	public enum VesselOrientation
 	{

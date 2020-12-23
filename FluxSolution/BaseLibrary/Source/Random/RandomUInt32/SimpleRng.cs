@@ -5,6 +5,9 @@ namespace Flux.Random
   public class SimpleRng
     : RandomUInt32
   {
+    public static System.Random Default
+      => new SimpleRng();
+
     public enum SeedEnum
     {
       MarsagliaDefault,

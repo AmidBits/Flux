@@ -29,7 +29,7 @@ namespace Flux.Reflection
       => default(T)! == null && !IsSystemNullable(source);
 
     public static bool IsStatic<T>(T source)
-      => typeof(T) is var t && t.IsClass && t.IsAbstract && t.IsSealed;
+      => (source is null ? typeof(T) : source.GetType()) is var t && t.IsClass && t.IsAbstract && t.IsSealed;
 
     /// <summary>Returns whether the source type is System.Nullable<T>. Determined by typeof(T), not source.</summary>
     /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>

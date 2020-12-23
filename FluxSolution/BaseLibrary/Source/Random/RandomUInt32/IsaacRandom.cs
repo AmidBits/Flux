@@ -7,6 +7,9 @@ namespace Flux.Random
 	public class IsaacRandom
 		: RandomUInt32
 	{
+		public static System.Random Default
+			=> new IsaacRandom();
+
 		#region Isaac
 		private uint m_randcnt;
 		private readonly uint[] m_randrsl = new uint[256];

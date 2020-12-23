@@ -13,7 +13,7 @@ namespace Flux.Random
 		/// <summary>Returns a non-negative random integer that is less than the specified maximum.</summary>
 		/// <returns>A non-negative random integer that is less than the specified maximum.</returns>
 		public override int Next(int maxValue)
-			=> maxValue > 0 ? (int)System.Math.Floor(maxValue * Sample()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), @"The maximum value must be greater than zero.");
+			=> maxValue >= 2 ? (int)System.Math.Floor(maxValue * Sample()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), @"The maximum value must be greater than zero.");
 		/// <summary>Returns a random integer that is within a specified range.</summary>
 		/// <returns>A random integer that is within a specified range, greater than or equal to specified minValue, and less than the specified maxValue.</returns>
 		public override int Next(int minValue, int maxValue)
@@ -40,7 +40,7 @@ namespace Flux.Random
 		/// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
 		/// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
 		protected override double Sample()
-			=> (SampleUInt64() >> 11) / (1L << 53);
+			=> (double)(SampleUInt64() >> 11) / (double)(1L << 53);
 
 		internal abstract ulong SampleUInt64();
 	}

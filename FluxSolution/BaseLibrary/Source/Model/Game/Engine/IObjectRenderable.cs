@@ -1,4 +1,4 @@
-﻿namespace Flux.Model.Game.Engine
+﻿namespace Flux.Model.Gaming.Engine
 {
 	public interface IObjectRenderable
 	{

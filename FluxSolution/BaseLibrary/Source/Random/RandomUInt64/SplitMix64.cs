@@ -5,6 +5,9 @@ namespace Flux.Random
   public class SplitMix64
     : RandomUInt64
   {
+    public static System.Random Default
+      => new SplitMix64();
+
     private ulong m_state;
 
     [System.CLSCompliant(false)]

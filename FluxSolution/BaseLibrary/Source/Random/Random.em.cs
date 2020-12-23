@@ -152,15 +152,15 @@ namespace Flux
     /// <summary>Returns a non-negative random Int32.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next();
+      => NextInt32(source, int.MaxValue);
     /// <summary>Returns a non-negative random Int32 that is less than the specified maxValue.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source, int maxValue)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next(maxValue);
+      => maxValue >= 2 ? (int)System.Math.Floor(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentNullException(nameof(maxValue));
     /// <summary>Returns a random Int32 that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int NextInt32(this System.Random source, int minValue, int maxValue)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Next(minValue, maxValue);
+      => minValue < maxValue ? minValue + NextInt32(source, maxValue - minValue) : throw new System.ArgumentNullException(nameof(minValue));
 
     /// <summary>Returns a non-negative random Int64.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -169,11 +169,11 @@ namespace Flux
     /// <summary>Returns a non-negative random Int64 that is less than the specified maxValue.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static long NextInt64(this System.Random source, long maxValue)
-      => maxValue > 0 ? (long)System.Math.Floor(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
+      => maxValue >= 2 ? (long)System.Math.Floor(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"{maxValue} > 0");
     /// <summary>Returns a random Int64 that is within a specified range.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static long NextInt64(this System.Random source, long minValue, long maxValue)
-      => minValue < maxValue ? NextInt64(source, maxValue - minValue) + minValue : throw new System.ArgumentOutOfRangeException(nameof(minValue), $"{minValue} < {maxValue}");
+      => minValue < maxValue ? minValue + NextInt64(source, maxValue - minValue) : throw new System.ArgumentOutOfRangeException(nameof(minValue), $"{minValue} < {maxValue}");
 
     /// <summary>Returns a random System.Net.IPAddress = IPv4.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
