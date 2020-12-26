@@ -11,7 +11,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //Flux.BitOps.Example();
+      Flux.BitOps.Example();
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
