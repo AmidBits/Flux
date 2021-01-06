@@ -12,7 +12,7 @@ namespace Flux
 
 			while (length > 0)
 			{
-				System.Text.Rune.DecodeFromUtf16(buffer, out var rune, out var charsConsumed);
+				System.Text.Rune.DecodeFromUtf16(new System.ReadOnlySpan<char>(buffer, offset, length), out var rune, out var charsConsumed);
 				offset += charsConsumed;
 				length -= charsConsumed;
 
