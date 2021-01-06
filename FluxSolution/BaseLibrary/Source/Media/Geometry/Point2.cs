@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class GeometryEm
 	{
 		/// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>

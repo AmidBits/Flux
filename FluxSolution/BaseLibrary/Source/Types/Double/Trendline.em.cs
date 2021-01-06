@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class DoubleEm
+  public static partial class SystemDoubleEm
   {
     public static TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayEm
+  public static partial class SystemArrayEm
   {
     /// <summary>Create a new sequence with all elements from the source, starting with specified dimension.</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional

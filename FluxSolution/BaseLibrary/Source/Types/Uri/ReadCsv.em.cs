@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class UriEm
+	public static partial class SystemUriEm
 	{
 
 		public static System.Collections.Generic.IEnumerable<string[]> ReadCsv(this System.Uri uri, Text.CsvOptions? options)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class SystemTextEm
 	{
 		/// <summary>Swap two elements by the specified indices.</summary>
 		public static void Swap(this System.Text.StringBuilder source, int indexA, int indexB)

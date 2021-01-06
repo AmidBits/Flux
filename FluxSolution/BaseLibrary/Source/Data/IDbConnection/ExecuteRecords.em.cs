@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IDbConnectionEm
+  public static partial class SystemDataEm
   {
     /// <summary>Returns a sequence of <see cref="System.Data.IDataRecord"/> from all rows.</summary>
     /// <returns>A sequence of <see cref="System.Data.IDataRecord"/>.</returns>
@@ -39,7 +39,7 @@ namespace Flux
 
       do
       {
-        var dt = IDataReaderEm.GetSchemaTableEx(idr);
+        var dt = GetSchemaTableEx(idr);
 
         while (idr.Read())
           yield return recordSelector(idr, dt);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ILists
+	public static partial class SystemCollectionsGenericEm
 	{
 		/// <summary>Returns the IList cast as a ReadOnlySpan. No allocations are needed.</summary>
 		public static T[] AsArray<T>(this System.Collections.Generic.IList<T> source)

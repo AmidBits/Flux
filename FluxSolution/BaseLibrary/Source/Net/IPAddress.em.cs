@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class IPAddressEm
+	public static partial class SystemNetEm
 	{
 		/// <summary>Create a new sequence of the IP address./summary>
 		/// <see cref="https://en.wikipedia.org/wiki/IPv6"/>

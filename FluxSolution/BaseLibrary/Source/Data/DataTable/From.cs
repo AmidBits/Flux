@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class DataTableEm
+  public static partial class SystemDataEm
   {
     /// <summary>Returns a new data table with values from the seqeuence. The specified table name, column names and types are used in constructing the data table.</summary>
     public static System.Data.DataTable ToDataTable(this System.Collections.Generic.IEnumerable<object[]> source, string tableName, System.Collections.Generic.IList<string> columnNames, System.Collections.Generic.IList<System.Type> types)

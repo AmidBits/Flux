@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class SystemReadOnlySpanEm
   {
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the specified comparer.</summary>
     /// <param name="minLength">The smaller length of the two spans.</param>

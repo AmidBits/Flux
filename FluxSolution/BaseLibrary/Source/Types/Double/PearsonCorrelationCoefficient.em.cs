@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DoubleEm
+  public static partial class SystemDoubleEm
   {
     /// <summary>Determines how close two variables are to having a linear relationship with each other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     /// <summary>Returns the medoid of a sequence. A value sequence will need to pre-ordered in order to arrive at a mathematically oriented medoid. This version does not order the sequence beforehand. Medoid is not the same as median.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Medoid"/>

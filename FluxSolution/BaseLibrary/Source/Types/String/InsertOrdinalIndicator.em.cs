@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringEm
+  public static partial class SystemStringEm
   {
     /// <summary>Returns a new string with ordinal extensions (e.g. 3rd, 12th, etc.) for all numeric substrings surrounded by spaces (or the beginning and end of the string).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>

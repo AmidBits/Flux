@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IDbConnectionEm
+  public static partial class SystemDataEm
   {
     //public static System.Data.DataTable ExecuteSchemaTable(this System.Data.IDbConnection source, Flux.Data.Sql.QName table, int commandTimeout, bool computeStatistics = true)
     //{

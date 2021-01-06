@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IDataRecordEm
+  public static partial class SystemDataEm
   {
     public static System.Collections.Generic.IEnumerable<TResult> GetFields<TResult>(this System.Data.IDataRecord source, System.Func<System.Data.IDataRecord, int, TResult> resultSelector)
     {

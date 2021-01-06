@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     /// <summary>Returns a new hashset containing the symmetric difference between the two sequences. Uses the specified equality comparer.</summary>
     /// <returns>The elements which are in either of the sets and not in their intersection.</returns>

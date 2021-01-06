@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class IEnumerableEm
+	public static partial class SystemCollectionsGenericEm
 	{
 		/// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
 		/// <param name="tupleSize">The number of elements in each tuple.</param>

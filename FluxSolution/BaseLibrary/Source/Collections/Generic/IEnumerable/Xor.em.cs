@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     public static int Xor<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int> selector, int seed = 0)
     {

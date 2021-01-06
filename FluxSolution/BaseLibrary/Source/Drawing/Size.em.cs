@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DrawingSizeEm
+  public static partial class SystemDrawingEm
   {
     /// <summary>Convert an index to a 2D vector, based on the size of the axes.</summary>
     public static System.Drawing.Point FromUniqueIndex(this in System.Drawing.Size source, int index)

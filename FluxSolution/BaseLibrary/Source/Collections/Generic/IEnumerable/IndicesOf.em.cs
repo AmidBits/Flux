@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     /// <summary>Creates a seqeuence of indices for elements when the predicate is met.</summary>
     public static System.Collections.Generic.IEnumerable<int> IndicesOf<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class SystemSpanEm
   {
     /// <summary>Replace (in-place) all characters using the specified replacement selector function.</summary>
     public static void ReplaceAll<T>(this System.Span<T> source, System.Func<T, T> replacementSelector)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class UriEm
+	public static partial class SystemUriEm
 	{
 		public static byte[] ReadAllBytes(this System.Uri uri)
 		{

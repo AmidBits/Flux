@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StreamEm
+	public static partial class SystemIoEm
 	{
 		/// <summary>Decrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
 		public static void Decrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))

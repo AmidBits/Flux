@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile_rank"/>

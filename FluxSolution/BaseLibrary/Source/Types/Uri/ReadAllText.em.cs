@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class UriEm
+	public static partial class SystemUriEm
 	{
 		public static string ReadAllText(this System.Uri uri, System.Text.Encoding encoding)
 		{

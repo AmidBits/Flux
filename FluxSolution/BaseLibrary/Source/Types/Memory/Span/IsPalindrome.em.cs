@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SpanEm
+	public static partial class SystemSpanEm
 	{
 		/// <summary>Determines whether the sequence is a palindrome. Uses the specified comparer.</summary>
 		public static bool IsPalindrome<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer)

@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class ArrayEm
+  public static partial class SystemArrayEm
   {
     /// <summary>Returns the array as a sequence of one-dimensional arrays (i.e. jagged).</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional

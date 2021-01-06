@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IDbConnectionEm
+  public static partial class SystemDataEm
   {
     /// <summary>Returns a sequence of strings from all results, rows, columns and specified delimiters for easy parsing.</summary>
     /// <param name="nameSelector">The string representing the separation between result sets (if more than one).</param>
@@ -35,7 +35,7 @@ namespace Flux
           if (fieldIndex > 0)
             yield return fieldSeparator;
 
-          yield return nameSelector(idr.GetName(fieldIndex), fieldIndex) ?? IDataRecordEm.GetNameEx(idr, fieldIndex);
+          yield return nameSelector(idr.GetName(fieldIndex), fieldIndex) ?? GetNameEx(idr, fieldIndex);
         }
 
         yield return recordSeparator;
@@ -52,7 +52,7 @@ namespace Flux
             if (fieldIndex > 0)
               yield return fieldSeparator;
 
-            yield return valueSelector(idr.GetValue(fieldIndex), fieldIndex) ?? IDataRecordEm.GetStringEx(idr, fieldIndex, nullValue);
+            yield return valueSelector(idr.GetValue(fieldIndex), fieldIndex) ?? GetStringEx(idr, fieldIndex, nullValue);
           }
         }
       }

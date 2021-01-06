@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class IDbConnectionEm
+  public static partial class SystemDataEm
   {
     /// <summary>Returns a sequence of objects (as an array) from all results, rows and columns.</summary>
     /// <param name="includeNames">Whether to the column header names for each result set.</param>
@@ -14,10 +14,10 @@ namespace Flux
       {
         if (index == 0 && includeNames)
         {
-          yield return IDataRecordEm.GetNames(idr).ToArray();
+          yield return GetNames(idr).ToArray();
         }
 
-        yield return IDataRecordEm.GetValues(idr);
+        yield return GetValues(idr);
       }
     }
   }

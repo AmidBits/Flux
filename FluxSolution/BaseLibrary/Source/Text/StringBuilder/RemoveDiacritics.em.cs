@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class SystemTextEm
   {
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
     public static System.Text.StringBuilder RemoveDiacriticalLatinStrokes(this System.Text.StringBuilder source)
@@ -9,7 +9,7 @@ namespace Flux
 
       for (var index = 0; index < source.Length; index++)
       {
-        source[index] = CharEm.RemoveDiacriticalLatinStroke(source[index]);
+        source[index] = SystemCharEm.RemoveDiacriticalLatinStroke(source[index]);
       }
 
       return source;
@@ -42,6 +42,6 @@ namespace Flux
 
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
     public static System.Text.StringBuilder RemoveDiacriticalMarksAndLatinStrokes(this System.Text.StringBuilder source)
-      => RemoveDiacriticalMarks(source, CharEm.RemoveDiacriticalLatinStroke);
+      => RemoveDiacriticalMarks(source, SystemCharEm.RemoveDiacriticalLatinStroke);
   }
 }

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class IDataReaderEm
+	public static partial class SystemDataEm
 	{
 		const string CsAllowDBNull = @"AllowDBNull";
 		const string CsColumnName = @"ColumnName";

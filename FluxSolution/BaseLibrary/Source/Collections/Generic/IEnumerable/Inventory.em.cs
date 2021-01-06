@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class IEnumerableEm
+  public static partial class SystemCollectionsGenericEm
   {
     /// <summary>Returns a new dictionary with a fill inventory of items, where source items are added and target items are subtracted. The counts are aggregated by <typeparamref name="TKey"/> into a new inventory dictionary.<summary>
     /// <param name="source">Count of items in stock, can be scattered.</param>

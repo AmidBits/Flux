@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class DateTimeEm
+	public static partial class SystemDateTimeEm
 	{
 		/// <summary>Returns the source as a string formatted for use in a file name using "yyyyMMdd HHmmss fffffff".</summary>
 		public static string ToStringFileNameFriendly(this System.DateTime source)

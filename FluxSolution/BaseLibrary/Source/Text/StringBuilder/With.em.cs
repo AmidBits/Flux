@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class SystemTextEm
 	{
 		/// <summary>Indicates whether the source ends with value. Uses the specified comparer.</summary>
 		public static bool EndsWith(this System.Text.StringBuilder source, string target, System.Collections.Generic.IEqualityComparer<char> comparer)

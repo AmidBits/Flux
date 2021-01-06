@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class GeometryEm
 	{
 		//public static readonly Vector3I[] HexagonDiagonals = new Vector3I[] { new Vector3I(2, -1, -1), new Vector3I(1, -2, 1), new Vector3I(-1, -1, 2), new Vector3I(-2, 1, 1), new Vector3I(-1, 2, -1), new Vector3I(1, 1, -2) };
 		//public static readonly Vector3I[] HexagonDirections = new Vector3I[] { new Vector3I(1, 0, -1), new Vector3I(1, -1, 0), new Vector3I(0, -1, 1), new Vector3I(-1, 0, 1), new Vector3I(-1, 1, 0), new Vector3I(0, 1, -1) };

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class UriEm
+	public static partial class SystemUriEm
 	{
 		/// <summary>Returns all lines from the <paramref cref="uri"/> with the <paramref cref="encoding"/>.</summary>
 		/// <example>new System.Uri(@"file://\Flux\Resources\Ucd\UnicodeText.txt\").ReadLines(System.Text.Encoding.UTF8)</example>

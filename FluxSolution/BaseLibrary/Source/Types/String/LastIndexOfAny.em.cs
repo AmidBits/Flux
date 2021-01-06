@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class StringEm
+  public static partial class SystemStringEm
   {
     /// <summary>Reports the zero-based index of the last occurrence in this instance of any substring in a specified array of strings.</summary>
     public static int LastIndexOfAny(this string source, params string[] values)
