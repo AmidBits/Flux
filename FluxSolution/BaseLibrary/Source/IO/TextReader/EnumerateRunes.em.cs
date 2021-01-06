@@ -8,28 +8,22 @@ namespace Flux
 
 			var buffer = new char[128];
 			var offset = 0;
-			var length = 0;
+			var length = source.Read(buffer, 0, buffer.Length);
 
-			while (true)
+			while (length > 0)
 			{
+				System.Text.Rune.DecodeFromUtf16(buffer, out var rune, out var charsConsumed);
+				offset += charsConsumed;
+				length -= charsConsumed;
+
+				yield return rune;
+
 				if (length <= 1)
 				{
 					System.Array.Copy(buffer, offset, buffer, 0, length);
 					offset = 0;
-
-					var actual = source.Read(buffer, length, buffer.Length - length);
-					length += actual;
+					length += source.Read(buffer, length, buffer.Length - length);
 				}
-
-				if (length >= 1)
-				{
-					System.Text.Rune.DecodeFromUtf16(buffer, out var rune, out var charsConsumed);
-					offset += charsConsumed;
-					length -= charsConsumed;
-
-					yield return rune;
-				}
-				else break;
 			}
 		}
 	}
