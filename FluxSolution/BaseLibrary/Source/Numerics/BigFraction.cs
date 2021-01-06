@@ -357,10 +357,12 @@ namespace Flux.Numerics
 
       var index = value.IndexOf(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, System.StringComparison.Ordinal);
 
-      if (index <= -1) return new BigFraction(value.FromRadixString(radix), System.Numerics.BigInteger.One, true);
+      var pnr = Text.PositionalNotation.ForRadix(radix);
+
+      if (index <= -1) return new BigFraction(pnr.TextToNumber(value), System.Numerics.BigInteger.One, true);
 
       return new BigFraction(
-        value.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty, System.StringComparison.Ordinal).FromRadixString(radix),
+        pnr.TextToNumber(value.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, string.Empty, System.StringComparison.Ordinal)),
         System.Numerics.BigInteger.Pow(radix, value.Length - index - 1),
         false
       );

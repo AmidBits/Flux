@@ -18,18 +18,14 @@ namespace Flux
       try
       {
         if (System.ComponentModel.TypeDescriptor.GetConverter(value) is var valueConverter && valueConverter != null && valueConverter.CanConvertTo(typeof(T)))
-        {
           return (T)valueConverter.ConvertTo(null, culture, value, typeof(T));
-        }
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
 
       try
       {
         if (System.ComponentModel.TypeDescriptor.GetConverter(typeof(T)) is var typeConverter && typeConverter != null && typeConverter.CanConvertFrom(value.GetType()))
-        {
           return (T)typeConverter.ConvertFrom(null, culture, value);
-        }
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
 

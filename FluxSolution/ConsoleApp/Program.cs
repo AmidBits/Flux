@@ -11,7 +11,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      Flux.BitOps.Example();
+      //Flux.BitOps.Example();
 
       var deg = Flux.Angle.FromDegree(10);
       var grad = deg.Gradians;

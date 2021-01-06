@@ -1,8 +1,8 @@
 ﻿namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
-  public struct StructuresOfBits32
-    : System.IEquatable<StructuresOfBits32>
+  public struct BitStructure32
+    : System.IEquatable<BitStructure32>
   {
     [System.Runtime.InteropServices.FieldOffset(0)] private readonly byte m_byte0;
     [System.Runtime.InteropServices.FieldOffset(1)] private readonly byte m_byte1;
@@ -18,7 +18,7 @@
     public float FloatingPoint32 => m_single;
     public int Integer32 => m_int32;
 
-    public StructuresOfBits32(byte[] bytes, int offset = 0)
+    public BitStructure32(byte[] bytes, int offset = 0)
       : this()
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
@@ -28,26 +28,26 @@
       m_byte2 = bytes[offset + 2];
       m_byte3 = bytes[offset + 3];
     }
-    public StructuresOfBits32(int value)
+    public BitStructure32(int value)
       : this()
       => m_int32 = value;
-    public StructuresOfBits32(float value)
+    public BitStructure32(float value)
       : this()
       => m_single = value;
 
     // Operators
-    public static bool operator ==(StructuresOfBits32 a, StructuresOfBits32 b)
+    public static bool operator ==(BitStructure32 a, BitStructure32 b)
       => a.Equals(b);
-    public static bool operator !=(StructuresOfBits32 a, StructuresOfBits32 b)
+    public static bool operator !=(BitStructure32 a, BitStructure32 b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals(StructuresOfBits32 other)
+    public bool Equals(BitStructure32 other)
       => m_int32 == other.m_int32;
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is StructuresOfBits32 o && Equals(o);
+      => obj is BitStructure32 o && Equals(o);
     public override int GetHashCode()
       => m_int32.GetHashCode();
     public override string? ToString()
@@ -55,8 +55,8 @@
   }
 
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
-  public struct StructuresOfBits64
-    : System.IEquatable<StructuresOfBits64>
+  public struct BitStructure64
+    : System.IEquatable<BitStructure64>
   {
     [System.Runtime.InteropServices.FieldOffset(0)] private readonly byte m_byte0;
     [System.Runtime.InteropServices.FieldOffset(1)] private readonly byte m_byte1;
@@ -80,7 +80,7 @@
     public double FloatingPoint64 => m_double;
     public long Integer64 => m_int64;
 
-    public StructuresOfBits64(byte[] bytes, int offset = 0)
+    public BitStructure64(byte[] bytes, int offset = 0)
       : this()
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
@@ -94,26 +94,26 @@
       m_byte6 = bytes[offset + 6];
       m_byte7 = bytes[offset + 7];
     }
-    public StructuresOfBits64(int value)
+    public BitStructure64(int value)
       : this()
       => m_int64 = value;
-    public StructuresOfBits64(double value)
+    public BitStructure64(double value)
       : this()
       => m_double = value;
 
     // Operators
-    public static bool operator ==(StructuresOfBits64 a, StructuresOfBits64 b)
+    public static bool operator ==(BitStructure64 a, BitStructure64 b)
       => a.Equals(b);
-    public static bool operator !=(StructuresOfBits64 a, StructuresOfBits64 b)
+    public static bool operator !=(BitStructure64 a, BitStructure64 b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals(StructuresOfBits64 other)
+    public bool Equals(BitStructure64 other)
       => m_int64 == other.m_int64;
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is StructuresOfBits64 o && Equals(o);
+      => obj is BitStructure64 o && Equals(o);
     public override int GetHashCode()
       => m_int64.GetHashCode();
     public override string? ToString()
