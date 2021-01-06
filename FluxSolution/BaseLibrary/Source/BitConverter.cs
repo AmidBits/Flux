@@ -84,7 +84,7 @@ namespace Flux
     /// <param name="buffer">The byte array to copy the bytes into</param>
     /// <param name="index">The first index into the array to copy the bytes into</param>
     public void CopyBytes(float value, byte[] buffer, int index)
-      => CopyBytes(Convert.BitsFromSingleToInt32(value), 4, buffer, index);
+      => CopyBytes(new BitStructure32(value).Integer32, 4, buffer, index);
     /// <summary>Copies the specified 16-bit unsigned integer value into the specified byte array, beginning at the specified index.</summary>
     /// <param name="value">The number to convert.</param>
     /// <param name="buffer">The byte array to copy the bytes into</param>
@@ -143,7 +143,7 @@ namespace Flux
     /// <param name="value">The number to convert.</param>
     /// <returns>An array of bytes with length 8.</returns>
     public byte[] GetBytes(double value)
-      => GetBytes(System.BitConverter.DoubleToInt64Bits(value), 8);
+      => GetBytes(new BitStructure64(value).Integer64, 8);
     /// <summary>Returns the specified 16-bit signed integer value as an array of bytes.</summary>
     /// <param name="value">The number to convert.</param>
     /// <returns>An array of bytes with length 2.</returns>
@@ -163,7 +163,7 @@ namespace Flux
     /// <param name="value">The number to convert.</param>
     /// <returns>An array of bytes with length 4.</returns>
     public byte[] GetBytes(float value)
-      => GetBytes(Convert.BitsFromSingleToInt32(value), 4);
+      => GetBytes(new BitStructure32(value).Integer32, 4);
     /// <summary>Returns the specified 16-bit unsigned integer value as an array of bytes.</summary>
     /// <param name="value">The number to convert.</param>
     /// <returns>An array of bytes with length 2.</returns>
@@ -293,7 +293,7 @@ namespace Flux
     /// <param name="startIndex">The starting position within value.</param>
     /// <returns>A single precision floating point number formed by four bytes beginning at startIndex.</returns>
     public float ToSingle(byte[] value, int startIndex)
-      => Convert.BitsFromInt32ToSingle(ToInt32(value, startIndex));
+      => new BitStructure32(ToInt32(value, startIndex)).FloatingPoint32;
     /// <summary>Returns a 16-bit unsigned integer converted from two bytes at a specified position in a byte array.</summary>
     /// <param name="value">An array of bytes.</param>
     /// <param name="startIndex">The starting position within value.</param>
