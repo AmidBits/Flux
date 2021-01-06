@@ -1,5 +1,6 @@
 namespace Flux
 {
+  #region Compass directions (various enums)
   /// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
@@ -101,7 +102,9 @@ namespace Flux
     SixteenWinds = 16,
     ThirtyTwoWinds = 32
   }
+  #endregion Compass directions
 
+  #region Earth radius (static class)
   public static class EarthRadii
   {
     public const double EquatorialInKilometers = 6378.1370;
@@ -119,6 +122,7 @@ namespace Flux
     public const double PolarInMiles = 3949.9028;
     public const double PolarInNauticalMiles = 3430.1920370562;
   }
+  #endregion Earth radius
 
   /// <summary>Represents a geographic position, using latotide, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
@@ -477,12 +481,10 @@ namespace Flux
     // IEquatable
     public bool Equals(Geoposition other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
-
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new IFormatProvider.DmsFormatter(), $"<{{0:{format ?? @"DMS"}NS}}, {{1:{format ?? @"DMS"}EW}}, {{2}} m>", Latitude, Longitude, Altitude);
-
-    // Object (override)
+    // Overrides
     public override bool Equals(object? obj)
       => obj is Geoposition o && Equals(o);
     public override int GetHashCode()
