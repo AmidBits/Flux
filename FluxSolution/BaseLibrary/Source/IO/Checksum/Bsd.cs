@@ -10,7 +10,7 @@ namespace Flux.IO.Checksum
 
     private uint m_hash;
 
-    public int Code { get => (int)m_hash; set => m_hash = (uint)value; }
+    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Bsd(int hash = 0) => m_hash = unchecked((uint)hash);
 

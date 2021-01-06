@@ -9,7 +9,8 @@ namespace Flux.IO.Hash
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash; // = 2166136261U;
-    public int Code { get => (int)m_hash; set => m_hash = (uint)value; }
+
+    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     private uint m_primeMultiplier; // = 16777619U;
     public int Prime { get => (int)m_primeMultiplier; set => m_primeMultiplier = (uint)value; }

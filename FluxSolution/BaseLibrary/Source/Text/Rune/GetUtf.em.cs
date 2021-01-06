@@ -18,6 +18,7 @@ namespace Flux
 			static ushort BitsLs(int value) => (ushort)((value & 0x03FF) + 0xDC00);
 			static ushort Bits16(int value) => (ushort)(value & 0xFFFF);
 		}
+
 		/// <summary>Generate a variable number (from 1 to 4) of bytes representing UTF8 encoding of the <see cref="System.Text.Rune"/>.</summary>
 		public static byte[] GetUtf8(this System.Text.Rune source)
 		{
