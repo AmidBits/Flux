@@ -23,8 +23,8 @@ namespace Flux
     }
     /// <summary>Send a WOL (magic packet) to the specified macAddress, address, port and subnetMask.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Wake-on-LAN"/>
-    public static void SendWakeOnLan(this System.Net.NetworkInformation.PhysicalAddress macAddress, System.Net.IPAddress ipAddress, System.Net.IPAddress subnetMask, int port = 0)
-      => SendWakeOnLan(macAddress, new System.Net.IPEndPoint(ipAddress.GetBroadcastAddress(subnetMask), port));
+    public static void SendWakeOnLanIPv4(this System.Net.NetworkInformation.PhysicalAddress macAddress, System.Net.IPAddress ipAddress, System.Net.IPAddress subnetMask, int port = 0)
+      => SendWakeOnLan(macAddress, new System.Net.IPEndPoint(ipAddress.GetBroadcastAddressIPv4(subnetMask), port));
 
     public static string ToStringMAC(this System.Net.NetworkInformation.PhysicalAddress source, char separator = '-')
       => string.Join(separator.ToString(), (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().Select(b => b.ToString(@"X2", System.Globalization.CultureInfo.InvariantCulture)));

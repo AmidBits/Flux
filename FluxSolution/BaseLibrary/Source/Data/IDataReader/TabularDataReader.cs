@@ -42,9 +42,8 @@ namespace Flux.Data
     // IDataReader
     public override bool IsClosed
       => FieldValues.Count == 0;
-
-    // IDataRecord
-    public override int FieldCount
+		// IDataRecord
+		public override int FieldCount
       => FieldNames.Count;
     public override System.Type GetFieldType(int index)
       => index >= 0 && index < FieldTypes.Count ? FieldTypes[index] : typeof(object);
