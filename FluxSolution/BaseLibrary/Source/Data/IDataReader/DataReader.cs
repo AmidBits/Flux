@@ -48,7 +48,8 @@ namespace Flux.Data
     }
     public virtual bool NextResult()
       => false;
-    public abstract bool Read();
+    public virtual bool Read()
+      => throw new System.NotImplementedException();
 
     // IDataRecord
     public virtual int FieldCount { get; protected set; }
@@ -140,11 +141,14 @@ namespace Flux.Data
       => (int)GetValue(index);
     public virtual long GetInt64(int index)
       => (long)GetValue(index);
-    public abstract string GetName(int index);
-    public abstract int GetOrdinal(string name);
+    public virtual string GetName(int index)
+      => throw new System.NotImplementedException();
+    public virtual int GetOrdinal(string name)
+      => throw new System.NotImplementedException();
     public virtual string GetString(int index)
       => (string)GetValue(index);
-    public abstract object GetValue(int index);
+    public virtual object GetValue(int index)
+      => throw new System.NotImplementedException();
     public virtual int GetValues(object[] values)
     {
       if (values is null) throw new System.ArgumentNullException(nameof(values));

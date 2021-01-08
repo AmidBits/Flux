@@ -17,7 +17,7 @@ namespace Flux
 			return target;
 		}
 		public static T[] ToNewArray<T>(this System.Collections.Generic.IList<T> source, int offset)
-			=> ToNewArray(source, offset, source.Count - offset);
+			=> ToNewArray(source, offset, (source ?? throw new System.ArgumentNullException(nameof(source))).Count - offset);
 
 		/// <summary>Creates a new array from the specified array from the specified offset and count.</summary>
 		public static T[] ToNewArray<T>(this System.Collections.Generic.IList<T> source, int offset, int count, int countEmptyPreElements, int countEmptyPostElements)

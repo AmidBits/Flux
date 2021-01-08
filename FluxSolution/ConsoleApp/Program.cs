@@ -12,13 +12,16 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var cs = Flux.Data.EnumerableDataReader.Create(
+			var edr = Flux.Data.EnumerableDataReader.Create(
 				System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().ToArray(),
 				new string[] { "ID", "Name", "Description", "Type", "Status", "IsReceiveOnly", "SupportsMulticast", "PhysicalAddress" },
 				new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) },
 				ni => new string[] { ni.Id, ni.Name, ni.Description, ni.NetworkInterfaceType.ToString(), ni.OperationalStatus.ToString(), ni.IsReceiveOnly.ToString(), ni.SupportsMulticast.ToString(), ni.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac) ? mac : string.Empty }
-			).ToDataTable(@"Hello").ToConsoleString();
+			);
 
+			var dt = edr.ToDataTable(@"Hello");
+			
+			var cs = dt.ToConsoleString();
 
 			System.Console.WriteLine(cs);
 
