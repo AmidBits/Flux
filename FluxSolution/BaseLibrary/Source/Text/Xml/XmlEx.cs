@@ -18,24 +18,15 @@ namespace Flux.Text
 
     /// <summary>Returns an XML escaped string (basically replacing all entity characters with their respective entity.</summary>
     public static string Escape(string source)
-    {
-      var sb = new System.Text.StringBuilder();
-
-      foreach (var character in source ?? throw new System.ArgumentNullException(nameof(source)))
+      => source.ToStringBuilder().ReplaceAll(c => c switch
       {
-        sb.Append(character switch
-        {
-          XmlEntityCharAmp => XmlEntityAmp,
-          XmlEntityCharApos => XmlEntityApos,
-          XmlEntityCharQuot => XmlEntityQuot,
-          XmlEntityCharGt => XmlEntityGt,
-          XmlEntityCharLt => XmlEntityLt,
-          _ => character
-        });
-      }
-
-      return sb.ToString();
-    }
+        XmlEntityCharAmp => XmlEntityAmp,
+        XmlEntityCharApos => XmlEntityApos,
+        XmlEntityCharQuot => XmlEntityQuot,
+        XmlEntityCharGt => XmlEntityGt,
+        XmlEntityCharLt => XmlEntityLt,
+        _ => string.Empty
+      }).ToString();
     /// <summary>Returns an string where all invalid XML characters have been escaped to .</summary>
     public static string EscapeInvalidCharacters(string source)
       => System.Text.RegularExpressions.Regex.Replace(source, @"[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD]", (m) => $"#0x{((int)m.Value[0]).ToString(@"X4", System.Globalization.CultureInfo.CurrentCulture)}#");
