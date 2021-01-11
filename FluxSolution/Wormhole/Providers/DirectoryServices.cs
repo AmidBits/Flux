@@ -40,7 +40,7 @@ namespace Wormhole
 					break;
 			}
 
-			return new Flux.Data.EnumerableDataReader(e, properties, System.Linq.Enumerable.Range(0, properties.Length).Select(i => typeof(object)).ToArray());
+			return new Flux.Data.EnumerableTabularDataReader(e, properties, System.Linq.Enumerable.Range(0, properties.Length).Select(i => typeof(object)).ToArray());
 		}
 
 		//public System.Data.IDataReader Read(System.Xml.Linq.XElement export, Wormhole.Log log)

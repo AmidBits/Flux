@@ -7,7 +7,7 @@ namespace Flux.Resources.ProjectGutenberg
   /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
   // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
   public class TenThousandWonderfulThings
-    : Conversions
+    : ResourceFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\ProjectGutenberg\pg45849.txt");
@@ -21,7 +21,7 @@ namespace Flux.Resources.ProjectGutenberg
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
-      using var e = uri.ReadLines(System.Text.Encoding.UTF8).GetEnumerator();
+      using var e = uri.GetStream().ReadLines(System.Text.Encoding.UTF8).GetEnumerator();
 
       var thing = new System.Text.StringBuilder();
 

@@ -12,15 +12,31 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var edr = Flux.Data.EnumerableDataReader.Create(
-				System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().ToArray(),
+			var nis = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+
+			var edr = Flux.Data.EnumerableTabularDataReader.Create(
+				nis,
 				new string[] { "ID", "Name", "Description", "Type", "Status", "IsReceiveOnly", "SupportsMulticast", "PhysicalAddress" },
-				new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) },
-				ni => new string[] { ni.Id, ni.Name, ni.Description, ni.NetworkInterfaceType.ToString(), ni.OperationalStatus.ToString(), ni.IsReceiveOnly.ToString(), ni.SupportsMulticast.ToString(), ni.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac) ? mac : string.Empty }
+				ni => new object[] { ni.Id, ni.Name, ni.Description, ni.NetworkInterfaceType, ni.OperationalStatus, ni.IsReceiveOnly, ni.SupportsMulticast, ni.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac) ? mac : string.Empty }
 			);
 
-			var dt = edr.ToDataTable(@"Hello");
+			var ub = new Flux.Resources.Ucd.Blocks();
 			
+			// var ss = ub.GetStrings(Flux.Resources.Ucd.Blocks.LocalUri);
+
+			var dr = ub.GetDataReader(Flux.Resources.Ucd.Blocks.LocalUri);
+
+			//var oa = dr.EnumerateData(idr => idr.GetValues());
+
+			var dt = dr.ToDataTable(@"UB");
+
+			//var read1 = edr.Read();
+			//var data1 = edr.GetValues();
+			//var read2 = edr.Read();
+			//var data2 = edr.GetValues();
+
+			//var dt = edr.ToDataTable(@"Hello");
+
 			var cs = dt.ToConsoleString();
 
 			System.Console.WriteLine(cs);
@@ -82,7 +98,8 @@ namespace ConsoleApp
 			//System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
 			for (int i = 0; i < taskCount; i++)
 			{
-				var total = ExpensiveTask(taskLoad);
+				ExpensiveTask(taskLoad);
+				//var total = ExpensiveTask(taskLoad);
 				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
 			}
 			//var endDateTime = DateTime.Now;
@@ -97,7 +114,8 @@ namespace ConsoleApp
 			//var startDateTime = DateTime.Now;
 			System.Threading.Tasks.Parallel.For(0, taskCount, i =>
 			{
-				var total = ExpensiveTask(taskLoad);
+				ExpensiveTask(taskLoad);
+				//var total = ExpensiveTask(taskLoad);
 				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
 			});
 			//var endDateTime = DateTime.Now;

@@ -5,7 +5,7 @@ namespace Flux.Resources.ProjectGutenberg
   /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
   // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
   public class WebstersUnabridgedDictionary
-    : Conversions
+    : ResourceFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\ProjectGutenberg\pg29765.txt");
@@ -25,7 +25,7 @@ namespace Flux.Resources.ProjectGutenberg
       var word = new System.Text.StringBuilder();
       var definition = new System.Text.StringBuilder();
 
-      foreach (var line in uri.ReadLines(System.Text.Encoding.UTF8))
+      foreach (var line in uri.GetStream().ReadLines(System.Text.Encoding.UTF8))
       {
         if (m_reWord.Match(line) is var match && match.Success)
         {

@@ -6,7 +6,7 @@ namespace Flux.Resources.ProjectGutenberg
 	/// <remarks>Returns keywords, synonyms and antonyms.</summary>
 	/// <see cref="http://www.gutenberg.org/ebooks/51155"/>
 	public class SynonymsAndAntonymsSamuelFallows
-		: Conversions
+		: ResourceFactory
 	{
 		public static System.Uri LocalUri
 			=> new System.Uri(@"file://\Resources\ProjectGutenberg\51155-0.txt");
@@ -24,7 +24,7 @@ namespace Flux.Resources.ProjectGutenberg
 		{
 			var lines = new System.Text.StringBuilder();
 
-			foreach (var line in uri.ReadLines(System.Text.Encoding.UTF8))
+			foreach (var line in uri.GetStream().ReadLines(System.Text.Encoding.UTF8))
 			{
 				if (line == @"=" || line.Length == 0)
 				{

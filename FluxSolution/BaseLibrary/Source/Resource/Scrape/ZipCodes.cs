@@ -6,7 +6,7 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public class ZipCodes
-    : Conversions
+    : ResourceFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");
@@ -19,7 +19,7 @@ namespace Flux.Resources.Scrape
       => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(double), typeof(double), typeof(double), typeof(double), typeof(double), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(long), typeof(long), typeof(string) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.ReadCsv(new Text.CsvOptions()).Skip(1);
+      => uri.GetStream().ReadCsv(new Text.CsvOptions()).Skip(1);
   }
 }
 

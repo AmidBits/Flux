@@ -8,7 +8,7 @@ namespace Flux.Resources.Scowl
   /// <seealso cref="http://wordlist.aspell.net/"/>
   /// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
   public class TwoOfTwelveFull
-    : Conversions
+    : ResourceFactory
   {
     public static System.Uri LocalUri
       => new System.Uri(@"file://\Resources\Scowl\2of12full.txt");
@@ -21,7 +21,7 @@ namespace Flux.Resources.Scowl
       => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+"));
+      => uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+"));
   }
 }
 
