@@ -35,6 +35,6 @@ namespace Flux.Data
     }
 
     public static EnumerableDataReader Create<TSource>(System.Collections.Generic.IEnumerable<TSource> collection, System.Collections.Generic.IList<string> fieldNames, System.Collections.Generic.IList<System.Type> fieldTypes, System.Func<TSource, System.Collections.Generic.IList<object>> valueSelector)
-      => new EnumerableDataReader(collection.Select(ts => valueSelector(ts)), fieldNames, fieldTypes);
+      => new EnumerableDataReader(collection.Select(ts => valueSelector(ts)).ToList(), fieldNames, fieldTypes);
   }
 }

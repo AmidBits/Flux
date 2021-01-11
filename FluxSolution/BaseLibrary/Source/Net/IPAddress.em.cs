@@ -4,7 +4,7 @@ namespace Flux
 {
 	public static partial class SystemNetEm
 	{
-		/// <summary>Create a new sequence of the IP address./summary>
+		/// <summary>Returns the 16-bit words (as integers) of an IP address. This is mainly useful for IPv6 addresses.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/IPv6"/>
 		public static System.Collections.Generic.IEnumerable<int> GetAddressWords(this System.Net.IPAddress source)
 		{
@@ -14,9 +14,9 @@ namespace Flux
 				yield return bytes[index] << 8 | bytes[index + 1];
 		}
 
-		/// <summary></summary>
+		/// <summary>There is no such thing as a broadcast address in IPv6.</summary>
 		/// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
-		public static System.Net.IPAddress GetBroadcastAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
+		public static System.Net.IPAddress GetBroadcastAddressIPv4(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (subnetMask is null) throw new System.ArgumentNullException(nameof(subnetMask));
@@ -32,7 +32,9 @@ namespace Flux
 			return new System.Net.IPAddress(broadcastAddress);
 		}
 
-		public static System.Numerics.BigInteger GetMaxValue()
+		public static System.Numerics.BigInteger GetMaxValueIPv4()
+			=> System.Numerics.BigInteger.Parse(@"4294967296", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
+		public static System.Numerics.BigInteger GetMaxValueIPv6()
 			=> System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
 		public static System.Numerics.BigInteger GetMinValue()
 			=> System.Numerics.BigInteger.Zero;
@@ -55,6 +57,13 @@ namespace Flux
 			return new System.Net.IPAddress(networkAddress);
 		}
 
+		/// <summary>The lower 64 bits identify the address of the interface or node, and is derived from the actual physical or MAC address using IEEE’s Extended Unique Identifier (EUI-64) format.</summary>
+		public static long Get64BitsLowerIPv6(this System.Net.IPAddress source)
+			=> (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 ? unchecked((long)(source.ToBigInteger() & 0xFFFFFFFFFFFFFFFF)) : throw new System.InvalidOperationException();
+		/// <summary>The upper 64 bits is split into 2 blocks of 48 and 16 bits respectively, where the lower 16 bits are used for subnets on an internal networks, and are controlled by a network administrator.</summary>
+		public static long Get64BitsUpperIPv6(this System.Net.IPAddress source)
+			=> (source ?? throw new System.ArgumentNullException(nameof(source))).AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 ? unchecked((long)((source.ToBigInteger() >> 64) & 0xFFFFFFFFFFFFFFFF)) : throw new System.InvalidOperationException();
+
 		/// <summary>Creates a new sequence of IP addresses between the source and target (inclusive).</summary>
 		public static System.Collections.Generic.IEnumerable<System.Net.IPAddress> GetRange(this System.Net.IPAddress source, System.Net.IPAddress target)
 		{
@@ -68,19 +77,19 @@ namespace Flux
 		}
 
 		/// <summary>Returns whether the address is between the specified minimum and maximum (inclusive).</summary>
-		public static bool IsBetween(this System.Net.IPAddress source, System.Net.IPAddress min, System.Net.IPAddress max)
+		public static bool IsBetweenIPv4(this System.Net.IPAddress source, System.Net.IPAddress min, System.Net.IPAddress max)
 			=> source.ToBigInteger() is var bi && bi >= min.ToBigInteger() && bi <= max.ToBigInteger();
 
-		/// <summary>Determintes whether the address is a multicast address (IPv4 or IPv6).</summary>
+		/// <summary>Determintes whether the address is a multicast address. Works on both IPv4 and IPv6.</summary>
 		public static bool IsMulticast(this System.Net.IPAddress source)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			if (source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-				return source.GetAddressBytes() is var bytes && (bytes[0] & 0xF0) == 0xE0;
+				return (source.GetAddressBytes()[0] & 0xF0) == 0xE0;
 
 			if (source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
-				return source.GetAddressBytes() is var bytes && bytes[0] == 0xFF;
+				return source.GetAddressBytes()[0] == 0xFF;
 
 			return false;
 		}
@@ -90,17 +99,25 @@ namespace Flux
 		public static bool InSameSubnet(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
 			=> source.GetNetworkAddress(subnetMask).Equals(other.GetNetworkAddress(subnetMask));
 
-		/// <summary>Convert the IP address to a BigInteger.</summary>
+		/// <summary>Convert the IP address to a BigInteger. Works on both IPv4 and IPv6.</summary>
 		public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
-			=> (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes().AsEnumerable().Reverse().ToArray().ToBigInteger();
+		{
+			if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+			var addressBytes = source.GetAddressBytes();
+
+			System.Array.Reverse(addressBytes);
+
+			return addressBytes.ToBigInteger();
+		}
 
 		/// <summary>Convert the BigInteger to an IP address.</summary>
 		public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
 		{
-			if (source < 0 || source > GetMaxValue()) throw new System.ArgumentOutOfRangeException(nameof(source));
+			if (source < 0 || source > GetMaxValueIPv6()) throw new System.ArgumentOutOfRangeException(nameof(source));
 
 			var byteArray = source.ToByteArrayEx(out var _);
-			if(byteArray.Length < 4)
+			if (byteArray.Length < 4)
 				System.Array.Resize(ref byteArray, 4);
 			System.Array.Reverse(byteArray);
 			return new System.Net.IPAddress(byteArray);
