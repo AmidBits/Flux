@@ -22,6 +22,8 @@ namespace Flux.Resources.ProjectGutenberg
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
+      yield return (string[])FieldNames;
+
       var word = new System.Text.StringBuilder();
       var definition = new System.Text.StringBuilder();
 

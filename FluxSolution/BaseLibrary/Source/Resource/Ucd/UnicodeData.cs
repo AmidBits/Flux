@@ -21,10 +21,10 @@ namespace Flux.Resources.Ucd
 			=> new System.Type[] { typeof(int), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) };
 
 		public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => s.Split(';'));
+			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => s.Split(';')).Prepend((string[])FieldNames);
 
 		public override System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
-		=> GetStrings(uri).ToTypedObjects((value, index) => index switch
+		=> TransformTypes(GetStrings(uri), (value, index) => index switch
 		{
 			0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
 			_ => value

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.Census
 {
-  /// <summary>The Unicode block database.</summary>
+  /// <summary>Census all data.</summary>
   /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
   // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
   public class CountiesAllData
@@ -19,7 +19,7 @@ namespace Flux.Resources.Census
       => new System.Type[] { typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.GetStream().ReadCsv(new Text.CsvOptions()).Skip(1);
+      => uri.GetStream().ReadCsv(new Text.CsvOptions());
   }
 }
 

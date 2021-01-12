@@ -21,7 +21,7 @@ namespace Flux.Resources.Scowl
       => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+"));
+      => uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => System.Text.RegularExpressions.Regex.Split(s.Trim(), @"(?<=[\-0-9]+[:#&=]?)\s+")).Prepend((string[])FieldNames);
   }
 }
 

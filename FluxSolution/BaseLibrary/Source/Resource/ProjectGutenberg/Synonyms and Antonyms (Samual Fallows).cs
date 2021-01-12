@@ -57,7 +57,7 @@ namespace Flux.Resources.ProjectGutenberg
 
 		/// <summary>Returns an IEnumerable<string[]> with keywords, synonyms and antonyms.</summary>
 		public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> GetArrays(uri).Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) });
+			=> GetArrays(uri).Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) }).Prepend((string[])FieldNames);
 	}
 }
 

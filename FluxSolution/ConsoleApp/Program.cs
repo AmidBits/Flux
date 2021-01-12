@@ -12,32 +12,11 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var nis = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+			var dr = Flux.Resources.Presets.GetScowlTwoOfTwelveFull(Flux.Resources.Presets.UriScowlTwoOfTwelveFullLocal);
 
-			var edr = Flux.Data.EnumerableTabularDataReader.Create(
-				nis,
-				new string[] { "ID", "Name", "Description", "Type", "Status", "IsReceiveOnly", "SupportsMulticast", "PhysicalAddress" },
-				ni => new object[] { ni.Id, ni.Name, ni.Description, ni.NetworkInterfaceType, ni.OperationalStatus, ni.IsReceiveOnly, ni.SupportsMulticast, ni.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac) ? mac : string.Empty }
-			);
+			var a = dr.ToArray();
 
-			var ub = new Flux.Resources.Ucd.Blocks();
-			
-			// var ss = ub.GetStrings(Flux.Resources.Ucd.Blocks.LocalUri);
-
-			var dr = ub.GetDataReader(Flux.Resources.Ucd.Blocks.LocalUri);
-
-			//var oa = dr.EnumerateData(idr => idr.GetValues());
-
-			var dt = dr.ToDataTable(@"UB");
-
-			//var read1 = edr.Read();
-			//var data1 = edr.GetValues();
-			//var read2 = edr.Read();
-			//var data2 = edr.GetValues();
-
-			//var dt = edr.ToDataTable(@"Hello");
-
-			var cs = dt.ToConsoleString();
+			var cs = a.ToConsoleStringJagged();
 
 			System.Console.WriteLine(cs);
 

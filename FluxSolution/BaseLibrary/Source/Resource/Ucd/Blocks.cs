@@ -23,35 +23,15 @@ namespace Flux.Resources.Ucd
 		private static System.Text.RegularExpressions.Regex m_reSplitter = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
 
 		public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line));
+			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line)).Prepend(FieldNames.ToArray());
 
 		public override System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
-			=> GetStrings(uri).ToTypedObjects((value, index) => index switch
+			=> TransformTypes(GetStrings(uri), (value, index) => index switch
 			{
 				0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
 				1 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
 				_ => value
 			});
-
-		//public static System.Collections.Generic.IEnumerable<string[]> GetDataStrings(System.Uri uri, params string[] fieldNames)
-		//{uri.GetStream()
-		//	yield return fieldNames;
-
-		//	foreach (var itemArray in uri.ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line)))
-		//		yield return itemArray;
-		//}
-		//public static System.Collections.Generic.IEnumerable<string[]> GetRawStrings()
-		//	=> LocalUri.ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line)))
-
-		//public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.IO.Stream stream)
-		//{
-		//	var reSplitter = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
-
-		//	using var streamReader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
-
-		//	//streamReader.ReadLine
-		//}
-
 	}
 }
 

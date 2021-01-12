@@ -19,7 +19,7 @@ namespace Flux.Resources.Scrape
       => new System.Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(double), typeof(double), typeof(double), typeof(double), typeof(double), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(long), typeof(long), typeof(string) };
 
     public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-      => uri.GetStream().ReadCsv(new Text.CsvOptions()).Skip(1);
+      => uri.GetStream().ReadCsv(new Text.CsvOptions());
   }
 }
 

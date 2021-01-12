@@ -2,7 +2,12 @@ namespace Flux
 {
 	public static partial class SystemCollectionsGenericEm
 	{
-		public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[]> arraySelector)
+		/// <summary>Create a new data table from the specified sequence.</summary>
+		/// <param name="source">The source sequence.</param>
+		/// <param name="tableName">The name of the data table.</param>
+		/// <param name="arraySelector">A array selector used to extract the data for each row in the data table.</param>
+		/// <param name="columnNames">Optional list of column names, if specified it's used, otherwise the first row is used automatically.</param>
+		public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[]> arraySelector, System.Collections.Generic.IList<string>? columnNames = null)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
@@ -13,8 +18,8 @@ namespace Flux
 
 			if (e.MoveNext())
 			{
-				var fieldNames = arraySelector(e.Current);
-				
+				var fieldNames = columnNames is null ? arraySelector(e.Current) : (object[])columnNames;
+
 				for (var columnIndex = 0; columnIndex < fieldNames.Length; columnIndex++)
 					dt.Columns.Add($"{fieldNames[columnIndex]}");
 
