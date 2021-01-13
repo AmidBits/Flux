@@ -12,11 +12,24 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var date = new System.DateTime(1, 3, 2);
+      //var jd = new Flux.JulianDay(2459227.9722685).AddHours(2).AddMinutes(4).AddSeconds(6);
+      //var jd = new Flux.JulianDay(0);//.AddHours(2).AddMinutes(4).AddSeconds(6);
+      //November 24, 4714 BC 12:00:00 = Monday, January 1, 4713
+      //var jd = new JulianDay(Flux.JulianDay.GregorianDateToJulianDay(1957, 10, 4.81));
+      //      var jd = new JulianDay(Flux.JulianDay.JulianDateToJulianDay(-4712, 1, 1.5));
+      //var jd = new JulianDay(Flux.JulianDay.JulianDateToJulianDay(1, 1, 1.5));
+
+      var jd = new JulianDay(Flux.JulianDay.NumberFromGregorianDate(-4713, 11, 24)).AddHours(1);
+      //var jd = new JulianDay(Flux.JulianDay.NumberFromJulianDate(-4712, 1, 1));
+
+      System.Console.WriteLine($"{jd} = {jd.ToProlepticGregorianDateString()} = {jd.ToProlepticJulianDateString()}");
+
+      //var date = new System.DateTime(1, 3, 2);
+
       //date = System.DateTime.Now;
-      System.Console.WriteLine($"{System.DateTime.MinValue} - {System.DateTime.MaxValue}");
-      System.Console.WriteLine($"{date} = {date.ToJulianDate()} = {Flux.JulianDayNumber.FromGregorianDate(date.Year, date.Month, date.Day)}");
-      System.Console.WriteLine($"{2459227.32708} = {Flux.JulianDayNumber.ToGregorianDate(2459227)}");
+      //System.Console.WriteLine($"{System.DateTime.MinValue} - {System.DateTime.MaxValue}");
+      //System.Console.WriteLine($"{date} = {date.ToJulianDate()} = {Flux.JulianDayNumber.FromGregorianDate(date.Year, date.Month, date.Day)}");
+      //System.Console.WriteLine($"{2459227.32708} = {Flux.JulianDayNumber.ToGregorianDate(2459227)}");
       //var dr = Flux.Resources.Presets.GetScowlTwoOfTwelveFull(Flux.Resources.Presets.UriScowlTwoOfTwelveFullLocal);
 
       //var a = dr.ToArray();
