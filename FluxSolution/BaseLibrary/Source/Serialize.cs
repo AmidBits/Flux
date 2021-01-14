@@ -15,6 +15,9 @@ namespace Flux
 			return FromXml<TTarget>(xe.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
 		}
 
+		/// <summary>Serialize the source from a JSON string to T, using the specified options.</summary>
+		public static TTarget? FromJson<TTarget>(string source, System.Text.Json.JsonSerializerOptions? options = null)
+			=> System.Text.Json.JsonSerializer.Deserialize<TTarget>(source, options);
 		/// <summary>Serialize the source from a JSON string to T.</summary>
 		public static TTarget? FromJson<TTarget>(string source)
 			=> System.Text.Json.JsonSerializer.Deserialize<TTarget>(source);
@@ -26,6 +29,9 @@ namespace Flux
 			return (TTarget)new System.Xml.Serialization.XmlSerializer(typeof(TTarget)).Deserialize(xr);
 		}
 
+		/// <summary>Serialize the source to a JSON string, using the specified options.</summary>
+		public static string ToJson(object source, System.Text.Json.JsonSerializerOptions? options = null)
+			=> System.Text.Json.JsonSerializer.Serialize(source, options);
 		/// <summary>Serialize the source to a JSON string.</summary>
 		public static string ToJson(object source)
 			=> System.Text.Json.JsonSerializer.Serialize(source);
