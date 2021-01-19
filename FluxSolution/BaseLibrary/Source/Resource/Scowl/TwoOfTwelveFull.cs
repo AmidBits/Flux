@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Resources1.Scowl
+namespace Flux.Resources.Scowl
 {
   public static class TwoOfTwelveFull
   {

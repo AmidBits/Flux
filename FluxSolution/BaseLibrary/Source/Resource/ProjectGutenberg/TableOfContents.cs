@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Resources1.ProjectGutenberg
+namespace Flux.Resources.ProjectGutenberg
 {
   public static class TableOfContents
   {
