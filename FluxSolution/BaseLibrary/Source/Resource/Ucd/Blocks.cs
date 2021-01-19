@@ -1,40 +1,40 @@
-using System.Linq;
+//using System.Linq;
 
-namespace Flux.Resources.Ucd
-{
-	/// <summary>The Unicode block database.</summary>
-	/// <see cref="https://www.unicode.org/"/>
-	/// <seealso cref="https://unicode.org/Public/"/>
-	/// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
-	// Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
-	public class Blocks
-		: ResourceFactory
-	{
-		public static System.Uri LocalUri
-			=> new System.Uri(@"file://\Resources\Ucd\Blocks.txt");
-		public static System.Uri SourceUri
-			=> new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
+//namespace Flux.Resources.Ucd
+//{
+//	/// <summary>The Unicode block database.</summary>
+//	/// <see cref="https://www.unicode.org/"/>
+//	/// <seealso cref="https://unicode.org/Public/"/>
+//	/// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
+//	// Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
+//	public class Blocks
+//		: ResourceFactory
+//	{
+//		public static System.Uri LocalUri
+//			=> new System.Uri(@"file://\Resources\Ucd\Blocks.txt");
+//		public static System.Uri SourceUri
+//			=> new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
-		public override System.Collections.Generic.IList<string> FieldNames
-			=> new string[] { "StartCode", "EndCode", "BlockName" };
-		public override System.Collections.Generic.IList<System.Type> FieldTypes
-			=> new System.Type[] { typeof(int), typeof(int), typeof(string) };
+//		public override System.Collections.Generic.IList<string> FieldNames
+//			=> new string[] { "StartCode", "EndCode", "BlockName" };
+//		public override System.Collections.Generic.IList<System.Type> FieldTypes
+//			=> new System.Type[] { typeof(int), typeof(int), typeof(string) };
 
-		private static System.Text.RegularExpressions.Regex m_reSplitter = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
+//		private static System.Text.RegularExpressions.Regex m_reSplitter = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
 
-		public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line)).Prepend(FieldNames.ToArray());
+//		public override System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
+//			=> uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplitter.Split(line)).Prepend(FieldNames.ToArray());
 
-		public override System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
-			=> TransformTypes(GetStrings(uri), (value, index) => index switch
-			{
-				0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
-				1 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
-				_ => value
-			});
-	}
-}
+//		public override System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
+//			=> TransformTypes(GetStrings(uri), (value, index) => index switch
+//			{
+//				0 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
+//				1 => int.Parse(value, System.Globalization.NumberStyles.HexNumber, null),
+//				_ => value
+//			});
+//	}
+//}
 
-//System.Console.WriteLine(nameof(Flux.Resources.Ucd.Blocks));
-//foreach (var strings in new Flux.Resources.Ucd.Blocks().GetStrings(Flux.Resources.Ucd.Blocks.SourceUri))
-//  System.Console.WriteLine(string.Join('|', strings));
+////System.Console.WriteLine(nameof(Flux.Resources.Ucd.Blocks));
+////foreach (var strings in new Flux.Resources.Ucd.Blocks().GetStrings(Flux.Resources.Ucd.Blocks.SourceUri))
+////  System.Console.WriteLine(string.Join('|', strings));

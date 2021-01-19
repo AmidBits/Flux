@@ -8,150 +8,164 @@ using Flux;
 
 namespace ConsoleApp
 {
-	class Program
-	{
-		private static void TimedMain(string[] _)
-		{
-			//var jd = new Flux.JulianDay(2459227.9722685).AddHours(2).AddMinutes(4).AddSeconds(6);
-			//var jd = new Flux.JulianDay(0);//.AddHours(2).AddMinutes(4).AddSeconds(6);
-			//November 24, 4714 BC 12:00:00 = Monday, January 1, 4713
-			//var jd = new JulianDay(Flux.JulianDay.GregorianDateToJulianDay(1957, 10, 4.81));
-			//var jd = new JulianDate(Flux.JulianDate.JulianDateToJulianDay(-4712, 1, 1.5));
-			//var jd = new JulianDay(Flux.JulianDay.JulianDateToJulianDay(1, 1, 1.5));
+  class Program
+  {
+    private static void TimedMain(string[] _)
+    {
+      //var data = Flux.Resources1.Census.CountiesAllData.Get(Flux.Resources1.Census.CountiesAllData.UriLocal);
+      //var data = Flux.Resources1.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.Get(Flux.Resources1.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal);
+      //var data = Flux.Resources1.ProjectGutenberg.TableOfContents.Get(Flux.Resources1.ProjectGutenberg.TableOfContents.UriLocal);
+      var data = Flux.Resources1.ProjectGutenberg.TenThousandWonderfulThings.Get(Flux.Resources1.ProjectGutenberg.TenThousandWonderfulThings.UriLocal);
+      //var data = Flux.Resources1.ProjectGutenberg.WebstersUnabridgedDictionary.Get(Flux.Resources1.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal);
+      //var data = Flux.Resources1.Scowl.TwoOfTwelveFull.Get(Flux.Resources1.Scowl.TwoOfTwelveFull.UriLocal);
+      //var data = Flux.Resources1.Scrape.ZipCodes.Get(Flux.Resources1.Scrape.ZipCodes.UriLocal);
+      //var data = Flux.Resources1.Ucd.Blocks.Get(Flux.Resources1.Ucd.Blocks.UriLocal);
+      //var data = Flux.Resources1.Ucd.UnicodeData.Get(Flux.Resources1.Ucd.UnicodeData.UriLocal);
+      //var data = Flux.Resources1.W3c.NamedCharacterReferences.Get(Flux.Resources1.W3c.NamedCharacterReferences.UriLocal);
 
-			//var jd = Flux.JulianDate.FromGregorianCalendarDate(33, 5, 30);
-			var jd = Flux.JulianDate.FromJulianCalendarDate(-4712, 1, 1);
+      foreach (var array in data.Skip(1).RandomElements(0.01))
+        System.Console.WriteLine($"{string.Join('|', array)}{System.Environment.NewLine}");
 
-			var addDays = (int)(365.25 * 4 * 1178);
-			var addHours = 6;
-			var addMinutes = 2;
-			var addSeconds = 2;
+      //var jd = new Flux.JulianDay(2459227.9722685).AddHours(2).AddMinutes(4).AddSeconds(6);
+      //var jd = new Flux.JulianDay(0);//.AddHours(2).AddMinutes(4).AddSeconds(6);
+      //November 24, 4714 BC 12:00:00 = Monday, January 1, 4713
+      //var jd = new JulianDay(Flux.JulianDay.GregorianDateToJulianDay(1957, 10, 4.81));
+      //var jd = new JulianDate(Flux.JulianDate.JulianDateToJulianDay(-4712, 1, 1.5));
+      //var jd = new JulianDay(Flux.JulianDay.JulianDateToJulianDay(1, 1, 1.5));
 
-			System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(time) {jd.ToTimeString()}{System.Environment.NewLine}");
-			jd = jd.AddDays(addDays);
-			System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addDays} days) {jd.ToTimeString()}{System.Environment.NewLine}");
-			jd = jd.AddHours(addHours);
-			System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addHours} hours) {jd.ToTimeString()}{System.Environment.NewLine}");
-			jd = jd.AddMinutes(addMinutes);
-			System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addMinutes} minutes) {jd.ToTimeString()}{System.Environment.NewLine}");
-			jd = jd.AddSeconds(addSeconds);
-			System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addSeconds} seconds) {jd.ToTimeString()}{System.Environment.NewLine}");
+      //var jd = Flux.JulianDate.FromGregorianCalendarDate(33, 5, 30);
+      //var jd = Flux.JulianDate.FromJulianCalendarDate(-4712, 1, 1);
 
-			//var date = new System.DateTime(1, 3, 2);
+      //var addDays = (int)(365.25 * 4 * 1178);
+      //var addHours = 6;
+      //var addMinutes = 2;
+      //var addSeconds = 2;
 
-			//date = System.DateTime.Now;
-			//System.Console.WriteLine($"{System.DateTime.MinValue} - {System.DateTime.MaxValue}");
-			//System.Console.WriteLine($"{date} = {date.ToJulianDate()} = {Flux.JulianDayNumber.FromGregorianDate(date.Year, date.Month, date.Day)}");
-			//System.Console.WriteLine($"{2459227.32708} = {Flux.JulianDayNumber.ToGregorianDate(2459227)}");
-			//var dr = Flux.Resources.Presets.GetScowlTwoOfTwelveFull(Flux.Resources.Presets.UriScowlTwoOfTwelveFullLocal);
+      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(time) {jd.ToTimeString()}{System.Environment.NewLine}");
+      //jd = jd.AddDays(addDays);
+      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addDays} days) {jd.ToTimeString()}{System.Environment.NewLine}");
+      //jd = jd.AddHours(addHours);
+      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addHours} hours) {jd.ToTimeString()}{System.Environment.NewLine}");
+      //jd = jd.AddMinutes(addMinutes);
+      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addMinutes} minutes) {jd.ToTimeString()}{System.Environment.NewLine}");
+      //jd = jd.AddSeconds(addSeconds);
+      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addSeconds} seconds) {jd.ToTimeString()}{System.Environment.NewLine}");
 
-			//var a = dr.ToArray();
+      //var date = new System.DateTime(1, 3, 2);
 
-			//var cs = a.ToConsoleStringJagged();
+      //date = System.DateTime.Now;
+      //System.Console.WriteLine($"{System.DateTime.MinValue} - {System.DateTime.MaxValue}");
+      //System.Console.WriteLine($"{date} = {date.ToJulianDate()} = {Flux.JulianDayNumber.FromGregorianDate(date.Year, date.Month, date.Day)}");
+      //System.Console.WriteLine($"{2459227.32708} = {Flux.JulianDayNumber.ToGregorianDate(2459227)}");
+      //var dr = Flux.Resources.Presets.GetScowlTwoOfTwelveFull(Flux.Resources.Presets.UriScowlTwoOfTwelveFullLocal);
 
-			//System.Console.WriteLine(cs);
+      //var a = dr.ToArray();
 
-			//foreach (var r in dr)
-			//{
-			//	System.Console.WriteLine(string.Join(',', r.GetNames()));
-			//	System.Console.WriteLine(string.Join(',', r.GetValues()));
-			//}
+      //var cs = a.ToConsoleStringJagged();
 
-			//System.Console.WriteLine(dt.ToConsoleString());
+      //System.Console.WriteLine(cs);
 
-			//var showIPStatistics = true;
+      //foreach (var r in dr)
+      //{
+      //	System.Console.WriteLine(string.Join(',', r.GetNames()));
+      //	System.Console.WriteLine(string.Join(',', r.GetValues()));
+      //}
 
-			//foreach (var nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
-			//{
-			//	System.Console.WriteLine($"Network Interface");
-			//	System.Console.WriteLine($"Description: {nic.Description}");
-			//	System.Console.WriteLine($"ID: {new System.Guid(nic.Id).ToString()}");
-			//	System.Console.WriteLine($"Name: {nic.Name}");
-			//	System.Console.WriteLine($"Operational status: {nic.OperationalStatus}");
-			//	System.Console.WriteLine($"Receive only: {nic.IsReceiveOnly}");
-			//	System.Console.WriteLine($"Speed: {nic.Speed.ToGroupString()}");
-			//	System.Console.WriteLine($"Supports multicast: {nic.SupportsMulticast}");
-			//	System.Console.WriteLine($"Type: {nic.NetworkInterfaceType}");
-			//	if (nic.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac))
-			//		System.Console.WriteLine($"Physical address: {mac}");
-			//	System.Console.WriteLine();
+      //System.Console.WriteLine(dt.ToConsoleString());
 
-			//	if (showIPStatistics)
-			//	{
-			//		var ips = nic.GetIPStatistics();
-			//		System.Console.WriteLine($"\tIP Statistics");
-			//		System.Console.WriteLine($"\tIncoming packets: {ips.IncomingPacketsDiscarded.ToGroupString()} discarded, {ips.IncomingPacketsWithErrors.ToGroupString()} errors, {ips.IncomingUnknownProtocolPackets.ToGroupString()} unknown.");
-			//		System.Console.WriteLine($"\tNon-unicast packets: {ips.NonUnicastPacketsReceived.ToGroupString()} received, {ips.NonUnicastPacketsSent.ToGroupString()} sent.");
-			//		System.Console.WriteLine($"\tOutgoing packets: {ips.OutgoingPacketsDiscarded.ToGroupString()} discarded, {ips.OutgoingPacketsWithErrors.ToGroupString()} errors.");
-			//		System.Console.WriteLine($"\tOutput queue length: {ips.OutputQueueLength.ToGroupString()}");
-			//		System.Console.WriteLine($"\tUnicast packets: {ips.UnicastPacketsReceived.ToGroupString()} received, {ips.UnicastPacketsSent.ToGroupString()} sent.");
-			//		System.Console.WriteLine();
-			//	}
+      //var showIPStatistics = true;
 
-			//}
+      //foreach (var nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+      //{
+      //	System.Console.WriteLine($"Network Interface");
+      //	System.Console.WriteLine($"Description: {nic.Description}");
+      //	System.Console.WriteLine($"ID: {new System.Guid(nic.Id).ToString()}");
+      //	System.Console.WriteLine($"Name: {nic.Name}");
+      //	System.Console.WriteLine($"Operational status: {nic.OperationalStatus}");
+      //	System.Console.WriteLine($"Receive only: {nic.IsReceiveOnly}");
+      //	System.Console.WriteLine($"Speed: {nic.Speed.ToGroupString()}");
+      //	System.Console.WriteLine($"Supports multicast: {nic.SupportsMulticast}");
+      //	System.Console.WriteLine($"Type: {nic.NetworkInterfaceType}");
+      //	if (nic.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac))
+      //		System.Console.WriteLine($"Physical address: {mac}");
+      //	System.Console.WriteLine();
 
-			//using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-			//	foreach (var rune in sr.EnumerateTextElements())
-			//		System.Console.Write(rune.ToString());
+      //	if (showIPStatistics)
+      //	{
+      //		var ips = nic.GetIPStatistics();
+      //		System.Console.WriteLine($"\tIP Statistics");
+      //		System.Console.WriteLine($"\tIncoming packets: {ips.IncomingPacketsDiscarded.ToGroupString()} discarded, {ips.IncomingPacketsWithErrors.ToGroupString()} errors, {ips.IncomingUnknownProtocolPackets.ToGroupString()} unknown.");
+      //		System.Console.WriteLine($"\tNon-unicast packets: {ips.NonUnicastPacketsReceived.ToGroupString()} received, {ips.NonUnicastPacketsSent.ToGroupString()} sent.");
+      //		System.Console.WriteLine($"\tOutgoing packets: {ips.OutgoingPacketsDiscarded.ToGroupString()} discarded, {ips.OutgoingPacketsWithErrors.ToGroupString()} errors.");
+      //		System.Console.WriteLine($"\tOutput queue length: {ips.OutputQueueLength.ToGroupString()}");
+      //		System.Console.WriteLine($"\tUnicast packets: {ips.UnicastPacketsReceived.ToGroupString()} received, {ips.UnicastPacketsSent.ToGroupString()} sent.");
+      //		System.Console.WriteLine();
+      //	}
 
-			//using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-			//	foreach (var rune in sr.EnumerateRunes())
-			//		System.Console.Write(rune.ToString());
+      //}
 
-			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
-			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
-		}
+      //using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+      //	foreach (var rune in sr.EnumerateTextElements())
+      //		System.Console.Write(rune.ToString());
 
-		static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
-		{
-			//var startDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
-			for (int i = 0; i < taskCount; i++)
-			{
-				ExpensiveTask(taskLoad);
-				//var total = ExpensiveTask(taskLoad);
-				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-			}
-			//var endDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
-			//var span = endDateTime - startDateTime;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
-			//System.Console.WriteLine();
-		}
+      //using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+      //	foreach (var rune in sr.EnumerateRunes())
+      //		System.Console.Write(rune.ToString());
 
-		static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
-		{
-			//var startDateTime = DateTime.Now;
-			System.Threading.Tasks.Parallel.For(0, taskCount, i =>
-			{
-				ExpensiveTask(taskLoad);
-				//var total = ExpensiveTask(taskLoad);
-				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-			});
-			//var endDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
-			//var span = endDateTime - startDateTime;
-			//System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
-			//System.Console.WriteLine();
-		}
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
+    }
 
-		static long ExpensiveTask(double taskLoad = 1)
-		{
-			var total = 0L;
-			for (var i = 1; i < int.MaxValue * taskLoad; i++)
-				total += i;
-			return total;
-		}
+    static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
+    {
+      //var startDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+      for (int i = 0; i < taskCount; i++)
+      {
+        ExpensiveTask(taskLoad);
+        //var total = ExpensiveTask(taskLoad);
+        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+      }
+      //var endDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+      //var span = endDateTime - startDateTime;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+      //System.Console.WriteLine();
+    }
 
-		static void Main(string[] args)
-		{
-			System.Console.InputEncoding = System.Text.Encoding.UTF8;
-			System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+    static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
+    {
+      //var startDateTime = DateTime.Now;
+      System.Threading.Tasks.Parallel.For(0, taskCount, i =>
+      {
+        ExpensiveTask(taskLoad);
+        //var total = ExpensiveTask(taskLoad);
+        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+      });
+      //var endDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+      //var span = endDateTime - startDateTime;
+      //System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+      //System.Console.WriteLine();
+    }
 
-			System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
+    static long ExpensiveTask(double taskLoad = 1)
+    {
+      var total = 0L;
+      for (var i = 1; i < int.MaxValue * taskLoad; i++)
+        total += i;
+      return total;
+    }
 
-			System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
-			System.Console.ReadKey();
-		}
-	}
+    static void Main(string[] args)
+    {
+      System.Console.InputEncoding = System.Text.Encoding.UTF8;
+      System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
+
+      System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
+      System.Console.ReadKey();
+    }
+  }
 }
