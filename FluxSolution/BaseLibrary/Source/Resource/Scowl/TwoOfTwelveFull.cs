@@ -14,7 +14,7 @@ namespace Flux.Resources.Scowl
     // Download URL: https://github.com/en-wl/wordlist/raw/master/alt12dicts/2of12full.txt
     /// <seealso cref="http://wordlist.aspell.net/"/>
     /// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { "DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word" };
 

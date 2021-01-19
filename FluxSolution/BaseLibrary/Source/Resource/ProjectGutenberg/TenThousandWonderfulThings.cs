@@ -7,7 +7,7 @@ namespace Flux.Resources.ProjectGutenberg
     public static System.Uri UriSource
       => new System.Uri(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
 
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { @"Title", @"Text" };
 

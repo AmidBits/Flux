@@ -11,7 +11,7 @@ namespace Flux.Resources.ProjectGutenberg
     /// <example>var words = Flux.Resources.GetGutenbergWebstersUnabridgedDictionary().Select(idr => idr.GetString(0)).Where(s => System.Text.RegularExpressions.Regex.IsMatch(s, @"^[A-Z]+$")).Select(s => s.ToLower()).ToArray();</example>
     /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
     // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { @"Word", @"Definition" };
 

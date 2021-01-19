@@ -10,7 +10,7 @@ namespace Flux.Resources.W3c
       => new System.Uri(@"https://html.spec.whatwg.org/entities.json");
 
     /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
 

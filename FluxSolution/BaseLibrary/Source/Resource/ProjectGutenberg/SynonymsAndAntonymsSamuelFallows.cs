@@ -12,7 +12,7 @@ namespace Flux.Resources.ProjectGutenberg
     /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
     /// <remarks>Returns keywords, synonyms and antonyms.</summary>
     /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { "Keywords", "Synonyms", "Antonyms" };
 

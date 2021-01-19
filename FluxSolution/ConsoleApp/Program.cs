@@ -12,18 +12,18 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			//var data = Flux.Resources1.Census.CountiesAllData.Get(Flux.Resources1.Census.CountiesAllData.UriLocal);
-			//var data = Flux.Resources1.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.Get(Flux.Resources1.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal);
-			//var data = Flux.Resources1.ProjectGutenberg.TableOfContents.Get(Flux.Resources1.ProjectGutenberg.TableOfContents.UriLocal);
-			var data = Flux.Resources1.ProjectGutenberg.TenThousandWonderfulThings.Get(Flux.Resources1.ProjectGutenberg.TenThousandWonderfulThings.UriLocal);
-			//var data = Flux.Resources1.ProjectGutenberg.WebstersUnabridgedDictionary.Get(Flux.Resources1.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal);
-			//var data = Flux.Resources1.Scowl.TwoOfTwelveFull.Get(Flux.Resources1.Scowl.TwoOfTwelveFull.UriLocal);
-			//var data = Flux.Resources1.Scrape.ZipCodes.Get(Flux.Resources1.Scrape.ZipCodes.UriLocal);
-			//var data = Flux.Resources1.Ucd.Blocks.Get(Flux.Resources1.Ucd.Blocks.UriLocal);
-			//var data = Flux.Resources1.Ucd.UnicodeData.Get(Flux.Resources1.Ucd.UnicodeData.UriLocal);
-			//var data = Flux.Resources1.W3c.NamedCharacterReferences.Get(Flux.Resources1.W3c.NamedCharacterReferences.UriLocal);
+			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal);
+			var data2 = Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal);
+			var data3 = Flux.Resources.ProjectGutenberg.TableOfContents.GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal);
+			var data4 = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal);
+			var data5 = Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal);
+			var data6 = Flux.Resources.Scowl.TwoOfTwelveFull.GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal);
+			var data7 = Flux.Resources.Scrape.ZipCodes.GetObjects(Flux.Resources.Scrape.ZipCodes.UriLocal);
+			var data8 = Flux.Resources.Ucd.Blocks.GetObjects(Flux.Resources.Ucd.Blocks.UriLocal);
+			var data9 = Flux.Resources.Ucd.UnicodeData.GetObjects(Flux.Resources.Ucd.UnicodeData.UriLocal);
+			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal);
 
-			using var e = data.GetEnumerator();
+			using var e = data1.GetEnumerator();
 
 			if (e.MoveNext())
 			{

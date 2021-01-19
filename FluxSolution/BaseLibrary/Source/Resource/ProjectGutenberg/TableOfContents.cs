@@ -10,7 +10,7 @@ namespace Flux.Resources.ProjectGutenberg
       => new System.Uri(@"http://www.gutenberg.org/dirs/GUTINDEX.ALL");
 
     /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> Get(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
     {
       yield return new string[] { @"Ebook", @"Number" };
 
