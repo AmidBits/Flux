@@ -133,9 +133,9 @@ namespace Flux
     public static readonly Geoposition Empty;
     public bool IsEmpty => Equals(Empty);
 
-    public const string SymbolDegrees = "\u00B0";
-    public const string SymbolMinutes = "\u2032";
-    public const string SymbolSeconds = "\u2033";
+    //public const string SymbolDegrees = "\u00B0";
+    //public const string SymbolMinutes = "\u2032";
+    //public const string SymbolSeconds = "\u2033";
 
     /// <summary>The altitude of the geographic position in meters.</summary>
     public double Altitude { get; set; }
@@ -483,7 +483,7 @@ namespace Flux
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new IFormatProvider.DmsFormatter(), $"<{{0:{format ?? @"DMS"}NS}}, {{1:{format ?? @"DMS"}EW}}, {{2}} m>", Latitude, Longitude, Altitude);
+      => string.Format(formatProvider ?? new IFormatProvider.GeopositionFormatProvider(), format ?? $"<{nameof(Geoposition)}: {{0:DMS}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Geoposition o && Equals(o);

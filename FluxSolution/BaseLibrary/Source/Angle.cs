@@ -10,8 +10,6 @@ namespace Flux
     public const double MultiplierRadianToDegree = 180 / System.Math.PI;
     public const double MultiplierRadianToGradian = 200 / System.Math.PI;
 
-    private const string m_formatString = "{0}\u00B0";
-
     private readonly double m_radian;
 
     public double Degrees
@@ -109,7 +107,7 @@ namespace Flux
       => m_radian == other.m_radian;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(null, m_formatString, string.Format(formatProvider, $"{{0:{format ?? @"N1"}}}", m_radian));
+      => string.Format(formatProvider ?? new IFormatProvider.AngleFormatProvider(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Angle o && Equals(o);

@@ -12,6 +12,17 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var a = Flux.Angle.FromDegree(32.2216671);
+      var g = new Flux.Geoposition(32.2216671, -110.123456);
+      var t = Flux.Temperature.FromCelsius(33);
+
+      System.Console.WriteLine(a);
+      System.Console.WriteLine(g);
+      System.Console.WriteLine(t);
+
+      //      System.Console.WriteLine(a.ToString("R5", new Flux.IFormatProvider.AngleFormatProvider()));
+
+      return;
 
       var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal);
       var data2 = Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal);
