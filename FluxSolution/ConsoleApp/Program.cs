@@ -23,7 +23,7 @@ namespace ConsoleApp
 			var data9 = Flux.Resources.Ucd.UnicodeData.GetObjects(Flux.Resources.Ucd.UnicodeData.UriLocal);
 			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal);
 
-			using var e = data1.GetEnumerator();
+			using var e = data0.GetEnumerator();
 
 			if (e.MoveNext())
 			{
