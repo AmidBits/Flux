@@ -33,25 +33,25 @@ namespace ConsoleApp
 			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).ToArray();
 			System.Console.WriteLine($"{nameof(data0)} = {data0.GetLength(0)} = {System.DateTime.Now}");
 
-			using var e = data0.GetEnumerator();
+			//using var e = data0.GetEnumerator();
 
-			if (e.MoveNext())
-			{
-				System.Console.WriteLine($"Field names [{e.Current.Length}]");
-				System.Console.WriteLine(string.Join('|', e.Current));
+			//if (e.MoveNext())
+			//{
+			//	System.Console.WriteLine($"Field names [{e.Current.Length}]");
+			//	System.Console.WriteLine(string.Join('|', e.Current));
 
-				var count = 1;
+			//	var count = 1;
 
-				while (e.MoveNext())
-				{
-					if (Flux.Random.NumberGenerator.Crypto.NextDouble() > 0.01)
-					{
-						System.Console.WriteLine($"Field values [{count++}][{e.Current.Length}]");
-						System.Console.WriteLine(string.Join('|', e.Current));
-						System.Console.WriteLine();
-					}
-				}
-			}
+			//	while (e.MoveNext())
+			//	{
+			//		if (Flux.Random.NumberGenerator.Crypto.NextDouble() > 0.01)
+			//		{
+			//			System.Console.WriteLine($"Field values [{count++}][{e.Current.Length}]");
+			//			System.Console.WriteLine(string.Join('|', e.Current));
+			//			System.Console.WriteLine();
+			//		}
+			//	}
+			//}
 
 			//var jd = new Flux.JulianDay(2459227.9722685).AddHours(2).AddMinutes(4).AddSeconds(6);
 			//var jd = new Flux.JulianDay(0);//.AddHours(2).AddMinutes(4).AddSeconds(6);
