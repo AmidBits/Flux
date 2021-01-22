@@ -12,16 +12,26 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal);
-			var data2 = Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal);
-			var data3 = Flux.Resources.ProjectGutenberg.TableOfContents.GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal);
-			var data4 = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal);
-			var data5 = Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal);
-			var data6 = Flux.Resources.Scowl.TwoOfTwelveFull.GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal);
-			var data7 = Flux.Resources.Scrape.ZipCodes.GetObjects(Flux.Resources.Scrape.ZipCodes.UriLocal);
-			var data8 = Flux.Resources.Ucd.Blocks.GetObjects(Flux.Resources.Ucd.Blocks.UriLocal);
-			var data9 = Flux.Resources.Ucd.UnicodeData.GetObjects(Flux.Resources.Ucd.UnicodeData.UriLocal);
-			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal);
+			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data1)} = {data1.GetLength(0)} = {System.DateTime.Now}");
+			var data2 = Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data2)} = {data2.GetLength(0)} = {System.DateTime.Now}");
+			var data3 = Flux.Resources.ProjectGutenberg.TableOfContents.GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data3)} = {data3.GetLength(0)} = {System.DateTime.Now}");
+			var data4 = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data4)} = {data4.GetLength(0)} = {System.DateTime.Now}");
+			var data5 = Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data5)} = {data5.GetLength(0)} = {System.DateTime.Now}");
+			var data6 = Flux.Resources.Scowl.TwoOfTwelveFull.GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data6)} = {data6.GetLength(0)} = {System.DateTime.Now}");
+			var data7 = Flux.Resources.Scrape.ZipCodes.GetObjects(Flux.Resources.Scrape.ZipCodes.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data7)} = {data7.GetLength(0)} = {System.DateTime.Now}");
+			var data8 = Flux.Resources.Ucd.Blocks.GetObjects(Flux.Resources.Ucd.Blocks.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data8)} = {data8.GetLength(0)} = {System.DateTime.Now}");
+			var data9 = Flux.Resources.Ucd.UnicodeData.GetObjects(Flux.Resources.Ucd.UnicodeData.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data9)} = {data9.GetLength(0)} = {System.DateTime.Now}");
+			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).ToArray();
+			System.Console.WriteLine($"{nameof(data0)} = {data0.GetLength(0)} = {System.DateTime.Now}");
 
 			using var e = data0.GetEnumerator();
 
