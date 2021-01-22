@@ -48,7 +48,7 @@ namespace Flux.Wpf
       {
         unitRatio = unitRatio % 1.0;
 
-        return Angle.DegreeToRadian(unitRatio * 360.0).AngularRotationToPoint();
+        return Angle.ConvertDegreeToRadian(unitRatio * 360.0).AngularRotationToPoint();
       }
       public static System.Windows.Point PatternSquare(double unitRatio)
       {

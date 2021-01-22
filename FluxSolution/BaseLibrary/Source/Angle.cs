@@ -10,14 +10,12 @@ namespace Flux
     public const double MultiplierRadianToDegree = 180 / System.Math.PI;
     public const double MultiplierRadianToGradian = 200 / System.Math.PI;
 
-    private const string m_formatString = "{0}\u00B0";
-
     private readonly double m_radian;
 
     public double Degrees
-      => m_radian * MultiplierRadianToDegree;
+      => ConvertRadianToDegree(m_radian);
     public double Gradians
-      => m_radian * MultiplierRadianToGradian;
+      => ConvertRadianToGradian(m_radian);
     public double Radians
       => m_radian;
 
@@ -46,49 +44,44 @@ namespace Flux
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double CartesianToRotationAngle(double x, double y)
+    public static double ConvertCartesianToRotationAngle(double x, double y)
       => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double CartesianToRotationAngle(System.Numerics.Vector2 vector)
-      => CartesianToRotationAngle(vector.X, vector.Y);
-
+    public static double ConvertCartesianToRotationAngle(System.Numerics.Vector2 vector)
+      => ConvertCartesianToRotationAngle(vector.X, vector.Y);
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double CartesianToRotationAngleEx(double x, double y)
-      => Maths.PiX2 - CartesianToRotationAngle(y, -x);
+    public static double ConvertCartesianToRotationAngleEx(double x, double y)
+      => Maths.PiX2 - ConvertCartesianToRotationAngle(y, -x);
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double CartesianToRotationAngleEx(System.Numerics.Vector2 vector)
-      => CartesianToRotationAngleEx(vector.X, vector.Y);
-
+    public static double ConvertCartesianToRotationAngleEx(System.Numerics.Vector2 vector)
+      => ConvertCartesianToRotationAngleEx(vector.X, vector.Y);
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
-    public static double DegreeToGradian(double degrees)
+    public static double ConvertDegreeToGradian(double degrees)
       => degrees * MultiplierDegreeToGradian;
     /// <summary>Convert the angle specified in degrees to radians.</summary>
-    public static double DegreeToRadian(double degrees)
+    public static double ConvertDegreeToRadian(double degrees)
       => degrees * MultiplierDegreeToRadian;
-
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
-    public static double GradianToDegree(double gradians)
+    public static double ConvertGradianToDegree(double gradians)
       => gradians * MultiplierGradianToDegree;
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-    public static double GradianToRadian(double gradians)
+    public static double ConvertGradianToRadian(double gradians)
       => gradians * MultiplierGradianToRadian;
-
     /// <summary>Convert the angle specified in radians to degrees.</summary>
-    public static double RadianToDegree(double radians)
+    public static double ConvertRadianToDegree(double radians)
       => radians * MultiplierRadianToDegree;
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-    public static double RadianToGradian(double radians)
+    public static double ConvertRadianToGradian(double radians)
       => radians * MultiplierRadianToGradian;
-
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-    public static System.Numerics.Vector2 RotationAngleToCartesian(double radians, out double x, out double y)
+    public static System.Numerics.Vector2 ConvertRotationAngleToCartesian(double radians, out double x, out double y)
       => new System.Numerics.Vector2((float)(x = System.Math.Cos(radians)), (float)(y = System.Math.Sin(radians)));
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-    public static System.Numerics.Vector2 RotationAngleToCartesianEx(double radians, out double x, out double y)
-      => RotationAngleToCartesian(Maths.PiX2 - (radians >= Maths.PiX2 ? radians % Maths.PiX2 : radians) + Maths.PiOver2, out x, out y);
+    public static System.Numerics.Vector2 ConvertRotationAngleToCartesianEx(double radians, out double x, out double y)
+      => ConvertRotationAngleToCartesian(Maths.PiX2 - (radians >= Maths.PiX2 ? radians % Maths.PiX2 : radians) + Maths.PiOver2, out x, out y);
     #endregion // Statics
 
     // Operators
@@ -114,7 +107,7 @@ namespace Flux
       => m_radian == other.m_radian;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(null, m_formatString, string.Format(formatProvider, $"{{0:{format ?? @"N1"}}}", m_radian));
+      => string.Format(formatProvider ?? new IFormatProvider.AngleFormatProvider(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Angle o && Equals(o);
