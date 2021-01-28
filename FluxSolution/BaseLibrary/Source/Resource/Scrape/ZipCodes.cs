@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Scrape
 {
 	public static class ZipCodes
@@ -24,19 +26,19 @@ namespace Flux.Resources.Scrape
 
 				while (e.MoveNext())
 				{
-					var objectArray = new object[e.Current.Length];
+					var objects = new object[e.Current.Length];
 
-					for (var i = objectArray.Length - 1; i >= 0; i--)
+					for (var index = objects.Length - 1; index >= 0; index--)
 					{
-						objectArray[i] = i switch
+						objects[index] = index switch
 						{
-							0 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
-							6 or 7 => System.Double.Parse(e.Current[i], System.Globalization.NumberStyles.Number, null),
-							_ => e.Current[i],
+							0 or 16 or 17 or 18 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var value) ? value : System.DBNull.Value,
+							6 or 7 or 8 or 9 or 10 => double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var value) ? value : System.DBNull.Value,
+							_ => e.Current[index],
 						};
 					}
 
-					yield return objectArray;
+					yield return objects;
 				}
 			}
 		}

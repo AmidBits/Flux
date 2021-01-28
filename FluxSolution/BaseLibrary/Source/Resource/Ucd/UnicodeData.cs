@@ -32,18 +32,19 @@ namespace Flux.Resources.Ucd
 
 				while (e.MoveNext())
 				{
-					var objectArray = new object[e.Current.Length];
+					var objects = new object[e.Current.Length];
 
-					for (var i = objectArray.Length - 1; i >= 0; i--)
+					for (var index = objects.Length - 1; index >= 0; index--)
 					{
-						objectArray[i] = i switch
+						objects[index] = index switch
 						{
-							0=> System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.HexNumber, null),
-							_ => e.Current[i],
+							0 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var value) ? value : System.DBNull.Value,
+							2 => Text.UnicodeCategoryMajorMinor.TryParse(e.Current[index], out var value) ? value.ToUnicodeCategory() : System.DBNull.Value,
+							_ => e.Current[index],
 						};
 					}
 
-					yield return objectArray;
+					yield return objects;
 				}
 			}
 		}

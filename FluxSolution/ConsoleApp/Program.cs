@@ -12,26 +12,42 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			//var csv = new Flux.Text.CsvReader(Flux.Resources.Scrape.ZipCodes.UriLocal.GetStream(), new Flux.Text.CsvOptions());
+
+			//for (csv.ReadToNextToken(); csv.TokenType != Flux.Text.CsvTokenType.None; csv.ReadToNextToken())
+			//{
+			//	if (csv.TokenType == Flux.Text.CsvTokenType.EndLine)
+			//	{
+			//		System.Console.WriteLine($"{csv.FieldValues.Count}");// ({string.Join('|', csv.FieldValues)})");
+			//	}
+			//}
+
+			//var s = "Señor Ñick.".Normalize(System.Text.NormalizationForm.FormKD);
+			//var s1 = string.Concat(s.Where(c => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark && System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.SpacingCombiningMark && System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.EnclosingMark).ToArray());
+
+			//System.Console.WriteLine($"{s} = {s1}");
+//			return;
+
 			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data1)} = {data1.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
 			var data2 = Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.GetStrings(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data2)} = {data2.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows)} = {data2.GetLength(0).ToGroupString()} rows, {data2[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data3 = Flux.Resources.ProjectGutenberg.TableOfContents.GetStrings(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data3)} = {data3.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TableOfContents)} = {data3.GetLength(0).ToGroupString()} rows, {data3[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data4 = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetStrings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data4)} = {data4.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings)} = {data4.GetLength(0).ToGroupString()} rows, {data4[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data5 = Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.GetStrings(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data5)} = {data5.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary)} = {data5.GetLength(0).ToGroupString()} rows, {data5[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data6 = Flux.Resources.Scowl.TwoOfTwelveFull.GetStrings(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data6)} = {data6.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.Scowl.TwoOfTwelveFull)} = {data6.GetLength(0).ToGroupString()} rows, {data6[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data7 = Flux.Resources.Scrape.ZipCodes.GetObjects(Flux.Resources.Scrape.ZipCodes.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data7)} = {data7.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.Scrape.ZipCodes)} = {data7.GetLength(0).ToGroupString()} rows, {data7[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data8 = Flux.Resources.Ucd.Blocks.GetObjects(Flux.Resources.Ucd.Blocks.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data8)} = {data8.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.Blocks)} = {data8.GetLength(0).ToGroupString()} rows, {data8[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data9 = Flux.Resources.Ucd.UnicodeData.GetObjects(Flux.Resources.Ucd.UnicodeData.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data9)} = {data9.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.UnicodeData)} = {data9.GetLength(0).ToGroupString()} rows, {data9[0].GetLength(0)} columns {System.DateTime.Now}");
 			var data0 = Flux.Resources.W3c.NamedCharacterReferences.GetStrings(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).ToArray();
-			System.Console.WriteLine($"{nameof(data0)} = {data0.GetLength(0)} = {System.DateTime.Now}");
+			System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
 
 			//using var e = data0.GetEnumerator();
 
