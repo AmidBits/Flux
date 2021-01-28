@@ -18,13 +18,13 @@ namespace Flux.Text
         var count = 0;
         var value = 0U;
 
-        foreach (char c in characters)
+        foreach (var character in characters)
         {
-          if (c == 'z' && count == 0) stream.Write(EncodeValue(value, 5), 0, 4);
-          else if (c < Characters[0] || c > Characters[Characters.Length - 1]) throw new System.FormatException($"Invalid character '{c}' in Ascii85 block.");
+          if (character == 'z' && count == 0) stream.Write(EncodeValue(value, 5), 0, 4);
+          else if (character < Characters[0] || character > Characters[Characters.Length - 1]) throw new System.FormatException($"Invalid character '{character}' in Ascii85 block.");
           else
           {
-            try { checked { value += (uint)(m_powersOf85[count] * (c - Characters.First())); } }
+            try { checked { value += (uint)(m_powersOf85[count] * (character - Characters.First())); } }
             catch (System.OverflowException ex) { throw new System.FormatException("The character block decodes to a value greater than 32-bits.", ex); }
 
             count++;

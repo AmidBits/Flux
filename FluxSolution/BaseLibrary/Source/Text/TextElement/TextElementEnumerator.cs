@@ -30,9 +30,9 @@ namespace Flux.Text
 		{
 			private readonly TextElementEnumerator m_enumerator;
 
-			private readonly char[] m_charArray;
-			private int m_charIndex;
-			private int m_charCount;
+			private readonly char[] m_array;
+			private int m_index;
+			private int m_count;
 
 			private string m_current;
 
@@ -40,9 +40,9 @@ namespace Flux.Text
 			{
 				m_enumerator = enumerator;
 
-				m_charArray = new char[enumerator.m_bufferSize];
-				m_charIndex = 0;
-				m_charCount = 0;
+				m_array = new char[enumerator.m_bufferSize];
+				m_index = 0;
+				m_count = 0;
 
 				m_current = default!;
 			}
@@ -56,23 +56,23 @@ namespace Flux.Text
 
 			public bool MoveNext()
 			{
-				var difference = m_charCount - m_charIndex;
+				var difference = m_count - m_index;
 
 				if (difference <= 4)
 				{
 					if (difference > 0)
-						System.Array.Copy(m_charArray, m_charIndex, m_charArray, 0, difference);
+						System.Array.Copy(m_array, m_index, m_array, 0, difference);
 
-					m_charIndex = 0;
-					m_charCount = difference;
+					m_index = 0;
+					m_count = difference;
 				}
 
-				if (m_charIndex == 0 && m_charCount < m_charArray.Length)
+				if (m_index == 0 && m_count < m_array.Length)
 				{
-					m_charCount += m_enumerator.m_textReader.Read(m_charArray, m_charCount, m_charArray.Length - m_charCount);
+					m_count += m_enumerator.m_textReader.Read(m_array, m_count, m_array.Length - m_count);
 				}
 
-				m_stringInfo.String = new string(m_charArray, m_charIndex, m_charCount - m_charIndex);
+				m_stringInfo.String = new string(m_array, m_index, m_count - m_index);
 
 				if (m_stringInfo.String.Length > 0)
 				{
@@ -80,7 +80,7 @@ namespace Flux.Text
 
 					if (grapheme is not null && grapheme.Length > 0)
 					{
-						m_charIndex += grapheme.Length;
+						m_index += grapheme.Length;
 
 						m_current = grapheme;
 

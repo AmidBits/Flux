@@ -30,9 +30,9 @@ namespace Flux.Text
 		{
 			private readonly RuneEnumerator m_enumerator;
 
-			private readonly char[] charArray;
-			private int charIndex;
-			private int charCount;
+			private readonly char[] m_array;
+			private int m_index;
+			private int m_count;
 
 			private System.Text.Rune m_current;
 
@@ -40,9 +40,9 @@ namespace Flux.Text
 			{
 				m_enumerator = enumerator;
 
-				charArray = new char[enumerator.m_bufferSize];
-				charIndex = 0;
-				charCount = 0;
+				m_array = new char[enumerator.m_bufferSize];
+				m_index = 0;
+				m_count = 0;
 
 				m_current = default!;
 			}
@@ -54,25 +54,25 @@ namespace Flux.Text
 
 			public bool MoveNext()
 			{
-				var difference = charCount - charIndex;
+				var difference = m_count - m_index;
 
 				if (difference <= 4)
 				{
 					if (difference > 0)
-						System.Array.Copy(charArray, charIndex, charArray, 0, difference);
+						System.Array.Copy(m_array, m_index, m_array, 0, difference);
 
-					charIndex = 0;
-					charCount = difference;
+					m_index = 0;
+					m_count = difference;
 				}
 
-				if (charIndex == 0 && charCount < charArray.Length)
+				if (m_index == 0 && m_count < m_array.Length)
 				{
-					charCount += m_enumerator.m_textReader.Read(charArray, charCount, charArray.Length - charCount);
+					m_count += m_enumerator.m_textReader.Read(m_array, m_count, m_array.Length - m_count);
 				}
 
-				if (System.Text.Rune.DecodeFromUtf16(charArray.AsSpan().Slice(charIndex, charCount - charIndex), out var rune, out var count) is var or && or == System.Buffers.OperationStatus.Done)
+				if (System.Text.Rune.DecodeFromUtf16(m_array.AsSpan().Slice(m_index, m_count - m_index), out var rune, out var count) is var or && or == System.Buffers.OperationStatus.Done)
 				{
-					charIndex += count;
+					m_index += count;
 
 					m_current = rune;
 
