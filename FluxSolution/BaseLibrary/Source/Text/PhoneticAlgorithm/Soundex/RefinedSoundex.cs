@@ -6,7 +6,7 @@ namespace Flux
     /// <returns>Returns a variable length refined soundex code.</returns>
     /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
     public static string EncodeRefinedSoundex(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.RefinedSoundex().EncodePhonetic(source);
+      => new Text.PhoneticAlgorithm.RefinedSoundex().EncodePhoneticAlgorithm(source);
   }
 
   namespace Text.PhoneticAlgorithm
@@ -15,13 +15,13 @@ namespace Flux
     /// <returns>Returns a variable length refined soundex code.</returns>
     /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
     public class RefinedSoundex
-      : IPhoneticEncoder
+      : IPhoneticAlgorithmEncoder
     {
       public const string LetterCodeMap = @"01360240043788015936020505";
 
-      public int CodeLength { get; set; } = 10;
+      public int MaxCodeLength { get; set; } = 10;
 
-      public string EncodePhonetic(System.ReadOnlySpan<char> name)
+      public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
       {
         var refinedSoundex = new System.Text.StringBuilder(20);
 
@@ -44,7 +44,7 @@ namespace Flux
           }
         }
 
-        return refinedSoundex.ToString(0, System.Math.Min(CodeLength, refinedSoundex.Length));
+        return refinedSoundex.ToString(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length));
       }
     }
   }

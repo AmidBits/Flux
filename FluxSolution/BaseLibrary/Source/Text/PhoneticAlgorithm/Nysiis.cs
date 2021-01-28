@@ -3,7 +3,7 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
   public class Nysiis
-    : IPhoneticEncoder
+    : IPhoneticAlgorithmEncoder
   {
     public int MaxCodeLength { get; set; } = 6;
 
@@ -44,7 +44,7 @@ namespace Flux.Text.PhoneticAlgorithm
     /// <summary>Nysiis is similar in nature to the SOUNDEX phonetic encoder, but does of course produce different results. New York State Identification and Intelligence System (NYSIIS) Phonetic Encoder.</summary>
     /// <see cref="https://xlinux.nist.gov/dads/HTML/nysiis.html"/>
     /// <summary>Returns a NYSIIS phonetically coded string.</summary>
-    public string EncodePhonetic(System.ReadOnlySpan<char> text)
+    public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> text)
     {
       var code = string.Concat(GetValidCharacters(text.ToString()));
 

@@ -4,7 +4,7 @@ namespace Flux.Text.PhoneticAlgorithm
 {
   /// <summary>Implements the Metaphone algorithm</summary>
   public class Metaphone
-    : IPhoneticEncoder
+    : IPhoneticAlgorithmEncoder
   {
     public int MaxCodeLength { get; set; } = 6;
 
@@ -18,7 +18,7 @@ namespace Flux.Text.PhoneticAlgorithm
     private int __pos;
 
     /// <summary>Encodes the given text using the Metaphone algorithm.</summary>
-    public string EncodePhonetic(System.ReadOnlySpan<char> text)
+    public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> text)
     {
       _output = new System.Text.StringBuilder();
 

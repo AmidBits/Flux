@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
     public static string EncodeSqlSoundex(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.SqlSoundex().EncodePhonetic(source);
+      => new Text.PhoneticAlgorithm.SqlSoundex().EncodePhoneticAlgorithm(source);
   }
 
   namespace Text.PhoneticAlgorithm
@@ -13,13 +13,13 @@ namespace Flux
     /// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
     public class SqlSoundex
-    : IPhoneticEncoder
+    : IPhoneticAlgorithmEncoder
     {
       public const string LetterCodeMap = @"01230120022455012623010202";
 
-      public int CodeLength { get; set; } = 4;
+      public int MaxCodeLength { get; set; } = 4;
 
-      public string EncodePhonetic(System.ReadOnlySpan<char> name)
+      public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
       {
         var soundex = new System.Text.StringBuilder();
 
@@ -45,10 +45,10 @@ namespace Flux
           }
         }
 
-        if (soundex.Length < CodeLength)
-          return soundex.Append('0', CodeLength - soundex.Length).ToString();
-        if (soundex.Length > CodeLength)
-          return soundex.ToString(0, CodeLength);
+        if (soundex.Length < MaxCodeLength)
+          return soundex.Append('0', MaxCodeLength - soundex.Length).ToString();
+        if (soundex.Length > MaxCodeLength)
+          return soundex.ToString(0, MaxCodeLength);
 
         return soundex.ToString();
       }
