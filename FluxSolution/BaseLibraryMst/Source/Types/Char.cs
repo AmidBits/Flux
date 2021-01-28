@@ -11,9 +11,9 @@ namespace Types
     [TestMethod]
     public void IsDiacriticalStroke()
     {
-      Assert.AreEqual(false, 'ñ'.IsDiacriticalStroke());
-      Assert.AreEqual(true, 'ø'.IsDiacriticalStroke());
-      Assert.AreEqual(false, 'A'.IsDiacriticalStroke());
+      Assert.AreEqual(false, 'ñ'.IsDiacriticalLatinStroke());
+      Assert.AreEqual(true, 'ø'.IsDiacriticalLatinStroke());
+      Assert.AreEqual(false, 'A'.IsDiacriticalLatinStroke());
     }
 
     [TestMethod]

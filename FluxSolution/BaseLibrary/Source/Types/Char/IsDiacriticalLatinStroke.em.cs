@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SystemCharEm
   {
     /// <summary>Determines whether the character is a latin diacritical stroke.</summary>
-    public static bool IsDiacriticalStroke(this char source)
+    public static bool IsDiacriticalLatinStroke(this char source)
       => source switch
       {
         '\u00D8' => true, // Latin Capital letter O with stroke
