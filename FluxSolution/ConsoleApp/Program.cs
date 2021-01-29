@@ -12,20 +12,12 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			//var mra = new Flux.Text.PhoneticAlgorithm.MatchRatingApproach();
+			var c2 = new Flux.Text.PhoneticAlgorithm.Caverphone2();
+			var c2c = c2.EncodePhoneticAlgorithm("Coughlin");
+			System.Console.WriteLine($"{c2} = {c2c}");
 
-			//var nm1 = "Catherine";
-			//var mra1 = mra.EncodePhoneticAlgorithm(nm1);
-			//System.Console.WriteLine($"{nm1} = {mra1}");
 
-			//var nm2 = "Kathryn";
-			//var mra2 = mra.EncodePhoneticAlgorithm(nm2);
-			//System.Console.WriteLine($"{nm2} = {mra2}");
-
-			//var isGood = mra.CompareEncodings(nm1, nm2, out var minimumRating, out var similarityRating);
-			//System.Console.WriteLine($"{isGood}, {minimumRating}, {similarityRating}");
-			
-			//return;
+			return;
 
 			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal).ToArray();
 			System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");

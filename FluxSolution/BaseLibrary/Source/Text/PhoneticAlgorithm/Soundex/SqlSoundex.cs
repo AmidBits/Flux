@@ -1,13 +1,5 @@
 namespace Flux
 {
-  public static partial class TextPhoneticAlgorithmEm
-  {
-    /// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
-    public static string EncodeSqlSoundex(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.SqlSoundex().EncodePhoneticAlgorithm(source);
-  }
-
   namespace Text.PhoneticAlgorithm
   {
     /// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>

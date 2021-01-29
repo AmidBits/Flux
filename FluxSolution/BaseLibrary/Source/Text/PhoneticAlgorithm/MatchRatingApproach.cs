@@ -1,15 +1,5 @@
-using System.Linq;
-
 namespace Flux
 {
-	public static partial class TextPhoneticAlgorithmEm
-	{
-		/// <summary>The match rating approach (MRA) is a phonetic algorithm developed by Western Airlines in 1977 for the indexation and comparison of homophonous names.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Match_rating_approach"/>
-		public static string EncodeMatchRatingApproach(this System.ReadOnlySpan<char> source)
-			=> new Text.PhoneticAlgorithm.MatchRatingApproach().EncodePhoneticAlgorithm(source);
-	}
-
 	namespace Text.PhoneticAlgorithm
 	{
 		/// <summary>The match rating approach (MRA) is a phonetic algorithm developed by Western Airlines in 1977 for the indexation and comparison of homophonous names.</summary>
@@ -19,7 +9,7 @@ namespace Flux
 		{
 			public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
 			{
-				var soundex = new System.Text.StringBuilder();
+				var code = new System.Text.StringBuilder();
 
 				for (var index = 0; index < name.Length; index++)
 				{
@@ -34,62 +24,38 @@ namespace Flux
 							continue;
 					}
 
-					soundex.Append(char.ToUpper(character, System.Globalization.CultureInfo.InvariantCulture));
+					code.Append(char.ToUpper(character, System.Globalization.CultureInfo.InvariantCulture));
 				}
 
-				if (soundex.Length > 6)
-					return soundex.ToString(0, 3) + soundex.ToString(soundex.Length - 3, 3);
+				if (code.Length > 6)
+					code.Remove(3, code.Length - 6);
 
-				return soundex.ToString();
+				return code.ToString();
 			}
 
-			public int CommonChars(string left, string right)
+			/// <summary>Compare two MRA encoded names.</summary>
+			/// <param name="code1">The first encoded name.</param>
+			/// <param name="code2">The second encoded name.</param>
+			/// <param name="minimumRating">Output variable returning the minimum rating.</param>
+			/// <param name="similarityRating">Output variable returning the similarity rating.</param>
+			/// <returns>Whether the name comparison is considered successful.</returns>
+			public static bool CompareEncoded(System.ReadOnlySpan<char> code1, System.ReadOnlySpan<char> code2, out int minimumRating, out int similarityRating)
 			{
-				return left.GroupBy(c => c)
-						.Join(
-								right.GroupBy(c => c),
-								g => g.Key,
-								g => g.Key,
-								(lg, rg) => lg.Zip(rg, (l, r) => l).Count())
-						.Sum();
-			}
-			public void Chars(System.ReadOnlySpan<char> left, System.ReadOnlySpan<char> right, out System.Text.StringBuilder leftOnly, out System.Text.StringBuilder leftAlso, out System.Text.StringBuilder rightOnly, out System.Text.StringBuilder rightAlso)
-			{
-				leftOnly = new System.Text.StringBuilder();
-				leftAlso = new System.Text.StringBuilder();
+				minimumRating = ComputeMinimumRating(code1.Length, code2.Length);
+				similarityRating = ComputeSimilarityRating(code1, code2);
 
-				foreach (var c in left)
-				{
-					if (right.IndexOf(c) == -1)
-						leftOnly.Append(c);
-					else
-						leftAlso.Append(c);
-				}
-
-				rightOnly = new System.Text.StringBuilder();
-				rightAlso = new System.Text.StringBuilder();
-
-				foreach (var c in right)
-				{
-					if (left.IndexOf(c) == -1)
-						rightOnly.Append(c);
-					else
-						rightAlso.Append(c);
-				}
+				return similarityRating >= minimumRating;
 			}
 
-			public bool CompareEncodings(System.ReadOnlySpan<char> name1, System.ReadOnlySpan<char> name2, out int minimumRating, out int similarityRating)
+			/// <summary>Returns the minimum rating which is based on the code lengths from two encoded names.</summary>
+			/// <param name="codeLength1">The first encoded length.</param>
+			/// <param name="codeLength2">The second encoded length.</param>
+			public static int ComputeMinimumRating(int codeLength1, int codeLength2)
 			{
-				minimumRating = 0;
-				similarityRating = 0;
+				if (System.Math.Abs(codeLength1 - codeLength2) >= 3)
+					return 0;
 
-				var code1 = EncodePhoneticAlgorithm(name1).AsReadOnlySpan();
-				var code2 = EncodePhoneticAlgorithm(name2).AsReadOnlySpan();
-
-				if (System.Math.Abs(code1.Length - code2.Length) >= 3)
-					return false;
-
-				minimumRating = (code1.Length + code2.Length) switch
+				return (codeLength1 + codeLength2) switch
 				{
 					<= 4 => 5,
 					<= 7 => 4,
@@ -97,28 +63,58 @@ namespace Flux
 					12 => 2,
 					_ => 0
 				};
+			}
+			/// <summary>Returns the similarity rating for two encoded names.</summary>
+			/// <param name="code1">The first encoded name.</param>
+			/// <param name="code2">The second encoded name.</param>
+			/// <returns></returns>
+			public static int ComputeSimilarityRating(System.ReadOnlySpan<char> code1, System.ReadOnlySpan<char> code2)
+			{
+				var large = code1.ToStringBuilder();
+				var small = code2.ToStringBuilder();
 
-				Chars(name1, name2, out var nlo, out var nla, out var nro, out var nra);
-				Chars(code1, code2, out var clo, out var cla, out var cro, out var cra);
+				if (large.Length < small.Length)
+				{
+					var tmp = large;
+					large = small;
+					small = tmp;
+				}
 
-				//var c1 = code1.ToStringBuilder().ReplaceAll(' ', code2.ToArray());
-				//var n1 = name1.ToStringBuilder().ReplaceAll(' ', name2.ToArray());
+				for (int i = 0; i < small.Length;)
+				{
+					bool found = false;
 
-				//if (code1.CountEqualAtStart(code2, out var startMinLength) is var equalAtStart && equalAtStart > 0)
-				//{
-				//	code1 = code1.Slice(equalAtStart);
-				//	code2 = code2.Slice(equalAtStart);
-				//}
+					for (int j = 0; j < large.Length; j++)
+						if (small[i] == large[j])
+						{
+							small.Remove(i, 1);
+							large.Remove(j, 1);
+							found = true;
+						}
 
-				//if (code1.CountEqualAtEnd(code2, out var endMinLength) is var equalAtEnd && equalAtEnd > 0)
-				//{
-				//	code1 = code1.Slice(0, code1.Length - equalAtEnd);
-				//	code2 = code2.Slice(0, code2.Length - equalAtEnd);
-				//}
+					if (!found)
+						i++;
+				}
 
-				similarityRating = 6 - (code1.Length > code2.Length ? code1.Length : code2.Length);
+				for (var i = small.Length - 1; i >= 0;)
+				{
+					var found = false;
 
-				return similarityRating >= minimumRating;
+					for (var j = large.Length - 1; j >= 0; j--)
+					{
+						if (small[i] == large[j])
+						{
+							small.Remove(i, 1);
+							large.Remove(j, 1);
+							found = true;
+						}
+					}
+
+					if (!found)
+						i--;
+				}
+
+				return 6 - large.Length;
 			}
 		}
 	}

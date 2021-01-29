@@ -1,14 +1,5 @@
 namespace Flux
 {
-  public static partial class TextPhoneticAlgorithmEm
-  {
-    /// <summary>Refined soundex is a phonetic algorithm for indexing names by sound, as pronounced in English. It is an 'refined' version of the basic soundex.</summary>
-    /// <returns>Returns a variable length refined soundex code.</returns>
-    /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
-    public static string EncodeRefinedSoundex(this System.ReadOnlySpan<char> source)
-      => new Text.PhoneticAlgorithm.RefinedSoundex().EncodePhoneticAlgorithm(source);
-  }
-
   namespace Text.PhoneticAlgorithm
   {
     /// <summary>Refined soundex is a phonetic algorithm for indexing names by sound, as pronounced in English. It is an 'refined' version of the basic soundex.</summary>
