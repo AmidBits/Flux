@@ -13,7 +13,7 @@ namespace Flux.Resources.Scrape
 		/// <see cref="http://federalgovernmentzipcodes.us/"/>
 		// Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
 		public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> uri.GetStream().ReadCsv(new Text.CsvOptions());
+			=> uri.GetStream().ReadCsv(new Text.Csv.CsvOptions());
 
 		/// <summary>Same as GetStrings, but objects instead, and some complete row values converted to numerical values, e.g. RecordNumber, Lat, Long.</summary>
 		public static System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)

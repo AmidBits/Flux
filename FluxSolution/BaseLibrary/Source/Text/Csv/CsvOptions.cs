@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux.Text.Csv
 {
   public class CsvOptions
   {

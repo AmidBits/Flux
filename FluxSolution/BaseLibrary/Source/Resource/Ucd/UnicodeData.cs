@@ -18,7 +18,7 @@ namespace Flux.Resources.Ucd
 
 			if (uri is null) throw new System.ArgumentNullException(nameof(uri));
 
-			foreach (var item in uri.GetStream().ReadCsv(new Text.CsvOptions() { FieldSeparator = ';' }))
+			foreach (var item in uri.GetStream().ReadCsv(new Text.Csv.CsvOptions() { FieldSeparator = ';' }))
 				yield return item;
 		}
 
