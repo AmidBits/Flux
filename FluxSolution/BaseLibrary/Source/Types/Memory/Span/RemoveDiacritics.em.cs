@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class SystemMemorySpanEm
   {
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
     public static void RemoveDiacriticalLatinStrokes(this System.Span<char> source)

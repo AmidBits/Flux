@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class SystemMemorySpanEm
   {
     /// <summary>Returns a string padded evenly on both sides to the specified width by the specified padding characters for left and right respectively.</summary>
     public static System.Span<T> PadEven<T>(this System.Span<T> source, int desiredWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool invertDefaultOddPaddingBehavior = false)

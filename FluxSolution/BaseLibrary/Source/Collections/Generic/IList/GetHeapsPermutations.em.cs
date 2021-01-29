@@ -23,9 +23,9 @@ namespace Flux
 					if (stackState[stackIndex] < stackIndex)
 					{
 						if ((stackIndex & 1) == 0)
-							SystemSpanEm.Swap(list, 0, stackIndex);
+							SystemMemorySpanEm.Swap(list, 0, stackIndex);
 						else
-							SystemSpanEm.Swap(list, stackState[stackIndex], stackIndex);
+							SystemMemorySpanEm.Swap(list, stackState[stackIndex], stackIndex);
 
 						yield return (System.Collections.Generic.IReadOnlyList<T>)list;
 

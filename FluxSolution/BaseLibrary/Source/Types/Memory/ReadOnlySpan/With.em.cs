@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemReadOnlySpanEm
+  public static partial class SystemMemoryReadOnlySpanEm
   {
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
