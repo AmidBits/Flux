@@ -108,7 +108,16 @@ namespace Flux.Text.Csv
 			return m_fieldValue.ToString();
 		}
 
-		public void ReadToNextToken()
+		public bool ReadTo(CsvTokenType tokenType)
+		{
+			while (ReadToNextToken())
+				if (TokenType == tokenType)
+					return true;
+
+			return false;
+		}
+
+		public bool ReadToNextToken()
 		{
 			switch (TokenType)
 			{
@@ -160,6 +169,8 @@ namespace Flux.Text.Csv
 				default:
 					throw new System.ArgumentOutOfRangeException(nameof(TokenType));
 			}
+
+			return m_tokenType != CsvTokenType.None;
 		}
 
 		public System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<string>> ReadLists()
