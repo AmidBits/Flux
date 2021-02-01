@@ -3,6 +3,7 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
 	/// <summary>Implements the Caverphone 2.0 algorithm</summary>
+	// https://en.wikipedia.org/wiki/Caverphone
 	public class Caverphone2
 		: IPhoneticAlgorithmEncoder
 	{
@@ -64,7 +65,7 @@ namespace Flux.Text.PhoneticAlgorithm
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"r$", @"3"); // 7.41
 			code = code.Replace(@"r", @"2"); // 7.42
 
-			code = System.Text.RegularExpressions.Regex.Replace(code, @"l3", @"L3"); // 7.43
+			code = code.Replace(@"l3", @"L3"); // 7.43
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"l$", @"3"); // 7.44
 			code = code.Replace(@"l", @"2"); // 7.45
 

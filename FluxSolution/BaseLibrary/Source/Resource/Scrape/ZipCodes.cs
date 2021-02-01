@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Resources.Scrape
 {
 	public static class ZipCodes

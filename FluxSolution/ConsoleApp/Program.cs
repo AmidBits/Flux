@@ -12,12 +12,11 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			//var c2 = new Flux.Text.PhoneticAlgorithm.Caverphone2();
-			//var c2c = c2.EncodePhoneticAlgorithm("Coughlin");
-			//System.Console.WriteLine($"{c2} = {c2c}");
+			var c2 = new Flux.Text.PhoneticAlgorithm.Caverphone2();
+			var c2c = c2.EncodePhoneticAlgorithm("Coughlin");
+			System.Console.WriteLine($"{c2} = {c2c}");
 
-
-			//return;
+			return;
 
 			var data1 = Flux.Resources.Census.CountiesAllData.GetObjects(Flux.Resources.Census.CountiesAllData.UriLocal).ToArray();
 			System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
