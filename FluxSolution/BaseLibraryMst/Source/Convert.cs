@@ -40,7 +40,7 @@ namespace Static
       string decS102 = @"102";
       System.Numerics.BigInteger decI102 = 102;
 
-      var pnr10 = Flux.Text.PositionalNotation.ForRadix(2);
+      var pnr10 = Flux.Text.PositionalNotation.ForRadix(10);
 
       Assert.AreEqual(decS102, pnr10.NumberToText(decI102));
       Assert.AreEqual(decI102, pnr10.TextToNumber(decS102));
@@ -52,7 +52,7 @@ namespace Static
       string hexS102 = @"66";
       System.Numerics.BigInteger hexI102 = 0x66;
 
-      var pnr16 = Flux.Text.PositionalNotation.ForRadix(2);
+      var pnr16 = Flux.Text.PositionalNotation.ForRadix(16);
 
       Assert.AreEqual(hexS102, pnr16.NumberToText(hexI102));
       Assert.AreEqual(hexI102, pnr16.TextToNumber(hexS102));

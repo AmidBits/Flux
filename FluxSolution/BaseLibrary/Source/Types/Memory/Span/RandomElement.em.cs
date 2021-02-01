@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemMemorySpanEm
+  public static partial class SystemSpanEm
   {
     /// <summary>Returns a random element from the sequence in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public static bool RandomElement<T>(this System.Span<T> source, out T result, System.Random rng)

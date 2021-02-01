@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemMemoryReadOnlySpanEm
+  public static partial class SystemReadOnlySpanEm
   {
     /// <summary>Reports the index of the last occurence that satisfies the predicate.</summary>
     public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

@@ -13,47 +13,46 @@ namespace Flux.Text
     {
       if (characters == null) throw new System.ArgumentNullException(nameof(characters));
 
-      using (var stream = new System.IO.MemoryStream((int)System.Math.Ceiling(characters.Length * 0.8))) // Output will be 80% of the encoded string.
-      {
-        var count = 0;
-        var value = 0U;
+			using var stream = new System.IO.MemoryStream((int)System.Math.Ceiling(characters.Length * 0.8));
 
-        foreach (var character in characters)
-        {
-          if (character == 'z' && count == 0) stream.Write(EncodeValue(value, 5), 0, 4);
-          else if (character < Characters[0] || character > Characters[Characters.Length - 1]) throw new System.FormatException($"Invalid character '{character}' in Ascii85 block.");
-          else
-          {
-            try { checked { value += (uint)(m_powersOf85[count] * (character - Characters.First())); } }
-            catch (System.OverflowException ex) { throw new System.FormatException("The character block decodes to a value greater than 32-bits.", ex); }
+			var count = 0;
+			var value = 0U;
 
-            count++;
+			foreach (var character in characters)
+			{
+				if (character == 'z' && count == 0) stream.Write(EncodeValue(value, 5), 0, 4);
+				else if (character < Characters[0] || character > Characters[Characters.Length - 1]) throw new System.FormatException($"Invalid character '{character}' in Ascii85 block.");
+				else
+				{
+					try { checked { value += (uint)(m_powersOf85[count] * (character - Characters.First())); } }
+					catch (System.OverflowException ex) { throw new System.FormatException("The character block decodes to a value greater than 32-bits.", ex); }
 
-            if (count == 5) // On a 5 character boundary, decode value and write bytes.
-            {
-              stream.Write(EncodeValue(value, count), 0, 4);
+					count++;
 
-              count = 0;
-              value = 0;
-            }
-          }
-        }
+					if (count == 5) // On a 5 character boundary, decode value and write bytes.
+					{
+						stream.Write(EncodeValue(value, count), 0, 4);
 
-        if (count > 1)
-        {
-          for (int padding = count; padding < 5; padding++)
-          {
-            try { checked { value += 84 * m_powersOf85[padding]; } }
-            catch (System.OverflowException ex) { throw new System.FormatException("The final character block decodes to a value greater than 32-bits.", ex); }
-          }
+						count = 0;
+						value = 0;
+					}
+				}
+			}
 
-          if (EncodeValue(value, count) is var encoded) stream.Write(encoded, 0, encoded.Length);
-        }
-        else if (count == 0) throw new System.FormatException("The final character block must contain more than one character .");
+			if (count > 1)
+			{
+				for (int padding = count; padding < 5; padding++)
+				{
+					try { checked { value += 84 * m_powersOf85[padding]; } }
+					catch (System.OverflowException ex) { throw new System.FormatException("The final character block decodes to a value greater than 32-bits.", ex); }
+				}
 
-        return stream.ToArray();
-      }
-    }
+				if (EncodeValue(value, count) is var encoded) stream.Write(encoded, 0, encoded.Length);
+			}
+			else if (count == 0) throw new System.FormatException("The final character block must contain more than one character .");
+
+			return stream.ToArray();
+		}
     private static byte[] EncodeValue(uint value, int count)
     {
       var encoded = new byte[count - 1];

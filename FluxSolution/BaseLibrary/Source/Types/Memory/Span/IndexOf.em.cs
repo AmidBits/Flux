@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemMemorySpanEm
+  public static partial class SystemSpanEm
   {
     /// <summary>Reports the index of the first occurence that satisfy the predicate.</summary>
     public static int IndexOf<T>(this System.Span<T> source, System.Func<T, int, bool> predicate)

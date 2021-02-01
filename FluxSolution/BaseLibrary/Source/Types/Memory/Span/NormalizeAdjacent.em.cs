@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemMemorySpanEm
+  public static partial class SystemSpanEm
   {
     /// <summary>Normalize (in-place) the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
     public static System.Span<T> NormalizeAdjacent<T>(this System.Span<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)

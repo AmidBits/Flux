@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemMemorySpanEm
+  public static partial class SystemSpanEm
   {
     /// <summary>Normalize (in-place, destructive) all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
     public static System.Span<T> NormalizeAll<T>(this System.Span<T> source, T normalizeWith, System.Func<T, bool> predicate)
