@@ -12,7 +12,19 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var c2 = new Flux.Text.PhoneticAlgorithm.Caverphone2();
+			var paea = new Flux.Text.IPhoneticAlgorithmEncoder[] { new Flux.Text.PhoneticAlgorithm.AmericanSoundex(), new Flux.Text.PhoneticAlgorithm.Caverphone1(), new Flux.Text.PhoneticAlgorithm.Caverphone2(), new Flux.Text.PhoneticAlgorithm.MatchRatingApproach(), new Flux.Text.PhoneticAlgorithm.RefinedSoundex()};
+
+			var names = new string[] { "Robert", "Rupert", "Rubin", "Ashcraft", "Ashcroft", "Tymczak", "Pfister", "Honeyman" };
+
+			foreach (var pae in paea)
+			{
+				foreach (var name in names)
+				{
+					System.Console.WriteLine($"{pae.ToString()}.\"{name}\" = {pae.EncodePhoneticAlgorithm(name)}");
+				}
+			}
+
+			var c2 = new Flux.Text.PhoneticAlgorithm.Caverphone1();
 			var c2c = c2.EncodePhoneticAlgorithm("Coughlin");
 			System.Console.WriteLine($"{c2} = {c2c}");
 

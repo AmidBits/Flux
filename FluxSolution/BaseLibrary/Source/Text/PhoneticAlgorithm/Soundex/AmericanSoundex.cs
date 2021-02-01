@@ -28,12 +28,14 @@ namespace Flux
 						if (soundex.Length == 0)
 						{
 							soundex.Append(letter);
+
 							lastUsedCode = code;
 						}
-						else if (code != lastUsedCode && !wasLastLetterHW)
+						else if (!(code == lastUsedCode || wasLastLetterHW))
 						{
 							if (code != '0')
 								soundex.Append(code);
+
 							lastUsedCode = code;
 						}
 
@@ -47,6 +49,33 @@ namespace Flux
 					return soundex.ToString(0, MaxCodeLength);
 
 				return soundex.ToString();
+			}
+
+			/// <summary>Returns a score in the range [0, 4] symbolizing a difference of the two specified soundex codes. The larger the difference score the larger the difference.</summary>
+			/// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
+			public static int Difference(System.ReadOnlySpan<char> soundex1, System.ReadOnlySpan<char> soundex2)
+			{
+				if (soundex1 == soundex2)
+					return 4;
+
+				if (soundex1.Slice(1, 3) == soundex2.Slice(1, 3))
+					return 3;
+
+				var result = soundex1[0] == soundex2[0] ? 1 : 0;
+
+				if (soundex2.IndexOf(soundex1.Slice(2, 2)) > -1)
+					return 2 + result;
+				else if (soundex2.IndexOf(soundex1.Slice(1, 2)) > -1)
+					return 2 + result;
+
+				if (soundex2[1] == soundex1[1])
+					result++;
+				if (soundex2[2] == soundex1[2])
+					result++;
+				if (soundex2[3] == soundex1[3])
+					result++;
+
+				return result == 0 ? 1 : result;
 			}
 		}
 	}

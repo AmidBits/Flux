@@ -1,76 +1,73 @@
-namespace Flux
-{
-  namespace Text.PhoneticAlgorithm
-  {
-    /// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
-    public class SqlSoundex
-    : IPhoneticAlgorithmEncoder
-    {
-      public const string LetterCodeMap = @"01230120022455012623010202";
+//namespace Flux
+//{
+//	namespace Text.PhoneticAlgorithm
+//	{
+//		/// <summary>SQL Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English, and as adopted by some relational database systems.</summary>
+//		/// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
+//		public class SqlSoundex
+//			: IPhoneticAlgorithmEncoder
+//		{
+//			//ABCDEFGHIJKLMNOPQRSTUVWXYZ
+//			public const string LetterCodeMap = @"01230120022455012623010202";
 
-      public int MaxCodeLength { get; set; } = 4;
+//			public int MaxCodeLength { get; set; } = 4;
 
-      public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
-      {
-        var soundex = new System.Text.StringBuilder();
+//			public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
+//			{
+//				var soundex = new System.Text.StringBuilder();
 
-        var lastUsedCode = '\0';
+//				for (var index = 0; index < name.Length; index++)
+//				{
+//					if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
+//					{
+//						if (index == 0)
+//							soundex.Append(letter);
 
-        for (var index = 0; index < name.Length; index++)
-        {
-          if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'a' && letter <= 'z')
-          {
-            var code = LetterCodeMap[letter - 'a'];
+//						soundex.Append(LetterCodeMap[letter - 'A']);
+//					}
+//				}
 
-            if (soundex.Length == 0)
-            {
-              soundex.Append(letter);
-              lastUsedCode = code;
-            }
-            else if (code != lastUsedCode)
-            {
-              if (code != '0')
-                soundex.Append(code);
-              lastUsedCode = code;
-            }
-          }
-        }
+//				soundex.NormalizeAdjacent('1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-        if (soundex.Length < MaxCodeLength)
-          return soundex.Append('0', MaxCodeLength - soundex.Length).ToString();
-        if (soundex.Length > MaxCodeLength)
-          return soundex.ToString(0, MaxCodeLength);
+//				soundex.RemoveAll('0');
 
-        return soundex.ToString();
-      }
+//				if (soundex[1] == LetterCodeMap[soundex[0] - 'A'])
+//					soundex.Remove(1, 1);
 
-      /// <summary>Returns a score in the range [0, 4] symbolizing a difference of the two specified soundex codes. The larger the difference score the larger the difference.</summary>
-      /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
-      public static int Difference(System.ReadOnlySpan<char> soundex1, System.ReadOnlySpan<char> soundex2)
-      {
-        if (soundex1 == soundex2)
-          return 4;
+//				if (soundex.Length < MaxCodeLength)
+//					soundex.Append('0', MaxCodeLength - soundex.Length);
+//				if (soundex.Length > MaxCodeLength)
+//					soundex.KeepLeft(MaxCodeLength);
 
-        if (soundex1.Slice(1, 3) == soundex2.Slice(1, 3))
-          return 3;
+//				return soundex.ToString();
+//			}
 
-        var result = soundex1[0] == soundex2[0] ? 1 : 0;
+//			/// <summary>Returns a score in the range [0, 4] symbolizing a difference of the two specified soundex codes. The larger the difference score the larger the difference.</summary>
+//			/// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
+//			public static int Difference(System.ReadOnlySpan<char> soundex1, System.ReadOnlySpan<char> soundex2)
+//			{
+//				if (soundex1 == soundex2)
+//					return 4;
 
-        if (soundex2.IndexOf(soundex1.Slice(2, 2)) > -1)
-          return 2 + result;
-        else if (soundex2.IndexOf(soundex1.Slice(1, 2)) > -1)
-          return 2 + result;
+//				if (soundex1.Slice(1, 3) == soundex2.Slice(1, 3))
+//					return 3;
 
-        if (soundex2[1] == soundex1[1])
-          result++;
-        if (soundex2[2] == soundex1[2])
-          result++;
-        if (soundex2[3] == soundex1[3])
-          result++;
+//				var result = soundex1[0] == soundex2[0] ? 1 : 0;
 
-        return result == 0 ? 1 : result;
-      }
-    }
-  }
-}
+//				if (soundex2.IndexOf(soundex1.Slice(2, 2)) > -1)
+//					return 2 + result;
+//				else if (soundex2.IndexOf(soundex1.Slice(1, 2)) > -1)
+//					return 2 + result;
+
+//				if (soundex2[1] == soundex1[1])
+//					result++;
+//				if (soundex2[2] == soundex1[2])
+//					result++;
+//				if (soundex2[3] == soundex1[3])
+//					result++;
+
+//				return result == 0 ? 1 : result;
+//			}
+//		}
+//	}
+//}
