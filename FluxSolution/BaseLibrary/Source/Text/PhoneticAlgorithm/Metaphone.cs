@@ -18,11 +18,11 @@ namespace Flux.Text.PhoneticAlgorithm
 		private int __pos;
 
 		/// <summary>Encodes the given text using the Metaphone algorithm.</summary>
-		public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> text)
+		public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> expression)
 		{
 			_output = new System.Text.StringBuilder();
 
-			__text = string.Concat(text.ToString().RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+			__text = string.Concat(expression.ToString().RemoveDiacriticalMarks(c => c.RemoveDiacriticalLatinStroke()).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
 			__pos = 0;
 
 			// Special handling of some string prefixes: PN, KN, GN, AE, WR, WH and X
