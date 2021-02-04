@@ -4,7 +4,7 @@ namespace Flux
 	{
 		public static T Dump<T>(this T value)
 		{
-			System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(value));
+			System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(value, new System.Text.Json.JsonSerializerOptions() { MaxDepth = 8192 }));
 
 			return value;
 		}
