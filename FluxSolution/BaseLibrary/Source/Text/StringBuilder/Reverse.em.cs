@@ -31,6 +31,5 @@ namespace Flux
 
 			return ReverseImpl(source, startIndex, endIndex);
 		}
-
 	}
 }
