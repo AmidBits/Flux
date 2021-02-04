@@ -12,6 +12,14 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			var sb = new System.Text.StringBuilder("maya");
+			System.Console.WriteLine(sb);
+			sb.PadLeft(12, @"rob");
+			System.Console.WriteLine(sb);
+			sb.PadRight(20, @"rob");
+			System.Console.WriteLine(sb);
+			return;
+
 			var paea = Flux.Reflection.ApplicationDomain.CreateFromTypes<Flux.Text.IPhoneticAlgorithmEncoder>(Flux.Reflection.ApplicationDomain.GetClassesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>());
 
 			var names = new string[] { "Robert", "Rupert", "Rubin", "Ashcraft", "Ashcroft", "Tymczak", "Pfister", "Honeyman" };
