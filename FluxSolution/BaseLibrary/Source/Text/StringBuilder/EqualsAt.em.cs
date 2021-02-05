@@ -14,15 +14,15 @@ namespace Flux
 			var sourceIndex = startIndex + count;
 			var targetIndex = count;
 
-			if (sourceIndex >= source.Length || targetIndex >= target.Length)
+			if (sourceIndex > source.Length || targetIndex > target.Length)
 				return false; // If beyond either ends, there can be no equality.
 
 			while (--sourceIndex >= 0 && --targetIndex >= 0)
 				if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
 					break;
 
-			if (sourceIndex < 0 && targetIndex < 0)
-				return true; // If both indices reached negative, there was a match.
+			if (targetIndex < 0)
+				return true; // If target index reached negative, there was a match.
 
 			return false;
 		}

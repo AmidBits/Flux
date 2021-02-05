@@ -4,12 +4,10 @@ namespace Flux
   {
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool AreIsomorphic(this System.Text.StringBuilder source, string target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static bool AreIsomorphic(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (target is null) throw new System.ArgumentNullException(nameof(target));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       if (source.Length != target.Length) return false;
 

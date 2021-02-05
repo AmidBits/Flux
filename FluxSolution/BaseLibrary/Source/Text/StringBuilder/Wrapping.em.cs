@@ -20,7 +20,7 @@ namespace Flux
 
 		/// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
 		public static System.Text.StringBuilder Unwrap(this System.Text.StringBuilder source, string left, string right)
-			=> source is not null && !string.IsNullOrEmpty(left) && !string.IsNullOrEmpty(right) && IsWrapped(source, left, right) ? source.Remove(0, left.Length).Remove(source.Length - right.Length, right.Length) : (source ?? throw new System.ArgumentNullException(nameof(source));
+			=> source is not null && !string.IsNullOrEmpty(left) && !string.IsNullOrEmpty(right) && IsWrapped(source, left, right) ? source.Remove(0, left.Length).Remove(source.Length - right.Length, right.Length) : (source ?? throw new System.ArgumentNullException(nameof(source)));
 
 		/// <summary>Add the specified wrap strings to the source.</summary>
 		public static System.Text.StringBuilder Wrap(this System.Text.StringBuilder source, string left, string right)

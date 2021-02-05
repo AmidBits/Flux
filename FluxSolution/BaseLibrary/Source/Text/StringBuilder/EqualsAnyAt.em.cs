@@ -26,7 +26,8 @@ namespace Flux
 					if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
 						break;
 
-				if (sourceIndex < 0 && targetIndex < 0) return true;
+				if (targetIndex < 0)
+					return true; // If target index reached negative, there was a match.
 			}
 
 			return false;
