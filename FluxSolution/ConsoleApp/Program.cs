@@ -12,25 +12,12 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var sb = new System.Text.StringBuilder("maya");
-			System.Console.WriteLine(sb);
-			sb.PadLeft(12, @"rob");
-			System.Console.WriteLine(sb);
-			sb.PadRight(20, @"rob");
-			System.Console.WriteLine(sb);
-			return;
-
-			var paea = Flux.Reflection.ApplicationDomain.CreateFromTypes<Flux.Text.IPhoneticAlgorithmEncoder>(Flux.Reflection.ApplicationDomain.GetClassesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>());
-
+			var ipaes = Flux.Reflection.ApplicationDomain.CreateFromTypes<Flux.Text.IPhoneticAlgorithmEncoder>(Flux.Reflection.ApplicationDomain.GetClassesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>());
 			var names = new string[] { "Robert", "Rupert", "Rubin", "Ashcraft", "Ashcroft", "Tymczak", "Pfister", "Honeyman" };
 
-			foreach (var pae in paea)
-			{
+			foreach (var ipae in ipaes)
 				foreach (var name in names)
-				{
-					System.Console.WriteLine($"{pae.ToString()}.\"{name}\" = {pae.EncodePhoneticAlgorithm(name)}");
-				}
-			}
+					System.Console.WriteLine($"{ipae.ToString()}.\"{name}\" = {ipae.EncodePhoneticAlgorithm(name)}");
 
 			return;
 
