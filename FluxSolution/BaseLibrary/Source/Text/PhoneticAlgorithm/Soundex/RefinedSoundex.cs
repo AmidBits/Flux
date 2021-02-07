@@ -37,6 +37,15 @@ namespace Flux
 
         return refinedSoundex.ToString(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length));
       }
+
+      public System.Collections.Generic.Dictionary<string, string> Samples => new System.Collections.Generic.Dictionary<string, string>()
+      {
+        { "Braz", "B1905" },
+        { "Corwin", "C30908" },
+        { "Hayers", "H093" },
+        { "Lambert", "L7081096" },
+        { "Nolton", "N807608" },
+      };
     }
   }
 }
