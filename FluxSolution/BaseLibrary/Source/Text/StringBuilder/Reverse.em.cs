@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextStringBuilderEm
 	{
 		/// <summary>Reverse all ranged characters, in-place.</summary>
 		internal static System.Text.StringBuilder ReverseImpl(this System.Text.StringBuilder source, int startIndex, int lastIndex)

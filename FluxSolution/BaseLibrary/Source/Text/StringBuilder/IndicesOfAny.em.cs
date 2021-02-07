@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextStringBuilderEm
 	{
 		/// <summary>Reports all first indices of the specified characters within the string builder (-1 if not found). Uses the specified comparer.</summary>
 		public static int[] IndicesOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)

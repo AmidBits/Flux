@@ -15,6 +15,6 @@ namespace Flux
       return source;
     }
     public static System.Text.StringBuilder ReplaceEqualAt(this System.Text.StringBuilder source, int startAt, System.ReadOnlySpan<char> key, System.ReadOnlySpan<char> value)
-      => ReplaceEqualAt(source, startAt, key, value, System.Collections.Generic.EqualityComparer<char>.Default)
+      => ReplaceEqualAt(source, startAt, key, value, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

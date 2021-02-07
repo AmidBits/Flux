@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextStringBuilderEm
 	{
 		/// <summary>Yields the number of characters that the source and the target have in common from the start.</summary>
 		public static int CountEqualAtStart(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)

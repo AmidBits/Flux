@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemTextEm
+  public static partial class SystemTextStringBuilderEm
   {
     /// <summary>Replicates the string a specified number of times.</summary>
     public static System.Text.StringBuilder Replicate(this System.Text.StringBuilder source, int count)

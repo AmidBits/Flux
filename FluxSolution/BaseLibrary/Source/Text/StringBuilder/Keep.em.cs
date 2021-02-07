@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextStringBuilderEm
 	{
 		/// <summary>Keep the specified character from the left, in the StringBuilder (discard on right).</summary>
 		public static System.Text.StringBuilder KeepLeft(this System.Text.StringBuilder source, int count)

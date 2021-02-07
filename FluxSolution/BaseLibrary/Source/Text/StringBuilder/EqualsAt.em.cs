@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextStringBuilderEm
 	{
 		/// <summary>Determines whether the specified <paramref name="count"/> of characters from the <paramref name="target"/> can be found in the <paramref name="source"/> at the specified <paramref name="startIndex"/>. Uses the specified comparer.</summary>
 		public static bool EqualsAt(this System.Text.StringBuilder source, int startIndex, System.ReadOnlySpan<char> target, int count, System.Collections.Generic.IEqualityComparer<char> comparer)

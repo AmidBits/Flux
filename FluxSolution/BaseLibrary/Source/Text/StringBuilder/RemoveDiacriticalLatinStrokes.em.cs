@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemTextEm
+  public static partial class SystemTextStringBuilderEm
   {
     /// <summary>Remove diacritical (latin) strokes which are not covered by the normalization forms in NET.</summary>
     public static System.Text.StringBuilder RemoveDiacriticalLatinStrokes(this System.Text.StringBuilder source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemTextEm
+  public static partial class SystemTextStringBuilderEm
   {
     /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemTextEm
+  public static partial class SystemTextStringBuilderEm
   {
     public static System.Text.StringBuilder MakeIntegersFixedLength(this System.Text.StringBuilder source, int minLength)
     {
