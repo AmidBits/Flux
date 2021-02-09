@@ -9,9 +9,12 @@ namespace Flux
 			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
 			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
+			var targetsCount = targets.Count;
+
 			for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-				for (var valueIndex = 0; valueIndex < targets.Count; valueIndex++)
-					if (comparer.Equals(source[sourceIndex], targets[valueIndex]))
+				if (source[sourceIndex] is var sourceChar)
+					for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
+					if (comparer.Equals(sourceChar, targets[targetsIndex]))
 						return sourceIndex;
 
 			return -1;
@@ -27,9 +30,11 @@ namespace Flux
 			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
 			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
+			var targetsCount = targets.Count;
+
 			for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-				for (var valueIndex = targets.Count - 1; valueIndex >= 0; valueIndex--)
-					if (Equals(source, sourceIndex, targets[valueIndex], comparer))
+				for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
+					if (EqualsAt(source, sourceIndex, targets[targetsIndex], comparer))
 						return sourceIndex;
 
 			return -1;

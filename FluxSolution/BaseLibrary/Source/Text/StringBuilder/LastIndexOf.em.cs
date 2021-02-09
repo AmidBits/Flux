@@ -24,8 +24,8 @@ namespace Flux
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-			for (int index = source.Length - target.Length; index >= 0; index--)
-				if (Equals(source, index, target, comparer))
+			for (var index = source.Length - target.Length; index >= 0; index--)
+				if (EqualsAt(source, index, target, comparer))
 					return index;
 
 			return -1;

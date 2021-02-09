@@ -15,7 +15,7 @@ namespace Flux
 			if (sourceLength < targetLength)
 				return false;
 
-			for (var index = 0; index < targetLength; index++)
+			for (var index = targetLength - 1; index >= 0; index--)
 				if (!comparer.Equals(source[index], target[index]))
 					return false;
 

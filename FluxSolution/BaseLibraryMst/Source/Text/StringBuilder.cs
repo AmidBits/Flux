@@ -85,11 +85,11 @@ namespace Text
 		public void EqualsAnyAt()
 		{
 			var expected = false;
-			var actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "do", "re", "mi" }.AsEnumerable());
+			var actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "do", "re", "mi" });
 			Assert.AreEqual(expected, actual);
 
 			expected = true;
-			actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "bo", "bi", "be" }.AsEnumerable());
+			actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "bo", "bi", "be" });
 			Assert.AreEqual(expected, actual);
 		}
 

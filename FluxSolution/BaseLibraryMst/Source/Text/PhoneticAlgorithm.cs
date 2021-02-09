@@ -45,26 +45,26 @@ namespace Text
 			Assert.AreEqual("SP", metaphone.EncodePhoneticAlgorithm("Sapp"));
 		}
 
-    [TestMethod]
-		public void Nysiis_Default()
-		{
-			Assert.AreEqual("SANARA", new Flux.Text.PhoneticAlgorithm.Nysiis().EncodePhoneticAlgorithm("Señor Hugo"));
-		}
+  //  [TestMethod]
+		//public void Nysiis_Default()
+		//{
+		//	Assert.AreEqual("SANARA", new Flux.Text.PhoneticAlgorithm.Nysiis().EncodePhoneticAlgorithm("Señor Hugo"));
+		//}
 
-		[TestMethod]
-		public void Nysiis_NikitaSamples()
-		{
-			var nysiis = new Flux.Text.PhoneticAlgorithm.Nysiis() { MaxCodeLength = 7 };
+		//[TestMethod]
+		//public void Nysiis_NikitaSamples()
+		//{
+		//	var nysiis = new Flux.Text.PhoneticAlgorithm.Nysiis() { MaxCodeLength = 7 };
 
-			Assert.AreEqual("DAGAL", nysiis.EncodePhoneticAlgorithm("Dougal"));
-			Assert.AreEqual("DAGAL", nysiis.EncodePhoneticAlgorithm("Dowgill"));
-			Assert.AreEqual("GLAND", nysiis.EncodePhoneticAlgorithm("Glinde"));
-			Assert.AreEqual("PLANRAG", nysiis.EncodePhoneticAlgorithm("Plumridge"));
-			//Assert.AreEqual("SANAC", nysiis.Encode("Chinnock"));
-			Assert.AreEqual("SANAC", nysiis.EncodePhoneticAlgorithm("Simic"));
-			Assert.AreEqual("WABARLY", nysiis.EncodePhoneticAlgorithm("Webberley"));
-			Assert.AreEqual("WABARLY", nysiis.EncodePhoneticAlgorithm("Wibberley"));
-		}
+		//	Assert.AreEqual("DAGAL", nysiis.EncodePhoneticAlgorithm("Dougal"));
+		//	Assert.AreEqual("DAGAL", nysiis.EncodePhoneticAlgorithm("Dowgill"));
+		//	Assert.AreEqual("GLAND", nysiis.EncodePhoneticAlgorithm("Glinde"));
+		//	Assert.AreEqual("PLANRAG", nysiis.EncodePhoneticAlgorithm("Plumridge"));
+		//	//Assert.AreEqual("SANAC", nysiis.Encode("Chinnock"));
+		//	Assert.AreEqual("SANAC", nysiis.EncodePhoneticAlgorithm("Simic"));
+		//	Assert.AreEqual("WABARLY", nysiis.EncodePhoneticAlgorithm("Webberley"));
+		//	Assert.AreEqual("WABARLY", nysiis.EncodePhoneticAlgorithm("Wibberley"));
+		//}
 
     [TestMethod]
  		public void RefinedSoundex_Default()
