@@ -246,7 +246,7 @@ namespace Text
 		[TestMethod]
 		public void Right()
 		{
-			var expected = @"Rob";
+			var expected = @"ob";
 			var actual = new System.Text.StringBuilder(@"Rob").Right(2).ToString();
 			Assert.AreEqual(expected, actual);
 		}
@@ -254,7 +254,7 @@ namespace Text
 		[TestMethod]
 		public void RightMost()
 		{
-			var expected = @"ob";
+			var expected = @"Rob";
 			var actual = new System.Text.StringBuilder(@"Rob").RightMost(10);
 			Assert.AreEqual(expected, actual);
 		}
