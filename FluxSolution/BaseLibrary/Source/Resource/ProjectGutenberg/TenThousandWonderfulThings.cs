@@ -1,43 +1,49 @@
 namespace Flux.Resources.ProjectGutenberg
 {
-  public static class TenThousandWonderfulThings
-  {
-    public static System.Uri UriLocal
-      => new System.Uri(@"file://\Resources\ProjectGutenberg\pg45849.txt");
-    public static System.Uri UriSource
-      => new System.Uri(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
+	public class TenThousandWonderfulThings
+		: ITabularDataAcquirer
+	{
+		public static System.Uri UriLocal
+			=> new System.Uri(@"file://\Resources\ProjectGutenberg\pg45849.txt");
+		public static System.Uri UriSource
+			=> new System.Uri(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
 
-    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-    {
-      yield return new string[] { @"Title", @"Text" };
+		public System.Uri Uri { get; private set; }
 
-      var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
+		public TenThousandWonderfulThings(System.Uri uri)
+			=> Uri = uri;
 
-      using var e = uri.GetStream().ReadLines(System.Text.Encoding.UTF8, true).GetEnumerator();
+		public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+		{
+			yield return new string[] { @"Title", @"Text" };
 
-      var entry = new System.Text.StringBuilder();
+			var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-      while (e.MoveNext())
-        if (e.Current.Equals(@"TEN THOUSAND WONDERFUL THINGS.", System.StringComparison.Ordinal)) // This is where we start enumerating lines from the text.
-          break;
+			using var e = Uri.GetStream().ReadLines(System.Text.Encoding.UTF8, true).GetEnumerator();
 
-      while (e.MoveNext())
-      {
-        if (e.Current.Equals(@"  PRINTED BY WILLIAM CLOWES AND SONS, LIMITED, LONDON AND DECCLES.", System.StringComparison.Ordinal)) // This is where we stop enumerating lines from the text.
-          break;
+			var entry = new System.Text.StringBuilder();
 
-        if (entry.EndsWith("\r\n\r\n\r\n") && reTitle.IsMatch(e.Current))
-        {
-          var text = entry.ToString().Trim();
-          var index = text.IndexOf("\r\n", System.StringComparison.Ordinal);
+			while (e.MoveNext())
+				if (e.Current.Equals(@"TEN THOUSAND WONDERFUL THINGS.", System.StringComparison.Ordinal)) // This is where we start enumerating lines from the text.
+					break;
 
-          yield return new string[] { text.Substring(0, index), text.Substring(index).Trim() };
+			while (e.MoveNext())
+			{
+				if (e.Current.Equals(@"  PRINTED BY WILLIAM CLOWES AND SONS, LIMITED, LONDON AND DECCLES.", System.StringComparison.Ordinal)) // This is where we stop enumerating lines from the text.
+					break;
 
-          entry.Clear();
-        }
+				if (entry.EndsWith("\r\n\r\n\r\n") && reTitle.IsMatch(e.Current))
+				{
+					var text = entry.ToString().Trim();
+					var index = text.IndexOf("\r\n", System.StringComparison.Ordinal);
 
-        entry.AppendLine(e.Current);
-      }
-    }
-  }
+					yield return new string[] { text.Substring(0, index), text.Substring(index).Trim() };
+
+					entry.Clear();
+				}
+
+				entry.AppendLine(e.Current);
+			}
+		}
+	}
 }

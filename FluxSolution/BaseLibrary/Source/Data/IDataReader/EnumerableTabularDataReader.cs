@@ -6,7 +6,7 @@ namespace Flux.Data
 	public class EnumerableTabularDataReader
 		: TabularDataReader
 	{
-		private readonly System.Collections.Generic.IEnumerator<System.Collections.Generic.IEnumerable<object>> m_enumerator;
+		internal readonly System.Collections.Generic.IEnumerator<System.Collections.Generic.IEnumerable<object>> m_enumerator;
 
 		public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source, System.Collections.Generic.IList<string> fieldNames, System.Collections.Generic.IList<System.Type> fieldTypes)
 			: base(fieldNames, fieldTypes)

@@ -1,26 +1,28 @@
 namespace Flux.Resources.Scrape
 {
-	public static class ZipCodes
+	public class ZipCodes
+		: ITabularDataAcquirer
 	{
 		public static System.Uri UriLocal
 			=> new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");
 		public static System.Uri UriSource
 			=> new System.Uri(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
 
+		public System.Uri Uri { get; private set; }
+
+		public ZipCodes(System.Uri uri)
+			=> Uri = uri;
+
 		/// <summary>A free zip code file.</summary>
 		/// <see cref="http://federalgovernmentzipcodes.us/"/>
 		// Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
-		public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-			=> uri.GetStream().ReadCsv(new Text.Csv.CsvOptions());
-
-		/// <summary>Same as GetStrings, but objects instead, and some complete row values converted to numerical values, e.g. RecordNumber, Lat, Long.</summary>
-		public static System.Collections.Generic.IEnumerable<object[]> GetObjects(System.Uri uri)
+		public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
 		{
-			using var e = GetStrings(uri).GetEnumerator();
+			using var e = Uri.GetStream().ReadCsv(new Text.Csv.CsvOptions()).GetEnumerator();
 
 			if (e.MoveNext())
 			{
-				yield return e.Current;
+				yield return e.Current; // This is the field names (column headers).
 
 				while (e.MoveNext())
 				{

@@ -2,62 +2,66 @@ using System.Linq;
 
 namespace Flux.Resources.ProjectGutenberg
 {
-  public static class SynonymsAndAntonymsSamuelFallows
-  {
-    public static System.Uri UriLocal
-      => new System.Uri(@"file://\Resources\ProjectGutenberg\51155-0.txt");
-    public static System.Uri UriSource
-      => new System.Uri(@"http://www.gutenberg.org/files/51155/51155-0.txt");
+	public class SynonymsAndAntonymsSamuelFallows
+		: ITabularDataAcquirer
+	{
+		public static System.Uri UriLocal
+			=> new System.Uri(@"file://\Resources\ProjectGutenberg\51155-0.txt");
+		public static System.Uri UriSource
+			=> new System.Uri(@"http://www.gutenberg.org/files/51155/51155-0.txt");
 
-    /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
-    /// <remarks>Returns keywords, synonyms and antonyms.</summary>
-    /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
-    public static System.Collections.Generic.IEnumerable<string[]> GetStrings(System.Uri uri)
-    {
-      yield return new string[] { "Keywords", "Synonyms", "Antonyms" };
+		public System.Uri Uri { get; private set; }
 
-      if (uri is null) throw new System.ArgumentNullException(nameof(uri));
+		public SynonymsAndAntonymsSamuelFallows(System.Uri uri)
+			=> Uri = uri;
 
-      var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+		/// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
+		/// <remarks>Returns keywords, synonyms and antonyms.</summary>
+		/// <see cref="http://www.gutenberg.org/ebooks/51155"/>
+		public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+		{
+			yield return new string[] { "Keywords", "Synonyms", "Antonyms" };
 
-      foreach (var item in EnumerateArrays().Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) }))
-        yield return item;
+			var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-      System.Collections.Generic.IEnumerable<string[][]> EnumerateArrays()
-      {
-        var lines = new System.Text.StringBuilder();
+			foreach (var item in EnumerateArrays().Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) }))
+				yield return item;
 
-        foreach (var line in uri.GetStream().ReadLines(System.Text.Encoding.UTF8))
-        {
-          if (line == @"=" || line.Length == 0)
-          {
-            if (lines.StartsWith(@"KEY:"))
-            {
-              var list = reSection.Replace(lines.ToString(), @",").ToLower(System.Globalization.CultureInfo.CurrentCulture).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim(' ', '.')).Where(s => s.Length > 0).ToList();
+			System.Collections.Generic.IEnumerable<string[][]> EnumerateArrays()
+			{
+				var lines = new System.Text.StringBuilder();
 
-              var iKey = list.IndexOf(@"key:");
-              var iSyn = list.IndexOf(@"syn:");
-              var iAnt = list.IndexOf(@"ant:");
+				foreach (var line in Uri.GetStream().ReadLines(System.Text.Encoding.UTF8))
+				{
+					if (line == @"=" || line.Length == 0)
+					{
+						if (lines.StartsWith(@"KEY:"))
+						{
+							var list = reSection.Replace(lines.ToString(), @",").ToLower(System.Globalization.CultureInfo.CurrentCulture).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim(' ', '.')).Where(s => s.Length > 0).ToList();
 
-              var aKey = iKey > -1 ? list.GetRange(iKey + 1, (iSyn > -1 ? iSyn : iAnt > -1 ? iAnt : list.Count) - 1).ToArray() : System.Array.Empty<string>();
-              var aSyn = iSyn > -1 ? list.GetRange(iSyn + 1, (iAnt > -1 ? iAnt - iSyn : list.Count - iSyn) - 1).ToArray() : System.Array.Empty<string>();
-              var aAnt = iAnt > -1 ? list.GetRange(iAnt + 1, (list.Count - iAnt) - 1).ToArray() : System.Array.Empty<string>();
+							var iKey = list.IndexOf(@"key:");
+							var iSyn = list.IndexOf(@"syn:");
+							var iAnt = list.IndexOf(@"ant:");
 
-              if (aKey.Length > 0)
-                yield return new string[][] { aKey, aSyn, aAnt };
-            }
+							var aKey = iKey > -1 ? list.GetRange(iKey + 1, (iSyn > -1 ? iSyn : iAnt > -1 ? iAnt : list.Count) - 1).ToArray() : System.Array.Empty<string>();
+							var aSyn = iSyn > -1 ? list.GetRange(iSyn + 1, (iAnt > -1 ? iAnt - iSyn : list.Count - iSyn) - 1).ToArray() : System.Array.Empty<string>();
+							var aAnt = iAnt > -1 ? list.GetRange(iAnt + 1, (list.Count - iAnt) - 1).ToArray() : System.Array.Empty<string>();
 
-            lines.Clear();
-          }
-          else
-          {
-            if (lines.Length > 0)
-              lines.Append(',');
+							if (aKey.Length > 0)
+								yield return new string[][] { aKey, aSyn, aAnt };
+						}
 
-            lines.Append(line);
-          }
-        }
-      }
-    }
-  }
+						lines.Clear();
+					}
+					else
+					{
+						if (lines.Length > 0)
+							lines.Append(',');
+
+						lines.Append(line);
+					}
+				}
+			}
+		}
+	}
 }
