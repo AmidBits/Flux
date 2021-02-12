@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class RegularExpressions
+	public static partial class RegEx
 	{
 		public const string AllMarkupTags = @"(" + OneMarkupTag + @")+";
 		public const string OneMarkupTag = @"<[^>]+>";
