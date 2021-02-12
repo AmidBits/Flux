@@ -7,8 +7,8 @@ namespace Text
 	[TestClass]
 	public partial class StringBuilder
 	{
-		readonly string source = "Senor Hugo";
-		readonly string target = "señor hugo";
+		// private readonly string source = "Senor Hugo";
+		// private readonly string target = "señor hugo";
 
 		readonly Flux.StringComparerEx comparerIgnoreCase = Flux.StringComparerEx.CurrentCultureIgnoreCase;
 		readonly Flux.StringComparerEx comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
@@ -117,7 +117,155 @@ namespace Text
 		public void IndexOf()
 		{
 			var expected = 3;
-			var actual = new System.Text.StringBuilder("Robert").IndexOf("er");
+			var actual = new System.Text.StringBuilder("Robert Serious").IndexOf("er");
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void InsertOrdinalIndicatorSuffix()
+		{
+			var expected = @"The 3rd item is before the 13th.";
+			var actual = new System.Text.StringBuilder(@"The 3 item is before the 13.").InsertOrdinalIndicatorSuffix().ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void IsPalindrome()
+		{
+			var palindrome = @"Poor Dan is in a droop".ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToLowerCaseInvariant();
+			var expected = true;
+			var actual = palindrome.IsPalindrome();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void LastIndexOf()
+		{
+			var expected = 8;
+			var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOf("er");
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void MakeIntegersFixedLength()
+		{
+			var expected = @"The 0003 item is before the 0013.";
+			var actual = new System.Text.StringBuilder(@"The 3 item is before the 13.").MakeIntegersFixedLength(4).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void NormalizeAdjacents()
+		{
+			var expected = @"There is a bee in the soup.";
+			var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeAdjacent('a', 'b').ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void NormalizeAll()
+		{
+			var expected = @"There is a bee in the soup.";
+			var actual = new System.Text.StringBuilder(@"   There  is a  bee in  the soup.
+   ").NormalizeAll(' ', char.IsWhiteSpace).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void PadEven()
+		{
+			var expected = @"---101----";
+			var actual = new System.Text.StringBuilder(@"101").PadEven(10, '-', '-').ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void PadLeft()
+		{
+			var expected = @"00000006";
+			var actual = new System.Text.StringBuilder(@"6").PadLeft(8, '0').ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void PadRight()
+		{
+			var expected = @"60000000";
+			var actual = new System.Text.StringBuilder(@"6").PadRight(8, '0').ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void RemoveAll()
+		{
+			var expected = @" There  is  a  new  neat  little  thing  that  eats  soup.";
+			var actual = new System.Text.StringBuilder(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.").RemoveAll(char.IsDigit).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void ReplaceEqualAt()
+		{
+			var expected = @"It's a test.";
+			var actual = new System.Text.StringBuilder(@"It's a bamboozle.").ReplaceEqualAt(7, @"bamboozle", @"test").ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void Replicate()
+		{
+			var expected = @"Ittt is sooo a ooone, tttwooo and ttthree.";
+			var actual = new System.Text.StringBuilder(@"It is so a one, two and three.").Replicate(2, 'o', 't').ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void Reverse()
+		{
+			var expected = @"daeheldooD";
+			var actual = new System.Text.StringBuilder(@"Doodlehead").Reverse().ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void StartsWith()
+		{
+			var expected = true;
+			var actual = new System.Text.StringBuilder(@"Robs boat.").StartsWith(@"Rob");
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void LeftMost()
+		{
+			var expected = @"Rob";
+			var actual = new System.Text.StringBuilder(@"Rob").LeftMost(10);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void Right()
+		{
+			var expected = @"ob";
+			var actual = new System.Text.StringBuilder(@"Rob").Right(2).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void RightMost()
+		{
+			var expected = @"Rob";
+			var actual = new System.Text.StringBuilder(@"Rob").RightMost(10);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void Swap()
+		{
+			var expected = @"Hobert Rugo";
+			var sb = new System.Text.StringBuilder(@"Robert Hugo");
+			sb.Swap(7, 0);
+			var actual = sb.ToString();
 			Assert.AreEqual(expected, actual);
 		}
 	}
