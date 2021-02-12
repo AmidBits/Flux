@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class SystemTextStringBuilderEm
   {
-    public static System.Text.StringBuilder MakeIntegersFixedLength(this System.Text.StringBuilder source, int minLength)
+    public static System.Text.StringBuilder MakeIntegersFixedLength(this System.Text.StringBuilder source, int length)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -13,8 +13,8 @@ namespace Flux
       {
         var isDigit = char.IsDigit(source[index]);
 
-        if (!isDigit && wasDigit && digitCount < minLength)
-          source.Insert(index + 1, @"0", minLength - digitCount);
+        if (!isDigit && wasDigit && digitCount < length)
+          source.Insert(index + 1, @"0", length - digitCount);
         else if (isDigit && !wasDigit)
           digitCount = 1;
         else
@@ -23,7 +23,7 @@ namespace Flux
         wasDigit = isDigit;
       }
 
-      if (wasDigit) source.Insert(0, @"0", minLength - digitCount);
+      if (wasDigit) source.Insert(0, @"0", length - digitCount);
 
       return source;
     }

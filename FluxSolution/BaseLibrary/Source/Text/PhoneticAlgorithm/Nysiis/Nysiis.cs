@@ -26,16 +26,16 @@ namespace Flux.Text.PhoneticAlgorithm
     {
       var sb = new System.Text.StringBuilder(GetValidCharacters(expression.ToString()));
 
-      sb.ReplaceEqualAt(0, @"MAC", @"MCC");
-      sb.ReplaceEqualAt(0, @"KN", @"N");
-      sb.ReplaceEqualAt(0, @"K", @"C");
-      sb.ReplaceEqualAt(0, @"PH", @"FF");
-      sb.ReplaceEqualAt(0, @"PF", @"FF");
-      sb.ReplaceEqualAt(0, @"SCH", @"SSS");
+      sb.ReplaceIfEqualAt(0, @"MAC", @"MCC");
+      sb.ReplaceIfEqualAt(0, @"KN", @"N");
+      sb.ReplaceIfEqualAt(0, @"K", @"C");
+      sb.ReplaceIfEqualAt(0, @"PH", @"FF");
+      sb.ReplaceIfEqualAt(0, @"PF", @"FF");
+      sb.ReplaceIfEqualAt(0, @"SCH", @"SSS");
 
       // Replace end...
 
-      sb.ReplaceEqualAt(sb.Length-3, @"SCH", @"SSS");
+      sb.ReplaceIfEqualAt(sb.Length-3, @"SCH", @"SSS");
 
       if (sb.Length > MaxCodeLength)
         sb.Remove(0, MaxCodeLength);

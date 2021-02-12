@@ -35,7 +35,7 @@ namespace Flux
 			return -1;
 		}
 		/// <summary>Reports the first index of the specified string within the string builder, or -1 if not found. Uses the default comparer.</summary>
-		public static int IndexOf(this System.Text.StringBuilder source, string target)
+		public static int IndexOf(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target)
 			=> IndexOf(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
 	}
 }

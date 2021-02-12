@@ -58,6 +58,22 @@ namespace Text
 		}
 
 		[TestMethod]
+		public void Duplicate_Gemination()
+		{
+			var expected = "Roobeert";
+			var actual = new System.Text.StringBuilder("Robert").Duplicate("aeiou", 1).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void Duplicate_MultiDuplication()
+		{
+			var expected = @"Ittt is sooo a ooone, tttwooo and ttthree.";
+			var actual = new System.Text.StringBuilder(@"It is so a one, two and three.").Duplicate("ot", 2).ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
 		public void EndsWith()
 		{
 			var expected = true;
@@ -102,14 +118,6 @@ namespace Text
 
 			expected = true;
 			actual = new System.Text.StringBuilder("Robert").EqualsAt(2, "be");
-			Assert.AreEqual(expected, actual);
-		}
-
-		[TestMethod]
-		public void Geminate()
-		{
-			var expected = "Roobeert";
-			var actual = new System.Text.StringBuilder("Robert").Geminate('a', 'e', 'i', 'o', 'u').ToString();
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -207,15 +215,7 @@ namespace Text
 		public void ReplaceEqualAt()
 		{
 			var expected = @"It's a test.";
-			var actual = new System.Text.StringBuilder(@"It's a bamboozle.").ReplaceEqualAt(7, @"bamboozle", @"test").ToString();
-			Assert.AreEqual(expected, actual);
-		}
-
-		[TestMethod]
-		public void Replicate()
-		{
-			var expected = @"Ittt is sooo a ooone, tttwooo and ttthree.";
-			var actual = new System.Text.StringBuilder(@"It is so a one, two and three.").Replicate(2, 'o', 't').ToString();
+			var actual = new System.Text.StringBuilder(@"It's a bamboozle.").ReplaceIfEqualAt(7, @"bamboozle", @"test").ToString();
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -266,6 +266,22 @@ namespace Text
 			var sb = new System.Text.StringBuilder(@"Robert Hugo");
 			sb.Swap(7, 0);
 			var actual = sb.ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void ToLowerCase()
+		{
+			var expected = @"robert hugo";
+			var actual = new System.Text.StringBuilder(@"Robert Hugo").ToLowerCaseInvariant().ToString();
+			Assert.AreEqual(expected, actual);
+		}
+
+		[TestMethod]
+		public void ToUpperCase()
+		{
+			var expected = @"ROBERT HUGO";
+			var actual = new System.Text.StringBuilder(@"Robert Hugo").ToUpperCaseInvariant().ToString();
 			Assert.AreEqual(expected, actual);
 		}
 	}

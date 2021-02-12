@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux
 {
   public static partial class RegularExpressions
   {
@@ -14,12 +14,5 @@ namespace Flux.Text
     /// <example>See below for balanced parenthesis.</example>
     public static bool IsBalancedConstruct(this string source, string open, string match, string close)
       => System.Text.RegularExpressions.Regex.IsMatch(source, CreateBalancedExpression(open, match, close));
-
-    public const string Palindrome = @"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$";
-
-    /// <summary>Matches palindromes of any length.</summary>
-    /// <see cref="https://www.regular-expressions.info/balancing.html"/>
-    public static bool IsPalindrome(this string text)
-      => System.Text.RegularExpressions.Regex.IsMatch(text, Palindrome);
   }
 }
