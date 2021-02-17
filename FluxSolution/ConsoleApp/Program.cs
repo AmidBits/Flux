@@ -12,14 +12,18 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			Flux.IFullMatrix<char> fm = new Flux.SpanMetrics.LevenshteinDistance<char>();
+			Flux.IFullMatrix<char> fm = new Flux.SpanMetrics.OptimalStringAlignment<char>();
+			Flux.ICustomFullMatrix<char> cfm = new Flux.SpanMetrics.OptimalStringAlignmentEx<char>() { CostOfDeletion = 1.5, CostOfInsertion = 1.5, CostOfSubstitution = 1.5, CostOfTransposition = 1.5 };
 			var s1 = "sitting";
 			var s2 = "kitten";
 			var m = fm.GetFullMatrix(s1, s2);
+			var cm = cfm.GetCustomFullMatrix(s1, s2);
 			var s = m.ToConsoleString2d((e, i) => e.ToString());
+			var cs = cm.ToConsoleString2d((e, i) => e.ToString());
 			//s = " " + s.Replace(System.Environment.NewLine, $"{System.Environment.NewLine}*");
-//			s = string.Concat(s.Select((e, i) => e == '*' ? e + (i + 1).ToString() : e.ToString()));
+			//			s = string.Concat(s.Select((e, i) => e == '*' ? e + (i + 1).ToString() : e.ToString()));
 			System.Console.WriteLine(s);
+			System.Console.WriteLine(cs);
 			return;
 
 			var size = new Flux.Geometry.Size3(2, 3, 4);
