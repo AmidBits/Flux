@@ -1,11 +1,11 @@
 namespace Flux
 {
-  namespace SpanMetrics
-  {
-    /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
-    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
-    public class LongestCommonSubstring<T>
+	namespace SpanMetrics
+	{
+		/// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
+		/// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+		/// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
+		public class LongestCommonSubstring<T>
 		: ASpanMetrics<T>, IFullMatrix<T>, IMeasuredLength<T>
 		{
 			public LongestCommonSubstring()
@@ -18,7 +18,7 @@ namespace Flux
 			}
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-			public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
+			private int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
 			{
 				var lcsg = new int[source.Length + 1, target.Length + 1];
 

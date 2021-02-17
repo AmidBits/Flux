@@ -1,8 +1,8 @@
 namespace Flux
 {
-  /// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
+	/// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
 	public interface IFullMatrix<T>
-  {
+	{
 		/// <summary>Compute a measured distance for the two sequences.</summary>
 		/// <param name="source">The source sequence.</param>
 		/// <param name="target">The target sequence.</param>
