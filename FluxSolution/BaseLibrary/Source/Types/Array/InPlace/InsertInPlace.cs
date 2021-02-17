@@ -1,7 +1,7 @@
 namespace Flux
 {
 	/// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-	public static partial class SystemArrayEm
+	public static partial class Array1D
 	{
 		/// <summary>Insert the specified elements at the index.</summary>
 		public static void InsertInPlace<T>(ref T[] source, int index, params T[] insert)

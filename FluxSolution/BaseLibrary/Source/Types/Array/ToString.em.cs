@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class SystemArrayEm
+  public static partial class ArrayJagged
   {
     public static System.Collections.Generic.IEnumerable<string> ToConsoleStringsJagged<T>(this T[][] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
     {
@@ -54,6 +54,10 @@ namespace Flux
     }
     public static string ToConsoleString2d<T>(this T[,] source, System.Func<T, int, string>? formatSelector, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
       => string.Join(System.Environment.NewLine, ToConsoleStrings2d(source, formatSelector, horizontalSeparator, verticalSeparator, uniformMaxWidth));
+    public static string ToConsoleString2d<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
+      => ToConsoleString2d(source, null, horizontalSeparator, verticalSeparator, uniformMaxWidth);
+    public static string ToConsoleString2d<T>(T[,] source)
+      => ToConsoleString2d(source, '\u007C', '\u002D', false);
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

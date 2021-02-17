@@ -41,7 +41,18 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
  # $PSVersionTable
 
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
- [Flux.Locale]::SpecialFolders | Format-Table
+# [Flux.Locale]::SpecialFolders | Format-Table
+
+$md = New-Object 'Flux.SpanMetrics.LevenshteinDistance[char]'
+$fm = $md.GetFullMatrix("settings", "kitten")
+$fe = 
+{  
+  param($e, $i)
+
+  $e.ToString()
+}
+$s = [Flux.SystemArrayEm]::ToConsoleString2d($fm, , , $false)
+$s
 
 # $cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
 # $uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
