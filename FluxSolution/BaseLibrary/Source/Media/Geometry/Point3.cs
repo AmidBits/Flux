@@ -186,128 +186,128 @@ namespace Flux
 
 			#region Static Members
 			/// <summary>Create a new vector with the sum from the vector added by the other.</summary>
-			public static Point3 Add(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x + v2.m_x, v1.m_y + v2.m_y, v1.m_z + v2.m_z);
+			public static Point3 Add(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x + p2.m_x, p1.m_y + p2.m_y, p1.m_z + p2.m_z);
 			/// <summary>Create a new vector with the sum from each member added to the value.</summary>
-			public static Point3 Add(in Point3 v, int value)
-				=> new Point3(v.m_x + value, v.m_y + value, v.m_z + value);
+			public static Point3 Add(in Point3 p, int value)
+				=> new Point3(p.m_x + value, p.m_y + value, p.m_z + value);
 			/// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-			public static Point3 LeftShift(in Point3 v, int count)
-				=> new Point3(v.m_x << count, v.m_y << count, v.m_z << count);
+			public static Point3 LeftShift(in Point3 p, int count)
+				=> new Point3(p.m_x << count, p.m_y << count, p.m_z << count);
 			/// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-			public static Point3 RightShift(in Point3 v, int count)
-				=> new Point3(v.m_x << count, v.m_y << count, v.m_z << count);
+			public static Point3 RightShift(in Point3 p, int count)
+				=> new Point3(p.m_x << count, p.m_y << count, p.m_z << count);
 			/// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
-			public static Point3 BitwiseAnd(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x & v2.m_x, v1.m_y & v2.m_y, v1.m_z & v2.m_z);
+			public static Point3 BitwiseAnd(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x & p2.m_x, p1.m_y & p2.m_y, p1.m_z & p2.m_z);
 			/// <summary>Create a new vector by performing an AND operation of each member on the vector and the value.</summary>
-			public static Point3 BitwiseAnd(in Point3 v, int value)
-				=> new Point3(v.m_x & value, v.m_y & value, v.m_z & value);
+			public static Point3 BitwiseAnd(in Point3 p, int value)
+				=> new Point3(p.m_x & value, p.m_y & value, p.m_z & value);
 			/// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-			public static Point3 Xor(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x ^ v2.m_x, v1.m_y ^ v2.m_y, v1.m_z ^ v2.m_z);
+			public static Point3 Xor(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y, p1.m_z ^ p2.m_z);
 			/// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-			public static Point3 Xor(in Point3 v, int value)
-				=> new Point3(v.m_x ^ value, v.m_y ^ value, v.m_z ^ value);
+			public static Point3 Xor(in Point3 p, int value)
+				=> new Point3(p.m_x ^ value, p.m_y ^ value, p.m_z ^ value);
 			/// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-			public static Point3 OnesComplement(in Point3 v)
-				=> new Point3(~v.m_x, ~v.m_y, ~v.m_z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
+			public static Point3 OnesComplement(in Point3 p)
+				=> new Point3(~p.m_x, ~p.m_y, ~p.m_z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
 			/// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
-			public static Point3 BitwiseOr(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x | v2.m_x, v1.m_y | v2.m_y, v1.m_z | v2.m_z);
+			public static Point3 BitwiseOr(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x | p2.m_x, p1.m_y | p2.m_y, p1.m_z | p2.m_z);
 			/// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
-			public static Point3 BitwiseOr(in Point3 v, int value)
-				=> new Point3(v.m_x | value, v.m_y | value, v.m_z | value);
+			public static Point3 BitwiseOr(in Point3 p, int value)
+				=> new Point3(p.m_x | value, p.m_y | value, p.m_z | value);
 			/// <summary>Compute the Chebyshev distance between the vectors.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-			public static double ChebyshevDistance(in Point3 v1, in Point3 v2)
-				=> Maths.Max(System.Math.Abs(v2.m_x - v1.m_x), System.Math.Abs(v2.m_y - v1.m_y), System.Math.Abs(v2.m_z - v1.m_z));
+			public static double ChebyshevDistance(in Point3 p1, in Point3 p2)
+				=> Maths.Max(System.Math.Abs(p2.m_x - p1.m_x), System.Math.Abs(p2.m_y - p1.m_y), System.Math.Abs(p2.m_z - p1.m_z));
 			/// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
-			public static Point3 CrossProduct(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_y * v2.m_z - v1.m_z * v2.m_y, v1.m_z * v2.m_x - v1.m_x * v2.m_z, v1.m_x * v2.m_y - v1.m_y * v2.m_x);
+			public static Point3 CrossProduct(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_y * p2.m_z - p1.m_z * p2.m_y, p1.m_z * p2.m_x - p1.m_x * p2.m_z, p1.m_x * p2.m_y - p1.m_y * p2.m_x);
 			/// <summary>Create a new vector with each member subtracted by 1.</summary>
-			public static Point3 Decrement(in Point3 v1)
-				=> Subtract(v1, 1);
+			public static Point3 Decrement(in Point3 p1)
+				=> Subtract(p1, 1);
 			/// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
-			public static Point3 Divide(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x / v2.m_x, v1.m_y / v2.m_y, v1.m_z / v2.m_z);
+			public static Point3 Divide(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x / p2.m_x, p1.m_y / p2.m_y, p1.m_z / p2.m_z);
 			/// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
-			public static Point3 Divide(in Point3 v, int value)
-				=> new Point3(v.m_x / value, v.m_y / value, v.m_z / value);
+			public static Point3 Divide(in Point3 p, int value)
+				=> new Point3(p.m_x / value, p.m_y / value, p.m_z / value);
 			/// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-			public static Point3 DivideCeiling(in Point3 v, double value)
-				=> new Point3((int)System.Math.Ceiling(v.m_x / value), (int)System.Math.Ceiling(v.m_y / value), (int)System.Math.Ceiling(v.m_z / value));
+			public static Point3 DivideCeiling(in Point3 p, double value)
+				=> new Point3((int)System.Math.Ceiling(p.m_x / value), (int)System.Math.Ceiling(p.m_y / value), (int)System.Math.Ceiling(p.m_z / value));
 			/// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-			public static Point3 DivideFloor(in Point3 v, double value)
-				=> new Point3((int)System.Math.Floor(v.m_x / value), (int)System.Math.Floor(v.m_y / value), (int)System.Math.Floor(v.m_z / value));
+			public static Point3 DivideFloor(in Point3 p, double value)
+				=> new Point3((int)System.Math.Floor(p.m_x / value), (int)System.Math.Floor(p.m_y / value), (int)System.Math.Floor(p.m_z / value));
 			/// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-			public static int DotProduct(in Point3 v1, in Point3 v2)
-				=> v1.m_x * v2.m_x + v1.m_y * v2.m_y + v1.m_z * v2.m_z;
+			public static int DotProduct(in Point3 p1, in Point3 p2)
+				=> p1.m_x * p2.m_x + p1.m_y * p2.m_y + p1.m_z * p2.m_z;
 			/// <summary>Compute the euclidean distance of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double EuclideanDistance(in Point3 v1, in Point3 v2)
-				=> GetLength(v1 - v2);
+			public static double EuclideanDistance(in Point3 p1, in Point3 p2)
+				=> GetLength(p1 - p2);
 			/// <summary>Compute the euclidean distance squared of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double EuclideanDistanceSquare(in Point3 v1, in Point3 v2)
-				=> GetLengthSquared(v1 - v2);
+			public static double EuclideanDistanceSquare(in Point3 p1, in Point3 p2)
+				=> GetLengthSquared(p1 - p2);
 			/// <summary>Create a new vector from the index and the length of the m_x and the length of the m_y axes.</summary>
 			public static Point3 FromUniqueIndex(int index, int lengthX, int lengthY)
 				=> index % (lengthX * lengthY) is var irxy ? new Point3(irxy % lengthX, irxy / lengthX, index / (lengthX * lengthY)) : throw new System.ArgumentOutOfRangeException(nameof(index));
 			/// <summary>Compute the length (or magnitude) of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double GetLength(in Point3 v)
-				=> System.Math.Sqrt(v.m_x * v.m_x + v.m_y * v.m_y + v.m_z * v.m_z);
+			public static double GetLength(in Point3 p)
+				=> System.Math.Sqrt(p.m_x * p.m_x + p.m_y * p.m_y + p.m_z * p.m_z);
 			/// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double GetLengthSquared(in Point3 v)
-				=> v.m_x * v.m_x + v.m_y * v.m_y + v.m_z * v.m_z;
+			public static double GetLengthSquared(in Point3 p)
+				=> p.m_x * p.m_x + p.m_y * p.m_y + p.m_z * p.m_z;
 			/// <summary>Create a new vector with 1 added to each member.</summary>
-			public static Point3 Increment(in Point3 v1)
-				=> Add(v1, 1);
+			public static Point3 Increment(in Point3 p1)
+				=> Add(p1, 1);
 			/// <summary>Compute the Manhattan distance between the vectors.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-			public static int ManhattanDistance(in Point3 v1, in Point3 v2)
-				=> System.Math.Abs(v2.m_x - v1.m_x) + System.Math.Abs(v2.m_y - v1.m_y) + System.Math.Abs(v2.m_z - v1.m_z);
+			public static int ManhattanDistance(in Point3 p1, in Point3 p2)
+				=> System.Math.Abs(p2.m_x - p1.m_x) + System.Math.Abs(p2.m_y - p1.m_y) + System.Math.Abs(p2.m_z - p1.m_z);
 			/// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
-			public static Point3 Multiply(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x * v2.m_x, v1.m_y * v2.m_y, v1.m_z * v2.m_z);
+			public static Point3 Multiply(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x * p2.m_x, p1.m_y * p2.m_y, p1.m_z * p2.m_z);
 			/// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
-			public static Point3 Multiply(in Point3 v, int value)
-				=> new Point3(v.m_x * value, v.m_y * value, v.m_z * value);
+			public static Point3 Multiply(in Point3 p, int value)
+				=> new Point3(p.m_x * value, p.m_y * value, p.m_z * value);
 			/// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
-			public static Point3 MultiplyCeiling(in Point3 v, double value)
-				=> new Point3((int)System.Math.Ceiling(v.m_x * value), (int)System.Math.Ceiling(v.m_y * value), (int)System.Math.Ceiling(v.m_z * value));
+			public static Point3 MultiplyCeiling(in Point3 p, double value)
+				=> new Point3((int)System.Math.Ceiling(p.m_x * value), (int)System.Math.Ceiling(p.m_y * value), (int)System.Math.Ceiling(p.m_z * value));
 			/// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-			public static Point3 MultiplyFloor(in Point3 v, double value)
-				=> new Point3((int)System.Math.Floor(v.m_x * value), (int)System.Math.Floor(v.m_y * value), (int)System.Math.Floor(v.m_z * value));
+			public static Point3 MultiplyFloor(in Point3 p, double value)
+				=> new Point3((int)System.Math.Floor(p.m_x * value), (int)System.Math.Floor(p.m_y * value), (int)System.Math.Floor(p.m_z * value));
 			/// <summary>Create a new vector from the additive inverse, i.e. a negation of the members in the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
-			public static Point3 Negate(in Point3 v)
-				=> new Point3(-v.m_x, -v.m_y, -v.m_z); // Negate the members of the vector.
+			public static Point3 Negate(in Point3 p)
+				=> new Point3(-p.m_x, -p.m_y, -p.m_z); // Negate the members of the vector.
 			private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
-			public static Point3 Parse(string point)
-				=> m_regexParse.Match(point) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
-				? new Point3(x, y)
-				: throw new System.ArgumentOutOfRangeException(nameof(point));
-			public static bool TryParse(string point, out Point3 result)
+			public static Point3 Parse(string pointAsString)
+				=> m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
+				? new Point3(x, y, z)
+				: throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
+			public static bool TryParse(string pointAsString, out Point3 point)
 			{
 				try
 				{
-					result = Parse(point);
+					point = Parse(pointAsString);
 					return true;
 				}
 #pragma warning disable CA1031 // Do not catch general exception types
 				catch
 #pragma warning restore CA1031 // Do not catch general exception types
 				{
-					result = default!;
+					point = default!;
 					return false;
 				}
 			}
@@ -324,35 +324,35 @@ namespace Flux
 			public static Point3 RandomZero(in Point3 toExclusive)
 				=> RandomZero(toExclusive.m_x, toExclusive.m_y, toExclusive.m_z);
 			/// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
-			public static Point3 Remainder(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x % v2.m_x, v1.m_y % v2.m_y, v1.m_z % v2.m_z);
+			public static Point3 Remainder(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x % p2.m_x, p1.m_y % p2.m_y, p1.m_z % p2.m_z);
 			/// <summary>Create a new vector with the remainder from each member divided by the value.</summary>
-			public static Point3 Remainder(in Point3 v, int value)
-				=> new Point3(v.m_x % value, v.m_y % value, v.m_z % value);
+			public static Point3 Remainder(in Point3 p, int value)
+				=> new Point3(p.m_x % value, p.m_y % value, p.m_z % value);
 			/// <summary>Create a new vector with the floor(remainder) from each member divided by the value.</summary>
-			public static Point3 Remainder(in Point3 v, double value)
-				=> new Point3((int)(v.m_x % value), (int)(v.m_y % value), (int)(v.m_z % value));
+			public static Point3 Remainder(in Point3 p, double value)
+				=> new Point3((int)(p.m_x % value), (int)(p.m_y % value), (int)(p.m_z % value));
 			/// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-			public static int ScalarTripleProduct(in Point3 a, in Point3 b, in Point3 c)
-				=> DotProduct(a, CrossProduct(b, c));
+			public static int ScalarTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
+				=> DotProduct(p1, CrossProduct(p2, p3));
 			/// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
-			public static Point3 Subtract(in Point3 v1, in Point3 v2)
-				=> new Point3(v1.m_x - v2.m_x, v1.m_y - v2.m_y, v1.m_z - v2.m_z);
+			public static Point3 Subtract(in Point3 p1, in Point3 p2)
+				=> new Point3(p1.m_x - p2.m_x, p1.m_y - p2.m_y, p1.m_z - p2.m_z);
 			/// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
-			public static Point3 Subtract(in Point3 v, in int value)
-				=> new Point3(v.m_x - value, v.m_y - value, v.m_z - value);
+			public static Point3 Subtract(in Point3 p, in int value)
+				=> new Point3(p.m_x - value, p.m_y - value, p.m_z - value);
 			/// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
 			public static Size3 ToSize3(Point3 point)
 				=> new Size3(point.m_x, point.m_y, point.m_z);
 			/// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-			public static Point3 VectorTripleProduct(in Point3 a, in Point3 b, in Point3 c)
-				=> CrossProduct(a, CrossProduct(b, c));
+			public static Point3 VectorTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
+				=> CrossProduct(p1, CrossProduct(p2, p3));
 			#endregion Static Members
 
 			#region "Unique" Index
-			/// <summary>Convert a "mapped" index to a 3D vector. This index is uniquely mapped using the specified size vector.</summary>
+			/// <summary>Convert a "mapped" index to a 3D point. This index is uniquely mapped using the specified size vector.</summary>
 			public static Point3 FromUniqueIndex(long index, in Size3 bounds)
 			{
 				var xy = (long)bounds.Width * (long)bounds.Height;
@@ -360,9 +360,9 @@ namespace Flux
 
 				return new Point3((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
 			}
-			/// <summary>Converts the vector to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
-			public static long ToUniqueIndex(in Point3 vector, in Size3 bounds)
-				=> vector.m_x + (vector.m_y * bounds.Width) + (vector.m_z * bounds.Width * bounds.Height);
+			/// <summary>Converts the point to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
+			public static long ToUniqueIndex(in Point3 point, in Size3 bounds)
+				=> point.m_x + (point.m_y * bounds.Width) + (point.m_z * bounds.Width * bounds.Height);
 			#endregion "Unique" Index
 
 			#region Overloaded Operators
@@ -373,38 +373,38 @@ namespace Flux
 			public static Point3 operator --(in Point3 v) => Decrement(v);
 			public static Point3 operator ++(in Point3 v) => Increment(v);
 
-			public static Point3 operator +(in Point3 v1, in Point3 v2) => Add(v1, v2);
-			public static Point3 operator +(in Point3 v1, in int i) => Add(v1, i);
+			public static Point3 operator +(in Point3 p1, in Point3 p2) => Add(p1, p2);
+			public static Point3 operator +(in Point3 p1, in int i) => Add(p1, i);
 
-			public static Point3 operator -(in Point3 v1, in Point3 v2) => Subtract(v1, v2);
-			public static Point3 operator -(in Point3 v1, in int i) => Subtract(v1, i);
+			public static Point3 operator -(in Point3 p1, in Point3 p2) => Subtract(p1, p2);
+			public static Point3 operator -(in Point3 p1, in int i) => Subtract(p1, i);
 
-			public static Point3 operator *(in Point3 v1, in Point3 v2) => Multiply(v1, v2);
-			public static Point3 operator *(in Point3 v1, in int i) => Multiply(v1, i);
+			public static Point3 operator *(in Point3 p1, in Point3 p2) => Multiply(p1, p2);
+			public static Point3 operator *(in Point3 p1, in int i) => Multiply(p1, i);
 
-			public static Point3 operator /(in Point3 v1, in Point3 v2) => Divide(v1, v2);
-			public static Point3 operator /(in Point3 v1, in int i) => Divide(v1, i);
+			public static Point3 operator /(in Point3 p1, in Point3 p2) => Divide(p1, p2);
+			public static Point3 operator /(in Point3 p1, in int i) => Divide(p1, i);
 
-			public static Point3 operator %(in Point3 v1, in int i) => Remainder(v1, i);
-			public static Point3 operator %(in Point3 v1, in double d) => Remainder(v1, d);
+			public static Point3 operator %(in Point3 p1, in int i) => Remainder(p1, i);
+			public static Point3 operator %(in Point3 p1, in double d) => Remainder(p1, d);
 
-			public static Point3 operator &(in Point3 v1, in Point3 v2) => BitwiseAnd(v1, v2);
-			public static Point3 operator &(in Point3 v1, in int i) => BitwiseAnd(v1, i);
+			public static Point3 operator &(in Point3 p1, in Point3 p2) => BitwiseAnd(p1, p2);
+			public static Point3 operator &(in Point3 p1, in int i) => BitwiseAnd(p1, i);
 
-			public static Point3 operator |(in Point3 v1, in Point3 v2) => BitwiseOr(v1, v2);
-			public static Point3 operator |(in Point3 v1, in int i) => BitwiseOr(v1, i);
+			public static Point3 operator |(in Point3 p1, in Point3 p2) => BitwiseOr(p1, p2);
+			public static Point3 operator |(in Point3 p1, in int i) => BitwiseOr(p1, i);
 
-			public static Point3 operator ^(in Point3 v1, in Point3 v2) => Xor(v1, v2);
-			public static Point3 operator ^(in Point3 v1, in int i) => Xor(v1, i);
+			public static Point3 operator ^(in Point3 p1, in Point3 p2) => Xor(p1, p2);
+			public static Point3 operator ^(in Point3 p1, in int i) => Xor(p1, i);
 
-			public static Point3 operator <<(in Point3 v1, in int i) => LeftShift(v1, i);
-			public static Point3 operator >>(in Point3 v1, in int i) => RightShift(v1, i);
+			public static Point3 operator <<(in Point3 p1, in int i) => LeftShift(p1, i);
+			public static Point3 operator >>(in Point3 p1, in int i) => RightShift(p1, i);
 
-			public static bool operator ==(in Point3 v1, in Point3 v2) => v1.Equals(v2);
-			public static bool operator !=(in Point3 v1, in Point3 v2) => !v1.Equals(v2);
+			public static bool operator ==(in Point3 p1, in Point3 p2) => p1.Equals(p2);
+			public static bool operator !=(in Point3 p1, in Point3 p2) => !p1.Equals(p2);
 			#endregion Overloaded Operators
 
-			// System.IEquatable<Vector3>
+			// System.IEquatable<Point3>
 			public bool Equals(Point3 other)
 				=> m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
 

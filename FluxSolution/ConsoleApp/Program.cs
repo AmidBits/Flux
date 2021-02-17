@@ -12,6 +12,27 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			Flux.IFullMatrix<char> fm = new Flux.SpanMetrics.LevenshteinDistance<char>();
+			var s1 = "sitting";
+			var s2 = "kitten";
+			var m = fm.GetFullMatrix(s1, s2);
+			var s = m.ToConsoleString2d((e, i) => e.ToString());
+			//s = " " + s.Replace(System.Environment.NewLine, $"{System.Environment.NewLine}*");
+//			s = string.Concat(s.Select((e, i) => e == '*' ? e + (i + 1).ToString() : e.ToString()));
+			System.Console.WriteLine(s);
+			return;
+
+			var size = new Flux.Geometry.Size3(2, 3, 4);
+			var length = size.Width * size.Height * size.Depth;
+			for (var index = 0; index < length; index++)
+			{
+				var point = Flux.Geometry.Point3.FromUniqueIndex(index, size);
+				var uniqueIndex = Flux.Geometry.Point3.ToUniqueIndex(point, size);
+
+				System.Console.WriteLine($"{index} = {point} = {uniqueIndex}");
+			}
+			return;
+
 			//System.Collections.Generic.Dictionary<string, string> Samples = new System.Collections.Generic.Dictionary<string, string>()
 			//{
 			//  { "Dougal", "DAGAL" },

@@ -10,9 +10,9 @@ namespace Text
 		// private readonly string source = "Senor Hugo";
 		// private readonly string target = "señor hugo";
 
-		readonly Flux.StringComparerEx comparerIgnoreCase = Flux.StringComparerEx.CurrentCultureIgnoreCase;
-		readonly Flux.StringComparerEx comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
-		readonly Flux.StringComparerEx comparerNone = Flux.StringComparerEx.Ordinal;
+		//readonly Flux.StringComparerEx comparerIgnoreCase = Flux.StringComparerEx.CurrentCultureIgnoreCase;
+		//readonly Flux.StringComparerEx comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
+		//readonly Flux.StringComparerEx comparerNone = Flux.StringComparerEx.Ordinal;
 
 		[TestMethod]
 		public void AreIsomorphic()

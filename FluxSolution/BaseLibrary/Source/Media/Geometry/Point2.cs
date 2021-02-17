@@ -95,76 +95,76 @@ namespace Flux
 
 			#region Static members
 			/// <summary>Create a new vector with the sum from the vector added to the other.</summary>
-			public static Point2 Add(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x + v2.m_x, v1.m_y + v2.m_y);
+			public static Point2 Add(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x + p2.m_x, p1.m_y + p2.m_y);
 			/// <summary>Create a new vector with the sum from each member added to the value.</summary>
-			public static Point2 Add(in Point2 v, in int value)
-				=> new Point2(v.m_x + value, v.m_y + value);
+			public static Point2 Add(in Point2 p, in int value)
+				=> new Point2(p.m_x + value, p.m_y + value);
 			/// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-			public static Point2 LeftShift(in Point2 v, in int count)
-				=> new Point2(v.m_x << count, v.m_y << count);
+			public static Point2 LeftShift(in Point2 p, in int count)
+				=> new Point2(p.m_x << count, p.m_y << count);
 			/// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-			public static Point2 RightShift(in Point2 v, in int count)
-				=> new Point2(v.m_x >> count, v.m_y >> count);
+			public static Point2 RightShift(in Point2 p, in int count)
+				=> new Point2(p.m_x >> count, p.m_y >> count);
 			/// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
-			public static Point2 BitwiseAnd(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x & v2.m_x, v1.m_y & v2.m_y);
+			public static Point2 BitwiseAnd(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x & p2.m_x, p1.m_y & p2.m_y);
 			/// <summary>Create a new vector by performing an AND operation of each member on the vector and the value.</summary>
-			public static Point2 BitwiseAnd(in Point2 v, in int value)
-				=> new Point2(v.m_x & value, v.m_y & value);
+			public static Point2 BitwiseAnd(in Point2 p, in int value)
+				=> new Point2(p.m_x & value, p.m_y & value);
 			/// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-			public static Point2 Xor(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x ^ v2.m_x, v1.m_y ^ v2.m_y);
+			public static Point2 Xor(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y);
 			/// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-			public static Point2 Xor(in Point2 v, in int value)
-				=> new Point2(v.m_x ^ value, v.m_y ^ value);
+			public static Point2 Xor(in Point2 p, in int value)
+				=> new Point2(p.m_x ^ value, p.m_y ^ value);
 			/// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-			public static Point2 OnesComplement(in Point2 v)
-				=> new Point2(~v.m_x, ~v.m_y); // .NET performs a one's complement (bitwise logical NOT) on integral types.
+			public static Point2 OnesComplement(in Point2 p)
+				=> new Point2(~p.m_x, ~p.m_y); // .NET performs a one's complement (bitwise logical NOT) on integral types.
 			/// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
-			public static Point2 BitwiseOr(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x | v2.m_x, v1.m_y | v2.m_y);
+			public static Point2 BitwiseOr(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x | p2.m_x, p1.m_y | p2.m_y);
 			/// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
-			public static Point2 BitwiseOr(in Point2 v, in int value)
-				=> new Point2(v.m_x | value, v.m_y | value);
+			public static Point2 BitwiseOr(in Point2 p, in int value)
+				=> new Point2(p.m_x | value, p.m_y | value);
 			/// <summary>Compute the Chebyshev distance between the vectors.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-			public static double ChebyshevDistance(in Point2 v1, in Point2 v2)
-				=> System.Math.Max(System.Math.Abs(v2.m_x - v1.m_x), System.Math.Abs(v2.m_y - v1.m_y));
+			public static double ChebyshevDistance(in Point2 p1, in Point2 p2)
+				=> System.Math.Max(System.Math.Abs(p2.m_x - p1.m_x), System.Math.Abs(p2.m_y - p1.m_y));
 			/// <summary>Computes the closest cartesian coordinate vector at the specified angle and distance from the vector.</summary>
-			public static Point2 ComputeVector(in Point2 v, in double angle, in double distance = 1)
-				=> new Point2((int)(distance * System.Math.Sin(angle)) + v.m_x, (int)(distance * System.Math.Cos(angle)) + v.m_y);
+			public static Point2 ComputeVector(in Point2 p, in double angle, in double distance = 1)
+				=> new Point2((int)(distance * System.Math.Sin(angle)) + p.m_x, (int)(distance * System.Math.Cos(angle)) + p.m_y);
 			/// <summary>Create a new vector with each member subtracted by 1.</summary>
-			public static Point2 Decrement(in Point2 v1)
-				=> Subtract(v1, 1);
+			public static Point2 Decrement(in Point2 p1)
+				=> Subtract(p1, 1);
 			/// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
-			public static Point2 Divide(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x / v2.m_x, v1.m_y / v2.m_y);
+			public static Point2 Divide(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x / p2.m_x, p1.m_y / p2.m_y);
 			/// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
-			public static Point2 Divide(in Point2 v, in int value)
-				=> new Point2(v.m_x / value, v.m_y / value);
+			public static Point2 Divide(in Point2 p, in int value)
+				=> new Point2(p.m_x / value, p.m_y / value);
 			/// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-			public static Point2 DivideCeiling(in Point2 v, in double value)
-				=> new Point2((int)(v.m_x / value), (int)(v.m_y / value));
+			public static Point2 DivideCeiling(in Point2 p, in double value)
+				=> new Point2((int)(p.m_x / value), (int)(p.m_y / value));
 			/// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-			public static Point2 DivideFloor(in Point2 v, in double value)
-				=> new Point2((int)(v.m_x / value), (int)(v.m_y / value));
+			public static Point2 DivideFloor(in Point2 p, in double value)
+				=> new Point2((int)(p.m_x / value), (int)(p.m_y / value));
 			/// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-			public static int DotProduct(in Point2 v1, in Point2 v2)
-				=> v1.m_x * v2.m_x + v1.m_y * v2.m_y;
+			public static int DotProduct(in Point2 p1, in Point2 p2)
+				=> p1.m_x * p2.m_x + p1.m_y * p2.m_y;
 			/// <summary>Compute the euclidean distance of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double EuclideanDistance(in Point2 v1, in Point2 v2)
-				=> GetLength(v1 - v2);
+			public static double EuclideanDistance(in Point2 p1, in Point2 p2)
+				=> GetLength(p1 - p2);
 			/// <summary>Compute the euclidean distance squared of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double EuclideanDistanceSquare(in Point2 v1, in Point2 v2)
-				=> GetLengthSquared(v1 - v2);
+			public static double EuclideanDistanceSquare(in Point2 p1, in Point2 p2)
+				=> GetLengthSquared(p1 - p2);
 			/// <summary>Create a new vector from the labels and label definitions.</summary>
 			public static Point2 FromLabels(string column, string row, System.Collections.Generic.IList<string> columnLabels, System.Collections.Generic.IList<string> rowLabels)
 				=> new Point2(columnLabels?.IndexOf(column) ?? throw new System.ArgumentOutOfRangeException(nameof(column)), rowLabels?.IndexOf(row) ?? throw new System.ArgumentOutOfRangeException(nameof(column)));
@@ -173,61 +173,61 @@ namespace Flux
 				=> new Point2(index % lengthX, index / lengthX);
 			/// <summary>Compute the length (or magnitude) of the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double GetLength(in Point2 v)
-				=> System.Math.Sqrt(v.m_x * v.m_x + v.m_y * v.m_y);
+			public static double GetLength(in Point2 p)
+				=> System.Math.Sqrt(p.m_x * p.m_x + p.m_y * p.m_y);
 			/// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-			public static double GetLengthSquared(in Point2 v)
-				=> v.m_x * v.m_x + v.m_y * v.m_y;
+			public static double GetLengthSquared(in Point2 p)
+				=> p.m_x * p.m_x + p.m_y * p.m_y;
 			/// <summary>Create a new vector with 1 added to each member.</summary>
-			public static Point2 Increment(in Point2 v1)
-				=> Add(v1, 1);
+			public static Point2 Increment(in Point2 p1)
+				=> Add(p1, 1);
 			/// <summary>Compute the Manhattan distance between the vectors.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-			public static int ManhattanDistance(in Point2 v1, in Point2 v2)
-				=> System.Math.Abs(v2.m_x - v1.m_x) + System.Math.Abs(v2.m_y - v1.m_y);
+			public static int ManhattanDistance(in Point2 p1, in Point2 p2)
+				=> System.Math.Abs(p2.m_x - p1.m_x) + System.Math.Abs(p2.m_y - p1.m_y);
 			/// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
-			public static Point2 Multiply(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x * v2.m_x, v1.m_y * v2.m_y);
+			public static Point2 Multiply(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x * p2.m_x, p1.m_y * p2.m_y);
 			/// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
-			public static Point2 Multiply(in Point2 v, in int value)
-				=> new Point2(v.m_x * value, v.m_y * value);
+			public static Point2 Multiply(in Point2 p, in int value)
+				=> new Point2(p.m_x * value, p.m_y * value);
 			/// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-			public static Point2 MultiplyCeiling(in Point2 v, in double value)
-				=> new Point2((int)System.Math.Ceiling(v.m_x * value), (int)System.Math.Ceiling(v.m_y * value));
+			public static Point2 MultiplyCeiling(in Point2 p, in double value)
+				=> new Point2((int)System.Math.Ceiling(p.m_x * value), (int)System.Math.Ceiling(p.m_y * value));
 			/// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-			public static Point2 MultiplyFloor(in Point2 v, in double value)
-				=> new Point2((int)System.Math.Floor(v.m_x * value), (int)System.Math.Floor(v.m_y * value));
+			public static Point2 MultiplyFloor(in Point2 p, in double value)
+				=> new Point2((int)System.Math.Floor(p.m_x * value), (int)System.Math.Floor(p.m_y * value));
 			/// <summary>Create a new vector from the additive inverse, i.e. a negation of the member in the vector.</summary>
 			/// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
-			public static Point2 Negate(in Point2 v)
-				=> new Point2(-v.m_x, -v.m_y); // Negate the members of the vector.
+			public static Point2 Negate(in Point2 p)
+				=> new Point2(-p.m_x, -p.m_y); // Negate the members of the vector.
 			private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
-			public static Point2 Parse(string point)
-				=> m_regexParse.Match(point) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
+			public static Point2 Parse(string pointAsString)
+				=> m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
 				? new Point2(x, y)
-				: throw new System.ArgumentOutOfRangeException(nameof(point));
-			public static bool TryParse(string point, out Point2 result)
+				: throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
+			public static bool TryParse(string pointAsString, out Point2 point)
 			{
 				try
 				{
-					result = Parse(point);
+					point = Parse(pointAsString);
 					return true;
 				}
 #pragma warning disable CA1031 // Do not catch general exception types
 				catch
 #pragma warning restore CA1031 // Do not catch general exception types
 				{
-					result = default!;
+					point = default!;
 					return false;
 				}
 			}
 			/// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only m_x and m_y.</summary>
-			public static Point2 PerpendicularCcw(in Point2 v)
-				=> new Point2(-v.m_y, v.m_x);
+			public static Point2 PerpendicularCcw(in Point2 p)
+				=> new Point2(-p.m_y, p.m_x);
 			/// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only m_x and m_y.</summary>
-			public static Point2 PerpendicularCw(in Point2 v)
-				=> new Point2(v.m_y, -v.m_x);
+			public static Point2 PerpendicularCw(in Point2 p)
+				=> new Point2(p.m_y, -p.m_x);
 			/// <summary>Create a new random vector using the crypto-grade rng.</summary>
 			public static Point2 Random(in int toExlusiveX, in int toExclusiveY)
 				=> new Point2(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY));
@@ -241,20 +241,20 @@ namespace Flux
 			public static Point2 RandomZero(in Point2 toExclusive)
 				=> RandomZero(toExclusive.m_x, toExclusive.m_y);
 			/// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
-			public static Point2 Remainder(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x % v2.m_x, v1.m_y % v2.m_y);
+			public static Point2 Remainder(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x % p2.m_x, p1.m_y % p2.m_y);
 			/// <summary>Create a new vector with the remainder from each member divided by the value. Integer math is used.</summary>
-			public static Point2 Remainder(in Point2 v, in int value)
-				=> new Point2(v.m_x % value, v.m_y % value);
+			public static Point2 Remainder(in Point2 p, in int value)
+				=> new Point2(p.m_x % value, p.m_y % value);
 			/// <summary>Create a new vector with the floor(remainder) from each member divided by the value.</summary>
-			public static Point2 Remainder(in Point2 v, in double value)
-				=> new Point2((int)(v.m_x % value), (int)(v.m_y % value));
+			public static Point2 Remainder(in Point2 p, in double value)
+				=> new Point2((int)(p.m_x % value), (int)(p.m_y % value));
 			/// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
-			public static Point2 Subtract(in Point2 v1, in Point2 v2)
-				=> new Point2(v1.m_x - v2.m_x, v1.m_y - v2.m_y);
+			public static Point2 Subtract(in Point2 p1, in Point2 p2)
+				=> new Point2(p1.m_x - p2.m_x, p1.m_y - p2.m_y);
 			/// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
-			public static Point2 Subtract(in Point2 v, in int value)
-				=> new Point2(v.m_x - value, v.m_y - value);
+			public static Point2 Subtract(in Point2 p, in int value)
+				=> new Point2(p.m_x - value, p.m_y - value);
 			/// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
 			public static Size2 ToSize2(Point2 point)
 				=> new Size2(point.m_x, point.m_y);
@@ -262,10 +262,12 @@ namespace Flux
 
 			#region "Unique" Index
 			/// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
-			public static Point2 FromUniqueIndex(long index, in Size2 bounds) => unchecked(new Point2((int)(index % bounds.Width), (int)(index / bounds.Width)));
+			public static Point2 FromUniqueIndex(long index, in Size2 bounds)
+				=> new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
 
 			/// <summary>Converts the vector to an index, based on the specified lengths of axes.</summary>
-			public static long ToUniqueIndex(in Point2 vector, in Size2 bounds) => vector.m_x + (vector.m_y * bounds.Width);
+			public static long ToUniqueIndex(in Point2 point, in Size2 bounds)
+				=> point.m_x + (point.m_y * bounds.Width);
 			#endregion "Unique" Index
 
 			#region Overloaded Operators
@@ -276,40 +278,40 @@ namespace Flux
 			public static Point2 operator --(in Point2 v) => Subtract(v, 1);
 			public static Point2 operator ++(in Point2 v) => Add(v, 1);
 
-			public static Point2 operator +(Point2 v1, Point2 v2) => Add(v1, v2);
-			public static Point2 operator +(Point2 v1, int v2) => Add(v1, v2);
-			public static Point2 operator +(int v1, Point2 v2) => Add(v2, v1);
+			public static Point2 operator +(Point2 p1, Point2 p2) => Add(p1, p2);
+			public static Point2 operator +(Point2 p1, int p2) => Add(p1, p2);
+			public static Point2 operator +(int p1, Point2 p2) => Add(p2, p1);
 
-			public static Point2 operator -(Point2 v1, Point2 v2) => Subtract(v1, v2);
-			public static Point2 operator -(Point2 v1, int v2) => Subtract(v1, v2);
+			public static Point2 operator -(Point2 p1, Point2 p2) => Subtract(p1, p2);
+			public static Point2 operator -(Point2 p1, int p2) => Subtract(p1, p2);
 
-			public static Point2 operator *(Point2 v1, Point2 v2) => Multiply(v1, v2);
-			public static Point2 operator *(Point2 v1, int v2) => Multiply(v1, v2);
-			public static Point2 operator *(int v1, Point2 v2) => Multiply(v2, v1);
+			public static Point2 operator *(Point2 p1, Point2 p2) => Multiply(p1, p2);
+			public static Point2 operator *(Point2 p1, int p2) => Multiply(p1, p2);
+			public static Point2 operator *(int p1, Point2 p2) => Multiply(p2, p1);
 
-			public static Point2 operator /(in Point2 v1, in Point2 v2) => Divide(v1, v2);
-			public static Point2 operator /(in Point2 v1, in int v2) => Divide(v1, v2);
+			public static Point2 operator /(in Point2 p1, in Point2 p2) => Divide(p1, p2);
+			public static Point2 operator /(in Point2 p1, in int p2) => Divide(p1, p2);
 
-			public static Point2 operator %(in Point2 v1, in int v2) => Remainder(v1, v2);
-			public static Point2 operator %(in Point2 v1, in double v2) => Remainder(v1, v2);
+			public static Point2 operator %(in Point2 p1, in int p2) => Remainder(p1, p2);
+			public static Point2 operator %(in Point2 p1, in double p2) => Remainder(p1, p2);
 
-			public static Point2 operator &(in Point2 v1, in Point2 v2) => BitwiseAnd(v1, v2);
-			public static Point2 operator &(in Point2 v1, in int v2) => BitwiseAnd(v1, v2);
+			public static Point2 operator &(in Point2 p1, in Point2 p2) => BitwiseAnd(p1, p2);
+			public static Point2 operator &(in Point2 p1, in int p2) => BitwiseAnd(p1, p2);
 
-			public static Point2 operator |(in Point2 v1, in Point2 v2) => BitwiseOr(v1, v2);
-			public static Point2 operator |(in Point2 v1, in int v2) => BitwiseOr(v1, v2);
+			public static Point2 operator |(in Point2 p1, in Point2 p2) => BitwiseOr(p1, p2);
+			public static Point2 operator |(in Point2 p1, in int p2) => BitwiseOr(p1, p2);
 
-			public static Point2 operator ^(in Point2 v1, in Point2 v2) => Xor(v1, v2);
-			public static Point2 operator ^(in Point2 v1, in int v2) => Xor(v1, v2);
+			public static Point2 operator ^(in Point2 p1, in Point2 p2) => Xor(p1, p2);
+			public static Point2 operator ^(in Point2 p1, in int p2) => Xor(p1, p2);
 
-			public static Point2 operator <<(in Point2 v1, in int v2) => LeftShift(v1, v2);
-			public static Point2 operator >>(in Point2 v1, in int v2) => RightShift(v1, v2);
+			public static Point2 operator <<(in Point2 p1, in int p2) => LeftShift(p1, p2);
+			public static Point2 operator >>(in Point2 p1, in int p2) => RightShift(p1, p2);
 
-			public static bool operator ==(in Point2 v1, in Point2 v2) => v1.Equals(v2);
-			public static bool operator !=(in Point2 v1, in Point2 v2) => !v1.Equals(v2);
+			public static bool operator ==(in Point2 p1, in Point2 p2) => p1.Equals(p2);
+			public static bool operator !=(in Point2 p1, in Point2 p2) => !p1.Equals(p2);
 			#endregion Overloaded Operators
 
-			// System.IEquatable<Vector2>
+			// System.IEquatable<Point2>
 			public bool Equals(Point2 other)
 				=> m_x == other.m_x && m_y == other.m_y;
 
