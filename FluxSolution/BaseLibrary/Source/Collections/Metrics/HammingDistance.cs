@@ -2,23 +2,6 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SpanMetricsEm
-  {
-    /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SpanMetrics.HammingDistance<T>(comparer).GetMetricDistance((T[])source, (T[])target);
-    /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target)
-      => new SpanMetrics.HammingDistance<T>().GetMetricDistance((T[])source, (T[])target);
-
-    /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer)
-      => new SpanMetrics.HammingDistance<T>(comparer).GetMetricDistance(source, target);
-    /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
-    public static int HammingDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => new SpanMetrics.HammingDistance<T>().GetMetricDistance(source, target);
-  }
-
   namespace SpanMetrics
   {
     /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
