@@ -111,7 +111,7 @@ namespace Types
 		{
 			var copy0 = (int[,])original.Clone();
 
-			Flux.Arrays.FlipInPlace(ref copy0, 0);
+			Flux.Array2D.FlipInPlace(ref copy0, 0);
 
 			var reverse0 = new int[3, 3] { { 3, 2, 1 }, { 6, 5, 4 }, { 9, 8, 7 } };
 
@@ -123,7 +123,7 @@ namespace Types
 		{
 			var copy1 = (int[,])original.Clone();
 
-			Flux.Arrays.FlipInPlace(ref copy1, 1);
+			Flux.Array2D.FlipInPlace(ref copy1, 1);
 
 			var reverse1 = new int[3, 3] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } };
 
@@ -165,7 +165,7 @@ namespace Types
 		{
 			var copy = (int[,])original.Clone();
 
-			Flux.Arrays.TransposeInPlace(ref copy);
+			Flux.Array2D.TransposeInPlace(ref copy);
 
 			var reverse = new int[3, 3] { { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } };
 
