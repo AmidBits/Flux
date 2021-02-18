@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.IFormatProvider
+namespace Flux.FormatProviders
 {
   /// <summary>A formatter for System.TimeSpan, that can also be used for long (ticks), int (seconds) and System.Numerics.BigInteger (milliseconds).</summary>
   /// <example>

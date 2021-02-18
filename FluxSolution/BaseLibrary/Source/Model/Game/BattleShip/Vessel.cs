@@ -38,7 +38,7 @@ namespace Flux
 			var sb = new System.Text.StringBuilder();
 
 			sb.AppendLine($"Placement {countAdjacentShips}:");
-			sb.AppendLine(placement.ToConsoleString2d(null, '\0', '\0', true));
+			sb.AppendLine(FormatProviders.ArrayFormatter.NoSeparatorsUniform.TwoToConsoleString(placement));
 
 			return sb.ToString();
 		}

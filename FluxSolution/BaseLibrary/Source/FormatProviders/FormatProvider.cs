@@ -1,4 +1,4 @@
-namespace Flux.IFormatProvider
+namespace Flux.FormatProviders
 {
   public abstract class FormatProvider
     : System.IFormatProvider, System.ICustomFormatter

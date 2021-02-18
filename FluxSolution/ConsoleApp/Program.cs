@@ -12,14 +12,15 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			Flux.IFullMatrix<char> fm = new Flux.SpanMetrics.OptimalStringAlignment<char>();
-			Flux.ICustomFullMatrix<char> cfm = new Flux.SpanMetrics.OptimalStringAlignmentEx<char>() { CostOfDeletion = 1.5, CostOfInsertion = 1.5, CostOfSubstitution = 1.5, CostOfTransposition = 1.5 };
+			var af = new Flux.FormatProviders.ArrayFormatter() { UniformWidth = true };
+			Flux.IFullMatrix<char> fm = new Flux.SpanMetrics.DamerauLevenshteinDistance<char>();
+			Flux.ICustomFullMatrix<char> cfm = new Flux.SpanMetrics.DamerauLevenshteinDistanceEx<char>() { CostOfDeletion = 1.75, CostOfInsertion = 1.25, CostOfSubstitution = 1.5, CostOfTransposition = 1.5 };
 			var s1 = "sitting";
 			var s2 = "kitten";
 			var m = fm.GetFullMatrix(s1, s2);
 			var cm = cfm.GetCustomFullMatrix(s1, s2);
-			var s = m.ToConsoleString2d((e, i) => e.ToString());
-			var cs = cm.ToConsoleString2d((e, i) => e.ToString());
+			var s = af.TwoToConsoleString(m, (e, i) => e.ToString());
+			var cs = af.TwoToConsoleString(cm, (e, i) => e.ToString());
 			//s = " " + s.Replace(System.Environment.NewLine, $"{System.Environment.NewLine}*");
 			//			s = string.Concat(s.Select((e, i) => e == '*' ? e + (i + 1).ToString() : e.ToString()));
 			System.Console.WriteLine(s);

@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class Array2D
+  public static partial class ArrayRank2
   {
     /// <summary>Create a new System.Data.DataTable from the two dimensional array.</summary>
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional

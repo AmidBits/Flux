@@ -107,7 +107,7 @@ namespace Flux
       => m_radian == other.m_radian;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new IFormatProvider.AngleFormatProvider(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
+      => string.Format(formatProvider ?? new FormatProviders.AngleFormatProvider(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Angle o && Equals(o);

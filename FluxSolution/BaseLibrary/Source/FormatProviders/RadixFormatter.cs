@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.IFormatProvider
+namespace Flux.FormatProviders
 {
 	/// <summary>Enables formatting of any number base (radix) with any characters desired.</summary>
 	public class RadixFormatter

@@ -1,4 +1,4 @@
-namespace Flux.IFormatProvider
+namespace Flux.FormatProviders
 {
   /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>

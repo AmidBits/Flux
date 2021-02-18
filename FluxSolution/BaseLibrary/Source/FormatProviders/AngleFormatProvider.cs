@@ -1,4 +1,4 @@
-namespace Flux.IFormatProvider
+namespace Flux.FormatProviders
 {
   /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
@@ -9,7 +9,7 @@ namespace Flux.IFormatProvider
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class TemperatureFormatProvider
+  public class AngleFormatProvider
     : FormatProvider
   {
     public bool UseUnicodeSymbolWhenAvailable { get; set; }
@@ -21,7 +21,7 @@ namespace Flux.IFormatProvider
     {
       if (!string.IsNullOrEmpty(format))
       {
-        if (arg is Temperature temperature)
+        if (arg is Angle angle)
         {
           if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
           {
@@ -38,21 +38,17 @@ namespace Flux.IFormatProvider
 
               switch (unitString)
               {
-                case var celsius when @"Celsius".StartsWith(celsius, System.StringComparison.InvariantCultureIgnoreCase):
-                  sb.AppendFormat(null, formatString, temperature.Celsius);
-                  sb.Append(UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
+                case var deg when @"Degrees".StartsWith(deg, System.StringComparison.InvariantCultureIgnoreCase):
+                  sb.AppendFormat(null, formatString, angle.Degrees);
+                  sb.Append(" deg");
                   break;
-                case var fahrenheit when @"Fahrenheit".StartsWith(fahrenheit, System.StringComparison.InvariantCultureIgnoreCase):
-                  sb.AppendFormat(null, formatString, temperature.Fahrenheit);
-                  sb.Append(UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
+                case var grad when @"Gradians".StartsWith(grad, System.StringComparison.InvariantCultureIgnoreCase):
+                  sb.AppendFormat(null, formatString, angle.Gradians);
+                  sb.Append($" gon");
                   break;
-                case var kelvin when @"Kelvin".StartsWith(kelvin, System.StringComparison.InvariantCultureIgnoreCase):
-                  sb.AppendFormat(null, formatString, temperature.Kelvin);
-                  sb.Append(UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
-                  break;
-                case var rankine when @"Rankine".StartsWith(rankine, System.StringComparison.InvariantCultureIgnoreCase):
-                  sb.AppendFormat(null, formatString, temperature.Rankine);
-                  sb.Append($" \u00B0R");
+                case var rad when @"Radians".StartsWith(rad, System.StringComparison.InvariantCultureIgnoreCase):
+                  sb.AppendFormat(null, formatString, angle.Radians);
+                  sb.Append($" rad");
                   break;
                 default:
                   throw new System.ArgumentOutOfRangeException(nameof(format));
