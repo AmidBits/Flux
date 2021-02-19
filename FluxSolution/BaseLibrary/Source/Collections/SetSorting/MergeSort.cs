@@ -1,21 +1,21 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.MergeSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.MergeSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source)
-      => new SpanSorting.MergeSort<T>(System.Collections.Generic.Comparer<T>.Default).SortInPlace((T[])source);
+      => new SetSorting.MergeSort<T>(System.Collections.Generic.Comparer<T>.Default).SortInPlace((T[])source);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public class MergeSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       public MergeSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

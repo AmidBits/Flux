@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.InsertionSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.InsertionSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyInsertionSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.InsertionSort<T>(comparer).SortInPlace(source);
+      => new SetSorting.InsertionSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     public static void ApplyInsertionSort<T>(this System.Span<T> source)
       => ApplyInsertionSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using insertion sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
     public class InsertionSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       public InsertionSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

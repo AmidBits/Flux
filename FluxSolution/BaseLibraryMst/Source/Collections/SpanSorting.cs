@@ -22,7 +22,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.BingoSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.BingoSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -32,7 +32,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.BingoSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.BingoSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -42,7 +42,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.CombSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.CombSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -52,7 +52,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.HeapSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.HeapSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -62,7 +62,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.InsertionSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.InsertionSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -72,7 +72,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.MergeSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.MergeSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -82,7 +82,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.QuickSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.QuickSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -92,7 +92,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.SelectionSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.SelectionSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }
@@ -102,7 +102,7 @@ namespace Collections.Generic
     {
       var original = m_text.ToCharArray();
       var sortable = new System.Span<char>(original.ToArray());
-      new Flux.SpanSorting.ShellSort<char>().SortInPlace(sortable);
+      new Flux.SetSorting.ShellSort<char>().SortInPlace(sortable);
       var actual = sortable.ToArray();
       CollectionAssert.AreNotEqual(original, actual);
     }

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Represents an algorithm that applied sorting in-place on the source.</summary>
     public interface ISortableInPlace<T>

@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.BubbleSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.BubbleSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyBubbleSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.BubbleSort<T>(comparer).SortInPlace(source);
+      => new SetSorting.BubbleSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     public static void ApplyBubbleSort<T>(this System.Span<T> source)
       => ApplyBubbleSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using bubble sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
     public class BubbleSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       public BubbleSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

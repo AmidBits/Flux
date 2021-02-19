@@ -2,10 +2,10 @@ using System.Linq;
 
 namespace Flux
 {
-  namespace SpanMetrics
+  namespace SetMetrics
   {
     public class OverlapCoefficient<T>
-      : ASpanMetrics<T>, ISimilarityCoefficient<T>
+      : ASetMetrics<T>, ISimilarityCoefficient<T>
     {
       public OverlapCoefficient()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

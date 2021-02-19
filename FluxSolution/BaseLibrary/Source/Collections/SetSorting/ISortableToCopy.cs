@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Represents an algorithm that produce a sorted copy of the source.</summary>
     public interface ISortableToCopy<T>

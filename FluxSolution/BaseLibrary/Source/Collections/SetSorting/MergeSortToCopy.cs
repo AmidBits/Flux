@@ -1,16 +1,16 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static System.Collections.Generic.IList<T> MergeSortToCopy<T>(this System.Collections.Generic.IList<T> source, SpanSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.MergeSortToCopy<T>(type, comparer).SortToCopy((T[])source);
+    public static System.Collections.Generic.IList<T> MergeSortToCopy<T>(this System.Collections.Generic.IList<T> source, SetSorting.MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
+      => new SetSorting.MergeSortToCopy<T>(type, comparer).SortToCopy((T[])source);
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
-    public static System.Collections.Generic.IList<T> MergeSortToCopy<T>(this System.Collections.Generic.IList<T> source, SpanSorting.MergeSortType type)
-      => new SpanSorting.MergeSortToCopy<T>(type, System.Collections.Generic.Comparer<T>.Default).SortToCopy((T[])source);
+    public static System.Collections.Generic.IList<T> MergeSortToCopy<T>(this System.Collections.Generic.IList<T> source, SetSorting.MergeSortType type)
+      => new SetSorting.MergeSortToCopy<T>(type, System.Collections.Generic.Comparer<T>.Default).SortToCopy((T[])source);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     public enum MergeSortType
     {
@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Sorts the content of the sequence using merge sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
     public class MergeSortToCopy<T>
-      : ASpanSorting<T>, ISortableToCopy<T>
+      : ASetSorting<T>, ISortableToCopy<T>
     {
       private readonly MergeSortType m_type;
 

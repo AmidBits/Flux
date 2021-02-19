@@ -1,13 +1,13 @@
 namespace Flux
 {
-  namespace SpanMetrics
+  namespace SetMetrics
   {
     /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class OptimalStringAlignment<T>
-      : ASpanMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+      : ASetMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     {
       public OptimalStringAlignment()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -130,7 +130,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     /// <remarks>Implemented based on the Wiki article.</remarks>
     public class OptimalStringAlignmentEx<T>
-      : ASpanMetrics<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
+      : ASetMetrics<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
     {
       public double CostOfDeletion { get; init; } = 1;
       public double CostOfInsertion { get; init; } = 1;

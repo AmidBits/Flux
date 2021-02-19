@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.SelectionSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.SelectionSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplySelectionSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.SelectionSort<T>(comparer).SortInPlace(source);
+      => new SetSorting.SelectionSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Span<T> source)
       => ApplySelectionSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class SelectionSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       public SelectionSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

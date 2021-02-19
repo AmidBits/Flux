@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.ShellSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.ShellSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
     public static void ApplyShellSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.ShellSort<T>(comparer).SortInPlace(source);
+      => new SetSorting.ShellSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     public static void ApplyShellSort<T>(this System.Span<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
     public class ShellSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 

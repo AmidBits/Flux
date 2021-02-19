@@ -1,6 +1,6 @@
 namespace Flux
 {
-	namespace SpanMetrics
+	namespace SetMetrics
 	{
 		/// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
@@ -9,7 +9,7 @@ namespace Flux
 		/// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
 		/// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
 		public class LongestCommonSubsequence<T>
-			: ASpanMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+			: ASetMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
 		{
 			public LongestCommonSubsequence()
 				: base(System.Collections.Generic.EqualityComparer<T>.Default)

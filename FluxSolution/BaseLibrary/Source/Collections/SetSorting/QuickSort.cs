@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class SpanSortingEm
+  public static partial class SortingEm
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.QuickSort<T>(comparer).SortInPlace((T[])source);
+      => new SetSorting.QuickSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyQuickSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SpanSorting.QuickSort<T>(comparer).SortInPlace(source);
+      => new SetSorting.QuickSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     public static void ApplyQuickSort<T>(this System.Span<T> source)
       => ApplyQuickSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SpanSorting
+  namespace SetSorting
   {
     /// <summary>Sorts the content of the sequence using quick sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
     public class QuickSort<T>
-      : ASpanSorting<T>, ISortableInPlace<T>
+      : ASetSorting<T>, ISortableInPlace<T>
     {
       public QuickSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)
