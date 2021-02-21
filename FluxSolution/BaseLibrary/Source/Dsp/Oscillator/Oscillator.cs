@@ -107,14 +107,10 @@ namespace Flux.Dsp.Synthesis
       Current = Generator?.GenerateWave(_phase) ?? 0;
 
       if (InvertPolarity)
-      {
         Current = -Current;
-      }
 
       foreach (var processor in PreProcessors)
-      {
         Current = processor.ProcessAudio(Current);
-      }
 
       if (AmplitudeModulator != null && _amplitudeModulation > Maths.EpsilonCpp32)
       {
@@ -124,36 +120,24 @@ namespace Flux.Dsp.Synthesis
       }
 
       if (RingModulator != null && _ringModulation > Maths.EpsilonCpp32)
-      {
         Current *= RingModulator.NextSample() * _ringModulation;
-      }
 
       foreach (var processor in PostProcessors)
-      {
         Current = processor.ProcessAudio(Current);
-      }
 
       if (!normalizedFrequency.HasValue)
-      {
         normalizedFrequency = NormalizedFrequency;
-      }
 
       var phaseShift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
       if (PhaseModulator != null && _phaseModulation > Maths.EpsilonCpp32)
-      {
         phaseShift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * _phaseModulation;
-      }
 
       if (FrequencyModulator != null && _frequencyModulation > Maths.EpsilonCpp32)
-      {
         phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample() * _frequencyModulation;
-      }
 
       if (ReversePhase)
-      {
         phaseShift = -phaseShift;
-      }
 
       _phase = Maths.Wrap(_phase + phaseShift, 0, 1); // Ensure phase wraps within cycle.
 
@@ -163,15 +147,13 @@ namespace Flux.Dsp.Synthesis
     }
 
     public double NextSample()
-      => (Next(null));
+      => Next(null);
 
     /// <summary>Returns a sequence of the specified number of samples.</summary>
     public System.Collections.Generic.IEnumerable<double> GetNext(int count)
     {
       while (count-- > 1)
-      {
         yield return NextSample();
-      }
     }
 
     /// <summary>Resets the phase position using the phase offset. Can be used to "sync" the oscillator.</summary>

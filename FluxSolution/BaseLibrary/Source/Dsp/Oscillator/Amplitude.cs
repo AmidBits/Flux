@@ -55,9 +55,7 @@ namespace Flux.Dsp.Synthesis
     public double Update(double sample)
     {
       if (InvertPolarity)
-      {
         sample = -sample;
-      }
 
       if (AmplitudeModulator != null && m_amplitudeModulation > Maths.EpsilonCpp32)
       {
@@ -67,9 +65,7 @@ namespace Flux.Dsp.Synthesis
       }
 
       if (RingModulator != null && m_ringModulation > Maths.EpsilonCpp32)
-      {
         sample *= RingModulator.NextSample() * m_ringModulation;
-      }
 
       return sample;
     }

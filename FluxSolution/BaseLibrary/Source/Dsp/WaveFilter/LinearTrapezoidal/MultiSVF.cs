@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
-  /// <summary>Calculates all filter frequency functions akk at once.</summary>
+  /// <summary>Calculates all filter frequency functions all at once.</summary>
   public class MultiSVF
     : IWaveFilterMono, IWaveProcessorMono
   {
