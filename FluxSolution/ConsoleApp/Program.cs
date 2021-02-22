@@ -18,32 +18,6 @@ namespace ConsoleApp
 			}
 			return;
 
-			//var af = new Flux.FormatProviders.ArrayFormatter() { UniformWidth = true };
-			//Flux.IFullMatrix<char> fm = new Flux.SetMetrics.DamerauLevenshteinDistance<char>();
-			//Flux.ICustomFullMatrix<char> cfm = new Flux.SetMetrics.DamerauLevenshteinDistanceEx<char>() { CostOfDeletion = 1.75, CostOfInsertion = 1.25, CostOfSubstitution = 1.5, CostOfTransposition = 1.5 };
-			//var s1 = "sitting";
-			//var s2 = "kitten";
-			//var m = fm.GetFullMatrix(s1, s2);
-			//var cm = cfm.GetCustomFullMatrix(s1, s2);
-			//var s = af.TwoToConsoleString(m, (e, i) => e.ToString());
-			//var cs = af.TwoToConsoleString(cm, (e, i) => e.ToString());
-			////s = " " + s.Replace(System.Environment.NewLine, $"{System.Environment.NewLine}*");
-			////			s = string.Concat(s.Select((e, i) => e == '*' ? e + (i + 1).ToString() : e.ToString()));
-			//System.Console.WriteLine(s);
-			//System.Console.WriteLine(cs);
-			//return;
-
-			//var size = new Flux.Geometry.Size3(2, 3, 4);
-			//var length = size.Width * size.Height * size.Depth;
-			//for (var index = 0; index < length; index++)
-			//{
-			//  var point = Flux.Geometry.Point3.FromUniqueIndex(index, size);
-			//  var uniqueIndex = Flux.Geometry.Point3.ToUniqueIndex(point, size);
-
-			//  System.Console.WriteLine($"{index} = {point} = {uniqueIndex}");
-			//}
-			//return;
-
 			//System.Collections.Generic.Dictionary<string, string> Samples = new System.Collections.Generic.Dictionary<string, string>()
 			//{
 			//  { "Dougal", "DAGAL" },
