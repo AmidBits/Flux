@@ -1,10 +1,75 @@
+using System.Linq;
+
 namespace Flux
 {
-	public static partial class SystemTypeEm
+	public static partial class Types
 	{
 		/// <summary>Returns the default value, like the default(T) does but from the <paramref name="source"/>.</summary>
 		public static object? GetDefaultValue(this System.Type source)
 			=> (source?.IsValueType ?? false) ? System.Activator.CreateInstance(source) : null;
+
+		/// <summary>Creates a new sequence with the derived types of the <paramref name="source"/>.</summary>
+		public static System.Collections.Generic.IEnumerable<System.Type> GetDerived(this System.Type source)
+		{
+			var list = new System.Collections.Generic.List<System.Type>();
+
+			foreach (var inheritanceType in GetInheritance(source))
+			{
+				foreach (var implementsType in GetImplements(inheritanceType))
+					if (!list.Contains(implementsType))
+						list.Add(implementsType);
+
+				list.Add(inheritanceType);
+			}
+
+			return list;
+		}
+
+		/// <summary>Creates a new sequence with implemented interfaces of the <paramref name="source"/>.</summary>
+		public static System.Collections.Generic.IEnumerable<System.Type> GetImplements(this System.Type source)
+		{
+			if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+			return new System.Collections.Generic.Stack<System.Type>(source.GetInterfaces());
+		}
+
+		/// <summary>Creates a new sequence with the inheritance type chain of the <paramref name="source"/>.</summary>
+		public static System.Collections.Generic.IEnumerable<System.Type> GetInheritance(this System.Type source)
+		{
+			var stack = new System.Collections.Generic.Stack<System.Type>();
+
+			for (var type = source; type != null; type = type.BaseType)
+				stack.Push(type);
+
+			return stack;
+		}
+
+		public static bool IsEqual(this System.Type source, System.Type target)
+			=> !(source is null || target is null) ? (source.IsGenericType ? source.GetGenericTypeDefinition() : source).Equals(target.IsGenericType ? target.GetGenericTypeDefinition() : target) : source is null && target is null;
+
+		//public static bool IsImplementing(this System.Type source, System.Type typeOfInterface)
+		//{
+		//	if (source is null) throw new System.Exception(nameof(source));
+		//	if (typeOfInterface is null) throw new System.Exception(nameof(typeOfInterface));
+
+		//	foreach (var implementedInterface in source.GetInterfaces())
+		//		if (implementedInterface.IsGenericType ? typeOfInterface.Equals(implementedInterface.GetGenericTypeDefinition()) : typeOfInterface.Equals(implementedInterface))
+		//			return true;
+
+		//	return false;
+		//}
+
+		//public static bool IsInheriting(this System.Type source, System.Type typeOfClass)
+		//{
+		//	if (source is null) throw new System.Exception(nameof(source));
+		//	if (typeOfClass is null) throw new System.Exception(nameof(typeOfClass));
+
+		//	foreach (var inheritedClass in GetInheritance(source))
+		//		if (inheritedClass.IsGenericType ? typeOfClass.Equals(inheritedClass.GetGenericTypeDefinition()) : typeOfClass.Equals(inheritedClass))
+		//			return true;
+
+		//	return false;
+		//}
 
 		/// <summary>Determines whether the <paramref name="source"/> type is a reference type.</summary>
 		public static bool IsReferenceType(this System.Type source)
@@ -13,6 +78,21 @@ namespace Flux
 		/// <summary>Determines whether the type is 'static', based on it being abstract and sealed.</summary>
 		public static bool IsStatic(this System.Type source)
 			=> source is not null ? source.IsAbstract && source.IsSealed : throw new System.ArgumentNullException(nameof(source));
+
+		public static bool IsSubclassOfEx(this System.Type source, System.Type baseType)
+		{
+			if (source is null || baseType is null || source.Equals(baseType))
+				return false;
+
+			if (baseType.IsGenericType)
+				baseType = baseType.GetGenericTypeDefinition();
+
+			for (var type = source; !(type is null || type is object); type = type.BaseType)
+				if (baseType.Equals(type.IsGenericType ? type.GetGenericTypeDefinition() : type))
+					return true;
+
+			return false;
+		}
 
 		/// <summary>Determines whether the type is System.Nullable<T>.</summary>
 		/// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>
