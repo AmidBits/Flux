@@ -47,6 +47,8 @@ namespace Flux
 		public static bool IsEqual(this System.Type source, System.Type target)
 			=> !(source is null || target is null) ? (source.IsGenericType ? source.GetGenericTypeDefinition() : source).Equals(target.IsGenericType ? target.GetGenericTypeDefinition() : target) : source is null && target is null;
 
+
+
 		//public static bool IsImplementing(this System.Type source, System.Type typeOfInterface)
 		//{
 		//	if (source is null) throw new System.Exception(nameof(source));
@@ -59,17 +61,20 @@ namespace Flux
 		//	return false;
 		//}
 
-		//public static bool IsInheriting(this System.Type source, System.Type typeOfClass)
-		//{
-		//	if (source is null) throw new System.Exception(nameof(source));
-		//	if (typeOfClass is null) throw new System.Exception(nameof(typeOfClass));
+		public static bool IsInheritingFrom(this System.Type source, System.Type superType)
+		{
+			if (source is null) throw new System.Exception(nameof(source));
+			if (superType is null) throw new System.Exception(nameof(superType));
 
-		//	foreach (var inheritedClass in GetInheritance(source))
-		//		if (inheritedClass.IsGenericType ? typeOfClass.Equals(inheritedClass.GetGenericTypeDefinition()) : typeOfClass.Equals(inheritedClass))
-		//			return true;
+			if (superType.IsGenericType)
+				superType = superType.GetGenericTypeDefinition();
 
-		//	return false;
-		//}
+			foreach (var inheritedType in GetInheritance(source))
+				if (inheritedType.IsGenericType ? superType.Equals(inheritedType.GetGenericTypeDefinition()) : superType.Equals(inheritedType))
+					return true;
+
+			return false;
+		}
 
 		/// <summary>Determines whether the <paramref name="source"/> type is a reference type.</summary>
 		public static bool IsReferenceType(this System.Type source)

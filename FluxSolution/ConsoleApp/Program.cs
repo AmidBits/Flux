@@ -12,12 +12,6 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			foreach (var kvp in Flux.Reflect.GetProperties(typeof(Flux.Locale)))
-			{
-				System.Console.WriteLine($"{kvp.Key} = {kvp.Value}");
-			}
-			return;
-
 			//System.Collections.Generic.Dictionary<string, string> Samples = new System.Collections.Generic.Dictionary<string, string>()
 			//{
 			//  { "Dougal", "DAGAL" },
