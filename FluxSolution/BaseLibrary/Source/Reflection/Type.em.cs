@@ -16,16 +16,17 @@ namespace Flux
 			foreach (var inheritanceType in GetInheritance(source))
 			{
 				foreach (var implementsType in GetImplements(inheritanceType))
-					if (!list.Contains(implementsType))
+					if (!list.Contains(implementsType)) // Research: do I need: (implementsType.IsGenericType ? implementsType.GetGenericTypeDefinition() : implementsType)
 						list.Add(implementsType);
 
-				list.Add(inheritanceType);
+				if (!list.Contains(inheritanceType)) // Research: do I need: (inheritanceType.IsGenericType ? inheritanceType.GetGenericTypeDefinition() : inheritanceType)
+					list.Add(inheritanceType);
 			}
 
 			return list;
 		}
 
-		/// <summary>Creates a new sequence with implemented interfaces of the <paramref name="source"/>.</summary>
+		/// <summary>Creates a new sequence with implemented interfaces of the <paramref name="source"/>. The sequence is returned in reverse order.</summary>
 		public static System.Collections.Generic.IEnumerable<System.Type> GetImplements(this System.Type source)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -33,7 +34,7 @@ namespace Flux
 			return new System.Collections.Generic.Stack<System.Type>(source.GetInterfaces());
 		}
 
-		/// <summary>Creates a new sequence with the inheritance type chain of the <paramref name="source"/>.</summary>
+		/// <summary>Creates a new sequence of all inherited base types (recursively) from the specified <paramref name="source"/> up to System.Object. The sequence is returned in reverse order (starting with the System.Object).</summary>
 		public static System.Collections.Generic.IEnumerable<System.Type> GetInheritance(this System.Type source)
 		{
 			var stack = new System.Collections.Generic.Stack<System.Type>();
@@ -43,23 +44,6 @@ namespace Flux
 
 			return stack;
 		}
-
-		public static bool IsEqual(this System.Type source, System.Type target)
-			=> !(source is null || target is null) ? (source.IsGenericType ? source.GetGenericTypeDefinition() : source).Equals(target.IsGenericType ? target.GetGenericTypeDefinition() : target) : source is null && target is null;
-
-
-
-		//public static bool IsImplementing(this System.Type source, System.Type typeOfInterface)
-		//{
-		//	if (source is null) throw new System.Exception(nameof(source));
-		//	if (typeOfInterface is null) throw new System.Exception(nameof(typeOfInterface));
-
-		//	foreach (var implementedInterface in source.GetInterfaces())
-		//		if (implementedInterface.IsGenericType ? typeOfInterface.Equals(implementedInterface.GetGenericTypeDefinition()) : typeOfInterface.Equals(implementedInterface))
-		//			return true;
-
-		//	return false;
-		//}
 
 		public static bool IsInheritingFrom(this System.Type source, System.Type superType)
 		{
@@ -80,9 +64,9 @@ namespace Flux
 		public static bool IsReferenceType(this System.Type source)
 			=> GetDefaultValue(source) is null && !IsSystemNullableOfT(source);
 
-		/// <summary>Determines whether the type is 'static', based on it being abstract and sealed.</summary>
-		public static bool IsStatic(this System.Type source)
-			=> source is not null ? source.IsAbstract && source.IsSealed : throw new System.ArgumentNullException(nameof(source));
+		/// <summary>Determines whether tshe type is 'static', based on it being abstract and sealed.</summary>
+		public static bool IsStaticClass(this System.Type source)
+			=> source is not null ? source.IsClass && source.IsAbstract && source.IsSealed : throw new System.ArgumentNullException(nameof(source));
 
 		public static bool IsSubclassOfEx(this System.Type source, System.Type baseType)
 		{
