@@ -12,7 +12,7 @@ namespace Flux
     public static object? GetDefaultValue(this System.Type source)
       => (source?.IsValueType ?? false) ? System.Activator.CreateInstance(source) : null;
 
-    /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/>.</summary>
+    /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from the specified type collection.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypesFrom(this System.Type source, params System.Type[] types)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -24,6 +24,7 @@ namespace Flux
         if ((type.IsGenericType ? type.GetGenericTypeDefinition() : type).IsSubtypeOf(source))
           yield return type;
     }
+    /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from the types in the Flux library.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypesFromFlux(this System.Type source)
       => GetDerivedTypesFrom(source, typeof(Types).Assembly.GetTypes());
 
@@ -54,26 +55,21 @@ namespace Flux
     public static bool IsStaticClass(this System.Type source)
       => source is not null ? source.IsClass && source.IsAbstract && source.IsSealed : throw new System.ArgumentNullException(nameof(source));
 
-    /// <summary>Determines whether the type is System.Nullable<T>.</summary>
-    /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>
-    public static bool IsSystemNullableOfT(this System.Type source)
-      => source is not null ? source.IsGenericType && source.GetGenericTypeDefinition() == typeof(System.Nullable<>) : throw new System.ArgumentNullException(nameof(source));
-
     /// <summary>Perform the same functionality as IsSubclassOf but can also handle generics.</summary>
-    public static bool IsSubtypeOf(this System.Type source, System.Type baseType)
+    public static bool IsSubtypeOf(this System.Type source, System.Type superType)
     {
-      if (source is null || baseType is null || source.Equals(baseType))
+      if (source is null || superType is null || source.Equals(superType))
         return false;
 
-      if (baseType.IsGenericType)
-        baseType = baseType.GetGenericTypeDefinition();
+      if (superType.IsGenericType)
+        superType = superType.GetGenericTypeDefinition();
 
       foreach (var inheritanceType in GetTypeImplements(source))
-        if (baseType.Equals(inheritanceType.IsGenericType ? inheritanceType.GetGenericTypeDefinition() : inheritanceType))
+        if (superType.Equals(inheritanceType.IsGenericType ? inheritanceType.GetGenericTypeDefinition() : inheritanceType))
           return true;
 
       foreach (var inheritanceType in GetTypeInheritance(source))
-        if (baseType.Equals(inheritanceType.IsGenericType ? inheritanceType.GetGenericTypeDefinition() : inheritanceType))
+        if (superType.Equals(inheritanceType.IsGenericType ? inheritanceType.GetGenericTypeDefinition() : inheritanceType))
           return true;
 
       return false;
@@ -81,5 +77,10 @@ namespace Flux
 
     public static bool IsSupertypeOf(this System.Type source, System.Type subType)
       => IsSubtypeOf(subType, source);
+
+    /// <summary>Determines whether the type is System.Nullable<T>.</summary>
+    /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>
+    public static bool IsSystemNullableOfT(this System.Type source)
+      => source is not null ? source.IsGenericType && source.GetGenericTypeDefinition() == typeof(System.Nullable<>) : throw new System.ArgumentNullException(nameof(source));
   }
 }
