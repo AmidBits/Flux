@@ -35,15 +35,15 @@ namespace Types
     [TestMethod]
     public void IsEnglishLetterLower()
     {
-      Assert.AreEqual(true, Flux.Globalization.EnUs.Language.IsEnglishLetterLower('t'));
-      Assert.AreEqual(false, Flux.Globalization.EnUs.Language.IsEnglishLetterLower('A'));
+      Assert.AreEqual(true, Flux.Globalization.EnUs.Language.IsEnglishLowerCaseLetter('t'));
+      Assert.AreEqual(false, Flux.Globalization.EnUs.Language.IsEnglishLowerCaseLetter('A'));
     }
 
     [TestMethod]
     public void IsEnglishLetterUpper()
     {
-      Assert.AreEqual(false, Flux.Globalization.EnUs.Language.IsEnglishLetterUpper('t'));
-      Assert.AreEqual(true, Flux.Globalization.EnUs.Language.IsEnglishLetterUpper('A'));
+      Assert.AreEqual(false, Flux.Globalization.EnUs.Language.IsEnglishUpperCaseLetter('t'));
+      Assert.AreEqual(true, Flux.Globalization.EnUs.Language.IsEnglishUpperCaseLetter('A'));
     }
 
     [TestMethod]
