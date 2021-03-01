@@ -94,7 +94,7 @@
       m_byte6 = bytes[offset + 6];
       m_byte7 = bytes[offset + 7];
     }
-    public BitStructure64(int value)
+    public BitStructure64(long value)
       : this()
       => m_int64 = value;
     public BitStructure64(double value)

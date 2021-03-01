@@ -12,16 +12,24 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var type = typeof(System.Collections.Generic.Dictionary<,>);
+      var rn = new Flux.Random.RandomName(Flux.Random.NumberGenerator.Crypto);
 
-      foreach (var derivedType in type.GetDerivedTypesFrom(System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToArray()).OrderBy(k => $"{k}"))
-        System.Console.WriteLine($"Derived: {derivedType}");
+      for (var i = 0; i < 10; i++)
+      {
+        var rname = rn.GenerateName(7);
+        System.Console.WriteLine(rname);
+      }
 
-      foreach (var implementedType in type.GetTypeImplements())
-        System.Console.WriteLine($"Implements: {implementedType}");
+      //var type = typeof(System.Collections.Generic.Dictionary<,>);
 
-      foreach (var inheritedType in type.GetTypeInheritance())
-        System.Console.WriteLine($"Inheritance: {inheritedType}");
+      //foreach (var derivedType in type.GetDerivedTypesFrom(System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToArray()).OrderBy(k => $"{k}"))
+      //  System.Console.WriteLine($"Derived: {derivedType}");
+
+      //foreach (var implementedType in type.GetTypeImplements())
+      //  System.Console.WriteLine($"Implements: {implementedType}");
+
+      //foreach (var inheritedType in type.GetTypeInheritance())
+      //  System.Console.WriteLine($"Inheritance: {inheritedType}");
 
       //System.Collections.Generic.Dictionary<string, string> Samples = new System.Collections.Generic.Dictionary<string, string>()
       //{
