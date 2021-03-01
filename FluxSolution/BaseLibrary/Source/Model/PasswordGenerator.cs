@@ -1,8 +1,25 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Flux.Model
 {
-  public static class PasswordGenerator
+  //public interface IPasswordGenerator
+  //{
+  //  public System.Collections.Generic.IEnumerable<char> GeneratePassword(int length);
+  //}
+
+  //public class PasswordGeneratorLiteral
+  //  : IPasswordGenerator
+  //{
+  //  public string AllowedFirst { get; init; };
+  //  public string AllowedMiddle { get; init; };
+  //  public string AllowedLast { get; init; };
+
+  //  public IEnumerable<char> GeneratePassword(int length) 
+  //    => throw new System.NotImplementedException();
+  //}
+
+  public class PasswordGenerator
   {
     public const string AlphaLower = "abcdefghijklmnopqrstuvwxyz";
     public const string AlphaUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -13,10 +30,21 @@ namespace Flux.Model
     public const string Symbols3 = "[\\]^_`"; // Note the escaped slash.
     public const string Symbols4 = "{|}~";
 
+    public bool AllowAlphaLower { get; set; } = true;
+    public bool AllowAlphaUpper { get; set; } = true;
+    public bool AllowNumeric { get; set; } = true;
+    public bool AllowSpace { get; set; }
+    public bool AllowSymbols1 { get; set; }
+    public bool AllowSymbols2 { get; set; }
+    public bool AllowSymbols3 { get; set; }
+    public bool AllowSymbols4 { get; set; }
+
+    public bool ForceStartWithAlpha { get; set; }
+
     /// <summary>Creates a new password sequence of specified length and various options.</summary>
-    public static System.Collections.Generic.IEnumerable<char> GetPassword(bool startWithAlpha, bool allowAlphaLower, bool allowAlphaUpper, bool allowNumeric, bool allowSpace, bool allowSymbols1, bool allowSymbols2, bool allowSymbols3, bool allowSymbols4, int length)
+    public System.Collections.Generic.IEnumerable<char> GetPassword(int length)
     {
-      if (length > 0 && startWithAlpha)
+      if (length > 0 && ForceStartWithAlpha)
       {
         yield return GetRandomBiased(AlphaLower + AlphaUpper).First();
 
@@ -27,19 +55,19 @@ namespace Flux.Model
       {
         var characterPool = new System.Text.StringBuilder();
 
-        if (allowAlphaLower) characterPool.Append(AlphaLower);
-        if (allowAlphaUpper) characterPool.Append(AlphaUpper);
+        if (AllowAlphaLower) characterPool.Append(AlphaLower);
+        if (AllowAlphaUpper) characterPool.Append(AlphaUpper);
 
-        if (allowNumeric) characterPool.Append(Numeric);
+        if (AllowNumeric) characterPool.Append(Numeric);
 
 #pragma warning disable CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
-        if (allowSpace) characterPool.Append(Space);
+        if (AllowSpace) characterPool.Append(Space);
 #pragma warning restore CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
 
-        if (allowSymbols1) characterPool.Append(Symbols1);
-        if (allowSymbols2) characterPool.Append(Symbols2);
-        if (allowSymbols3) characterPool.Append(Symbols3);
-        if (allowSymbols4) characterPool.Append(Symbols4);
+        if (AllowSymbols1) characterPool.Append(Symbols1);
+        if (AllowSymbols2) characterPool.Append(Symbols2);
+        if (AllowSymbols3) characterPool.Append(Symbols3);
+        if (AllowSymbols4) characterPool.Append(Symbols4);
 
         foreach (var character in GetRandomBiased(characterPool.ToString()).Take(length))
         {
@@ -88,7 +116,7 @@ namespace Flux.Model
     {
       if (characterPool is null) throw new System.ArgumentNullException(nameof(characterPool));
 
-      for (var index = ushort.MaxValue / characterPool.Length ; index > 0; index--)
+      for (var index = ushort.MaxValue / characterPool.Length; index > 0; index--)
       {
         foreach (var character in characterPool.Distinct().RandomElements(1))
         {

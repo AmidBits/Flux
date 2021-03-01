@@ -40,15 +40,6 @@ namespace Flux.Model
 		}
 	}
 
-	public class SampleTTT
-		: Grid<int>
-	{
-		public SampleTTT()
-			: base(3, 3)
-		{
-		}
-	}
-
 	namespace Sample
 	{
 		public sealed class Move
