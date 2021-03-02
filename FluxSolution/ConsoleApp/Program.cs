@@ -14,7 +14,7 @@ namespace ConsoleApp
 		{
 			var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
 
-			for (var i = 0; i < 10000; i++)
+			for (var i = 0; i < 1000000; i++)
 				d[Flux.Random.NumberGenerator.Crypto.NextProbabilityRuneEnUs()]++;
 
 			foreach (var kvp in d)
