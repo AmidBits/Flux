@@ -12,11 +12,14 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var n1 ="Rooobooocoooop";
+
+			System.Console.WriteLine(Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.Where(kvp => kvp.Key.IsEnglishVowel(false)).Sum(kvp => kvp.Value) + Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.Where(kvp => kvp.Key == (System.Text.Rune)'y').Single().Value / 2.0);
+
+			var n1 = "Rooobooocoooop";
 			System.Console.WriteLine(n1);
 			var n2 = n1.ToStringBuilder().NormalizeAdjacent(3, 'o').ToString();
 			System.Console.WriteLine(n2);
-			return;
+//			return;
 
 			//var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
 
@@ -26,9 +29,9 @@ namespace ConsoleApp
 			//foreach (var kvp in d)
 			//	System.Console.WriteLine($"'{kvp.Key}' = {kvp.Value}");
 
-			for (var i = 0; i < 10; i++)
+			for (var i = 0; i < 20; i++)
 			{
-				var rname = Flux.Random.NumberGenerator.Pseudo.NextRandomNameEnUs(7);
+				var rname = Flux.Random.NumberGenerator.Pseudo.NextRandomNameEnUs(6);
 				System.Console.WriteLine(rname);
 			}
 

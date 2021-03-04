@@ -2,25 +2,42 @@ namespace Flux
 {
 	public static partial class GlobalizationEnUsEm
 	{
-		/// <summary></summary>
+		/// <summary>Generates a random name of specified length based on simple statistical properties of the English language.</summary>
 		public static string NextRandomNameEnUs(this System.Random source, int length)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			var sb = new System.Text.StringBuilder();
 
+			var consonantRepeats = 0;
+			var vowelRepeats = 0;
+
 			while (sb.Length < (2 * length))
 			{
-				sb.Append(source.NextBoolean() ? GetConsonant() : GetVowel());
+				if (vowelRepeats >= 2 || (consonantRepeats < 2 && source.NextDouble() <= 0.6)) // Typical consonants to vowel ratio is about 3/2.
+				{
+					if (source.NextDouble() > 0.6)
+					{
+						consonantRepeats++;
+						vowelRepeats = 0;
+
+						sb.Append(source.NextProbabilityRuneEnUsConsonant(source.NextDouble() < 0.6).ToString());
+					}
+				}
+
+				if (consonantRepeats >= 2 || (vowelRepeats < 2 && source.NextDouble() < 0.4)) // Typical vowel to consonant ratio is about 2/3.
+				{
+					if (source.NextDouble() > 0.4)
+					{
+						consonantRepeats = 0;
+						vowelRepeats++;
+
+						sb.Append(source.NextProbabilityRuneEnUsVowel(source.NextDouble() < 0.4).ToString());
+					}
+				}
 			}
 
-			return sb.NormalizeAdjacent('a', 'i', 'u', 'y', 'h', 'j', 'k', 'q', 'v', 'w', 'x', 'z').ToUpperCaseInvariant(0, 1).LeftMost(length);
-
-			string GetConsonant(double probabilityOfSkipping = 0.15, double chanceOfDouble = 0)
-				=> source.NextDouble() < probabilityOfSkipping ? string.Empty : source.NextProbabilityRuneEnUsConsonant(true).ToString() is var consonant && source.NextDouble() < chanceOfDouble ? consonant + consonant : consonant;
-
-			string GetVowel(double probabilityOfSkipping = 0.10, double chanceOfDouble = 0)
-			 => source.NextDouble() < probabilityOfSkipping ? string.Empty : source.NextProbabilityRuneEnUsVowel(false).ToString() is var vowel && source.NextDouble() < chanceOfDouble ? vowel + vowel : vowel;
+			return sb.ToUpperCaseInvariant(0, 1).LeftMost(length);
 		}
 	}
 }

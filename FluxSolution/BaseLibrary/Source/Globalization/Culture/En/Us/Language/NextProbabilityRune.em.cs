@@ -2,27 +2,27 @@ namespace Flux
 {
   public static partial class GlobalizationEnUsEm
   {
-    /// <summary></summary>
+    /// <summary>Returns the next probable rune based on the rng <paramref name="source"/>.</summary>
     public static System.Text.Rune NextProbabilityRuneEnUs(this System.Random source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      double spectrum = 0.0, value = source.NextDouble();
+      double accumulatedValues = 0.0, probabilityThreshold = source.NextDouble();
 
       for (var index = 0; index < Globalization.EnUs.Language.RelativeFrequencyOfLetters.Count; index++)
       {
         var kvp = Globalization.EnUs.Language.RelativeFrequencyOfLetters[index];
 
-        spectrum += kvp.Value;
+        accumulatedValues += kvp.Value;
 
-        if (value <= spectrum)
+        if (probabilityThreshold <= accumulatedValues)
           return kvp.Key;
       }
 
       return Globalization.EnUs.Language.RelativeFrequencyOfLetters[0].Key;
     }
 
-    /// <summary></summary>
+    /// <summary>Returns the next probable consonant based on <paramref name="source"/> and whether Y will be considered.</summary>
     public static System.Text.Rune NextProbabilityRuneEnUsConsonant(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
@@ -30,7 +30,7 @@ namespace Flux
         rune = NextProbabilityRuneEnUs(source);
       return rune;
     }
-    /// <summary></summary>
+    /// <summary>Returns the next probable vowel based on <paramref name="source"/> and whether Y will be considered.</summary>
     public static System.Text.Rune NextProbabilityRuneEnUsVowel(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
