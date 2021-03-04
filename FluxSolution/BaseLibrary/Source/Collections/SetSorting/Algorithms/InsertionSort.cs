@@ -41,6 +41,20 @@ namespace Flux
           for (var j = i; j > 0 && Comparer.Compare(source[j - 1], source[j]) > 0; j--)
             source.Swap(j, j - 1);
       }
+
+      public void SortInPlaceNew(System.Span<T> source)
+      {
+        //var sourceLength = source.Length;
+
+        //for (var i = 1; i < sourceLength; i++)
+        //{
+        //  var j = i-1;
+
+        //  while(j>=0and source[j])
+        //  for (var j = i; j > 0 && Comparer.Compare(source[j - 1], source[j]) > 0; j--)
+        //    source.Swap(j, j - 1);
+        //}
+      }
     }
   }
 }

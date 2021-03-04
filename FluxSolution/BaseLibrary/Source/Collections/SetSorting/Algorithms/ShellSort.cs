@@ -9,7 +9,7 @@ namespace Flux
     public static void ApplyShellSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplyShellSort(source, System.Collections.Generic.Comparer<T>.Default);
 
-    /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
+    /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort. This makes the shell sort basically an improved insertion sort.</summary>
     public static void ApplyShellSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
       => new SetSorting.ShellSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using shell sort.</summary>
@@ -19,7 +19,7 @@ namespace Flux
 
   namespace SetSorting
   {
-    /// <summary>Sorts the content of the sequence using shell sort.</summary>
+    /// <summary>Sorts the content of the sequence using Marcin Ciura's gap sequence, with an inner insertion sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
     public class ShellSort<T>
       : ASetSorting<T>, ISortableInPlace<T>
@@ -37,22 +37,24 @@ namespace Flux
 
       public void SortInPlace(System.Span<T> source)
       {
+        var sourceLength = source.Length;
+
         foreach (var gap in m_gaps)
         {
-          for (var i = gap; i < source.Length; i += 1)
+          for (var o = gap; o < sourceLength; o++)
           {
-            var j = i;
+            var i = o;
 
-            var temp = source[j];
+            var tmp = source[i];
 
-            while (j >= gap && Comparer.Compare(source[j - gap], temp) > 0)
+            while (i >= gap && Comparer.Compare(source[i - gap], tmp) > 0)
             {
-              source[j] = source[j - gap];
+              source[i] = source[i - gap];
 
-              j -= gap;
+              i -= gap;
             }
 
-            source[j] = temp;
+            source[i] = tmp;
           }
         }
       }

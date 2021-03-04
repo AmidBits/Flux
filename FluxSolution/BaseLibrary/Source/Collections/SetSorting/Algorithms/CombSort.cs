@@ -19,8 +19,8 @@ namespace Flux
 
   namespace SetSorting
   {
-    /// <summary>Sorts the content of the sequence using comb sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
+    /// <summary>Sorts the content of the sequence using essentially an improved bubble sort.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Comb_sort"/>
     public class CombSort<T>
       : ASetSorting<T>, ISortableInPlace<T>
     {

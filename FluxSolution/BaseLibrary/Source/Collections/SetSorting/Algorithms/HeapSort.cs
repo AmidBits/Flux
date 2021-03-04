@@ -25,7 +25,7 @@ namespace Flux
       FloydDown
     }
 
-    /// <summary>Sorts the content of the sequence using heap sort.</summary>
+    /// <summary>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
     public class HeapSort<T>
       : ASetSorting<T>, ISortableInPlace<T>

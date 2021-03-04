@@ -19,7 +19,7 @@ namespace Flux
 
   namespace SetSorting
   {
-    /// <summary>Sorts the content of the sequence using bubble sort.</summary>
+    /// <summary>Sorts the content of the sequence using an optimized version.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
     public class BubbleSort<T>
       : ASetSorting<T>, ISortableInPlace<T>
@@ -35,24 +35,25 @@ namespace Flux
 
       public void SortInPlace(System.Span<T> source)
       {
-        var length = source.Length;
+        var sourceLength = source.Length;
 
         do
         {
           var newLength = 0;
 
-          for (var i = 1; i < length; i++)
+          for (var i = 1; i < sourceLength; i++)
           {
             if (Comparer.Compare(source[i - 1], source[i]) > 0)
             {
               source.Swap(i - 1, i);
+
               newLength = i;
             }
           }
 
-          length = newLength;
+          sourceLength = newLength;
         }
-        while (length > 1);
+        while (sourceLength > 1);
       }
     }
   }

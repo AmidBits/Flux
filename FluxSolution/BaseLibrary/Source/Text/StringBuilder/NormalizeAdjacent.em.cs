@@ -16,9 +16,9 @@ namespace Flux
 			{
 				var current = source[indexOfSource];
 
-				var isEqual = characters.Length > 0
-					? (characters.IndexOf(current, comparer) > -1 && characters.IndexOf(previous, comparer) > -1)
-					: comparer.Equals(current, previous);
+				var isEqual = characters.Length > 0 // Use list or just characters?
+					? (characters.IndexOf(current, comparer) > -1 && characters.IndexOf(previous, comparer) > -1) // Is both current and previous in characters?
+					: comparer.Equals(current, previous); // Is current and previous character equal?
 
 				if (!isEqual || adjacentLength < maxAdjacentLength)
 				{
