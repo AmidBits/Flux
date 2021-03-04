@@ -17,10 +17,10 @@ namespace Flux
 
 					if (index > 0)
 					{
-						if (Flux.Globalization.EnUs.Language.IsEnglishVowel(character, false))
+						if (GlobalizationEnUsLanguage.IsEnglishVowel(character, false))
 							continue;
 
-						if (Flux.Globalization.EnUs.Language.IsEnglishVowel(character, true) && character == name[index - 1])
+						if (GlobalizationEnUsLanguage.IsEnglishVowel(character, true) && character == name[index - 1])
 							continue;
 					}
 

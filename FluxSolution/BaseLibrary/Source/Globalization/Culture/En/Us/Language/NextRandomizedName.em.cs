@@ -16,10 +16,10 @@ namespace Flux
 
 			return sb.NormalizeAdjacent('a', 'i', 'u', 'y', 'h', 'j', 'k', 'q', 'v', 'w', 'x', 'z').ToUpperCaseInvariant(0, 1).LeftMost(length);
 
-			string GetConsonant(double probabilityOfSkipping = 0.25, double chanceOfDouble = 0.10)
+			string GetConsonant(double probabilityOfSkipping = 0.15, double chanceOfDouble = 0)
 				=> source.NextDouble() < probabilityOfSkipping ? string.Empty : source.NextProbabilityRuneEnUsConsonant(true).ToString() is var consonant && source.NextDouble() < chanceOfDouble ? consonant + consonant : consonant;
 
-			string GetVowel(double probabilityOfSkipping = 0.15, double chanceOfDouble = 0.0)
+			string GetVowel(double probabilityOfSkipping = 0.10, double chanceOfDouble = 0)
 			 => source.NextDouble() < probabilityOfSkipping ? string.Empty : source.NextProbabilityRuneEnUsVowel(false).ToString() is var vowel && source.NextDouble() < chanceOfDouble ? vowel + vowel : vowel;
 		}
 	}

@@ -12,19 +12,23 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
+			var n1 ="Rooobooocoooop";
+			System.Console.WriteLine(n1);
+			var n2 = n1.ToStringBuilder().NormalizeAdjacent(3, 'o').ToString();
+			System.Console.WriteLine(n2);
+			return;
 
-			for (var i = 0; i < 1000000; i++)
-				d[Flux.Random.NumberGenerator.Crypto.NextProbabilityRuneEnUs()]++;
+			//var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
 
-			foreach (var kvp in d)
-				System.Console.WriteLine($"'{kvp.Key}' = {kvp.Value}");
+			//for (var i = 0; i < 1000000; i++)
+			//	d[Flux.Random.NumberGenerator.Crypto.NextProbabilityRuneEnUs()]++;
 
-			var rn = new Flux.Random.RandomName(Flux.Random.NumberGenerator.Pseudo);
+			//foreach (var kvp in d)
+			//	System.Console.WriteLine($"'{kvp.Key}' = {kvp.Value}");
 
 			for (var i = 0; i < 10; i++)
 			{
-				var rname = rn.GenerateName(7);
+				var rname = Flux.Random.NumberGenerator.Pseudo.NextRandomNameEnUs(7);
 				System.Console.WriteLine(rname);
 			}
 
