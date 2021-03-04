@@ -17,7 +17,7 @@ namespace ConsoleApp
 
 			var n1 = "Rooobooocoooop";
 			System.Console.WriteLine(n1);
-			var n2 = n1.ToStringBuilder().NormalizeAdjacent(3, 'o').ToString();
+			var n2 = n1.ToStringBuilder().NormalizeAdjacent(2, 'o').ToString();
 			System.Console.WriteLine(n2);
 //			return;
 
