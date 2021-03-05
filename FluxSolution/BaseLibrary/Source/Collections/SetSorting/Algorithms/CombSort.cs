@@ -35,26 +35,28 @@ namespace Flux
 
       public void SortInPlace(System.Span<T> source)
       {
-        var gapSize = source.Length;
+        var gap = source.Length;
         var shrinkFactor = 1.3;
         var isSorted = false;
 
         while (isSorted == false)
         {
-          gapSize = (int)System.Math.Floor(gapSize / shrinkFactor);
+          gap = (int)System.Math.Floor(gap / shrinkFactor);
 
-          if (gapSize <= 1)
+          if (gap <= 1)
           {
-            gapSize = 1;
+            gap = 1;
+
             isSorted = true; // No swaps this pass, we are done.
           }
 
           // A single "comb" over the input list
-          for (var i = 0; i + gapSize < source.Length; i++) // See Shell sort for a similar idea
+          for (var i = 0; i + gap < source.Length; i++) // See Shell sort for a similar idea
           {
-            if (Comparer.Compare(source[i], source[i + gapSize]) > 0)
+            if (Comparer.Compare(source[i], source[i + gap]) > 0)
             {
-              source.Swap(i, i + gapSize);
+              source.Swap(i, i + gap);
+
               isSorted = false; // If this assignment never happens within the loop, then there have been no swaps and the list is sorted.
             }
           }

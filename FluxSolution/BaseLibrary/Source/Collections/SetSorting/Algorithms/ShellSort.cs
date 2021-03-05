@@ -41,20 +41,20 @@ namespace Flux
 
         foreach (var gap in m_gaps)
         {
-          for (var o = gap; o < sourceLength; o++)
+          for (var i = gap; i < sourceLength; i++)
           {
-            var i = o;
+            var j = i;
 
-            var tmp = source[i];
+            var tmp = source[j];
 
-            while (i >= gap && Comparer.Compare(source[i - gap], tmp) > 0)
+            while (j >= gap && Comparer.Compare(source[j - gap], tmp) > 0)
             {
-              source[i] = source[i - gap];
+              source[j] = source[j - gap];
 
-              i -= gap;
+              j -= gap;
             }
 
-            source[i] = tmp;
+            source[j] = tmp;
           }
         }
       }
