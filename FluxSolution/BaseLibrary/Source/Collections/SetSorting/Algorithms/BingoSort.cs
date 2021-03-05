@@ -20,7 +20,7 @@ namespace Flux
 	namespace SetSorting
 	{
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
+		/// <see cref="https://en.wikipedia.org/wiki/Bingo_sort"/>
 		public class BingoSort<T>
 			: ASetSorting<T>, ISortableInPlace<T>
 		{
