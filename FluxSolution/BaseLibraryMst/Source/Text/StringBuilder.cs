@@ -166,7 +166,7 @@ namespace Text
 		public void NormalizeAdjacents()
 		{
 			var expected = @"There is a bee in the soup.";
-			var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeAdjacent('a', 'b').ToString();
+			var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeAdjacent(1, 'a', 'b').ToString();
 			Assert.AreEqual(expected, actual);
 		}
 
