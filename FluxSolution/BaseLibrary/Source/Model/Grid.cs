@@ -6,13 +6,14 @@ namespace Flux.Model
 	{
 		public System.Collections.Generic.IList<TValue> Values { get; internal set; }
 
-		public int Columns { get; }
-		public int Rows { get; }
+		public Geometry.Size2 Size { get; }
 
-		public (int row, int column) IndexToRowColumn(int index)
-			=> index < 0 || index >= Rows * Columns ? throw new System.ArgumentOutOfRangeException(nameof(index)) : (index / Columns, index % Columns);
+		public Geometry.Point2 IndexToRowColumn(int index)
+			=> Geometry.Point2.FromUniqueIndex(index, Size);
+		public int RowColumnToIndex(Geometry.Point2 point)
+			=> (int)Geometry.Point2.ToUniqueIndex(point, Size);
 		public int RowColumnToIndex(int row, int column)
-			=> row < 0 || row >= Rows ? throw new System.ArgumentOutOfRangeException(nameof(row)) : column < 0 || column >= Columns ? throw new System.ArgumentOutOfRangeException(nameof(column)) : row * Columns + column;
+			=> (int)Geometry.Point2.ToUniqueIndex(new Geometry.Point2(column, row), Size);
 
 		public TValue this[int index]
 		{
@@ -27,10 +28,9 @@ namespace Flux.Model
 
 		public Grid(int rows, int columns)
 		{
-			Columns = columns;
-			Rows = rows;
+			Size = new Geometry.Size2(columns, rows);
 
-			Values = new TValue[Rows * Columns];
+			Values = new TValue[rows * columns];
 		}
 
 		public void Reset()

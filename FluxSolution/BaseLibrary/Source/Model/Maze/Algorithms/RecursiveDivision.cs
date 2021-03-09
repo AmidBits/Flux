@@ -7,7 +7,7 @@ namespace Flux.Model.Maze
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      Divide(grid, 0, 0, grid.Rows, grid.Columns);
+      Divide(grid, 0, 0, grid.Size.Height, grid.Size.Width);
     }
 
     private void Divide(Grid grid, int row, int column, int height, int width)
