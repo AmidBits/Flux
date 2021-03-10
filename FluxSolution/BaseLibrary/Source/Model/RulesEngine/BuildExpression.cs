@@ -5,25 +5,25 @@ namespace Flux.Model
 {
 	public static partial class RulesEngine
 	{
-		public static System.Linq.Expressions.Expression BuildExpression<T>(Rule rule, System.Linq.Expressions.ParameterExpression parameter)
+		public static System.Linq.Expressions.Expression BuildExpression<T>(Rule rule, System.Linq.Expressions.ParameterExpression parameterExpression)
 		{
-			var left = System.Linq.Expressions.MemberExpression.Property(parameter, rule.Name);
+			var meProperty = System.Linq.Expressions.MemberExpression.Property(parameterExpression, rule.Name);
 			var propertyType = typeof(T).GetProperty(rule.Name)?.PropertyType ?? throw new System.ArgumentNullException(nameof(rule), $"There is no property named {rule.Name} in the type.");
 
-			if (System.Linq.Expressions.ExpressionType.TryParse(rule.Operator, out System.Linq.Expressions.ExpressionType binaryOperator))
+			if (System.Linq.Expressions.ExpressionType.TryParse(rule.Operator, out System.Linq.Expressions.ExpressionType expressionType))
 			{
-				var rightExpression = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.Value, propertyType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
+				var ceRight = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.Value, propertyType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
 
-				return System.Linq.Expressions.Expression.MakeBinary(binaryOperator, left, rightExpression);
+				return System.Linq.Expressions.Expression.MakeBinary(expressionType, meProperty, ceRight);
 			}
 			else
 			{
-				var methodInfo = propertyType.GetMethods().Where(mi => mi.Name == rule.Operator && mi.GetParameters() is var p && p.Length == 1 && p[0].ParameterType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())).First();
+				var methodInfo = propertyType.GetMethods().Where(mi => mi.Name == rule.Operator && mi.GetParameters() is var pi && pi.Length == 1 && pi[0].ParameterType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())).First();
 				var parameterType = methodInfo.GetParameters()[0].ParameterType;
 
-				var argument = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.Value, parameterType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
+				var ceArgument = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.Value, parameterType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
 
-				return System.Linq.Expressions.Expression.Call(left, methodInfo, argument);
+				return System.Linq.Expressions.Expression.Call(meProperty, methodInfo, ceArgument);
 			}
 		}
 	}

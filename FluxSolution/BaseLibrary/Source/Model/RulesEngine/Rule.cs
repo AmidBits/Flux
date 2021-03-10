@@ -5,9 +5,16 @@ namespace Flux.Model
 	{
 		public string Name { get; }
 		public string Operator { get; }
-		public string Value { get; }
+		public object Value { get; }
 
 		public Rule(string name, string @operator, string value)
+		{
+			Name = name;
+			Operator = @operator;
+			Value = value;
+		}
+		[System.CLSCompliant(false)]
+		public Rule(string name, string @operator, System.IConvertible value)
 		{
 			Name = name;
 			Operator = @operator;
