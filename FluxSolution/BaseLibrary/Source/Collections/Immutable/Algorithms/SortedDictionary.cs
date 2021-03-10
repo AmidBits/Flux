@@ -5,10 +5,10 @@ namespace Flux.Collections.Immutable
   // https://blogs.msdn.microsoft.com/bclteam/2012/12/18/preview-of-immutable-collections-released-on-nuget/
 
   public class SortedDictionary<TKey, TValue>
-    : ISortedDictionary<TKey, TValue>
+    : IReadOnlyDictionary<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
-    public static readonly ISortedDictionary<TKey, TValue> Empty = new EmptyDictionary();
+    public static readonly IReadOnlyDictionary<TKey, TValue> Empty = new EmptyDictionary();
 
     private readonly IBinarySearchTree<TKey, TValue> m_tree = AvlTree<TKey, TValue>.Empty;
 
@@ -16,8 +16,8 @@ namespace Flux.Collections.Immutable
 
     public TValue this[TKey key] => m_tree.Lookup(key);
     public bool IsEmpty => false;
-    public ISortedDictionary<TKey, TValue> Add(TKey key, TValue value) => new SortedDictionary<TKey, TValue>(m_tree.Add(key, value));
-    public ISortedDictionary<TKey, TValue> Remove(TKey key) => new SortedDictionary<TKey, TValue>(m_tree.Remove(key));
+    public IReadOnlyDictionary<TKey, TValue> Add(TKey key, TValue value) => new SortedDictionary<TKey, TValue>(m_tree.Add(key, value));
+    public IReadOnlyDictionary<TKey, TValue> Remove(TKey key) => new SortedDictionary<TKey, TValue>(m_tree.Remove(key));
 
     // IMap<K, V>
     public System.Collections.Generic.IEnumerable<TKey> Keys => m_tree.Keys;
@@ -48,13 +48,13 @@ namespace Flux.Collections.Immutable
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator() => m_tree.GetNodesInOrder().Select(bst => new System.Collections.Generic.KeyValuePair<TKey, TValue>(bst.Key, bst.Value)).GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private class EmptyDictionary : ISortedDictionary<TKey, TValue>
+    private class EmptyDictionary : IReadOnlyDictionary<TKey, TValue>
     {
       // IDictionary<K, V>
       public TValue this[TKey key] => throw new System.Exception(nameof(EmptyDictionary));
       public bool IsEmpty => true;
-      public ISortedDictionary<TKey, TValue> Add(TKey key, TValue value) => new SortedDictionary<TKey, TValue>(AvlTree<TKey, TValue>.Empty.Add(key, value));
-      public ISortedDictionary<TKey, TValue> Remove(TKey key) => throw new System.Exception(nameof(EmptyDictionary));
+      public IReadOnlyDictionary<TKey, TValue> Add(TKey key, TValue value) => new SortedDictionary<TKey, TValue>(AvlTree<TKey, TValue>.Empty.Add(key, value));
+      public IReadOnlyDictionary<TKey, TValue> Remove(TKey key) => throw new System.Exception(nameof(EmptyDictionary));
 
       // IMap<K, V>
       public System.Collections.Generic.IEnumerable<TKey> Keys { get { yield break; } }
