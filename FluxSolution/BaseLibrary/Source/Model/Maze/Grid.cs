@@ -12,48 +12,55 @@ namespace Flux.Model.Maze
 
 		/// <summary>Returns a sequence with all dead end (singly linked) cells.</summary>
 		public System.Collections.Generic.IEnumerable<Cell> GetDeadEnds()
-			=> Values.Where(c => c.Paths.Count == 1);
-
+		{
+			for (var index = 0; index < Values.Count; index++)
+				if (Values[index] is var cell && cell.Paths.Count == 1)
+					yield return cell;
+		}
 		/// <summary>Reset edges with one optional 4-way N,E,S,W and/or one 4-way NE,SE,SW,NW.</summary>
 		public void ResetEdges(bool orthogonal, bool diagonal)
 		{
-			for (var r = 0; r < Size.Height; r++)
+			for (var v = 0; v < Size.Height; v++) // 
 			{
-				for (var c = 0; c < Size.Width; c++)
+				for (var h = 0; h < Size.Width; h++)
 				{
-					var cell = this[r, c];
+					var cell = this[v, h];
 
 					cell.Edges.Clear();
 
-					if (orthogonal || diagonal)
-					{
-						var north = (r > 0);
-						var east = (c < (Size.Width - 1));
-						var south = (r < (Size.Height - 1));
-						var west = (c > 0);
+					var n = (v > 0); // North (positive vertical axis).
+					var e = (h < (Size.Width - 1)); // East (negative horizontal axis).
+					var s = (v < (Size.Height - 1)); // South (negative vertical axis).
+					var w = (h > 0); // West (positive horizontal axis).
 
-						if (orthogonal && north) { cell.Edges.Add((int)EightWindCompassRose.N, this[r - 1, c]); }
-						if (diagonal && north && east) { cell.Edges.Add((int)EightWindCompassRose.NE, this[r - 1, c + 1]); }
-						if (orthogonal && east) { cell.Edges.Add((int)EightWindCompassRose.E, this[r, c + 1]); }
-						if (diagonal && south && east) { cell.Edges.Add((int)EightWindCompassRose.SE, this[r + 1, c + 1]); }
-						if (orthogonal && south) { cell.Edges.Add((int)EightWindCompassRose.S, this[r + 1, c]); }
-						if (diagonal && south && west) { cell.Edges.Add((int)EightWindCompassRose.SW, this[r + 1, c - 1]); }
-						if (orthogonal && west) { cell.Edges.Add((int)EightWindCompassRose.W, this[r, c - 1]); }
-						if (diagonal && north && west) { cell.Edges.Add((int)EightWindCompassRose.NW, this[r - 1, c - 1]); }
+					if (orthogonal)
+					{
+						if (n) cell.Edges.Add((int)EightWindCompassRose.N, this[v - 1, h]);
+						if (e) cell.Edges.Add((int)EightWindCompassRose.E, this[v, h + 1]);
+						if (s) cell.Edges.Add((int)EightWindCompassRose.S, this[v + 1, h]);
+						if (w) cell.Edges.Add((int)EightWindCompassRose.W, this[v, h - 1]);
+					}
+
+					if (diagonal)
+					{
+						if (n && e) cell.Edges.Add((int)EightWindCompassRose.NE, this[v - 1, h + 1]);
+						if (s && e) cell.Edges.Add((int)EightWindCompassRose.SE, this[v + 1, h + 1]);
+						if (s && w) cell.Edges.Add((int)EightWindCompassRose.SW, this[v + 1, h - 1]);
+						if (n && w) cell.Edges.Add((int)EightWindCompassRose.NW, this[v - 1, h - 1]);
 					}
 				}
 			}
 		}
 
-		/// <summary>Reset all pathway connections to either connected state or not.</summary>
-		public void ResetPaths(bool asConnected)
+		/// <summary>Reset all pathway connection states as either connected or not.</summary>
+		public void ResetPaths(bool isConnected)
 		{
-			foreach (var cell in Values)
-				cell.ResetPaths(asConnected);
+			for (var index = Values.Count - 1; index >= 0; index--)
+				Values[index].ResetPaths(isConnected);
 		}
 
 		// System.ICloneable
 		public object Clone()
-			=> new Grid(Size) { Values = Values.ToArray() };
+			=> new Grid(Size) { Values = new System.Collections.Generic.List<Cell>(Values) };
 	}
 }
