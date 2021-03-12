@@ -41,11 +41,15 @@ namespace Flux
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set).</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int MostSignificant1Bit(int value)
-      => value >= 0 ? unchecked((int)MostSignificant1Bit((uint)value)) : int.MinValue;
+      => value >= 0
+      ? unchecked((int)MostSignificant1Bit((uint)value))
+      : int.MinValue;
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set).</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static long MostSignificant1Bit(long value)
-      => value >= 0 ? unchecked((long)MostSignificant1Bit((ulong)value)) : long.MinValue;
+      => value >= 0
+      ? unchecked((long)MostSignificant1Bit((ulong)value))
+      : long.MinValue;
 
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set).</summary>
     [System.CLSCompliant(false)]
