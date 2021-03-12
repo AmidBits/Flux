@@ -61,7 +61,7 @@ namespace Flux
 			return new System.Numerics.BigInteger(GetRandomByteSpan(source, quotient + (remainder > 0 ? 1 : 0)), true) & ((System.Numerics.BigInteger.One << maxBitLength) - 1);
 		}
 
-		/// <summary>Generates a boolean value with the specified probability of being true.</summary>
+		/// <summary>Generates a boolean value with the specified probability of being true. This function can be called a Bernoulli trial.</summary>
 		public static bool NextBoolean(this System.Random source, double probabilityOfTrue = 0.5)
 			=> (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble() < probabilityOfTrue;
 

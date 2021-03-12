@@ -3,9 +3,9 @@ using System.Linq;
 namespace Flux.Probability
 {
   public sealed class Bernoulli
-    : IDiscreteDistribution<int>
+    : IDiscreteProbabilityDistribution<int>
   {
-    public static IDiscreteDistribution<int> Distribution(int zero, int one)
+    public static IDiscreteProbabilityDistribution<int> Distribution(int zero, int one)
     {
       if (zero < 0 || one < 0 || zero == 0 && one == 0) throw new System.ArgumentException(@"Both zero and one must be greater than 0.");
 
@@ -31,7 +31,7 @@ namespace Flux.Probability
       => (StandardContinuousUniform.Distribution.Sample() <= ((double)Zero) / (Zero + One)) ? 0 : 1;
 
     public System.Collections.Generic.IEnumerable<int> Support()
-      => Enumerable.Range(0, 2);
+      => System.Linq.Enumerable.Range(0, 1);
 
     public int Weight(int x)
       => x == 0 ? Zero : x == 1 ? One : 0;

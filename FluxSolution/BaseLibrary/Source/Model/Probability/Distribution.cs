@@ -16,11 +16,11 @@ namespace Flux.Probability
     public static string Histogram(this IDistribution<double> d, double low, double high) =>
       d.Samples().Histogram(low, high);
 
-    public static string Histogram<T>(this IDiscreteDistribution<T> d)
+    public static string Histogram<T>(this IDiscreteProbabilityDistribution<T> d)
       where T : notnull
       => d.Samples().DiscreteHistogram();
 
-    public static string ShowWeights<T>(this IDiscreteDistribution<T> d)
+    public static string ShowWeights<T>(this IDiscreteProbabilityDistribution<T> d)
     {
       if (d is null) throw new System.ArgumentNullException(nameof(d));
 
@@ -29,11 +29,11 @@ namespace Flux.Probability
       string ToLabel(T t) => t?.ToString()?.PadLeft(labelMax) ?? throw new System.ArgumentNullException(nameof(T));
     }
 
-    public static IDiscreteDistribution<TR> Select<TA, TR>(this IDiscreteDistribution<TA> d, System.Func<TA, TR> projection)
+    public static IDiscreteProbabilityDistribution<TR> Select<TA, TR>(this IDiscreteProbabilityDistribution<TA> d, System.Func<TA, TR> projection)
       where TR : notnull
       => Projected<TA, TR>.Distribution(d, projection);
 
-    public static IDiscreteDistribution<T> ToUniform<T>(this System.Collections.Generic.IEnumerable<T> items)
+    public static IDiscreteProbabilityDistribution<T> ToUniform<T>(this System.Collections.Generic.IEnumerable<T> items)
       where T : notnull
     {
       var list = items.ToList();

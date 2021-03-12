@@ -3,15 +3,15 @@ using System.Linq;
 namespace Flux.Probability
 {
   public sealed class Projected<TA, TR> 
-    : IDiscreteDistribution<TR>
+    : IDiscreteProbabilityDistribution<TR>
     where TR : notnull
   {
-    private readonly IDiscreteDistribution<TA> underlying;
+    private readonly IDiscreteProbabilityDistribution<TA> underlying;
     private readonly System.Func<TA, TR> projection;
     private readonly System.Collections.Generic.Dictionary<TR, int> weights;
 
 #pragma warning disable CA1000 // Do not declare static members on generic types
-    public static IDiscreteDistribution<TR> Distribution(IDiscreteDistribution<TA> underlying, System.Func<TA, TR> projection)
+    public static IDiscreteProbabilityDistribution<TR> Distribution(IDiscreteProbabilityDistribution<TA> underlying, System.Func<TA, TR> projection)
 #pragma warning restore CA1000 // Do not declare static members on generic types
     {
       if (underlying is null) throw new System.ArgumentNullException(nameof(underlying));
@@ -22,7 +22,7 @@ namespace Flux.Probability
       return result;
     }
 
-    private Projected(IDiscreteDistribution<TA> underlying, System.Func<TA, TR> projection)
+    private Projected(IDiscreteProbabilityDistribution<TA> underlying, System.Func<TA, TR> projection)
     {
       this.underlying = underlying;
       this.projection = projection;

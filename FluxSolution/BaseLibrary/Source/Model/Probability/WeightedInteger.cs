@@ -4,15 +4,15 @@ namespace Flux.Probability
 {
   // Weighted integer distribution using alias method.
   public sealed class WeightedInteger
-    : IDiscreteDistribution<int>
+    : IDiscreteProbabilityDistribution<int>
   {
     private readonly System.Collections.Generic.List<int> weights;
     private readonly IDistribution<int>[] distributions;
 
-    public static IDiscreteDistribution<int> Distribution(params int[] weights)
+    public static IDiscreteProbabilityDistribution<int> Distribution(params int[] weights)
       => Distribution((System.Collections.Generic.IEnumerable<int>)weights);
 
-    public static IDiscreteDistribution<int> Distribution(System.Collections.Generic.IEnumerable<int> weights)
+    public static IDiscreteProbabilityDistribution<int> Distribution(System.Collections.Generic.IEnumerable<int> weights)
     {
       System.Collections.Generic.List<int> w = weights.ToList();
       if (w.Any(x => x < 0) || !w.Any(x => x > 0))

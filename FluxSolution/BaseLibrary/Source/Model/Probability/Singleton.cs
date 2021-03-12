@@ -1,7 +1,7 @@
 namespace Flux.Probability
 {
   public sealed class Singleton<T>
-    : IDiscreteDistribution<T>
+    : IDiscreteProbabilityDistribution<T>
   {
     private readonly T t;
 

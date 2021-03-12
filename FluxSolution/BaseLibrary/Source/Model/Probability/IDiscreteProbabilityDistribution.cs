@@ -1,6 +1,6 @@
 namespace Flux.Probability
 {
-  public interface IDiscreteDistribution<T>
+  public interface IDiscreteProbabilityDistribution<T>
     : IDistribution<T>
   {
     System.Collections.Generic.IEnumerable<T> Support();
