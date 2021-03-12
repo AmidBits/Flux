@@ -15,7 +15,9 @@ namespace Flux
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static int BitLength(System.Numerics.BigInteger value)
-      => value >= 0 ? Log2(value) + 1 : 0;
+      => value >= 0
+      ? Log2(value) + 1
+      : 0;
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
