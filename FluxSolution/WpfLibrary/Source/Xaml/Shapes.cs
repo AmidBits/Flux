@@ -46,13 +46,13 @@ namespace Flux.Wpf
 
       public static System.Windows.Point PatternCircle(double unitRatio)
       {
-        unitRatio = unitRatio % 1.0;
+        unitRatio %= 1.0;
 
         return Angle.ConvertDegreeToRadian(unitRatio * 360.0).AngularRotationToPoint();
       }
       public static System.Windows.Point PatternSquare(double unitRatio)
       {
-        unitRatio = unitRatio % 1.0;
+        unitRatio %= 1.0;
 
         if (unitRatio >= 0 && unitRatio <= 0.25)
           return new System.Windows.Point(((unitRatio - 0.125) * 4), 0);

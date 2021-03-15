@@ -29,10 +29,10 @@ namespace Flux
     {
       var list = series.Select(t => valueSelector(t)).ToList();
 
-      foreach (var item in list.Select((v, i) => (value: v, index: i)))
+      foreach (var (value, index) in list.Select((v, i) => (value: v, index: i)))
       {
-        AvgX += item.index;
-        AvgY += item.value;
+        AvgX += index;
+        AvgY += value;
       }
 
       Count = series.Count();
@@ -40,10 +40,10 @@ namespace Flux
       AvgX /= Count;
       AvgY /= Count;
 
-      foreach (var item in list.Select((v, i) => (value: v, index: i)))
+      foreach (var (value, index) in list.Select((v, i) => (value: v, index: i)))
       {
-        v1 += (item.index - AvgX) * (item.value - AvgY);
-        v2 += System.Math.Pow(item.index - AvgX, 2);
+        v1 += (index - AvgX) * (value - AvgY);
+        v2 += System.Math.Pow(index - AvgX, 2);
       }
 
       Slope = v1 / v2;

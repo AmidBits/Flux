@@ -12,10 +12,10 @@ namespace Flux.Wpf.IValueConverter
       return UniversalConversion(value, targetType, parameter, culture, nameof(ConvertBack));
     }
 
-    private object UniversalConversion(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture, string caller)
+    private static object UniversalConversion(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture, string caller)
     {
-      if (value is System.Windows.Media.Color && targetType == typeof(System.Windows.Media.SolidColorBrush))
-        return new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)value);
+      if (value is System.Windows.Media.Color color && targetType == typeof(System.Windows.Media.SolidColorBrush))
+        return new System.Windows.Media.SolidColorBrush(color);
 
       if (value is System.Windows.Media.SolidColorBrush && targetType == typeof(System.Windows.Media.Color))
         return (value as System.Windows.Media.SolidColorBrush).Color;

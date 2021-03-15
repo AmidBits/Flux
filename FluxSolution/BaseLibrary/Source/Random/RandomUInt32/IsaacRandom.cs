@@ -46,10 +46,10 @@ namespace Flux.Random
 
 				switch (i & 3)
 				{
-					case 0: m_randa = m_randa ^ (m_randa << 13); break;
-					case 1: m_randa = m_randa ^ (m_randa >> 6); break;
-					case 2: m_randa = m_randa ^ (m_randa << 2); break;
-					case 3: m_randa = m_randa ^ (m_randa >> 16); break;
+					case 0: m_randa ^= (m_randa << 13); break;
+					case 1: m_randa ^= (m_randa >> 6); break;
+					case 2: m_randa ^= (m_randa << 2); break;
+					case 3: m_randa ^= (m_randa >> 16); break;
 				}
 
 				m_randa = unchecked(m_randmem[(i + 128) & 255] + m_randa);
