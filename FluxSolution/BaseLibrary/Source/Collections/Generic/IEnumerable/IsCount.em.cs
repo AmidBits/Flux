@@ -32,7 +32,7 @@ namespace Flux
 			return counter <= maxCount;
 		}
 
-		/// <summary>Returns whether the sequence has at least the specified minimum count (number of elements) and at most the maximum count, matching the predicate.</summary>
+		/// <summary>Returns whether the sequence has at least a minimum count (inclusive) and at most a maximum count (inclusive), matching the predicate.</summary>
 		public static bool IsCountBetween<T>(this System.Collections.Generic.IEnumerable<T> source, int minCount, int maxCount, System.Func<T, int, bool> predicate)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
