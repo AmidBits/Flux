@@ -13,6 +13,7 @@ namespace Flux.Collections.Immutable
       m_backwards = backwards;
     }
 
+    // IQueue
     public int Count { get; private set; }
     public bool IsEmpty => false;
     public TValue Peek() => m_forwards.Peek();
@@ -25,6 +26,7 @@ namespace Flux.Collections.Immutable
       else if (m_backwards.IsEmpty) return Queue<TValue>.Empty;
       else return new Queue<TValue>(m_backwards.Reverse(), Stack<TValue>.Empty);
     }
+    // IEnumerable
     public System.Collections.Generic.IEnumerator<TValue> GetEnumerator()
     {
       foreach (TValue t in m_forwards) yield return t;
@@ -35,11 +37,13 @@ namespace Flux.Collections.Immutable
     private sealed class EmptyQueue
       : IQueue<TValue>
     {
+      // IQueue
       public int Count => 0;
       public bool IsEmpty => true;
       public TValue Peek() => throw new System.Exception(nameof(EmptyQueue));
       public IQueue<TValue> Enqueue(TValue value) => new Queue<TValue>(Stack<TValue>.Empty.Push(value), Stack<TValue>.Empty);
       public IQueue<TValue> Dequeue() => throw new System.Exception(nameof(EmptyQueue));
+      // IEnumerable
       public System.Collections.Generic.IEnumerator<TValue> GetEnumerator() { yield break; }
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }

@@ -27,7 +27,8 @@ namespace Flux.Collections.Immutable
       => m_value;
     #endregion IBinaryTree Implementation
 
-    private sealed class EmptyBinaryTree : IBinaryTree<TValue>
+    private sealed class EmptyBinaryTree 
+      : IBinaryTree<TValue>
     {
       #region IBinaryTree Implementation
       public bool IsEmpty

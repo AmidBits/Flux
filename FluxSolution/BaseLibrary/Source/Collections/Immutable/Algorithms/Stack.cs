@@ -1,40 +1,44 @@
 namespace Flux.Collections.Immutable
 {
-  public sealed class Stack<T>
-    : IStack<T>
-  {
-    public static readonly IStack<T> Empty = new EmptyStack();
+	public sealed class Stack<TValue>
+		: IStack<TValue>
+	{
+		public static readonly IStack<TValue> Empty = new EmptyStack();
 
-    private readonly T m_head;
-    private readonly IStack<T> m_tail;
-    private Stack(T head, IStack<T> tail)
-    {
-      m_head = head;
-      m_tail = tail;
-    }
+		private readonly TValue m_head;
+		private readonly IStack<TValue> m_tail;
+		private Stack(TValue head, IStack<TValue> tail)
+		{
+			m_head = head;
+			m_tail = tail;
+		}
 
-    public int Count { get; private set; }
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-    {
-      for (IStack<T> stack = this; !stack.IsEmpty; stack = stack.Pop())
-        yield return stack.Peek();
-    }
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-    public bool IsEmpty => false;
-    public T Peek() => m_head;
-    public IStack<T> Pop() => m_tail;
-    public IStack<T> Push(T value) => new Stack<T>(value, this) { Count = Count + 1 };
+		// IStack<T>
+		public int Count { get; init; }
+		public bool IsEmpty => false;
+		public TValue Peek() => m_head;
+		public IStack<TValue> Pop() => m_tail;
+		public IStack<TValue> Push(TValue value) => new Stack<TValue>(value, this) { Count = Count + 1 };
+		// IEnumerable<T>
+		public System.Collections.Generic.IEnumerator<TValue> GetEnumerator()
+		{
+			for (IStack<TValue> stack = this; !stack.IsEmpty; stack = stack.Pop())
+				yield return stack.Peek();
+		}
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private sealed class EmptyStack
-      : IStack<T>
-    {
-      public int Count => 0;
-      public bool IsEmpty => true;
-      public T Peek() => throw new System.Exception(nameof(EmptyStack));
-      public IStack<T> Push(T value) => new Stack<T>(value, this);
-      public IStack<T> Pop() => throw new System.Exception(nameof(EmptyStack));
-      public System.Collections.Generic.IEnumerator<T> GetEnumerator() { yield break; }
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-  }
+		private sealed class EmptyStack
+			: IStack<TValue>
+		{
+			// IStack
+			public int Count => 0;
+			public bool IsEmpty => true;
+			public TValue Peek() => throw new System.Exception(nameof(EmptyStack));
+			public IStack<TValue> Push(TValue value) => new Stack<TValue>(value, this);
+			public IStack<TValue> Pop() => throw new System.Exception(nameof(EmptyStack));
+			// IEnumerator
+			public System.Collections.Generic.IEnumerator<TValue> GetEnumerator() { yield break; }
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		}
+	}
 }
