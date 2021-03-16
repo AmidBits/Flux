@@ -35,25 +35,6 @@ namespace Collections.Generic
 		}
 
 		[TestMethod]
-		public void ContainsFew()
-		{
-			Assert.IsFalse(integers.ContainsFew(new int[] { 19, 57 }));
-			Assert.IsTrue(integers.ContainsFew(new int[] { 17, 23 }));
-		}
-
-		[TestMethod]
-		public void CountAtLeast()
-		{
-			Assert.IsTrue(integers.IsCountAtLeast(4, (e, i) => true));
-		}
-
-		[TestMethod]
-		public void CountAtMost()
-		{
-			Assert.IsTrue(integers.IsCountAtMost(4000, (e, i) => true));
-		}
-
-		[TestMethod]
 		public void CountEqualAtStart()
 		{
 			Assert.AreEqual(4, integers.CountEqualAtStart(new int[] { 17, 17, 19, 23 }));
@@ -91,6 +72,25 @@ namespace Collections.Generic
 		public void IndexOfMin()
 		{
 			Assert.AreEqual(0, integers.IndexOfMin(v => v, out var _));
+		}
+
+		[TestMethod]
+		public void IsCountBetween()
+		{
+			Assert.IsFalse(integers.IsCountBetween(3, 8, (e, i) => new int[] { 19, 57 }.Contains(e)));
+			Assert.IsTrue(integers.IsCountBetween(3, 8, (e, i) => new int[] { 17, 23 }.Contains(e)));
+		}
+
+		[TestMethod]
+		public void IsCountAtLeast()
+		{
+			Assert.IsTrue(integers.IsCountAtLeast(4, (e, i) => true));
+		}
+
+		[TestMethod]
+		public void IsCountAtMost()
+		{
+			Assert.IsTrue(integers.IsCountAtMost(4000, (e, i) => true));
 		}
 
 		[TestMethod]
