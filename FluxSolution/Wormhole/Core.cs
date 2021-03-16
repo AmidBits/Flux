@@ -344,11 +344,9 @@ namespace Wormhole
 					System.Diagnostics.EventLog.CreateEventSource(EventSource, EventLogName);
 				}
 
-				using (var el = new System.Diagnostics.EventLog(EventLogName))
-				{
-					el.Source = EventSource;
-					el.WriteEntry(message, type, eventID, category);
-				}
+				using var el = new System.Diagnostics.EventLog(EventLogName);
+				el.Source = EventSource;
+				el.WriteEntry(message, type, eventID, category);
 			}
 			catch { }
 		}
@@ -363,43 +361,43 @@ namespace Wormhole
 		#region File/Sql Log functionality
 		public class Log
 		{
-			public string BatchID => _xePayload.Attribute(nameof(System.Guid)).Value;
-			public string Category => _xePayload.Name.LocalName;
+			public string BatchID => m_xePayload.Attribute(nameof(System.Guid)).Value;
+			public string Category => m_xePayload.Name.LocalName;
 			public string Location { get; private set; }
-			public string Name => string.Join(@"-", _xePayload.Elements().Select(c => c.Attribute(@"Entity").Value));
+			public string Name => string.Join(@"-", m_xePayload.Elements().Select(c => c.Attribute(@"Entity").Value));
 
-			private string _logFileName;
+			private readonly string m_logFileName;
 
-			private System.Xml.Linq.XElement _xePayload;
+			private readonly System.Xml.Linq.XElement m_xePayload;
 
 			public Log(string workFolder, System.Xml.Linq.XElement xePayload)
 			{
-				_xePayload = xePayload;
+				m_xePayload = xePayload;
 
-				if (_xePayload.Attribute(nameof(System.Guid)) is null)
+				if (m_xePayload.Attribute(nameof(System.Guid)) is null)
 				{
-					_xePayload.SetAttributeValue(nameof(System.Guid), System.Guid.NewGuid().ToString());
+					m_xePayload.SetAttributeValue(nameof(System.Guid), System.Guid.NewGuid().ToString());
 				}
 
-				if (_xePayload.Attribute("Name") is null)
+				if (m_xePayload.Attribute("Name") is null)
 				{
-					_xePayload.SetAttributeValue(@"Name", _xePayload.Element(@"Export").Attribute(@"Entity").Value + @"-" + _xePayload.Element(@"Import").Attribute(@"Entity").Value);
+					m_xePayload.SetAttributeValue(@"Name", m_xePayload.Element(@"Export").Attribute(@"Entity").Value + @"-" + m_xePayload.Element(@"Import").Attribute(@"Entity").Value);
 				}
 
 				Location = workFolder;
 
 				SetupLog();
 
-				_logFileName = System.IO.Path.Combine(workFolder, $"{Name}.{_xePayload.Name.LocalName.ToLower()}");
+				m_logFileName = System.IO.Path.Combine(workFolder, $"{Name}.{m_xePayload.Name.LocalName.ToLower()}");
 
-				if (System.IO.File.Exists(_logFileName))
+				if (System.IO.File.Exists(m_logFileName))
 				{
-					System.IO.File.Delete(_logFileName);
+					System.IO.File.Delete(m_logFileName);
 				}
 
 				//ExecuteNonQuery($"INSERT [tools].[dbo].[ActionLog] ([BatchID], [Category], [Location], [Message], [Name], [Provider], [Text], [Timestamp], [Xml]) SELECT '{_batchID}', '{Category}', '{workFolder.EscapeTsql()}', 'Commenced', '{Name.EscapeTsql()}', '{ApplicationName}', NULL, GETDATE(), '{xml.ToString().EscapeTsql()}';");
 				//ExecuteNonQuery($"EXECUTE [tools].[dbo].[LogActivity] '{_batchID}', '{Category}', '{workFolder.EscapeTsql()}', 'Commenced', '{Name.EscapeTsql()}', '{ApplicationName}', NULL, '{xml.ToString().EscapeTsql()}'");
-				ExecuteNonQuery(@"Reset", string.Empty, _xePayload.ToString().EscapeTsql());
+				ExecuteNonQuery(@"Reset", string.Empty, m_xePayload.ToString().EscapeTsql());
 			}
 
 			public void Write(params string[] message)
@@ -411,15 +409,15 @@ namespace Wormhole
 					return;
 				}
 
-				var messages = message.ToNewArray(1, message.Length - 1).Prepend($"{System.DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff")} {message[0]}").ToArray();
+				var messages = message.ToNewArray(1, message.Length - 1).Prepend($"{System.DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffffff} {message[0]}").ToArray();
 
 				try
 				{
-					System.IO.File.AppendAllLines(_logFileName, messages);
+					System.IO.File.AppendAllLines(m_logFileName, messages);
 				}
 				catch (System.Exception ex)
 				{
-					Core.WriteEventLogError($"Log.Write(FILE={_logFileName}): {ex.Message} \"{messages}\"; {ex.StackTrace}");
+					Core.WriteEventLogError($"Log.Write(FILE={m_logFileName}): {ex.Message} \"{messages}\"; {ex.StackTrace}");
 				}
 
 				try
@@ -441,17 +439,17 @@ namespace Wormhole
 				ExecuteNonQuery(string.Format(LogScript, LogTableName.QualifiedNameQuoted(3), BatchID, Category, Location, message, Name, ApplicationName, text, xml));
 			}
 
-			private static string[] _logTableColumnDefinitions;
+			private static string[] m_logTableColumnDefinitions;
 			public static string[] LogTableColumnDefinitions
-				=> _logTableColumnDefinitions ?? (_logTableColumnDefinitions = System.Text.RegularExpressions.Regex.Replace(System.Configuration.ConfigurationManager.AppSettings[nameof(LogTableColumnDefinitions)] ?? throw new System.ArgumentOutOfRangeException(nameof(LogTableColumnDefinitions)), @"\s{2,}", string.Empty).Split(','));
+				=> m_logTableColumnDefinitions ??= System.Text.RegularExpressions.Regex.Replace(System.Configuration.ConfigurationManager.AppSettings[nameof(LogTableColumnDefinitions)] ?? throw new System.ArgumentOutOfRangeException(nameof(LogTableColumnDefinitions)), @"\s{2,}", string.Empty).Split(',');
 
 			private static Flux.Data.TsqlName _logTableName;
 			public static Flux.Data.TsqlName LogTableName
 				=> _logTableName.IsEmpty ? (_logTableName = Flux.Data.TsqlName.Parse(System.Configuration.ConfigurationManager.AppSettings[nameof(LogTableName)] ?? throw new System.ArgumentOutOfRangeException(nameof(LogTableName)))) : _logTableName;
 
-			private static string _logScript;
+			private static string m_logScript;
 			public static string LogScript
-				=> _logScript ?? (_logScript = System.Configuration.ConfigurationManager.AppSettings[nameof(LogScript)]?.Trim() ?? throw new System.ArgumentOutOfRangeException(nameof(LogScript)));
+				=> m_logScript ??= System.Configuration.ConfigurationManager.AppSettings[nameof(LogScript)]?.Trim() ?? throw new System.ArgumentOutOfRangeException(nameof(LogScript));
 
 			public static void ExecuteNonQuery(string statement)
 			{
@@ -461,17 +459,13 @@ namespace Wormhole
 
 				try
 				{
-					using (var connection = new System.Data.SqlClient.SqlConnection($"Data Source={LogTableName.ServerName};Initial Catalog={LogTableName.DatabaseName};Integrated Security=SSPI;"))
-					{
-						connection.Open();
+					using var connection = new System.Data.SqlClient.SqlConnection($"Data Source={LogTableName.ServerName};Initial Catalog={LogTableName.DatabaseName};Integrated Security=SSPI;");
+					connection.Open();
 
-						using (var command = connection.CreateCommand())
-						{
-							command.CommandText = statement;
+					using var command = connection.CreateCommand();
+					command.CommandText = statement;
 
-							command.ExecuteNonQuery();
-						}
-					}
+					command.ExecuteNonQuery();
 				}
 				catch (System.Exception ex)
 				{

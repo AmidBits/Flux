@@ -319,126 +319,122 @@ namespace Wormhole
 
       Flux.Data.Tsql.MergeTable(false, targetEntity.DefaultMergeName, targetEntity, targetFieldNames, targetTsqlDefinitions);
 
-      using (var connection = new System.Data.SqlClient.SqlConnection(targetConnection))
-      {
-        connection.Open();
+			using var connection = new System.Data.SqlClient.SqlConnection(targetConnection);
+			connection.Open();
 
-        using (var command = connection.CreateCommand())
-        {
-          command.CommandTimeout = 3600;
+			using var command = connection.CreateCommand();
+			command.CommandTimeout = 3600;
 
-          var commandText = new System.Collections.Generic.Dictionary<string, string>();
+			var commandText = new System.Collections.Generic.Dictionary<string, string>();
 
-          if (targetOptions.Contains(@"DROP"))
-          {
-            commandText.Add(@"DROP", $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity)))} {Flux.Data.Tsql.DropTable(targetEntity)}");
-          }
+			if (targetOptions.Contains(@"DROP"))
+			{
+				commandText.Add(@"DROP", $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity)))} {Flux.Data.Tsql.DropTable(targetEntity)}");
+			}
 
-          if (targetOptions.Contains(@"CREATE"))
-          {
-            if (targetTsqlDefinitions == null || targetTsqlDefinitions.Length != sourceFieldNames.Length)
-            {
-              throw new System.ArgumentNullException("TsqlDefinitions");
-            }
+			if (targetOptions.Contains(@"CREATE"))
+			{
+				if (targetTsqlDefinitions == null || targetTsqlDefinitions.Length != sourceFieldNames.Length)
+				{
+					throw new System.ArgumentNullException("TsqlDefinitions");
+				}
 
-            commandText.Add(@"CREATE", $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Not(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity))))} {Flux.Data.Tsql.CreateTable(targetEntity, targetTsqlDefinitions)}");
-          }
+				commandText.Add(@"CREATE", $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Not(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity))))} {Flux.Data.Tsql.CreateTable(targetEntity, targetTsqlDefinitions)}");
+			}
 
-          if (targetOptions.Contains(@"TRUNCATE"))
-          {
-            commandText.Add(@"TRUNCATE", $"{Flux.Data.Tsql.TruncateTable(targetEntity)}");
-          }
+			if (targetOptions.Contains(@"TRUNCATE"))
+			{
+				commandText.Add(@"TRUNCATE", $"{Flux.Data.Tsql.TruncateTable(targetEntity)}");
+			}
 
-          command.CommandText = $"SELECT COUNT(*) AS ColumnCount FROM ( {Flux.Data.TsqlInformationSchema.SelectColumns(targetEntity, @"COLUMN_NAME")} ) AS CC;";
-          log.Write($"Target table pre-processing{(int.TryParse(command.ExecuteScalar().ToString(), out var preColumns) ? $" TargetColumnCount={preColumns}" : string.Empty)} ({string.Join(@",", commandText.Keys)})", command.CommandText);
+			command.CommandText = $"SELECT COUNT(*) AS ColumnCount FROM ( {Flux.Data.TsqlInformationSchema.SelectColumns(targetEntity, @"COLUMN_NAME")} ) AS CC;";
+			log.Write($"Target table pre-processing{(int.TryParse(command.ExecuteScalar().ToString(), out var preColumns) ? $" TargetColumnCount={preColumns}" : string.Empty)} ({string.Join(@",", commandText.Keys)})", command.CommandText);
 
-          command.CommandText = $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity)))} {Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(targetEntity)} ELSE SELECT 'NoTable'; {string.Join(@"; ", commandText.Values)}";
-          log.Write($"Target table pre-processing{(int.TryParse(command.ExecuteScalar().ToString(), out var preCount) ? $" TargetRowCount={preCount}" : string.Empty)} ({string.Join(@",", commandText.Keys)})", command.CommandText);
+			command.CommandText = $"{Flux.Data.Tsql.If(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(targetEntity)))} {Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(targetEntity)} ELSE SELECT 'NoTable'; {string.Join(@"; ", commandText.Values)}";
+			log.Write($"Target table pre-processing{(int.TryParse(command.ExecuteScalar().ToString(), out var preCount) ? $" TargetRowCount={preCount}" : string.Empty)} ({string.Join(@",", commandText.Keys)})", command.CommandText);
 
-          using (var sbc = new System.Data.SqlClient.SqlBulkCopy(connection)
-          {
-            BatchSize = (int)((-Flux.Maths.Logistic(System.Math.Clamp(Flux.Maths.ISqrt(sourceFieldNames.Length), 1, 20), 0.3, 5, 20) + 30) * 1000),
-            BulkCopyTimeout = (int)System.TimeSpan.FromHours(3).TotalSeconds,
-            DestinationTableName = targetEntity.QualifiedNameQuoted(3),
-            EnableStreaming = true,
-            NotifyAfter = 10000
-          })
-          {
-            sbc.SqlRowsCopied += (object sender, System.Data.SqlClient.SqlRowsCopiedEventArgs e) =>
-            {
-              log.Write($"{((int)e.RowsCopied)} rows copied");
+			using (var sbc = new System.Data.SqlClient.SqlBulkCopy(connection)
+			{
+				BatchSize = (int)((-Flux.Maths.Logistic(System.Math.Clamp(Flux.Maths.ISqrt(sourceFieldNames.Length), 1, 20), 0.3, 5, 20) + 30) * 1000),
+				BulkCopyTimeout = (int)System.TimeSpan.FromHours(3).TotalSeconds,
+				DestinationTableName = targetEntity.QualifiedNameQuoted(3),
+				EnableStreaming = true,
+				NotifyAfter = 10000
+			})
+			{
+				sbc.SqlRowsCopied += (object sender, System.Data.SqlClient.SqlRowsCopiedEventArgs e) =>
+				{
+					log.Write($"{((int)e.RowsCopied)} rows copied");
 
-              if (e.RowsCopied < 1000000)
-              {
-                sbc.NotifyAfter = (int)(e.RowsCopied * 10 - e.RowsCopied);
-              }
-              else if (e.RowsCopied == 1000000)
-              {
-                sbc.NotifyAfter = 1000000;
-              }
-            };
+					if (e.RowsCopied < 1000000)
+					{
+						sbc.NotifyAfter = (int)(e.RowsCopied * 10 - e.RowsCopied);
+					}
+					else if (e.RowsCopied == 1000000)
+					{
+						sbc.NotifyAfter = 1000000;
+					}
+				};
 
-            for (var i = 0; i < sourceFieldNames.Length; i++) { sbc.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(sourceFieldNames[i], targetFieldNames[i])); }
-            sbc.WriteToServer(source);
+				for (var i = 0; i < sourceFieldNames.Length; i++) { sbc.ColumnMappings.Add(new System.Data.SqlClient.SqlBulkCopyColumnMapping(sourceFieldNames[i], targetFieldNames[i])); }
+				sbc.WriteToServer(source);
 
-            log.Write($"Target table TotalRowsCopied={sbc.TotalRowsCopied()}", $"BatchSize={sbc.BatchSize}");
-          }
+				log.Write($"Target table TotalRowsCopied={sbc.TotalRowsCopied()}", $"BatchSize={sbc.BatchSize}");
+			}
 
-          command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(targetEntity)}";
-          log.Write($"Target table post-processing TargetRowCount={(int)command.ExecuteScalar()}", command.CommandText);
+			command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(targetEntity)}";
+			log.Write($"Target table post-processing TargetRowCount={(int)command.ExecuteScalar()}", command.CommandText);
 
-          const string Merge = @"MERGE";
-          const string MergePlus = @"MERGE+";
-          const string ToolsMerge = @"ToolsMERGE";
-          const string ToolsMergePlus = @"ToolsMERGE+";
+			const string Merge = @"MERGE";
+			const string MergePlus = @"MERGE+";
+			const string ToolsMerge = @"ToolsMERGE";
+			const string ToolsMergePlus = @"ToolsMERGE+";
 
-          if (targetOptions.Contains(ToolsMerge) || targetOptions.Contains(ToolsMergePlus))
-          {
-            var mergeEntity = targetEntity.DefaultMergeName;
+			if (targetOptions.Contains(ToolsMerge) || targetOptions.Contains(ToolsMergePlus))
+			{
+				var mergeEntity = targetEntity.DefaultMergeName;
 
-            var options = new System.Collections.Generic.List<string>();
+				var options = new System.Collections.Generic.List<string>();
 
-            if (targetOptions.Contains(ToolsMergePlus))
-            {
-              options.Add(@"HighFrequency");
-            }
+				if (targetOptions.Contains(ToolsMergePlus))
+				{
+					options.Add(@"HighFrequency");
+				}
 
-            if (options.Count > 0)
-            {
-              log.Write($"Merge table OPTIONS", string.Join(@",", options));
-            }
+				if (options.Count > 0)
+				{
+					log.Write($"Merge table OPTIONS", string.Join(@",", options));
+				}
 
-            command.CommandText = $"EXECUTE [tools].[EffectiveDating].[MergeTable] '{mergeEntity}', {(options.Count > 0 ? $"'{string.Join(@",", options)}'" : @"NULL")}";
-            log.Write($"Merge table {mergeEntity}", command.CommandText);
-            command.ExecuteNonQuery();
-          }
-          else if (targetOptions.Contains(Merge) || targetOptions.Contains(MergePlus))
-          {
-            var mergeEntity = targetEntity.DefaultMergeName;
+				command.CommandText = $"EXECUTE [tools].[EffectiveDating].[MergeTable] '{mergeEntity}', {(options.Count > 0 ? $"'{string.Join(@",", options)}'" : @"NULL")}";
+				log.Write($"Merge table {mergeEntity}", command.CommandText);
+				command.ExecuteNonQuery();
+			}
+			else if (targetOptions.Contains(Merge) || targetOptions.Contains(MergePlus))
+			{
+				var mergeEntity = targetEntity.DefaultMergeName;
 
-            var mergeDense = targetOptions.Contains(MergePlus);
+				var mergeDense = targetOptions.Contains(MergePlus);
 
-            if (targetTsqlDefinitions.Length == 0)
-            {
-              targetTsqlDefinitions = System.Linq.Enumerable.Range(0, source.FieldCount).Select(i => source.GetDefaultTsqlDefinition(i)).ToArray();
-            }
+				if (targetTsqlDefinitions.Length == 0)
+				{
+					targetTsqlDefinitions = System.Linq.Enumerable.Range(0, source.FieldCount).Select(i => source.GetDefaultTsqlDefinition(i)).ToArray();
+				}
 
-            command.CommandText = Flux.Data.Tsql.If(Flux.Data.Tsql.Not(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(mergeEntity))), Flux.Data.Tsql.CreateMergeTable(mergeEntity, targetTsqlDefinitions, mergeDense));
-            log.Write($"Merge table CREATE", command.CommandText);
-            command.ExecuteNonQuery();
+				command.CommandText = Flux.Data.Tsql.If(Flux.Data.Tsql.Not(Flux.Data.Tsql.Exists(Flux.Data.TsqlInformationSchema.SelectTable(mergeEntity))), Flux.Data.Tsql.CreateMergeTable(mergeEntity, targetTsqlDefinitions, mergeDense));
+				log.Write($"Merge table CREATE", command.CommandText);
+				command.ExecuteNonQuery();
 
-            command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(mergeEntity)}";
-            log.Write($"Merge table COUNT={((int)command.ExecuteScalar())} (before)", command.CommandText);
+				command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(mergeEntity)}";
+				log.Write($"Merge table COUNT={((int)command.ExecuteScalar())} (before)", command.CommandText);
 
-            command.CommandText = Flux.Data.Tsql.MergeTable(mergeDense, mergeEntity, targetEntity, sourceFieldNames, targetTsqlDefinitions);
-            log.Write($"MERGE into {mergeEntity.QualifiedNameQuoted(4)} using {targetEntity.QualifiedNameQuoted(4)}", command.CommandText);
-            log.Write($"Merge table OUTPUT", $"{command.ExecuteScalar()}");
+				command.CommandText = Flux.Data.Tsql.MergeTable(mergeDense, mergeEntity, targetEntity, sourceFieldNames, targetTsqlDefinitions);
+				log.Write($"MERGE into {mergeEntity.QualifiedNameQuoted(4)} using {targetEntity.QualifiedNameQuoted(4)}", command.CommandText);
+				log.Write($"Merge table OUTPUT", $"{command.ExecuteScalar()}");
 
-            command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(mergeEntity)}";
-            log.Write($"Merge table COUNT={((int)command.ExecuteScalar())} (after)", command.CommandText);
-          }
-        }
-      }
-    }
+				command.CommandText = $"{Flux.Data.Tsql.SelectCount()} {Flux.Data.Tsql.From(mergeEntity)}";
+				log.Write($"Merge table COUNT={((int)command.ExecuteScalar())} (after)", command.CommandText);
+			}
+		}
   }
 }
