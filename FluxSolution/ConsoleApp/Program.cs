@@ -12,6 +12,7 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+
 			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6,4, 0.3));
 			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6,1, 1.0/6.0));
 

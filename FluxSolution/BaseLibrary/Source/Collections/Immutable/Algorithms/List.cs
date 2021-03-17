@@ -1,15 +1,15 @@
 namespace Flux.Collections.Immutable
 {
-  public sealed class List<T>
-    : IList<T>
-    where T : System.IComparable<T>
+  public sealed class List<TValue>
+    : IList<TValue>
+    where TValue : System.IComparable<TValue>
   {
-    public static readonly IList<T> Empty = new EmptyList();
+    public static readonly IList<TValue> Empty = new EmptyList();
 
-    private readonly T m_value;
-    private readonly IList<T> m_tail;
+    private readonly TValue m_value;
+    private readonly IList<TValue> m_tail;
 
-    private List(T value, IList<T> tail)
+    private List(TValue value, IList<TValue> tail)
     {
       m_value = value;
 
@@ -19,19 +19,19 @@ namespace Flux.Collections.Immutable
     #region IList implementation
     public bool IsEmpty
       => false;
-    public T Value
+    public TValue Value
       => m_value;
-    public IList<T> Add(T value)
-      => new List<T>(m_value, m_tail.Add(value));
-    public bool Contains(T value)
+    public IList<TValue> Add(TValue value)
+      => new List<TValue>(m_value, m_tail.Add(value));
+    public bool Contains(TValue value)
       => m_value.Equals(value) || m_tail.Contains(value);
-    public IList<T> Remove(T value)
+    public IList<TValue> Remove(TValue value)
       => value.Equals(m_value) ? m_tail : m_tail.Remove(value);
     #endregion IList implementation
 
-    private System.Collections.Generic.IEnumerator<T> Enumerate()
+    private System.Collections.Generic.IEnumerator<TValue> Enumerate()
     {
-      var node = (List<T>)this;
+      var node = (List<TValue>)this;
 
       yield return node.m_value;
 
@@ -39,35 +39,35 @@ namespace Flux.Collections.Immutable
       {
         yield return node.m_value;
 
-        node = (List<T>)node.m_tail;
+        node = (List<TValue>)node.m_tail;
       }
     }
 
     #region IEnumerable
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<TValue> GetEnumerator()
       => Enumerate();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion IEnumerable
 
     private sealed class EmptyList
-      : IList<T>
+      : IList<TValue>
     {
       #region IList implementation
       public bool IsEmpty
         => true;
-      public T Value
+      public TValue Value
         => throw new System.Exception(nameof(EmptyList));
-      public IList<T> Add(T value)
-        => new List<T>(value, this);
-      public bool Contains(T value)
+      public IList<TValue> Add(TValue value)
+        => new List<TValue>(value, this);
+      public bool Contains(TValue value)
         => throw new System.Exception(nameof(EmptyList));
-      public IList<T> Remove(T value)
+      public IList<TValue> Remove(TValue value)
         => throw new System.Exception(nameof(EmptyList));
       #endregion IList implementation
 
       #region IEnumerable
-      public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+      public System.Collections.Generic.IEnumerator<TValue> GetEnumerator()
       { yield break; }
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         => GetEnumerator();
