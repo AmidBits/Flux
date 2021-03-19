@@ -190,6 +190,32 @@ namespace Flux
     public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
       => new System.Numerics.Vector2(source.Y, -source.X);
 
+    /// <summary>Perpendicular distance to the to the line.</summary>
+    public static double PerpendicularDistance(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    {
+      var ab = b - a;
+
+      return (ab * (source - a)).Length() / ab.Length();
+    }
+
+    /// <summary>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</summary>
+    /// <see cref="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
+    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
+    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
+    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
+    /// <param name="source">A given point.</param>
+    public static double PerpendicularDistance(this System.Numerics.Vector2 source, float a, float b, float c)
+      => System.Math.Abs(a * source.X + b * source.Y + c) / System.Math.Sqrt(a * a + b * b);
+
+    /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
+    /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
+    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
+    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
+    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
+    /// <param name="source">A given point.</param>
+    public static System.Numerics.Vector2 PerpendicularFoot(this System.Numerics.Vector2 source, float a, float b, float c)
+      => -1 * (a * source.X + b * source.Y + c) / (a * a + b * b) * new System.Numerics.Vector2(a + source.X, b + source.Y);
+
     /// <summary>Rotate the vector around the specified axis.</summary>
     public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
