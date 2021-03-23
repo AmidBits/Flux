@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SystemDrawingEm
   {
     /// <summary>This is basically LERP with the the ability to compute an arbitrary point anywhere on the path from a to b (including before a and after b). The result, when the specified scalar is, <0 is a vector beyond a (backwards), 0 is vector a, 0.5 equals the midpoint vector between a and b, 1 is vector b, and >1 equals a vector beyond b (forward).</summary>>
-    public static System.Drawing.Point AlongPathTo2(this System.Drawing.Point source, System.Drawing.Point target, float scalar = 0.5f)
+    public static System.Drawing.Point AlongPathTo(this System.Drawing.Point source, System.Drawing.Point target, float scalar = 0.5f)
       => new System.Drawing.Point((int)((source.X + target.X) * scalar), (int)((source.Y + target.Y) * scalar));
 
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
@@ -38,20 +38,20 @@ namespace Flux
     public static System.Drawing.Point PerpendicularCw(this System.Drawing.Point source)
       => new System.Drawing.Point(source.Y, -source.X);
 
-    /// <summary>Convert a 2D vector to a point.</summary>
+    /// <summary>Convert a 2D geometry point to a 2D drawing point.</summary>
+    public static System.Drawing.Point ToPoint(this in Geometry.Point2 source)
+      => new System.Drawing.Point(source.X, source.Y);
+    /// <summary>Convert a 2D drawing point to a 2D geometry point.</summary>
+    public static Geometry.Point2 ToPoint2(this in System.Drawing.Point source)
+      => new Geometry.Point2(source.X, source.Y);
+
+    /// <summary>Convert a 2D vector to a 2D drawing point.</summary>
     public static System.Drawing.Point ToPoint(this in System.Numerics.Vector2 source)
       => new System.Drawing.Point((int)source.X, (int)source.Y);
-
-    /// <summary>Convert a 3D vector to a point.</summary>
-    public static System.Drawing.Point ToPoint(this in System.Numerics.Vector3 source)
-      => new System.Drawing.Point((int)source.X, (int)source.Y);
-
-    /// <summary>Convert a point to a 2D vector.</summary>
+    /// <summary>Convert a 2D drawing point to a 2D vector.</summary>
     public static System.Numerics.Vector2 ToVector2(this in System.Drawing.Point source)
       => new System.Numerics.Vector2(source.X, source.Y);
-    /// <summary>Convert a point to a 3D vector.</summary>
-    public static System.Numerics.Vector3 ToVector3(this in System.Drawing.Point source)
-      => new System.Numerics.Vector3(source.X, source.Y, 0);
+
 
   }
 }

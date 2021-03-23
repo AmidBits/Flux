@@ -2,11 +2,6 @@ namespace Flux
 {
   public static partial class LinqX
   {
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Range(System.Numerics.BigInteger start, System.Numerics.BigInteger step)
-    {
-      for (var value = start; ; value += step)
-        yield return value;
-    }
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Range(System.Numerics.BigInteger start, System.Numerics.BigInteger count, System.Numerics.BigInteger step)
     {
       for (var value = start; count > 0; count--, value += step)
@@ -18,7 +13,6 @@ namespace Flux
       for (var value = start; count > 0; count--, value += step)
         yield return value;
     }
-
     public static System.Collections.Generic.IEnumerable<double> Range(double start, double count, double step)
     {
       for (var value = start; count > 0; count--, value += step)

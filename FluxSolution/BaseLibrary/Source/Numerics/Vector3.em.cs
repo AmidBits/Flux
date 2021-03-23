@@ -21,7 +21,7 @@ namespace Flux
 
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static float AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
-      => (before - source).AngleTo(after - source);
+      => AngleTo(before - source, after - source);
 
     public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
       => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
@@ -122,10 +122,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var angle1 = e.Current;
+        var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (angle1 != e.Current)
+          if (initialAngle != e.Current)
             return false;
       }
 
@@ -141,10 +141,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var length1 = e.Current;
+        var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (length1 != e.Current)
+          if (initialLength != e.Current)
             return false;
       }
 

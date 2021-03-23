@@ -4,10 +4,10 @@ namespace Flux
   {
     /// <summary>Perform a comparison of the difference against 10 raised to the power of the specified precision.</summary>
     /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
-    /// <param name="decimalDigits">The tolerance, as a number of decimals, considered before finding inequality. Using a negative value allows for left side tolerance.</param>
+    /// <param name="digits">The tolerance, as a number of decimals, considered before finding inequality. Using a negative value allows for left side tolerance.</param>
     /// <example>Flux.Math.EqualityApproximation.Almost(1000.02, 1000.015, 2)</example>
-    public static bool IsAlmostEqual(double a, double b, int decimalDigits)
-      => IsAlmostEqual(a, b, System.Math.Pow(10d, -decimalDigits));
+    public static bool IsAlmostEqual(double a, double b, int digits, int radix)
+      => IsAlmostEqual(a, b, System.Math.Pow(radix, -digits));
 
     private static bool IsAlmostEqualImpl(double a, double b, double absoluteEpsilon)
       => System.Math.Abs(a - b) <= absoluteEpsilon;
@@ -28,8 +28,6 @@ namespace Flux
     /// <param name="relativeEpsilon">A value representing a decimal percentage.</param>
     public static bool IsPracticallyEqual(double a, double b, double absoluteEpsilon, double relativeEpsilon)
       => a == b || IsAlmostEqualImpl(a, b, absoluteEpsilon) || IsApproximatelyEqualImpl(a, b, relativeEpsilon);
-
-
 
     /// <summary>Perform a comparison of the difference against radix 10 raised to the power of the specified precision.</summary>
     /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
