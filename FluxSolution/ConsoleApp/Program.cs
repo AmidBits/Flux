@@ -12,9 +12,9 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var rgb = new Flux.Coloring.Rgb(100, 50, 100, 150);
+			var rgb = new Flux.Coloring.Rgba(100, 50, 100, 150);
 			System.Console.WriteLine($"{rgb}");
-			var hsl = rgb.ToHsl();
+			var hsl = rgb.ToHsla();
 			var hslRgb = hsl.ToRgb();
 			System.Console.WriteLine($"{hsl} = {hslRgb}");
 			var hsv = rgb.ToHsv();
