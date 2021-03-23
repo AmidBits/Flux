@@ -12,9 +12,18 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+			var rgb = new Flux.Coloring.Rgb(100, 50, 100, 150);
+			System.Console.WriteLine($"{rgb}");
+			var hsl = rgb.ToHsl();
+			var hslRgb = hsl.ToRgb();
+			System.Console.WriteLine($"{hsl} = {hslRgb}");
+			var hsv = rgb.ToHsv();
+			var hsvRgb = hsv.ToRgb();
+			System.Console.WriteLine($"{hsv} = {hsvRgb}");
 
-			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6,4, 0.3));
-			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6,1, 1.0/6.0));
+
+			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6, 4, 0.3));
+			System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6, 1, 1.0 / 6.0));
 
 			//var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
 			//for (var i = 0; i < 100000; i++)

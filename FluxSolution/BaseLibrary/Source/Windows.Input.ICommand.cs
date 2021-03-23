@@ -26,8 +26,8 @@
 
 		// ICommand
 		public bool CanExecute(object? Parameter)
-			=> m_canExecute?.Invoke((T)Parameter) ?? true;
+			=> m_canExecute?.Invoke((T?)Parameter) ?? true;
 		public void Execute(object? Parameter)
-			=> m_execute((T)Parameter);
+			=> m_execute((T?)Parameter);
 	}
 }

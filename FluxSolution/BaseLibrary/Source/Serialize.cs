@@ -26,7 +26,7 @@ namespace Flux
 		{
 			using var ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(source));
 			using var xr = System.Xml.XmlReader.Create(ms);
-			return (TTarget)new System.Xml.Serialization.XmlSerializer(typeof(TTarget)).Deserialize(xr);
+			return (TTarget?)new System.Xml.Serialization.XmlSerializer(typeof(TTarget)).Deserialize(xr);
 		}
 
 		/// <summary>Serialize the source to a JSON string, using the specified options.</summary>
