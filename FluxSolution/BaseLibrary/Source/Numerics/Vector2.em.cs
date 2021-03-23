@@ -8,6 +8,9 @@ namespace Flux
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
 
+    public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
+      => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
+
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -141,11 +144,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var tolerance = Maths.Epsilon1E7;
-        var angle1 = e.Current;
+        var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsAlmostEqual(angle1, e.Current, tolerance))
+          if (!Maths.IsAlmostEqual(initialAngle, e.Current, Maths.Epsilon1E7))
             return false;
       }
 
@@ -162,10 +164,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var length1 = e.Current;
+        var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsPracticallyEqual(length1, e.Current, 1e-6f, 1e-6f))
+          if (!Maths.IsPracticallyEqual(initialLength, e.Current, 1e-6f, 1e-6f))
             return false;
       }
 

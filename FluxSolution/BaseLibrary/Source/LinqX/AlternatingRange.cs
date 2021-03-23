@@ -174,23 +174,23 @@ namespace Flux
           break;
       }
     }
-
-    /*
-      var seq1 = Flux.Linq.AlternatingRange(5, 12, -3, Linq.AlternatingRangeDirection.AwayFromMean).ToArray();
-      System.Console.WriteLine(string.Join(", ", seq1.Select(i => i.ToString("D2"))));
-      System.Console.WriteLine();
-
-      var seq1r = Flux.Linq.AlternatingRange(5, 12, -3, Linq.AlternatingRangeDirection.TowardsMean).ToArray();
-      System.Console.WriteLine(string.Join(", ", seq1r.Select(i => i.ToString("D2"))));
-      System.Console.WriteLine();
-
-      var seq2 = Flux.Linq.AlternatingRange(0, 11, 3, Linq.AlternatingRangeDirection.AwayFromMean).ToArray();
-      System.Console.WriteLine(string.Join(", ", seq2.Select(i => i.ToString("D2"))));
-      System.Console.WriteLine();
-
-      var seq2r = Flux.Linq.AlternatingRange(0, 11, 3, Linq.AlternatingRangeDirection.TowardsMean).ToArray();
-      System.Console.WriteLine(string.Join(", ", seq2r.Select(i => i.ToString("D2"))));
-      System.Console.WriteLine();
-     */
   }
 }
+
+/*
+  var seq1 = Flux.Linq.AlternatingRange(5, 12, -3, Linq.AlternatingRangeDirection.AwayFromMean).ToArray();
+  System.Console.WriteLine(string.Join(", ", seq1.Select(i => i.ToString("D2"))));
+  System.Console.WriteLine();
+
+  var seq1r = Flux.Linq.AlternatingRange(5, 12, -3, Linq.AlternatingRangeDirection.TowardsMean).ToArray();
+  System.Console.WriteLine(string.Join(", ", seq1r.Select(i => i.ToString("D2"))));
+  System.Console.WriteLine();
+
+  var seq2 = Flux.Linq.AlternatingRange(0, 11, 3, Linq.AlternatingRangeDirection.AwayFromMean).ToArray();
+  System.Console.WriteLine(string.Join(", ", seq2.Select(i => i.ToString("D2"))));
+  System.Console.WriteLine();
+
+  var seq2r = Flux.Linq.AlternatingRange(0, 11, 3, Linq.AlternatingRangeDirection.TowardsMean).ToArray();
+  System.Console.WriteLine(string.Join(", ", seq2r.Select(i => i.ToString("D2"))));
+  System.Console.WriteLine();
+*/

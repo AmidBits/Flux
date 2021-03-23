@@ -14,7 +14,7 @@ namespace Flux
       [System.Runtime.InteropServices.FieldOffset(0)] private int m_left;
       [System.Runtime.InteropServices.FieldOffset(4)] private int m_top;
       [System.Runtime.InteropServices.FieldOffset(8)] private int m_right;
-      [System.Runtime.InteropServices.FieldOffset(0)] private int m_bottom;
+      [System.Runtime.InteropServices.FieldOffset(12)] private int m_bottom;
 
       public int Left { get => m_left; set => m_left = value; }
       public int Top { get => m_top; set => m_top = value; }
@@ -23,6 +23,27 @@ namespace Flux
 
       public int X { get => m_left; set => m_left = value; }
       public int Y { get => m_top; set => m_top = value; }
+
+      public int Width
+      {
+        get => m_right - m_left;
+        set => m_right = m_left + value;
+      }
+      public int Height
+      {
+        get => m_bottom - m_top;
+        set => m_bottom = m_top + value;
+      }
+
+      public Point2 Center
+      {
+        get => new Point2(Left + (Width / 2), Top + (Height / 2));
+        set
+        {
+          Left = value.X - (Width / 2);
+          Top = value.Y - (Height / 2);
+        }
+      }
 
       public Point2 Location
       {
@@ -34,9 +55,6 @@ namespace Flux
         }
       }
 
-      public int Width { get => m_right - m_left; set => m_right = m_left + value; }
-      public int Height { get => m_bottom - m_top; set => m_bottom = m_top + value; }
-
       public Size2 Size
       {
         get => new Size2(Width, Height);
@@ -46,9 +64,6 @@ namespace Flux
           Height = value.Height;
         }
       }
-
-      public Point2 Center()
-        => new Point2(Left + (Width / 2), Top + (Height / 2));
 
       public Rect(int left, int top, int width, int height)
       {

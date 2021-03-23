@@ -2,34 +2,34 @@ namespace Flux
 {
   public static partial class Maths
   {
-    /// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
-    /// When dot eq 0 then the vectors are perpendicular.
-    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
-    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
-    /// </summary>
-    public static double AngleBetween(in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
-      => System.Math.Acos(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(a), System.Numerics.Vector3.Normalize(b)));
-    /// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
-    /// When dot eq 0 then the vectors are perpendicular.
-    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
-    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
-    /// </summary>
-    public static double AngleBetween(in System.Numerics.Vector2 a, in System.Numerics.Vector2 b)
-      => System.Math.Acos(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(a), System.Numerics.Vector2.Normalize(b)));
-    /// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
-    /// When dot eq 0 then the vectors are perpendicular.
-    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
-    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
-    /// </summary>
-    public static double AngleBetween(in (double x, double y, double z) a, in (double x, double y, double z) b)
-      => System.Math.Acos(DotProduct(NormalizeVector(a), NormalizeVector(b)));
-    /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
-    /// When dot eq 0 then the vectors are perpendicular.
-    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
-    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
-    /// </summary>
-    public static double AngleBetween(in double ax, in double ay, in double az, in double bx, in double by, in double bz)
-      => System.Math.Acos(DotProduct(NormalizeVector(ax, ay, az), NormalizeVector(bx, by, bz)));
+    ///// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
+    ///// When dot eq 0 then the vectors are perpendicular.
+    ///// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    ///// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    ///// </summary>
+    //public static double AngleBetween(in System.Numerics.Vector3 a, in System.Numerics.Vector3 b)
+    //  => System.Math.Acos(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(a), System.Numerics.Vector3.Normalize(b)));
+    ///// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
+    ///// When dot eq 0 then the vectors are perpendicular.
+    ///// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    ///// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    ///// </summary>
+    //public static double AngleBetween(in System.Numerics.Vector2 a, in System.Numerics.Vector2 b)
+    //  => System.Math.Acos(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(a), System.Numerics.Vector2.Normalize(b)));
+    ///// <summary>(2D/3D) Calculate the angle between the source vector and the specified target vector. 
+    ///// When dot eq 0 then the vectors are perpendicular.
+    ///// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    ///// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    ///// </summary>
+    //public static double AngleBetween(in (double x, double y, double z) a, in (double x, double y, double z) b)
+    //  => System.Math.Acos(DotProduct(NormalizeVector(a), NormalizeVector(b)));
+    ///// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
+    ///// When dot eq 0 then the vectors are perpendicular.
+    ///// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    ///// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    ///// </summary>
+    //public static double AngleBetween(in double ax, in double ay, in double az, in double bx, in double by, in double bz)
+    //  => System.Math.Acos(DotProduct(NormalizeVector(ax, ay, az), NormalizeVector(bx, by, bz)));
 
     ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
