@@ -41,7 +41,7 @@ namespace Flux.Coloring
 		/// <summary>Returns an Rgb struct based on Hsi model.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/HSL_and_HSV#From_HSI"/>
 		/// <returns>An Rgb object</returns>
-		public Rgb ToRgb()
+		public Rgba ToRgb()
 		{
 			double hue1 = Hue / 60;
 			double z = 1 - System.Math.Abs((hue1 % 2) - 1);
@@ -79,7 +79,7 @@ namespace Flux.Coloring
 					break;
 			}
 
-			return new Rgb(
+			return new Rgba(
 				System.Convert.ToByte(255 * Alpha),
 				System.Convert.ToByte(255 * r1),
 				System.Convert.ToByte(255 * g1),

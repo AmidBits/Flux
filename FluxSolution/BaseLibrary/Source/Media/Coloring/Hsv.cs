@@ -38,51 +38,60 @@ namespace Flux.Coloring
 		public double GetChroma()
 			=> m_value * m_saturation;
 
+		public Hsla ToHsla()
+		{
+			var h = Hue;
+			var l = Value * (1 - Saturation / 2);
+			var s = l == 0 || l == 1 ? 0 : (Value - l) / System.Math.Min(l, 1 - l);
+			return new Hsla(h, s, l, Alpha);
+		}
 		/// <summary>Returns an Rgb struct based on Hsv model.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/HSL_and_HSV#From_HSV"/>
 		/// <returns>An Rgb object</returns>
-		public Rgb ToRgb()
+		public Rgba ToRgb()
 		{
-			double chroma = Value * Saturation;
+			double c = GetChroma();
 			double h1 = Hue / 60;
-			double x = chroma * (1 - System.Math.Abs((h1 % 2) - 1));
+			double x = c * (1 - System.Math.Abs((h1 % 2) - 1));
 
-			double m = Value - chroma;
+			double m = Value - c;
 			double r1 = m, g1 = m, b1 = m;
 
 			switch (h1)
 			{
-				case var v1 when v1 < 1:
-					r1 += chroma;
+				case >= 0 and <= 1:
+					r1 += c;
 					g1 += x;
 					break;
-				case var v2 when v2 < 2:
+				case > 1 and <= 2:
 					r1 += x;
-					g1 += chroma;
+					g1 += c;
 					break;
-				case var v3 when v3 < 3:
-					g1 += chroma;
+				case > 2 and <= 3:
+					g1 += c;
 					b1 += x;
 					break;
-				case var v4 when v4 < 4:
+				case > 3 and <= 4:
 					g1 += x;
-					b1 += chroma;
+					b1 += c;
 					break;
-				case var v5 when v5 < 5:
+				case > 4 and <= 5:
 					r1 += x;
-					b1 += chroma;
+					b1 += c;
 					break;
-				default: // h1 <= 6 //
-					r1 += chroma;
+				case > 5 and <= 6:
+					r1 += c;
 					b1 += x;
+					break;
+				default:
 					break;
 			}
 
-			return new Rgb(
-				System.Convert.ToByte(255 * Alpha),
+			return new Rgba(
 				System.Convert.ToByte(255 * r1),
 				System.Convert.ToByte(255 * g1),
-				System.Convert.ToByte(255 * b1)
+				System.Convert.ToByte(255 * b1),
+				System.Convert.ToByte(255 * Alpha)
 			 );
 		}
 
@@ -94,14 +103,14 @@ namespace Flux.Coloring
 
 		// IEquatable
 		public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
-			=> Alpha == other.Alpha && Hue == other.Hue && Saturation == other.Saturation && Value == other.Value;
+			=> Hue == other.Hue && Saturation == other.Saturation && Value == other.Value && Alpha == other.Alpha;
 
 		// Object (overrides)
 		public override bool Equals(object? obj)
 			=> obj is Hsv o && Equals(o);
 		public override int GetHashCode()
-			=> System.HashCode.Combine(Alpha, Hue, Saturation, Value);
+			=> System.HashCode.Combine(Hue, Saturation, Value, Alpha);
 		public override string ToString()
-			=> $"<{nameof(Hsv)}: {Alpha}, {Hue}, {Saturation}, {Value}>";
+			=> $"<{nameof(Hsv)}: {Hue}, {Saturation}, {Value}, {Alpha}>";
 	}
 }
