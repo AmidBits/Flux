@@ -33,7 +33,7 @@ namespace Flux.Text
 
     /// <summary>Returns whether the string contains any XML entities.</summary>
     public static bool HasXmlEntities(string source)
-      => source is not null && ((source ?? throw new System.ArgumentNullException(nameof(source))).Contains(XmlEntityAmp, System.StringComparison.Ordinal) || source.Contains(XmlEntityApos, System.StringComparison.Ordinal) || source.Contains(XmlEntityQuot, System.StringComparison.Ordinal) || source.Contains(XmlEntityGt, System.StringComparison.Ordinal) || source.Contains(XmlEntityLt, System.StringComparison.Ordinal));
+      => !(source is null) && ((source ?? throw new System.ArgumentNullException(nameof(source))).Contains(XmlEntityAmp, System.StringComparison.Ordinal) || source.Contains(XmlEntityApos, System.StringComparison.Ordinal) || source.Contains(XmlEntityQuot, System.StringComparison.Ordinal) || source.Contains(XmlEntityGt, System.StringComparison.Ordinal) || source.Contains(XmlEntityLt, System.StringComparison.Ordinal));
 
     /// <summary>Returns whether the string contains any XML entity character.</summary>
     public static bool HasXmlEntityCharacter(string source)

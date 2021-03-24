@@ -18,7 +18,7 @@ namespace LoggerApp
         totalCharacterCount += line is null ? 0 : line.Length + 2;
         lineCount++;
 
-        if (line is not null)
+        if (!(line is null))
         {
           yield return (lineCount, totalCharacterCount, line);
         }

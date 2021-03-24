@@ -104,7 +104,7 @@ namespace Flux.Model
 
     public Item? ChildItem(string nameOrID)
     {
-      if (Items is not null && Items.Count > 0)
+      if (!(Items is null) && Items.Count > 0)
       {
         if (int.TryParse(nameOrID, out var index) && index >= 0 && index < Items.Count)
           return this;
@@ -117,7 +117,7 @@ namespace Flux.Model
 
     public Item? FindItem(string nameOrID)
     {
-      if (Items is not null && Items.Count > 0)
+      if (!(Items is null) && Items.Count > 0)
       {
         foreach (var item in Items)
         {

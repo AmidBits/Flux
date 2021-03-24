@@ -21,7 +21,7 @@ namespace Flux
 
       for (var row = 0; row < source.Rows.Count; row++)
       {
-        if (verticalSeparatorRow is not null && (row > 0 || includeColumnNames))
+        if (!(verticalSeparatorRow is null) && (row > 0 || includeColumnNames))
           yield return string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => new string(verticalSeparator, width)));
 
         yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, format, source.Rows[row].ItemArray);

@@ -73,7 +73,7 @@ namespace Flux.Media.Riff
 		{
 			if (stream is null) throw new System.ArgumentNullException(nameof(stream));
 
-			while (ReadChunk(stream) is var chunk && chunk is not null)
+			while (ReadChunk(stream) is var chunk && !(chunk is null))
 				yield return chunk;
 		}
 		public static Chunk? ReadChunk(System.IO.Stream stream)

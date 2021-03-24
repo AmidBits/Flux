@@ -7,7 +7,7 @@ namespace Flux
 		{
 			using var reader = new System.IO.StreamReader(source, encoding);
 
-			for (var line = reader.ReadLine(); line is not null; line = reader.ReadLine())
+			for (var line = reader.ReadLine(); !(line is null); line = reader.ReadLine())
 				if (line.Length > 0 || keepEmptyLines)
 					yield return line;
 		}
