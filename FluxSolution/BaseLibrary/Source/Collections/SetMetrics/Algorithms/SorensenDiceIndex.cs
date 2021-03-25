@@ -2,10 +2,10 @@ using System.Linq;
 
 namespace Flux
 {
-  namespace SetMetrics
+  namespace Metrics
   {
     public class SørensenDiceIndex<T>
-      : ASetMetrics<T>, ISimilarityCoefficient<T>
+      : AMetrics<T>, ISimilarityCoefficient<T>
     {
       public SørensenDiceIndex()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)

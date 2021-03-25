@@ -16,30 +16,26 @@ namespace Flux.Collections.Immutable
       m_value = value;
     }
 
-    #region IBinaryTree Implementation
-    public bool IsEmpty
-      => false;
-    public IBinaryTree<TValue> Left
-      => m_left;
-    public IBinaryTree<TValue> Right
-      => m_right;
-    public TValue Value
-      => m_value;
-    #endregion IBinaryTree Implementation
+    // IBinaryTree<TValue>
+    public bool IsEmpty => false;
+    public IBinaryTree<TValue> Left => m_left;
+    public IBinaryTree<TValue> Right => m_right;
+    public TValue Value => m_value;
 
-    private sealed class EmptyBinaryTree 
+    public override string ToString()
+      => $"<{GetType().Name}: {m_value}>";
+
+    private sealed class EmptyBinaryTree
       : IBinaryTree<TValue>
     {
-      #region IBinaryTree Implementation
-      public bool IsEmpty
-        => true;
-      public IBinaryTree<TValue> Left
-        => throw new System.Exception(nameof(EmptyBinaryTree));
-      public IBinaryTree<TValue> Right
-        => throw new System.Exception(nameof(EmptyBinaryTree));
-      public TValue Value
-        => throw new System.Exception(nameof(EmptyBinaryTree));
-      #endregion IBinaryTree Implementation
+      // IBinaryTree<TValue>
+      public bool IsEmpty => true;
+      public IBinaryTree<TValue> Left => throw new System.Exception(nameof(EmptyBinaryTree));
+      public IBinaryTree<TValue> Right => throw new System.Exception(nameof(EmptyBinaryTree));
+      public TValue Value => throw new System.Exception(nameof(EmptyBinaryTree));
+
+      public override string ToString()
+        => $"<{GetType().Name}>";
     }
   }
 }

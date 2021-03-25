@@ -4,25 +4,25 @@ namespace Flux
 	{
 		/// <summary>Sorts the content of the sequence using merge sort.</summary>
 		public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.MergeSort<T>(comparer).SortInPlace((T[])source);
+			=> new Sorting.MergeSort<T>(comparer).SortInPlace((T[])source);
 		/// <summary>Sorts the content of the sequence using merge sort.</summary>
 		public static void ApplyMergeSort<T>(this System.Collections.Generic.IList<T> source)
 			=> ApplyMergeSort(source, System.Collections.Generic.Comparer<T>.Default);
 
 		/// <summary>Sorts the content of the sequence using quick sort.</summary>
 		public static void ApplyMergeSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.MergeSort<T>(comparer).SortInPlace(source);
+			=> new Sorting.MergeSort<T>(comparer).SortInPlace(source);
 		/// <summary>Sorts the content of the sequence using quick sort.</summary>
 		public static void ApplyMergeSort<T>(this System.Span<T> source)
 			=> ApplyMergeSort(source, System.Collections.Generic.Comparer<T>.Default);
 	}
 
-	namespace SetSorting
+	namespace Sorting
 	{
 		/// <summary>Sorts the content of the sequence using merge sort.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
 		public class MergeSort<T>
-			: ASetSorting<T>, ISortableInPlace<T>
+			: ASortable<T>, ISortableInPlace<T>
 		{
 			public MergeSort(System.Collections.Generic.IComparer<T> comparer)
 				: base(comparer)

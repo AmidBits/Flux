@@ -3,21 +3,21 @@ namespace Flux
 	public static partial class SortingEm
 	{
 		/// <summary>Sorts the content of the sequence using heap sort.</summary>
-		public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, SetSorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.HeapSort<T>(type, comparer).SortInPlace((T[])source);
+		public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, Sorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
+			=> new Sorting.HeapSort<T>(type, comparer).SortInPlace((T[])source);
 		/// <summary>Sorts the content of the sequence using heap sort.</summary>
-		public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, SetSorting.HeapSortType type)
+		public static void ApplyHeapSort<T>(this System.Collections.Generic.IList<T> source, Sorting.HeapSortType type)
 			=> ApplyHeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
 
 		/// <summary>Sorts the content of the sequence using heap sort.</summary>
-		public static void ApplyHeapSort<T>(this System.Span<T> source, SetSorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.HeapSort<T>(type, comparer).SortInPlace(source);
+		public static void ApplyHeapSort<T>(this System.Span<T> source, Sorting.HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
+			=> new Sorting.HeapSort<T>(type, comparer).SortInPlace(source);
 		/// <summary>Sorts the content of the sequence using heap sort.</summary>
-		public static void ApplyHeapSort<T>(this System.Span<T> source, SetSorting.HeapSortType type)
+		public static void ApplyHeapSort<T>(this System.Span<T> source, Sorting.HeapSortType type)
 			=> ApplyHeapSort(source, type, System.Collections.Generic.Comparer<T>.Default);
 	}
 
-	namespace SetSorting
+	namespace Sorting
 	{
 		public enum HeapSortType
 		{
@@ -28,7 +28,7 @@ namespace Flux
 		/// <summary>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
 		public class HeapSort<T>
-			: ASetSorting<T>, ISortableInPlace<T>
+			: ASortable<T>, ISortableInPlace<T>
 		{
 			private readonly HeapSortType m_type;
 

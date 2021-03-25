@@ -4,25 +4,25 @@ namespace Flux
 	{
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
 		public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.BingoSort<T>(comparer).SortInPlace((T[])source);
+			=> new Sorting.BingoSort<T>(comparer).SortInPlace((T[])source);
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
 		public static void ApplyBingoSort<T>(this System.Collections.Generic.IList<T> source)
 			=> ApplyBingoSort(source, System.Collections.Generic.Comparer<T>.Default);
 
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
 		public static void ApplyBingoSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-			=> new SetSorting.BingoSort<T>(comparer).SortInPlace(source);
+			=> new Sorting.BingoSort<T>(comparer).SortInPlace(source);
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
 		public static void ApplyBingoSort<T>(this System.Span<T> source)
 			=> ApplyBingoSort(source, System.Collections.Generic.Comparer<T>.Default);
 	}
 
-	namespace SetSorting
+	namespace Sorting
 	{
 		/// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Bingo_sort"/>
 		public class BingoSort<T>
-			: ASetSorting<T>, ISortableInPlace<T>
+			: ASortable<T>, ISortableInPlace<T>
 		{
 			public BingoSort(System.Collections.Generic.IComparer<T> comparer)
 				: base(comparer)

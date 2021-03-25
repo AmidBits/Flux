@@ -4,25 +4,25 @@ namespace Flux
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SetSorting.SelectionSort<T>(comparer).SortInPlace((T[])source);
+      => new Sorting.SelectionSort<T>(comparer).SortInPlace((T[])source);
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Collections.Generic.IList<T> source)
       => ApplySelectionSort(source, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => new SetSorting.SelectionSort<T>(comparer).SortInPlace(source);
+      => new Sorting.SelectionSort<T>(comparer).SortInPlace(source);
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     public static void ApplySelectionSort<T>(this System.Span<T> source)
       => ApplySelectionSort(source, System.Collections.Generic.Comparer<T>.Default);
   }
 
-  namespace SetSorting
+  namespace Sorting
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
     public class SelectionSort<T>
-      : ASetSorting<T>, ISortableInPlace<T>
+      : ASortable<T>, ISortableInPlace<T>
     {
       public SelectionSort(System.Collections.Generic.IComparer<T> comparer)
         : base(comparer)

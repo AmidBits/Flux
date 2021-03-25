@@ -1,6 +1,6 @@
 namespace Flux
 {
-	namespace SetMetrics
+	namespace Metrics
 	{
 		/// <summary>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two sequences is, the more similar the sequences are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</summary>
 		/// <param name="boostThreshold">The minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
@@ -8,7 +8,7 @@ namespace Flux
 		/// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
 		/// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
 		public class JaroWinklerDistance<T>
-			: ASetMetrics<T>, INormalizedDistance<T>
+			: AMetrics<T>, INormalizedDistance<T>
 		{
 			/// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>
 			public double BoostThreshold { get; set; } = 0.7;

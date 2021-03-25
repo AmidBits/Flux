@@ -1,12 +1,12 @@
 namespace Flux
 {
-  namespace SetMetrics
+  namespace Metrics
   {
-    public abstract class ASetMetrics<T>
+    public abstract class AMetrics<T>
     {
       public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
-      public ASetMetrics(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      public AMetrics(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
         => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
 
       public void OptimizeEnds(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.ReadOnlySpan<T> sourceSlice, out System.ReadOnlySpan<T> targetSlice, out int sourceCount, out int targetCount, out int atStart, out int atEnd)

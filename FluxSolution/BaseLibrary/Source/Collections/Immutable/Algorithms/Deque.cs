@@ -52,6 +52,9 @@ namespace Flux.Collections.Immutable
       m_right = right;
     }
 
+    public override string ToString()
+      => $"<{GetType().Name}>";
+
     private sealed class EmptyDeque
       : IDeque<TValue>
     {
@@ -62,6 +65,9 @@ namespace Flux.Collections.Immutable
       public IDeque<TValue> DequeueRight() => throw new System.Exception(nameof(EmptyDeque));
       public TValue PeekLeft() => throw new System.Exception(nameof(EmptyDeque));
       public TValue PeekRight() => throw new System.Exception(nameof(EmptyDeque));
+
+      public override string ToString()
+        => $"<{GetType().Name}>";
     }
 
     private sealed class SingleDeque
@@ -79,6 +85,9 @@ namespace Flux.Collections.Immutable
       public IDeque<TValue> DequeueRight() => Empty;
       public TValue PeekLeft() => item;
       public TValue PeekRight() => item;
+
+      public override string ToString()
+        => $"<{GetType().Name}>";
     }
 
     private abstract class Dequelette
@@ -91,6 +100,9 @@ namespace Flux.Collections.Immutable
       public abstract Dequelette EnqueueRight(TValue t);
       public abstract Dequelette DequeueLeft();
       public abstract Dequelette DequeueRight();
+
+      public override string ToString()
+        => $"<{GetType().Name}>";
     }
 
     private class Dequelette1

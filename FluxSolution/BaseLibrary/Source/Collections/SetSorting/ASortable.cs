@@ -1,13 +1,13 @@
 namespace Flux
 {
-  namespace SetSorting
+  namespace Sorting
   {
     /// <summary>Represents a sort algorithm.</summary>
-    public abstract class ASetSorting<T>
+    public abstract class ASortable<T>
     {
       public System.Collections.Generic.IComparer<T> Comparer { get; }
 
-      public ASetSorting(System.Collections.Generic.IComparer<T> comparer)
+      public ASortable(System.Collections.Generic.IComparer<T> comparer)
         => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     }
   }
