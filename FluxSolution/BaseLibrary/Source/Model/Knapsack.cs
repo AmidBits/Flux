@@ -10,14 +10,12 @@ namespace Flux.Model
 		public static int[,] ComputeRecursiveGrid(int weightCapacity, int[] weights, int[] values, int numberOfDistinctItems, out double maxValue)
 		{
 			if (weights is null) throw new System.ArgumentNullException(nameof(weights));
-			if (values is null) throw new System.ArgumentNullException(nameof(values));
+			if (weights.Length <= 0 || weights.Length < numberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(weights));
 
-			if (weights.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(weights));
-			if (values.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(values));
+			if (values is null) throw new System.ArgumentNullException(nameof(values));
+			if (values.Length <= 0 || values.Length < numberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(values));
 
 			if (numberOfDistinctItems <= 0) throw new System.ArgumentOutOfRangeException(nameof(numberOfDistinctItems));
-
-			if (numberOfDistinctItems > weights.Length || numberOfDistinctItems > values.Length) throw new System.ArgumentException($"Weights ({weights.Length}) and Values ({values.Length}) must be of equal in length, and NumberOfItems must be less or equal to their length.");
 
 			var grid = new int[numberOfDistinctItems + 1, weightCapacity + 1];
 
@@ -25,24 +23,24 @@ namespace Flux.Model
 				for (int j = 0; j <= weightCapacity; j++)
 					grid[i, j] = -1;
 
-			maxValue = Recurser(numberOfDistinctItems, weightCapacity);
+			maxValue = Recurse(numberOfDistinctItems, weightCapacity);
 
 			return grid;
 
-			int Recurser(int i, int j)
+			int Recurse(int i, int j)
 			{
 				if (i == 0 || j <= 0)
 					return 0;
 
 				if (grid[i - 1, j] < 0) // m[i-1, j] has not been calculated, so we do so now.
-					grid[i - 1, j] = Recurser(i - 1, j);
+					grid[i - 1, j] = Recurse(i - 1, j);
 
 				if (weights[i - 1] > j) // Weight cannot fit in the bag.
 					grid[i, j] = grid[i - 1, j];
 				else
 				{
 					if (grid[i - 1, j - weights[i - 1]] < 0) // m[i-1,j-w[i]] has not been calculated, so we do that now.
-						grid[i - 1, j - weights[i - 1]] = Recurser(i - 1, j - weights[i - 1]);
+						grid[i - 1, j - weights[i - 1]] = Recurse(i - 1, j - weights[i - 1]);
 
 					grid[i, j] = System.Math.Max(grid[i - 1, j], grid[i - 1, j - weights[i - 1]] + values[i - 1]);
 				}
@@ -54,30 +52,28 @@ namespace Flux.Model
 		public static int[,] ComputeDynamicGrid(int weightCapacity, int[] weights, int[] values, int numberOfDistinctItems, out int maxValue)
 		{
 			if (weights is null) throw new System.ArgumentNullException(nameof(weights));
-			if (values is null) throw new System.ArgumentNullException(nameof(values));
+			if (weights.Length <= 0 || weights.Length < numberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(weights));
 
-			if (weights.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(weights));
-			if (values.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(values));
+			if (values is null) throw new System.ArgumentNullException(nameof(values));
+			if (values.Length <= 0 || values.Length < numberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(values));
 
 			if (numberOfDistinctItems <= 0) throw new System.ArgumentOutOfRangeException(nameof(numberOfDistinctItems));
 
-			if (numberOfDistinctItems > weights.Length || numberOfDistinctItems > values.Length) throw new System.ArgumentException($"Weights ({weights.Length}) and Values ({values.Length}) must be of equal in length, and NumberOfItems must be less or equal to their length.");
-
-			var results = new int[numberOfDistinctItems + 1, weightCapacity + 1];
+			var grid = new int[numberOfDistinctItems + 1, weightCapacity + 1];
 
 			for (int i = 0; i <= numberOfDistinctItems; i++)
 			{
 				for (int j = 0; j <= weightCapacity; j++)
 				{
-					if (i == 0 || j == 0) results[i, j] = 0;
-					else if (weights[i - 1] <= j) results[i, j] = System.Math.Max(values[i - 1] + results[i - 1, j - weights[i - 1]], results[i - 1, j]);
-					else results[i, j] = results[i - 1, j];
+					if (i == 0 || j == 0) grid[i, j] = 0;
+					else if (weights[i - 1] <= j) grid[i, j] = System.Math.Max(values[i - 1] + grid[i - 1, j - weights[i - 1]], grid[i - 1, j]);
+					else grid[i, j] = grid[i - 1, j];
 				}
 			}
 
-			maxValue = results[numberOfDistinctItems, weightCapacity];
+			maxValue = grid[numberOfDistinctItems, weightCapacity];
 
-			return results;
+			return grid;
 		}
 	}
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
