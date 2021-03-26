@@ -1,144 +1,116 @@
 namespace Flux.Model
 {
-  /*
-         var items = new Flux.Model.Knapsack.Item[] {
-        new Flux.Model.Knapsack.Item(505, 23),
-        new Flux.Model.Knapsack.Item(352, 26),
-        new Flux.Model.Knapsack.Item(458, 20),
-        new Flux.Model.Knapsack.Item(220, 18),
-        new Flux.Model.Knapsack.Item(354, 32),
-        new Flux.Model.Knapsack.Item(414, 27),
-        new Flux.Model.Knapsack.Item(498, 29),
-        new Flux.Model.Knapsack.Item(545, 26),
-        new Flux.Model.Knapsack.Item(473, 30),
-        new Flux.Model.Knapsack.Item(543, 27)
-      };
-
-      int[] value = { 10, 50, 70 };
-      int[] weight = { 10, 20, 30 };
-      int capacity = 40;
-      int itemsCount = 7;
-
-      var ks = new Flux.Model.Knapsack(67, items);
-
-      System.Console.WriteLine(ks.Recurser(10, 67));
-*/
-
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
-  public class Knapsack
-  {
-    public int WeightCapacity { get; set; }
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
+	public static class Knapsack
+	{
+		public static int[,] ComputeRecursiveGrid(int weightCapacity, int[] weights, int[] values, int numberOfDistinctItems, out double maxValue)
+		{
+			if (weights is null) throw new System.ArgumentNullException(nameof(weights));
+			if (values is null) throw new System.ArgumentNullException(nameof(values));
 
-    private KnapsackItem[] Items;
+			if (weights.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(weights));
+			if (values.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(values));
 
-    private int[,] Value;
+			if (numberOfDistinctItems <= 0) throw new System.ArgumentOutOfRangeException(nameof(numberOfDistinctItems));
 
-    public Knapsack(int weightCapacity, KnapsackItem[] items)
-    {
-      WeightCapacity = weightCapacity;
-      Items = items;
+			if (numberOfDistinctItems > weights.Length || numberOfDistinctItems > values.Length) throw new System.ArgumentException($"Weights ({weights.Length}) and Values ({values.Length}) must be of equal in length, and NumberOfItems must be less or equal to their length.");
 
-      Value = new int[Items.Length + 1, WeightCapacity + 1];
+			var grid = new int[numberOfDistinctItems + 1, weightCapacity + 1];
 
-      for (int i = 0; i < Value.GetLength(0); i++)
-      {
-        for (int j = 0; j < Value.GetLength(1); j++)
-        {
-          Value[i, j] = -1;
-        }
-      }
-    }
+			for (int i = 0; i <= numberOfDistinctItems; i++)
+				for (int j = 0; j <= weightCapacity; j++)
+					grid[i, j] = -1;
 
-    public int Recurser(int i, int j)
-    {
-      if (i == 0 || j <= 0)
-        return 0;
+			maxValue = Recurser(numberOfDistinctItems, weightCapacity);
 
-      if (Value[i - 1, j] == -1)      //m[i-1, j] has not been calculated, we have to call function m
-        Value[i - 1, j] = Recurser(i - 1, j);
+			return grid;
 
-      if (Items[i - 1].Weight > j)                      //item cannot fit in the bag (THIS WAS MISSING FROM THE PREVIOUS ALGORITHM)
-        Value[i, j] = Value[i - 1, j];
-      else
-      {
-        if (Value[i - 1, j - Items[i - 1].Weight] == -1)      //m[i-1,j-w[i]] has not been calculated, we have to call function m
-          Value[i - 1, j - Items[i - 1].Weight] = Recurser(i - 1, j - Items[i - 1].Weight);
+			int Recurser(int i, int j)
+			{
+				if (i == 0 || j <= 0)
+					return 0;
 
-        Value[i, j] = System.Math.Max(Value[i - 1, j], Value[i - 1, j - Items[i - 1].Weight] + Items[i - 1].Value);
-      }
+				if (grid[i - 1, j] < 0) // m[i-1, j] has not been calculated, so we do so now.
+					grid[i - 1, j] = Recurser(i - 1, j);
 
-      return Value[i, j];
-    }
+				if (weights[i - 1] > j) // Weight cannot fit in the bag.
+					grid[i, j] = grid[i - 1, j];
+				else
+				{
+					if (grid[i - 1, j - weights[i - 1]] < 0) // m[i-1,j-w[i]] has not been calculated, so we do that now.
+						grid[i - 1, j - weights[i - 1]] = Recurser(i - 1, j - weights[i - 1]);
 
-    public static void MaxValue2(int W, int n)
-    {
-      var value = new int[n + 1, W + 1];
+					grid[i, j] = System.Math.Max(grid[i - 1, j], grid[i - 1, j - weights[i - 1]] + values[i - 1]);
+				}
 
-      for (int i = 0; i <= value.GetLength(0); i++)
-      {
-        for (int j = 0; j <= value.GetLength(1); j++)
-        {
-          value[i, j] = -1;
-        }
-      }
+				return grid[i, j];
+			}
+		}
 
+		public static int[,] ComputeDynamicGrid(int weightCapacity, int[] weights, int[] values, int numberOfDistinctItems, out int maxValue)
+		{
+			if (weights is null) throw new System.ArgumentNullException(nameof(weights));
+			if (values is null) throw new System.ArgumentNullException(nameof(values));
 
-    }
+			if (weights.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(weights));
+			if (values.Length <= 0) throw new System.ArgumentOutOfRangeException(nameof(values));
 
-    public static int MaxValue(int weightCapacity, int[] weight, int[] value, int numberOfDistinctItems)
-    {
-      if (weight is null) throw new System.ArgumentNullException(nameof(weight));
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
+			if (numberOfDistinctItems <= 0) throw new System.ArgumentOutOfRangeException(nameof(numberOfDistinctItems));
 
-      var K = new int[numberOfDistinctItems + 1, weightCapacity + 1];
+			if (numberOfDistinctItems > weights.Length || numberOfDistinctItems > values.Length) throw new System.ArgumentException($"Weights ({weights.Length}) and Values ({values.Length}) must be of equal in length, and NumberOfItems must be less or equal to their length.");
 
-      for (int i = 0; i <= numberOfDistinctItems; i++)
-      {
-        for (int w = 0; w <= weightCapacity; w++)
-        {
-          if (i == 0 || w == 0) K[i, w] = 0;
-          else if (weight[i - 1] <= w) K[i, w] = System.Math.Max(value[i - 1] + K[i - 1, w - weight[i - 1]], K[i - 1, w]);
-          else K[i, w] = K[i - 1, w];
-        }
-      }
+			var results = new int[numberOfDistinctItems + 1, weightCapacity + 1];
 
-      return K[numberOfDistinctItems, weightCapacity];
-    }
+			for (int i = 0; i <= numberOfDistinctItems; i++)
+			{
+				for (int j = 0; j <= weightCapacity; j++)
+				{
+					if (i == 0 || j == 0) results[i, j] = 0;
+					else if (weights[i - 1] <= j) results[i, j] = System.Math.Max(values[i - 1] + results[i - 1, j - weights[i - 1]], results[i - 1, j]);
+					else results[i, j] = results[i - 1, j];
+				}
+			}
 
-    public static int MaxValue2(int weightCapacity, KnapsackItem[] items)
-    {
-      if (items is null) throw new System.ArgumentNullException(nameof(items));
+			maxValue = results[numberOfDistinctItems, weightCapacity];
 
-      var K = new int[items.Length + 1, weightCapacity + 1];
-
-      for (int i = 0; i <= items.Length; i++)
-      {
-        for (int w = 0; w <= weightCapacity; w++)
-        {
-          if (i == 0 || w == 0) K[i, w] = 0;
-          else if (items[i - 1].Weight <= w) K[i, w] = System.Math.Max(items[i - 1].Value + K[i - 1, w - items[i - 1].Weight], K[i - 1, w]);
-          else K[i, w] = K[i - 1, w];
-        }
-      }
-
-      return K[items.Length, weightCapacity];
-    }
-  }
-
-  public class KnapsackItem
-  {
-    public int Value { get; set; }
-    public int Weight { get; set; }
-
-    public KnapsackItem(int value, int weight)
-    {
-      Value = value;
-      Weight = weight;
-    }
-  }
+			return results;
+		}
+	}
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }
+
+/*
+	var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
+	var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
+
+	var dg = Flux.Model.Knapsack.ComputeDynamicGrid(67, weights, values, 10, out var dgMaxWorth);
+
+	for (var i = 10; i >= 0; i--)
+	{
+		for (var j = 67; j >= 0; j--)
+		{
+			System.Console.Write($"m({i},{j})={dg[i, j]},");
+		}
+
+		System.Console.WriteLine();
+	}
+
+	var rg = Flux.Model.Knapsack.ComputeRecursiveGrid(67, weights, values, 10, out var rgMaxWorth);
+
+	for (var i = 10; i >= 0; i--)
+	{
+		for (var j = 67; j >= 0; j--)
+		{
+			var value = rg[i, j];
+
+			if (value > 0)
+				System.Console.Write($"m({i},{j})={value},");
+		}
+
+		System.Console.WriteLine();
+	}
+*/
