@@ -1,6 +1,7 @@
 namespace Flux.Model
 {
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+  // https://en.wikipedia.org/wiki/Zobrist_hashing
   public class ZobristTable
   {
     private readonly ulong[,,] m_table;
@@ -53,7 +54,7 @@ namespace Flux.Model
     }
 
     public override string ToString()
-      => $"<{m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
+      => $"<{nameof(ZobristTable)}: {m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
   }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

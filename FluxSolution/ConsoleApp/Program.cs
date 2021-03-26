@@ -12,171 +12,101 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var rgb = new Flux.Coloring.Rgba(100, 50, 100, 150);
-      System.Console.WriteLine($"{rgb}");
-      var hsl = rgb.ToHsla();
-      var hslRgb = hsl.ToRgb();
-      System.Console.WriteLine($"{hsl} = {hslRgb}");
-      var hsv = rgb.ToHsv();
-      var hsvRgb = hsv.ToRgb();
-      System.Console.WriteLine($"{hsv} = {hsvRgb}");
 
 
-      System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6, 4, 0.3));
-      System.Console.WriteLine(Flux.Maths.ProbabilityMassFunction(6, 1, 1.0 / 6.0));
+      var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
+      for (var i = 0; i < 100000; i++)
+        d[Flux.Random.NumberGenerator.Crypto.NextProbabilityRuneEnUs()]++;
+      foreach (var kvp in d.Take(7))
+        System.Console.WriteLine($"'{kvp.Key}' = {kvp.Value}");
 
-      //var d = Flux.Globalization.EnUs.Language.RelativeFrequencyOfLetters.ToDictionary(kvp => kvp.Key, kvp => 0);
-      //for (var i = 0; i < 100000; i++)
-      //  d[Flux.Random.NumberGenerator.Crypto.NextProbabilityRuneEnUs()]++;
-      //foreach (var kvp in d.Take(7))
-      //  System.Console.WriteLine($"'{kvp.Key}' = {kvp.Value}");
+      for (var i = 0; i < 7; i++)
+        System.Console.WriteLine(Flux.Random.NumberGenerator.Pseudo.NextRandomNameEnUs(6));
 
-      //for (var i = 0; i < 7; i++)
-      //  System.Console.WriteLine(Flux.Random.NumberGenerator.Pseudo.NextRandomNameEnUs(6));
+      /*
+      var ipaes = Flux.Reflection.ApplicationDomain.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
+      var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
 
-      //System.Collections.Generic.Dictionary<string, string> Samples = new System.Collections.Generic.Dictionary<string, string>()
-      //{
-      //  { "Dougal", "DAGAL" },
-      //  { "Glinde", "GLAND" },
-      //  { "Plumridge", "PLANRAG" },
-      //  { "Simak", "SANAC" },
-      //  { "Webberley", "WABARLY" },
-      //};
-      //var ipaes = Flux.Reflection.ApplicationDomain.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
-      //var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
+      foreach (var ipae in ipaes)
+        foreach (var name in names)
+          System.Console.WriteLine($"{ipae.GetType().Name}.\"{name}\", \"{ipae.EncodePhoneticAlgorithm(name)}\"");
+      */
 
-      //foreach (var ipae in ipaes)
-      //  foreach (var name in names)
-      //    System.Console.WriteLine($"{ipae.GetType().Name}.\"{name}\", \"{ipae.EncodePhoneticAlgorithm(name)}\"");
+      /*
+      var data1 = new Flux.Resources.Census.CountiesAllData(Flux.Resources.Census.CountiesAllData.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
+      var data2 = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows)} = {data2.GetLength(0).ToGroupString()} rows, {data2[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data3 = new Flux.Resources.ProjectGutenberg.TableOfContents(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TableOfContents)} = {data3.GetLength(0).ToGroupString()} rows, {data3[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data4 = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings)} = {data4.GetLength(0).ToGroupString()} rows, {data4[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data5 = new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary)} = {data5.GetLength(0).ToGroupString()} rows, {data5[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data6 = new Flux.Resources.Scowl.TwoOfTwelveFull(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Scowl.TwoOfTwelveFull)} = {data6.GetLength(0).ToGroupString()} rows, {data6[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data7 = new Flux.Resources.Scrape.ZipCodes(Flux.Resources.Scrape.ZipCodes.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Scrape.ZipCodes)} = {data7.GetLength(0).ToGroupString()} rows, {data7[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data8 = new Flux.Resources.Ucd.Blocks(Flux.Resources.Ucd.Blocks.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.Blocks)} = {data8.GetLength(0).ToGroupString()} rows, {data8[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data9 = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.UnicodeData)} = {data9.GetLength(0).ToGroupString()} rows, {data9[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data0 = new Flux.Resources.W3c.NamedCharacterReferences(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
+      */
 
-      //return;
+      /*
+      var count = 1;
+      while (e.MoveNext())
+        if (Flux.Random.NumberGenerator.Crypto.NextDouble() > 0.01)
+        {
+          System.Console.WriteLine($"Field values [{count++}][{e.Current.Length}]");
+          System.Console.WriteLine(string.Join('|', e.Current));
+          System.Console.WriteLine();
+        }
+      */
 
-      //var data1 = new Flux.Resources.Census.CountiesAllData(Flux.Resources.Census.CountiesAllData.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
-      //var data2 = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows)} = {data2.GetLength(0).ToGroupString()} rows, {data2[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data3 = new Flux.Resources.ProjectGutenberg.TableOfContents(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TableOfContents)} = {data3.GetLength(0).ToGroupString()} rows, {data3[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data4 = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings)} = {data4.GetLength(0).ToGroupString()} rows, {data4[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data5 = new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary)} = {data5.GetLength(0).ToGroupString()} rows, {data5[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data6 = new Flux.Resources.Scowl.TwoOfTwelveFull(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.Scowl.TwoOfTwelveFull)} = {data6.GetLength(0).ToGroupString()} rows, {data6[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data7 = new Flux.Resources.Scrape.ZipCodes(Flux.Resources.Scrape.ZipCodes.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.Scrape.ZipCodes)} = {data7.GetLength(0).ToGroupString()} rows, {data7[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data8 = new Flux.Resources.Ucd.Blocks(Flux.Resources.Ucd.Blocks.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.Blocks)} = {data8.GetLength(0).ToGroupString()} rows, {data8[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data9 = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.UnicodeData)} = {data9.GetLength(0).ToGroupString()} rows, {data9[0].GetLength(0)} columns {System.DateTime.Now}");
-      //var data0 = new Flux.Resources.W3c.NamedCharacterReferences(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).AcquireTabularData().ToArray();
-      //System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
+      /*
+      var showIPStatistics = true;
 
-      //using var e = data0.GetEnumerator();
+      foreach (var nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+      {
+        System.Console.WriteLine($"Network Interface");
+        System.Console.WriteLine($"Description: {nic.Description}");
+        System.Console.WriteLine($"ID: {new System.Guid(nic.Id).ToString()}");
+        System.Console.WriteLine($"Name: {nic.Name}");
+        System.Console.WriteLine($"Operational status: {nic.OperationalStatus}");
+        System.Console.WriteLine($"Receive only: {nic.IsReceiveOnly}");
+        System.Console.WriteLine($"Speed: {nic.Speed.ToGroupString()}");
+        System.Console.WriteLine($"Supports multicast: {nic.SupportsMulticast}");
+        System.Console.WriteLine($"Type: {nic.NetworkInterfaceType}");
+        if (nic.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac))
+          System.Console.WriteLine($"Physical address: {mac}");
+        System.Console.WriteLine();
 
-      //if (e.MoveNext())
-      //{
-      //	System.Console.WriteLine($"Field names [{e.Current.Length}]");
-      //	System.Console.WriteLine(string.Join('|', e.Current));
+        if (showIPStatistics)
+        {
+          var ips = nic.GetIPStatistics();
+          System.Console.WriteLine($"\tIP Statistics");
+          System.Console.WriteLine($"\tIncoming packets: {ips.IncomingPacketsDiscarded.ToGroupString()} discarded, {ips.IncomingPacketsWithErrors.ToGroupString()} errors, {ips.IncomingUnknownProtocolPackets.ToGroupString()} unknown.");
+          System.Console.WriteLine($"\tNon-unicast packets: {ips.NonUnicastPacketsReceived.ToGroupString()} received, {ips.NonUnicastPacketsSent.ToGroupString()} sent.");
+          System.Console.WriteLine($"\tOutgoing packets: {ips.OutgoingPacketsDiscarded.ToGroupString()} discarded, {ips.OutgoingPacketsWithErrors.ToGroupString()} errors.");
+          System.Console.WriteLine($"\tOutput queue length: {ips.OutputQueueLength.ToGroupString()}");
+          System.Console.WriteLine($"\tUnicast packets: {ips.UnicastPacketsReceived.ToGroupString()} received, {ips.UnicastPacketsSent.ToGroupString()} sent.");
+          System.Console.WriteLine();
+        }
+      }
+      */
 
-      //	var count = 1;
+      /*
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+        foreach (var rune in sr.EnumerateTextElements())
+          System.Console.Write(rune.ToString());
 
-      //	while (e.MoveNext())
-      //	{
-      //		if (Flux.Random.NumberGenerator.Crypto.NextDouble() > 0.01)
-      //		{
-      //			System.Console.WriteLine($"Field values [{count++}][{e.Current.Length}]");
-      //			System.Console.WriteLine(string.Join('|', e.Current));
-      //			System.Console.WriteLine();
-      //		}
-      //	}
-      //}
-
-      //var jd = new Flux.JulianDay(2459227.9722685).AddHours(2).AddMinutes(4).AddSeconds(6);
-      //var jd = new Flux.JulianDay(0);//.AddHours(2).AddMinutes(4).AddSeconds(6);
-      //November 24, 4714 BC 12:00:00 = Monday, January 1, 4713
-      //var jd = new JulianDay(Flux.JulianDay.GregorianDateToJulianDay(1957, 10, 4.81));
-      //var jd = new JulianDate(Flux.JulianDate.JulianDateToJulianDay(-4712, 1, 1.5));
-      //var jd = new JulianDay(Flux.JulianDay.JulianDateToJulianDay(1, 1, 1.5));
-
-      //var jd = Flux.JulianDate.FromGregorianCalendarDate(33, 5, 30);
-      //var jd = Flux.JulianDate.FromJulianCalendarDate(-4712, 1, 1);
-
-      //var addDays = (int)(365.25 * 4 * 1178);
-      //var addHours = 6;
-      //var addMinutes = 2;
-      //var addSeconds = 2;
-
-      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(time) {jd.ToTimeString()}{System.Environment.NewLine}");
-      //jd = jd.AddDays(addDays);
-      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addDays} days) {jd.ToTimeString()}{System.Environment.NewLine}");
-      //jd = jd.AddHours(addHours);
-      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addHours} hours) {jd.ToTimeString()}{System.Environment.NewLine}");
-      //jd = jd.AddMinutes(addMinutes);
-      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addMinutes} minutes) {jd.ToTimeString()}{System.Environment.NewLine}");
-      //jd = jd.AddSeconds(addSeconds);
-      //System.Console.WriteLine($"{jd}{System.Environment.NewLine}{jd.ToGregorianCalendarDateString()}{System.Environment.NewLine}{jd.ToJulianCalendarDateString()}{System.Environment.NewLine}(added {addSeconds} seconds) {jd.ToTimeString()}{System.Environment.NewLine}");
-
-      //var date = new System.DateTime(1, 3, 2);
-
-      //date = System.DateTime.Now;
-      //System.Console.WriteLine($"{System.DateTime.MinValue} - {System.DateTime.MaxValue}");
-      //System.Console.WriteLine($"{date} = {date.ToJulianDate()} = {Flux.JulianDayNumber.FromGregorianDate(date.Year, date.Month, date.Day)}");
-      //System.Console.WriteLine($"{2459227.32708} = {Flux.JulianDayNumber.ToGregorianDate(2459227)}");
-      //var dr = Flux.Resources.Presets.GetScowlTwoOfTwelveFull(Flux.Resources.Presets.UriScowlTwoOfTwelveFullLocal);
-
-      //var a = dr.ToArray();
-
-      //var cs = a.ToConsoleStringJagged();
-
-      //System.Console.WriteLine(cs);
-
-      //foreach (var r in dr)
-      //{
-      //	System.Console.WriteLine(string.Join(',', r.GetNames()));
-      //	System.Console.WriteLine(string.Join(',', r.GetValues()));
-      //}
-
-      //System.Console.WriteLine(dt.ToConsoleString());
-
-      //var showIPStatistics = true;
-
-      //foreach (var nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
-      //{
-      //	System.Console.WriteLine($"Network Interface");
-      //	System.Console.WriteLine($"Description: {nic.Description}");
-      //	System.Console.WriteLine($"ID: {new System.Guid(nic.Id).ToString()}");
-      //	System.Console.WriteLine($"Name: {nic.Name}");
-      //	System.Console.WriteLine($"Operational status: {nic.OperationalStatus}");
-      //	System.Console.WriteLine($"Receive only: {nic.IsReceiveOnly}");
-      //	System.Console.WriteLine($"Speed: {nic.Speed.ToGroupString()}");
-      //	System.Console.WriteLine($"Supports multicast: {nic.SupportsMulticast}");
-      //	System.Console.WriteLine($"Type: {nic.NetworkInterfaceType}");
-      //	if (nic.GetPhysicalAddress().ToStringMAC() is var mac && !string.IsNullOrWhiteSpace(mac))
-      //		System.Console.WriteLine($"Physical address: {mac}");
-      //	System.Console.WriteLine();
-
-      //	if (showIPStatistics)
-      //	{
-      //		var ips = nic.GetIPStatistics();
-      //		System.Console.WriteLine($"\tIP Statistics");
-      //		System.Console.WriteLine($"\tIncoming packets: {ips.IncomingPacketsDiscarded.ToGroupString()} discarded, {ips.IncomingPacketsWithErrors.ToGroupString()} errors, {ips.IncomingUnknownProtocolPackets.ToGroupString()} unknown.");
-      //		System.Console.WriteLine($"\tNon-unicast packets: {ips.NonUnicastPacketsReceived.ToGroupString()} received, {ips.NonUnicastPacketsSent.ToGroupString()} sent.");
-      //		System.Console.WriteLine($"\tOutgoing packets: {ips.OutgoingPacketsDiscarded.ToGroupString()} discarded, {ips.OutgoingPacketsWithErrors.ToGroupString()} errors.");
-      //		System.Console.WriteLine($"\tOutput queue length: {ips.OutputQueueLength.ToGroupString()}");
-      //		System.Console.WriteLine($"\tUnicast packets: {ips.UnicastPacketsReceived.ToGroupString()} received, {ips.UnicastPacketsSent.ToGroupString()} sent.");
-      //		System.Console.WriteLine();
-      //	}
-
-      //}
-
-      //using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-      //	foreach (var rune in sr.EnumerateTextElements())
-      //		System.Console.Write(rune.ToString());
-
-      //using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-      //	foreach (var rune in sr.EnumerateRunes())
-      //		System.Console.Write(rune.ToString());
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+        foreach (var rune in sr.EnumerateRunes())
+          System.Console.Write(rune.ToString());
+      */
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
