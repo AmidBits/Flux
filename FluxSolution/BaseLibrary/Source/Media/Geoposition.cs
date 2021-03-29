@@ -459,7 +459,7 @@ namespace Flux
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out Geoposition result, double earthRadius = EarthRadii.MeanInMeters)
     {
-      if (Flux.FormatProviders.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Flux.FormatProviders.DmsFormatter.TryParse(longitudeDMS, out var longitude))
+      if (Flux.Formatters.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Flux.Formatters.DmsFormatter.TryParse(longitudeDMS, out var longitude))
       {
         result = new Geoposition(latitude, longitude, earthRadius);
         return true;
@@ -483,7 +483,7 @@ namespace Flux
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new FormatProviders.GeopositionFormatProvider(), format ?? $"<{nameof(Geoposition)}: {{0:DMS}}>", this);
+      => string.Format(formatProvider ?? new Formatters.GeopositionFormatter(), format ?? $"<{nameof(Geoposition)}: {{0:DMS}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Geoposition o && Equals(o);

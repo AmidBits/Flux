@@ -1,0 +1,31 @@
+﻿<Window x:Name="window"
+        x:Class="WpfApp.Mazes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        mc:Ignorable="d"
+        Title="Mazes" 
+        Background="Black" Foreground="White"
+        Height="800" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Click="Button_Click_Clear" Content="Clear" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_AldousBroder" Content="Aldous/Broder" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_BackTracker" Content="BackTracker" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_BinaryTree" Content="Binary Tree" Margin="1" Padding="5" Visibility="Visible"/>
+            <Button Click="Button_Click_GrowingTree" Content="Growing Tree" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_HuntAndKill" Content="Hunt And Kill" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_RecursiveDivision" Content="Recursive Division" Margin="1" Padding="5"/>
+            <Button Click="Button_Click_SideWinder" Content="SideWinder" Margin="1" Padding="5" Visibility="Visible"/>
+            <Button Click="Button_Click_Wilsons" Content="Wilsons" Margin="1" Padding="5" Visibility="Visible"/>
+            <Button Click="Button_Click_Braid" Content="Braid" Margin="1" Padding="5"/>
+        </StackPanel>
+        <Canvas x:Name="canvas" Grid.Column="0" Grid.Row="1" Height="800" Width="800" />
+    </Grid>
+</Window>

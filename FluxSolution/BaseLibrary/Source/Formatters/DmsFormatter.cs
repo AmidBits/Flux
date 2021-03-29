@@ -1,4 +1,4 @@
-namespace Flux.FormatProviders
+namespace Flux.Formatters
 {
   /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
@@ -10,7 +10,7 @@ namespace Flux.FormatProviders
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
   public class DmsFormatter
-    : FormatProvider
+    : AFormatter
   {
     public bool InsertSpaces { get; set; }
     public System.Text.Rune SymbolDegrees { get; set; } = new System.Text.Rune('\u00B0');

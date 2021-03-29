@@ -15,13 +15,13 @@ namespace IFormatProvider
     [TestMethod]
     public void Formatter()
     {
-      Assert.AreEqual(string.Format(new Flux.FormatProviders.DmsFormatter(), @"{0:DMS}", _dms1), _dms1);
+      Assert.AreEqual(string.Format(new Flux.Formatters.DmsFormatter(), @"{0:DMS}", _dms1), _dms1);
     }
 
     [TestMethod]
     public void TryParse()
     {
-      Flux.FormatProviders.DmsFormatter.TryParse(_dms1, out var dms1tp);
+      Flux.Formatters.DmsFormatter.TryParse(_dms1, out var dms1tp);
 
       Assert.AreEqual(_dms1tp, dms1tp);
     }
@@ -37,7 +37,7 @@ namespace IFormatProvider
 		[TestMethod]
 		public void Formatter()
 		{
-			Assert.AreEqual(_radix16, string.Format(new Flux.FormatProviders.RadixFormatter(), "{0:RADIX16}", _radix10));
+			Assert.AreEqual(_radix16, string.Format(new Flux.Formatters.RadixFormatter(), "{0:RADIX16}", _radix10));
 		}
   }
 }

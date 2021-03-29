@@ -1,4 +1,4 @@
-namespace Flux.FormatProviders
+namespace Flux.Formatters
 {
   /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
@@ -9,8 +9,8 @@ namespace Flux.FormatProviders
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class GeopositionFormatProvider
-    : FormatProvider
+  public class GeopositionFormatter
+    : AFormatter
   {
     public bool InsertSpaces { get; set; }
 

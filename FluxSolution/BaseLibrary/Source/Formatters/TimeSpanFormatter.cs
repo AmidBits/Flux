@@ -1,13 +1,13 @@
 using System.Linq;
 
-namespace Flux.FormatProviders
+namespace Flux.Formatters
 {
   /// <summary>A formatter for System.TimeSpan, that can also be used for long (ticks), int (seconds) and System.Numerics.BigInteger (milliseconds).</summary>
   /// <example>
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.TsFormatter() { Abbreviated = true }, "{0:TS}", timeValue));
   /// </example>
   public class TimeSpanFormatter 
-    : FormatProvider
+    : AFormatter
   {
     private const string csD = "d";
     private const string csDay = "day";

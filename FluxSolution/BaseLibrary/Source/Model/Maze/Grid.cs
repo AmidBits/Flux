@@ -8,6 +8,9 @@ namespace Flux.Model.Maze
 		public Grid(Geometry.Size2 size)
 			: base(size.Height, size.Width)
 		{
+			for (var h = size.Height - 1; h >= 0; h--)
+				for (var w = size.Width - 1; w >= 0; w--)
+					this[h, w] = new Cell();
 			// Instantiate each cell?
 		}
 

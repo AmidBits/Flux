@@ -1,10 +1,10 @@
 using System.Linq;
 
-namespace Flux.FormatProviders
+namespace Flux.Formatters
 {
 	/// <summary>Enables formatting of any number base (radix) with any characters desired.</summary>
 	public class RadixFormatter
-		: FormatProvider
+		: AFormatter
 	{
 		public const string FormatIdentifier = @"RADIX";
 

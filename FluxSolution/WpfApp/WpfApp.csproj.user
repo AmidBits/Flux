@@ -10,12 +10,18 @@
     <Compile Update="DesktopWidget.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Mazes.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="DesktopWidget.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Mazes.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
