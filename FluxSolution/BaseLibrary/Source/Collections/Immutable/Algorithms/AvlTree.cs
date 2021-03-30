@@ -24,10 +24,14 @@ namespace Flux.Collections.Immutable
 		}
 
 		// IBinaryTree<TValue>
-		public bool IsEmpty => false;
-		IBinaryTree<TValue> IBinaryTree<TValue>.Left => m_left;
-		IBinaryTree<TValue> IBinaryTree<TValue>.Right => m_right;
-		public TValue Value => m_value;
+		public bool IsEmpty
+			=> false;
+		IBinaryTree<TValue> IBinaryTree<TValue>.Left
+			=> m_left;
+		IBinaryTree<TValue> IBinaryTree<TValue>.Right
+			=> m_right;
+		public TValue Value
+			=> m_value;
 
 		// IBinarySearchTree<TKey, TValue>
 		public TKey Key
@@ -100,33 +104,50 @@ namespace Flux.Collections.Immutable
 		#endregion Static Helpers
 
 		public override string ToString()
-			=> $"<{GetType().Name}: {m_key}, {m_value}, {m_height}>";
+			=> $"<{GetType().Name}({(Left.IsEmpty ? '-' : 'L')}|{(Right.IsEmpty ? '-' : 'R')}): {m_key}, {m_value}, {m_height}>";
 
 		private sealed class EmptyAvlTree
 			: IBinarySearchTree<TKey, TValue>
 		{
 			// IBinaryTree<TValue>
-			public bool IsEmpty => true;
-			IBinaryTree<TValue> IBinaryTree<TValue>.Left => throw new System.Exception(nameof(EmptyAvlTree));
-			IBinaryTree<TValue> IBinaryTree<TValue>.Right => throw new System.Exception(nameof(EmptyAvlTree));
-			public TValue Value => throw new System.Exception(nameof(EmptyAvlTree));
+			public bool IsEmpty
+				=> true;
+			IBinaryTree<TValue> IBinaryTree<TValue>.Left
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			IBinaryTree<TValue> IBinaryTree<TValue>.Right
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			public TValue Value
+				=> throw new System.Exception(nameof(EmptyAvlTree));
 
 			// IBinarySearchTree<TKey, TValue>
-			public TKey Key => throw new System.Exception(nameof(EmptyAvlTree));
-			public IBinarySearchTree<TKey, TValue> Left => throw new System.Exception(nameof(EmptyAvlTree));
-			public IBinarySearchTree<TKey, TValue> Right => throw new System.Exception(nameof(EmptyAvlTree));
-			public IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value) => new AvlTree<TKey, TValue>(key, value, this, this);
-			public IBinarySearchTree<TKey, TValue> Remove(TKey key) => throw new System.Exception(nameof(EmptyAvlTree));
-			public IBinarySearchTree<TKey, TValue> Search(TKey key) => this;
+			public TKey Key
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			public IBinarySearchTree<TKey, TValue> Left
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			public IBinarySearchTree<TKey, TValue> Right
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			public IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value)
+				=> new AvlTree<TKey, TValue>(key, value, this, this);
+			public IBinarySearchTree<TKey, TValue> Remove(TKey key)
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			public IBinarySearchTree<TKey, TValue> Search(TKey key)
+				=> this;
 
 			// IMap<TKey, TValue>
-			public System.Collections.Generic.IEnumerable<TKey> Keys { get { yield break; } }
-			public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs { get { yield break; } }
-			public System.Collections.Generic.IEnumerable<TValue> Values { get { yield break; } }
-			IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
-			public bool Contains(TKey key) => false;
-			public TValue Lookup(TKey key) => throw new System.Exception(nameof(EmptyAvlTree));
-			IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key) => Remove(key);
+			public System.Collections.Generic.IEnumerable<TKey> Keys
+			{ get { yield break; } }
+			public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs
+			{ get { yield break; } }
+			public System.Collections.Generic.IEnumerable<TValue> Values
+			{ get { yield break; } }
+			IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value)
+				=> Add(key, value);
+			public bool Contains(TKey key)
+				=> false;
+			public TValue Lookup(TKey key)
+				=> throw new System.Exception(nameof(EmptyAvlTree));
+			IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key)
+				=> Remove(key);
 
 			public override string ToString()
 				=> $"<{GetType().Name}>";
