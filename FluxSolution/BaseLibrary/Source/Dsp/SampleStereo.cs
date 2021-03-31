@@ -9,23 +9,17 @@
     public double FrontLeft { get; }
     public double FrontRight { get; }
 
-    public SampleStereo(in double monoSample)
-      : this(monoSample, monoSample)
-    {
-    }
     public SampleStereo(in double frontLeft, in double frontRight)
     {
       FrontLeft = frontLeft;
       FrontRight = frontRight;
     }
+    public SampleStereo(in double monoSample)
+      : this(monoSample, monoSample)
+    { }
 
     public double ToMono()
-      => ((FrontLeft + FrontRight) / 2);
-
-    // Statics
-
-    public static double ToMonoSample(SampleStereo stereo)
-      => ((stereo.FrontLeft + stereo.FrontRight) / 2);
+      => (FrontLeft + FrontRight) / 2;
 
     // Operators
     public static bool operator ==(in SampleStereo a, in SampleStereo b)

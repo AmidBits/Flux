@@ -1,47 +1,40 @@
 ﻿namespace Flux.Dsp
 {
-  //public struct MonoSample
-  //  : IChannelFc, System.IEquatable<MonoSample>
-  //{
-  //  public double FrontCenter { get; }
+  public struct SampleMono
+    : IChannelFc, System.IEquatable<SampleMono>
+  {
+    public static readonly SampleMono Empty;
+    public bool IsEmpty => Equals(Empty);
 
-  //  public MonoSample(in double frontCenter)
-  //  {
-  //    FrontCenter = frontCenter;
-  //  }
+    public double FrontCenter { get; }
 
-  //  public StereoSample ToStereo()
-  //    => new StereoSample(FrontCenter, FrontCenter);
+    public SampleMono(in double frontCenter)
+    {
+      FrontCenter = frontCenter;
+    }
+    public SampleMono(in double frontLeft, in double frontRight)
+      : this((frontLeft + frontRight) / 2)
+    { }
 
-  //  #region Static functions
-  //  public static StereoSample ToStereoSample(MonoSample mono)
-  //    => new StereoSample(mono.FrontCenter, mono.FrontCenter);
-  //  //public static ISampleQuad ToQuadSample(in ISampleMono mono)
-  //  //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
-  //  #endregion Static functions
+    public SampleStereo ToStereo()
+      => new SampleStereo(FrontCenter, FrontCenter);
 
-  //  // Operators
-  //  public static bool operator ==(in MonoSample a, in MonoSample b)
-  //    => a.Equals(b);
-  //  public static bool operator !=(in MonoSample a, in MonoSample b)
-  //    => !a.Equals(b);
-  //  //public static implicit operator double(MonoSample sample)
-  //  //  => sample.FrontCenter;
-  //  //public static implicit operator MonoSample(in double sample)
-  //  //  => new MonoSample(sample);
-  //  //public static implicit operator StereoSample(in MonoSample mono)
-  //  //  => new StereoSample(mono.FrontCenter, mono.FrontCenter);
-  //  //public static implicit operator QuadSample(in MonoSample mono)
-  //  //  => new QuadSample(mono.FrontCenter, mono.FrontCenter, mono.FrontCenter, mono.FrontCenter);
-  //  // IEquatable<T>
-  //  public bool Equals(MonoSample other)
-  //    => FrontCenter.Equals(other.FrontCenter);
-  //  // Object overrides
-  //  public override bool Equals(object? obj)
-  //    => obj is MonoSample sample && Equals(sample);
-  //  public override int GetHashCode()
-  //    => FrontCenter.GetHashCode();
-  //  public override string ToString()
-  //    => $"<Fc:{FrontCenter}>";
-  //}
+    // Operators
+    public static bool operator ==(in SampleMono a, in SampleMono b)
+      => a.Equals(b);
+    public static bool operator !=(in SampleMono a, in SampleMono b)
+      => !a.Equals(b);
+
+    // IEquatable<T>
+    public bool Equals(SampleMono other)
+      => FrontCenter.Equals(other.FrontCenter);
+
+    // Object overrides
+    public override bool Equals(object? obj)
+      => obj is SampleMono sample && Equals(sample);
+    public override int GetHashCode()
+      => FrontCenter.GetHashCode();
+    public override string ToString()
+      => $"<Fc:{FrontCenter}>";
+  }
 }
