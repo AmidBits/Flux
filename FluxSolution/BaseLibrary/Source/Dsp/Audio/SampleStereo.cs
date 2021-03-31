@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp
 {
   public struct SampleStereo
-    : IChannelFl, IChannelFr, System.IEquatable<SampleStereo>
+    : IAudioChannelFl, IAudioChannelFr, System.IEquatable<SampleStereo>
   {
     public static readonly SampleStereo Empty;
     public bool IsEmpty => Equals(Empty);

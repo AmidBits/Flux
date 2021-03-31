@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp
 {
   public struct Sample21
-    : IChannelFl, IChannelFr, IChannelLfe, System.IEquatable<Sample21>
+    : IAudioChannelFl, IAudioChannelFr, IAudioChannelLfe, System.IEquatable<Sample21>
   {
     public double FrontLeft { get; }
     public double FrontRight { get; }
