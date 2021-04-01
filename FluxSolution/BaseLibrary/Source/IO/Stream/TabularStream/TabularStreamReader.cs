@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.IO
 {
-  public sealed class TabularReaderStream
+  public sealed class TabularStreamReader
     : Flux.Data.TabularDataReader
   {
     private readonly System.IO.StreamReader m_streamReader;
@@ -14,7 +14,7 @@ namespace Flux.IO
 
     public int RecordIndex { get; private set; }
 
-    public TabularReaderStream(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
+    public TabularStreamReader(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
     {
       m_streamReader = new System.IO.StreamReader(path, encoding);
 

@@ -1,20 +1,25 @@
 namespace Flux.IO
 {
-  public class BitReaderStream
+#pragma warning disable CA1710 // Identifiers should have correct suffix
+  public class BitStreamReader
+#pragma warning restore CA1710 // Identifiers should have correct suffix
     : System.IO.Stream
   {
     private readonly System.IO.Stream m_baseStream;
 
     private ulong m_bitBuffer;
+    /// <summary>The intermediate 64-bit storage buffer.</summary>
     [System.CLSCompliant(false)]
     public ulong BitBuffer => m_bitBuffer & ((1UL << m_bitCount) - 1UL);
 
     private int m_bitCount;
+    /// <summary>The number of bits currently stored in the bit buffer.</summary>
     public int BitCount => m_bitCount;
 
+    /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalBits { get; private set; }
 
-    public BitReaderStream(System.IO.Stream input)
+    public BitStreamReader(System.IO.Stream input)
       => m_baseStream = input;
 
     private void ReadBytes(int bitCount)
@@ -66,12 +71,18 @@ namespace Flux.IO
     }
 
     // System.IO.Stream
-    public override bool CanRead => m_baseStream.CanRead;
-    public override bool CanSeek => false;
-    public override bool CanWrite => false;
-    public override void Flush() { }
-    public override long Length => m_baseStream.Length;
-    public override long Position { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
+    public override bool CanRead
+      => m_baseStream.CanRead;
+    public override bool CanSeek
+      => false;
+    public override bool CanWrite
+      => false;
+    public override void Flush()
+    { }
+    public override long Length
+      => m_baseStream.Length;
+    public override long Position
+    { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
     /// <summary>Implements reading bulk bytes of bits.</summary>
     public override int Read(byte[] buffer, int offset, int count)
     {
@@ -90,9 +101,13 @@ namespace Flux.IO
       return limit - index - 1;
     }
     /// <summary>Implements reading a single byte of bits.</summary>
-    public override int ReadByte() => (byte)ReadBitsUInt32(8);
-    public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new System.NotImplementedException();
-    public override void SetLength(long value) => throw new System.NotImplementedException();
-    public override void Write(byte[] buffer, int offset, int count) => throw new System.NotImplementedException();
+    public override int ReadByte()
+      => (byte)ReadBitsUInt32(8);
+    public override long Seek(long offset, System.IO.SeekOrigin origin)
+      => throw new System.NotImplementedException();
+    public override void SetLength(long value)
+      => throw new System.NotImplementedException();
+    public override void Write(byte[] buffer, int offset, int count)
+      => throw new System.NotImplementedException();
   }
 }

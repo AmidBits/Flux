@@ -1,20 +1,25 @@
 namespace Flux.IO
 {
-  public class BitWriterStream
+#pragma warning disable CA1710 // Identifiers should have correct suffix
+  public class BitStreamWriter
+#pragma warning restore CA1710 // Identifiers should have correct suffix
     : System.IO.Stream
   {
     private readonly System.IO.Stream m_baseStream;
 
     private ulong m_bitBuffer;
+    /// <summary>The intermediate 64-bit storage buffer.</summary>
     [System.CLSCompliant(false)]
     public ulong BitBuffer => m_bitBuffer & ((1UL << m_bitCount) - 1UL);
 
     private int m_bitCount;
+    /// <summary>The number of bits currently stored in the bit buffer.</summary>
     public int BitCount => m_bitCount;
 
+    /// <summary>The total number of bits written through the bit stream.</summary>
     public int TotalBits { get; private set; }
 
-    public BitWriterStream(System.IO.Stream output)
+    public BitStreamWriter(System.IO.Stream output)
       => m_baseStream = output;
 
     private void WriteBytes()
@@ -63,9 +68,12 @@ namespace Flux.IO
     }
 
     // System.IO.Stream
-    public override bool CanRead => false;
-    public override bool CanSeek => false;
-    public override bool CanWrite => m_baseStream.CanWrite;
+    public override bool CanRead
+      => false;
+    public override bool CanSeek
+      => false;
+    public override bool CanWrite
+      => m_baseStream.CanWrite;
     public override void Flush()
     {
       if (m_bitCount > 0 && 8 - (m_bitCount % 8) is var shift && shift < 8)
@@ -76,19 +84,18 @@ namespace Flux.IO
 
       WriteBytes();
 
-      //if (m_bitCount > 0)
-      //{
-      //  m_baseStream.WriteByte((byte)(m_bitBuffer << (8 - m_bitCount)));
-      //  m_bitCount = 0;
-      //}
-
       m_baseStream.Flush();
     }
-    public override long Length => m_baseStream.Length;
-    public override long Position { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
-    public override int Read(byte[] buffer, int offset, int count) => throw new System.NotImplementedException();
-    public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new System.NotImplementedException();
-    public override void SetLength(long value) => throw new System.NotImplementedException();
+    public override long Length
+      => m_baseStream.Length;
+    public override long Position
+    { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
+    public override int Read(byte[] buffer, int offset, int count)
+      => throw new System.NotImplementedException();
+    public override long Seek(long offset, System.IO.SeekOrigin origin)
+      => throw new System.NotImplementedException();
+    public override void SetLength(long value)
+      => throw new System.NotImplementedException();
     /// <summary>Implements writing bulk bytes of bits.</summary>
     public override void Write(byte[] buffer, int offset, int count)
     {

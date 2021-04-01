@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.IO
 {
-  public sealed class TabularWriterStream
+  public sealed class TabularStreamWriter
     : Disposable
   {
     private readonly System.IO.StreamWriter _streamWriter;
@@ -24,7 +24,7 @@ namespace Flux.IO
     //  }
     //}
 
-    public TabularWriterStream(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
+    public TabularStreamWriter(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
     {
       _streamWriter = new System.IO.StreamWriter(path, false, encoding);
 

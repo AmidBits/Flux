@@ -80,33 +80,27 @@ namespace Flux.Model
 }
 
 /*
-	var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
-	var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
+  var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
+  var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
 
-	var dg = Flux.Model.Knapsack.ComputeDynamicGrid(67, weights, values, 10, out var dgMaxWorth);
+  var dg = Flux.Model.Knapsack.ComputeDynamicGrid(67, weights, values, 10, out var dgMaxWorth);
 
-	for (var i = 10; i >= 0; i--)
-	{
-		for (var j = 67; j >= 0; j--)
-		{
-			System.Console.Write($"m({i},{j})={dg[i, j]},");
-		}
+  for (var i = 10; i >= 0; i--)
+  {
+    for (var j = 67; j >= 0; j--)
+      System.Console.Write($"m({i},{j})={dg[i, j]},");
 
-		System.Console.WriteLine();
-	}
+    System.Console.WriteLine();
+  }
 
-	var rg = Flux.Model.Knapsack.ComputeRecursiveGrid(67, weights, values, 10, out var rgMaxWorth);
+  var rg = Flux.Model.Knapsack.ComputeRecursiveGrid(67, weights, values, 10, out var rgMaxWorth);
 
-	for (var i = 10; i >= 0; i--)
-	{
-		for (var j = 67; j >= 0; j--)
-		{
-			var value = rg[i, j];
+  for (var i = 10; i >= 0; i--)
+  {
+    for (var j = 67; j >= 0; j--)
+      if (rg[i, j] is var value && value > 0)
+        System.Console.Write($"m({i},{j})={value},");
 
-			if (value > 0)
-				System.Console.Write($"m({i},{j})={value},");
-		}
-
-		System.Console.WriteLine();
-	}
+    System.Console.WriteLine();
+  }
 */
