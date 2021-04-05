@@ -7,6 +7,8 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int majorDimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      if (majorDimension < 0 || majorDimension > 1) throw new System.ArgumentOutOfRangeException(nameof(majorDimension));
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);

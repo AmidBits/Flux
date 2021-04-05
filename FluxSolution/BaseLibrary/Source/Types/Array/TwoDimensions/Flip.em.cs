@@ -8,6 +8,7 @@ namespace Flux
     public static T[,] Flip<T>(this T[,] source, int dimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
       var sourceLength0 = source.GetLength(0);

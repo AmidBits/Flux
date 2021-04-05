@@ -9,6 +9,8 @@ namespace Flux
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);

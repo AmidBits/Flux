@@ -17,6 +17,7 @@ namespace Flux
     public static T[,] Duplicate<T>(this T[,] source, int absoluteLength0, int absoluteLength1, int copyCount0, int copyCount1, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       if (copyCount0 < 0) copyCount0 = source.GetLength(0);
       if (copyCount1 < 0) copyCount1 = source.GetLength(1);

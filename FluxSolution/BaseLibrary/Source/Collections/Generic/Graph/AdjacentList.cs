@@ -2,217 +2,256 @@
 
 namespace Flux.Collections.Generic.Graph
 {
-	public class Vertex<TValue>
-	{
-		private TValue m_value;
+  ///// <summary>
+  ///// Helper data structure for Prim and Dijstra
+  ///// </summary>
+  //public class PathCost<TValue, TWeight>
+  //  where TValue : System.IEquatable<TWeight>
+  //  where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
+  //{
+  //  public Vertex<TValue> m_vertex;
+  //  public TWeight m_cost;
 
-		public Vertex(TValue value)
-		{
-			m_value = value;
-		}
+  //  public PathCost(Vertex<TValue> vertex, TWeight cost)
+  //  {
+  //    m_vertex = vertex;
+  //    m_cost = cost;
+  //  }
 
-		public TValue Value
-			=> m_value;
-	}
+  //  public int CompareTo(object obj)
+  //    => obj is PathCost<TValue, TWeight> pathCost ? m_cost.CompareTo(pathCost.m_cost) : default;
+  //}
 
-	public class Edge<TValue, TWeight>
-		where TValue : System.IEquatable<TWeight>
-		where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
-	{
-		private Vertex<TValue> m_source, m_target;
+  /// <summary>Represents a graph using an adjacency list. Limited to two edges per vertex pair (one weight per direction).</summary>
+  /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
+  /// https://www.tutorialspoint.com/representation-of-graphs
+  /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
+  /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
+  public class AdjacentList<TVertex, TWeight>
+    where TVertex : System.IEquatable<TVertex>
+    where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
+  {
+    public System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
 
-		private TWeight m_weight;
+    public bool AddVertex(TVertex vertex)
+    {
+      if (!m_data.ContainsKey(vertex))
+      {
+        m_data.Add(vertex, new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>());
 
-		public Edge(Vertex<TValue> source, Vertex<TValue> target, TWeight weight)
-		{
-			m_source = source;
-			m_target = target;
+        return true;
+      }
+      else // No vertex to remove.
+        return false;
+    }
+    public bool RemoveVertex(TVertex vertex)
+    {
+      if (m_data.ContainsKey(vertex))
+      {
+        foreach (var kvp in m_data)
+          if (kvp.Value.ContainsKey(vertex))
+            kvp.Value.Remove(vertex); // Remove any vertex as a target.
 
-			m_weight = weight;
-		}
+        m_data.Remove(vertex); // Remove vertex as a source.
 
-		public TValue Source
-			=> m_source.Value;
-		public TValue Target
-			=> m_target.Value;
+        return true;
+      }
+      else // No vertex to remove.
+        return false;
+    }
 
-		public TWeight Weight
-			=> m_weight;
-	}
+    public System.Collections.Generic.IEnumerable<TVertex> GetVertices()
+      => m_data.Select(kvp => kvp.Key);
 
-	/// <summary>
-	/// Helper data structure for Prim and Dijstra
-	/// </summary>
-	public class PathCost<TValue, TWeight>
-		where TValue : System.IEquatable<TWeight>
-		where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
-	{
-		public Vertex<TValue> m_vertex;
-		public TWeight m_cost;
+    public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
+    {
+      AddVertex(source);
+      AddVertex(target);
 
-		public PathCost(Vertex<TValue> vertex, TWeight cost)
-		{
-			m_vertex = vertex;
-			m_cost = cost;
-		}
+      if (!m_data[source].ContainsKey(target))
+        m_data[source].Add(target, new System.Collections.Generic.List<TWeight>() { weight });
+      else
+        m_data[source][target].Add(weight);
+    }
+    public void AddUndirectedEdge(TVertex source, TVertex target, TWeight weight)
+    {
+      AddDirectedEdge(source, target, weight);
 
-		public int CompareTo(object obj)
-			=> obj is PathCost<TValue, TWeight> pathCost ? m_cost.CompareTo(pathCost.m_cost) : default;
-	}
+      if (!m_data[target].ContainsKey(source))
+        m_data[target].Add(source, new System.Collections.Generic.List<TWeight>() { weight });
+      else
+        m_data[target][source].Add(weight);
+    }
 
-	/// <summary>Directed weighted Graph representation as a disjoint set of weighted edges. Useful to model shortest path and minimum cost problems.</summary>
-	public class AdjacentList<TValue, TWeight>
-		where TValue : System.IEquatable<TWeight>
-		where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
-	{
-		public System.Collections.Generic.Dictionary<Vertex<TValue>, System.Collections.Generic.LinkedList<Edge<TValue, TWeight>>> adjacencyList;
+    public bool RemoveDirectedEdge(TVertex source, TVertex target, TWeight weight)
+    {
+      if (!m_data.Any(kvp => kvp.Key.Equals(source) && kvp.Value.Any(kvp => kvp.Key.Equals(target) && kvp.Value.Equals(weight))))
+        return false;
 
-		public AdjacentList()
-		{
-			adjacencyList = new System.Collections.Generic.Dictionary<Vertex<TValue>, System.Collections.Generic.LinkedList<Edge<TValue, TWeight>>>();
-		}
+      m_data[source][target].Remove(weight);
 
-		public int VertexesCount => adjacencyList.Count();
-		public int EdgesCount { get; private set; }
+      if (m_data[source][target].Any())
+        return true;
 
-		public void AddDirectedEdge(Vertex source, Vertex destination, int weight)
-		{
-			if (!adjacencyList.ContainsKey(source))
-				adjacencyList.Add(source, new LinkedList<Edge>());
+      m_data[source].Remove(target);
 
-			if (!adjacencyList.ContainsKey(destination))
-				adjacencyList.Add(destination, new LinkedList<Edge>());
+      if (m_data[source].Any())
+        return true;
 
-			adjacencyList[source].AddLast(new Edge(source, destination, weight));
+      m_data.Remove(source);
 
-			EdgesCount++;
-		}
+      return true;
+    }
+    public bool RemoveUndirectedEdge(TVertex source, TVertex target, TWeight weight)
+    {
+      if (!RemoveDirectedEdge(source, target, weight))
+        return false;
 
-		public System.Collections.Generic.List<Edge> KruskalMinimumSpanningTree()
-		{
-			var mst = new System.Collections.Generic.List<Edge>();
+      m_data[target][source].Remove(weight);
 
-			var vertexes = adjacencyList.Keys;
-			// Edges by increasing order of weight
-			var edgesByWeight = adjacencyList.Values.SelectMany(e => e).OrderBy(e => e.weight);
+      if (m_data[target][source].Any())
+        return true;
 
-			// Use a Disjoint Set to keep track of the connected components
-			var spanningTreeUnion = new UnionFind<Vertex<TValue>>(vertexes);
+      m_data[target].Remove(target);
 
-			// A minimum spanning tree has V–1 edges where V is the number of vertices in the given graph
-			// Greedy strategy: pick the smallest weight edge that does not cause a cycle in the MST constructed so far
-			int minSpanningTreeCount = 0;
-			for (var i = 0; i < edgesByWeight.Count()
-					&& minSpanningTreeCount < vertexes.Count - 1; i++)
-			{
-				var edge = edgesByWeight.ElementAt(i);
+      if (m_data[target].Any())
+        return true;
 
-				var sourceSubset = spanningTreeUnion.Find(edge.source);
-				var destinationSubset = spanningTreeUnion.Find(edge.destination);
+      m_data.Remove(target);
 
-				if (sourceSubset == destinationSubset) // will cause a cycle
-					continue;
+      return true;
+    }
 
-				spanningTreeUnion.Union(sourceSubset, destinationSubset);
-				mst.Add(edge);
+    public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
+    {
+      foreach (var sourcePoint in m_data.Keys)
+        foreach (var targetPoint in m_data[sourcePoint].Keys)
+          foreach (var edgeWeight in m_data[sourcePoint][targetPoint])
+            yield return new Edge<TVertex, TWeight>(sourcePoint, targetPoint, edgeWeight);
+    }
 
-				minSpanningTreeCount++;
-			}
+    //public System.Collections.Generic.List<Edge<TPoint, TWeight>> KruskalMinimumSpanningTree()
+    //{
+    //  var mst = new System.Collections.Generic.List<Edge<TPoint, TWeight>>();
 
-			return mst;
-		}
+    //  var vertexes = Edges.Keys;
+    //  // Edges by increasing order of weight
+    //  var edgesByWeight = Edges.Values.SelectMany(e => e).OrderBy(e => e.Weight).ToList();
 
-		public System.Collections.Generic.List<Edge<TValue,TWeight>> PrimsMinimumSpanningTree()
-		{
-			var mst = new System.Collections.Generic.Dictionary<Vertex<TValue>, Edge<TValue,TWeight>>();
-			if (!adjacencyList.Any())
-			{
-				return mst.Values.ToList();
-			}
+    //  // Use a Disjoint Set to keep track of the connected components
+    //  var spanningTreeUnion = new UnionFind.QuickUnion<TPoint>(vertexes);
 
-			var vertexToMinCost = new System.Collections.Generic.Dictionary<Vertex, PathCost>();
+    //  // A minimum spanning tree has V–1 edges where V is the number of vertices in the given graph
+    //  // Greedy strategy: pick the smallest weight edge that does not cause a cycle in the MST constructed so far
+    //  int minSpanningTreeCount = 0;
+    //  for (var i = 0; i < edgesByWeight.Count && minSpanningTreeCount < vertexes.Count - 1; i++)
+    //  {
+    //    var edge = edgesByWeight[i];
 
-			// Min Heap storing min cost of the spanning tree
-			var minHeapNodes = new IndexedHeap<PathCost>(
-					new List<PathCost> {
-										(vertexToMinCost[adjacencyList.Keys.First()] = new PathCost(adjacencyList.Keys.First(), 0))
-			}, (p1, p2) => p1.cost.CompareTo(p2.cost));
+    //    var sourceSubset = spanningTreeUnion.Find(edge.Source);
+    //    var targetSubset = spanningTreeUnion.Find(edge.Target);
 
-			foreach (var vertex in adjacencyList.Keys.Skip(1))
-				minHeapNodes.Push(vertexToMinCost[vertex] = new PathCost(vertex, int.MaxValue));
+    //    if (sourceSubset == targetSubset) // will cause a cycle
+    //      continue;
 
-			// Traverse the node by min cost
-			// Greedy strategy: Select the edge that minimize the cost for reaching node from its neighbors
-			while (minHeapNodes.Any())
-			{
-				var minNode = minHeapNodes.Pop();
+    //    spanningTreeUnion.Union(spanningTreeUnion.Values[sourceSubset], spanningTreeUnion.Values[targetSubset]);
+    //    mst.Add(edge);
 
-				// Visit all the neighbors and update the corresponding cost
-				foreach (var edge in adjacencyList[minNode.vertex])
-				{
-					// Check that the current cost of reaching the adjacent node is less than the current one
-					if (minHeapNodes.Contains(vertexToMinCost[edge.destination]) && edge.weight < vertexToMinCost[edge.destination].cost)
-					{
-						vertexToMinCost[edge.destination].cost = edge.weight;
-						mst[edge.destination] = edge;
+    //    minSpanningTreeCount++;
+    //  }
 
-						// Sift up the heap starting from the current index (log n)
-						minHeapNodes.SiftUp(fromIndex: minHeapNodes.IndexOf(vertexToMinCost[edge.destination]));
-					}
-				}
-			}
+    //  return mst;
+    //}
 
-			return mst.Values.ToList();
-		}
+    //public System.Collections.Generic.List<Edge<TPoint>> PrimsMinimumSpanningTree()
+    //{
+    //  var mst = new System.Collections.Generic.Dictionary<TPoint, Edge<TPoint>>();
 
-		public List<Edge> DijkstraShortestPath(Vertex source, Vertex destination = default)
-		{
-			var sp = new Dictionary<Vertex, Edge>();
-			if (!adjacencyList.Any())
-			{
-				return sp.Values.ToList();
-			}
+    //  if (!AdjacencyList.Any())
+    //    return mst.Values.ToList();
 
-			var vertexToPathCost = new Dictionary<Vertex, PathCost>();
+    //  var vertexToMinCost = new System.Collections.Generic.Dictionary<TPoint, PathCost>();
 
-			// Min Heap storing accumulated min cost for reaching target node greedily
-			var minHeapNodes = new IndexedHeap<PathCost>(
-					new List<PathCost> { (vertexToPathCost[source] = new PathCost(source, 0)) },
-					compareFunc: (p1, p2) => p1.cost.CompareTo(p2.cost));
+    //  // Min Heap storing min cost of the spanning tree
+    //  var minHeapNodes = new IndexedHeap<PathCost>(
+    //      new System.Collections.Generic.List<PathCost> {
+    //                (vertexToMinCost[AdjacencyList.Keys.First()] = new PathCost(AdjacencyList.Keys.First(), 0))
+    //  }, (p1, p2) => p1.cost.CompareTo(p2.cost));
 
-			foreach (var vertex in adjacencyList.Keys)
-			{
-				if (vertex == source)
-					continue;
+    //  foreach (var vertex in AdjacencyList.Keys.Skip(1))
+    //    minHeapNodes.Push(vertexToMinCost[vertex] = new PathCost(vertex, int.MaxValue));
 
-				minHeapNodes.Push(vertexToPathCost[vertex] = new PathCost(vertex, int.MaxValue));
-			}
+    //  // Traverse the node by min cost
+    //  // Greedy strategy: Select the edge that minimize the cost for reaching node from its neighbors
+    //  while (minHeapNodes.Any())
+    //  {
+    //    var minNode = minHeapNodes.Pop();
 
-			// Greedy strategy: Select the path that minimized the accumulated cost up to this node
-			// Traverse the node by min cost
-			while (minHeapNodes.Any())
-			{
-				var minNode = minHeapNodes.Pop();
+    //    // Visit all the neighbors and update the corresponding cost
+    //    foreach (var edge in AdjacencyList[minNode.vertex])
+    //    {
+    //      // Check that the current cost of reaching the adjacent node is less than the current one
+    //      if (minHeapNodes.Contains(vertexToMinCost[edge.Target]) && edge.weight < vertexToMinCost[edge.destination].cost)
+    //      {
+    //        vertexToMinCost[edge.Target].cost = edge.Weight;
+    //        mst[edge.Target] = edge;
 
-				// Visit all the neighbors and update the corresponding cost
-				foreach (var edge in adjacencyList[minNode.vertex])
-				{
-					// Check that the current cost of reaching the adjacent node is less than the current one
-					if (minHeapNodes.Contains(vertexToPathCost[edge.destination]) && minNode.cost + edge.weight < vertexToPathCost[edge.destination].cost)
-					{
-						vertexToPathCost[edge.destination].cost = minNode.cost + edge.weight;
-						sp[edge.destination] = edge;
+    //        // Sift up the heap starting from the current index (log n)
+    //        minHeapNodes.SiftUp(fromIndex: minHeapNodes.IndexOf(vertexToMinCost[edge.destination]));
+    //      }
+    //    }
+    //  }
 
-						// Sift up the heap starting from the current index (log n)
-						minHeapNodes.SiftUp(fromIndex: minHeapNodes.IndexOf(vertexToPathCost[edge.destination]));
-					}
-				}
+    //  return mst.Values.ToList();
+    //}
 
-				if (minNode.vertex.Equals(destination))
-					break;
-			}
+    //public System.Collections.Generic.List<Edge<TPoint, TWeight>> DijkstraShortestPath(TPoint source, TPoint target = default)
+    //{
+    //  var sp = new System.Collections.Generic.Dictionary<TPoint, Edge<TPoint, TWeight>>();
 
-			return sp.Values.ToList();
-		}
-	}
+    //  if (!AdjacencyList.Any())
+    //    return sp.Values.ToList();
+
+    //  var vertexToPathCost = new System.Collections.Generic.Dictionary<TPoint, PathCost>();
+
+    //  // Min Heap storing accumulated min cost for reaching target node greedily
+    //  var minHeapNodes = new IndexedHeap<PathCost>(
+    //      new System.Collections.Generic.List<PathCost> { (vertexToPathCost[source] = new PathCost(source, 0)) },
+    //      compareFunc: (p1, p2) => p1.cost.CompareTo(p2.cost));
+
+    //  foreach (var vertex in AdjacencyList.Keys)
+    //  {
+    //    if (vertex == source)
+    //      continue;
+
+    //    minHeapNodes.Push(vertexToPathCost[vertex] = new PathCost(vertex, int.MaxValue));
+    //  }
+
+    //  // Greedy strategy: Select the path that minimized the accumulated cost up to this node
+    //  // Traverse the node by min cost
+    //  while (minHeapNodes.Any())
+    //  {
+    //    var minNode = minHeapNodes.Pop();
+
+    //    // Visit all the neighbors and update the corresponding cost
+    //    foreach (var edge in AdjacencyList[minNode.vertex])
+    //    {
+    //      // Check that the current cost of reaching the adjacent node is less than the current one
+    //      if (minHeapNodes.Contains(vertexToPathCost[edge.Target]) && minNode.cost + edge.Weight < vertexToPathCost[edge.Target].cost)
+    //      {
+    //        vertexToPathCost[edge.Target].cost = minNode.cost + edge.Weight;
+    //        sp[edge.Target] = edge;
+
+    //        // Sift up the heap starting from the current index (log n)
+    //        minHeapNodes.SiftUp(fromIndex: minHeapNodes.IndexOf(vertexToPathCost[edge.Target]));
+    //      }
+    //    }
+
+    //    if (minNode.vertex.Equals(target))
+    //      break;
+    //  }
+
+    //  return sp.Values.ToList();
+    //}
+  }
 }

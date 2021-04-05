@@ -9,6 +9,7 @@ namespace Flux
     public static T[,] Transpose<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
