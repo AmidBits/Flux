@@ -12,12 +12,12 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var g = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
+      var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
 
-      g.AddVertex('a');
-      g.AddVertex('b');
-      g.AddVertex('c');
-      g.AddVertex('d');
+      al.AddVertex('a');
+      al.AddVertex('b');
+      al.AddVertex('c');
+      al.AddVertex('d');
 
       //g.AddDirectedEdge('a', 'b', 1);
       //g.AddDirectedEdge('a', 'c', 1);
@@ -28,15 +28,46 @@ namespace ConsoleApp
       //g.AddDirectedEdge('c', 'd', 1);
       //g.AddDirectedEdge('d', 'c', 1);
 
-      g.AddUndirectedEdge('a', 'b', 1);
-      g.AddUndirectedEdge('a', 'c', 1);
-      g.AddUndirectedEdge('b', 'c', 1);
-      g.AddUndirectedEdge('c', 'd', 1);
+      al.AddUndirectedEdge('a', 'b', 1);
+      al.AddUndirectedEdge('a', 'c', 1);
+      al.AddUndirectedEdge('b', 'c', 1);
+      al.AddUndirectedEdge('c', 'd', 1);
 
-      System.Console.WriteLine(g.ToString());
+      al.RemoveUndirectedEdge('c', 'b', 1);
 
-      foreach (var edge in g.GetEdges())
-        System.Console.WriteLine(edge);
+      System.Console.WriteLine(al.ToString());
+
+
+
+      var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
+
+      am.AddVertex('a');
+      am.AddVertex('b');
+      am.AddVertex('c');
+      am.AddVertex('d');
+
+      //am.AddDirectedEdge('a', 'b', 1);
+      //am.AddDirectedEdge('a', 'c', 1);
+      //am.AddDirectedEdge('b', 'a', 1);
+      //am.AddDirectedEdge('b', 'c', 1);
+      //am.AddDirectedEdge('c', 'a', 1);
+      //am.AddDirectedEdge('c', 'b', 1);
+      //am.AddDirectedEdge('c', 'd', 1);
+      //am.AddDirectedEdge('d', 'c', 1);
+
+      am.AddUndirectedEdge('a', 'b', 1);
+      am.AddUndirectedEdge('a', 'c', 1);
+      am.AddUndirectedEdge('b', 'c', 1);
+      am.AddUndirectedEdge('c', 'd', 1);
+
+      am.RemoveUndirectedEdge('c', 'b', 1);
+
+      System.Console.WriteLine(am.ToString());
+
+
+
+      //foreach (var edge in g.GetEdges())
+      //  System.Console.WriteLine(edge);
 
       /*
       var ipaes = Flux.Reflection.ApplicationDomain.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
@@ -47,41 +78,41 @@ namespace ConsoleApp
           System.Console.WriteLine($"{ipae.GetType().Name}.\"{name}\", \"{ipae.EncodePhoneticAlgorithm(name)}\"");
       */
 
-        /*
-        var data1 = new Flux.Resources.Census.CountiesAllData(Flux.Resources.Census.CountiesAllData.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
-        var data2 = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows)} = {data2.GetLength(0).ToGroupString()} rows, {data2[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data3 = new Flux.Resources.ProjectGutenberg.TableOfContents(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TableOfContents)} = {data3.GetLength(0).ToGroupString()} rows, {data3[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data4 = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings)} = {data4.GetLength(0).ToGroupString()} rows, {data4[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data5 = new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary)} = {data5.GetLength(0).ToGroupString()} rows, {data5[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data6 = new Flux.Resources.Scowl.TwoOfTwelveFull(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.Scowl.TwoOfTwelveFull)} = {data6.GetLength(0).ToGroupString()} rows, {data6[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data7 = new Flux.Resources.Scrape.ZipCodes(Flux.Resources.Scrape.ZipCodes.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.Scrape.ZipCodes)} = {data7.GetLength(0).ToGroupString()} rows, {data7[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data8 = new Flux.Resources.Ucd.Blocks(Flux.Resources.Ucd.Blocks.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.Blocks)} = {data8.GetLength(0).ToGroupString()} rows, {data8[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data9 = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.UnicodeData)} = {data9.GetLength(0).ToGroupString()} rows, {data9[0].GetLength(0)} columns {System.DateTime.Now}");
-        var data0 = new Flux.Resources.W3c.NamedCharacterReferences(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).AcquireTabularData().ToArray();
-        System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
-        */
+      /*
+      var data1 = new Flux.Resources.Census.CountiesAllData(Flux.Resources.Census.CountiesAllData.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
+      var data2 = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows)} = {data2.GetLength(0).ToGroupString()} rows, {data2[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data3 = new Flux.Resources.ProjectGutenberg.TableOfContents(Flux.Resources.ProjectGutenberg.TableOfContents.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TableOfContents)} = {data3.GetLength(0).ToGroupString()} rows, {data3[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data4 = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings)} = {data4.GetLength(0).ToGroupString()} rows, {data4[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data5 = new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary)} = {data5.GetLength(0).ToGroupString()} rows, {data5[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data6 = new Flux.Resources.Scowl.TwoOfTwelveFull(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Scowl.TwoOfTwelveFull)} = {data6.GetLength(0).ToGroupString()} rows, {data6[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data7 = new Flux.Resources.Scrape.ZipCodes(Flux.Resources.Scrape.ZipCodes.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Scrape.ZipCodes)} = {data7.GetLength(0).ToGroupString()} rows, {data7[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data8 = new Flux.Resources.Ucd.Blocks(Flux.Resources.Ucd.Blocks.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.Blocks)} = {data8.GetLength(0).ToGroupString()} rows, {data8[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data9 = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.Ucd.UnicodeData)} = {data9.GetLength(0).ToGroupString()} rows, {data9[0].GetLength(0)} columns {System.DateTime.Now}");
+      var data0 = new Flux.Resources.W3c.NamedCharacterReferences(Flux.Resources.W3c.NamedCharacterReferences.UriLocal).AcquireTabularData().ToArray();
+      System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
+      */
 
-        /*
-        using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-          foreach (var rune in sr.EnumerateTextElements())
-            System.Console.Write(rune.ToString());
+      /*
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+        foreach (var rune in sr.EnumerateTextElements())
+          System.Console.Write(rune.ToString());
 
-        using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
-          foreach (var rune in sr.EnumerateRunes())
-            System.Console.Write(rune.ToString());
-        */
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+        foreach (var rune in sr.EnumerateRunes())
+          System.Console.Write(rune.ToString());
+      */
 
-        //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
-        //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
     }
 
     static void RegularForLoop(int taskCount = 10, double taskLoad = 1)

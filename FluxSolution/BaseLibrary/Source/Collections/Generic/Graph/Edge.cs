@@ -4,27 +4,20 @@
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
-    private readonly TVertex m_source, m_target;
-
-    private readonly TWeight m_weight;
-
-    public Edge(TVertex source, TVertex target, TWeight weight)
+    public Edge(Vertex<TVertex> source, Vertex<TVertex> target, TWeight weight)
     {
-      m_source = source;
-      m_target = target;
+      Source = source;
+      Target = target;
 
-      m_weight = weight;
+      Weight = weight;
     }
 
-    public TVertex Source
-      => m_source;
-    public TVertex Target
-      => m_target;
+    public Vertex<TVertex> Source { get; }
+    public Vertex<TVertex> Target { get; }
 
-    public TWeight Weight
-      => m_weight;
+    public TWeight Weight { get; }
 
     public override string ToString()
-      => $"<{nameof(Edge<TVertex, TWeight>)}: {m_source}, {m_target}, {m_weight}>";
+      => $"<{nameof(Edge<TVertex, TWeight>)}: {Source}, {Target}, Weight: {Weight}>";
   }
 }

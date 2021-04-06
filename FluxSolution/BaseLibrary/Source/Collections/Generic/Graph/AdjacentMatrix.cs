@@ -1,4 +1,6 @@
-﻿namespace Flux.Collections.Generic.Graph
+﻿using System.Linq;
+
+namespace Flux.Collections.Generic.Graph
 {
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -47,15 +49,28 @@
         return false;
     }
 
-    public System.Collections.Generic.IEnumerable<TVertex> GetVertices()
-      => m_vertices;
+    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
+    {
+      for (var row = 0; row < m_vertices.Count; row++)
+      {
+        var degree = 0;
+
+        for (var column = m_vertices.Count - 1; column >= 0; column--)
+          if (!m_weights[row, column].Equals(default!))
+            degree++;
+
+        yield return new Vertex<TVertex>(m_vertices[row], degree);
+      }
+    }
 
     public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
     {
+      var vertices = GetVertices().ToList();
+
       for (var row = 0; row < m_vertices.Count; row++)
         for (var column = 0; column < m_vertices.Count; column++)
           if (m_weights[row, column] is var weight && !weight.Equals(default!))
-            yield return new Edge<TVertex, TWeight>(m_vertices[row], m_vertices[column], weight);
+            yield return new Edge<TVertex, TWeight>(vertices[row], vertices[column], weight);
     }
 
     public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
@@ -117,8 +132,18 @@
       m_weights[targetIndex, sourceIndex] = weight;
     }
 
-    public override string ToString()
+    public string ToConsoleString()
       => m_weights.ToConsoleString();
+
+    public override string ToString()
+    {
+      var sb = new System.Text.StringBuilder();
+      var index = 0;
+      foreach (var edge in GetEdges())
+        sb.AppendLine($"#{++index}: {edge}");
+      sb.Insert(0, $"<{nameof(AdjacentMatrix<TVertex, TWeight>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
+      return sb.ToString();
+    }
   }
 #pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

@@ -60,8 +60,8 @@ namespace Flux.Collections.Generic.Graph
         return false;
     }
 
-    public System.Collections.Generic.IEnumerable<TVertex> GetVertices()
-      => m_data.Select(kvp => kvp.Key);
+    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
+      => m_data.Select(kvp => new Vertex<TVertex>(kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count)));
 
     public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
@@ -85,49 +85,61 @@ namespace Flux.Collections.Generic.Graph
 
     public bool RemoveDirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
-      if (!m_data.Any(kvp => kvp.Key.Equals(source) && kvp.Value.Any(kvp => kvp.Key.Equals(target) && kvp.Value.Equals(weight))))
+      if (m_data.ContainsKey(source) && m_data[source].ContainsKey(target) && m_data[source][target].Contains(weight))
+      {
+        m_data[source][target].Remove(weight);
+
+        if (!m_data[source][target].Any())
+        {
+          m_data[source].Remove(target);
+
+          if (!m_data[source].Any())
+            m_data.Remove(source);
+        }
+
+        return true;
+      }
+      else
         return false;
-
-      m_data[source][target].Remove(weight);
-
-      if (m_data[source][target].Any())
-        return true;
-
-      m_data[source].Remove(target);
-
-      if (m_data[source].Any())
-        return true;
-
-      m_data.Remove(source);
-
-      return true;
     }
     public bool RemoveUndirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
-      if (!RemoveDirectedEdge(source, target, weight))
+      if (RemoveDirectedEdge(source, target, weight))
+      {
+        m_data[target][source].Remove(weight);
+
+        if (!m_data[target][source].Any())
+        {
+          m_data[target].Remove(target);
+
+          if (!m_data[target].Any())
+            m_data.Remove(target);
+        }
+
+        return true;
+      }
+      else
         return false;
-
-      m_data[target][source].Remove(weight);
-
-      if (m_data[target][source].Any())
-        return true;
-
-      m_data[target].Remove(target);
-
-      if (m_data[target].Any())
-        return true;
-
-      m_data.Remove(target);
-
-      return true;
     }
 
     public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
     {
-      foreach (var sourcePoint in m_data.Keys)
-        foreach (var targetPoint in m_data[sourcePoint].Keys)
-          foreach (var edgeWeight in m_data[sourcePoint][targetPoint])
-            yield return new Edge<TVertex, TWeight>(sourcePoint, targetPoint, edgeWeight);
+      var vertices = GetVertices().ToList();
+
+      foreach (var source in vertices)
+        foreach (var target in m_data[source.Value].Keys.Select(key => vertices.First(v => v.Value.Equals(key))))
+          foreach (var weight in m_data[source.Value][target.Value])
+            yield return new Edge<TVertex, TWeight>(source, target, weight);
+    }
+
+    public override string ToString()
+    {
+      var sb = new System.Text.StringBuilder();
+      var index = 0;
+      foreach (var edge in GetEdges())
+        sb.AppendLine($"#{++index}: {edge}");
+      sb.Insert(0, $"<{nameof(AdjacentList<TVertex, TWeight>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
+      return sb.ToString();
     }
 
     //public System.Collections.Generic.List<Edge<TPoint, TWeight>> KruskalMinimumSpanningTree()
