@@ -62,7 +62,7 @@ namespace ConsoleApp
 
       am.RemoveUndirectedEdge('c', 'b', 1);
 
-      System.Console.WriteLine(am.ToString());
+      System.Console.WriteLine(am.ToConsoleString());
 
 
 

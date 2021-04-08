@@ -9,8 +9,9 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.Columns.Count).Select(i => includeColumnNames ? System.Math.Max(source.Columns[i].ColumnName.Length, source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length)) : source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length));
-      if (uniformMaxWidth) columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToArray(); // If used, replace all with total max width.
+      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.Columns.Count).Select(i => includeColumnNames ? System.Math.Max(source.Columns[i].ColumnName.Length, source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length)) : source.Rows.Cast<System.Data.DataRow>().Max(dr => $"{dr[i]}".Length)).ToList();
+      if (uniformMaxWidth)
+        columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToList(); // If used, replace all with total max width.
 
       var format = string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 

@@ -9,6 +9,7 @@ namespace Flux.Collections.Generic.Graph
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   public class AdjacentMatrix<TVertex, TWeight>
+    : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
@@ -16,13 +17,13 @@ namespace Flux.Collections.Generic.Graph
 
     private TWeight[,] m_weights = new TWeight[0, 0];
 
-    public bool AddVertex(TVertex point)
+    public bool AddVertex(TVertex vertex)
     {
-      if (!m_vertices.Contains(point))
+      if (!m_vertices.Contains(vertex))
       {
         var index = m_vertices.Count;
 
-        m_vertices.Add(point);
+        m_vertices.Add(vertex);
 
         m_weights = m_weights.Insert(0, index, default!);
         m_weights = m_weights.Insert(1, index, default!);
@@ -32,11 +33,11 @@ namespace Flux.Collections.Generic.Graph
       else // Vertex already exists.
         return false;
     }
-    public bool RemoveVertex(TVertex point)
+    public bool RemoveVertex(TVertex vertex)
     {
-      if (m_vertices.Contains(point))
+      if (m_vertices.Contains(vertex))
       {
-        var index = m_vertices.IndexOf(point);
+        var index = m_vertices.IndexOf(vertex);
 
         m_weights = m_weights.Remove(0, index);
         m_weights = m_weights.Remove(1, index);
@@ -135,6 +136,7 @@ namespace Flux.Collections.Generic.Graph
     public string ToConsoleString()
       => m_weights.ToConsoleString();
 
+    // Overrides.
     public override string ToString()
     {
       var sb = new System.Text.StringBuilder();

@@ -28,6 +28,7 @@ namespace Flux.Collections.Generic.Graph
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
   public class AdjacentList<TVertex, TWeight>
+    : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
@@ -132,6 +133,7 @@ namespace Flux.Collections.Generic.Graph
             yield return new Edge<TVertex, TWeight>(source, target, weight);
     }
 
+    // Overrides.
     public override string ToString()
     {
       var sb = new System.Text.StringBuilder();
