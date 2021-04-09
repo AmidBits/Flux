@@ -11,18 +11,11 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var length0 = source.Length;
-      var maxLength1 = source.Max(t => t.Length);
+      var array = new T[source.Length, source.Max(t => t.Length)];
 
-      var array = new T[length0, maxLength1];
-
-      for (var i0 = 0; i0 < length0; i0++)
-      {
-        var length1 = source[i0].Length;
-
-        for (var i1 = 0; i1 < length1; i1++)
+      for (var i0 = source.Length - 1; i0 >= 0; i0--)
+        for (var i1 = source[i0].Length - 1; i1 >= 0; i1--)
           array[i0, i1] = source[i0][i1];
-      }
 
       return array;
     }

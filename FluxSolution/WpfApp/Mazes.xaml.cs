@@ -30,7 +30,7 @@ namespace WpfApp
 
     Flux.Model.Maze.Grid m_grid;
 
-    Flux.Model.Maze.AMaze? m_maze;
+    Flux.Model.Maze.AMaze m_maze;
 
     void ResetMaze()
     {
@@ -40,7 +40,7 @@ namespace WpfApp
       PaintMaze();
     }
 
-    void CarveMaze(Flux.Model.Maze.AMaze? maze)
+    void CarveMaze(Flux.Model.Maze.AMaze maze)
     {
       ResetMaze();
 

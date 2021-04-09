@@ -13,10 +13,11 @@ namespace Flux
     public static T[,] Insert<T>(this T[,] source, int dimension, int index, params T[] items)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      //if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
-      if (index < 0) index = source.GetLength(dimension);
+      if (index < 0)
+        index = source.GetLength(dimension);
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
@@ -35,13 +36,22 @@ namespace Flux
         }
       }
 
-      //		var values = target.GetLength(dimension);
-      //items is null || items.Length == 0 ? default :
+      if (items is null || items.Length == 0)
+        items = new T[target.GetLength(dimension)];
 
-      //for (int i = 0, len = System.Math.Min(target.GetLength(dimension), items.Length); i < len; i++)
-      //{
-      //	target[dimension == 0 ? index : i, dimension == 1 ? index : i] = items[i];
-      //}
+      var minLength = System.Math.Min(source.GetLength(dimension), items.Length);
+
+      switch (dimension)
+      {
+        case 0:
+          for (var index0 = 0; index0 < minLength; index0++)
+            target[index, index0] = items[index0];
+          break;
+        case 1:
+          for (int index1 = 0; index1 < minLength; index1++)
+            target[index1, index] = items[index1];
+          break;
+      }
 
       return target;
     }

@@ -12,57 +12,83 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
 
-      al.AddVertex('a');
-      al.AddVertex('b');
-      al.AddVertex('c');
-      al.AddVertex('d');
+      //var m = new string[8, 8];
 
-      //g.AddDirectedEdge('a', 'b', 1);
-      //g.AddDirectedEdge('a', 'c', 1);
-      //g.AddDirectedEdge('b', 'a', 1);
-      //g.AddDirectedEdge('b', 'c', 1);
-      //g.AddDirectedEdge('c', 'a', 1);
-      //g.AddDirectedEdge('c', 'b', 1);
-      //g.AddDirectedEdge('c', 'd', 1);
-      //g.AddDirectedEdge('d', 'c', 1);
+      //for (var r = 0; r < 8; r++)
+      //{
+      //  for (var c = 0; c < 8; c++)
+      //  {
+      //    m[r, c] = "  ";
+      //  }
+      //}
 
-      al.AddUndirectedEdge('a', 'b', 1);
-      al.AddUndirectedEdge('a', 'c', 1);
-      al.AddUndirectedEdge('b', 'c', 1);
-      al.AddUndirectedEdge('c', 'd', 1);
+      //for (var r = 0; r < 3; r++)
+      //{
+      //  for (var c = 0; c < 3; c++)
+      //  {
+      //    m[r, c] = $"{(char)(r + 'A')}{(char)(c + 'A')}";
+      //  }
+      //}
 
-      al.RemoveUndirectedEdge('c', 'b', 1);
+      //System.Console.WriteLine(m.ToConsoleString());
+      //System.Console.WriteLine();
 
-      System.Console.WriteLine(al.ToString());
+      //m = m.ToArray(1, 1, 2, 2, 1, 1, 1, 1);
+
+      //System.Console.WriteLine(m.ToConsoleString());
+
+      //var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
+
+      //al.AddVertex('a');
+      //al.AddVertex('b');
+      //al.AddVertex('c');
+      //al.AddVertex('d');
+
+      ////g.AddDirectedEdge('a', 'b', 1);
+      ////g.AddDirectedEdge('a', 'c', 1);
+      ////g.AddDirectedEdge('b', 'a', 1);
+      ////g.AddDirectedEdge('b', 'c', 1);
+      ////g.AddDirectedEdge('c', 'a', 1);
+      ////g.AddDirectedEdge('c', 'b', 1);
+      ////g.AddDirectedEdge('c', 'd', 1);
+      ////g.AddDirectedEdge('d', 'c', 1);
+
+      //al.AddUndirectedEdge('a', 'b', 1);
+      //al.AddUndirectedEdge('a', 'c', 1);
+      //al.AddUndirectedEdge('b', 'c', 1);
+      //al.AddUndirectedEdge('c', 'd', 1);
+
+      //al.RemoveUndirectedEdge('c', 'b', 1);
+
+      //System.Console.WriteLine(al.ToString());
 
 
 
-      var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
+      //var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
 
-      am.AddVertex('a');
-      am.AddVertex('b');
-      am.AddVertex('c');
-      am.AddVertex('d');
+      //am.AddVertex('a');
+      //am.AddVertex('b');
+      //am.AddVertex('c');
+      //am.AddVertex('d');
 
-      //am.AddDirectedEdge('a', 'b', 1);
-      //am.AddDirectedEdge('a', 'c', 1);
-      //am.AddDirectedEdge('b', 'a', 1);
-      //am.AddDirectedEdge('b', 'c', 1);
-      //am.AddDirectedEdge('c', 'a', 1);
-      //am.AddDirectedEdge('c', 'b', 1);
-      //am.AddDirectedEdge('c', 'd', 1);
-      //am.AddDirectedEdge('d', 'c', 1);
+      ////am.AddDirectedEdge('a', 'b', 1);
+      ////am.AddDirectedEdge('a', 'c', 1);
+      ////am.AddDirectedEdge('b', 'a', 1);
+      ////am.AddDirectedEdge('b', 'c', 1);
+      ////am.AddDirectedEdge('c', 'a', 1);
+      ////am.AddDirectedEdge('c', 'b', 1);
+      ////am.AddDirectedEdge('c', 'd', 1);
+      ////am.AddDirectedEdge('d', 'c', 1);
 
-      am.AddUndirectedEdge('a', 'b', 1);
-      am.AddUndirectedEdge('a', 'c', 1);
-      am.AddUndirectedEdge('b', 'c', 1);
-      am.AddUndirectedEdge('c', 'd', 1);
+      //am.AddUndirectedEdge('a', 'b', 1);
+      //am.AddUndirectedEdge('a', 'c', 1);
+      //am.AddUndirectedEdge('b', 'c', 1);
+      //am.AddUndirectedEdge('c', 'd', 1);
 
-      am.RemoveUndirectedEdge('c', 'b', 1);
+      //am.RemoveUndirectedEdge('c', 'b', 1);
 
-      System.Console.WriteLine(am.ToConsoleString());
+      //System.Console.WriteLine(am.ToConsoleString());
 
 
 
