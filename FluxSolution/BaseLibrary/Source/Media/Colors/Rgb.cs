@@ -167,6 +167,27 @@ namespace Flux.Colors
 
       return new Hsv(H, S, V, A);
     }
+    //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
+    // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
+    //public Hwb ToHwb()
+    //{
+    //  var red = m_red / 255.0;
+    //  var green = m_green / 255.0;
+    //  var blue = m_blue / 255.0;
+
+    //  var max = System.Math.Max(red, System.Math.Max(green, blue));
+    //  var min = System.Math.Min(red, System.Math.Min(green, blue));
+
+    //  var b = 1 - max;
+
+    //  if (max == min)
+    //    return new Hwb(-1, min, b);
+
+    //  var f = red == min ? green - blue : (green == min ? blue - red : red - green);
+    //  var i = red == min ? 3 : (green == min ? 5 : 1);
+
+    //  return new Hwb(i - f / (max - min), min, b, Alpha / 255.0);
+    //}
 
     public int ToInt()
       => Alpha + 1 is var a ? (Alpha << 24) | ((byte)((Red * a) >> 8) << 16) | ((byte)((Green * a) >> 8) << 8) | (byte)((Blue * a) >> 8) : throw new System.Exception();

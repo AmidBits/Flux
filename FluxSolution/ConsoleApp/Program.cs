@@ -14,11 +14,11 @@ namespace ConsoleApp
     {
       var rgb = new Flux.Colors.Rgb(255, 0, 0);
 
-      System.Console.WriteLine($"{rgb} = {rgb.ToHsl()}");
+      System.Console.WriteLine($"{rgb} = {rgb.ToHwb()}");
 
-      var cmyk = new Flux.Colors.Cmyk(1, 0, 0, 0);
+      var hwb = new Flux.Colors.Hwb(4, 0.08, 0.12, 0);
 
-      System.Console.WriteLine($"{cmyk} = {cmyk.ToRgb()} = {cmyk.ToRgb().ToHsl()}");
+      System.Console.WriteLine($"{hwb} = {hwb.ToRgb()} = {hwb.ToRgb().ToHsl()}");
 
       //var m = new string[8, 8];
 
