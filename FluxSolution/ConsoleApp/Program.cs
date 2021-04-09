@@ -12,6 +12,13 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var rgb = new Flux.Colors.Rgb(255, 0, 0);
+
+      System.Console.WriteLine($"{rgb} = {rgb.ToHsl()}");
+
+      var cmyk = new Flux.Colors.Cmyk(1, 0, 0, 0);
+
+      System.Console.WriteLine($"{cmyk} = {cmyk.ToRgb()} = {cmyk.ToRgb().ToHsl()}");
 
       //var m = new string[8, 8];
 
