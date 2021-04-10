@@ -8,6 +8,22 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public static class Cast<T>
+  {
+    public static System.ReadOnlySpan<T> ToReadOnlySpan(System.Collections.Generic.IEnumerable<T> sequence)
+    {
+      switch (sequence)
+      {
+        case T[] array:
+          return array;
+        case System.Collections.Generic.IList<T> ilist:
+          return (T[])ilist;
+        default:
+          return ToReadOnlySpan(new System.Collections.Generic.List<T>(sequence));
+      }
+    }
+  }
+
   class Program
   {
     private static void TimedMain(string[] _)
