@@ -32,7 +32,7 @@ namespace Flux.Collections.Generic.Graph
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
-    public System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
+    private System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
 
     public bool AddVertex(TVertex vertex)
     {
