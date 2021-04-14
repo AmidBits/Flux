@@ -59,11 +59,7 @@ namespace Flux.Model
         if (AllowAlphaUpper) characterPool.Append(AlphaUpper);
 
         if (AllowNumeric) characterPool.Append(Numeric);
-
-#pragma warning disable CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
         if (AllowSpace) characterPool.Append(Space);
-#pragma warning restore CA1834 // Consider using 'StringBuilder.Append(char)' when applicable
-
         if (AllowSymbols1) characterPool.Append(Symbols1);
         if (AllowSymbols2) characterPool.Append(Symbols2);
         if (AllowSymbols3) characterPool.Append(Symbols3);

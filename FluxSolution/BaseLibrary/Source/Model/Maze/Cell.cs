@@ -2,8 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-#pragma warning disable CA1031 // Do not catch general exception types
-	public class Cell
+  public class Cell
 	{
 		/// <summary>Edges are possible pathways.</summary>
 		public System.Collections.Generic.Dictionary<int, Cell> Edges { get; private set; } = new System.Collections.Generic.Dictionary<int, Cell>();
@@ -51,5 +50,4 @@ namespace Flux.Model.Maze
 
 		public float Weight { get; private set; } = 1;
 	}
-#pragma warning restore CA1031 // Do not catch general exception types
 }

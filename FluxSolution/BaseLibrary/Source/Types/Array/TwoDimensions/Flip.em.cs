@@ -4,7 +4,6 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Create a new two-dimensional array from the source, with the order of all elements along the specified dimension reversed.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] Flip<T>(this T[,] source, int dimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -46,6 +45,5 @@ namespace Flux
 
       return target;
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

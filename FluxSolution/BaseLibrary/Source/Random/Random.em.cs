@@ -182,6 +182,16 @@ namespace Flux
     public static double NextNormal(this System.Random source, double mean, double standardDeviation)
       => standardDeviation > 0 ? mean + standardDeviation * NextNormal(source) : throw new System.ArgumentOutOfRangeException(nameof(standardDeviation), $"{standardDeviation} > 0");
 
+    // Preliminary to be in place.
+    public static float NextSingle(this System.Random source)
+      => System.Convert.ToSingle(source.NextDouble(float.MinValue, float.MaxValue));
+    // Preliminary to be in place.
+    public static float NextSingle(this System.Random source, float maxValue)
+      => System.Convert.ToSingle(source.NextDouble(float.MinValue, maxValue));
+    // Preliminary to be in place.
+    public static float NextSingle(this System.Random source, float minValue, float maxValue)
+      => System.Convert.ToSingle(source.NextDouble(minValue, maxValue));
+
     /// <summary>Returns a random System.TimeSpan in the range [System.TimeSpan.MinValue, System.TimeSpan.MaxValue].</summary>
     public static System.TimeSpan NextTimeSpan(this System.Random source)
       => new System.TimeSpan(NextInt64(source));

@@ -40,7 +40,7 @@ namespace Flux.Geometry
 
     public const double SixtyDegreesInRadians = System.Math.PI / 180 * 60.0;
 
-    private System.Numerics.Vector2[] m_points = new System.Numerics.Vector2[6];
+    private readonly System.Numerics.Vector2[] m_points = new System.Numerics.Vector2[6];
     /// <summary>The six hexagon points.</summary>
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2> Points { get => m_points; }
 

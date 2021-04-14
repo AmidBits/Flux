@@ -15,7 +15,7 @@ namespace Flux.Collections.Generic
     public Geometry.Point2 BoundaryHigh { get; private set; }
     public Geometry.Point2 BoundaryLow { get; private set; }
 
-    private System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     /// <summary>A list of items in this tree.</summary>
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 

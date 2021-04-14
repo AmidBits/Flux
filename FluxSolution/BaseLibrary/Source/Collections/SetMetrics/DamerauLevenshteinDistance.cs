@@ -20,7 +20,6 @@ namespace Flux
       {
       }
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
       /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
       public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
@@ -201,7 +200,6 @@ namespace Flux
 
         return matrix[sourceCount + 1, targetCount + 1];
       }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
       public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
         => 1 - GetSimpleMatchingDistance(source, target);
@@ -234,7 +232,6 @@ namespace Flux
       {
       }
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
       /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
       public double[,] GetCustomFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
@@ -356,7 +353,6 @@ namespace Flux
 
         return matrix[sourceCount + 1, targetCount + 1];
       }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     }
     #endregion Custom Scalable Version
   }

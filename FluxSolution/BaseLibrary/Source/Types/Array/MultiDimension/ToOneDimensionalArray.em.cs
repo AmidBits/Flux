@@ -6,7 +6,6 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Returns the single dimension array with all elements from the multi-dimensional array.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[] ToOneDimensionalArray<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -17,6 +16,5 @@ namespace Flux
         array[index++] = item;
       return array;
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

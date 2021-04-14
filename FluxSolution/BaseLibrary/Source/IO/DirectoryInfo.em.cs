@@ -32,11 +32,9 @@ namespace Flux
 				System.IO.FileInfo[] fileInfos = System.Array.Empty<System.IO.FileInfo>();
 
 				try { fileInfos = directoryInfo.GetFiles(); }
-#pragma warning disable CA1031 // Do not catch general exception types
-				catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
+        catch { }
 
-				foreach (var fi in fileInfos)
+        foreach (var fi in fileInfos)
 				{
 					if (predicateFile?.Invoke(fi) ?? true)
 					{
@@ -47,11 +45,9 @@ namespace Flux
 				System.IO.DirectoryInfo[] directoryInfos = System.Array.Empty<System.IO.DirectoryInfo>();
 
 				try { directoryInfos = directoryInfo.GetDirectories(); }
-#pragma warning disable CA1031 // Do not catch general exception types
-				catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
+        catch { }
 
-				foreach (var di in directoryInfos)
+        foreach (var di in directoryInfos)
 				{
 					if (predicateDirectory?.Invoke(di) ?? true)
 					{

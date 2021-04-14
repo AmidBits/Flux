@@ -26,8 +26,8 @@ namespace Flux.Dsp.Synthesis
 		private double m_position;
 		public double Position { get => m_position; set => m_position = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
 
-		private double m_maximumPhase;
-		private double m_minimumPhase;
+		private readonly double m_maximumPhase;
+		private readonly double m_minimumPhase;
 
 		/// <summary>Indicates whether the phase was reset, i.e. the cycle was completed.</summary>
 		public bool WasReset { get; set; }

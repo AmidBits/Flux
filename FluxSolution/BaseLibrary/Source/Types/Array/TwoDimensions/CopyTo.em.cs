@@ -4,7 +4,6 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Fill the array with the specified value pattern, at the offset and count.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static void CopyTo<T>(this T[,] source, T[,] target, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1, int count0, int count1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -29,6 +28,5 @@ namespace Flux
         for (var c1 = count1 - 1; c1 >= 0; c1--)
           target[targetIndex0 + c0, targetIndex1 + c1] = source[sourceIndex0 + c0, sourceIndex1 + c1];
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

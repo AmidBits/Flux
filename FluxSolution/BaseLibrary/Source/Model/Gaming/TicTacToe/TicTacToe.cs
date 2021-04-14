@@ -4,7 +4,6 @@ using System.Linq;
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
 // https://en.wikipedia.org/wiki/Negamax
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 namespace Flux.Model.TicTacToe
 {
 	public sealed class Move
@@ -344,7 +343,6 @@ namespace Flux.Model.TicTacToe
 			=> GetEnumerator();
 	}
 }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
 /*
 var ttt = new Flux.Model.TicTacToe.Board();

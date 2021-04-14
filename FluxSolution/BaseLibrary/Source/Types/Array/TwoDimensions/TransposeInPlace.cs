@@ -5,9 +5,7 @@ namespace Flux
   {
     /// <summary>Transpose the two-dimensional array, in-place. Both dimensions must be equal in length, i.e. it has to be a square two-dimensional array. The array is also returned.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Transpose"/>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static void TransposeInPlace<T>(ref T[,] source)
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
