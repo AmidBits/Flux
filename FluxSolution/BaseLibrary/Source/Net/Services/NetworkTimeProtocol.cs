@@ -120,9 +120,7 @@
       foreach (string ntpHost in DefaultNtpHosts)
       {
         try { return Request(ntpHost); }
-#pragma warning disable CA1031 // Do not catch general exception types
         catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
       }
 
       throw new System.Exception($"Unable to reach any (tried {DefaultNtpHosts.Count}) NTP servers.");
@@ -141,9 +139,7 @@
         result = Request(ntpHost);
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
       catch
-#pragma warning restore CA1031 // Do not catch general exception types.
       {
         result = new System.DateTime();
         return false;
@@ -156,9 +152,7 @@
         result = Request();
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
       catch
-#pragma warning restore CA1031 // Do not catch general exception types.
       {
         result = new System.DateTime();
         return false;

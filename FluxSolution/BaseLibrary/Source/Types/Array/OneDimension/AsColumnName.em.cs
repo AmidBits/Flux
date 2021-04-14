@@ -3,7 +3,7 @@ namespace Flux
 	public static partial class ArrayRank1
 	{
 		// Should be a resource!
-		private static string DefaultIndexedColumnFormat = @"Column_{0}";
+		private static readonly string DefaultIndexedColumnFormat = @"Column_{0}";
 
 		/// <summary>Returns a column name from the array as if it were an array of column names, substituting if not enough column names are specified.</summary>
 		public static string AsColumnName(this string[] source, int index)

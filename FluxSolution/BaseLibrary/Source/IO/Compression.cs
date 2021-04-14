@@ -27,10 +27,7 @@ namespace Flux.Compression
         result = output.ToArray();
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;
@@ -58,10 +55,7 @@ namespace Flux.Compression
         result = output.ToArray();
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;
@@ -107,10 +101,7 @@ namespace Flux.Compression
         result = output.ToArray();
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;
@@ -126,10 +117,7 @@ namespace Flux.Compression
           return true;
         }
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;
@@ -146,10 +134,7 @@ namespace Flux.Compression
         result = output.ToArray();
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;
@@ -165,10 +150,7 @@ namespace Flux.Compression
           return false;
         }
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default!;
       return false;

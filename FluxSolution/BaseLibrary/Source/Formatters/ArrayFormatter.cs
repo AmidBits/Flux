@@ -54,7 +54,6 @@ namespace Flux.Formatters
     #endregion Jagged Arrays
 
     #region Two-Dimensional Arrays
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     // Returns the array elements formatted for the console.
     public System.Collections.Generic.IEnumerable<string> TwoToConsoleStrings<T>(T[,] source, System.Func<T, int, string> formatSelector)
     {
@@ -82,7 +81,6 @@ namespace Flux.Formatters
       => string.Join(System.Environment.NewLine, TwoToConsoleStrings(source, formatSelector));
     public string TwoToConsoleString<T>(T[,] source)
       => TwoToConsoleString(source, (e, i) => $"{e}");
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     #endregion Two-Dimensional Arrays
 
     #region Single-Dimensional (i.e. 1D) Arrays

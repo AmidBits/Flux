@@ -20,9 +20,8 @@ namespace Flux
 			{
 			}
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-			/// <summary></summary>
-			public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      /// <summary></summary>
+      public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
 			{
 				var lcsg = new int[source.Length + 1, target.Length + 1];
 
@@ -69,9 +68,8 @@ namespace Flux
 
 				return lcs;
 			}
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
-			public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
 				=> source.Length + target.Length - 2 * GetMetricLength(source, target);
 
 			public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

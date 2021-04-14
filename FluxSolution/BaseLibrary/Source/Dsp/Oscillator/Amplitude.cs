@@ -27,8 +27,8 @@ namespace Flux.Dsp.Synthesis
     /// <see cref="https://en.wikipedia.org/wiki/Ring_modulation"/>
     public IOscillator? RingModulator { get; set; }
 
-    private double m_maximumAmplitude;
-    private double m_minimumAmplitude;
+    private readonly double m_maximumAmplitude;
+    private readonly double m_minimumAmplitude;
 
     //public ComputedRange PeakToPeak { get; private set; }
 

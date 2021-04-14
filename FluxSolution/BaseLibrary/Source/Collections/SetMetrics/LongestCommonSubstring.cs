@@ -17,8 +17,7 @@ namespace Flux
 			{
 			}
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-			private int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
+      private int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
 			{
 				var lcsg = new int[source.Length + 1, target.Length + 1];
 
@@ -72,9 +71,8 @@ namespace Flux
 
 				return lcs;
 			}
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
-			public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
 			{
 				var maxLength = 0;
 

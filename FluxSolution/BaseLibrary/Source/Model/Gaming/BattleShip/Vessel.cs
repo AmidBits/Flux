@@ -4,8 +4,7 @@ namespace Flux
 {
 	public static partial class BattleshipEm
 	{
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-		public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Gaming.BattleShip.Vessel> ships, Geometry.Size2 size)
+    public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Gaming.BattleShip.Vessel> ships, Geometry.Size2 size)
 		{
 			if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -43,9 +42,8 @@ namespace Flux
 			return sb.ToString();
 		}
 	}
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
-	namespace Model.Gaming.BattleShip
+  namespace Model.Gaming.BattleShip
 	{
 		public struct Vessel
 			: System.IEquatable<Vessel>

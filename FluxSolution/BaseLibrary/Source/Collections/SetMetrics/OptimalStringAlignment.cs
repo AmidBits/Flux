@@ -18,7 +18,6 @@ namespace Flux
       {
       }
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
       /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
       public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
@@ -78,7 +77,6 @@ namespace Flux
 
         return ldg;
       }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
       public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
@@ -146,7 +144,6 @@ namespace Flux
       {
       }
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
       /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
       public double[,] GetCustomFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
@@ -176,7 +173,6 @@ namespace Flux
 
         return ldg;
       }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
       public double GetCustomMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {

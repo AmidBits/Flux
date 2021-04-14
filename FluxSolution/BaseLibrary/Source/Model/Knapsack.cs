@@ -1,11 +1,10 @@
 namespace Flux.Model
 {
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
-	public static class Knapsack
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
+  public static class Knapsack
 	{
 		public static int[,] ComputeRecursiveGrid(int weightCapacity, int[] weights, int[] values, int numberOfDistinctItems, out double maxValue)
 		{
@@ -76,7 +75,6 @@ namespace Flux.Model
 			return grid;
 		}
 	}
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }
 
 /*

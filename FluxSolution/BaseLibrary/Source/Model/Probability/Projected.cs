@@ -10,9 +10,7 @@ namespace Flux.Probability
     private readonly System.Func<TA, TR> projection;
     private readonly System.Collections.Generic.Dictionary<TR, int> weights;
 
-#pragma warning disable CA1000 // Do not declare static members on generic types
     public static IDiscreteProbabilityDistribution<TR> Distribution(IDiscreteProbabilityDistribution<TA> underlying, System.Func<TA, TR> projection)
-#pragma warning restore CA1000 // Do not declare static members on generic types
     {
       if (underlying is null) throw new System.ArgumentNullException(nameof(underlying));
 

@@ -13,7 +13,7 @@ namespace Flux
 		public static readonly JulianDate Empty;
 		public bool IsEmpty => Equals(Empty);
 
-		private double m_value;
+		private readonly double m_value;
 		public double Value
 			=> m_value;
 

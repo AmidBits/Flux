@@ -143,10 +143,10 @@ namespace Flux.Model.Gaming.MineSweeper
       => m_warnings.Keys;
     public System.Collections.Generic.IEnumerable<int> Values
       => m_warnings.Values;
-#pragma warning disable CA1043 // Use Integral Or String Argument For Indexers
+
     public int this[Geometry.Point2 key]
       => m_warnings[key];
-#pragma warning restore CA1043 // Use Integral Or String Argument For Indexers
+
     public bool ContainsKey(Geometry.Point2 key)
       => m_warnings.ContainsKey(key);
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Geometry.Point2, int>> GetEnumerator()
@@ -186,10 +186,7 @@ namespace Flux.Model.Gaming.MineSweeper
       if (gameState is null) throw new System.ArgumentNullException(nameof(gameState));
       if (mineField is null) throw new System.ArgumentNullException(nameof(mineField));
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
       var charField = new char[mineField.Field.Size.Height, mineField.Field.Size.Width];
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
-
       var covers = gameState.Covers();
 
       for (var i = 0; i < mineField.Field.Size.Height; i++)

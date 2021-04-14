@@ -4,7 +4,7 @@ namespace Flux
   {
     private readonly System.Collections.Generic.Queue<System.DateTime> m_history;
     private readonly int m_limit;
-    private System.TimeSpan m_window;
+    private readonly System.TimeSpan m_window;
 
     public EventLimiter(int limit, System.TimeSpan interval)
     {

@@ -208,7 +208,7 @@ namespace Flux.Model.PlayingCards
     public static bool IsColor4Green(int utf) => IsSuitClubs(utf);
 
     /// <summary>Indicates whether the UTF value represents a face card.</summary>
-    public static bool IsFaceCard(int utf) => GetRankIndex(utf) is var rankIndex && rankIndex >= 0xB && rankIndex <= 0xE && IsCard(utf) ? true : false;
+    public static bool IsFaceCard(int utf) => GetRankIndex(utf) is var rankIndex && rankIndex >= 0xB && rankIndex <= 0xE && IsCard(utf);
     /// <summary>Indicates whether the UTF value represents a face card of the french 52 playing cards (i.e. no knight).</summary>
     public static bool IsFaceCard52(int utf) => IsFaceCard(utf) && !IsRankKnight(utf);
 

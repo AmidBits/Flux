@@ -44,9 +44,7 @@ namespace Flux.Globalization.EnUs
         result = Parse(text);
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types
       catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
 
       result = new NorthAmericanNumberingPlan();
       return false;

@@ -7,13 +7,12 @@ namespace Flux.Collections.Generic.Graph
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   public class AdjacentMatrix<TVertex, TWeight>
     : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
-    private System.Collections.Generic.List<TVertex> m_vertices = new System.Collections.Generic.List<TVertex>();
+    private readonly System.Collections.Generic.List<TVertex> m_vertices = new System.Collections.Generic.List<TVertex>();
 
     private TWeight[,] m_weights = new TWeight[0, 0];
 
@@ -147,5 +146,4 @@ namespace Flux.Collections.Generic.Graph
       return sb.ToString();
     }
   }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

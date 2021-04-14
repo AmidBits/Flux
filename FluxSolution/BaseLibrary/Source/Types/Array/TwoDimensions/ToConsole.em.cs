@@ -5,7 +5,6 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension, i.e. so called row-major.</summary>
   public static partial class ArrayRank2
   {
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     /// <summary>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
     {
@@ -30,6 +29,5 @@ namespace Flux
     /// <summary>Returns the two-dimensional array as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
     public static string ToConsoleString<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015', bool uniformMaxWidth = false)
       => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformMaxWidth));
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

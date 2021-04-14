@@ -6,9 +6,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Create a new System.Data.DataTable from the two dimensional array.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool hasColumnNames, params string[] customColumnNames)
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
