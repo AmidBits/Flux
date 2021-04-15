@@ -4,9 +4,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Reverse the order of all elements, in-place, along the specified dimension of the two-dimensional array. I.e. like mirror.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static void FlipInPlace<T>(ref T[,] source, int dimension)
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));

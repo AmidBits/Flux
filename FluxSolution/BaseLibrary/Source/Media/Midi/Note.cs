@@ -27,9 +27,8 @@ namespace Flux.Media.Midi
         result = FromFrequency(frequency);
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
       catch { }
-#pragma warning restore CA1031 // Do not catch general exception types.
+
       result = default;
       return false;
     }
@@ -42,7 +41,7 @@ namespace Flux.Media.Midi
       => (note / 12) - 1;
 
     public static bool IsNoteNumber(int noteNumber)
-      => noteNumber >= 0 && noteNumber <= 127 ? true : false;
+      => noteNumber >= 0 && noteNumber <= 127;
 
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
@@ -82,9 +81,8 @@ namespace Flux.Media.Midi
         result = Parse(scientificPitchNotation);
         return true;
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
       catch { }
-#pragma warning restore CA1031 // Do not catch general exception types.
+
       result = default;
       return false;
     }

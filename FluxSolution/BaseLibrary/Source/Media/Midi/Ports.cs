@@ -437,7 +437,7 @@ namespace Flux.Media.Midi
 
     public const int CallbackFunction = 0x00030000;
 
-    private Winmm.MidiInProc m_midiInProc;
+    private readonly Winmm.MidiInProc m_midiInProc;
 
     private System.IntPtr m_id;
 

@@ -2,7 +2,6 @@ using System.Linq;
 
 namespace Flux.Text
 {
-#pragma warning disable CA1028 // Enum Storage should be Int32
   /// <summary>Each value contains both the first and the last code points for the block name (high 32-bits = first, low 32-bits = last).</summary>
   public enum UnicodeBlock
     : long
@@ -308,7 +307,6 @@ namespace Flux.Text
     SupplementaryPrivateUseAreaA = 0x000F0000000FFFFF,
     SupplementaryPrivateUseAreaB = 0x001000000010FFFF
   }
-#pragma warning restore CA1028 // Enum Storage should be Int32
 
   namespace Text
   {

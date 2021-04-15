@@ -93,9 +93,7 @@ namespace Flux.IO
       for (; index < limit; index++)
       {
         try { buffer[index] = (byte)ReadByte(); }
-#pragma warning disable CA1031 // Do not catch general exception types
         catch { break; }
-#pragma warning restore CA1031 // Do not catch general exception types
       }
 
       return limit - index - 1;

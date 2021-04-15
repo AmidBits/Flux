@@ -4,7 +4,6 @@ namespace Flux
 {
   public static partial class Convert
   {
-#pragma warning disable CA1031 // Do not catch general exception types
 
     /// <summary>Complement the built-in System.IConvertible functionality.</summary>
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.convert.changetype"/>
@@ -61,7 +60,5 @@ namespace Flux
       result = default!;
       return false;
     }
-
-#pragma warning restore CA1031 // Do not catch general exception types
   }
 }

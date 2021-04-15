@@ -25,11 +25,9 @@ namespace Flux
 					result = Parse(text).ToList();
 					return true;
 				}
-#pragma warning disable CA1031 // Do not catch general exception types
-				catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
+        catch { }
 
-				result = default!;
+        result = default!;
 				return false;
 			}
 

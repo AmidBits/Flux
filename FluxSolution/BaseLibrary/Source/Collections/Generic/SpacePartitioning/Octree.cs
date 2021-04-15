@@ -13,12 +13,12 @@ namespace Flux.Collections.Generic
     public Geometry.Point3 BoundaryHigh { get; private set; }
     public Geometry.Point3 BoundaryLow { get; private set; }
 
-    private System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 
     public int MaximumItems { get; set; }
 
-    private System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
+    private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
     public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
 
     public Octree(Geometry.Point3 boundaryLow, Geometry.Point3 boundaryHigh)

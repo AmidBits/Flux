@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Flux.Collections.Immutable
@@ -82,7 +84,7 @@ namespace Flux.Collections.Immutable
 		public override string ToString()
 			=> $"<{GetType().Name}({(Left.IsEmpty ? '-' : 'L')}|{(Right.IsEmpty ? '-' : 'R')}): {m_key}, {m_value}>";
 
-		private sealed class EmptyBinarySearchTree
+    private sealed class EmptyBinarySearchTree
 			: IBinarySearchTree<TKey, TValue>
 		{
 			// IBinaryTree<TValue>

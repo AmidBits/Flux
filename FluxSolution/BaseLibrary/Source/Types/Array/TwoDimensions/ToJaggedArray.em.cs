@@ -4,9 +4,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Returns the array as a sequence of one-dimensional arrays (i.e. jagged).</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));

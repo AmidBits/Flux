@@ -7,8 +7,6 @@ namespace Flux
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var sourceLength = source.Length;
-
       for (var index = source.Length - 1; index >= 0; index--)
         if (predicate(source[index], index))
           return index;

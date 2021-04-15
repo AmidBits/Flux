@@ -1,6 +1,5 @@
 ﻿namespace Flux.Dsp
 {
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
   /// <summary>Fourier transformation.</summary>
   /// <see cref="https://github.com/andrewkirillov/AForge.NET/blob/master/Sources/Math/FourierTransform.cs"/>
   /// <remarks>The class implements one dimensional and two dimensional Discrete and Fast Fourier Transformation.</remarks>
@@ -345,5 +344,4 @@
 
     #endregion
   }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 }

@@ -20,7 +20,7 @@ namespace Flux
       }
 
       /// <summary>Yield count elements from the sequence.</summary>
-      System.Collections.Generic.IEnumerable<TSource> Yield(System.Collections.Generic.IEnumerator<TSource> e, int count)
+      static System.Collections.Generic.IEnumerable<TSource> Yield(System.Collections.Generic.IEnumerator<TSource> e, int count)
       {
         yield return e.Current;
 

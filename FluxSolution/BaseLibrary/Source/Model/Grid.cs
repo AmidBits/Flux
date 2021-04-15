@@ -368,13 +368,11 @@ namespace Flux.Model
 				else return System.Math.Min(Minimax(depth + 1, nodeIndex * 2, true, scores, maxHeight), Minimax(depth + 1, nodeIndex * 2 + 1, true, scores, maxHeight));
 			}
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-			public T[,] GetRowMajorOrder2D<T>(System.Func<State, T> selector)
+      public T[,] GetRowMajorOrder2D<T>(System.Func<State, T> selector)
 				=> Values.Select(selector).ToArray().ToTwoDimensionalArray(3, 3);
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
-			// IEnumerable<State>
-			public System.Collections.Generic.IEnumerator<State> GetEnumerator()
+      // IEnumerable<State>
+      public System.Collections.Generic.IEnumerator<State> GetEnumerator()
 				=> Values.ToList().GetEnumerator();
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 				=> GetEnumerator();

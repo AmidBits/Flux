@@ -3,7 +3,6 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Create a new sequence with all elements from the source, starting with specified dimension.</summary>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int majorDimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -52,6 +51,5 @@ namespace Flux
           throw new System.ArgumentOutOfRangeException(nameof(dimension));
       }
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

@@ -9,7 +9,6 @@ namespace Flux
     /// <param name="index">The index in the dimension where the items should be added, e.g. which row or column to fill. If -1 then add at the end of the dimension.</param>
     /// <param name="items">The items to fill at index. If less or more than the number of slots in the array, as many as can be copied will be.</param>
     /// <returns></returns>
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public static T[,] Insert<T>(this T[,] source, int dimension, int index, params T[] items)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -55,6 +54,5 @@ namespace Flux
 
       return target;
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
   }
 }

@@ -68,10 +68,8 @@ namespace Flux.Data
 				result = Parse(tsqlColumnDefinition);
 				return true;
 			}
-#pragma warning disable CA1031 // Do not catch general exception types.
-			catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-			{ }
+      catch
+      { }
 
 			result = default;
 			return false;

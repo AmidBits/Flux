@@ -80,61 +80,61 @@ namespace Flux.Formatters
 
     /// <summary>Try formatting either a latitude or a longitude from a decimal value according to the format parameter as shown.</summary>
     /// <returns></returns>
-//    public bool TryFormat(double value, string format, out string result)
-//    {
-//      try
-//      {
-//        var space = InsertSpaces ? @" " : string.Empty;
+    //    public bool TryFormat(double value, string format, out string result)
+    //    {
+    //      try
+    //      {
+    //        var space = InsertSpaces ? @" " : string.Empty;
 
-//        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
-//        {
-//          var decimalDegrees = System.Math.Abs(value);
-//          var degrees = System.Math.Floor(decimalDegrees);
-//          var decimalMinutes = 60 * (decimalDegrees - degrees);
-//          var minutes = System.Math.Floor(decimalMinutes);
-//          var decimalSeconds = 60 * decimalMinutes - 60 * minutes;
-//          var seconds = System.Math.Floor(decimalSeconds);
+    //        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+    //        {
+    //          var decimalDegrees = System.Math.Abs(value);
+    //          var degrees = System.Math.Floor(decimalDegrees);
+    //          var decimalMinutes = 60 * (decimalDegrees - degrees);
+    //          var minutes = System.Math.Floor(decimalMinutes);
+    //          var decimalSeconds = 60 * decimalMinutes - 60 * minutes;
+    //          var seconds = System.Math.Floor(decimalSeconds);
 
-//          var sb = new System.Text.StringBuilder();
+    //          var sb = new System.Text.StringBuilder();
 
-//          if (m.Groups[@"Parts"] is System.Text.RegularExpressions.Group gp && gp.Success && gp.Value is string sp)
-//          {
-//            if (!(m.Groups[@"DecimalPlaces"] is System.Text.RegularExpressions.Group gdp && gdp.Success && gdp.Value is string sdp && int.TryParse(sdp, out var dp) && dp >= 0 && dp < 15))
-//            {
-//              dp = -1;
-//            }
+    //          if (m.Groups[@"Parts"] is System.Text.RegularExpressions.Group gp && gp.Success && gp.Value is string sp)
+    //          {
+    //            if (!(m.Groups[@"DecimalPlaces"] is System.Text.RegularExpressions.Group gdp && gdp.Success && gdp.Value is string sdp && int.TryParse(sdp, out var dp) && dp >= 0 && dp < 15))
+    //            {
+    //              dp = -1;
+    //            }
 
-//            switch (sp)
-//            {
-//              case @"D":
-//                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", decimalDegrees);
-//                break;
-//              case @"DM":
-//                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
-//                break;
-//              case @"DMS":
-//                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
-//                break;
-//            }
+    //            switch (sp)
+    //            {
+    //              case @"D":
+    //                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", decimalDegrees);
+    //                break;
+    //              case @"DM":
+    //                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
+    //                break;
+    //              case @"DMS":
+    //                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
+    //                break;
+    //            }
 
-//            if (m.Groups["AxisCardinalDirections"] is System.Text.RegularExpressions.Group group && group.Success && group.Value is string axisCardinalDirections && axisCardinalDirections.Length == 2)
-//            {
-//              sb.Append(space);
-//              sb.Append(value >= 0 ? axisCardinalDirections[0] : axisCardinalDirections[1]);
-//            }
-//          }
+    //            if (m.Groups["AxisCardinalDirections"] is System.Text.RegularExpressions.Group group && group.Success && group.Value is string axisCardinalDirections && axisCardinalDirections.Length == 2)
+    //            {
+    //              sb.Append(space);
+    //              sb.Append(value >= 0 ? axisCardinalDirections[0] : axisCardinalDirections[1]);
+    //            }
+    //          }
 
-//          result = sb.ToString();
-//          return true;
-//        }
-//      }
-//#pragma warning disable CA1031 // Do not catch general exception types
-//      catch { }
-//#pragma warning restore CA1031 // Do not catch general exception types
+    //          result = sb.ToString();
+    //          return true;
+    //        }
+    //      }
+    //#pragma warning disable CA1031 // Do not catch general exception types
+    //      catch { }
+    //#pragma warning restore CA1031 // Do not catch general exception types
 
-//      result = string.Empty;
-//      return false;
-//    }
+    //      result = string.Empty;
+    //      return false;
+    //    }
 
     /// <summary>Try parsing a single DMS part (i.e. either latitude OR longitude).</summary>
     public static bool TryParse(string dms, out double result)
@@ -171,10 +171,7 @@ namespace Flux.Formatters
           return true;
         }
       }
-#pragma warning disable CA1031 // Do not catch general exception types.
-      catch
-#pragma warning restore CA1031 // Do not catch general exception types.
-      { }
+      catch { }
 
       result = default;
       return false;

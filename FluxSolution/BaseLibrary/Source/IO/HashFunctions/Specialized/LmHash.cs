@@ -1,6 +1,5 @@
 namespace Flux.IO.Hash
 {
-#pragma warning disable CA5351 // Do Not Use Broken Cryptographic Algorithms
   /// <summary>The LM hash algorithm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/LAN_Manager#LM_hash_details"/>
   /// <remarks>
@@ -63,5 +62,4 @@ namespace Flux.IO.Hash
       return hash;
     }
   }
-#pragma warning restore CA5351 // Do Not Use Broken Cryptographic Algorithms
 }

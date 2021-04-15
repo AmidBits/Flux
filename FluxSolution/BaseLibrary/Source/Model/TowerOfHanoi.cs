@@ -13,7 +13,7 @@ namespace Flux.Model
     {
       return Move(numberOfDisks, startRodIdentifier, destinationRodIdentifier, temporaryRodIdentifier);
 
-      System.Collections.Generic.IEnumerable<(TLabel, TLabel)> Move(int remainingDisks, TLabel source, TLabel target, TLabel auxiliary)
+      static System.Collections.Generic.IEnumerable<(TLabel, TLabel)> Move(int remainingDisks, TLabel source, TLabel target, TLabel auxiliary)
       {
         if (remainingDisks > 0)
         {
