@@ -12,15 +12,12 @@ namespace ConsoleApp
   {
     public static System.ReadOnlySpan<T> ToReadOnlySpan(System.Collections.Generic.IEnumerable<T> sequence)
     {
-      switch (sequence)
+      return sequence switch
       {
-        case T[] array:
-          return array;
-        case System.Collections.Generic.IList<T> ilist:
-          return (T[])ilist;
-        default:
-          return ToReadOnlySpan(new System.Collections.Generic.List<T>(sequence));
-      }
+        T[] array => array,
+        System.Collections.Generic.IList<T> ilist => (T[])ilist,
+        _ => ToReadOnlySpan(new System.Collections.Generic.List<T>(sequence)),
+      };
     }
   }
 
@@ -28,7 +25,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //var rgb = new Flux.Colors.Rgb(255, 0, 0);
+      var rgb = new Flux.Colors.Rgb(255, 0, 0);
 
       //System.Console.WriteLine($"{rgb} = {rgb.ToHwb()}");
 
