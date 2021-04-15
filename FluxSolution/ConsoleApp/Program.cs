@@ -8,31 +8,10 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public static class Cast<T>
-  {
-    public static System.ReadOnlySpan<T> ToReadOnlySpan(System.Collections.Generic.IEnumerable<T> sequence)
-    {
-      return sequence switch
-      {
-        T[] array => array,
-        System.Collections.Generic.IList<T> ilist => (T[])ilist,
-        _ => ToReadOnlySpan(new System.Collections.Generic.List<T>(sequence)),
-      };
-    }
-  }
-
   class Program
   {
     private static void TimedMain(string[] _)
     {
-      var rgb = new Flux.Colors.Rgb(255, 0, 0);
-
-      //System.Console.WriteLine($"{rgb} = {rgb.ToHwb()}");
-
-      //var hwb = new Flux.Colors.Hwb(4, 0.08, 0.12, 0);
-
-      //System.Console.WriteLine($"{hwb} = {hwb.ToRgb()} = {hwb.ToRgb().ToHsl()}");
-
       //var m = new string[8, 8];
 
       //for (var r = 0; r < 8; r++)
