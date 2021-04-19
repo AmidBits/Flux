@@ -12,7 +12,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //var m = new string[8, 8];
+         //var m = new string[8, 8];
 
       //for (var r = 0; r < 8; r++)
       //{
