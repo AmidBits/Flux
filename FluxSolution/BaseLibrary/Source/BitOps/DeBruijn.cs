@@ -40,6 +40,7 @@ namespace Flux
 
 			return MsbIndexTable[(number * 0x06EB14F9) >> 27];
 		}
+		[System.CLSCompliant(false)]
 		public static int MsbIndex(ulong number)
 			=> number > uint.MaxValue ? 32 + MsbIndex((uint)(number >> 32)) : MsbIndex((uint)number);
 	}
