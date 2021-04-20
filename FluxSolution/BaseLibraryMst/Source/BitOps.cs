@@ -67,104 +67,104 @@ namespace BitOps
 
 		[TestMethod]
 		public void FoldHigh_BigInteger()
-			=> Assert.AreEqual(4094.ToBigInteger(), Flux.BitOps.FoldHigh(18.ToBigInteger()));
+			=> Assert.AreEqual(4094.ToBigInteger(), Flux.BitOps.FoldLeft(18.ToBigInteger()));
 		[TestMethod]
 		public void FoldHigh_BigInteger_Speed()
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = System.Numerics.BigInteger.Parse("2251799813685246");
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 4);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 4);
 		}
 		[TestMethod]
 		public void FoldHigh_Int32()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldHigh(18));
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldLeft(18));
 		[TestMethod]
 		public void FoldHigh_Int32_Speed()
 		{
 			var value = 670530;
 			var expected = -2;
-			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
+			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_Int64()
-			=> Assert.AreEqual(-2, Flux.BitOps.FoldHigh(18L));
+			=> Assert.AreEqual(-2, Flux.BitOps.FoldLeft(18L));
 		[TestMethod]
 		public void FoldHigh_Int64_Speed()
 		{
 			var value = 670530L;
 			var expected = -2L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_UInt32()
-			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldHigh(18U));
+			=> Assert.AreEqual(4294967294U, Flux.BitOps.FoldLeft(18U));
 		[TestMethod]
 		public void FoldHigh_UInt32_Speed()
 		{
 			var value = 670530U;
 			var expected = 4294967294U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldHigh_UInt64()
-			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldHigh(18UL));
+			=> Assert.AreEqual(18446744073709551614UL, Flux.BitOps.FoldLeft(18UL));
 		[TestMethod]
 		public void FoldHigh_UInt64_Speed()
 		{
 			var value = 670530UL;
 			var expected = 18446744073709551614UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldHigh(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]
 		public void FoldLow_BigInteger()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18.ToBigInteger()));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldRight(18.ToBigInteger()));
 		[TestMethod]
 		public void FoldLow_BigInteger_Speed()
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert((System.Numerics.BigInteger)expected, 1);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldRight(value), 1000000).Assert((System.Numerics.BigInteger)expected, 1);
 		}
 		[TestMethod]
 		public void FoldLow_Int32()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldRight(18));
 		[TestMethod]
 		public void FoldLow_Int32_Speed()
 		{
 			var value = 670530;
 			var expected = 1048575;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldRight(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_Int64()
-			=> Assert.AreEqual(31, Flux.BitOps.FoldLow(18L));
+			=> Assert.AreEqual(31, Flux.BitOps.FoldRight(18L));
 		[TestMethod]
 		public void FoldLow_Int64_Speed()
 		{
 			var value = 670530L;
 			var expected = 1048575L;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldRight(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_UInt32()
-			=> Assert.AreEqual(31U, Flux.BitOps.FoldLow(18U));
+			=> Assert.AreEqual(31U, Flux.BitOps.FoldRight(18U));
 		[TestMethod]
 		public void FoldLow_UInt32_Speed()
 		{
 			var value = 670530U;
 			var expected = 1048575U;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldRight(value), 1000000).Assert(expected, 0.3);
 		}
 		[TestMethod]
 		public void FoldLow_UInt64()
-			=> Assert.AreEqual(31UL, Flux.BitOps.FoldLow(18UL));
+			=> Assert.AreEqual(31UL, Flux.BitOps.FoldRight(18UL));
 		[TestMethod]
 		public void FoldLow_UInt64_Speed()
 		{
 			var value = 670530UL;
 			var expected = 1048575UL;
-			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldLow(value), 1000000).Assert(expected, 0.3);
+			Flux.Diagnostics.Performance.Measure(() => Flux.BitOps.FoldRight(value), 1000000).Assert(expected, 0.3);
 		}
 
 		[TestMethod]

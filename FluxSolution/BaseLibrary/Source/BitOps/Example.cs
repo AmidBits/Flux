@@ -15,8 +15,8 @@
         sb.AppendLine($"                 Hex: {number.ToString(@"X8", null)}");
         sb.AppendLine($"              Binary: {System.Convert.ToString(number, 2).PadLeft(32, '0')}");
         sb.AppendLine($"           BitLength: {Flux.BitOps.BitLength(number)}");
-        sb.AppendLine($"              FoldHi: {System.Convert.ToString(Flux.BitOps.FoldHigh(number), 2).PadLeft(32, '0')}");
-        sb.AppendLine($"              FoldLo: {System.Convert.ToString(Flux.BitOps.FoldLow(number), 2).PadLeft(32, '0')}");
+        sb.AppendLine($"              FoldHi: {System.Convert.ToString(Flux.BitOps.FoldLeft(number), 2).PadLeft(32, '0')}");
+        sb.AppendLine($"              FoldLo: {System.Convert.ToString(Flux.BitOps.FoldRight(number), 2).PadLeft(32, '0')}");
         sb.AppendLine($"    LeadingZeroCount: {System.Numerics.BitOperations.LeadingZeroCount(number)} = {Flux.BitOps.LeadingZeroCount(number)}");
         sb.AppendLine($"                Log2: {System.Numerics.BitOperations.Log2(number)} = {Flux.BitOps.Log2(number)}");
         sb.AppendLine($"            PopCount: {System.Numerics.BitOperations.PopCount(number)} = {Flux.BitOps.PopCount(number)}");
