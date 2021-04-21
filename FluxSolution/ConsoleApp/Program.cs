@@ -12,7 +12,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-         //var m = new string[8, 8];
+      var dbs = new Flux.DeBrujinSequence();
+      var db = dbs.Get( 4, 10, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').Reverse().ToArray();
+      System.Console.WriteLine($"({db.Length}) {db}");
+      //var m = new string[8, 8];
 
       //for (var r = 0; r < 8; r++)
       //{
