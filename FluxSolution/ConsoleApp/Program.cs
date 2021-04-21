@@ -10,126 +10,99 @@ using Flux;
 
 namespace ConsoleApp
 {
-  class Program
-  {
-    //public static int[] ZFunction(string s)
-    //{
-    //  var n = s.Length;
+	class Program
+	{
+		private static void TimedMain(string[] _)
+		{
+			var x = Flux.Maths.GetDeBruijnSequence(10, 4);
+			//var db = Flux.Maths.GetDeBruijnSequence(10, 4, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').ToList();
+			//var db = new Flux.MoserDeBruijnSequence().GetThem(30).ToList();
+			//			db.Reverse();
+			System.Console.WriteLine($"({x.Count}) {string.Join(string.Empty, x)}");
+			Flux.Maths.ValidateDeBruijn(x, 10, 4);
+			//var m = new string[8, 8];
 
-    //  int[] z = new int[n];
+			//for (var r = 0; r < 8; r++)
+			//{
+			//  for (var c = 0; c < 8; c++)
+			//  {
+			//    m[r, c] = "  ";
+			//  }
+			//}
 
-    //  for (int i = 1, l = 0, r = 0; i < n; ++i)
-    //  {
-    //    if (i <= r)
-    //      z[i] = System.Math.Min(r - i + 1, z[i - l]);
+			//for (var r = 0; r < 3; r++)
+			//{
+			//  for (var c = 0; c < 3; c++)
+			//  {
+			//    m[r, c] = $"{(char)(r + 'A')}{(char)(c + 'A')}";
+			//  }
+			//}
 
-    //    while (i + z[i] < n && s[z[i]] == s[i + z[i]])
-    //      ++z[i];
+			//System.Console.WriteLine(m.ToConsoleString());
+			//System.Console.WriteLine();
 
-    //    if (i + z[i] - 1 > r)
-    //    {
-    //      l = i;
-    //      r = i + z[i] - 1;
-    //    }
-    //  }
+			//m = m.ToArray(1, 1, 2, 2, 1, 1, 1, 1);
 
-    //  return z;
-    //}
+			//System.Console.WriteLine(m.ToConsoleString());
 
-    private static void TimedMain(string[] _)
-    {
-      var z = new System.ReadOnlySpan<char>("abcabcd".ToCharArray()).PrefixFunction();
+			//var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
 
-      System.Console.WriteLine($"({z.Length}) {string.Join(',', z)}");
-      return;
+			//al.AddVertex('a');
+			//al.AddVertex('b');
+			//al.AddVertex('c');
+			//al.AddVertex('d');
 
-      var dbs = new Flux.DeBrujinSequence();
-      var db = dbs.Get(10, 4, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').ToList();
-      db.Reverse();
-      System.Console.WriteLine($"({db.Count}) {string.Concat(db)}");
-      //var m = new string[8, 8];
+			////g.AddDirectedEdge('a', 'b', 1);
+			////g.AddDirectedEdge('a', 'c', 1);
+			////g.AddDirectedEdge('b', 'a', 1);
+			////g.AddDirectedEdge('b', 'c', 1);
+			////g.AddDirectedEdge('c', 'a', 1);
+			////g.AddDirectedEdge('c', 'b', 1);
+			////g.AddDirectedEdge('c', 'd', 1);
+			////g.AddDirectedEdge('d', 'c', 1);
 
-      //for (var r = 0; r < 8; r++)
-      //{
-      //  for (var c = 0; c < 8; c++)
-      //  {
-      //    m[r, c] = "  ";
-      //  }
-      //}
+			//al.AddUndirectedEdge('a', 'b', 1);
+			//al.AddUndirectedEdge('a', 'c', 1);
+			//al.AddUndirectedEdge('b', 'c', 1);
+			//al.AddUndirectedEdge('c', 'd', 1);
 
-      //for (var r = 0; r < 3; r++)
-      //{
-      //  for (var c = 0; c < 3; c++)
-      //  {
-      //    m[r, c] = $"{(char)(r + 'A')}{(char)(c + 'A')}";
-      //  }
-      //}
+			//al.RemoveUndirectedEdge('c', 'b', 1);
 
-      //System.Console.WriteLine(m.ToConsoleString());
-      //System.Console.WriteLine();
-
-      //m = m.ToArray(1, 1, 2, 2, 1, 1, 1, 1);
-
-      //System.Console.WriteLine(m.ToConsoleString());
-
-      //var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
-
-      //al.AddVertex('a');
-      //al.AddVertex('b');
-      //al.AddVertex('c');
-      //al.AddVertex('d');
-
-      ////g.AddDirectedEdge('a', 'b', 1);
-      ////g.AddDirectedEdge('a', 'c', 1);
-      ////g.AddDirectedEdge('b', 'a', 1);
-      ////g.AddDirectedEdge('b', 'c', 1);
-      ////g.AddDirectedEdge('c', 'a', 1);
-      ////g.AddDirectedEdge('c', 'b', 1);
-      ////g.AddDirectedEdge('c', 'd', 1);
-      ////g.AddDirectedEdge('d', 'c', 1);
-
-      //al.AddUndirectedEdge('a', 'b', 1);
-      //al.AddUndirectedEdge('a', 'c', 1);
-      //al.AddUndirectedEdge('b', 'c', 1);
-      //al.AddUndirectedEdge('c', 'd', 1);
-
-      //al.RemoveUndirectedEdge('c', 'b', 1);
-
-      //System.Console.WriteLine(al.ToString());
+			//System.Console.WriteLine(al.ToString());
 
 
 
-      //var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
+			//var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
 
-      //am.AddVertex('a');
-      //am.AddVertex('b');
-      //am.AddVertex('c');
-      //am.AddVertex('d');
+			//am.AddVertex('a');
+			//am.AddVertex('b');
+			//am.AddVertex('c');
+			//am.AddVertex('d');
 
-      ////am.AddDirectedEdge('a', 'b', 1);
-      ////am.AddDirectedEdge('a', 'c', 1);
-      ////am.AddDirectedEdge('b', 'a', 1);
-      ////am.AddDirectedEdge('b', 'c', 1);
-      ////am.AddDirectedEdge('c', 'a', 1);
-      ////am.AddDirectedEdge('c', 'b', 1);
-      ////am.AddDirectedEdge('c', 'd', 1);
-      ////am.AddDirectedEdge('d', 'c', 1);
+			////am.AddDirectedEdge('a', 'b', 1);
+			////am.AddDirectedEdge('a', 'c', 1);
+			////am.AddDirectedEdge('b', 'a', 1);
+			////am.AddDirectedEdge('b', 'c', 1);
+			////am.AddDirectedEdge('c', 'a', 1);
+			////am.AddDirectedEdge('c', 'b', 1);
+			////am.AddDirectedEdge('c', 'd', 1);
+			////am.AddDirectedEdge('d', 'c', 1);
 
-      //am.AddUndirectedEdge('a', 'b', 1);
-      //am.AddUndirectedEdge('a', 'c', 1);
-      //am.AddUndirectedEdge('b', 'c', 1);
-      //am.AddUndirectedEdge('c', 'd', 1);
+			//am.AddUndirectedEdge('a', 'b', 1);
+			//am.AddUndirectedEdge('a', 'c', 1);
+			//am.AddUndirectedEdge('b', 'c', 1);
+			//am.AddUndirectedEdge('c', 'd', 1);
 
-      //am.RemoveUndirectedEdge('c', 'b', 1);
+			//am.RemoveUndirectedEdge('c', 'b', 1);
 
-      //System.Console.WriteLine(am.ToConsoleString());
+			//System.Console.WriteLine(am.ToConsoleString());
 
 
 
-      //foreach (var edge in g.GetEdges())
-      //  System.Console.WriteLine(edge);
+			//foreach (var edge in g.GetEdges())
+			//  System.Console.WriteLine(edge);
 
-      /*
+			/*
       var ipaes = Flux.Reflection.ApplicationDomain.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
 
@@ -138,7 +111,7 @@ namespace ConsoleApp
           System.Console.WriteLine($"{ipae.GetType().Name}.\"{name}\", \"{ipae.EncodePhoneticAlgorithm(name)}\"");
       */
 
-      /*
+			/*
       var data1 = new Flux.Resources.Census.CountiesAllData(Flux.Resources.Census.CountiesAllData.UriLocal).AcquireTabularData().ToArray();
       System.Console.WriteLine($"{nameof(Flux.Resources.Census.CountiesAllData)} = {data1.GetLength(0).ToGroupString()} rows, {data1[0].GetLength(0)} columns = {System.DateTime.Now}");
       var data2 = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.UriLocal).AcquireTabularData().ToArray();
@@ -161,7 +134,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"{nameof(Flux.Resources.W3c.NamedCharacterReferences)} = {data0.GetLength(0).ToGroupString()} rows, {data0[0].GetLength(0)} columns {System.DateTime.Now}");
       */
 
-      /*
+			/*
       using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
         foreach (var rune in sr.EnumerateTextElements())
           System.Console.Write(rune.ToString());
@@ -171,60 +144,60 @@ namespace ConsoleApp
           System.Console.Write(rune.ToString());
       */
 
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
-    }
+			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
+			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
+		}
 
-    static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
-    {
-      //var startDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
-      for (int i = 0; i < taskCount; i++)
-      {
-        ExpensiveTask(taskLoad);
-        //var total = ExpensiveTask(taskLoad);
-        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      }
-      //var endDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
-      //var span = endDateTime - startDateTime;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
-      //System.Console.WriteLine();
-    }
+		static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
+		{
+			//var startDateTime = DateTime.Now;
+			//System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+			for (int i = 0; i < taskCount; i++)
+			{
+				ExpensiveTask(taskLoad);
+				//var total = ExpensiveTask(taskLoad);
+				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+			}
+			//var endDateTime = DateTime.Now;
+			//System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+			//var span = endDateTime - startDateTime;
+			//System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+			//System.Console.WriteLine();
+		}
 
-    static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
-    {
-      //var startDateTime = DateTime.Now;
-      System.Threading.Tasks.Parallel.For(0, taskCount, i =>
-      {
-        ExpensiveTask(taskLoad);
-        //var total = ExpensiveTask(taskLoad);
-        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      });
-      //var endDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
-      //var span = endDateTime - startDateTime;
-      //System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
-      //System.Console.WriteLine();
-    }
+		static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
+		{
+			//var startDateTime = DateTime.Now;
+			System.Threading.Tasks.Parallel.For(0, taskCount, i =>
+			{
+				ExpensiveTask(taskLoad);
+				//var total = ExpensiveTask(taskLoad);
+				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+			});
+			//var endDateTime = DateTime.Now;
+			//System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+			//var span = endDateTime - startDateTime;
+			//System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+			//System.Console.WriteLine();
+		}
 
-    static long ExpensiveTask(double taskLoad = 1)
-    {
-      var total = 0L;
-      for (var i = 1; i < int.MaxValue * taskLoad; i++)
-        total += i;
-      return total;
-    }
+		static long ExpensiveTask(double taskLoad = 1)
+		{
+			var total = 0L;
+			for (var i = 1; i < int.MaxValue * taskLoad; i++)
+				total += i;
+			return total;
+		}
 
-    static void Main(string[] args)
-    {
-      System.Console.InputEncoding = System.Text.Encoding.UTF8;
-      System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+		static void Main(string[] args)
+		{
+			System.Console.InputEncoding = System.Text.Encoding.UTF8;
+			System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
+			System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
 
-      System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
-      System.Console.ReadKey();
-    }
-  }
+			System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
+			System.Console.ReadKey();
+		}
+	}
 }

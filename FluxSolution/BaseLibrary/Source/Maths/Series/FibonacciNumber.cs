@@ -25,12 +25,12 @@ namespace Flux
     public static bool IsFibonacciNumber(System.Numerics.BigInteger number)
     {
       var fiver = 5 * number * number;
-      var fourp = fiver + 4;
-      var fourps = ISqrt(fourp);
-      var fourn = fiver - 4;
-      var fourns = ISqrt(fourn);
+      var fp4 = fiver + 4;
+      var fp4sr = ISqrt(fp4);
+      var fm4 = fiver - 4;
+      var fm4sr = ISqrt(fm4);
 
-      return fourps * fourps == fourp || fourns * fourns == fourn;
+      return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
     }
   }
 }
