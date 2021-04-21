@@ -1,5 +1,7 @@
 namespace Flux
 {
+  // https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence
+  // https://www.geeksforgeeks.org/moser-de-bruijn-sequence/
   public class MoserDeBruijnSequence
     : System.Collections.Generic.IEnumerable<int>
   {

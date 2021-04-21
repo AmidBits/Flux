@@ -1,5 +1,7 @@
 namespace Flux
 {
+  // https://en.wikipedia.org/wiki/De_Bruijn_sequence
+  // https://www.geeksforgeeks.org/de-bruijn-sequence-set-1/
   public class DeBrujinSequence
   {
     private static System.Collections.Generic.HashSet<string> m_seen = new System.Collections.Generic.HashSet<string>();
@@ -9,7 +11,7 @@ namespace Flux
     /// <param name="n"></param>
     /// <param name="k"></param>
     /// <param name="A"></param>
-    public System.Collections.Generic.IEnumerable<char> Get(int n, int k, params char[] A)
+    public System.Collections.Generic.IEnumerable<char> Get(int k, int n, params char[] A)
     {
       m_seen.Clear();
       m_edges.Clear();

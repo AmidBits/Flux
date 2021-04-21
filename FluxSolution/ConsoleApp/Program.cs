@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Buffers;
+using System.Linq;
 using Flux;
 
 // C# Interactive commands:
@@ -10,11 +12,41 @@ namespace ConsoleApp
 {
   class Program
   {
+    //public static int[] ZFunction(string s)
+    //{
+    //  var n = s.Length;
+
+    //  int[] z = new int[n];
+
+    //  for (int i = 1, l = 0, r = 0; i < n; ++i)
+    //  {
+    //    if (i <= r)
+    //      z[i] = System.Math.Min(r - i + 1, z[i - l]);
+
+    //    while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+    //      ++z[i];
+
+    //    if (i + z[i] - 1 > r)
+    //    {
+    //      l = i;
+    //      r = i + z[i] - 1;
+    //    }
+    //  }
+
+    //  return z;
+    //}
+
     private static void TimedMain(string[] _)
     {
+      var z = new System.ReadOnlySpan<char>("abcabcd".ToCharArray()).PrefixFunction();
+
+      System.Console.WriteLine($"({z.Length}) {string.Join(',', z)}");
+      return;
+
       var dbs = new Flux.DeBrujinSequence();
-      var db = dbs.Get( 4, 10, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').Reverse().ToArray();
-      System.Console.WriteLine($"({db.Length}) {db}");
+      var db = dbs.Get(10, 4, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').ToList();
+      db.Reverse();
+      System.Console.WriteLine($"({db.Count}) {string.Concat(db)}");
       //var m = new string[8, 8];
 
       //for (var r = 0; r < 8; r++)

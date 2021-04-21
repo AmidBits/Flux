@@ -22,7 +22,6 @@ namespace Flux
     /// <summary>Indicates whether the specified target is found at the specified index in the source, using the specified comparer.</summary>
     public static bool Equals<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
       => Equals(source, sourceIndex, target, 0, target.Length, comparer);
-
     /// <summary>Indicates whether the specified target is found at the specified index in the source, using the default comparer.</summary>
     public static bool Equals<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target)
       => Equals(source, sourceIndex, target, 0, target.Length, System.Collections.Generic.EqualityComparer<T>.Default);
