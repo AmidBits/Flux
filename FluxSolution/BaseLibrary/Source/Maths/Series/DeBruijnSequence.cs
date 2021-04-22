@@ -4,7 +4,7 @@ namespace Flux
 {
 	public static partial class Maths
 	{
-		https://www.rosettacode.org/wiki/De_Bruijn_sequences#C.23
+		// https://www.rosettacode.org/wiki/De_Bruijn_sequences#C.23
 		public static void ValidateDeBruijn(System.Collections.Generic.List<int> sequence, int k, int n)
 		{
 			var le = sequence.Count;
