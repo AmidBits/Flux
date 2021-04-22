@@ -4,6 +4,7 @@ namespace Flux
 {
 	public static partial class Maths
 	{
+		// https://en.wikipedia.org/wiki/De_Bruijn_sequence
 		// https://www.rosettacode.org/wiki/De_Bruijn_sequences#C.23
 		//public static System.Collections.Generic.IDictionary<int, int> GetDeBruijnCounts(System.Collections.Generic.List<byte> sequence, int k, int n)
 		//{
