@@ -5,59 +5,97 @@ namespace Flux
 	public static partial class Maths
 	{
 		// https://www.rosettacode.org/wiki/De_Bruijn_sequences#C.23
-		public static void ValidateDeBruijn(System.Collections.Generic.List<int> sequence, int k, int n)
-		{
-			var le = sequence.Count;
-			var found = new int[le - (n - 1)];
-			var errs = new System.Collections.Generic.List<string>();
-			// Check all strings of 4 consecutive digits within 'db'
-			// to see if all 10,000 combinations occur without duplication.
-			for (int i = 0; i < le - 3; i++)
-			{
-				var s = sequence.GetRange(i, 4).ToArray();
-				//if (AllDigits(s))
-				//{
-				if (int.TryParse(string.Join(string.Empty, s), out int number))
-					found[number]++;
-				//}
-			}
-			for (int i = 0; i < 10000; i++)
-			{
-				if (found[i] == 0)
-				{
-					errs.Add(string.Format("    PIN number {0,4} missing", i));
-				}
-				else if (found[i] > 1)
-				{
-					errs.Add(string.Format("    PIN number {0,4} occurs {1} times", i, found[i]));
-				}
-			}
-			var lerr = errs.Count;
-			if (lerr == 0)
-			{
-				System.Console.WriteLine("  No errors found");
-			}
-			else
-			{
-				var pl = lerr == 1 ? "" : "s";
-				System.Console.WriteLine("  {0} error{1} found:", lerr, pl);
-				errs.ForEach(System.Console.WriteLine);
-			}
-		}
-		public static System.Collections.Generic.List<int> GetDeBruijnSequence(int k, int n)
-		{
-			var sequence = new System.Collections.Generic.List<int>();
+		//public static System.Collections.Generic.IDictionary<int, int> GetDeBruijnCounts(System.Collections.Generic.List<byte> sequence, int k, int n)
+		//{
+		//	var elementCounts = new System.Collections.Generic.Dictionary<int, int>();
 
-			var a = new int[k * n];
+		//	for (var i = (int)System.Math.Pow(k, n) - 1; i >= 0; i--)
+		//		elementCounts.Add(i, 0);
+
+		//	foreach (var value in DecodeDeBruijnSequence(sequence, k, n, b => string.Join(string.Empty, b)))
+		//		if (value.Length <= 4)
+		//			elementCounts[int.Parse(value.Replace(",", string.Empty), System.Globalization.NumberStyles.Integer)]++;
+
+		//	return elementCounts;
+		//}
+
+		//public static System.Collections.Generic.List<string> GenerateDeBruijnErrors(System.Collections.Generic.List<byte> sequence, int k, int n)
+		//{
+		//	var elementCounts = GetDeBruijnCounts(sequence, k, n);
+
+		//	var elementErrors = new System.Collections.Generic.List<string>();
+
+		//	foreach (var kvp in elementCounts)
+		//		if (kvp.Value == 0)
+		//			elementErrors.Add($"Element {string.Join(',', kvp.Key)} is missing.");
+		//		else if (kvp.Value > 1)
+		//			elementErrors.Add($"Element {string.Join(',', kvp.Key)} occurs {kvp.Value} times.");
+		//	//for (int i = 0; i < elementCounts.Count; i++)
+		//	//{
+		//	//	if (elementCounts[i] == 0)
+		//	//		elementErrors.Add($"Element {i,4} is missing.");
+		//	//	else if (elementCounts[i] > 1)
+		//	//		elementErrors.Add($"Element {i,4} occurs {elementCounts[i]} times");
+		//	//}
+
+		//	return elementErrors;
+		//}
+
+		//public static void GetDeBruijnElements(System.Collections.Generic.List<int> sequence, int k, int n)
+		//{
+		//	var sc = sequence.Count;
+		//	var foundElements = new int[sc - (n - 1)];
+		//	var errs = new System.Collections.Generic.List<string>();
+		//	// Check all strings of 4 consecutive digits within 'db'
+		//	// to see if all 10,000 combinations occur without duplication.
+		//	for (int i = 0; i < sc - 3; i++)
+		//	{
+		//		var s = sequence.GetRange(i, 4).ToArray();
+		//		//if (AllDigits(s))
+		//		//{
+		//		if (int.TryParse(string.Join(string.Empty, s), out int number))
+		//			foundElements[number]++;
+		//		//}
+		//	}
+		//	for (int i = 0; i < 10000; i++)
+		//	{
+		//		if (foundElements[i] == 0)
+		//		{
+		//			errs.Add(string.Format("    PIN number {0,4} missing", i));
+		//		}
+		//		else if (foundElements[i] > 1)
+		//		{
+		//			errs.Add(string.Format("    PIN number {0,4} occurs {1} times", i, foundElements[i]));
+		//		}
+		//	}
+		//	var lerr = errs.Count;
+		//	if (lerr == 0)
+		//	{
+		//		System.Console.WriteLine("  No errors found");
+		//	}
+		//	else
+		//	{
+		//		var pl = lerr == 1 ? "" : "s";
+		//		System.Console.WriteLine("  {0} error{1} found:", lerr, pl);
+		//		errs.ForEach(System.Console.WriteLine);
+		//	}
+		//}
+
+		public static System.Collections.Generic.IEnumerable<TSymbol[]> ExpandDeBruijnSequence<TSymbol>(System.Collections.Generic.List<TSymbol> deBruijnSequence, int size_k, int order_n)
+			=> deBruijnSequence.PartitionNgram(order_n, (e, i) => e.ToArray());
+
+		public static System.Collections.Generic.IEnumerable<TSymbol> GetDeBruijnSequence<TSymbol>(int size_k, int order_n, params TSymbol[] alphabet)
+		{
+			var sequence = new System.Collections.Generic.List<byte>();
+
+			var a = new byte[size_k * order_n];
 
 			void DeBruijn(int t, int p)
 			{
-				if (t > n)
+				if (t > order_n)
 				{
-					if (n % p == 0)
-					{
-						sequence.AddRange(new System.ArraySegment<int>(a, 1, p));
-					}
+					if ((order_n % p) == 0)
+						sequence.AddRange(new System.ArraySegment<byte>(a, 1, p));
 				}
 				else
 				{
@@ -65,9 +103,9 @@ namespace Flux
 					DeBruijn(t + 1, p);
 					var j = a[t - p] + 1;
 
-					while (j < k)
+					while (j < size_k)
 					{
-						a[t] = j;
+						a[t] = (byte)j;
 						DeBruijn(t + 1, t);
 						j++;
 					}
@@ -76,10 +114,12 @@ namespace Flux
 
 			DeBruijn(1, 1);
 
-			sequence.AddRange(sequence.GetRange(0, n - 1));
+			sequence.AddRange(sequence.GetRange(0, order_n - 1));
 
-			return sequence;
+			return sequence.Select(i => alphabet[i]);
 		}
+		public static System.Collections.Generic.IEnumerable<int> GetDeBruijnSequence(int size_k, int order_n)
+			=> GetDeBruijnSequence(size_k, order_n, System.Linq.Enumerable.Range(0, size_k).ToArray());
 
 		/// <summary>A de Bruijn sequence of order n on a size-k alphabet A is a cyclic sequence in which every possible length-n string on A occurs exactly once as a substring (i.e., as a contiguous subsequence). Such a sequence is denoted by B(k, n) and has length kn, which is also the number of distinct strings of length n on A. Each of these distinct strings, when taken as a substring of B(k, n), must start at a different position, because substrings starting at the same position are not distinct. Therefore, B(k, n) must have at least kn symbols. And since B(k, n) has exactly kn symbols, De Bruijn sequences are optimally short with respect to the property of containing every string of length n at least once.</summary>
 		/// <param name="n">The order of, or length of each sub-sequence.</param>

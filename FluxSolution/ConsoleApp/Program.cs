@@ -14,12 +14,39 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			var x = Flux.Maths.GetDeBruijnSequence(10, 4);
+			var k = 2;
+			var n = 3;
+
+			var alphabet = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+			//alphabet = new string[] { "a", "b", "c", "d" };
+
+			var dbs = Flux.Maths.GetDeBruijnSequence(k, n, alphabet).Take((int)System.Math.Pow(k, n)).ToArray();
+			//var dbs2 = Flux.Maths.GetDeBruijnSequence2(k, n, alphabet).ToList();
+			//var dbx = dbs.PartitionNgram(n, (e, i) => string.Concat(e.Select(i => alphabet[i]))).ToList();
+			//var edbs = Flux.Maths.ExpandDeBruijnSequence(dbs, k, n).ToList();
+			//var ddbs = Flux.Maths.DecodeDeBruijnSequence(dbs, k, n, b => string.Join(string.Empty, b.Select(i => alphabet[i]))).ToList();
+			//var ddbsa = Flux.Maths.DecodeDeBruijnSequence(dbs, k, n, alphabet).ToList();
+
+			//System.Console.WriteLine($"   Bruijn: {dbs.Count}");
+			//System.Console.WriteLine($"First 130: {string.Join(string.Empty, dbs.Take(130))}");
+			//System.Console.WriteLine($" Last 130: {string.Join(string.Empty, dbs.TakeLast(130))}");
+			//dbs[4443] = 255;
+			////			var dbd = Flux.Maths.DecodeDeBruijnSequence(dbs, k, n, b => string.Join(string.Empty, b.Where(n => n >= 0 && n < 255))).ToArray();
+			////		var dbcs = dbd.Histogram((e, i) => e);
+			////dbs[4443] = (byte)255;0
+			////System.Console.WriteLine($"\"abcd\": {string.Join(string.Empty, dbs.Select(n => (char)(n + 'a')))}");
+
+			//var dbc = Flux.Maths.GetDeBruijnCounts(dbs, k, n);
+			//System.Console.WriteLine($"Counts: {dbc.Count} ({string.Join(',', dbc.Select((kvp, i) => (s: $"{i,4} ({string.Join(',', kvp.Key)})", count: kvp.Value)).Where(sc => sc.count != 1))})");
+			//var dbe = Flux.Maths.GenerateDeBruijnErrors(dbs, k, n);
+			//System.Console.WriteLine($"Errors: {dbe.Count} ({string.Join(',', dbe)})");
+
 			//var db = Flux.Maths.GetDeBruijnSequence(10, 4, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9').ToList();
 			//var db = new Flux.MoserDeBruijnSequence().GetThem(30).ToList();
 			//			db.Reverse();
-			System.Console.WriteLine($"({x.Count}) {string.Join(string.Empty, x)}");
-			Flux.Maths.ValidateDeBruijn(x, 10, 4);
+			//System.Console.WriteLine($"({x.Count}) {string.Join(string.Empty, x)}");
+			//Flux.Maths.ValidateDeBruijn(x, 10, 4);
+
 			//var m = new string[8, 8];
 
 			//for (var r = 0; r < 8; r++)
