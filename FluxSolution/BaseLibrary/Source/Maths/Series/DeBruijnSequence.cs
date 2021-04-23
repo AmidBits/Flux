@@ -82,9 +82,10 @@ namespace Flux
 		//	}
 		//}
 
-		public static System.Collections.Generic.IEnumerable<TSymbol[]> ExpandDeBruijnSequence<TSymbol>(System.Collections.Generic.List<TSymbol> deBruijnSequence, int size_k, int order_n)
+		public static System.Collections.Generic.IEnumerable<TSymbol[]> ExpandDeBruijnSequence<TSymbol>(System.Collections.Generic.List<TSymbol> deBruijnSequence, int order_n)
 			=> deBruijnSequence.PartitionNgram(order_n, (e, i) => e.ToArray());
 
+		/// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
 		public static System.Collections.Generic.IEnumerable<TSymbol> GetDeBruijnSequence<TSymbol>(int size_k, int order_n, params TSymbol[] alphabet)
 		{
 			var sequence = new System.Collections.Generic.List<byte>();
@@ -119,6 +120,7 @@ namespace Flux
 
 			return sequence.Select(i => alphabet[i]);
 		}
+		/// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet. The alphabet is integers 0 through 9.</summary>
 		public static System.Collections.Generic.IEnumerable<int> GetDeBruijnSequence(int size_k, int order_n)
 			=> GetDeBruijnSequence(size_k, order_n, System.Linq.Enumerable.Range(0, size_k).ToArray());
 
