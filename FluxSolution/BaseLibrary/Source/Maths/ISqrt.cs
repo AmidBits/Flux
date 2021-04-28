@@ -33,13 +33,11 @@
 
 		/// <summary>Returns the integer square root of the specified number. Provided for a consistent call site, and internally calls System.Math.Floor(System.Math.Sqrt()).</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Integer_square_root"/>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public static int ISqrt(int value)
 			=> System.Convert.ToInt32(System.Math.Floor(System.Math.Sqrt(value)));
 
 		/// <summary>Returns the integer square root of the specified number. Provided for a consistent call site, and internally calls System.Math.Floor(System.Math.Sqrt()).</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Integer_square_root"/>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public static long ISqrt(long value)
 			=> System.Convert.ToInt64(System.Math.Floor(System.Math.Sqrt(value)));
 	}

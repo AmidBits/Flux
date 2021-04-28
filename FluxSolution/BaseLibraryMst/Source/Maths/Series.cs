@@ -76,7 +76,7 @@ namespace Maths
     public void GetBellTriangle()
     {
       var expected = new System.Numerics.BigInteger[][] { new System.Numerics.BigInteger[] { 1 }, new System.Numerics.BigInteger[] { 1, 2 }, new System.Numerics.BigInteger[] { 2, 3, 5 }, new System.Numerics.BigInteger[] { 5, 7, 10, 15 }, new System.Numerics.BigInteger[] { 15, 20, 27, 37, 52 }, new System.Numerics.BigInteger[] { 52, 67, 87, 114, 151, 203 }, new System.Numerics.BigInteger[] { 203, 255, 322, 409, 523, 674, 877 } };
-      var actual = Flux.Maths.GetBellTriangle().Take(expected.Length).ToArray();
+      var actual = new BellTriangle().Take(expected.Length).ToArray();
 
       for (var index = 0; index < expected.Length; index++)
         Assert.IsTrue(actual[index].SequenceEqual(expected[index]));
@@ -86,7 +86,7 @@ namespace Maths
     public void GetCatalanSequence()
     {
       var expected = new long[] { 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420, 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, 18367353072152, 69533550916004, 263747951750360, 1002242216651368, 3814986502092304 };
-      var actual = Flux.Maths.GetCatalanSequence().Take(expected.Length).Select(bi => (long)bi).ToArray();
+      var actual = new CatalanNumber().Take(expected.Length).Select(bi => (long)bi).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -102,7 +102,7 @@ namespace Maths
     public void GetFibonacciSequence()
     {
       var expected = new long[] { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296, 433494437, 701408733, 1134903170, 1836311903, 2971215073, 4807526976, 7778742049, 12586269025, 20365011074, 32951280099, 53316291173, 86267571272, 139583862445, 225851433717, 365435296162, 591286729879, 956722026041, 1548008755920, 2504730781961, 4052739537881, 6557470319842, 10610209857723, 17167680177565, 27777890035288, 44945570212853, 72723460248141, 117669030460994, 190392490709135, 308061521170129, 498454011879264, 806515533049393, 1304969544928657, 2111485077978050, 3416454622906707, 5527939700884757, 8944394323791464, 14472334024676221, 23416728348467685, 37889062373143906, 61305790721611591, 99194853094755497, 160500643816367088, 259695496911122585, 420196140727489673, 679891637638612258, 1100087778366101931, 1779979416004714189, 2880067194370816120, 4660046610375530309, 7540113804746346429 };
-      var actual = Flux.Maths.GetFibonacciSequence().Take(expected.Length).Select(i => (long)i).ToArray();
+      var actual = new FibonacciSequence().Take(expected.Length).Select(i => (long)i).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -110,7 +110,7 @@ namespace Maths
     public void GetMersennePrimes()
     {
       var expected = new int[] { 3, 7, 31, 127, 8191, 131071, 524287, 2147483647 };
-      var actual = Flux.Maths.GetMersennePrimes().Take(expected.Length).Select(bi => (int)bi).ToArray();
+      var actual = MersenneNumber.GetMersennePrimes().Take(expected.Length).Select(bi => (int)bi).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -118,17 +118,17 @@ namespace Maths
     public void GetPadovanSequence()
     {
       var expected = new int[] { 1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12, 16, 21, 28, 37, 49, 65, 86, 114, 151, 200, 265, 351, 465, 616, 816, 1081, 1432, 1897, 2513, 3329, 4410, 5842, 7739, 10252, 13581, 17991, 23833, 31572, 41824, 55405, 73396, 97229, 128801, 170625 };
-      var actual = Flux.Maths.GetPadovanSequence().Take(expected.Length).Select(bi => (int)bi).ToArray();
+      var actual = new PadovanSequence().Take(expected.Length).Select(bi => (int)bi).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
-    [TestMethod]
-    public void GetPerrinSequence()
-    {
-      var expected = new int[] { 3, 0, 2, 3, 2, 5, 5, 7, 10, 12, 17, 22, 29, 39, 51, 68, 90, 119, 158, 209, 277, 367, 486, 644, 853, 1130, 1497, 1983, 2627, 3480, 4610, 6107, 8090, 10717, 14197, 18807, 24914, 33004, 43721, 57918, 76725, 101639, 134643, 178364, 236282, 313007 };
-      var actual = Flux.Maths.GetPerrinSequence().Take(expected.Length).Select(bi => (int)bi).ToArray();
-      Assert.IsTrue(actual.SequenceEqual(expected));
-    }
+    //[TestMethod]
+    //public void GetPerrinSequence()
+    //{
+    //  var expected = new int[] { 3, 0, 2, 3, 2, 5, 5, 7, 10, 12, 17, 22, 29, 39, 51, 68, 90, 119, 158, 209, 277, 367, 486, 644, 853, 1130, 1497, 1983, 2627, 3480, 4610, 6107, 8090, 10717, 14197, 18807, 24914, 33004, 43721, 57918, 76725, 101639, 134643, 178364, 236282, 313007 };
+    //  var actual = new PerrinNumber().Take(expected.Length).Select(bi => (int)bi).ToArray();
+    //  Assert.IsTrue(actual.SequenceEqual(expected));
+    //}
 
     [TestMethod]
     public void GetAscendingPrimes()
@@ -141,7 +141,7 @@ namespace Maths
     public void GetCousinePrimes()
     {
       var expected = new (System.Numerics.BigInteger, System.Numerics.BigInteger, int)[] { (3, 7, 1), (7, 11, 3), (13, 17, 5), (19, 23, 7) };
-      var actual = Flux.Maths.GetCousinePrimes().Take(expected.Length).ToArray();
+      var actual = PrimeNumber.GetCousinePrimes().Take(expected.Length).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
     public void GetDescendingPrimes()
@@ -153,29 +153,29 @@ namespace Maths
     [TestMethod]
     public void GetPrimeFactors()
     {
-      var expected = new int[] { 2, 2, 3, 5 };
-      var actual = Flux.Maths.GetPrimeFactors(60).ToArray();
+      var expected = new System.Numerics.BigInteger[] { 2, 2, 3, 5 };
+      var actual = PrimeNumber.GetPrimeFactors(60).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
     [TestMethod]
     public void GetPrimeGaps()
     {
-      var expected = new int[] { 1, 2, 2, 4, 2 };
-      var actual = Flux.Maths.GetPrimeGaps(2).Take(expected.Length).ToArray();
+      var expected = new System.Numerics.BigInteger[] { 1, 2, 2, 4, 2 };
+      var actual = PrimeNumber.GetPrimeGaps(2).Take(expected.Length).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void GetSuperPrimes()
     {
       var expected = new System.Numerics.BigInteger[] { 3, 5, 11, 17, 31 };
-      var actual = Flux.Maths.GetSuperPrimes().Take(expected.Length).ToArray();
+      var actual = PrimeNumber.GetSuperPrimes().Take(expected.Length).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void GetTwinPrimes()
     {
       var expected = new (System.Numerics.BigInteger, System.Numerics.BigInteger)[] { (3, 5), (5, 7), (11, 13), (17, 19), (29, 31) };
-      var actual = Flux.Maths.GetTwinPrimes().Take(expected.Length).ToArray();
+      var actual = PrimeNumber.GetTwinPrimes().Take(expected.Length).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
 

@@ -1,7 +1,7 @@
 namespace Flux
 {
   public class PerrinNumber
-  : ISequenceInfinite<System.Numerics.BigInteger>
+    : ISequenceInfinite<System.Numerics.BigInteger>
   {
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
