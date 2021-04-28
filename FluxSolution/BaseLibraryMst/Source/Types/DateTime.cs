@@ -205,8 +205,8 @@ namespace Types
 		[TestMethod]
 		public void ToStringISO8601Time()
 		{
-			Assert.AreEqual(@"00:00:00", source.ToStringISO8601Time());
-			Assert.AreEqual(@"00:00:00", target.ToStringISO8601Time());
+			Assert.AreEqual(@"00:00", source.ToStringISO8601Time());
+			Assert.AreEqual(@"00:00", target.ToStringISO8601Time());
 		}
 		[TestMethod]
 		public void ToStringISO8601OrdinalDate()
