@@ -10,17 +10,21 @@ using Flux;
 
 namespace ConsoleApp
 {
+
 	class Program
 	{
 		private static void TimedMain(string[] _)
 		{
-			var k = 2;
-			var n = 3;
+			foreach (var bns in new Flux.BellTriangle())
+				System.Console.WriteLine(string.Join('|', bns));
 
-			var alphabet = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-			//alphabet = new string[] { "a", "b", "c", "d" };
+			//var k = 2;
+			//var n = 3;
 
-			var dbs = Flux.Maths.GetDeBruijnSequence(k, n, alphabet).Take((int)System.Math.Pow(k, n)).ToArray();
+			//var alphabet = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+			////alphabet = new string[] { "a", "b", "c", "d" };
+
+			//var dbs = Flux.Maths.GetDeBruijnSequence(k, n, alphabet).Take((int)System.Math.Pow(k, n)).ToArray();
 			//var dbs2 = Flux.Maths.GetDeBruijnSequence2(k, n, alphabet).ToList();
 			//var dbx = dbs.PartitionNgram(n, (e, i) => string.Concat(e.Select(i => alphabet[i]))).ToList();
 			//var edbs = Flux.Maths.ExpandDeBruijnSequence(dbs, k, n).ToList();
