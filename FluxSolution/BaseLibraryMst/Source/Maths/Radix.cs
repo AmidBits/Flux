@@ -92,7 +92,7 @@ namespace Maths
 		{
 			for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Random.NumberGenerator.Crypto.NextBigInteger(i) + 1)
 			{
-				var expectedSum = Flux.Maths.GetDigits(i, 10).Aggregate(System.Numerics.BigInteger.Zero, (a, e) => a + e);
+				var expectedSum = Flux.Maths.GetDigitsReversed(i, 10).Aggregate(System.Numerics.BigInteger.Zero, (a, e) => a + e);
 				var actualSum = Flux.Maths.DigitSum(i, 10);
 				Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
 			}
@@ -102,7 +102,7 @@ namespace Maths
 		{
 			for (var i = 2U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.NextInt32((int)i) + 1)
 			{
-				var expectedSum = Flux.Maths.GetDigits((int)i, 10).Aggregate(0, (a, e) => a + e);
+				var expectedSum = Flux.Maths.GetDigitsReversed((int)i, 10).Aggregate(0, (a, e) => a + e);
 				var actualSum = Flux.Maths.DigitSum(i, 10);
 				Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
 			}
@@ -112,7 +112,7 @@ namespace Maths
 		{
 			for (var i = 2UL; i < long.MaxValue; i += (ulong)Flux.Random.NumberGenerator.Crypto.NextInt64((long)i) + 1)
 			{
-				var expectedSum = Flux.Maths.GetDigits((long)i, 10).Aggregate(0L, (a, e) => a + e);
+				var expectedSum = Flux.Maths.GetDigitsReversed((long)i, 10).Aggregate(0L, (a, e) => a + e);
 				var actualSum = (long)Flux.Maths.DigitSum(i, 10);
 				Assert.AreEqual(expectedSum, actualSum, $"{i} = {expectedSum} ({expectedSum}) = {actualSum}");
 			}
@@ -143,9 +143,9 @@ namespace Maths
 		[TestMethod]
 		public void GetComponents()
 		{
-			CollectionAssert.AreEqual(new int[] { 0, 2, 0, 0, 0, 0, 64, 0, 256, 512, 0, 2048, 4096, 8192, 0, 0, 0, 131072, 0, 524288 }, Flux.Maths.GetComponents(670530, 2).ToArray(), nameof(Flux.Maths.GetComponents) + ".Radix=2");
-			CollectionAssert.AreEqual(new int[] { 0, 30, 500, 0, 70000, 600000 }, Flux.Maths.GetComponents(670530, 10).ToArray(), nameof(Flux.Maths.GetComponents) + ".Radix=10");
-			CollectionAssert.AreEqual(new int[] { 2, 64, 2816, 12288, 655360 }, Flux.Maths.GetComponents(670530, 16).ToArray(), nameof(Flux.Maths.GetComponents) + ".Radix=16");
+			CollectionAssert.AreEqual(new int[] { 0, 2, 0, 0, 0, 0, 64, 0, 256, 512, 0, 2048, 4096, 8192, 0, 0, 0, 131072, 0, 524288 }, Flux.Maths.GetPlaceValues(670530, 2).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=2");
+			CollectionAssert.AreEqual(new int[] { 0, 30, 500, 0, 70000, 600000 }, Flux.Maths.GetPlaceValues(670530, 10).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=10");
+			CollectionAssert.AreEqual(new int[] { 2, 64, 2816, 12288, 655360 }, Flux.Maths.GetPlaceValues(670530, 16).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=16");
 		}
 
 		[TestMethod]

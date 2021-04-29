@@ -14,10 +14,6 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-
-			//foreach (var bns in new Flux.BellTriangle())
-			//	System.Console.WriteLine(string.Join('|', bns));
-
 			//var k = 2;
 			//var n = 3;
 
