@@ -3,11 +3,7 @@ namespace Flux.Numerics
   public class FibonacciNumber
     : INumberSequence<System.Numerics.BigInteger>
   {
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
-
+    // INumberSequence
     /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
@@ -26,6 +22,14 @@ namespace Flux.Numerics
       }
     }
 
+    // IEnumerable
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+
+    #region Statics
+
     /// <summary>Determines whether the number is a Fibonacci number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     public static bool IsFibonacciNumber(System.Numerics.BigInteger number)
@@ -38,6 +42,8 @@ namespace Flux.Numerics
 
       return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
     }
+
+    #endregion Statics
   }
 
   //public static partial class Maths

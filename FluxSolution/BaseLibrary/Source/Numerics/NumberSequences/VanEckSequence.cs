@@ -1,170 +1,154 @@
 namespace Flux.Numerics
 {
-	public class VanEckSequence
-	: INumberSequence<System.Numerics.BigInteger>
-	{
-		public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-			=> GetSequence().GetEnumerator();
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-			=> GetEnumerator();
+  public class VanEckSequence
+  : INumberSequence<System.Numerics.BigInteger>
+  {
+    public System.Numerics.BigInteger StartWith { get; set; }
 
-		public System.Numerics.BigInteger StartWith { get; set; }
+    public VanEckSequence(System.Numerics.BigInteger startsWith)
+      => StartWith = startsWith;
 
-		/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-		/// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
-		/// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-		/// <remarks>This function runs indefinitely, if allowed.</remarks>
-		public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-		{
-			if (StartWith < 0) throw new System.ArgumentOutOfRangeException(nameof(StartWith));
+    // INumberSequence
+    /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+    /// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+    /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+      => GetVanEckSequence(StartWith);
 
-			var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
-			var last = StartWith;
+    // IEnumerable
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
 
-			for (var index = System.Numerics.BigInteger.Zero; ; index++)
-			{
-				yield return last;
+    #region Statics
 
-				System.Numerics.BigInteger next;
+    /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+    /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetVanEckSequence(System.Numerics.BigInteger startWith)
+    {
+      if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
 
-				if (lasts.ContainsKey(last))
-				{
-					next = index - lasts[last];
-					lasts[last] = index;
-				}
-				else // The last was new.
-				{
-					next = 0;
-					lasts.Add(last, index);
-				}
+      var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
+      var last = startWith;
 
-				last = next;
-			}
-		}
+      for (var index = System.Numerics.BigInteger.Zero; ; index++)
+      {
+        yield return last;
 
-		/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-		/// <remarks>This function runs indefinitely, if allowed.</remarks>
-		public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetVanEckSequence(System.Numerics.BigInteger startWith)
-		{
-			if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
+        System.Numerics.BigInteger next;
 
-			var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
-			var last = startWith;
+        if (lasts.ContainsKey(last))
+        {
+          next = index - lasts[last];
+          lasts[last] = index;
+        }
+        else // The last was new.
+        {
+          next = 0;
+          lasts.Add(last, index);
+        }
 
-			for (var index = System.Numerics.BigInteger.Zero; ; index++)
-			{
-				yield return last;
+        last = next;
+      }
+    }
 
-				System.Numerics.BigInteger next;
+    #endregion Statics
+  }
+  //public static partial class Maths
+  //{
+  //	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+  //	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+  //	/// <remarks>This function runs indefinitely, if allowed.</remarks>
+  //	public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetVanEckSequence(System.Numerics.BigInteger startWith)
+  //	{
+  //		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
 
-				if (lasts.ContainsKey(last))
-				{
-					next = index - lasts[last];
-					lasts[last] = index;
-				}
-				else // The last was new.
-				{
-					next = 0;
-					lasts.Add(last, index);
-				}
+  //		var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
+  //		var last = startWith;
 
-				last = next;
-			}
-		}
-	}
-	//public static partial class Maths
-	//{
-	//	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-	//	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-	//	/// <remarks>This function runs indefinitely, if allowed.</remarks>
-	//	public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetVanEckSequence(System.Numerics.BigInteger startWith)
-	//	{
-	//		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
+  //		for (var index = System.Numerics.BigInteger.Zero; ; index++)
+  //		{
+  //			yield return last;
 
-	//		var lasts = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, System.Numerics.BigInteger>();
-	//		var last = startWith;
+  //			System.Numerics.BigInteger next;
 
-	//		for (var index = System.Numerics.BigInteger.Zero; ; index++)
-	//		{
-	//			yield return last;
+  //			if (lasts.ContainsKey(last))
+  //			{
+  //				next = index - lasts[last];
+  //				lasts[last] = index;
+  //			}
+  //			else // The last was new.
+  //			{
+  //				next = 0;
+  //				lasts.Add(last, index);
+  //			}
 
-	//			System.Numerics.BigInteger next;
+  //			last = next;
+  //		}
+  //	}
 
-	//			if (lasts.ContainsKey(last))
-	//			{
-	//				next = index - lasts[last];
-	//				lasts[last] = index;
-	//			}
-	//			else // The last was new.
-	//			{
-	//				next = 0;
-	//				lasts.Add(last, index);
-	//			}
+  //	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+  //	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+  //	public static System.Collections.Generic.IEnumerable<int> GetVanEckSequence(int startWith, int count)
+  //	{
+  //		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
+  //		else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-	//			last = next;
-	//		}
-	//	}
+  //		var lasts = new System.Collections.Generic.Dictionary<int, int>();
+  //		var last = startWith;
 
-	//	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-	//	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-	//	public static System.Collections.Generic.IEnumerable<int> GetVanEckSequence(int startWith, int count)
-	//	{
-	//		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
-	//		else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+  //		for (var index = 0; index < count; index++)
+  //		{
+  //			yield return last;
 
-	//		var lasts = new System.Collections.Generic.Dictionary<int, int>();
-	//		var last = startWith;
+  //			int next;
 
-	//		for (var index = 0; index < count; index++)
-	//		{
-	//			yield return last;
+  //			if (lasts.ContainsKey(last))
+  //			{
+  //				next = index - lasts[last];
+  //				lasts[last] = index;
+  //			}
+  //			else // The last was new.
+  //			{
+  //				next = 0;
+  //				lasts.Add(last, index);
+  //			}
 
-	//			int next;
+  //			last = next;
+  //		}
+  //	}
+  //	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+  //	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+  //	public static System.Collections.Generic.IEnumerable<long> GetVanEckSequence(long startWith, long count)
+  //	{
+  //		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
+  //		else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-	//			if (lasts.ContainsKey(last))
-	//			{
-	//				next = index - lasts[last];
-	//				lasts[last] = index;
-	//			}
-	//			else // The last was new.
-	//			{
-	//				next = 0;
-	//				lasts.Add(last, index);
-	//			}
+  //		var lasts = new System.Collections.Generic.Dictionary<long, long>();
+  //		var last = startWith;
 
-	//			last = next;
-	//		}
-	//	}
-	//	/// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-	//	/// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-	//	public static System.Collections.Generic.IEnumerable<long> GetVanEckSequence(long startWith, long count)
-	//	{
-	//		if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
-	//		else if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+  //		for (var index = 0L; index <= count; index++)
+  //		{
+  //			yield return last;
 
-	//		var lasts = new System.Collections.Generic.Dictionary<long, long>();
-	//		var last = startWith;
+  //			long next;
 
-	//		for (var index = 0L; index <= count; index++)
-	//		{
-	//			yield return last;
+  //			if (lasts.ContainsKey(last))
+  //			{
+  //				next = index - lasts[last];
+  //				lasts[last] = index;
+  //			}
+  //			else // The last was new.
+  //			{
+  //				next = 0;
+  //				lasts.Add(last, index);
+  //			}
 
-	//			long next;
-
-	//			if (lasts.ContainsKey(last))
-	//			{
-	//				next = index - lasts[last];
-	//				lasts[last] = index;
-	//			}
-	//			else // The last was new.
-	//			{
-	//				next = 0;
-	//				lasts.Add(last, index);
-	//			}
-
-	//			last = next;
-	//		}
-	//	}
-	//}
+  //			last = next;
+  //		}
+  //	}
+  //}
 }

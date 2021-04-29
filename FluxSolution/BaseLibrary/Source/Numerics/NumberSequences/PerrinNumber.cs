@@ -3,10 +3,22 @@ namespace Flux.Numerics
   public class PerrinNumber
     : INumberSequence<System.Numerics.BigInteger>
   {
+    // INumberSequence
+    /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    {
+      for (var number = System.Numerics.BigInteger.Zero; ; number++)
+        GetNumber(number);
+    }
+
+    // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
+
+    #region Statics
 
     /// <summary>Yields a Perrin number of the specified value number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
@@ -34,13 +46,7 @@ namespace Flux.Numerics
       return p;
     }
 
-    /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-    {
-      for (var number = System.Numerics.BigInteger.Zero; ; number++)
-        GetNumber(number);
-    }
+    #endregion Statics
   }
 
   //public static partial class Maths

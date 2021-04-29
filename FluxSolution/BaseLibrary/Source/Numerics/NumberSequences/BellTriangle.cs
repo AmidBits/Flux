@@ -3,11 +3,7 @@ namespace Flux.Numerics
 	public class BellTriangle
 		: INumberSequence<System.Numerics.BigInteger[]>
 	{
-		public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger[]> GetEnumerator()
-				=> GetSequence().GetEnumerator();
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-			=> GetEnumerator();
-
+		// INumberSequence
 		public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger[]> GetSequence()
 		{
 			var current = new System.Numerics.BigInteger[1] { 1 };
@@ -23,5 +19,11 @@ namespace Flux.Numerics
 					current[i] = previous[i - 1] + current[i - 1];
 			}
 		}
+
+		// IEnumerable
+		public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger[]> GetEnumerator()
+				=> GetSequence().GetEnumerator();
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			=> GetEnumerator();
 	}
 }

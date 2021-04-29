@@ -3,11 +3,7 @@ namespace Flux.Numerics
 	public class PadovanSequence
 	: INumberSequence<System.Numerics.BigInteger>
 	{
-		public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-			=> GetSequence().GetEnumerator();
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-			=> GetEnumerator();
-
+		// INumberSequence
 		/// <summary>Creates a new sequence with padovan numbers.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
 		/// <remarks>This function runs indefinitely, if allowed.</remarks>
@@ -30,6 +26,12 @@ namespace Flux.Numerics
 				p1 = pn;
 			}
 		}
+
+		// IEnumerable
+		public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+			=> GetSequence().GetEnumerator();
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			=> GetEnumerator();
 	}
 
 	//public static partial class Maths
