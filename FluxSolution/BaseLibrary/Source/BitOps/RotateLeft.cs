@@ -17,7 +17,11 @@ namespace Flux
 			=> value = (value << count) | (value >> (32 - count));
 		[System.CLSCompliant(false)]
 		public static uint RotateLeft(uint value, int count)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.RotateLeft(value, count);
+#else
 			=> (value << count) | (value >> (32 - count));
+#endif
 
 		[System.CLSCompliant(false)]
 		public static void RotateLeft1(ref ulong value)
@@ -30,6 +34,10 @@ namespace Flux
 			=> value = (value << count) | (value >> (64 - count));
 		[System.CLSCompliant(false)]
 		public static ulong RotateLeft(ulong value, int count)
+#if NETCOREAPP
+			=> System.Numerics.BitOperations.RotateLeft(value, count);
+#else
 			=> (value << count) | (value >> (64 - count));
+#endif
 	}
 }
