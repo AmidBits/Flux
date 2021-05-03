@@ -10,7 +10,7 @@ namespace Flux.Numerics
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
     {
       for (var number = System.Numerics.BigInteger.Zero; ; number++)
-        yield return GetNumber(number);
+        yield return GetCatalanNumber(number);
     }
 
     // IEnumerable
@@ -23,7 +23,7 @@ namespace Flux.Numerics
 
     /// <summary>Returns the Catalan number for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
-    public static System.Numerics.BigInteger GetNumber(System.Numerics.BigInteger number)
+    public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number)
       => Maths.Factorial(number * 2) / (Maths.Factorial(number + 1) * Maths.Factorial(number));
 
     #endregion Statics

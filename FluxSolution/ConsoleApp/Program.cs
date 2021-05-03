@@ -14,7 +14,7 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-			//var k = 2;
+			//var k = 2`
 			//var n = 3;
 
 			//var alphabet = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
