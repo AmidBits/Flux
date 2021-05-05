@@ -5,18 +5,18 @@ namespace Flux.Model.Maze
   public class BinaryTreeMaze
     : AMaze
   {
-    private EightWindCompassRose m_diagonal = EightWindCompassRose.NE;
-    public EightWindCompassRose Diagonal
+    private InterCardinalDirection m_diagonal = InterCardinalDirection.NE;
+    public InterCardinalDirection Diagonal
     {
       get { return m_diagonal; }
       set
       {
         switch (value)
         {
-          case EightWindCompassRose.NE:
-          case EightWindCompassRose.NW:
-          case EightWindCompassRose.SE:
-          case EightWindCompassRose.SW:
+          case InterCardinalDirection.NE:
+          case InterCardinalDirection.NW:
+          case InterCardinalDirection.SE:
+          case InterCardinalDirection.SW:
             m_diagonal = value;
             break;
           default:

@@ -61,8 +61,10 @@ namespace WpfApp
 			var wallWidth = 2;
 			var wallWidthX2 = wallWidth * 2;
 
-			var width = (int)(canvas.ActualWidth / m_grid.Size.Width);
-			var height = (int)(canvas.ActualHeight / m_grid.Size.Height);
+			var minSize = (int)System.Math.Min(canvas.ActualWidth, canvas.ActualHeight);
+
+			var width = minSize / m_grid.Size.Width;// (int)(canvas.ActualWidth / m_grid.Size.Width);
+			var height = minSize / m_grid.Size.Height;// (int)(canvas.ActualHeight / m_grid.Size.Height);
 
 			canvas.Children.Clear();
 

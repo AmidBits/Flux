@@ -5,18 +5,18 @@ namespace Flux.Model.Maze
   public class SidewinderMaze
     : AMaze
   {
-    private EightWindCompassRose m_diagonal = EightWindCompassRose.NE;
-    public EightWindCompassRose Diagonal
+    private InterCardinalDirection m_diagonal = InterCardinalDirection.NE;
+    public InterCardinalDirection Diagonal
     {
       get { return m_diagonal; }
       set
       {
         switch (value)
         {
-          case EightWindCompassRose.NE:
-          case EightWindCompassRose.NW:
-          case EightWindCompassRose.SE:
-          case EightWindCompassRose.SW:
+          case InterCardinalDirection.NE:
+          case InterCardinalDirection.NW:
+          case InterCardinalDirection.SE:
+          case InterCardinalDirection.SW:
             m_diagonal = value;
             break;
           default:
@@ -53,7 +53,7 @@ namespace Flux.Model.Maze
             run.Clear();
           }
           else
-            cell.ConnectPath(cell.Edges[(int)EightWindCompassRose.E], true);
+            cell.ConnectPath(cell.Edges[(int)CardinalDirection.E], true);
         }
       }
     }
