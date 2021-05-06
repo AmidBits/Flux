@@ -15,7 +15,7 @@ namespace Flux
       : null;
 
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from the specified type collection.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypesFrom(this System.Type source, params System.Type[] types)
+    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source, params System.Type[] types)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -27,8 +27,26 @@ namespace Flux
           yield return type;
     }
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from the types in the Flux library.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypesFromFlux(this System.Type source)
-      => GetDerivedTypesFrom(source, typeof(Types).Assembly.GetTypes());
+    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source)
+      => GetDerivedTypes(source, typeof(Types).Assembly.GetTypes());
+
+    ///// <summary>Creates a new list with the inherited types of the <paramref name="source"/> type.</summary>
+    //public static System.Collections.Generic.IList<System.Type> GetInheritance(this System.Type source)
+    //{
+    //  var list = new System.Collections.Generic.List<System.Type>();
+
+    //  foreach (var typeInheritance in GetTypeInheritance(source))
+    //  {
+    //    foreach (var typeImplement in GetTypeImplements(typeInheritance))
+    //      if (!list.Contains(typeImplement))
+    //        list.Add(typeImplement);
+
+    //    if (!list.Contains(typeInheritance))
+    //      list.Add(typeInheritance);
+    //  }
+
+    //  return list;
+    //}
 
     /// <summary>Creates a new sequence with implemented interfaces of the <paramref name="source"/>.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetTypeImplements(this System.Type source)

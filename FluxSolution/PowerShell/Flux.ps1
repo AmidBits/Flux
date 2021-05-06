@@ -35,10 +35,11 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
     [void][System.Reflection.Assembly]::Load($bytes) # Load the byte array as an assembly into the current context.
 }
+else { "Assembly already loaded..." }
 
 # Sample use from Flux BaseLibrary:
 
- # $PSVersionTable
+# $PSVersionTable
 
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
 # [Flux.Locale]::SpecialFolders | Format-Table
@@ -54,37 +55,6 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # $af = New-Object Flux.FormatProviders.ArrayFormatter
 # $s = $af.TwoToConsoleString($fm)
 # $s
- 
-Clear-Host
-
-function TypeCategory([System.Type]$type)
-{
-    if($type.IsClass) {return "class"}
-    if($type.IsInterface) {return "interface"}
-    if($type.IsValueType) {return "struct"}
-    "other"
-}
-
-$types = @([Flux.Reflection.AssemblyInfo]::Flux.Assembly.GetTypes() | Where-Object {$_.IsPublic} | Sort-Object FullName);
-
-foreach($interface in $types | Where-Object {$_.IsClass})
-{
-    $inheritance = [Flux.Types]::GetInheritance($interface)
-    if($inheritance.Length -gt 1)
-    {[string](@($inheritance | % {$_.Name}) -join ', ')}
-    
-    # $derivedTypes = @([Flux.Types]::GetDerived($interface, $types))
-
-    # if($derivedTypes.Length -gt 0)
-    # {
-    #     Write-Host "$($interface.Name)"
-
-    #     foreach($implementingType in $derivedTypes)
-    #     {
-    #         Write-Host "`t$($implementingType.Name) ($(TypeCategory($implementingType)))"
-    #     }
-    # }
-}
 
 # $cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
 # $uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
