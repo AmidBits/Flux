@@ -4,9 +4,9 @@ namespace Flux
   {
     /// <summary>Determines whether the source equals the target, taking into account generics.</summary>
     public static bool EqualsEx(this System.Type source, System.Type target)
-      => !(source is null || target is null)
-      ? (source.IsGenericType ? source.GetGenericTypeDefinition() : source).Equals(target.IsGenericType ? target.GetGenericTypeDefinition() : target)
-      : source is null && target is null;
+      => source is null || target is null
+      ? source is null && target is null
+      : (source.IsGenericType ? source.GetGenericTypeDefinition() : source).Equals(target.IsGenericType ? target.GetGenericTypeDefinition() : target)
 
     /// <summary>Returns the default value, like the default(T) does but from the <paramref name="source"/>.</summary>
     public static object? GetDefaultValue(this System.Type source)
@@ -30,44 +30,24 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source)
       => GetDerivedTypes(source, typeof(Types).Assembly.GetTypes());
 
-    ///// <summary>Creates a new list with the inherited types of the <paramref name="source"/> type.</summary>
-    //public static System.Collections.Generic.IList<System.Type> GetInheritance(this System.Type source)
-    //{
-    //  var list = new System.Collections.Generic.List<System.Type>();
-
-    //  foreach (var typeInheritance in GetTypeInheritance(source))
-    //  {
-    //    foreach (var typeImplement in GetTypeImplements(typeInheritance))
-    //      if (!list.Contains(typeImplement))
-    //        list.Add(typeImplement);
-
-    //    if (!list.Contains(typeInheritance))
-    //      list.Add(typeInheritance);
-    //  }
-
-    //  return list;
-    //}
-
     /// <summary>Creates a new sequence with implemented interfaces of the <paramref name="source"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Type> GetTypeImplements(this System.Type source)
+    public static System.Collections.Generic.IReadOnlyCollection<System.Type> GetTypeImplements(this System.Type source)
       => source is null
       ? throw new System.ArgumentNullException(nameof(source))
       : new System.Collections.Generic.Stack<System.Type>(source.GetInterfaces());
 
     /// <summary>Creates a new sequence with the inheritance type chain of the <paramref name="source"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Type> GetTypeInheritance(this System.Type source)
+    public static System.Collections.Generic.IReadOnlyCollection<System.Type> GetTypeInheritance(this System.Type source)
     {
       var stack = new System.Collections.Generic.Stack<System.Type>();
-
       for (var type = source; type != null; type = type.BaseType)
         stack.Push(type);
-
       return stack;
     }
 
     /// <summary>Determines whether the <paramref name="source"/> type is a reference type.</summary>
     public static bool IsReferenceType(this System.Type source)
-      => GetDefaultValue(source) is null && !IsSystemNullableOfT(source);
+      => GetDefaultValue(source) is null && !IsSystemNullable(source);
 
     /// <summary>Determines whether the type is 'static', based on it being abstract and sealed.</summary>
     public static bool IsStaticClass(this System.Type source)
@@ -100,7 +80,7 @@ namespace Flux
 
     /// <summary>Determines whether the type is System.Nullable<T>.</summary>
     /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>
-    public static bool IsSystemNullableOfT(this System.Type source)
+    public static bool IsSystemNullable(this System.Type source)
       => source is null
       ? throw new System.ArgumentNullException(nameof(source))
       : source.IsGenericType && source.GetGenericTypeDefinition() == typeof(System.Nullable<>);
