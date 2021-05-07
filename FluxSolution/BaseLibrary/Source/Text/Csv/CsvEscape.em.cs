@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-	public static partial class CsvEm
+	public static partial class TextCsvEm
 	{
 		public static string CsvEscape(this string source, char fieldSeparator)
 			=> source.AsSpan().GetCsvEscapeLevel(fieldSeparator) switch

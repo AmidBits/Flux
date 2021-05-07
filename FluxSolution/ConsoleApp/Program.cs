@@ -14,6 +14,7 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
+
 			//var k = 2`
 			//var n = 3;
 

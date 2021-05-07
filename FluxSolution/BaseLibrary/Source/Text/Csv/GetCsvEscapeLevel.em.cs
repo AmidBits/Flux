@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class CsvEm
+  public static partial class TextCsvEm
   {
     public static Text.Csv.CsvEscapeLevel GetCsvEscapeLevel(this System.ReadOnlySpan<char> source, char fieldSeparator)
     {

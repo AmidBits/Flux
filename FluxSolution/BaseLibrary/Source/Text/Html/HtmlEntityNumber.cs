@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class HtmlEm
+	public static partial class TextHtmlEm
 	{
 		/// <summary>Returns a string representing the <see cref="System.Text.Rune"/> as an HTML Entity Number.</summary>
 		public static string ToHtmlEntityNumber(this System.Text.Rune source)
