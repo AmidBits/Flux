@@ -15,7 +15,7 @@ Clear-Host
 
 $vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net5.0' }
 
-"Checking availability of <$($vsProjectReference.SolutionName)\$($vsProjectReference.ProjectName)\$($vsProjectReference.TargetFramework)\$($vsProjectReference.Configuration)>"
+"Checking for assembly <$($vsProjectReference.SolutionName)\$($vsProjectReference.ProjectName)\$($vsProjectReference.TargetFramework)\$($vsProjectReference.Configuration)>"
 
 if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -match "^$($vsProjectReference.ProjectName)" } | Test-Any)) # Check whether the project library is already loaded.
 {
@@ -50,17 +50,18 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
 # [Flux.Locale]::SpecialFolders | Format-Table
 
-# $md = New-Object 'Flux.SetMetrics.DamerauLevenshteinDistance[char]'
-# $fm = $md.GetFullMatrix("settings", "kitten")
+$md = New-Object 'Flux.Sequence.Metrics.DamerauLevenshteinDistance[char]'
+$fm = $md.GetFullMatrix("settings", "kitten")
 # $fe = 
 # {  
 #   param($e, $i)
 
 #   $e.ToString()
 # }
-# $af = New-Object Flux.FormatProviders.ArrayFormatter
-# $s = $af.TwoToConsoleString($fm)
-# $s
+
+$af = New-Object Flux.Formatters.ArrayFormatter
+$s = $af.TwoToConsoleString($fm)
+"$($md.GetType().FullName)$([System.Environment]::NewLine)$s"
 
 # $cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
 # $uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
