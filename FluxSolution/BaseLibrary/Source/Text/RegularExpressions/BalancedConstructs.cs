@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Regex
+  public static partial class RegularExpressions
   {
     public static string CreateBalancedExpression(string reOpen, string reMatch, string reClose)
       => $"^{reMatch}*(?>(?>(?'balance'{reOpen}){reMatch}*)+(?>(?'-balance'{reClose}){reMatch}*)+)+(?(balance)(?!))$";

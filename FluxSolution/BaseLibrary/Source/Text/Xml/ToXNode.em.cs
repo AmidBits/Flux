@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemXmlEm
+	public static partial class TextXmlEm
 	{
 		/// <summary>Convert an XmlElement into an XElement.</summary>
 		/// <param name="source">The XmlElement to convert.</param>
