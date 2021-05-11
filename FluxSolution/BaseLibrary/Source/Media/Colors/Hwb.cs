@@ -17,7 +17,7 @@ namespace Flux.Colors
 
     public Hwb(double hue, double white, double black)
     {
-      m_hue = hue >= 0 && hue <= 6 ? hue : throw new System.ArgumentOutOfRangeException(nameof(hue));
+      m_hue = hue >= 0 && hue <= 360 ? hue : throw new System.ArgumentOutOfRangeException(nameof(hue));
       m_white = white >= 0 && white <= 1 ? white : throw new System.ArgumentOutOfRangeException(nameof(white));
       m_black = black >= 0 && black <= 1 ? black : throw new System.ArgumentOutOfRangeException(nameof(black));
     }
@@ -34,78 +34,39 @@ namespace Flux.Colors
     public double GetChroma()
       => 3 * m_black * m_white / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
 
-    /// <summary>Converts to a corresponding HSV color.</summary>
+    /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
     public Hsv ToHsv()
     {
       var v = 1 - m_black;
 
       return new Hsv(m_hue, 1 - (m_white / v), v);
     }
-    /// <summary>Creates an RGB color corresponding to the HWB instance.</summary>
+    /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
     public Rgb ToRgb()
     {
-      //double hue = m_hue;
-      //double white = m_white;
-      //double black = m_black;
+      var h1 = m_hue / 360;
+      var wh = m_white;
+      var bl = m_black;
 
-      //var v = 1 - black;
-
-      //if (hue == -1 && System.Convert.ToByte(v * 255) is var vb)
-      //  return new Rgb(vb, vb, vb);
-
-      //var i = (int)System.Math.Floor(hue);
-      //var f = hue - i;
-
-      //if ((i & 1) == 1)
-      //  f = 1 - f;
-
-      //var n = white + f * (v - white);
-
-      //double r, g, b;
-
-      //switch (i)
-      //{
-      //  default:
-      //  case 6:
-      //  case 0: r = v; g = n; b = white; break;
-      //  case 1: r = n; g = v; b = white; break;
-      //  case 2: r = white; g = v; b = n; break;
-      //  case 3: r = white; g = n; b = v; break;
-      //  case 4: r = n; g = white; b = v; break;
-      //  case 5: r = v; g = white; b = n; break;
-      //}
-
-      //return new Rgb(
-      //  System.Convert.ToByte(255 * r),
-      //  System.Convert.ToByte(255 * g),
-      //  System.Convert.ToByte(255 * b),
-      //  System.Convert.ToByte(255 * Alpha)
-      //);
-
-      var h = m_hue;// / 360;
-      var wh = m_white;// / 100;
-      var bl = m_black;// / 100;
-
-      var ratio = wh + bl;
-
-      double v, f, n;
-      if (ratio > 1)
+      if (wh + bl is var ratio && ratio > 1)
       {
         wh /= ratio;
         bl /= ratio;
       }
-      var i = (int)System.Math.Floor(6 * h);
-      v = 1 - bl;
-      f = 6 * h - i;
 
-      if ((i & 1) == 1)
-        f = 1 - f;
+      var whole = (int)(h1 * 6);
+      var fraction = (h1 * 6) - whole;
 
-      n = wh + f * (v - wh);
+      if ((whole & 1) == 1)
+        fraction = 1 - fraction;
+
+      var v = 1 - bl;
+
+      var n = wh + fraction * (v - wh);
 
       double r, g, b;
 
-      switch (i)
+      switch (whole)
       {
         default:
         case 6:
@@ -118,9 +79,9 @@ namespace Flux.Colors
       }
 
       return new Rgb(
-        System.Convert.ToByte(255 * r),
-        System.Convert.ToByte(255 * g),
-        System.Convert.ToByte(255 * b)
+        System.Convert.ToByte(r * 255),
+        System.Convert.ToByte(g * 255),
+        System.Convert.ToByte(b * 255)
       );
     }
 

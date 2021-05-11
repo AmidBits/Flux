@@ -76,24 +76,28 @@ namespace Flux.Colors
       return new Rgb(gray, gray, gray);
     }
 
-    /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
+    /// <summary>Converts the RGB to a corresponding CMYK color.</summary>
     public Cmyk ToCmyk()
     {
-      var red = m_red / 255.0;
-      var green = m_green / 255.0;
-      var blue = m_blue / 255.0;
+      var red = m_red / 255d;
+      var green = m_green / 255d;
+      var blue = m_blue / 255d;
 
-      var black = System.Math.Min(1 - red, System.Math.Min(1 - green, 1 - blue));
+      var key = 1 - System.Math.Max(red, System.Math.Max(green, blue));
+      var m1key = 1 - key;
 
-      var m1black = 1 - black;
+      var cyan = (m1key - red) / m1key;
+      var magenta = (m1key - green) / m1key;
+      var yellow = (m1key - blue) / m1key;
 
-      var cyan = (m1black - red) / m1black;
-      var magenta = (m1black - green) / m1black;
-      var yellow = (m1black - blue) / m1black;
-
-      return new Cmyk(cyan, magenta, yellow, black);
+      return new Cmyk(
+        cyan < 0 ? 0 : cyan,
+        magenta < 0 ? 0 : magenta,
+        yellow < 0 ? 0 : yellow,
+        key
+      );
     }
-    /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
+    /// <summary>Converts the RGB to a corresponding HSI color.</summary>
     public Hsi ToHsi()
     {
       var rgb = (double)(m_red + m_green + m_blue);
@@ -102,24 +106,28 @@ namespace Flux.Colors
       var g = m_green / rgb;
       var b = m_blue / rgb;
 
-      var i = rgb / (3 * 255);
-      var s = 1 - 3 * Maths.Min(r, g, b);
-      var h = System.Math.Acos((0.5 * ((r - g) + (r - b))) / System.Math.Pow(System.Math.Pow(r - g, 2) + (r - b) * (g - b), 0.5));
-
+      var h = System.Math.Acos(0.5 * (r - g + (r - b)) / System.Math.Pow(System.Math.Pow(r - g, 2) + (r - b) * (g - b), 0.5));
       if (b > g)
         h = 2 * System.Math.PI - h;
 
-      return new Hsi(h, s, i);
+      return new Hsi(
+        h,
+        1 - 3 * Maths.Min(r, g, b),
+        rgb / (3 * 255)
+      );
     }
-    /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
+    /// <summary>Converts the RGB to a corresponding HSL color.</summary>
     public Hsl ToHsl()
     {
       var r = m_red / 255d;
       var g = m_green / 255d;
       var b = m_blue / 255d;
+
       var max = System.Math.Max(System.Math.Max(r, g), b);
       var min = System.Math.Min(System.Math.Min(r, g), b);
+
       var chroma = max - min;
+
       double h1;
 
       if (chroma == 0) h1 = 0;
@@ -127,23 +135,26 @@ namespace Flux.Colors
       else if (max == g) h1 = 2 + ((b - r) / chroma);
       else h1 = 4 + ((r - g) / chroma);
 
-      var L = 0.5 * (max + min);
-      var S = chroma == 0 ? 0 : chroma / (1 - System.Math.Abs((2 * L) - 1));
-      var H = 60 * h1;
+      var luminosity = 0.5 * (max + min);
 
-      return new Hsl(H, S, L);
+      return new Hsl(
+        h1 * 60,
+        chroma == 0 ? 0 : chroma / (1 - System.Math.Abs(2 * luminosity - 1)),
+        luminosity
+      );
     }
-    /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
+    /// <summary>Converts the RGB to a corresponding HSV color.</summary>
     public Hsv ToHsv()
     {
-      const double toDouble = 1.0 / 255;
-
       var r = m_red / 255d;
       var g = m_green / 255d;
       var b = m_blue / 255d;
+
       var max = System.Math.Max(System.Math.Max(r, g), b);
       var min = System.Math.Min(System.Math.Min(r, g), b);
+
       var chroma = max - min;
+
       double h1;
 
       if (chroma == 0) h1 = 0;
@@ -151,11 +162,37 @@ namespace Flux.Colors
       else if (max == g) h1 = 2 + ((b - r) / chroma);
       else h1 = 4 + ((r - g) / chroma);
 
-      var V = max;
-      var S = chroma == 0 ? 0 : chroma / max;
-      var H = 60 * h1;
+      return new Hsv(
+        h1 * 60,
+        chroma == 0 ? 0 : chroma / max,
+        max
+      );
+    }
+    /// <summary>Converts the RGB to a corresponding HWB color.</summary>
+    public Hwb ToHwb()
+    {
+      var r = m_red / 255d;
+      var g = m_green / 255d;
+      var b = m_blue / 255d;
 
-      return new Hsv(H, S, V);
+      var max = System.Math.Max(System.Math.Max(r, g), b);
+      var min = System.Math.Min(System.Math.Min(r, g), b);
+
+      var chroma = max - min;
+
+      double hue;
+
+      if (chroma == 0) hue = 0;
+      else if (max == r) hue = (((g - b) / chroma) + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
+      else if (max == g) hue = 2 + ((b - r) / chroma);
+      else hue = 4 + ((r - g) / chroma);
+
+      hue *= 60;
+
+      if (hue < 0)
+        hue += 360;
+
+      return new Hwb(hue, min, 1 - max);
     }
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
