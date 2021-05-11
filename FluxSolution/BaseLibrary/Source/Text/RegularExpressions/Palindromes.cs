@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Regex
+  public static partial class RegularExpressions
   {
     public const string Palindrome = @"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$";
 

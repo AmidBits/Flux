@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static class DiagnosticsEm
+	public static class ExtensionMethods
 	{
 		public static T Dump<T>(this T value)
 		{

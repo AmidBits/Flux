@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextEm
+	public static partial class SystemTextRegularExpressionsEm
 	{
 		/// <summary>Generate a variable number (from 1 to 2) of words (16 bits as ints) representing UTF16 encoding of the <see cref="System.Text.Rune"/>.</summary>
 		public static int[] GetUtf16(this System.Text.Rune source)
