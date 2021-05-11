@@ -14,7 +14,7 @@ namespace ConsoleApp
 	{
 		private static void TimedMain(string[] _)
 		{
-
+			//Flux.Colors.
 			//var k = 2`
 			//var n = 3;
 
