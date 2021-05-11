@@ -7,8 +7,7 @@ namespace Flux
       return sequence switch
       {
         T[] array => array,
-        System.Collections.Generic.IList<T> ilist => (T[])ilist,
-        System.Collections.Generic.IReadOnlyList<T> ireadonlylist => (T[])ireadonlylist,
+        System.Collections.Generic.List<T> list => System.Runtime.InteropServices.CollectionsMarshal.AsSpan<T>(list),
         _ => ToReadOnlySpan(new System.Collections.Generic.List<T>(sequence)),
       };
     }
@@ -17,7 +16,7 @@ namespace Flux
       return sequence switch
       {
         T[] array => array,
-        System.Collections.Generic.IList<T> ilist => (T[])ilist,
+        System.Collections.Generic.List<T> list => System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list),
         _ => ToSpan(new System.Collections.Generic.List<T>(sequence)),
       };
     }
