@@ -11,15 +11,15 @@ namespace Flux.Colors
     [System.Runtime.InteropServices.FieldOffset(1)] private byte m_green;
     [System.Runtime.InteropServices.FieldOffset(2)] private byte m_blue;
 
-    public byte Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public byte Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public byte Blue { get => m_blue; set => m_blue = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Blue { get => m_blue; set => m_blue = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
-    public Rgb(byte red, byte green, byte blue)
+    public Rgb(int red, int green, int blue)
     {
-      m_red = red >= 0 && red <= 255 ? red : throw new System.ArgumentOutOfRangeException(nameof(red));
-      m_green = green >= 0 && green <= 255 ? green : throw new System.ArgumentOutOfRangeException(nameof(green));
-      m_blue = blue >= 0 && blue <= 255 ? blue : throw new System.ArgumentOutOfRangeException(nameof(blue));
+      m_red = red >= 0 && red <= 255 ? (byte)red : throw new System.ArgumentOutOfRangeException(nameof(red));
+      m_green = green >= 0 && green <= 255 ? (byte)green : throw new System.ArgumentOutOfRangeException(nameof(green));
+      m_blue = blue >= 0 && blue <= 255 ? (byte)blue : throw new System.ArgumentOutOfRangeException(nameof(blue));
     }
 
     public static Rgb Random(System.Random rng)
@@ -33,34 +33,68 @@ namespace Flux.Colors
     public static Rgb Random()
       => Random(Flux.Random.NumberGenerator.Crypto);
 
-    //public double GetChroma()
-    //  => System.Math.Max(System.Math.Max(m_red, m_green), m_blue) - System.Math.Min(System.Math.Min(m_red, m_green), m_blue);
-    public double GetHue()
+    /// <summary>Returns the chroma for the RGB value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>
+    public double GetChroma(out double min, out double max, out double r, out double g, out double b)
     {
-      var max = System.Math.Max(System.Math.Max(m_red, m_green), m_blue);
-      var min = System.Math.Min(System.Math.Min(m_red, m_green), m_blue);
+      r = m_red / 255d;
+      g = m_green / 255d;
+      b = m_blue / 255d;
 
-      if (max == min)
+      min = System.Math.Min(System.Math.Min(r, g), b);
+      max = System.Math.Max(System.Math.Max(r, g), b);
+
+      return max - min;
+    }
+    /// <summary>Returns the hue for the RGB value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Hue"/>
+    public double GetHue(out double min, out double max, out double r, out double g, out double b, out double chroma)
+    {
+      chroma = GetChroma(out min, out max, out r, out g, out b);
+
+      double hue;
+
+      if (chroma == 0) // No range, hue = 0.
         return 0;
+      else if (max == r)
+        hue = ((g - b) / chroma + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
+      else if (max == g)
+        hue = 2 + (b - r) / chroma;
+      else // if (max == blue) // No need for comparison, at this point blue must be max.
+        hue = 4 + (r - g) / chroma;
 
-      var range = max - min;
-
-      var hue = 0D;
-
-      if (max == m_red)
-        hue = (((m_green - m_blue) / range) + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
-      else if (max == m_green)
-        hue = ((m_blue - m_red) / range) + 2;
-      else if (max == m_blue)
-        hue = ((m_red - m_green) / range) + 4;
-
-      hue *= 60;
+      hue *= 60; // Convert to [0, 360] range.
 
       if (hue < 0)
-        hue += 360;
+        hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
 
       return hue;
     }
+    /// <summary>Returns the luma for the RGB value, using the specified coefficients.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Luma_(video)"/>
+    public double GetLuma(double rc, double gc, double bc)
+    {
+      var r = m_red / 255d;
+      var g = m_green / 255d;
+      var b = m_blue / 255d;
+
+      return rc * r + gc * g + bc * b;
+    }
+    /// <summary>Returns the luma for the RGB value, using Rec.601 coefficients.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rec._601"/>
+    public double GetLuma601()
+      => GetLuma(0.2989, 0.5870, 0.1140);
+    /// <summary>Returns the luma for the RGB value, using Adobe/SMPTE 240M coefficients.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Adobe_RGB_color_space"/>
+    public double GetLuma240()
+      => GetLuma(0.212, 0.701, 0.087);
+    /// <summary>Returns the luma for the RGB value, using Rec.709 coefficients.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rec._709"/>
+    public double GetLuma709()
+      => GetLuma(0.2126, 0.7152, 0.0722);
+    /// <summary>Returns the luma for the RGB value, using Rec.2020 coefficients.</summary>
+    public double GetLuma2020()
+      => GetLuma(0.2627, 0.6780, 0.0593);
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Rgb ToGrayscale(GrayscaleMethod method)
@@ -79,121 +113,43 @@ namespace Flux.Colors
     /// <summary>Converts the RGB to a corresponding CMYK color.</summary>
     public Cmyk ToCmyk()
     {
-      var red = m_red / 255d;
-      var green = m_green / 255d;
-      var blue = m_blue / 255d;
+      GetNormalizedChroma(m_red, m_green, m_blue, out var min, out var max, out var r, out var g, out var b);
 
-      var key = 1 - System.Math.Max(red, System.Math.Max(green, blue));
-      var m1key = 1 - key;
+      var key = 1 - max;
 
-      var cyan = (m1key - red) / m1key;
-      var magenta = (m1key - green) / m1key;
-      var yellow = (m1key - blue) / m1key;
+      var rkey = 1 - key;
 
       return new Cmyk(
-        cyan < 0 ? 0 : cyan,
-        magenta < 0 ? 0 : magenta,
-        yellow < 0 ? 0 : yellow,
+        System.Math.Max(0, (rkey - r) / rkey), // Cyan.
+        System.Math.Max(0, (rkey - g) / rkey), // Magenta.
+        System.Math.Max(0, (rkey - b) / rkey), // Yellow.
         key
       );
     }
     /// <summary>Converts the RGB to a corresponding HSI color.</summary>
     public Hsi ToHsi()
     {
-      var rgb = (double)(m_red + m_green + m_blue);
+      var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
 
-      var r = m_red / rgb;
-      var g = m_green / rgb;
-      var b = m_blue / rgb;
+      var i = (r + g + b) / 3;
 
-      var h = System.Math.Acos(0.5 * (r - g + (r - b)) / System.Math.Pow(System.Math.Pow(r - g, 2) + (r - b) * (g - b), 0.5));
-      if (b > g)
-        h = 2 * System.Math.PI - h;
-
-      return new Hsi(
-        h,
-        1 - 3 * Maths.Min(r, g, b),
-        rgb / (3 * 255)
-      );
+      return new Hsi(h, i == 0 ? 0 : 1 - (min / i), i);
     }
     /// <summary>Converts the RGB to a corresponding HSL color.</summary>
     public Hsl ToHsl()
     {
-      var r = m_red / 255d;
-      var g = m_green / 255d;
-      var b = m_blue / 255d;
+      var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
 
-      var max = System.Math.Max(System.Math.Max(r, g), b);
-      var min = System.Math.Min(System.Math.Min(r, g), b);
+      var l = 0.5 * (max + min);
 
-      var chroma = max - min;
-
-      double h1;
-
-      if (chroma == 0) h1 = 0;
-      else if (max == r) h1 = (((g - b) / chroma) + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
-      else if (max == g) h1 = 2 + ((b - r) / chroma);
-      else h1 = 4 + ((r - g) / chroma);
-
-      var luminosity = 0.5 * (max + min);
-
-      return new Hsl(
-        h1 * 60,
-        chroma == 0 ? 0 : chroma / (1 - System.Math.Abs(2 * luminosity - 1)),
-        luminosity
-      );
+      return new Hsl(h, l == 0 || l == 1 ? 0 : chroma / (1 - System.Math.Abs(2 * l - 1)), l);
     }
     /// <summary>Converts the RGB to a corresponding HSV color.</summary>
     public Hsv ToHsv()
-    {
-      var r = m_red / 255d;
-      var g = m_green / 255d;
-      var b = m_blue / 255d;
-
-      var max = System.Math.Max(System.Math.Max(r, g), b);
-      var min = System.Math.Min(System.Math.Min(r, g), b);
-
-      var chroma = max - min;
-
-      double h1;
-
-      if (chroma == 0) h1 = 0;
-      else if (max == r) h1 = (((g - b) / chroma) + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
-      else if (max == g) h1 = 2 + ((b - r) / chroma);
-      else h1 = 4 + ((r - g) / chroma);
-
-      return new Hsv(
-        h1 * 60,
-        chroma == 0 ? 0 : chroma / max,
-        max
-      );
-    }
+      => new Hsv(GetHue(out _, out var max, out _, out _, out _, out var chroma), max == 0 ? 0 : chroma / max, max);
     /// <summary>Converts the RGB to a corresponding HWB color.</summary>
     public Hwb ToHwb()
-    {
-      var r = m_red / 255d;
-      var g = m_green / 255d;
-      var b = m_blue / 255d;
-
-      var max = System.Math.Max(System.Math.Max(r, g), b);
-      var min = System.Math.Min(System.Math.Min(r, g), b);
-
-      var chroma = max - min;
-
-      double hue;
-
-      if (chroma == 0) hue = 0;
-      else if (max == r) hue = (((g - b) / chroma) + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
-      else if (max == g) hue = 2 + ((b - r) / chroma);
-      else hue = 4 + ((r - g) / chroma);
-
-      hue *= 60;
-
-      if (hue < 0)
-        hue += 360;
-
-      return new Hwb(hue, min, 1 - max);
-    }
+      => new Hwb(GetHue(out var min, out var max, out _, out _, out _, out _), min, 1 - max);
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
     //public Hwb ToHwb()
@@ -217,7 +173,7 @@ namespace Flux.Colors
     //}
 
     public int ToInt()
-      => ((byte)(Red >> 8) << 16) | ((byte)(Green >> 8) << 8) | (byte)(Blue >> 8);
+      => (byte)(Red << 16) | (byte)(Green << 8) | (byte)(Blue << 0);
 
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
@@ -297,5 +253,77 @@ namespace Flux.Colors
       => System.HashCode.Combine(m_red, m_green, m_blue);
     public override string ToString()
       => $"<{GetType().Name}: {m_red}, {m_green}, {m_blue}>";
+
+    #region Statics
+    public static double GetChroma(byte red, byte green, byte blue, out byte min, out byte max)
+    {
+      max = System.Math.Max(System.Math.Max(red, green), blue);
+      min = System.Math.Min(System.Math.Min(red, green), blue);
+
+      return max - min;
+    }
+    public static double GetHue(byte red, byte green, byte blue, byte min, byte max)
+    {
+      if (min == max) // No range, hue = 0.
+        return 0;
+
+      double hue;
+
+      var chroma = (double)(max - min);
+
+      if (chroma == 0) // No color range.
+        return 0;
+      else if (max == red)
+        hue = ((green - blue) / chroma + 6) % 6;
+      else if (max == green)
+        hue = 2 + (blue - red) / chroma;
+      else // if (max == blue) // No need for comparison, blue must be max.
+        hue = 4 + (red - green) / chroma;
+
+      hue *= 60;
+
+      if (hue < 0)
+        hue += 360;
+
+      return hue;
+    }
+
+    public static double GetNormalizedChroma(byte red, byte green, byte blue, out double min, out double max, out double r, out double g, out double b)
+    {
+      r = red / 255d;
+      g = green / 255d;
+      b = blue / 255d;
+
+      max = System.Math.Max(System.Math.Max(r, g), b);
+      min = System.Math.Min(System.Math.Min(r, g), b);
+
+      return max - min;
+    }
+    public static double GetNormalizedHue(double nred, double ngreen, double nblue, double min, double max)
+    {
+      if (min == max) // No range, hue = 0.
+        return 0;
+
+      double hue;
+
+      var chroma = max - min;
+
+      if (chroma == 0) // No range, hue = 0.
+        return 0;
+      else if (max == nred)
+        hue = ((ngreen - nblue) / chroma + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
+      else if (max == ngreen)
+        hue = 2 + (nblue - nred) / chroma;
+      else // if (max == blue) // No need for comparison, at this point blue must be max.
+        hue = 4 + (nred - ngreen) / chroma;
+
+      hue *= 60; // Convert to [0, 360] range.
+
+      if (hue < 0)
+        hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
+
+      return hue;
+    }
+    #endregion Statics
   }
 }

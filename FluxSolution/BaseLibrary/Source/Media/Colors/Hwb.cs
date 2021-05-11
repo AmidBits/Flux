@@ -101,6 +101,6 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, White, Black);
     public override string ToString()
-      => $"<{GetType().Name}: {Hue}, {White}, {Black}>";
+      => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_white * 100):N1}%, {(m_black * 100):N1}%>";
   }
 }

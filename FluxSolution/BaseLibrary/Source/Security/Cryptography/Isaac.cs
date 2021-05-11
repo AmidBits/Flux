@@ -1,9 +1,10 @@
 namespace Flux.Cryptography
 {
   // http://burtleburtle.net/bob/rand/isaacafa.html
-  public class Isaac : Flux.Random.IsaacRandom
+  public class Isaac
+    : Flux.Random.IsaacRandom
   {
-    private byte[] Vernam(string text)
+    public byte[] Vernam(string text)
     {
       var bytes = new byte[text.Length];
 

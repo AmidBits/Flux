@@ -9,10 +9,10 @@ namespace Flux.Colors
     public bool IsEmpty => Equals(Empty);
 
     [System.Runtime.InteropServices.FieldOffset(0)] private Hsl m_hsl;
-    [System.Runtime.InteropServices.FieldOffset(24)] private double? m_alpha;
+    [System.Runtime.InteropServices.FieldOffset(24)] private double m_alpha;
 
     public Hsl HSL { get => m_hsl; set => m_hsl = value; }
-    public double Alpha { get => m_alpha ?? 1; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
     public Hsla(Hsl hsl, double alpha)
     {

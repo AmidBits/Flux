@@ -56,14 +56,14 @@ namespace Flux.Colors
 
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Cmyk other)
-      => Cyan == other.Cyan && Magenta == other.Magenta && Yellow == other.Yellow && Black == other.Black;
+      => m_cyan == other.m_cyan && m_magenta == other.m_magenta && m_yellow == other.m_yellow && m_black == other.m_black;
 
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Cmyk o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Cyan, Magenta, Yellow, Black);
+      => System.HashCode.Combine(m_cyan, m_magenta, m_yellow, m_black);
     public override string ToString()
-      => $"<{GetType().Name}: {Cyan}, {Magenta}, {Yellow}, {Black}>";
+      => $"<{GetType().Name}: {(m_cyan * 360):N1}\u00B0, {(m_magenta * 360):N1}\u00B0, {(m_yellow * 360):N1}\u00B0, {(m_black * 360):N1}\u00B0>";
   }
 }

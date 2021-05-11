@@ -15,17 +15,22 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       var rgb = Flux.Colors.Rgb.Random();
-      System.Console.WriteLine($"{rgb}\r\n");
+      //      rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
+      rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
+      System.Console.WriteLine($"{rgb}");
+      var hue = rgb.GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
       var cmyk = rgb.ToCmyk();
-      System.Console.WriteLine($"{cmyk}\r\n {cmyk.ToRgb()}\r\n");
-      //var hsi = rgb.ToHsi();
-      //System.Console.WriteLine($"{hsi}\r\n {hsi.ToRgb()}\r\n");
+      System.Console.WriteLine($"{cmyk} ({cmyk.ToRgb()})");
+      var hsi = rgb.ToHsi();
+      System.Console.WriteLine($"{hsi} ({hsi.ToRgb()})");
       var hsl = rgb.ToHsl();
-      System.Console.WriteLine($"{hsl}\r\n {hsl.ToRgb()}\r\n");
+      System.Console.WriteLine($"{hsl} ({hsl.ToRgb()}) ({hsl.ToHsv()})");
       var hsv = rgb.ToHsv();
-      System.Console.WriteLine($"{hsv}\r\n {hsv.ToRgb()}\r\n {hsv.ToHwb()}\r\n");
+      System.Console.WriteLine($"{hsv} ({hsv.ToRgb()}) ({hsv.ToHsl()}) ({hsv.ToHwb()})");
       var hwb = rgb.ToHwb();
-      System.Console.WriteLine($"{hwb}\r\n {hwb.ToRgb()}\r\n {hwb.ToHsv()}\r\n");
+      System.Console.WriteLine($"{hwb} ({hwb.ToRgb()}) ({hwb.ToHsv()})");
+
+      System.Console.WriteLine($"{rgb.ToStringHtmlHex()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1} | {(chroma * 100):N1} | {(hsv.Value * 100):N1}%, {(hsl.Lightness * 100):N1}%, {(hsi.Intensity * 100):N1}% | Y={rgb.GetLuma601()} | {(hsv.Saturation * 100):N1}%, {(hsl.Saturation * 100):N1}%, {(hsi.Saturation * 100):N1}%");
 
       //Flux.Colors.
       //var k = 2`

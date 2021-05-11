@@ -12,7 +12,7 @@ namespace Flux.Media.Midi
 
     public int Value { get; set; }
 
-    public Note(int value)
+    public Note(byte value)
       => Value = value;
 
 		#region Statics

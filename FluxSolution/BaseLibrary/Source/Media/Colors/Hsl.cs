@@ -32,25 +32,23 @@ namespace Flux.Colors
       => Random(Flux.Random.NumberGenerator.Crypto);
 
     public double GetChroma()
-      => (1 - System.Math.Abs(2 * Lightness - 1)) * Saturation;
+      => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;
 
     /// <summary>Creates an HSV color corresponding to the HSL instance.</summary>
     public Hsv ToHsv()
     {
-      var h = Hue;
-      var v = Lightness + Saturation * System.Math.Min(Lightness, 1 - Lightness);
-      var s = v == 0 ? 0 : 2 * (1 - Lightness / v);
+      var v = m_lightness + m_saturation * System.Math.Min(m_lightness, 1 - m_lightness);
 
-      return new Hsv(h, s, v);
+      return new Hsv(m_hue, v == 0 ? 0 : 2 * (1 - m_lightness / v), v);
     }
     /// <summary>Creates an RGB color corresponding to the HSL instance.</summary>
     public Rgb ToRgb()
     {
       double c = GetChroma();
-      double h1 = Hue / 60;
+      double h1 = m_hue / 60;
       double x = c * (1 - System.Math.Abs((h1 % 2) - 1));
 
-      double m = Lightness - (0.5 * c);
+      double m = m_lightness - (0.5 * c);
       double r1 = m, g1 = m, b1 = m;
 
       switch (h1)
@@ -109,6 +107,6 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, Saturation, Lightness);
     public override string ToString()
-      => $"<{GetType().Name}: {Hue}, {Saturation}, {Lightness}>";
+      => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_lightness * 100):N1}%>";
   }
 }

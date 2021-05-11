@@ -8,10 +8,10 @@ namespace Flux.Colors
     public bool IsEmpty => Equals(Empty);
 
     [System.Runtime.InteropServices.FieldOffset(0)] private Hwb m_hwb;
-    [System.Runtime.InteropServices.FieldOffset(8)] private double? m_alpha;
+    [System.Runtime.InteropServices.FieldOffset(8)] private double m_alpha;
 
     public Hwb HWB { get => m_hwb; set => m_hwb = value; }
-    public double Alpha { get => m_alpha ?? 1; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
     public Hwba(Hwb hwb, double alpha)
     {

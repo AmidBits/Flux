@@ -9,10 +9,10 @@ namespace Flux.Colors
     public bool IsEmpty => Equals(Empty);
 
     [System.Runtime.InteropServices.FieldOffset(0)] private Cmyk m_cmyk;
-    [System.Runtime.InteropServices.FieldOffset(32)] private double? m_alpha;
+    [System.Runtime.InteropServices.FieldOffset(32)] private double m_alpha;
 
     public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
-    public double Alpha { get => m_alpha ?? 1; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
     public Cmyka(Cmyk cmyk, double alpha)
     {
@@ -52,6 +52,6 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(CMYK.Cyan, CMYK.Magenta, CMYK.Yellow, CMYK.Black, Alpha);
     public override string ToString()
-      => $"<{GetType().Name}: {CMYK.Cyan}, {CMYK.Magenta}, {CMYK.Yellow}, {CMYK.Black}, {Alpha}>";
+      => $"<{GetType().Name}: {(CMYK.Cyan * 360):N1}\u00B0, {(CMYK.Magenta * 360):N1}\u00B0, {(CMYK.Yellow * 360):N1}\u00B0, {(CMYK.Black * 360):N1}\u00B0, {(m_alpha * 100):N1}%>";
   }
 }

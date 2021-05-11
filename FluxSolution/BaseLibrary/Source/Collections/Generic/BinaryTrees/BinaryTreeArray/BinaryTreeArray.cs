@@ -54,9 +54,12 @@ namespace Flux.Collections.Generic
       return isL && isR;
     }
 
-    private static int ChildIndexLeft(int index) => (index << 1) + 1;
-    private static int ChildIndexRight(int index) => (index << 1) + 2;
-    private static int ParentIndex(int index) => (index - 1) >> 1;
+    public static int ChildIndexLeft(int index)
+      => (index << 1) + 1;
+    public static int ChildIndexRight(int index)
+      => (index << 1) + 2;
+    public static int ParentIndex(int index)
+      => (index - 1) >> 1;
 
     private bool Delete(TKey key, int index)
     {

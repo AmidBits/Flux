@@ -35,11 +35,9 @@ namespace Flux.Colors
     /// <summary>Creates an HSL color corresponding to the HSV instance.</summary>
     public Hsl ToHsl()
     {
-      var h = Hue;
-      var l = Value * (1 - Saturation / 2);
-      var s = l == 0 || l == 1 ? 0 : (Value - l) / System.Math.Min(l, 1 - l);
+      var lightness = m_value * (1 - m_saturation / 2);
 
-      return new Hsl(h, s, l);
+      return new Hsl(m_hue, lightness == 0 || lightness == 1 ? 0 : (m_value - lightness) / System.Math.Min(lightness, 1 - lightness), lightness);
     }
     /// <summary>Converts to a Hwb color.</summary>
     public Hwb ToHwb()
@@ -48,10 +46,10 @@ namespace Flux.Colors
     public Rgb ToRgb()
     {
       double c = GetChroma();
-      double h1 = Hue / 60;
+      double h1 = m_hue / 60;
       double x = c * (1 - System.Math.Abs((h1 % 2) - 1));
 
-      double m = Value - c;
+      double m = m_value - c;
       double r1 = m, g1 = m, b1 = m;
 
       switch (h1)
@@ -107,6 +105,6 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_hue, m_saturation, m_value);
     public override string ToString()
-      => $"<{GetType().Name}: {m_hue}, {m_saturation}, {m_value}>";
+      => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_value * 100):N1}%>";
   }
 }

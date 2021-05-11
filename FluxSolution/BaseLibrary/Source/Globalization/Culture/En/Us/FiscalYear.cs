@@ -15,7 +15,7 @@ namespace Flux.Globalization.EnUs
     }
 
     /// <summary>Gets the fiscal year of the specified scope for the datetime.</summary>
-    private static int Get(System.DateTime source, Scope scope)
+    public static int Get(System.DateTime source, Scope scope)
     {
       switch (scope)
       {

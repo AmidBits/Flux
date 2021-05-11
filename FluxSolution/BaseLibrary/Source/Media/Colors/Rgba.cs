@@ -9,17 +9,17 @@ namespace Flux.Colors
     public bool IsEmpty => Equals(Empty);
 
     [System.Runtime.InteropServices.FieldOffset(0)] private Rgb m_rgb;
-    [System.Runtime.InteropServices.FieldOffset(3)] private byte? m_alpha;
+    [System.Runtime.InteropServices.FieldOffset(3)] private byte m_alpha;
 
     public Rgb RGB { get => m_rgb; set => m_rgb = value; }
-    public byte Alpha { get => m_alpha ?? 255; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
-    public Rgba(byte red, byte green, byte blue, byte alpha)
+    public Rgba(int red, int green, int blue, int alpha)
     {
       m_rgb = new Rgb(red, green, blue);
-      m_alpha = alpha >= 0 && alpha <= 255 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
+      m_alpha = alpha >= 0 && alpha <= 255 ? (byte)alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
     }
-    public Rgba(Rgb rgb, byte alpha)
+    public Rgba(Rgb rgb, int alpha)
       : this(rgb.Red, rgb.Green, rgb.Blue, alpha)
     { }
 
