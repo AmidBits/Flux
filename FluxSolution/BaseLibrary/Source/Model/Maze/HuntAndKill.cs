@@ -9,7 +9,7 @@ namespace Flux.Model.Maze
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      grid.Values.RandomElement(out var current, Rng);
+      grid.GetValues().RandomElement(out var current, Rng);
 
       while (current != null)
       {
@@ -24,7 +24,7 @@ namespace Flux.Model.Maze
         {
           current = null;
 
-          foreach (var cell in grid.Values.Where(c => !c.Paths.Any()))
+          foreach (var cell in grid.GetValues().Where(c => !c.Paths.Any()))
           {
             var visited = cell.GetEdgesWithPaths();
 

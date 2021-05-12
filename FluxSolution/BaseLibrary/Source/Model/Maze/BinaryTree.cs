@@ -32,7 +32,7 @@ namespace Flux.Model.Maze
       var direction1 = (int)m_diagonal - 45;
       var direction2 = (int)m_diagonal + 45;
 
-      foreach (var cell in grid.Values)
+      foreach (var cell in grid.GetValues())
       {
         var direction = cell.Edges.Where(kvp => kvp.Key == direction1 || kvp.Key == direction2);
 

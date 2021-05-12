@@ -10,7 +10,7 @@ namespace Flux.Model.Maze
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
       var stack = new System.Collections.Generic.Stack<Cell>();
-      grid.Values.RandomElement(out var element, Rng);
+      grid.GetValues().RandomElement(out var element, Rng);
       stack.Push(element);
       while (stack.Any())
       {

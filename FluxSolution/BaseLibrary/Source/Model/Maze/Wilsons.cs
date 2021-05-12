@@ -11,7 +11,7 @@ namespace Flux.Model.Maze
 
       var path = new System.Collections.Generic.List<Cell>();
 
-      var unvisited = grid.Values.ToList();
+      var unvisited = grid.GetValues().ToList();
       unvisited.RandomElement(out var unvisitedElement, Rng);
       unvisited.Remove(unvisitedElement);
 

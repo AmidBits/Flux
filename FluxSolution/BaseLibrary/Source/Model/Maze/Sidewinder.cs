@@ -38,7 +38,7 @@ namespace Flux.Model.Maze
       {
         run.Clear();
 
-        foreach (var cell in grid.Values.Skip(r * grid.Size.Width).Take(grid.Size.Width))
+        foreach (var cell in grid.GetValues().Skip(r * grid.Size.Width).Take(grid.Size.Width))
         {
           run.Add(cell);
 

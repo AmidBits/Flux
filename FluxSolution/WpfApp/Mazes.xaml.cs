@@ -100,7 +100,7 @@ namespace WpfApp
 					}
 				}
 			}
-			foreach (var cell in m_grid.Values)
+			foreach (var cell in m_grid.GetValues())
 			{
 				//  float x = cell.Column * (width + wallWidth) + wallWidth * 2F;
 				//  float y = cell.Row * (width + wallWidth) + wallWidth * 2F;

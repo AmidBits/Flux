@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   public class GrowingTreeMaze
     : AMaze
   {
-    public System.Func<System.Collections.Generic.IList<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
+    public System.Func<System.Collections.Generic.IEnumerable<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
     {
       list.RandomElement(out var element);
 
@@ -16,7 +16,7 @@ namespace Flux.Model.Maze
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      var active = new System.Collections.Generic.List<Cell> { Selector(grid.Values, Rng) };
+      var active = new System.Collections.Generic.List<Cell> { Selector(grid.GetValues(), Rng) };
 
       while (active.Any())
       {

@@ -9,9 +9,9 @@ namespace Flux.Model.Maze
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      grid.Values.RandomElement(out var current, Rng);
+      grid.GetValues().RandomElement(out var current, Rng);
 
-      var unvisitedCount = grid.Values.Count - 1;
+      var unvisitedCount = grid.Count - 1;
 
       while (unvisitedCount > 0)
       {
