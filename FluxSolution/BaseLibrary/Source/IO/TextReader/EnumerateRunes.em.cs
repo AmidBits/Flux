@@ -6,7 +6,7 @@ namespace Flux
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			var buffer = new char[128];
+			var buffer = new char[1024];
 			var offset = 0;
 			var length = source.Read(buffer, 0, buffer.Length);
 
@@ -28,3 +28,9 @@ namespace Flux
 		}
 	}
 }
+
+/*
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Xml.xml"))
+        foreach (var rune in sr.EnumerateRunes())
+          System.Console.Write(rune.ToString());
+ */

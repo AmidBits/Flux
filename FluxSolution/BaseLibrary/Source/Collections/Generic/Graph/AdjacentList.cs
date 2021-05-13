@@ -269,3 +269,35 @@ namespace Flux.Collections.Generic.Graph
     //}
   }
 }
+
+/*
+      // Adjacent List.
+
+      var al = new Flux.Collections.Generic.Graph.AdjacentList<char, int>();
+
+      al.AddVertex('a');
+      al.AddVertex('b');
+      al.AddVertex('c');
+      al.AddVertex('d');
+
+      //g.AddDirectedEdge('a', 'b', 1);
+      //g.AddDirectedEdge('a', 'c', 1);
+      //g.AddDirectedEdge('b', 'a', 1);
+      //g.AddDirectedEdge('b', 'c', 1);
+      //g.AddDirectedEdge('c', 'a', 1);
+      //g.AddDirectedEdge('c', 'b', 1);
+      //g.AddDirectedEdge('c', 'd', 1);
+      //g.AddDirectedEdge('d', 'c', 1);
+
+      al.AddDirectedEdge('a', 'b', 2);
+      al.AddUndirectedEdge('a', 'c', 1);
+      al.AddUndirectedEdge('b', 'c', 1);
+      al.AddUndirectedEdge('c', 'd', 1);
+
+      al.RemoveUndirectedEdge('c', 'b', 1);
+
+      System.Console.WriteLine(al.ToString());
+
+      foreach (var edge in al.GetEdges())
+        System.Console.WriteLine(edge);
+ */

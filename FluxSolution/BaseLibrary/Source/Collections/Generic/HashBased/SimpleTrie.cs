@@ -35,6 +35,8 @@ namespace Flux
     {
       private readonly Node m_root = new Node(false);
 
+      public int Count { get; private set; }
+
       /// <summary>Delete an entry set of <typeparamref name="TKey"/>.</summary>
       /// <param name="entry"></param>
       public void Delete(params TKey[] entry)
@@ -87,6 +89,8 @@ namespace Flux
             var node = new Node(index == entry.Length - 1);
 
             temp.SubNodes.Add(entry[index], node);
+
+            Count++;
 
             temp = node;
           }

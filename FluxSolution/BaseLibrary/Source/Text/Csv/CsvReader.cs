@@ -174,8 +174,8 @@ namespace Flux.Text.Csv
         }
         else throw new System.Exception(@"Could not load field names.");
       }
-
-      IsClosed = !ReadToToken(CsvTokenType.EndLine);
+      else // Otherwise load FieldValues.
+        IsClosed = !ReadToToken(CsvTokenType.EndLine);
 
       return !IsClosed;
     }

@@ -2,49 +2,47 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public class DeBruijnSequence<T>
-    : INumberSequence<T>
+  // https://www.rosettacode.org/wiki/De_Bruijn_sequences
+  public class DeBruijnSequence
+    : INumberSequence<int>
   {
-    public System.Collections.Generic.IList<T> Alphabet { get; set; } = System.Array.Empty<T>();
     public int OrderN { get; set; }
     public int SizeK { get; set; }
 
-    public DeBruijnSequence(int sizeK, int orderN, params T[] alphabet)
+    public DeBruijnSequence(int sizeK, int orderN)
     {
-      Alphabet = alphabet;
       OrderN = orderN;
       SizeK = sizeK;
     }
 
+    /// <summary>Creates a new sequence with the code indices expanded.</summary>
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<int>> GetExpandedSequence<T>()
+      => GetSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
+
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<T> GetSequence()
-      => GetDeBruijnSequence(SizeK, OrderN, Alphabet);
+    public System.Collections.Generic.IEnumerable<int> GetSequence()
+      => GetDeBruijnSequence(SizeK, OrderN);
 
     // IEnumerable
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
       => GetSequence().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
     #region Statics
-
-    /// <summary>Creates a new sequence with the codes expanded.</summary>
-    public static System.Collections.Generic.IEnumerable<T[]> ExpandDeBruijnSequence(System.Collections.Generic.List<T> deBruijnSequence, int order_n)
-      => deBruijnSequence.PartitionNgram(order_n, (e, i) => e.ToArray());
-
-    /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
-    public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence(int size_k, int order_n, System.Collections.Generic.IList<T> alphabet)
+    /// <summary>Creates a new sequence with DeBruijn numbers, which are the indices in a k-sized alphabet of order_n size.</summary>
+    public static System.Collections.Generic.IList<int> GetDeBruijnSequence(int size_k, int order_n)
     {
-      var sequence = new System.Collections.Generic.List<byte>();
+      var sequence = new System.Collections.Generic.List<int>();
 
-      var a = new byte[size_k * order_n];
+      var a = new int[size_k * order_n];
 
       void DeBruijn(int t, int p)
       {
         if (t > order_n)
         {
           if ((order_n % p) == 0)
-            sequence.AddRange(new System.ArraySegment<byte>(a, 1, p));
+            sequence.AddRange(new System.ArraySegment<int>(a, 1, p));
         }
         else
         {
@@ -65,13 +63,45 @@ namespace Flux.Numerics
 
       sequence.AddRange(sequence.GetRange(0, order_n - 1));
 
-      return sequence.Select(i => alphabet[i]);
+      return sequence;
     }
-    /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
-    public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence(int size_k, int order_n, params T[] alphabet)
-      => GetDeBruijnSequence(size_k, order_n, (System.Collections.Generic.IList<T>)alphabet);
 
+    /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
+    public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence<T>(int size_k, int order_n, System.Collections.Generic.IList<T> alphabet)
+      => size_k <= alphabet.Count ? GetDeBruijnSequence(size_k, order_n).Select(i => alphabet[i]) : throw new System.ArgumentOutOfRangeException(nameof(size_k));
+    /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
+    public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence<T>(int size_k, int order_n, params T[] alphabet)
+      => GetDeBruijnSequence(size_k, order_n, (System.Collections.Generic.IList<T>)alphabet);
     #endregion Statics
+  }
+
+  public class DeBruijnSequence<T>
+    : INumberSequence<T>
+  {
+    public int OrderN { get; }
+    public int SizeK { get; }
+    System.Collections.Generic.IList<T> Alphabet { get; }
+
+    public DeBruijnSequence(int sizeK, int orderN, System.Collections.Generic.IList<T> alphabet)
+    {
+      OrderN = orderN;
+      SizeK = sizeK;
+      Alphabet = alphabet;
+    }
+
+    /// <summary>Creates a new sequence with the code indices expanded.</summary>
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> GetExpandedSequence()
+      => GetSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
+
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<T> GetSequence()
+      => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, Alphabet);
+
+    // IEnumerable
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+      => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 
   //public static partial class Maths

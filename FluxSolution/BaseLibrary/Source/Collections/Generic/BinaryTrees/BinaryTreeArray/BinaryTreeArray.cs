@@ -59,7 +59,7 @@ namespace Flux.Collections.Generic
     public static int ChildIndexRight(int index)
       => (index << 1) + 2;
     public static int ParentIndex(int index)
-      => (index - 1) >> 1;
+      => index <= 0 ? -1 : (index - 1) >> 1;
 
     private bool Delete(TKey key, int index)
     {
@@ -193,19 +193,6 @@ namespace Flux.Collections.Generic
         return index;
 
       return -1;
-
-      //	if (node.Key.CompareTo(key) == 0)
-      //	return index;
-
-      //var indexLeft = Search(key, ChildIndexLeft(index));
-      //if (indexLeft > -1)
-      //	return indexLeft;
-
-      //var indexRight = Search(key, ChildIndexRight(index));
-      //if (indexRight > -1)
-      //	return indexRight;
-
-      //return -1;
     }
     public IBinaryTreeArrayNode<TKey, TValue> Search(TKey key)
       => Search(key, 0) is var index && index > -1 ? m_data[index] : Empty;

@@ -35,7 +35,7 @@ namespace Flux.Numerics
 
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-      => GetAscendingPotentialPrimes(2).Where(IsPrimeNumber);
+      => GetAscendingPrimes(2);
 
     // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
@@ -469,6 +469,25 @@ namespace Flux.Numerics
     }
 
     #endregion Statics
+  }
+
+  public class PrimeNumberReverse
+    : INumberSequence<System.Numerics.BigInteger>
+  {
+    public System.Numerics.BigInteger StartAt { get; }
+
+    public PrimeNumberReverse(System.Numerics.BigInteger startAt)
+      => StartAt = startAt;
+
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+      => PrimeNumber.GetDescendingPrimes(StartAt);
+
+    // IEnumerable
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
   }
 
   //public static partial class Maths
