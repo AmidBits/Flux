@@ -50,8 +50,8 @@ namespace Flux.Media.Colors
     public override bool Equals(object? obj)
       => obj is Cmyka o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(CMYK.Cyan, CMYK.Magenta, CMYK.Yellow, CMYK.Black, Alpha);
+      => System.HashCode.Combine(CMYK.Cyan, CMYK.Magenta, CMYK.Yellow, CMYK.Key, Alpha);
     public override string ToString()
-      => $"<{GetType().Name}: {(CMYK.Cyan * 360):N1}\u00B0, {(CMYK.Magenta * 360):N1}\u00B0, {(CMYK.Yellow * 360):N1}\u00B0, {(CMYK.Black * 360):N1}\u00B0, {(m_alpha * 100):N1}%>";
+      => $"<{GetType().Name}: {(CMYK.Cyan * 360):N1}\u00B0, {(CMYK.Magenta * 360):N1}\u00B0, {(CMYK.Yellow * 360):N1}\u00B0, {(CMYK.Key * 360):N1}\u00B0, {(m_alpha * 100):N1}%>";
   }
 }

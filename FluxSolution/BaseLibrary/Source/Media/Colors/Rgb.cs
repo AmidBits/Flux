@@ -95,6 +95,18 @@ namespace Flux.Media.Colors
     /// <summary>Returns the luma for the RGB value, using Rec.2020 coefficients.</summary>
     public double GetLuma2020()
       => GetLuma(0.2627, 0.6780, 0.0593);
+    public void GetSecondaryChromaAndHue(out double chroma2, out double hue2)
+    {
+      var r = m_red / 255d;
+      var g = m_green / 255d;
+      var b = m_blue / 255d;
+
+      var alpha = (2 * r - g - b) / 2;
+      var beta = (Maths.SquareRootOf3 / 2) * (g - b);
+
+      chroma2 = System.Math.Sqrt(alpha * alpha + beta * beta);
+      hue2 = Maths.Wrap(Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)), 0, 360);
+    }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Rgb ToGrayscale(GrayscaleMethod method)
@@ -117,14 +129,17 @@ namespace Flux.Media.Colors
 
       var key = 1 - max;
 
-      var rkey = 1 - key;
+      var keyR = 1 - key;
 
       return new Cmyk(
-        System.Math.Max(0, (rkey - r) / rkey), // Cyan.
-        System.Math.Max(0, (rkey - g) / rkey), // Magenta.
-        System.Math.Max(0, (rkey - b) / rkey), // Yellow.
+        Clamp((keyR - r) / keyR), // Cyan.
+        Clamp((keyR - g) / keyR), // Magenta.
+        Clamp((keyR - b) / keyR), // Yellow.
         key
       );
+
+      static double Clamp(double value)
+        => value < 0 || double.IsNaN(value) ? 0 : value > 1 ? 1 : value;
     }
     /// <summary>Converts the RGB to a corresponding HSI color.</summary>
     public Hsi ToHsi()

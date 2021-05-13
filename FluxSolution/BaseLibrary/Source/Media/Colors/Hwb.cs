@@ -39,7 +39,7 @@ namespace Flux.Media.Colors
     {
       var v = 1 - m_black;
 
-      return new Hsv(m_hue, 1 - (m_white / v), v);
+      return new Hsv(m_hue, v > 0 ? System.Math.Max(1 - (m_white / v), 0) : 0, v);
     }
     /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
     public Rgb ToRgb()
