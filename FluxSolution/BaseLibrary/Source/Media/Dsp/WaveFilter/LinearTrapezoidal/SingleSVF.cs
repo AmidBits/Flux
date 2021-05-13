@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
+namespace Flux.Media.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>A linear trapezoidal integrated state variable filter (SVF) collection</summary>
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>

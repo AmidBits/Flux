@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Media.Dsp.AudioProcessor
 {
 	/// <summary>A basic limiter.</summary>
 	/// <see cref="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>

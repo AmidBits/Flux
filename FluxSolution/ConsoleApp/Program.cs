@@ -14,9 +14,9 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var rgb = Flux.Colors.Rgb.Random();
+      var rgb = Flux.Media.Colors.Rgb.Random();
       //      rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
-      rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
+      rgb = new Flux.Media.Colors.Rgb(0xB4, 0x30, 0xE5);
       System.Console.WriteLine($"{rgb}");
       var hue = rgb.GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
       var cmyk = rgb.ToCmyk();

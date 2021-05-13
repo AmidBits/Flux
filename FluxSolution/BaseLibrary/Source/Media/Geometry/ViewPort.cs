@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux.Media.Geometry
 {
   /// <summary></summary>
   /// <remarks>NOTE! ViewPort does not currently have any properties.</remarks>

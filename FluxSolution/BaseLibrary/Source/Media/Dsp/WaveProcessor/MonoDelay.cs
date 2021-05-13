@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Media.Dsp.AudioProcessor
 {
   // https://creatingsound.com/2013/06/dsp-audio-programming-series-part-1/
   // https://stackoverflow.com/questions/11793310/how-to-add-echo-effect-on-audio-file-using-objective-c

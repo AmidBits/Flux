@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
+namespace Flux.Media.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>A linear trapezoidal integrated Sallen Key filter (SKF) collection</summary>
   /// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>

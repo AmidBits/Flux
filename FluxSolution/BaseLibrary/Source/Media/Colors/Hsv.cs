@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Media.Colors
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Hsv

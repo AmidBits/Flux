@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Media.Dsp
 {
   public struct Sample21
     : IAudioChannelFl, IAudioChannelFr, IAudioChannelLfe, System.IEquatable<Sample21>

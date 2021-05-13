@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveGenerator
+namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sine_wave"/>
   public class CosineWave

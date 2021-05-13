@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Media.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]

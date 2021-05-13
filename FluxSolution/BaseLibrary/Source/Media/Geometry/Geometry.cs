@@ -1,4 +1,4 @@
-//namespace Flux
+//namespace Flux.Media
 //{
 //  public static partial class Geometry
 //  {

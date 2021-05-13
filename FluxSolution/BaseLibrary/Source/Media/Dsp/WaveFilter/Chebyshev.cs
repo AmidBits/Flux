@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Dsp.WaveFilter.Chebyshev
+namespace Flux.Media.Dsp.WaveFilter.Chebyshev
 {
   /// <see cref="http://www.dspguide.com/ch20.htm"/>
   public static class RecursionCoefficient

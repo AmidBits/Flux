@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.WaveGenerator
+﻿namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <summary>Pink noise oscillator. Can only be used by instance.</summary>
   /// <remarks>his is an approximation to a -10dB/decade filter using a weighted sum of first order filters.It is accurate to within +/-0.05dB above 9.2Hz (44100Hz sampling rate). Unity gain is at Nyquist, but can be adjusted by scaling the numbers at the end of each line.</remarks>

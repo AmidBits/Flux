@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux.Media.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Ellipse

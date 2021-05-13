@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Media.Colors
 {
   /// <summary>CMYK refers to the four ink plates used in some color printing: Cyan, Magenta, Yellow, and Key (black).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/CMYK_color_model"/>

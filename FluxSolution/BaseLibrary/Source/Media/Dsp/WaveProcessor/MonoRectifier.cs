@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Media.Dsp.AudioProcessor
 {
   public enum MonoRectifierMode
   {

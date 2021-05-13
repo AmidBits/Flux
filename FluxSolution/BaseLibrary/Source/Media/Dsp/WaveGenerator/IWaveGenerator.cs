@@ -1,4 +1,4 @@
-namespace Flux.Dsp
+namespace Flux.Media.Dsp
 {
   /// <summary>An interface with the purpose of generating singular bipolar waveforms in the range [-1, 1] based on a specified phase in the range [0, 2PI].</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Waveform"/>

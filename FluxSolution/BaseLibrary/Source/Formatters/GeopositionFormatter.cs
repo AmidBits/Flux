@@ -21,7 +21,7 @@ namespace Flux.Formatters
     {
       if (!string.IsNullOrEmpty(format))
       {
-        if (arg is Geoposition geo)
+        if (arg is Media.Geoposition geo)
         {
           if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
           {

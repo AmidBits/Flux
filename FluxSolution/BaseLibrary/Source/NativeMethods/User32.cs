@@ -74,16 +74,16 @@
   {
     // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getcursorpos
     [System.Runtime.InteropServices.DllImport("user32.dll")]
-    private static extern bool GetCursorPos(out Geometry.Point2 lpPoint);
+    private static extern bool GetCursorPos(out Media.Geometry.Point2 lpPoint);
     /// <summary>Retrieves the position of the mouse cursor, in screen coordinates.</summary>
-    public static bool TryGetCursorPos(out Geometry.Point2 point)
+    public static bool TryGetCursorPos(out Media.Geometry.Point2 point)
       => GetCursorPos(out point);
 
     // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setcursorpos
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool SetCursorPos(int X, int Y);
     /// <summary>Moves the cursor to the specified screen coordinates. If the new coordinates are not within the screen rectangle set by the most recent ClipCursor function call, the system automatically adjusts the coordinates so that the cursor stays within the rectangle./summary>
-    public static bool TrySetCursorPos(Geometry.Point2 point)
+    public static bool TrySetCursorPos(Media.Geometry.Point2 point)
       => SetCursorPos(point.X, point.Y);
 
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmousemovepointsex

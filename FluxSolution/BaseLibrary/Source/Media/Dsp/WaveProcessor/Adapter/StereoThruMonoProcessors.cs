@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Media.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Process a stereo signal using two mono audio processors (IAudioProcessorMono).</summary>
   public class StereoThruMonoProcessors

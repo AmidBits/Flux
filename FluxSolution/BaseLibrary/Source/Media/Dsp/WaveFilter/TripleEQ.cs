@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveFilter
+namespace Flux.Media.Dsp.WaveFilter
 {
   public class TripleEQ
     : IWaveFilterMono, IWaveProcessorMono

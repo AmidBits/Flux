@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Media
 {
 	/// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W. The directional values are the degrees they represent.</summary>
 	/// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>

@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Media
 {
   public struct Temperature
     : System.IEquatable<Temperature>

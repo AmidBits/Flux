@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Media.Dsp.AudioProcessor
 {
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 

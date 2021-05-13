@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Media
 {
   public struct Angle
     : System.IEquatable<Angle>

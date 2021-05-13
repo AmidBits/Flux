@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Media.Dsp.AudioProcessor.Adapter
 {
   public class MonoThruStereoProcessor
     : IWaveProcessorMono

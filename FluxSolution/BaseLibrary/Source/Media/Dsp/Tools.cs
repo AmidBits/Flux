@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Dsp
+namespace Flux.Media.Dsp
 {
   // https://github.com/safchain/sa_dsp/blob/master/jni/dsp/limit/SimpleLimit.cpp
   public static class Tools

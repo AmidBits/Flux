@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Media.Dsp
 {
   /// <summary>Fourier transformation.</summary>
   /// <see cref="https://github.com/andrewkirillov/AForge.NET/blob/master/Sources/Math/FourierTransform.cs"/>

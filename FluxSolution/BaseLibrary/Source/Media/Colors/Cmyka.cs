@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Media.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]

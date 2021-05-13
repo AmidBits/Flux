@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveGenerator
+namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
   public class SampleAndHold

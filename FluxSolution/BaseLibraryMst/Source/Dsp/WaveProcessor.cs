@@ -11,12 +11,12 @@ namespace Dsp
     //private Flux.Dsp.Oscillator.AmplitudeModulator _amplitudeModulator = new Flux.Dsp.WaveModulator.AmplitudeModulator();
     //private Flux.Dsp.WaveModulator.RingModulator _ringModulator = new Flux.Dsp.WaveModulator.RingModulator();
 
-    private Flux.Dsp.AudioProcessor.MonoFolder _folder = new Flux.Dsp.AudioProcessor.MonoFolder() { Multiplier = 2.5 };
-    private Flux.Dsp.AudioProcessor.MonoInverter _inverter = new Flux.Dsp.AudioProcessor.MonoInverter();
-    private Flux.Dsp.AudioProcessor.MonoLagger _lagger = new Flux.Dsp.AudioProcessor.MonoLagger();
-    private Flux.Dsp.AudioProcessor.MonoQuadratic _quadratic = new Flux.Dsp.AudioProcessor.MonoQuadratic() { Exponent = 2 };
-    private Flux.Dsp.AudioProcessor.MonoRectifier _fullWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.MonoRectifierMode.FullWave, 0);
-    private Flux.Dsp.AudioProcessor.MonoRectifier _halfWaveRectifier = new Flux.Dsp.AudioProcessor.MonoRectifier(Flux.Dsp.AudioProcessor.MonoRectifierMode.HalfWave, 0);
+    private Flux.Media.Dsp.AudioProcessor.MonoFolder _folder = new Flux.Media.Dsp.AudioProcessor.MonoFolder() { Multiplier = 2.5 };
+    private Flux.Media.Dsp.AudioProcessor.MonoInverter _inverter = new Flux.Media.Dsp.AudioProcessor.MonoInverter();
+    private Flux.Media.Dsp.AudioProcessor.MonoLagger _lagger = new Flux.Media.Dsp.AudioProcessor.MonoLagger();
+    private Flux.Media.Dsp.AudioProcessor.MonoQuadratic _quadratic = new Flux.Media.Dsp.AudioProcessor.MonoQuadratic() { Exponent = 2 };
+    private Flux.Media.Dsp.AudioProcessor.MonoRectifier _fullWaveRectifier = new Flux.Media.Dsp.AudioProcessor.MonoRectifier(Flux.Media.Dsp.AudioProcessor.MonoRectifierMode.FullWave, 0);
+    private Flux.Media.Dsp.AudioProcessor.MonoRectifier _halfWaveRectifier = new Flux.Media.Dsp.AudioProcessor.MonoRectifier(Flux.Media.Dsp.AudioProcessor.MonoRectifierMode.HalfWave, 0);
 
     private const double _hiPhase = System.Math.PI * 0.75;
     private const double _loPhase = System.Math.PI * 0.25;

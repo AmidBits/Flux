@@ -1,4 +1,4 @@
-namespace Flux.Dsp.Synthesis
+namespace Flux.Media.Dsp.Synthesis
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amplitude"/>

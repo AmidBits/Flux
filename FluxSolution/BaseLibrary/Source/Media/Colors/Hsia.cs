@@ -1,4 +1,4 @@
-namespace Flux.Colors
+namespace Flux.Media.Colors
 {
   /// <summary>Hsia is the same as Hsi with the addition of an alpha channel.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]

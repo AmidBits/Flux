@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.WaveGenerator
+﻿namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <summary>Pink noise oscillator. Can only be used by instance.</summary>
   /// <see cref="http://stackoverflow.com/questions/616897/how-can-i-make-a-pink-noise-generator"/>

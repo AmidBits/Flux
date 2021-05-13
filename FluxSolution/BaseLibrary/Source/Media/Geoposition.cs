@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Media
 {
 	#region Earth radius (static class)
 	public static class EarthRadii

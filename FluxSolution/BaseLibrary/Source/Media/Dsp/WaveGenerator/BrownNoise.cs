@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.WaveGenerator
+﻿namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Brownian_noise"/>
   /// <seealso cref="http://vellocet.com/dsp/noise/VRand.html"/>

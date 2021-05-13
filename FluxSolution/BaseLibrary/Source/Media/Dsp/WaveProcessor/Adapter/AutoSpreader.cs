@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Media.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
   public class AutoSpreader

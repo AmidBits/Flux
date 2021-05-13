@@ -1,4 +1,4 @@
-namespace Flux.Dsp.Synthesis
+namespace Flux.Media.Dsp.Synthesis
 {
 	public class Phase
 	{

@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
+﻿namespace Flux.Media.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>Calculates all filter frequency functions all at once.</summary>
   public class MultiSVF

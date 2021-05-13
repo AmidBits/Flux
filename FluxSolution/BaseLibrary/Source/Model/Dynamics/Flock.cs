@@ -2,7 +2,7 @@
 //using System.Collections.Generic;
 //using System.Linq;
 
-using Flux.Geometry;
+using Flux.Media.Geometry;
 using System.Diagnostics;
 using System.Linq;
 

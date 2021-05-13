@@ -21,7 +21,7 @@ namespace Flux.Formatters
     {
       if (!string.IsNullOrEmpty(format))
       {
-        if (arg is Angle angle)
+        if (arg is Media.Angle angle)
         {
           if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
           {

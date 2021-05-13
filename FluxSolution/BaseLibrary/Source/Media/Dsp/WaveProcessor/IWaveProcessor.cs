@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Media.Dsp
 {
   /// <summary>A bipolar [-1, 1] sample audio processor in mono.</summary>
   public interface IWaveProcessorMono

@@ -1,4 +1,4 @@
-namespace Flux.Dsp.WaveFilter
+namespace Flux.Media.Dsp.WaveFilter
 {
 	// https://github.com/vinniefalco/DSPFilters/blob/master/shared/DSPFilters/source/PoleFilter.cpp
 	// http://musicdsp.org/files/Audio-EQ-Cookbook.txt

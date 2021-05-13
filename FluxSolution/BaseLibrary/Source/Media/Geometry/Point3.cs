@@ -112,31 +112,31 @@ namespace Flux
 
     /// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public static System.Collections.Generic.IEnumerable<Geometry.Point3> GetOctantCenterVectors(this Geometry.Point3 source, int subOctantSizeOfX, int subOctantSizeOfY, int subOctantSizeOfZ)
+    public static System.Collections.Generic.IEnumerable<Media.Geometry.Point3> GetOctantCenterVectors(this Media.Geometry.Point3 source, int subOctantSizeOfX, int subOctantSizeOfY, int subOctantSizeOfZ)
     {
-      yield return new Geometry.Point3(source.X + subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z + subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X - subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z + subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X - subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z + subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X + subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z + subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X + subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z - subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X - subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z - subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X - subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z - subOctantSizeOfZ);
-      yield return new Geometry.Point3(source.X + subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z - subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X + subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z + subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X - subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z + subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X - subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z + subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X + subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z + subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X + subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z - subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X - subOctantSizeOfX, source.Y + subOctantSizeOfY, source.Z - subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X - subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z - subOctantSizeOfZ);
+      yield return new Media.Geometry.Point3(source.X + subOctantSizeOfX, source.Y - subOctantSizeOfY, source.Z - subOctantSizeOfZ);
     }
     /// <summary>Convert the 3D vector to a octant based on the specified axis vector.</summary>
     /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public static int ToOctantNumber(this Geometry.Point3 source, in Geometry.Point3 centerAxis) => ((source.X >= centerAxis.X ? 1 : 0) * 1) + ((source.Y >= centerAxis.Y ? 1 : 0) * 2) + ((source.Z >= centerAxis.Z ? 1 : 0) * 4);
+    public static int ToOctantNumber(this Media.Geometry.Point3 source, in Media.Geometry.Point3 centerAxis) => ((source.X >= centerAxis.X ? 1 : 0) * 1) + ((source.Y >= centerAxis.Y ? 1 : 0) * 2) + ((source.Z >= centerAxis.Z ? 1 : 0) * 4);
 
     /// <summary>Convert a point to a 2D vector (the Z component is discarded).</summary>
-    public static System.Numerics.Vector2 ToVector2(this in Geometry.Point3 source)
+    public static System.Numerics.Vector2 ToVector2(this in Media.Geometry.Point3 source)
       => new System.Numerics.Vector2(source.X, source.Y);
     /// <summary>Convert a point to a 3D vector.</summary>
-    public static System.Numerics.Vector3 ToVector3(this in Geometry.Point3 source)
+    public static System.Numerics.Vector3 ToVector3(this in Media.Geometry.Point3 source)
       => new System.Numerics.Vector3(source.X, source.Y, source.Z);
   }
 
-  namespace Geometry
+  namespace Media.Geometry
   {
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
     public struct Point3

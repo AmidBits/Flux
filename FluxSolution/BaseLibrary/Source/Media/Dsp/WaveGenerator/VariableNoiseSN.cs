@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.WaveGenerator
+﻿namespace Flux.Media.Dsp.WaveGenerator
 {
   /// <summary>
   /// A class (Viir ~ variable IIR) that provides a source of pink noise with a power spectrum density(PSD) proportional to 1/f^alpha.

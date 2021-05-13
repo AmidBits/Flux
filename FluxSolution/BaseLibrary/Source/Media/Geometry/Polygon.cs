@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Linq;
 
-namespace Flux.Geometry
+namespace Flux.Media.Geometry
 {
   public enum PolygonType
   {
