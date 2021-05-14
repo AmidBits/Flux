@@ -14,22 +14,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var data5 = new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.UriLocal).AcquireTabularData().ToArray();
-      var data6 = new Flux.Resources.Scowl.TwoOfTwelveFull(Flux.Resources.Scowl.TwoOfTwelveFull.UriLocal).AcquireTabularData().ToArray();
-
-      var st = new Flux.Collections.Generic.SimpleTrie<char>();
-      var length = 0;
-      foreach (var row in data5.Skip(1))
-      {
-        var word = $"{row[0]}".ToCharArray();
-        length += word.Length;
-        st.Insert(word);
-      }
-      //st.Insert("an");
-      //st.Insert("and");
-      //st.Insert("ant");
-      //st.Insert("at");
-
+      var source = new System.DateTime(1967, 05, 30);
+      var target = new System.DateTime(2021, 05, 14);
+      System.Console.WriteLine($"{source.AgeInTotalYears(target)}");
+      System.Console.WriteLine($"{target.AgeInTotalYears(source)}");
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

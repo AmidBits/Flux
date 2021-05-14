@@ -34,10 +34,6 @@ namespace Flux.Text.PhoneticAlgorithm
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"^(a|e|i|o|u)", @"A"); // 5.18
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"(a|e|i|o|u)", @"3"); // 5.19
 
-			//code = code.Replace(@"j", @"y"); // 7.20
-			//code = System.Text.RegularExpressions.Regex.Replace(code, @"^y3", @"Y3"); // 7.21
-			//code = System.Text.RegularExpressions.Regex.Replace(code, @"^y", @"A"); // 7.22
-			//code = code.Replace(@"y", @"3"); // 7.23
 			code = code.Replace(@"3gh3", @"3kh3"); // 5.20
 			code = code.Replace(@"gh", @"22"); // 5.21
 			code = code.Replace(@"g", @"k"); // 5.22

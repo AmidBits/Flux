@@ -160,6 +160,10 @@ namespace Flux.Text.Csv
       return false;
     }
 
+    // Statics
+    public static string UnescapeCsv(string source)
+      => source?.Unwrap('"', '"').Replace("\"\"", "\"", System.StringComparison.Ordinal) ?? string.Empty;
+
     // DataReader
     public override bool Read()
     {
