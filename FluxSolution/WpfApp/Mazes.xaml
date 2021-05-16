@@ -17,7 +17,7 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal">
+		<StackPanel x:Name="stackPanelControls" Orientation="Horizontal">
 			<Button Click="Button_Click_Clear" Content="Clear" Margin="1" Padding="5"/>
 			<Button Click="Button_Click_AldousBroder" Content="Aldous/Broder" Margin="1" Padding="5"/>
 			<Button Click="Button_Click_BackTracker" Content="BackTracker" Margin="1" Padding="5"/>
