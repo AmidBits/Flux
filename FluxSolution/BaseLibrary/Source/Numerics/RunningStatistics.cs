@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Numerics
 {
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable

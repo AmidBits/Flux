@@ -14,10 +14,9 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var source = new System.DateTime(1967, 05, 30);
-      var target = new System.DateTime(2021, 05, 14);
-      System.Console.WriteLine($"{source.AgeInTotalYears(target)}");
-      System.Console.WriteLine($"{target.AgeInTotalYears(source)}");
+      var st = new Flux.Collections.Generic.SimpleTrie<char>();
+      st.Insert("Hello");
+      st.Insert("Helm");
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
