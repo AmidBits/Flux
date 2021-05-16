@@ -437,35 +437,35 @@ namespace Flux.Media.Midi
 
     public const int CallbackFunction = 0x00030000;
 
-    private readonly Winmm.MidiInProc m_midiInProc;
+    private readonly Win32.Winmm.MidiInProc m_midiInProc;
 
     private System.IntPtr m_id;
 
     public int Index { get; }
 
-    public Winmm.MidiInCaps Capabilities { get; }
+    public Win32.Winmm.MidiInCaps Capabilities { get; }
 
-    private MidiIn(int index, Winmm.MidiInCaps capabilities)
+    private MidiIn(int index, Win32.Winmm.MidiInCaps capabilities)
     {
-      m_midiInProc = new Winmm.MidiInProc(MidiProc);
+      m_midiInProc = new Win32.Winmm.MidiInProc(MidiProc);
 
       Index = index;
       Capabilities = capabilities;
 
-      ErrorHandled(Winmm.NativeMethods.midiInOpen(out m_id, (uint)index, m_midiInProc, System.IntPtr.Zero, 0));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiInOpen(out m_id, (uint)index, m_midiInProc, System.IntPtr.Zero, 0));
     }
 
     private static bool ErrorHandled(uint mmsyserr)
       => mmsyserr == MmSysErrNoError ? true : throw new System.InvalidOperationException();
 
     public static int Count
-      => unchecked((int)Winmm.NativeMethods.midiInGetNumDevs());
+      => unchecked((int)Win32.Winmm.NativeMethods.midiInGetNumDevs());
 
     public bool Start()
-      => ErrorHandled(Winmm.NativeMethods.midiInStart(m_id));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiInStart(m_id));
 
     public bool Stop()
-      => ErrorHandled(Winmm.NativeMethods.midiInStop(m_id));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiInStop(m_id));
 
     private void MidiProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2)
     {
@@ -474,7 +474,7 @@ namespace Flux.Media.Midi
 
     protected override void DisposeManaged()
     {
-      ErrorHandled(Winmm.NativeMethods.midiInClose(m_id));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiInClose(m_id));
 
       m_id = System.IntPtr.Zero;
     }
@@ -532,18 +532,18 @@ namespace Flux.Media.Midi
 
     public int Index { get; }
 
-    public Winmm.MidiOutCaps Capabilities { get; }
+    public Win32.Winmm.MidiOutCaps Capabilities { get; }
 
     //private void MidiProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2)
     //{
     //}
 
-    private MidiOut(int index, Winmm.MidiOutCaps capabilities)
+    private MidiOut(int index, Win32.Winmm.MidiOutCaps capabilities)
     {
       Index = index;
       Capabilities = capabilities;
 
-      ErrorHandled(Winmm.NativeMethods.midiOutOpen(out m_id, (uint)index, null, System.IntPtr.Zero, 0));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiOutOpen(out m_id, (uint)index, null, System.IntPtr.Zero, 0));
     }
 
     public static MidiOut Create(int index) => GetMidiOuts().Where(mo => mo.m_id.ToInt32() == index).Single();
@@ -554,45 +554,45 @@ namespace Flux.Media.Midi
 
     public void TrySendMore(byte[] message)
     {
-      var mhdr = new Winmm.Header();
+      var mhdr = new Win32.Winmm.Header();
       mhdr.dwBufferLength = mhdr.dwBytesRecorded = message?.Length ?? throw new System.ArgumentNullException(nameof(message));
       mhdr.lpData = System.Runtime.InteropServices.Marshal.AllocHGlobal(mhdr.dwBufferLength);
       System.Runtime.InteropServices.Marshal.Copy(message, 0, mhdr.lpData, mhdr.dwBufferLength);
-      var sizeOfHeader = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Winmm.Header));
+      var sizeOfHeader = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Win32.Winmm.Header));
       var nhdr = System.Runtime.InteropServices.Marshal.AllocHGlobal(sizeOfHeader);
       System.Runtime.InteropServices.Marshal.StructureToPtr(mhdr, nhdr, false);
-      ErrorHandled(Winmm.NativeMethods.midiOutPrepareHeader(m_id, nhdr, sizeOfHeader));
-      ErrorHandled(Winmm.NativeMethods.midiOutLongMsg(m_id, nhdr, sizeOfHeader));
-      ErrorHandled(Winmm.NativeMethods.midiOutUnprepareHeader(m_id, nhdr, sizeOfHeader));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiOutPrepareHeader(m_id, nhdr, sizeOfHeader));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiOutLongMsg(m_id, nhdr, sizeOfHeader));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiOutUnprepareHeader(m_id, nhdr, sizeOfHeader));
     }
     //=> message.Length <= 3 ? midiOutShortMsg(Id, BitConverter.BigEndian.ToUInt32(message, 0)) : throw new System.ArgumentOutOfRangeException(nameof(message));
     public bool TrySend(byte status, byte data1, byte data2)
-      => Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)(data2 << 16 | data1 << 8 | status)) == MmSysErrNoError;
+      => Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)(data2 << 16 | data1 << 8 | status)) == MmSysErrNoError;
     public bool TrySend(int message)
-      => Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)(message)) == MmSysErrNoError;
+      => Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)(message)) == MmSysErrNoError;
 
     public void NoteOff(int channel, int note, int velocity)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((velocity << 16) | (note << 8) | (0x80 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((velocity << 16) | (note << 8) | (0x80 | (channel & 0xF)))));
     public void NoteOn(int channel, int note, int velocity)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((velocity << 16) | (note << 8) | (0x90 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((velocity << 16) | (note << 8) | (0x90 | (channel & 0xF)))));
     public void AfterTouch(int channel, int note, int pressure)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 16) | (note << 8) | (0xA0 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 16) | (note << 8) | (0xA0 | (channel & 0xF)))));
     public void Controller(int channel, int cc, int value)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((value << 16) | (cc << 8) | (0xB0 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((value << 16) | (cc << 8) | (0xB0 | (channel & 0xF)))));
     public void ProgramChange(int channel, int pressure)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 8) | (0xC0 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 8) | (0xC0 | (channel & 0xF)))));
     public void ChannelPressure(int channel, int pressure)
-      => ErrorHandled(Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 8) | (0xD0 | (channel & 0xF)))));
+      => ErrorHandled(Win32.Winmm.NativeMethods.midiOutShortMsg(m_id, (uint)((pressure << 8) | (0xD0 | (channel & 0xF)))));
 
     private static System.Collections.Generic.IEnumerable<MidiOut> GetMidiOuts()
     {
-      var mo = new MidiOut[Winmm.NativeMethods.midiOutGetNumDevs()];
+      var mo = new MidiOut[Win32.Winmm.NativeMethods.midiOutGetNumDevs()];
 
       for (var index = 0; index < mo.Length; index++)
       {
-        var moc = default(Winmm.MidiOutCaps);
+        var moc = default(Win32.Winmm.MidiOutCaps);
 
-        ErrorHandled(Winmm.NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
+        ErrorHandled(Win32.Winmm.NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
 
         yield return new MidiOut(index, moc);
       }
@@ -617,7 +617,7 @@ namespace Flux.Media.Midi
 
     protected override void DisposeManaged()
     {
-      ErrorHandled(Winmm.NativeMethods.midiOutClose(m_id));
+      ErrorHandled(Win32.Winmm.NativeMethods.midiOutClose(m_id));
 
       m_id = System.IntPtr.Zero;
     }

@@ -1,4 +1,4 @@
-﻿namespace Flux.User32
+﻿namespace Flux.Win32.User32
 {
   public enum GmmpResolution
   {

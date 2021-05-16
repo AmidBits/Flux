@@ -1,4 +1,4 @@
-﻿namespace Flux.Winmm
+﻿namespace Flux.Win32.Winmm
 {
   #region System.Enum Manufacturer
   /// <summary>
