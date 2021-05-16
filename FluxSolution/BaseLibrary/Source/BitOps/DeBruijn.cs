@@ -4,7 +4,7 @@ namespace Flux
   // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
   // http://aggregate.org/MAGIC/#Log2%20of%20an%20Integer
 
-  public static class BitsByDeBruijn
+  public static class BitOpsDeBruijn
   {
     public static readonly byte[] LogTable = new byte[] { 0, 9, 1, 10, 13, 21, 2, 29, 11, 14, 16, 18, 22, 25, 3, 30, 8, 12, 20, 28, 15, 17, 24, 7, 19, 27, 23, 6, 26, 5, 4, 31 };
 

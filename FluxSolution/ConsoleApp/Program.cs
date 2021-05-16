@@ -14,9 +14,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var st = new Flux.Collections.Generic.SimpleTrie<char>();
-      st.Insert("Hello");
-      st.Insert("Helm");
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
