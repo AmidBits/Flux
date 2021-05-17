@@ -1,8 +1,8 @@
 using System.Linq;
 
-namespace Flux
+namespace Flux.Reflexion
 {
-	public static partial class Reflect
+	public static partial class Types
 	{
 		/// <summary>Returns all the fields in a dictionary. To get the public fields of a static object, use the parameter typeof([StaticObjectName]).</summary>
 		public static System.Collections.Generic.IDictionary<string, object?> GetFields(object source)

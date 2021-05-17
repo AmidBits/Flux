@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Reflexion
 {
   public static partial class Types
   {
