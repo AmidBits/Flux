@@ -7,18 +7,18 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="DesktopWidget.xaml.cs">
+    <Compile Update="Windows\DesktopWidget.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Drawing.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Mazes.xaml.cs">
+    <Compile Update="Windows\Mazes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DesktopWidget.xaml">
+    <Page Update="Windows\DesktopWidget.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Drawing.xaml">
@@ -27,7 +27,7 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Mazes.xaml">
+    <Page Update="Windows\Mazes.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

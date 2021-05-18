@@ -22,6 +22,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <ToggleButton Grid.Column="0" Grid.Row="0" x:Name="toggleButtonDesktopWidget" Checked="toggleButtonDesktopWidget_Checked" Content="Desktop Widget" Unchecked="toggleButtonDesktopWidget_Unchecked"></ToggleButton>
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+            <ToggleButton x:Name="toggleButtonDesktopWidget" Checked="toggleButtonDesktopWidget_Checked" Content="Desktop Widget" Unchecked="toggleButtonDesktopWidget_Unchecked"></ToggleButton>
+            <ToggleButton x:Name="toggleButtonMazes" Checked="toggleButtonMazes_Checked" Content="Mazes" Unchecked="toggleButtonMazes_Unchecked"></ToggleButton>
+        </StackPanel>
     </Grid>
 </Window>

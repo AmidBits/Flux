@@ -8,30 +8,35 @@
       InitializeComponent();
     }
 
+    void ToggleWindow(ref System.Windows.Window window, System.Type windowType)
+    {
+      if (window is null)
+      {
+        window = (System.Windows.Window)System.Activator.CreateInstance(windowType);
+        window.Show();
+      }
+      else
+      {
+        window.Close();
+        window = null;
+      }
+    }
+
     #region DesktopWidget
-    DesktopWidget m_desktopWidget = null;
-
+    System.Windows.Window m_windowDesktopWidget = null;
     private void toggleButtonDesktopWidget_Checked(object sender, System.Windows.RoutedEventArgs e)
-    {
-      if (m_desktopWidget is null)
-      {
-        m_desktopWidget = new DesktopWidget();
-        m_desktopWidget.Show();
-      }
-      else
-        throw new System.ArgumentNullException(nameof(m_desktopWidget));
-    }
-
+      => ToggleWindow(ref m_windowDesktopWidget, typeof(DesktopWidget));
     private void toggleButtonDesktopWidget_Unchecked(object sender, System.Windows.RoutedEventArgs e)
-    {
-      if (m_desktopWidget is null)
-        throw new System.ArgumentNullException(nameof(m_desktopWidget));
-      else
-      {
-        m_desktopWidget.Close();
-        m_desktopWidget = null;
-      }
-    }
+      => ToggleWindow(ref m_windowDesktopWidget, typeof(DesktopWidget));
+
     #endregion DesktopWidget
+
+    #region Window Mazes
+    System.Windows.Window m_windowMazes = null;
+    private void toggleButtonMazes_Checked(object sender, System.Windows.RoutedEventArgs e)
+      => ToggleWindow(ref m_windowMazes, typeof(Mazes));
+    private void toggleButtonMazes_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+     => ToggleWindow(ref m_windowMazes, typeof(Mazes));
+    #endregion Window Mazes
   }
 }
