@@ -14,7 +14,9 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-
+      var scores = 17;
+      for (var i = 1; i <= 100; i++)
+        System.Console.WriteLine($"{i:D2} = NR({Flux.Maths.PercentileNearestRank(i, scores)}) = LR({Flux.Maths.PercentileRankLerp(i, scores)})");
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
     }
