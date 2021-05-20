@@ -14,9 +14,40 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var scores = 17;
-      for (var i = 1; i <= 100; i++)
-        System.Console.WriteLine($"{i:D2} = NR({Flux.Maths.PercentileNearestRank(i, scores)}) = LR({Flux.Maths.PercentileRankLerp(i, scores)})");
+      //var set = new int[] { 40, 45, 55, 67, 77, 85, 89, 88, 81, 69, 56, 43 };
+      var set = new int[] { 55, 66, 77, 88, 99 };
+      //var set = new int[] { 1, 2, 2, 3, 5 };
+
+      System.Console.WriteLine("Histogram:");
+      var histogram = set.Histogram(out var sumOfFrequencies);
+      foreach (var kvp in histogram) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+
+      System.Console.WriteLine("PMF:");
+      var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
+      foreach (var kvp in pmf) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+
+      System.Console.WriteLine("CDF:");
+      var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
+      foreach (var kvp in cdf) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+
+      System.Console.WriteLine("PercentileRank:");
+      var plr = histogram.PercentileRank(sumOfFrequencies);
+      foreach (var kvp in plr) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+
+      System.Console.WriteLine("PercentRank:");
+      var pr = set.PercentRank();
+      foreach (var kvp in pr) System.Console.WriteLine($"{kvp}'");
+
+      var count = set.Length;
+      var percentile = 50;
+
+      System.Console.WriteLine();
+      System.Console.WriteLine($"NearestRank: {Maths.PercentileOrdinalNearest(percentile, count)}, LerpRank: {Maths.PercentileOrdinalLerp(percentile, count)}");
+
+
+      //System.Console.WriteLine($"{set.ProbabilityMassFunction(2/*, out var x, out var y*/)}");
+      //System.Console.WriteLine($"{set.CumulativeMassFunction(2)}");
+
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
     }

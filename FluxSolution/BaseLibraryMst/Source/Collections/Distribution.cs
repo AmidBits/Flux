@@ -19,7 +19,9 @@ namespace Collections.Generic
     [TestMethod]
     public void PercentRank()
     {
-      CollectionAssert.AreEqual(new double[] { 10, 30, 50, 70, 90 }, d.PercentRank().ToArray(), nameof(Flux.SystemCollectionsGenericEm.PercentileRank));
+      var actual = d.PercentRank().ToArray();
+      var expected = new double[] { 0, 25, 50, 75, 100 };
+      CollectionAssert.AreEqual(expected, actual, nameof(Flux.SystemCollectionsGenericEm.PercentileRank));
     }
 
     [TestMethod]
@@ -31,7 +33,7 @@ namespace Collections.Generic
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.6, d.ProbabilityMassFunction(65, out var _, out var _), nameof(Flux.SystemCollectionsGenericEm.ProbabilityMassFunction));
+      Assert.AreEqual(0.6, d.ProbabilityMassFunction(65), nameof(Flux.SystemCollectionsGenericEm.ProbabilityMassFunction));
     }
   }
 }
