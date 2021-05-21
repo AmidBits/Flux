@@ -1,4 +1,6 @@
-﻿namespace WpfApp
+﻿using System.ComponentModel;
+
+namespace WpfApp
 {
   /// <summary>Interaction logic for MainWindow.</summary>
   public partial class MainWindow : System.Windows.Window
@@ -6,6 +8,20 @@
     public MainWindow()
     {
       InitializeComponent();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+      if (m_windowDesktopWidget is not null)
+        ToggleWindow(ref m_windowDesktopWidget, typeof(DesktopWidget));
+      if (m_windowDrawing is not null)
+        ToggleWindow(ref m_windowDrawing, typeof(Drawing));
+      if (m_windowMazes is not null)
+        ToggleWindow(ref m_windowMazes, typeof(Mazes));
+
+      System.Threading.Thread.Sleep(3000);
+
+      base.OnClosing(e);
     }
 
     void ToggleWindow(ref System.Windows.Window window, System.Type windowType)
@@ -28,8 +44,15 @@
       => ToggleWindow(ref m_windowDesktopWidget, typeof(DesktopWidget));
     private void toggleButtonDesktopWidget_Unchecked(object sender, System.Windows.RoutedEventArgs e)
       => ToggleWindow(ref m_windowDesktopWidget, typeof(DesktopWidget));
-
     #endregion DesktopWidget
+
+    #region Window Drawing
+    System.Windows.Window m_windowDrawing = null;
+    private void toggleButtonDrawing_Checked(object sender, System.Windows.RoutedEventArgs e)
+        => ToggleWindow(ref m_windowDrawing, typeof(Drawing));
+    private void toggleButtonDrawing_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+        => ToggleWindow(ref m_windowDrawing, typeof(Drawing));
+    #endregion Window Drawing
 
     #region Window Mazes
     System.Windows.Window m_windowMazes = null;
@@ -38,5 +61,6 @@
     private void toggleButtonMazes_Unchecked(object sender, System.Windows.RoutedEventArgs e)
      => ToggleWindow(ref m_windowMazes, typeof(Mazes));
     #endregion Window Mazes
+
   }
 }

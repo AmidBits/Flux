@@ -10,7 +10,7 @@
     <Compile Update="Windows\DesktopWidget.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Drawing.xaml.cs">
+    <Compile Update="Windows\Drawing.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Windows\Mazes.xaml.cs">
@@ -21,7 +21,7 @@
     <Page Update="Windows\DesktopWidget.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Drawing.xaml">
+    <Page Update="Windows\Drawing.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
