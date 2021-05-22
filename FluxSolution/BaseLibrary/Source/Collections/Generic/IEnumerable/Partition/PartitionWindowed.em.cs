@@ -13,43 +13,34 @@ namespace Flux
 
       var queue = new System.Collections.Generic.Queue<System.Collections.Generic.List<TSource>>();
 
-      using (var e = source.GetEnumerator())
+      var e = source.GetEnumerator();
+
+      var index = step;
+
+      if (e.MoveNext())
       {
-        var index = step;
-
-        if (e.MoveNext())
+        do
         {
-          do
+          if (index++ >= step)
           {
-            if (index++ >= step)
-            {
-              index = 1;
+            index = 1;
 
-              queue.Enqueue(new System.Collections.Generic.List<TSource>());
-            }
-
-            foreach (var list in queue)
-            {
-              list.Add(e.Current);
-            }
-
-            if (queue.Peek().Count == size)
-            {
-              yield return resultSelector(queue.Dequeue());
-            }
+            queue.Enqueue(new System.Collections.Generic.List<TSource>());
           }
-          while (e.MoveNext());
+
+          foreach (var list in queue)
+            list.Add(e.Current);
+
+          if (queue.Peek().Count == size)
+            yield return resultSelector(queue.Dequeue());
         }
-        else throw new System.ArgumentException(@"The sequence is empty");
+        while (e.MoveNext());
       }
+      else throw new System.ArgumentException(@"The sequence is empty");
 
       if (includeTrailing)
-      {
         while (queue.Count > 0 && queue.Peek().Count > 0)
-        {
           yield return resultSelector(queue.Dequeue());
-        }
-      }
     }
   }
 }

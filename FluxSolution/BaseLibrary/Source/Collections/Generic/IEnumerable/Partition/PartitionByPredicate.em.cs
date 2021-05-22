@@ -11,20 +11,20 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionByPredicate<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int, bool> partitionPredicate, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (partitionPredicate is null) throw new System.ArgumentNullException(nameof(partitionPredicate));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       var partitionIndex = 0;
       var elementIndex = 0;
 
-      using (var enumerator = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source)))
-      {
-        while (enumerator.MoveNext())
-        {
-          yield return resultSelector(Yield(enumerator), partitionIndex);
+      var enumerator = source.GetEnumerator();
 
-          partitionIndex++;
-        }
+      while (enumerator.MoveNext())
+      {
+        yield return resultSelector(Yield(enumerator), partitionIndex);
+
+        partitionIndex++;
       }
 
       /// <summary>Yield count elements from the sequence.</summary>
