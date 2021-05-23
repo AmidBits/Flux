@@ -26,7 +26,7 @@ namespace ConsoleApp
       var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
       System.Console.WriteLine(pmf.ToConsoleString());
 
-      System.Console.WriteLine("CDF:");
+      System.Console.WriteLine("CMF(CDF):");
       var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
       System.Console.WriteLine(cdf.ToConsoleString());
 
