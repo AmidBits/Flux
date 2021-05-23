@@ -15,28 +15,28 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //var set = new int[] { 40, 45, 55, 67, 77, 85, 89, 88, 81, 69, 56, 43 };
-      var set = new int[] { 55, 66, 77, 88, 99 };
-      //var set = new int[] { 1, 2, 2, 3, 5 };
+      //var set = new int[] { 55, 66, 77, 88, 99 };
+      var set = new int[] { 1, 2, 2, 3, 5 };
 
       System.Console.WriteLine("Histogram:");
       var histogram = set.Histogram(out var sumOfFrequencies);
-      foreach (var kvp in histogram) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+      System.Console.WriteLine(histogram.ToConsoleString());
 
       System.Console.WriteLine("PMF:");
       var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
-      foreach (var kvp in pmf) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+      System.Console.WriteLine(pmf.ToConsoleString());
 
       System.Console.WriteLine("CDF:");
       var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
-      foreach (var kvp in cdf) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+      System.Console.WriteLine(cdf.ToConsoleString());
 
       System.Console.WriteLine("PercentileRank:");
       var plr = histogram.PercentileRank(sumOfFrequencies);
-      foreach (var kvp in plr) System.Console.WriteLine($"{kvp.Key} = '{kvp.Value}'");
+      System.Console.WriteLine(plr.ToConsoleString());
 
       System.Console.WriteLine("PercentRank:");
       var pr = set.PercentRank();
-      foreach (var kvp in pr) System.Console.WriteLine($"{kvp}'");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
 
       var count = set.Length;
       var percentile = 50;
