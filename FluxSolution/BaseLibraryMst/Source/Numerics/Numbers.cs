@@ -4,10 +4,10 @@ using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Maths
+namespace Numerics
 {
 	[TestClass]
-	public class Series
+	public class Numbers
 	{
 		readonly System.Numerics.BigInteger[] nbi = System.Linq.Enumerable.Range(0, 255).Select(i => -(System.Numerics.BigInteger)i).ToArray();
 		readonly short[] ns = System.Linq.Enumerable.Range(0, 255).Select(i => (short)-i).ToArray();

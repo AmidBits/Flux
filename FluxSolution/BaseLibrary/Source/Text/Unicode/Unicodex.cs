@@ -10,7 +10,7 @@ namespace Flux.Text
 	/// <remarks>A .NET CLR character, is UTF-16, i.e. a code unit (mentioned above).</remarks>
 	/// <remarks>A .NET 'text element' is equivalent to a grapheme.</remarks>
 	/// <remarks>A .NET System.Text.Rune represents a Unicode code point.</remarks>
-	public static partial class UnicodeEx
+	public static partial class Unicodex
 	{
 		public static System.Collections.Generic.IDictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>> GetCharactersByUnicodeCategory()
 		{
