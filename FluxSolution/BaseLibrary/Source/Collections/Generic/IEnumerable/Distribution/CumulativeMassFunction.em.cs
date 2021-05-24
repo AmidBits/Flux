@@ -28,6 +28,7 @@ namespace Flux
       => CumulativeMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
 
     /// <summary>The CDF is the function that maps values to their percentile rank, in a probability range [0, 1], in a distribution.</summary>
+    /// <remarks>For consistency, a discrete CDF should be called a cumulative mass function(CMF), but that seems just ignored.</remarks>
     public static System.Collections.Generic.IDictionary<TValue, double> CumulativeMassFunction<TValue>(this System.Collections.Generic.IDictionary<TValue, int> source, int sumOfAllFrequencies, double factor = 1)
       where TValue : notnull
     {
