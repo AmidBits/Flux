@@ -1,11 +1,5 @@
 namespace Flux
 {
-  public enum AlternatingRangeDirection
-  {
-    AwayFromMean,
-    TowardsMean
-  }
-
   public static partial class LinqX
   {
     /// <summary>Produces a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
@@ -64,7 +58,6 @@ namespace Flux
           break;
       }
     }
-
     public static System.Collections.Generic.IEnumerable<double> AlternatingRange(double mean, int count, double step, AlternatingRangeDirection direction)
     {
       switch (direction)
