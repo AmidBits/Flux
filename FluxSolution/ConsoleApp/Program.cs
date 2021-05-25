@@ -14,8 +14,13 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var set = new int[] { 1, 2, 2, 3, 5 };
+      var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
 
+foreach(var value in set)
+			{
+        System.Console.WriteLine($"{value:G2}");
+			}
+      
       System.Console.WriteLine("Histogram:");
       var histogram = set.Histogram(out var sumOfFrequencies);
       System.Console.WriteLine(histogram.ToConsoleString());
