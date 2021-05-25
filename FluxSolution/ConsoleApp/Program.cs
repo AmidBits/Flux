@@ -14,8 +14,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //var set = new int[] { 40, 45, 55, 67, 77, 85, 89, 88, 81, 69, 56, 43 };
-      //var set = new int[] { 55, 66, 77, 88, 99 };
       var set = new int[] { 1, 2, 2, 3, 5 };
 
       System.Console.WriteLine("Histogram:");

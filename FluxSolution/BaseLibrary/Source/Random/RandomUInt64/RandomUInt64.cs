@@ -7,7 +7,6 @@ namespace Flux.Random
 	{
 		/// <summary>Returns a non-negative random integer.</summary>
 		/// <returns>A non-negative random integer.</returns>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public override int Next()
 			=> Next(int.MaxValue);
 		/// <summary>Returns a non-negative random integer that is less than the specified maximum.</summary>
@@ -33,7 +32,6 @@ namespace Flux.Random
 		}
 		/// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
 		/// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public override double NextDouble()
 			=> Sample();
 
