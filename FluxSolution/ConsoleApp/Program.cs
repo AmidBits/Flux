@@ -14,13 +14,30 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      //var outer = 6 * 16;
+      //var inner = outer / 6;
+
+      //var array = new int[outer][];
+
+      //for (var o = array.GetLength(0) - 1; o >= 0; o--)
+      //{
+      //  array[o] = new int[1024 * 1024 * 1024 / inner];
+
+      //  var factorial = Flux.Maths.Factorial(Flux.Random.NumberGenerator.Crypto.Next() & 0x3FFFFFF);
+
+      //  for (var i = array[o].GetLength(0) - 1; i >= 0; i--)
+      //    array[o][i] = factorial;
+      //}
+
+      //System.Threading.Thread.Sleep(1000);
+
+      //return;
+
       var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
 
-foreach(var value in set)
-			{
+      foreach (var value in set)
         System.Console.WriteLine($"{value:G2}");
-			}
-      
+
       System.Console.WriteLine("Histogram:");
       var histogram = set.Histogram(out var sumOfFrequencies);
       System.Console.WriteLine(histogram.ToConsoleString());
