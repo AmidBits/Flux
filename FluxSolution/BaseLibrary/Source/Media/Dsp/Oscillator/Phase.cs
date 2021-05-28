@@ -44,7 +44,7 @@ namespace Flux.Media.Dsp.Synthesis
 
 			m_position = m_offset = 0.0;
 		}
-		public Phase() : this(Media.Frequency.Normalized(440.0, 44100.0)) { }
+		public Phase() : this(Media.Frequency.CyclesPerSample(440.0, 44100.0)) { }
 
 		/// <summary>Resets the phase position using the phase offset. Can be used to "sync" the oscillator.</summary>
 		public void Reset(bool resetModulators)

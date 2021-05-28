@@ -18,6 +18,8 @@ namespace Flux.Media
       => ConvertRadianToGradian(m_radian);
     public double Radians
       => m_radian;
+    public double Revolutions
+      => ConvertRadianToRevolution(m_radian);
 
     public Angle(double radian)
       => m_radian = radian;
@@ -64,18 +66,25 @@ namespace Flux.Media
     /// <summary>Convert the angle specified in degrees to radians.</summary>
     public static double ConvertDegreeToRadian(double degree)
       => degree * DivPiBy180;
+    public static double ConvertDegreeToRevolution(double degree)
+      => degree / 360;
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
     public static double ConvertGradianToDegree(double gradian)
       => gradian * Div9By10;
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
     public static double ConvertGradianToRadian(double gradian)
       => gradian * DivPiBy200;
+    public static double ConvertGradianToRevolution(double gradian)
+      => gradian / 400;
     /// <summary>Convert the angle specified in radians to degrees.</summary>
     public static double ConvertRadianToDegree(double radian)
       => radian * Div180ByPi;
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
     public static double ConvertRadianToGradian(double radian)
       => radian * Div200ByPi;
+    public static double ConvertRadianToRevolution(double radian)
+      => radian / Maths.PiX2;
+
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static System.Numerics.Vector2 ConvertRotationAngleToCartesian(double radian, out double x, out double y)
