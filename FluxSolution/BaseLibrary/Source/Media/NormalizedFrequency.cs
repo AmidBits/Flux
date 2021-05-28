@@ -8,7 +8,7 @@ namespace Flux.Media
 		public SampleRate SampleRate { get; set; }
 
 		public double Value
-			=> Frequency.Value / SampleRate.Value;
+			=> Frequency.Hertz / SampleRate.Frequency.Hertz;
 
 		public NormalizedFrequency(Frequency frequency, SampleRate sampleRate)
 		{

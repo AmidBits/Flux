@@ -7,6 +7,9 @@ namespace Flux.Media
     public const double CelsiusBoilingPoint = 99.9839;
     public const double CelsiusIcePoint = 0d;
 
+    public const double Div9By5 = 9d / 5d;
+    public const double Div5By9 = 5d / 9d;
+
     public const double FahrenheitAbsoluteZero = -459.67;
     public const double FahrenheitBoilingPoint = 211.97102;
     public const double FahrenheitIcePoint = 32d;
@@ -57,19 +60,19 @@ namespace Flux.Media
 
     /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
     public static double ConvertCelsiusToFahrenheit(double celsius)
-      => celsius * (9d / 5d) + FahrenheitIcePoint;
+      => celsius * Div9By5 + FahrenheitIcePoint;
     /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
     public static double ConvertCelsiusToKelvin(double celsius)
       => celsius - CelsiusAbsoluteZero;
     /// <summary>Convert the temperature specified in Celsius to Rankine.</summary>
     public static double ConvertCelsiusToRankine(double celsius)
-      => (celsius - CelsiusAbsoluteZero) * (9d / 5d);
+      => (celsius - CelsiusAbsoluteZero) * Div9By5;
     /// <summary>Convert the temperature specified in Fahrenheit to Celsius.</summary>
     public static double ConvertFahrenheitToCelsius(double fahrenheit)
-      => (fahrenheit - FahrenheitIcePoint) * (5d / 9d);
+      => (fahrenheit - FahrenheitIcePoint) * Div5By9;
     /// <summary>Convert the temperature specified in Fahrenheit to Kelvin.</summary>
     public static double ConvertFahrenheitToKelvin(double fahrenheit)
-      => (fahrenheit - FahrenheitAbsoluteZero) * (5d / 9d);
+      => (fahrenheit - FahrenheitAbsoluteZero) * Div5By9;
     /// <summary>Convert the temperature specified in Fahrenheit to Rankine.</summary>
     public static double ConvertFahrenheitToRankine(double fahrenheit)
       => fahrenheit - FahrenheitAbsoluteZero;
@@ -78,19 +81,19 @@ namespace Flux.Media
       => kelvin - KelvinIcePoint;
     /// <summary>Convert the temperature specified in Kelvin to Fahrenheit.</summary>
     public static double ConvertKelvinToFahrenheit(double kelvin)
-      => kelvin * (9d / 5d) + FahrenheitAbsoluteZero;
+      => kelvin * Div9By5 + FahrenheitAbsoluteZero;
     /// <summary>Convert the temperature specified in Kelvin to Rankine.</summary>
     public static double ConvertKelvinToRankine(double kelvin)
-      => kelvin * (9d / 5d);
+      => kelvin * Div9By5;
     /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
     public static double ConvertRankineToCelsius(double rankine)
-      => (rankine - RankineIcePoint) * (5d / 9d);
+      => (rankine - RankineIcePoint) * Div5By9;
     /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
     public static double ConvertRankineToFahrenheit(double rankine)
       => rankine - RankineIcePoint;
     /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
     public static double ConvertRankineToKelvin(double rankine)
-      => rankine * (5d / 9d);
+      => rankine * Div5By9;
     #endregion // Statics
 
     // Operators

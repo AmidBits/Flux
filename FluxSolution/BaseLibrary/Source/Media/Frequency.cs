@@ -1,21 +1,27 @@
 namespace Flux.Media
 {
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
-  public class Frequency
+  public struct Frequency
+    : System.IEquatable<Frequency>, System.IFormattable
   {
     private static readonly double FrequencyRatioOfCent = System.Math.Pow(2.0, 1.0 / 1200.0);
 
-    public double Value { get; set; }
+    private readonly double m_hertz;
+    public double Hertz => m_hertz;
 
     public Frequency(double value)
-      => Value = value;
-    public Frequency(byte midiNote)
-      => Value = Midi.Note.ToFrequency(midiNote);
+      => m_hertz = value;
+    //public Frequency(byte midiNote)
+    //  => m_hertz = Midi.MidiNote.ToFrequency(midiNote);
 
     public NormalizedFrequency ToNormalizedFrequency(SampleRate sampleRate)
       => new NormalizedFrequency(this, sampleRate);
 
     #region Statics
+    //public Frequency ConvertMidiNoteToFrequency(byte midiNote)
+    //  => m_hertz = Midi.MidiNote.ToFrequency(midiNote);
+
+
     /// <summary>Convert two specified frequencies into a frequency ratio.</summary>
     public static double Ratio(double frequencyA, double frequencyB)
       => (frequencyA / frequencyB);
@@ -48,5 +54,19 @@ namespace Flux.Media
     public static double ToWaveLength(double frequency, double speedOfSound = 343.21)
       => speedOfSound / frequency;
     #endregion Statics
+
+    // IEquatable
+    public bool Equals(Frequency other)
+      => m_hertz == other.m_hertz;
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => string.Format(formatProvider ?? new Formatters.AngleFormatter(), format ?? $"<{nameof(Frequency)}: {{0:D3}}>", this);
+    // Overrides
+    public override bool Equals(object? obj)
+      => obj is Frequency o && Equals(o);
+    public override int GetHashCode()
+      => m_hertz.GetHashCode();
+    public override string ToString()
+      => ToString(null, null);
   }
 }
