@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Partition the sequence into a specified number of list. The last partition may contain less elements than the other partitions.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionByCount<TSource, TResult>(this System.Collections.Generic.IList<TSource> source, int countOfPartitions, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)

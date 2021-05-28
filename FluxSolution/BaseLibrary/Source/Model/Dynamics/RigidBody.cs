@@ -9,7 +9,7 @@ namespace Flux.Model.Dynamics
     public float CoefficientOfDrag { get; set; } = 0.35F;
     public float CoefficientOfRestitution { get; set; } = 0.95F;
 
-    public float Mass { get; set; } = 7F;
+    public float Mass { get; set; } = 100F;
 
     public System.Numerics.Vector3 LinearVelocity { get; set; }
     public System.Numerics.Vector3 Force { get; set; }
@@ -28,11 +28,11 @@ namespace Flux.Model.Dynamics
       foreach (var forceGenerator in ForceGenerators)
         forceGenerator.ApplyForce(this);
 
-      var linearAcceleration = Force / Mass;
+      var linearAcceleration = Force / Mass; // F=ma means a=F/a.
       LinearVelocity += linearAcceleration * deltaTime;
       Force = System.Numerics.Vector3.Zero;
 
-      var angularAcceleration = Torque / Mass;
+      var angularAcceleration = Torque / Mass; // F=ma means a=F/a.
       AngularVelocity += angularAcceleration * deltaTime;
       Torque = System.Numerics.Vector3.Zero;
 

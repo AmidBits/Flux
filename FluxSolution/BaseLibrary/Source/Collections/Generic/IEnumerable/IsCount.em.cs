@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		/// <summary>Returns whether the sequence has at least the specified count (number of elements) matching the predicate.</summary>
 		public static bool IsCountAtLeast<T>(this System.Collections.Generic.IEnumerable<T> source, int minCount, System.Func<T, int, bool> predicate)

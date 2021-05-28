@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Partition the sequence as a new sequence of size elements.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/N-gram"/>

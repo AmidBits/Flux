@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIListEm
 	{
 		/// <summary></summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
@@ -23,9 +23,9 @@ namespace Flux
 					if (stackState[stackIndex] < stackIndex)
 					{
 						if ((stackIndex & 1) == 0)
-							SystemSpanEm.Swap(list, 0, stackIndex);
+							Swap(list, 0, stackIndex);
 						else
-							SystemSpanEm.Swap(list, stackState[stackIndex], stackIndex);
+							Swap(list, stackState[stackIndex], stackIndex);
 
 						yield return (System.Collections.Generic.IReadOnlyList<T>)list;
 

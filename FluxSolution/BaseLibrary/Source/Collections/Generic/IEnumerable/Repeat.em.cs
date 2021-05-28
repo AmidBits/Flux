@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {

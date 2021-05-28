@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDoubleEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Determines how close two variables are to having a linear relationship with each other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>

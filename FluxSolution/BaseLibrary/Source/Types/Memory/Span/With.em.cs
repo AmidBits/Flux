@@ -35,19 +35,5 @@ namespace Flux
     /// <summary>Indicates whether the sequence starts with the other sequence. Uses the default comparer.</summary>
     public static bool StartsWith<T>(this System.Span<T> source, System.ReadOnlySpan<T> other)
       => StartsWith(source, other, System.Collections.Generic.EqualityComparer<T>.Default);
-
-    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
-    public static bool EndsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => EndsWith((System.Span<T>)(T[])source, (T[])other, comparer);
-    /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
-    public static bool EndsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> other)
-      => EndsWith((System.Span<T>)(T[])source, (T[])other, System.Collections.Generic.EqualityComparer<T>.Default);
-
-    /// <summary>Indicates whether the sequence starts with the other sequence. Uses the specified comparer.</summary>
-    public static bool StartsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> other, System.Collections.Generic.IEqualityComparer<T> comparer)
-      => StartsWith((System.Span<T>)(T[])source, (T[])other, comparer);
-    /// <summary>Indicates whether the sequence starts with the other sequence. Uses the default comparer.</summary>
-    public static bool StartsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> other)
-      => StartsWith((System.Span<T>)(T[])source, (T[])other, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

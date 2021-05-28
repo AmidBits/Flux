@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		// http://www.greenteapress.com/thinkstats/thinkstats.pdf
 

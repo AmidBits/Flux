@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     // https://en.wikipedia.org/wiki/Percentile_rank
 

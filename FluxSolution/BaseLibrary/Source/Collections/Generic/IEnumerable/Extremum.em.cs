@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		public static (T minimum, T maximum) Extremum<T>(this System.Collections.Generic.IEnumerable<T> source)
 			where T : System.IComparable<T>

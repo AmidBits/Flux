@@ -21,12 +21,5 @@ namespace Flux
     /// <summary>Returns a random element from the sequence in the output variable. Uses the .NET cryptographic random number generator.</summary>
     public static bool RandomElement<T>(this System.Span<T> source, out T result)
       => RandomElement(source, out result, Flux.Random.NumberGenerator.Crypto);
-
-    /// <summary>Returns a random element from the list in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
-    public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result, System.Random rng)
-      => RandomElement((System.Span<T>)(T[])source.ToArray(), out result, rng);
-    /// <summary>Returns a random element from the list in the output variable. Uses the .NET cryptographic random number generator.</summary>
-    public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result)
-      => RandomElement((System.Span<T>)(T[])source.ToArray(), out result, Flux.Random.NumberGenerator.Crypto);
   }
 }

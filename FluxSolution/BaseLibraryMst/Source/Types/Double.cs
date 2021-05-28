@@ -33,7 +33,7 @@ namespace Types
     [TestMethod]
     public void Percentile75th()
     {
-      Assert.AreEqual(60, (int)d.PercentileRank(75), nameof(SystemCollectionsGenericEm.PercentRank));
+      Assert.AreEqual(60, (int)d.PercentileRank(75), nameof(SystemCollectionsGenericIEnumerableEm.PercentRank));
     }
 
     [TestMethod]

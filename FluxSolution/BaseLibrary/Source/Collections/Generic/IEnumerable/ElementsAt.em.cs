@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Returns a new sequence of elements based on the specified indices. Can be used to create a subset, repeating duplicates, reorder, etc.</summary>
     public static System.Collections.Generic.IEnumerable<T> ElementsAt<T>(this System.Collections.Generic.IEnumerable<T> source, params int[] indices)

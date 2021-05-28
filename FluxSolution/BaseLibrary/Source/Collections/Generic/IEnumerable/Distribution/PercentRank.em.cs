@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericEm
+  public static partial class SystemCollectionsGenericIEnumerableEm
   {
     public static double PercentRank<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int index)
       => Maths.PercentRank(source.Count(), index);

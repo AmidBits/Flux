@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		/// <summary>Creates a jagged array from the sequence, using the specified selector and column names.</summary>
 		public static object[][] ToJaggedArray<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, object[]> arraySelector, params string[] columnNames)

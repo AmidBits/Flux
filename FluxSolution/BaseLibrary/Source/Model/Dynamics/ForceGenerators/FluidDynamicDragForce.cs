@@ -1,6 +1,6 @@
 namespace Flux.Model.Dynamics.ForceGenerators
 {
-  public class DragForce
+  public class FluidDynamicDragForce
     : IForceGenerator
   {
     public const float DensityOfAir = 1.29F;

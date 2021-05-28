@@ -79,17 +79,17 @@ namespace Flux
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<float> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => SystemCollectionsGenericEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+      => SystemCollectionsGenericIEnumerableEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 v2, System.Numerics.Vector3 v3, int index, float angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => SystemCollectionsGenericEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+      => SystemCollectionsGenericIEnumerableEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => SystemCollectionsGenericEm.PartitionTuple2(source, true, (e1, e2, index) => (e2 + e1) / 2);
+      => SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (e1, e2, index) => (e2 + e1) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector3 v1, System.Numerics.Vector3 vm, System.Numerics.Vector3 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => SystemCollectionsGenericEm.PartitionTuple2(source, true, (e1, e2, index) => (e1, (e2 + e1) / 2, e2, index));
+      => SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (e1, e2, index) => (e1, (e2 + e1) / 2, e2, index));
 
     //public static bool InsidePolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
     //  => System.Math.Abs(AngleSum(source, vector)) > 1;
@@ -238,12 +238,12 @@ namespace Flux
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is var c ? SystemCollectionsGenericEm.PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? SystemCollectionsGenericIEnumerableEm.PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => ComputeCentroid(source) is var c ? SystemCollectionsGenericEm.PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>

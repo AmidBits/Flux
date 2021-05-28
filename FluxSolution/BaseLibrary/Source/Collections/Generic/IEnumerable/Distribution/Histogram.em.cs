@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		public static System.Collections.Generic.SortedDictionary<TValue, int> Histogram<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, out int sumOfAllFrequencies)
 			where TValue : notnull

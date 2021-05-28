@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		/// <summary>Create a new data table from the specified sequence.</summary>
 		/// <param name="source">The source sequence.</param>

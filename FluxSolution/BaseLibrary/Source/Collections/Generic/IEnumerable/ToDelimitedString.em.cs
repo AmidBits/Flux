@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericEm
+	public static partial class SystemCollectionsGenericIEnumerableEm
 	{
 		/// <summary>Concatenates item data into a string from the sequence with the specified delimiter, by means of a <see cref="System.Text.StringBuilder"/> selector.</summary>
 		private static string ToDelimitedString<T>(System.Collections.Generic.IEnumerable<T> source, string delimiter, System.Func<System.Text.StringBuilder, T, System.Text.StringBuilder> stringBuilder)
