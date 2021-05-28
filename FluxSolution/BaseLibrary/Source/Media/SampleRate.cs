@@ -1,14 +1,14 @@
 namespace Flux.Media
 {
-	public class SampleRate
-	{
-		public double Value { get; set; }
+  public class SampleRate
+  {
+    public Frequency Frequency { get; set; }
 
-		public SampleRate(double value)
-			=> Value = value;
-		public SampleRate()
-			: this(44100)
-		{
-		}
-	}
+    public SampleRate(Frequency frequency)
+      => Frequency = frequency;
+    public SampleRate()
+      : this(new Frequency(44100))
+    {
+    }
+  }
 }

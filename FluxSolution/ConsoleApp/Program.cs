@@ -10,99 +10,118 @@ using Flux;
 
 namespace ConsoleApp
 {
-	class Program
-	{
-		private static void TimedMain(string[] _)
-		{
-			var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
+  class Program
+  {
+    private static void TimedMain(string[] _)
+    {
+      //var outer = 6 * 16;
+      //var inner = outer / 6;
 
-			foreach (var value in set)
-				System.Console.WriteLine($"{value:G2}");
+      //var array = new int[outer][];
 
-			System.Console.WriteLine("Histogram:");
-			var histogram = set.Histogram(out var sumOfFrequencies);
-			System.Console.WriteLine(histogram.ToConsoleString());
+      //for (var o = array.GetLength(0) - 1; o >= 0; o--)
+      //{
+      //  array[o] = new int[1024 * 1024 * 1024 / inner];
 
-			System.Console.WriteLine("PMF:");
-			var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
-			System.Console.WriteLine(pmf.ToConsoleString());
+      //  var factorial = Flux.Maths.Factorial(Flux.Random.NumberGenerator.Crypto.Next() & 0x3FFFFFF);
 
-			System.Console.WriteLine("CMF(CDF):");
-			var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
-			System.Console.WriteLine(cdf.ToConsoleString());
+      //  for (var i = array[o].GetLength(0) - 1; i >= 0; i--)
+      //    array[o][i] = factorial;
+      //}
 
-			System.Console.WriteLine("PercentileRank:");
-			var plr = histogram.PercentileRank(sumOfFrequencies);
-			System.Console.WriteLine(plr.ToConsoleString());
+      //System.Threading.Thread.Sleep(1000);
 
-			System.Console.WriteLine("PercentRank:");
-			var pr = set.PercentRank();
-			System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
+      //return;
 
-			var count = set.Length;
-			var percentile = 50;
+      var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
 
-			System.Console.WriteLine();
-			System.Console.WriteLine($"NearestRank: {Maths.PercentileOrdinalNearest(percentile, count)}, LerpRank: {Maths.PercentileOrdinalLerp(percentile, count)}");
+      foreach (var value in set)
+        System.Console.WriteLine($"{value:G2}");
+
+      System.Console.WriteLine("Histogram:");
+      var histogram = set.Histogram(out var sumOfFrequencies);
+      System.Console.WriteLine(histogram.ToConsoleString());
+
+      System.Console.WriteLine("PMF:");
+      var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
+      System.Console.WriteLine(pmf.ToConsoleString());
+
+      System.Console.WriteLine("CMF(CDF):");
+      var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
+      System.Console.WriteLine(cdf.ToConsoleString());
+
+      System.Console.WriteLine("PercentileRank:");
+      var plr = histogram.PercentileRank(sumOfFrequencies);
+      System.Console.WriteLine(plr.ToConsoleString());
+
+      System.Console.WriteLine("PercentRank:");
+      var pr = set.PercentRank();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
+
+      var count = set.Length;
+      var percentile = 50;
+
+      System.Console.WriteLine();
+      System.Console.WriteLine($"NearestRank: {Maths.PercentileOrdinalNearest(percentile, count)}, LerpRank: {Maths.PercentileOrdinalLerp(percentile, count)}");
 
 
-			//System.Console.WriteLine($"{set.ProbabilityMassFunction(2/*, out var x, out var y*/)}");
-			//System.Console.WriteLine($"{set.CumulativeMassFunction(2)}");
+      //System.Console.WriteLine($"{set.ProbabilityMassFunction(2/*, out var x, out var y*/)}");
+      //System.Console.WriteLine($"{set.CumulativeMassFunction(2)}");
 
-			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
-			//System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
-		}
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
+    }
 
-		static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
-		{
-			//var startDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
-			for (int i = 0; i < taskCount; i++)
-			{
-				ExpensiveTask(taskLoad);
-				//var total = ExpensiveTask(taskLoad);
-				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-			}
-			//var endDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
-			//var span = endDateTime - startDateTime;
-			//System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
-			//System.Console.WriteLine();
-		}
+    static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
+    {
+      //var startDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+      for (int i = 0; i < taskCount; i++)
+      {
+        ExpensiveTask(taskLoad);
+        //var total = ExpensiveTask(taskLoad);
+        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+      }
+      //var endDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+      //var span = endDateTime - startDateTime;
+      //System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+      //System.Console.WriteLine();
+    }
 
-		static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
-		{
-			//var startDateTime = DateTime.Now;
-			System.Threading.Tasks.Parallel.For(0, taskCount, i =>
-			{
-				ExpensiveTask(taskLoad);
-				//var total = ExpensiveTask(taskLoad);
-				//System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-			});
-			//var endDateTime = DateTime.Now;
-			//System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
-			//var span = endDateTime - startDateTime;
-			//System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
-			//System.Console.WriteLine();
-		}
+    static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
+    {
+      //var startDateTime = DateTime.Now;
+      System.Threading.Tasks.Parallel.For(0, taskCount, i =>
+      {
+        ExpensiveTask(taskLoad);
+        //var total = ExpensiveTask(taskLoad);
+        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+      });
+      //var endDateTime = DateTime.Now;
+      //System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+      //var span = endDateTime - startDateTime;
+      //System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+      //System.Console.WriteLine();
+    }
 
-		static long ExpensiveTask(double taskLoad = 1)
-		{
-			var total = 0L;
-			for (var i = 1; i < int.MaxValue * taskLoad; i++)
-				total += i;
-			return total;
-		}
+    static long ExpensiveTask(double taskLoad = 1)
+    {
+      var total = 0L;
+      for (var i = 1; i < int.MaxValue * taskLoad; i++)
+        total += i;
+      return total;
+    }
 
-		static void Main(string[] args)
-		{
-			System.Console.InputEncoding = System.Text.Encoding.UTF8;
-			System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+    static void Main(string[] args)
+    {
+      System.Console.InputEncoding = System.Text.Encoding.UTF8;
+      System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-			System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
 
-			System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
-			System.Console.ReadKey();
-		}
-	}
+      System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
+      System.Console.ReadKey();
+    }
+  }
 }

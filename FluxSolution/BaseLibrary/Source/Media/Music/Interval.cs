@@ -36,11 +36,11 @@ namespace Flux.Media.Music.Interval
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
     /// <summary>Convert a specified interval ratio to cents.</summary>
-    public static int FromFrequencyRatio(double ratio)
-      => (int)(System.Math.Log(ratio, 2.0) * 1200.0);
+    public static int ConvertFrequencyRatioToCents(double frequencyRatio)
+      => (int)(System.Math.Log(frequencyRatio, 2.0) * 1200.0);
 
     /// <summary>Convert a specified cents to an interval ratio.</summary>
-    public static double ToFrequencyRatio(int cents)
+    public static double ConvertCentsToFrequencyRatio(int cents)
       => System.Math.Pow(2.0, cents / 1200.0);
   }
 
@@ -52,11 +52,11 @@ namespace Flux.Media.Music.Interval
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
     /// <summary>Convert a specified interval ratio to cents.</summary>
-    public static int FromFrequencyRatio(double ratio)
-      => (int)(System.Math.Log(ratio, 2.0) * 12.0); //Cent.FromFrequencyRatio(ratio) / 100;
+    public static int ConvertFrequencyRatioToSemitone(double frequencyRatio)
+      => (int)(System.Math.Log(frequencyRatio, 2.0) * 12.0);
 
     /// <summary>Convert a specified semitone to an interval ratio.</summary>
-    public static double ToFrequencyRatio(int semitones)
-      => System.Math.Pow(2.0, semitones / 12.0); //Cent.ToFrequencyRatio(semitones * 100);
+    public static double ConvertSemitoneToFrequencyRatio(int semitones)
+      => System.Math.Pow(2.0, semitones / 12.0);
   }
 }
