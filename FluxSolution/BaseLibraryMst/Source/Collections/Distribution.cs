@@ -8,7 +8,7 @@ namespace Collections.Generic
   [TestClass]
   public class Distribution
   {
-    double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
+    private readonly double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
 
     [TestMethod]
     public void CumulativeMassFunction()

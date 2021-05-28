@@ -27,11 +27,8 @@ namespace Flux
 #if NETCOREAPP
       return 1U << (LeadingZeroCount(value) ^ 31);
 #else
-			value |= (value >> 1);
-			value |= (value >> 2);
-			value |= (value >> 4);
-			value |= (value >> 8);
-			value |= (value >> 16);
+      FoldRight(ref value);
+
 			return value & ~(value >> 1);
 #endif
     }
@@ -42,12 +39,8 @@ namespace Flux
 #if NETCOREAPP
       return 1UL << (LeadingZeroCount(value) ^ 63);
 #else
-      value |= (value >> 1);
-      value |= (value >> 2);
-      value |= (value >> 4);
-      value |= (value >> 8);
-      value |= (value >> 16);
-      value |= (value >> 32);
+      FoldRight(ref value);
+
       return value & ~(value >> 1);
 #endif
     }

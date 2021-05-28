@@ -14,7 +14,7 @@ namespace Flux
   internal class AdjacentGrouping<TKey, TElement>
     : System.Collections.Generic.IEnumerable<TElement>, System.Linq.IGrouping<TKey, TElement>
   {
-    private System.Collections.Generic.List<TElement> m_elements = new System.Collections.Generic.List<TElement>();
+    private readonly System.Collections.Generic.List<TElement> m_elements = new System.Collections.Generic.List<TElement>();
 
     public int Count
       => m_elements.Count;
