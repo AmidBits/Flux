@@ -14,10 +14,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      Flux.Maths.TryIntegerRoot(8, 3, out var root, out var isPerfectRoot);
-      System.Console.WriteLine($"{root} = {isPerfectRoot}");
-      Flux.Maths.TryIntegerRoot(9, 3, out root, out isPerfectRoot);
-      System.Console.WriteLine($"{root} = {isPerfectRoot}");
+      8.ToBigInteger().TryIRoot(3, out var root, out var isPerfectRoot);
+      System.Console.WriteLine($"{root} = {(isPerfectRoot ? "Perfect" : "Imperfect")}");
+      9.ToBigInteger().TryIRoot(3, out root, out isPerfectRoot);
+      System.Console.WriteLine($"{root} = {(isPerfectRoot ? "Perfect" : "Imperfect")}");
 
       var n1 = 0b0000100000010000_0000000000000000.ToBigInteger();
       System.Console.WriteLine($"{n1.ToRadixString(2)}");

@@ -1,12 +1,12 @@
 ﻿namespace Flux
 {
-  public static partial class Maths
+  public static partial class SystemNumericsBigIntegerEm
   {
-    static bool IsPerfectIntegerRoot(System.Numerics.BigInteger number, int nth, System.Numerics.BigInteger root)
+    public static bool IsPerfectIRoot(this System.Numerics.BigInteger number, int nth, System.Numerics.BigInteger root)
       => number == System.Numerics.BigInteger.Pow(root, nth);
 
     /// <summary>Returns the the largest integer less than or equal to the square root of the specified number.</summary>
-    static System.Numerics.BigInteger IntegerRoot(System.Numerics.BigInteger number, int nth)
+    public static System.Numerics.BigInteger IRoot(this System.Numerics.BigInteger number, int nth)
     {
       if (number < 0) throw new System.ArgumentOutOfRangeException(nameof(number));
       if (nth <= 0) throw new System.ArgumentOutOfRangeException(nameof(nth));
@@ -26,18 +26,18 @@
       return d < e ? d : e;
     }
 
-    public static bool TryIntegerRoot(System.Numerics.BigInteger number, int nth, out System.Numerics.BigInteger root, out bool isPerfectRoot)
+    public static bool TryIRoot(this System.Numerics.BigInteger number, int nth, out System.Numerics.BigInteger root, out bool isPerfect)
     {
       try
       {
-        root = IntegerRoot(number, nth);
-        isPerfectRoot = IsPerfectIntegerRoot(number, nth, root);
+        root = IRoot(number, nth);
+        isPerfect = number == System.Numerics.BigInteger.Pow(root, nth);
         return true;
       }
       catch
       {
         root = 0;
-        isPerfectRoot = false;
+        isPerfect = false;
         return false;
       }
     }
