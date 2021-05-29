@@ -11,15 +11,15 @@ namespace Flux
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     public static int TrailingZeroCount(System.Numerics.BigInteger value)
       => value > 0
-      ? PopCount((value & -value) - 1)
+      ? PopCount(LeastSignificant1Bit(value) - 1)
       : -1;
 
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     public static int TrailingZeroCount(int value)
-      => PopCount((value & -value) - 1);
+      => PopCount(LeastSignificant1Bit(value) - 1);
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     public static int TrailingZeroCount(long value)
-      => PopCount((value & -value) - 1);
+      => PopCount(LeastSignificant1Bit(value) - 1);
 
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     [System.CLSCompliant(false)]

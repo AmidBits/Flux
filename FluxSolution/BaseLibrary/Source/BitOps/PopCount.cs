@@ -10,17 +10,29 @@ namespace Flux
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     public static int PopCount(System.Numerics.BigInteger value)
     {
-      if (value > 255 && value.ToByteArray() is var byteArray)
-      {
-        var count = 0;
-        for (var index = byteArray.Length - 1; index >= 0; index--)
-          count += PopCount((uint)byteArray[index]);
-        return count;
-      }
-      else if (value >= 0)
+      if (value <= uint.MaxValue)
         return PopCount((uint)value);
+      else if (value <= ulong.MaxValue)
+        return PopCount((ulong)value);
 
-      return -1;
+      var byteArray = value.ToByteArray();
+      var byteArrayLength = byteArray.Length;
+
+      var count = 0;
+
+      var index = 0;
+
+      while (byteArrayLength - index >= 4)
+      {
+        count += PopCount(System.BitConverter.ToUInt32(byteArray, 0));
+
+        index += 4;
+      }
+
+      while (index < byteArrayLength)
+        count += PopCount((uint)byteArray[index++]);
+
+      return count;
     }
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>

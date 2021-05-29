@@ -14,6 +14,22 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var n1 = 0b0000100000010000_0000000000000000.ToBigInteger();
+      System.Console.WriteLine($"{n1.ToRadixString(2)}");
+  
+      var tzc = Flux.BitOps.TrailingZeroCount(n1);
+
+      var nx = (((System.Numerics.BigInteger.One << Flux.BitOps.BitLength(n1)) - 1)>>tzc)<<tzc;
+      //nx >>= tzc;
+      //nx <<= tzc;
+      System.Console.WriteLine(nx.ToRadixString(2));
+
+      var n2 = Flux.BitOps.FoldLeft(n1);
+
+      System.Console.WriteLine(n2.ToRadixString(2));
+
+      return;
+
       //var outer = 6 * 16;
       //var inner = outer / 6;
 
