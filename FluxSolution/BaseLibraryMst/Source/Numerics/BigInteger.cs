@@ -23,8 +23,8 @@ namespace Numerics
 		[TestMethod]
 		public void GetBitLength()
 		{
-			Assert.AreEqual(6, Flux.BitOps.BitLength(54.ToBigInteger()));
-			Assert.AreEqual(5, Flux.BitOps.BitLength(24.ToBigInteger()));
+			Assert.AreEqual(6, Flux.Numerics.BitOps.BitLength(54.ToBigInteger()));
+			Assert.AreEqual(5, Flux.Numerics.BitOps.BitLength(24.ToBigInteger()));
 		}
 
 		[TestMethod]

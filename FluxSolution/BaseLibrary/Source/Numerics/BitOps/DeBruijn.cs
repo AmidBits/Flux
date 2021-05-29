@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
 	// https://en.wikipedia.org/wiki/Binary_logarithm
 	// http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious

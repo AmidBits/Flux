@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux
+namespace Flux.Numerics
 {
   public static partial class BitOps
   {

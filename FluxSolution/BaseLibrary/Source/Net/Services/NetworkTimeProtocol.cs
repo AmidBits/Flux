@@ -46,47 +46,47 @@
       => m_data[3];
     [System.CLSCompliant(false)]
     public uint RootDelay
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 4);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 4);
     //=> (uint)m_data[4] << 24 | (uint)m_data[5] << 16 | (uint)m_data[6] << 8 | m_data[7];
     [System.CLSCompliant(false)]
     public uint RootDispersion
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 8);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 8);
     //=> (uint)m_data[8] << 24 | (uint)m_data[9] << 16 | (uint)m_data[10] << 8 | m_data[11];
     [System.CLSCompliant(false)]
     public uint ReferenceClockIdentifier
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 12);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 12);
     //=> (uint)m_data[12] << 24 | (uint)m_data[13] << 16 | (uint)m_data[14] << 8 | m_data[15];
     [System.CLSCompliant(false)]
     public uint ReferenceTimestampSeconds
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 16);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 16);
     //=> (uint)m_data[16] << 24 | (uint)m_data[17] << 16 | (uint)m_data[18] << 8 | m_data[19];
     [System.CLSCompliant(false)]
     public uint ReferenceTimestampFraction
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 20);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 20);
     //=> (uint)m_data[20] << 24 | (uint)m_data[21] << 16 | (uint)m_data[22] << 8 | m_data[23];
     [System.CLSCompliant(false)]
     public uint OriginateTimestampSeconds
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 24);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 24);
     //=> (uint)m_data[24] << 24 | (uint)m_data[25] << 16 | (uint)m_data[26] << 8 | m_data[27];
     [System.CLSCompliant(false)]
     public uint OriginateTimestampFraction
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 28);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 28);
     //=> (uint)m_data[28] << 24 | (uint)m_data[29] << 16 | (uint)m_data[30] << 8 | m_data[31];
     [System.CLSCompliant(false)]
     public uint ReceiveTimestampSeconds
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 32);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 32);
     //=> (uint)m_data[32] << 24 | (uint)m_data[33] << 16 | (uint)m_data[34] << 8 | m_data[35];
     [System.CLSCompliant(false)]
     public uint ReceiveTimestampFraction
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 36);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 36);
     //=> (uint)m_data[36] << 24 | (uint)m_data[37] << 16 | (uint)m_data[38] << 8 | m_data[39];
     [System.CLSCompliant(false)]
     public uint TransmitTimestampSeconds
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 40);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 40);
     //=> (uint)m_data[40] << 24 | (uint)m_data[41] << 16 | (uint)m_data[42] << 8 | m_data[43];
     [System.CLSCompliant(false)]
     public uint TransmitTimestampFraction
-      => Flux.BitConverter.BigEndian.ToUInt32(m_data, 44);
+      => Numerics.BitConverter.BigEndian.ToUInt32(m_data, 44);
     //=> (uint)m_data[44] << 24 | (uint)m_data[45] << 16 | (uint)m_data[46] << 8 | m_data[47];
 
     //public System.TimeSpan ReferenceTimestamp => new System.TimeSpan(0, 0, 0, (int)ReferenceTimestampSeconds, (int)ReferenceTimestampFraction);

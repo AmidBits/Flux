@@ -12,13 +12,13 @@
 
 			if (number > 0)
 			{
-				var bitLength = BitOps.BitLength(number);
+				var bitLength = Numerics.BitOps.BitLength(number);
 
 				var root = System.Numerics.BigInteger.One << (bitLength >> 1);
 
 				while (!IsSqrt(number, root))
 				{
-					root += (number / root);
+					root += number / root;
 					root >>= 1;
 				}
 

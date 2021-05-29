@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
 	public static partial class BitOps
 	{
@@ -39,7 +39,6 @@ namespace Flux
 		public static uint FoldRight(uint value)
 		{
 			FoldRight(ref value);
-
 			return value;
 		}
 
@@ -64,7 +63,6 @@ namespace Flux
 		public static ulong FoldRight(ulong value)
 		{
 			FoldRight(ref value);
-
 			return value;
 		}
 	}
