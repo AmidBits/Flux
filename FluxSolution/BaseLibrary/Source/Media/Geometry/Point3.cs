@@ -135,7 +135,7 @@ namespace Flux.Media.Geometry
       => p.m_x * p.m_x + p.m_y * p.m_y + p.m_z * p.m_z;
     /// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public static System.Collections.Generic.IEnumerable<Point3> GetOctantCenterVectors(this Point3 source, Size3 subOctant)
+    public static System.Collections.Generic.IEnumerable<Point3> GetOctantCenterVectors(Point3 source, Size3 subOctant)
     {
       yield return new Point3(source.X + subOctant.Width, source.Y + subOctant.Height, source.Z + subOctant.Depth);
       yield return new Point3(source.X - subOctant.Width, source.Y + subOctant.Height, source.Z + subOctant.Depth);
@@ -149,7 +149,7 @@ namespace Flux.Media.Geometry
     /// <summary>Convert the 3D vector to a octant based on the specified axis vector.</summary>
     /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public static int GetOctantNumber(this Point3 source, in Point3 center)
+    public static int GetOctantNumber(Point3 source, in Point3 center)
       => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0) + (source.Z >= center.Z ? 4 : 0);
     /// <summary>Create a new vector with 1 added to each member.</summary>
     public static Point3 Increment(in Point3 p1)

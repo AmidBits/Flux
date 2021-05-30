@@ -158,7 +158,7 @@ namespace Flux.Media.Geometry
       => p.m_x * p.m_x + p.m_y * p.m_y;
     /// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public static System.Collections.Generic.IEnumerable<Point2> GetQuadrantCenterVectors(this Point2 source, Size2 subQuadrant)
+    public static System.Collections.Generic.IEnumerable<Point2> GetQuadrantCenterVectors(Point2 source, Size2 subQuadrant)
     {
       yield return new Point2(source.X + subQuadrant.Width, source.Y + subQuadrant.Height);
       yield return new Point2(source.X - subQuadrant.Width, source.Y + subQuadrant.Height);
@@ -168,7 +168,7 @@ namespace Flux.Media.Geometry
     /// <summary>Convert the 2D vector to a quadrant based on the specified center vector.</summary>
     /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public static int GetQuadrantNumber(this Point2 source, in Point2 center)
+    public static int GetQuadrantNumber(Point2 source, in Point2 center)
       => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0);
     /// <summary>Create a new vector with 1 added to each member.</summary>
     public static Point2 Increment(in Point2 p1)
