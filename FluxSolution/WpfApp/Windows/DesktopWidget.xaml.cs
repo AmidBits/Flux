@@ -90,24 +90,27 @@ namespace WpfApp
     /// <summary>Hides the window from appearing in the Alt+Tab or Windows+Tab.</summary>
     public void SetupHelperWindow()
     {
-      // Create helper window, outside of visible part of screen and small enough to avoid its appearance at the beginning.
-
-      var m_helperWindow = new System.Windows.Window
+      if (m_helperWindow is null)
       {
-        Top = int.MinValue,
-        Left = int.MinValue,
-        Width = 1,
-        Height = 1,
-        WindowStyle = System.Windows.WindowStyle.ToolWindow, // ToolWindow avoids the icon in Alt+Tab.
-        ShowInTaskbar = false
-      };
+        // Create helper window, outside of visible part of screen and small enough to avoid its appearance at the beginning.
 
-      m_helperWindow.Show(); // Show window before it can own our main window.
+        m_helperWindow = new System.Windows.Window
+        {
+          Top = int.MinValue,
+          Left = int.MinValue,
+          Width = 1,
+          Height = 1,
+          WindowStyle = System.Windows.WindowStyle.ToolWindow, // ToolWindow avoids the icon in Alt+Tab.
+          ShowInTaskbar = false
+        };
 
-      m_ownerWindow = window.Owner;
-      window.Owner = m_helperWindow; // This will remove the icon for main window.
+        m_helperWindow.Show(); // Show window before it can own our main window.
 
-      m_helperWindow.Hide(); // Hide helper window.
+        m_ownerWindow = window.Owner;
+        window.Owner = m_helperWindow; // This will remove the icon for main window.
+
+        m_helperWindow.Hide(); // Hide helper window.
+      }
     }
 
     void CleanupHelperWindow()

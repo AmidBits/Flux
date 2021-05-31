@@ -19,8 +19,6 @@ namespace WpfApp
       if (m_windowMazes is not null)
         ToggleWindow(ref m_windowMazes, typeof(Mazes));
 
-      System.Threading.Thread.Sleep(3000);
-
       base.OnClosing(e);
     }
 
