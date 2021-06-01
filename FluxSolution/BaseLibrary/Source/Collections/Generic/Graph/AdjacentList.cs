@@ -30,39 +30,33 @@ namespace Flux.Collections.Generic.Graph
   public class AdjacentList<TVertex, TWeight>
     : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
-    where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
+    where TWeight : System.IEquatable<TWeight>
   {
-    private readonly System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
+    private readonly System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data 
+      = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
 
     public bool AddVertex(TVertex vertex)
     {
-      if (!m_data.ContainsKey(vertex))
-      {
-        m_data.Add(vertex, new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>());
+      if (m_data.ContainsKey(vertex))
+        return false; // Vertex already exists.
 
-        return true;
-      }
-      else // No vertex to remove.
-        return false;
+      m_data.Add(vertex, new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>());
+
+      return true;
     }
     public bool RemoveVertex(TVertex vertex)
     {
-      if (m_data.ContainsKey(vertex))
-      {
-        foreach (var kvp in m_data)
-          if (kvp.Value.ContainsKey(vertex))
-            kvp.Value.Remove(vertex); // Remove any vertex as a target.
+      if (!m_data.ContainsKey(vertex))
+        return false; // No vertex to remove.
 
-        m_data.Remove(vertex); // Remove vertex as a source.
+      foreach (var kvp in m_data)
+        if (kvp.Value.ContainsKey(vertex))
+          kvp.Value.Remove(vertex); // Remove any vertex as a target.
 
-        return true;
-      }
-      else // No vertex to remove.
-        return false;
+      m_data.Remove(vertex); // Remove vertex as a source.
+
+      return true;
     }
-
-    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
-      => m_data.Select(kvp => new Vertex<TVertex>(kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count)));
 
     public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
@@ -78,50 +72,52 @@ namespace Flux.Collections.Generic.Graph
     {
       AddDirectedEdge(source, target, weight);
 
-      if (!m_data[target].ContainsKey(source))
-        m_data[target].Add(source, new System.Collections.Generic.List<TWeight>() { weight });
-      else
-        m_data[target][source].Add(weight);
+      if (!source.Equals(target))
+      {
+        if (!m_data[target].ContainsKey(source))
+          m_data[target].Add(source, new System.Collections.Generic.List<TWeight>() { weight });
+        else
+          m_data[target][source].Add(weight);
+      }
     }
 
     public bool RemoveDirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
-      if (m_data.ContainsKey(source) && m_data[source].ContainsKey(target) && m_data[source][target].Contains(weight))
-      {
-        m_data[source][target].Remove(weight);
-
-        if (!m_data[source][target].Any())
-        {
-          m_data[source].Remove(target);
-
-          if (!m_data[source].Any())
-            m_data.Remove(source);
-        }
-
-        return true;
-      }
-      else
+      if (!m_data.ContainsKey(source) || !m_data[source].ContainsKey(target) || !m_data[source][target].Contains(weight))
         return false;
+
+      m_data[source][target].Remove(weight);
+
+      if (!m_data[source][target].Any())
+      {
+        m_data[source].Remove(target);
+
+        if (!m_data[source].Any())
+          m_data.Remove(source);
+      }
+
+      return true;
     }
     public bool RemoveUndirectedEdge(TVertex source, TVertex target, TWeight weight)
     {
-      if (RemoveDirectedEdge(source, target, weight))
-      {
-        m_data[target][source].Remove(weight);
-
-        if (!m_data[target][source].Any())
-        {
-          m_data[target].Remove(target);
-
-          if (!m_data[target].Any())
-            m_data.Remove(target);
-        }
-
-        return true;
-      }
-      else
+      if (!RemoveDirectedEdge(source, target, weight))
         return false;
+
+      m_data[target][source].Remove(weight);
+
+      if (!m_data[target][source].Any())
+      {
+        m_data[target].Remove(target);
+
+        if (!m_data[target].Any())
+          m_data.Remove(target);
+      }
+
+      return true;
     }
+
+    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
+      => m_data.Select(kvp => new Vertex<TVertex>(kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count) + m_data.Sum(kvpSub => kvpSub.Value.ContainsKey(kvp.Key) ? kvpSub.Value[kvp.Key].Count : 0)));
 
     public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
     {

@@ -17,17 +17,19 @@ namespace ConsoleApp
 
       // Adjacent List.
 
-      var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, int>();
+      var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, double>();
 
       const string a = "a";
       const string b = "b";
       const string c = "c";
       const string d = "d";
+      const string e = "e";
 
       al.AddVertex(a);
       al.AddVertex(b);
       al.AddVertex(c);
       al.AddVertex(d);
+      al.AddVertex(e);
 
       //g.AddDirectedEdge(a, b, 1);
       //g.AddDirectedEdge(a, c, 1);
@@ -38,23 +40,26 @@ namespace ConsoleApp
       //g.AddDirectedEdge(c, d, 1);
       //g.AddDirectedEdge(d, c, 1);
 
-      al.AddDirectedEdge(a, b, 2);
+      al.AddDirectedEdge(a, b, 2.1);
+      al.AddDirectedEdge(a, b, 5.4);
       al.AddDirectedEdge(b, a, 2);
       al.AddUndirectedEdge(a, c, 1);
       al.AddUndirectedEdge(b, c, 3);
       al.AddDirectedEdge(c, d, 6);
+      al.AddUndirectedEdge(a, a, 7);
+      //System.Console.WriteLine(al.ToConsoleString(w => w));
+      ////al.RemoveUndirectedEdge(c, b, 1);
+      //al.RemoveDirectedEdge(c, d, 6);
+      //System.Console.WriteLine(al.ToConsoleString(w => w));
+      //al.RemoveDirectedEdge(a, b, 2);
+      //System.Console.WriteLine(al.ToConsoleString(w => w));
 
-      System.Console.WriteLine(al.HasDirectedEdges());
-      //al.RemoveUndirectedEdge(c, b, 1);
-      al.RemoveDirectedEdge(c, d, 6);
-      System.Console.WriteLine(al.HasDirectedEdges());
-      al.RemoveDirectedEdge(a, b, 2);
-      System.Console.WriteLine(al.HasDirectedEdges());
-
-      System.Console.WriteLine(al.ToConsoleString(w => w));
+      // System.Console.WriteLine(al.ToConsoleString(w => w));
       //System.Console.WriteLine(al.ToString());
 
-      foreach (var edge in al.GetEdges())
+      foreach (var vertex in al.GetVertices())
+        System.Console.WriteLine(vertex);
+      foreach (var edge in al.GetEdges().OrderBy(e => e.Source.Value).ThenBy(e => e.Target.Value))
         System.Console.WriteLine(edge);
 
       //var outer = 6 * 16;

@@ -2,7 +2,7 @@
 {
   public interface IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
-    where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
+    //where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
   {
     bool AddVertex(TVertex vertex);
     bool RemoveVertex(TVertex vertex);

@@ -6,11 +6,11 @@ namespace Flux.Collections.Generic.Graph
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
-  /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
+  /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
   public class AdjacentMatrix<TVertex, TWeight>
     : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
-    where TWeight : System.IComparable<TWeight>, System.IEquatable<TWeight>
+    where TWeight : System.IEquatable<TWeight>
   {
     private readonly System.Collections.Generic.List<TVertex> m_vertices = new System.Collections.Generic.List<TVertex>();
 
@@ -18,59 +18,35 @@ namespace Flux.Collections.Generic.Graph
 
     public bool AddVertex(TVertex vertex)
     {
-      if (!m_vertices.Contains(vertex))
-      {
-        var index = m_vertices.Count;
+      if (m_vertices.Contains(vertex))
+        return false; // Already contains the vertex.
 
-        m_vertices.Add(vertex);
+      var index = m_vertices.Count;
 
-        m_weights = m_weights.Insert(0, index, default!);
-        m_weights = m_weights.Insert(1, index, default!);
+      m_vertices.Add(vertex);
 
-        return true;
-      }
-      else // Vertex already exists.
-        return false;
+      m_weights = m_weights.Insert(0, index, default!);
+      m_weights = m_weights.Insert(1, index, default!);
+
+      return true;
     }
+
+    public bool ContainsVertex(TVertex vertex)
+      => m_vertices.Contains(vertex);
+
     public bool RemoveVertex(TVertex vertex)
     {
-      if (m_vertices.Contains(vertex))
-      {
-        var index = m_vertices.IndexOf(vertex);
+      if (!m_vertices.Contains(vertex))
+        return false; // Contains no such vertex.
 
-        m_weights = m_weights.Remove(0, index);
-        m_weights = m_weights.Remove(1, index);
+      var index = m_vertices.IndexOf(vertex);
 
-        m_vertices.RemoveAt(index);
+      m_weights = m_weights.Remove(0, index);
+      m_weights = m_weights.Remove(1, index);
 
-        return true;
-      }
-      else // No vertex to remove.
-        return false;
-    }
+      m_vertices.RemoveAt(index);
 
-    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
-    {
-      for (var row = 0; row < m_vertices.Count; row++)
-      {
-        var degree = 0;
-
-        for (var column = m_vertices.Count - 1; column >= 0; column--)
-          if (!m_weights[row, column].Equals(default!))
-            degree++;
-
-        yield return new Vertex<TVertex>(m_vertices[row], degree);
-      }
-    }
-
-    public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
-    {
-      var vertices = GetVertices().ToList();
-
-      for (var row = 0; row < m_vertices.Count; row++)
-        for (var column = 0; column < m_vertices.Count; column++)
-          if (m_weights[row, column] is var weight && !weight.Equals(default!))
-            yield return new Edge<TVertex, TWeight>(vertices[row], vertices[column], weight);
+      return true;
     }
 
     public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
@@ -78,18 +54,15 @@ namespace Flux.Collections.Generic.Graph
     public void AddUndirectedEdge(TVertex source, TVertex target, TWeight weight)
       => SetUndirectedEdge(source, target, weight);
 
-    public bool HasDirectedEdges()
-    {
-      var l0 = m_weights.GetLength(0);
-      var l1 = m_weights.GetLength(1);
-
-      for (var i0 = l0 - 1; i0 >= 0; i0--)
-        for (var i1 = l1 - 1; i1 >= 0; i1--)
-          if (!m_weights[i0, i1].Equals(m_weights[i1, i0]))
-            return true;
-
-      return false;
-    }
+    public bool ContainsDirectedEdge(TVertex source, TVertex target, TWeight weight)
+      => m_vertices.IndexOf(source) is var sourceIndex && sourceIndex > -1
+      && m_vertices.IndexOf(target) is var targetIndex && targetIndex > -1
+      && m_weights[sourceIndex, targetIndex].Equals(weight);
+    public bool ContainsUndirectedEdge(TVertex source, TVertex target, TWeight weight)
+      => m_vertices.IndexOf(source) is var sourceIndex && sourceIndex > -1
+      && m_vertices.IndexOf(target) is var targetIndex && targetIndex > -1
+      && m_weights[sourceIndex, targetIndex].Equals(weight)
+      && m_weights[targetIndex, sourceIndex].Equals(weight);
 
     public bool RemoveDirectedEdge(TVertex source, TVertex target, TWeight weight)
     => ResetDirectedEdge(source, target, weight);
@@ -143,6 +116,34 @@ namespace Flux.Collections.Generic.Graph
 
       m_weights[sourceIndex, targetIndex] = weight;
       m_weights[targetIndex, sourceIndex] = weight;
+    }
+
+    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
+    {
+      for (var row = 0; row < m_vertices.Count; row++)
+      {
+        var degree = 0;
+
+        for (var column = m_vertices.Count - 1; column >= 0; column--)
+        {
+          if (!m_weights[row, column].Equals(default!))
+            degree++;
+          if (!m_weights[column, row].Equals(default!))
+            degree++;
+        }
+
+        yield return new Vertex<TVertex>(m_vertices[row], degree);
+      }
+    }
+
+    public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
+    {
+      var vertices = GetVertices().ToList();
+
+      for (var row = 0; row < m_vertices.Count; row++)
+        for (var column = 0; column < m_vertices.Count; column++)
+          if (m_weights[row, column] is var weight && !weight.Equals(default!))
+            yield return new Edge<TVertex, TWeight>(vertices[row], vertices[column], weight);
     }
 
     public string ToConsoleString<TResult>(System.Func<TWeight, TResult> weightFormatter)
