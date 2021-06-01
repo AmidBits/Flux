@@ -200,7 +200,7 @@ namespace Flux.Model.TicTacToe
 		//  =>
 
 		public override string ToString()
-			=> Formatters.ArrayFormatter.NoSeparators.TwoToConsoleString(GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }));
+			=> Formatting.ArrayFormatter.NoSeparators.TwoToConsoleString(GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }));
 
 		// This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
 		//public static int EvaluateBoard(char[,] board, char player, char opponent)

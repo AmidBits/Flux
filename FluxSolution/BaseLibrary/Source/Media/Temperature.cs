@@ -119,7 +119,7 @@ namespace Flux.Media
       => m_kelvin == other.m_kelvin;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new Formatters.TemperatureFormatter(), format ?? $"<{nameof(Temperature)}: {{0:F3}}>", this);
+      => string.Format(formatProvider ?? new Formatting.TemperatureFormatter(), format ?? $"<{nameof(Temperature)}: {{0:F3}}>", this);
     // Overrides
     public override bool Equals(object? obj)
       => obj is Temperature o && Equals(o);

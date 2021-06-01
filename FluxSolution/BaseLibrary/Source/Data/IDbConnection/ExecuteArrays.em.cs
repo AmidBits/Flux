@@ -13,9 +13,7 @@ namespace Flux
       foreach (var idr in ExecuteRecords(source, commandText, commandTimeout))
       {
         if (index == 0 && includeNames)
-        {
           yield return GetNames(idr).ToArray();
-        }
 
         yield return GetValues(idr);
       }

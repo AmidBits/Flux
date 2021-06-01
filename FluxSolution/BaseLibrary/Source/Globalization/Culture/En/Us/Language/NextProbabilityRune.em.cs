@@ -26,7 +26,7 @@ namespace Flux
     public static System.Text.Rune NextProbabilityRuneEnUsConsonant(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
-      while (!GlobalizationEnUsLanguage.IsEnglishConsonant(rune, includeY))
+      while (!GlobalizationEnUs.IsEnglishConsonant(rune, includeY))
         rune = NextProbabilityRuneEnUs(source);
       return rune;
     }
@@ -34,7 +34,7 @@ namespace Flux
     public static System.Text.Rune NextProbabilityRuneEnUsVowel(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
-      while (!GlobalizationEnUsLanguage.IsEnglishVowel(rune, includeY))
+      while (!GlobalizationEnUs.IsEnglishVowel(rune, includeY))
         rune = NextProbabilityRuneEnUs(source);
       return rune;
     }

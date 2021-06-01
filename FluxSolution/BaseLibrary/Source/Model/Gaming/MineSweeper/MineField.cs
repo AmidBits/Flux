@@ -211,7 +211,7 @@ namespace Flux.Model.Gaming.MineSweeper
       }
 
       System.Console.Clear();
-      System.Console.WriteLine(Formatters.ArrayFormatter.Separated.TwoToConsoleString(charField, (e, i) => e.ToString()));
+      System.Console.WriteLine(Formatting.ArrayFormatter.Separated.TwoToConsoleString(charField, (e, i) => e.ToString()));
       for (var i = 0; i < mineField.Field.Size.Height; i++)
         for (var j = 0; j < mineField.Field.Size.Width; j++)
           if (charField[i, j] == 'M')
