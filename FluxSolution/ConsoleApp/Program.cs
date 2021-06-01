@@ -14,6 +14,49 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+
+      // Adjacent List.
+
+      var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, int>();
+
+      const string a = "a";
+      const string b = "b";
+      const string c = "c";
+      const string d = "d";
+
+      al.AddVertex(a);
+      al.AddVertex(b);
+      al.AddVertex(c);
+      al.AddVertex(d);
+
+      //g.AddDirectedEdge(a, b, 1);
+      //g.AddDirectedEdge(a, c, 1);
+      //g.AddDirectedEdge(b, a, 1);
+      //g.AddDirectedEdge(b, c, 1);
+      //g.AddDirectedEdge(c, a, 1);
+      //g.AddDirectedEdge(c, b, 1);
+      //g.AddDirectedEdge(c, d, 1);
+      //g.AddDirectedEdge(d, c, 1);
+
+      al.AddDirectedEdge(a, b, 2);
+      al.AddDirectedEdge(b, a, 2);
+      al.AddUndirectedEdge(a, c, 1);
+      al.AddUndirectedEdge(b, c, 3);
+      al.AddDirectedEdge(c, d, 6);
+
+      System.Console.WriteLine(al.HasDirectedEdges());
+      //al.RemoveUndirectedEdge(c, b, 1);
+      al.RemoveDirectedEdge(c, d, 6);
+      System.Console.WriteLine(al.HasDirectedEdges());
+      al.RemoveDirectedEdge(a, b, 2);
+      System.Console.WriteLine(al.HasDirectedEdges());
+
+      System.Console.WriteLine(al.ToConsoleString(w => w));
+      //System.Console.WriteLine(al.ToString());
+
+      foreach (var edge in al.GetEdges())
+        System.Console.WriteLine(edge);
+
       //var outer = 6 * 16;
       //var inner = outer / 6;
 
@@ -33,36 +76,36 @@ namespace ConsoleApp
 
       //return;
 
-      var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
+      //var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
 
-      foreach (var value in set)
-        System.Console.WriteLine($"{value:G2}");
+      //foreach (var value in set)
+      //  System.Console.WriteLine($"{value:G2}");
 
-      System.Console.WriteLine("Histogram:");
-      var histogram = set.Histogram(out var sumOfFrequencies);
-      System.Console.WriteLine(histogram.ToConsoleString());
+      //System.Console.WriteLine("Histogram:");
+      //var histogram = set.Histogram(out var sumOfFrequencies);
+      //System.Console.WriteLine(histogram.ToConsoleString());
 
-      System.Console.WriteLine("PMF:");
-      var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
-      System.Console.WriteLine(pmf.ToConsoleString());
+      //System.Console.WriteLine("PMF:");
+      //var pmf = histogram.ProbabilityMassFunction(sumOfFrequencies);
+      //System.Console.WriteLine(pmf.ToConsoleString());
 
-      System.Console.WriteLine("CMF(CDF):");
-      var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
-      System.Console.WriteLine(cdf.ToConsoleString());
+      //System.Console.WriteLine("CMF(CDF):");
+      //var cdf = histogram.CumulativeMassFunction(sumOfFrequencies);
+      //System.Console.WriteLine(cdf.ToConsoleString());
 
-      System.Console.WriteLine("PercentileRank:");
-      var plr = histogram.PercentileRank(sumOfFrequencies);
-      System.Console.WriteLine(plr.ToConsoleString());
+      //System.Console.WriteLine("PercentileRank:");
+      //var plr = histogram.PercentileRank(sumOfFrequencies);
+      //System.Console.WriteLine(plr.ToConsoleString());
 
-      System.Console.WriteLine("PercentRank:");
-      var pr = set.PercentRank();
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
+      //System.Console.WriteLine("PercentRank:");
+      //var pr = set.PercentRank();
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
 
-      var count = set.Length;
-      var percentile = 50;
+      //var count = set.Length;
+      //var percentile = 50;
 
-      System.Console.WriteLine();
-      System.Console.WriteLine($"NearestRank: {Maths.PercentileOrdinalNearest(percentile, count)}, LerpRank: {Maths.PercentileOrdinalLerp(percentile, count)}");
+      //System.Console.WriteLine();
+      //System.Console.WriteLine($"NearestRank: {Maths.PercentileOrdinalNearest(percentile, count)}, LerpRank: {Maths.PercentileOrdinalLerp(percentile, count)}");
 
 
       //System.Console.WriteLine($"{set.ProbabilityMassFunction(2/*, out var x, out var y*/)}");

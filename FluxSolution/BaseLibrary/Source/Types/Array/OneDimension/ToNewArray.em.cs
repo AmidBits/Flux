@@ -4,16 +4,17 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Creates a new two-dimensional array with data from the source array. Use pre and post arguments to add surrounding space in the array.</summary>
-    public static T[,] ToArray<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1, int preCount0, int preCount1, int postCount0, int postCount1)
+    public static T[] ToNewArray<T>(this T[] source, int sourceIndex, int count, int preCount, int postCount)
     {
-      var target = new T[preCount0 + count0 + postCount0, preCount1 + count1 + postCount1];
+      var target = new T[preCount + count + postCount];
 
-      CopyTo(source, target, sourceIndex0, sourceIndex1, preCount0, preCount1, count0, count1);
+      while (count-- > 0)
+        target[preCount++] = source[sourceIndex++];
 
       return target;
     }
     /// <summary>Creates a new two-dimensional array with data from the source array.</summary>
-    public static T[,] ToArray<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1)
-      => ToArray(source, sourceIndex0, sourceIndex1, count0, count1, 0, 0, 0, 0);
+    public static T[] ToNewArray<T>(this T[] source, int sourceIndex, int count)
+      => ToNewArray(source, sourceIndex, count, 0, 0);
   }
 }

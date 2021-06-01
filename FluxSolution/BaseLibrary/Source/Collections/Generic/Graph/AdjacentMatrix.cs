@@ -78,8 +78,21 @@ namespace Flux.Collections.Generic.Graph
     public void AddUndirectedEdge(TVertex source, TVertex target, TWeight weight)
       => SetUndirectedEdge(source, target, weight);
 
+    public bool HasDirectedEdges()
+    {
+      var l0 = m_weights.GetLength(0);
+      var l1 = m_weights.GetLength(1);
+
+      for (var i0 = l0 - 1; i0 >= 0; i0--)
+        for (var i1 = l1 - 1; i1 >= 0; i1--)
+          if (!m_weights[i0, i1].Equals(m_weights[i1, i0]))
+            return true;
+
+      return false;
+    }
+
     public bool RemoveDirectedEdge(TVertex source, TVertex target, TWeight weight)
-      => ResetDirectedEdge(source, target, weight);
+    => ResetDirectedEdge(source, target, weight);
     public bool RemoveUndirectedEdge(TVertex source, TVertex target, TWeight weight)
       => ResetUndirectedEdge(source, target, weight);
 
@@ -88,7 +101,7 @@ namespace Flux.Collections.Generic.Graph
       var sourceIndex = m_vertices.IndexOf(source);
       var targetIndex = m_vertices.IndexOf(target);
 
-      if (m_weights[sourceIndex, targetIndex].Equals(weight))
+      if (sourceIndex > -1 && targetIndex > -1 && m_weights[sourceIndex, targetIndex].Equals(weight))
       {
         m_weights[sourceIndex, targetIndex] = default!;
 
@@ -102,7 +115,7 @@ namespace Flux.Collections.Generic.Graph
       var sourceIndex = m_vertices.IndexOf(source);
       var targetIndex = m_vertices.IndexOf(target);
 
-      if (m_weights[sourceIndex, targetIndex].Equals(weight) && m_weights[targetIndex, sourceIndex].Equals(weight))
+      if (sourceIndex > -1 && targetIndex > -1 && m_weights[sourceIndex, targetIndex].Equals(weight) && m_weights[targetIndex, sourceIndex].Equals(weight))
       {
         m_weights[sourceIndex, targetIndex] = default!;
         m_weights[targetIndex, sourceIndex] = default!;
@@ -132,8 +145,26 @@ namespace Flux.Collections.Generic.Graph
       m_weights[targetIndex, sourceIndex] = weight;
     }
 
-    public string ToConsoleString()
-      => m_weights.ToConsoleString();
+    public string ToConsoleString<TResult>(System.Func<TWeight, TResult> weightFormatter)
+    {
+      if (weightFormatter is null) throw new System.ArgumentNullException(nameof(weightFormatter));
+
+      var l0 = m_weights.GetLength(0);
+      var l1 = m_weights.GetLength(1);
+
+      var grid = new object[l0 + 1, l1 + 1];
+
+      for (var i0 = l0 - 1; i0 >= 0; i0--)
+      {
+        grid[i0 + 1, 0] = m_vertices[i0];
+        grid[0, i0 + 1] = m_vertices[i0];
+
+        for (var i1 = l1 - 1; i1 >= 0; i1--)
+          grid[i0 + 1, i1 + 1] = weightFormatter(m_weights[i0, i1])!;
+      }
+
+      return grid.ToConsoleString(uniformWidth: true, centerContent: true);
+    }
 
     // Overrides.
     public override string ToString()

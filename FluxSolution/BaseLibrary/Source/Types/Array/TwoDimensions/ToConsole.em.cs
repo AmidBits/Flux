@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux
@@ -6,28 +7,51 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false)
+    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool centerContent = false)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(i => source.GetElements(1, i).Max(o => $"{o.item}".Length)).ToList();
-      if (uniformMaxWidth)
-        columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToList(); // If used, replace all with total max width.
+      var length0 = source.GetLength(0);
+      var length1 = source.GetLength(1);
 
-      var format = string.Join(horizontalSeparator.ToString(), columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
-      var verticalSeparatorRow = verticalSeparator == '\0' ? null : string.Join(horizontalSeparator.ToString(), columnMaxWidths.Select((width, index) => new string(verticalSeparator, width)));
+      var maxWidths = new int[length1];
+      var maxWidth = 0;
 
-      for (var row = 0; row < source.GetLength(0); row++) // Consider row as dimension 0.
+      var target = new string[length0, length1];
+
+      for (var i0 = length0 - 1; i0 >= 0; i0--)
       {
-        if (!(verticalSeparatorRow is null) && row > 0)
-          yield return string.Join(horizontalSeparator, columnMaxWidths.Select((width, index) => new string(verticalSeparator, width)));
+        for (var i1 = length1 - 1; i1 >= 0; i1--)
+        {
+          var v01 = $"{source[i0, i1]}";
 
-        yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, format, source.GetElements(0, row).Select(e => (object?)e.item).ToArray());
+          target[i0, i1] = v01;
+
+          if (v01.Length > maxWidths[i1])
+          {
+            maxWidths[i1] = v01.Length;
+
+            if (v01.Length > maxWidth)
+              maxWidth = v01.Length;
+          }
+        }
+      }
+
+      var horizontalFormat = string.Join(horizontalSeparator.ToString(), maxWidths.Select((e, i) => $"{{{i},-{(uniformMaxWidth ? maxWidth : e)}}}"));
+
+      var verticalSeparatorLine = verticalSeparator == '\0' ? null : string.Join(horizontalSeparator.ToString(), maxWidths.Select((e, i) => new string(verticalSeparator, uniformMaxWidth ? maxWidth : e)));
+
+      for (var rowIndex = 0; rowIndex < length0; rowIndex++) // Consider row as dimension 0.
+      {
+        if (!(verticalSeparatorLine is null) && rowIndex > 0)
+          yield return verticalSeparatorLine;
+
+        yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, horizontalFormat, target.GetElements(0, rowIndex).Select((e, i) => centerContent ? e.item.ToStringBuilder().PadEven(maxWidth, ' ', ' ').ToString() : e.item).ToArray());
       }
     }
     /// <summary>Returns the two-dimensional array as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
-    public static string ToConsoleString<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015', bool uniformMaxWidth = false)
-      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformMaxWidth));
+    public static string ToConsoleString<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015', bool uniformWidth = false, bool centerContent = false)
+      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformWidth, centerContent));
   }
 }
