@@ -17,36 +17,59 @@ namespace ConsoleApp
 
       // Adjacent List.
 
-      var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, double>();
+      var al = new Flux.Collections.Generic.Graph.AdjacentList<int, int>();
 
-      const string a = "a";
-      const string b = "b";
-      const string c = "c";
-      const string d = "d";
-      const string e = "e";
+      var n = 1;
+      al.AddDirectedEdge(1, 2, n++);
+      al.AddDirectedEdge(1, 5, n++);
+      al.AddDirectedEdge(2, 3, n++);
+      al.AddDirectedEdge(2, 5, n++);
+      al.AddDirectedEdge(3, 4, n++);
+      al.AddDirectedEdge(4, 5, n++);
+      al.AddDirectedEdge(4, 6, n++);
 
-      al.AddVertex(a);
-      al.AddVertex(b);
-      al.AddVertex(c);
-      al.AddVertex(d);
-      al.AddVertex(e);
+      //var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, double>();
 
-      //g.AddDirectedEdge(a, b, 1);
-      //g.AddDirectedEdge(a, c, 1);
-      //g.AddDirectedEdge(b, a, 1);
-      //g.AddDirectedEdge(b, c, 1);
-      //g.AddDirectedEdge(c, a, 1);
-      //g.AddDirectedEdge(c, b, 1);
-      //g.AddDirectedEdge(c, d, 1);
-      //g.AddDirectedEdge(d, c, 1);
+      //const string a = "a";
+      //const string b = "b";
+      //const string c = "c";
+      //const string d = "d";
+      //const string e = "e";
 
-      al.AddDirectedEdge(a, b, 2.1);
-      al.AddDirectedEdge(a, b, 5.4);
-      al.AddDirectedEdge(b, a, 2);
-      al.AddUndirectedEdge(a, c, 1);
-      al.AddUndirectedEdge(b, c, 3);
-      al.AddDirectedEdge(c, d, 6);
-      al.AddUndirectedEdge(a, a, 7);
+      //al.AddVertex(a);
+      //al.AddVertex(b);
+      //al.AddVertex(c);
+      //al.AddVertex(d);
+      //al.AddVertex(e);
+
+      //al.AddDirectedEdge(a, b, 1);
+      //al.AddDirectedEdge(a, c, 1);
+      //al.AddDirectedEdge(a, d, 1);
+      //al.AddDirectedEdge(a, e, 1);
+      //al.AddDirectedEdge(b, a, 1);
+      //al.AddDirectedEdge(b, c, 1);
+      //al.AddDirectedEdge(b, d, 1);
+      //al.AddDirectedEdge(b, e, 1);
+      //al.AddDirectedEdge(c, a, 1);
+      //al.AddDirectedEdge(c, b, 1);
+      //al.AddDirectedEdge(c, d, 1);
+      //al.AddDirectedEdge(c, e, 1);
+      //al.AddDirectedEdge(d, a, 1);
+      //al.AddDirectedEdge(d, b, 1);
+      //al.AddDirectedEdge(d, c, 1);
+      //al.AddDirectedEdge(d, e, 1);
+      //al.AddDirectedEdge(e, a, 1);
+      //al.AddDirectedEdge(e, b, 1);
+      //al.AddDirectedEdge(e, c, 1);
+      //al.AddDirectedEdge(e, d, 1);
+
+      //al.AddDirectedEdge(a, b, 2.1);
+      //al.AddDirectedEdge(a, b, 5.4);
+      //al.AddDirectedEdge(b, a, 2);
+      //al.AddUndirectedEdge(a, c, 1);
+      //al.AddUndirectedEdge(b, c, 3);
+      //al.AddDirectedEdge(c, d, 6);
+      //al.AddUndirectedEdge(a, a, 7);
       //System.Console.WriteLine(al.ToConsoleString(w => w));
       ////al.RemoveUndirectedEdge(c, b, 1);
       //al.RemoveDirectedEdge(c, d, 6);
@@ -57,10 +80,12 @@ namespace ConsoleApp
       // System.Console.WriteLine(al.ToConsoleString(w => w));
       //System.Console.WriteLine(al.ToString());
 
+      var index = 0;
       foreach (var vertex in al.GetVertices())
-        System.Console.WriteLine(vertex);
+        System.Console.WriteLine($"{index++}: {vertex}");
+      index = 0; 
       foreach (var edge in al.GetEdges().OrderBy(e => e.Source.Value).ThenBy(e => e.Target.Value))
-        System.Console.WriteLine(edge);
+        System.Console.WriteLine($"{index++}: {edge}");
 
       //var outer = 6 * 16;
       //var inner = outer / 6;

@@ -6,7 +6,7 @@ namespace Flux.Collections.Generic.Graph
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
-  /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+  /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public class AdjacentMatrix<TVertex, TWeight>
     : IGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
