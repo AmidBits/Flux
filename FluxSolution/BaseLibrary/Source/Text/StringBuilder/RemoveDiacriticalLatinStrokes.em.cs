@@ -8,9 +8,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       for (var index = 0; index < source.Length; index++)
-      {
         source[index] = SystemCharEm.RemoveDiacriticalLatinStroke(source[index]);
-      }
 
       return source;
     }

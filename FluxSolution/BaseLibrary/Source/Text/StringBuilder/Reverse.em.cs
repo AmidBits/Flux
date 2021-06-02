@@ -6,7 +6,7 @@ namespace Flux
     internal static System.Text.StringBuilder ReverseImpl(this System.Text.StringBuilder source, int startIndex, int lastIndex)
     {
       while (startIndex < lastIndex)
-        Swap(source, startIndex++, lastIndex--);
+        SwapImpl(source, startIndex++, lastIndex--);
 
       return source;
     }

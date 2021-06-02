@@ -7,25 +7,29 @@ namespace Flux
     /// <summary>Normalize (in-place, destructive) all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
     public static System.Span<T> NormalizeAll<T>(this System.Span<T> source, T normalizeWith, System.Func<T, bool> predicate)
     {
-      var normalizeIndex = 0;
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var previous = true; // Set to true in order for trimming to occur on the left.
+      var normalizedIndex = 0;
 
-      for (int sourceIndex = 0, sourceLength = source.Length; sourceIndex < sourceLength; sourceIndex++)
+      var isPrevious = true; // Set to true in order for trimming to occur on the left.
+
+      for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
       {
         var character = source[sourceIndex];
 
-        var current = (predicate ?? throw new System.ArgumentNullException(nameof(predicate)))(character);
+        var isCurrent = predicate(character);
 
-        if (!(previous && current))
+        if (!(isPrevious && isCurrent))
         {
-          source[normalizeIndex++] = current ? normalizeWith : character;
+          source[normalizedIndex++] = isCurrent ? normalizeWith : character;
 
-          previous = current;
+          isPrevious = isCurrent;
         }
       }
 
-      return source.Slice(0, previous ? normalizeIndex - 1 : normalizeIndex);
+      if (isPrevious) normalizedIndex--;
+
+      return source.Slice(0, normalizedIndex);
     }
     /// <summary>Normalize (in-place, destructive) all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
     public static System.Span<T> NormalizeAll<T>(this System.Span<T> source, T normalizeWith, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] normalize)

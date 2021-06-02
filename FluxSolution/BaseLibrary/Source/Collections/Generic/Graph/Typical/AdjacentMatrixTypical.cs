@@ -1,31 +1,16 @@
 ﻿using System.Linq;
 
-namespace Flux.Collections.Generic.GraphTypical
+namespace Flux.Collections.Generic.Graph
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
-  public interface IGraphTypical<TVertex, TValue>
-    where TVertex : System.IEquatable<TVertex>
-  {
-    bool IsAdjacent(TVertex source, TVertex target);
-    System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source);
-    void AddVertex(TVertex vertex);
-    void RemoveVertex(TVertex vertex);
-    void AddEdge(TVertex source, TVertex target);
-    void RemoveEdge(TVertex source, TVertex target);
-    TValue GetVertexValue(TVertex vertex);
-    void SetVertexValue(TVertex vertex, TValue value);
-    TValue GetEdgeValue(TVertex source, TVertex target);
-    void SetEdgeValue(TVertex source, TVertex target, TValue value);
-  }
-
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class AdjacentMatrix<TVertex, TValue>
+  public class AdjacentMatrixTypical<TVertex, TValue>
     : IGraphTypical<TVertex, TValue>
     where TVertex : System.IEquatable<TVertex>
+    where TValue : System.IEquatable<TValue>
   {
     private readonly System.Collections.Generic.List<TVertex> m_vertices = new System.Collections.Generic.List<TVertex>();
     private readonly System.Collections.Generic.List<TValue> m_valuesOfVertices = new System.Collections.Generic.List<TValue>();
@@ -44,19 +29,19 @@ namespace Flux.Collections.Generic.GraphTypical
 
     public System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source)
     {
-      foreach (var matrix in m_matrix.GetElements(0))
+      foreach (var matrix in m_matrix.GetElements(0, m_vertices.IndexOf(source)))
         if (matrix.item != 0)
           yield return m_vertices[matrix.index1];
     }
 
-    public void AddVertex(TVertex vertex)
+    public void AddVertex(TVertex vertex, TValue value)
     {
       if (!m_vertices.Contains(vertex))
       {
         var index = m_vertices.Count;
 
         m_vertices.Add(vertex);
-        m_valuesOfVertices.Add(default!);
+        m_valuesOfVertices.Add(value);
 
         m_matrix = m_matrix.Insert(0, index, 0);
         m_matrix = m_matrix.Insert(1, index, 0);
@@ -65,6 +50,8 @@ namespace Flux.Collections.Generic.GraphTypical
         m_valuesOfEdges = m_valuesOfEdges.Insert(1, index, default!);
       }
     }
+    public void AddVertex(TVertex vertex)
+      => AddVertex(vertex, default!);
     //public bool ContainsVertex(TVertex vertex)
     //  => m_vertices.Contains(vertex);
     public void RemoveVertex(TVertex vertex)
@@ -84,13 +71,17 @@ namespace Flux.Collections.Generic.GraphTypical
       }
     }
 
-    public void AddEdge(TVertex source, TVertex target)
+    public void AddEdge(TVertex source, TVertex target, TValue value)
     {
       AddVertex(source);
       AddVertex(target);
 
       m_matrix[m_vertices.IndexOf(source), m_vertices.IndexOf(target)] = source.Equals(target) ? 2 : 1;
+
+      SetEdgeValue(source, target, value);
     }
+    public void AddEdge(TVertex source, TVertex target)
+      => AddEdge(source, target, default!);
     public void RemoveEdge(TVertex source, TVertex target)
     {
       var sourceIndex = m_vertices.IndexOf(source);
@@ -110,20 +101,23 @@ namespace Flux.Collections.Generic.GraphTypical
     public void SetEdgeValue(TVertex source, TVertex target, TValue value)
       => m_valuesOfEdges[m_vertices.IndexOf(source), m_vertices.IndexOf(target)] = value;
 
-    public System.Collections.Generic.IEnumerable<(TVertex vertex, int degree, TValue value)> GetVertices()
+    public System.Collections.Generic.IEnumerable<(TVertex vertex, int degree)> GetVertices()
     {
       foreach (var vertex in m_vertices)
-        yield return (vertex, m_matrix.GetElements(0).Sum(vt => vt.item), m_valuesOfVertices[m_vertices.IndexOf(vertex)]);
+        yield return (vertex, m_matrix.GetElements(0, m_vertices.IndexOf(vertex)).Sum(vt => vt.item));
     }
 
     public System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TValue value)> GetEdges()
     {
-      var vertices = GetVertices().ToList();
+      foreach (var source in m_vertices)
+        foreach (var target in GetNeighbors(source))
+          yield return (source, target, GetEdgeValue(source, target));
+      //var vertices = GetVertices().ToList();
 
-      for (var row = 0; row < m_vertices.Count; row++)
-        for (var column = 0; column < m_vertices.Count; column++)
-          if (m_matrix[row, column] != 0)
-            yield return (vertices[row].vertex, vertices[column].vertex, m_valuesOfEdges[row, column]);
+      //for (var row = 0; row < m_vertices.Count; row++)
+      //  for (var column = 0; column < m_vertices.Count; column++)
+      //    if (m_matrix[row, column] != 0)
+      //      yield return (vertices[row].vertex, vertices[column].vertex, m_valuesOfEdges[row, column]);
     }
 
     //public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
@@ -223,26 +217,26 @@ namespace Flux.Collections.Generic.GraphTypical
     //        yield return new Edge<TVertex, TWeight>(vertices[row], vertices[column], weight);
     //}
 
-    //public string ToConsoleString<TResult>(System.Func<TWeight, TResult> weightFormatter)
-    //{
-    //  if (weightFormatter is null) throw new System.ArgumentNullException(nameof(weightFormatter));
+    public string ToConsoleString<TResult>(System.Func<int, TResult> weightFormatter)
+    {
+      if (weightFormatter is null) throw new System.ArgumentNullException(nameof(weightFormatter));
 
-    //  var l0 = m_matrix.GetLength(0);
-    //  var l1 = m_matrix.GetLength(1);
+      var l0 = m_matrix.GetLength(0);
+      var l1 = m_matrix.GetLength(1);
 
-    //  var grid = new object[l0 + 1, l1 + 1];
+      var grid = new object[l0 + 1, l1 + 1];
 
-    //  for (var i0 = l0 - 1; i0 >= 0; i0--)
-    //  {
-    //    grid[i0 + 1, 0] = m_vertices[i0];
-    //    grid[0, i0 + 1] = m_vertices[i0];
+      for (var i0 = l0 - 1; i0 >= 0; i0--)
+      {
+        grid[i0 + 1, 0] = m_vertices[i0];
+        grid[0, i0 + 1] = m_vertices[i0];
 
-    //    for (var i1 = l1 - 1; i1 >= 0; i1--)
-    //      grid[i0 + 1, i1 + 1] = weightFormatter(m_matrix[i0, i1])!;
-    //  }
+        for (var i1 = l1 - 1; i1 >= 0; i1--)
+          grid[i0 + 1, i1 + 1] = weightFormatter(m_matrix[i0, i1])!;
+      }
 
-    //  return grid.ToConsoleString(uniformWidth: true, centerContent: true);
-    //}
+      return grid.ToConsoleString(uniformWidth: true, centerContent: true);
+    }
 
     // Overrides.
     public override string ToString()
@@ -251,7 +245,7 @@ namespace Flux.Collections.Generic.GraphTypical
       var index = 0;
       foreach (var edge in GetEdges())
         sb.AppendLine($"#{++index}: {edge}");
-      sb.Insert(0, $"<{nameof(AdjacentMatrix<TVertex, TValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
+      sb.Insert(0, $"<{nameof(AdjacentMatrixTypical<TVertex, TValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
 

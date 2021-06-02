@@ -12,13 +12,13 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var targetIndex = 0;
+      var removedIndex = 0;
 
       for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
         if (source[sourceIndex] is var character && !predicate(character))
-          source[targetIndex++] = character;
+          source[removedIndex++] = character;
 
-      return source.Remove(targetIndex, source.Length - targetIndex);
+      return source.Remove(removedIndex, source.Length - removedIndex);
     }
     /// <summary>Remove the specified characters. Uses the specified comparer.</summary>
     public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params char[] remove)

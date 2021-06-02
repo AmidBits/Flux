@@ -21,12 +21,13 @@ namespace Flux
           source[index] = replacement;
     }
     /// <summary>Replace (in-place) all specified elements with the specified element. Uses the specified comparer.</summary>
-    public static void ReplaceAll<T>(this System.Span<T> source, T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, params T[] replace)
+    public static void ReplaceAll<T>(this System.Span<T> source, T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] replace)
     {
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      ReplaceAll(source, replacement, t => System.Array.Exists(replace, e => comparer.Equals(e, t)));
+      ReplaceAll(source, replacement, t => System.Array.Exists(replace, e => equalityComparer.Equals(e, t)));
     }
+
     /// <summary>Replace (in-place) all specified elements with the specified element. Uses the default comparer.</summary>
     public static void ReplaceAll<T>(this System.Span<T> source, T replacement, params T[] replace)
       => ReplaceAll(source, replacement, System.Collections.Generic.EqualityComparer<T>.Default, replace);

@@ -17,16 +17,33 @@ namespace ConsoleApp
 
       // Adjacent List.
 
-      var al = new Flux.Collections.Generic.Graph.AdjacentList<int, int>();
+      var al = new Flux.Collections.Generic.Graph.AdjacentMatrixTypical<int, int>();
+
+      //al.AddVertex(1);
+      //al.AddVertex(2);
+      //al.AddVertex(3);
+      //al.AddVertex(4);
+      //al.AddVertex(5);
+      //al.AddVertex(6);
 
       var n = 1;
-      al.AddDirectedEdge(1, 2, n++);
-      al.AddDirectedEdge(1, 5, n++);
-      al.AddDirectedEdge(2, 3, n++);
-      al.AddDirectedEdge(2, 5, n++);
-      al.AddDirectedEdge(3, 4, n++);
-      al.AddDirectedEdge(4, 5, n++);
-      al.AddDirectedEdge(4, 6, n++);
+      al.AddEdge(1, 2, 1221);
+      al.AddEdge(1, 5, 1551);
+      al.AddEdge(2, 3, 2332);
+      al.AddEdge(2, 5, 2552);
+      al.AddEdge(3, 4, 3443);
+      al.AddEdge(4, 5, 4554);
+      al.AddEdge(4, 6, 4664);
+
+      al.AddEdge(2, 1, 1221);
+      al.AddEdge(5, 1, 1551);
+      al.AddEdge(3, 2, 2332);
+      al.AddEdge(5, 2, 2552);
+      al.AddEdge(4, 3, 3443);
+      al.AddEdge(5, 4, 4554);
+      al.AddEdge(6, 4, 4664);
+
+      //al.AddEdge(6, 6, n++);
 
       //var al = new Flux.Collections.Generic.Graph.AdjacentMatrix<string, double>();
 
@@ -77,14 +94,16 @@ namespace ConsoleApp
       //al.RemoveDirectedEdge(a, b, 2);
       //System.Console.WriteLine(al.ToConsoleString(w => w));
 
-      // System.Console.WriteLine(al.ToConsoleString(w => w));
-      //System.Console.WriteLine(al.ToString());
+      //System.Console.WriteLine($"Matrix:");
+      //System.Console.WriteLine(al.ToConsoleString(w => w));
 
-      var index = 0;
+      System.Console.WriteLine($"Vertices:");
+      var index = 1;
       foreach (var vertex in al.GetVertices())
         System.Console.WriteLine($"{index++}: {vertex}");
-      index = 0; 
-      foreach (var edge in al.GetEdges().OrderBy(e => e.Source.Value).ThenBy(e => e.Target.Value))
+      System.Console.WriteLine($"Edges:");
+      index = 1;
+      foreach (var edge in al.GetEdges().OrderBy(e => e.source).ThenBy(e => e.target))
         System.Console.WriteLine($"{index++}: {edge}");
 
       //var outer = 6 * 16;

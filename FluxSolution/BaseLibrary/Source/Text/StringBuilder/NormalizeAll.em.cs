@@ -12,24 +12,27 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var targetIndex = 0;
+      var normlizedIndex = 0;
 
-      var previous = true;
+      var isPrevious = true;
 
       for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
       {
-        if (source[sourceIndex] is var c && predicate(c) is var current && (!previous || !current))
-        {
-          source[targetIndex++] = current ? replacement : c;
+        var character = source[sourceIndex];
 
-          previous = current;
+        var isCurrent = predicate(character);
+
+        if (!(isPrevious && isCurrent))
+        {
+          source[normlizedIndex++] = isCurrent ? replacement : character;
+
+          isPrevious = isCurrent;
         }
       }
 
-      if (previous) 
-        targetIndex--;
+      if (isPrevious) normlizedIndex--;
 
-      return targetIndex == source.Length ? source : source.Remove(targetIndex, source.Length - targetIndex);
+      return normlizedIndex == source.Length ? source : source.Remove(normlizedIndex, source.Length - normlizedIndex);
     }
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
     public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] characters)
