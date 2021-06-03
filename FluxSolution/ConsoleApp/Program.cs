@@ -10,62 +10,19 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public static class Test
-  {
-    public static (TSource maxLow, TSource equal, TSource minHigh) GetMaxLowAndMinHigh<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int> compareSelector)
-    {
-      using var e = source.GetEnumerator();
-
-      TSource maxLow = default;
-      TSource equal = default;
-      TSource minHigh = default;
-
-      while (e.MoveNext())
-      {
-        var cmp = compareSelector(e.Current);
-
-        if (cmp < 0)
-          maxLow = e.Current;
-        else if (cmp == 0)
-          equal = e.Current;
-        else if (cmp > 0)
-        {
-          minHigh = e.Current;
-          break;
-        }
-      }
-
-      return (maxLow, equal, minHigh);
-    }
-  }
-
   class Program
   {
-
-
     private static void TimedMain(string[] _)
     {
-      var dt = new System.Data.DataTable();
+      var allInts = new char[] { 'a', 'b', 'f', 'd', 'd', 'a', 'z', 'z', 'b', 'z', 'd', 'a', 'd', 'b', 'd', 'h', 'a', 'b', 'd' };
+      var findInts = new char[] { 'a', 'b', 'd' };
 
-      dt.Columns.Add("Col_0", typeof(double));
-      dt.Columns.Add("L", typeof(double));
-      dt.Columns.Add("M", typeof(double));
-      dt.Columns.Add("S", typeof(double));
+      var im = allInts.GetIndexMap(findInts, c => c);
 
-      dt.Rows.Add(new object[] { 45.0, 0.3521, 2.441, 0.09182 });
-      dt.Rows.Add(new object[] { 45.5, 0.3521, 2.524, 0.09153 });
-      dt.Rows.Add(new object[] { 46.0, 0.3521, 2.608, 0.09124 });
-      dt.Rows.Add(new object[] { 46.5, 0.3521, 2.691, 0.09094 });
-      dt.Rows.Add(new object[] { 47.0, 0.3521, 2.776, 0.09065 });
-      dt.Rows.Add(new object[] { 47.5, 0.3521, 2.861, 0.09036 });
-      dt.Rows.Add(new object[] { 48.0, 0.3521, 2.948, 0.09007 });
-
-      var lookup = 46.8;
-
-      var drLo = dt.Rows.Cast<System.Data.DataRow>().Last(r => (double)r.ItemArray[0] < lookup);
-      var drHi = dt.Rows.Cast<System.Data.DataRow>().First(r => (double)r.ItemArray[0] > lookup);
-
-      var tr = dt.Rows.Cast<System.Data.DataRow>().GetMaxLowAndMinHigh(dr => (double)dr[0] < lookup ? -1 : (double)dr[0] > lookup ? 1 : 0);
+      //foreach (var sub in GetIt(allInts, findIntts))
+      //{
+      //  System.Console.WriteLine(string.Join('+', sub));
+      //}
 
       // Adjacent List.
 
