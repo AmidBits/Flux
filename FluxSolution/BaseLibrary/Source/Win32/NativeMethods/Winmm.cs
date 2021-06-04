@@ -386,8 +386,8 @@
 
   // https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-midiincaps
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct MidiInCaps
-    : System.IEquatable<MidiInCaps>
+  public struct MidiInCapabilities
+    : System.IEquatable<MidiInCapabilities>
   {
     private readonly short wMid;
     private readonly short wPid;
@@ -404,12 +404,12 @@
     public long Support => dwSupport;
 
     // Statics
-    public static MidiInCaps[] GetMidiIns()
+    public static MidiInCapabilities[] GetMidiIns()
     {
-      var mica = new MidiInCaps[NativeMethods.midiInGetNumDevs()];
+      var mica = new MidiInCapabilities[NativeMethods.midiInGetNumDevs()];
       for (var index = 0; index < mica.Length; index++)
       {
-        var mic = default(MidiInCaps);
+        var mic = default(MidiInCapabilities);
         NativeMethods.ErrorHandled(NativeMethods.midiInGetDevCaps(new System.IntPtr(index), out mic, (uint)System.Runtime.InteropServices.Marshal.SizeOf(mic)));
         mica[index] = mic;
       }
@@ -417,18 +417,18 @@
     }
 
     // Operators
-    public static bool operator ==(MidiInCaps a, MidiInCaps b)
+    public static bool operator ==(MidiInCapabilities a, MidiInCapabilities b)
       => a.Equals(b);
-    public static bool operator !=(MidiInCaps a, MidiInCaps b)
+    public static bool operator !=(MidiInCapabilities a, MidiInCapabilities b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] MidiInCaps other)
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] MidiInCapabilities other)
       => DriverVersion == other.DriverVersion && Manufacturer == other.Manufacturer && Name == other.Name && ProductIdentifier == other.ProductIdentifier && Support == other.Support;
 
     // Object overrides
     public override bool Equals(object? obj)
-      => obj is MidiInCaps mic && Equals(mic);
+      => obj is MidiInCapabilities mic && Equals(mic);
     public override int GetHashCode()
       => System.HashCode.Combine(DriverVersion, Manufacturer, Name, ProductIdentifier, Support);
     public override string ToString()
@@ -437,8 +437,8 @@
 
   // https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-midioutcaps
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct MidiOutCaps
-    : System.IEquatable<MidiOutCaps>
+  public struct MidiOutCapabilities
+    : System.IEquatable<MidiOutCapabilities>
   {
     private readonly short wMid;
     private readonly short wPid;
@@ -463,12 +463,12 @@
     public int Voices => wVoices;
 
     // Statics
-    public static MidiOutCaps[] GetMidiOuts()
+    public static MidiOutCapabilities[] GetMidiOuts()
     {
-      var moca = new MidiOutCaps[NativeMethods.midiOutGetNumDevs()];
+      var moca = new MidiOutCapabilities[NativeMethods.midiOutGetNumDevs()];
       for (var index = 0; index < moca.Length; index++)
       {
-        var moc = default(MidiOutCaps);
+        var moc = default(MidiOutCapabilities);
         NativeMethods.ErrorHandled(NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
         moca[index] = moc;
       }
@@ -476,26 +476,26 @@
     }
 
     // Operators
-    public static bool operator ==(MidiOutCaps a, MidiOutCaps b)
+    public static bool operator ==(MidiOutCapabilities a, MidiOutCapabilities b)
       => a.Equals(b);
-    public static bool operator !=(MidiOutCaps a, MidiOutCaps b)
+    public static bool operator !=(MidiOutCapabilities a, MidiOutCapabilities b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] MidiOutCaps other)
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] MidiOutCapabilities other)
       => ChannelMask == other.ChannelMask && DriverVersion == other.DriverVersion && Manufacturer == other.Manufacturer && Name == other.Name && Notes == other.Notes && ProductIdentifier == other.ProductIdentifier && Support == other.Support && Technology == other.Technology && Voices == other.Voices;
 
     // Object overrides
     public override bool Equals(object? obj)
-      => obj is MidiOutCaps moc && Equals(moc);
+      => obj is MidiOutCapabilities moc && Equals(moc);
     public override int GetHashCode()
       => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashCore();
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   };
 
-  public delegate void MidiInProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
-  public delegate void MidiOutProc(System.IntPtr hmo, int wMsg, in System.IntPtr dwInstance, in int dwParam1, in int dwParam2);
+  public delegate void MidiInProcedure(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2);
+  public delegate void MidiOutProcedure(System.IntPtr hmo, int wMsg, in System.IntPtr dwInstance, in int dwParam1, in int dwParam2);
 
   internal class NativeMethods
   {
@@ -505,21 +505,21 @@
 
 #pragma warning disable IDE1006 // Naming Styles
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInClose(System.IntPtr hMidiIn);
-    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInGetDevCaps(System.IntPtr uDeviceID, out MidiInCaps pmic, uint cbmic);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInGetDevCaps(System.IntPtr uDeviceID, out MidiInCapabilities pmic, uint cbmic);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] internal static extern uint midiInGetErrorText(uint wError, System.Text.StringBuilder lpText, uint cchText);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInGetNumDevs();
-    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInOpen(out System.IntPtr lphMidiIn, uint uDeviceID, MidiInProc dwCallback, System.IntPtr dwCallbackInstance, uint dwFlags);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInOpen(out System.IntPtr lphMidiIn, uint uDeviceID, MidiInProcedure dwCallback, System.IntPtr dwCallbackInstance, uint dwFlags);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInMessage(System.IntPtr hmi, uint uMsg, out uint dw1, out uint dw2);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInStart(System.IntPtr hMidiIn);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInStop(System.IntPtr hMidiIn);
 
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutClose(System.IntPtr hmo);
-    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutGetDevCaps(System.IntPtr uDeviceID, out MidiOutCaps pmoc, uint cbmoc);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutGetDevCaps(System.IntPtr uDeviceID, out MidiOutCapabilities pmoc, uint cbmoc);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] internal static extern uint midiOutGetErrorText(uint mmrError, System.Text.StringBuilder pszText, uint cchText);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutGetNumDevs();
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutLongMsg(System.IntPtr hmo, System.IntPtr pmh, int cbmh);
     //[System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutMessage(System.IntPtr hmo, uint uMsg, in uint dw1, in uint dw2);
-    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutOpen(out System.IntPtr phmo, uint uDeviceID, MidiOutProc? dwCallback, System.IntPtr dwInstance, uint fdwOpen);
+    [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutOpen(out System.IntPtr phmo, uint uDeviceID, MidiOutProcedure? dwCallback, System.IntPtr dwInstance, uint fdwOpen);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutPrepareHeader(System.IntPtr hmo, System.IntPtr pmh, int cbmh);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutReset(System.IntPtr hmo);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutShortMsg(System.IntPtr hmo, uint dwMsg);
