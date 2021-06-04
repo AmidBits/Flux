@@ -3,13 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace IFormatProvider
+namespace Formatting
 {
   [TestClass]
-  public class DMS
+  public class Dms
   {
-    string _dms1 = @"40 11 15";
-    double _dms1tp = 40.1875;
+    private readonly string _dms1 = @"40 11 15";
+    private readonly double _dms1tp = 40.1875;
 
 
     [TestMethod]
@@ -28,16 +28,16 @@ namespace IFormatProvider
   }
 
   [TestClass]
-  public class RADIX
+  public class Radix
   {
-    System.Numerics.BigInteger _radix10 = 32;
-    string _radix16 = @"20";
+    private readonly System.Numerics.BigInteger _radix10 = 32;
+    private readonly string _radix16 = @"20";
 
 
-		[TestMethod]
-		public void Formatter()
-		{
-			Assert.AreEqual(_radix16, string.Format(new Flux.Formatting.RadixFormatter(), "{0:RADIX16}", _radix10));
-		}
+    [TestMethod]
+    public void Formatter()
+    {
+      Assert.AreEqual(_radix16, string.Format(new Flux.Formatting.RadixFormatter(), "{0:RADIX16}", _radix10));
+    }
   }
 }

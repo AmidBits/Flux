@@ -503,7 +503,6 @@
     internal static bool ErrorHandled(uint mmsyserr)
       => mmsyserr == MmSysErrNoError ? true : throw new System.InvalidOperationException();
 
-#pragma warning disable IDE1006 // Naming Styles
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInClose(System.IntPtr hMidiIn);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiInGetDevCaps(System.IntPtr uDeviceID, out MidiInCapabilities pmic, uint cbmic);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] internal static extern uint midiInGetErrorText(uint wError, System.Text.StringBuilder lpText, uint cchText);
@@ -524,7 +523,6 @@
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutReset(System.IntPtr hmo);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutShortMsg(System.IntPtr hmo, uint dwMsg);
     [System.Runtime.InteropServices.DllImport(@"winmm.dll")] internal static extern uint midiOutUnprepareHeader(System.IntPtr hmo, System.IntPtr pmh, int cbmh);
-#pragma warning restore IDE1006 // Naming Styles
   }
   //  /// <summary>Manage MIDI In Ports</summary>
   //  public class MidiIn

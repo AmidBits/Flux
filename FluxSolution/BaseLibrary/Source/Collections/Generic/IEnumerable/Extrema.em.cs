@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Compute both the minimum and maximum element in a single pass, and return them as a 2-tuple. Uses the specified comparer.</summary>
-    public static (TSource minimum, TSource maximum) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> keySelector, System.Collections.Generic.IComparer<TValue> comparer)
+    public static (TSource minimum, TSource maximum) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
@@ -15,13 +15,13 @@ namespace Flux
         var loSource = e.Current;
         var hiSource = e.Current;
 
-        var loValue = keySelector(e.Current);
-        var hiValue = keySelector(e.Current);
+        var loValue = valueSelector(e.Current);
+        var hiValue = valueSelector(e.Current);
 
         while (e.MoveNext())
         {
           var cSource = e.Current;
-          var cValue = keySelector(e.Current);
+          var cValue = valueSelector(e.Current);
 
           if (comparer.Compare(cValue, loValue) < 0)
           {
@@ -41,7 +41,7 @@ namespace Flux
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
     /// <summary>Compute both the minimum and maximum element in a single pass, and return them as a 2-tuple. Uses the default comparer.</summary>
-    public static (TSource minimum, TSource maximum) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> keySelector)
-      => Extrema(source, keySelector, System.Collections.Generic.Comparer<TValue>.Default);
+    public static (TSource minimum, TSource maximum) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
+      => Extrema(source, valueSelector, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }
