@@ -6,8 +6,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> RunLengthEncode<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       using var e = source.GetEnumerator();
 

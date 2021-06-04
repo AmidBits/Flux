@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SystemCollectionsGenericIEnumerableEm
   {
     /// <summary>Compute both the minimum and maximum element in a single pass, and return them as a 2-tuple. Uses the specified comparer.</summary>
-    public static bool GetNearestGreaterAndLessOrEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, out int indexOfLtMax, out int indexOfEq, out int indexOfGtMin)
+    public static bool GetNearestGreaterAndLessOrEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> keySelector, TValue referenceValue, out int indexOfLtMax, out int indexOfEq, out int indexOfGtMin)
       where TValue : struct, System.IComparable<TValue>
     {
       using var e = source.GetEnumerator();
@@ -19,7 +19,7 @@ namespace Flux
 
       while (e.MoveNext())
       {
-        var currentValue = valueSelector(e.Current);
+        var currentValue = keySelector(e.Current);
 
         switch (currentValue.CompareTo(referenceValue))
         {
@@ -47,14 +47,14 @@ namespace Flux
 
       return indexOfLtMax != -1 || indexOfEq != -1 || indexOfGtMin != -1;
     }
-    public static (TSource lessThan, TSource equal, TSource greaterThan) GetNearestGreaterAndLessOrEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, System.Collections.Generic.IComparer<TValue> comparer)
+    public static (TSource lessThan, TSource equal, TSource greaterThan) GetNearestGreaterAndLessOrEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> keySelector, TValue referenceValue, System.Collections.Generic.IComparer<TValue> comparer)
        where TValue : struct
     {
       using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
-        var cValue = valueSelector(e.Current);
+        var cValue = keySelector(e.Current);
 
         var cmp = comparer.Compare(cValue, referenceValue);
 
@@ -68,7 +68,7 @@ namespace Flux
 
         while (e.MoveNext())
         {
-          cValue = valueSelector(e.Current);
+          cValue = keySelector(e.Current);
 
           switch (comparer.Compare(cValue, referenceValue))
           {

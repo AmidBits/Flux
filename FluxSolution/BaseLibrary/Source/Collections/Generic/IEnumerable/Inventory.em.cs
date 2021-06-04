@@ -33,7 +33,7 @@ namespace Flux
         var count = countSelector(value);
 
         if (inventory.ContainsKey(key)) inventory[key] -= count;
-        else inventory.Add(key, count);
+        else inventory.Add(key, -count);
       }
 
       return inventory;

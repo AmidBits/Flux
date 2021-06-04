@@ -4,9 +4,10 @@ namespace Flux
   {
     /// <summary>Generates all possible permutations of the elements in the sequence.</summary>
     /// <see cref="https://stackoverflow.com/a/4319074"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T>? comparer)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceLength = source.Count;
 
@@ -65,11 +66,11 @@ namespace Flux
           yield return items[transform[i].Item2];
       }
     }
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> items)
-      => Permute(items, System.Collections.Generic.Comparer<T>.Default);
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> items, System.Collections.Generic.IComparer<T> comparer)
-      => Permute(new System.Collections.Generic.List<T>(items), comparer);
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> items)
-      => Permute(new System.Collections.Generic.List<T>(items), System.Collections.Generic.Comparer<T>.Default);
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> source)
+      => Permute(source, System.Collections.Generic.Comparer<T>.Default);
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
+      => Permute(new System.Collections.Generic.List<T>(source), comparer);
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> source)
+      => Permute(new System.Collections.Generic.List<T>(source), System.Collections.Generic.Comparer<T>.Default);
   }
 }

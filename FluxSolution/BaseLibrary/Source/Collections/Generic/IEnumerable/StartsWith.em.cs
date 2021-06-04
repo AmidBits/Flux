@@ -9,8 +9,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
-
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       using var e = source.GetEnumerator();
 
