@@ -18,7 +18,7 @@ namespace ConsoleApp
       var findInts = new char[] { 'a', 'b', 'd' };
 
       var im = allInts.GetIndexMap(findInts, c => c);
-
+      System.Console.WriteLine(im.ToDictionary(kvp => kvp.Key, kvp => string.Join(',', kvp.Value)).ToConsoleString());
       //foreach (var sub in GetIt(allInts, findIntts))
       //{
       //  System.Console.WriteLine(string.Join('+', sub));
