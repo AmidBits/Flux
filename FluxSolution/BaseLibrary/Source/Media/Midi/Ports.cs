@@ -437,17 +437,17 @@ namespace Flux.Media.Midi
 
     public const int CallbackFunction = 0x00030000;
 
-    private readonly Win32.Winmm.MidiInProc m_midiInProc;
+    private readonly Win32.Winmm.MidiInProcedure m_midiInProc;
 
     private System.IntPtr m_id;
 
     public int Index { get; }
 
-    public Win32.Winmm.MidiInCaps Capabilities { get; }
+    public Win32.Winmm.MidiInCapabilities Capabilities { get; }
 
-    private MidiIn(int index, Win32.Winmm.MidiInCaps capabilities)
+    private MidiIn(int index, Win32.Winmm.MidiInCapabilities capabilities)
     {
-      m_midiInProc = new Win32.Winmm.MidiInProc(MidiProc);
+      m_midiInProc = new Win32.Winmm.MidiInProcedure(MidiProc);
 
       Index = index;
       Capabilities = capabilities;
@@ -532,13 +532,13 @@ namespace Flux.Media.Midi
 
     public int Index { get; }
 
-    public Win32.Winmm.MidiOutCaps Capabilities { get; }
+    public Win32.Winmm.MidiOutCapabilities Capabilities { get; }
 
     //private void MidiProc(System.IntPtr hMidiIn, int wMsg, System.IntPtr dwInstance, int dwParam1, int dwParam2)
     //{
     //}
 
-    private MidiOut(int index, Win32.Winmm.MidiOutCaps capabilities)
+    private MidiOut(int index, Win32.Winmm.MidiOutCapabilities capabilities)
     {
       Index = index;
       Capabilities = capabilities;
@@ -590,7 +590,7 @@ namespace Flux.Media.Midi
 
       for (var index = 0; index < mo.Length; index++)
       {
-        var moc = default(Win32.Winmm.MidiOutCaps);
+        var moc = default(Win32.Winmm.MidiOutCapabilities);
 
         ErrorHandled(Win32.Winmm.NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
 

@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quickselect"/>
-    public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int Kth, System.Collections.Generic.IComparer<T> comparer)
+    public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int kth, System.Collections.Generic.IComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -14,11 +14,11 @@ namespace Flux
 
       while (true)
       {
-        var pivotIndex = Partition(Kth);
+        var pivotIndex = Partition(kth);
 
-        if (Kth < pivotIndex) rightIndex = pivotIndex - 1;
-        else if (Kth > pivotIndex) leftIndex = pivotIndex + 1;
-        else return source[Kth];
+        if (kth < pivotIndex) rightIndex = pivotIndex - 1;
+        else if (kth > pivotIndex) leftIndex = pivotIndex + 1;
+        else return source[kth];
       }
 
       /// <summary>Group a list (from left to right index) into two parts, those less than a certain element, and those greater than or equal to the element.</summary>

@@ -7,6 +7,8 @@ namespace Flux
     /// <summary>Returns a new sequence of elements based on the specified indices. Can be used to create a subset, repeating duplicates, reorder, etc.</summary>
     public static System.Collections.Generic.IEnumerable<T> ElementsAt<T>(this System.Collections.Generic.IEnumerable<T> source, params int[] indices)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var cache = new System.Collections.Generic.Dictionary<int, T>((indices ?? throw new System.ArgumentNullException(nameof(indices))).Length);
 
       var indexCounter = 0;
