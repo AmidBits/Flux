@@ -1,3 +1,4 @@
+
 #if ROSLYIN_CORE_COMPILER_AVAILABLE
 
 // Requires the package "Microsoft.CodeAnalysis.CSharp".

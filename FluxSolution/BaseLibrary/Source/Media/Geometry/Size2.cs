@@ -10,17 +10,17 @@ namespace Flux.Media.Geometry
     [System.Runtime.InteropServices.FieldOffset(0)] private int m_width;
     [System.Runtime.InteropServices.FieldOffset(4)] private int m_height;
 
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
-
-    public Point2 Center()
-      => new Point2(m_width / 2, m_height / 2);
-
     public Size2(int width, int height)
     {
       m_width = width;
       m_height = height;
     }
+
+    public int Width { get => m_width; set => m_width = value; }
+    public int Height { get => m_height; set => m_height = value; }
+
+    public Point2 Center()
+      => new Point2(Width / 2, Height / 2);
 
     #region Statics
     /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
@@ -85,14 +85,14 @@ namespace Flux.Media.Geometry
 
     // IEquatable
     public bool Equals(Size2 other)
-      => m_width == other.m_width && m_height == other.m_height;
+      => Width == other.Width && Height == other.Height;
 
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Size2 o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_width, m_height);
+      => System.HashCode.Combine(Width, Height);
     public override string? ToString()
-      => $"<Size {m_width}, {m_height}>";
+      => $"<Size {Width}, {Height}>";
   }
 }

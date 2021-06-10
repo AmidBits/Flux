@@ -11,19 +11,19 @@ namespace Flux.Media.Geometry
     [System.Runtime.InteropServices.FieldOffset(4)] private int m_height;
     [System.Runtime.InteropServices.FieldOffset(8)] private int m_depth;
 
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
-    public int Depth { get => m_depth; set => m_depth = value; }
-
-    public Point3 Center()
-      => new Point3(m_width / 2, m_height / 2, m_depth / 2);
-
     public Size3(int width, int height, int depth)
     {
       m_width = width;
       m_height = height;
       m_depth = depth;
     }
+
+    public int Width { get => m_width; set => m_width = value; }
+    public int Height { get => m_height; set => m_height = value; }
+    public int Depth { get => m_depth; set => m_depth = value; }
+
+    public Point3 Center()
+      => new Point3(Width / 2, Height / 2, Depth / 2);
 
     #region Static members
     /// <summary>Adds a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
@@ -88,14 +88,14 @@ namespace Flux.Media.Geometry
 
     // IEquatable
     public bool Equals(Size3 other)
-      => m_width == other.m_width && m_height == other.m_height && m_depth == other.m_depth;
+      => Width == other.Width && Height == other.Height && Depth == other.Depth;
 
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is Size3 o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_width, m_height, m_depth);
+      => System.HashCode.Combine(Width, Height, Depth);
     public override string? ToString()
-      => $"<Size {m_width}, {m_height}, {m_depth}>";
+      => $"<Size {Width}, {Height}, {Depth}>";
   }
 }
