@@ -11,7 +11,7 @@ namespace Flux
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       for (var index = source.Count - 1; index > 0; index--)
-        source.Swap(index, rng.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
+        Swap(source, index, rng.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
     }
     /// <summary>Returns a shuffled (randomized) sequence, implementing the standard Knuth-Fisher-Yates algorithm. Uses the cryptographic Random.</summary>
     public static void Shuffle<T>(this System.Collections.Generic.IList<T> source)
