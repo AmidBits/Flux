@@ -12,6 +12,9 @@ namespace Flux.Media
 
     private readonly double m_radian;
 
+    public Angle(double radian)
+      => m_radian = radian;
+
     public double Degrees
       => ConvertRadianToDegree(m_radian);
     public double Gradians
@@ -20,9 +23,6 @@ namespace Flux.Media
       => m_radian;
     public double Revolutions
       => ConvertRadianToRevolution(m_radian);
-
-    public Angle(double radian)
-      => m_radian = radian;
 
     #region Static methods
     public static Angle Add(Angle left, Angle right)

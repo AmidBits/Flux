@@ -9,10 +9,12 @@ namespace Flux.Media
     private static readonly double FrequencyRatioOfCent = System.Math.Pow(2.0, 1.0 / 1200.0);
 
     private readonly double m_hertz;
-    public double Hertz => m_hertz;
 
     public Frequency(double hertz)
       => m_hertz = hertz >= 0 ? hertz : throw new System.ArgumentOutOfRangeException(nameof(hertz));
+
+    public double Hertz 
+      => m_hertz;
 
     #region Statics
     /// <summary>Computes the normalized frequency is a unit of measurement of frequency equivalent to cycles/sample. In digital signal processing (DSP), the continuous time variable, t, with units of seconds, is replaced by the discrete integer variable, n, with units of samples. More precisely, the time variable, in seconds, has been normalized (divided) by the sampling interval, T (seconds/sample), which causes time to have convenient integer values at the moments of sampling.</summary>

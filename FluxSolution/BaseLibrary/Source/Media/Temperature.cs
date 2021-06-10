@@ -24,6 +24,9 @@ namespace Flux.Media
 
     private readonly double m_kelvin;
 
+    public Temperature(double kelvin)
+      => m_kelvin = kelvin;
+
     public double Celsius
       => ConvertKelvinToCelsius(m_kelvin);
     public double Fahrenheit
@@ -32,9 +35,6 @@ namespace Flux.Media
       => m_kelvin;
     public double Rankine
       => ConvertKelvinToRankine(m_kelvin);
-
-    public Temperature(double kelvin)
-      => m_kelvin = kelvin;
 
     #region // Statics
     public static Temperature Add(Temperature left, Temperature right)

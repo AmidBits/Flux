@@ -20,7 +20,7 @@ namespace Flux.Media
 	}
 	#endregion Earth radius
 
-	/// <summary>Represents a geographic position, using latotide, longitude and altitude.</summary>
+	/// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
 	/// <seealso cref="http://www.edwilliams.org/avform.htm"/>
 	/// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
 	public struct Geoposition
@@ -34,15 +34,15 @@ namespace Flux.Media
 		//public const string SymbolSeconds = "\u2033";
 
 		/// <summary>The altitude of the geographic position in meters.</summary>
-		public double Altitude { get; set; }
+		public double Altitude { get;  }
 
 		private double m_latitudeDeg, m_latitudeRad;
 		/// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-		public double Latitude { get => m_latitudeDeg; set => m_latitudeRad = Angle.ConvertDegreeToRadian(m_latitudeDeg = Maths.Wrap(value, -90.0, 90.0)); }
+		public double Latitude { get => m_latitudeDeg; /*set => m_latitudeRad = Angle.ConvertDegreeToRadian(m_latitudeDeg = Maths.Wrap(value, -90.0, 90.0));*/ }
 
 		private double m_longitudeDeg, m_longitudeRad;
 		/// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-		public double Longitude { get => m_longitudeDeg; set => m_longitudeRad = Angle.ConvertDegreeToRadian(m_longitudeDeg = Maths.Wrap(value, -180.0, 180.0)); }
+		public double Longitude { get => m_longitudeDeg; /*set => m_longitudeRad = Angle.ConvertDegreeToRadian(m_longitudeDeg = Maths.Wrap(value, -180.0, 180.0));*/ }
 
 		public Geoposition(double latitude, double longitude, double altitude = 1.0)
 		{

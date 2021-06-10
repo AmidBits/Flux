@@ -7,16 +7,23 @@ namespace Flux.Media.Geometry
     public static readonly Size3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int Width;
-    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Height;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Depth;
+    [System.Runtime.InteropServices.FieldOffset(0)] private readonly int m_width;
+    [System.Runtime.InteropServices.FieldOffset(4)] private readonly int m_height;
+    [System.Runtime.InteropServices.FieldOffset(8)] private readonly int m_depth;
 
     public Size3(int width, int height, int depth)
     {
-      Width = width;
-      Height = height;
-      Depth = depth;
+      m_width = width;
+      m_height = height;
+      m_depth = depth;
     }
+
+    public int Width
+      => m_width;
+    public int Height
+      => m_height;
+    public int Depth
+      => m_depth;
 
     public Point3 Center()
       => new Point3(Width / 2, Height / 2, Depth / 2);
