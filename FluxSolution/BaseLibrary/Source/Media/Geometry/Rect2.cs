@@ -7,60 +7,33 @@ namespace Flux.Media.Geometry
     public static readonly Rect2 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private int m_left;
-    [System.Runtime.InteropServices.FieldOffset(4)] private int m_top;
-    [System.Runtime.InteropServices.FieldOffset(8)] private int m_width;
-    [System.Runtime.InteropServices.FieldOffset(12)] private int m_height;
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int Left;
+    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Top;
+    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Width;
+    [System.Runtime.InteropServices.FieldOffset(12)] public readonly int Height;
 
     public Rect2(int left, int top, int width, int height)
     {
-      m_left = left;
-      m_top = top;
-      m_width = width;
-      m_height = height;
+      Left = left;
+      Top = top;
+      Width = width;
+      Height = height;
     }
 
-    public int Left { get => m_left; set => m_left = value; }
-    public int Top { get => m_top; set => m_top = value; }
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
-
-    public int Right { get => m_left + m_width; set => m_width = value - m_left; }
-    public int Bottom { get => m_top + m_height; set => m_height = value - m_top; }
+    public int Right
+      => Left + Width;
+    public int Bottom
+      => Top + Height;
 
     public Point2 Center
-    {
-      get => new Point2(Left + (Width / 2), Top + (Height / 2));
-      set
-      {
-        Left = value.X - (Width / 2);
-        Top = value.Y - (Height / 2);
-      }
-    }
-
-    public Point2 Location
-    {
-      get => new Point2(Left, Top);
-      set
-      {
-        Left = value.X;
-        Top = value.Y;
-      }
-    }
+      => new Point2(Left + (Width / 2), Top + (Height / 2));
 
     public Size2 Size
-    {
-      get => new Size2(Width, Height);
-      set
-      {
-        Width = value.Width;
-        Height = value.Height;
-      }
-    }
+      => new Size2(Width, Height);
 
     // Statics
     private static Rect2 Create(int left, int top, int right, int bottom)
-      => left < right && top < bottom ? new Rect2() { Left = left, Top = top, Width = right - left, Height = bottom - top } : Empty;
+      => left < right && top < bottom ? new Rect2(left, top, right - left, bottom - top) : Empty;
     /// <summary>Determines the Rectangle structure that represents the intersection of two rectangles. Empty if there is no intersection.</summary>
     public static Rect2 Intersect(Rect2 a, Rect2 b)
       => Create(System.Math.Max(a.Left, b.Left), System.Math.Max(a.Top, b.Top), System.Math.Min(a.Right, b.Right), System.Math.Min(a.Bottom, b.Bottom));

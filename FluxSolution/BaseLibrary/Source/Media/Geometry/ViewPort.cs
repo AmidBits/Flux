@@ -2,32 +2,32 @@ namespace Flux.Media.Geometry
 {
   /// <summary></summary>
   /// <remarks>NOTE! ViewPort does not currently have any properties.</remarks>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct ViewPort
     : System.IEquatable<ViewPort>
   {
-    private float? m_canvasHeight;
-    public float CanvasHeight { get => m_canvasHeight ??= 2f; set => m_canvasHeight = value; }
-    private float? m_canvasWidth;
-    public float CanvasWidth { get => m_canvasWidth ??= 2f; set => m_canvasWidth = value; }
+    public static readonly ViewPort Empty;
+    public bool IsEmpty => Equals(Empty);
 
-    private int? m_rasterHeight;
-    public int RasterHeight { get => m_rasterHeight ??= 1024; set => m_rasterHeight = value; }
-    private int? m_rasterWidth;
-    public int RasterWidth { get => m_rasterWidth ??= 1920; set => m_rasterWidth = value; }
-
-    private System.Numerics.Quaternion? m_worldToCamera;
-    public System.Numerics.Quaternion WorldToCamera { get => m_worldToCamera ??= System.Numerics.Quaternion.Identity; set => m_worldToCamera = value; }
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly float CanvasHeight;
+    [System.Runtime.InteropServices.FieldOffset(4)] public readonly float CanvasWidth;
+    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int RasterHeight;
+    [System.Runtime.InteropServices.FieldOffset(12)] public readonly int RasterWidth;
+    [System.Runtime.InteropServices.FieldOffset(16)] public readonly System.Numerics.Quaternion WorldToCamera;
 
     public ViewPort(float canvasWidth, float canvasHeight, int rasterWidth, int rasterHeight, System.Numerics.Quaternion worldToCamera)
     {
-      m_canvasHeight = canvasHeight;
-      m_canvasWidth = canvasWidth;
+      CanvasHeight = canvasHeight;
+      CanvasWidth = canvasWidth;
 
-      m_rasterHeight = rasterHeight;
-      m_rasterWidth = rasterWidth;
+      RasterHeight = rasterHeight;
+      RasterWidth = rasterWidth;
 
-      m_worldToCamera = worldToCamera;
+      WorldToCamera = worldToCamera;
     }
+    public ViewPort(System.Numerics.Quaternion worldToCamera, int rasterWidth = 1920, int rasterHeight = 1024, float canvasWidth = 2, float canvasHeight = 2)
+      : this(canvasWidth, canvasHeight, rasterWidth, rasterHeight, worldToCamera)
+    { }
 
     /// <summary>Transform the 3D point from world space to camera space.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
@@ -66,14 +66,14 @@ namespace Flux.Media.Geometry
 
     // IEquatable
     public bool Equals(ViewPort other)
-      => ToString() == other.ToString();
+      => CanvasHeight == other.CanvasHeight && CanvasWidth == other.CanvasWidth && RasterHeight == other.RasterHeight && RasterWidth == other.RasterWidth && WorldToCamera == other.WorldToCamera;
 
     // Object (overrides)
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(typeof(ViewPort));
+      => System.HashCode.Combine(CanvasHeight, CanvasWidth, RasterHeight, RasterWidth, WorldToCamera);
     public override string? ToString()
-      => $"<ViewPort>";
+      => $"<{GetType().Name}: Canvas=({CanvasWidth}, {CanvasHeight}), Raster=({RasterWidth}, {RasterHeight}), W2C=({WorldToCamera})>";
   }
 }

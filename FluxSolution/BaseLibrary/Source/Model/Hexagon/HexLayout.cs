@@ -1,57 +1,83 @@
 namespace Flux.Model.Hexagon
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct HexLayout
+    : System.IEquatable<HexLayout>
   {
-    public readonly HexOrientation Orientation;
-    public readonly Maui.Graphics.Size Size;
-    public readonly Maui.Graphics.Point Origin;
+    public static readonly HexLayout Empty;
+    public bool IsEmpty => Equals(Empty);
 
-    public HexLayout(HexOrientation orientation, Maui.Graphics.Size size, Maui.Graphics.Point origin)
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly Media.Geometry.Size2 Size;
+    [System.Runtime.InteropServices.FieldOffset(8)] public readonly Media.Geometry.Point2 Origin;
+    [System.Runtime.InteropServices.FieldOffset(16)] public readonly HexOrientation Orientation;
+
+    public HexLayout(HexOrientation orientation, Media.Geometry.Size2 size, Media.Geometry.Point2 origin)
     {
       Orientation = orientation;
       Size = size;
       Origin = origin;
     }
 
-    public Flux.Maui.Graphics.Point HexToPixel(Hex h)
+    public void HexToPixel(Hex h, out double x, out double y)
     {
-      var x = (Orientation.F0 * h.Q + Orientation.F1 * h.R) * Size.Width;
-      var y = (Orientation.F2 * h.Q + Orientation.F3 * h.R) * Size.Height;
-     
-      return new Maui.Graphics.Point(x + Origin.X, y + Origin.Y);
+      x = (Orientation.F0 * h.Q + Orientation.F1 * h.R) * Size.Width;
+      y = (Orientation.F2 * h.Q + Orientation.F3 * h.R) * Size.Height;
+
+      x += Origin.X;
+      y += Origin.Y;
     }
 
-    public HexF PixelToHex(Flux.Maui.Graphics.Point p)
+    public HexF PixelToHex(double x, double y)
     {
-      var pt = new Flux.Maui.Graphics.Point((p.X - Origin.X) / Size.Width, (p.Y - Origin.Y) / Size.Height);
+      var dx = (x - Origin.X) / Size.Width;
+      var dy = (y - Origin.Y) / Size.Height;
 
-      var q = Orientation.B0 * pt.X + Orientation.B1 * pt.Y;
-      var r = Orientation.B2 * pt.X + Orientation.B3 * pt.Y;
-     
+      var q = Orientation.B0 * dx + Orientation.B1 * dy;
+      var r = Orientation.B2 * dx + Orientation.B3 * dy;
+
       return new HexF(q, r);
     }
 
-    public Flux.Maui.Graphics.Point HexCornerOffset(int corner)
+    public void HexCornerOffset(int corner, out double x, out double y)
     {
       var angle = 2.0 * System.Math.PI * (Orientation.StartAngle - corner) / 6.0;
-      
-      return new Flux.Maui.Graphics.Point(Size.Width * System.Math.Cos(angle), Size.Height * System.Math.Sin(angle));
+
+      x = Size.Width * (float)System.Math.Cos(angle);
+      y = Size.Height * (float)System.Math.Sin(angle);
     }
 
-    public System.Collections.Generic.List<Flux.Maui.Graphics.Point> PolygonCorners(Hex h)
+    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(Hex h)
     {
-      var corners = new System.Collections.Generic.List<Flux.Maui.Graphics.Point>();
-      
-      var center = HexToPixel(h);
+      var corners = new System.Collections.Generic.List<(double x, double y)>();
+
+      HexToPixel(h, out var centerX, out var centerY);
 
       for (int i = 0; i < 6; i++)
       {
-        var offset = HexCornerOffset(i);
+        HexCornerOffset(i, out var offsetX, out var offsetY);
 
-        corners.Add(new Flux.Maui.Graphics.Point(center.X + offset.X, center.Y + offset.Y));
+        corners.Add((centerX + offsetX, centerY + offsetY));
       }
 
       return corners;
     }
+
+    // Operators
+    public static bool operator ==(HexLayout a, HexLayout b)
+      => a.Equals(b);
+    public static bool operator !=(HexLayout a, HexLayout b)
+      => !a.Equals(b);
+
+    // IEquatable
+    public bool Equals(HexLayout other)
+      => Orientation == other.Orientation && Size == other.Size && Origin == other.Origin;
+
+    // Object (overrides)
+    public override bool Equals(object? obj)
+      => obj is HexLayout o && Equals(o);
+    public override int GetHashCode()
+      => System.HashCode.Combine(Orientation, Size, Origin);
+    public override string? ToString()
+      => $"<{GetType().Name}: {Orientation}, {Size}, {Origin}>";
   }
 }

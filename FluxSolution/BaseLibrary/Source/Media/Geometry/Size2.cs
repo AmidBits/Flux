@@ -7,17 +7,14 @@ namespace Flux.Media.Geometry
     public static readonly Size2 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private int m_width;
-    [System.Runtime.InteropServices.FieldOffset(4)] private int m_height;
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int Width;
+    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Height;
 
     public Size2(int width, int height)
     {
-      m_width = width;
-      m_height = height;
+      Width = width;
+      Height = height;
     }
-
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
 
     public Point2 Center()
       => new Point2(Width / 2, Height / 2);

@@ -44,7 +44,7 @@ namespace Flux.Media.Geometry
     public static System.Numerics.Vector3 IntermediaryPoint(System.Numerics.Vector3 a, System.Numerics.Vector3 b, float scalar = 0.5f) => (a + b) * scalar;
 
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static LineTestResult IntersectionTest(float aX1, float aY1, float aX2, float aY2, float bX1, float bY1, float bX2, float bY2)
+    public static LineTestResult IntersectionTest(double aX1, double aY1, double aX2, double aY2, double bX1, double bY1, double bX2, double bY2)
     {
       var p13x = aX1 - bX1;
       var p13y = aY1 - bY1;
@@ -124,45 +124,45 @@ namespace Flux.Media.Geometry
       }
     }
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static LineTestResult IntersectionTest(Flux.Maui.Graphics.Point a1, Flux.Maui.Graphics.Point a2, Flux.Maui.Graphics.Point b1, Flux.Maui.Graphics.Point b2)
-    {
-      var p13x = a1.X - b1.X;
-      var p13y = a1.Y - b1.Y;
-      var p21x = a2.X - a1.X;
-      var p21y = a2.Y - a1.Y;
-      var p43x = b2.X - b1.X;
-      var p43y = b2.Y - b1.Y;
+    //public static LineTestResult IntersectionTest(Flux.Maui.Graphics.Point a1, Flux.Maui.Graphics.Point a2, Flux.Maui.Graphics.Point b1, Flux.Maui.Graphics.Point b2)
+    //{
+    //  var p13x = a1.X - b1.X;
+    //  var p13y = a1.Y - b1.Y;
+    //  var p21x = a2.X - a1.X;
+    //  var p21y = a2.Y - a1.Y;
+    //  var p43x = b2.X - b1.X;
+    //  var p43y = b2.Y - b1.Y;
 
-      var a = p43x * p13y - p43y * p13x;
-      var b = p21x * p13y - p21y * p13x;
-      var ab = p43y * p21x - p43x * p21y;
+    //  var a = p43x * p13y - p43y * p13x;
+    //  var b = p21x * p13y - p21y * p13x;
+    //  var ab = p43y * p21x - p43x * p21y;
 
-      if (ab != 0)
-      {
-        a /= ab;
-        b /= ab;
+    //  if (ab != 0)
+    //  {
+    //    a /= ab;
+    //    b /= ab;
 
-        if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
-        {
-          return new LineTestResult(LineTestOutcome.LinesIntersecting, a1.X + a * (a2.X - a1.X), a1.Y + a * (a2.Y - a1.Y));
-        }
-        else // Not intersecting.
-        {
-          return new LineTestResult(LineTestOutcome.Unknown);
-        }
-      }
-      else
-      {
-        if (a == 0 || b == 0) // Coincident.
-        {
-          return new LineTestResult(LineTestOutcome.CoincidentLines);
-        }
-        else // Parallel.
-        {
-          return new LineTestResult(LineTestOutcome.ParallelLines);
-        }
-      }
-    }
+    //    if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
+    //    {
+    //      return new LineTestResult(LineTestOutcome.LinesIntersecting, a1.X + a * (a2.X - a1.X), a1.Y + a * (a2.Y - a1.Y));
+    //    }
+    //    else // Not intersecting.
+    //    {
+    //      return new LineTestResult(LineTestOutcome.Unknown);
+    //    }
+    //  }
+    //  else
+    //  {
+    //    if (a == 0 || b == 0) // Coincident.
+    //    {
+    //      return new LineTestResult(LineTestOutcome.CoincidentLines);
+    //    }
+    //    else // Parallel.
+    //    {
+    //      return new LineTestResult(LineTestOutcome.ParallelLines);
+    //    }
+    //  }
+    //}
 
     /// <summary>Returns the corresponding y from the specified x, slope and the point.</summary>
     /// <param name="x"></param>

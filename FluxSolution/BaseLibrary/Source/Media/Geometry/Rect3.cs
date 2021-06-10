@@ -8,54 +8,28 @@ namespace Flux.Media.Geometry
     public static readonly Rect3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private int m_x;
-    [System.Runtime.InteropServices.FieldOffset(4)] private int m_y;
-    [System.Runtime.InteropServices.FieldOffset(8)] private int m_z;
-    [System.Runtime.InteropServices.FieldOffset(12)] private int m_width;
-    [System.Runtime.InteropServices.FieldOffset(16)] private int m_height;
-    [System.Runtime.InteropServices.FieldOffset(20)] private int m_depth;
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int X;
+    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Y;
+    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Z;
+    [System.Runtime.InteropServices.FieldOffset(12)] public readonly int Width;
+    [System.Runtime.InteropServices.FieldOffset(16)] public readonly int Height;
+    [System.Runtime.InteropServices.FieldOffset(20)] public readonly int Depth;
 
     public Rect3(int x, int y, int z, int width, int height, int depth)
     {
-      m_x = x;
-      m_y = y;
-      m_z = z;
-      m_width = width;
-      m_height = height;
-      m_depth = depth;
+      X = x;
+      Y = y;
+      Z = z;
+      Width = width;
+      Height = height;
+      Depth = depth;
     }
-
-    public int X { get => m_x; set => m_x = value; }
-    public int Y { get => m_y; set => m_y = value; }
-    public int Z { get => m_z; set => m_z = value; }
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
-    public int Depth { get => m_depth; set => m_depth = value; }
 
     public System.Numerics.Vector3 Center()
       => new System.Numerics.Vector3(X + Width / 2, Y + Height / 2, Z + Depth / 2);
 
-    public Point3 Location
-    {
-      get => new Point3(X, Y, Z);
-      set
-      {
-        X = value.X;
-        Y = value.Y;
-        Z = value.Z;
-      }
-    }
-
     public Size3 Size
-    {
-      get => new Size3(Width, Height, Depth);
-      set
-      {
-        Width = value.Width;
-        Height = value.Height;
-        Depth = value.Depth;
-      }
-    }
+      => new Size3(Width, Height, Depth);
 
     // Operators
     public static bool operator ==(Rect3 a, Rect3 b)
