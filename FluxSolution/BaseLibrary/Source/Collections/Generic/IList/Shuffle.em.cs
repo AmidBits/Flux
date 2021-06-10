@@ -1,17 +1,20 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
-	{
-		/// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
-		public static void Shuffle<T>(this System.Collections.Generic.IList<T> source, System.Random rng)
-		{
-			if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+  public static partial class SystemCollectionsGenericIListEm
+  {
+    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-			for (var index = source.Count - 1; index > 0; index--)
-				source.Swap(index, rng.Next(index));
-		}
-		/// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
-		public static void Shuffle<T>(this System.Collections.Generic.IList<T> source)
-			=> Shuffle(source, Flux.Random.NumberGenerator.Crypto);
-	}
+    /// <summary>Returns a shuffled (randomized) sequence, implementing the standard Knuth-Fisher-Yates algorithm. Uses the specified Random.</summary>
+    public static void Shuffle<T>(this System.Collections.Generic.IList<T> source, System.Random rng)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      for (var index = source.Count - 1; index > 0; index--)
+        source.Swap(index, rng.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
+    }
+    /// <summary>Returns a shuffled (randomized) sequence, implementing the standard Knuth-Fisher-Yates algorithm. Uses the cryptographic Random.</summary>
+    public static void Shuffle<T>(this System.Collections.Generic.IList<T> source)
+      => Shuffle(source, Flux.Random.NumberGenerator.Crypto);
+  }
 }
