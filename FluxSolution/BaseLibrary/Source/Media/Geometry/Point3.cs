@@ -7,13 +7,9 @@ namespace Flux.Media.Geometry
     public static readonly Point3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private int m_x;
-    [System.Runtime.InteropServices.FieldOffset(4)] private int m_y;
-    [System.Runtime.InteropServices.FieldOffset(8)] private int m_z;
-
-    public int X { get => m_x; set => m_x = value; }
-    public int Y { get => m_y; set => m_y = value; }
-    public int Z { get => m_z; set => m_z = value; }
+    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int X;
+    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Y;
+    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Z;
 
     public Point3(int value)
       : this(value, value, value) { }
@@ -23,9 +19,9 @@ namespace Flux.Media.Geometry
       : this(x, y, 0) { }
     public Point3(int x, int y, int z)
     {
-      m_x = x;
-      m_y = y;
-      m_z = z;
+      X = x;
+      Y = y;
+      Z = z;
     }
     public Point3(int[] array, int startIndex)
     {
@@ -33,87 +29,87 @@ namespace Flux.Media.Geometry
 
       if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
 
-      m_x = array[startIndex++];
-      m_y = array[startIndex++];
-      m_z = array[startIndex];
+      X = array[startIndex++];
+      Y = array[startIndex++];
+      Z = array[startIndex];
     }
 
-    /// <summary>Convert the vector to a unique index using the length of the m_x and the m_y axes.</summary>
+    /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
     public int ToUniqueIndex(int lengthX, int lengthY)
-      => m_x + m_y * lengthX + m_z * lengthX * lengthY;
+      => X + Y * lengthX + Z * lengthX * lengthY;
     public System.Numerics.Vector3 ToVector3()
-      => new System.Numerics.Vector3(m_x, m_y, m_z);
+      => new System.Numerics.Vector3(X, Y, Z);
     public int[] ToArray()
-      => new int[] { m_x, m_y, m_z };
+      => new int[] { X, Y, Z };
 
     #region Static members
     /// <summary>Create a new vector with the sum from the vector added by the other.</summary>
     public static Point3 Add(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x + p2.m_x, p1.m_y + p2.m_y, p1.m_z + p2.m_z);
+      => new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
     /// <summary>Create a new vector with the sum from each member added to the value.</summary>
     public static Point3 Add(in Point3 p, int value)
-      => new Point3(p.m_x + value, p.m_y + value, p.m_z + value);
+      => new Point3(p.X + value, p.Y + value, p.Z + value);
     /// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
     public static Point3 LeftShift(in Point3 p, int count)
-      => new Point3(p.m_x << count, p.m_y << count, p.m_z << count);
+      => new Point3(p.X << count, p.Y << count, p.Z << count);
     /// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
     public static Point3 RightShift(in Point3 p, int count)
-      => new Point3(p.m_x << count, p.m_y << count, p.m_z << count);
+      => new Point3(p.X << count, p.Y << count, p.Z << count);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
     public static Point3 BitwiseAnd(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x & p2.m_x, p1.m_y & p2.m_y, p1.m_z & p2.m_z);
+      => new Point3(p1.X & p2.X, p1.Y & p2.Y, p1.Z & p2.Z);
     /// <summary>Create a new vector by performing an AND operation of each member on the vector and the value.</summary>
     public static Point3 BitwiseAnd(in Point3 p, int value)
-      => new Point3(p.m_x & value, p.m_y & value, p.m_z & value);
+      => new Point3(p.X & value, p.Y & value, p.Z & value);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
     public static Point3 Xor(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y, p1.m_z ^ p2.m_z);
+      => new Point3(p1.X ^ p2.X, p1.Y ^ p2.Y, p1.Z ^ p2.Z);
     /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
     public static Point3 Xor(in Point3 p, int value)
-      => new Point3(p.m_x ^ value, p.m_y ^ value, p.m_z ^ value);
+      => new Point3(p.X ^ value, p.Y ^ value, p.Z ^ value);
     /// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
     public static Point3 OnesComplement(in Point3 p)
-      => new Point3(~p.m_x, ~p.m_y, ~p.m_z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
+      => new Point3(~p.X, ~p.Y, ~p.Z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
     public static Point3 BitwiseOr(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x | p2.m_x, p1.m_y | p2.m_y, p1.m_z | p2.m_z);
+      => new Point3(p1.X | p2.X, p1.Y | p2.Y, p1.Z | p2.Z);
     /// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
     public static Point3 BitwiseOr(in Point3 p, int value)
-      => new Point3(p.m_x | value, p.m_y | value, p.m_z | value);
+      => new Point3(p.X | value, p.Y | value, p.Z | value);
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Point3 p1, in Point3 p2)
-      => Maths.Max(System.Math.Abs(p2.m_x - p1.m_x), System.Math.Abs(p2.m_y - p1.m_y), System.Math.Abs(p2.m_z - p1.m_z));
+      => Maths.Max(System.Math.Abs(p2.X - p1.X), System.Math.Abs(p2.Y - p1.Y), System.Math.Abs(p2.Z - p1.Z));
     /// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
     public static Point3 CrossProduct(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_y * p2.m_z - p1.m_z * p2.m_y, p1.m_z * p2.m_x - p1.m_x * p2.m_z, p1.m_x * p2.m_y - p1.m_y * p2.m_x);
+      => new Point3(p1.Y * p2.Z - p1.Z * p2.Y, p1.Z * p2.X - p1.X * p2.Z, p1.X * p2.Y - p1.Y * p2.X);
     /// <summary>Create a new vector with each member subtracted by 1.</summary>
     public static Point3 Decrement(in Point3 p1)
       => Subtract(p1, 1);
     /// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
     public static Point3 Divide(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x / p2.m_x, p1.m_y / p2.m_y, p1.m_z / p2.m_z);
+      => new Point3(p1.X / p2.X, p1.Y / p2.Y, p1.Z / p2.Z);
     /// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
     public static Point3 Divide(in Point3 p, int value)
-      => new Point3(p.m_x / value, p.m_y / value, p.m_z / value);
+      => new Point3(p.X / value, p.Y / value, p.Z / value);
     /// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
     public static Point3 Divide(in Point3 p, double value)
-      => new Point3(System.Convert.ToInt32(p.m_x / value), System.Convert.ToInt32(p.m_y / value), System.Convert.ToInt32(p.m_z / value));
+      => new Point3(System.Convert.ToInt32(p.X / value), System.Convert.ToInt32(p.Y / value), System.Convert.ToInt32(p.Z / value));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point3 DivideCeiling(in Point3 p, double value)
-      => new Point3((int)System.Math.Ceiling(p.m_x / value), (int)System.Math.Ceiling(p.m_y / value), (int)System.Math.Ceiling(p.m_z / value));
+      => new Point3((int)System.Math.Ceiling(p.X / value), (int)System.Math.Ceiling(p.Y / value), (int)System.Math.Ceiling(p.Z / value));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point3 DivideFloor(in Point3 p, double value)
-      => new Point3((int)System.Math.Floor(p.m_x / value), (int)System.Math.Floor(p.m_y / value), (int)System.Math.Floor(p.m_z / value));
+      => new Point3((int)System.Math.Floor(p.X / value), (int)System.Math.Floor(p.Y / value), (int)System.Math.Floor(p.Z / value));
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
     public static int DotProduct(in Point3 p1, in Point3 p2)
-      => p1.m_x * p2.m_x + p1.m_y * p2.m_y + p1.m_z * p2.m_z;
+      => p1.X * p2.X + p1.Y * p2.Y + p1.Z * p2.Z;
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(in Point3 p1, in Point3 p2)
@@ -122,17 +118,17 @@ namespace Flux.Media.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistanceSquare(in Point3 p1, in Point3 p2)
       => GetLengthSquared(p1 - p2);
-    /// <summary>Create a new vector from the index and the length of the m_x and the length of the m_y axes.</summary>
+    /// <summary>Create a new vector from the index and the length of the X and the length of the Y axes.</summary>
     public static Point3 FromUniqueIndex(int index, int lengthX, int lengthY)
       => index % (lengthX * lengthY) is var irxy ? new Point3(irxy % lengthX, irxy / lengthX, index / (lengthX * lengthY)) : throw new System.ArgumentOutOfRangeException(nameof(index));
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLength(in Point3 p)
-      => System.Math.Sqrt(p.m_x * p.m_x + p.m_y * p.m_y + p.m_z * p.m_z);
+      => System.Math.Sqrt(p.X * p.X + p.Y * p.Y + p.Z * p.Z);
     /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double GetLengthSquared(in Point3 p)
-      => p.m_x * p.m_x + p.m_y * p.m_y + p.m_z * p.m_z;
+      => p.X * p.X + p.Y * p.Y + p.Z * p.Z;
     /// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
     public static System.Collections.Generic.IEnumerable<Point3> GetOctantCenterVectors(Point3 source, Size3 subOctant)
@@ -198,26 +194,26 @@ namespace Flux.Media.Geometry
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(in Point3 p1, in Point3 p2)
-      => System.Math.Abs(p2.m_x - p1.m_x) + System.Math.Abs(p2.m_y - p1.m_y) + System.Math.Abs(p2.m_z - p1.m_z);
+      => System.Math.Abs(p2.X - p1.X) + System.Math.Abs(p2.Y - p1.Y) + System.Math.Abs(p2.Z - p1.Z);
     /// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
     public static Point3 Multiply(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x * p2.m_x, p1.m_y * p2.m_y, p1.m_z * p2.m_z);
+      => new Point3(p1.X * p2.X, p1.Y * p2.Y, p1.Z * p2.Z);
     /// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
     public static Point3 Multiply(in Point3 p, int value)
-      => new Point3(p.m_x * value, p.m_y * value, p.m_z * value);
+      => new Point3(p.X * value, p.Y * value, p.Z * value);
     /// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
     public static Point3 Multiply(in Point3 p, double value)
-      => new Point3(System.Convert.ToInt32(p.m_x * value), System.Convert.ToInt32(p.m_y * value), System.Convert.ToInt32(p.m_z * value));
+      => new Point3(System.Convert.ToInt32(p.X * value), System.Convert.ToInt32(p.Y * value), System.Convert.ToInt32(p.Z * value));
     /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
     public static Point3 MultiplyCeiling(in Point3 p, double value)
-      => new Point3((int)System.Math.Ceiling(p.m_x * value), (int)System.Math.Ceiling(p.m_y * value), (int)System.Math.Ceiling(p.m_z * value));
+      => new Point3((int)System.Math.Ceiling(p.X * value), (int)System.Math.Ceiling(p.Y * value), (int)System.Math.Ceiling(p.Z * value));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point3 MultiplyFloor(in Point3 p, double value)
-      => new Point3((int)System.Math.Floor(p.m_x * value), (int)System.Math.Floor(p.m_y * value), (int)System.Math.Floor(p.m_z * value));
+      => new Point3((int)System.Math.Floor(p.X * value), (int)System.Math.Floor(p.Y * value), (int)System.Math.Floor(p.Z * value));
     /// <summary>Create a new vector from the additive inverse, i.e. a negation of the members in the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
     public static Point3 Negate(in Point3 p)
-      => new Point3(-p.m_x, -p.m_y, -p.m_z); // Negate the members of the vector.
+      => new Point3(-p.X, -p.Y, -p.Z); // Negate the members of the vector.
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
     public static Point3 Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
@@ -241,35 +237,35 @@ namespace Flux.Media.Geometry
       => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
     public static Point3 Random(in Point3 toExclusive)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.m_x), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.m_y));
+      => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.X), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static Point3 RandomZero(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
       => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ * 2) - toExclusiveZ);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
     public static Point3 RandomZero(in Point3 toExclusive)
-      => RandomZero(toExclusive.m_x, toExclusive.m_y, toExclusive.m_z);
+      => RandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
     /// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
     public static Point3 Remainder(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x % p2.m_x, p1.m_y % p2.m_y, p1.m_z % p2.m_z);
+      => new Point3(p1.X % p2.X, p1.Y % p2.Y, p1.Z % p2.Z);
     /// <summary>Create a new vector with the remainder from each member divided by the value.</summary>
     public static Point3 Remainder(in Point3 p, int value)
-      => new Point3(p.m_x % value, p.m_y % value, p.m_z % value);
+      => new Point3(p.X % value, p.Y % value, p.Z % value);
     /// <summary>Create a new vector with the floor(remainder) from each member divided by the value.</summary>
     public static Point3 Remainder(in Point3 p, double value)
-      => new Point3((int)(p.m_x % value), (int)(p.m_y % value), (int)(p.m_z % value));
+      => new Point3((int)(p.X % value), (int)(p.Y % value), (int)(p.Z % value));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static int ScalarTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
       => DotProduct(p1, CrossProduct(p2, p3));
     /// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
     public static Point3 Subtract(in Point3 p1, in Point3 p2)
-      => new Point3(p1.m_x - p2.m_x, p1.m_y - p2.m_y, p1.m_z - p2.m_z);
+      => new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
     /// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
     public static Point3 Subtract(in Point3 p, int value)
-      => new Point3(p.m_x - value, p.m_y - value, p.m_z - value);
+      => new Point3(p.X - value, p.Y - value, p.Z - value);
     /// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
     public static Size3 ToSize3(Point3 point)
-      => new Size3(point.m_x, point.m_y, point.m_z);
+      => new Size3(point.X, point.Y, point.Z);
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static Point3 VectorTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
@@ -287,7 +283,7 @@ namespace Flux.Media.Geometry
     }
     /// <summary>Converts the point to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
     public static long ToUniqueIndex(in Point3 point, in Size3 bounds)
-      => point.m_x + (point.m_y * bounds.Width) + (point.m_z * bounds.Width * bounds.Height);
+      => point.X + (point.Y * bounds.Width) + (point.Z * bounds.Width * bounds.Height);
     #endregion "Unique" index
 
     #region Overloaded operators
@@ -337,14 +333,14 @@ namespace Flux.Media.Geometry
 
     // System.IEquatable<Point3>
     public bool Equals(Point3 other)
-      => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
+      => X == other.X && Y == other.Y && Z == other.Z;
 
     // Overrides
     public override bool Equals(object? obj)
       => obj is Point3 o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y, m_z);
+      => System.HashCode.Combine(X, Y, Z);
     public override string ToString()
-      => $"<Point {m_x}, {m_y}, {m_z}>";
+      => $"<Point {X}, {Y}, {Z}>";
   }
 }

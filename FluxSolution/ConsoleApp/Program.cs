@@ -15,7 +15,6 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
 
-
       /*
       var allInts = new char[] { 'a', 'b', 'f', 'd', 'd', 'a', 'z', 'z', 'b', 'z', 'd', 'a', 'd', 'b', 'd', 'h', 'a', 'b', 'd' };
       var findInts = new char[] { 'a', 'b', 'd' };

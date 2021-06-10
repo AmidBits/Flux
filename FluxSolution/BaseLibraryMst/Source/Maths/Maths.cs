@@ -26,7 +26,7 @@ namespace Maths
 
     [TestMethod]
     public void ParallelSplitFactorial()
-		{
+    {
       Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeProduct(12));
       Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeProduct(pbi[12]));
     }
@@ -34,8 +34,9 @@ namespace Maths
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(479001600, Flux.Maths.Factorial(12));
+      Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.Maths.Factorial(67.ToBigInteger()));
       Assert.AreEqual(479001600, Flux.Maths.Factorial(pbi[12]));
+      Assert.AreEqual(-479001600, Flux.Maths.Factorial(-pbi[12]));
     }
 
     [TestMethod]

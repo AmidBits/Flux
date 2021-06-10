@@ -4,8 +4,8 @@ namespace Flux.Media.Geometry
 {
   public enum HexagonOrientation
   {
-    HorizontallyFlat,
-    VerticallyFlat
+    FlatTopped,
+    PointyTopped
   }
 
   // https://en.wikipedia.org/wiki/Centered_hexagonal_number
@@ -46,7 +46,7 @@ namespace Flux.Media.Geometry
 
     public Hexagon(HexagonOrientation orientation, double outerDiameter = 1.0)
     {
-      m_points = (orientation == HexagonOrientation.HorizontallyFlat) ? Ellipse.CreateHexagon(outerDiameter, outerDiameter).ToArray() : Ellipse.CreateHexagon(outerDiameter, outerDiameter, 0.0).ToArray();
+      m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateHexagon(outerDiameter, outerDiameter).ToArray() : Ellipse.CreateHexagon(outerDiameter, outerDiameter, 0.0).ToArray();
     }
 
     /// <summary>Creates an array with the vertices for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
