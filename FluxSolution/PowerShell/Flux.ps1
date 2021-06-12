@@ -43,6 +43,8 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
     #>
 
     [void][System.Reflection.Assembly]::Load($bytes) # Load the byte array as an assembly into the current context.
+
+    "Assembly loaded..."
 }
 
 # Sample use from Flux BaseLibrary:
@@ -50,7 +52,7 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
 # [Flux.Locale]::SpecialFolders | Format-Table
 
-$md = New-Object 'Flux.Sequence.Metrics.DamerauLevenshteinDistance[char]'
+$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
 $fm = $md.GetFullMatrix("settings", "kitten")
 # $fe = 
 # {  
