@@ -10,6 +10,7 @@ using Flux;
 
 namespace ConsoleApp
 {
+
   class Program
   {
     private static void TimedMain(string[] _)

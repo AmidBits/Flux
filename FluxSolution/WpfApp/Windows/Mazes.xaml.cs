@@ -23,7 +23,7 @@ namespace WpfApp
     {
       InitializeComponent();
 
-      var size = new Flux.Media.Geometry.Size2(40, 40);
+      var size = new Flux.Media.Geometry.Size2(60, 60);
 
       m_grid = new Flux.Model.Maze.Grid(size);
     }
@@ -90,35 +90,35 @@ namespace WpfApp
           }
         }
       }
-      foreach (var cell in m_grid.GetValues())
-      {
-        //  float x = cell.Column * (width + wallWidth) + wallWidth * 2F;
-        //  float y = cell.Row * (width + wallWidth) + wallWidth * 2F;
+      //foreach (var cell in m_grid.GetValues())
+      //{
+      //  float x = cell.Column * (width + wallWidth) + wallWidth * 2F;
+      //  float y = cell.Row * (width + wallWidth) + wallWidth * 2F;
 
-        //  foreach (Flux.Model.DirectionEnum direction in Enum.GetValues(typeof(Flux.Model.DirectionEnum)))
-        //  {
-        //    if (!cell.Edges.ContainsKey((int)direction) || !cell.Paths.ContainsKey((int)direction))
-        //    //if (!cell.Edges.ContainsKey((int)direction) || cell.Paths[(int)direction] == null)
-        //    //if (cell.Edges[(int)direction] == null || cell.Paths[(int)direction] == null)
-        //    {
-        //      switch (direction)
-        //      {
-        //        case Flux.Model.DirectionEnum.North:
-        //          args.DrawingSession.DrawLine(x, y, x + width, y, Windows.UI.Colors.Green, wallWidth);
-        //          break;
-        //        case Flux.Model.DirectionEnum.East:
-        //          args.DrawingSession.DrawLine(x + width, y, x + width, y + height, Windows.UI.Colors.Yellow, wallWidth * 0.5F);
-        //          break;
-        //        case Flux.Model.DirectionEnum.South:
-        //          args.DrawingSession.DrawLine(x, y + height, x + width, y + height, Windows.UI.Colors.Red, wallWidth);
-        //          break;
-        //        case Flux.Model.DirectionEnum.West:
-        //          args.DrawingSession.DrawLine(x, y, x, y + height, Windows.UI.Colors.Blue, wallWidth);
-        //          break;
-        //      }
-        //    }
-        //  }
-      }
+      //  foreach (Flux.Model.DirectionEnum direction in Enum.GetValues(typeof(Flux.Model.DirectionEnum)))
+      //  {
+      //    if (!cell.Edges.ContainsKey((int)direction) || !cell.Paths.ContainsKey((int)direction))
+      //    //if (!cell.Edges.ContainsKey((int)direction) || cell.Paths[(int)direction] == null)
+      //    //if (cell.Edges[(int)direction] == null || cell.Paths[(int)direction] == null)
+      //    {
+      //      switch (direction)
+      //      {
+      //        case Flux.Model.DirectionEnum.North:
+      //          args.DrawingSession.DrawLine(x, y, x + width, y, Windows.UI.Colors.Green, wallWidth);
+      //          break;
+      //        case Flux.Model.DirectionEnum.East:
+      //          args.DrawingSession.DrawLine(x + width, y, x + width, y + height, Windows.UI.Colors.Yellow, wallWidth * 0.5F);
+      //          break;
+      //        case Flux.Model.DirectionEnum.South:
+      //          args.DrawingSession.DrawLine(x, y + height, x + width, y + height, Windows.UI.Colors.Red, wallWidth);
+      //          break;
+      //        case Flux.Model.DirectionEnum.West:
+      //          args.DrawingSession.DrawLine(x, y, x, y + height, Windows.UI.Colors.Blue, wallWidth);
+      //          break;
+      //      }
+      //    }
+      //  }
+      //}
 
       static System.Windows.Shapes.Line CreateLine(double X1, double Y1, double X2, double Y2, System.Windows.Media.Brush brush, double width)
       {

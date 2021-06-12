@@ -85,84 +85,10 @@ namespace Flux.Media.Geometry
     }
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static LineTestResult IntersectionTest(System.Numerics.Vector2 a1, System.Numerics.Vector2 a2, System.Numerics.Vector2 b1, System.Numerics.Vector2 b2)
-    {
-      var p13x = a1.X - b1.X;
-      var p13y = a1.Y - b1.Y;
-      var p21x = a2.X - a1.X;
-      var p21y = a2.Y - a1.Y;
-      var p43x = b2.X - b1.X;
-      var p43y = b2.Y - b1.Y;
-
-      var a = p43x * p13y - p43y * p13x;
-      var b = p21x * p13y - p21y * p13x;
-      var ab = p43y * p21x - p43x * p21y;
-
-      if (ab != 0)
-      {
-        a /= ab;
-        b /= ab;
-
-        if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
-        {
-          return new LineTestResult(LineTestOutcome.LinesIntersecting, a1.X + a * (a2.X - a1.X), a1.Y + a * (a2.Y - a1.Y));
-        }
-        else // Not intersecting.
-        {
-          return new LineTestResult(LineTestOutcome.Unknown);
-        }
-      }
-      else
-      {
-        if (a == 0 || b == 0) // Coincident.
-        {
-          return new LineTestResult(LineTestOutcome.CoincidentLines);
-        }
-        else // Parallel.
-        {
-          return new LineTestResult(LineTestOutcome.ParallelLines);
-        }
-      }
-    }
+      => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    //public static LineTestResult IntersectionTest(Flux.Maui.Graphics.Point a1, Flux.Maui.Graphics.Point a2, Flux.Maui.Graphics.Point b1, Flux.Maui.Graphics.Point b2)
-    //{
-    //  var p13x = a1.X - b1.X;
-    //  var p13y = a1.Y - b1.Y;
-    //  var p21x = a2.X - a1.X;
-    //  var p21y = a2.Y - a1.Y;
-    //  var p43x = b2.X - b1.X;
-    //  var p43y = b2.Y - b1.Y;
-
-    //  var a = p43x * p13y - p43y * p13x;
-    //  var b = p21x * p13y - p21y * p13x;
-    //  var ab = p43y * p21x - p43x * p21y;
-
-    //  if (ab != 0)
-    //  {
-    //    a /= ab;
-    //    b /= ab;
-
-    //    if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
-    //    {
-    //      return new LineTestResult(LineTestOutcome.LinesIntersecting, a1.X + a * (a2.X - a1.X), a1.Y + a * (a2.Y - a1.Y));
-    //    }
-    //    else // Not intersecting.
-    //    {
-    //      return new LineTestResult(LineTestOutcome.Unknown);
-    //    }
-    //  }
-    //  else
-    //  {
-    //    if (a == 0 || b == 0) // Coincident.
-    //    {
-    //      return new LineTestResult(LineTestOutcome.CoincidentLines);
-    //    }
-    //    else // Parallel.
-    //    {
-    //      return new LineTestResult(LineTestOutcome.ParallelLines);
-    //    }
-    //  }
-    //}
+    public static LineTestResult IntersectionTest(Flux.Media.Geometry.Point2 a1, Flux.Media.Geometry.Point2 a2, Flux.Media.Geometry.Point2 b1, Flux.Media.Geometry.Point2 b2)
+      => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
 
     /// <summary>Returns the corresponding y from the specified x, slope and the point.</summary>
     /// <param name="x"></param>

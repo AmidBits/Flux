@@ -8,8 +8,8 @@ namespace Flux.Media.Geometry
 
     public LineTestOutcome Outcome { get; }
 
-    public double? X { get; }
-    public double? Y { get; }
+    public readonly double? X;
+    public readonly double? Y;
 
     public LineTestResult(LineTestOutcome outcome)
     {
