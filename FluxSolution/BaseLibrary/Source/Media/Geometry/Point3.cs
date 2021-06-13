@@ -7,31 +7,35 @@ namespace Flux.Media.Geometry
     public static readonly Point3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int X;
-    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Y;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Z;
+    [System.Runtime.InteropServices.FieldOffset(0)] private int m_x;
+    [System.Runtime.InteropServices.FieldOffset(4)] private int m_y;
+    [System.Runtime.InteropServices.FieldOffset(8)] private int m_z;
 
-    public Point3(int value)
-      : this(value, value, value) { }
+    public int X { get => m_x; set => m_x = value; }
+    public int Y { get => m_y; set => m_y = value; }
+    public int Z { get => m_z; set => m_z = value; }
+
+    public Point3(int x, int y, int z)
+    {
+      m_x = x;
+      m_y = y;
+      m_z = z;
+    }
     public Point3(Point2 value, int z)
       : this(value.X, value.Y, z) { }
     public Point3(int x, int y)
       : this(x, y, 0) { }
-    public Point3(int x, int y, int z)
-    {
-      X = x;
-      Y = y;
-      Z = z;
-    }
+    public Point3(int value)
+      : this(value, value, value) { }
     public Point3(int[] array, int startIndex)
     {
       if (array is null) throw new System.ArgumentNullException(nameof(array));
 
       if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
 
-      X = array[startIndex++];
-      Y = array[startIndex++];
-      Z = array[startIndex];
+      m_x = array[startIndex++];
+      m_y = array[startIndex++];
+      m_z = array[startIndex];
     }
 
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>

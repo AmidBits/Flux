@@ -9,22 +9,25 @@ namespace Flux.Media.Geometry
     public static readonly Point2 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int X;
-    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Y;
+    [System.Runtime.InteropServices.FieldOffset(0)] private int m_x;
+    [System.Runtime.InteropServices.FieldOffset(4)] private int m_y;
+
+    public int X { get => m_x; set => m_x = value; }
+    public int Y { get => m_y; set => m_y = value; }
 
     public Point2(int value)
       : this(value, value) { }
     public Point2(int x, int y)
     {
-      X = x;
-      Y = y;
+      m_x = x;
+      m_y = y;
     }
     public Point2(int[] array, int startIndex)
     {
       if (array is null || array.Length - startIndex < 2) throw new System.ArgumentOutOfRangeException(nameof(array));
 
-      X = array[startIndex++];
-      Y = array[startIndex];
+      m_x = array[startIndex++];
+      m_y = array[startIndex];
     }
 
     #region Static Instances

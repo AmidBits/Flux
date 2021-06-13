@@ -7,23 +7,30 @@ namespace Flux.Media.Geometry
     public static readonly Rect2 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly int Left;
-    [System.Runtime.InteropServices.FieldOffset(4)] public readonly int Top;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly int Width;
-    [System.Runtime.InteropServices.FieldOffset(12)] public readonly int Height;
+    [System.Runtime.InteropServices.FieldOffset(0)] private Point2 m_position;
+    [System.Runtime.InteropServices.FieldOffset(8)] private Size2 m_size;
 
+    public int Left { get => m_position.X; set => m_position.X = value; }
+    public int X { get => m_position.X; set => m_position.X = value; }
+    public int Top { get => m_position.Y; set => m_position.Y = value; }
+    public int Y { get => m_position.Y; set => m_position.Y = value; }
+
+    public int Width { get => m_size.Width; set => m_size.Width = value; }
+    public int Height { get => m_size.Height; set => m_size.Height = value; }
+
+    public int Right { get => m_position.X + m_size.Width; set => m_size.Width = value - m_position.X; }
+    public int Bottom { get => m_position.Y + m_size.Height; set => m_size.Height = value - m_position.Y; }
+
+    public Rect2(Point2 position, Size2 size)
+    {
+      m_position = position;
+      m_size = size;
+    }
     public Rect2(int left, int top, int width, int height)
     {
-      Left = left;
-      Top = top;
-      Width = width;
-      Height = height;
+      m_position = new Point2(left, top);
+      m_size = new Size2(width, height);
     }
-
-    public int Right
-      => Left + Width;
-    public int Bottom
-      => Top + Height;
 
     public Point2 Center
       => new Point2(Left + (Width / 2), Top + (Height / 2));
