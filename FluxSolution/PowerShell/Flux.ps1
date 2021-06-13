@@ -1,4 +1,3 @@
-
 # Converts a local project URI to a 'binary' URI, for debugging purposes.
 function ConvertTo-BinUri ( [uri]$VsUri, [hashtable]$VsReference ) 
 { New-Object System.Uri $VsUri.OriginalString.Replace("/\", "/\$($VsReference.SolutionName)\$($VsReference.ProjectName)\bin\$($VsReference.Configuration)\$($VsReference.TargetFramework)\") }
@@ -15,26 +14,23 @@ Clear-Host
 
 $vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net5.0' }
 
-"Checking for assembly <$($vsProjectReference.SolutionName)\$($vsProjectReference.ProjectName)\$($vsProjectReference.TargetFramework)\$($vsProjectReference.Configuration)>"
+[string]$assemblyFileName = Expand-FileToPath "$($vsProjectReference.ProjectName).dll" $vsProjectReference
+
+"Add-on <$assemblyFileName>$([System.Environment]::NewLine)"
 
 if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -match "^$($vsProjectReference.ProjectName)" } | Test-Any)) # Check whether the project library is already loaded.
 {
     # Various ways to include/use the Flux BaseLibray in PowerShell:
 
-    [string]$assemblyFileName = Expand-FileToPath "$($vsProjectReference.ProjectName).dll" $vsProjectReference # The file name of the binary assembly.
-    "Loading assembly <$assemblyFileName>"
-
     [byte[]]$bytes = [System.IO.File]::ReadAllBytes($assemblyFileName) # Read the binary assembly to a byte array.
 
     <#
+    [string]$base64TextFile = 'C:\Flux\AssemblyString.txt' # The path of the base64 string.
+
     [string]$base64 = [System.Convert]::ToBase64String($bytes) # Encode the byte array to a Base64 string. 
 
-    [string]$base64TextFile = 'C:\Flux\AssemblyString.txt' # The path of the base64 string.
     [void][System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($base64TextFile)) # Ensure the folder structure is there.
     [System.IO.File]::WriteAllText($base64TextFile, $base64) # Write the Base64 string to a text file.
-   
-    # Optionally use a literal Base64 string (obtain from the text file created above) to create independence from files.
-    [string]$base64 = '[REPLACE_WITH_LITERAL_BASE64_STRING_FROM_FILE]'
 
     if([System.IO.File]::Exists($base64TextFile)) # Check if the Base64 file exists.
     { [string]$base64 = [System.IO.File]::ReadAllText($base64TextFile) } # Read a Base64 string from the text file.
@@ -43,17 +39,20 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
     #>
 
     [void][System.Reflection.Assembly]::Load($bytes) # Load the byte array as an assembly into the current context.
-
-    "Assembly loaded..."
 }
 
 # Sample use from Flux BaseLibrary:
 
-# [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
-# [Flux.Locale]::SpecialFolders | Format-Table
+"Locale-Properties:"
+ [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
+ "Locale-SpecialFolders:"
+ [Flux.Locale]::SpecialFolders | Format-Table
 
-$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
-$fm = $md.GetFullMatrix("settings", "kitten")
+return;
+
+#$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
+#$fm = $md.GetFullMatrix("settings", "kitten")
+
 # $fe = 
 # {  
 #   param($e, $i)
@@ -61,13 +60,14 @@ $fm = $md.GetFullMatrix("settings", "kitten")
 #   $e.ToString()
 # }
 
-$af = New-Object Flux.Formatters.ArrayFormatter
-$s = $af.TwoToConsoleString($fm)
-"$($md.GetType().FullName)$([System.Environment]::NewLine)$s"
+#$af = New-Object Flux.Formatting.ArrayFormatter
+#$s = $af.TwoToConsoleString($fm)
 
-# $cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
-# $uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
-# $cad.GetDataTable($uri) | Where-Object {$_."Word" -cmatch '^[a-z]{2,}$' -and $_."NonAmerican" -eq '-&'} | Select-Object -Unique -First 1000 Word | Format-Table
+#"$($md.GetType().FullName)$([System.Environment]::NewLine)$s"
+
+$cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
+$uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
+$cad.GetDataTable($uri) | Where-Object {$_."Word" -cmatch '^[a-z]{2,}$' -and $_."NonAmerican" -eq '-&'} | Select-Object -Unique -First 1000 Word | Format-Table
 
 # [Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
 # [Flux.Locale].Assembly.GetTypes() | Select-Object FullName
