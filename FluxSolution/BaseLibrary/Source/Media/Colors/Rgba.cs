@@ -146,23 +146,27 @@ namespace Flux.Media.Colors
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Rgba a, Rgba b)
       => a.Equals(b);
     public static bool operator !=(Rgba a, Rgba b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgba other)
       => RGB == other.RGB && Alpha == other.Alpha;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Rgba o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(RGB.Red, RGB.Green, RGB.Blue, Alpha);
+      => System.HashCode.Combine(RGB, Alpha);
     public override string ToString()
       => $"<{GetType().Name}: {RGB.Red}, {RGB.Green}, {RGB.Blue}, {Alpha}>";
+    #endregion Object overrides
   }
 
   //internal static class Color

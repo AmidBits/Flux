@@ -23,6 +23,14 @@ namespace Flux.Media.Colors
     {
     }
 
+    /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
+    public Hsva ToHsva()
+      => new Hsva(HWB.ToHsv(), Alpha);
+    /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
+    public Rgba ToRgba()
+      => new Rgba(HWB.ToRgb(), System.Convert.ToByte(Alpha * 255));
+
+    #region Static methods
     public static Hwba Random(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
@@ -31,30 +39,28 @@ namespace Flux.Media.Colors
     }
     public static Hwba Random()
       => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static methods
 
-    /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
-    public Hsva ToHsva()
-      => new Hsva(HWB.ToHsv(), Alpha);
-    /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
-    public Rgba ToRgba()
-      => new Rgba(HWB.ToRgb(), System.Convert.ToByte(Alpha * 255));
-
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Hwba a, Hwba b)
       => a.Equals(b);
     public static bool operator !=(Hwba a, Hwba b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hwba other)
       => HWB == other.HWB && Alpha == other.Alpha;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hwba o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(HWB.Hue, HWB.White, HWB.Black, Alpha);
+      => System.HashCode.Combine(HWB, Alpha);
     public override string ToString()
       => $"<{GetType().Name}: {HWB.Hue}, {HWB.White}, {HWB.Black}, {Alpha}>";
+    #endregion Object overrides
   }
 }

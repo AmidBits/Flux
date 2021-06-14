@@ -22,13 +22,6 @@ namespace Flux.Media.Colors
       m_value = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
     }
 
-    public static Hsv Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
-
     public double GetChroma()
       => m_value * m_saturation;
 
@@ -89,22 +82,35 @@ namespace Flux.Media.Colors
        );
     }
 
-    // Operators
+    #region Static methods
+    public static Hsv Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Hsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
+    }
+    #endregion Static methods
+
+    #region Overloaded operators
     public static bool operator ==(Hsv a, Hsv b)
       => a.Equals(b);
     public static bool operator !=(Hsv a, Hsv b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
       => Hue == other.Hue && Saturation == other.Saturation && Value == other.Value;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsv o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_hue, m_saturation, m_value);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_value * 100):N1}%>";
+    #endregion Object overrides
   }
 }

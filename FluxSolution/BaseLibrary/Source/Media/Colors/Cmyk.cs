@@ -27,15 +27,6 @@ namespace Flux.Media.Colors
       m_key = black >= 0 && black <= 1 ? black : throw new System.ArgumentOutOfRangeException(nameof(black));
     }
 
-    public static Cmyk Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Cmyk(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Cmyk Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
-
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Rgb ToRgb()
     {
@@ -48,22 +39,37 @@ namespace Flux.Media.Colors
       return new Rgb(red, green, blue);
     }
 
-    // Operators
+    #region Static members
+    public static Cmyk Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Cmyk(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
+    }
+    public static Cmyk Random()
+      => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static members
+
+    #region Overloaded operators
     public static bool operator ==(Cmyk a, Cmyk b)
       => a.Equals(b);
     public static bool operator !=(Cmyk a, Cmyk b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Cmyk other)
       => m_cyan == other.m_cyan && m_magenta == other.m_magenta && m_yellow == other.m_yellow && m_key == other.m_key;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Cmyk o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_cyan, m_magenta, m_yellow, m_key);
     public override string ToString()
       => $"<{GetType().Name}: {(m_cyan * 360):N1}\u00B0, {(m_magenta * 360):N1}\u00B0, {(m_yellow * 360):N1}\u00B0, {(m_key * 360):N1}\u00B0>";
+    #endregion Object overrides
   }
 }

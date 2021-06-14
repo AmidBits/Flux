@@ -23,6 +23,11 @@ namespace Flux.Media.Colors
       : this(new Cmyk(cyan, magenta, yellow, black), alpha)
     { }
 
+    /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
+    public Rgba ToRgba()
+      => new Rgba(CMYK.ToRgb(), System.Convert.ToByte(Alpha * 255));
+
+    #region Static members
     public static Cmyka Random(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
@@ -31,27 +36,28 @@ namespace Flux.Media.Colors
     }
     public static Cmyka Random()
       => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static members
 
-    /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
-    public Rgba ToRgba()
-      => new Rgba(CMYK.ToRgb(), System.Convert.ToByte(Alpha * 255));
-
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Cmyka a, Cmyka b)
       => a.Equals(b);
     public static bool operator !=(Cmyka a, Cmyka b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Cmyka other)
       => CMYK == other.CMYK && Alpha == other.Alpha;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Cmyka o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(CMYK.Cyan, CMYK.Magenta, CMYK.Yellow, CMYK.Key, Alpha);
+      => System.HashCode.Combine(CMYK, Alpha);
     public override string ToString()
       => $"<{GetType().Name}: {(CMYK.Cyan * 360):N1}\u00B0, {(CMYK.Magenta * 360):N1}\u00B0, {(CMYK.Yellow * 360):N1}\u00B0, {(CMYK.Key * 360):N1}\u00B0, {(m_alpha * 100):N1}%>";
+    #endregion Object overrides
   }
 }

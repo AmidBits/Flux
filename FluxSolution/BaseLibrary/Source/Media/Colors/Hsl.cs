@@ -22,15 +22,6 @@ namespace Flux.Media.Colors
       m_lightness = lightness >= 0 && lightness <= 1 ? lightness : throw new System.ArgumentOutOfRangeException(nameof(lightness));
     }
 
-    public static Hsl Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hsl(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Hsl Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
-
     public double GetChroma()
       => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;
 
@@ -91,22 +82,37 @@ namespace Flux.Media.Colors
     public string ToStringHtmlHsl()
       => $"hsl({Hue}, {Saturation}%, {Lightness}%)";
 
-    // Operators
+    #region Static methods
+    public static Hsl Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Hsl(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
+    }
+    public static Hsl Random()
+      => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static methods
+
+    #region Overloaded operators
     public static bool operator ==(Hsl a, Hsl b)
       => a.Equals(b);
     public static bool operator !=(Hsl a, Hsl b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interface
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsl other)
       => Hue == other.Hue && Saturation == other.Saturation && Lightness == other.Lightness;
+    #endregion Implemented interface
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsl o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, Saturation, Lightness);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_lightness * 100):N1}%>";
+    #endregion Object overrides
   }
 }

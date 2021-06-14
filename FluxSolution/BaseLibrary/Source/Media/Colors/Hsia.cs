@@ -24,6 +24,11 @@ namespace Flux.Media.Colors
     {
     }
 
+    /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
+    public Rgba ToRgba()
+      => new Rgba(HSI.ToRgb(), System.Convert.ToByte(Alpha * 255));
+
+    #region Static members
     public static Hsia Random(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
@@ -32,27 +37,28 @@ namespace Flux.Media.Colors
     }
     public static Hsia Random()
       => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static members
 
-    /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
-    public Rgba ToRgba()
-      => new Rgba(HSI.ToRgb(), System.Convert.ToByte(Alpha * 255));
-
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Hsia a, Hsia b)
       => a.Equals(b);
     public static bool operator !=(Hsia a, Hsia b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interface
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsia other)
       => HSI == other.HSI && Alpha == other.Alpha;
+    #endregion Implemented interface
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsia o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(HSI.Hue, HSI.Saturation, HSI.Intensity, Alpha);
+      => System.HashCode.Combine(HSI, Alpha);
     public override string ToString()
       => $"<{GetType().Name}: {HSI.Hue}, {HSI.Saturation}, {HSI.Intensity}, {Alpha}>";
+    #endregion Object overrides
   }
 }

@@ -22,15 +22,6 @@ namespace Flux.Media.Colors
       m_black = black >= 0 && black <= 1 ? black : throw new System.ArgumentOutOfRangeException(nameof(black));
     }
 
-    public static Hwb Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hwb(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Hwb Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
-
     public double GetChroma()
       => 3 * m_black * m_white / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
 
@@ -85,22 +76,37 @@ namespace Flux.Media.Colors
       );
     }
 
-    // Operators
+    #region Static member
+    public static Hwb Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Hwb(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
+    }
+    public static Hwb Random()
+      => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static member
+
+    #region Overloaded operators
     public static bool operator ==(Hwb a, Hwb b)
       => a.Equals(b);
     public static bool operator !=(Hwb a, Hwb b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hwb other)
       => Hue == other.Hue && White == other.White && Black == other.Black;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hwb o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, White, Black);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_white * 100):N1}%, {(m_black * 100):N1}%>";
+    #endregion Object overrides
   }
 }

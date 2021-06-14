@@ -22,15 +22,6 @@ namespace Flux.Media.Colors
       m_intensity = intensity >= 0 && intensity <= 1 ? intensity : throw new System.ArgumentOutOfRangeException(nameof(intensity));
     }
 
-    public static Hsi Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hsi(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Hsi Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
-
     public double GetChroma()
       => 3 * Intensity * Saturation / (1 + (1 - System.Math.Abs((Hue / 60 % 2) - 1)));
 
@@ -80,22 +71,37 @@ namespace Flux.Media.Colors
       );
     }
 
-    // Operators
+    #region Static methods
+    public static Hsi Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Hsi(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
+    }
+    public static Hsi Random()
+      => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static methods
+
+    #region Overloaded operators
     public static bool operator ==(Hsi a, Hsi b)
       => a.Equals(b);
     public static bool operator !=(Hsi a, Hsi b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsi other)
       => Hue == other.Hue && Saturation == other.Saturation && Intensity == other.Intensity;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsi o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, Saturation, Intensity);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_intensity * 100):N1}%>";
+    #endregion Object overrides
   }
 }

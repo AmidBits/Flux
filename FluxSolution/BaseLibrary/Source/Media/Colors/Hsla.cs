@@ -24,15 +24,6 @@ namespace Flux.Media.Colors
     {
     }
 
-    public static Hsla Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hsla(Hsl.Random(rng), rng.NextDouble());
-    }
-    public static Hsla Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
-
     /// <summary>Creates an HSVA color corresponding to the HSL instance.</summary>
     public Hsva ToHsva()
       => new Hsva(HSL.ToHsv(), Alpha);
@@ -43,22 +34,37 @@ namespace Flux.Media.Colors
     public string ToStringHtmlHsla()
       => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {Alpha})";
 
-    // Operators
+    #region Static methods
+    public static Hsla Random(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      return new Hsla(Hsl.Random(rng), rng.NextDouble());
+    }
+    public static Hsla Random()
+      => Random(Flux.Random.NumberGenerator.Crypto);
+    #endregion Static methods
+
+    #region Overloaded operators
     public static bool operator ==(Hsla a, Hsla b)
       => a.Equals(b);
     public static bool operator !=(Hsla a, Hsla b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsla other)
       => HSL == other.HSL && Alpha == other.Alpha;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsla o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(HSL.Hue, HSL.Saturation, HSL.Lightness, Alpha);
+      => System.HashCode.Combine(HSL, Alpha);
     public override string ToString()
       => $"<{GetType().Name}: {HSL.Hue}, {HSL.Saturation}, {HSL.Lightness}, {Alpha}>";
+    #endregion Object overrides
   }
 }

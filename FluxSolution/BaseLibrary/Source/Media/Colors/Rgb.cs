@@ -198,78 +198,7 @@ namespace Flux.Media.Colors
     public string ToStringHtmlRgb()
       => $"rgb({Red}, {Green}, {Blue})";
 
-    /// <summary>
-    /// Returns a color based on XAML color string.
-    /// </summary>
-    /// <param name="colorString">The color string. Any format used in XAML should work.</param>
-    /// <returns>Parsed color</returns>
-    //public static Rgb Parse(string colorString)
-    //{
-    //  if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
-
-    //  if (colorString[0] == '#')
-    //  {
-    //    switch (colorString)
-    //    {
-    //      case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
-    //        return new Rgb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
-    //      case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
-    //        return new Rgb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
-    //      case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
-    //        var a5 = (byte)(c >> 12);
-    //        var r5 = (byte)((c >> 8) & 0xf);
-    //        var g5 = (byte)((c >> 4) & 0xf);
-    //        var b5 = (byte)(c & 0xf);
-    //        a5 = (byte)(a5 << 4 | a5);
-    //        r5 = (byte)(r5 << 4 | r5);
-    //        g5 = (byte)(g5 << 4 | g5);
-    //        b5 = (byte)(b5 << 4 | b5);
-    //        return new Rgb(r5, g5, b5, a5);
-    //      case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
-    //        var r4 = (byte)((ci4 >> 8) & 0xf);
-    //        var g4 = (byte)((ci4 >> 4) & 0xf);
-    //        var b4 = (byte)(ci4 & 0xf);
-    //        r4 = (byte)(r4 << 4 | r4);
-    //        g4 = (byte)(g4 << 4 | g4);
-    //        b4 = (byte)(b4 << 4 | b4);
-    //        return new Rgb(r4, g4, b4, 255);
-    //      default:
-    //        throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
-    //    }
-    //  }
-
-    //  if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
-    //  {
-    //    return (colorString.Substring(3).Split(',')) switch
-    //    {
-    //      var s4 when s4.Length == 4 => new Rgb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
-    //      var s3 when s3.Length == 3 => new Rgb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
-    //      _ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
-    //    };
-    //  }
-
-    //  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
-    //}
-
-    // Operators
-    public static bool operator ==(Rgb a, Rgb b)
-      => a.Equals(b);
-    public static bool operator !=(Rgb a, Rgb b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
-      => m_red == other.m_red && m_green == other.m_green && m_blue == other.m_blue;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is Rgb o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_red, m_green, m_blue);
-    public override string ToString()
-      => $"<{GetType().Name}: {m_red}, {m_green}, {m_blue}>";
-
-    #region Statics
+    #region Static methods
     public static double GetChroma(byte red, byte green, byte blue, out byte min, out byte max)
     {
       max = System.Math.Max(System.Math.Max(red, green), blue);
@@ -339,7 +268,83 @@ namespace Flux.Media.Colors
 
       return hue;
     }
-    #endregion Statics
+    #endregion Static methods
+
+    #region Overloaded operators
+    /// <summary>
+    /// Returns a color based on XAML color string.
+    /// </summary>
+    /// <param name="colorString">The color string. Any format used in XAML should work.</param>
+    /// <returns>Parsed color</returns>
+    //public static Rgb Parse(string colorString)
+    //{
+    //  if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
+
+    //  if (colorString[0] == '#')
+    //  {
+    //    switch (colorString)
+    //    {
+    //      case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
+    //        return new Rgb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
+    //      case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
+    //        return new Rgb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
+    //      case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
+    //        var a5 = (byte)(c >> 12);
+    //        var r5 = (byte)((c >> 8) & 0xf);
+    //        var g5 = (byte)((c >> 4) & 0xf);
+    //        var b5 = (byte)(c & 0xf);
+    //        a5 = (byte)(a5 << 4 | a5);
+    //        r5 = (byte)(r5 << 4 | r5);
+    //        g5 = (byte)(g5 << 4 | g5);
+    //        b5 = (byte)(b5 << 4 | b5);
+    //        return new Rgb(r5, g5, b5, a5);
+    //      case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
+    //        var r4 = (byte)((ci4 >> 8) & 0xf);
+    //        var g4 = (byte)((ci4 >> 4) & 0xf);
+    //        var b4 = (byte)(ci4 & 0xf);
+    //        r4 = (byte)(r4 << 4 | r4);
+    //        g4 = (byte)(g4 << 4 | g4);
+    //        b4 = (byte)(b4 << 4 | b4);
+    //        return new Rgb(r4, g4, b4, 255);
+    //      default:
+    //        throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
+    //    }
+    //  }
+
+    //  if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
+    //  {
+    //    return (colorString.Substring(3).Split(',')) switch
+    //    {
+    //      var s4 when s4.Length == 4 => new Rgb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
+    //      var s3 when s3.Length == 3 => new Rgb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
+    //      _ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
+    //    };
+    //  }
+
+    //  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
+    //}
+
+    // Operators
+    public static bool operator ==(Rgb a, Rgb b)
+      => a.Equals(b);
+    public static bool operator !=(Rgb a, Rgb b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IEquatable
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
+      => m_red == other.m_red && m_green == other.m_green && m_blue == other.m_blue;
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    public override bool Equals(object? obj)
+      => obj is Rgb o && Equals(o);
+    public override int GetHashCode()
+      => System.HashCode.Combine(m_red, m_green, m_blue);
+    public override string ToString()
+      => $"<{GetType().Name}: {m_red}, {m_green}, {m_blue}>";
+    #endregion Object overrides
   }
 }
 
