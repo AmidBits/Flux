@@ -57,22 +57,26 @@ namespace Flux.Media.Geometry
     public System.Numerics.Vector2 TransformNdcToRaster(System.Numerics.Vector2 ndc)
       => new System.Numerics.Vector2(ndc.X * RasterWidth, (1f - ndc.Y) * RasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(ViewPort a, ViewPort b)
       => a.Equals(b);
     public static bool operator !=(ViewPort a, ViewPort b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(ViewPort other)
       => CanvasHeight == other.CanvasHeight && CanvasWidth == other.CanvasWidth && RasterHeight == other.RasterHeight && RasterWidth == other.RasterWidth && WorldToCamera == other.WorldToCamera;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is ViewPort o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(CanvasHeight, CanvasWidth, RasterHeight, RasterWidth, WorldToCamera);
     public override string? ToString()
       => $"<{GetType().Name}: Canvas=({CanvasWidth}, {CanvasHeight}), Raster=({RasterWidth}, {RasterHeight}), W2C=({WorldToCamera})>";
+    #endregion Object overrides
   }
 }
