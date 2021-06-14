@@ -2,12 +2,12 @@ namespace Flux.Media
 {
   public class SampleRate
   {
-    public Frequency Frequency { get; set; }
+    public Units.Frequency Frequency { get; set; }
 
-    public SampleRate(Frequency frequency)
+    public SampleRate(Units.Frequency frequency)
       => Frequency = frequency;
     public SampleRate()
-      : this(new Frequency(44100))
+      : this(new Units.Frequency(44100))
     {
     }
   }

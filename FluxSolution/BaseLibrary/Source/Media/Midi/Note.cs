@@ -26,18 +26,18 @@ namespace Flux.Media.Midi
       => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public Frequency ToFrequency()
-      => new Frequency(ConvertNoteToFrequency(m_number));
+    public Units.Frequency ToFrequency()
+      => new Units.Frequency(ConvertNoteToFrequency(m_number));
 
     #region Static methods
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static double ConvertNoteToFrequency(int midiNote)
-      => midiNote >= 0 && midiNote <= 127 ? Frequency.Reference440 * System.Math.Pow(2, (midiNote - ReferenceA4) / 12.0) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
+      => midiNote >= 0 && midiNote <= 127 ? Units.Frequency.Reference440 * System.Math.Pow(2, (midiNote - ReferenceA4) / 12.0) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static int ConvertFrequencyToNote(double frequency)
-      => (int)(ReferenceA4 + (System.Math.Log(frequency / Frequency.Reference440, 2.0) * 12.0)) is var midiNote && midiNote >= 0 && midiNote <= 127 ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+      => (int)(ReferenceA4 + (System.Math.Log(frequency / Units.Frequency.Reference440, 2.0) * 12.0)) is var midiNote && midiNote >= 0 && midiNote <= 127 ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
-    public static Note FromFrequency(Frequency frequency)
+    public static Note FromFrequency(Units.Frequency frequency)
       => new Note(ConvertFrequencyToNote(frequency.Hertz));
     public static bool IsMidiNote(int number)
       => number >= 0 && number <= 127;
@@ -61,7 +61,7 @@ namespace Flux.Media.Midi
       throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
     }
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
-    public static bool TryFromFrequency(Frequency frequency, out Note result)
+    public static bool TryFromFrequency(Units.Frequency frequency, out Note result)
     {
       try
       {

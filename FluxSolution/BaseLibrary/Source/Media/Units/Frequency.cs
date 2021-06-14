@@ -1,4 +1,4 @@
-namespace Flux.Media
+namespace Flux.Media.Units
 {
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
   public struct Frequency

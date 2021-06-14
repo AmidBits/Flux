@@ -1,80 +1,80 @@
 namespace Flux.Media.Dsp.Synthesis
 {
-	public class Phase
-	{
-		private double m_frequencyModulation;
-		/// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
-		public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
+  public class Phase
+  {
+    private double m_frequencyModulation;
+    /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
+    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
-		/// <summary>The frequency modulator (FM) for the oscillator.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
-		public IOscillator? FrequencyModulator { get; set; }
+    /// <summary>The frequency modulator (FM) for the oscillator.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
+    public IOscillator? FrequencyModulator { get; set; }
 
-		public double NormalizedFrequency { get; set; }
+    public double NormalizedFrequency { get; set; }
 
-		private double m_offset;
-		public double Offset { get => m_offset; set => m_offset = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
+    private double m_offset;
+    public double Offset { get => m_offset; set => m_offset = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
 
-		private double m_phaseModulation;
-		/// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
-		public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    private double m_phaseModulation;
+    /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
+    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
-		/// <summary>The pulse modulator (PM) for the oscillator.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
-		public Oscillator? PhaseModulator { get; set; }
+    /// <summary>The pulse modulator (PM) for the oscillator.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
+    public Oscillator? PhaseModulator { get; set; }
 
-		private double m_position;
-		public double Position { get => m_position; set => m_position = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
+    private double m_position;
+    public double Position { get => m_position; set => m_position = Maths.Wrap(value, m_minimumPhase, m_maximumPhase); }
 
-		private readonly double m_maximumPhase;
-		private readonly double m_minimumPhase;
+    private readonly double m_maximumPhase;
+    private readonly double m_minimumPhase;
 
-		/// <summary>Indicates whether the phase was reset, i.e. the cycle was completed.</summary>
-		public bool WasReset { get; set; }
+    /// <summary>Indicates whether the phase was reset, i.e. the cycle was completed.</summary>
+    public bool WasReset { get; set; }
 
-		/// <summary>Indicates whether the direction of the phase should be reversed.</summary>
-		public bool Reverse { get; set; }
+    /// <summary>Indicates whether the direction of the phase should be reversed.</summary>
+    public bool Reverse { get; set; }
 
-		public Phase(double normalizedFrequency)
-		{
-			NormalizedFrequency = normalizedFrequency;
+    public Phase(double normalizedFrequency)
+    {
+      NormalizedFrequency = normalizedFrequency;
 
-			m_minimumPhase = 0;
-			m_maximumPhase = 1;
+      m_minimumPhase = 0;
+      m_maximumPhase = 1;
 
-			m_position = m_offset = 0.0;
-		}
-		public Phase() : this(Media.Frequency.CyclesPerSample(440.0, 44100.0)) { }
+      m_position = m_offset = 0.0;
+    }
+    public Phase() : this(Units.Frequency.CyclesPerSample(440.0, 44100.0)) { }
 
-		/// <summary>Resets the phase position using the phase offset. Can be used to "sync" the oscillator.</summary>
-		public void Reset(bool resetModulators)
-		{
-			m_position = m_offset;
+    /// <summary>Resets the phase position using the phase offset. Can be used to "sync" the oscillator.</summary>
+    public void Reset(bool resetModulators)
+    {
+      m_position = m_offset;
 
-			if (resetModulators)
-			{
-				(FrequencyModulator as Oscillator)?.Reset(resetModulators);
-				(PhaseModulator as Oscillator)?.Reset(resetModulators);
-			}
-		}
+      if (resetModulators)
+      {
+        (FrequencyModulator as Oscillator)?.Reset(resetModulators);
+        (PhaseModulator as Oscillator)?.Reset(resetModulators);
+      }
+    }
 
-		public void Update(double? normalizedFrequency)
-		{
-			if (!normalizedFrequency.HasValue)
-				normalizedFrequency = NormalizedFrequency;
+    public void Update(double? normalizedFrequency)
+    {
+      if (!normalizedFrequency.HasValue)
+        normalizedFrequency = NormalizedFrequency;
 
-			var shift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
+      var shift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-			if (PhaseModulator != null && m_phaseModulation > Flux.Maths.EpsilonCpp32)
-				shift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
+      if (PhaseModulator != null && m_phaseModulation > Flux.Maths.EpsilonCpp32)
+        shift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-			if (FrequencyModulator != null && m_frequencyModulation > Flux.Maths.EpsilonCpp32)
-				shift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
+      if (FrequencyModulator != null && m_frequencyModulation > Flux.Maths.EpsilonCpp32)
+        shift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
-			if (Reverse)
-				shift = -shift;
+      if (Reverse)
+        shift = -shift;
 
-			m_position = Maths.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
-		}
-	}
+      m_position = Maths.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
+    }
+  }
 }
