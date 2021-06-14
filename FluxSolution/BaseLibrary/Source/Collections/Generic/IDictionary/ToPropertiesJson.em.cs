@@ -5,7 +5,7 @@ namespace Flux
   public static partial class SystemCollectionsGenericIDictionaryEm
   {
     /// <summary>Create a new <see cref="System.String"/> from the dictionary, in the form "{ Name=Value, ... }".</summary>
-    public static string ToPropertiesJson(this System.Collections.Generic.IDictionary<string, object?> properties, System.Func<object?, string> valueSelector)
-      => $"{{{string.Join(',', (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => $"{kvp.Key}={valueSelector(kvp.Value)}"))}}}";
+    public static string ToPropertiesJson<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> properties, System.Func<TKey, string> nameSelector, System.Func<TKey, TValue, string> valueSelector)
+      => $"{{{string.Join(',', (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => $"{nameSelector(kvp.Key)}={valueSelector(kvp.Key, kvp.Value)}"))}}}";
   }
 }

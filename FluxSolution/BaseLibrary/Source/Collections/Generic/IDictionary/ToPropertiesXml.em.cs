@@ -5,7 +5,7 @@ namespace Flux
   public static partial class SystemCollectionsGenericIDictionaryEm
   {
     /// <summary>Create a new <see cref="System.Xml.Linq.XElement"/> from the dictionary, in the form "<Properties><Property Name="" Value="" />...</Properties>".</summary>
-    public static System.Xml.Linq.XElement ToPropertiesXml(this System.Collections.Generic.IDictionary<string, object?> properties, System.Func<object?, string> valueSelector)
-      => new System.Xml.Linq.XElement(@"Properties", (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => new System.Xml.Linq.XElement(@"Property", new System.Xml.Linq.XAttribute(@"Name", kvp.Key), new System.Xml.Linq.XAttribute(@"Value", valueSelector(kvp.Value)))));
+    public static System.Xml.Linq.XElement ToPropertiesXml<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> properties, System.Func<TKey, string> nameSelector, System.Func<TKey, TValue, string> valueSelector)
+      => new System.Xml.Linq.XElement(@"Properties", (properties ?? throw new System.ArgumentNullException(nameof(properties))).Select(kvp => new System.Xml.Linq.XElement(@"Property", new System.Xml.Linq.XAttribute(@"Name", nameSelector(kvp.Key)), new System.Xml.Linq.XAttribute(@"Value", valueSelector(kvp.Key, kvp.Value)))));
   }
 }

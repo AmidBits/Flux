@@ -16,7 +16,7 @@ namespace Flux
     }
 
     /// <summary>Serialize the source from a JSON string to T, using the specified options.</summary>
-    public static TTarget? FromJson<TTarget>(string source, System.Text.Json.JsonSerializerOptions? options = null)
+    public static TTarget? FromJson<TTarget>(string source, System.Text.Json.JsonSerializerOptions options)
       => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source, options);
     /// <summary>Serialize the source from a JSON string to T.</summary>
     public static TTarget? FromJson<TTarget>(string source)
@@ -30,23 +30,26 @@ namespace Flux
     }
 
     /// <summary>Serialize the source to a JSON string, using the specified options.</summary>
-    public static string ToJson(object source, System.Text.Json.JsonSerializerOptions? options = null)
+    public static string ToJson(object source, System.Text.Json.JsonSerializerOptions options)
       => System.Text.Json.JsonSerializer.Serialize(source, options);
     /// <summary>Serialize the source to a JSON string.</summary>
     public static string ToJson(object source)
       => System.Text.Json.JsonSerializer.Serialize(source);
     /// <summary>Serialize the source to an XML string.</summary>
-    public static string ToXml(object source)
+    public static string ToXml(object source, System.Xml.XmlWriterSettings settings)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       using var sw = new System.IO.StringWriter();
-      using var xw = System.Xml.XmlWriter.Create(sw, new System.Xml.XmlWriterSettings() { OmitXmlDeclaration = true });
+      using var xw = System.Xml.XmlWriter.Create(sw, settings);
       var xsn = new System.Xml.Serialization.XmlSerializerNamespaces();
       xsn.Add(string.Empty, string.Empty);
       new System.Xml.Serialization.XmlSerializer(source.GetType()).Serialize(xw, source, xsn);
       return sw.ToString();
     }
+    /// <summary>Serialize the source to an XML string.</summary>
+    public static string ToXml(object source)
+      => ToXml(source, new System.Xml.XmlWriterSettings() { OmitXmlDeclaration = true });
 
     /// <summary>Use the JSON serializer to deep clone the source of type TSource to a TTarget using the Try paradigm.</summary>
     public static bool TryCloneJson<TTarget>(object source, out TTarget? result)
