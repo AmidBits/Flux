@@ -38,7 +38,7 @@ namespace Flux.Media.Geometry
     public Size2 Size
       => new Size2(Width, Height);
 
-    // Statics
+    #region Static methods
     private static Rect2 Create(int left, int top, int right, int bottom)
       => left < right && top < bottom ? new Rect2(left, top, right - left, bottom - top) : Empty;
     /// <summary>Determines the Rectangle structure that represents the intersection of two rectangles. Empty if there is no intersection.</summary>
@@ -50,23 +50,28 @@ namespace Flux.Media.Geometry
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Rect2'/>.</summary>
     public static Size2 ToSize2(Rect2 size)
       => new Size2(size.Width, size.Height);
+    #endregion Static methods
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Rect2 a, Rect2 b)
       => a.Equals(b);
     public static bool operator !=(Rect2 a, Rect2 b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(Rect2 other)
       => Left == other.Left && Top == other.Top && Width == other.Width && Height == other.Height;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Rect2 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Left, Top, Width, Height);
     public override string? ToString()
       => $"<Rect {Left}, {Top}, {Width}, {Height}>";
+    #endregion Object overrides
   }
 }

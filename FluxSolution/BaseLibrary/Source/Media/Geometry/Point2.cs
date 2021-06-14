@@ -67,7 +67,7 @@ namespace Flux.Media.Geometry
     public int[] ToArray()
       => new int[] { X, Y };
 
-    #region Static members
+    #region Static methods
     /// <summary>Create a new vector with the sum from the vector added to the other.</summary>
     public static Point2 Add(Point2 p1, Point2 p2)
       => new Point2(p1.X + p2.X, p1.Y + p2.Y);
@@ -289,7 +289,7 @@ namespace Flux.Media.Geometry
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
     public static Size2 ToSize2(Point2 point)
       => new Size2(point.X, point.Y);
-    #endregion Static members
+    #endregion Static methods
 
     #region "Unique" index
     /// <summary>Convert an index to a 3D vector, based on the specified lengths of axes.</summary>
@@ -302,6 +302,11 @@ namespace Flux.Media.Geometry
     #endregion "Unique" index
 
     #region Overloaded operators
+    public static bool operator ==(Point2 p1, Point2 p2)
+      => p1.Equals(p2);
+    public static bool operator !=(Point2 p1, Point2 p2)
+      => !p1.Equals(p2);
+
     public static Point2 operator -(Point2 v) => Negate(v);
 
     public static Point2 operator ~(Point2 v) => OnesComplement(v);
@@ -342,11 +347,9 @@ namespace Flux.Media.Geometry
 
     public static Point2 operator <<(Point2 p1, int v) => LeftShift(p1, v);
     public static Point2 operator >>(Point2 p1, int v) => RightShift(p1, v);
-
-    public static bool operator ==(Point2 p1, Point2 p2) => p1.Equals(p2);
-    public static bool operator !=(Point2 p1, Point2 p2) => !p1.Equals(p2);
     #endregion Overloaded operators
 
+    #region Implemented interfaces
     // System.IComparable
     public int CompareTo(Point2 other)
       => X < other.X ? -1 : X > other.X ? 1 : Y < other.Y ? -1 : Y > other.Y ? 1 : 0;
@@ -354,13 +357,15 @@ namespace Flux.Media.Geometry
     // System.IEquatable
     public bool Equals(Point2 other)
       => X == other.X && Y == other.Y;
+    #endregion Implemented interfaces
 
-    // Overrides
+    #region Object overrides
     public override bool Equals(object? obj)
        => obj is Point2 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y);
     public override string ToString()
       => $"<{GetType().Name}: {X}, {Y}>";
+    #endregion Object overrides
   }
 }

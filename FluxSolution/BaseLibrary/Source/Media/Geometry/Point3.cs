@@ -46,7 +46,7 @@ namespace Flux.Media.Geometry
     public int[] ToArray()
       => new int[] { X, Y, Z };
 
-    #region Static members
+    #region Static methods
     /// <summary>Create a new vector with the sum from the vector added by the other.</summary>
     public static Point3 Add(in Point3 p1, in Point3 p2)
       => new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
@@ -274,7 +274,7 @@ namespace Flux.Media.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static Point3 VectorTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
       => CrossProduct(p1, CrossProduct(p2, p3));
-    #endregion Static members
+    #endregion Static methods
 
     #region "Unique" index
     /// <summary>Convert a "mapped" index to a 3D point. This index is uniquely mapped using the specified size vector.</summary>
@@ -291,6 +291,11 @@ namespace Flux.Media.Geometry
     #endregion "Unique" index
 
     #region Overloaded operators
+    public static bool operator ==(in Point3 p1, in Point3 p2)
+      => p1.Equals(p2);
+    public static bool operator !=(in Point3 p1, in Point3 p2)
+      => !p1.Equals(p2);
+
     public static Point3 operator -(in Point3 v) => Negate(v);
 
     public static Point3 operator ~(in Point3 v) => OnesComplement(v);
@@ -330,11 +335,9 @@ namespace Flux.Media.Geometry
 
     public static Point3 operator <<(in Point3 p1, int v) => LeftShift(p1, v);
     public static Point3 operator >>(in Point3 p1, int v) => RightShift(p1, v);
-
-    public static bool operator ==(in Point3 p1, in Point3 p2) => p1.Equals(p2);
-    public static bool operator !=(in Point3 p1, in Point3 p2) => !p1.Equals(p2);
     #endregion Overloaded operators
 
+    #region Implemented interfaces
     // System.IComparable
     public int CompareTo(Point3 other)
       => X < other.X ? -1 : X > other.X ? 1 : Y < other.Y ? -1 : Y > other.Y ? 1 : Z < other.Z ? -1 : Z > other.Z ? 1 : 0;
@@ -342,13 +345,15 @@ namespace Flux.Media.Geometry
     // System.IEquatable
     public bool Equals(Point3 other)
       => X == other.X && Y == other.Y && Z == other.Z;
+    #endregion Implemented interfaces
 
-    // Overrides
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Point3 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y, Z);
     public override string ToString()
       => $"<Point {X}, {Y}, {Z}>";
+    #endregion Object overrides
   }
 }

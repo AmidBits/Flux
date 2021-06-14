@@ -45,8 +45,7 @@ namespace Flux
       m_parts = result.m_parts;
     }
 
-    #region Static members
-
+    #region Static methods
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
     public static VersionEx Parse(string version)
@@ -63,8 +62,9 @@ namespace Flux
       result = default;
       return false;
     }
+    #endregion Static methods
 
-    // Operators
+    #region Overloaded operators
     public static bool operator <(VersionEx a, VersionEx b)
       => a.CompareTo(b) < 0;
     public static bool operator <=(VersionEx a, VersionEx b)
@@ -73,13 +73,14 @@ namespace Flux
       => a.CompareTo(b) < 0;
     public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
+
     public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
     public static bool operator !=(VersionEx a, VersionEx b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
-    #endregion Static members
-
+    #region Implemented interfaces
     // IComparable
     public int CompareTo(VersionEx other)
     {
@@ -104,13 +105,15 @@ namespace Flux
 
       return true;
     }
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => m_parts.CombineHashCore();
     public override string? ToString()
       => $"{nameof(VersionEx)}: {string.Join(m_separatorsArray[0], m_parts)}";
+    #endregion Object overrides
   }
 }

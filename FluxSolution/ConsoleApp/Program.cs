@@ -15,6 +15,16 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      for (var i = 0; i <= 360; i += 10)
+      {
+        var a = Flux.Media.Units.Angle.FromDegree(i);
+
+        var c = Flux.Media.Units.Angle.ConvertRotationAngleToCartesian(a.Radians, out var cx, out var cy);
+        var ce = Flux.Media.Units.Angle.ConvertRotationAngleToCartesianEx(a.Radians, out var cxe, out var cye);
+
+        System.Console.WriteLine($"{i} = {a.Degrees} = {a.Radians} = {c} = {ce}");
+      }
+
 
       /*
       var allInts = new char[] { 'a', 'b', 'f', 'd', 'd', 'a', 'z', 'z', 'b', 'z', 'd', 'a', 'd', 'b', 'd', 'h', 'a', 'b', 'd' };

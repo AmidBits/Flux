@@ -21,7 +21,7 @@ namespace Flux.Formatting
     {
       if (!string.IsNullOrEmpty(format))
       {
-        if (arg is Media.Temperature temperature)
+        if (arg is Media.Units.Temperature temperature)
         {
           if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
           {

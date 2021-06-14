@@ -22,7 +22,7 @@ namespace Flux.Media.Geometry
     public Point2 Center()
       => new Point2(Width / 2, Height / 2);
 
-    #region Statics
+    #region Static methods
     /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
     public static Size2 Add(Size2 a, Size2 b)
       => new Size2(unchecked(a.Width + b.Width), unchecked(a.Height + b.Height));
@@ -53,9 +53,14 @@ namespace Flux.Media.Geometry
     /// <summary>Creates a <see cref='Point2'/> from a <see cref='Size2'/>.</summary>
     public static Point2 ToPoint2(Size2 size)
       => new Point2(size.Width, size.Height);
-    #endregion Statics
+    #endregion Static methods
 
-    #region Operators
+    #region Overloaded operators
+    public static bool operator ==(Size2 a, Size2 b)
+      => a.Equals(b);
+    public static bool operator !=(Size2 a, Size2 b)
+      => !a.Equals(b);
+
     public static Size2 operator +(Size2 a, Size2 b)
       => Add(a, b);
     public static Size2 operator +(Size2 a, int b)
@@ -76,23 +81,21 @@ namespace Flux.Media.Geometry
       => Divide(a, b);
     public static Size2 operator /(int a, Size2 b)
       => Divide(a, b);
+    #endregion Overloaded operators
 
-    public static bool operator ==(Size2 a, Size2 b)
-      => a.Equals(b);
-    public static bool operator !=(Size2 a, Size2 b)
-      => !a.Equals(b);
-    #endregion Operators
-
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(Size2 other)
       => Width == other.Width && Height == other.Height;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Size2 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height);
     public override string? ToString()
       => $"<Size {Width}, {Height}>";
+    #endregion Object overrides
   }
 }
