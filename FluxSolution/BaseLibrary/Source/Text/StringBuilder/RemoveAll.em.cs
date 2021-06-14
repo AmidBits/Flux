@@ -12,9 +12,11 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
+      var sourceLength = source.Length;
+
       var removedIndex = 0;
 
-      for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
+      for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
         if (source[sourceIndex] is var character && !predicate(character))
           source[removedIndex++] = character;
 

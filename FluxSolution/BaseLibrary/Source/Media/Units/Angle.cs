@@ -29,29 +29,6 @@ namespace Flux.Media.Units
     #region Static methods
     public static Angle Add(Angle left, Angle right)
       => new Angle(left.m_radian + right.m_radian);
-    public static Angle Divide(Angle left, Angle right)
-      => new Angle(left.m_radian / right.m_radian);
-    public static Angle FromCartesian(double x, double y)
-      => new Angle(ConvertCartesianToRotationAngle(x, y));
-    public static Angle FromCartesianEx(double x, double y)
-      => new Angle(ConvertCartesianToRotationAngleEx(x, y));
-    public static Angle FromDegree(double degree)
-      => new Angle(ConvertDegreeToRadian(degree));
-    public static Angle FromGradian(double gradian)
-      => new Angle(ConvertGradianToRadian(gradian));
-    public static Angle FromRadian(double radian)
-      => new Angle(radian);
-    public static Angle FromRevolutions(double revolution)
-      => new Angle(ConvertRevolutionToRadian(revolution));
-    public static Angle Multiply(Angle left, Angle right)
-      => new Angle(left.m_radian * right.m_radian);
-    public static Angle Negate(Angle value)
-      => new Angle(-value.m_radian);
-    public static Angle Remainder(Angle dividend, Angle divisor)
-      => new Angle(dividend.m_radian % divisor.m_radian);
-    public static Angle Subtract(Angle left, Angle right)
-      => new Angle(left.m_radian - right.m_radian);
-
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static double ConvertCartesianToRotationAngle(double x, double y)
@@ -94,6 +71,28 @@ namespace Flux.Media.Units
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static (double x, double y) ConvertRotationAngleToCartesianEx(double radian, out double x, out double y)
       => ConvertRotationAngleToCartesian(Maths.PiX2 - (radian >= Maths.PiX2 ? radian % Maths.PiX2 : radian) + Maths.PiOver2, out x, out y);
+    public static Angle Divide(Angle left, Angle right)
+      => new Angle(left.m_radian / right.m_radian);
+    public static Angle FromCartesian(double x, double y)
+      => new Angle(ConvertCartesianToRotationAngle(x, y));
+    public static Angle FromCartesianEx(double x, double y)
+      => new Angle(ConvertCartesianToRotationAngleEx(x, y));
+    public static Angle FromDegree(double degree)
+      => new Angle(ConvertDegreeToRadian(degree));
+    public static Angle FromGradian(double gradian)
+      => new Angle(ConvertGradianToRadian(gradian));
+    public static Angle FromRadian(double radian)
+      => new Angle(radian);
+    public static Angle FromRevolutions(double revolution)
+      => new Angle(ConvertRevolutionToRadian(revolution));
+    public static Angle Multiply(Angle left, Angle right)
+      => new Angle(left.m_radian * right.m_radian);
+    public static Angle Negate(Angle value)
+      => new Angle(-value.m_radian);
+    public static Angle Remainder(Angle dividend, Angle divisor)
+      => new Angle(dividend.m_radian % divisor.m_radian);
+    public static Angle Subtract(Angle left, Angle right)
+      => new Angle(left.m_radian - right.m_radian);
     #endregion Static methods
 
     #region Overloaded operators

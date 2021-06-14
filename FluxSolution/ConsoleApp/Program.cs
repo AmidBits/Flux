@@ -20,9 +20,11 @@ namespace ConsoleApp
         var a = Flux.Media.Units.Angle.FromDegree(i);
 
         var c = Flux.Media.Units.Angle.ConvertRotationAngleToCartesian(a.Radians, out var cx, out var cy);
+        var c1 = Flux.Media.Units.Angle.ConvertCartesianToRotationAngle(cx, cy);
         var ce = Flux.Media.Units.Angle.ConvertRotationAngleToCartesianEx(a.Radians, out var cxe, out var cye);
+        var ce1 = Flux.Media.Units.Angle.ConvertCartesianToRotationAngleEx(cxe, cye);
 
-        System.Console.WriteLine($"{i} = {a.Degrees:N1} = {a.Radians:N5} = ({c.x:N3}, {c.y:N3}) = ({ce.x:N3}, {ce.y:N3})");
+        System.Console.WriteLine($"{i} = {a.Degrees:N1} = {a.Radians:N5} = ({c.x:N3}, {c.y:N3} = {c1:N5}) = ({ce.x:N3}, {ce.y:N3} = {ce1:N5})");
       }
 
       /*

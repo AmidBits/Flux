@@ -6,8 +6,7 @@ namespace Flux
     public static System.Text.StringBuilder ToLowerCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo culture)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      culture ??= System.Globalization.CultureInfo.CurrentCulture;
+      if (culture is null) throw new System.ArgumentNullException(nameof(culture));
 
       for (var index = startIndex + length - 1; index >= startIndex; index--)
       {
