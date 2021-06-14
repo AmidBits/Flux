@@ -27,9 +27,7 @@ namespace Flux.Formatting
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
       if (string.IsNullOrEmpty(format) && !(format?.StartsWith(FormatIdentifier, System.StringComparison.OrdinalIgnoreCase) ?? false))
-      {
         return HandleOtherFormats(format, arg);
-      }
 
       System.TimeSpan ts;
 

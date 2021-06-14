@@ -14,6 +14,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      /*
       for (var i = 0; i <= 360; i += 15)
       {
         var a = Flux.Media.Units.Angle.FromDegree(i);
@@ -25,6 +26,7 @@ namespace ConsoleApp
 
         System.Console.WriteLine($"{i} = {a.Degrees:N1} = {a.Radians:N5} = ({c.x:N3}, {c.y:N3} = {c1:N5}) = ({ce.x:N3}, {ce.y:N3} = {ce1:N5})");
       }
+      */
 
       /*
       var allInts = new char[] { 'a', 'b', 'f', 'd', 'd', 'a', 'z', 'z', 'b', 'z', 'd', 'a', 'd', 'b', 'd', 'h', 'a', 'b', 'd' };

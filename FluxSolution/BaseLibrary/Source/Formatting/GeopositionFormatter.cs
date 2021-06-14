@@ -19,56 +19,53 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format))
+      if (!string.IsNullOrEmpty(format) && arg is Media.Geoposition geo)
       {
-        if (arg is Media.Geoposition geo)
+        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+          if (m.Groups[@"Parts"] is System.Text.RegularExpressions.Group g0 && g0.Success && g0.Value is string parts)
           {
-            if (m.Groups[@"Parts"] is System.Text.RegularExpressions.Group g0 && g0.Success && g0.Value is string parts)
+            if (!(m.Groups[@"DecimalPlaces"] is System.Text.RegularExpressions.Group g1 && g1.Success && g1.Value is string g1s && int.TryParse(g1s, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
             {
-              if (!(m.Groups[@"DecimalPlaces"] is System.Text.RegularExpressions.Group g1 && g1.Success && g1.Value is string g1s && int.TryParse(g1s, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
+              decimalPlaces = -1;
+            }
+
+            var spacing = InsertSpaces ? @" " : string.Empty;
+
+            var sb = new System.Text.StringBuilder();
+
+            sb.Append($"{FormatParts(geo.Latitude, parts, decimalPlaces)}{spacing}");
+            sb.Append($"{(geo.Latitude >= 0 ? 'N' : 'S')}");
+            sb.Append($",{spacing}");
+            sb.Append($"{FormatParts(geo.Longitude, parts, decimalPlaces)}{spacing}");
+            sb.Append($"{(geo.Longitude >= 0 ? 'E' : 'W')}");
+            sb.Append($",{spacing}");
+            sb.Append($"{geo.Altitude}{spacing}m");
+
+            return sb.ToString();
+
+            /// <param name="format">[D|DM|DMS]{numberOfDecimaPlaces}{NS|EW}</param>
+            /// <param name="arg">Either latitude or longitude.</param>
+            /// <returns>{-}[nn.nnnn\u00B0|nn\u00B0nn.nn\u2032|nn\u00B0nn\u2032nn\u2033]</returns>
+            string FormatParts(double value, string parts, int decimalPlaces)
+            {
+              var decimalDegrees = System.Math.Abs(value);
+              var degrees = System.Math.Floor(decimalDegrees);
+              var decimalMinutes = 60 * (decimalDegrees - degrees);
+              var minutes = System.Math.Floor(decimalMinutes);
+              var decimalSeconds = 60 * decimalMinutes - 60 * minutes;
+              // var seconds = System.Math.Floor(decimalSeconds);
+
+              switch (parts)
               {
-                decimalPlaces = -1;
-              }
-
-              var spacing = InsertSpaces ? @" " : string.Empty;
-
-              var sb = new System.Text.StringBuilder();
-
-              sb.Append($"{FormatParts(geo.Latitude, parts, decimalPlaces)}{spacing}");
-              sb.Append($"{(geo.Latitude >= 0 ? 'N' : 'S')}");
-              sb.Append($",{spacing}");
-              sb.Append($"{FormatParts(geo.Longitude, parts, decimalPlaces)}{spacing}");
-              sb.Append($"{(geo.Longitude >= 0 ? 'E' : 'W')}");
-              sb.Append($",{spacing}");
-              sb.Append($"{geo.Altitude}{spacing}m");
-
-              return sb.ToString();
-
-              /// <param name="format">[D|DM|DMS]{numberOfDecimaPlaces}{NS|EW}</param>
-              /// <param name="arg">Either latitude or longitude.</param>
-              /// <returns>{-}[nn.nnnn\u00B0|nn\u00B0nn.nn\u2032|nn\u00B0nn\u2032nn\u2033]</returns>
-              string FormatParts(double value, string parts, int decimalPlaces)
-              {
-                var decimalDegrees = System.Math.Abs(value);
-                var degrees = System.Math.Floor(decimalDegrees);
-                var decimalMinutes = 60 * (decimalDegrees - degrees);
-                var minutes = System.Math.Floor(decimalMinutes);
-                var decimalSeconds = 60 * decimalMinutes - 60 * minutes;
-                // var seconds = System.Math.Floor(decimalSeconds);
-
-                switch (parts)
-                {
-                  case @"D":
-                    return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 4)}}}\u00B0", decimalDegrees);
-                  case @"DM":
-                    return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}\u00B0{spacing}{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 2)}}}\u2032", decimalMinutes);
-                  case @"DMS":
-                    return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}\u00B0{spacing}{minutes:N0}\u2032{spacing}{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 0)}}}\u2033", decimalSeconds);
-                  default:
-                    throw new System.ArgumentOutOfRangeException(nameof(parts));
-                }
+                case @"D":
+                  return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 4)}}}\u00B0", decimalDegrees);
+                case @"DM":
+                  return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}\u00B0{spacing}{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 2)}}}\u2032", decimalMinutes);
+                case @"DMS":
+                  return string.Format(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}\u00B0{spacing}{minutes:N0}\u2032{spacing}{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 0)}}}\u2033", decimalSeconds);
+                default:
+                  throw new System.ArgumentOutOfRangeException(nameof(parts));
               }
             }
           }
