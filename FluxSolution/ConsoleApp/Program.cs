@@ -14,6 +14,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var t = Flux.Media.Units.Temperature.FromCelsius(0);
+      var tf = new Flux.Formatting.TemperatureFormatter() { UseUnicodeSymbolWhenAvailable = false };
+
+      System.Console.WriteLine(string.Format(tf, "{0:F3}", t));
+
       /*
       for (var i = 0; i <= 360; i += 15)
       {

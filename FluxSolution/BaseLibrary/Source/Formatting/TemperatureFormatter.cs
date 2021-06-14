@@ -21,43 +21,29 @@ namespace Flux.Formatting
     {
       if (!string.IsNullOrEmpty(format) && arg is Media.Units.Temperature temperature)
       {
-        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+        if (m_regexFormat.Match(format.ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          var sb = new System.Text.StringBuilder();
-
           if (m.Groups[@"Unit"] is var g0 && g0.Success && g0.Value is var unitString)
           {
             if (!(m.Groups[@"DecimalPlaces"] is var g1 && g1.Success && g1.Value is var decimalPlacesString && int.TryParse(decimalPlacesString, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
-            {
               decimalPlaces = -1;
-            }
 
             var formatString = $"{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 4)}}}";
 
             switch (unitString)
             {
               case var celsius when @"Celsius".StartsWith(celsius, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, temperature.Celsius);
-                sb.Append(UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
-                break;
+                return string.Format(null, formatString, temperature.Celsius) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
               case var fahrenheit when @"Fahrenheit".StartsWith(fahrenheit, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, temperature.Fahrenheit);
-                sb.Append(UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
-                break;
+                return string.Format(null, formatString, temperature.Fahrenheit) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
               case var kelvin when @"Kelvin".StartsWith(kelvin, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, temperature.Kelvin);
-                sb.Append(UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
-                break;
+                return string.Format(null, formatString, temperature.Kelvin) + (UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
               case var rankine when @"Rankine".StartsWith(rankine, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, temperature.Rankine);
-                sb.Append($" \u00B0R");
-                break;
+                return string.Format(null, formatString, temperature.Rankine) + " \u00B0R";
               default:
-                throw new System.ArgumentOutOfRangeException(nameof(format));
+                break;
             }
           }
-
-          return sb.ToString();
         }
       }
 

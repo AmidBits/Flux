@@ -23,37 +23,27 @@ namespace Flux.Formatting
       {
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          var sb = new System.Text.StringBuilder();
-
           if (m.Groups[@"Unit"] is var g0 && g0.Success && g0.Value is var unitString)
           {
             if (!(m.Groups[@"DecimalPlaces"] is var g1 && g1.Success && g1.Value is var decimalPlacesString && int.TryParse(decimalPlacesString, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
-            {
               decimalPlaces = -1;
-            }
 
             var formatString = $"{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 4)}}}";
 
             switch (unitString)
             {
-              case var deg when @"Degrees".StartsWith(deg, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, angle.Degrees);
-                sb.Append(" deg");
-                break;
-              case var grad when @"Gradians".StartsWith(grad, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, angle.Gradians);
-                sb.Append($" gon");
-                break;
-              case var rad when @"Radians".StartsWith(rad, System.StringComparison.InvariantCultureIgnoreCase):
-                sb.AppendFormat(null, formatString, angle.Radians);
-                sb.Append($" rad");
-                break;
+              case var degrees when @"Degrees".StartsWith(degrees, System.StringComparison.InvariantCultureIgnoreCase):
+                return string.Format(null, formatString, angle.Degrees) + @" deg";
+              case var gradians when @"Gradians".StartsWith(gradians, System.StringComparison.InvariantCultureIgnoreCase):
+                return string.Format(null, formatString, angle.Gradians) + @" gon";
+              case var radians when @"Radians".StartsWith(radians, System.StringComparison.InvariantCultureIgnoreCase):
+                return string.Format(null, formatString, angle.Radians) + @" rad";
+              case var revolutions when @"Revolutions".StartsWith(revolutions, System.StringComparison.InvariantCultureIgnoreCase):
+                return string.Format(null, formatString, angle.Radians) + @" rev";
               default:
-                throw new System.ArgumentOutOfRangeException(nameof(format));
+                break;
             }
           }
-
-          return sb.ToString();
         }
       }
 
