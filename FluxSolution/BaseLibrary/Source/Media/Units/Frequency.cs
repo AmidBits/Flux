@@ -53,6 +53,11 @@ namespace Flux.Media.Units
     #endregion Static methods
 
     #region Overloaded operators
+    public static implicit operator Frequency(double value)
+      => new Frequency(value);
+    public static implicit operator double(Frequency value)
+      => value.m_hertz;
+
     public static bool operator <(Frequency a, Frequency b)
       => a.CompareTo(b) < 0;
     public static bool operator <=(Frequency a, Frequency b)

@@ -1,5 +1,6 @@
 namespace Flux.Media.Units
 {
+  /// <summary>Represents an angle (stored as a radians and implicitly convertible to/from double and radian).</summary>
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable
   {
@@ -18,13 +19,13 @@ namespace Flux.Media.Units
     public (double x, double y) CartesianEx
       => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
     public double Degrees
-      => ConvertRadianToDegree(m_radian);
+      => ConvertRadiansToDegrees(m_radian);
     public double Gradians
-      => ConvertRadianToGradian(m_radian);
+      => ConvertRadiansToGradians(m_radian);
     public double Radians
       => m_radian;
     public double Revolutions
-      => ConvertRadianToRevolution(m_radian);
+      => ConvertRadiansToRevolutions(m_radian);
 
     #region Static methods
     public static Angle Add(Angle left, Angle right)
@@ -38,30 +39,30 @@ namespace Flux.Media.Units
     public static double ConvertCartesianToRotationAngleEx(double x, double y)
       => Maths.PiX2 - ConvertCartesianToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
-    public static double ConvertDegreeToGradian(double degree)
+    public static double ConvertDegreesToGradians(double degree)
       => degree * (10d / 9d);
     /// <summary>Convert the angle specified in degrees to radians.</summary>
-    public static double ConvertDegreeToRadian(double degree)
+    public static double ConvertDegreesToRadians(double degree)
       => degree * (System.Math.PI / 180);
-    public static double ConvertDegreeToRevolution(double degree)
+    public static double ConvertDegreesToRevolutions(double degree)
       => degree / 360;
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
-    public static double ConvertGradianToDegree(double gradian)
+    public static double ConvertGradiansToDegrees(double gradian)
       => gradian * (9d / 10d);
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-    public static double ConvertGradianToRadian(double gradian)
+    public static double ConvertGradiansToRadians(double gradian)
       => gradian * (System.Math.PI / 200);
-    public static double ConvertGradianToRevolution(double gradian)
+    public static double ConvertGradiansToRevolutions(double gradian)
       => gradian / 400;
     /// <summary>Convert the angle specified in radians to degrees.</summary>
-    public static double ConvertRadianToDegree(double radian)
+    public static double ConvertRadiansToDegrees(double radian)
       => radian * (180 / System.Math.PI);
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-    public static double ConvertRadianToGradian(double radian)
+    public static double ConvertRadiansToGradians(double radian)
       => radian * (200 / System.Math.PI);
-    public static double ConvertRadianToRevolution(double radian)
+    public static double ConvertRadiansToRevolutions(double radian)
       => radian / (System.Math.PI * 2);
-    public static double ConvertRevolutionToRadian(double revolution)
+    public static double ConvertRevolutionsToRadians(double revolution)
       => revolution * (System.Math.PI * 2);
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -78,13 +79,13 @@ namespace Flux.Media.Units
     public static Angle FromCartesianEx(double x, double y)
       => new Angle(ConvertCartesianToRotationAngleEx(x, y));
     public static Angle FromDegree(double degree)
-      => new Angle(ConvertDegreeToRadian(degree));
+      => new Angle(ConvertDegreesToRadians(degree));
     public static Angle FromGradian(double gradian)
-      => new Angle(ConvertGradianToRadian(gradian));
+      => new Angle(ConvertGradiansToRadians(gradian));
     public static Angle FromRadian(double radian)
       => new Angle(radian);
-    public static Angle FromRevolutions(double revolution)
-      => new Angle(ConvertRevolutionToRadian(revolution));
+    public static Angle FromRevolutions(double turns)
+      => new Angle(ConvertRevolutionsToRadians(turns));
     public static Angle Multiply(Angle left, Angle right)
       => new Angle(left.m_radian * right.m_radian);
     public static Angle Negate(Angle value)
@@ -96,6 +97,11 @@ namespace Flux.Media.Units
     #endregion Static methods
 
     #region Overloaded operators
+    public static implicit operator Angle(double value)
+      => new Angle(value);
+    public static implicit operator double(Angle value)
+      => value.m_radian;
+
     public static bool operator ==(Angle a, Angle b)
       => a.Equals(b);
     public static bool operator !=(Angle a, Angle b)

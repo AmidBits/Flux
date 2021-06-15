@@ -50,8 +50,8 @@ namespace Flux.Media
 		{
 			Altitude = altitude;
 
-			m_latitudeRad = Units.Angle.ConvertDegreeToRadian(m_latitudeDeg = Maths.Wrap(latitude, -90, +90));
-			m_longitudeRad = Units.Angle.ConvertDegreeToRadian(m_longitudeDeg = Maths.Wrap(longitude, -180, +180));
+			m_latitudeRad = Units.Angle.ConvertDegreesToRadians(m_latitudeDeg = Maths.Wrap(latitude, -90, +90));
+			m_longitudeRad = Units.Angle.ConvertDegreesToRadians(m_longitudeDeg = Maths.Wrap(longitude, -180, +180));
 		}
 
 		/// <summary>Calculates the approximate radius at the latitude of the specified geoposition.</summary>
@@ -80,9 +80,9 @@ namespace Flux.Media
 		/// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
 		public Geoposition DestinationPointAt(double bearingDegrees, double angularDistance)
 		{
-			EndPoint(m_latitudeRad, m_longitudeRad, Units.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
+			EndPoint(m_latitudeRad, m_longitudeRad, Units.Angle.ConvertDegreesToRadians(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-			return new Geoposition(Units.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Units.Angle.ConvertRadianToDegree(lon2), -180, +180), Altitude);
+			return new Geoposition(Units.Angle.ConvertRadiansToDegrees(lat2), Maths.Wrap(Units.Angle.ConvertRadiansToDegrees(lon2), -180, +180), Altitude);
 		}
 
 		/// <summary>The distance from the point to the specified target.</summary>
@@ -93,14 +93,14 @@ namespace Flux.Media
 			=> earthRadius * CentralAngleVincentyFormula(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad);
 
 		public double InitialBearingTo(Geoposition targetPoint)
-			=> Units.Angle.ConvertRadianToDegree(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
+			=> Units.Angle.ConvertRadiansToDegrees(InitialBearing(m_latitudeRad, m_longitudeRad, targetPoint.m_latitudeRad, targetPoint.m_longitudeRad));
 
 		/// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
 		public Geoposition IntermediaryPointTo(Geoposition target, double unitInterval)
 		{
 			IntermediaryPoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, unitInterval, out var lat, out var lon);
 
-			return new Geoposition(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Altitude);
+			return new Geoposition(Units.Angle.ConvertRadiansToDegrees(lat), Units.Angle.ConvertRadiansToDegrees(lon), Altitude);
 		}
 
 		/// <summary>The midpoint between this point and the specified target.</summary>
@@ -108,7 +108,7 @@ namespace Flux.Media
 		{
 			Midpoint(m_latitudeRad, m_longitudeRad, target.m_latitudeRad, target.m_longitudeRad, out var lat, out var lon);
 
-			return new Geoposition(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Altitude);
+			return new Geoposition(Units.Angle.ConvertRadiansToDegrees(lat), Units.Angle.ConvertRadiansToDegrees(lon), Altitude);
 		}
 
 		#region Static members
@@ -318,7 +318,7 @@ namespace Flux.Media
 		{
 			var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-			var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
+			var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreesToRadians(latitude) / 2.0) + Flux.Maths.PiOver4));
 
 			var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Maths.PiX2));
 
@@ -330,7 +330,7 @@ namespace Flux.Media
 
 			var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Maths.PiX2);
 
-			var latitude = Units.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
+			var latitude = Units.Angle.ConvertRadiansToDegrees((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
 
 			return (latitude, longitude);
 		}
