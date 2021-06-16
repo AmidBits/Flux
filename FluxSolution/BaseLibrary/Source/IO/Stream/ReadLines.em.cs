@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemIoEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Returns a new sequence with all lines from the <see cref="System.IO.Stream"/> with the <see cref="System.Text.Encoding"/> and whether to keep empty lines.</summary>
 		public static System.Collections.Generic.IEnumerable<string> ReadLines(this System.IO.Stream source, System.Text.Encoding encoding, bool keepEmptyLines = false)

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Yields a sequence of dates between the source and the specified number of days.</summary>
     /// <param name="source">Start date.</param>

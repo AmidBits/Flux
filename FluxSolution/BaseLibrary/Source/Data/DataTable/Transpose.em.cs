@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDataEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivoted).</summary>
     /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>

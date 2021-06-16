@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDecimalEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Deconstructs the decimal number into its basic components as a named ValueType for use.</summary>
     [System.CLSCompliant(false)]

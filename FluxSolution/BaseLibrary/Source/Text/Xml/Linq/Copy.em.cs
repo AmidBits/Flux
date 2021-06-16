@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemXmlEm
+  public static partial class ExtensionMethods
   {
     public static System.Xml.Linq.XElement? Copy(this System.Xml.Linq.XElement source)
     {

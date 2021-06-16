@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIDictionaryEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Create a new <see cref="System.Xml.Linq.XElement"/> from the dictionary, in the form "<Properties><Property Name="" Value="" />...</Properties>".</summary>
     public static System.Xml.Linq.XElement ToPropertiesXml<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> properties, System.Func<TKey, string> nameSelector, System.Func<TKey, TValue, string> valueSelector)

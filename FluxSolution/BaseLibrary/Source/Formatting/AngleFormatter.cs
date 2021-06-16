@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Media.Units.Angle angle)
+      if (!string.IsNullOrEmpty(format) && arg is Units.Angle angle)
       {
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {

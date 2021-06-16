@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
-  public static partial class UnicodeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Translates a System.Globalization.UnicodeCategory enum value into a MajorLabel enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>

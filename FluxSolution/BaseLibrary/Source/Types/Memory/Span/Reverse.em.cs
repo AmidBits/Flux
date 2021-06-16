@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a new array with the range [minIndex, maxIndex] (inclusive) of elements in reverse order.</summary>
     public static void Reverse<T>(this System.Span<T> source, int minIndex, int maxIndex)

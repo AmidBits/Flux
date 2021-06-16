@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIListEm
+  public static partial class ExtensionMethods
   {
     // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 

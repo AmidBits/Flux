@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Determines the closest DayOfWeek date before and after the source.</summary>
     public static System.DateTime Closest(this System.DateTime source, System.DayOfWeek dayOfWeek, out System.DateTime secondClosest)

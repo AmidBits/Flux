@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Media.Units.Temperature temperature)
+      if (!string.IsNullOrEmpty(format) && arg is Units.Temperature temperature)
       {
         if (m_regexFormat.Match(format.ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextStringBuilderEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Returns the last index of the occurence of value in the string. Or -1 if not found.</summary>
 		public static int LastIndexOf(this System.Text.StringBuilder source, char target, System.Collections.Generic.IEqualityComparer<char> comparer)

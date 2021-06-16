@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns whether source is a rotation of target.</summary>
     public static bool IsRotationOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Creates a new list from the specified array from the specified offset and count.</summary>
 		public static System.Collections.Generic.List<T> ToNewList<T>(this System.Collections.Generic.IList<T> source, int offset, int count)

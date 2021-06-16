@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemUriEm
+	public static partial class ExtensionMethods
 	{
 		public static byte[] ReadAllBytes(this System.IO.Stream source)
 		{

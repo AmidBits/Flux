@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIEnumerableEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Generates all possible permutations of the elements in the sequence.</summary>
     /// <see cref="https://stackoverflow.com/a/4319074"/>

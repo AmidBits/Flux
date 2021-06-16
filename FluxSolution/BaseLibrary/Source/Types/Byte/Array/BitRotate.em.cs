@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemByteEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Performs an in-place left rotation of all bits in the array.</summary>
 		public static void BitRotateLeft(this byte[] source)

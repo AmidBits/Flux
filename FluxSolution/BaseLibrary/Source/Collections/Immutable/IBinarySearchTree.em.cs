@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class CollectionsImmutableEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Gets the maximum (with the greatest key) node.</summary>
 		public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)

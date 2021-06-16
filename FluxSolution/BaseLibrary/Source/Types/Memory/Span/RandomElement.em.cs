@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns a random element from the sequence in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public static bool RandomElement<T>(this System.Span<T> source, out T result, System.Random rng)

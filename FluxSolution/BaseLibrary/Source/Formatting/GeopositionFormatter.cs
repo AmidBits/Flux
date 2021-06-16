@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Media.Geoposition geo)
+      if (!string.IsNullOrEmpty(format) && arg is GeoPoint geo)
       {
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
@@ -40,7 +40,7 @@ namespace Flux.Formatting
             sb.Append($"{FormatParts(geo.Longitude, parts, decimalPlaces)}{spacing}");
             sb.Append($"{(geo.Longitude >= 0 ? 'E' : 'W')}");
             sb.Append($",{spacing}");
-            sb.Append($"{geo.Altitude}{spacing}m");
+            sb.Append($"{geo.Height.Meters}{spacing}m");
 
             return sb.ToString();
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIEnumerableEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Compute both the minimum and maximum element in a single pass, and return them as a 2-tuple. Uses the specified comparer.</summary>
     public static (TSource minimum, TSource maximum) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)

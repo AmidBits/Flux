@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDataEm
+  public static partial class ExtensionMethods
   {
     public static string GetDefaultTsqlDefinition(this System.Data.IDataRecord source, int index)
     {

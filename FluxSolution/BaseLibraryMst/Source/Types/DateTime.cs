@@ -224,15 +224,15 @@ namespace Types
 		[TestMethod]
 		public void UnixTime()
 		{
-			Assert.AreEqual(-81820800, source.ToUnixTimestamp(), nameof(Flux.SystemDateTimeEm.ToUnixTimestamp));
-			Assert.AreEqual(-81820800000, source.ToUnixUltraTimestamp(), nameof(Flux.SystemDateTimeEm.ToUnixUltraTimestamp));
+			Assert.AreEqual(-81820800, source.ToUnixTimestamp(), nameof(Flux.ExtensionMethods.ToUnixTimestamp));
+			Assert.AreEqual(-81820800000, source.ToUnixUltraTimestamp(), nameof(Flux.ExtensionMethods.ToUnixUltraTimestamp));
 		}
 
 		[TestMethod]
 		public void Week()
 		{
-			Assert.AreEqual(22, source.WeekOfYear(), nameof(Flux.SystemDateTimeEm.WeekOfYear));
-			Assert.AreEqual(32, target.WeekOfYear(), nameof(Flux.SystemDateTimeEm.WeekOfYear));
+			Assert.AreEqual(22, source.WeekOfYear(), nameof(Flux.ExtensionMethods.WeekOfYear));
+			Assert.AreEqual(32, target.WeekOfYear(), nameof(Flux.ExtensionMethods.WeekOfYear));
 		}
 	}
 }

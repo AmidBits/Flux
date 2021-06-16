@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemDoubleEm
+  public static partial class ExtensionMethods
   {
 		/// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>

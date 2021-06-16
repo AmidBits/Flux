@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDataEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns a sequence of <see cref="System.Data.IDataRecord"/> from all rows.</summary>
     /// <returns>A sequence of <see cref="System.Data.IDataRecord"/>.</returns>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemStringEm
+  public static partial class ExtensionMethods
   {
     public static System.Text.StringBuilder ToStringBuilder(this string source)
       => new System.Text.StringBuilder(source);

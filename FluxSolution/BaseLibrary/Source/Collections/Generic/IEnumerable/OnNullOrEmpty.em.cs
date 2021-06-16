@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIEnumerableEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the substitute sequence, if the source sequence is either null or empty. An exception is thrown if the substitute sequence is either null or empty.</summary>
     /// <exception cref="substitute">When either null or empty.</exception>

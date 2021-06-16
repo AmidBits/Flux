@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     public static System.DateTime FromJulianDate(this double julianDate)
       => System.DateTime.FromOADate(julianDate - 2415018.5);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether any element in the sequence satisfies the predicate.</summary>
     public static bool Exists<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

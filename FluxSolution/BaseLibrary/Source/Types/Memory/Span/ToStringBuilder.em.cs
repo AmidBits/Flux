@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a string builder from the source.</summary>
     public static System.Text.StringBuilder ToStringBuilder(this System.Span<char> source)

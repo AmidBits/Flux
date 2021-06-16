@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Returns a random element from the list in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
 		public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result, System.Random rng)

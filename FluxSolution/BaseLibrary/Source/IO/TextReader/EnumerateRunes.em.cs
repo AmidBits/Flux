@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextRegularExpressionsEm
+	public static partial class ExtensionMethods
 	{
 		public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.TextReader source)
 		{

@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>All expressions are unanchored (for now).</summary>
-  public static partial class SystemTextRegularExpressionsEm
+  public static partial class ExtensionMethods
   {
     public static System.Collections.Generic.IDictionary<string, string> GetNamedGroups(this System.Text.RegularExpressions.Match source)
     {

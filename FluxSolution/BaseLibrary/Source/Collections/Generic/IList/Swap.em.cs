@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Swap two elements by the specified indices.</summary>
 		public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Determines the current calendar quarter (1-4) of the source.</summary>
     public static int QuarterOfYear(this System.DateTime source)

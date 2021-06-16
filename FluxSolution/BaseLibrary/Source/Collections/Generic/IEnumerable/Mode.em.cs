@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemCollectionsGenericIEnumerableEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Results in a new sequence consisting of 'moded' (i.e. sorted by the most frequent or common) elements in decreasing count of a appearance in the sequence.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Mode"/>

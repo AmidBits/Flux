@@ -7,44 +7,44 @@ namespace Flux.Model.Gaming.MineSweeper
 {
   public static class EmMineSweeper
   {
-    public static System.Collections.Generic.IEnumerable<Media.Geometry.Point2> AllPoints(this Media.Geometry.Size2 size)
+    public static System.Collections.Generic.IEnumerable<Geometry.Point2> AllPoints(this Geometry.Size2 size)
     {
       for (var i = 0; i < size.Width; i++)
         for (var j = 0; j < size.Height; j++)
-          yield return new Media.Geometry.Point2(i, j);
+          yield return new Geometry.Point2(i, j);
     }
   }
 
   public class Covers
-    : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<Media.Geometry.Point2, bool>>
+    : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<Geometry.Point2, bool>>
   {
-    private readonly System.Collections.Immutable.IImmutableDictionary<Media.Geometry.Point2, bool> m_covers;
+    private readonly System.Collections.Immutable.IImmutableDictionary<Geometry.Point2, bool> m_covers;
 
     public int Count
       => m_covers.Count;
 
-    private Covers(System.Collections.Immutable.IImmutableDictionary<Media.Geometry.Point2, bool> covers)
+    private Covers(System.Collections.Immutable.IImmutableDictionary<Geometry.Point2, bool> covers)
       => m_covers = covers;
 
-    public bool HasFlag(Media.Geometry.Point2 point)
+    public bool HasFlag(Geometry.Point2 point)
       => m_covers[point];
-    public bool IsCovered(Media.Geometry.Point2 point)
+    public bool IsCovered(Geometry.Point2 point)
       => m_covers.ContainsKey(point);
 
-    public Covers SwitchFlag(Media.Geometry.Point2 point)
+    public Covers SwitchFlag(Geometry.Point2 point)
       => m_covers.TryGetValue(point, out var hasFlag) ? new Covers(m_covers.SetItem(point, !hasFlag)) : this;
 
-    public Covers Uncover(Media.Geometry.Point2 point)
+    public Covers Uncover(Geometry.Point2 point)
       => IsCovered(point) ? new Covers(m_covers.Remove(point)) : this;
 
-    public Covers UncoverRange(System.Collections.Generic.IEnumerable<Media.Geometry.Point2> points)
+    public Covers UncoverRange(System.Collections.Generic.IEnumerable<Geometry.Point2> points)
       => new Covers(m_covers.RemoveRange(points));
 
     // Statics
-    public static Covers Create(Media.Geometry.Size2 size)
+    public static Covers Create(Geometry.Size2 size)
       => new Covers(size.AllPoints().ToImmutableDictionary(p => p, p => false));
     // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Media.Geometry.Point2, bool>> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Geometry.Point2, bool>> GetEnumerator()
       => m_covers.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
@@ -52,70 +52,70 @@ namespace Flux.Model.Gaming.MineSweeper
 
   public class Field
   {
-    public Media.Geometry.Size2 Size { get; }
+    public Geometry.Size2 Size { get; }
 
-    public Field(Media.Geometry.Size2 size)
+    public Field(Geometry.Size2 size)
       => Size = size;
 
-    public System.Collections.Generic.IEnumerable<Media.Geometry.Point2> GetNeighbours(Media.Geometry.Point2 point)
+    public System.Collections.Generic.IEnumerable<Geometry.Point2> GetNeighbours(Geometry.Point2 point)
     {
-      if (point + new Media.Geometry.Point2(1, 0) is var right && IsInRange(right))
+      if (point + new Geometry.Point2(1, 0) is var right && IsInRange(right))
         yield return right;
-      if (point + new Media.Geometry.Point2(1, -1) is var upRight && IsInRange(upRight))
+      if (point + new Geometry.Point2(1, -1) is var upRight && IsInRange(upRight))
         yield return upRight;
-      if (point + new Media.Geometry.Point2(0, -1) is var up && IsInRange(up))
+      if (point + new Geometry.Point2(0, -1) is var up && IsInRange(up))
         yield return up;
-      if (point + new Media.Geometry.Point2(-1, -1) is var upLeft && IsInRange(upLeft))
+      if (point + new Geometry.Point2(-1, -1) is var upLeft && IsInRange(upLeft))
         yield return upLeft;
-      if (point + new Media.Geometry.Point2(-1, 0) is var left && IsInRange(left))
+      if (point + new Geometry.Point2(-1, 0) is var left && IsInRange(left))
         yield return left;
-      if (point + new Media.Geometry.Point2(-1, 1) is var downLeft && IsInRange(downLeft))
+      if (point + new Geometry.Point2(-1, 1) is var downLeft && IsInRange(downLeft))
         yield return downLeft;
-      if (point + new Media.Geometry.Point2(0, 1) is var down && IsInRange(down))
+      if (point + new Geometry.Point2(0, 1) is var down && IsInRange(down))
         yield return down;
-      if (point + new Media.Geometry.Point2(1, 1) is var downRight && IsInRange(downRight))
+      if (point + new Geometry.Point2(1, 1) is var downRight && IsInRange(downRight))
         yield return downRight;
     }
 
-    public bool IsInRange(Media.Geometry.Point2 point)
+    public bool IsInRange(Geometry.Point2 point)
       => point.X >= 0 && point.Y >= 0 && point.X < Size.Width && point.Y < Size.Height;
 
-    public static bool IsEmptyAt(Mines mines, Warnings warnings, Media.Geometry.Point2 point)
+    public static bool IsEmptyAt(Mines mines, Warnings warnings, Geometry.Point2 point)
       => !(mines?.HasMineAt(point) ?? false) && !(warnings?.HasWarningAt(point) ?? false);
   }
 
   public class Mines
-    : System.Collections.Generic.IReadOnlySet<Media.Geometry.Point2>
+    : System.Collections.Generic.IReadOnlySet<Geometry.Point2>
   {
-    private readonly System.Collections.Generic.IReadOnlySet<Media.Geometry.Point2> m_mines;
+    private readonly System.Collections.Generic.IReadOnlySet<Geometry.Point2> m_mines;
 
-    private Mines(System.Collections.Generic.IReadOnlySet<Media.Geometry.Point2> mines)
+    private Mines(System.Collections.Generic.IReadOnlySet<Geometry.Point2> mines)
       => m_mines = mines;
 
-    public bool HasMineAt(Media.Geometry.Point2 point)
+    public bool HasMineAt(Geometry.Point2 point)
       => m_mines.Contains(point);
 
     public static Mines Create(Field field, int count)
-      => new Mines(System.Linq.Enumerable.Repeat(Random.NumberGenerator.Crypto, count * 2).Select(r => new Media.Geometry.Point2(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
+      => new Mines(System.Linq.Enumerable.Repeat(Random.NumberGenerator.Crypto, count * 2).Select(r => new Geometry.Point2(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
 
     #region IReadOnlySet implementation
     public int Count
       => m_mines.Count;
-    public bool Contains(Media.Geometry.Point2 item)
+    public bool Contains(Geometry.Point2 item)
       => m_mines.Contains(item);
-    public bool IsProperSubsetOf(IEnumerable<Media.Geometry.Point2> other)
+    public bool IsProperSubsetOf(IEnumerable<Geometry.Point2> other)
       => m_mines.IsProperSubsetOf(other);
-    public bool IsProperSupersetOf(IEnumerable<Media.Geometry.Point2> other)
+    public bool IsProperSupersetOf(IEnumerable<Geometry.Point2> other)
       => m_mines.IsProperSupersetOf(other);
-    public bool IsSubsetOf(IEnumerable<Media.Geometry.Point2> other)
+    public bool IsSubsetOf(IEnumerable<Geometry.Point2> other)
       => m_mines.IsSubsetOf(other);
-    public bool IsSupersetOf(IEnumerable<Media.Geometry.Point2> other)
+    public bool IsSupersetOf(IEnumerable<Geometry.Point2> other)
       => m_mines.IsSupersetOf(other);
-    public bool Overlaps(IEnumerable<Media.Geometry.Point2> other)
+    public bool Overlaps(IEnumerable<Geometry.Point2> other)
       => m_mines.Overlaps(other);
-    public bool SetEquals(IEnumerable<Media.Geometry.Point2> other)
+    public bool SetEquals(IEnumerable<Geometry.Point2> other)
       => m_mines.SetEquals(other);
-    public System.Collections.Generic.IEnumerator<Media.Geometry.Point2> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<Geometry.Point2> GetEnumerator()
       => m_mines.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
@@ -124,36 +124,36 @@ namespace Flux.Model.Gaming.MineSweeper
 
 #pragma warning disable CA1710 // Identifiers should have correct suffix
   public class Warnings
-    : System.Collections.Generic.IReadOnlyDictionary<Media.Geometry.Point2, int>
+    : System.Collections.Generic.IReadOnlyDictionary<Geometry.Point2, int>
   {
-    private readonly System.Collections.Generic.IDictionary<Media.Geometry.Point2, int> m_warnings;
+    private readonly System.Collections.Generic.IDictionary<Geometry.Point2, int> m_warnings;
 
-    public bool HasWarningAt(Media.Geometry.Point2 point)
+    public bool HasWarningAt(Geometry.Point2 point)
       => m_warnings.ContainsKey(point);
-    public int WarningsAt(Media.Geometry.Point2 point)
+    public int WarningsAt(Geometry.Point2 point)
       => m_warnings.TryGetValue(point, out var result) ? result : 0;
 
-    private Warnings(System.Collections.Generic.IDictionary<Media.Geometry.Point2, int> warnings)
+    private Warnings(System.Collections.Generic.IDictionary<Geometry.Point2, int> warnings)
       => m_warnings = warnings;
 
     #region IReadOnlyDictionary implementation
     public int Count
       => m_warnings.Count;
-    public System.Collections.Generic.IEnumerable<Media.Geometry.Point2> Keys
+    public System.Collections.Generic.IEnumerable<Geometry.Point2> Keys
       => m_warnings.Keys;
     public System.Collections.Generic.IEnumerable<int> Values
       => m_warnings.Values;
 
-    public int this[Media.Geometry.Point2 key]
+    public int this[Geometry.Point2 key]
       => m_warnings[key];
 
-    public bool ContainsKey(Media.Geometry.Point2 key)
+    public bool ContainsKey(Geometry.Point2 key)
       => m_warnings.ContainsKey(key);
-    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Media.Geometry.Point2, int>> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Geometry.Point2, int>> GetEnumerator()
       => m_warnings.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
-    public bool TryGetValue(Media.Geometry.Point2 key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out int value)
+    public bool TryGetValue(Geometry.Point2 key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out int value)
       => m_warnings.TryGetValue(key, out value);
     #endregion IReadOnlyDictionary implementation
 
@@ -168,10 +168,10 @@ namespace Flux.Model.Gaming.MineSweeper
     public Mines Mines { get; }
     public Warnings Warnings { get; }
 
-    public bool IsEmptyAt(Media.Geometry.Point2 point)
+    public bool IsEmptyAt(Geometry.Point2 point)
       => !Mines.HasMineAt(point) && !Warnings.HasWarningAt(point);
 
-    public MineField(Media.Geometry.Size2 fieldSize, int mineCount)
+    public MineField(Geometry.Size2 fieldSize, int mineCount)
     {
       Field = new Field(fieldSize);
       Mines = Mines.Create(Field, mineCount);
@@ -193,7 +193,7 @@ namespace Flux.Model.Gaming.MineSweeper
       {
         for (var j = 0; j < mineField.Field.Size.Width; j++)
         {
-          var p = new Media.Geometry.Point2(i, j);
+          var p = new Geometry.Point2(i, j);
 
           var isUncovered = !covers.IsCovered(p);
 
@@ -220,7 +220,7 @@ namespace Flux.Model.Gaming.MineSweeper
 
     public static void PlayInConsole()
     {
-      var mineField = new Model.Gaming.MineSweeper.MineField(new Media.Geometry.Size2(10, 10), 10);
+      var mineField = new Model.Gaming.MineSweeper.MineField(new Geometry.Size2(10, 10), 10);
       var gameState = Model.Gaming.MineSweeper.Game.Start(mineField);
       var gameResult = gameState.Evaluate(mineField.Mines);
 
@@ -228,7 +228,7 @@ namespace Flux.Model.Gaming.MineSweeper
 
       while (System.Console.ReadLine() is var line && !string.IsNullOrEmpty(line))
       {
-        if (Media.Geometry.Point2.TryParse(line, out var point))
+        if (Geometry.Point2.TryParse(line, out var point))
         {
           gameState.CursorPosition = point;
 
@@ -256,7 +256,7 @@ namespace Flux.Model.Gaming.MineSweeper
     public static GameState SwitchFlag(GameState current)
       => (current ?? throw new System.ArgumentNullException(nameof(current))).Do(current.Covers().SwitchFlag(current.CursorPosition));
 
-    private static Covers UncoverDeep(this Covers covers, MineField mineField, Media.Geometry.Point2 point)
+    private static Covers UncoverDeep(this Covers covers, MineField mineField, Geometry.Point2 point)
     {
       if (!covers.IsCovered(point))
         return covers;
@@ -271,21 +271,21 @@ namespace Flux.Model.Gaming.MineSweeper
   {
     private readonly IImmutableStack<Covers> m_moves;
 
-    public Media.Geometry.Point2 CursorPosition { get; set; }
+    public Geometry.Point2 CursorPosition { get; set; }
 
-    private GameState(IImmutableStack<Covers> moves, Media.Geometry.Point2 cursorPosition)
+    private GameState(IImmutableStack<Covers> moves, Geometry.Point2 cursorPosition)
     {
       m_moves = moves;
       CursorPosition = cursorPosition;
     }
 
     public static GameState Create(Covers covers)
-      => new GameState(ImmutableStack.Create(covers), new Media.Geometry.Point2(0, 0));
+      => new GameState(ImmutableStack.Create(covers), new Geometry.Point2(0, 0));
 
     public GameState Do(Covers covers)
       => new GameState(m_moves.Push(covers), CursorPosition);
 
-    public GameState Do(Media.Geometry.Point2 cursorPosition)
+    public GameState Do(Geometry.Point2 cursorPosition)
       => new GameState(m_moves, cursorPosition);
 
     public GameState Undo()

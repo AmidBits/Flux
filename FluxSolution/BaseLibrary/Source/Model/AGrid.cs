@@ -8,7 +8,7 @@ namespace Flux.Model
   {
     public int Count => Size.Width * Size.Height;
 
-    public Media.Geometry.Size2 Size { get; }
+    public Geometry.Size2 Size { get; }
 
     private System.Collections.Generic.IList<TValue> Values;// { get; protected set; }
 
@@ -30,7 +30,7 @@ namespace Flux.Model
 
     public AGrid(int rows, int columns)
     {
-      Size = new Media.Geometry.Size2(columns, rows);
+      Size = new Geometry.Size2(columns, rows);
 
       Values = new TValue[rows * columns];
 

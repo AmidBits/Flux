@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
 		public static bool EndsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)

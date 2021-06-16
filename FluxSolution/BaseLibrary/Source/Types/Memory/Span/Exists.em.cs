@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether any element in the sequence satisfies the predicate.</summary>
     public static bool Exists<T>(this System.Span<T> source, System.Func<T, int, bool> predicate)

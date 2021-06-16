@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary></summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTimeSpanEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Compute how many microseconds have elapsed. There are ten ticks to a microsecond.</summary>
 		public static double GetTotalMicroseconds(this System.TimeSpan source)

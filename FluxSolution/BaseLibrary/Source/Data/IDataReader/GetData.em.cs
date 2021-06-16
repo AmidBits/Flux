@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemDataEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Creates a new sequence of <typeparamref name="TResult"/> from the IDataReader.</summary>
 		public static System.Collections.Generic.IEnumerable<TResult> EnumerateData<TResult>(this System.Data.IDataReader source, System.Func<System.Data.IDataRecord, TResult> resultSelector)

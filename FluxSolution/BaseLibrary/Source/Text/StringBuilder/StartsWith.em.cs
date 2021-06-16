@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemTextStringBuilderEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Indicates whether the source starts with value. Uses the specified comparer.</summary>
 		public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemTextRuneEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Determines whether the character is of the specified  unicode category major code.</summary>
     public static bool IsUnicodeMajorCode(this System.Text.Rune source, Text.UnicodeCategoryMajorCode majorCode)

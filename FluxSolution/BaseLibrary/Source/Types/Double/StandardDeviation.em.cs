@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDoubleEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Calculate the standard deviation (a measure that is used to quantify the amount of variation of a set of values) of a sequence.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Standard_deviation"/>

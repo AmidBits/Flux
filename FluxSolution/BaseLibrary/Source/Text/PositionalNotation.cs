@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static class TextPositionalNotationEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the string formatted using the specified base, 2 for binary, 10 for decimal, 16 for hexadecimal, etc.</summary>
     public static string ToRadixString(this System.Numerics.BigInteger number, int radix)

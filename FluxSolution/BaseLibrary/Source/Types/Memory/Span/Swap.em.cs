@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemSpanEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Swap two elements by the specified indices.</summary>
 		public static void Swap<T>(this System.Span<T> source, int indexA, int indexB)

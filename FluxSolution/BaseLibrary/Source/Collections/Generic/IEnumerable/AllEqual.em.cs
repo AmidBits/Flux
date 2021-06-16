@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIEnumerableEm
+	public static partial class ExtensionMethods
 	{
 		public static bool AllEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, out TValue value, System.Collections.Generic.IEqualityComparer<TValue> comparer)
 		{

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemDoubleEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Calculate the median of a sequence. This implementation requires an ordered enumerable and enumerates the sequence multiple times.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Median"/>

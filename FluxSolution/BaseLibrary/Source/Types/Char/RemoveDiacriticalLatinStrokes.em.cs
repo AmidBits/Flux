@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemCharEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Removes latin stroke diacriticals from any character with the strokes, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>

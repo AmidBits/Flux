@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIEnumerableEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Copies the specified number of elements from the sequence into the IList starting at the target index. This implementation copies as much as it can, i.e. the minimum of count, source items or target space.</summary>
 		public static int CopyInto<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IList<T> target, int targetIndex, int count)

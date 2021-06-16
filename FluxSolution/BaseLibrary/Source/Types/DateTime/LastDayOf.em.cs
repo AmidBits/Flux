@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Determines the last day of the month in the source.</summary>
     public static System.DateTime LastDayOfMonth(this System.DateTime source)

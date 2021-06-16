@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemNumericsEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
@@ -46,17 +46,17 @@ namespace Flux
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => SystemCollectionsGenericIEnumerableEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+      => ExtensionMethods.PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => SystemCollectionsGenericIEnumerableEm.PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+      => ExtensionMethods.PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (v1, v2, index) => (v1 + v2) / 2);
+      => ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => (v1 + v2) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector2 v1, System.Numerics.Vector2 vm, System.Numerics.Vector2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
+      => ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
 
     /// <summary>Determines the inclusion of a vector in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
@@ -96,17 +96,17 @@ namespace Flux
       if (a is null) throw new System.ArgumentNullException(nameof(a));
       if (b is null) throw new System.ArgumentNullException(nameof(b));
 
-      if (Media.Geometry.Line.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Media.Geometry.LineTestOutcome.LinesIntersecting)
+      if (Geometry.Line.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
         return true;
 
       for (int i = 1; i < a.Count; i++)
       {
-        if (Media.Geometry.Line.IntersectionTest(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Media.Geometry.LineTestOutcome.LinesIntersecting)
+        if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
           return true;
 
         for (int p = 1; p < b.Count; p++)
         {
-          if (Media.Geometry.Line.IntersectionTest(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Media.Geometry.LineTestOutcome.LinesIntersecting)
+          if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
             return true;
         }
       }
@@ -258,7 +258,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Media.Geometry.TriangulationType mode)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode)
     {
       var copy = source.ToList();
 
@@ -268,12 +268,12 @@ namespace Flux
       {
         triplet = mode switch
         {
-          Media.Geometry.TriangulationType.Sequential => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).First(),
-          Media.Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(),
-          Media.Geometry.TriangulationType.SmallestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b),
-          Media.Geometry.TriangulationType.LargestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle > b.angle ? a : b),
-          Media.Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
-          Media.Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
+          Geometry.TriangulationType.Sequential => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).First(),
+          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(),
+          Geometry.TriangulationType.SmallestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b),
+          Geometry.TriangulationType.LargestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle > b.angle ? a : b),
+          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
+          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
           _ => throw new System.Exception(),
         };
         yield return new System.Collections.Generic.List<System.Numerics.Vector2>() { triplet.v2, triplet.v3, triplet.v1 };
@@ -285,12 +285,12 @@ namespace Flux
     /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? SystemCollectionsGenericIEnumerableEm.PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? ExtensionMethods.PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? SystemCollectionsGenericIEnumerableEm.PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>

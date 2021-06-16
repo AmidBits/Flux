@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemSpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Reports the length (or count) of equality at the end of the sequence. Using the specified comparer.</summary>
     /// <param name="minLength">The smaller length of the two spans.</param>

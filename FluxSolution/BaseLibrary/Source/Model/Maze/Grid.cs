@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   public class Grid
     : AGrid<Cell>, System.ICloneable
   {
-    public Grid(Media.Geometry.Size2 size)
+    public Grid(Geometry.Size2 size)
       : base(size.Height, size.Width)
     {
       for (var h = size.Height - 1; h >= 0; h--)
@@ -36,18 +36,18 @@ namespace Flux.Model.Maze
 
           if (orthogonal)
           {
-            if (n) cell.Edges.Add((int)Media.EightWindCompassRose.N, this[y - 1, x]);
-            if (e) cell.Edges.Add((int)Media.EightWindCompassRose.E, this[y, x + 1]);
-            if (s) cell.Edges.Add((int)Media.EightWindCompassRose.S, this[y + 1, x]);
-            if (w) cell.Edges.Add((int)Media.EightWindCompassRose.W, this[y, x - 1]);
+            if (n) cell.Edges.Add((int)EightWindCompassRose.N, this[y - 1, x]);
+            if (e) cell.Edges.Add((int)EightWindCompassRose.E, this[y, x + 1]);
+            if (s) cell.Edges.Add((int)EightWindCompassRose.S, this[y + 1, x]);
+            if (w) cell.Edges.Add((int)EightWindCompassRose.W, this[y, x - 1]);
           }
 
           if (diagonal)
           {
-            if (n && e) cell.Edges.Add((int)Media.EightWindCompassRose.NE, this[y - 1, x + 1]);
-            if (s && e) cell.Edges.Add((int)Media.EightWindCompassRose.SE, this[y + 1, x + 1]);
-            if (s && w) cell.Edges.Add((int)Media.EightWindCompassRose.SW, this[y + 1, x - 1]);
-            if (n && w) cell.Edges.Add((int)Media.EightWindCompassRose.NW, this[y - 1, x - 1]);
+            if (n && e) cell.Edges.Add((int)EightWindCompassRose.NE, this[y - 1, x + 1]);
+            if (s && e) cell.Edges.Add((int)EightWindCompassRose.SE, this[y + 1, x + 1]);
+            if (s && w) cell.Edges.Add((int)EightWindCompassRose.SW, this[y + 1, x - 1]);
+            if (n && w) cell.Edges.Add((int)EightWindCompassRose.NW, this[y - 1, x - 1]);
           }
         }
       }

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemNetEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the 16-bit words (as integers) of an IP address. This is mainly useful for IPv6 addresses.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/IPv6"/>

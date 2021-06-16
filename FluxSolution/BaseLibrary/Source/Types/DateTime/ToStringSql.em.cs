@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SystemDateTimeEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns a string in SQL Server parsable format, with dynamic precision based on zero values for fractional seconds.</summary>
     public static string ToStringSql(this System.DateTime source)

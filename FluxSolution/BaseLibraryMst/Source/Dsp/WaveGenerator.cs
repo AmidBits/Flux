@@ -8,11 +8,11 @@ namespace Dsp
   [TestClass]
   public class WaveGenerator
   {
-    private readonly Flux.Media.Dsp.IWaveGenerator m_pulseWave = new Flux.Media.Dsp.WaveGenerator.PulseWave();
-    private readonly Flux.Media.Dsp.IWaveGenerator m_sawtoothWave = new Flux.Media.Dsp.WaveGenerator.SawtoothWave();
-    private readonly Flux.Media.Dsp.IWaveGenerator m_sineWave = new Flux.Media.Dsp.WaveGenerator.SineWave();
-    private readonly Flux.Media.Dsp.IWaveGenerator m_squareWave = new Flux.Media.Dsp.WaveGenerator.SquareWave();
-    private readonly Flux.Media.Dsp.IWaveGenerator m_triangleWave = new Flux.Media.Dsp.WaveGenerator.TriangleWave();
+    private readonly Flux.Dsp.IWaveGenerator m_pulseWave = new Flux.Dsp.WaveGenerator.PulseWave();
+    private readonly Flux.Dsp.IWaveGenerator m_sawtoothWave = new Flux.Dsp.WaveGenerator.SawtoothWave();
+    private readonly Flux.Dsp.IWaveGenerator m_sineWave = new Flux.Dsp.WaveGenerator.SineWave();
+    private readonly Flux.Dsp.IWaveGenerator m_squareWave = new Flux.Dsp.WaveGenerator.SquareWave();
+    private readonly Flux.Dsp.IWaveGenerator m_triangleWave = new Flux.Dsp.WaveGenerator.TriangleWave();
 
     [TestMethod]
     public void PulseWave()

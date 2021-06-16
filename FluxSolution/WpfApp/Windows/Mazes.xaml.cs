@@ -23,7 +23,7 @@ namespace WpfApp
     {
       InitializeComponent();
 
-      var size = new Flux.Media.Geometry.Size2(60, 60);
+      var size = new Flux.Geometry.Size2(60, 60);
 
       m_grid = new Flux.Model.Maze.Grid(size);
     }
@@ -67,22 +67,22 @@ namespace WpfApp
           float x = column * width;// + wallWidth * 2F;
           float y = row * height;// + wallWidth * 2F;
 
-          foreach (Flux.Media.CardinalDirection direction in Enum.GetValues(typeof(Flux.Media.CardinalDirection)))
+          foreach (Flux.CardinalDirection direction in Enum.GetValues(typeof(Flux.CardinalDirection)))
           {
             if (!cell.Edges.ContainsKey((int)direction) || !cell.Paths.ContainsKey((int)direction))
             {
               switch (direction)
               {
-                case Flux.Media.CardinalDirection.N:
+                case Flux.CardinalDirection.N:
                   canvas.Children.Add(CreateLine(x + wallWidth, y, x + width - wallWidthX2, y, System.Windows.Media.Brushes.Green, wallWidth));
                   break;
-                case Flux.Media.CardinalDirection.E:
+                case Flux.CardinalDirection.E:
                   canvas.Children.Add(CreateLine(x + width - wallWidth, y + wallWidth, x + width - wallWidth, y + height - wallWidthX2, System.Windows.Media.Brushes.Yellow, wallWidth * 0.5F));
                   break;
-                case Flux.Media.CardinalDirection.S:
+                case Flux.CardinalDirection.S:
                   canvas.Children.Add(CreateLine(x + wallWidth, y + height - wallWidth, x + width - wallWidthX2, y + height - wallWidth, System.Windows.Media.Brushes.Red, wallWidth));
                   break;
-                case Flux.Media.CardinalDirection.W:
+                case Flux.CardinalDirection.W:
                   canvas.Children.Add(CreateLine(x, y + wallWidth, x, y + height - wallWidthX2, System.Windows.Media.Brushes.Blue, wallWidth));
                   break;
               }

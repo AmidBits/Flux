@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GlobalizationEnUsEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Generates a random name of specified length based on simple statistical properties of the English language.</summary>
     public static string NextRandomNameEnUs(this System.Random source, int length)

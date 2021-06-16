@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class SystemCollectionsGenericIListEm
+	public static partial class ExtensionMethods
 	{
 		/// <summary>Reports the count of elements equal at the end of the sequences. Using the specified comparer.</summary>
 		/// <param name="minLength">The smaller length of the two spans.</param>

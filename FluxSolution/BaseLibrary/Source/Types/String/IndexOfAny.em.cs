@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemStringEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Reports the zero-based index of the first occurrence in this instance of any substring in a specified array of strings.</summary>
     public static int IndexOfAny(this string source, params string[] values)
