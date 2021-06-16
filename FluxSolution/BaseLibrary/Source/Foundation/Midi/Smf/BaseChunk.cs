@@ -56,8 +56,5 @@ namespace Flux.Riff.Smf
       while (GetChunk(stream) is var chunk && !(chunk is null))
         yield return chunk;
     }
-
-    public override string ToString()
-      => base.ToString();
   }
 }

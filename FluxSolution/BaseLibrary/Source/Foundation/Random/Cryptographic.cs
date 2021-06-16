@@ -21,11 +21,10 @@ namespace Flux.Random
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     public override double NextDouble()
-      //=> (double)(System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) & 0x003FFFFFFFFFFF) / (double)(1UL << 53);
-      => (double)(System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (double)(1UL << 53);
+      => (double)System.Security.Cryptography.RandomNumberGenerator.GetInt32(int.MaxValue) / (double)int.MaxValue;
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     protected override double Sample()
-      => (double)(System.BitConverter.ToUInt64(this.GetRandomBytes(8), 0) >> 11) / (double)(1UL << 53);
+      => (double)System.Security.Cryptography.RandomNumberGenerator.GetInt32(int.MaxValue) / (double)int.MaxValue;
   }
 }
