@@ -52,10 +52,10 @@ namespace Flux.Media.Units
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator double(Length v)
+      => v.m_meters;
     public static implicit operator Length(double v)
       => new Length(v);
-    public static implicit operator double(Length v)
-      => v.m_meters;
 
     public static bool operator <(Length a, Length b)
       => a.CompareTo(b) < 0;
