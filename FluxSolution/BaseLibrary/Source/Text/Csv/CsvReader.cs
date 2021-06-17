@@ -30,8 +30,8 @@ namespace Flux.Text.Csv
     public CsvReader(System.IO.Stream stream, CsvOptions options, System.Collections.Generic.IList<string> fieldNames)
       : this(stream, options)
     {
-      FieldNames.AddRange(fieldNames);
-      FieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(string), FieldNames.Count));
+      m_fieldNames.AddRange(fieldNames);
+      m_fieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(string), FieldNames.Count));
     }
 
     private CsvTokenType m_tokenType = CsvTokenType.None;
@@ -50,52 +50,44 @@ namespace Flux.Text.Csv
 
       for (var peek = m_streamReader.Peek(); peek != -1; peek = m_streamReader.Peek())
       {
-        if (!isQuotedField) // We are not inside a double quoted field, and so various characters are important.
+        if (isQuotedField) // We are inside double quoted field, so really the only 'important' character will be an 'exit field' double quote.
         {
           if (peek == '"') // Read is a double quote.
           {
-            m_streamReader.Read();
+            m_streamReader.Read(); // Discard the current peek.
 
+            if (m_streamReader.Peek() != '"') // Was it a single double quote?
+              isQuotedField = false; // Yes, so let's exit double quoted field.
+            else // No, since the 'second' peek is a double quote, this is, or should be, an escape sequence.
+              m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Withdraw and store the 'second' double quote (since it was escaped as one).
+          }
+          else // For a double quoted field, anything else goes here.
+            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read()));
+        }
+        else // We are outside of any double quotes, and so various characters are important.
+        {
+          if (peek == '"') // Peek is a double quote.
+          {
+            m_streamReader.Read();
             isQuotedField = true; // Enter double quoted field.
           }
           else if (peek == m_options.FieldSeparator) // Read is a field separator.
           {
             m_streamReader.Read();
-
             break;
           }
           else if (peek == '\r')
           {
             m_streamReader.Read();
-
             break;
           }
           else if (peek == '\n')
           {
-            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read()));
-
+            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Save this single line feed for the token evaluation.
             break;
           }
-          else
+          else // For a field not double quoted, anything else goes here.
             m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read()));
-        }
-        else // We are inside a double quoted field, so really the only 'important' character will be an 'exit field' double quote.
-        {
-          if (peek == '"') // Read is a double quote.
-          {
-            m_streamReader.Read();
-
-            if (m_streamReader.Peek() != '"') // Single double quote?
-            {
-              isQuotedField = false; // Exit double quoted field.
-            }
-            else // Peek is a double quote, so this is, or should be, an escape sequence.
-            {
-              m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Keep the other double quote (since it was escaped as one).
-            }
-          }
-          else
-            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Anything else goes, for a double quoted field.
         }
       }
 
@@ -113,30 +105,30 @@ namespace Flux.Text.Csv
           }
           break;
         case CsvTokenType.StartLine:
-          FieldValues.Clear();
+          m_fieldValues.Clear();
 
-          if (ReadFieldValue() is var startLineValue && startLineValue == "\n")
+          if (ReadFieldValue() is var startLineValue && startLineValue == "\n") // A single line feed is an end of line.
           {
             m_tokenType = CsvTokenType.EndLine;
           }
-          else
+          else // Otherwise a 'start' of another field.
           {
-            FieldValues.Add(startLineValue);
+            m_fieldValues.Add(startLineValue);
 
             m_tokenType = CsvTokenType.StartField;
           }
           break;
         case CsvTokenType.StartField:
-          m_tokenType = CsvTokenType.EndField;
+          m_tokenType = CsvTokenType.EndField; // The content of the field has already been acquired, so it's the end of a field.
           break;
         case CsvTokenType.EndField:
-          if (ReadFieldValue() is var endFieldValue && endFieldValue == "\n")
+          if (ReadFieldValue() is var endFieldValue && endFieldValue == "\n") // A single line feed is an end of line.
           {
             m_tokenType = CsvTokenType.EndLine;
           }
-          else
+          else // Otherwise a 'start' of another field.
           {
-            FieldValues.Add(endFieldValue);
+            m_fieldValues.Add(endFieldValue);
 
             m_tokenType = CsvTokenType.StartField;
           }
@@ -167,14 +159,14 @@ namespace Flux.Text.Csv
     // DataReader
     public override bool Read()
     {
-      FieldValues.Clear();
+      m_fieldValues.Clear();
 
       if (FieldNames.Count == 0)
       {
         if (!(IsClosed = !ReadToToken(CsvTokenType.EndLine)))
         {
-          FieldNames.AddRange(FieldValues.Cast<string>());
-          FieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(string), FieldNames.Count));
+          m_fieldNames.AddRange(FieldValues.Cast<string>());
+          m_fieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(string), FieldNames.Count));
         }
         else throw new System.Exception(@"Could not load field names.");
       }

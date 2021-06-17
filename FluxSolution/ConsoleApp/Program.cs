@@ -14,27 +14,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var p = @"C:\Windows\WinSxS\amd64_microsoft-windows-shell-sounds_31bf3856ad364e35_10.0.19041.1_none_cd0389b654e71da2";
-      var d = System.IO.Directory.EnumerateFiles(p);
-      foreach (var f in d)
+      foreach (var ucd in new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData())
       {
-        System.Console.WriteLine(f);
-        var s = System.IO.File.OpenRead(f);
-        if(System.IO.Path.GetExtension(f).EndsWith("mid"))
-        foreach (var c in Flux.Riff.Smf.BaseChunk.GetChunks(s))
-          System.Console.WriteLine(c);
-        else if(System.IO.Path.GetExtension(f).EndsWith("wav"))
-          foreach (var c in Flux.Riff.BaseChunk.GetChunks(s))
-            System.Console.WriteLine(c);
-        s.Close();
-        System.Console.WriteLine();
-        System.Console.ReadKey();
+        System.Console.WriteLine(string.Join('|', ucd));
       }
 
-      var t = Flux.Units.Temperature.FromCelsius(0);
-      var tf = new Flux.Formatting.TemperatureFormatter() { UseUnicodeSymbolWhenAvailable = false };
-
-      System.Console.WriteLine(string.Format(tf, "{0:Kelvin3}", t));
 
       /*
       for (var i = 0; i <= 360; i += 15)

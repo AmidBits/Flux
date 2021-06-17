@@ -28,14 +28,14 @@ namespace Flux.IO
     public void Initialize(int headerCount, System.Collections.Generic.IList<string>? fieldNames, System.Collections.Generic.IList<System.Type>? fieldTypes, System.Collections.Generic.IList<string>? fieldProviderTypes)
     {
       if (headerCount >= 1 && ReadFieldValues().ToList() is var streamFieldNames)
-        FieldNames.AddRange(fieldNames ?? streamFieldNames!);
+        m_fieldNames.AddRange(fieldNames ?? streamFieldNames!);
       else
-        FieldNames.AddRange(fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames), @"Missing field names."));
+        m_fieldNames.AddRange(fieldNames ?? throw new System.ArgumentNullException(nameof(fieldNames), @"Missing field names."));
 
       if (headerCount >= 2 && ReadFieldValues().Select(typeName => System.Type.GetType(typeName ?? @"Object")).ToList() is var streamFieldTypes)
-        FieldTypes.AddRange(fieldTypes ?? streamFieldTypes!);
+        m_fieldTypes.AddRange(fieldTypes ?? streamFieldTypes!);
       else
-        FieldTypes.AddRange(fieldTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field types."));
+        m_fieldTypes.AddRange(fieldTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field types."));
 
       if (FieldTypes.Any() && FieldNames.Any() && FieldTypes.Count != FieldNames.Count)
         throw new System.DataMisalignedException($"The number of field types ({FieldTypes.Count}) does not match the number of field names ({FieldNames.Count}).");
@@ -162,8 +162,8 @@ namespace Flux.IO
     /// <summary>Converts the string values into appropriately parsed object types. Requires GetFieldType(index) to be implemented, and therefore FieldTypes needs to be initialized.</summary>
     public override bool Read()
     {
-      FieldValues.Clear();
-      FieldValues.Add(ReadFieldValues().Select((value, index) => ConvertToObject(value, GetFieldType(index))));
+      m_fieldValues.Clear();
+      m_fieldValues.Add(ReadFieldValues().Select((value, index) => ConvertToObject(value, GetFieldType(index))));
 
       if (FieldValues.Count > 0)
       {
