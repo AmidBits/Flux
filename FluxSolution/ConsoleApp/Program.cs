@@ -46,44 +46,8 @@ namespace ConsoleApp
       return osv;
     }
 
-    public static string GetOsPlatform()
-    {
-      var platforms = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
-
-      for (var index = platforms.Length - 1; index >= 0; index--)
-        if (System.OperatingSystem.IsOSPlatform(platforms[index]))
-          return platforms[index];
-
-      return string.Empty;
-    }
-
-    public static Version GetOsPlatformVersion(string platform)
-    {
-      var major = 0;
-      for (; major < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major + 1); major++) ;
-      System.Console.Write($"Major = '{major}'");
-
-      var minor = 0;
-      for (; minor < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor + 1); minor++) ;
-      System.Console.Write($"Minor = '{minor}'");
-
-      var build = 0;
-      for (; build < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build + 1); build++) ;
-      System.Console.Write($"Build = '{build}'");
-
-      var revision = 0;
-      for (; revision < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build, revision + 1); revision++) ;
-      System.Console.Write($"Revision = '{revision}'");
-
-      return new Version(major, minor, build, revision);
-    }
-
     private static void TimedMain(string[] _)
     {
-      var platform = GetOsPlatform();
-      var version = GetOsPlatformVersion(platform);
-
-
       //var e = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().GetEnumerator();
       //e.MoveNext();
       //var names = e.Current.Cast<string>().ToArray();
@@ -92,9 +56,11 @@ namespace ConsoleApp
       //  System.Console.WriteLine(string.Join('|', ucd.GetValues()));
       //}
 
+      var l = new Flux.Units.Length(1);
+
       foreach (System.Data.IDataRecord ucd in new Flux.Data.EnumerableDataReader<object[]>(new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData(), 15, true, (e, i) => e[i], (e, i) => typeof(string)))
       {
-        //        System.Console.WriteLine(string.Join('|', ucd.GetValues()));
+        System.Console.WriteLine(string.Join('|', ucd.GetValues()));
       }
 
       /*

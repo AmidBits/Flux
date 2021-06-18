@@ -17,22 +17,28 @@ namespace Flux.Units
       => m_meters;
     public double Miles
       => ConvertMetersToMiles(m_meters);
+    public double NauticalMiles
+      => ConvertMetersToNauticalMiles(m_meters);
 
     #region Static methods
     public static Length Add(Length left, Length right)
       => new Length(left.m_meters + right.m_meters);
     public static double ConvertFeetToMeters(double feet)
-      => feet / 3.28084;
-    public static double ConvertKilometersToMeters(double miles)
-      => miles * 1000;
+      => feet * 0.3048;
+    public static double ConvertKilometersToMeters(double kilometers)
+      => kilometers * 1000;
     public static double ConvertMetersToFeet(double meters)
-      => meters * 3.28084;
+      => meters / 0.3048;
+    public static double ConvertMetersToNauticalMiles(double meters)
+      => meters / 1852;
     public static double ConvertMetersToKilometers(double meters)
       => meters / 1000;
     public static double ConvertMetersToMiles(double meters)
-      => meters * 0.00062137119223733;
+      => meters / 1609.344;
     public static double ConvertMilesToMeters(double miles)
-      => miles / 0.00062137119223733;
+      => miles * 1609.344;
+    public static double ConvertNauticalMilesToMeters(double nauticalMiles)
+      => nauticalMiles * 1852;
     public static Length Divide(Length left, Length right)
       => new Length(left.m_meters / right.m_meters);
     public static Length FromFeet(double feet)
@@ -41,6 +47,8 @@ namespace Flux.Units
       => new Length(ConvertKilometersToMeters(kilometer));
     public static Length FromMiles(double miles)
       => new Length(ConvertMilesToMeters(miles));
+    public static Length FromNauticalMiles(double nauticalMiles)
+      => new Length(ConvertNauticalMilesToMeters(nauticalMiles));
     public static Length Multiply(Length left, Length right)
       => new Length(left.m_meters * right.m_meters);
     public static Length Negate(Length value)

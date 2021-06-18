@@ -62,8 +62,8 @@ namespace Flux.Units
       => radian * (200 / System.Math.PI);
     public static double ConvertRadiansToRevolutions(double radian)
       => radian / (System.Math.PI * 2);
-    public static double ConvertRevolutionsToRadians(double revolution)
-      => revolution * (System.Math.PI * 2);
+    public static double ConvertRevolutionsToRadians(double revolutions)
+      => revolutions * (System.Math.PI * 2);
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static (double x, double y) ConvertRotationAngleToCartesian(double radian, out double x, out double y)
