@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
   /// <summary>Represents the types of stores available for application data.</summary>
@@ -21,20 +23,19 @@ namespace Flux
       => new System.Uri(System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName);
 
     /// <summary>Returns the version of the common language runtime.</summary>
-    public static System.Version CommonLanguageRuntimeVersion
+    public static System.Version ClrVersion
       => System.Environment.Version;
 
-    /// <summary>Returns the computer domain namn, or string.Empty if the computer is not registered in a domain.</summary>
-    public static string ComputerDomainName
-      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
-
-    /// <summary>Returns the host name of the computer.</summary>
-    public static string ComputerHostName
-      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName;
-
-    /// <summary>Returns the primary DNS name of the computer. Includes the fully qualified domain, if the computer is registered in a domain.</summary>
-    public static string ComputerPrimaryDnsName
+    /// <summary>Returns the DNS primary host name of the computer. Includes the fully qualified domain, if the computer is registered in a domain.</summary>
+    public static string ComputerDnsPrimaryHostName
       => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
+
+    /// <summary>Returns the descriptive text of the current platform identifier.</summary>
+    public static string EnvironmentOsTitle
+      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().Trim().LastIndexOf(' '));
+    /// <summary>Returns the version of the current platform identifier.</summary>
+    public static System.Version EnvironmentOsVersion
+      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
@@ -61,22 +62,26 @@ namespace Flux
     public static string MachineName
       => System.Environment.MachineName;
 
+    /// <summary>Returns the computer domain namn, or string.Empty if the computer is not registered in a domain.</summary>
+    public static string NetworkDomainName
+      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
+
+    /// <summary>Returns the host name of the computer.</summary>
+    public static string NetworkHostName
+      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName;
+
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
-    public static string OperatingSystemTitle
+    public static string RuntimeOsArchitecture
+      => System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString();
+    /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
+    public static string RuntimeOsTitle
       => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' '));
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
-    public static System.Version OperatingSystemVersion
+    public static System.Version RuntimeOsVersion
       => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
 
-    /// <summary>Returns the descriptive text of the current platform identifier.</summary>
-    public static string PlatformTitle
-      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().Trim().LastIndexOf(' '));
-    /// <summary>Returns the version of the current platform identifier.</summary>
-    public static System.Version PlatformVersion
-      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
-
     /// <summary>Returns a dictionary of special folder names and they respective directory info paths.</summary>
-    public static System.Collections.Specialized.OrderedDictionary SpecialFolders
+    public static System.Collections.IDictionary SpecialFolders
     {
       get
       {
@@ -98,6 +103,47 @@ namespace Flux
       }
     }
 
+    /// <summary>Returns the enumerated operating system platform found in <see cref="System.OperatingSystem"/>. If no title can be determined, an empty string is returned.</summary>
+    public static string SystemOsTitle
+    {
+      get
+      {
+        var platforms = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
+
+        for (var index = platforms.Length - 1; index >= 0; index--)
+          if (System.OperatingSystem.IsOSPlatform(platforms[index]))
+            return platforms[index];
+
+        return string.Empty;
+      }
+    }
+    /// <summary>Returns the enumerated operating system platform version found in <see cref="System.OperatingSystem"/>. If no version can be determined, 0.0.0.0 is returned.</summary>
+    public static System.Version SystemOsVersion
+    {
+      get
+      {
+        var platform = SystemOsTitle;
+
+        var major = 0;
+        while (major < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major + 1))
+          major++;
+
+        var minor = 0;
+        while (minor < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor + 1))
+          minor++;
+
+        var build = 0;
+        while (build < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build + 1))
+          build++;
+
+        var revision = 0;
+        while (revision < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build, revision + 1))
+          revision++;
+
+        return new System.Version(major, minor, build, revision);
+      }
+    }
+
     /// <summary>Returns the number of ticks in the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
     public static long TimerTickCounter
       => System.Diagnostics.Stopwatch.GetTimestamp();
@@ -112,6 +158,9 @@ namespace Flux
     /// <summary>Returns the user name from <see cref="System.Environment"/>.</summary>
     public static string UserName
       => System.Environment.UserName;
+
+    public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
+      => Flux.Reflexion.Types.GetProperties(typeof(Locale));
   }
 }
 

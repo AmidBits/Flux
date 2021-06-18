@@ -43,10 +43,12 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 # Sample use from Flux BaseLibrary:
 
-"Locale-Properties:"
- [Flux.Locale].GetProperties() | Select-Object Name | ForEach-Object { "$($_.Name)=`"$([Flux.Locale]::"$($_.Name)")`"" }
- "Locale-SpecialFolders:"
- [Flux.Locale]::SpecialFolders | Format-Table
+#"Locale-Properties:"
+[Flux.Locale]::GetProperties()
+# "Locale-SpecialFolders:"
+# [Flux.Locale]::SpecialFolders
+
+#[System.Environment]::GetEnvironmentVariables().GetType()
 
 return;
 

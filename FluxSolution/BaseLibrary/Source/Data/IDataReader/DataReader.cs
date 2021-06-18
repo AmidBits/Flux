@@ -12,21 +12,6 @@ namespace Flux.Data
     public const string AllowDBNull = nameof(AllowDBNull);
     public const string TsqlDataType = nameof(TsqlDataType);
 
-    protected System.Collections.Generic.List<bool> m_fieldAllowDBNulls = new System.Collections.Generic.List<bool>();
-    /// <summary>An array of whether the fields FieldNulls is an optional functionality where each field defaults to true (as in, the field allows null values).</summary>
-    public System.Collections.Generic.IReadOnlyList<bool> FieldAllowDBNulls { get => m_fieldAllowDBNulls; set => m_fieldAllowDBNulls.AddRange(value); }
-
-    protected System.Collections.Generic.List<string> m_fieldTsqlDataTypes = new System.Collections.Generic.List<string>();
-    /// <summary>An array of the T-SQL data types for the result.</summary>
-    public System.Collections.Generic.List<string> FieldTsqlDataTypes { get => m_fieldTsqlDataTypes; set => m_fieldTsqlDataTypes.AddRange(value); }
-
-    /// <summary>DataReader extension, which indicates whether the field at the specified index allows nulls. By default, true is returned for any index (field).</summary>
-    public virtual bool GetFieldAllowDBNull(int index)
-      => index < 0 || index >= FieldAllowDBNulls.Count || FieldAllowDBNulls[index];
-    /// <summary>DataReader extension, which returns a complete T-SQL data type (with type arguments as needed/desired) the field at the specified index corresponds to. By default, the type returned by GetFieldType() is System.Object, which results in "sql_variant" being returned.</summary>
-    public virtual string GetFieldTsqlDataType(int index)
-      => index >= 0 && index < FieldTsqlDataTypes.Count ? FieldTsqlDataTypes[index] : (Data.TsqlDataType.NameFromType(GetFieldType(index)) is var tsqlTypeName ? tsqlTypeName + Data.TsqlDataType.GetDefaultArgument(tsqlTypeName) : throw new System.Exception(@"Could not construct T-SQL data type definition."));
-
     // IDataReader
     public virtual int Depth { get; protected set; }
     public virtual bool IsClosed { get; protected set; } // False by default. Must change during operations in a derived class, in order to reflect open/close status of the data reader.
@@ -42,14 +27,12 @@ namespace Flux.Data
             { ColumnName, typeof(string) },
             { DataType, typeof(System.Type) },
             { ColumnSize, typeof(int) },
-            { AllowDBNull, typeof(bool) },
-            { TsqlDataType, typeof(string) }
           }
       };
 
       for (var index = 0; index < FieldCount; index++)
       {
-        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, GetFieldAllowDBNull(index), GetFieldTsqlDataType(index) });
+        dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1 });
       }
 
       return dt;
@@ -136,8 +119,8 @@ namespace Flux.Data
     /// <summary>Gets the Type information corresponding to the type of Object that would be returned from GetValue(Int32).</summary>
     /// <remarks>This information can be used to increase performance by indicating the strongly-typed accessor to call. 
     /// (For example, using GetInt32 is roughly ten times faster than using GetValue.)</remarks>
-    public virtual System.Type GetFieldType(int index)
-      => typeof(object);
+    public abstract System.Type GetFieldType(int index);
+      //=> typeof(object);
     public virtual float GetFloat(int index)
       => (float)GetValue(index);
     public virtual System.Guid GetGuid(int index)
@@ -148,14 +131,14 @@ namespace Flux.Data
       => (int)GetValue(index);
     public virtual long GetInt64(int index)
       => (long)GetValue(index);
-    public virtual string GetName(int index)
-      => throw new System.NotImplementedException();
-    public virtual int GetOrdinal(string name)
-      => throw new System.NotImplementedException();
+    public abstract string GetName(int index);
+    //=> throw new System.NotImplementedException();
+    public abstract int GetOrdinal(string name);
+      //=> throw new System.NotImplementedException();
     public virtual string GetString(int index)
       => (string)GetValue(index);
-    public virtual object GetValue(int index)
-      => throw new System.NotImplementedException();
+    public abstract object GetValue(int index);
+      //=> throw new System.NotImplementedException();
     public virtual int GetValues(object[] values)
     {
       if (values is null) throw new System.ArgumentNullException(nameof(values));
@@ -177,24 +160,5 @@ namespace Flux.Data
       => new DataReaderEnumerator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
-
-    private class DataReaderEnumerator
-      : Disposable, System.Collections.Generic.IEnumerator<System.Data.IDataRecord>
-    {
-      private readonly System.Data.IDataReader m_dataReader;
-
-      public DataReaderEnumerator(System.Data.IDataReader dataReader)
-        => m_dataReader = dataReader ?? throw new System.ArgumentNullException(nameof(dataReader));
-
-      // IEnumerator
-      public System.Data.IDataRecord Current
-        => m_dataReader;
-      object System.Collections.IEnumerator.Current
-        => m_dataReader;
-      public bool MoveNext()
-        => m_dataReader.Read();
-      public void Reset()
-        => throw new System.NotSupportedException($"Implementations of System.Data.IDataReader are forward-only constructs.");
-    }
   }
 }

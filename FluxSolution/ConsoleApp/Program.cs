@@ -12,13 +12,90 @@ namespace ConsoleApp
 {
   class Program
   {
+    public enum PRODUCT_TYPE
+    {
+      VER_NT_WORKSTATION = 0x0000001,
+      VER_NT_DOMAIN_CONTROLLER = 0x0000002,
+      VER_NT_SERVER = 0x0000003
+    }
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    public struct OSVERSIONINFOEXW
+    {
+      public int dwOSVersionInfoSize;
+      public int dwMajorVersion;
+      public int dwMinorVersion;
+      public int dwBuildNumber;
+      public int dwPlatformId;
+      [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)] public string szCSDVersion;
+      public ushort wServicePackMajor;
+      public ushort wServicePackMinor;
+      public ushort wSuiteMask;
+      public PRODUCT_TYPE wProductType;
+      public byte wReserved;
+    }
+
+    [System.Runtime.InteropServices.DllImport("ntdll.dll", SetLastError = true)]
+    public static extern bool RtlGetVersion(ref OSVERSIONINFOEXW versionInfo);
+
+    public static OSVERSIONINFOEXW RtlGetVersion()
+    {
+      var osv = new OSVERSIONINFOEXW();
+      osv.dwOSVersionInfoSize = System.Runtime.InteropServices.Marshal.SizeOf(osv);
+      RtlGetVersion(ref osv);
+      return osv;
+    }
+
+    public static string GetOsPlatform()
+    {
+      var platforms = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
+
+      for (var index = platforms.Length - 1; index >= 0; index--)
+        if (System.OperatingSystem.IsOSPlatform(platforms[index]))
+          return platforms[index];
+
+      return string.Empty;
+    }
+
+    public static Version GetOsPlatformVersion(string platform)
+    {
+      var major = 0;
+      for (; major < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major + 1); major++) ;
+      System.Console.Write($"Major = '{major}'");
+
+      var minor = 0;
+      for (; minor < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor + 1); minor++) ;
+      System.Console.Write($"Minor = '{minor}'");
+
+      var build = 0;
+      for (; build < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build + 1); build++) ;
+      System.Console.Write($"Build = '{build}'");
+
+      var revision = 0;
+      for (; revision < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build, revision + 1); revision++) ;
+      System.Console.Write($"Revision = '{revision}'");
+
+      return new Version(major, minor, build, revision);
+    }
+
     private static void TimedMain(string[] _)
     {
-      foreach (var ucd in new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData())
-      {
-        System.Console.WriteLine(string.Join('|', ucd));
-      }
+      var platform = GetOsPlatform();
+      var version = GetOsPlatformVersion(platform);
 
+
+      //var e = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().GetEnumerator();
+      //e.MoveNext();
+      //var names = e.Current.Cast<string>().ToArray();
+      //foreach (System.Data.IDataRecord ucd in new Flux.Data.EnumerableDataReader<object[]>(e, 15, (e, i) => names[i], (e, i) => e[i], (e, s) => System.Array.IndexOf(names, s), (e, i) => typeof(string)))
+      //{
+      //  System.Console.WriteLine(string.Join('|', ucd.GetValues()));
+      //}
+
+      foreach (System.Data.IDataRecord ucd in new Flux.Data.EnumerableDataReader<object[]>(new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData(), 15, true, (e, i) => e[i], (e, i) => typeof(string)))
+      {
+        //        System.Console.WriteLine(string.Join('|', ucd.GetValues()));
+      }
 
       /*
       for (var i = 0; i <= 360; i += 15)

@@ -35,9 +35,6 @@ namespace Flux.Data
     // IDisposable
     protected override void DisposeManaged()
     {
-      m_fieldAllowDBNulls.Clear();
-      m_fieldTsqlDataTypes.Clear();
-
       m_fieldNames.Clear();
       m_fieldTypes.Clear();
       m_fieldValues.Clear();
