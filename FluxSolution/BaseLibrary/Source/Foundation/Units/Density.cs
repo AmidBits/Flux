@@ -1,0 +1,87 @@
+namespace Flux.Units
+{
+  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  public struct Density
+    : System.IComparable<Density>, System.IEquatable<Density>, System.IFormattable
+  {
+    private readonly double m_kilogramPerCubicMeter;
+
+    public Density(double kilogramPerCubicMeter)
+      => m_kilogramPerCubicMeter = kilogramPerCubicMeter;
+
+    public double KilogramPerCubicMeter
+      => m_kilogramPerCubicMeter;
+
+    #region Static methods
+    public static Density Add(Density left, Density right)
+      => new Density(left.m_kilogramPerCubicMeter + right.m_kilogramPerCubicMeter);
+    public static Density Divide(Density left, Density right)
+      => new Density(left.m_kilogramPerCubicMeter / right.m_kilogramPerCubicMeter);
+    public static Density Multiply(Density left, Density right)
+      => new Density(left.m_kilogramPerCubicMeter * right.m_kilogramPerCubicMeter);
+    public static Density Negate(Density value)
+      => new Density(-value.m_kilogramPerCubicMeter);
+    public static Density Remainder(Density dividend, Density divisor)
+      => new Density(dividend.m_kilogramPerCubicMeter % divisor.m_kilogramPerCubicMeter);
+    public static Density Subtract(Density left, Density right)
+      => new Density(left.m_kilogramPerCubicMeter - right.m_kilogramPerCubicMeter);
+    #endregion Static methods
+
+    #region Overloaded operators
+    public static explicit operator double(Density v)
+      => v.m_kilogramPerCubicMeter;
+    public static implicit operator Density(double v)
+      => new Density(v);
+
+    public static bool operator <(Density a, Density b)
+      => a.CompareTo(b) < 0;
+    public static bool operator <=(Density a, Density b)
+      => a.CompareTo(b) <= 0;
+    public static bool operator >(Density a, Density b)
+      => a.CompareTo(b) < 0;
+    public static bool operator >=(Density a, Density b)
+      => a.CompareTo(b) <= 0;
+
+    public static bool operator ==(Density a, Density b)
+      => a.Equals(b);
+    public static bool operator !=(Density a, Density b)
+      => !a.Equals(b);
+
+    public static Density operator +(Density a, Density b)
+      => Add(a, b);
+    public static Density operator /(Density a, Density b)
+      => Divide(a, b);
+    public static Density operator *(Density a, Density b)
+      => Multiply(a, b);
+    public static Density operator -(Density v)
+      => Negate(v);
+    public static Density operator %(Density a, Density b)
+      => Remainder(a, b);
+    public static Density operator -(Density a, Density b)
+      => Subtract(a, b);
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IComparable
+    public int CompareTo(Density other)
+      => m_kilogramPerCubicMeter.CompareTo(other.m_kilogramPerCubicMeter);
+
+    // IEquatable
+    public bool Equals(Density other)
+      => m_kilogramPerCubicMeter == other.m_kilogramPerCubicMeter;
+
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => string.Format(formatProvider, format ?? $"<{nameof(Density)}: {{0:D3}}>", this);
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    public override bool Equals(object? obj)
+      => obj is Density o && Equals(o);
+    public override int GetHashCode()
+      => m_kilogramPerCubicMeter.GetHashCode();
+    public override string ToString()
+      => ToString(null, null);
+    #endregion Object overrides
+  }
+}

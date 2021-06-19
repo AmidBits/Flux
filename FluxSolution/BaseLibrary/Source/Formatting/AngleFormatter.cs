@@ -33,13 +33,13 @@ namespace Flux.Formatting
             switch (unitString)
             {
               case var degrees when @"Degrees".StartsWith(degrees, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.Degrees) + @" degs";
+                return string.Format(null, formatString, angle.Degree) + @" degs";
               case var gradians when @"Gradians".StartsWith(gradians, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.Gradians) + @" gons";
+                return string.Format(null, formatString, angle.Gradian) + @" gons";
               case var radians when @"Radians".StartsWith(radians, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.Radians) + @" radians";
+                return string.Format(null, formatString, angle.Radian) + @" radians";
               case var revolutions when @"Revolutions".StartsWith(revolutions, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.Radians) + @" turns";
+                return string.Format(null, formatString, angle.Radian) + @" turns";
               default:
                 break;
             }

@@ -18,13 +18,13 @@ namespace Flux.Units
       => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
     public (double x, double y) CartesianEx
       => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
-    public double Degrees
+    public double Degree
       => ConvertRadiansToDegrees(m_radian);
-    public double Gradians
+    public double Gradian
       => ConvertRadiansToGradians(m_radian);
-    public double Radians
+    public double Radian
       => m_radian;
-    public double Revolutions
+    public double Revolution
       => ConvertRadiansToRevolutions(m_radian);
 
     #region Static methods
