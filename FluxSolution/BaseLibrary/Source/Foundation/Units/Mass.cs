@@ -1,4 +1,4 @@
-namespace Flux.Units2
+namespace Flux.Units
 {
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
   public struct Mass
