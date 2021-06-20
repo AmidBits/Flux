@@ -11,6 +11,9 @@ namespace Flux.Units
 
     public double Degree
       => m_degree;
+    public double Radian
+      => Angle.ConvertDegreesToRadians(m_degree);
+
 
     #region Static methods
     public static Azimuth Add(Azimuth left, Azimuth right)
