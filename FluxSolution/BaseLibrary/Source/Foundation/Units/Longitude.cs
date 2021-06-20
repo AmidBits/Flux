@@ -1,0 +1,89 @@
+namespace Flux.Units
+{
+  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  public struct Longitude
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>, System.IFormattable
+  {
+    private readonly double m_degree;
+
+    public Longitude(double degree)
+      => m_degree = Maths.Wrap(degree, -180, +180);
+
+    public double Degree
+      => m_degree;
+    public double Radian
+      => Angle.ConvertDegreesToRadians(m_degree);
+
+    #region Static methods
+    public static Longitude Add(Longitude left, Longitude right)
+      => new Longitude(left.m_degree + right.m_degree);
+    public static Longitude Divide(Longitude left, Longitude right)
+      => new Longitude(left.m_degree / right.m_degree);
+    public static Longitude Multiply(Longitude left, Longitude right)
+      => new Longitude(left.m_degree * right.m_degree);
+    public static Longitude Negate(Longitude value)
+      => new Longitude(-value.m_degree);
+    public static Longitude Remainder(Longitude dividend, Longitude divisor)
+      => new Longitude(dividend.m_degree % divisor.m_degree);
+    public static Longitude Subtract(Longitude left, Longitude right)
+      => new Longitude(left.m_degree - right.m_degree);
+    #endregion Static methods
+
+    #region Overloaded operators
+    public static explicit operator double(Longitude v)
+      => v.m_degree;
+    public static implicit operator Longitude(double v)
+      => new Longitude(v);
+
+    public static bool operator <(Longitude a, Longitude b)
+      => a.CompareTo(b) < 0;
+    public static bool operator <=(Longitude a, Longitude b)
+      => a.CompareTo(b) <= 0;
+    public static bool operator >(Longitude a, Longitude b)
+      => a.CompareTo(b) < 0;
+    public static bool operator >=(Longitude a, Longitude b)
+      => a.CompareTo(b) <= 0;
+
+    public static bool operator ==(Longitude a, Longitude b)
+      => a.Equals(b);
+    public static bool operator !=(Longitude a, Longitude b)
+      => !a.Equals(b);
+
+    public static Longitude operator +(Longitude a, Longitude b)
+      => Add(a, b);
+    public static Longitude operator /(Longitude a, Longitude b)
+      => Divide(a, b);
+    public static Longitude operator *(Longitude a, Longitude b)
+      => Multiply(a, b);
+    public static Longitude operator -(Longitude v)
+      => Negate(v);
+    public static Longitude operator %(Longitude a, Longitude b)
+      => Remainder(a, b);
+    public static Longitude operator -(Longitude a, Longitude b)
+      => Subtract(a, b);
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IComparable
+    public int CompareTo(Longitude other)
+      => m_degree.CompareTo(other.m_degree);
+
+    // IEquatable
+    public bool Equals(Longitude other)
+      => m_degree == other.m_degree;
+
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => string.Format(formatProvider, format ?? $"<{nameof(Longitude)}: {{0:D3}}>", this);
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    public override bool Equals(object? obj)
+      => obj is Longitude o && Equals(o);
+    public override int GetHashCode()
+      => m_degree.GetHashCode();
+    public override string ToString()
+      => ToString(null, null);
+    #endregion Object overrides
+  }
+}
