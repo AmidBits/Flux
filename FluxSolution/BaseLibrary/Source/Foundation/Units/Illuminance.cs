@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Illuminance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, System.IFormattable
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>
   {
     private readonly double m_lux;
 
@@ -78,10 +78,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Illuminance other)
       => m_lux == other.m_lux;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Illuminance)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -90,7 +86,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_lux.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_lux} lx>";
     #endregion Object overrides
   }
 }

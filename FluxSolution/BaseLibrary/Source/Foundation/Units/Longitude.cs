@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Longitude.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
-    : System.IComparable<Longitude>, System.IEquatable<Longitude>, System.IFormattable
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -78,10 +78,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Longitude other)
       => m_degree == other.m_degree;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Longitude)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -90,7 +86,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_degree}\u00B0>";
     #endregion Object overrides
   }
 }

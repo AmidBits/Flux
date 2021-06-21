@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric current.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, System.IFormattable
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>
   {
     private readonly double m_ampere;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(ElectricCurrent other)
       => m_ampere == other.m_ampere;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(ElectricCurrent)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_ampere.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_ampere} A>";
     #endregion Object overrides
   }
 }

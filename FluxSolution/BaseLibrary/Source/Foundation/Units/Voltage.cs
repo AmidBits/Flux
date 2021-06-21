@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Voltage.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, System.IFormattable
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>
   {
     private readonly double m_volt;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Voltage other)
       => m_volt == other.m_volt;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Voltage)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_volt.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_volt} V>";
     #endregion Object overrides
   }
 }

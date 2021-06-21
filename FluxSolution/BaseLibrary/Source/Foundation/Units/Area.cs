@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Area.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IEquatable<Area>, System.IFormattable
+    : System.IComparable<Area>, System.IEquatable<Area>
   {
     private readonly double m_squareMeter;
 
@@ -72,10 +72,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Area other)
       => m_squareMeter == other.m_squareMeter;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Area)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -84,7 +80,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_squareMeter.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_squareMeter} m²>";
     #endregion Object overrides
   }
 }

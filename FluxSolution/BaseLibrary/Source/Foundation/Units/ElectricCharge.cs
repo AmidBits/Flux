@@ -3,34 +3,34 @@ namespace Flux.Units
   /// <summary>Electric charge.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, System.IFormattable
+    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>
   {
-    private readonly double m_Coulomb;
+    private readonly double m_coulomb;
 
     public ElectricCharge(double coulomb)
-      => m_Coulomb = coulomb;
+      => m_coulomb = coulomb;
 
     public double Coulomb
-      => m_Coulomb;
+      => m_coulomb;
 
     #region Static methods
     public static ElectricCharge Add(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_Coulomb + right.m_Coulomb);
+      => new ElectricCharge(left.m_coulomb + right.m_coulomb);
     public static ElectricCharge Divide(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_Coulomb / right.m_Coulomb);
+      => new ElectricCharge(left.m_coulomb / right.m_coulomb);
     public static ElectricCharge Multiply(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_Coulomb * right.m_Coulomb);
+      => new ElectricCharge(left.m_coulomb * right.m_coulomb);
     public static ElectricCharge Negate(ElectricCharge value)
-      => new ElectricCharge(-value.m_Coulomb);
+      => new ElectricCharge(-value.m_coulomb);
     public static ElectricCharge Remainder(ElectricCharge dividend, ElectricCharge divisor)
-      => new ElectricCharge(dividend.m_Coulomb % divisor.m_Coulomb);
+      => new ElectricCharge(dividend.m_coulomb % divisor.m_coulomb);
     public static ElectricCharge Subtract(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_Coulomb - right.m_Coulomb);
+      => new ElectricCharge(left.m_coulomb - right.m_coulomb);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(ElectricCharge v)
-      => v.m_Coulomb;
+      => v.m_coulomb;
     public static implicit operator ElectricCharge(double v)
       => new ElectricCharge(v);
 
@@ -65,24 +65,20 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(ElectricCharge other)
-      => m_Coulomb.CompareTo(other.m_Coulomb);
+      => m_coulomb.CompareTo(other.m_coulomb);
 
     // IEquatable
     public bool Equals(ElectricCharge other)
-      => m_Coulomb == other.m_Coulomb;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(ElectricCharge)}: {{0:D3}}>", this);
+      => m_coulomb == other.m_coulomb;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is ElectricCharge o && Equals(o);
     public override int GetHashCode()
-      => m_Coulomb.GetHashCode();
+      => m_coulomb.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_coulomb} C>";
     #endregion Object overrides
   }
 }

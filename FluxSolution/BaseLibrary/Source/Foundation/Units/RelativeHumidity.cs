@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, System.IFormattable
+    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>
   {
     private readonly double m_percent;
 
@@ -73,10 +73,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(RelativeHumidity other)
       => m_percent == other.m_percent;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(RelativeHumidity)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -85,7 +81,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_percent.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_percent * 100}%>";
     #endregion Object overrides
   }
 }

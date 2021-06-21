@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Speed.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable<Speed>, System.IEquatable<Speed>, System.IFormattable
+    : System.IComparable<Speed>, System.IEquatable<Speed>
   {
     public static Speed SpeedOfLight
       => new Speed(299792458);
@@ -25,10 +25,14 @@ namespace Flux.Units
       => m_metersPerSecond;
     public double MilesPerHour
       => ConvertMetersPerSecondToMilesPerHour(m_metersPerSecond);
+    public double NauticalMilesPerHour
+      => ConvertMetersPerSecondToNauticalMilesPerHour(m_metersPerSecond);
 
     #region Static methods
     public static Speed Add(Speed left, Speed right)
       => new Speed(left.m_metersPerSecond + right.m_metersPerSecond);
+    public static double ConvertMetersPerSecondToNauticalMilesPerHour(double metersPerSecond)
+      => metersPerSecond * 1.9438444924406;
     public static double ConvertFeetPerSecondToMetersPerSecond(double feetPerSecond)
       => feetPerSecond * 0.3048;
     public static double ConvertKilometersPerHourToMetersPerSecond(double kilometersPerHour)
@@ -45,6 +49,8 @@ namespace Flux.Units
       => metersPerSecond * 2.2369362920544;
     public static double ConvertMilesPerHourToMetersPerSecond(double milesPerHour)
       => milesPerHour * 0.44704;
+    public static double ConvertNauticalMilesPerHourToMetersPerSecond(double nauticalMilesPerHour)
+      => nauticalMilesPerHour / 1.9438444924406;
     public static Speed Divide(Speed left, Speed right)
       => new Speed(left.m_metersPerSecond / right.m_metersPerSecond);
     public static Speed FromFeetPerSecond(double feetPerSecond)
@@ -55,6 +61,8 @@ namespace Flux.Units
       => new Speed(ConvertKnotsToMetersPerSecond(knots));
     public static Speed FromMilesPerHour(double milesPerHour)
       => new Speed(ConvertMilesPerHourToMetersPerSecond(milesPerHour));
+    public static Speed FromNauticalMilesPerHour(double nauticalMilesPerHour)
+      => new Speed(ConvertNauticalMilesPerHourToMetersPerSecond(nauticalMilesPerHour));
     public static Speed Multiply(Speed left, Speed right)
       => new Speed(left.m_metersPerSecond * right.m_metersPerSecond);
     public static Speed Negate(Speed value)
@@ -107,10 +115,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Speed other)
       => m_metersPerSecond == other.m_metersPerSecond;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Speed)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -119,7 +123,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_metersPerSecond.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_metersPerSecond} m/s>";
     #endregion Object overrides
   }
 }

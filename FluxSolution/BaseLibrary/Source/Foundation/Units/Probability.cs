@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Probability.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
-    : System.IComparable<Probability>, System.IEquatable<Probability>, System.IFormattable
+    : System.IComparable<Probability>, System.IEquatable<Probability>
   {
     public const double MaxValue = 1;
     public const double MinValue = 0;
@@ -73,10 +73,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Probability other)
       => m_percent == other.m_percent;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Probability)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -85,7 +81,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_percent.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_percent * 100}%>";
     #endregion Object overrides
   }
 }

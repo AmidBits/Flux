@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Time.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IEquatable<Time>, System.IFormattable
+    : System.IComparable<Time>, System.IEquatable<Time>
   {
     private readonly double m_seconds;
 
@@ -75,10 +75,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Time other)
       => m_seconds == other.m_seconds;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Time)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -87,7 +83,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_seconds.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_seconds} s>";
     #endregion Object overrides
   }
 }

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Temporal frequency.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, System.IFormattable
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>
   {
     private readonly double m_hertz;
 
@@ -90,10 +90,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Frequency other)
       => m_hertz == other.m_hertz;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Frequency)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -102,7 +98,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_hertz.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_hertz} Hz>";
     #endregion Object overrides
   }
 }

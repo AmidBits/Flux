@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric resistance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, System.IFormattable
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>
   {
     private readonly double m_ohm;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(ElectricResistance other)
       => m_ohm == other.m_ohm;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(ElectricResistance)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_ohm.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_ohm} \u03A9>";
     #endregion Object overrides
   }
 }

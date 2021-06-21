@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Flow.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IEquatable<Flow>, System.IFormattable
+    : System.IComparable<Flow>, System.IEquatable<Flow>
   {
     private readonly double m_cubicMeterPerSecond;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Flow other)
       => m_cubicMeterPerSecond == other.m_cubicMeterPerSecond;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Flow)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_cubicMeterPerSecond.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_cubicMeterPerSecond} m³/s>";
     #endregion Object overrides
   }
 }

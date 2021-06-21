@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Pressure.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>, System.IFormattable
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>
   {
     private readonly double m_pascal;
 
@@ -78,10 +78,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Pressure other)
       => m_pascal == other.m_pascal;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Pressure)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -90,7 +86,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_pascal.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_pascal} Pa>";
     #endregion Object overrides
   }
 }

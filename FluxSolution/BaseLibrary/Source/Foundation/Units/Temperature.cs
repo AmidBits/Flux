@@ -132,10 +132,6 @@ namespace Flux.Units
     // IEquatable<Angle>
     public bool Equals(Temperature other)
       => m_kelvin == other.m_kelvin;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new Formatting.TemperatureFormatter(), format ?? $"<{nameof(Temperature)}: {{0:F3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -144,7 +140,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_kelvin.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_kelvin} K>";
     #endregion Object overrides
   }
 }

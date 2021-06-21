@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Force.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, System.IFormattable
+    : System.IComparable<Force>, System.IEquatable<Force>
   {
     private readonly double m_newton;
 
@@ -70,11 +70,7 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Force other)
       => m_newton == other.m_newton;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Force)}: {{0:D3}}>", this);
-    #endregion Implemented interfaces
+   #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_newton.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_newton} N>";
     #endregion Object overrides
   }
 }

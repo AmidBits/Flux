@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Inductance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IEquatable<Inductance>, System.IFormattable
+    : System.IComparable<Inductance>, System.IEquatable<Inductance>
   {
     private readonly double m_henry;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Inductance other)
       => m_henry == other.m_henry;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Inductance)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_henry.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_henry} H>";
     #endregion Object overrides
   }
 }

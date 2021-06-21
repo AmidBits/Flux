@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Torque.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>, System.IFormattable
+    : System.IComparable<Torque>, System.IEquatable<Torque>
   {
     private readonly double m_newtonMeter;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Torque other)
       => m_newtonMeter == other.m_newtonMeter;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Torque)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_newtonMeter.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_newtonMeter} N m>";
     #endregion Object overrides
   }
 }

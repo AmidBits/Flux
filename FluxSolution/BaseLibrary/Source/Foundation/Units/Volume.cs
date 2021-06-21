@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Volume.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable<Volume>, System.IEquatable<Volume>, System.IFormattable
+    : System.IComparable<Volume>, System.IEquatable<Volume>
   {
     private readonly double m_cubicMeter;
 
@@ -72,10 +72,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Volume other)
       => m_cubicMeter == other.m_cubicMeter;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Volume)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -84,7 +80,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_cubicMeter.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_cubicMeter} m³>";
     #endregion Object overrides
   }
 }

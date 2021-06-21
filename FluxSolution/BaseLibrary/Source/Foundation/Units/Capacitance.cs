@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Capacitance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, System.IFormattable
+    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>
   {
     private readonly double m_farad;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Capacitance other)
       => m_farad == other.m_farad;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Capacitance)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_farad.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_farad} F>";
     #endregion Object overrides
   }
 }

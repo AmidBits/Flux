@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Length.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IEquatable<Length>, System.IFormattable
+    : System.IComparable<Length>, System.IEquatable<Length>
   {
     private readonly double m_meters;
 
@@ -102,10 +102,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Length other)
       => m_meters == other.m_meters;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Length)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -114,7 +110,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_meters.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{nameof(Length)}: {m_meters} m>";
     #endregion Object overrides
   }
 }

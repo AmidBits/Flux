@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Azimuth.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
-    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, System.IFormattable
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -78,10 +78,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Azimuth other)
       => m_degree == other.m_degree;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Azimuth)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -90,7 +86,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_degree}\u00B0>";
     #endregion Object overrides
   }
 }

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Density.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>, System.IFormattable
+    : System.IComparable<Density>, System.IEquatable<Density>
   {
     private readonly double m_kilogramPerCubicMeter;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Density other)
       => m_kilogramPerCubicMeter == other.m_kilogramPerCubicMeter;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Density)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_kilogramPerCubicMeter.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_kilogramPerCubicMeter} kg/m³>";
     #endregion Object overrides
   }
 }

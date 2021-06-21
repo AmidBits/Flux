@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Acceleration.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, System.IFormattable
+    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>
   {
     private readonly double m_meterPerSecondSquare;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Acceleration other)
       => m_meterPerSecondSquare == other.m_meterPerSecondSquare;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Acceleration)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_meterPerSecondSquare.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_meterPerSecondSquare} m/s²>";
     #endregion Object overrides
   }
 }

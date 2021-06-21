@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Mass.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable<Mass>, System.IEquatable<Mass>, System.IFormattable
+    : System.IComparable<Mass>, System.IEquatable<Mass>
   {
     private readonly double m_kilograms;
 
@@ -78,10 +78,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Mass other)
       => m_kilograms == other.m_kilograms;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Mass)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -90,7 +86,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_kilograms.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_kilograms} kg>";
     #endregion Object overrides
   }
 }

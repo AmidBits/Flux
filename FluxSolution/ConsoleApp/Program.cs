@@ -48,6 +48,13 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var d = 3.0;
+
+      var l1 = (Flux.Units.Acceleration)d;
+      System.Console.WriteLine(l1);
+      var ld = (double)l1;
+      System.Console.WriteLine(ld);
+
       //var e = new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData().GetEnumerator();
       //e.MoveNext();
       //var names = e.Current.Cast<string>().ToArray();
@@ -55,7 +62,7 @@ namespace ConsoleApp
       //{
       //  System.Console.WriteLine(string.Join('|', ucd.GetValues()));
       //}
-
+      return;
       var l = new Flux.Units.Length(1);
 
       foreach (System.Data.IDataRecord ucd in new Flux.Data.EnumerableDataReader<object[]>(new Flux.Resources.Ucd.UnicodeData(Flux.Resources.Ucd.UnicodeData.UriLocal).AcquireTabularData(), 15, true, (e, i) => e[i], (e, i) => typeof(string)))

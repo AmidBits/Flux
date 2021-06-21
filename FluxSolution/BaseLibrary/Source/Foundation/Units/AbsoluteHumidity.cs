@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
-    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, System.IFormattable
+    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>
   {
     private readonly double m_gramPerCubicMeter;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(AbsoluteHumidity other)
       => m_gramPerCubicMeter == other.m_gramPerCubicMeter;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(AbsoluteHumidity)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_gramPerCubicMeter.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_gramPerCubicMeter} g/m³>";
     #endregion Object overrides
   }
 }

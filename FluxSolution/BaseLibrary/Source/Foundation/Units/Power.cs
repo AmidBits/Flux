@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Power.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, System.IFormattable
+    : System.IComparable<Power>, System.IEquatable<Power>
   {
     private readonly double m_watt;
 
@@ -70,10 +70,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Power other)
       => m_watt == other.m_watt;
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, format ?? $"<{nameof(Power)}: {{0:D3}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -82,7 +78,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_watt.GetHashCode();
     public override string ToString()
-      => ToString(null, null);
+      => $"<{GetType().Name}: {m_watt} W>";
     #endregion Object overrides
   }
 }
