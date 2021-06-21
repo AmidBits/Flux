@@ -14,6 +14,9 @@ namespace Flux.Units
     public double Radian
       => Angle.ConvertDegreesToRadians(m_degree);
 
+    public Angle ToAngle()
+      => Angle.FromDegree(m_degree);
+
     #region Static methods
     public static Longitude Add(Longitude left, Longitude right)
       => new Longitude(left.m_degree + right.m_degree);
