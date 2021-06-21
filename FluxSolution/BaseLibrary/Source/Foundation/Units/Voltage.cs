@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Voltage.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
     : System.IComparable<Voltage>, System.IEquatable<Voltage>, System.IFormattable
   {

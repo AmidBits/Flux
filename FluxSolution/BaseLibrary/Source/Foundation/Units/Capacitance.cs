@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Capacitance.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
     : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, System.IFormattable
   {

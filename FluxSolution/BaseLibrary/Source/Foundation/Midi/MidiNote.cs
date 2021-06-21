@@ -5,14 +5,15 @@ namespace Flux.Midi
   /// <summary>A MIDI note is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-  public struct Note
-    : System.IComparable<Note>, System.IEquatable<Note>
+  public struct MidiNote
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>
   {
-    public const byte ReferenceA4 = 69;
+    public const byte ReferenceNoteNumberA4 = 69;
+    public const double ReferenceFrequencyHertz440 = 440;
 
     private int m_number;
 
-    public Note(int midiNoteNumber)
+    public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     public int Number
@@ -32,18 +33,18 @@ namespace Flux.Midi
     #region Static methods
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static double ConvertNoteToFrequency(int midiNote)
-      => midiNote >= 0 && midiNote <= 127 ? Units.Frequency.Reference440 * System.Math.Pow(2, (midiNote - ReferenceA4) / 12.0) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
+      => IsMidiNote(midiNote) ? ReferenceFrequencyHertz440 * System.Math.Pow(2, (midiNote - ReferenceNoteNumberA4) / 12.0) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static int ConvertFrequencyToNote(double frequency)
-      => (int)(ReferenceA4 + (System.Math.Log(frequency / Units.Frequency.Reference440, 2.0) * 12.0)) is var midiNote && midiNote >= 0 && midiNote <= 127 ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+      => (int)(ReferenceNoteNumberA4 + (System.Math.Log(frequency / ReferenceFrequencyHertz440, 2.0) * 12.0)) is var midiNote && IsMidiNote(midiNote) ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
-    public static Note FromFrequency(Units.Frequency frequency)
-      => new Note(ConvertFrequencyToNote(frequency.Hertz));
+    public static MidiNote FromFrequency(Units.Frequency frequency)
+      => new MidiNote(ConvertFrequencyToNote(frequency.Hertz));
     public static bool IsMidiNote(int number)
       => number >= 0 && number <= 127;
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-    public static Note Parse(string scientificPitchNotation)
+    public static MidiNote Parse(string scientificPitchNotation)
     {
       var m = System.Text.RegularExpressions.Regex.Match(scientificPitchNotation, @"^([^0-9\-]+)([\-0-9]+)$");
 
@@ -55,13 +56,13 @@ namespace Flux.Midi
         if (octave < -1 && octave > 9 && offset == -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
 
-        return new Note((byte)((octave + 1) * 12 + offset));
+        return new MidiNote((byte)((octave + 1) * 12 + offset));
       }
 
       throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
     }
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
-    public static bool TryFromFrequency(Units.Frequency frequency, out Note result)
+    public static bool TryFromFrequency(Units.Frequency frequency, out MidiNote result)
     {
       try
       {
@@ -75,7 +76,7 @@ namespace Flux.Midi
     }
     /// <summary>Attempts to parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-    public static bool TryParse(string scientificPitchNotation, out Note result)
+    public static bool TryParse(string scientificPitchNotation, out MidiNote result)
     {
       try
       {
@@ -90,34 +91,34 @@ namespace Flux.Midi
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator <(Note a, Note b)
+    public static bool operator <(MidiNote a, MidiNote b)
      => a.CompareTo(b) < 0;
-    public static bool operator <=(Note a, Note b)
+    public static bool operator <=(MidiNote a, MidiNote b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(Note a, Note b)
+    public static bool operator >(MidiNote a, MidiNote b)
       => a.CompareTo(b) < 0;
-    public static bool operator >=(Note a, Note b)
+    public static bool operator >=(MidiNote a, MidiNote b)
       => a.CompareTo(b) <= 0;
 
-    public static bool operator ==(Note a, Note b)
+    public static bool operator ==(MidiNote a, MidiNote b)
       => a.Equals(b);
-    public static bool operator !=(Note a, Note b)
+    public static bool operator !=(MidiNote a, MidiNote b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Note other)
+    public int CompareTo(MidiNote other)
       => m_number.CompareTo(other.m_number);
 
     // IEquatable
-    public bool Equals(Note other)
+    public bool Equals(MidiNote other)
       => m_number == other.m_number;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Note o && Equals(o);
+      => obj is MidiNote o && Equals(o);
     public override int GetHashCode()
       => m_number.GetHashCode();
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>

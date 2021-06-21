@@ -1,9 +1,15 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Speed.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
     : System.IComparable<Speed>, System.IEquatable<Speed>, System.IFormattable
   {
+    public static Speed SpeedOfLight
+      => new Speed(299792458);
+    public static Speed SpeedOfSound
+      => new Speed(340.27);
+
     private readonly double m_metersPerSecond;
 
     public Speed(double metersPerSecond)
@@ -60,7 +66,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Speed v)
+    public static implicit operator double(Speed v)
       => v.m_metersPerSecond;
     public static implicit operator Speed(double v)
       => new Speed(v);

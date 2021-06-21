@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Energy.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
     : System.IComparable<Energy>, System.IEquatable<Energy>, System.IFormattable
   {

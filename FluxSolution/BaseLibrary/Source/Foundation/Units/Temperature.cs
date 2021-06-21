@@ -1,5 +1,7 @@
 namespace Flux.Units
 {
+  /// <summary>Temperature.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
     : System.IComparable<Temperature>, System.IEquatable<Temperature>
   {

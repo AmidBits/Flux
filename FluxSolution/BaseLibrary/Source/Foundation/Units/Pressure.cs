@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Pressure.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
     : System.IComparable<Pressure>, System.IEquatable<Pressure>, System.IFormattable
   {

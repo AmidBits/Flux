@@ -79,9 +79,9 @@ namespace Flux
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     public GeoPoint DestinationPointAt(double bearingDegrees, double angularDistance)
     {
-      EndPoint(Latitude.Radian, Longitude.Radian, Units.Angle.ConvertDegreesToRadians(bearingDegrees), angularDistance, out var lat2, out var lon2);
+      EndPoint(Latitude.Radian, Longitude.Radian, Units.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new GeoPoint(Units.Angle.ConvertRadiansToDegrees(lat2), Maths.Wrap(Units.Angle.ConvertRadiansToDegrees(lon2), -180, +180), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Units.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Meters);
     }
 
     /// <summary>The distance from the point to the specified target.</summary>
@@ -92,14 +92,14 @@ namespace Flux
       => earthRadius * CentralAngleVincentyFormula(Latitude.Radian, Longitude.Radian, targetPoint.Latitude.Radian, targetPoint.Longitude.Radian);
 
     public double InitialBearingTo(GeoPoint targetPoint)
-      => Units.Angle.ConvertRadiansToDegrees(InitialBearing(Latitude.Radian, Longitude.Radian, targetPoint.Latitude.Radian, targetPoint.Longitude.Radian));
+      => Units.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Radian, Longitude.Radian, targetPoint.Latitude.Radian, targetPoint.Longitude.Radian));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
     public GeoPoint IntermediaryPointTo(GeoPoint target, double unitInterval)
     {
       IntermediaryPoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, unitInterval, out var lat, out var lon);
 
-      return new GeoPoint(Units.Angle.ConvertRadiansToDegrees(lat), Units.Angle.ConvertRadiansToDegrees(lon), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meters);
     }
 
     /// <summary>The midpoint between this point and the specified target.</summary>
@@ -107,7 +107,7 @@ namespace Flux
     {
       Midpoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, out var lat, out var lon);
 
-      return new GeoPoint(Units.Angle.ConvertRadiansToDegrees(lat), Units.Angle.ConvertRadiansToDegrees(lon), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meters);
     }
 
     #region Static members
@@ -317,7 +317,7 @@ namespace Flux
     {
       var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-      var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreesToRadians(latitude) / 2.0) + Flux.Maths.PiOver4));
+      var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
 
       var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Maths.PiX2));
 
@@ -329,7 +329,7 @@ namespace Flux
 
       var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Maths.PiX2);
 
-      var latitude = Units.Angle.ConvertRadiansToDegrees((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
+      var latitude = Units.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
 
       return (latitude, longitude);
     }

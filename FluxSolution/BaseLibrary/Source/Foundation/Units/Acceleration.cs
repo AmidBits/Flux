@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Acceleration.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
     : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, System.IFormattable
   {

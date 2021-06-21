@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
     : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, System.IFormattable
   {

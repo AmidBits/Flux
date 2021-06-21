@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Density.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
     : System.IComparable<Density>, System.IEquatable<Density>, System.IFormattable
   {

@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Volume.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
     : System.IComparable<Volume>, System.IEquatable<Volume>, System.IFormattable
   {
@@ -17,6 +18,8 @@ namespace Flux.Units
       => new Volume(left.m_cubicMeter + right.m_cubicMeter);
     public static Volume Divide(Volume left, Volume right)
       => new Volume(left.m_cubicMeter / right.m_cubicMeter);
+    public static Volume FromRectangularCuboid(double lengthInMeters, double widthInMeters, double heightInMeters)
+      => new Volume(lengthInMeters * widthInMeters * heightInMeters);
     public static Volume Multiply(Volume left, Volume right)
       => new Volume(left.m_cubicMeter * right.m_cubicMeter);
     public static Volume Negate(Volume value)

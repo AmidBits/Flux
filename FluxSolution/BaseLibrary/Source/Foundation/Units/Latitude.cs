@@ -1,18 +1,22 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Latitude.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, System.IFormattable
   {
+    public const double MaxValue = +90;
+    public const double MinValue = -90;
+
     private readonly double m_degree;
 
     public Latitude(double degree)
-      => m_degree = Maths.Wrap(degree, -90, +90);
+      => m_degree = Maths.Wrap(degree, MinValue, MaxValue);
 
     public double Degree
       => m_degree;
     public double Radian
-      => Angle.ConvertDegreesToRadians(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degree);
 
     public Angle ToAngle()
       => Angle.FromDegree(m_degree);

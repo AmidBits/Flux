@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Inductance.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
     : System.IComparable<Inductance>, System.IEquatable<Inductance>, System.IFormattable
   {

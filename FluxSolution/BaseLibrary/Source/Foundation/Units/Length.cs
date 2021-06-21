@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Length.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, System.IFormattable
   {

@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Torque.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
     : System.IComparable<Torque>, System.IEquatable<Torque>, System.IFormattable
   {

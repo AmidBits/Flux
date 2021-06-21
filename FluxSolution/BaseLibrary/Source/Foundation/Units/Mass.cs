@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Mass.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
     : System.IComparable<Mass>, System.IEquatable<Mass>, System.IFormattable
   {

@@ -1,13 +1,17 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Probability.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
     : System.IComparable<Probability>, System.IEquatable<Probability>, System.IFormattable
   {
+    public const double MaxValue = 1;
+    public const double MinValue = 0;
+
     private readonly double m_percent;
 
     public Probability(double percent)
-      => m_percent = percent;
+      => m_percent = percent >= MinValue && percent <= MaxValue ? percent : throw new System.ArgumentOutOfRangeException(nameof(percent));
 
     public double Percent
       => m_percent;

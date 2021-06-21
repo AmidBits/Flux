@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Time.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
     : System.IComparable<Time>, System.IEquatable<Time>, System.IFormattable
   {
@@ -11,7 +12,8 @@ namespace Flux.Units
 
     public double Seconds
       => m_seconds;
-    public System.TimeSpan TimeSpan
+
+    public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_seconds);
 
     #region Static methods

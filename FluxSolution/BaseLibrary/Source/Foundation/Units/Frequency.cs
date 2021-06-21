@@ -1,13 +1,10 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Temporal frequency.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
     : System.IComparable<Frequency>, System.IEquatable<Frequency>, System.IFormattable
   {
-    public const double Reference440 = 440;
-
-    private static readonly double FrequencyRatioOfCent = System.Math.Pow(2.0, 1.0 / 1200.0);
-
     private readonly double m_hertz;
 
     public Frequency(double hertz)
@@ -19,37 +16,36 @@ namespace Flux.Units
     #region Static methods
     public static Frequency Add(Frequency left, Frequency right)
       => new Frequency(left.m_hertz + right.m_hertz);
-    /// <summary>Computes the normalized frequency is a unit of measurement of frequency equivalent to cycles/sample. In digital signal processing (DSP), the continuous time variable, t, with units of seconds, is replaced by the discrete integer variable, n, with units of samples. More precisely, the time variable, in seconds, has been normalized (divided) by the sampling interval, T (seconds/sample), which causes time to have convenient integer values at the moments of sampling.</summary>
-    public static double CyclesPerSample(double frequency, double sampleRate)
-      => frequency / sampleRate;
     public static Frequency Divide(Frequency left, Frequency right)
       => new Frequency(left.m_hertz / right.m_hertz);
-    /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public static Frequency FromMidiNote(int midiNote)
-      => midiNote >= 0 && midiNote <= 127 && Reference440 * System.Math.Pow(2, (midiNote - Midi.Note.ReferenceA4) / 12.0) is var hertz ? new Frequency(hertz) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
-    public static Frequency FromMidiNote(Midi.Note midiNote)
-      => FromMidiNote(midiNote.Number);
     public static Frequency Multiply(Frequency left, Frequency right)
       => new Frequency(left.m_hertz * right.m_hertz);
     public static Frequency Negate(Frequency frequency)
       => new Frequency(-frequency.m_hertz);
     public static Frequency Remainder(Frequency dividend, Frequency divisor)
       => new Frequency(dividend.m_hertz % divisor.m_hertz);
-    /// <summary>The number of samples in one complete frequency cycle.</summary>
-    public static double SamplesPerCycle(double frequency, double sampleRate)
-      => sampleRate / frequency;
-    /// <summary>Computes the number of milliseconds per period of the specified frequency.</summary>
-    public static double SecondsPerPeriod(double frequency)
+    /// <summary>Computes the normalized frequency of the specified frequency and sample rate.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
+    public static double GetNormalizedFrequency(double frequency, double sampleRate)
+      => frequency / sampleRate;
+    /// <summary>Returns the phase speed (in meters per second, a.k.a. m/s) at the specified frequency and wavelength.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Phase_velocity"/>
+    public static double GetPhaseVelocity(double frequency, double waveLength)
+      => frequency * waveLength;
+    /// <summary>Computes the time (in seconds) it takes to complete one cycle at the specified frequency.</summary>
+    public static double GetPeriod(double frequency)
       => 1.0 / frequency;
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int cents)
-      => (System.Math.Pow(Music.Interval.Cent.FrequencyRatio, cents) * frequency);
+    /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
+    public static double GetSamplesPerCycle(double frequency, double sampleRate)
+      => sampleRate / frequency;
+    /// <summary>The wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per seond) for the wavelength distance.</summary>
+    /// <param name="phaseVelocity">The constant speed of the traveling wave. If sound waves then typically speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
+    /// <returns>The wave length in the unit specified (default is in meters per second, i.e. 343.21 m/s).</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
+    public static double GetWaveLength(double frequency, double phaseVelocity)
+      => phaseVelocity / frequency;
     public static Frequency Subtract(Frequency left, Frequency right)
       => new Frequency(left.m_hertz - right.m_hertz);
-    /// <summary>The wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per seond) for the wavelength distance.</summary>
-    /// <returns>The wave length in the unit specified (default is in meters per second, i.e. 343.21 m/s).</returns>
-    public static double ToWaveLength(double frequency, double speedOfSound = 343.21)
-      => speedOfSound / frequency;
     #endregion Static methods
 
     #region Overloaded operators

@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Illuminance.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
     : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, System.IFormattable
   {

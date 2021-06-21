@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Electric current.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
     : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, System.IFormattable
   {

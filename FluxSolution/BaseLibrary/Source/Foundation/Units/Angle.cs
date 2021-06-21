@@ -1,31 +1,39 @@
 namespace Flux.Units
 {
   /// <summary>Represents an angle (stored as a radians and implicitly convertible to/from double and radian).</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable
   {
-    public const double DegreeFullRotation = 360;
-    public const double GradianFullRotation = 400;
-    public const double RadianFullRotation = System.Math.PI * 2;
-    public const double RevolutionFullRotation = 1;
+    public const double OneFullRotationInDegrees = 360;
+    public const double OneFullRotationInGradians = 400;
+    public const double OneFullRotationInRadians = System.Math.PI * 2;
+    public const double OneFullRotationInRevolutions = 1;
 
     private readonly double m_radian;
 
     public Angle(double radian)
-      => m_radian = Maths.Wrap(radian, 0, System.Math.PI * 2);
+      => m_radian = radian;
 
     public (double x, double y) Cartesian
       => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
     public (double x, double y) CartesianEx
       => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
     public double Degree
-      => ConvertRadiansToDegrees(m_radian);
+      => ConvertRadianToDegree(m_radian);
     public double Gradian
-      => ConvertRadiansToGradians(m_radian);
+      => ConvertRadianToGradian(m_radian);
     public double Radian
       => m_radian;
     public double Revolution
-      => ConvertRadiansToRevolutions(m_radian);
+      => ConvertRadianToRevolution(m_radian);
+
+    public Azimuth ToAzimuth()
+      => new Azimuth(Degree);
+    public Latitude ToLatitude()
+      => new Latitude(Degree);
+    public Longitude ToLongitude()
+      => new Longitude(Degree);
 
     #region Static methods
     public static Angle Add(Angle left, Angle right)
@@ -39,30 +47,30 @@ namespace Flux.Units
     public static double ConvertCartesianToRotationAngleEx(double x, double y)
       => Maths.PiX2 - ConvertCartesianToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
-    public static double ConvertDegreesToGradians(double degree)
+    public static double ConvertDegreeToGradian(double degree)
       => degree * (10d / 9d);
     /// <summary>Convert the angle specified in degrees to radians.</summary>
-    public static double ConvertDegreesToRadians(double degree)
+    public static double ConvertDegreeToRadian(double degree)
       => degree * (System.Math.PI / 180);
-    public static double ConvertDegreesToRevolutions(double degree)
+    public static double ConvertDegreeToRevolution(double degree)
       => degree / 360;
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
-    public static double ConvertGradiansToDegrees(double gradian)
+    public static double ConvertGradianToDegree(double gradian)
       => gradian * (9d / 10d);
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-    public static double ConvertGradiansToRadians(double gradian)
+    public static double ConvertGradianToRadian(double gradian)
       => gradian * (System.Math.PI / 200);
-    public static double ConvertGradiansToRevolutions(double gradian)
+    public static double ConvertGradianToRevolution(double gradian)
       => gradian / 400;
     /// <summary>Convert the angle specified in radians to degrees.</summary>
-    public static double ConvertRadiansToDegrees(double radian)
+    public static double ConvertRadianToDegree(double radian)
       => radian * (180 / System.Math.PI);
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-    public static double ConvertRadiansToGradians(double radian)
+    public static double ConvertRadianToGradian(double radian)
       => radian * (200 / System.Math.PI);
-    public static double ConvertRadiansToRevolutions(double radian)
+    public static double ConvertRadianToRevolution(double radian)
       => radian / (System.Math.PI * 2);
-    public static double ConvertRevolutionsToRadians(double revolutions)
+    public static double ConvertRevolutionToRadian(double revolutions)
       => revolutions * (System.Math.PI * 2);
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -79,13 +87,13 @@ namespace Flux.Units
     public static Angle FromCartesianEx(double x, double y)
       => new Angle(ConvertCartesianToRotationAngleEx(x, y));
     public static Angle FromDegree(double degree)
-      => new Angle(ConvertDegreesToRadians(degree));
+      => new Angle(ConvertDegreeToRadian(degree));
     public static Angle FromGradian(double gradian)
-      => new Angle(ConvertGradiansToRadians(gradian));
+      => new Angle(ConvertGradianToRadian(gradian));
     public static Angle FromRadian(double radian)
       => new Angle(radian);
     public static Angle FromRevolutions(double turns)
-      => new Angle(ConvertRevolutionsToRadians(turns));
+      => new Angle(ConvertRevolutionToRadian(turns));
     public static Angle Multiply(Angle left, Angle right)
       => new Angle(left.m_radian * right.m_radian);
     public static Angle Negate(Angle value)

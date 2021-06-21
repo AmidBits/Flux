@@ -1,6 +1,7 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Area.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
     : System.IComparable<Area>, System.IEquatable<Area>, System.IFormattable
   {
@@ -17,6 +18,8 @@ namespace Flux.Units
       => new Area(left.m_squareMeter + right.m_squareMeter);
     public static Area Divide(Area left, Area right)
       => new Area(left.m_squareMeter / right.m_squareMeter);
+    public static Area FromRectangule(double lengthInMeters, double widthInMeters)
+      => new Area(lengthInMeters * widthInMeters);
     public static Area Multiply(Area left, Area right)
       => new Area(left.m_squareMeter * right.m_squareMeter);
     public static Area Negate(Area value)

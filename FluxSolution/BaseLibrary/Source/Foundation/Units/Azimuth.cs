@@ -1,9 +1,13 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Azimuth.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
     : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, System.IFormattable
   {
+    public const double MaxValue = 360;
+    public const double MinValue = 0;
+
     private readonly double m_degree;
 
     public Azimuth(double degree)
@@ -12,7 +16,7 @@ namespace Flux.Units
     public double Degree
       => m_degree;
     public double Radian
-      => Angle.ConvertDegreesToRadians(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degree);
 
     public Angle ToAngle()
       => Angle.FromDegree(m_degree);
@@ -34,7 +38,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Azimuth v)
-      => v.m_degree;
+     => v.m_degree;
     public static implicit operator Azimuth(double v)
       => new Azimuth(v);
 
