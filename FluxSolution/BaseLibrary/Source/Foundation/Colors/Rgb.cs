@@ -1,15 +1,14 @@
 namespace Flux.Colors
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Rgb
     : System.IEquatable<Rgb>
   {
     public static readonly Rgb Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private byte m_red;
-    [System.Runtime.InteropServices.FieldOffset(1)] private byte m_green;
-    [System.Runtime.InteropServices.FieldOffset(2)] private byte m_blue;
+    private byte m_blue;
+    private byte m_green;
+    private byte m_red;
 
     public int Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
     public int Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
@@ -122,7 +121,7 @@ namespace Flux.Colors
       return new Rgb(gray, gray, gray);
     }
 
-    /// <summary>Converts the RGB to a corresponding CMYK color.</summary>
+    /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
     public Cmyk ToCmyk()
     {
       GetNormalizedChroma(m_red, m_green, m_blue, out var min, out var max, out var r, out var g, out var b);
@@ -141,7 +140,7 @@ namespace Flux.Colors
       static double Clamp(double value)
         => value < 0 || double.IsNaN(value) ? 0 : value > 1 ? 1 : value;
     }
-    /// <summary>Converts the RGB to a corresponding HSI color.</summary>
+    /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
     public Hsi ToHsi()
     {
       var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
@@ -150,7 +149,7 @@ namespace Flux.Colors
 
       return new Hsi(h, i == 0 ? 0 : 1 - (min / i), i);
     }
-    /// <summary>Converts the RGB to a corresponding HSL color.</summary>
+    /// <summary>Creates an HSL color corresponding to the RGB instance.</summary>
     public Hsl ToHsl()
     {
       var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
@@ -159,10 +158,10 @@ namespace Flux.Colors
 
       return new Hsl(h, l == 0 || l == 1 ? 0 : chroma / (1 - System.Math.Abs(2 * l - 1)), l);
     }
-    /// <summary>Converts the RGB to a corresponding HSV color.</summary>
+    /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
     public Hsv ToHsv()
       => new Hsv(GetHue(out _, out var max, out _, out _, out _, out var chroma), max == 0 ? 0 : chroma / max, max);
-    /// <summary>Converts the RGB to a corresponding HWB color.</summary>
+    /// <summary>Creates an HWB color corresponding to the RGB instance.</summary>
     public Hwb ToHwb()
       => new Hwb(GetHue(out var min, out var max, out _, out _, out _, out _), min, 1 - max);
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
@@ -199,6 +198,8 @@ namespace Flux.Colors
       => $"rgb({Red}, {Green}, {Blue})";
 
     #region Static methods
+    public static Rgb FromInt(int rgb)
+      => unchecked(new Rgb((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb));
     public static double GetChroma(byte red, byte green, byte blue, out byte min, out byte max)
     {
       max = System.Math.Max(System.Math.Max(red, green), blue);
@@ -231,7 +232,6 @@ namespace Flux.Colors
 
       return hue;
     }
-
     public static double GetNormalizedChroma(byte red, byte green, byte blue, out double min, out double max, out double r, out double g, out double b)
     {
       r = red / 255d;
@@ -268,6 +268,8 @@ namespace Flux.Colors
 
       return hue;
     }
+    public static int ToInt(Rgb rgb)
+      => (rgb.Red << 16) | (rgb.Green << 8) | (rgb.Blue << 0);
     #endregion Static methods
 
     #region Overloaded operators

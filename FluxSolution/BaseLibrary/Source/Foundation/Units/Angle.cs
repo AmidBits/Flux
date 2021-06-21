@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Represents an angle (stored as a radians and implicitly convertible to/from double and radian).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable
+    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IStandardizedScalar
   {
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
@@ -150,6 +150,10 @@ namespace Flux.Units
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_radian;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -1,14 +1,13 @@
 //namespace Flux.Maui.Graphics
 //{
-//  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
 //  public struct Size
 //    : System.IEquatable<Size>
 //  {
 //    public static readonly Size Empty;
 //    public bool IsEmpty => Equals(Empty);
 
-//    [System.Runtime.InteropServices.FieldOffset(0)] private double m_width;
-//    [System.Runtime.InteropServices.FieldOffset(4)] private double m_height;
+//    private double m_width;
+//    private double m_height;
 
 //    public double Width { get => m_width; set => m_width = value; }
 //    public double Height { get => m_height; set => m_height = value; }

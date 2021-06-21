@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Torque.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>
+    : System.IComparable<Torque>, System.IEquatable<Torque>, IStandardizedScalar
   {
     private readonly double m_newtonMeter;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Torque v)
+    public static implicit operator double(Torque v)
       => v.m_newtonMeter;
     public static implicit operator Torque(double v)
       => new Torque(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Torque other)
       => m_newtonMeter == other.m_newtonMeter;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_newtonMeter;
     #endregion Implemented interfaces
 
     #region Object overrides

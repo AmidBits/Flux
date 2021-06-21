@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric resistance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IStandardizedScalar
   {
     private readonly double m_ohm;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricResistance v)
+    public static implicit operator double(ElectricResistance v)
       => v.m_ohm;
     public static implicit operator ElectricResistance(double v)
       => new ElectricResistance(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(ElectricResistance other)
       => m_ohm == other.m_ohm;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_ohm;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Probability.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
-    : System.IComparable<Probability>, System.IEquatable<Probability>
+    : System.IComparable<Probability>, System.IEquatable<Probability>, IStandardizedScalar
   {
     public const double MaxValue = 1;
     public const double MinValue = 0;
@@ -32,7 +32,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Probability v)
+    public static implicit operator double(Probability v)
       => v.m_percent;
     public static implicit operator Probability(double v)
       => new Probability(v);
@@ -73,6 +73,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Probability other)
       => m_percent == other.m_percent;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_percent;
     #endregion Implemented interfaces
 
     #region Object overrides

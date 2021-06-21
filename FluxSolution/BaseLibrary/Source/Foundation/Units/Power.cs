@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Power.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>
+    : System.IComparable<Power>, System.IEquatable<Power>, IStandardizedScalar
   {
     private readonly double m_watt;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Power v)
+    public static implicit operator double(Power v)
       => v.m_watt;
     public static implicit operator Power(double v)
       => new Power(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Power other)
       => m_watt == other.m_watt;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_watt;
     #endregion Implemented interfaces
 
     #region Object overrides

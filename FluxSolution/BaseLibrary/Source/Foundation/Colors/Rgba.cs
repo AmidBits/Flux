@@ -1,18 +1,17 @@
 namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Rgba
     : System.IEquatable<Rgba>
   {
     public static readonly Rgba Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private Rgb m_rgb;
-    [System.Runtime.InteropServices.FieldOffset(3)] private byte m_alpha;
+    private byte m_alpha;
+    private Rgb m_rgb;
 
-    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
     public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
 
     public Rgba(Rgb rgb, int alpha)
     {
@@ -47,9 +46,12 @@ namespace Flux.Colors
     /// <summary>Creates an HSLA color corresponding to the RGBA instance.</summary>
     public Hsla ToHsla()
       => new Hsla(RGB.ToHsl(), Alpha / 255.0);
-    /// <summary>Creates an HSV color corresponding to the RGBA instance.</summary>
+    /// <summary>Creates an HSVA color corresponding to the RGBA instance.</summary>
     public Hsva ToHsva()
       => new Hsva(RGB.ToHsv(), Alpha / 255.0);
+    /// <summary>Creates an HWBA color corresponding to the RGBA instance.</summary>
+    public Hwba ToHwba()
+      => new Hwba(RGB.ToHwb(), Alpha / 255.0);
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
     //public Hwb ToHwb()
@@ -72,12 +74,12 @@ namespace Flux.Colors
     //  return new Hwb(i - f / (max - min), min, b, Alpha / 255.0);
     //}
 
-    public int ToInt()
-    {
-      var a = Alpha + 1;
+    //public int ToInt()
+    //{
+    //  var a = Alpha + 1;
 
-      return (Alpha << 24) | ((byte)((RGB.Red * a) >> 8) << 16) | ((byte)((RGB.Green * a) >> 8) << 8) | (byte)((RGB.Blue * a) >> 8);
-    }
+    //  return (Alpha << 24) | ((byte)((RGB.Red * a) >> 8) << 16) | ((byte)((RGB.Green * a) >> 8) << 8) | (byte)((RGB.Blue * a) >> 8);
+    //}
 
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
@@ -93,11 +95,11 @@ namespace Flux.Colors
     public string ToStringHtmlSc()
       => $"sc#{Alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
 
-    /// <summary>
-    /// Returns a color based on XAML color string.
-    /// </summary>
+    #region Static methods
+    public static int ToInt(Rgba rgba)
+      => (rgba.Alpha << 24) | (rgba.RGB.Red << 16) | (rgba.RGB.Green << 8) | (rgba.RGB.Blue << 0);
+    /// <summary>Creates a new RGBA color by parsing the specified string.</summary>
     /// <param name="colorString">The color string. Any format used in XAML should work.</param>
-    /// <returns>Parsed color</returns>
     public static Rgba Parse(string colorString)
     {
       if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
@@ -145,8 +147,16 @@ namespace Flux.Colors
 
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
+    public static Rgba FromInt(int rgba)
+      => unchecked(new Rgba((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba));
+    #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator int(Rgba v)
+      => (v.Alpha << 24) | (v.RGB.Red << 16) | (v.RGB.Green << 8) | (v.RGB.Blue << 0);
+    public static explicit operator Rgba(int v)
+      => unchecked(new Rgba((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
+
     public static bool operator ==(Rgba a, Rgba b)
       => a.Equals(b);
     public static bool operator !=(Rgba a, Rgba b)

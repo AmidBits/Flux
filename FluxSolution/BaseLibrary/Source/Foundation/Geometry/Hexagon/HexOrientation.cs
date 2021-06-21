@@ -1,21 +1,20 @@
 namespace Flux.Geometry.Hexagon
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct HexOrientation
     : System.IEquatable<HexOrientation>
   {
     public static readonly HexOrientation FlatTopped = new HexOrientation(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
     public static readonly HexOrientation PointyTopped = new HexOrientation(System.Math.Sqrt(3.0), System.Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, System.Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly double F0;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly double F1;
-    [System.Runtime.InteropServices.FieldOffset(16)] public readonly double F2;
-    [System.Runtime.InteropServices.FieldOffset(24)] public readonly double F3;
-    [System.Runtime.InteropServices.FieldOffset(32)] public readonly double B0;
-    [System.Runtime.InteropServices.FieldOffset(40)] public readonly double B1;
-    [System.Runtime.InteropServices.FieldOffset(48)] public readonly double B2;
-    [System.Runtime.InteropServices.FieldOffset(56)] public readonly double B3;
-    [System.Runtime.InteropServices.FieldOffset(64)] public readonly double StartAngle; // in multiples of 60°
+    public readonly double F0;
+    public readonly double F1;
+    public readonly double F2;
+    public readonly double F3;
+    public readonly double B0;
+    public readonly double B1;
+    public readonly double B2;
+    public readonly double B3;
+    public readonly double StartAngle; // in multiples of 60°
 
     private HexOrientation(double f0, double f1, double f2, double f3, double b0, double b1, double b2, double b3, double startAngle)
     {

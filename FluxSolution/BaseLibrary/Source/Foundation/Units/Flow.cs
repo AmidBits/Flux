@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Flow.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IEquatable<Flow>
+    : System.IComparable<Flow>, System.IEquatable<Flow>, IStandardizedScalar
   {
     private readonly double m_cubicMeterPerSecond;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Flow v)
+    public static implicit operator double(Flow v)
       => v.m_cubicMeterPerSecond;
     public static implicit operator Flow(double v)
       => new Flow(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Flow other)
       => m_cubicMeterPerSecond == other.m_cubicMeterPerSecond;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_cubicMeterPerSecond;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Temperature.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IEquatable<Temperature>
+    : System.IComparable<Temperature>, System.IEquatable<Temperature>, IStandardizedScalar
   {
     public const double CelsiusAbsoluteZero = -273.15;
     public const double CelsiusBoilingPoint = 99.9839;
@@ -132,6 +132,10 @@ namespace Flux.Units
     // IEquatable<Angle>
     public bool Equals(Temperature other)
       => m_kelvin == other.m_kelvin;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_kelvin;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -3,79 +3,79 @@ namespace Flux.Units
   /// <summary>Speed.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable<Speed>, System.IEquatable<Speed>
+    : System.IComparable<Speed>, System.IEquatable<Speed>, IStandardizedScalar
   {
     public static Speed SpeedOfLight
       => new Speed(299792458);
     public static Speed SpeedOfSound
       => new Speed(340.27);
 
-    private readonly double m_metersPerSecond;
+    private readonly double m_meterPerSecond;
 
-    public Speed(double metersPerSecond)
-      => m_metersPerSecond = metersPerSecond;
+    public Speed(double meterPerSecond)
+      => m_meterPerSecond = meterPerSecond;
 
-    public double FeetPerSecond
-      => ConvertMetersPerSecondToFeetPerSecond(m_metersPerSecond);
-    public double KilometersPerHour
-      => ConvertMetersPerSecondToKilometersPerHour(m_metersPerSecond);
-    public double Knots
-      => ConvertMetersPerSecondToKnots(m_metersPerSecond);
-    public double MetersPerSecond
-      => m_metersPerSecond;
-    public double MilesPerHour
-      => ConvertMetersPerSecondToMilesPerHour(m_metersPerSecond);
-    public double NauticalMilesPerHour
-      => ConvertMetersPerSecondToNauticalMilesPerHour(m_metersPerSecond);
+    public double FootPerSecond
+      => ConvertMeterPerSecondToFootPerSecond(m_meterPerSecond);
+    public double KilometerPerHour
+      => ConvertMeterPerSecondToKilometerPerHour(m_meterPerSecond);
+    public double Knot
+      => ConvertMeterPerSecondToKnot(m_meterPerSecond);
+    public double MeterPerSecond
+      => m_meterPerSecond;
+    public double MilePerHour
+      => ConvertMeterPerSecondToMilePerHour(m_meterPerSecond);
+    public double NauticalMilePerHour
+      => ConvertMeterPerSecondToNauticalMilePerHour(m_meterPerSecond);
 
     #region Static methods
     public static Speed Add(Speed left, Speed right)
-      => new Speed(left.m_metersPerSecond + right.m_metersPerSecond);
-    public static double ConvertMetersPerSecondToNauticalMilesPerHour(double metersPerSecond)
+      => new Speed(left.m_meterPerSecond + right.m_meterPerSecond);
+    public static double ConvertMeterPerSecondToNauticalMilePerHour(double metersPerSecond)
       => metersPerSecond * 1.9438444924406;
-    public static double ConvertFeetPerSecondToMetersPerSecond(double feetPerSecond)
+    public static double ConvertFootPerSecondToMeterPerSecond(double feetPerSecond)
       => feetPerSecond * 0.3048;
-    public static double ConvertKilometersPerHourToMetersPerSecond(double kilometersPerHour)
+    public static double ConvertKilometerPerHourToMeterPerSecond(double kilometersPerHour)
       => kilometersPerHour * 0.27;
-    public static double ConvertKnotsToMetersPerSecond(double knots)
+    public static double ConvertKnotToMeterPerSecond(double knots)
       => knots * (1852.0 / 3600.0);
-    public static double ConvertMetersPerSecondToFeetPerSecond(double metersPerSecond)
+    public static double ConvertMeterPerSecondToFootPerSecond(double metersPerSecond)
       => metersPerSecond / 0.3048;
-    public static double ConvertMetersPerSecondToKilometersPerHour(double metersPerSecond)
+    public static double ConvertMeterPerSecondToKilometerPerHour(double metersPerSecond)
       => metersPerSecond * 3.6;
-    public static double ConvertMetersPerSecondToKnots(double knots)
+    public static double ConvertMeterPerSecondToKnot(double knots)
       => knots / (1852.0 / 3600.0);
-    public static double ConvertMetersPerSecondToMilesPerHour(double metersPerSecond)
+    public static double ConvertMeterPerSecondToMilePerHour(double metersPerSecond)
       => metersPerSecond * 2.2369362920544;
-    public static double ConvertMilesPerHourToMetersPerSecond(double milesPerHour)
+    public static double ConvertMilePerHourToMeterPerSecond(double milesPerHour)
       => milesPerHour * 0.44704;
-    public static double ConvertNauticalMilesPerHourToMetersPerSecond(double nauticalMilesPerHour)
+    public static double ConvertNauticalMilePerHourToMeterPerSecond(double nauticalMilesPerHour)
       => nauticalMilesPerHour / 1.9438444924406;
     public static Speed Divide(Speed left, Speed right)
-      => new Speed(left.m_metersPerSecond / right.m_metersPerSecond);
+      => new Speed(left.m_meterPerSecond / right.m_meterPerSecond);
     public static Speed FromFeetPerSecond(double feetPerSecond)
-      => new Speed(ConvertFeetPerSecondToMetersPerSecond(feetPerSecond));
+      => new Speed(ConvertFootPerSecondToMeterPerSecond(feetPerSecond));
     public static Speed FromKilometersPerHour(double kilometersPerHour)
-      => new Speed(ConvertKilometersPerHourToMetersPerSecond(kilometersPerHour));
+      => new Speed(ConvertKilometerPerHourToMeterPerSecond(kilometersPerHour));
     public static Speed FromKnots(double knots)
-      => new Speed(ConvertKnotsToMetersPerSecond(knots));
+      => new Speed(ConvertKnotToMeterPerSecond(knots));
     public static Speed FromMilesPerHour(double milesPerHour)
-      => new Speed(ConvertMilesPerHourToMetersPerSecond(milesPerHour));
+      => new Speed(ConvertMilePerHourToMeterPerSecond(milesPerHour));
     public static Speed FromNauticalMilesPerHour(double nauticalMilesPerHour)
-      => new Speed(ConvertNauticalMilesPerHourToMetersPerSecond(nauticalMilesPerHour));
+      => new Speed(ConvertNauticalMilePerHourToMeterPerSecond(nauticalMilesPerHour));
     public static Speed Multiply(Speed left, Speed right)
-      => new Speed(left.m_metersPerSecond * right.m_metersPerSecond);
+      => new Speed(left.m_meterPerSecond * right.m_meterPerSecond);
     public static Speed Negate(Speed value)
-      => new Speed(-value.m_metersPerSecond);
+      => new Speed(-value.m_meterPerSecond);
     public static Speed Remainder(Speed dividend, Speed divisor)
-      => new Speed(dividend.m_metersPerSecond % divisor.m_metersPerSecond);
+      => new Speed(dividend.m_meterPerSecond % divisor.m_meterPerSecond);
     public static Speed Subtract(Speed left, Speed right)
-      => new Speed(left.m_metersPerSecond - right.m_metersPerSecond);
+      => new Speed(left.m_meterPerSecond - right.m_meterPerSecond);
     #endregion Static methods
 
     #region Overloaded operators
     public static implicit operator double(Speed v)
-      => v.m_metersPerSecond;
+      => v.m_meterPerSecond;
     public static implicit operator Speed(double v)
       => new Speed(v);
 
@@ -110,20 +110,24 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Speed other)
-      => m_metersPerSecond.CompareTo(other.m_metersPerSecond);
+      => m_meterPerSecond.CompareTo(other.m_meterPerSecond);
 
     // IEquatable
     public bool Equals(Speed other)
-      => m_metersPerSecond == other.m_metersPerSecond;
+      => m_meterPerSecond == other.m_meterPerSecond;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_meterPerSecond;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Speed o && Equals(o);
     public override int GetHashCode()
-      => m_metersPerSecond.GetHashCode();
+      => m_meterPerSecond.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_metersPerSecond} m/s>";
+      => $"<{GetType().Name}: {m_meterPerSecond} m/s>";
     #endregion Object overrides
   }
 }

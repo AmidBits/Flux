@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Acceleration.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>
+    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IStandardizedScalar
   {
     private readonly double m_meterPerSecondSquare;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Acceleration v)
+    public static implicit operator double(Acceleration v)
       => v.m_meterPerSecondSquare;
     public static implicit operator Acceleration(double v)
       => new Acceleration(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Acceleration other)
       => m_meterPerSecondSquare == other.m_meterPerSecondSquare;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_meterPerSecondSquare;
     #endregion Implemented interfaces
 
     #region Object overrides

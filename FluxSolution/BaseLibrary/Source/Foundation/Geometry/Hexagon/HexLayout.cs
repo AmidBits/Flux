@@ -1,15 +1,14 @@
 namespace Flux.Geometry.Hexagon
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct HexLayout
     : System.IEquatable<HexLayout>
   {
     public static readonly HexLayout Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly Geometry.Size2 Size;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly Geometry.Point2 Origin;
-    [System.Runtime.InteropServices.FieldOffset(16)] public readonly HexOrientation Orientation;
+    public readonly Geometry.Size2 Size;
+    public readonly Geometry.Point2 Origin;
+    public readonly HexOrientation Orientation;
 
     public HexLayout(HexOrientation orientation, Geometry.Size2 size, Geometry.Point2 origin)
     {

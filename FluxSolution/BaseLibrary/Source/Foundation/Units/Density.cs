@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Density.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>
+    : System.IComparable<Density>, System.IEquatable<Density>, IStandardizedScalar
   {
     private readonly double m_kilogramPerCubicMeter;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Density v)
+    public static implicit operator double(Density v)
       => v.m_kilogramPerCubicMeter;
     public static implicit operator Density(double v)
       => new Density(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Density other)
       => m_kilogramPerCubicMeter == other.m_kilogramPerCubicMeter;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_kilogramPerCubicMeter;
     #endregion Implemented interfaces
 
     #region Object overrides

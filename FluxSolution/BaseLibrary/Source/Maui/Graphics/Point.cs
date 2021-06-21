@@ -2,15 +2,14 @@
 
 //namespace Flux.Maui.Graphics
 //{
-//  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
 //  public struct Point
 //    : System.IEquatable<Point>
 //  {
 //    public static readonly Point Empty;
 //    public bool IsEmpty => Equals(Empty);
 
-//    [System.Runtime.InteropServices.FieldOffset(0)] private double m_x;
-//    [System.Runtime.InteropServices.FieldOffset(4)] private double m_y;
+//    private double m_x;
+//    private double m_y;
 
 //    public double X { get => m_x; set => m_x = value; }
 //    public double Y { get => m_y; set => m_y = value; }

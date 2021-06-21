@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Inductance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IEquatable<Inductance>
+    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IStandardizedScalar
   {
     private readonly double m_henry;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Inductance v)
+    public static implicit operator double(Inductance v)
       => v.m_henry;
     public static implicit operator Inductance(double v)
       => new Inductance(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Inductance other)
       => m_henry == other.m_henry;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_henry;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -1,15 +1,14 @@
 namespace Flux.Geometry
 {
   /// <summary>Rect3 is a rectangular cuboid. It is therefor a limited 3D cubiod.</summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Rect3
     : System.IEquatable<Rect3>, System.IFormattable
   {
     public static readonly Rect3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private Point3 m_position;
-    [System.Runtime.InteropServices.FieldOffset(8)] private Size3 m_size;
+    private Point3 m_position;
+    private Size3 m_size;
 
     public int Left { get => m_position.X; set => m_position.X = value; }
     public int X { get => m_position.X; set => m_position.X = value; }

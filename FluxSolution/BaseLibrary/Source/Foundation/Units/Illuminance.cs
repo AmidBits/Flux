@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Illuminance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IStandardizedScalar
   {
     private readonly double m_lux;
 
@@ -37,7 +37,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Illuminance v)
+    public static implicit operator double(Illuminance v)
       => v.m_lux;
     public static implicit operator Illuminance(double v)
       => new Illuminance(v);
@@ -78,6 +78,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Illuminance other)
       => m_lux == other.m_lux;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_lux;
     #endregion Implemented interfaces
 
     #region Object overrides

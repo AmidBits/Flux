@@ -1,15 +1,14 @@
 namespace Flux.Geometry
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Point3
     : System.IComparable<Point3>, System.IEquatable<Point3>
   {
     public static readonly Point3 Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private int m_x;
-    [System.Runtime.InteropServices.FieldOffset(4)] private int m_y;
-    [System.Runtime.InteropServices.FieldOffset(8)] private int m_z;
+    private int m_x;
+    private int m_y;
+    private int m_z;
 
     public int X { get => m_x; set => m_x = value; }
     public int Y { get => m_y; set => m_y = value; }

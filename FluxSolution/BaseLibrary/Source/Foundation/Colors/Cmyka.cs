@@ -1,15 +1,14 @@
 namespace Flux.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Cmyka
     : System.IEquatable<Cmyka>
   {
     public static readonly Cmyka Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private Cmyk m_cmyk;
-    [System.Runtime.InteropServices.FieldOffset(32)] private double m_alpha;
+    private Cmyk m_cmyk;
+    private double m_alpha;
 
     public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
     public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }

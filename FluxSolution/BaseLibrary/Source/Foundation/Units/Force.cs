@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Force.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>
+    : System.IComparable<Force>, System.IEquatable<Force>, IStandardizedScalar
   {
     private readonly double m_newton;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Force v)
+    public static implicit operator double(Force v)
       => v.m_newton;
     public static implicit operator Force(double v)
       => new Force(v);
@@ -70,7 +70,11 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Force other)
       => m_newton == other.m_newton;
-   #endregion Implemented interfaces
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_newton;
+    #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)

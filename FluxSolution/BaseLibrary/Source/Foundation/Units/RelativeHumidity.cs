@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>
+    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IStandardizedScalar
   {
     private readonly double m_percent;
 
@@ -32,7 +32,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(RelativeHumidity v)
+    public static implicit operator double(RelativeHumidity v)
       => v.m_percent;
     public static implicit operator RelativeHumidity(double v)
       => new RelativeHumidity(v);
@@ -73,6 +73,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(RelativeHumidity other)
       => m_percent == other.m_percent;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_percent;
     #endregion Implemented interfaces
 
     #region Object overrides

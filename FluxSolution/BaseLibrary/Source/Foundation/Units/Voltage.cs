@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Voltage.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IStandardizedScalar
   {
     private readonly double m_volt;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Voltage v)
+    public static implicit operator double(Voltage v)
       => v.m_volt;
     public static implicit operator Voltage(double v)
       => new Voltage(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Voltage other)
       => m_volt == other.m_volt;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_volt;
     #endregion Implemented interfaces
 
     #region Object overrides

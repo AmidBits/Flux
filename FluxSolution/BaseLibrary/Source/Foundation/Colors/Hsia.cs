@@ -1,15 +1,14 @@
 namespace Flux.Colors
 {
   /// <summary>Hsia is the same as Hsi with the addition of an alpha channel.</summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Hsia
     : System.IEquatable<Hsia>
   {
     public static readonly Hsia Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private Hsi m_hsi;
-    [System.Runtime.InteropServices.FieldOffset(24)] private double m_alpha;
+    private Hsi m_hsi;
+    private double m_alpha;
 
     public Hsi HSI { get => m_hsi; set => m_hsi = value; }
     public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }

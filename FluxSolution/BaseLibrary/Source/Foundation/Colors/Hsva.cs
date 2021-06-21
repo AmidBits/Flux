@@ -1,15 +1,14 @@
 namespace Flux.Colors
 {
   /// <summary>Hsva is the same as Hsv with the addition of an alpha channel.</summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Hsva
     : System.IEquatable<Hsva>
   {
     public static readonly Hsva Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private Hsv m_hsv;
-    [System.Runtime.InteropServices.FieldOffset(24)] private double m_alpha;
+    private Hsv m_hsv;
+    private double m_alpha;
 
     public Hsv HSV { get => m_hsv; set => m_hsv = value; }
     public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Azimuth.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
-    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IStandardizedScalar
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -37,7 +37,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Azimuth v)
+    public static implicit operator double(Azimuth v)
      => v.m_degree;
     public static implicit operator Azimuth(double v)
       => new Azimuth(v);
@@ -78,6 +78,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Azimuth other)
       => m_degree == other.m_degree;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_degree;
     #endregion Implemented interfaces
 
     #region Object overrides

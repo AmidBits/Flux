@@ -37,17 +37,17 @@ namespace Flux
     public Units.Length Height { get; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public Units.Angle Latitude { get; }
+    public Units.Latitude Latitude { get; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public Units.Angle Longitude { get; }
+    public Units.Longitude Longitude { get; }
 
     public GeoPoint(double latitude, double longitude, double altitude = 1.0)
     {
       Height = altitude;
 
-      Latitude = Units.Angle.FromDegree(Maths.Wrap(latitude, -90, +90));
-      Longitude = Units.Angle.FromDegree(Maths.Wrap(longitude, -180, +180));
+      Latitude = new Units.Latitude(latitude); // Units.Angle.FromDegree(Maths.Wrap(latitude, -90, +90));
+      Longitude = new Units.Longitude(longitude); // Units.Angle.FromDegree(Maths.Wrap(longitude, -180, +180));
     }
 
     /// <summary>Calculates the approximate radius at the latitude of the specified geoposition.</summary>
@@ -81,7 +81,7 @@ namespace Flux
     {
       EndPoint(Latitude.Radian, Longitude.Radian, Units.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Units.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Units.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Meter);
     }
 
     /// <summary>The distance from the point to the specified target.</summary>
@@ -99,7 +99,7 @@ namespace Flux
     {
       IntermediaryPoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, unitInterval, out var lat, out var lon);
 
-      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meter);
     }
 
     /// <summary>The midpoint between this point and the specified target.</summary>
@@ -107,7 +107,7 @@ namespace Flux
     {
       Midpoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, out var lat, out var lon);
 
-      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meters);
+      return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meter);
     }
 
     #region Static members

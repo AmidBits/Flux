@@ -3,39 +3,39 @@ namespace Flux.Units
   /// <summary>Time.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IEquatable<Time>
+    : System.IComparable<Time>, System.IEquatable<Time>, IStandardizedScalar
   {
-    private readonly double m_seconds;
+    private readonly double m_second;
 
     public Time(double seconds)
-      => m_seconds = seconds;
+      => m_second = seconds;
 
-    public double Seconds
-      => m_seconds;
+    public double Second
+      => m_second;
 
     public System.TimeSpan ToTimeSpan()
-      => System.TimeSpan.FromSeconds(m_seconds);
+      => System.TimeSpan.FromSeconds(m_second);
 
     #region Static methods
     public static Time Add(Time left, Time right)
-      => new Time(left.m_seconds + right.m_seconds);
+      => new Time(left.m_second + right.m_second);
     public static Time Divide(Time left, Time right)
-      => new Time(left.m_seconds / right.m_seconds);
+      => new Time(left.m_second / right.m_second);
     public static Time FromTimeSpan(System.TimeSpan timeSpan)
       => new Time(timeSpan.TotalSeconds);
     public static Time Multiply(Time left, Time right)
-      => new Time(left.m_seconds * right.m_seconds);
+      => new Time(left.m_second * right.m_second);
     public static Time Negate(Time value)
-      => new Time(-value.m_seconds);
+      => new Time(-value.m_second);
     public static Time Remainder(Time dividend, Time divisor)
-      => new Time(dividend.m_seconds % divisor.m_seconds);
+      => new Time(dividend.m_second % divisor.m_second);
     public static Time Subtract(Time left, Time right)
-      => new Time(left.m_seconds - right.m_seconds);
+      => new Time(left.m_second - right.m_second);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Time v)
-      => v.m_seconds;
+    public static implicit operator double(Time v)
+      => v.m_second;
     public static implicit operator Time(double v)
       => new Time(v);
 
@@ -70,20 +70,24 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Time other)
-      => m_seconds.CompareTo(other.m_seconds);
+      => m_second.CompareTo(other.m_second);
 
     // IEquatable
     public bool Equals(Time other)
-      => m_seconds == other.m_seconds;
+      => m_second == other.m_second;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_second;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Time o && Equals(o);
     public override int GetHashCode()
-      => m_seconds.GetHashCode();
+      => m_second.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_seconds} s>";
+      => $"<{GetType().Name}: {m_second} s>";
     #endregion Object overrides
   }
 }

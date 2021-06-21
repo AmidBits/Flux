@@ -1,14 +1,13 @@
 namespace Flux.Geometry
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Line
     : System.IEquatable<Line>
   {
     public static readonly Line Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private System.Numerics.Vector3 m_p1;
-    [System.Runtime.InteropServices.FieldOffset(12)] private System.Numerics.Vector3 m_p2;
+    private System.Numerics.Vector3 m_p1;
+    private System.Numerics.Vector3 m_p2;
 
     public System.Numerics.Vector3 P1 { get => m_p1; set => m_p1 = value; }
     public System.Numerics.Vector3 P2 { get => m_p2; set => m_p2 = value; }

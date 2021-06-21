@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Latitude.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, IStandardizedScalar
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -37,7 +37,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Latitude v)
+    public static implicit operator double(Latitude v)
       => v.m_degree;
     public static implicit operator Latitude(double v)
       => new Latitude(v);
@@ -78,6 +78,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Latitude other)
       => m_degree == other.m_degree;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_degree;
     #endregion Implemented interfaces
 
     #region Object overrides

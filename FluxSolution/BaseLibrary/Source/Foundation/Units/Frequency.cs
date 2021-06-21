@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Temporal frequency.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IStandardizedScalar
   {
     private readonly double m_hertz;
 
@@ -90,6 +90,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Frequency other)
       => m_hertz == other.m_hertz;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_hertz;
     #endregion Implemented interfaces
 
     #region Object overrides

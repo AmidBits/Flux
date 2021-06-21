@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric current.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IStandardizedScalar
   {
     private readonly double m_ampere;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricCurrent v)
+    public static implicit operator double(ElectricCurrent v)
       => v.m_ampere;
     public static implicit operator ElectricCurrent(double v)
       => new ElectricCurrent(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(ElectricCurrent other)
       => m_ampere == other.m_ampere;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_ampere;
     #endregion Implemented interfaces
 
     #region Object overrides

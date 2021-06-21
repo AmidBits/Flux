@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Area.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IEquatable<Area>
+    : System.IComparable<Area>, System.IEquatable<Area>, IStandardizedScalar
   {
     private readonly double m_squareMeter;
 
@@ -31,7 +31,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Area v)
+    public static implicit operator double(Area v)
       => v.m_squareMeter;
     public static implicit operator Area(double v)
       => new Area(v);
@@ -72,6 +72,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Area other)
       => m_squareMeter == other.m_squareMeter;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_squareMeter;
     #endregion Implemented interfaces
 
     #region Object overrides

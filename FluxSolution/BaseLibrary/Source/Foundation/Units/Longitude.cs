@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Longitude.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
-    : System.IComparable<Longitude>, System.IEquatable<Longitude>
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>, IStandardizedScalar
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -37,7 +37,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Longitude v)
+    public static implicit operator double(Longitude v)
       => v.m_degree;
     public static implicit operator Longitude(double v)
       => new Longitude(v);
@@ -78,6 +78,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Longitude other)
       => m_degree == other.m_degree;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_degree;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -1,15 +1,14 @@
 namespace Flux.Geometry.Hexagon
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct HexF
     : System.IEquatable<HexF>
   {
     public static readonly HexF Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] public readonly double Q;
-    [System.Runtime.InteropServices.FieldOffset(8)] public readonly double R;
-    [System.Runtime.InteropServices.FieldOffset(16)] public readonly double S;
+    public readonly double Q;
+    public readonly double R;
+    public readonly double S;
 
     public HexF(double q, double r, double s)
     {

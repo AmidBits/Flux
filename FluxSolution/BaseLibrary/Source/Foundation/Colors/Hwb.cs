@@ -1,15 +1,14 @@
 namespace Flux.Colors
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct Hwb
     : System.IEquatable<Hwb>
   {
     public static readonly Hwb Empty;
     public bool IsEmpty => Equals(Empty);
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private double m_hue;
-    [System.Runtime.InteropServices.FieldOffset(8)] private double m_white;
-    [System.Runtime.InteropServices.FieldOffset(16)] private double m_black;
+    private double m_hue;
+    private double m_white;
+    private double m_black;
 
     public double Hue { get => m_hue; set => m_hue = value >= 0 && value <= 360 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
     public double White { get => m_white; set => m_white = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }

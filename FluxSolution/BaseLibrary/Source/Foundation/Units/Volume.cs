@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Volume.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable<Volume>, System.IEquatable<Volume>
+    : System.IComparable<Volume>, System.IEquatable<Volume>, IStandardizedScalar
   {
     private readonly double m_cubicMeter;
 
@@ -31,7 +31,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Volume v)
+    public static implicit operator double(Volume v)
       => v.m_cubicMeter;
     public static implicit operator Volume(double v)
       => new Volume(v);
@@ -72,6 +72,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Volume other)
       => m_cubicMeter == other.m_cubicMeter;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_cubicMeter;
     #endregion Implemented interfaces
 
     #region Object overrides

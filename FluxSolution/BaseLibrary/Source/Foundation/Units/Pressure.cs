@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Pressure.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IStandardizedScalar
   {
     private readonly double m_pascal;
 
@@ -37,7 +37,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Pressure v)
+    public static implicit operator double(Pressure v)
       => v.m_pascal;
     public static implicit operator Pressure(double v)
       => new Pressure(v);
@@ -78,6 +78,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Pressure other)
       => m_pascal == other.m_pascal;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_pascal;
     #endregion Implemented interfaces
 
     #region Object overrides

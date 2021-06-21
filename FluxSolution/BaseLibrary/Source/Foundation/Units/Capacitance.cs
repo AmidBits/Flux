@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Capacitance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>
+    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IStandardizedScalar
   {
     private readonly double m_farad;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Capacitance v)
+    public static implicit operator double(Capacitance v)
       => v.m_farad;
     public static implicit operator Capacitance(double v)
       => new Capacitance(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(Capacitance other)
       => m_farad == other.m_farad;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_farad;
     #endregion Implemented interfaces
 
     #region Object overrides

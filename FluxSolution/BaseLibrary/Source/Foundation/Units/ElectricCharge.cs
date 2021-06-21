@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric charge.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>
+    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IStandardizedScalar
   {
     private readonly double m_coulomb;
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricCharge v)
+    public static implicit operator double(ElectricCharge v)
       => v.m_coulomb;
     public static implicit operator ElectricCharge(double v)
       => new ElectricCharge(v);
@@ -70,6 +70,10 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(ElectricCharge other)
       => m_coulomb == other.m_coulomb;
+
+    // IUnitStandardized
+    public double GetScalar()
+      => m_coulomb;
     #endregion Implemented interfaces
 
     #region Object overrides
