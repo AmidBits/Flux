@@ -11,7 +11,7 @@
     public int FriendGroupCount { get; private set; }
     public System.Collections.Generic.List<T> Values { get; } = new System.Collections.Generic.List<T>();
 
-    public QuickFind(System.Collections.Generic.List<T> values)
+    public QuickFind(System.Collections.Generic.IEnumerable<T> values)
     {
       Values.AddRange(values);
 
