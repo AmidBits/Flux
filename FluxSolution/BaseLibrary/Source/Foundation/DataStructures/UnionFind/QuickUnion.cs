@@ -1,4 +1,4 @@
-﻿namespace Flux.Collections.Generic.UnionFind
+﻿namespace Flux.DataStructures.UnionFind
 {
   public class QuickUnion<T>
     : IUnionFind<T>

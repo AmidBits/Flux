@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.Collections.Generic.Graph
+namespace Flux.DataStructures.Graph
 {
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)

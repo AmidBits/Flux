@@ -1,4 +1,4 @@
-﻿namespace Flux.Collections.Generic.Graph
+﻿namespace Flux.DataStructures.Graph
 {
   /// <summary>Interface for a common approch to graphs.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)

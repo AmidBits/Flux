@@ -1,4 +1,4 @@
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public interface IOrderedDictionary<TKey, TValue>
     : System.Collections.Generic.IDictionary<TKey, TValue>

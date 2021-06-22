@@ -1,5 +1,4 @@
-
-namespace Flux.Collections.Immutable
+namespace Flux.DataStructures.Immutable
 {
 	public sealed class BinaryTree<TValue>
 		: IBinaryTree<TValue>

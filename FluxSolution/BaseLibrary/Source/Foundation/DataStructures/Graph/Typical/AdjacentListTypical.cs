@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.Collections.Generic.Graph
+namespace Flux.DataStructures.Graph
 {
   ///// <summary>
   ///// Helper data structure for Prim and Dijstra

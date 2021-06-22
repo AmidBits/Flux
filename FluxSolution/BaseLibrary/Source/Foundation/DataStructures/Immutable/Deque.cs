@@ -1,4 +1,4 @@
-namespace Flux.Collections.Immutable
+namespace Flux.DataStructures.Immutable
 {
   public sealed class Deque<TValue>
     : IDeque<TValue>

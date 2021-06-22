@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Collections.Immutable
+namespace Flux.DataStructures.Immutable
 {
 	public sealed class AvlTree<TKey, TValue>
 		: IBinarySearchTree<TKey, TValue>

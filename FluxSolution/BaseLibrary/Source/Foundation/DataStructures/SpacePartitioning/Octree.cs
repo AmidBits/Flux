@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public interface IOctree
   {

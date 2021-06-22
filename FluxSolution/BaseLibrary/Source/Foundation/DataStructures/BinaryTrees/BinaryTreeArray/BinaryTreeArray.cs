@@ -1,4 +1,4 @@
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public class BinaryTreeArray<TKey, TValue>
     where TKey : System.IComparable<TKey>

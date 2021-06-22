@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux.Collections.Generic.Graph
+﻿namespace Flux.DataStructures.Graph
 {
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
   public interface IGraphTypical<TVertex, TValue>

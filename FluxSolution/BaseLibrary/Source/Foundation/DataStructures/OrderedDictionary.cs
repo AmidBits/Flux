@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public class OrderedDictionary<TKey, TValue>
     : IOrderedDictionary<TKey, TValue>

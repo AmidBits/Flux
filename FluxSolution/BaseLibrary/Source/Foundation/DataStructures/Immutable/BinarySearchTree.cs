@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace Flux.Collections.Immutable
+namespace Flux.DataStructures.Immutable
 {
 	public sealed class BinarySearchTree<TKey, TValue>
 		: IBinarySearchTree<TKey, TValue>

@@ -3,7 +3,7 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Gets the maximum (with the greatest key) node.</summary>
-		public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static DataStructures.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -16,7 +16,7 @@ namespace Flux
 			return node;
 		}
 		/// <summary>Gets the minimum (with the least key) node.</summary>
-		public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetMinimumNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static DataStructures.Immutable.IBinarySearchTree<TKey, TValue> GetMinimumNode<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -30,23 +30,23 @@ namespace Flux
 		}
 
 		/// <summary>Gets the predecessor (or "previous") node by key.</summary>
-		public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetPredecessorNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static DataStructures.Immutable.IBinarySearchTree<TKey, TValue> GetPredecessorNode<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 			=> (source ?? throw new System.ArgumentNullException(nameof(source))).IsEmpty ? source : source.Left.GetMaximumNode();
 		/// <summary>Gets the successor (or "next") node by key.</summary>
-		public static Collections.Immutable.IBinarySearchTree<TKey, TValue> GetSuccessorNode<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static DataStructures.Immutable.IBinarySearchTree<TKey, TValue> GetSuccessorNode<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 			=> (source ?? throw new System.ArgumentNullException(nameof(source))).IsEmpty ? source : source.Right.GetMinimumNode();
 
 		/// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrder<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var stack = new System.Collections.Generic.Stack<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 
 			var node = source;
 
@@ -71,12 +71,12 @@ namespace Flux
 		/// <summary>Depth-first search (DFS), in-order reverse (RNL). In a binary search tree, in-order traversal retrieves data in sorted order. This is in-order reversed.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrderReversed<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesInOrderReversed<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var stack = new System.Collections.Generic.Stack<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 
 			var node = source;
 
@@ -102,19 +102,19 @@ namespace Flux
 		/// <summary>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, int maxDepth)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source, int maxDepth)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			if (source.IsEmpty) yield break;
 
-			var level = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var level = new System.Collections.Generic.Queue<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 			level.Enqueue(source);
 
 			for (var depth = 0; level.Count > 0 && depth < maxDepth; depth++)
 			{
-				var nextLevel = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+				var nextLevel = new System.Collections.Generic.Queue<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 
 				while (level.Count > 0)
 				{
@@ -132,14 +132,14 @@ namespace Flux
 		/// <summary>Breadth-first search (BFS), chunked level order. Traversal yields the binary tree levels, in chunks, starting with the root, then its two children, then their children, and so on "in generations".</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>[]> GetNodesLevelOrderChunked<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>[]> GetNodesLevelOrderChunked<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			if (source.IsEmpty) yield break;
 
-			var level = new System.Collections.Generic.Queue<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var level = new System.Collections.Generic.Queue<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 			level.Enqueue(source);
 
 			while (level.Count > 0)
@@ -159,16 +159,16 @@ namespace Flux
 		/// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPostOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPostOrder<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			if (source.IsEmpty) yield break;
 
-			var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var stack = new System.Collections.Generic.Stack<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 
-			var lastNodeVisited = default(Collections.Immutable.IBinarySearchTree<TKey, TValue>);
+			var lastNodeVisited = default(DataStructures.Immutable.IBinarySearchTree<TKey, TValue>);
 
 			var node = source;
 
@@ -201,14 +201,14 @@ namespace Flux
 		/// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-		public static System.Collections.Generic.IEnumerable<Collections.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPreOrder<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source)
+		public static System.Collections.Generic.IEnumerable<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>> GetNodesPreOrder<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
 			if (source.IsEmpty) yield break;
 
-			var stack = new System.Collections.Generic.Stack<Collections.Immutable.IBinarySearchTree<TKey, TValue>>();
+			var stack = new System.Collections.Generic.Stack<DataStructures.Immutable.IBinarySearchTree<TKey, TValue>>();
 
 			stack.Push(source);
 
@@ -228,7 +228,7 @@ namespace Flux
 		/// <param name="maximumKey">The maximum key so far.</param>
 		/// <param name="keyDecrementor">Return a decremented key.</param>
 		/// <param name="keyIncrementor">Return an incremented key.</param>
-		public static bool IsBinarySearchTree<TKey, TValue>(this Collections.Immutable.IBinarySearchTree<TKey, TValue> source, TKey minimumKey, TKey maximumKey, System.Func<TKey, TKey> keyDecrementor, System.Func<TKey, TKey> keyIncrementor)
+		public static bool IsBinarySearchTree<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source, TKey minimumKey, TKey maximumKey, System.Func<TKey, TKey> keyDecrementor, System.Func<TKey, TKey> keyIncrementor)
 			where TKey : System.IComparable<TKey>
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));

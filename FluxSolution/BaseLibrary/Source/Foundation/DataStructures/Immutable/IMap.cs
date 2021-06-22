@@ -1,4 +1,4 @@
-namespace Flux.Collections.Immutable
+namespace Flux.DataStructures.Immutable
 {
   // https://blogs.msdn.microsoft.com/bclteam/2012/12/18/preview-of-immutable-collections-released-on-nuget/
   public interface IMap<TKey, TValue>

@@ -1,4 +1,4 @@
-﻿namespace Flux.Collections.Generic.Graph
+﻿namespace Flux.DataStructures.Graph
 {
   public class Edge<TVertex, TWeight>
     : System.IEquatable<Edge<TVertex, TWeight>>

@@ -1,4 +1,4 @@
-﻿namespace Flux.Collections.Generic.Graph
+﻿namespace Flux.DataStructures.Graph
 {
   public class Vertex<TVertex>
     where TVertex : System.IEquatable<TVertex>

@@ -1,4 +1,4 @@
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public interface IDeque<T>
   {

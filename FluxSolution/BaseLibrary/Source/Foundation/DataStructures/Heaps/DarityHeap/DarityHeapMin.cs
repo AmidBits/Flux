@@ -1,4 +1,4 @@
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>

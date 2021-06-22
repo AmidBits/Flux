@@ -2,10 +2,10 @@ namespace Flux
 {
 	public static partial class ExtensionMethods
 	{
-		public static int GetNodeCount<TValue>(this Collections.Immutable.IBinaryTree<TValue> source)
+		public static int GetNodeCount<TValue>(this DataStructures.Immutable.IBinaryTree<TValue> source)
 			=> source?.IsEmpty ?? throw new System.ArgumentNullException(nameof(source)) ? 0 : 1 + GetNodeCount(source.Left) + GetNodeCount(source.Right);
 
-		public static int Minimax<TValue>(this Collections.Immutable.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
+		public static int Minimax<TValue>(this DataStructures.Immutable.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			else if (source.IsEmpty) throw new System.ArgumentException(source.GetType().Name);

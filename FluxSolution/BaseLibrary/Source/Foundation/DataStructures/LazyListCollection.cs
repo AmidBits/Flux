@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures
 {
   public class LazyListCollection<T>
     : Flux.Disposable, System.Collections.Generic.IList<T>
