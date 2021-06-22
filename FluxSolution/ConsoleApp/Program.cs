@@ -46,8 +46,39 @@ namespace ConsoleApp
       return osv;
     }
 
+    static System.Text.RegularExpressions.Regex reNmea = new System.Text.RegularExpressions.Regex(@"(?<StartOfSentence>\$)?(?<SentenceValues>[A-Z]{5}\,[^\*]+)(?<EndOfSentence>\*)?(?<Checksum>[A-Fa-f0-9]+)?(?<Termination>\r\n)?");
+
     private static void TimedMain(string[] _)
     {
+      var nmea = "$GPGLL,3751.65,S,14507.36,E,161229.487*76\r\n";
+      nmea = "$GPGLL,3723.2475,N,07717.3644,E,161229.487,A*2C";
+      //nmea = "$GPGSA,A,3,19,28,14,18,27,22,31,39,,,,,1.7,1.0,1.3*35";
+      //nmea = "$GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C";
+      //nmea = "$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74\r\n";
+
+      var ns = new NmeaGll(nmea);
+
+      var x = ns.Latitude;
+
+      //if (nmea.StartsWith('$'))
+      //  nmea = nmea.Substring(1);
+
+      //if (nmea.EndsWith("\r\n"))
+      //  nmea = nmea.Substring(0, nmea.Length - 2);
+
+      //if (System.Text.RegularExpressions.Regex.IsMatch(nmea, @"[0-9a-fA-F]{2}$"))
+      //  nmea = nmea.Substring(0, nmea.Length - 3);
+
+      //var anmea = nmea.Split('$', ',', '*');
+
+
+      //var nmeac = "GPGSV,3,3,10,26,37,134,00,29,25,136,00".ToArray();
+      //var nmeai = nmeac.Select(c => (int)c).ToArray();
+
+      //var nmea = new Flux.Checksum.Nmea(nmeai);
+
+      return;
+
       var d = 3.0;
 
       var l1 = (Flux.Units.Acceleration)d;
