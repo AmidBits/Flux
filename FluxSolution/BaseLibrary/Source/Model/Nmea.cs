@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Nmea
 {
   public class NmeaSentence
   {
@@ -8,7 +8,7 @@ namespace Flux
 
     private System.Collections.Generic.IDictionary<string, string> m_sentenceMetaData;
 
-    private string[] m_sentenceValues;
+    private string[] m_sentenceData;
 
     public NmeaSentence(string sentence)
     {
@@ -16,25 +16,77 @@ namespace Flux
 
       m_sentenceMetaData = m_reSentence.Match(m_sentenceRaw).GetNamedGroups();
 
-      m_sentenceValues = m_sentenceMetaData[@"SentenceValues"].Split(',');
+      m_sentenceData = m_sentenceMetaData[@"SentenceValues"].Split(',');
     }
 
     public string SentenceCode
-      => m_sentenceValues[0];
+      => m_sentenceData[0];
 
     public System.Collections.Generic.IReadOnlyDictionary<string, string> SentenceMetaData
       => (System.Collections.Generic.IReadOnlyDictionary<string, string>)m_sentenceMetaData;
 
-    public System.Collections.Generic.IReadOnlyList<string> SentenceValues
-      => m_sentenceValues;
+    public System.Collections.Generic.IReadOnlyList<string> SentenceData
+      => m_sentenceData;
 
     public static double GetDecimalLatitude(string latitude_DDMM_MMMM, string latitude_Indicator)
-      => int.Parse(latitude_DDMM_MMMM.Substring(0, 2)) + double.Parse(latitude_DDMM_MMMM.Substring(2)) / 60 is var ld && latitude_Indicator == @"S" ? -ld : ld;
-    public static double GetDecimalLongitude(string longitude_DDDMM_MMMM, string longitude_Indicator)
-      => int.Parse(longitude_DDDMM_MMMM.Substring(0, 3)) + double.Parse(longitude_DDDMM_MMMM.Substring(3)) / 60 is var ld && longitude_Indicator == @"W" ? -ld : ld;
+    {
+      var degrees = int.Parse(latitude_DDMM_MMMM.Substring(0, 2));
+      var minutes = double.Parse(latitude_DDMM_MMMM.Substring(2));
 
-    //public static System.DateTime GetUtcDateTime(string utc)
-    //  => int.Parse( // System.DateTime.ParseExact(utc, @"hhmmss.fff", null);
+      var decimalValue = degrees + minutes / 60;
+
+      return latitude_Indicator == @"S" ? -decimalValue : decimalValue;
+    }
+
+    public static double GetDecimalLongitude(string longitude_DDDMM_MMMM, string longitude_Indicator)
+    {
+      var degrees = int.Parse(longitude_DDDMM_MMMM.Substring(0, 3));
+      var minutes = double.Parse(longitude_DDDMM_MMMM.Substring(3));
+
+      var decimalValue = degrees + minutes / 60;
+
+      return longitude_Indicator == @"W" ? -decimalValue : decimalValue;
+    }
+
+    public static System.DateTime GetUtcTime(string utc_HHMMSS_SSS)
+    {
+      var now = System.DateTime.Now;
+
+      var hh = int.Parse(utc_HHMMSS_SSS.Substring(0, 2));
+      var mm = int.Parse(utc_HHMMSS_SSS.Substring(2, 2));
+      var ss = int.Parse(utc_HHMMSS_SSS.Substring(4, 2));
+      var ms = int.Parse(utc_HHMMSS_SSS.Substring(7, 3));
+
+      return new System.DateTime(now.Year, now.Month, now.Day, hh, mm, ss, ms, System.DateTimeKind.Utc);
+    }
+  }
+
+  public class NmeaGga
+  {
+    private readonly NmeaSentence m_sentence;
+
+    public NmeaGga(string sentence)
+    {
+      m_sentence = new NmeaSentence(sentence);
+    }
+
+    public string LatitudeString
+      => m_sentence.SentenceData[1];
+    public string LatitudeIndicatorString
+      => m_sentence.SentenceData[2];
+    public string LongitudeString
+      => m_sentence.SentenceData[3];
+    public string LongitudeIndicatorString
+      => m_sentence.SentenceData[4];
+    public string UtcTimeString
+      => m_sentence.SentenceData[5];
+
+    public double LatitudeDecimal
+      => NmeaSentence.GetDecimalLatitude(LatitudeString, LatitudeIndicatorString);
+    public double LongitudeDecimal
+      => NmeaSentence.GetDecimalLongitude(LongitudeString, LongitudeIndicatorString);
+    public System.DateTime UtcTime
+      => NmeaSentence.GetUtcTime(UtcTimeString);
   }
 
   public class NmeaGll
@@ -46,22 +98,22 @@ namespace Flux
       m_sentence = new NmeaSentence(sentence);
     }
 
-    public string Latitude
-      => m_sentence.SentenceValues[1];
-    public string LatitudeIndicator
-      => m_sentence.SentenceValues[2];
-    public string Longitude
-      => m_sentence.SentenceValues[3];
-    public string LongitudeIndicator
-      => m_sentence.SentenceValues[4];
-    public string UtcTime
-      => m_sentence.SentenceValues[5];
+    public string LatitudeString
+      => m_sentence.SentenceData[1];
+    public string LatitudeIndicatorString
+      => m_sentence.SentenceData[2];
+    public string LongitudeString
+      => m_sentence.SentenceData[3];
+    public string LongitudeIndicatorString
+      => m_sentence.SentenceData[4];
+    public string UtcTimeString
+      => m_sentence.SentenceData[5];
 
     public double LatitudeDecimal
-      => NmeaSentence.GetDecimalLatitude(Latitude, LatitudeIndicator);
+      => NmeaSentence.GetDecimalLatitude(LatitudeString, LatitudeIndicatorString);
     public double LongitudeDecimal
-      => NmeaSentence.GetDecimalLongitude(Longitude, LongitudeIndicator);
-    public System.DateTime UtcDateTime
-      => NmeaSentence.GetUtcDateTime(UtcTime);
+      => NmeaSentence.GetDecimalLongitude(LongitudeString, LongitudeIndicatorString);
+    public System.DateTime UtcTime
+      => NmeaSentence.GetUtcTime(UtcTimeString);
   }
 }

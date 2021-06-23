@@ -55,10 +55,9 @@ namespace ConsoleApp
       //nmea = "$GPGSA,A,3,19,28,14,18,27,22,31,39,,,,,1.7,1.0,1.3*35";
       //nmea = "$GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C";
       //nmea = "$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74\r\n";
+      nmea = "$GPGGA,181908.00,3404.7041778,N,07044.3966270,W,4,13,1.00,495.144,M,29.200,M,0.10,0000*40";
 
-      var ns = new NmeaGll(nmea);
-
-      var x = ns.Latitude;
+      var ns = new Flux.Nmea.NmeaGll(nmea);
 
       //if (nmea.StartsWith('$'))
       //  nmea = nmea.Substring(1);
