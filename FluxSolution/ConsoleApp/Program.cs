@@ -48,7 +48,7 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      Flux.Numerics.BitOps.Example();
+
       /*
       for (var i = 0; i <= 360; i += 15)
       {

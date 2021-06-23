@@ -258,13 +258,13 @@ namespace Flux.Geometry
       => new Point2(p.Y, -p.X);
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point2 Random(int toExlusiveX, int toExclusiveY)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY));
+      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
     public static Point2 Random(Point2 toExclusive)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.X), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.Y));
+      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExclusive.X), Flux.Random.NumberGenerator.Crypto.Next(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static Point2 RandomZero(int toExlusiveX, int toExclusiveY)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY * 2) - toExclusiveY);
+      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
     public static Point2 RandomZero(Point2 toExclusive)
       => RandomZero(toExclusive.X, toExclusive.Y);

@@ -75,30 +75,30 @@ namespace Random.NumberGenerator
 			}
 		}
 
-		[TestMethod]
-		public void Int32()
-		{
-			for (var i = 2; i < short.MaxValue; i++)
-			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
+		//[TestMethod]
+		//public void Int32()
+		//{
+		//	for (var i = 2; i < short.MaxValue; i++)
+		//	{
+		//		var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
 
-				Assert.IsTrue(rv >= 0 && rv < int.MaxValue);
-			}
+		//		Assert.IsTrue(rv >= 0 && rv < int.MaxValue);
+		//	}
 
-			for (var i = 2; i < short.MaxValue; i++)
-			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
+		//	for (var i = 2; i < short.MaxValue; i++)
+		//	{
+		//		var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i);
 
-				Assert.IsTrue(rv >= 0 && rv < i);
-			}
+		//		Assert.IsTrue(rv >= 0 && rv < i);
+		//	}
 
-			for (var i = short.MinValue; i <= -2; i++)
-			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i, 0);
+		//	for (var i = short.MinValue; i <= -2; i++)
+		//	{
+		//		var rv = Flux.Random.NumberGenerator.Crypto.NextInt32(i, 0);
 
-				Assert.IsTrue(rv >= i && rv < 0);
-			}
-		}
+		//		Assert.IsTrue(rv >= i && rv < 0);
+		//	}
+		//}
 
 		[TestMethod]
 		public void Int64()

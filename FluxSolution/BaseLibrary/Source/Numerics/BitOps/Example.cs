@@ -4,12 +4,12 @@
   {
     public static void Example(System.Random? rng = null)
     {
-      if (rng is null) rng = Flux.Random.NumberGenerator.Crypto;
+      if (rng is null) rng = Flux.Random.NumberGenerator.Xoshiro256P;
 
       for (var i = 100; i >= 0; i--)
       //System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>
       {
-        var number = (uint)rng.NextInt32();
+        var number = (uint)rng.Next();
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"             Decimal: {number.ToBigInteger().ToGroupString()}");
         sb.AppendLine($"                 Hex: {number.ToString(@"X8", null)}");

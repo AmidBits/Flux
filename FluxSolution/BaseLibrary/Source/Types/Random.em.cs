@@ -139,15 +139,15 @@ namespace Flux
     public static System.Guid NextGuid(this System.Random source)
       => new System.Guid(GetRandomBytes(source, 16));
 
-    /// <summary>Returns a non-negative random Int32.</summary>
-    public static int NextInt32(this System.Random source)
-      => NextInt32(source, int.MaxValue);
-    /// <summary>Returns a non-negative random Int32 that is less than the specified maxValue.</summary>
-    public static int NextInt32(this System.Random source, int maxValue)
-      => maxValue >= 2 ? (int)System.Math.Floor(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentNullException(nameof(maxValue));
-    /// <summary>Returns a random Int32 that is within a specified range.</summary>
-    public static int NextInt32(this System.Random source, int minValue, int maxValue)
-      => minValue < maxValue ? minValue + NextInt32(source, maxValue - minValue) : throw new System.ArgumentNullException(nameof(minValue));
+    ///// <summary>Returns a non-negative random Int32.</summary>
+    //public static int NextInt32(this System.Random source)
+    //  => NextInt32(source, int.MaxValue);
+    ///// <summary>Returns a non-negative random Int32 that is less than the specified maxValue.</summary>
+    //public static int NextInt32(this System.Random source, int maxValue)
+    //  => maxValue >= 2 ? (int)System.Math.Floor(maxValue * (source ?? throw new System.ArgumentNullException(nameof(source))).NextDouble()) : throw new System.ArgumentNullException(nameof(maxValue));
+    ///// <summary>Returns a random Int32 that is within a specified range.</summary>
+    //public static int NextInt32(this System.Random source, int minValue, int maxValue)
+    //  => minValue < maxValue ? minValue + NextInt32(source, maxValue - minValue) : throw new System.ArgumentNullException(nameof(minValue));
 
     /// <summary>Returns a non-negative random Int64.</summary>
     public static long NextInt64(this System.Random source)

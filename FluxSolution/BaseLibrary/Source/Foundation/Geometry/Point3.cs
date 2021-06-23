@@ -237,13 +237,13 @@ namespace Flux.Geometry
     }
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point3 Random(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ));
+      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveZ));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
     public static Point3 Random(in Point3 toExclusive)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.X), Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusive.Y));
+      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExclusive.X), Flux.Random.NumberGenerator.Crypto.Next(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static Point3 RandomZero(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.NextInt32(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.NextInt32(toExclusiveZ * 2) - toExclusiveZ);
+      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveZ * 2) - toExclusiveZ);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
     public static Point3 RandomZero(in Point3 toExclusive)
       => RandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);

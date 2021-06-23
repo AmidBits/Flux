@@ -69,7 +69,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitCount_Int32()
 		{
-			for (var i = 2U; i < short.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.NextInt32((int)i) + 1)
+			for (var i = 2U; i < short.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.Next((int)i) + 1)
 			{
 				var expectedString = i.ToString();
 				var actualCount = Flux.Maths.DigitCount((int)i, 10);
@@ -100,7 +100,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitSum_Int32()
 		{
-			for (var i = 2U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.NextInt32((int)i) + 1)
+			for (var i = 2U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.Next((int)i) + 1)
 			{
 				var expectedSum = Flux.Maths.GetDigitsReversed((int)i, 10).Aggregate(0, (a, e) => a + e);
 				var actualSum = Flux.Maths.DigitSum(i, 10);
