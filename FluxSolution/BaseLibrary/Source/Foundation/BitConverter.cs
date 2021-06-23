@@ -1,4 +1,4 @@
-namespace Flux.Numerics
+namespace Flux
 {
   /// <summary>Equivalent of System.BitConverter, but with either endianness.</summary>
   public abstract class BitConverter

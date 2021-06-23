@@ -12,7 +12,7 @@ namespace Flux.Riff
     : Chunk
   {
     public override string ChunkID { get => System.Text.Encoding.ASCII.GetString(m_buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(m_buffer, 0); } }
-    public override int ChunkSize { get => System.BitConverter.ToInt32(m_buffer, 4); set { System.BitConverter.GetBytes(value).CopyTo(m_buffer, 4); } }
+    public override int ChunkSize { get => BitConverter.LittleEndian.ToInt32(m_buffer, 4); set { BitConverter.LittleEndian.GetBytes(value).CopyTo(m_buffer, 4); } }
 
     public BaseChunk(string chunkID, int chunkDataSize)
       : base(chunkID, chunkDataSize)

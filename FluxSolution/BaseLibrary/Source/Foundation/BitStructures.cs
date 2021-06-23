@@ -1,4 +1,4 @@
-﻿namespace Flux.Numerics
+﻿namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public struct BitStructure32
