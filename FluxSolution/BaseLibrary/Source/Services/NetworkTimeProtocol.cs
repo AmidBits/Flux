@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Services
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
