@@ -1,3 +1,5 @@
+using System;
+
 namespace Flux
 {
 	namespace Text.PhoneticAlgorithm
@@ -11,20 +13,25 @@ namespace Flux
 			{
 				var code = new System.Text.StringBuilder();
 
-				for (var index = 0; index < name.Length; index++)
+				var index = -1;
+				var previousRune = new System.Text.Rune(0);
+
+				foreach(var currentRune in name.EnumerateRunes())
 				{
-					var character = name[index];
+					index++;
 
 					if (index > 0)
 					{
-						if (GlobalizationEnUs.IsEnglishVowel(character, false))
+						if (GlobalizationEnUs.IsEnglishVowel(currentRune, false))
 							continue;
 
-						if (GlobalizationEnUs.IsEnglishVowel(character, true) && character == name[index - 1])
+						if (GlobalizationEnUs.IsEnglishVowel(currentRune, true) && currentRune == previousRune)
 							continue;
 					}
 
-					code.Append(char.ToUpper(character, System.Globalization.CultureInfo.InvariantCulture));
+					code.Append(System.Text.Rune.ToUpper(currentRune, System.Globalization.CultureInfo.InvariantCulture));
+
+					previousRune = currentRune;
 				}
 
 				if (code.Length > 6)

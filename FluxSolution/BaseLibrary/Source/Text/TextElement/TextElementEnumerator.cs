@@ -68,9 +68,7 @@ namespace Flux.Text
         }
 
         if (m_index == 0 && m_count < m_array.Length)
-        {
           m_count += m_enumerator.m_textReader.Read(m_array, m_count, m_array.Length - m_count);
-        }
 
         m_stringInfo.String = new string(m_array, m_index, m_count - m_index);
 
