@@ -11,37 +11,49 @@ namespace Flux.Midi
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
 
-    private int m_number;
+    public const char SymbolFlat = '\u266D';
+    public const char SymbolSharp = '\u266F';
+
+    public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{SymbolSharp}/D{SymbolFlat}", @"D", $"D{SymbolSharp}/E{SymbolFlat}", @"E", @"F", $"F{SymbolSharp}/G{SymbolFlat}", @"G", $"G{SymbolSharp}/A{SymbolFlat}", @"A", $"A{SymbolSharp}/B{SymbolFlat}", @"B" };
+
+    private readonly byte m_number;
 
     public MidiNote(int midiNoteNumber)
-      => m_number = IsMidiNote(midiNoteNumber) ? midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     public int Number
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
-    public string Name()
-      => Music.Note.Names.ElementAt(m_number % 12);
+    public string ScientificPitchNotationLabel
+      => ScientificPitchNotationLabels[m_number % 12];
     /// <summary>Determines the octave of the specified MIDI note.</summary>
-    public int Octave()
+    public int Octave
       => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Units.Frequency ToFrequency()
-      => new Units.Frequency(ConvertNoteToFrequency(m_number));
+      => new Units.Frequency(ConvertToFrequency(m_number));
 
     #region Static methods
-    /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public static double ConvertNoteToFrequency(int midiNote)
-      => IsMidiNote(midiNote) ? ReferenceFrequencyHertz440 * System.Math.Pow(2, (midiNote - ReferenceNoteNumberA4) / 12.0) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
-    /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
+    /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
+    public static double ConvertNoteToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequencyHertz)
+      => referenceFrequencyHertz * System.Math.Pow(2, (noteNumber - referenceNoteNumber) / 12.0);
+    /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
+    public static int ConvertFrequencyToNote(double frequency, double referenceFrequencyHertz, int referenceNoteNumber)
+      => (int)(referenceNoteNumber + (System.Math.Log(frequency / referenceFrequencyHertz, 2.0) * 12.0));
+    /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
     public static int ConvertFrequencyToNote(double frequency)
-      => (int)(ReferenceNoteNumberA4 + (System.Math.Log(frequency / ReferenceFrequencyHertz440, 2.0) * 12.0)) is var midiNote && IsMidiNote(midiNote) ? midiNote : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+      => ConvertFrequencyToNote(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+    /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
+    public static double ConvertToFrequency(int midiNote)
+      => IsMidiNote(midiNote) ? ConvertNoteToFrequency(midiNote, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Units.Frequency frequency)
       => new MidiNote(ConvertFrequencyToNote(frequency.Hertz));
-    public static bool IsMidiNote(int number)
-      => number >= 0 && number <= 127;
+    /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
+    public static bool IsMidiNote(int noteNumber)
+      => noteNumber >= 0 && noteNumber <= 127;
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public static MidiNote Parse(string scientificPitchNotation)
@@ -51,7 +63,7 @@ namespace Flux.Midi
       if (m.Success && m.Groups is var gc && gc.Count >= 3 && gc[1].Success && gc[2].Success)
       {
         var octave = int.Parse(gc[2].Value, System.Globalization.CultureInfo.CurrentCulture);
-        var offset = System.Array.FindIndex(Music.Note.Names.ToArray(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
+        var offset = System.Array.FindIndex(ScientificPitchNotationLabels.ToArray(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
 
         if (octave < -1 && octave > 9 && offset == -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
@@ -124,7 +136,7 @@ namespace Flux.Midi
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString()
-      => $"{GetType().Name}: {Name()}{Octave()} (#{m_number})";
+      => $"{GetType().Name}: {ScientificPitchNotationLabel}{Octave} (#{m_number})";
     #endregion Object overrides
   }
 }

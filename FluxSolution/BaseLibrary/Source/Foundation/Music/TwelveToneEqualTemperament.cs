@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Music.Interval
+namespace Flux.Music
 {
   public static class TwelveToneEqualTemperament
   {
@@ -22,9 +22,9 @@ namespace Flux.Music.Interval
     }
 
     public static System.Collections.Generic.IEnumerable<double> GetFrequencyRatios()
-      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => System.Math.Pow(2.0, i / 12.0));
+      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Units.Semitone.ConvertToFrequencyRatio(i));
 
     public static System.Collections.Generic.IEnumerable<int> GetCents()
-      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => i * 100);
+      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Units.Semitone.ConvertToCent(i));
   }
 }
