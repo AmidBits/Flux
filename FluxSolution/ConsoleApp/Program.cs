@@ -48,6 +48,38 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var s = "A𠈓C";
+
+      for (var i = 0; i < s.Length; i++)
+      {
+        var c = s[i];
+
+        System.Console.WriteLine($"{i}: {c} ({((int)c):X4}), Hi={char.IsHighSurrogate(c)}, Lo={char.IsLowSurrogate(c)}");
+      }
+
+      var t = s.ToStringBuilder().Reverse().ToString();
+
+      //for (var i = 0; i < s.Length; i++)
+      //{
+      //  var cc = s[i];
+      //  if (char.IsHighSurrogate(cc))
+      //  {
+      //    var nc = s[i + 1];
+      //    if (char.IsLowSurrogate(nc))
+      //    {
+      //      // good here!
+      //      System.Console.WriteLine($"Doubles{cc}, Hi={char.IsHighSurrogate(cc)}, Doubles{nc}, Lo={char.IsLowSurrogate(nc)}");
+      //    }
+      //  }
+      //}
+
+
+      for (var i = 0; i < t.Length; i++)
+      {
+        var c = t[i];
+
+        System.Console.WriteLine($"{i}: {c} ({((int)c):X4}), Hi={char.IsHighSurrogate(c)}, Lo={char.IsLowSurrogate(c)}");
+      }
 
       /*
       for (var i = 0; i <= 360; i += 15)

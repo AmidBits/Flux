@@ -3,10 +3,31 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Reverse all ranged characters, in-place.</summary>
+          // THIS METHOD HAS TO HANDLE SURROGATES!!!
     internal static System.Text.StringBuilder ReverseImpl(this System.Text.StringBuilder source, int startIndex, int lastIndex)
     {
       while (startIndex < lastIndex)
-        SwapImpl(source, startIndex++, lastIndex--);
+      {
+        var sc = source[startIndex];
+        var lc = source[lastIndex];
+
+
+        if (char.IsHighSurrogate(sc))
+        {
+          source[startIndex++] = source[lastIndex]; // Overwrite
+          source[lastIndex--] = source[startIndex]; // Move low (2nd) surrogate to reversed position as low (2nd) surrogate, i.e. keep relationship.
+          source[startIndex++] = source[lastIndex]; // 
+          source[lastIndex--] = sc; // Move character from initial position to reverse position, if high (1st) surrogate then as high (1st) surrogate, i.e. keep relationship.
+        }
+        else if (char.IsLowSurrogate(lc))
+        {
+        }
+        else
+        {
+          source[startIndex++] = lc; 
+          source[lastIndex--] = sc; 
+        }
+      }
 
       return source;
     }
