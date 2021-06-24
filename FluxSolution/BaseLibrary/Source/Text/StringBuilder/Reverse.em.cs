@@ -8,8 +8,8 @@ namespace Flux
     {
       while (startIndex < lastIndex)
       {
-        var sc = source[startIndex];
-        var lc = source[lastIndex];
+        var sc = source[startIndex]; // if high then accomodate...
+        var lc = source[lastIndex]; // if low then accomodate...
 
 
         if (char.IsHighSurrogate(sc))
