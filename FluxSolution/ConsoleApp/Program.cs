@@ -46,12 +46,9 @@ namespace ConsoleApp
       return osv;
     }
 
-    //public static int ApproximateTimezoneOffset(double longitude)
-    //  => (int)Flux.Maths.RoundToNearest((longitude + System.Math.CopySign(7.5, longitude)) / 15, RoundingBehavior.RoundTowardZero);
-
     private static void TimedMain(string[] _)
     {
-      System.Console.WriteLine($"TZ={Flux.Units.Longitude.GetTheoreticalTimezoneOffset(-110)}");
+      System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0)% 360.0);
 
       var s = "A𠈓C";
 

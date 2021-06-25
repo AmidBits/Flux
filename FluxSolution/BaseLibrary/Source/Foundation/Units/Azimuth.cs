@@ -8,10 +8,19 @@ namespace Flux.Units
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
+    public const double North = 0;
+    public const double NorthEast = 45;
+    public const double East = 90;
+    public const double SouthEast = 135;
+    public const double South = 180;
+    public const double SouthWest = 225;
+    public const double West = 270;
+    public const double NorthWest = 315;
+
     private readonly double m_degree;
 
     public Azimuth(double degree)
-      => m_degree = Maths.Wrap(degree, 0, 360);
+      => m_degree = Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
 
     public double Degree
       => m_degree;
