@@ -48,9 +48,22 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0)% 360.0);
+      System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0) % 360.0);
 
-      var s = "A𠈓C";
+      var s = "AA𠈓AAA𠈓AAAA𠈓𠈓AAAA";
+
+      System.Console.WriteLine($"{s} : {s.Length} : {s.EnumerateRunes().Count()}");
+
+      var sb = s.ToStringBuilder();
+
+      var sbp = sb.PrefixFunction();
+      var sbz = sb.ZFunction();
+
+      System.Console.WriteLine($"{sb} : {sb.Length} : {sb.EnumerateRunes().Count()}");
+
+      var ros = new System.ReadOnlySpan<System.Text.Rune>(sb.EnumerateRunes().ToArray());
+      var p = ros.PrefixFunction();
+      var z = ros.ZFunction();
 
       for (var i = 0; i < s.Length; i++)
       {
@@ -59,7 +72,17 @@ namespace ConsoleApp
         System.Console.WriteLine($"{i}: {c} ({((int)c):X4}), Hi={char.IsHighSurrogate(c)}, Lo={char.IsLowSurrogate(c)}");
       }
 
-      var t = s.ToStringBuilder().Reverse().ToString();
+      var t = sb.Reverse().ToString();
+
+      var cc = s.AsEnumerable().CountEqualAtStart(t);
+      var cr = s.EnumerateRunes().CountEqualAtStart(t.EnumerateRunes());
+
+      System.Console.WriteLine($"{cc} : {cr}");
+
+      //while (e1.MoveNext() && e2.MoveNext() && e1.Current.index <= e2.Current.index)
+      //{
+      //  System.Console.WriteLine($"{e1.Current} : {e2.Current} = {((e2.Current.index - e1.Current.index) >= System.Math.Min(e1.Current.length, e2.Current.length))}");
+      //}
 
       //for (var i = 0; i < s.Length; i++)
       //{

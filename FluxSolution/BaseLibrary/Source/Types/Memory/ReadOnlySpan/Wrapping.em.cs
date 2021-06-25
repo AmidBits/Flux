@@ -29,7 +29,7 @@ namespace Flux
       where T : System.IEquatable<T>
       => source.Slice(left.Length, source.Length - (left.Length + right.Length));
     /// <summary>Add the specified wrap strings to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped.</summary>
-    public static System.Span<T> Wrap<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
+    public static T[] Wrap<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
       where T : System.IEquatable<T>
     {
       var array = source.ToArray(left.Length, right.Length);
