@@ -48,6 +48,8 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0)% 360.0);
+
       var s = "A𠈓C";
 
       for (var i = 0; i < s.Length; i++)

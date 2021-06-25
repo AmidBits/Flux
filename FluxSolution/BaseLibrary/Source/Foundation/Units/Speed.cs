@@ -31,8 +31,6 @@ namespace Flux.Units
     #region Static methods
     public static Speed Add(Speed left, Speed right)
       => new Speed(left.m_meterPerSecond + right.m_meterPerSecond);
-    public static double ConvertMeterPerSecondToNauticalMilePerHour(double metersPerSecond)
-      => metersPerSecond * 1.9438444924406;
     public static double ConvertFootPerSecondToMeterPerSecond(double feetPerSecond)
       => feetPerSecond * 0.3048;
     public static double ConvertKilometerPerHourToMeterPerSecond(double kilometersPerHour)
@@ -47,6 +45,8 @@ namespace Flux.Units
       => knots / (1852.0 / 3600.0);
     public static double ConvertMeterPerSecondToMilePerHour(double metersPerSecond)
       => metersPerSecond * 2.2369362920544;
+    public static double ConvertMeterPerSecondToNauticalMilePerHour(double metersPerSecond)
+      => metersPerSecond * 1.9438444924406;
     public static double ConvertMilePerHourToMeterPerSecond(double milesPerHour)
       => milesPerHour * 0.44704;
     public static double ConvertNauticalMilePerHourToMeterPerSecond(double nauticalMilesPerHour)
