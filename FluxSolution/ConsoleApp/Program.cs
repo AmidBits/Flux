@@ -48,10 +48,19 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var lat = 1;
-      var h = new Flux.Units.Length(Flux.Units.Latitude.ComputeHeightOfDegreeAt(lat));
-      var w = new Flux.Units.Length(Flux.Units.Latitude.ComputeWidthOfDegreeAt(lat));
-      System.Console.WriteLine($"{lat} : {h} : {w}");
+      //for (var lat = 1; lat <= 90; lat++)
+      //{
+      //  var h = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateLatitudinalHeight(lat));
+      //  var r = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateRadius(lat));
+      //  var w = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateLongitudinalWidth(lat));
+      //  System.Console.WriteLine($"{lat} : height = {h} : width = {w} : radius = {r}");
+      //}
+      var gp = new Flux.GeoPoint(31.629167, -110.571944, 1441);
+      var h = gp.Latitude.ApproximateLatitudinalHeight;
+      var r = gp.Latitude.ApproximateRadius;
+      var tz = Flux.Units.Longitude.ComputeTheoreticalTimezoneOffset(gp.Longitude.Degree);
+      var w = gp.Latitude.ApproximateLongitudinalWidth;
+      System.Console.WriteLine($"{gp} : height = {h} : width = {w} : radius = {r} : tz = {tz}");
 
       return;
       System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0) % 360.0);

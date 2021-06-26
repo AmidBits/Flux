@@ -18,6 +18,9 @@ namespace Flux.Units
     public double Radian
       => Angle.ConvertDegreeToRadian(m_degree);
 
+    public int TheoreticalTimezoneOffset
+      => ComputeTheoreticalTimezoneOffset(Degree);
+
     public Angle ToAngle()
       => Angle.FromDegree(m_degree);
 

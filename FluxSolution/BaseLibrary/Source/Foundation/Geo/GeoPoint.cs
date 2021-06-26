@@ -50,17 +50,6 @@ namespace Flux
       Longitude = new Units.Longitude(longitude); // Units.Angle.FromDegree(Maths.Wrap(longitude, -180, +180));
     }
 
-    /// <summary>Calculates the approximate radius at the latitude of the specified geoposition.</summary>
-    public double ApproxmateRadius
-      => ApproximateRadiusAtLatitude(Latitude.Radian);
-
-    /// <summary>Calculate the latitudinal height in meters.</summary>
-    public double LatitudinalHeight
-      => ApproximateLatitudinalHeight(Latitude.Radian);
-    /// <summary>Calculate the longitudinal width in meters.</summary>
-    public double LongitudinalWidth
-      => ApproximateLongitudinalWidth(Latitude.Radian);
-
     /// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     /// <param name="trackStart"></param>
     /// <param name="trackEnd"></param>
@@ -123,26 +112,6 @@ namespace Flux
       crossTrackCentralAngle = CrossTrackCentralAngle(latitude1, longitude1, latitude2, longitude2, latitude3, longitude3, out var trackCentralAngle13);
 
       return System.Math.Acos(System.Math.Cos(trackCentralAngle13) / System.Math.Cos(crossTrackCentralAngle));
-    }
-
-    /// <summary>Computes the approximate length in meters of a degree of latitude at the specified latitude.</summary>
-    public static double ApproximateLatitudinalHeight(double latitude)
-      => 111132.954 - 559.822 * System.Math.Cos(2 * latitude) + 1.175 * System.Math.Cos(4 * latitude);//- 0.0023 * System.Math.Cos(6 * latitude);
-
-    /// <summary>Computes the approximate length in meters of a degree of longitude at the specified latitude.</summary>
-    /// <returns>The approximate length in meters of a degree of longitude.</returns>
-    public static double ApproximateLongitudinalWidth(double latitude)
-      => 111412.84 * System.Math.Cos(latitude) + -93.5 * System.Math.Cos(3.0 * latitude) + 0.118 * System.Math.Cos(5.0 * latitude);
-
-    /// <summary>Determines an approximate radius in meters.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
-    /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-    public static double ApproximateRadiusAtLatitude(double latitude)
-    {
-      var powCosLat2 = System.Math.Pow(System.Math.Cos(latitude), 2);
-      var powSinLat2 = System.Math.Pow(System.Math.Sin(latitude), 2);
-
-      return System.Math.Sqrt((System.Math.Pow(EarthRadii.EquatorialInMeters, 4) * powCosLat2 + System.Math.Pow(EarthRadii.PolarInMeters, 4) * powSinLat2) / (System.Math.Pow(EarthRadii.EquatorialInMeters, 2) * powCosLat2 + System.Math.Pow(EarthRadii.PolarInMeters, 2) * powSinLat2));
     }
 
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
