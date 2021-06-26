@@ -48,6 +48,12 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var lat = 1;
+      var h = new Flux.Units.Length(Flux.Units.Latitude.ComputeHeightOfDegreeAt(lat));
+      var w = new Flux.Units.Length(Flux.Units.Latitude.ComputeWidthOfDegreeAt(lat));
+      System.Console.WriteLine($"{lat} : {h} : {w}");
+
+      return;
       System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0) % 360.0);
 
       var s = "AA𠈓AAA𠈓AAAA𠈓𠈓AAAA";
