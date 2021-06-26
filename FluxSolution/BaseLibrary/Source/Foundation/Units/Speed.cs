@@ -31,26 +31,26 @@ namespace Flux.Units
     #region Static methods
     public static Speed Add(Speed left, Speed right)
       => new Speed(left.m_meterPerSecond + right.m_meterPerSecond);
-    public static double ConvertFootPerSecondToMeterPerSecond(double feetPerSecond)
-      => feetPerSecond * 0.3048;
-    public static double ConvertKilometerPerHourToMeterPerSecond(double kilometersPerHour)
-      => kilometersPerHour * 0.27;
+    public static double ConvertFootPerSecondToMeterPerSecond(double footPerSecond)
+      => footPerSecond * 0.3048;
+    public static double ConvertKilometerPerHourToMeterPerSecond(double kilometerPerHour)
+      => kilometerPerHour * 0.27;
     public static double ConvertKnotToMeterPerSecond(double knots)
       => knots * (1852.0 / 3600.0);
-    public static double ConvertMeterPerSecondToFootPerSecond(double metersPerSecond)
-      => metersPerSecond / 0.3048;
-    public static double ConvertMeterPerSecondToKilometerPerHour(double metersPerSecond)
-      => metersPerSecond * 3.6;
-    public static double ConvertMeterPerSecondToKnot(double knots)
-      => knots / (1852.0 / 3600.0);
-    public static double ConvertMeterPerSecondToMilePerHour(double metersPerSecond)
-      => metersPerSecond * 2.2369362920544;
-    public static double ConvertMeterPerSecondToNauticalMilePerHour(double metersPerSecond)
-      => metersPerSecond * 1.9438444924406;
-    public static double ConvertMilePerHourToMeterPerSecond(double milesPerHour)
-      => milesPerHour * 0.44704;
-    public static double ConvertNauticalMilePerHourToMeterPerSecond(double nauticalMilesPerHour)
-      => nauticalMilesPerHour / 1.9438444924406;
+    public static double ConvertMeterPerSecondToFootPerSecond(double meterPerSecond)
+      => meterPerSecond / 0.3048;
+    public static double ConvertMeterPerSecondToKilometerPerHour(double meterPerSecond)
+      => meterPerSecond * 3.6;
+    public static double ConvertMeterPerSecondToKnot(double knot)
+      => knot / (1852.0 / 3600.0);
+    public static double ConvertMeterPerSecondToMilePerHour(double meterPerSecond)
+      => meterPerSecond * 2.2369362920544;
+    public static double ConvertMeterPerSecondToNauticalMilePerHour(double meterPerSecond)
+      => meterPerSecond * 1.9438444924406;
+    public static double ConvertMilePerHourToMeterPerSecond(double milePerHour)
+      => milePerHour * 0.44704;
+    public static double ConvertNauticalMilePerHourToMeterPerSecond(double nauticalMilePerHour)
+      => nauticalMilePerHour / 1.9438444924406;
     public static Speed Divide(Speed left, Speed right)
       => new Speed(left.m_meterPerSecond / right.m_meterPerSecond);
     public static Speed FromFeetPerSecond(double feetPerSecond)

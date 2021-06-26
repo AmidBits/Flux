@@ -10,6 +10,8 @@ namespace Flux.Units
     public Mass(double kilogram)
       => m_kilogram = kilogram;
 
+    public double Gram
+      => ConvertKilogramToGram(m_kilogram);
     public double Kilogram
       => m_kilogram;
     public double Pound
@@ -18,12 +20,18 @@ namespace Flux.Units
     #region Static methods
     public static Mass Add(Mass left, Mass right)
       => new Mass(left.m_kilogram + right.m_kilogram);
-    public static double ConvertPoundToKilogram(double pounds)
-      => pounds * 0.45359237;
-    public static double ConvertKilogramToPound(double pounds)
-      => pounds / 0.45359237;
+    public static double ConvertGramToKilogram(double gram)
+      => gram / 1000;
+    public static double ConvertPoundToKilogram(double pound)
+      => pound * 0.45359237;
+    public static double ConvertKilogramToGram(double kilogram)
+      => kilogram * 1000;
+    public static double ConvertKilogramToPound(double kilogram)
+      => kilogram / 0.45359237;
     public static Mass Divide(Mass left, Mass right)
       => new Mass(left.m_kilogram / right.m_kilogram);
+    public static Mass FromGram(double gram)
+      => new Mass(ConvertGramToKilogram(gram));
     public static Mass FromPounds(double pounds)
       => new Mass(ConvertPoundToKilogram(pounds));
     public static Mass Multiply(Mass left, Mass right)

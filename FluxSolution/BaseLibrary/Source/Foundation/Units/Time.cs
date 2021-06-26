@@ -12,6 +12,8 @@ namespace Flux.Units
 
     public double Second
       => m_second;
+    public double Hour
+      => ConvertSecondToHour(m_second);
 
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_second);
@@ -19,8 +21,14 @@ namespace Flux.Units
     #region Static methods
     public static Time Add(Time left, Time right)
       => new Time(left.m_second + right.m_second);
+    public static double ConvertHourToSecond(double hour)
+      => hour * 3600;
+    public static double ConvertSecondToHour(double second)
+      => second / 3600;
     public static Time Divide(Time left, Time right)
       => new Time(left.m_second / right.m_second);
+    public static Time FromHour(double hour)
+      => new Time(ConvertHourToSecond(hour));
     public static Time FromTimeSpan(System.TimeSpan timeSpan)
       => new Time(timeSpan.TotalSeconds);
     public static Time Multiply(Time left, Time right)

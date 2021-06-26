@@ -21,18 +21,23 @@ namespace Flux.Units
     public Angle ToAngle()
       => Angle.FromDegree(m_degree);
 
-    public Length ToApproximateHeight
-      => ComputeApproximateHeightAt(Degree);
-    public Length ToApproximateWidth
-      => ComputeApproximateWidthAt(Degree);
+    /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
+    public Length ToApproximateLatitudinalHeight
+      => ComputeApproximateLatitudinalHeight(Degree);
+    /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
+    public Length ToApproximateLongitudinalWidth
+      => ComputeApproximateLongitudinalWidth(Degree);
+    /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
+    /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Length ToApproximateRadius
-      => ComputeApproximateRadiusAt(Degree);
+      => ComputeApproximateRadius(Degree);
 
     #region Static methods
     public static Latitude Add(Latitude left, Latitude right)
       => new Latitude(left.m_degree + right.m_degree);
-    /// <summary>Computes the approximate length in meters of a degree of latitude at the specified latitude.</summary>
-    public static double ComputeApproximateHeightAt(double latitude)
+    /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
+    public static double ComputeApproximateLatitudinalHeight(double latitude)
     {
       const double heightAtEquatorInMeters = 110567;
       const double heightAtPolesInMeters = 111699;
@@ -41,10 +46,19 @@ namespace Flux.Units
 
       return System.Math.Sin(radian) * (heightAtPolesInMeters - heightAtEquatorInMeters) + heightAtEquatorInMeters;
     }
+    /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
+    public static double ComputeApproximateLongitudinalWidth(double latitude)
+    {
+      const double widthAtEquatorInMeters = 111321;
+
+      var radian = Angle.ConvertDegreeToRadian(latitude);
+
+      return System.Math.Cos(radian) * widthAtEquatorInMeters;
+    }
     /// <summary>Determines an approximate radius in meters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-    public static double ComputeApproximateRadiusAt(double latitude)
+    public static double ComputeApproximateRadius(double latitude)
     {
       var radian = Angle.ConvertDegreeToRadian(latitude);
 
@@ -55,16 +69,6 @@ namespace Flux.Units
       var denominator = System.Math.Pow(EarthRadii.EquatorialInMeters * cos, 2) + System.Math.Pow(EarthRadii.PolarInMeters * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
-    }
-    /// <summary>Computes the approximate length in meters of a degree of longitude at the specified latitude.</summary>
-    /// <returns>The approximate length in meters of a degree of longitude.</returns>
-    public static double ComputeApproximateWidthAt(double latitude)
-    {
-      const double widthAtEquatorInMeters = 111321;
-
-      var radian = Angle.ConvertDegreeToRadian(latitude);
-
-      return System.Math.Cos(radian) * widthAtEquatorInMeters;
     }
     public static Latitude Divide(Latitude left, Latitude right)
       => new Latitude(left.m_degree / right.m_degree);

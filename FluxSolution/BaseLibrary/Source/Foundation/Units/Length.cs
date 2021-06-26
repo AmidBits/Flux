@@ -18,6 +18,8 @@ namespace Flux.Units
       => m_meter;
     public double Mile
       => ConvertMeterToMile(m_meter);
+    public double Millimeter
+      => ConvertMeterToMillimeter(m_meter);
     public double NauticalMile
       => ConvertMeterToNauticalMile(m_meter);
 
@@ -26,30 +28,36 @@ namespace Flux.Units
       => new Length(left.m_meter + right.m_meter);
     public static double ConvertFootToMeter(double feet)
       => feet * 0.3048;
-    public static double ConvertKilometerToMeter(double kilometers)
-      => kilometers * 1000;
-    public static double ConvertMeterToFoot(double meters)
-      => meters / 0.3048;
-    public static double ConvertMeterToNauticalMile(double meters)
-      => meters / 1852;
-    public static double ConvertMeterToKilometer(double meters)
-      => meters / 1000;
-    public static double ConvertMeterToMile(double meters)
-      => meters / 1609.344;
-    public static double ConvertMileToMeter(double miles)
-      => miles * 1609.344;
-    public static double ConvertNauticalMileToMeter(double nauticalMiles)
-      => nauticalMiles * 1852;
+    public static double ConvertKilometerToMeter(double kilometer)
+      => kilometer * 1000;
+    public static double ConvertMeterToFoot(double meter)
+      => meter / 0.3048;
+    public static double ConvertMeterToNauticalMile(double meter)
+      => meter / 1852;
+    public static double ConvertMeterToKilometer(double meter)
+      => meter / 1000;
+    public static double ConvertMeterToMile(double meter)
+      => meter / 1609.344;
+    public static double ConvertMeterToMillimeter(double meter)
+      => meter * 1000;
+    public static double ConvertMileToMeter(double mile)
+      => mile * 1609.344;
+    public static double ConvertMillimeterToMeter(double millimeter)
+      => millimeter / 1000;
+    public static double ConvertNauticalMileToMeter(double nauticalMile)
+      => nauticalMile * 1852;
     public static Length Divide(Length left, Length right)
       => new Length(left.m_meter / right.m_meter);
-    public static Length FromFeet(double feet)
-      => new Length(ConvertFootToMeter(feet));
-    public static Length FromKilometers(double kilometer)
+    public static Length FromFoot(double foot)
+      => new Length(ConvertFootToMeter(foot));
+    public static Length FromKilometer(double kilometer)
       => new Length(ConvertKilometerToMeter(kilometer));
-    public static Length FromMiles(double miles)
-      => new Length(ConvertMileToMeter(miles));
-    public static Length FromNauticalMiles(double nauticalMiles)
-      => new Length(ConvertNauticalMileToMeter(nauticalMiles));
+    public static Length FromMile(double mile)
+      => new Length(ConvertMileToMeter(mile));
+    public static Length FromMillimeter(double millimeter)
+      => new Length(ConvertMillimeterToMeter(millimeter));
+    public static Length FromNauticalMile(double nauticalMile)
+      => new Length(ConvertNauticalMileToMeter(nauticalMile));
     public static Length Multiply(Length left, Length right)
       => new Length(left.m_meter * right.m_meter);
     public static Length Negate(Length value)
