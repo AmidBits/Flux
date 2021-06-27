@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Midi
+namespace Flux.Units
 {
   /// <summary>A MIDI note is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
@@ -122,7 +122,6 @@ namespace Flux.Midi
     // IComparable
     public int CompareTo(MidiNote other)
       => m_number.CompareTo(other.m_number);
-
     // IEquatable
     public bool Equals(MidiNote other)
       => m_number == other.m_number;
