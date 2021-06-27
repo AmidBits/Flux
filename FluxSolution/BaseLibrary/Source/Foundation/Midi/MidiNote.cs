@@ -37,23 +37,23 @@ namespace Flux.Midi
 
     #region Static methods
     /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
-    public static double ConvertNoteToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequencyHertz)
-      => referenceFrequencyHertz * System.Math.Pow(2, (noteNumber - referenceNoteNumber) / 12.0);
+    public static double ConvertMidiNoteToFrequency(int midiNoteNumber, int referenceNoteNumber, double referenceFrequencyHertz)
+      => referenceFrequencyHertz * System.Math.Pow(2, (midiNoteNumber - referenceNoteNumber) / 12.0);
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
-    public static int ConvertFrequencyToNote(double frequency, double referenceFrequencyHertz, int referenceNoteNumber)
+    public static int ConvertFrequencyToMidiNote(double frequency, double referenceFrequencyHertz, int referenceNoteNumber)
       => (int)(referenceNoteNumber + (System.Math.Log(frequency / referenceFrequencyHertz, 2.0) * 12.0));
     /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
-    public static int ConvertFrequencyToNote(double frequency)
-      => ConvertFrequencyToNote(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+    public static int ConvertFrequencyToMidiNote(double frequency)
+      => ConvertFrequencyToMidiNote(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public static double ConvertToFrequency(int midiNote)
-      => IsMidiNote(midiNote) ? ConvertNoteToFrequency(midiNote, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNote));
+    public static double ConvertToFrequency(int midiNoteNumber)
+      => IsMidiNote(midiNoteNumber) ? ConvertMidiNoteToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Units.Frequency frequency)
-      => new MidiNote(ConvertFrequencyToNote(frequency.Hertz));
+      => new MidiNote(ConvertFrequencyToMidiNote(frequency.Hertz));
     /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
-    public static bool IsMidiNote(int noteNumber)
-      => noteNumber >= 0 && noteNumber <= 127;
+    public static bool IsMidiNote(int midiNoteNumber)
+      => midiNoteNumber >= 0 && midiNoteNumber <= 127;
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public static MidiNote Parse(string scientificPitchNotation)
