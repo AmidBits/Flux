@@ -48,17 +48,17 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var s = "Abc𠈓A𠈓A𠈓A𠈓AA𠈓AAAA𠈓𠈓AAAA";
-
+      var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
+      //s = "\uD83D\uDC69\uD83C\uDFFD\u200D\uD83D\uDE92";
       System.Console.WriteLine(s.Length);
 
       using var sr = new System.IO.StringReader(s);
-      using var tee = new Flux.Text.RuneEnumerator(sr, 8);
+      using var tee = new Flux.Text.GraphemeEnumerator(sr, 8);
 
       var index = 0;
       foreach (var te in tee)
-        //System.Console.WriteLine($"{index++} : {te} ({te.Length})");
-      System.Console.WriteLine($"{index++} : {te} ({te.Utf16SequenceLength})");
+        System.Console.WriteLine($"{index++} : {te}");
+      //System.Console.WriteLine($"{index++} : {te} ({te.Utf16SequenceLength})");
 
       /*
       for (var i = 0; i <= 360; i += 15)

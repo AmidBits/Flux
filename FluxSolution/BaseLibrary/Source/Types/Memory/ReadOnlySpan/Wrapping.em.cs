@@ -14,7 +14,7 @@ namespace Flux
     public static T[] Wrap<T>(this System.ReadOnlySpan<T> source, T left, T right)
       where T : System.IEquatable<T>
     {
-      var array = source.ToArray(1, 1);
+      var array = source.ToNewArray(1, 1);
       array[0] = left;
       array[array.Length - 1] = right;
       return array;
@@ -32,7 +32,7 @@ namespace Flux
     public static T[] Wrap<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
       where T : System.IEquatable<T>
     {
-      var array = source.ToArray(left.Length, right.Length);
+      var array = source.ToNewArray(left.Length, right.Length);
       left.CopyTo(new System.Span<T>(array).Slice(0, left.Length));
       right.CopyTo(new System.Span<T>(array).Slice(left.Length + source.Length, right.Length));
       return array;

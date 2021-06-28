@@ -1,12 +1,12 @@
 namespace Flux.Text
 {
-  public class TextElementEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<string>
+  public class GraphemeEnumerator
+    : Disposable, System.Collections.Generic.IEnumerable<Grapheme>
   {
     internal readonly System.IO.TextReader m_textReader;
     internal readonly int m_bufferSize;
 
-    public TextElementEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
+    public GraphemeEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
     {
       if (textReader is null) throw new System.ArgumentNullException(nameof(textReader));
       if (bufferSize < 8) throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
@@ -14,22 +14,22 @@ namespace Flux.Text
       m_textReader = textReader;
       m_bufferSize = bufferSize;
     }
-    public TextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
+    public GraphemeEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
       : this(new System.IO.StreamReader(stream, encoding), bufferSize)
     { }
 
-    public System.Collections.Generic.IEnumerator<string> GetEnumerator()
-      => new TextElementIterator(this);
+    public System.Collections.Generic.IEnumerator<Grapheme> GetEnumerator()
+      => new GraphemeIterator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
     protected override void DisposeManaged()
       => m_textReader.Dispose();
 
-    private class TextElementIterator
-      : System.Collections.Generic.IEnumerator<string>
+    private class GraphemeIterator
+      : System.Collections.Generic.IEnumerator<Grapheme>
     {
-      private readonly TextElementEnumerator m_enumerator;
+      private readonly GraphemeEnumerator m_enumerator;
 
       private readonly char[] m_buffer;
       private int m_bufferIndex;
@@ -40,9 +40,9 @@ namespace Flux.Text
       private int m_textElementIndex;
       private int m_textElementCount;
 
-      private string m_current;
+      private Grapheme m_current;
 
-      public TextElementIterator(TextElementEnumerator enumerator)
+      public GraphemeIterator(GraphemeEnumerator enumerator)
       {
         m_enumerator = enumerator;
 
@@ -58,7 +58,7 @@ namespace Flux.Text
         m_current = default!;
       }
 
-      public string Current
+      public Grapheme Current
         => m_current;
       object System.Collections.IEnumerator.Current
         => m_current!;
@@ -87,7 +87,7 @@ namespace Flux.Text
 
           m_bufferIndex += textElement.Length; // Adjust the buffer index by the number of characters in the text element.
 
-          m_current = textElement; // Set current to the text element.
+          m_current = new Grapheme(textElement); // Set current to the text element.
 
           return true;
         }
