@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Inductance.</summary>
+  /// <summary>Electrical inductance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
     : System.IComparable<Inductance>, System.IEquatable<Inductance>, IStandardizedScalar

@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Capacitance.</summary>
+  /// <summary>Electrical capacitance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
     : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IStandardizedScalar
