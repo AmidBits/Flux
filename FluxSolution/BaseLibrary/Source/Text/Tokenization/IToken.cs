@@ -1,9 +1,10 @@
 namespace Flux.Text.Tokenization
 {
   /// <see cref="https://en.wikipedia.org/wiki/Lexical_analysis"/>
-  public interface IToken<T>
+  public interface IToken<TValue>
+    where TValue : notnull
   {
     public int Index { get; }
-    public T Value { get; }
+    public TValue Value { get; }
   }
 }

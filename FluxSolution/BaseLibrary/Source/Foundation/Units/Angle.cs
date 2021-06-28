@@ -162,7 +162,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_radian.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_radian}\u00B0 (radian)>";
+      => $"<{GetType().Name}: {m_radian}\u00B0 rad>";
     #endregion Object overrides
   }
 }

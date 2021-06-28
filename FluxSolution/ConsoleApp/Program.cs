@@ -48,78 +48,17 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      //for (var lat = 1; lat <= 90; lat++)
-      //{
-      //  var h = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateLatitudinalHeight(lat));
-      //  var r = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateRadius(lat));
-      //  var w = new Flux.Units.Length(Flux.Units.Latitude.ComputeApproximateLongitudinalWidth(lat));
-      //  System.Console.WriteLine($"{lat} : height = {h} : width = {w} : radius = {r}");
-      //}
-      var gp = new Flux.GeoPoint(31.629167, -110.571944, 1441);
-      var h = gp.Latitude.ApproximateLatitudinalHeight;
-      var r = gp.Latitude.ApproximateRadius;
-      var tz = Flux.Units.Longitude.ComputeTheoreticalTimezoneOffset(gp.Longitude.Degree);
-      var w = gp.Latitude.ApproximateLongitudinalWidth;
-      System.Console.WriteLine($"{gp} : height = {h} : width = {w} : radius = {r} : tz = {tz}");
+      var s = "Abc𠈓A𠈓A𠈓A𠈓AA𠈓AAAA𠈓𠈓AAAA";
 
-      return;
-      System.Console.WriteLine(Flux.Maths.Wrap(360.0, 0, 360.0) % 360.0);
+      System.Console.WriteLine(s.Length);
 
-      var s = "AA𠈓AAA𠈓AAAA𠈓𠈓AAAA";
+      using var sr = new System.IO.StringReader(s);
+      using var tee = new Flux.Text.RuneEnumerator(sr, 8);
 
-      System.Console.WriteLine($"{s} : {s.Length} : {s.EnumerateRunes().Count()}");
-
-      var sb = s.ToStringBuilder();
-
-      var sbp = sb.PrefixFunction();
-      var sbz = sb.ZFunction();
-
-      System.Console.WriteLine($"{sb} : {sb.Length} : {sb.EnumerateRunes().Count()}");
-
-      var ros = new System.ReadOnlySpan<System.Text.Rune>(sb.EnumerateRunes().ToArray());
-      var p = ros.PrefixFunction();
-      var z = ros.ZFunction();
-
-      for (var i = 0; i < s.Length; i++)
-      {
-        var c = s[i];
-
-        System.Console.WriteLine($"{i}: {c} ({((int)c):X4}), Hi={char.IsHighSurrogate(c)}, Lo={char.IsLowSurrogate(c)}");
-      }
-
-      var t = sb.Reverse().ToString();
-
-      var cc = s.AsEnumerable().CountEqualAtStart(t);
-      var cr = s.EnumerateRunes().CountEqualAtStart(t.EnumerateRunes());
-
-      System.Console.WriteLine($"{cc} : {cr}");
-
-      //while (e1.MoveNext() && e2.MoveNext() && e1.Current.index <= e2.Current.index)
-      //{
-      //  System.Console.WriteLine($"{e1.Current} : {e2.Current} = {((e2.Current.index - e1.Current.index) >= System.Math.Min(e1.Current.length, e2.Current.length))}");
-      //}
-
-      //for (var i = 0; i < s.Length; i++)
-      //{
-      //  var cc = s[i];
-      //  if (char.IsHighSurrogate(cc))
-      //  {
-      //    var nc = s[i + 1];
-      //    if (char.IsLowSurrogate(nc))
-      //    {
-      //      // good here!
-      //      System.Console.WriteLine($"Doubles{cc}, Hi={char.IsHighSurrogate(cc)}, Doubles{nc}, Lo={char.IsLowSurrogate(nc)}");
-      //    }
-      //  }
-      //}
-
-
-      for (var i = 0; i < t.Length; i++)
-      {
-        var c = t[i];
-
-        System.Console.WriteLine($"{i}: {c} ({((int)c):X4}), Hi={char.IsHighSurrogate(c)}, Lo={char.IsLowSurrogate(c)}");
-      }
+      var index = 0;
+      foreach (var te in tee)
+        //System.Console.WriteLine($"{index++} : {te} ({te.Length})");
+      System.Console.WriteLine($"{index++} : {te} ({te.Utf16SequenceLength})");
 
       /*
       for (var i = 0; i <= 360; i += 15)

@@ -10,7 +10,7 @@ namespace Flux.Units
     public LuminousFlux(double lumen)
       => m_lumen = lumen;
 
-    public double Candela
+    public double Lumen
       => m_lumen;
 
     #region Static methods
