@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Units
 {
   /// <summary>A MIDI note is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
@@ -33,20 +31,20 @@ namespace Flux.Units
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Units.Frequency ToFrequency()
-      => new Units.Frequency(ConvertToFrequency(m_number));
+      => new Units.Frequency(ConvertMidiNoteToFrequency(m_number));
 
     #region Static methods
-    /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
-    public static double ConvertMidiNoteToFrequency(int midiNoteNumber, int referenceNoteNumber, double referenceFrequencyHertz)
-      => referenceFrequencyHertz * System.Math.Pow(2, (midiNoteNumber - referenceNoteNumber) / 12.0);
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
-    public static int ConvertFrequencyToMidiNote(double frequency, double referenceFrequencyHertz, int referenceNoteNumber)
-      => (int)(referenceNoteNumber + (System.Math.Log(frequency / referenceFrequencyHertz, 2.0) * 12.0));
+    public static int ConvertFrequencyToMidiNote(double frequency, double referenceFrequency, int referenceNoteNumber)
+      => (int)((System.Math.Log(frequency / referenceFrequency, 2.0) * 12.0) + referenceNoteNumber);
     /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
     public static int ConvertFrequencyToMidiNote(double frequency)
       => ConvertFrequencyToMidiNote(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+    /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
+    public static double ConvertMidiNoteToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequency)
+      => System.Math.Pow(2, (noteNumber - referenceNoteNumber) / 12.0) * referenceFrequency;
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public static double ConvertToFrequency(int midiNoteNumber)
+    public static double ConvertMidiNoteToFrequency(int midiNoteNumber)
       => IsMidiNote(midiNoteNumber) ? ConvertMidiNoteToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Units.Frequency frequency)
@@ -63,7 +61,7 @@ namespace Flux.Units
       if (m.Success && m.Groups is var gc && gc.Count >= 3 && gc[1].Success && gc[2].Success)
       {
         var octave = int.Parse(gc[2].Value, System.Globalization.CultureInfo.CurrentCulture);
-        var offset = System.Array.FindIndex(ScientificPitchNotationLabels.ToArray(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
+        var offset = System.Array.FindIndex(ScientificPitchNotationLabels, 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
 
         if (octave < -1 && octave > 9 && offset == -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
