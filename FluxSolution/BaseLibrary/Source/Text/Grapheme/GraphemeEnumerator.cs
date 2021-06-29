@@ -1,7 +1,7 @@
 namespace Flux.Text
 {
   public class GraphemeEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<Grapheme>
+    : Disposable, System.Collections.Generic.IEnumerable<GraphemeCluster>
   {
     internal readonly System.IO.TextReader m_textReader;
     internal readonly int m_bufferSize;
@@ -18,7 +18,7 @@ namespace Flux.Text
       : this(new System.IO.StreamReader(stream, encoding), bufferSize)
     { }
 
-    public System.Collections.Generic.IEnumerator<Grapheme> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<GraphemeCluster> GetEnumerator()
       => new GraphemeIterator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
@@ -27,7 +27,7 @@ namespace Flux.Text
       => m_textReader.Dispose();
 
     private class GraphemeIterator
-      : System.Collections.Generic.IEnumerator<Grapheme>
+      : System.Collections.Generic.IEnumerator<GraphemeCluster>
     {
       private readonly GraphemeEnumerator m_enumerator;
 
@@ -40,7 +40,7 @@ namespace Flux.Text
       private int m_textElementIndex;
       private int m_textElementCount;
 
-      private Grapheme m_current;
+      private GraphemeCluster m_current;
 
       public GraphemeIterator(GraphemeEnumerator enumerator)
       {
@@ -58,10 +58,12 @@ namespace Flux.Text
         m_current = default!;
       }
 
-      public Grapheme Current
+      public GraphemeCluster Current
         => m_current;
       object System.Collections.IEnumerator.Current
         => m_current!;
+
+      private int m_overallIndex = 0;
 
       public bool MoveNext()
       {
@@ -87,7 +89,9 @@ namespace Flux.Text
 
           m_bufferIndex += textElement.Length; // Adjust the buffer index by the number of characters in the text element.
 
-          m_current = new Grapheme(textElement); // Set current to the text element.
+          m_current = new GraphemeCluster(textElement, m_overallIndex); // Set current to the text element.
+
+          m_overallIndex += textElement.Length;
 
           return true;
         }

@@ -49,6 +49,9 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
+
+      var gs = Flux.Text.GraphemeCluster.GetAll(s).ToArray();
+
       //s = "\uD83D\uDC69\uD83C\uDFFD\u200D\uD83D\uDE92";
       System.Console.WriteLine(s.Length);
 
