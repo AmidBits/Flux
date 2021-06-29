@@ -18,6 +18,8 @@ namespace Flux.Units
       => new Frequency(left.m_hertz + right.m_hertz);
     public static Frequency Divide(Frequency left, Frequency right)
       => new Frequency(left.m_hertz / right.m_hertz);
+    public static Frequency FromAcoustics(Speed soundVelocity, Length waveLength)
+      => new Frequency(soundVelocity.MeterPerSecond / waveLength.Meter);
     public static Frequency Multiply(Frequency left, Frequency right)
       => new Frequency(left.m_hertz * right.m_hertz);
     public static Frequency Negate(Frequency frequency)

@@ -18,6 +18,8 @@ namespace Flux.Units
       => new ElectricCurrent(left.m_ampere + right.m_ampere);
     public static ElectricCurrent Divide(ElectricCurrent left, ElectricCurrent right)
       => new ElectricCurrent(left.m_ampere / right.m_ampere);
+    public static ElectricCurrent FromVR(Voltage v, ElectricResistance r)
+      => new ElectricCurrent(v / r);
     public static ElectricCurrent Multiply(ElectricCurrent left, ElectricCurrent right)
       => new ElectricCurrent(left.m_ampere * right.m_ampere);
     public static ElectricCurrent Negate(ElectricCurrent value)

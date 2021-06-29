@@ -18,6 +18,8 @@ namespace Flux.Units
       => new Voltage(left.m_volt + right.m_volt);
     public static Voltage Divide(Voltage left, Voltage right)
       => new Voltage(left.m_volt / right.m_volt);
+    public static Voltage FromIR(ElectricCurrent i, ElectricResistance r)
+      => new Voltage(i * r);
     public static Voltage Multiply(Voltage left, Voltage right)
       => new Voltage(left.m_volt * right.m_volt);
     public static Voltage Negate(Voltage value)

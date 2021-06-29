@@ -53,6 +53,8 @@ namespace Flux.Units
       => nauticalMilePerHour / 1.9438444924406;
     public static Speed Divide(Speed left, Speed right)
       => new Speed(left.m_meterPerSecond / right.m_meterPerSecond);
+    public static Frequency FromAcousticsAsSoundVelocity(Frequency frequency, Length waveLength)
+      => new Frequency(frequency.Hertz * waveLength.Meter);
     public static Speed FromFeetPerSecond(double feetPerSecond)
       => new Speed(ConvertFootPerSecondToMeterPerSecond(feetPerSecond));
     public static Speed FromKilometersPerHour(double kilometersPerHour)

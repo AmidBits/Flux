@@ -48,6 +48,8 @@ namespace Flux.Units
       => nauticalMile * 1852;
     public static Length Divide(Length left, Length right)
       => new Length(left.m_meter / right.m_meter);
+    public static Frequency FromAcousticsAsWaveLength(Speed soundVelocity, Frequency frequency)
+      => new Frequency(soundVelocity.MeterPerSecond / frequency.Hertz);
     public static Length FromFoot(double foot)
       => new Length(ConvertFootToMeter(foot));
     public static Length FromKilometer(double kilometer)

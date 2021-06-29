@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IntegersEm
+  public static partial class ExtensionMethods
   {
     /// <summary></summary>
     public static string ToGroupString(this System.Numerics.BigInteger source)

@@ -18,6 +18,24 @@ namespace Flux.Units
       => new ElectricResistance(left.m_ohm + right.m_ohm);
     public static ElectricResistance Divide(ElectricResistance left, ElectricResistance right)
       => new ElectricResistance(left.m_ohm / right.m_ohm);
+    public static ElectricResistance FromVI(Voltage v, ElectricCurrent i)
+      => new ElectricResistance(v / i);
+    /// <summary>Converts resistor values as if in parallel configuration.</summary>
+    public static ElectricResistance FromParallelResistors(params double[] resistors)
+    {
+      var sum = 0.0;
+      foreach (var resistor in resistors)
+        sum += 1 / resistor;
+      return 1 / sum;
+    }
+    /// <summary>Converts resistor values as if in parallel configuration.</summary>
+    public static ElectricResistance FromSerialResistors(params double[] resistors)
+    {
+      var sum = 0.0;
+      foreach (var resistor in resistors)
+        sum += resistor;
+      return sum;
+    }
     public static ElectricResistance Multiply(ElectricResistance left, ElectricResistance right)
       => new ElectricResistance(left.m_ohm * right.m_ohm);
     public static ElectricResistance Negate(ElectricResistance value)
