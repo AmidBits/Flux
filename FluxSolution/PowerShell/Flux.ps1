@@ -44,13 +44,13 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # Sample use from Flux BaseLibrary:
 
 #"Locale-Properties:"
-[Flux.Locale]::GetProperties()
+#[Flux.Locale]::GetProperties()
 # "Locale-SpecialFolders:"
 # [Flux.Locale]::SpecialFolders
 
 #[System.Environment]::GetEnvironmentVariables().GetType()
 
-return;
+#return;
 
 #$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
 #$fm = $md.GetFullMatrix("settings", "kitten")
@@ -66,10 +66,9 @@ return;
 #$s = $af.TwoToConsoleString($fm)
 
 #"$($md.GetType().FullName)$([System.Environment]::NewLine)$s"
-
-$cad = New-Object Flux.Resources.Scowl.TwoOfTwelveFull
-$uri = ConvertTo-BinUri ([Flux.Resources.Scowl.TwoOfTwelveFull]::LocalUri) $vsProjectReference
-$cad.GetDataTable($uri) | Where-Object {$_."Word" -cmatch '^[a-z]{2,}$' -and $_."NonAmerican" -eq '-&'} | Select-Object -Unique -First 1000 Word | Format-Table
+$cad = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile.Replace("/\", "/\FluxSolution\BaseLibrary\"))
+$atb = $cad.AcquireDataTable() 
+$atb | Where-Object {$_.Title -match "ENGLISH"}  | Format-List
 
 # [Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
 # [Flux.Locale].Assembly.GetTypes() | Select-Object FullName

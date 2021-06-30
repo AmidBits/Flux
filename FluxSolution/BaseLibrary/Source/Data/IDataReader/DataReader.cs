@@ -9,8 +9,6 @@ namespace Flux.Data
     public const string ColumnName = nameof(ColumnName);
     public const string DataType = nameof(DataType);
     public const string ColumnSize = nameof(ColumnSize);
-    public const string AllowDBNull = nameof(AllowDBNull);
-    public const string TsqlDataType = nameof(TsqlDataType);
 
     // IDataReader
     public virtual int Depth { get; protected set; }
@@ -31,9 +29,7 @@ namespace Flux.Data
       };
 
       for (var index = 0; index < FieldCount; index++)
-      {
         dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1 });
-      }
 
       return dt;
     }
@@ -120,7 +116,7 @@ namespace Flux.Data
     /// <remarks>This information can be used to increase performance by indicating the strongly-typed accessor to call. 
     /// (For example, using GetInt32 is roughly ten times faster than using GetValue.)</remarks>
     public abstract System.Type GetFieldType(int index);
-      //=> typeof(object);
+    //=> typeof(object);
     public virtual float GetFloat(int index)
       => (float)GetValue(index);
     public virtual System.Guid GetGuid(int index)
@@ -134,11 +130,11 @@ namespace Flux.Data
     public abstract string GetName(int index);
     //=> throw new System.NotImplementedException();
     public abstract int GetOrdinal(string name);
-      //=> throw new System.NotImplementedException();
+    //=> throw new System.NotImplementedException();
     public virtual string GetString(int index)
       => (string)GetValue(index);
     public abstract object GetValue(int index);
-      //=> throw new System.NotImplementedException();
+    //=> throw new System.NotImplementedException();
     public virtual int GetValues(object[] values)
     {
       if (values is null) throw new System.ArgumentNullException(nameof(values));

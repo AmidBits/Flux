@@ -3,10 +3,10 @@ using System.Linq;
 namespace Flux.Resources.Ucd
 {
   public class Blocks
-    : ITabularDataAcquirer
+    : ATabularDataAcquirer
   {
-    public static System.Uri UriLocal
-      => new System.Uri(@"file://\Resources\Ucd\Blocks.txt");
+    public static string LocalFile
+      => @"file://\Resources\Ucd\Blocks.txt";
     public static System.Uri UriSource
       => new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
@@ -20,7 +20,7 @@ namespace Flux.Resources.Ucd
     /// <seealso cref="https://unicode.org/Public/"/>
     /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
     // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
-    public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
     {
       using var e = GetStrings(Uri).GetEnumerator();
 

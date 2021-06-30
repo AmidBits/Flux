@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Data
 {
   /// <summary>An implementation of a <see cref="TabularDataReader"/> over a System.Collection.Generic.IEnumerable<T>.</summary>
@@ -8,29 +6,49 @@ namespace Flux.Data
   {
     internal readonly System.Collections.Generic.IEnumerator<System.Collections.Generic.IEnumerable<object>> m_enumerator;
 
+    /// <summary>Creates a enumerable tabular data reader using the specified sequence.</summary>
     public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source)
-      => m_enumerator = source?.GetEnumerator() ?? throw new System.ArgumentNullException(nameof(source));
-
-    /// <summary>Initializes the FieldNames into strings of the default "Column_#" format.</summary>
-    /// <param name="fieldCount">The number of fields to create.</param>
-    public void CreateDefaultFieldNames(int fieldCount)
     {
-      m_fieldNames.Clear();
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      for (var index = 1; index <= fieldCount; index++)
-        m_fieldNames.Add($"Column_{index}");
+      m_enumerator = source.GetEnumerator();
     }
-    /// <summary>Initializes the property FieldNames into strings by reading a row from the source.</summary>
-    public bool ReadFieldNames()
+    /// <summary>Creates a enumerable tabular data reader using the specified sequence and number of field names. Zero or less will force the reader to use the values from the first element as field names.</summary>
+    /// <param name="fieldCount">If field count is less or equal to zero, then the enumerable tabular data reader will attempt to read from the enumerator.</param>
+    public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source, int fieldCount)
+      : this(source)
     {
       m_fieldNames.Clear();
 
-      IsClosed = m_enumerator is null || !m_enumerator.MoveNext();
+      if (fieldCount > 0)
+      {
+        for (var index = 1; index <= fieldCount; index++)
+          m_fieldNames.Add($"Column_{index}");
+      }
+      else
+      {
+        IsClosed = !m_enumerator.MoveNext();
 
-      if (!IsClosed)
-        m_fieldNames.AddRange(m_enumerator!.Current.Select(v => $"{v}"));
+        if (!IsClosed)
+          foreach (var fieldName in m_enumerator.Current)
+            m_fieldNames.Add($"{fieldName}");
+      }
 
-      return !IsClosed;
+      FieldCount = m_fieldNames.Count;
+    }
+    /// <summary>Creates a enumerable tabular data reader using the specified sequence and field names.</summary>
+    public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source, System.Collections.Generic.IEnumerable<string> fieldNames)
+      : this(source)
+    {
+      m_fieldNames.AddRange(fieldNames);
+
+      FieldCount = m_fieldNames.Count;
+    }
+    /// <summary>Creates a enumerable tabular data reader using the specified sequence, field names and types.</summary>
+    public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source, System.Collections.Generic.IEnumerable<string> fieldNames, System.Collections.Generic.IEnumerable<System.Type> fieldTypes)
+      : this(source, fieldNames)
+    {
+      m_fieldTypes.AddRange(fieldTypes);
     }
 
     /// <summary>Attempts to read the next result as field values into the EnumerableTabularDataReader.FieldValues object.</summary>
@@ -38,7 +56,7 @@ namespace Flux.Data
     {
       m_fieldValues.Clear();
 
-      IsClosed = m_enumerator is null || !m_enumerator.MoveNext();
+      IsClosed = !m_enumerator.MoveNext();
 
       if (!IsClosed)
         m_fieldValues.AddRange(m_enumerator!.Current);

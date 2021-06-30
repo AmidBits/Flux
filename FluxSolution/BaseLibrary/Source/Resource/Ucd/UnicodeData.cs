@@ -1,10 +1,10 @@
 namespace Flux.Resources.Ucd
 {
 	public class UnicodeData
-		: ITabularDataAcquirer
+		: ATabularDataAcquirer
 	{
-		public static System.Uri UriLocal
-			=> new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
+		public static string LocalFile
+			=> @"file://\Resources\Ucd\UnicodeData.txt";
 		public static System.Uri UriSource
 			=> new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt");
 
@@ -18,7 +18,7 @@ namespace Flux.Resources.Ucd
 		/// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
 		/// <seealso cref="https://unicode.org/Public/"/>
 		// Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
-		public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+		public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
 		{
 			using var e = GetStrings(Uri).GetEnumerator();
 

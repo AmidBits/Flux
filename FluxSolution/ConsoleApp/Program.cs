@@ -48,6 +48,26 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      //var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
+
+      //var dt = cad.AcquireDataTable();
+
+      //var find = "Sweden";
+
+      //foreach (var dr in dt.Rows.Cast<System.Data.DataRow>())
+      //{
+      //  var s0 = dr[0].ToString();
+      //  var s1 = dr[1].ToString();
+
+      //  //if (s0.Contains(find, StringComparison.InvariantCultureIgnoreCase) || s1.Contains(find, StringComparison.InvariantCultureIgnoreCase))
+      //  {
+      //    System.Console.Clear();
+      //    System.Console.WriteLine($"<{s0}>");
+      //    System.Console.WriteLine(s1);
+      //    System.Console.ReadKey();
+      //  }
+      //}
+
       var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
 
       var gs = Flux.Text.GraphemeCluster.GetAll(s).ToArray();

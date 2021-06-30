@@ -6,7 +6,7 @@ namespace Flux.Data
   {
     protected System.Collections.Generic.List<string> m_fieldNames = new System.Collections.Generic.List<string>();
     /// <summary>An array of the field names for the result.</summary>
-    public System.Collections.Generic.IReadOnlyList<string> FieldNames { get => m_fieldNames; init => m_fieldNames.AddRange(value); }
+    public System.Collections.Generic.IReadOnlyList<string> FieldNames { get => m_fieldNames; /*init => m_fieldNames.AddRange(value);*/ }
 
     protected System.Collections.Generic.List<System.Type> m_fieldTypes = new System.Collections.Generic.List<System.Type>();
     ///// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
@@ -18,19 +18,35 @@ namespace Flux.Data
       => m_fieldValues;
 
     // IDataRecord
-    public override int FieldCount
-      => m_fieldNames.Count;
     /// <summary>Gets the data type information for the specified field. Return the name of the System.Type exposed by GetFieldType(index) by default. Override to change this behavior.</summary>
     /// <remarks>The data type information can differ from the type information returned by GetFieldType, especially where the underlying data types do not map one for one to the runtime types supported by the language. 
     /// (For example, DataTypeName may be "integer", while Type.Name may be "Int32".)</remarks>
     public override System.Type GetFieldType(int index)
-      => index >= 0 && index < m_fieldTypes.Count ? m_fieldTypes[index] : typeof(object); //  Returns the corresponding System.Type in the FieldTypes array, if present, otherwise typeof(object) is returned.
+    {
+      if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      return index < m_fieldTypes.Count ? m_fieldTypes[index] : typeof(object);
+    }
     public override string GetName(int index)
-      => m_fieldNames[index];
+    {
+      if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      return index < m_fieldTypes.Count ? m_fieldNames[index] : $"Column_{index}";
+    }
     public override int GetOrdinal(string name)
-      => m_fieldNames.IndexOf(name);
+    {
+      for (var index = FieldCount - 1; index >= 0; index--)
+        if (GetName(index) == name)
+          return index;
+
+      throw new System.ArgumentOutOfRangeException(nameof(name));
+    }
     public override object GetValue(int index)
-      => m_fieldValues[index];
+    {
+      if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      return m_fieldValues[index];
+    }
 
     // IDisposable
     protected override void DisposeManaged()

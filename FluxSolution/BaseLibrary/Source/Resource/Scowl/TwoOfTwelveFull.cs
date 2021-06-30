@@ -3,10 +3,10 @@ using System.Linq;
 namespace Flux.Resources.Scowl
 {
 	public class TwoOfTwelveFull
-		: ITabularDataAcquirer
+		: ATabularDataAcquirer
 	{
-		public static System.Uri UriLocal
-			=> new System.Uri(@"file://\Resources\Scowl\2of12full.txt");
+		public static string LocalFile
+			=> @"file://\FluxSolution\BaseLibrary\Resources\Scowl\2of12full.txt";
 		public static System.Uri UriSource
 			=> new System.Uri(@"https://raw.githubusercontent.com/en-wl/wordlist/master/alt12dicts/2of12full.txt");
 
@@ -20,7 +20,7 @@ namespace Flux.Resources.Scowl
 		// Download URL: https://github.com/en-wl/wordlist/raw/master/alt12dicts/2of12full.txt
 		/// <seealso cref="http://wordlist.aspell.net/"/>
 		/// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
-		public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+		public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
 		{
 			yield return new string[] { "DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word" };
 

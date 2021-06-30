@@ -34,7 +34,7 @@ namespace Wormhole
         "PresetGroupsDirectMembers" or "PresetGroupsNested" => Preset2Steps(filter, properties),
         _ => Ldap.Search(Ldap.RootDse.DefaultNamingContext, filter, properties),
       };
-      return new Flux.Data.EnumerableTabularDataReader(e) { FieldNames = properties };
+      return new Flux.Data.EnumerableTabularDataReader(e, properties);
     }
 
     //public System.Data.IDataReader Read(System.Xml.Linq.XElement export, Wormhole.Log log)

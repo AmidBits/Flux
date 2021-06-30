@@ -3,10 +3,10 @@ using System.Linq;
 namespace Flux.Resources.W3c
 {
   public class NamedCharacterReferences
-    : ITabularDataAcquirer
+    : ATabularDataAcquirer
   {
-    public static System.Uri UriLocal
-      => new System.Uri(@"file://\Resources\W3c\NamedCharacterReferences.json");
+    public static string LocalFile
+      => @"file://\Resources\W3c\NamedCharacterReferences.json";
     public static System.Uri UriSource
       => new System.Uri(@"https://html.spec.whatwg.org/entities.json");
     public System.Uri Uri { get; private set; }
@@ -15,7 +15,7 @@ namespace Flux.Resources.W3c
       => Uri = uri;
 
     /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
-    public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
     {
       yield return new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
 

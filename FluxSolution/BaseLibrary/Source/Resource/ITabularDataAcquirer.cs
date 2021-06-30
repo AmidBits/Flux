@@ -1,15 +1,26 @@
-﻿namespace Flux
-{
-	//public static class TabularDataAcquirer
-	//{
-	//	public static System.Data.IDataReader GetDataReader(this ITabularDataAcquirer source)
-	//	{
-	//	}
-	//}
+﻿using System.Linq;
 
-	public interface ITabularDataAcquirer
-	{
-		/// <summary>Acquire tabular data from the URI. The first array should be field names.</summary>
-		System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
-	}
+namespace Flux
+{
+  public interface ITabularDataAcquirer
+  {
+    /// <summary>Acquire tabular data from the URI. The first array should be field names.</summary>
+    System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
+  }
+
+  public abstract class ATabularDataAcquirer
+    : ITabularDataAcquirer
+  {
+    public abstract System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
+
+    public virtual System.Data.IDataReader AcquireDataReader()
+      => new Flux.Data.EnumerableTabularDataReader(AcquireTabularData(), -1);
+
+    public virtual System.Data.DataTable AcquireDataTable()
+    {
+      using var idr = AcquireDataReader();
+
+      return idr.ToDataTable(idr.GetNames().ToArray());
+    }
+  }
 }

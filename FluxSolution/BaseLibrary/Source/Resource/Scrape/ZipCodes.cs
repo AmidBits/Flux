@@ -1,10 +1,10 @@
 namespace Flux.Resources.Scrape
 {
   public class ZipCodes
-    : ITabularDataAcquirer
+    : ATabularDataAcquirer
   {
-    public static System.Uri UriLocal
-      => new System.Uri(@"file://\Resources\Scrape\free-zipcode-database.csv");
+    public static string LocalFile
+      => @"file://\Resources\Scrape\free-zipcode-database.csv";
     public static System.Uri UriSource
       => new System.Uri(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
 
@@ -16,7 +16,7 @@ namespace Flux.Resources.Scrape
     /// <summary>A free zip code file.</summary>
     /// <see cref="http://federalgovernmentzipcodes.us/"/>
     // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
-    public System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
     {
       using var e = Uri.GetStream().ReadCsv(new Text.Csv.CsvOptions()).GetEnumerator();
 
