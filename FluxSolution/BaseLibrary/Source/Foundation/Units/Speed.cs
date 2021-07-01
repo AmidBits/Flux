@@ -8,7 +8,7 @@ namespace Flux.Units
     public static Speed SpeedOfLight
       => new Speed(299792458);
     public static Speed SpeedOfSound
-      => new Speed(340.27);
+      => new Speed(343.2);
 
     private readonly double m_meterPerSecond;
 
