@@ -3,24 +3,32 @@ namespace Flux.Data
   public struct TsqlNullability
     : System.IEquatable<TsqlNullability>
   {
-    public static readonly TsqlNullability Empty;
-    public bool IsEmpty => Equals(Empty);
+    public static TsqlNullability NotNull
+      => new TsqlNullability(false);
+    public static TsqlNullability Null
+      => new TsqlNullability(true);
 
     public const string CsNotNull = @"NOT NULL";
     public const string CsNull = @"NULL";
 
     public bool IsNullable { get; private set; }
 
-    public TsqlNullability(bool isNullable)
+    private TsqlNullability(bool isNullable)
       => IsNullable = isNullable;
 
+    public static TsqlNullability FromBoolean(bool value)
+      => value ? Null : NotNull;
     public static TsqlNullability Parse(string expression)
-      => (expression.ToStringBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToUpperCase(System.Globalization.CultureInfo.InvariantCulture).ToString()) switch
-      {
-        CsNotNull => new TsqlNullability() { IsNullable = false },
-        CsNull => new TsqlNullability() { IsNullable = true },
-        _ => throw new System.ArgumentOutOfRangeException(nameof(expression)),
-      };
+    {
+      var text = expression.ToStringBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToString();
+
+      if (text.Equals(CsNotNull, System.StringComparison.InvariantCultureIgnoreCase))
+        return NotNull;
+      else if (text.Equals(CsNull, System.StringComparison.InvariantCultureIgnoreCase))
+        return Null;
+      else
+        throw new System.ArgumentOutOfRangeException(nameof(expression));
+    }
     public static bool TryParse(string expression, out TsqlNullability result)
     {
       try
@@ -34,22 +42,26 @@ namespace Flux.Data
       return false;
     }
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(TsqlNullability left, TsqlNullability right)
       => left.Equals(right);
     public static bool operator !=(TsqlNullability left, TsqlNullability right)
       => !left.Equals(right);
+    #endregion Overloaded operators
 
-    // System.IEquatable<SqlDefinitionNullability>
+    #region Implemented interfaces
+    // IEquatable
     public bool Equals(TsqlNullability other)
       => IsNullable == other.IsNullable;
+    #endregion Implemented interfaces
 
-    // System.Object Overrides
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is TsqlNullability o && Equals(o);
     public override int GetHashCode()
       => IsNullable.GetHashCode();
     public override string ToString()
       => IsNullable ? CsNull : CsNotNull;
+    #endregion Object overrides
   }
 }

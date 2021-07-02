@@ -29,14 +29,14 @@ namespace Flux.Colors
       => new Rgba(HWB.ToRgb(), System.Convert.ToByte(Alpha * 255));
 
     #region Static methods
-    public static Hwba Random(System.Random rng)
+    public static Hwba FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hwba(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     }
-    public static Hwba Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hwba FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators

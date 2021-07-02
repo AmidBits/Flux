@@ -27,14 +27,14 @@ namespace Flux.Colors
       => new Rgba(HSI.ToRgb(), System.Convert.ToByte(Alpha * 255));
 
     #region Static members
-    public static Hsia Random(System.Random rng)
+    public static Hsia FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hsia(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     }
-    public static Hsia Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hsia FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static members
 
     #region Overloaded operators

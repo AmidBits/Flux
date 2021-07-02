@@ -12,7 +12,7 @@ namespace Flux
     public static T[,] Insert<T>(this T[,] source, int dimension, int index, params T[] items)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      //if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
       if (index < 0)

@@ -22,7 +22,7 @@ namespace Flux.Colors
       : this(new Rgb(red, green, blue), alpha)
     { }
 
-    public static Rgba Random(System.Random rng)
+    public static Rgba FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
@@ -30,8 +30,8 @@ namespace Flux.Colors
 
       return new Rgba(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
-    public static Rgba Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Rgba FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Rgba ToGrayscale(GrayscaleMethod method)

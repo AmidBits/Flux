@@ -48,9 +48,6 @@ namespace Flux.Data
     public string Name { get; private set; }
     public System.Collections.Generic.IReadOnlyList<string> Arguments { get; private set; }
 
-    public string ToStringQuoted(bool ansi)
-      => ansi ? Name.Wrap('"', '"') : Name.Wrap('[', ']');
-
     public TsqlDataType(string name, System.Collections.Generic.IEnumerable<string> arguments)
     {
       Name = name;
@@ -58,10 +55,14 @@ namespace Flux.Data
     }
     public TsqlDataType(string name)
       : this(name, System.Linq.Enumerable.Empty<string>())
-    {
-    }
+    { }
+
+    public string ToStringQuoted(bool ansi)
+      => ansi ? Name.Wrap('"', '"') : Name.Wrap('[', ']');
 
     #region Static members
+    public static bool IsDataTypeName(string text)
+      => Reflect.GetConstants(typeof(TsqlDataType)).Values.Where(v => v is string).Contains(text);
 
     /// <summary>Returns the default argument of the specified dataTypeName.</summary>
     public static string GetDefaultArgument(string dataTypeName, bool beExplicit = false)
@@ -282,21 +283,27 @@ namespace Flux.Data
 
     #endregion Static members
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(TsqlDataType left, TsqlDataType right)
       => left.Equals(right);
     public static bool operator !=(TsqlDataType left, TsqlDataType right)
       => !left.Equals(right);
-    // System.IEquatable<SqlDefinitionNullability>
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IEquatable
     public bool Equals(TsqlDataType other)
       => Name == other.Name && Arguments.SequenceEqual(other.Arguments);
-    // System.Object Overrides
+    #endregion IEquatable
+
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is TsqlDataType o && Equals(o);
     public override int GetHashCode()
       => Name.GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
       => Name;
+    #endregion Object overrides
   }
 
   /// <summary>SQL data type name functionality</summary>

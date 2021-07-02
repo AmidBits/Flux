@@ -21,7 +21,7 @@ namespace Flux.Colors
       m_blue = blue >= 0 && blue <= 255 ? (byte)blue : throw new System.ArgumentOutOfRangeException(nameof(blue));
     }
 
-    public static Rgb Random(System.Random rng)
+    public static Rgb FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
@@ -29,8 +29,8 @@ namespace Flux.Colors
 
       return new Rgb(bytes[0], bytes[1], bytes[2]);
     }
-    public static Rgb Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Rgb FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Returns the chroma for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>

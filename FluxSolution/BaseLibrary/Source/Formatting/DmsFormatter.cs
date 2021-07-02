@@ -24,7 +24,7 @@ namespace Flux.Formatting
     {
       if (!string.IsNullOrEmpty(format))
       {
-        if (Flux.Convert.TryTypeConverter<double>(arg ?? string.Empty, out var signedDecimalDegrees, null))
+        if (Convert.TryTypeConverter<double>(arg ?? string.Empty, out var signedDecimalDegrees, null))
         {
           if (TryFormat(signedDecimalDegrees, format, out var dms))
           {

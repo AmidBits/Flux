@@ -31,7 +31,7 @@ namespace Flux
     }
   }
 
-  public static class Quaternion
+  public static class QuaternionEx
   {
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>

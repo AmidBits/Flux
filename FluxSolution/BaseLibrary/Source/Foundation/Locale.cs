@@ -160,7 +160,7 @@ namespace Flux
       => System.Environment.UserName;
 
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => Flux.Reflexion.Types.GetProperties(typeof(Locale));
+      => Reflect.GetProperties(typeof(Locale));
   }
 }
 

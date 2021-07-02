@@ -1,0 +1,9 @@
+namespace Flux
+{
+  public static partial class ExtensionMethods
+  {
+    /// <summary>Returns whether the FieldInfo represents a constant. A constant is a fields that is a literal and cannot be initialized.</summary>
+    public static bool IsConstant(this System.Reflection.FieldInfo source)
+      => source.IsLiteral && !source.IsInitOnly;
+  }
+}

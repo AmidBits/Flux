@@ -21,6 +21,6 @@ namespace Flux
 		}
 		/// <summary>Returns a random element from the list in the output variable. Uses the .NET cryptographic random number generator.</summary>
 		public static bool RandomElement<T>(this System.Collections.Generic.IList<T> source, out T result)
-			=> RandomElement(source, out result, Flux.Random.NumberGenerator.Crypto);
+			=> RandomElement(source, out result, Randomization.NumberGenerator.Crypto);
 	}
 }

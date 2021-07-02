@@ -13,42 +13,62 @@ namespace Flux.Numerics
   /// <summary></summary>
   /// <see cref="https://github.com/john-h-k/MathSharp/tree/master/sources/MathSharp/Vector/VectorFloatingPoint/VectorDouble"/>
   public struct Vector4D
-    : System.IEquatable<Vector4D>, System.IFormattable
+    : System.IEquatable<Vector4D>
   {
-    public static readonly Vector4D Empty = new Vector4D(0, 0, 0, 0);
-    public bool IsEmpty => Equals(Empty);
+    public static Vector4D Empty
+      => new Vector4D(0, 0, 0, 0);
 
-    public static readonly Vector256<double> Epsilon = Vector256.Create(double.Epsilon);
-    public static readonly Vector256<double> NegativeOne = Vector256.Create(-1d);
-    public static readonly Vector256<double> One = Vector256.Create(1d);
-    public static readonly Vector256<double> Zero = Vector256<double>.Zero;
+    public static Vector256<double> Epsilon
+      => Vector256.Create(double.Epsilon);
+    public static Vector256<double> NegativeOne
+      => Vector256.Create(-1d);
+    public static Vector256<double> One
+      => Vector256.Create(1d);
+    public static Vector256<double> Zero
+      => Vector256<double>.Zero;
 
-    public static readonly Vector256<double> MaskNotSign = Vector256.Create(~long.MaxValue).AsDouble();
+    public static Vector256<double> MaskNotSign
+      => Vector256.Create(~long.MaxValue).AsDouble();
     //public static readonly Vector256<double> MaskSign = Vector256.Create(long.MaxValue).AsDouble();
 
-    public static readonly Vector256<double> MaskX = Vector256.Create(+0, -1, -1, -1).AsDouble();
-    public static readonly Vector256<double> MaskY = Vector256.Create(-1, +0, -1, -1).AsDouble();
-    public static readonly Vector256<double> MaskZ = Vector256.Create(-1, -1, +0, -1).AsDouble();
-    public static readonly Vector256<double> MaskW = Vector256.Create(-1, -1, -1, +0).AsDouble();
+    public static Vector256<double> MaskX
+      => Vector256.Create(+0, -1, -1, -1).AsDouble();
+    public static Vector256<double> MaskY
+      => Vector256.Create(-1, +0, -1, -1).AsDouble();
+    public static Vector256<double> MaskZ
+      => Vector256.Create(-1, -1, +0, -1).AsDouble();
+    public static Vector256<double> MaskW
+      => Vector256.Create(-1, -1, -1, +0).AsDouble();
 
-    public static readonly Vector256<double> UnitX = Vector256.Create(1d, 0d, 0d, 0d);
-    public static readonly Vector256<double> UnitY = Vector256.Create(0d, 1d, 0d, 0d);
-    public static readonly Vector256<double> UnitZ = Vector256.Create(0d, 0d, 1d, 0d);
-    public static readonly Vector256<double> UnitW = Vector256.Create(0d, 0d, 0d, 1d);
+    public static Vector256<double> UnitX
+      => Vector256.Create(1d, 0d, 0d, 0d);
+    public static Vector256<double> UnitY
+      => Vector256.Create(0d, 1d, 0d, 0d);
+    public static Vector256<double> UnitZ
+      => Vector256.Create(0d, 0d, 1d, 0d);
+    public static Vector256<double> UnitW
+      => Vector256.Create(0d, 0d, 0d, 1d);
 
-    public static readonly Vector256<double> OneDivPi = Vector256.Create(1 / System.Math.PI);
-    public static readonly Vector256<double> OneDiv2Pi = Vector256.Create(1 / (2 * System.Math.PI));
-    public static readonly Vector256<double> PiMul2 = Vector256.Create(System.Math.PI * 2);
+    public static Vector256<double> OneDivPi
+      => Vector256.Create(1 / System.Math.PI);
+    public static Vector256<double> OneDiv2Pi
+      => Vector256.Create(1 / (2 * System.Math.PI));
+    public static Vector256<double> PiMul2
+      => Vector256.Create(System.Math.PI * 2);
 
     private readonly Vector256<double> m_v256;
     /// <summary>Retreives the Vector256 store for the instance.</summary>
     public Vector256<double> V256
       => m_v256;
 
-    public double X => m_v256.GetElement(0);
-    public double Y => m_v256.GetElement(1);
-    public double Z => m_v256.GetElement(2);
-    public double W => m_v256.GetElement(3);
+    public double X
+      => m_v256.GetElement(0);
+    public double Y
+      => m_v256.GetElement(1);
+    public double Z
+      => m_v256.GetElement(2);
+    public double W
+      => m_v256.GetElement(3);
 
     public Vector4D(in Vector256<double> xyzw)
       => m_v256 = xyzw;
@@ -59,17 +79,18 @@ namespace Flux.Numerics
     public Vector4D(double x, double y)
       => m_v256 = Vector256.Create(x, y, 1, 1);
 
-    public static Vector4D FromVector256(Vector256<double> v)
-      => new Vector4D(v.GetElement(0), v.GetElement(1), v.GetElement(2), v.GetElement(3));
-    public Vector256<double> ToVector256()
-      => Vector256.Create(m_v256.GetElement(0), m_v256.GetElement(1), m_v256.GetElement(2), m_v256.GetElement(3));
+    public bool IsEmpty
+      => Equals(Empty);
 
     public double Length()
       => System.Math.Sqrt(LengthSquared());
     public double LengthSquared()
       => DotProduct3D(m_v256, m_v256).GetElement(0);
 
-    #region Static members (implementations using intrinsics if applicable)
+    public Vector256<double> ToVector256()
+      => Vector256.Create(m_v256.GetElement(0), m_v256.GetElement(1), m_v256.GetElement(2), m_v256.GetElement(3));
+
+    #region Static methods
     /// <summary>Returns the vector with absolute values.</summary>
     public static Vector256<double> Abs(in Vector256<double> v)
       => Max(Subtract(Vector256<double>.Zero, v), v);
@@ -176,6 +197,9 @@ namespace Flux.Numerics
 
       return Vector256.Create(v1.GetElement(0) * v2.GetElement(0) + v1.GetElement(1) * v2.GetElement(1) + v1.GetElement(2) * v2.GetElement(2));
     }
+    /// <summary>Creates a new Vector4D from a Vector256<double>.</summary>
+    public static Vector4D FromVector256(Vector256<double> v)
+      => new Vector4D(v.GetElement(0), v.GetElement(1), v.GetElement(2), v.GetElement(3));
     public static Vector256<double> HorizontalAdd(in Vector256<double> v1, in Vector256<double> v2)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.HorizontalAdd(v1, v2)
@@ -260,6 +284,10 @@ namespace Flux.Numerics
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(upper))
       : Vector256.Create(System.Math.Round(v.GetElement(0)), System.Math.Round(v.GetElement(1)), System.Math.Round(v.GetElement(2)), System.Math.Round(v.GetElement(3)));
+    /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+    public static Vector256<double> ScalarTripleProduct3D(in Vector256<double> a, in Vector256<double> b, in Vector256<double> c)
+      => DotProduct3D(a, CrossProduct3D(b, c));
     public static Vector256<double> Sign(in Vector256<double> v)
       => System.Runtime.Intrinsics.X86.Avx.And(v, MaskNotSign);
     public static Vector256<double> Sqrt(in Vector256<double> v)
@@ -282,40 +310,37 @@ namespace Flux.Numerics
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported && v.GetLower() is var lower && v.GetUpper() is var upper
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(upper))
       : Vector256.Create(System.Math.Truncate(v.GetElement(0)), System.Math.Truncate(v.GetElement(1)), System.Math.Truncate(v.GetElement(2)), System.Math.Truncate(v.GetElement(3)));
+    /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+    public static Vector256<double> VectorTripleProduct3D(in Vector256<double> a, in Vector256<double> b, in Vector256<double> c)
+      => CrossProduct3D(a, CrossProduct3D(b, c));
     public static Vector256<double> WithinBounds(in Vector256<double> v, in Vector256<double> bound)
       => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(v, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(v, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
 
     public static Vector256<double> DuplicateToVector256(in Vector128<double> v) => Vector256.Create(v, v);
-    #endregion Static members (implementations using intrinsics if applicable)
+    #endregion Static methods
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Vector4D a, Vector4D b)
       => a.Equals(b);
     public static bool operator !=(Vector4D a, Vector4D b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(Vector4D other)
       => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
+    #endregion Implemented interfaces
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-    {
-      if (string.IsNullOrEmpty(format))
-        format = "G";
-      if (provider is null)
-        provider = System.Globalization.CultureInfo.CurrentCulture;
-
-      return $"<{X.ToString(format, provider)}, {Y.ToString(format, provider)}, {Z.ToString(format, provider)}, {W.ToString(format, provider)}>";
-    }
-
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Vector4D o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y, Z, W);
     public override string ToString()
-      => ToString("G", System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{GetType().Name}: {X}, {Y}, {Z}, {W}>";
+    #endregion Object overrides
   }
 
   /// <summary>

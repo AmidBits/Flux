@@ -66,7 +66,7 @@
       => new BitArrayEnumerator(this);
 
     private class BitArrayEnumerator
-      : Flux.Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
+      : Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
     {
       private readonly BitArray m_bitArray;
 

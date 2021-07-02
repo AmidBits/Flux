@@ -29,6 +29,6 @@ namespace Flux
       : 3 - phase / PiOver2;
 
     public static double WhiteNoise()
-      => 1 - 2 * Flux.Random.NumberGenerator.Crypto.NextDouble();
+      => 1 - 2 * Randomization.NumberGenerator.Crypto.NextDouble();
   }
 }

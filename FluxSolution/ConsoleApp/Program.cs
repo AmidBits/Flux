@@ -10,6 +10,26 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public interface IM<T> { }
+
+  public interface IX { }
+  public class A
+    : IX, IM<A>
+  {
+  }
+
+  public interface IY { }
+  public class B
+    : A, IY, IM<B>
+  {
+  }
+
+  public interface IZ { }
+  public class C
+    : B, IZ, IM<C>
+  {
+  }
+
   class Program
   {
     public enum PRODUCT_TYPE
@@ -48,25 +68,42 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      //var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
+      ////var tii = Flux.Reflect.GetTypesImplementingInterface<Flux.Memory.Sort.ISortableInPlace<>>();
+      //var tii2 = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsSubtypeOf(typeof(Flux.Memory.Sort.ISortableInPlace<>))).ToArray();
+      //foreach (var el in Flux.Reflect.GetProperties(typeof(Flux.Locale)))
+      //  System.Console.WriteLine($"{el.Key} = {el.Value}");
+      //return;
+      //System.Console.WriteLine(typeof(IM<>).IsSubtypeOf(typeof(A)));
+      //System.Console.WriteLine(typeof(IM<>).IsSupertypeOf(typeof(A)));
+      //System.Console.WriteLine(typeof(A).IsSubtypeOf(typeof(IM<>)));
+      //System.Console.WriteLine(typeof(A).IsSupertypeOf(typeof(IM<>)));
 
-      //var dt = cad.AcquireDataTable();
 
-      //var find = "Sweden";
-
-      //foreach (var dr in dt.Rows.Cast<System.Data.DataRow>())
+      //foreach (var type in GetInheritance(typeof(C)))
       //{
-      //  var s0 = dr[0].ToString();
-      //  var s1 = dr[1].ToString();
-
-      //  //if (s0.Contains(find, StringComparison.InvariantCultureIgnoreCase) || s1.Contains(find, StringComparison.InvariantCultureIgnoreCase))
-      //  {
-      //    System.Console.Clear();
-      //    System.Console.WriteLine($"<{s0}>");
-      //    System.Console.WriteLine(s1);
-      //    System.Console.ReadKey();
-      //  }
+      //  System.Console.WriteLine(type.Name);
       //}
+
+      //Flux.Data.TsqlDataType.IsDataTypeName("decimal");
+      var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
+
+      var dt = cad.AcquireDataTable();
+
+      var find = "Sweden";
+
+      foreach (var dr in dt.Rows.Cast<System.Data.DataRow>())
+      {
+        var s0 = dr[0].ToString();
+        var s1 = dr[1].ToString();
+
+        //if (s0.Contains(find, StringComparison.InvariantCultureIgnoreCase) || s1.Contains(find, StringComparison.InvariantCultureIgnoreCase))
+        {
+          System.Console.Clear();
+          System.Console.WriteLine($"<{s0}>");
+          System.Console.WriteLine(s1);
+          System.Console.ReadKey();
+        }
+      }
 
       var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
 
@@ -230,7 +267,7 @@ namespace ConsoleApp
       System.Console.InputEncoding = System.Text.Encoding.UTF8;
       System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 
       System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
       System.Console.ReadKey();

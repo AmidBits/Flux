@@ -27,14 +27,14 @@ namespace Flux.Colors
       => new Rgba(CMYK.ToRgb(), System.Convert.ToByte(Alpha * 255));
 
     #region Static members
-    public static Cmyka Random(System.Random rng)
+    public static Cmyka FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Cmyka(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     }
-    public static Cmyka Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Cmyka FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static members
 
     #region Overloaded operators

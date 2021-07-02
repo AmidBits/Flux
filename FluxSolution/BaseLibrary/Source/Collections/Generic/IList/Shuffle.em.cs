@@ -15,6 +15,6 @@ namespace Flux
     }
     /// <summary>Returns a shuffled (randomized) sequence, implementing the standard Knuth-Fisher-Yates algorithm. Uses the cryptographic Random.</summary>
     public static void Shuffle<T>(this System.Collections.Generic.IList<T> source)
-      => Shuffle(source, Flux.Random.NumberGenerator.Crypto);
+      => Shuffle(source, Randomization.NumberGenerator.Crypto);
   }
 }

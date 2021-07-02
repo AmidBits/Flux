@@ -12,21 +12,21 @@ namespace Random.NumberGenerator
 		{
 			for (var i = 0; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextBigInteger(i);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextBigInteger(i);
 
 				Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
 			}
 
 			for (var i = 1; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextBigInteger(i.ToBigInteger());
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextBigInteger(i.ToBigInteger());
 
 				Assert.IsTrue(rv >= 0 && rv < i);
 			}
 
 			for (var i = short.MinValue; i < 0; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextBigInteger(i, 0);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextBigInteger(i, 0);
 
 				Assert.IsTrue(rv >= i && rv < 0);
 			}
@@ -37,14 +37,14 @@ namespace Random.NumberGenerator
 		{
 			for (var i = 0; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextDateTime();
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextDateTime();
 
 				Assert.IsTrue(rv >= System.DateTime.MinValue && rv < System.DateTime.MaxValue);
 			}
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextDateTime(System.DateTime.MinValue, System.DateTime.MaxValue);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextDateTime(System.DateTime.MinValue, System.DateTime.MaxValue);
 
 				Assert.IsTrue(rv >= System.DateTime.MinValue && rv < System.DateTime.MaxValue);
 			}
@@ -55,21 +55,21 @@ namespace Random.NumberGenerator
 		{
 			for (var i = 0; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextDouble();
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextDouble();
 
 				Assert.IsTrue(rv >= 0 && rv < 1.0);
 			}
 
 			for (var i = 1; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextDouble(i);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextDouble(i);
 
 				Assert.IsTrue(rv >= 0 && rv < i);
 			}
 
 			for (var i = short.MinValue; i < 0; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextDouble(i, 0);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextDouble(i, 0);
 
 				Assert.IsTrue(rv >= i && rv < 0);
 			}
@@ -105,21 +105,21 @@ namespace Random.NumberGenerator
 		{
 			for (var i = 2; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt64(i);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextInt64(i);
 
 				Assert.IsTrue(rv >= 0L && rv < long.MaxValue);
 			}
 
 			for (var i = 2; i < short.MaxValue; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt64(i);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextInt64(i);
 
 				Assert.IsTrue(rv >= 0L && rv < (long)i);
 			}
 
 			for (var i = short.MinValue; i < -2; i++)
 			{
-				var rv = Flux.Random.NumberGenerator.Crypto.NextInt64(i, 0);
+				var rv = Flux.Randomization.NumberGenerator.Crypto.NextInt64(i, 0);
 
 				Assert.IsTrue(rv >= (long)i && rv < 0L);
 			}
@@ -157,7 +157,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void Next()
 		{
-			var cr = new Flux.Random.Cryptographic();
+			var cr = new Flux.Randomization.Cryptographic();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -184,7 +184,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextDouble()
 		{
-			var cr = new Flux.Random.Cryptographic();
+			var cr = new Flux.Randomization.Cryptographic();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -211,7 +211,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextBigInteger()
 		{
-			var cr = new Flux.Random.Cryptographic();
+			var cr = new Flux.Randomization.Cryptographic();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -242,7 +242,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void Next()
 		{
-			var cr = new Flux.Random.IsaacRandom();
+			var cr = new Flux.Randomization.IsaacRandom();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -269,7 +269,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextDouble()
 		{
-			var cr = new Flux.Random.IsaacRandom();
+			var cr = new Flux.Randomization.IsaacRandom();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -296,7 +296,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextBigInteger()
 		{
-			var cr = new Flux.Random.IsaacRandom();
+			var cr = new Flux.Randomization.IsaacRandom();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -327,7 +327,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void Next()
 		{
-			var cr = new Flux.Random.SplitMix64();
+			var cr = new Flux.Randomization.SplitMix64();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -354,7 +354,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextDouble()
 		{
-			var cr = new Flux.Random.SplitMix64();
+			var cr = new Flux.Randomization.SplitMix64();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -381,7 +381,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextBigInteger()
 		{
-			var cr = new Flux.Random.SplitMix64();
+			var cr = new Flux.Randomization.SplitMix64();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -412,7 +412,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void Next()
 		{
-			var cr = new Flux.Random.Xoshiro256P();
+			var cr = new Flux.Randomization.Xoshiro256P();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -439,7 +439,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextDouble()
 		{
-			var cr = new Flux.Random.Xoshiro256P();
+			var cr = new Flux.Randomization.Xoshiro256P();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -466,7 +466,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextBigInteger()
 		{
-			var cr = new Flux.Random.Xoshiro256P();
+			var cr = new Flux.Randomization.Xoshiro256P();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -497,7 +497,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void Next()
 		{
-			var cr = new Flux.Random.Xoshiro256SS();
+			var cr = new Flux.Randomization.Xoshiro256SS();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -524,7 +524,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextDouble()
 		{
-			var cr = new Flux.Random.Xoshiro256SS();
+			var cr = new Flux.Randomization.Xoshiro256SS();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{
@@ -551,7 +551,7 @@ namespace Random.NumberGenerator
 		[TestMethod]
 		public void NextBigInteger()
 		{
-			var cr = new Flux.Random.Xoshiro256SS();
+			var cr = new Flux.Randomization.Xoshiro256SS();
 
 			for (var i = 0; i < short.MaxValue; i++)
 			{

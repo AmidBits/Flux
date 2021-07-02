@@ -24,7 +24,7 @@ ORDER BY S.[name], T.[name]
     /// <param name="metaData">The XML element for the source.</param>
     /// <param name="writer">This is the output stream for the data.</param>
     /// <param name="log"></param>
-    void Export(System.Xml.Linq.XElement metaData, Flux.IO.TabularStreamWriter writer, Flux.Diagnostics.FileLog log);
+    void Export(System.Xml.Linq.XElement metaData, IO.TabularStreamWriter writer, Services.FileLog log);
   }
 
   public interface IDataImport
@@ -47,7 +47,7 @@ ORDER BY S.[name], T.[name]
     /// <param name="metaData">The XML element for the source.</param>
     /// <param name="reader">This is the input stream for the data.</param>
     /// <param name="log"></param>
-    void Import(System.Xml.Linq.XElement metaData, Flux.IO.TabularStreamReader reader, Flux.Diagnostics.FileLog log);
+    void Import(System.Xml.Linq.XElement metaData, IO.TabularStreamReader reader, Services.FileLog log);
   }
 
   //class Program

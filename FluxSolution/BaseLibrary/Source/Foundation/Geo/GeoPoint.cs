@@ -286,9 +286,9 @@ namespace Flux
     {
       var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-      var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Flux.Maths.PiOver4));
+      var mpForward = System.Math.Log(System.Math.Tan((Units.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Maths.PiOver4));
 
-      var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Flux.Maths.PiX2));
+      var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Maths.PiX2));
 
       return (x, y);
     }
@@ -296,9 +296,9 @@ namespace Flux
     {
       var longitude = x * 360.0 / pixelCanvasWidth - 180.0;
 
-      var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Flux.Maths.PiX2);
+      var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Maths.PiX2);
 
-      var latitude = Units.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Flux.Maths.PiOver4) * 2.0);
+      var latitude = Units.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Maths.PiOver4) * 2.0);
 
       return (latitude, longitude);
     }
@@ -321,7 +321,7 @@ namespace Flux
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeoPoint result, double earthRadius = EarthRadii.MeanInMeters)
     {
-      if (Flux.Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Flux.Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
+      if (Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
       {
         result = new GeoPoint(latitude, longitude, earthRadius);
         return true;

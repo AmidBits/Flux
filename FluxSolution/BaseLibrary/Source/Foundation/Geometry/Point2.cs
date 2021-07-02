@@ -109,6 +109,10 @@ namespace Flux.Geometry
     /// <summary>Computes the closest cartesian coordinate vector at the specified angle and distance from the vector.</summary>
     public static Point2 ComputeVector(Point2 p, double angle, double distance = 1)
       => new Point2((int)(distance * System.Math.Sin(angle)) + p.X, (int)(distance * System.Math.Cos(angle)) + p.Y);
+    /// <summary>Returns the cross product of the two vectors.</summary>
+    /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
+    public static int CrossProduct(Point2 p1, Point2 p2)
+      => p1.X * p2.Y - p1.Y * p2.X;
     /// <summary>Create a new vector with each member subtracted by 1.</summary>
     public static Point2 Decrement(Point2 p1)
       => Subtract(p1, 1);
@@ -257,17 +261,17 @@ namespace Flux.Geometry
     public static Point2 PerpendicularCw(Point2 p)
       => new Point2(p.Y, -p.X);
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static Point2 Random(int toExlusiveX, int toExclusiveY)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY));
+    public static Point2 FromRandom(int toExlusiveX, int toExclusiveY)
+      => new Point2(Randomization.NumberGenerator.Crypto.Next(toExlusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
-    public static Point2 Random(Point2 toExclusive)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExclusive.X), Flux.Random.NumberGenerator.Crypto.Next(toExclusive.Y));
+    public static Point2 FromRandom(Point2 toExclusive)
+      => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusive.X), Randomization.NumberGenerator.Crypto.Next(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    public static Point2 RandomZero(int toExlusiveX, int toExclusiveY)
-      => new Point2(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY);
+    public static Point2 FromRandomZero(int toExlusiveX, int toExclusiveY)
+      => new Point2(Randomization.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
-    public static Point2 RandomZero(Point2 toExclusive)
-      => RandomZero(toExclusive.X, toExclusive.Y);
+    public static Point2 FromRandomZero(Point2 toExclusive)
+      => FromRandomZero(toExclusive.X, toExclusive.Y);
     /// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
     public static Point2 Remainder(Point2 p1, Point2 p2)
       => new Point2(p1.X % p2.X, p1.Y % p2.Y);

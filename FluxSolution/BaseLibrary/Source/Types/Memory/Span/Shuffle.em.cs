@@ -12,6 +12,6 @@ namespace Flux
 		}
 		/// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
 		public static void Shuffle<T>(this System.Span<T> source)
-			=> Shuffle(source, Flux.Random.NumberGenerator.Crypto);
+			=> Shuffle(source, Randomization.NumberGenerator.Crypto);
 	}
 }

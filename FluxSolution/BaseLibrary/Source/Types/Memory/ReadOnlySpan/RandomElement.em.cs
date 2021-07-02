@@ -18,6 +18,6 @@ namespace Flux
     }
     /// <summary>Returns a random element from the sequence in the output variable. Uses the .NET cryptographic random number generator.</summary>
     public static bool RandomElement<T>(this System.ReadOnlySpan<T> source, out T result)
-      => RandomElement(source, out result, Flux.Random.NumberGenerator.Crypto);
+      => RandomElement(source, out result, Randomization.NumberGenerator.Crypto);
   }
 }

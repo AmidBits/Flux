@@ -82,14 +82,14 @@ namespace Flux.Colors
       => $"hsl({Hue}, {Saturation}%, {Lightness}%)";
 
     #region Static methods
-    public static Hsl Random(System.Random rng)
+    public static Hsl FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hsl(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
     }
-    public static Hsl Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hsl FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators

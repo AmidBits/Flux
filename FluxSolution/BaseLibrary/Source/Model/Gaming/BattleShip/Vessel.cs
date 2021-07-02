@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string ToConsoleString(this System.Collections.Generic.List<Flux.Model.Gaming.BattleShip.Vessel> ships, Geometry.Size2 size)
+    public static string ToConsoleString(this System.Collections.Generic.List<Model.Gaming.BattleShip.Vessel> ships, Geometry.Size2 size)
     {
       if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -14,13 +14,13 @@ namespace Flux
 
       for (var i = 0; i < ships.Count; i++)
       {
-        Flux.Model.Gaming.BattleShip.Vessel s = ships[i];
+        Model.Gaming.BattleShip.Vessel s = ships[i];
 
         for (var j = i + 1; j < ships.Count; j++)
         {
-          Flux.Model.Gaming.BattleShip.Vessel t = ships[j];
+          Model.Gaming.BattleShip.Vessel t = ships[j];
 
-          if (Flux.Model.Gaming.BattleShip.Vessel.Intersects(s, t))
+          if (Model.Gaming.BattleShip.Vessel.Intersects(s, t))
             countAdjacentShips++;
         }
       }
@@ -30,7 +30,7 @@ namespace Flux
         for (int y = 0; y < size.Height; y++)
           placement[y, x] = '.';
 
-      foreach (Flux.Model.Gaming.BattleShip.Vessel s in ships)
+      foreach (Model.Gaming.BattleShip.Vessel s in ships)
         foreach (Geometry.Point2 p in s.Locations)
           placement[p.Y, p.X] = (char)('0' + s.Length);
 
@@ -151,7 +151,7 @@ namespace Flux
 
           do
           {
-            ship = new Vessel(size, new Geometry.Point2(Random.NumberGenerator.Crypto.Next(gridSize.Width), Random.NumberGenerator.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerator.Crypto.Next(2));
+            ship = new Vessel(size, new Geometry.Point2(Randomization.NumberGenerator.Crypto.Next(gridSize.Width), Randomization.NumberGenerator.Crypto.Next(gridSize.Height)), (VesselOrientation)Randomization.NumberGenerator.Crypto.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 

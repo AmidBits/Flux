@@ -71,14 +71,14 @@ namespace Flux.Colors
     }
 
     #region Static methods
-    public static Hsi Random(System.Random rng)
+    public static Hsi FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hsi(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
     }
-    public static Hsi Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hsi FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators

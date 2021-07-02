@@ -4,7 +4,7 @@ using System.Linq;
 namespace Flux.Text.Csv
 {
 	public class CsvWriter
-		: Flux.Disposable
+		: Disposable
 	{
 		private readonly char[] m_escapeCharacters;
 

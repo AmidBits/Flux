@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.IO
 {
   public sealed class TabularStreamReader
-    : Flux.Data.TabularDataReader
+    : Data.TabularDataReader
   {
     private readonly System.IO.StreamReader m_streamReader;
 

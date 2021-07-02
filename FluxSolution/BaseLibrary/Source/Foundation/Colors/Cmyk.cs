@@ -39,14 +39,14 @@ namespace Flux.Colors
     }
 
     #region Static members
-    public static Cmyk Random(System.Random rng)
+    public static Cmyk FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Cmyk(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     }
-    public static Cmyk Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Cmyk FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static members
 
     #region Overloaded operators

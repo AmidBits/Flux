@@ -33,18 +33,18 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public SampleStereo ProcessAudio(SampleStereo stereo)
-      => (m_position > Flux.Maths.EpsilonCpp32)
+      => (m_position > Maths.EpsilonCpp32)
       ? new SampleStereo(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
-      : (m_position < -Flux.Maths.EpsilonCpp32)
+      : (m_position < -Maths.EpsilonCpp32)
       ? new SampleStereo(stereo.FrontLeft * m_scaledAbsInv + stereo.FrontRight * m_scaledAbs, stereo.FrontRight * m_positionInvAbs)
       : stereo;
 
     /// <summary>Apply stereo pan across the stereo field.</summary>
     /// <param name="position">Pan position in the range [-1, 1], where -1 means more of the stereo to the left, 1 means more of the stereo to the right and 0 means no change.</param>
     public static (double left, double right) Apply(double position, double left, double right)
-      => (position > Flux.Maths.EpsilonCpp32 && position * 0.5 is var scaledRightAbs)
+      => (position > Maths.EpsilonCpp32 && position * 0.5 is var scaledRightAbs)
       ? (left * (1 - position), left * scaledRightAbs + right * (1 - scaledRightAbs))
-      : (position < -Flux.Maths.EpsilonCpp32 && position * -0.5 is var scaledLeftAbs)
+      : (position < -Maths.EpsilonCpp32 && position * -0.5 is var scaledLeftAbs)
       ? (left * (1 - scaledLeftAbs) + right * scaledLeftAbs, right * (-1 + position))
       : (left, right);
   }

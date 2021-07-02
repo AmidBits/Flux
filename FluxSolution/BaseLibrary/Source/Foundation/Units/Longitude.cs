@@ -28,7 +28,7 @@ namespace Flux.Units
     public static Longitude Add(Longitude left, Longitude right)
       => new Longitude(left.m_degree + right.m_degree);
     public static int ComputeTheoreticalTimezoneOffset(double longitude)
-      => (int)Flux.Maths.RoundToNearest((longitude + System.Math.CopySign(7.5, longitude)) / 15, RoundingBehavior.RoundTowardZero);
+      => (int)Maths.RoundToNearest((longitude + System.Math.CopySign(7.5, longitude)) / 15, RoundingBehavior.RoundTowardZero);
     public static Longitude Divide(Longitude left, Longitude right)
       => new Longitude(left.m_degree / right.m_degree);
     public static Longitude Multiply(Longitude left, Longitude right)

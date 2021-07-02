@@ -7,9 +7,9 @@
     protected System.Random Rng { get; set; }
 
     public WhiteNoise(System.Random? rng)
-      => Rng = rng ?? Flux.Random.NumberGenerator.Crypto;
+      => Rng = rng ?? Randomization.NumberGenerator.Crypto;
     public WhiteNoise()
-      => Rng = new Flux.Random.Xoshiro256SS();
+      => Rng = new Randomization.Xoshiro256SS();
 
     public virtual double GenerateWave(double phase2Pi)
       => Rng.NextDouble() * 2 - 1;

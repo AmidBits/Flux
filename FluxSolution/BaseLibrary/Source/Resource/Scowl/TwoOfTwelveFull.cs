@@ -6,7 +6,7 @@ namespace Flux.Resources.Scowl
 		: ATabularDataAcquirer
 	{
 		public static string LocalFile
-			=> @"file://\FluxSolution\BaseLibrary\Resources\Scowl\2of12full.txt";
+			=> @"file://\Resources\Scowl\2of12full.txt";
 		public static System.Uri UriSource
 			=> new System.Uri(@"https://raw.githubusercontent.com/en-wl/wordlist/master/alt12dicts/2of12full.txt");
 

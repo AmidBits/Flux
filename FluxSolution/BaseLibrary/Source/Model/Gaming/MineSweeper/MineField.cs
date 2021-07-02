@@ -96,7 +96,7 @@ namespace Flux.Model.Gaming.MineSweeper
       => m_mines.Contains(point);
 
     public static Mines Create(Field field, int count)
-      => new Mines(System.Linq.Enumerable.Repeat(Random.NumberGenerator.Crypto, count * 2).Select(r => new Geometry.Point2(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
+      => new Mines(System.Linq.Enumerable.Repeat(Randomization.NumberGenerator.Crypto, count * 2).Select(r => new Geometry.Point2(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
 
     #region IReadOnlySet implementation
     public int Count
@@ -181,7 +181,7 @@ namespace Flux.Model.Gaming.MineSweeper
 
   public static class Game
   {
-    public static void RenderInConsole(Flux.Model.Gaming.MineSweeper.GameState gameState, Flux.Model.Gaming.MineSweeper.MineField mineField)
+    public static void RenderInConsole(GameState gameState, MineField mineField)
     {
       if (gameState is null) throw new System.ArgumentNullException(nameof(gameState));
       if (mineField is null) throw new System.ArgumentNullException(nameof(mineField));
@@ -232,7 +232,7 @@ namespace Flux.Model.Gaming.MineSweeper
         {
           gameState.CursorPosition = point;
 
-          gameState = Flux.Model.Gaming.MineSweeper.Game.Uncover(gameState, mineField);
+          gameState = Game.Uncover(gameState, mineField);
 
           gameResult = gameState.Evaluate(mineField.Mines);
         }

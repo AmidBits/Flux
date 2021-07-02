@@ -7,7 +7,7 @@ namespace Flux.Hashing
 
     public ZobristTable(int lengthDimension0, int lengthDimension1, int statePermutations)
     {
-      var rng = new Flux.Random.Cryptographic();
+      var rng = new Randomization.Cryptographic();
 
       m_table = new ulong[lengthDimension0, lengthDimension1, statePermutations];
 

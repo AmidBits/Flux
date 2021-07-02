@@ -236,17 +236,17 @@ namespace Flux.Geometry
       }
     }
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static Point3 Random(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY), Flux.Random.NumberGenerator.Crypto.Next(toExclusiveZ));
+    public static Point3 FromRandom(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
+      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExlusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
     /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
-    public static Point3 Random(in Point3 toExclusive)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExclusive.X), Flux.Random.NumberGenerator.Crypto.Next(toExclusive.Y));
+    public static Point3 FromRandom(in Point3 toExclusive)
+      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExclusive.X), Randomization.NumberGenerator.Crypto.Next(toExclusive.Y));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    public static Point3 RandomZero(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Flux.Random.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY, Flux.Random.NumberGenerator.Crypto.Next(toExclusiveZ * 2) - toExclusiveZ);
+    public static Point3 FromRandomZero(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
+      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY, Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2) - toExclusiveZ);
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
-    public static Point3 RandomZero(in Point3 toExclusive)
-      => RandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
+    public static Point3 FromRandomZero(in Point3 toExclusive)
+      => FromRandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
     /// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
     public static Point3 Remainder(in Point3 p1, in Point3 p2)
       => new Point3(p1.X % p2.X, p1.Y % p2.Y, p1.Z % p2.Z);
@@ -258,7 +258,7 @@ namespace Flux.Geometry
       => new Point3((int)(p.X % value), (int)(p.Y % value), (int)(p.Z % value));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static int ScalarTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
+    public static int ScalarTripleProduct(Point3 p1, Point3 p2, Point3 p3)
       => DotProduct(p1, CrossProduct(p2, p3));
     /// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
     public static Point3 Subtract(in Point3 p1, in Point3 p2)
@@ -271,7 +271,7 @@ namespace Flux.Geometry
       => new Size3(point.X, point.Y, point.Z);
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Point3 VectorTripleProduct(in Point3 p1, in Point3 p2, in Point3 p3)
+    public static Point3 VectorTripleProduct(Point3 p1, Point3 p2, Point3 p3)
       => CrossProduct(p1, CrossProduct(p2, p3));
     #endregion Static methods
 

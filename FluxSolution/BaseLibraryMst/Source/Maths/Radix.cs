@@ -59,7 +59,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitCount_BigInteger()
 		{
-			for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Random.NumberGenerator.Crypto.NextBigInteger(i) + 1)
+			for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Randomization.NumberGenerator.Crypto.NextBigInteger(i) + 1)
 			{
 				var expectedString = i.ToString();
 				var actualCount = Flux.Maths.DigitCount(i, 10);
@@ -69,7 +69,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitCount_Int32()
 		{
-			for (var i = 2U; i < short.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.Next((int)i) + 1)
+			for (var i = 2U; i < short.MaxValue; i += (uint)Flux.Randomization.NumberGenerator.Crypto.Next((int)i) + 1)
 			{
 				var expectedString = i.ToString();
 				var actualCount = Flux.Maths.DigitCount((int)i, 10);
@@ -79,7 +79,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitCount_Int64()
 		{
-			for (var i = 2UL; i < long.MaxValue; i += (ulong)Flux.Random.NumberGenerator.Crypto.NextInt64((long)i) + 1)
+			for (var i = 2UL; i < long.MaxValue; i += (ulong)Flux.Randomization.NumberGenerator.Crypto.NextInt64((long)i) + 1)
 			{
 				var expectedString = i.ToString();
 				var actualCount = Flux.Maths.DigitCount((long)i, 10);
@@ -90,7 +90,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitSum_BigInteger()
 		{
-			for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Random.NumberGenerator.Crypto.NextBigInteger(i) + 1)
+			for (var i = 1.ToBigInteger(); i < ulong.MaxValue; i += Flux.Randomization.NumberGenerator.Crypto.NextBigInteger(i) + 1)
 			{
 				var expectedSum = Flux.Maths.GetDigitsReversed(i, 10).Aggregate(System.Numerics.BigInteger.Zero, (a, e) => a + e);
 				var actualSum = Flux.Maths.DigitSum(i, 10);
@@ -100,7 +100,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitSum_Int32()
 		{
-			for (var i = 2U; i < int.MaxValue; i += (uint)Flux.Random.NumberGenerator.Crypto.Next((int)i) + 1)
+			for (var i = 2U; i < int.MaxValue; i += (uint)Flux.Randomization.NumberGenerator.Crypto.Next((int)i) + 1)
 			{
 				var expectedSum = Flux.Maths.GetDigitsReversed((int)i, 10).Aggregate(0, (a, e) => a + e);
 				var actualSum = Flux.Maths.DigitSum(i, 10);
@@ -110,7 +110,7 @@ namespace Maths
 		[TestMethod]
 		public void DigitSum_Int64()
 		{
-			for (var i = 2UL; i < long.MaxValue; i += (ulong)Flux.Random.NumberGenerator.Crypto.NextInt64((long)i) + 1)
+			for (var i = 2UL; i < long.MaxValue; i += (ulong)Flux.Randomization.NumberGenerator.Crypto.NextInt64((long)i) + 1)
 			{
 				var expectedSum = Flux.Maths.GetDigitsReversed((long)i, 10).Aggregate(0L, (a, e) => a + e);
 				var actualSum = (long)Flux.Maths.DigitSum(i, 10);
@@ -217,11 +217,11 @@ namespace Maths
 		{
 			var value = System.Numerics.BigInteger.Parse("670530");
 
-			if (value >= int.MinValue && value <= int.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.ReverseDigits((int)value, 10), 200000).Assert(35076, 0.25);
-			if (value >= long.MinValue && value <= long.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.ReverseDigits((long)value, 10), 200000).Assert(35076L, 0.25);
-			Flux.Diagnostics.Performance.Measure(() => Flux.Maths.ReverseDigits(value, 10), 200000).Assert((System.Numerics.BigInteger)35076, 1.2);
-			if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.ReverseDigits((uint)value, 10), 200000).Assert(35076U, 0.25);
-			if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Diagnostics.Performance.Measure(() => Flux.Maths.ReverseDigits((ulong)value, 10), 200000).Assert(35076UL, 0.25);
+			if (value >= int.MinValue && value <= int.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((int)value, 10), 200000).Assert(35076, 0.25);
+			if (value >= long.MinValue && value <= long.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((long)value, 10), 200000).Assert(35076L, 0.25);
+			Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits(value, 10), 200000).Assert((System.Numerics.BigInteger)35076, 1.2);
+			if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((uint)value, 10), 200000).Assert(35076U, 0.25);
+			if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((ulong)value, 10), 200000).Assert(35076UL, 0.25);
 		}
 
 		[TestMethod]

@@ -36,11 +36,11 @@ namespace Flux
     {
       Explicit = GetType().GetTypeInfo().DeclaredMethods.Where(mi => !mi.IsSpecialName).ToList(); // Explicit methods, i.e. not accessor, etc.
 
-      m_mapMiExplicit = Flux.DependsOnAttribute.MapDependencies(Explicit);
+      m_mapMiExplicit = DependsOnAttribute.MapDependencies(Explicit);
 
       var piNotICommand = GetType().GetTypeInfo().DeclaredProperties.Where(pi => !pi.PropertyType.GetTypeInfo().Equals(typeof(System.Windows.Input.ICommand)) && !pi.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(System.Windows.Input.ICommand)));
 
-      m_mapPiNotICommand = Flux.DependsOnAttribute.MapDependencies(piNotICommand);
+      m_mapPiNotICommand = DependsOnAttribute.MapDependencies(piNotICommand);
     }
 
     /// <summary>Raise the PropertyChanged event chain for the property names.</summary>

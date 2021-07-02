@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.DataStructures
 {
   public class LazyListCollection<T>
-    : Flux.Disposable, System.Collections.Generic.IList<T>
+    : Disposable, System.Collections.Generic.IList<T>
   {
     private readonly System.Collections.Generic.IList<T> m_cache = new System.Collections.Generic.List<T>();
     private readonly System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>> m_enumerators = new System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>>();

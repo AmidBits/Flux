@@ -10,11 +10,8 @@ namespace Flux
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
-      var sourceLengthD = source.GetLength(dimension);
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
-
-      if (sourceLengthD - indices.Length <= 0) throw new System.ArgumentException($"At least one dimension index must remain in target.");
 
       var target = new T[sourceLength0 - (dimension == 0 ? indices.Length : 0), sourceLength1 - (dimension == 1 ? indices.Length : 0)];
 

@@ -202,11 +202,11 @@ namespace Flux.Model
 
       var width = 1 + values.Max(s => s.Length);
 
-      foreach (var r in Flux.Model.Sudoku.RowLabels)
+      foreach (var r in Sudoku.RowLabels)
       {
-        foreach (var c in Flux.Model.Sudoku.ColumnLabels)
+        foreach (var c in Sudoku.ColumnLabels)
         {
-          sb.Append(values[Flux.Model.Sudoku.ToIndex(r.ToString() + c.ToString())].ToStringBuilder().PadEven(width, ' ', ' '));
+          sb.Append(values[Sudoku.ToIndex(r.ToString() + c.ToString())].ToStringBuilder().PadEven(width, ' ', ' '));
 
           if (c == '9') { sb.AppendLine(); } // After each unit row.
         }

@@ -1,11 +1,10 @@
-#if FluxNumerics
 namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating four double precision floating point values and provides hardware accelerated methods.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4.cs"/>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
   public struct Vector4
-    : System.IEquatable<Vector4>, System.IFormattable
+    : System.IEquatable<Vector4>
   {
     /// <summary>The X component of the vector.</summary>
     public double X { get; set; }
@@ -74,37 +73,7 @@ namespace Flux.Numerics
     public double LengthSquared()
       => X * X + Y * Y + Z * Z + W * W;
 
-    /// <summary>Adds two vectors together.</summary>
-    public static Vector4 operator +(in Vector4 v1, in Vector4 v2)
-      => new Vector4(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
-    /// <summary>Subtracts the second vector from the first.</summary>
-    public static Vector4 operator -(in Vector4 v1, in Vector4 v2)
-      => new Vector4(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
-    /// <summary>Multiplies two vectors together.</summary>
-    public static Vector4 operator *(in Vector4 v1, in Vector4 v2)
-      => new Vector4(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(in Vector4 v, double scalar)
-      => new Vector4(v.X * scalar, v.Y * scalar, v.Z * scalar, v.W * scalar);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(double scalar, in Vector4 v)
-      => new Vector4(scalar * v.X, scalar * v.Y, scalar * v.Z, scalar * v.W);
-    /// <summary>Divides the first vector by the second.</summary>
-    public static Vector4 operator /(in Vector4 v1, in Vector4 v2)
-      => new Vector4(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
-    /// <summary>Divides the vector by the given scalar.</summary>
-    public static Vector4 operator /(in Vector4 v, double divisor)
-      => new Vector4(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
-    /// <summary>Negates a given vector.</summary>
-    public static Vector4 operator -(in Vector4 v)
-      => new Vector4(-v.X, -v.Y, -v.Z, -v.W);
-    /// <summary>Returns a boolean indicating whether the two given vectors are equal.</summary>
-    public static bool operator ==(in Vector4 v1, in Vector4 v2)
-      => v1.Equals(v2);
-    /// <summary>Returns a boolean indicating whether the two given vectors are not equal.</summary>
-    public static bool operator !=(in Vector4 v1, in Vector4 v2)
-      => !v1.Equals(v2);
-
+    #region Static methods
     /// <summary>Returns a vector whose elements are the absolute values of each of the source vector's elements.</summary>
     public static Vector4 Abs(in Vector4 v)
       => new Vector4(System.Math.Abs(v.X), System.Math.Abs(v.Y), System.Math.Abs(v.Z), System.Math.Abs(v.W));
@@ -270,30 +239,59 @@ namespace Flux.Numerics
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static Vector4 VectorTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c) => Cross(a, Cross(b, c));
+    #endregion Static methods
 
-    // System.Equatable
+    #region Operator overloads
+    /// <summary>Returns a boolean indicating whether the two given vectors are equal.</summary>
+    public static bool operator ==(in Vector4 v1, in Vector4 v2)
+      => v1.Equals(v2);
+    /// <summary>Returns a boolean indicating whether the two given vectors are not equal.</summary>
+    public static bool operator !=(in Vector4 v1, in Vector4 v2)
+      => !v1.Equals(v2);
+
+    /// <summary>Adds two vectors together.</summary>
+    public static Vector4 operator +(in Vector4 v1, in Vector4 v2)
+      => new Vector4(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
+    /// <summary>Subtracts the second vector from the first.</summary>
+    public static Vector4 operator -(in Vector4 v1, in Vector4 v2)
+      => new Vector4(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
+    /// <summary>Multiplies two vectors together.</summary>
+    public static Vector4 operator *(in Vector4 v1, in Vector4 v2)
+      => new Vector4(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
+    /// <summary>Multiplies a vector by the given scalar.</summary>
+    public static Vector4 operator *(in Vector4 v, double scalar)
+      => new Vector4(v.X * scalar, v.Y * scalar, v.Z * scalar, v.W * scalar);
+    /// <summary>Multiplies a vector by the given scalar.</summary>
+    public static Vector4 operator *(double scalar, in Vector4 v)
+      => new Vector4(scalar * v.X, scalar * v.Y, scalar * v.Z, scalar * v.W);
+    /// <summary>Divides the first vector by the second.</summary>
+    public static Vector4 operator /(in Vector4 v1, in Vector4 v2)
+      => new Vector4(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
+    /// <summary>Divides the vector by the given scalar.</summary>
+    public static Vector4 operator /(in Vector4 v, double divisor)
+      => new Vector4(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
+    /// <summary>Negates a given vector.</summary>
+    public static Vector4 operator -(in Vector4 v)
+      => new Vector4(-v.X, -v.Y, -v.Z, -v.W);
+    #endregion Operator overloads
+
+    #region Implemented interfaces
+    // IEquatable
     /// <summary>Returns a boolean indicating whether the given Vector4 is equal to this Vector4 instance.</summary>
     public bool Equals(Vector4 v)
       => X == v.X && Y == v.Y && Z == v.Z && W == v.W;
-    // System.Formattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-    {
-      provider ??= System.Globalization.CultureInfo.CurrentCulture;
+    #endregion Implemented interfaces
 
-      return string.Format(provider, @"<X={0} Y={1} Z={2} W={3}>", X.ToString(format, provider), Y.ToString(format, provider), Z.ToString(format, provider), W.ToString(format, provider));
-    }
-    public string ToString(string format)
-      => ToString(format, System.Globalization.CultureInfo.CurrentCulture);
-
+    #region Object overrides
     /// <summary>Returns a boolean indicating whether the given Object is equal to this Vector4 instance.</summary>
     public override bool Equals(object? obj)
       => obj is Vector4 ? Equals((Vector4)obj) : false;
     /// <summary>Returns the hash code for this instance.</summary>
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(X, Y, Z, W).CombineHashDefault();
+      => System.HashCode.Combine(X, Y, Z, W);
     /// <summary>Returns a String representing this Quaternion instance.</summary>
     public override string ToString()
-      => ToString(@"N3", System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{GetType().Name}: X={X} Y={Y} Z={Z} W={W}>";
+    #endregion Object overrides
   }
 }
-#endif

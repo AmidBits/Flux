@@ -30,10 +30,10 @@ namespace Flux.Colors
       => new Rgba(HSV.ToRgb(), System.Convert.ToByte(Alpha * 255));
 
     #region Static methods
-    public static Hsva Random(System.Random rng)
+    public static Hsva FromRandom(System.Random rng)
       => new Hsva(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    public static Hsva Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hsva FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators

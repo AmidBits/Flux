@@ -76,14 +76,14 @@ namespace Flux.Colors
     }
 
     #region Static member
-    public static Hwb Random(System.Random rng)
+    public static Hwb FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hwb(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
     }
-    public static Hwb Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hwb FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static member
 
     #region Overloaded operators

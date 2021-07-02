@@ -33,14 +33,14 @@ namespace Flux.Colors
       => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {Alpha})";
 
     #region Static methods
-    public static Hsla Random(System.Random rng)
+    public static Hsla FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
-      return new Hsla(Hsl.Random(rng), rng.NextDouble());
+      return new Hsla(Hsl.FromRandom(rng), rng.NextDouble());
     }
-    public static Hsla Random()
-      => Random(Flux.Random.NumberGenerator.Crypto);
+    public static Hsla FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators

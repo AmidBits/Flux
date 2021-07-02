@@ -240,10 +240,10 @@ namespace Flux.Geometry
       => Ellipse.Create(8, radius, radius).Select(v2 => v2.ToVector3());
     /// <summary>Creates a octagon with the specified radius, starting point 22.5 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateOctagonXY2(float radius)
-      => Ellipse.Create(8, radius, radius, Flux.Maths.PiOver8).Select(v2 => v2.ToVector3());
+      => Ellipse.Create(8, radius, radius, Maths.PiOver8).Select(v2 => v2.ToVector3());
     /// <summary>Creates a square with the specified radius, starting point 45 degrees to the right of flat top.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateSquareXY(float radius)
-      => Ellipse.Create(4, radius, radius, Flux.Maths.PiOver4).Select(v2 => v2.ToVector3());
+      => Ellipse.Create(4, radius, radius, Maths.PiOver4).Select(v2 => v2.ToVector3());
     /// <summary>Creates a triangle with the specified radius, starting point up.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> CreateTriangleXY(float radius)
       => Ellipse.Create(3, radius, radius).Select(v2 => v2.ToVector3());

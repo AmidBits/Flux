@@ -4,7 +4,7 @@ namespace Flux.Resources.ProjectGutenberg
     : ATabularDataAcquirer
   {
     public static string LocalFile
-       => @"file://\Resources\ProjectGutenberg\pg29765.txt";
+      => @"file://\Resources\ProjectGutenberg\pg29765.txt";
     public static System.Uri UriSource
       => new System.Uri(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
 

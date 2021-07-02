@@ -14,7 +14,7 @@ namespace Data
       var columnName = "TheName";
       var dataTypeName = "nvarchar";
       var arguments = new System.Collections.Generic.List<string> { "MAX" };
-      var nullability = new Flux.Data.TsqlNullability(true);
+      var nullability = Flux.Data.TsqlNullability.FromBoolean(true);
 
       var columnDefinition = new Flux.Data.TsqlColumnDefinition(columnName, dataTypeName, arguments, nullability);
 

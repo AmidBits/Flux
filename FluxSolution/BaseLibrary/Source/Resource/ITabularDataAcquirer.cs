@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   public interface ITabularDataAcquirer
   {
@@ -14,13 +12,9 @@ namespace Flux
     public abstract System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
 
     public virtual System.Data.IDataReader AcquireDataReader()
-      => new Flux.Data.EnumerableTabularDataReader(AcquireTabularData(), -1);
+      => new Data.EnumerableTabularDataReader(AcquireTabularData(), -1);
 
     public virtual System.Data.DataTable AcquireDataTable()
-    {
-      using var idr = AcquireDataReader();
-
-      return idr.ToDataTable(idr.GetNames().ToArray());
-    }
+      => AcquireDataReader().ToDataTable(GetType().Name);
   }
 }
