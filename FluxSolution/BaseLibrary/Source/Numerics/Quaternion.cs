@@ -5,6 +5,10 @@ namespace Flux.Numerics
   public struct Quaternion
     : System.IEquatable<Quaternion>
   {
+    /// <summary>Returns a Quaternion representing no rotation.</summary>
+    public static Quaternion Identity
+      => new Quaternion(0, 0, 0, 1);
+
     /// <summary>Specifies the X-value of the vector component of the Quaternion.</summary>
     public double X { get; set; }
     /// <summary>Specifies the Y-value of the vector component of the Quaternion.</summary>
@@ -13,14 +17,6 @@ namespace Flux.Numerics
     public double Z { get; set; }
     /// <summary>Specifies the rotation component of the Quaternion.</summary>
     public double W { get; set; }
-
-    /// <summary>Returns a Quaternion representing no rotation.</summary>
-    public static Quaternion Identity
-      => new Quaternion(0, 0, 0, 1);
-
-    /// <summary>Returns whether the Quaternion is the identity Quaternion.</summary>
-    public bool IsIdentity
-      => X == 0 && Y == 0 && Z == 0 && W == 1;
 
     /// <summary>Constructs a Quaternion from the given components.</summary>
     public Quaternion(double x, double y, double z, double w)
@@ -31,9 +27,13 @@ namespace Flux.Numerics
       this.W = w;
     }
 
+    /// <summary>Returns whether the Quaternion is the identity Quaternion.</summary>
+    public bool IsIdentity
+      => Equals(Identity);
+
     /// <summary>Calculates the length of the Quaternion.</summary>
     public double Length()
-      => System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+      => System.Math.Sqrt(LengthSquared());
     /// <summary>Calculates the length squared of the Quaternion. This operation is cheaper than Length().</summary>
     public double LengthSquared()
       => X * X + Y * Y + Z * Z + W * W;
@@ -270,7 +270,7 @@ namespace Flux.Numerics
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y, Z, W);
     public override string ToString()
-      => $"<{GetType().Name}: {X}, {Y}, {Z}, {W}>";
+      => $"<{GetType().Name}: X={X}, Y={Y}, Z={Z}, W={W}>";
     #endregion Object overrides
   }
 }

@@ -85,18 +85,6 @@ namespace Flux.Numerics
     public bool IsIdentity
       => Equals(Identity);
 
-    /// <summary>Gets or sets the translation component of this matrix.</summary>
-    public Vector4 Translation
-    {
-      get => new Vector4(M41, M42, M43, 1);
-      set
-      {
-        M41 = value.X;
-        M42 = value.Y;
-        M43 = value.Z;
-      }
-    }
-
     /// <summary>Calculates the determinant of the matrix.</summary>
     public double GetDeterminant()
     {
@@ -143,6 +131,18 @@ namespace Flux.Numerics
              b * (e * kp_lo - g * ip_lm + h * io_km) +
              c * (e * jp_ln - f * ip_lm + h * in_jm) -
              d * (e * jo_kn - f * io_km + g * in_jm);
+    }
+
+    /// <summary>Gets or sets the translation component of this matrix.</summary>
+    public Vector4 Translation
+    {
+      get => new Vector4(M41, M42, M43, 1);
+      set
+      {
+        M41 = value.X;
+        M42 = value.Y;
+        M43 = value.Z;
+      }
     }
 
     #region Static methods
@@ -1358,7 +1358,7 @@ namespace Flux.Numerics
     #region Object overrides
     /// <summary>Returns a boolean indicating whether the given Object is equal to this matrix instance.</summary>
     public override bool Equals(object? obj)
-      => obj is Matrix4x4 ? Equals((Matrix4x4)obj) : false;
+      => obj is Matrix4x4 o && Equals(o);
     /// <summary>Returns the hash code for this instance.</summary>
     public override int GetHashCode()
     {

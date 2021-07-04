@@ -158,10 +158,10 @@ namespace Flux.Numerics
     #region Object overrides
     /// <summary>Returns a boolean indicating whether the given Object is equal to this Plane instance.</summary>
     public override readonly bool Equals(object? obj)
-      => obj is Plane ? Equals((Plane)obj) : false;
+      => obj is Plane o && Equals(o);
     /// <summary>Returns the hash code for this instance.</summary>
     public override readonly int GetHashCode()
-      => Normal.GetHashCode() + D.GetHashCode();
+      => System.HashCode.Combine(Normal, D);
     /// <summary>Returns a String representing this Plane instance.</summary>
     public override readonly string ToString()
       => $"<{GetType().Name}: X={Normal.X} Y={Normal.Y} Z={Normal.Z} W={Normal.W}, D={D}>";

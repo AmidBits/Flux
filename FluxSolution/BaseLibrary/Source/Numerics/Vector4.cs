@@ -6,15 +6,6 @@ namespace Flux.Numerics
   public struct Vector4
     : System.IEquatable<Vector4>
   {
-    /// <summary>The X component of the vector.</summary>
-    public double X { get; set; }
-    /// <summary>The Y component of the vector.</summary>
-    public double Y { get; set; }
-    /// <summary>The Z component of the vector.</summary>
-    public double Z { get; set; }
-    /// <summary>The W component of the vector.</summary>
-    public double W { get; set; }
-
     /// <summary>Returns the vector (0,0,0,0).</summary>
     public static Vector4 Zero
       => new Vector4();
@@ -33,6 +24,15 @@ namespace Flux.Numerics
     /// <summary>Returns the vector (0,0,0,1).</summary>
     public static Vector4 UnitW
       => new Vector4(0, 0, 0, 1);
+
+    /// <summary>The X component of the vector.</summary>
+    public double X { get; set; }
+    /// <summary>The Y component of the vector.</summary>
+    public double Y { get; set; }
+    /// <summary>The Z component of the vector.</summary>
+    public double Z { get; set; }
+    /// <summary>The W component of the vector.</summary>
+    public double W { get; set; }
 
     /// <summary>Constructs a vector with the specified x, y and z values, while W will be assigned a value of 1.</summary>
     public Vector4(double x, double y, double z)
@@ -285,7 +285,7 @@ namespace Flux.Numerics
     #region Object overrides
     /// <summary>Returns a boolean indicating whether the given Object is equal to this Vector4 instance.</summary>
     public override bool Equals(object? obj)
-      => obj is Vector4 ? Equals((Vector4)obj) : false;
+      => obj is Vector4 o && Equals(o);
     /// <summary>Returns the hash code for this instance.</summary>
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y, Z, W);
