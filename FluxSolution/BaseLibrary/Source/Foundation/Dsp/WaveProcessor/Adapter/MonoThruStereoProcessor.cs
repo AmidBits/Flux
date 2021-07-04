@@ -11,6 +11,6 @@ namespace Flux.Dsp.AudioProcessor.Adapter
     }
 
     public double ProcessAudio(double sample)
-      => Stereo.ProcessAudio(new SampleStereo(sample)).ToMono();
+      => Stereo.ProcessAudio(new SampleStereo(sample)).ToMono().FrontCenter;
   }
 }

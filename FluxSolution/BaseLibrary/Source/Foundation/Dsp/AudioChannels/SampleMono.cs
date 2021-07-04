@@ -1,41 +1,47 @@
 ﻿namespace Flux.Dsp
 {
-	public struct SampleMono
-		: System.IEquatable<SampleMono>
-		, IAudioChannelFc
-	{
-		public static readonly SampleMono Empty;
-		public bool IsEmpty => Equals(Empty);
+  public struct SampleMono
+    : System.IEquatable<SampleMono>
+    , IAudioChannelFc
+  {
+    public static readonly SampleMono Empty;
+    public bool IsEmpty => Equals(Empty);
 
-		public double FrontCenter { get; }
+    public double FrontCenter { get; }
 
-		public SampleMono(in double frontCenter)
-		{
-			FrontCenter = frontCenter;
-		}
-		public SampleMono(in double frontLeft, in double frontRight)
-			: this((frontLeft + frontRight) / 2)
-		{ }
+    public SampleMono(double frontCenter)
+    {
+      FrontCenter = frontCenter;
+    }
 
-		public SampleStereo ToStereo()
-			=> new SampleStereo(FrontCenter, FrontCenter);
+    public SampleStereo ToStereo()
+      => new SampleStereo(FrontCenter, FrontCenter);
 
-		// Operators
-		public static bool operator ==(in SampleMono a, in SampleMono b)
-			=> a.Equals(b);
-		public static bool operator !=(in SampleMono a, in SampleMono b)
-			=> !a.Equals(b);
+    #region Static methods
+    public static double ConvertStereoToMono(double frontLeft, double frontRight)
+      => (frontLeft + frontRight) / 2;
+    #endregion Static methods
 
-		// IEquatable<T>
-		public bool Equals(SampleMono other)
-			=> FrontCenter.Equals(other.FrontCenter);
+    #region Overloaded operators
+    public static bool operator ==(in SampleMono a, in SampleMono b)
+      => a.Equals(b);
+    public static bool operator !=(in SampleMono a, in SampleMono b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
 
-		// Object overrides
-		public override bool Equals(object? obj)
-			=> obj is SampleMono sample && Equals(sample);
-		public override int GetHashCode()
-			=> FrontCenter.GetHashCode();
-		public override string ToString()
-			=> $"<Fc:{FrontCenter}>";
-	}
+    #region Implemented interfaces
+    // IEquatable
+    public bool Equals(SampleMono other)
+      => FrontCenter.Equals(other.FrontCenter);
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    public override bool Equals(object? obj)
+      => obj is SampleMono o && Equals(o);
+    public override int GetHashCode()
+      => System.HashCode.Combine(FrontCenter);
+    public override string ToString()
+      => $"<Fc:{FrontCenter}>";
+    #endregion Object overrides
+  }
 }

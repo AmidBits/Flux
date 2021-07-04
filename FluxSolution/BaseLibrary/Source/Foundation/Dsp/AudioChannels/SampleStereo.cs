@@ -1,43 +1,52 @@
 ﻿namespace Flux.Dsp
 {
-	public struct SampleStereo
-		: System.IEquatable<SampleStereo>
-		, IAudioChannelFl, IAudioChannelFr
-	{
-		public static readonly SampleStereo Empty;
-		public bool IsEmpty => Equals(Empty);
+  public struct SampleStereo
+    : System.IEquatable<SampleStereo>
+    , IAudioChannelFl, IAudioChannelFr
+  {
+    public static readonly SampleStereo Empty;
+    public bool IsEmpty => Equals(Empty);
 
-		public double FrontLeft { get; }
-		public double FrontRight { get; }
+    public double FrontLeft { get; }
+    public double FrontRight { get; }
 
-		public SampleStereo(in double frontLeft, in double frontRight)
-		{
-			FrontLeft = frontLeft;
-			FrontRight = frontRight;
-		}
-		public SampleStereo(in double monoSample)
-			: this(monoSample, monoSample)
-		{ }
+    public SampleStereo(in double frontLeft, in double frontRight)
+    {
+      FrontLeft = frontLeft;
+      FrontRight = frontRight;
+    }
+    public SampleStereo(in double frontCenter)
+      : this(frontCenter, frontCenter)
+    { }
 
-		public double ToMono()
-			=> (FrontLeft + FrontRight) / 2;
+    public SampleMono ToMono()
+      => new SampleMono(ConvertStereoToMono(FrontLeft, FrontRight));
 
-		// Operators
-		public static bool operator ==(in SampleStereo a, in SampleStereo b)
-			=> a.Equals(b);
-		public static bool operator !=(in SampleStereo a, in SampleStereo b)
-			=> !a.Equals(b);
+    #region Static methods
+    public static double ConvertStereoToMono(double frontLeft, double frontRight)
+      => (frontLeft + frontRight) / 2;
+    #endregion Static methods
 
-		// IEquatable<T>
-		public bool Equals(SampleStereo other)
-			=> FrontLeft == other.FrontLeft && FrontRight == other.FrontRight;
+    #region Overloaded operators
+    public static bool operator ==(in SampleStereo a, in SampleStereo b)
+      => a.Equals(b);
+    public static bool operator !=(in SampleStereo a, in SampleStereo b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
 
-		// Object overrides
-		public override bool Equals(object? obj)
-			=> obj is SampleStereo sample && Equals(sample);
-		public override int GetHashCode()
-			=> System.HashCode.Combine(FrontLeft, FrontRight);
-		public override string ToString()
-			=> $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
-	}
+    #region Implemented interfaces
+    // IEquatable<T>
+    public bool Equals(SampleStereo other)
+      => FrontLeft == other.FrontLeft && FrontRight == other.FrontRight;
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    public override bool Equals(object? obj)
+      => obj is SampleStereo o && Equals(o);
+    public override int GetHashCode()
+      => System.HashCode.Combine(FrontLeft, FrontRight);
+    public override string ToString()
+      => $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
+    #endregion Object overrides
+  }
 }
