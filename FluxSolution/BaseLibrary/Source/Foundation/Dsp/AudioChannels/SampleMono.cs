@@ -4,8 +4,8 @@
     : System.IEquatable<SampleMono>
     , IAudioChannelFc
   {
-    public static readonly SampleMono Empty;
-    public bool IsEmpty => Equals(Empty);
+    public static SampleMono Silent
+      => new SampleMono();
 
     public double FrontCenter { get; }
 

@@ -4,8 +4,8 @@
     : System.IEquatable<SampleStereo>
     , IAudioChannelFl, IAudioChannelFr
   {
-    public static readonly SampleStereo Empty;
-    public bool IsEmpty => Equals(Empty);
+    public static SampleStereo Silent
+      => new SampleStereo();
 
     public double FrontLeft { get; }
     public double FrontRight { get; }
