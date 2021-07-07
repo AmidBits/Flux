@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Probability.</summary>
+  /// <summary>Probability is represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
     : System.IComparable<Probability>, System.IEquatable<Probability>, IStandardizedScalar
@@ -8,33 +8,33 @@ namespace Flux.Units
     public const double MaxValue = 1;
     public const double MinValue = 0;
 
-    private readonly double m_percent;
+    private readonly double m_ratio;
 
-    public Probability(double percent)
-      => m_percent = percent >= MinValue && percent <= MaxValue ? percent : throw new System.ArgumentOutOfRangeException(nameof(percent));
+    public Probability(double ratio)
+      => m_ratio = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
-    public double Percent
-      => m_percent;
+    public double Ratio
+      => m_ratio;
 
     #region Static methods
     public static Probability Add(Probability left, Probability right)
-      => new Probability(left.m_percent + right.m_percent);
+      => new Probability(left.m_ratio + right.m_ratio);
     public static Probability Divide(Probability left, Probability right)
-      => new Probability(left.m_percent / right.m_percent);
+      => new Probability(left.m_ratio / right.m_ratio);
     public static Probability Multiply(Probability left, Probability right)
-      => new Probability(left.m_percent * right.m_percent);
+      => new Probability(left.m_ratio * right.m_ratio);
     public static Probability Negate(Probability value)
-      => new Probability(-value.m_percent);
+      => new Probability(-value.m_ratio);
     public static Probability Remainder(Probability dividend, Probability divisor)
-      => new Probability(dividend.m_percent % divisor.m_percent);
+      => new Probability(dividend.m_ratio % divisor.m_ratio);
     public static Probability Subtract(Probability left, Probability right)
-      => new Probability(left.m_percent - right.m_percent);
+      => new Probability(left.m_ratio - right.m_ratio);
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator double(Probability v)
-      => v.m_percent;
-    public static implicit operator Probability(double v)
+    public static explicit operator double(Probability v)
+      => v.m_ratio;
+    public static explicit operator Probability(double v)
       => new Probability(v);
 
     public static bool operator <(Probability a, Probability b)
@@ -68,24 +68,24 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Probability other)
-      => m_percent.CompareTo(other.m_percent);
+      => m_ratio.CompareTo(other.m_ratio);
 
     // IEquatable
     public bool Equals(Probability other)
-      => m_percent == other.m_percent;
+      => m_ratio == other.m_ratio;
 
     // IUnitStandardized
     public double GetScalar()
-      => m_percent;
+      => m_ratio;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Probability o && Equals(o);
     public override int GetHashCode()
-      => m_percent.GetHashCode();
+      => m_ratio.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_percent * 100}%>";
+      => $"<{GetType().Name}: {m_ratio}>";
     #endregion Object overrides
   }
 }

@@ -16,14 +16,10 @@ namespace Flux.Units
     public int Value
       => m_value;
 
-    public int ToCent()
-      => ConvertToCent(m_value);
-    public double ToFrequencyRatio()
-      => ConvertToFrequencyRatio(m_value);
-
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int semitones)
-      => System.Math.Pow(FrequencyRatio, semitones) * frequency;
+    public Cent ToCent()
+      => new Cent(ConvertToCent(m_value));
+    public Frequency ToFrequencyRatio()
+      => new Frequency(ConvertToFrequencyRatio(m_value));
 
     #region Static methods
     public static Semitone Add(Semitone left, Semitone right)
@@ -40,21 +36,24 @@ namespace Flux.Units
     public static Semitone Divide(Semitone left, Semitone right)
       => new Semitone(left.m_value / right.m_value);
     public static Semitone FromFrequencyRatio(double frequencyRatio)
-      => ConvertFrequencyRatioToSemitone(frequencyRatio);
+      => new Semitone(ConvertFrequencyRatioToSemitone(frequencyRatio));
     public static Semitone Multiply(Semitone left, Semitone right)
       => new Semitone(left.m_value * right.m_value);
     public static Semitone Negate(Semitone value)
       => new Semitone(-value.m_value);
     public static Semitone Remainder(Semitone dividend, Semitone divisor)
       => new Semitone(dividend.m_value % divisor.m_value);
+    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public static double ShiftPitch(double frequency, int semitones)
+      => System.Math.Pow(FrequencyRatio, semitones) * frequency;
     public static Semitone Subtract(Semitone left, Semitone right)
       => new Semitone(left.m_value - right.m_value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator int(Semitone v)
+    public static explicit operator int(Semitone v)
       => v.m_value;
-    public static implicit operator Semitone(int v)
+    public static explicit operator Semitone(int v)
       => new Semitone(v);
 
     public static bool operator <(Semitone a, Semitone b)

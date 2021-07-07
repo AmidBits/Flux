@@ -29,9 +29,9 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator double(AbsoluteHumidity v)
+    public static explicit operator double(AbsoluteHumidity v)
       => v.m_gramPerCubicMeter;
-    public static implicit operator AbsoluteHumidity(double v)
+    public static explicit operator AbsoluteHumidity(double v)
       => new AbsoluteHumidity(v);
 
     public static bool operator <(AbsoluteHumidity a, AbsoluteHumidity b)

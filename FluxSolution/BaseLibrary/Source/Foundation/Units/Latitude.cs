@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Latitude.</summary>
+  /// <summary>Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90].</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, IStandardizedScalar
@@ -8,34 +8,32 @@ namespace Flux.Units
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    private readonly double m_degree;
+    private readonly Angle m_angle;
 
     public Latitude(double degree)
-      => m_degree = Maths.Wrap(degree, MinValue, MaxValue);
+      => m_angle = Angle.FromDegree(Maths.Wrap(degree, MinValue, MaxValue));
+    public Latitude(Angle angle)
+      : this(angle.Degree)
+    { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Length ApproximateLatitudinalHeight
-      => ComputeApproximateLatitudinalHeight(Degree);
+      => new Length(ComputeApproximateLatitudinalHeight(Angle.Degree));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Length ApproximateLongitudinalWidth
-      => ComputeApproximateLongitudinalWidth(Degree);
+      => new Length(ComputeApproximateLongitudinalWidth(Angle.Degree));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Length ApproximateRadius
-      => ComputeApproximateRadius(Degree);
+      => new Length(ComputeApproximateRadius(Angle.Degree));
 
-    public double Degree
-      => m_degree;
-    public double Radian
-      => Angle.ConvertDegreeToRadian(m_degree);
-
-    public Angle ToAngle()
-      => Angle.FromDegree(m_degree);
+    public Angle Angle
+      => m_angle;
 
     #region Static methods
     public static Latitude Add(Latitude left, Latitude right)
-      => new Latitude(left.m_degree + right.m_degree);
+      => new Latitude(left.m_angle + right.m_angle);
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     public static double ComputeApproximateLatitudinalHeight(double latitude)
     {
@@ -77,21 +75,21 @@ namespace Flux.Units
       return System.Math.Sqrt(numerator / denominator);
     }
     public static Latitude Divide(Latitude left, Latitude right)
-      => new Latitude(left.m_degree / right.m_degree);
+      => new Latitude(left.m_angle / right.m_angle);
     public static Latitude Multiply(Latitude left, Latitude right)
-      => new Latitude(left.m_degree * right.m_degree);
+      => new Latitude(left.m_angle * right.m_angle);
     public static Latitude Negate(Latitude value)
-      => new Latitude(-value.m_degree);
+      => new Latitude(-value.m_angle);
     public static Latitude Remainder(Latitude dividend, Latitude divisor)
-      => new Latitude(dividend.m_degree % divisor.m_degree);
+      => new Latitude(dividend.m_angle % divisor.m_angle);
     public static Latitude Subtract(Latitude left, Latitude right)
-      => new Latitude(left.m_degree - right.m_degree);
+      => new Latitude(left.m_angle - right.m_angle);
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator double(Latitude v)
-      => v.m_degree;
-    public static implicit operator Latitude(double v)
+    public static explicit operator double(Latitude v)
+      => v.m_angle.Degree;
+    public static explicit operator Latitude(double v)
       => new Latitude(v);
 
     public static bool operator <(Latitude a, Latitude b)
@@ -125,24 +123,24 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Latitude other)
-      => m_degree.CompareTo(other.m_degree);
+      => m_angle.CompareTo(other.m_angle);
 
     // IEquatable
     public bool Equals(Latitude other)
-      => m_degree == other.m_degree;
+      => m_angle == other.m_angle;
 
     // IUnitStandardized
     public double GetScalar()
-      => m_degree;
+      => m_angle.Degree;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
-      => m_degree.GetHashCode();
+      => m_angle.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_degree}\u00B0>";
+      => $"<{GetType().Name}: {m_angle.Degree}\u00B0>";
     #endregion Object overrides
   }
 }

@@ -16,12 +16,8 @@ namespace Flux.Units
     public int Value
       => m_value;
 
-    public double ToFrequencyRatio()
-      => ConvertToFrequencyRatio(m_value);
-
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int cents)
-      => System.Math.Pow(FrequencyRatio, cents) * frequency;
+    public Frequency ToFrequencyRatio()
+      => new Frequency(ConvertToFrequencyRatio(m_value));
 
     #region Static methods
     public static Cent Add(Cent left, Cent right)
@@ -35,21 +31,24 @@ namespace Flux.Units
     public static Cent Divide(Cent left, Cent right)
       => new Cent(left.m_value / right.m_value);
     public static Cent FromFrequencyRatio(double frequencyRatio)
-      => ConvertFrequencyRatioToCent(frequencyRatio);
+      => new Cent(ConvertFrequencyRatioToCent(frequencyRatio));
     public static Cent Multiply(Cent left, Cent right)
       => new Cent(left.m_value * right.m_value);
     public static Cent Negate(Cent value)
       => new Cent(-value.m_value);
     public static Cent Remainder(Cent dividend, Cent divisor)
       => new Cent(dividend.m_value % divisor.m_value);
+    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public static double ShiftPitch(double frequency, int cents)
+      => System.Math.Pow(FrequencyRatio, cents) * frequency;
     public static Cent Subtract(Cent left, Cent right)
       => new Cent(left.m_value - right.m_value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator int(Cent v)
+    public static explicit operator int(Cent v)
       => v.m_value;
-    public static implicit operator Cent(int v)
+    public static explicit operator Cent(int v)
       => new Cent(v);
 
     public static bool operator <(Cent a, Cent b)

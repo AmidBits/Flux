@@ -9,46 +9,52 @@ namespace Flux.Units
     public const double MinValue = 0;
 
     public const double North = 0;
+    public const double NorthNorthEast = 22.5;
     public const double NorthEast = 45;
+    public const double EastNorthEast = 67.5;
     public const double East = 90;
+    public const double EastSouthEast = 112.5;
     public const double SouthEast = 135;
+    public const double SouthSouthEast = 157.5;
     public const double South = 180;
+    public const double SouthSouthWest = 202.5;
     public const double SouthWest = 225;
+    public const double WestSouthWest = 247.5;
     public const double West = 270;
+    public const double WestNorthWest = 292.5;
     public const double NorthWest = 315;
+    public const double NorthNorthWest = 337.5;
 
-    private readonly double m_degree;
+    private readonly Angle m_angle;
 
     public Azimuth(double degree)
-      => m_degree = Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
+      => m_angle = Angle.FromDegree(Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
+    public Azimuth(Angle angle)
+      : this(angle.Degree)
+    { }
 
-    public double Degree
-      => m_degree;
-    public double Radian
-      => Angle.ConvertDegreeToRadian(m_degree);
-
-    public Angle ToAngle()
-      => Angle.FromDegree(m_degree);
+    public Angle Angle
+      => m_angle;
 
     #region Static methods
     public static Azimuth Add(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_degree + right.m_degree);
+      => new Azimuth(left.m_angle + right.m_angle);
     public static Azimuth Divide(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_degree / right.m_degree);
+      => new Azimuth(left.m_angle / right.m_angle);
     public static Azimuth Multiply(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_degree * right.m_degree);
+      => new Azimuth(left.m_angle * right.m_angle);
     public static Azimuth Negate(Azimuth value)
-      => new Azimuth(-value.m_degree);
+      => new Azimuth(-value.m_angle);
     public static Azimuth Remainder(Azimuth dividend, Azimuth divisor)
-      => new Azimuth(dividend.m_degree % divisor.m_degree);
+      => new Azimuth(dividend.m_angle % divisor.m_angle);
     public static Azimuth Subtract(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_degree - right.m_degree);
+      => new Azimuth(left.m_angle - right.m_angle);
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator double(Azimuth v)
-     => v.m_degree;
-    public static implicit operator Azimuth(double v)
+    public static explicit operator double(Azimuth v)
+     => v.m_angle.Degree;
+    public static explicit operator Azimuth(double v)
       => new Azimuth(v);
 
     public static bool operator <(Azimuth a, Azimuth b)
@@ -82,24 +88,24 @@ namespace Flux.Units
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Azimuth other)
-      => m_degree.CompareTo(other.m_degree);
+      => m_angle.CompareTo(other.m_angle);
 
     // IEquatable
     public bool Equals(Azimuth other)
-      => m_degree == other.m_degree;
+      => m_angle == other.m_angle;
 
     // IUnitStandardized
     public double GetScalar()
-      => m_degree;
+      => m_angle.Degree;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Azimuth o && Equals(o);
     public override int GetHashCode()
-      => m_degree.GetHashCode();
+      => m_angle.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_degree}\u00B0>";
+      => $"<{GetType().Name}: {m_angle.Degree}\u00B0>";
     #endregion Object overrides
   }
 }

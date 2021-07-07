@@ -44,10 +44,9 @@ namespace Flux
 
     public GeoPoint(double latitude, double longitude, double altitude = 1.0)
     {
-      Height = altitude;
-
       Latitude = new Units.Latitude(latitude); // Units.Angle.FromDegree(Maths.Wrap(latitude, -90, +90));
       Longitude = new Units.Longitude(longitude); // Units.Angle.FromDegree(Maths.Wrap(longitude, -180, +180));
+      Height = new Units.Length(altitude);
     }
 
     /// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
@@ -56,19 +55,19 @@ namespace Flux
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
     public double AlongTrackDistance(GeoPoint trackStart, GeoPoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Radian, trackStart.Longitude.Radian, trackEnd.Latitude.Radian, trackEnd.Longitude.Radian, Latitude.Radian, Longitude.Radian, out var _);
+      => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
     /// <summary>The shortest distance of this position from the specified track.</summary>
     /// <remarks>The cross track error, i.e. the distance off course.</remarks>
     public double CrossTrackError(GeoPoint trackStart, GeoPoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Radian, trackStart.Longitude.Radian, trackEnd.Latitude.Radian, trackEnd.Longitude.Radian, Latitude.Radian, Longitude.Radian, out var _);
+      => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
     // <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
     /// <param name="bearingDegrees"></param>
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     public GeoPoint DestinationPointAt(double bearingDegrees, double angularDistance)
     {
-      EndPoint(Latitude.Radian, Longitude.Radian, Units.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
+      EndPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, Units.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
       return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Units.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Meter);
     }
@@ -78,15 +77,15 @@ namespace Flux
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns></returns>
     public double DistanceTo(GeoPoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * CentralAngleVincentyFormula(Latitude.Radian, Longitude.Radian, targetPoint.Latitude.Radian, targetPoint.Longitude.Radian);
+      => earthRadius * CentralAngleVincentyFormula(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian);
 
     public double InitialBearingTo(GeoPoint targetPoint)
-      => Units.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Radian, Longitude.Radian, targetPoint.Latitude.Radian, targetPoint.Longitude.Radian));
+      => Units.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
     public GeoPoint IntermediaryPointTo(GeoPoint target, double unitInterval)
     {
-      IntermediaryPoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, unitInterval, out var lat, out var lon);
+      IntermediaryPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, unitInterval, out var lat, out var lon);
 
       return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meter);
     }
@@ -94,7 +93,7 @@ namespace Flux
     /// <summary>The midpoint between this point and the specified target.</summary>
     public GeoPoint MidpointTo(GeoPoint target)
     {
-      Midpoint(Latitude.Radian, Longitude.Radian, target.Latitude.Radian, target.Longitude.Radian, out var lat, out var lon);
+      Midpoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, out var lat, out var lon);
 
       return new GeoPoint(Units.Angle.ConvertRadianToDegree(lat), Units.Angle.ConvertRadianToDegree(lon), Height.Meter);
     }

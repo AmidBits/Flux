@@ -30,7 +30,7 @@ namespace Flux.Units
       => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public Units.Frequency ToFrequency()
+    public Frequency ToFrequency()
       => new Units.Frequency(ConvertMidiNoteToFrequency(m_number));
 
     #region Static methods
@@ -47,7 +47,7 @@ namespace Flux.Units
     public static double ConvertMidiNoteToFrequency(int midiNoteNumber)
       => IsMidiNote(midiNoteNumber) ? ConvertMidiNoteToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
-    public static MidiNote FromFrequency(Units.Frequency frequency)
+    public static MidiNote FromFrequency(Frequency frequency)
       => new MidiNote(ConvertFrequencyToMidiNote(frequency.Hertz));
     /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
     public static bool IsMidiNote(int midiNoteNumber)
@@ -72,7 +72,7 @@ namespace Flux.Units
       throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
     }
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
-    public static bool TryFromFrequency(Units.Frequency frequency, out MidiNote result)
+    public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
     {
       try
       {
@@ -101,6 +101,11 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator byte(MidiNote v)
+      => v.m_number;
+    public static explicit operator MidiNote(byte v)
+      => new MidiNote(v);
+
     public static bool operator <(MidiNote a, MidiNote b)
      => a.CompareTo(b) < 0;
     public static bool operator <=(MidiNote a, MidiNote b)

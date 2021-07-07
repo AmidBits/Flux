@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>RelativeHumidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
     : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IStandardizedScalar
@@ -8,10 +8,7 @@ namespace Flux.Units
     private readonly double m_percent;
 
     public RelativeHumidity(double percent)
-      => m_percent = percent >= 0 && percent <= 1 ? percent : throw new System.ArgumentOutOfRangeException(nameof(percent));
-    public RelativeHumidity(int percent)
-      : this(percent / 100.0)
-    { }
+      => m_percent = percent;
 
     public double Percent
       => m_percent;
@@ -32,9 +29,9 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator double(RelativeHumidity v)
+    public static explicit operator double(RelativeHumidity v)
       => v.m_percent;
-    public static implicit operator RelativeHumidity(double v)
+    public static explicit operator RelativeHumidity(double v)
       => new RelativeHumidity(v);
 
     public static bool operator <(RelativeHumidity a, RelativeHumidity b)
@@ -85,7 +82,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_percent.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_percent * 100}%>";
+      => $"<{GetType().Name}: {m_percent}%>";
     #endregion Object overrides
   }
 }

@@ -34,11 +34,11 @@ namespace Flux.Formatting
 
             var sb = new System.Text.StringBuilder();
 
-            sb.Append($"{FormatParts(geo.Latitude, parts, decimalPlaces)}{spacing}");
-            sb.Append($"{(geo.Latitude >= 0 ? 'N' : 'S')}");
+            sb.Append($"{FormatParts(geo.Latitude.Angle.Degree, parts, decimalPlaces)}{spacing}");
+            sb.Append($"{(geo.Latitude.Angle.Degree >= 0 ? 'N' : 'S')}");
             sb.Append($",{spacing}");
-            sb.Append($"{FormatParts(geo.Longitude, parts, decimalPlaces)}{spacing}");
-            sb.Append($"{(geo.Longitude >= 0 ? 'E' : 'W')}");
+            sb.Append($"{FormatParts(geo.Longitude.Angle.Degree, parts, decimalPlaces)}{spacing}");
+            sb.Append($"{(geo.Longitude.Angle.Degree >= 0 ? 'E' : 'W')}");
             sb.Append($",{spacing}");
             sb.Append($"{geo.Height.Meter}{spacing}m");
 

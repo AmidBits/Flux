@@ -68,6 +68,18 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var prdc = Flux.Units.PowerRatio.FromDecibelChange(1);
+      var arprdc = prdc.ToAmplitudeRatio();
+      var ardc = Flux.Units.AmplitudeRatio.FromDecibelChange(1);
+      var fpra = Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(10), new Flux.Units.Power(0.001));
+      var fprb = Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(0.001), new Flux.Units.Power(10));
+      var fara = Flux.Units.AmplitudeRatio.FromAmplitudeRatio(new Flux.Units.Voltage(31.62), new Flux.Units.Voltage(1));
+      var farb = Flux.Units.AmplitudeRatio.FromAmplitudeRatio(new Flux.Units.Voltage(1), new Flux.Units.Voltage(31.62));
+      var pr6 = new Flux.Units.PowerRatio(6);
+      var pr3 = new Flux.Units.PowerRatio(3);
+      var prs = pr6 - pr3;
+      var pra = pr6 + pr3;
+
       ////var tii = Flux.Reflect.GetTypesImplementingInterface<Flux.Memory.Sort.ISortableInPlace<>>();
       //var tii2 = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsSubtypeOf(typeof(Flux.Memory.Sort.ISortableInPlace<>))).ToArray();
       //foreach (var el in Flux.Reflect.GetProperties(typeof(Flux.Locale)))
