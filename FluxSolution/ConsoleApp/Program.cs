@@ -68,69 +68,50 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var prdc = Flux.Units.PowerRatio.FromDecibelChange(1);
-      var arprdc = prdc.ToAmplitudeRatio();
-      var ardc = Flux.Units.AmplitudeRatio.FromDecibelChange(1);
-      var fpra = Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(10), new Flux.Units.Power(0.001));
-      var fprb = Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(0.001), new Flux.Units.Power(10));
-      var fara = Flux.Units.AmplitudeRatio.FromAmplitudeRatio(new Flux.Units.Voltage(31.62), new Flux.Units.Voltage(1));
-      var farb = Flux.Units.AmplitudeRatio.FromAmplitudeRatio(new Flux.Units.Voltage(1), new Flux.Units.Voltage(31.62));
-      var pr6 = new Flux.Units.PowerRatio(6);
-      var pr3 = new Flux.Units.PowerRatio(3);
-      var prs = pr6 - pr3;
-      var pra = pr6 + pr3;
-
-      ////var tii = Flux.Reflect.GetTypesImplementingInterface<Flux.Memory.Sort.ISortableInPlace<>>();
-      //var tii2 = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsSubtypeOf(typeof(Flux.Memory.Sort.ISortableInPlace<>))).ToArray();
-      //foreach (var el in Flux.Reflect.GetProperties(typeof(Flux.Locale)))
-      //  System.Console.WriteLine($"{el.Key} = {el.Value}");
-      //return;
-      //System.Console.WriteLine(typeof(IM<>).IsSubtypeOf(typeof(A)));
-      //System.Console.WriteLine(typeof(IM<>).IsSupertypeOf(typeof(A)));
-      //System.Console.WriteLine(typeof(A).IsSubtypeOf(typeof(IM<>)));
-      //System.Console.WriteLine(typeof(A).IsSupertypeOf(typeof(IM<>)));
-
-
-      //foreach (var type in GetInheritance(typeof(C)))
-      //{
-      //  System.Console.WriteLine(type.Name);
-      //}
-
-      //Flux.Data.TsqlDataType.IsDataTypeName("decimal");
-      var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
-
-      var dt = cad.AcquireDataTable();
-
-      var find = "Sweden";
-
-      foreach (var dr in dt.Rows.Cast<System.Data.DataRow>())
+     
+      foreach(var fi in Flux.Reflect.GetFieldInfos(typeof(Flux.Units.Azimuth)))
       {
-        var s0 = dr[0].ToString();
-        var s1 = dr[1].ToString();
-
-        //if (s0.Contains(find, StringComparison.InvariantCultureIgnoreCase) || s1.Contains(find, StringComparison.InvariantCultureIgnoreCase))
-        {
-          System.Console.Clear();
-          System.Console.WriteLine($"<{s0}>");
-          System.Console.WriteLine(s1);
-          System.Console.ReadKey();
-        }
+        System.Console.WriteLine($"{fi.Name} = {fi.GetValueEx(typeof(Flux.Units.Azimuth))}");
       }
 
-      var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
+      //var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
 
-      var gs = Flux.Text.GraphemeCluster.GetAll(s).ToArray();
+      //var dt = cad.AcquireDataTable();
 
-      //s = "\uD83D\uDC69\uD83C\uDFFD\u200D\uD83D\uDE92";
-      System.Console.WriteLine(s.Length);
+      //var find = "Sweden";
 
-      using var sr = new System.IO.StringReader(s);
-      using var tee = new Flux.Text.GraphemeEnumerator(sr, 8);
+      //foreach (var dr in dt.Rows.Cast<System.Data.DataRow>())
+      //{
+      //  var s0 = dr[0].ToString();
+      //  var s1 = dr[1].ToString();
 
-      var index = 0;
-      foreach (var te in tee)
-        System.Console.WriteLine($"{index++} : {te}");
-      //System.Console.WriteLine($"{index++} : {te} ({te.Utf16SequenceLength})");
+      //  //if (s0.Contains(find, StringComparison.InvariantCultureIgnoreCase) || s1.Contains(find, StringComparison.InvariantCultureIgnoreCase))
+      //  {
+      //    System.Console.Clear();
+      //    System.Console.WriteLine($"<{s0}>");
+      //    System.Console.WriteLine(s1);
+      //    System.Console.ReadKey();
+      //  }
+      //}
+
+      //return;
+
+      //var s = "A𠈓B\u0061C\u0061\u0301D\U0001F469\U0001F3FD\u200D\U0001F692E";
+
+      //var gs = Flux.Text.GraphemeCluster.GetAll(s).ToArray();
+
+      ////s = "\uD83D\uDC69\uD83C\uDFFD\u200D\uD83D\uDE92";
+      //System.Console.WriteLine(s.Length);
+
+      //using var sr = new System.IO.StringReader(s);
+      //using var tee = new Flux.Text.GraphemeEnumerator(sr, 8);
+
+      //var index = 0;
+      //foreach (var te in tee)
+      //  System.Console.WriteLine($"{index++} : {te}");
+      ////System.Console.WriteLine($"{index++} : {te} ({te.Utf16SequenceLength})");
+
+      //return;
 
       /*
       for (var i = 0; i <= 360; i += 15)
@@ -234,44 +215,44 @@ namespace ConsoleApp
     }
 
     #region Serial vs. Parallel Loops
-    static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
-    {
-      //var startDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
-      for (int i = 0; i < taskCount; i++)
-      {
-        ExpensiveTask(taskLoad);
-        //var total = ExpensiveTask(taskLoad);
-        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      }
-      //var endDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
-      //var span = endDateTime - startDateTime;
-      //System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
-      //System.Console.WriteLine();
-    }
-    static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
-    {
-      //var startDateTime = DateTime.Now;
-      System.Threading.Tasks.Parallel.For(0, taskCount, i =>
-      {
-        ExpensiveTask(taskLoad);
-        //var total = ExpensiveTask(taskLoad);
-        //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
-      });
-      //var endDateTime = DateTime.Now;
-      //System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
-      //var span = endDateTime - startDateTime;
-      //System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
-      //System.Console.WriteLine();
-    }
-    static long ExpensiveTask(double taskLoad = 1)
-    {
-      var total = 0L;
-      for (var i = 1; i < int.MaxValue * taskLoad; i++)
-        total += i;
-      return total;
-    }
+    //static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
+    //{
+    //  //var startDateTime = DateTime.Now;
+    //  //System.Console.WriteLine($"{nameof(RegularForLoop)} started at {startDateTime}.");
+    //  for (int i = 0; i < taskCount; i++)
+    //  {
+    //    ExpensiveTask(taskLoad);
+    //    //var total = ExpensiveTask(taskLoad);
+    //    //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+    //  }
+    //  //var endDateTime = DateTime.Now;
+    //  //System.Console.WriteLine($"{nameof(RegularForLoop)} ended at {endDateTime}.");
+    //  //var span = endDateTime - startDateTime;
+    //  //System.Console.WriteLine($"{nameof(RegularForLoop)} executed in {span.TotalSeconds} seconds.");
+    //  //System.Console.WriteLine();
+    //}
+    //static void ParallelForLoop(int taskCount = 10, double taskLoad = 1)
+    //{
+    //  //var startDateTime = DateTime.Now;
+    //  System.Threading.Tasks.Parallel.For(0, taskCount, i =>
+    //  {
+    //    ExpensiveTask(taskLoad);
+    //    //var total = ExpensiveTask(taskLoad);
+    //    //System.Console.WriteLine($"{nameof(ExpensiveTask)} {i} - {total}.");
+    //  });
+    //  //var endDateTime = DateTime.Now;
+    //  //System.Console.WriteLine($"{nameof(ParallelForLoop)} ended at {endDateTime}.");
+    //  //var span = endDateTime - startDateTime;
+    //  //System.Console.WriteLine($"{nameof(ParallelForLoop)} executed in {span.TotalSeconds} seconds");
+    //  //System.Console.WriteLine();
+    //}
+    //static long ExpensiveTask(double taskLoad = 1)
+    //{
+    //  var total = 0L;
+    //  for (var i = 1; i < int.MaxValue * taskLoad; i++)
+    //    total += i;
+    //  return total;
+    //}
     #endregion Serial vs. Parallel Loops
 
     static void Main(string[] args)

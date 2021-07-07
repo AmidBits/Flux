@@ -43,12 +43,8 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 # Sample use from Flux BaseLibrary:
 
-#"Locale-Properties:"
-#[Flux.Locale]::GetProperties()
-# "Locale-SpecialFolders:"
-# [Flux.Locale]::SpecialFolders
-
-#[System.Environment]::GetEnvironmentVariables().GetType()
+# "Locale-Properties:"
+# [Flux.Locale]::GetProperties()
 
 #return;
 
@@ -65,10 +61,13 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 #$af = New-Object Flux.Formatting.ArrayFormatter
 #$s = $af.TwoToConsoleString($fm)
 
-#"$($md.GetType().FullName)$([System.Environment]::NewLine)$s"
-$cad = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile.Replace("/\", "/\FluxSolution\BaseLibrary\"))
-$atb = $cad.AcquireDataTable() 
-$atb | Where-Object {$_.Title -match "ENGLISH"}  | Format-List
+# $uri = New-Object System.Uri ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile)
+# $uri.OriginalString
+# $binuri = ConvertTo-BinUri $uri $vsProjectReference
+# $binuri.OriginalString
+# $cad = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings $binuri
+# $atb = $cad.AcquireDataTable() 
+# $atb.Rows | Where-Object {$_.Title -match 'SCANDINAVIA'}  | Format-List
 
 # [Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
 # [Flux.Locale].Assembly.GetTypes() | Select-Object FullName
