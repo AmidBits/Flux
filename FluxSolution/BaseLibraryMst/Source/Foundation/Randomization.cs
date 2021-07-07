@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace Random.NumberGenerator
+namespace Foundation.Randomization
 {
 	[TestClass]
 	public class StaticCrypto

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace Dsp
+namespace Foundation.Dsp
 {
   [TestClass]
   public class WaveProcessor

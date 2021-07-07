@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
-namespace Globalization
+namespace Foundation.Cultural
 {
   [TestClass]
   public class EnUs
