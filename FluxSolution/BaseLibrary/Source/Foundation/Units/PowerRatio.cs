@@ -19,7 +19,7 @@ namespace Flux.Units
       => new AmplitudeRatio(System.Math.Sqrt(m_decibelWatt));
 
     #region Static methods
-    public static PowerRatio Add(PowerRatio left, PowerRatio right)
+    public static PowerRatio LogAdd(PowerRatio left, PowerRatio right)
       => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, left.m_decibelWatt / ScalingFactor) + System.Math.Pow(10, right.m_decibelWatt / ScalingFactor))); // Pow inverse of Log10.
     public static PowerRatio Divide(PowerRatio left, PowerRatio right)
       => new PowerRatio(left.m_decibelWatt - right.m_decibelWatt);
@@ -31,7 +31,7 @@ namespace Flux.Units
       => new PowerRatio(left.m_decibelWatt + right.m_decibelWatt);
     public static PowerRatio Negate(PowerRatio value)
       => new PowerRatio(-value.m_decibelWatt);
-    public static PowerRatio Subtract(PowerRatio left, PowerRatio right)
+    public static PowerRatio LogSubtract(PowerRatio left, PowerRatio right)
       => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, left.m_decibelWatt / ScalingFactor) - System.Math.Pow(10, right.m_decibelWatt / ScalingFactor)));
     #endregion Static methods
 
@@ -56,7 +56,7 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static PowerRatio operator +(PowerRatio a, PowerRatio b)
-      => Add(a, b);
+      => LogAdd(a, b);
     public static PowerRatio operator /(PowerRatio a, PowerRatio b)
       => Divide(a, b);
     public static PowerRatio operator *(PowerRatio a, PowerRatio b)
@@ -64,7 +64,7 @@ namespace Flux.Units
     public static PowerRatio operator -(PowerRatio v)
       => Negate(v);
     public static PowerRatio operator -(PowerRatio a, PowerRatio b)
-      => Subtract(a, b);
+      => LogSubtract(a, b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

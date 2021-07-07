@@ -68,11 +68,14 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-     
-      foreach(var fi in Flux.Reflect.GetFieldInfos(typeof(Flux.Units.Azimuth)))
-      {
-        System.Console.WriteLine($"{fi.Name} = {fi.GetValueEx(typeof(Flux.Units.Azimuth))}");
-      }
+      var pr10 = Flux.Units.PowerRatio.FromDecibelChange(10);
+      var pr8 = Flux.Units.PowerRatio.FromDecibelChange(8);
+      var pr7 = Flux.Units.PowerRatio.FromDecibelChange(7);
+
+      var pr25 = pr10 + pr8 + pr7;
+
+      var pr = Flux.Units.PowerRatio.FromDecibelChange(25);
+      var ar = Flux.Units.AmplitudeRatio.FromDecibelChange(25);
 
       //var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
 
