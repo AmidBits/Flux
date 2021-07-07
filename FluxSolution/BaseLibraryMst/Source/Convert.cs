@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Static
 {
   [TestClass]
-  public class Convert
+  public class Units
   {
     [TestMethod]
     public void Em_Convert_ChangeType()
