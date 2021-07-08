@@ -11,7 +11,7 @@ namespace Flux.Units
     private readonly Angle m_angle;
 
     public Latitude(double degree)
-      => m_angle = Angle.FromDegree(Maths.Wrap(degree, MinValue, MaxValue));
+      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
     public Latitude(Angle angle)
       : this(angle.Degree)
     { }

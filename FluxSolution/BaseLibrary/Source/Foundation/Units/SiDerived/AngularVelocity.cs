@@ -10,7 +10,7 @@ namespace Flux.Units
     public AngularVelocity(double radianPerSecond)
       => m_radianPerSecond = radianPerSecond;
 
-    public double SquareMeter
+    public double RadianPerSecond
       => m_radianPerSecond;
 
     #region Static methods

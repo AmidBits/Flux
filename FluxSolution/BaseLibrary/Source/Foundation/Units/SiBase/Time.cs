@@ -1,5 +1,18 @@
 namespace Flux.Units
 {
+  public enum TimeUnit
+  {
+    Nanosecond,
+    Microsecond,
+    Millisecond,
+    Second,
+    Minute,
+    Hour,
+    Day,
+    Week,
+    Fortnight,
+  }
+
   /// <summary>Time.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
@@ -12,25 +25,69 @@ namespace Flux.Units
 
     public double Second
       => m_second;
-    public double Hour
-      => ConvertSecondToHour(m_second);
 
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_second);
+    public double ToUnitValue(TimeUnit unit)
+    {
+      switch (unit)
+      {
+        case TimeUnit.Nanosecond:
+          return m_second * 1000000000;
+        case TimeUnit.Microsecond:
+          return m_second * 1000000;
+        case TimeUnit.Millisecond:
+          return m_second * 1000;
+        case TimeUnit.Second:
+          return m_second;
+        case TimeUnit.Minute:
+          return m_second / 60;
+        case TimeUnit.Hour:
+          return m_second / 3600;
+        case TimeUnit.Day:
+          return m_second / 86400;
+        case TimeUnit.Week:
+          return m_second / 604800;
+        case TimeUnit.Fortnight:
+          return m_second / 1209600;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static Time Add(Time left, Time right)
       => new Time(left.m_second + right.m_second);
-    public static double ConvertHourToSecond(double hour)
-      => hour * 3600;
-    public static double ConvertSecondToHour(double second)
-      => second / 3600;
     public static Time Divide(Time left, Time right)
       => new Time(left.m_second / right.m_second);
-    public static Time FromHour(double hour)
-      => new Time(ConvertHourToSecond(hour));
     public static Time FromTimeSpan(System.TimeSpan timeSpan)
       => new Time(timeSpan.TotalSeconds);
+    public static Time FromUnitValue(TimeUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case TimeUnit.Nanosecond:
+          return new Time(value / 1000000000);
+        case TimeUnit.Microsecond:
+          return new Time(value / 1000000);
+        case TimeUnit.Millisecond:
+          return new Time(value / 1000);
+        case TimeUnit.Second:
+          return new Time(value);
+        case TimeUnit.Minute:
+          return new Time(value * 60);
+        case TimeUnit.Hour:
+          return new Time(value * 3600);
+        case TimeUnit.Day:
+          return new Time(value * 86400);
+        case TimeUnit.Week:
+          return new Time(value * 604800);
+        case TimeUnit.Fortnight:
+          return new Time(value * 1209600);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static Time Multiply(Time left, Time right)
       => new Time(left.m_second * right.m_second);
     public static Time Negate(Time value)

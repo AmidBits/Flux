@@ -1,5 +1,14 @@
 namespace Flux.Units
 {
+  public enum MassUnit
+  {
+    Milligram,
+    Gram,
+    Ounce,
+    Pound,
+    Kilogram,
+  }
+
   /// <summary>Mass.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
@@ -10,30 +19,51 @@ namespace Flux.Units
     public Mass(double kilogram)
       => m_kilogram = kilogram;
 
-    public double Gram
-      => ConvertKilogramToGram(m_kilogram);
     public double Kilogram
       => m_kilogram;
-    public double Pound
-      => ConvertKilogramToPound(m_kilogram);
+
+    public double ToUnitValue(MassUnit unit)
+    {
+      switch (unit)
+      {
+        case MassUnit.Milligram:
+          return m_kilogram * 1000000;
+        case MassUnit.Gram:
+          return m_kilogram * 1000;
+        case MassUnit.Ounce:
+          return m_kilogram * 35.27396195;
+        case MassUnit.Pound:
+          return m_kilogram / 0.45359237;
+        case MassUnit.Kilogram:
+          return m_kilogram;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static Mass Add(Mass left, Mass right)
       => new Mass(left.m_kilogram + right.m_kilogram);
-    public static double ConvertGramToKilogram(double gram)
-      => gram / 1000;
-    public static double ConvertPoundToKilogram(double pound)
-      => pound * 0.45359237;
-    public static double ConvertKilogramToGram(double kilogram)
-      => kilogram * 1000;
-    public static double ConvertKilogramToPound(double kilogram)
-      => kilogram / 0.45359237;
     public static Mass Divide(Mass left, Mass right)
-      => new Mass(left.m_kilogram / right.m_kilogram);
-    public static Mass FromGram(double gram)
-      => new Mass(ConvertGramToKilogram(gram));
-    public static Mass FromPounds(double pounds)
-      => new Mass(ConvertPoundToKilogram(pounds));
+     => new Mass(left.m_kilogram / right.m_kilogram);
+    public static Mass FromUnitValue(MassUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case MassUnit.Milligram:
+          return new Mass(value / 1000000);
+        case MassUnit.Gram:
+          return new Mass(value / 1000);
+        case MassUnit.Ounce:
+          return new Mass(value / 35.27396195);
+        case MassUnit.Pound:
+          return new Mass(value * 0.45359237);
+        case MassUnit.Kilogram:
+          return new Mass(value);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static Mass Multiply(Mass left, Mass right)
       => new Mass(left.m_kilogram * right.m_kilogram);
     public static Mass Negate(Mass value)

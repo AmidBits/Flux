@@ -1,5 +1,13 @@
 namespace Flux.Units
 {
+  public enum TemperatureUnit
+  {
+    Celsius,
+    Fahrenheit,
+    Kelvin,
+    Rankine,
+  }
+
   /// <summary>Temperature.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
@@ -26,37 +34,27 @@ namespace Flux.Units
     public Temperature(double kelvin)
       => m_kelvin = kelvin;
 
-    public double Celsius
-      => ConvertKelvinToCelsius(m_kelvin);
-    public double Fahrenheit
-      => ConvertKelvinToFahrenheit(m_kelvin);
     public double Kelvin
       => m_kelvin;
-    public double Rankine
-      => ConvertKelvinToRankine(m_kelvin);
+
+    public double ToUnitValue(TemperatureUnit unit)
+    {
+      switch (unit)
+      {
+        case TemperatureUnit.Celsius:
+          return m_kelvin - KelvinIcePoint;
+        case TemperatureUnit.Fahrenheit:
+          return m_kelvin * 1.8 + FahrenheitAbsoluteZero;
+        case TemperatureUnit.Kelvin:
+          return m_kelvin;
+        case TemperatureUnit.Rankine:
+          return m_kelvin * 1.8;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
-    public static Temperature Add(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin + right.m_kelvin);
-    public static Temperature Divide(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin / right.m_kelvin);
-    public static Temperature FromCelsius(double celsius)
-      => new Temperature(ConvertCelsiusToKelvin(celsius));
-    public static Temperature FromFahrenheit(double fahrenheit)
-      => new Temperature(ConvertFahrenheitToKelvin(fahrenheit));
-    public static Temperature FromKelvin(double kelvin)
-      => new Temperature(kelvin);
-    public static Temperature FromRankine(double rankine)
-      => new Temperature(ConvertRankineToKelvin(rankine));
-    public static Temperature Multiply(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin * right.m_kelvin);
-    public static Temperature Negate(Temperature value)
-      => new Temperature(-value.m_kelvin);
-    public static Temperature Remainder(Temperature dividend, Temperature divisor)
-      => new Temperature(dividend.m_kelvin % divisor.m_kelvin);
-    public static Temperature Subtract(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin - right.m_kelvin);
-
     /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
     public static double ConvertCelsiusToFahrenheit(double celsius)
       => celsius * 1.8 + FahrenheitIcePoint;
@@ -87,12 +85,41 @@ namespace Flux.Units
     /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
     public static double ConvertRankineToCelsius(double rankine)
       => (rankine - RankineIcePoint) / 1.8;
-    /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
-    public static double ConvertRankineToFahrenheit(double rankine)
-      => rankine - RankineIcePoint;
     /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
     public static double ConvertRankineToKelvin(double rankine)
       => rankine / 1.8;
+    /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
+    public static double ConvertRankineToFahrenheit(double rankine)
+      => rankine - RankineIcePoint;
+
+    public static Temperature Add(Temperature left, Temperature right)
+      => new Temperature(left.m_kelvin + right.m_kelvin);
+    public static Temperature Divide(Temperature left, Temperature right)
+      => new Temperature(left.m_kelvin / right.m_kelvin);
+    public static Temperature FromUnitValue(TemperatureUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case TemperatureUnit.Celsius:
+          return new Temperature(value - CelsiusAbsoluteZero);
+        case TemperatureUnit.Fahrenheit:
+          return new Temperature((value - FahrenheitAbsoluteZero) / 1.8);
+        case TemperatureUnit.Kelvin:
+          return new Temperature(value);
+        case TemperatureUnit.Rankine:
+          return new Temperature(value / 1.8);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    public static Temperature Multiply(Temperature left, Temperature right)
+      => new Temperature(left.m_kelvin * right.m_kelvin);
+    public static Temperature Negate(Temperature value)
+      => new Temperature(-value.m_kelvin);
+    public static Temperature Remainder(Temperature dividend, Temperature divisor)
+      => new Temperature(dividend.m_kelvin % divisor.m_kelvin);
+    public static Temperature Subtract(Temperature left, Temperature right)
+      => new Temperature(left.m_kelvin - right.m_kelvin);
     #endregion Static methods
 
     #region Overloaded operators

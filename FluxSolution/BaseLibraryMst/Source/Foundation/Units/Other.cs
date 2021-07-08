@@ -23,12 +23,42 @@ namespace Foundation.Units
     }
 
     [TestMethod]
+    public void Azimuth()
+    {
+      var a = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 1);
+
+      var u = new Flux.Units.Azimuth(a);
+
+      Assert.AreEqual(a, u.Angle);
+    }
+
+    [TestMethod]
     public void Cent()
     {
       var u = new Flux.Units.Cent(1);
 
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(Flux.Units.Cent.FrequencyRatio, u.ToFrequencyRatio().Hertz);
+      Assert.AreEqual(Flux.Units.Cent.FrequencyRatio, u.ToFrequencyRatio());
+    }
+
+    [TestMethod]
+    public void Latitude()
+    {
+      var a = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 1);
+
+      var u = new Flux.Units.Latitude(a);
+
+      Assert.AreEqual(a, u.Angle);
+    }
+
+    [TestMethod]
+    public void Longitude()
+    {
+      var a = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 1);
+
+      var u = new Flux.Units.Longitude(a);
+
+      Assert.AreEqual(a, u.Angle);
     }
 
     [TestMethod]
@@ -72,7 +102,7 @@ namespace Foundation.Units
 
       Assert.AreEqual(1, u.Value);
       Assert.AreEqual(100, u.ToCent().Value);
-      Assert.AreEqual(Flux.Units.Semitone.FrequencyRatio, u.ToFrequencyRatio().Hertz);
+      Assert.AreEqual(Flux.Units.Semitone.FrequencyRatio, u.ToFrequencyRatio());
     }
   }
 }

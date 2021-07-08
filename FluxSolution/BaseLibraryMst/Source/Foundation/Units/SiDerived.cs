@@ -20,12 +20,28 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Angle(1);
 
-      Assert.AreEqual((0.5403023058681398, 0.8414709848078965), u.Cartesian);
-      Assert.AreEqual((0.8414709848078966, 0.5403023058681394), u.CartesianEx);
+      Assert.AreEqual((0.5403023058681398, 0.8414709848078965), u.ToCartesian());
+      Assert.AreEqual((0.8414709848078966, 0.5403023058681394), u.ToCartesianEx());
       Assert.AreEqual(57.29577951308232, u.Degree);
-      Assert.AreEqual(63.66197723675813, u.Gradian);
+      Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Units.AngleUnit.Gradian));
       Assert.AreEqual(1, u.Radian);
-      Assert.AreEqual(0.15915494309189535, u.Revolution);
+      Assert.AreEqual(0.15915494309189535, u.ToUnitValue(Flux.Units.AngleUnit.Revolution));
+    }
+
+    [TestMethod]
+    public void AngularAcceleration()
+    {
+      var u = new Flux.Units.AngularAcceleration(1);
+
+      Assert.AreEqual(1, u.RadianPerSecondSquare);
+    }
+
+    [TestMethod]
+    public void AngularVelocity()
+    {
+      var u = new Flux.Units.AngularVelocity(1);
+
+      Assert.AreEqual(1, u.RadianPerSecond);
     }
 
     [TestMethod]

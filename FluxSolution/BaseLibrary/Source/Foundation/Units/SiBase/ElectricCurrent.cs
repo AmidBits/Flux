@@ -1,5 +1,11 @@
 namespace Flux.Units
 {
+  public enum ElectricCurrentUnit
+  {
+    Milliampere,
+    Ampere,
+  }
+
   /// <summary>Electric current.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
@@ -13,11 +19,40 @@ namespace Flux.Units
     public double Ampere
       => m_ampere;
 
+    public double ToUnitValue(ElectricCurrentUnit unit)
+      => ConvertAmpereToUnit(m_ampere, unit);
+
     #region Static methods
     public static ElectricCurrent Add(ElectricCurrent left, ElectricCurrent right)
       => new ElectricCurrent(left.m_ampere + right.m_ampere);
+    public static double ConvertAmpereToUnit(double ampere, ElectricCurrentUnit unit)
+    {
+      switch (unit)
+      {
+        case ElectricCurrentUnit.Milliampere:
+          return ampere * 1000;
+        case ElectricCurrentUnit.Ampere:
+          return ampere;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    public static double ConvertUnitToAmpere(double value, ElectricCurrentUnit unit)
+    {
+      switch (unit)
+      {
+        case ElectricCurrentUnit.Milliampere:
+          return value / 1000;
+        case ElectricCurrentUnit.Ampere:
+          return value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static ElectricCurrent Divide(ElectricCurrent left, ElectricCurrent right)
       => new ElectricCurrent(left.m_ampere / right.m_ampere);
+    public static ElectricCurrent FromUnitValue(ElectricCurrentUnit unit, double value)
+      => new ElectricCurrent(ConvertUnitToAmpere(value, unit));
     public static ElectricCurrent FromVR(Voltage v, ElectricResistance r)
       => new ElectricCurrent(v.Volt / r.Ohm);
     public static ElectricCurrent Multiply(ElectricCurrent left, ElectricCurrent right)

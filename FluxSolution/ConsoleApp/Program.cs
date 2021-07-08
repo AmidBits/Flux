@@ -68,6 +68,14 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var c1 = new Flux.Units.Cent(1);
+      var c2 = new Flux.Units.Cent(2);
+      var c3 = c1 + c2;
+
+      var f1 = Flux.Units.Cent.ShiftPitch(440, 600);
+      var f2 = Flux.Units.Semitone.ShiftPitch(440, 6);
+
+
       var pr10 = Flux.Units.PowerRatio.FromDecibelChange(10);
       var pr8 = Flux.Units.PowerRatio.FromDecibelChange(8);
       var pr7 = Flux.Units.PowerRatio.FromDecibelChange(7);

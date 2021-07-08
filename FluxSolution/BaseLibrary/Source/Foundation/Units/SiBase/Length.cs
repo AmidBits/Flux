@@ -1,5 +1,19 @@
 namespace Flux.Units
 {
+  public enum LengthUnit
+  {
+    Millimeter,
+    Centimeter,
+    Inch,
+    Decimeter,
+    Foot,
+    Yard,
+    Meter,
+    NauticalMile,
+    Mile,
+    Kilometer,
+  }
+
   /// <summary>Length.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
@@ -10,56 +24,73 @@ namespace Flux.Units
     public Length(double meter)
       => m_meter = meter;
 
-    public double Foot
-      => ConvertMeterToFoot(m_meter);
-    public double Kilometer
-      => ConvertMeterToKilometer(m_meter);
     public double Meter
       => m_meter;
-    public double Mile
-      => ConvertMeterToMile(m_meter);
-    public double Millimeter
-      => ConvertMeterToMillimeter(m_meter);
-    public double NauticalMile
-      => ConvertMeterToNauticalMile(m_meter);
+
+    public double ToUnitValue(LengthUnit unit)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+          return m_meter * 1000;
+        case LengthUnit.Centimeter:
+          return m_meter * 100;
+        case LengthUnit.Inch:
+          return m_meter / 0.0254;
+        case LengthUnit.Decimeter:
+          return m_meter * 10;
+        case LengthUnit.Foot:
+          return m_meter / 0.3048;
+        case LengthUnit.Yard:
+          return m_meter / 0.9144;
+        case LengthUnit.Meter:
+          return m_meter;
+        case LengthUnit.NauticalMile:
+          return m_meter / 1852;
+        case LengthUnit.Mile:
+          return m_meter / 1609.344;
+        case LengthUnit.Kilometer:
+          return m_meter / 1000;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static Length Add(Length left, Length right)
       => new Length(left.m_meter + right.m_meter);
-    public static double ConvertFootToMeter(double feet)
-      => feet * 0.3048;
-    public static double ConvertKilometerToMeter(double kilometer)
-      => kilometer * 1000;
-    public static double ConvertMeterToFoot(double meter)
-      => meter / 0.3048;
-    public static double ConvertMeterToNauticalMile(double meter)
-      => meter / 1852;
-    public static double ConvertMeterToKilometer(double meter)
-      => meter / 1000;
-    public static double ConvertMeterToMile(double meter)
-      => meter / 1609.344;
-    public static double ConvertMeterToMillimeter(double meter)
-      => meter * 1000;
-    public static double ConvertMileToMeter(double mile)
-      => mile * 1609.344;
-    public static double ConvertMillimeterToMeter(double millimeter)
-      => millimeter / 1000;
-    public static double ConvertNauticalMileToMeter(double nauticalMile)
-      => nauticalMile * 1852;
     public static Length Divide(Length left, Length right)
       => new Length(left.m_meter / right.m_meter);
     public static Frequency FromAcousticsAsWaveLength(Speed soundVelocity, Frequency frequency)
       => new Frequency(soundVelocity.MeterPerSecond / frequency.Hertz);
-    public static Length FromFoot(double foot)
-      => new Length(ConvertFootToMeter(foot));
-    public static Length FromKilometer(double kilometer)
-      => new Length(ConvertKilometerToMeter(kilometer));
-    public static Length FromMile(double mile)
-      => new Length(ConvertMileToMeter(mile));
-    public static Length FromMillimeter(double millimeter)
-      => new Length(ConvertMillimeterToMeter(millimeter));
-    public static Length FromNauticalMile(double nauticalMile)
-      => new Length(ConvertNauticalMileToMeter(nauticalMile));
+    public static Length FromUnitValue(LengthUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+          return new Length(value / 1000);
+        case LengthUnit.Centimeter:
+          return new Length(value / 100);
+        case LengthUnit.Inch:
+          return new Length(value * 0.0254);
+        case LengthUnit.Decimeter:
+          return new Length(value / 10);
+        case LengthUnit.Foot:
+          return new Length(value * 0.3048);
+        case LengthUnit.Yard:
+          return new Length(value * 0.9144);
+        case LengthUnit.Meter:
+          return new Length(value);
+        case LengthUnit.NauticalMile:
+          return new Length(value * 1852);
+        case LengthUnit.Mile:
+          return new Length(value * 1609.344);
+        case LengthUnit.Kilometer:
+          return new Length(value * 1000);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static Length Multiply(Length left, Length right)
       => new Length(left.m_meter * right.m_meter);
     public static Length Negate(Length value)

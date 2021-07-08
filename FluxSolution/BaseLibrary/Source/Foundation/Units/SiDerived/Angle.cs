@@ -1,5 +1,13 @@
 namespace Flux.Units
 {
+  public enum AngleUnit
+  {
+    Degree,
+    Gradian,
+    Radian,
+    Revolution,
+  }
+
   /// <summary>Represents an angle (stored as a radians and implicitly convertible to/from double and radian).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
@@ -15,29 +23,33 @@ namespace Flux.Units
     public Angle(double radian)
       => m_radian = radian;
 
-    public (double x, double y) Cartesian
-      => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
-    public (double x, double y) CartesianEx
-      => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
     public double Degree
       => ConvertRadianToDegree(m_radian);
-    public double Gradian
-      => ConvertRadianToGradian(m_radian);
     public double Radian
       => m_radian;
-    public double Revolution
-      => ConvertRadianToRevolution(m_radian);
 
-    public Azimuth ToAzimuth()
-      => new Azimuth(Degree);
-    public Latitude ToLatitude()
-      => new Latitude(Degree);
-    public Longitude ToLongitude()
-      => new Longitude(Degree);
+    public (double x, double y) ToCartesian()
+      => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
+    public (double x, double y) ToCartesianEx()
+      => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
+    public double ToUnitValue(AngleUnit unit)
+    {
+      switch (unit)
+      {
+        case AngleUnit.Degree:
+          return ConvertRadianToDegree(m_radian);
+        case AngleUnit.Gradian:
+          return ConvertRadianToGradian(m_radian);
+        case AngleUnit.Radian:
+          return m_radian;
+        case AngleUnit.Revolution:
+          return ConvertRadianToRevolution(m_radian);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
-    public static Angle Add(Angle left, Angle right)
-      => new Angle(left.m_radian + right.m_radian);
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static double ConvertCartesianToRotationAngle(double x, double y)
@@ -80,20 +92,31 @@ namespace Flux.Units
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static (double x, double y) ConvertRotationAngleToCartesianEx(double radian, out double x, out double y)
       => ConvertRotationAngleToCartesian(Maths.PiX2 - (radian >= Maths.PiX2 ? radian % Maths.PiX2 : radian) + Maths.PiOver2, out x, out y);
+
+    public static Angle Add(Angle left, Angle right)
+      => new Angle(left.m_radian + right.m_radian);
     public static Angle Divide(Angle left, Angle right)
       => new Angle(left.m_radian / right.m_radian);
     public static Angle FromCartesian(double x, double y)
       => new Angle(ConvertCartesianToRotationAngle(x, y));
     public static Angle FromCartesianEx(double x, double y)
       => new Angle(ConvertCartesianToRotationAngleEx(x, y));
-    public static Angle FromDegree(double degree)
-      => new Angle(ConvertDegreeToRadian(degree));
-    public static Angle FromGradian(double gradian)
-      => new Angle(ConvertGradianToRadian(gradian));
-    public static Angle FromRadian(double radian)
-      => new Angle(radian);
-    public static Angle FromRevolution(double turns)
-      => new Angle(ConvertRevolutionToRadian(turns));
+    public static Angle FromUnitValue(AngleUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case AngleUnit.Degree:
+          return new Angle(ConvertDegreeToRadian(value));
+        case AngleUnit.Gradian:
+          return new Angle(ConvertGradianToRadian(value));
+        case AngleUnit.Radian:
+          return new Angle(value);
+        case AngleUnit.Revolution:
+          return new Angle(ConvertRevolutionToRadian(value));
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static Angle Multiply(Angle left, Angle right)
       => new Angle(left.m_radian * right.m_radian);
     public static Angle Negate(Angle value)

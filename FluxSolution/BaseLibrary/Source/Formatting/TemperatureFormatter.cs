@@ -33,13 +33,13 @@ namespace Flux.Formatting
             switch (unitString)
             {
               case var celsius when @"Celsius".StartsWith(celsius, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.Celsius) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
+                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Celsius)) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
               case var fahrenheit when @"Fahrenheit".StartsWith(fahrenheit, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.Fahrenheit) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
+                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Fahrenheit)) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
               case var kelvin when @"Kelvin".StartsWith(kelvin, System.StringComparison.InvariantCultureIgnoreCase):
                 return string.Format(null, formatString, temperature.Kelvin) + (UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
               case var rankine when @"Rankine".StartsWith(rankine, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.Rankine) + " \u00B0R";
+                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Rankine)) + " \u00B0R";
               default:
                 break;
             }

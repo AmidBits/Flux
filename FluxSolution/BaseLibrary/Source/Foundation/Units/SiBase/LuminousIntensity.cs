@@ -1,5 +1,10 @@
 namespace Flux.Units
 {
+  public enum LuminousIntensityUnit
+  {
+    Candela,
+  }
+
   /// <summary>A unit for amount of substance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity
@@ -13,11 +18,32 @@ namespace Flux.Units
     public double Candela
       => m_candela;
 
+    public double ToUnitValue(LuminousIntensityUnit unit)
+    {
+      switch (unit)
+      {
+        case LuminousIntensityUnit.Candela:
+          return m_candela;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+
     #region Static methods
     public static LuminousIntensity Add(LuminousIntensity left, LuminousIntensity right)
       => new LuminousIntensity(left.m_candela + right.m_candela);
     public static LuminousIntensity Divide(LuminousIntensity left, LuminousIntensity right)
       => new LuminousIntensity(left.m_candela / right.m_candela);
+    public static LuminousIntensity FromUnitValue(LuminousIntensityUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case LuminousIntensityUnit.Candela:
+          return new LuminousIntensity(value);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static LuminousIntensity Multiply(LuminousIntensity left, LuminousIntensity right)
       => new LuminousIntensity(left.m_candela * right.m_candela);
     public static LuminousIntensity Negate(LuminousIntensity value)

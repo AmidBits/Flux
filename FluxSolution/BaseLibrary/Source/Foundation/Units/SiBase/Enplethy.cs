@@ -1,5 +1,10 @@
 namespace Flux.Units
 {
+  public enum EnplethyUnit
+  {
+    Mole,
+  }
+
   /// <summary>A unit for amount of substance.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
@@ -13,11 +18,32 @@ namespace Flux.Units
     public double Mole
       => m_mole;
 
+    public double ToUnitValue(EnplethyUnit unit)
+    {
+      switch (unit)
+      {
+        case EnplethyUnit.Mole:
+          return m_mole;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+
     #region Static methods
     public static Enplethy Add(Enplethy left, Enplethy right)
       => new Enplethy(left.m_mole + right.m_mole);
     public static Enplethy Divide(Enplethy left, Enplethy right)
       => new Enplethy(left.m_mole / right.m_mole);
+    public static Enplethy FromUnitValue(double value, EnplethyUnit unit)
+    {
+      switch (unit)
+      {
+        case EnplethyUnit.Mole:
+          return new Enplethy(value);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     public static Enplethy Multiply(Enplethy left, Enplethy right)
       => new Enplethy(left.m_mole * right.m_mole);
     public static Enplethy Negate(Enplethy value)

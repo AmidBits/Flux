@@ -28,7 +28,7 @@ namespace Flux.Units
     private readonly Angle m_angle;
 
     public Azimuth(double degree)
-      => m_angle = Angle.FromDegree(Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
+      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
     public Azimuth(Angle angle)
       : this(angle.Degree)
     { }

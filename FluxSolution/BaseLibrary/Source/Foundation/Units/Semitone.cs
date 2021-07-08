@@ -17,22 +17,26 @@ namespace Flux.Units
       => m_value;
 
     public Cent ToCent()
-      => new Cent(ConvertToCent(m_value));
-    public Frequency ToFrequencyRatio()
-      => new Frequency(ConvertToFrequencyRatio(m_value));
+      => new Cent(ConvertSemitoneToCent(m_value));
+    public double ToFrequencyRatio()
+      => ConvertSemitoneToFrequencyRatio(m_value);
 
     #region Static methods
-    public static Semitone Add(Semitone left, Semitone right)
-      => new Semitone(left.m_value + right.m_value);
     /// <summary>Convert a specified interval ratio to cents.</summary>
     public static int ConvertFrequencyRatioToSemitone(double frequencyRatio)
       => (int)(System.Math.Log(frequencyRatio, 2.0) * 12.0);
     /// <summary>Convert a specified semitone to cents.</summary>
-    public static int ConvertToCent(int semitones)
+    public static int ConvertSemitoneToCent(int semitones)
       => semitones * 100;
     /// <summary>Convert a specified semitone to an interval ratio.</summary>
-    public static double ConvertToFrequencyRatio(int semitones)
+    public static double ConvertSemitoneToFrequencyRatio(int semitones)
       => System.Math.Pow(2.0, semitones / 12.0);
+    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public static double ShiftPitch(double frequency, int semitones)
+      => frequency * ConvertSemitoneToFrequencyRatio(semitones);
+
+    public static Semitone Add(Semitone left, Semitone right)
+      => new Semitone(left.m_value + right.m_value);
     public static Semitone Divide(Semitone left, Semitone right)
       => new Semitone(left.m_value / right.m_value);
     public static Semitone FromFrequencyRatio(double frequencyRatio)
@@ -43,9 +47,6 @@ namespace Flux.Units
       => new Semitone(-value.m_value);
     public static Semitone Remainder(Semitone dividend, Semitone divisor)
       => new Semitone(dividend.m_value % divisor.m_value);
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int semitones)
-      => System.Math.Pow(FrequencyRatio, semitones) * frequency;
     public static Semitone Subtract(Semitone left, Semitone right)
       => new Semitone(left.m_value - right.m_value);
     #endregion Static methods

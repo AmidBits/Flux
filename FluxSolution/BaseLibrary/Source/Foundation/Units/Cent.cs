@@ -16,18 +16,22 @@ namespace Flux.Units
     public int Value
       => m_value;
 
-    public Frequency ToFrequencyRatio()
-      => new Frequency(ConvertToFrequencyRatio(m_value));
+    public double ToFrequencyRatio()
+      => ConvertCentToFrequencyRatio(m_value);
 
     #region Static methods
-    public static Cent Add(Cent left, Cent right)
-      => new Cent(left.m_value + right.m_value);
     /// <summary>Convert a specified interval ratio to cents.</summary>
     public static int ConvertFrequencyRatioToCent(double frequencyRatio)
       => (int)(System.Math.Log(frequencyRatio, 2.0) * 1200.0);
     /// <summary>Convert a specified cents to an interval ratio.</summary>
-    public static double ConvertToFrequencyRatio(int cents)
+    public static double ConvertCentToFrequencyRatio(int cents)
       => System.Math.Pow(2.0, cents / 1200.0);
+    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public static double ShiftPitch(double frequency, int cents)
+      => frequency * ConvertCentToFrequencyRatio(cents);
+
+    public static Cent Add(Cent left, Cent right)
+      => new Cent(left.m_value + right.m_value);
     public static Cent Divide(Cent left, Cent right)
       => new Cent(left.m_value / right.m_value);
     public static Cent FromFrequencyRatio(double frequencyRatio)
@@ -38,9 +42,6 @@ namespace Flux.Units
       => new Cent(-value.m_value);
     public static Cent Remainder(Cent dividend, Cent divisor)
       => new Cent(dividend.m_value % divisor.m_value);
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int cents)
-      => System.Math.Pow(FrequencyRatio, cents) * frequency;
     public static Cent Subtract(Cent left, Cent right)
       => new Cent(left.m_value - right.m_value);
     #endregion Static methods
