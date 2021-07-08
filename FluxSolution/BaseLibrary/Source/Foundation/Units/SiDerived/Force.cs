@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Newton
       => m_newton;
 
-    #region Static methods
-    public static Force Add(Force left, Force right)
-      => new Force(left.m_newton + right.m_newton);
-    public static Force Divide(Force left, Force right)
-      => new Force(left.m_newton / right.m_newton);
-    public static Force Multiply(Force left, Force right)
-      => new Force(left.m_newton * right.m_newton);
-    public static Force Negate(Force value)
-      => new Force(-value.m_newton);
-    public static Force Remainder(Force dividend, Force divisor)
-      => new Force(dividend.m_newton % divisor.m_newton);
-    public static Force Subtract(Force left, Force right)
-      => new Force(left.m_newton - right.m_newton);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Force v)
       => v.m_newton;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Force a, Force b)
       => !a.Equals(b);
 
-    public static Force operator +(Force a, Force b)
-      => Add(a, b);
-    public static Force operator /(Force a, Force b)
-      => Divide(a, b);
-    public static Force operator *(Force a, Force b)
-      => Multiply(a, b);
     public static Force operator -(Force v)
-      => Negate(v);
+      => new Force(-v.m_newton);
+    public static Force operator +(Force a, Force b)
+      => new Force(a.m_newton + b.m_newton);
+    public static Force operator /(Force a, Force b)
+      => new Force(a.m_newton / b.m_newton);
     public static Force operator %(Force a, Force b)
-      => Remainder(a, b);
+      => new Force(a.m_newton % b.m_newton);
+    public static Force operator *(Force a, Force b)
+      => new Force(a.m_newton * b.m_newton);
     public static Force operator -(Force a, Force b)
-      => Subtract(a, b);
+      => new Force(a.m_newton - b.m_newton);
     #endregion Overloaded operators
 
     #region Implemented interfaces

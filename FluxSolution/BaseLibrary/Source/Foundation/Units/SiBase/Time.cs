@@ -56,10 +56,6 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Time Add(Time left, Time right)
-      => new Time(left.m_second + right.m_second);
-    public static Time Divide(Time left, Time right)
-      => new Time(left.m_second / right.m_second);
     public static Time FromTimeSpan(System.TimeSpan timeSpan)
       => new Time(timeSpan.TotalSeconds);
     public static Time FromUnitValue(TimeUnit unit, double value)
@@ -88,14 +84,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Time Multiply(Time left, Time right)
-      => new Time(left.m_second * right.m_second);
-    public static Time Negate(Time value)
-      => new Time(-value.m_second);
-    public static Time Remainder(Time dividend, Time divisor)
-      => new Time(dividend.m_second % divisor.m_second);
-    public static Time Subtract(Time left, Time right)
-      => new Time(left.m_second - right.m_second);
     #endregion Static methods
 
     #region Overloaded operators
@@ -118,18 +106,18 @@ namespace Flux.Units
     public static bool operator !=(Time a, Time b)
       => !a.Equals(b);
 
-    public static Time operator +(Time a, Time b)
-      => Add(a, b);
-    public static Time operator /(Time a, Time b)
-      => Divide(a, b);
-    public static Time operator *(Time a, Time b)
-      => Multiply(a, b);
     public static Time operator -(Time v)
-      => Negate(v);
+      => new Time(-v.m_second);
+    public static Time operator +(Time a, Time b)
+      => new Time(a.m_second + b.m_second);
+    public static Time operator /(Time a, Time b)
+      => new Time(a.m_second / b.m_second);
+    public static Time operator *(Time a, Time b)
+      => new Time(a.m_second * b.m_second);
     public static Time operator %(Time a, Time b)
-      => Remainder(a, b);
+      => new Time(a.m_second % b.m_second);
     public static Time operator -(Time a, Time b)
-      => Subtract(a, b);
+      => new Time(a.m_second - b.m_second);
     #endregion Overloaded operators
 
     #region Implemented interfaces

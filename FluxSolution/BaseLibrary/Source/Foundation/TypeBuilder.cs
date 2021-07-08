@@ -2,7 +2,7 @@ namespace Flux
 {
   public static class TypeBuilder
   {
-    private static void AddConstructor(System.Reflection.Emit.TypeBuilder typeBuilder)
+    public static void AddConstructor(System.Reflection.Emit.TypeBuilder typeBuilder)
     {
       typeBuilder.DefineDefaultConstructor(System.Reflection.MethodAttributes.Public | System.Reflection.MethodAttributes.SpecialName | System.Reflection.MethodAttributes.RTSpecialName);
     }

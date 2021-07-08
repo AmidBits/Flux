@@ -30,26 +30,11 @@ namespace Flux.Units
     public Azimuth(double degree)
       => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
     public Azimuth(Angle angle)
-      : this(angle.Degree)
+      : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public Angle Angle
       => m_angle;
-
-    #region Static methods
-    public static Azimuth Add(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_angle + right.m_angle);
-    public static Azimuth Divide(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_angle / right.m_angle);
-    public static Azimuth Multiply(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_angle * right.m_angle);
-    public static Azimuth Negate(Azimuth value)
-      => new Azimuth(-value.m_angle);
-    public static Azimuth Remainder(Azimuth dividend, Azimuth divisor)
-      => new Azimuth(dividend.m_angle % divisor.m_angle);
-    public static Azimuth Subtract(Azimuth left, Azimuth right)
-      => new Azimuth(left.m_angle - right.m_angle);
-    #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Azimuth v)
@@ -71,18 +56,38 @@ namespace Flux.Units
     public static bool operator !=(Azimuth a, Azimuth b)
       => !a.Equals(b);
 
-    public static Azimuth operator +(Azimuth a, Azimuth b)
-      => Add(a, b);
-    public static Azimuth operator /(Azimuth a, Azimuth b)
-      => Divide(a, b);
-    public static Azimuth operator *(Azimuth a, Azimuth b)
-      => Multiply(a, b);
     public static Azimuth operator -(Azimuth v)
-      => Negate(v);
+      => new Azimuth(-v.Angle);
+    public static Azimuth operator +(Azimuth a, Azimuth b)
+      => new Azimuth(a.Angle + b.Angle);
+    public static Azimuth operator +(Azimuth a, double b)
+      => new Azimuth(a.Angle.Degree + b);
+    public static Azimuth operator +(double a, Azimuth b)
+      => new Azimuth(a + b.Angle.Degree);
+    public static Azimuth operator /(Azimuth a, Azimuth b)
+      => new Azimuth(a.Angle / b.Angle);
+    public static Azimuth operator /(Azimuth a, double b)
+      => new Azimuth(a.Angle.Degree / b);
+    public static Azimuth operator /(double a, Azimuth b)
+      => new Azimuth(a / b.Angle.Degree);
+    public static Azimuth operator *(Azimuth a, Azimuth b)
+      => new Azimuth(a.Angle * b.Angle);
+    public static Azimuth operator *(Azimuth a, double b)
+      => new Azimuth(a.Angle.Degree * b);
+    public static Azimuth operator *(double a, Azimuth b)
+      => new Azimuth(a * b.Angle.Degree);
     public static Azimuth operator %(Azimuth a, Azimuth b)
-      => Remainder(a, b);
+      => new Azimuth(a.Angle % b.Angle);
+    public static Azimuth operator %(Azimuth a, double b)
+      => new Azimuth(a.Angle.Degree % b);
+    public static Azimuth operator %(double a, Azimuth b)
+      => new Azimuth(a % b.Angle.Degree);
     public static Azimuth operator -(Azimuth a, Azimuth b)
-      => Subtract(a, b);
+      => new Azimuth(a.Angle - b.Angle);
+    public static Azimuth operator -(Azimuth a, double b)
+      => new Azimuth(a.Angle.Degree - b);
+    public static Azimuth operator -(double a, Azimuth b)
+      => new Azimuth(a - b.Angle.Degree);
     #endregion Overloaded operators
 
     #region Implemented interfaces

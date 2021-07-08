@@ -1,5 +1,14 @@
 namespace Flux.Units
 {
+  public enum SpeedUnit
+  {
+    FeetPerSecond,
+    KilometersPerHour,
+    Knots,
+    MetersPerSecond,
+    MilesPerHour,
+  }
+
   /// <summary>Speed.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
@@ -15,64 +24,52 @@ namespace Flux.Units
     public Speed(double meterPerSecond)
       => m_meterPerSecond = meterPerSecond;
 
-    public double FootPerSecond
-      => ConvertMeterPerSecondToFootPerSecond(m_meterPerSecond);
-    public double KilometerPerHour
-      => ConvertMeterPerSecondToKilometerPerHour(m_meterPerSecond);
-    public double Knot
-      => ConvertMeterPerSecondToKnot(m_meterPerSecond);
     public double MeterPerSecond
       => m_meterPerSecond;
-    public double MilePerHour
-      => ConvertMeterPerSecondToMilePerHour(m_meterPerSecond);
-    public double NauticalMilePerHour
-      => ConvertMeterPerSecondToNauticalMilePerHour(m_meterPerSecond);
+
+    public double ToUnitValue(SpeedUnit unit)
+    {
+      switch (unit)
+      {
+        case SpeedUnit.FeetPerSecond:
+          return m_meterPerSecond * (1250.0 / 381.0);
+        case SpeedUnit.KilometersPerHour:
+          return m_meterPerSecond * (18.0 / 5.0);
+        case SpeedUnit.Knots:
+          return m_meterPerSecond * (3600.0 / 1852.0);
+        case SpeedUnit.MetersPerSecond:
+          return m_meterPerSecond;
+        case SpeedUnit.MilesPerHour:
+          return m_meterPerSecond * (3125.0 / 1397.0);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
-    public static Speed Add(Speed left, Speed right)
-      => new Speed(left.m_meterPerSecond + right.m_meterPerSecond);
-    public static double ConvertFootPerSecondToMeterPerSecond(double footPerSecond)
-      => footPerSecond * 0.3048;
-    public static double ConvertKilometerPerHourToMeterPerSecond(double kilometerPerHour)
-      => kilometerPerHour * 0.27;
-    public static double ConvertKnotToMeterPerSecond(double knots)
-      => knots * (1852.0 / 3600.0);
-    public static double ConvertMeterPerSecondToFootPerSecond(double meterPerSecond)
-      => meterPerSecond / 0.3048;
-    public static double ConvertMeterPerSecondToKilometerPerHour(double meterPerSecond)
-      => meterPerSecond * 3.6;
-    public static double ConvertMeterPerSecondToKnot(double knot)
-      => knot / (1852.0 / 3600.0);
-    public static double ConvertMeterPerSecondToMilePerHour(double meterPerSecond)
-      => meterPerSecond * 2.2369362920544;
-    public static double ConvertMeterPerSecondToNauticalMilePerHour(double meterPerSecond)
-      => meterPerSecond * 1.9438444924406;
-    public static double ConvertMilePerHourToMeterPerSecond(double milePerHour)
-      => milePerHour * 0.44704;
-    public static double ConvertNauticalMilePerHourToMeterPerSecond(double nauticalMilePerHour)
-      => nauticalMilePerHour / 1.9438444924406;
-    public static Speed Divide(Speed left, Speed right)
-      => new Speed(left.m_meterPerSecond / right.m_meterPerSecond);
-    public static Frequency FromAcousticsAsSoundVelocity(Frequency frequency, Length waveLength)
-      => new Frequency(frequency.Hertz * waveLength.Meter);
-    public static Speed FromFeetPerSecond(double feetPerSecond)
-      => new Speed(ConvertFootPerSecondToMeterPerSecond(feetPerSecond));
-    public static Speed FromKilometersPerHour(double kilometersPerHour)
-      => new Speed(ConvertKilometerPerHourToMeterPerSecond(kilometersPerHour));
-    public static Speed FromKnots(double knots)
-      => new Speed(ConvertKnotToMeterPerSecond(knots));
-    public static Speed FromMilesPerHour(double milesPerHour)
-      => new Speed(ConvertMilePerHourToMeterPerSecond(milesPerHour));
-    public static Speed FromNauticalMilesPerHour(double nauticalMilesPerHour)
-      => new Speed(ConvertNauticalMilePerHourToMeterPerSecond(nauticalMilesPerHour));
-    public static Speed Multiply(Speed left, Speed right)
-      => new Speed(left.m_meterPerSecond * right.m_meterPerSecond);
-    public static Speed Negate(Speed value)
-      => new Speed(-value.m_meterPerSecond);
-    public static Speed Remainder(Speed dividend, Speed divisor)
-      => new Speed(dividend.m_meterPerSecond % divisor.m_meterPerSecond);
-    public static Speed Subtract(Speed left, Speed right)
-      => new Speed(left.m_meterPerSecond - right.m_meterPerSecond);
+    public static Speed From(Length length, Time time)
+      => new Speed(length.Meter / time.Second);
+    /// <summary>Create a speed that contains the sound velocity, of acoustics, from the properties frequency and wave length.</summary>
+    public static Speed From(Frequency frequency, Length waveLength)
+      => new Speed(frequency.Hertz * waveLength.Meter);
+    public static Speed FromUnitValue(SpeedUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case SpeedUnit.FeetPerSecond:
+          return new Speed(value * (381.0 / 1250.0));
+        case SpeedUnit.KilometersPerHour:
+          return new Speed(value * (5.0 / 18.0));
+        case SpeedUnit.Knots:
+          return new Speed(value * (1852.0 / 3600.0));
+        case SpeedUnit.MetersPerSecond:
+          return new Speed(value);
+        case SpeedUnit.MilesPerHour:
+          return new Speed(value * (1397.0 / 3125.0));
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators
@@ -95,18 +92,18 @@ namespace Flux.Units
     public static bool operator !=(Speed a, Speed b)
       => !a.Equals(b);
 
-    public static Speed operator +(Speed a, Speed b)
-      => Add(a, b);
-    public static Speed operator /(Speed a, Speed b)
-      => Divide(a, b);
-    public static Speed operator *(Speed a, Speed b)
-      => Multiply(a, b);
     public static Speed operator -(Speed v)
-      => Negate(v);
+      => new Speed(-v.m_meterPerSecond);
+    public static Speed operator +(Speed a, Speed b)
+      => new Speed(a.m_meterPerSecond + b.m_meterPerSecond);
+    public static Speed operator /(Speed a, Speed b)
+      => new Speed(a.m_meterPerSecond / b.m_meterPerSecond);
+    public static Speed operator *(Speed a, Speed b)
+      => new Speed(a.m_meterPerSecond * b.m_meterPerSecond);
     public static Speed operator %(Speed a, Speed b)
-      => Remainder(a, b);
+      => new Speed(a.m_meterPerSecond % b.m_meterPerSecond);
     public static Speed operator -(Speed a, Speed b)
-      => Subtract(a, b);
+      => new Speed(a.m_meterPerSecond - b.m_meterPerSecond);
     #endregion Overloaded operators
 
     #region Implemented interfaces

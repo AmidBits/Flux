@@ -14,20 +14,8 @@ namespace Flux.Units
       => m_squareMeter;
 
     #region Static methods
-    public static Area Add(Area left, Area right)
-      => new Area(left.m_squareMeter + right.m_squareMeter);
-    public static Area Divide(Area left, Area right)
-      => new Area(left.m_squareMeter / right.m_squareMeter);
-    public static Area FromRectangule(double lengthInMeters, double widthInMeters)
-      => new Area(lengthInMeters * widthInMeters);
-    public static Area Multiply(Area left, Area right)
-      => new Area(left.m_squareMeter * right.m_squareMeter);
-    public static Area Negate(Area value)
-      => new Area(-value.m_squareMeter);
-    public static Area Remainder(Area dividend, Area divisor)
-      => new Area(dividend.m_squareMeter % divisor.m_squareMeter);
-    public static Area Subtract(Area left, Area right)
-      => new Area(left.m_squareMeter - right.m_squareMeter);
+    public static Area FromRectangle(Length length, Length width)
+      => new Area(length.Meter * width.Meter);
     #endregion Static methods
 
     #region Overloaded operators
@@ -50,18 +38,18 @@ namespace Flux.Units
     public static bool operator !=(Area a, Area b)
       => !a.Equals(b);
 
-    public static Area operator +(Area a, Area b)
-      => Add(a, b);
-    public static Area operator /(Area a, Area b)
-      => Divide(a, b);
-    public static Area operator *(Area a, Area b)
-      => Multiply(a, b);
     public static Area operator -(Area v)
-      => Negate(v);
+      => new Area(-v.m_squareMeter);
+    public static Area operator +(Area a, Area b)
+      => new Area(a.m_squareMeter + b.m_squareMeter);
+    public static Area operator /(Area a, Area b)
+      => new Area(a.m_squareMeter + b.m_squareMeter);
+    public static Area operator *(Area a, Area b)
+      => new Area(a.m_squareMeter + b.m_squareMeter);
     public static Area operator %(Area a, Area b)
-      => Remainder(a, b);
+      => new Area(a.m_squareMeter + b.m_squareMeter);
     public static Area operator -(Area a, Area b)
-      => Subtract(a, b);
+      => new Area(a.m_squareMeter + b.m_squareMeter);
     #endregion Overloaded operators
 
     #region Implemented interfaces

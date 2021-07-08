@@ -13,21 +13,6 @@ namespace Flux.Units
     public double MeterPerSecondSquare
       => m_meterPerSecondSquare;
 
-    #region Static methods
-    public static Acceleration Add(Acceleration left, Acceleration right)
-      => new Acceleration(left.m_meterPerSecondSquare + right.m_meterPerSecondSquare);
-    public static Acceleration Divide(Acceleration left, Acceleration right)
-      => new Acceleration(left.m_meterPerSecondSquare / right.m_meterPerSecondSquare);
-    public static Acceleration Multiply(Acceleration left, Acceleration right)
-      => new Acceleration(left.m_meterPerSecondSquare * right.m_meterPerSecondSquare);
-    public static Acceleration Negate(Acceleration value)
-      => new Acceleration(-value.m_meterPerSecondSquare);
-    public static Acceleration Remainder(Acceleration dividend, Acceleration divisor)
-      => new Acceleration(dividend.m_meterPerSecondSquare % divisor.m_meterPerSecondSquare);
-    public static Acceleration Subtract(Acceleration left, Acceleration right)
-      => new Acceleration(left.m_meterPerSecondSquare - right.m_meterPerSecondSquare);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Acceleration v)
       => v.m_meterPerSecondSquare;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Acceleration a, Acceleration b)
       => !a.Equals(b);
 
-    public static Acceleration operator +(Acceleration a, Acceleration b)
-      => Add(a, b);
-    public static Acceleration operator /(Acceleration a, Acceleration b)
-      => Divide(a, b);
-    public static Acceleration operator *(Acceleration a, Acceleration b)
-      => Multiply(a, b);
     public static Acceleration operator -(Acceleration v)
-      => Negate(v);
+      => new Acceleration(-v.m_meterPerSecondSquare);
+    public static Acceleration operator +(Acceleration a, Acceleration b)
+      => new Acceleration(a.m_meterPerSecondSquare + b.m_meterPerSecondSquare);
+    public static Acceleration operator /(Acceleration a, Acceleration b)
+      => new Acceleration(a.m_meterPerSecondSquare / b.m_meterPerSecondSquare);
+    public static Acceleration operator *(Acceleration a, Acceleration b)
+      => new Acceleration(a.m_meterPerSecondSquare * b.m_meterPerSecondSquare);
     public static Acceleration operator %(Acceleration a, Acceleration b)
-      => Remainder(a, b);
+      => new Acceleration(a.m_meterPerSecondSquare % b.m_meterPerSecondSquare);
     public static Acceleration operator -(Acceleration a, Acceleration b)
-      => Subtract(a, b);
+      => new Acceleration(a.m_meterPerSecondSquare - b.m_meterPerSecondSquare);
     #endregion Overloaded operators
 
     #region Implemented interfaces

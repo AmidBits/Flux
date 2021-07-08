@@ -108,9 +108,7 @@
 
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mouse_event
     [System.Runtime.InteropServices.DllImport("user32.dll")]
-#pragma warning disable IDE1006 // Naming Styles
     private static extern void mouse_event(int flags, int dx, int dy, uint data, System.UIntPtr extraInfo);
-#pragma warning restore IDE1006 // Naming Styles
     /// <summary>Synthesize mouse motion and button clicks.</summary>
     public static void InvokeMouseEvent(MouseEventFlags flags)
       => InvokeMouseEvent(flags, 0, 0, 0, System.UIntPtr.Zero);

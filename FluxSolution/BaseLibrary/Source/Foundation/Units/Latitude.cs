@@ -11,9 +11,9 @@ namespace Flux.Units
     private readonly Angle m_angle;
 
     public Latitude(double degree)
-      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
+      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, System.Math.Clamp(degree, MinValue, MaxValue));
     public Latitude(Angle angle)
-      : this(angle.Degree)
+      : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
@@ -32,8 +32,6 @@ namespace Flux.Units
       => m_angle;
 
     #region Static methods
-    public static Latitude Add(Latitude left, Latitude right)
-      => new Latitude(left.m_angle + right.m_angle);
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     public static double ComputeApproximateLatitudinalHeight(double latitude)
     {
@@ -74,16 +72,6 @@ namespace Flux.Units
 
       return System.Math.Sqrt(numerator / denominator);
     }
-    public static Latitude Divide(Latitude left, Latitude right)
-      => new Latitude(left.m_angle / right.m_angle);
-    public static Latitude Multiply(Latitude left, Latitude right)
-      => new Latitude(left.m_angle * right.m_angle);
-    public static Latitude Negate(Latitude value)
-      => new Latitude(-value.m_angle);
-    public static Latitude Remainder(Latitude dividend, Latitude divisor)
-      => new Latitude(dividend.m_angle % divisor.m_angle);
-    public static Latitude Subtract(Latitude left, Latitude right)
-      => new Latitude(left.m_angle - right.m_angle);
     #endregion Static methods
 
     #region Overloaded operators
@@ -106,18 +94,38 @@ namespace Flux.Units
     public static bool operator !=(Latitude a, Latitude b)
       => !a.Equals(b);
 
-    public static Latitude operator +(Latitude a, Latitude b)
-      => Add(a, b);
-    public static Latitude operator /(Latitude a, Latitude b)
-      => Divide(a, b);
-    public static Latitude operator *(Latitude a, Latitude b)
-      => Multiply(a, b);
     public static Latitude operator -(Latitude v)
-      => Negate(v);
+      => new Latitude(-v.Angle);
+    public static Latitude operator +(Latitude a, Latitude b)
+      => new Latitude(a.Angle + b.Angle);
+    public static Latitude operator +(Latitude a, double b)
+      => new Latitude(a.Angle.Degree + b);
+    public static Latitude operator +(double a, Latitude b)
+      => new Latitude(a + b.Angle.Degree);
+    public static Latitude operator /(Latitude a, Latitude b)
+      => new Latitude(a.Angle / b.Angle);
+    public static Latitude operator /(Latitude a, double b)
+      => new Latitude(a.Angle.Degree / b);
+    public static Latitude operator /(double a, Latitude b)
+      => new Latitude(a / b.Angle.Degree);
+    public static Latitude operator *(Latitude a, Latitude b)
+      => new Latitude(a.Angle * b.Angle);
+    public static Latitude operator *(Latitude a, double b)
+      => new Latitude(a.Angle.Degree * b);
+    public static Latitude operator *(double a, Latitude b)
+      => new Latitude(a * b.Angle.Degree);
     public static Latitude operator %(Latitude a, Latitude b)
-      => Remainder(a, b);
+      => new Latitude(a.Angle % b.Angle);
+    public static Latitude operator %(Latitude a, double b)
+      => new Latitude(a.Angle.Degree % b);
+    public static Latitude operator %(double a, Latitude b)
+      => new Latitude(a % b.Angle.Degree);
     public static Latitude operator -(Latitude a, Latitude b)
-      => Subtract(a, b);
+      => new Latitude(a.Angle - b.Angle);
+    public static Latitude operator -(Latitude a, double b)
+      => new Latitude(a.Angle.Degree - b);
+    public static Latitude operator -(double a, Latitude b)
+      => new Latitude(a - b.Angle.Degree);
     #endregion Overloaded operators
 
     #region Implemented interfaces

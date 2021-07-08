@@ -15,11 +15,9 @@ namespace Flux.Model.Maze
       unvisited.RandomElement(out var unvisitedElement, Rng);
       unvisited.Remove(unvisitedElement);
 
-      Cell cell;
-
       while (unvisited.Any())
       {
-        unvisited.RandomElement(out cell, Rng);
+        unvisited.RandomElement(out Cell cell, Rng);
 
         path.Clear();
         path.Add(cell);

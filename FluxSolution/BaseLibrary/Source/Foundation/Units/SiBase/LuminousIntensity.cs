@@ -30,10 +30,6 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static LuminousIntensity Add(LuminousIntensity left, LuminousIntensity right)
-      => new LuminousIntensity(left.m_candela + right.m_candela);
-    public static LuminousIntensity Divide(LuminousIntensity left, LuminousIntensity right)
-      => new LuminousIntensity(left.m_candela / right.m_candela);
     public static LuminousIntensity FromUnitValue(LuminousIntensityUnit unit, double value)
     {
       switch (unit)
@@ -44,14 +40,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static LuminousIntensity Multiply(LuminousIntensity left, LuminousIntensity right)
-      => new LuminousIntensity(left.m_candela * right.m_candela);
-    public static LuminousIntensity Negate(LuminousIntensity value)
-      => new LuminousIntensity(-value.m_candela);
-    public static LuminousIntensity Remainder(LuminousIntensity dividend, LuminousIntensity divisor)
-      => new LuminousIntensity(dividend.m_candela % divisor.m_candela);
-    public static LuminousIntensity Subtract(LuminousIntensity left, LuminousIntensity right)
-      => new LuminousIntensity(left.m_candela - right.m_candela);
     #endregion Static methods
 
     #region Overloaded operators
@@ -74,18 +62,18 @@ namespace Flux.Units
     public static bool operator !=(LuminousIntensity a, LuminousIntensity b)
       => !a.Equals(b);
 
-    public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b)
-      => Add(a, b);
-    public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b)
-      => Divide(a, b);
-    public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b)
-      => Multiply(a, b);
     public static LuminousIntensity operator -(LuminousIntensity v)
-      => Negate(v);
+      => new LuminousIntensity(-v.m_candela);
+    public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b)
+      => new LuminousIntensity(a.m_candela + b.m_candela);
+    public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b)
+      => new LuminousIntensity(a.m_candela / b.m_candela);
+    public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b)
+      => new LuminousIntensity(a.m_candela * b.m_candela);
     public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b)
-      => Remainder(a, b);
+      => new LuminousIntensity(a.m_candela % b.m_candela);
     public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b)
-      => Subtract(a, b);
+      => new LuminousIntensity(a.m_candela - b.m_candela);
     #endregion Overloaded operators
 
     #region Implemented interfaces

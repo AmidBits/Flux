@@ -94,18 +94,18 @@ namespace Flux.Units
     public static bool operator !=(Mass a, Mass b)
       => !a.Equals(b);
 
-    public static Mass operator +(Mass a, Mass b)
-      => Add(a, b);
-    public static Mass operator /(Mass a, Mass b)
-      => Divide(a, b);
-    public static Mass operator *(Mass a, Mass b)
-      => Multiply(a, b);
     public static Mass operator -(Mass v)
-      => Negate(v);
+      => new Mass(-v.m_kilogram);
+    public static Mass operator +(Mass a, Mass b)
+      => new Mass(a.m_kilogram + b.m_kilogram);
+    public static Mass operator /(Mass a, Mass b)
+      => new Mass(a.m_kilogram / b.m_kilogram);
+    public static Mass operator *(Mass a, Mass b)
+      => new Mass(a.m_kilogram * b.m_kilogram);
     public static Mass operator %(Mass a, Mass b)
-      => Remainder(a, b);
+      => new Mass(a.m_kilogram % b.m_kilogram);
     public static Mass operator -(Mass a, Mass b)
-      => Subtract(a, b);
+      => new Mass(a.m_kilogram - b.m_kilogram);
     #endregion Overloaded operators
 
     #region Implemented interfaces

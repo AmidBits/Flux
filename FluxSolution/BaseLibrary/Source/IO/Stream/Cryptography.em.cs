@@ -23,10 +23,8 @@ namespace Flux
 
 			using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm) ?? throw new System.NullReferenceException();
 
-#pragma warning disable CA5373 // Do not use obsolete key derivation function
 			algo.Key = pdb.GetBytes(algo.KeySize / 8);
 			algo.IV = pdb.GetBytes(algo.BlockSize / 8);
-#pragma warning restore CA5373 // Do not use obsolete key derivation function
 
 			using var cs = new System.Security.Cryptography.CryptoStream(output, algo.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
 

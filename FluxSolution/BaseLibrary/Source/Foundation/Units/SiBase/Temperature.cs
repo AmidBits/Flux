@@ -92,10 +92,6 @@ namespace Flux.Units
     public static double ConvertRankineToFahrenheit(double rankine)
       => rankine - RankineIcePoint;
 
-    public static Temperature Add(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin + right.m_kelvin);
-    public static Temperature Divide(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin / right.m_kelvin);
     public static Temperature FromUnitValue(TemperatureUnit unit, double value)
     {
       switch (unit)
@@ -112,14 +108,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Temperature Multiply(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin * right.m_kelvin);
-    public static Temperature Negate(Temperature value)
-      => new Temperature(-value.m_kelvin);
-    public static Temperature Remainder(Temperature dividend, Temperature divisor)
-      => new Temperature(dividend.m_kelvin % divisor.m_kelvin);
-    public static Temperature Subtract(Temperature left, Temperature right)
-      => new Temperature(left.m_kelvin - right.m_kelvin);
     #endregion Static methods
 
     #region Overloaded operators
@@ -142,18 +130,18 @@ namespace Flux.Units
     public static bool operator !=(Temperature a, Temperature b)
       => !a.Equals(b);
 
-    public static Temperature operator +(Temperature a, Temperature b)
-      => Add(a, b);
-    public static Temperature operator /(Temperature a, Temperature b)
-      => Divide(a, b);
-    public static Temperature operator %(Temperature a, Temperature b)
-      => Remainder(a, b);
-    public static Temperature operator *(Temperature a, Temperature b)
-      => Multiply(a, b);
-    public static Temperature operator -(Temperature a, Temperature b)
-      => Subtract(a, b);
     public static Temperature operator -(Temperature v)
-      => Negate(v);
+      => new Temperature(-v.m_kelvin);
+    public static Temperature operator +(Temperature a, Temperature b)
+      => new Temperature(a.m_kelvin + b.m_kelvin);
+    public static Temperature operator /(Temperature a, Temperature b)
+      => new Temperature(a.m_kelvin / b.m_kelvin);
+    public static Temperature operator %(Temperature a, Temperature b)
+      => new Temperature(a.m_kelvin % b.m_kelvin);
+    public static Temperature operator *(Temperature a, Temperature b)
+      => new Temperature(a.m_kelvin * b.m_kelvin);
+    public static Temperature operator -(Temperature a, Temperature b)
+      => new Temperature(a.m_kelvin - b.m_kelvin);
     #endregion Overloaded operators
 
     #region Implemented interfaces

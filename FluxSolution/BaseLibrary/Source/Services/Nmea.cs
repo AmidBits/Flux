@@ -194,7 +194,7 @@ namespace Flux.Services.Nmea
     public Units.Longitude Longitude
       => new Units.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[5], m_values[6]));
     public Units.Speed SpeedOverGround
-      => Units.Speed.FromKnots(m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0);
+      => Units.Speed.FromUnitValue(Units.SpeedUnit.Knots, m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0);
     public Units.Azimuth CourseOverGround
       => new Units.Azimuth(m_values.Length > 8 && double.TryParse(m_values[8], out var result) ? result : 0);
     public System.DateTime UtcDateTime

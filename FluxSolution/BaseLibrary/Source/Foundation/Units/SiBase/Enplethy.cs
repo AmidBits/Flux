@@ -30,10 +30,6 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Enplethy Add(Enplethy left, Enplethy right)
-      => new Enplethy(left.m_mole + right.m_mole);
-    public static Enplethy Divide(Enplethy left, Enplethy right)
-      => new Enplethy(left.m_mole / right.m_mole);
     public static Enplethy FromUnitValue(double value, EnplethyUnit unit)
     {
       switch (unit)
@@ -44,14 +40,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Enplethy Multiply(Enplethy left, Enplethy right)
-      => new Enplethy(left.m_mole * right.m_mole);
-    public static Enplethy Negate(Enplethy value)
-      => new Enplethy(-value.m_mole);
-    public static Enplethy Remainder(Enplethy dividend, Enplethy divisor)
-      => new Enplethy(dividend.m_mole % divisor.m_mole);
-    public static Enplethy Subtract(Enplethy left, Enplethy right)
-      => new Enplethy(left.m_mole - right.m_mole);
     #endregion Static methods
 
     #region Overloaded operators
@@ -74,18 +62,18 @@ namespace Flux.Units
     public static bool operator !=(Enplethy a, Enplethy b)
       => !a.Equals(b);
 
-    public static Enplethy operator +(Enplethy a, Enplethy b)
-      => Add(a, b);
-    public static Enplethy operator /(Enplethy a, Enplethy b)
-      => Divide(a, b);
-    public static Enplethy operator *(Enplethy a, Enplethy b)
-      => Multiply(a, b);
     public static Enplethy operator -(Enplethy v)
-      => Negate(v);
+      => new Enplethy(-v.Mole);
+    public static Enplethy operator +(Enplethy a, Enplethy b)
+      => new Enplethy(a.m_mole + b.m_mole);
+    public static Enplethy operator /(Enplethy a, Enplethy b)
+      => new Enplethy(a.m_mole / b.m_mole);
+    public static Enplethy operator *(Enplethy a, Enplethy b)
+      => new Enplethy(a.m_mole * b.m_mole);
     public static Enplethy operator %(Enplethy a, Enplethy b)
-      => Remainder(a, b);
+      => new Enplethy(a.m_mole % b.m_mole);
     public static Enplethy operator -(Enplethy a, Enplethy b)
-      => Subtract(a, b);
+      => new Enplethy(a.m_mole - b.m_mole);
     #endregion Overloaded operators
 
     #region Implemented interfaces

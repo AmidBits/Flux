@@ -18,7 +18,6 @@ namespace Flux.Memory.Metrics
     {
     }
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     /// <summary></summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
@@ -67,7 +66,6 @@ namespace Flux.Memory.Metrics
 
       return lcs;
     }
-#pragma warning restore CA1814 // Prefer jagged arrays over multidimensional
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => source.Length + target.Length - 2 * GetMetricLength(source, target);

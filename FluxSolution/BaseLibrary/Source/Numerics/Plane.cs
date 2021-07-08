@@ -86,8 +86,7 @@ namespace Flux.Numerics
     /// <param name="matrix">The transformation matrix to apply to the Plane.</param>
     public static Plane Transform(Plane plane, Matrix4x4 matrix)
     {
-      Matrix4x4 m;
-      Matrix4x4.Invert(matrix, out m);
+      Matrix4x4.Invert(matrix, out var m);
 
       double x = plane.Normal.X, y = plane.Normal.Y, z = plane.Normal.Z, w = plane.D;
 

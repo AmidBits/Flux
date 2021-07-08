@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Katal
       => m_katal;
 
-    #region Static methods
-    public static CatalyticActivity Add(CatalyticActivity left, CatalyticActivity right)
-      => new CatalyticActivity(left.m_katal + right.m_katal);
-    public static CatalyticActivity Divide(CatalyticActivity left, CatalyticActivity right)
-      => new CatalyticActivity(left.m_katal / right.m_katal);
-    public static CatalyticActivity Multiply(CatalyticActivity left, CatalyticActivity right)
-      => new CatalyticActivity(left.m_katal * right.m_katal);
-    public static CatalyticActivity Negate(CatalyticActivity value)
-      => new CatalyticActivity(-value.m_katal);
-    public static CatalyticActivity Remainder(CatalyticActivity dividend, CatalyticActivity divisor)
-      => new CatalyticActivity(dividend.m_katal % divisor.m_katal);
-    public static CatalyticActivity Subtract(CatalyticActivity left, CatalyticActivity right)
-      => new CatalyticActivity(left.m_katal - right.m_katal);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(CatalyticActivity v)
       => v.m_katal;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(CatalyticActivity a, CatalyticActivity b)
       => !a.Equals(b);
 
-    public static CatalyticActivity operator +(CatalyticActivity a, CatalyticActivity b)
-      => Add(a, b);
-    public static CatalyticActivity operator /(CatalyticActivity a, CatalyticActivity b)
-      => Divide(a, b);
-    public static CatalyticActivity operator *(CatalyticActivity a, CatalyticActivity b)
-      => Multiply(a, b);
     public static CatalyticActivity operator -(CatalyticActivity v)
-      => Negate(v);
+      => new CatalyticActivity(-v.m_katal);
+    public static CatalyticActivity operator +(CatalyticActivity a, CatalyticActivity b)
+      => new CatalyticActivity(a.m_katal + b.m_katal);
+    public static CatalyticActivity operator /(CatalyticActivity a, CatalyticActivity b)
+      => new CatalyticActivity(a.m_katal / b.m_katal);
     public static CatalyticActivity operator %(CatalyticActivity a, CatalyticActivity b)
-      => Remainder(a, b);
+      => new CatalyticActivity(a.m_katal % b.m_katal);
+    public static CatalyticActivity operator *(CatalyticActivity a, CatalyticActivity b)
+      => new CatalyticActivity(a.m_katal * b.m_katal);
     public static CatalyticActivity operator -(CatalyticActivity a, CatalyticActivity b)
-      => Subtract(a, b);
+      => new CatalyticActivity(a.m_katal - b.m_katal);
     #endregion Overloaded operators
 
     #region Implemented interfaces

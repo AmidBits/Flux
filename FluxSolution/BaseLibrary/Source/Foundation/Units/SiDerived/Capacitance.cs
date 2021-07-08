@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Farad
       => m_farad;
 
-    #region Static methods
-    public static Capacitance Add(Capacitance left, Capacitance right)
-      => new Capacitance(left.m_farad + right.m_farad);
-    public static Capacitance Divide(Capacitance left, Capacitance right)
-      => new Capacitance(left.m_farad / right.m_farad);
-    public static Capacitance Multiply(Capacitance left, Capacitance right)
-      => new Capacitance(left.m_farad * right.m_farad);
-    public static Capacitance Negate(Capacitance value)
-      => new Capacitance(-value.m_farad);
-    public static Capacitance Remainder(Capacitance dividend, Capacitance divisor)
-      => new Capacitance(dividend.m_farad % divisor.m_farad);
-    public static Capacitance Subtract(Capacitance left, Capacitance right)
-      => new Capacitance(left.m_farad - right.m_farad);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Capacitance v)
       => v.m_farad;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Capacitance a, Capacitance b)
       => !a.Equals(b);
 
-    public static Capacitance operator +(Capacitance a, Capacitance b)
-      => Add(a, b);
-    public static Capacitance operator /(Capacitance a, Capacitance b)
-      => Divide(a, b);
-    public static Capacitance operator *(Capacitance a, Capacitance b)
-      => Multiply(a, b);
     public static Capacitance operator -(Capacitance v)
-      => Negate(v);
+      => new Capacitance(-v.m_farad);
+    public static Capacitance operator +(Capacitance a, Capacitance b)
+      => new Capacitance(a.m_farad + b.m_farad);
+    public static Capacitance operator /(Capacitance a, Capacitance b)
+      => new Capacitance(a.m_farad / b.m_farad);
     public static Capacitance operator %(Capacitance a, Capacitance b)
-      => Remainder(a, b);
+      => new Capacitance(a.m_farad % b.m_farad);
+    public static Capacitance operator *(Capacitance a, Capacitance b)
+      => new Capacitance(a.m_farad * b.m_farad);
     public static Capacitance operator -(Capacitance a, Capacitance b)
-      => Subtract(a, b);
+      => new Capacitance(a.m_farad - b.m_farad);
     #endregion Overloaded operators
 
     #region Implemented interfaces

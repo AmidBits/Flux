@@ -13,21 +13,12 @@ namespace Flux.Units
     public double RadianPerSecond
       => m_radianPerSecond;
 
+    public (Angle angle, Time time) ToParts(AngleUnit angleUnit, TimeUnit timeUnit)
+      => (Angle.FromUnitValue(AngleUnit.Radian, m_radianPerSecond), Time.FromUnitValue(TimeUnit.Second, 1));
+
     #region Static methods
-    public static AngularVelocity Add(AngularVelocity left, AngularVelocity right)
-      => new AngularVelocity(left.m_radianPerSecond + right.m_radianPerSecond);
-    public static AngularVelocity Divide(AngularVelocity left, AngularVelocity right)
-      => new AngularVelocity(left.m_radianPerSecond / right.m_radianPerSecond);
-    public static AngularVelocity FromRectangule(double lengthInMeters, double widthInMeters)
-      => new AngularVelocity(lengthInMeters * widthInMeters);
-    public static AngularVelocity Multiply(AngularVelocity left, AngularVelocity right)
-      => new AngularVelocity(left.m_radianPerSecond * right.m_radianPerSecond);
-    public static AngularVelocity Negate(AngularVelocity value)
-      => new AngularVelocity(-value.m_radianPerSecond);
-    public static AngularVelocity Remainder(AngularVelocity dividend, AngularVelocity divisor)
-      => new AngularVelocity(dividend.m_radianPerSecond % divisor.m_radianPerSecond);
-    public static AngularVelocity Subtract(AngularVelocity left, AngularVelocity right)
-      => new AngularVelocity(left.m_radianPerSecond - right.m_radianPerSecond);
+    public AngularVelocity From(Angle angle, Time time)
+      => new AngularVelocity(angle.Radian / time.Second);
     #endregion Static methods
 
     #region Overloaded operators
@@ -50,18 +41,18 @@ namespace Flux.Units
     public static bool operator !=(AngularVelocity a, AngularVelocity b)
       => !a.Equals(b);
 
-    public static AngularVelocity operator +(AngularVelocity a, AngularVelocity b)
-      => Add(a, b);
-    public static AngularVelocity operator /(AngularVelocity a, AngularVelocity b)
-      => Divide(a, b);
-    public static AngularVelocity operator *(AngularVelocity a, AngularVelocity b)
-      => Multiply(a, b);
     public static AngularVelocity operator -(AngularVelocity v)
-      => Negate(v);
+      => new AngularVelocity(-v.m_radianPerSecond);
+    public static AngularVelocity operator +(AngularVelocity a, AngularVelocity b)
+      => new AngularVelocity(a.m_radianPerSecond + b.m_radianPerSecond);
+    public static AngularVelocity operator /(AngularVelocity a, AngularVelocity b)
+      => new AngularVelocity(a.m_radianPerSecond / b.m_radianPerSecond);
+    public static AngularVelocity operator *(AngularVelocity a, AngularVelocity b)
+      => new AngularVelocity(a.m_radianPerSecond * b.m_radianPerSecond);
     public static AngularVelocity operator %(AngularVelocity a, AngularVelocity b)
-      => Remainder(a, b);
+      => new AngularVelocity(a.m_radianPerSecond % b.m_radianPerSecond);
     public static AngularVelocity operator -(AngularVelocity a, AngularVelocity b)
-      => Subtract(a, b);
+      => new AngularVelocity(a.m_radianPerSecond - b.m_radianPerSecond);
     #endregion Overloaded operators
 
     #region Implemented interfaces

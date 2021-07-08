@@ -20,49 +20,35 @@ namespace Flux.Units
       => m_ampere;
 
     public double ToUnitValue(ElectricCurrentUnit unit)
-      => ConvertAmpereToUnit(m_ampere, unit);
+    {
+      switch (unit)
+      {
+        case ElectricCurrentUnit.Milliampere:
+          return m_ampere * 1000;
+        case ElectricCurrentUnit.Ampere:
+          return m_ampere;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
-    public static ElectricCurrent Add(ElectricCurrent left, ElectricCurrent right)
-      => new ElectricCurrent(left.m_ampere + right.m_ampere);
-    public static double ConvertAmpereToUnit(double ampere, ElectricCurrentUnit unit)
-    {
-      switch (unit)
-      {
-        case ElectricCurrentUnit.Milliampere:
-          return ampere * 1000;
-        case ElectricCurrentUnit.Ampere:
-          return ampere;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
-    public static double ConvertUnitToAmpere(double value, ElectricCurrentUnit unit)
-    {
-      switch (unit)
-      {
-        case ElectricCurrentUnit.Milliampere:
-          return value / 1000;
-        case ElectricCurrentUnit.Ampere:
-          return value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
-    public static ElectricCurrent Divide(ElectricCurrent left, ElectricCurrent right)
-      => new ElectricCurrent(left.m_ampere / right.m_ampere);
     public static ElectricCurrent FromUnitValue(ElectricCurrentUnit unit, double value)
-      => new ElectricCurrent(ConvertUnitToAmpere(value, unit));
-    public static ElectricCurrent FromVR(Voltage v, ElectricResistance r)
-      => new ElectricCurrent(v.Volt / r.Ohm);
-    public static ElectricCurrent Multiply(ElectricCurrent left, ElectricCurrent right)
-      => new ElectricCurrent(left.m_ampere * right.m_ampere);
-    public static ElectricCurrent Negate(ElectricCurrent value)
-      => new ElectricCurrent(-value.m_ampere);
-    public static ElectricCurrent Remainder(ElectricCurrent dividend, ElectricCurrent divisor)
-      => new ElectricCurrent(dividend.m_ampere % divisor.m_ampere);
-    public static ElectricCurrent Subtract(ElectricCurrent left, ElectricCurrent right)
-      => new ElectricCurrent(left.m_ampere - right.m_ampere);
+    {
+      switch (unit)
+      {
+        case ElectricCurrentUnit.Milliampere:
+          return new ElectricCurrent(value / 1000);
+        case ElectricCurrentUnit.Ampere:
+          return new ElectricCurrent(value);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    public static ElectricCurrent From(Power power, Voltage voltage)
+      => new ElectricCurrent(power.Watt / voltage.Volt);
+    public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
+      => new ElectricCurrent(voltage.Volt / resistance.Ohm);
     #endregion Static methods
 
     #region Overloaded operators
@@ -85,18 +71,18 @@ namespace Flux.Units
     public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
       => !a.Equals(b);
 
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
-      => Add(a, b);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
-      => Divide(a, b);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
-      => Multiply(a, b);
     public static ElectricCurrent operator -(ElectricCurrent v)
-      => Negate(v);
+      => new ElectricCurrent(-v.m_ampere);
+    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
+      => new ElectricCurrent(a.m_ampere + b.m_ampere);
+    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
+      => new ElectricCurrent(a.m_ampere / b.m_ampere);
+    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
+      => new ElectricCurrent(a.m_ampere * b.m_ampere);
     public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
-      => Remainder(a, b);
+      => new ElectricCurrent(a.m_ampere % b.m_ampere);
     public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
-      => Subtract(a, b);
+      => new ElectricCurrent(a.m_ampere - b.m_ampere);
     #endregion Overloaded operators
 
     #region Implemented interfaces

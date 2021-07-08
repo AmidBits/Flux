@@ -57,10 +57,6 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Length Add(Length left, Length right)
-      => new Length(left.m_meter + right.m_meter);
-    public static Length Divide(Length left, Length right)
-      => new Length(left.m_meter / right.m_meter);
     public static Frequency FromAcousticsAsWaveLength(Speed soundVelocity, Frequency frequency)
       => new Frequency(soundVelocity.MeterPerSecond / frequency.Hertz);
     public static Length FromUnitValue(LengthUnit unit, double value)
@@ -91,14 +87,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Length Multiply(Length left, Length right)
-      => new Length(left.m_meter * right.m_meter);
-    public static Length Negate(Length value)
-      => new Length(-value.m_meter);
-    public static Length Remainder(Length dividend, Length divisor)
-      => new Length(dividend.m_meter % divisor.m_meter);
-    public static Length Subtract(Length left, Length right)
-      => new Length(left.m_meter - right.m_meter);
     #endregion Static methods
 
     #region Overloaded operators
@@ -121,18 +109,18 @@ namespace Flux.Units
     public static bool operator !=(Length a, Length b)
       => !a.Equals(b);
 
-    public static Length operator +(Length a, Length b)
-      => Add(a, b);
-    public static Length operator /(Length a, Length b)
-      => Divide(a, b);
-    public static Length operator *(Length a, Length b)
-      => Multiply(a, b);
     public static Length operator -(Length v)
-      => Negate(v);
+      => new Length(-v.m_meter);
+    public static Length operator +(Length a, Length b)
+      => new Length(a.m_meter + b.m_meter);
+    public static Length operator /(Length a, Length b)
+      => new Length(a.m_meter / b.m_meter);
+    public static Length operator *(Length a, Length b)
+      => new Length(a.m_meter * b.m_meter);
     public static Length operator %(Length a, Length b)
-      => Remainder(a, b);
+      => new Length(a.m_meter % b.m_meter);
     public static Length operator -(Length a, Length b)
-      => Subtract(a, b);
+      => new Length(a.m_meter - b.m_meter);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -8,7 +8,7 @@ namespace Flux.Units
     Revolution,
   }
 
-  /// <summary>Represents an angle (stored as a radians and implicitly convertible to/from double and radian).</summary>
+  /// <summary>Represents an angle (stored as a radians and explicitly convertible to/from double as radian).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IStandardizedScalar
@@ -93,10 +93,6 @@ namespace Flux.Units
     public static (double x, double y) ConvertRotationAngleToCartesianEx(double radian, out double x, out double y)
       => ConvertRotationAngleToCartesian(Maths.PiX2 - (radian >= Maths.PiX2 ? radian % Maths.PiX2 : radian) + Maths.PiOver2, out x, out y);
 
-    public static Angle Add(Angle left, Angle right)
-      => new Angle(left.m_radian + right.m_radian);
-    public static Angle Divide(Angle left, Angle right)
-      => new Angle(left.m_radian / right.m_radian);
     public static Angle FromCartesian(double x, double y)
       => new Angle(ConvertCartesianToRotationAngle(x, y));
     public static Angle FromCartesianEx(double x, double y)
@@ -117,14 +113,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Angle Multiply(Angle left, Angle right)
-      => new Angle(left.m_radian * right.m_radian);
-    public static Angle Negate(Angle value)
-      => new Angle(-value.m_radian);
-    public static Angle Remainder(Angle dividend, Angle divisor)
-      => new Angle(dividend.m_radian % divisor.m_radian);
-    public static Angle Subtract(Angle left, Angle right)
-      => new Angle(left.m_radian - right.m_radian);
     #endregion Static methods
 
     #region Overloaded operators
@@ -147,18 +135,18 @@ namespace Flux.Units
     public static bool operator >=(Angle a, Angle b)
       => a.CompareTo(b) <= 0;
 
-    public static Angle operator +(Angle a, Angle b)
-      => Add(a, b);
-    public static Angle operator /(Angle a, Angle b)
-      => Divide(a, b);
-    public static Angle operator %(Angle a, Angle b)
-      => Remainder(a, b);
-    public static Angle operator *(Angle a, Angle b)
-      => Multiply(a, b);
-    public static Angle operator -(Angle a, Angle b)
-      => Subtract(a, b);
     public static Angle operator -(Angle v)
-      => Negate(v);
+      => new Angle(-v.m_radian);
+    public static Angle operator +(Angle a, Angle b)
+      => new Angle(a.m_radian + b.m_radian);
+    public static Angle operator /(Angle a, Angle b)
+      => new Angle(a.m_radian / b.m_radian);
+    public static Angle operator %(Angle a, Angle b)
+      => new Angle(a.m_radian % b.m_radian);
+    public static Angle operator *(Angle a, Angle b)
+      => new Angle(a.m_radian * b.m_radian);
+    public static Angle operator -(Angle a, Angle b)
+      => new Angle(a.m_radian - b.m_radian);
     #endregion Overloaded operators
 
     #region Implemented interfaces

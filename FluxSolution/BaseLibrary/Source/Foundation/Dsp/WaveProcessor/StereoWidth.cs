@@ -14,7 +14,7 @@ namespace Flux.Dsp.AudioProcessor
       {
         m_width = System.Math.Clamp(value, -1.0, 1.0);
 
-        var tmp = 1 / System.Math.Max(m_width + 1, 2);
+        // var tmp = 1 / System.Math.Max(m_width + 1, 2); // This was present in my code, but I am unsure what it is suppose to do.
 
         m_stereoCoefficient = (m_width > Maths.EpsilonCpp32 || m_width < -Maths.EpsilonCpp32) ? (m_width + 1) / 2 : 1;
       }

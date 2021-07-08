@@ -13,21 +13,6 @@ namespace Flux.Units
     public double RadianPerSecondSquare
       => m_radianPerSecondSquare;
 
-    #region Static methods
-    public static AngularAcceleration Add(AngularAcceleration left, AngularAcceleration right)
-      => new AngularAcceleration(left.m_radianPerSecondSquare + right.m_radianPerSecondSquare);
-    public static AngularAcceleration Divide(AngularAcceleration left, AngularAcceleration right)
-      => new AngularAcceleration(left.m_radianPerSecondSquare / right.m_radianPerSecondSquare);
-    public static AngularAcceleration Multiply(AngularAcceleration left, AngularAcceleration right)
-      => new AngularAcceleration(left.m_radianPerSecondSquare * right.m_radianPerSecondSquare);
-    public static AngularAcceleration Negate(AngularAcceleration value)
-      => new AngularAcceleration(-value.m_radianPerSecondSquare);
-    public static AngularAcceleration Remainder(AngularAcceleration dividend, AngularAcceleration divisor)
-      => new AngularAcceleration(dividend.m_radianPerSecondSquare % divisor.m_radianPerSecondSquare);
-    public static AngularAcceleration Subtract(AngularAcceleration left, AngularAcceleration right)
-      => new AngularAcceleration(left.m_radianPerSecondSquare - right.m_radianPerSecondSquare);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(AngularAcceleration v)
       => v.m_radianPerSecondSquare;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(AngularAcceleration a, AngularAcceleration b)
       => !a.Equals(b);
 
-    public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b)
-      => Add(a, b);
-    public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b)
-      => Divide(a, b);
-    public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b)
-      => Multiply(a, b);
     public static AngularAcceleration operator -(AngularAcceleration v)
-      => Negate(v);
+      => new AngularAcceleration(-v.m_radianPerSecondSquare);
+    public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b)
+      => new AngularAcceleration(a.m_radianPerSecondSquare + b.m_radianPerSecondSquare);
+    public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b)
+      => new AngularAcceleration(a.m_radianPerSecondSquare / b.m_radianPerSecondSquare);
+    public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b)
+      => new AngularAcceleration(a.m_radianPerSecondSquare * b.m_radianPerSecondSquare);
     public static AngularAcceleration operator %(AngularAcceleration a, AngularAcceleration b)
-      => Remainder(a, b);
+      => new AngularAcceleration(a.m_radianPerSecondSquare % b.m_radianPerSecondSquare);
     public static AngularAcceleration operator -(AngularAcceleration a, AngularAcceleration b)
-      => Subtract(a, b);
+      => new AngularAcceleration(a.m_radianPerSecondSquare - b.m_radianPerSecondSquare);
     #endregion Overloaded operators
 
     #region Implemented interfaces

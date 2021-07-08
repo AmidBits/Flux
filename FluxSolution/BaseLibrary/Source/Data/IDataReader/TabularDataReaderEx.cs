@@ -20,7 +20,7 @@ namespace Flux.Data
     {
       if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
 
-      return index < FieldAllowDBNulls.Count ? FieldAllowDBNulls[index] : true; // The default is to allow nulls.
+      return index >= FieldAllowDBNulls.Count || FieldAllowDBNulls[index]; // The default is to allow nulls.
     }
 
     /// <summary>DataReader extension, which returns a complete T-SQL data type (with type arguments as needed/desired) the field at the specified index corresponds to. By default, the type returned by GetFieldType() is System.Object, which results in "sql_variant" being returned.</summary>

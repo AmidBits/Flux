@@ -122,7 +122,6 @@ namespace Flux.Model.Gaming.MineSweeper
     #endregion IReadOnlySet implementation
   }
 
-#pragma warning disable CA1710 // Identifiers should have correct suffix
   public class Warnings
     : System.Collections.Generic.IReadOnlyDictionary<Geometry.Point2, int>
   {
@@ -160,7 +159,6 @@ namespace Flux.Model.Gaming.MineSweeper
     public static Warnings Create(Field field, Mines mines)
       => new Warnings(mines.SelectMany(mine => field.GetNeighbours(mine)).GroupBy(neighbor => neighbor).ToDictionary(g => g.Key, g => g.Count()));
   }
-#pragma warning restore CA1710 // Identifiers should have correct suffix
 
   public class MineField
   {
@@ -222,7 +220,7 @@ namespace Flux.Model.Gaming.MineSweeper
     {
       var mineField = new Model.Gaming.MineSweeper.MineField(new Geometry.Size2(10, 10), 10);
       var gameState = Model.Gaming.MineSweeper.Game.Start(mineField);
-      var gameResult = gameState.Evaluate(mineField.Mines);
+      //var gameResult = gameState.Evaluate(mineField.Mines);
 
       RenderInConsole(gameState, mineField);
 
@@ -234,7 +232,7 @@ namespace Flux.Model.Gaming.MineSweeper
 
           gameState = Game.Uncover(gameState, mineField);
 
-          gameResult = gameState.Evaluate(mineField.Mines);
+          //gameResult = gameState.Evaluate(mineField.Mines);
         }
 
         RenderInConsole(gameState, mineField);

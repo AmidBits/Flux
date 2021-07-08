@@ -16,21 +16,6 @@ namespace Flux.Units
     public double Ratio
       => m_ratio;
 
-    #region Static methods
-    public static Probability Add(Probability left, Probability right)
-      => new Probability(left.m_ratio + right.m_ratio);
-    public static Probability Divide(Probability left, Probability right)
-      => new Probability(left.m_ratio / right.m_ratio);
-    public static Probability Multiply(Probability left, Probability right)
-      => new Probability(left.m_ratio * right.m_ratio);
-    public static Probability Negate(Probability value)
-      => new Probability(-value.m_ratio);
-    public static Probability Remainder(Probability dividend, Probability divisor)
-      => new Probability(dividend.m_ratio % divisor.m_ratio);
-    public static Probability Subtract(Probability left, Probability right)
-      => new Probability(left.m_ratio - right.m_ratio);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Probability v)
       => v.m_ratio;
@@ -51,18 +36,38 @@ namespace Flux.Units
     public static bool operator !=(Probability a, Probability b)
       => !a.Equals(b);
 
-    public static Probability operator +(Probability a, Probability b)
-      => Add(a, b);
-    public static Probability operator /(Probability a, Probability b)
-      => Divide(a, b);
-    public static Probability operator *(Probability a, Probability b)
-      => Multiply(a, b);
     public static Probability operator -(Probability v)
-      => Negate(v);
+      => new Probability(-v.Ratio);
+    public static Probability operator +(Probability a, Probability b)
+      => new Probability(a.Ratio + b.Ratio);
+    public static Probability operator +(Probability a, double b)
+      => new Probability(a.Ratio + b);
+    public static Probability operator +(double a, Probability b)
+      => new Probability(a + b.Ratio);
+    public static Probability operator /(Probability a, Probability b)
+      => new Probability(a.Ratio / b.Ratio);
+    public static Probability operator /(Probability a, double b)
+      => new Probability(a.Ratio / b);
+    public static Probability operator /(double a, Probability b)
+      => new Probability(a / b.Ratio);
+    public static Probability operator *(Probability a, Probability b)
+      => new Probability(a.Ratio * b.Ratio);
+    public static Probability operator *(Probability a, double b)
+      => new Probability(a.Ratio * b);
+    public static Probability operator *(double a, Probability b)
+      => new Probability(a * b.Ratio);
     public static Probability operator %(Probability a, Probability b)
-      => Remainder(a, b);
+      => new Probability(a.Ratio % b.Ratio);
+    public static Probability operator %(Probability a, double b)
+      => new Probability(a.Ratio % b);
+    public static Probability operator %(double a, Probability b)
+      => new Probability(a % b.Ratio);
     public static Probability operator -(Probability a, Probability b)
-      => Subtract(a, b);
+      => new Probability(a.Ratio - b.Ratio);
+    public static Probability operator -(Probability a, double b)
+      => new Probability(a.Ratio - b);
+    public static Probability operator -(double a, Probability b)
+      => new Probability(a - b.Ratio);
     #endregion Overloaded operators
 
     #region Implemented interfaces

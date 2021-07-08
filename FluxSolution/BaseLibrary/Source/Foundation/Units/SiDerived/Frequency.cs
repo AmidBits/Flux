@@ -13,6 +13,9 @@ namespace Flux.Units
     public double Hertz
       => m_hertz;
 
+    public Angle ToAngle()
+      => Angle.FromUnitValue(AngleUnit.Revolution, m_hertz);
+
     #region Static methods
     /// <summary>Computes the normalized frequency of the specified frequency and sample rate.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
@@ -35,20 +38,8 @@ namespace Flux.Units
     public static double GetPeriod(double frequency)
       => 1.0 / frequency;
 
-    public static Frequency Add(Frequency left, Frequency right)
-      => new Frequency(left.m_hertz + right.m_hertz);
-    public static Frequency Divide(Frequency left, Frequency right)
-      => new Frequency(left.m_hertz / right.m_hertz);
     public static Frequency FromAcoustics(Speed soundVelocity, Length waveLength)
       => new Frequency(soundVelocity.MeterPerSecond / waveLength.Meter);
-    public static Frequency Multiply(Frequency left, Frequency right)
-      => new Frequency(left.m_hertz * right.m_hertz);
-    public static Frequency Negate(Frequency frequency)
-      => new Frequency(-frequency.m_hertz);
-    public static Frequency Remainder(Frequency dividend, Frequency divisor)
-      => new Frequency(dividend.m_hertz % divisor.m_hertz);
-    public static Frequency Subtract(Frequency left, Frequency right)
-      => new Frequency(left.m_hertz - right.m_hertz);
     #endregion Static methods
 
     #region Overloaded operators
@@ -71,18 +62,18 @@ namespace Flux.Units
     public static bool operator !=(Frequency a, Frequency b)
       => !a.Equals(b);
 
-    public static Frequency operator +(Frequency a, Frequency b)
-      => Add(a, b);
-    public static Frequency operator /(Frequency a, Frequency b)
-      => Divide(a, b);
-    public static Frequency operator %(Frequency a, Frequency b)
-      => Remainder(a, b);
-    public static Frequency operator *(Frequency a, Frequency b)
-      => Multiply(a, b);
-    public static Frequency operator -(Frequency a, Frequency b)
-      => Subtract(a, b);
     public static Frequency operator -(Frequency v)
-      => Negate(v);
+      => new Frequency(-v.m_hertz);
+    public static Frequency operator +(Frequency a, Frequency b)
+      => new Frequency(a.m_hertz + b.m_hertz);
+    public static Frequency operator /(Frequency a, Frequency b)
+      => new Frequency(a.m_hertz / b.m_hertz);
+    public static Frequency operator %(Frequency a, Frequency b)
+      => new Frequency(a.m_hertz % b.m_hertz);
+    public static Frequency operator *(Frequency a, Frequency b)
+      => new Frequency(a.m_hertz * b.m_hertz);
+    public static Frequency operator -(Frequency a, Frequency b)
+      => new Frequency(a.m_hertz - b.m_hertz);
     #endregion Overloaded operators
 
     #region Implemented interfaces

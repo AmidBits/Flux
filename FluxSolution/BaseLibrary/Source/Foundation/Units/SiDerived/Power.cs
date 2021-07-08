@@ -14,18 +14,8 @@ namespace Flux.Units
       => m_watt;
 
     #region Static methods
-    public static Power Add(Power left, Power right)
-      => new Power(left.m_watt + right.m_watt);
-    public static Power Divide(Power left, Power right)
-      => new Power(left.m_watt / right.m_watt);
-    public static Power Multiply(Power left, Power right)
-      => new Power(left.m_watt * right.m_watt);
-    public static Power Negate(Power value)
-      => new Power(-value.m_watt);
-    public static Power Remainder(Power dividend, Power divisor)
-      => new Power(dividend.m_watt % divisor.m_watt);
-    public static Power Subtract(Power left, Power right)
-      => new Power(left.m_watt - right.m_watt);
+    public static Power From(ElectricCurrent current, Voltage voltage)
+      => new Power(current.Ampere * voltage.Volt);
     #endregion Static methods
 
     #region Overloaded operators
@@ -48,18 +38,18 @@ namespace Flux.Units
     public static bool operator !=(Power a, Power b)
       => !a.Equals(b);
 
-    public static Power operator +(Power a, Power b)
-      => Add(a, b);
-    public static Power operator /(Power a, Power b)
-      => Divide(a, b);
-    public static Power operator *(Power a, Power b)
-      => Multiply(a, b);
     public static Power operator -(Power v)
-      => Negate(v);
+      => new Power(-v.m_watt);
+    public static Power operator +(Power a, Power b)
+      => new Power(a.m_watt + b.m_watt);
+    public static Power operator /(Power a, Power b)
+      => new Power(a.m_watt / b.m_watt);
+    public static Power operator *(Power a, Power b)
+      => new Power(a.m_watt * b.m_watt);
     public static Power operator %(Power a, Power b)
-      => Remainder(a, b);
+      => new Power(a.m_watt % b.m_watt);
     public static Power operator -(Power a, Power b)
-      => Subtract(a, b);
+      => new Power(a.m_watt - b.m_watt);
     #endregion Overloaded operators
 
     #region Implemented interfaces

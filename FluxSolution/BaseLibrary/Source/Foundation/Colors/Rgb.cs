@@ -124,7 +124,7 @@ namespace Flux.Colors
     /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
     public Cmyk ToCmyk()
     {
-      GetNormalizedChroma(m_red, m_green, m_blue, out var min, out var max, out var r, out var g, out var b);
+      GetNormalizedChroma(m_red, m_green, m_blue, out var _, out var max, out var r, out var g, out var b);
 
       var key = 1 - max;
 
@@ -143,7 +143,7 @@ namespace Flux.Colors
     /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
     public Hsi ToHsi()
     {
-      var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
+      var h = GetHue(out var min, out var _, out var r, out var g, out var b, out var _);
 
       var i = (r + g + b) / 3;
 
@@ -152,7 +152,7 @@ namespace Flux.Colors
     /// <summary>Creates an HSL color corresponding to the RGB instance.</summary>
     public Hsl ToHsl()
     {
-      var h = GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
+      var h = GetHue(out var min, out var max, out var _, out var _, out var _, out var chroma);
 
       var l = 0.5 * (max + min);
 

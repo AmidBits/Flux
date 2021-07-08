@@ -6,9 +6,9 @@ namespace Flux.DataStructures
     : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
   {
-    private System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>();
-    private System.Collections.Generic.List<TKey> m_listOfKeys = new System.Collections.Generic.List<TKey>();
-    private System.Collections.Generic.List<TValue> m_listOfValues = new System.Collections.Generic.List<TValue>();
+    private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>();
+    private readonly System.Collections.Generic.List<TKey> m_listOfKeys = new System.Collections.Generic.List<TKey>();
+    private readonly System.Collections.Generic.List<TValue> m_listOfValues = new System.Collections.Generic.List<TValue>();
 
     // IOrderedDictionary
 

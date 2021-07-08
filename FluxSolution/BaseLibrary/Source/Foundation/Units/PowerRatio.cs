@@ -19,20 +19,19 @@ namespace Flux.Units
       => new AmplitudeRatio(System.Math.Sqrt(m_decibelWatt));
 
     #region Static methods
-    public static PowerRatio LogAdd(PowerRatio left, PowerRatio right)
-      => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, left.m_decibelWatt / ScalingFactor) + System.Math.Pow(10, right.m_decibelWatt / ScalingFactor))); // Pow inverse of Log10.
-    public static PowerRatio Divide(PowerRatio left, PowerRatio right)
-      => new PowerRatio(left.m_decibelWatt - right.m_decibelWatt);
     public static PowerRatio FromDecibelChange(double decibelChange)
       => new PowerRatio(System.Math.Pow(10, decibelChange / ScalingFactor)); // Pow inverse of Log10.
     public static PowerRatio FromPowerRatio(Power numerator, Power denominator)
       => new PowerRatio(ScalingFactor * System.Math.Log10(numerator.Watt / denominator.Watt));
-    public static PowerRatio Multiply(PowerRatio left, PowerRatio right)
-      => new PowerRatio(left.m_decibelWatt + right.m_decibelWatt);
-    public static PowerRatio Negate(PowerRatio value)
-      => new PowerRatio(-value.m_decibelWatt);
-    public static PowerRatio LogSubtract(PowerRatio left, PowerRatio right)
-      => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, left.m_decibelWatt / ScalingFactor) - System.Math.Pow(10, right.m_decibelWatt / ScalingFactor)));
+
+    private static double LogAdd(double leftDecibelWatt, double rightDecibelWatt)
+      => ScalingFactor * System.Math.Log10(System.Math.Pow(10, leftDecibelWatt / ScalingFactor) + System.Math.Pow(10, rightDecibelWatt / ScalingFactor));
+    private static double LogDivide(double leftDecibelWatt, double rightDecibelWatt)
+      => leftDecibelWatt - rightDecibelWatt;
+    private static double LogMultiply(double leftDecibelWatt, double rightDecibelWatt)
+      => leftDecibelWatt + rightDecibelWatt;
+    private static double LogSubtract(double leftDecibelWatt, double rightDecibelWatt)
+      => ScalingFactor * System.Math.Log10(System.Math.Pow(10, leftDecibelWatt / ScalingFactor) - System.Math.Pow(10, rightDecibelWatt / ScalingFactor));
     #endregion Static methods
 
     #region Overloaded operators
@@ -55,16 +54,32 @@ namespace Flux.Units
     public static bool operator !=(PowerRatio a, PowerRatio b)
       => !a.Equals(b);
 
-    public static PowerRatio operator +(PowerRatio a, PowerRatio b)
-      => LogAdd(a, b);
-    public static PowerRatio operator /(PowerRatio a, PowerRatio b)
-      => Divide(a, b);
-    public static PowerRatio operator *(PowerRatio a, PowerRatio b)
-      => Multiply(a, b);
     public static PowerRatio operator -(PowerRatio v)
-      => Negate(v);
+      => new PowerRatio(-v.DecibelWatt);
+    public static PowerRatio operator +(PowerRatio a, PowerRatio b)
+      => new PowerRatio(LogAdd(a.DecibelWatt, b.DecibelWatt));
+    public static PowerRatio operator +(PowerRatio a, double b)
+      => new PowerRatio(LogAdd(a.DecibelWatt, b));
+    public static PowerRatio operator +(double a, PowerRatio b)
+      => new PowerRatio(LogAdd(a, b.DecibelWatt));
+    public static PowerRatio operator /(PowerRatio a, PowerRatio b)
+      => new PowerRatio(LogDivide(a.DecibelWatt, b.DecibelWatt));
+    public static PowerRatio operator /(PowerRatio a, double b)
+      => new PowerRatio(LogDivide(a.DecibelWatt, b));
+    public static PowerRatio operator /(double a, PowerRatio b)
+      => new PowerRatio(LogDivide(a, b.DecibelWatt));
+    public static PowerRatio operator *(PowerRatio a, PowerRatio b)
+      => new PowerRatio(LogMultiply(a.DecibelWatt, b.DecibelWatt));
+    public static PowerRatio operator *(PowerRatio a, double b)
+      => new PowerRatio(LogMultiply(a.DecibelWatt, b));
+    public static PowerRatio operator *(double a, PowerRatio b)
+      => new PowerRatio(LogMultiply(a, b.DecibelWatt));
     public static PowerRatio operator -(PowerRatio a, PowerRatio b)
-      => LogSubtract(a, b);
+      => new PowerRatio(LogSubtract(a.DecibelWatt, b.DecibelWatt));
+    public static PowerRatio operator -(PowerRatio a, double b)
+      => new PowerRatio(LogSubtract(a.DecibelWatt, b));
+    public static PowerRatio operator -(double a, PowerRatio b)
+      => new PowerRatio(LogSubtract(a, b.DecibelWatt));
     #endregion Overloaded operators
 
     #region Implemented interfaces

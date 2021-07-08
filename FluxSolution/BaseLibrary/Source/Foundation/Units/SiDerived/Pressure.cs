@@ -1,5 +1,11 @@
 namespace Flux.Units
 {
+  public enum PressureUnit
+  {
+    Pascal,
+    PSI,
+  }
+
   /// <summary>Pressure.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
@@ -12,28 +18,33 @@ namespace Flux.Units
 
     public double Pascal
       => m_pascal;
-    public double Psi
-      => ConvertPascalToPsi(m_pascal);
+
+    public double ToUnitValue(PressureUnit unit)
+    {
+      switch (unit)
+      {
+        case PressureUnit.Pascal:
+          return m_pascal;
+        case PressureUnit.PSI:
+          return m_pascal * (1290320000 / 8896443230521);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
-    public static Pressure Add(Pressure left, Pressure right)
-      => new Pressure(left.m_pascal + right.m_pascal);
-    public static double ConvertPascalToPsi(double pascal)
-      => pascal / 6894.7572932; // * 0.0001450377;
-    public static double ConvertPsiToPascal(double psi)
-      => psi * 6894.7572932;
-    public static Pressure Divide(Pressure left, Pressure right)
-      => new Pressure(left.m_pascal / right.m_pascal);
-    public static Pressure FromPsi(double psi)
-      => new Pressure(ConvertPsiToPascal(psi));
-    public static Pressure Multiply(Pressure left, Pressure right)
-      => new Pressure(left.m_pascal * right.m_pascal);
-    public static Pressure Negate(Pressure value)
-      => new Pressure(-value.m_pascal);
-    public static Pressure Remainder(Pressure dividend, Pressure divisor)
-      => new Pressure(dividend.m_pascal % divisor.m_pascal);
-    public static Pressure Subtract(Pressure left, Pressure right)
-      => new Pressure(left.m_pascal - right.m_pascal);
+    public static Pressure FromUnitValue(PressureUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case PressureUnit.Pascal:
+          return new Pressure(value);
+        case PressureUnit.PSI:
+          return new Pressure(value * (8896443230521 / 1290320000));
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators
@@ -56,18 +67,18 @@ namespace Flux.Units
     public static bool operator !=(Pressure a, Pressure b)
       => !a.Equals(b);
 
-    public static Pressure operator +(Pressure a, Pressure b)
-      => Add(a, b);
-    public static Pressure operator /(Pressure a, Pressure b)
-      => Divide(a, b);
-    public static Pressure operator *(Pressure a, Pressure b)
-      => Multiply(a, b);
     public static Pressure operator -(Pressure v)
-      => Negate(v);
+      => new Pressure(-v.m_pascal);
+    public static Pressure operator +(Pressure a, Pressure b)
+      => new Pressure(a.m_pascal + b.m_pascal);
+    public static Pressure operator /(Pressure a, Pressure b)
+      => new Pressure(a.m_pascal / b.m_pascal);
+    public static Pressure operator *(Pressure a, Pressure b)
+      => new Pressure(a.m_pascal * b.m_pascal);
     public static Pressure operator %(Pressure a, Pressure b)
-      => Remainder(a, b);
+      => new Pressure(a.m_pascal % b.m_pascal);
     public static Pressure operator -(Pressure a, Pressure b)
-      => Subtract(a, b);
+      => new Pressure(a.m_pascal - b.m_pascal);
     #endregion Overloaded operators
 
     #region Implemented interfaces

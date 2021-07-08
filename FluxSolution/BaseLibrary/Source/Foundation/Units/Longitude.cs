@@ -13,7 +13,7 @@ namespace Flux.Units
     public Longitude(double degree)
       => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
     public Longitude(Angle angle)
-      : this(angle.Degree)
+      : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public Angle Angle
@@ -23,20 +23,8 @@ namespace Flux.Units
       => ComputeTheoreticalTimezoneOffset(m_angle.Degree);
 
     #region Static methods
-    public static Longitude Add(Longitude left, Longitude right)
-      => new Longitude(left.m_angle + right.m_angle);
     public static int ComputeTheoreticalTimezoneOffset(double longitude)
       => (int)Maths.RoundToNearest((longitude + System.Math.CopySign(7.5, longitude)) / 15, RoundingBehavior.RoundTowardZero);
-    public static Longitude Divide(Longitude left, Longitude right)
-      => new Longitude(left.m_angle / right.m_angle);
-    public static Longitude Multiply(Longitude left, Longitude right)
-      => new Longitude(left.m_angle * right.m_angle);
-    public static Longitude Negate(Longitude value)
-      => new Longitude(-value.m_angle);
-    public static Longitude Remainder(Longitude dividend, Longitude divisor)
-      => new Longitude(dividend.m_angle % divisor.m_angle);
-    public static Longitude Subtract(Longitude left, Longitude right)
-      => new Longitude(left.m_angle - right.m_angle);
     #endregion Static methods
 
     #region Overloaded operators
@@ -59,18 +47,38 @@ namespace Flux.Units
     public static bool operator !=(Longitude a, Longitude b)
       => !a.Equals(b);
 
-    public static Longitude operator +(Longitude a, Longitude b)
-      => Add(a, b);
-    public static Longitude operator /(Longitude a, Longitude b)
-      => Divide(a, b);
-    public static Longitude operator *(Longitude a, Longitude b)
-      => Multiply(a, b);
     public static Longitude operator -(Longitude v)
-      => Negate(v);
+      => new Longitude(-v.Angle);
+    public static Longitude operator +(Longitude a, Longitude b)
+      => new Longitude(a.Angle + b.Angle);
+    public static Longitude operator +(Longitude a, double b)
+      => new Longitude(a.Angle.Degree + b);
+    public static Longitude operator +(double a, Longitude b)
+      => new Longitude(a + b.Angle.Degree);
+    public static Longitude operator /(Longitude a, Longitude b)
+      => new Longitude(a.Angle / b.Angle);
+    public static Longitude operator /(Longitude a, double b)
+      => new Longitude(a.Angle.Degree / b);
+    public static Longitude operator /(double a, Longitude b)
+      => new Longitude(a / b.Angle.Degree);
+    public static Longitude operator *(Longitude a, Longitude b)
+      => new Longitude(a.Angle * b.Angle);
+    public static Longitude operator *(Longitude a, double b)
+      => new Longitude(a.Angle.Degree * b);
+    public static Longitude operator *(double a, Longitude b)
+      => new Longitude(a * b.Angle.Degree);
     public static Longitude operator %(Longitude a, Longitude b)
-      => Remainder(a, b);
+      => new Longitude(a.Angle % b.Angle);
+    public static Longitude operator %(Longitude a, double b)
+      => new Longitude(a.Angle.Degree % b);
+    public static Longitude operator %(double a, Longitude b)
+      => new Longitude(a % b.Angle.Degree);
     public static Longitude operator -(Longitude a, Longitude b)
-      => Subtract(a, b);
+      => new Longitude(a.Angle - b.Angle);
+    public static Longitude operator -(Longitude a, double b)
+      => new Longitude(a.Angle.Degree - b);
+    public static Longitude operator -(double a, Longitude b)
+      => new Longitude(a - b.Angle.Degree);
     #endregion Overloaded operators
 
     #region Implemented interfaces

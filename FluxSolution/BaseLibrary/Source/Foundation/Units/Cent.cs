@@ -30,20 +30,8 @@ namespace Flux.Units
     public static double ShiftPitch(double frequency, int cents)
       => frequency * ConvertCentToFrequencyRatio(cents);
 
-    public static Cent Add(Cent left, Cent right)
-      => new Cent(left.m_value + right.m_value);
-    public static Cent Divide(Cent left, Cent right)
-      => new Cent(left.m_value / right.m_value);
     public static Cent FromFrequencyRatio(double frequencyRatio)
       => new Cent(ConvertFrequencyRatioToCent(frequencyRatio));
-    public static Cent Multiply(Cent left, Cent right)
-      => new Cent(left.m_value * right.m_value);
-    public static Cent Negate(Cent value)
-      => new Cent(-value.m_value);
-    public static Cent Remainder(Cent dividend, Cent divisor)
-      => new Cent(dividend.m_value % divisor.m_value);
-    public static Cent Subtract(Cent left, Cent right)
-      => new Cent(left.m_value - right.m_value);
     #endregion Static methods
 
     #region Overloaded operators
@@ -66,18 +54,38 @@ namespace Flux.Units
     public static bool operator !=(Cent a, Cent b)
       => !a.Equals(b);
 
-    public static Cent operator +(Cent a, Cent b)
-      => Add(a, b);
-    public static Cent operator /(Cent a, Cent b)
-      => Divide(a, b);
-    public static Cent operator *(Cent a, Cent b)
-      => Multiply(a, b);
     public static Cent operator -(Cent v)
-      => Negate(v);
+      => new Cent(-v.Value);
+    public static Cent operator +(Cent a, Cent b)
+      => new Cent(a.Value + b.Value);
+    public static Cent operator +(Cent a, int b)
+      => new Cent(a.Value + b);
+    public static Cent operator +(int a, Cent b)
+      => new Cent(a + b.Value);
+    public static Cent operator /(Cent a, Cent b)
+      => new Cent(a.Value / b.Value);
+    public static Cent operator /(Cent a, int b)
+      => new Cent(a.Value / b);
+    public static Cent operator /(int a, Cent b)
+      => new Cent(a / b.Value);
+    public static Cent operator *(Cent a, Cent b)
+      => new Cent(a.Value * b.Value);
+    public static Cent operator *(Cent a, int b)
+      => new Cent(a.Value * b);
+    public static Cent operator *(int a, Cent b)
+      => new Cent(a * b.Value);
     public static Cent operator %(Cent a, Cent b)
-      => Remainder(a, b);
+      => new Cent(a.Value % b.Value);
+    public static Cent operator %(Cent a, int b)
+      => new Cent(a.Value % b);
+    public static Cent operator %(int a, Cent b)
+      => new Cent(a % b.Value);
     public static Cent operator -(Cent a, Cent b)
-      => Subtract(a, b);
+      => new Cent(a.Value - b.Value);
+    public static Cent operator -(Cent a, int b)
+      => new Cent(a.Value - b);
+    public static Cent operator -(int a, Cent b)
+      => new Cent(a - b.Value);
     #endregion Overloaded operators
 
     #region Implemented interfaces

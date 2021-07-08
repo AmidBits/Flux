@@ -14,20 +14,10 @@ namespace Flux.Units
       => m_volt;
 
     #region Static methods
-    public static Voltage Add(Voltage left, Voltage right)
-      => new Voltage(left.m_volt + right.m_volt);
-    public static Voltage Divide(Voltage left, Voltage right)
-      => new Voltage(left.m_volt / right.m_volt);
-    public static Voltage FromIR(ElectricCurrent i, ElectricResistance r)
-      => new Voltage(i.Ampere * r.Ohm);
-    public static Voltage Multiply(Voltage left, Voltage right)
-      => new Voltage(left.m_volt * right.m_volt);
-    public static Voltage Negate(Voltage value)
-      => new Voltage(-value.m_volt);
-    public static Voltage Remainder(Voltage dividend, Voltage divisor)
-      => new Voltage(dividend.m_volt % divisor.m_volt);
-    public static Voltage Subtract(Voltage left, Voltage right)
-      => new Voltage(left.m_volt - right.m_volt);
+    public static Voltage From(ElectricCurrent current, ElectricResistance resistance)
+      => new Voltage(current.Ampere * resistance.Ohm);
+    public static Voltage From(Power power, ElectricCurrent current)
+      => new Voltage(power.Watt / current.Ampere);
     #endregion Static methods
 
     #region Overloaded operators
@@ -50,18 +40,18 @@ namespace Flux.Units
     public static bool operator !=(Voltage a, Voltage b)
       => !a.Equals(b);
 
-    public static Voltage operator +(Voltage a, Voltage b)
-      => Add(a, b);
-    public static Voltage operator /(Voltage a, Voltage b)
-      => Divide(a, b);
-    public static Voltage operator *(Voltage a, Voltage b)
-      => Multiply(a, b);
     public static Voltage operator -(Voltage v)
-      => Negate(v);
+      => new Voltage(-v.m_volt);
+    public static Voltage operator +(Voltage a, Voltage b)
+      => new Voltage(a.m_volt + b.m_volt);
+    public static Voltage operator /(Voltage a, Voltage b)
+      => new Voltage(a.m_volt / b.m_volt);
+    public static Voltage operator *(Voltage a, Voltage b)
+      => new Voltage(a.m_volt * b.m_volt);
     public static Voltage operator %(Voltage a, Voltage b)
-      => Remainder(a, b);
+      => new Voltage(a.m_volt % b.m_volt);
     public static Voltage operator -(Voltage a, Voltage b)
-      => Subtract(a, b);
+      => new Voltage(a.m_volt - b.m_volt);
     #endregion Overloaded operators
 
     #region Implemented interfaces
