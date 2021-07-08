@@ -26,7 +26,7 @@ namespace Flux.Units
         case PressureUnit.Pascal:
           return m_pascal;
         case PressureUnit.PSI:
-          return m_pascal * (1290320000 / 8896443230521);
+          return m_pascal * (1290320000.0 / 8896443230521.0);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -40,7 +40,7 @@ namespace Flux.Units
         case PressureUnit.Pascal:
           return new Pressure(value);
         case PressureUnit.PSI:
-          return new Pressure(value * (8896443230521 / 1290320000));
+          return new Pressure(value * (8896443230521.0 / 1290320000.0));
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }

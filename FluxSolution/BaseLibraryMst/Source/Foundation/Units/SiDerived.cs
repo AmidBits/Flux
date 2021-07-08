@@ -171,7 +171,7 @@ namespace Foundation.Units
       var u = new Flux.Units.Pressure(1);
 
       Assert.AreEqual(1, u.Pascal);
-      Assert.AreEqual(0.00014503773772954367, u.ToUnitValue(Flux.Units.PressureUnit.PSI));
+      Assert.AreEqual(0.0001450377377302092, u.ToUnitValue(Flux.Units.PressureUnit.PSI));
     }
 
     [TestMethod]
@@ -187,11 +187,11 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Speed(1);
 
-      Assert.AreEqual(3.280839895013123, u.ToUnitValue(Flux.Units.SpeedUnit.FeetPerSecond));
+      Assert.AreEqual(3.2808398950131235, u.ToUnitValue(Flux.Units.SpeedUnit.FeetPerSecond));
       Assert.AreEqual(3.6, u.ToUnitValue(Flux.Units.SpeedUnit.KilometersPerHour));
       Assert.AreEqual(1.9438444924406046, u.ToUnitValue(Flux.Units.SpeedUnit.Knots));
       Assert.AreEqual(1, u.MeterPerSecond);
-      Assert.AreEqual(2.2369362920544, u.ToUnitValue(Flux.Units.SpeedUnit.MilesPerHour));
+      Assert.AreEqual(2.2369362920544025, u.ToUnitValue(Flux.Units.SpeedUnit.MilesPerHour));
     }
 
     [TestMethod]
