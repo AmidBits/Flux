@@ -14,8 +14,11 @@ namespace Flux.Units
       => m_ohm;
 
     #region Static methods
-    public static ElectricResistance From(Voltage v, ElectricCurrent i)
-      => new ElectricResistance(v.Volt / i.Ampere);
+    /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
+    /// <param name="voltage"></param>
+    /// <param name="current"></param>
+    public static ElectricResistance From(Voltage voltage, ElectricCurrent current)
+      => new ElectricResistance(voltage.Volt / current.Ampere);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
     {
@@ -24,7 +27,7 @@ namespace Flux.Units
         sum += 1 / resistor;
       return (ElectricResistance)(1 / sum);
     }
-    /// <summary>Converts resistor values as if in parallel configuration.</summary>
+    /// <summary>Converts resistor values as if in serial configuration.</summary>
     public static ElectricResistance FromSerialResistors(params double[] resistors)
     {
       var sum = 0.0;

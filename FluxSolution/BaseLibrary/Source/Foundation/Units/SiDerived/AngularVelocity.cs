@@ -17,6 +17,9 @@ namespace Flux.Units
       => (Angle.FromUnitValue(AngleUnit.Radian, m_radianPerSecond), Time.FromUnitValue(TimeUnit.Second, 1));
 
     #region Static methods
+    /// <summary>Creates a new AngularVelocity instance from the specified angle and time.</summary>
+    /// <param name="angle"></param>
+    /// <param name="time"></param>
     public AngularVelocity From(Angle angle, Time time)
       => new AngularVelocity(angle.Radian / time.Second);
     #endregion Static methods

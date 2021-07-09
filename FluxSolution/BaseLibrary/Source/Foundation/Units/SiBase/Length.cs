@@ -57,7 +57,11 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Frequency FromAcousticsAsWaveLength(Speed soundVelocity, Frequency frequency)
+    /// <summary>Creates a new Length instance representing the acoustic property of wave length.</summary>
+    /// <param name="soundVelocity"></param>
+    /// <param name="frequency"></param>
+    /// <returns>Returns the wave length.</returns>
+    public static Frequency From(Speed soundVelocity, Frequency frequency)
       => new Frequency(soundVelocity.MeterPerSecond / frequency.Hertz);
     public static Length FromUnitValue(LengthUnit unit, double value)
     {

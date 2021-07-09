@@ -137,7 +137,6 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Illuminance(1);
 
-      Assert.AreEqual(0.0929, u.Lumens);
       Assert.AreEqual(1, u.Lux);
     }
 

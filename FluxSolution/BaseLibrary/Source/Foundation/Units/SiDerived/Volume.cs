@@ -14,8 +14,12 @@ namespace Flux.Units
       => m_cubicMeter;
 
     #region Static methods
-    public static Volume FromRectangularCuboid(double lengthInMeters, double widthInMeters, double heightInMeters)
-      => new Volume(lengthInMeters * widthInMeters * heightInMeters);
+    /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>
+    /// <param name="length"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    public static Volume From(Length length, Length width, Length height)
+      => new Volume(length.Meter * width.Meter * height.Meter);
     #endregion Static methods
 
     #region Overloaded operators

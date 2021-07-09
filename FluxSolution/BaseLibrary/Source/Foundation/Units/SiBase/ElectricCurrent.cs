@@ -33,6 +33,16 @@ namespace Flux.Units
     }
 
     #region Static methods
+    /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
+    /// <param name="power"></param>
+    /// <param name="voltage"></param>
+    public static ElectricCurrent From(Power power, Voltage voltage)
+      => new ElectricCurrent(power.Watt / voltage.Volt);
+    /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
+    /// <param name="voltage"></param>
+    /// <param name="resistance"></param>
+    public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
+      => new ElectricCurrent(voltage.Volt / resistance.Ohm);
     public static ElectricCurrent FromUnitValue(ElectricCurrentUnit unit, double value)
     {
       switch (unit)
@@ -45,10 +55,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static ElectricCurrent From(Power power, Voltage voltage)
-      => new ElectricCurrent(power.Watt / voltage.Volt);
-    public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new ElectricCurrent(voltage.Volt / resistance.Ohm);
     #endregion Static methods
 
     #region Overloaded operators

@@ -12,17 +12,6 @@ namespace Flux.Units
 
     public double Lux
       => m_lux;
-    public double Lumens
-      => ConvertLuxToLumens(m_lux);
-
-    #region Static methods
-    public static double ConvertLuxToLumens(double lux)
-      => lux * 0.0929;
-    public static double ConvertLumensToLux(double lumens)
-      => lumens / 0.0929;
-    public static Illuminance FromLumens(double lumens)
-      => new Illuminance(ConvertLumensToLux(lumens));
-    #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Illuminance v)

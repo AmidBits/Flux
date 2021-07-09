@@ -56,7 +56,8 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Time FromTimeSpan(System.TimeSpan timeSpan)
+    /// <summary>Creates a new Time instance from the specified <paramref name="timeSpan"/>.</summary>
+    public static Time From(System.TimeSpan timeSpan)
       => new Time(timeSpan.TotalSeconds);
     public static Time FromUnitValue(TimeUnit unit, double value)
     {

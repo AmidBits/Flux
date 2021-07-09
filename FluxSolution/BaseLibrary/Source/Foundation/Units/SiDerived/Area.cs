@@ -14,7 +14,10 @@ namespace Flux.Units
       => m_squareMeter;
 
     #region Static methods
-    public static Area FromRectangle(Length length, Length width)
+    /// <summary>Creates a new Area instance from the specified rectangular length and width.</summary>
+    /// <param name="length"></param>
+    /// <param name="width"></param>
+    public static Area From(Length length, Length width)
       => new Area(length.Meter * width.Meter);
     #endregion Static methods
 

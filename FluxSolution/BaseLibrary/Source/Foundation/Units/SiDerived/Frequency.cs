@@ -37,9 +37,11 @@ namespace Flux.Units
     /// <summary>Computes the time (in seconds) it takes to complete one cycle at the specified frequency.</summary>
     public static double GetPeriod(double frequency)
       => 1.0 / frequency;
-
-    public static Frequency FromAcoustics(Speed soundVelocity, Length waveLength)
-      => new Frequency(soundVelocity.MeterPerSecond / waveLength.Meter);
+    /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>
+    /// <param name="soundVelocity"></param>
+    /// <param name="wavelength"></param>
+    public static Frequency From(Speed soundVelocity, Length wavelength)
+      => new Frequency(soundVelocity.MeterPerSecond / wavelength.Meter);
     #endregion Static methods
 
     #region Overloaded operators

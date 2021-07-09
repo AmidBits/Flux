@@ -14,8 +14,14 @@ namespace Flux.Units
       => m_volt;
 
     #region Static methods
+    /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>
+    /// <param name="current"></param>
+    /// <param name="resistance"></param>
     public static Voltage From(ElectricCurrent current, ElectricResistance resistance)
       => new Voltage(current.Ampere * resistance.Ohm);
+    /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
+    /// <param name="power"></param>
+    /// <param name="current"></param>
     public static Voltage From(Power power, ElectricCurrent current)
       => new Voltage(power.Watt / current.Ampere);
     #endregion Static methods

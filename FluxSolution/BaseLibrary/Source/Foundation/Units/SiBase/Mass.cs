@@ -42,10 +42,6 @@ namespace Flux.Units
     }
 
     #region Static methods
-    public static Mass Add(Mass left, Mass right)
-      => new Mass(left.m_kilogram + right.m_kilogram);
-    public static Mass Divide(Mass left, Mass right)
-     => new Mass(left.m_kilogram / right.m_kilogram);
     public static Mass FromUnitValue(MassUnit unit, double value)
     {
       switch (unit)
@@ -64,14 +60,6 @@ namespace Flux.Units
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    public static Mass Multiply(Mass left, Mass right)
-      => new Mass(left.m_kilogram * right.m_kilogram);
-    public static Mass Negate(Mass value)
-      => new Mass(-value.m_kilogram);
-    public static Mass Remainder(Mass dividend, Mass divisor)
-      => new Mass(dividend.m_kilogram % divisor.m_kilogram);
-    public static Mass Subtract(Mass left, Mass right)
-      => new Mass(left.m_kilogram - right.m_kilogram);
     #endregion Static methods
 
     #region Overloaded operators
