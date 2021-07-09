@@ -46,12 +46,12 @@ namespace Flux.Geometry
 
     public HexagonShape(HexagonOrientation orientation, double outerDiameter = 1.0)
     {
-      m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateHexagon(outerDiameter, outerDiameter).ToArray() : Ellipse.CreateHexagon(outerDiameter, outerDiameter, 0.0).ToArray();
+      m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Units.Angle.ConvertDegreeToRadian(90)).ToArray() : Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
     }
 
     /// <summary>Creates an array with the vertices for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static System.Numerics.Vector2[] GetPoints(double length, double angleOffset) => Ellipse.CreateHexagon(length, length, angleOffset).ToArray();
+    public static System.Numerics.Vector2[] GetPoints(double length, double angleOffset) => Ellipse.CreateCircularArcPoints(6, length, length, (x, y) => new System.Numerics.Vector2((float)x, (float)y), angleOffset).ToArray();
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>

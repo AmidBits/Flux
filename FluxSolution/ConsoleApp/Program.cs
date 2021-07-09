@@ -96,6 +96,10 @@ namespace ConsoleApp
       System.Console.WriteLine($"{x1:N1}, {y1:N1} : {x2:N1}, {y2:N1} : {x3:N1}, {y3:N1}");
       System.Console.WriteLine($"{System.Convert.ToInt32(x4)}, {System.Convert.ToInt32(y4)}");
 
+
+      foreach (var pnt in Flux.Geometry.Ellipse.CreateCircularArcPoints(4, 10, 10, (x, y) => $"XY = {x:N1}, {y:N1}", 0.0, 0.0))
+        System.Console.WriteLine(pnt);
+
       var c1 = new Flux.Units.Cent(1);
       var c2 = new Flux.Units.Cent(2);
       var c3 = c1 + c2;

@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   public struct Ellipse
-    : System.IEquatable<Ellipse>, System.IFormattable
+    : System.IEquatable<Ellipse>
   {
     public static readonly Ellipse Empty;
     public bool IsEmpty => Equals(Empty);
@@ -35,59 +35,33 @@ namespace Flux.Geometry
       => new System.Numerics.Vector2((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
-    /// Flux.Media.Geometry.Ellipse.Create(3, 100, 100, 0); // triangle, horizontally pointy
-    /// Flux.Media.Geometry.Ellipse.Create(3, 100, 100, Flux.Math.Pi.DivBy6); // triangle, vertically pointy
-    /// Flux.Media.Geometry.Ellipse.Create(4, 100, 100, 0); // rectangle, horizontally and vertically pointy
-    /// Flux.Media.Geometry.Ellipse.Create(4, 100, 100, Flux.Math.Pi.DivBy4); // rectangle, vertically and horizontally flat
-    /// Flux.Media.Geometry.Ellipse.Create(5, 100, 100, 0); // pentagon, horizontally pointy
-    /// Flux.Media.Geometry.Ellipse.Create(5, 100, 100, Flux.Math.Pi.DivBy6); // pentagon, vertically pointy
-    /// Flux.Media.Geometry.Ellipse.Create(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)
-    /// Flux.Media.Geometry.Ellipse.Create(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, horizontally flat (or vertically pointy)
-    /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, 0); // octagon, horizontally and vertically pointy
-    /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, vertically and horizontally flat
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, Flux.Math.Pi.DivBy6); // triangle, vertically pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, Flux.Math.Pi.DivBy4); // rectangle, vertically and horizontally flat
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, Flux.Math.Pi.DivBy6); // pentagon, vertically pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, horizontally flat (or vertically pointy)
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy
+    /// Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, vertically and horizontally flat
     /// </summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> Create(double segmentCount, double radiusX, double radiusY, double offsetRadians = 0, double randomnessUnitInterval = 0)
+    public static System.Collections.Generic.IEnumerable<TResult> CreateCircularArcPoints<TResult>(double numberOfPoints, double radiusX, double radiusY, System.Func<double, double, TResult> resultSelector, double offsetRadians = 0, double probabilityOfRandom = 0)
     {
-      offsetRadians += -Maths.PiOver2;
+      var circularArc = Maths.PiX2 / numberOfPoints;
 
-      var segmentRadian = Maths.PiX2 / segmentCount;
-
-      var rng = new System.Random();
-
-      for (var segment = 0; segment < segmentCount; segment++)
+      for (var segment = 0; segment < numberOfPoints; segment++)
       {
-        var angle = offsetRadians + segment * segmentRadian;
+        var angle = offsetRadians + segment * circularArc;
 
-        if (randomnessUnitInterval > double.Epsilon)
-        {
-          angle += rng.NextDouble(segmentRadian * (1 - randomnessUnitInterval), segmentRadian);
-        }
+        if (probabilityOfRandom > Flux.Maths.Epsilon1E7)
+          angle += Flux.Randomization.NumberGenerator.Crypto.NextDouble(0, circularArc * probabilityOfRandom);
 
-        yield return ToCartesian(radiusX, radiusY, angle);
+        Flux.Units.Angle.ConvertRotationAngleToCartesianEx(angle, out var x, out var y);
+
+        yield return resultSelector(x * radiusX, y * radiusY);
       }
     }
-
-    /// Flux.Media.Geometry.Ellipse.Create(7, 100, 100, Flux.Math.Pi.DivBy7); // heptagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHeptagon(double width, double height, double offsetRadians = Maths.PiOver7)
-      => Create(7, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateHexagon(double width, double height, double offsetRadians = Maths.PiOver6)
-      => Create(6, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(9, 100, 100, Flux.Math.Pi.DivBy9); // nonagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateNonagon(double width, double height, double offsetRadians = Maths.PiOver9)
-      => Create(9, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateOctagon(double width, double height, double offsetRadians = Maths.PiOver8)
-      => Create(8, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(5, 100, 100, Flux.Math.Pi.DivBy5); // pentagon, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreatePentagon(double width, double height, double offsetRadians = Maths.PiOver5)
-      => Create(5, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(4, 100, 100, Flux.Math.Pi.DivBy4); // square, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateSquare(double width, double height, double offsetRadians = Maths.PiOver4)
-      => Create(4, width, height, offsetRadians);
-    /// Flux.Media.Geometry.Ellipse.Create(3, 100, 100, Flux.Math.Pi.DivBy3); // triangle, flat top
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> CreateTriangle(double width, double height, double offsetRadians = Maths.PiOver3)
-      => Create(3, width, height, offsetRadians);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public static double SurfaceArea(double radiusA, double radiusB)
@@ -119,33 +93,27 @@ namespace Flux.Geometry
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static Ellipse FromCartesian(double x, double y)
       => new Ellipse(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    /// <summary>Returns a vector from the specified elliptical (circular) properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static System.Numerics.Vector2 ToCartesian(double radius, double angle)
-      => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radius), (float)(System.Math.Sin(angle) * radius));
-    /// <summary>Returns a vector from the specified elliptical properties. The angle (radians) is expected as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static System.Numerics.Vector2 ToCartesian(double radiusX, double radiusY, double angle)
-      => new System.Numerics.Vector2((float)(System.Math.Cos(angle) * radiusX), (float)(System.Math.Sin(angle) * radiusY));
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(Ellipse a, Ellipse b)
       => a.Equals(b);
     public static bool operator !=(Ellipse a, Ellipse b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(Ellipse other)
       => Width == other.Width && Height == other.Height && Angle == other.Angle;
+    #endregion Implemented interfaces
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{nameof(Ellipse)}: {Width.ToString(format, provider)}, {Height.ToString(format, provider)}, {Angle.ToString(format, provider)}>";
-
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()
-      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{GetType().Name}: {Width}, {Height}, {Units.Angle.FromUnitValue(Units.AngleUnit.Radian, Angle)}>";
+    #endregion Object overrides
   }
 }
