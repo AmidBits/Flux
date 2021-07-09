@@ -37,6 +37,8 @@ namespace Flux.Model
     public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
     public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
+    public static readonly Geometry.Size2 BoardSize = new Geometry.Size2(Files.Length, Ranks.Length);
+
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 
     public static bool IsValidIndex(int index)
@@ -47,19 +49,29 @@ namespace Flux.Model
       => vector.X >= 0 && vector.X <= 7 && vector.Y >= 0 && vector.Y <= 7;
 
     public static (string column, string row) IndexToLabel(int index)
-      => Geometry.Point2.FromUniqueIndex(index, Files.Length).ToLabels(Files, Ranks);
+    {
+      var p = Geometry.Point2.FromUniqueIndex(index, BoardSize);
+
+      return (Files[p.X], Ranks[p.Y]);
+    }
+
     public static Geometry.Point2 IndexToVector(int index)
-      => Geometry.Point2.FromUniqueIndex(index, Files.Length);
+      => Geometry.Point2.FromUniqueIndex(index, BoardSize);
 
     public static int LabelToIndex(string column, string row)
-      => Geometry.Point2.FromLabels(column, row, Files, Ranks).ToUniqueIndex(Files.Length);
+    {
+      var p = new Geometry.Point2(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
+
+      return (int)Geometry.Point2.ToUniqueIndex(p, BoardSize);
+    }
+
     public static Geometry.Point2 LabelToVector(string column, string row)
-      => Geometry.Point2.FromLabels(column, row, Files, Ranks);
+      => new Geometry.Point2(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Geometry.Point2 vector)
-      => vector.ToUniqueIndex(Files.Length);
+      => (int)Geometry.Point2.ToUniqueIndex(vector, BoardSize);
     public static (string column, string row) VectorToLabel(Geometry.Point2 vector)
-      => vector.ToLabels(Files, Ranks);
+      => (Files[vector.X], Ranks[vector.Y]);
 
     public static System.Collections.Generic.IEnumerable<Geometry.Point2> GetMovesOfBishop(Geometry.Point2 vector)
     {

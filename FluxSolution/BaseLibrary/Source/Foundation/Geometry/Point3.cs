@@ -38,50 +38,43 @@ namespace Flux.Geometry
     }
 
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
-    public int ToUniqueIndex(int lengthX, int lengthY)
-      => X + Y * lengthX + Z * lengthX * lengthY;
     public System.Numerics.Vector3 ToVector3()
       => new System.Numerics.Vector3(X, Y, Z);
-    public int[] ToArray()
-      => new int[] { X, Y, Z };
 
     #region Static methods
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(in Point3 p1, in Point3 p2)
+    public static double ChebyshevDistance(Point3 p1, Point3 p2)
       => Maths.Max(System.Math.Abs(p2.X - p1.X), System.Math.Abs(p2.Y - p1.Y), System.Math.Abs(p2.Z - p1.Z));
     /// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
-    public static Point3 CrossProduct(in Point3 p1, in Point3 p2)
+    public static Point3 CrossProduct(Point3 p1, Point3 p2)
       => new Point3(p1.Y * p2.Z - p1.Z * p2.Y, p1.Z * p2.X - p1.X * p2.Z, p1.X * p2.Y - p1.Y * p2.X);
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static Point3 DivideCeiling(in Point3 p, double value)
+    public static Point3 DivideCeiling(Point3 p, double value)
       => new Point3((int)System.Math.Ceiling(p.X / value), (int)System.Math.Ceiling(p.Y / value), (int)System.Math.Ceiling(p.Z / value));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static Point3 DivideFloor(in Point3 p, double value)
+    public static Point3 DivideFloor(Point3 p, double value)
       => new Point3((int)System.Math.Floor(p.X / value), (int)System.Math.Floor(p.Y / value), (int)System.Math.Floor(p.Z / value));
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-    public static int DotProduct(in Point3 p1, in Point3 p2)
+    public static int DotProduct(Point3 p1, Point3 p2)
       => p1.X * p2.X + p1.Y * p2.Y + p1.Z * p2.Z;
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(in Point3 p1, in Point3 p2)
+    public static double EuclideanDistance(Point3 p1, Point3 p2)
       => GetLength(p1 - p2);
     /// <summary>Compute the euclidean distance squared of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistanceSquare(in Point3 p1, in Point3 p2)
+    public static double EuclideanDistanceSquare(Point3 p1, Point3 p2)
       => GetLengthSquared(p1 - p2);
-    /// <summary>Create a new vector from the index and the length of the X and the length of the Y axes.</summary>
-    public static Point3 FromUniqueIndex(int index, int lengthX, int lengthY)
-      => index % (lengthX * lengthY) is var irxy ? new Point3(irxy % lengthX, irxy / lengthX, index / (lengthX * lengthY)) : throw new System.ArgumentOutOfRangeException(nameof(index));
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLength(in Point3 p)
+    public static double GetLength(Point3 p)
       => System.Math.Sqrt(p.X * p.X + p.Y * p.Y + p.Z * p.Z);
     /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLengthSquared(in Point3 p)
+    public static double GetLengthSquared(Point3 p)
       => p.X * p.X + p.Y * p.Y + p.Z * p.Z;
     /// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
@@ -99,9 +92,8 @@ namespace Flux.Geometry
     /// <summary>Convert the 3D vector to a octant based on the specified axis vector.</summary>
     /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public static int GetOctantNumber(Point3 source, in Point3 center)
+    public static int GetOctantNumber(Point3 source, Point3 center)
       => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0) + (source.Z >= center.Z ? 4 : 0);
-
     public static Point3 InterpolateCosine(Point3 y1, Point3 y2, double mu)
       => mu >= 0 && mu <= 1 && ((1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0) is double mu2
       ? (y1 * (1.0 - mu2) + y2 * mu2)
@@ -141,16 +133,15 @@ namespace Flux.Geometry
     }
     public static Point3 InterpolateLinear(Point3 y1, Point3 y2, double mu)
       => y1 * (1 - mu) + y2 * mu;
-
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanDistance(in Point3 p1, in Point3 p2)
+    public static int ManhattanDistance(Point3 p1, Point3 p2)
       => System.Math.Abs(p2.X - p1.X) + System.Math.Abs(p2.Y - p1.Y) + System.Math.Abs(p2.Z - p1.Z);
     /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
-    public static Point3 MultiplyCeiling(in Point3 p, double value)
+    public static Point3 MultiplyCeiling(Point3 p, double value)
       => new Point3((int)System.Math.Ceiling(p.X * value), (int)System.Math.Ceiling(p.Y * value), (int)System.Math.Ceiling(p.Z * value));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static Point3 MultiplyFloor(in Point3 p, double value)
+    public static Point3 MultiplyFloor(Point3 p, double value)
       => new Point3((int)System.Math.Floor(p.X * value), (int)System.Math.Floor(p.Y * value), (int)System.Math.Floor(p.Z * value));
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
     public static Point3 Parse(string pointAsString)
@@ -171,17 +162,11 @@ namespace Flux.Geometry
       }
     }
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static Point3 FromRandom(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExlusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
-    /// <summary>Create a new random vector in the range [(0, 0), toExclusive] using the crypto-grade rng.</summary>
-    public static Point3 FromRandom(in Point3 toExclusive)
-      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExclusive.X), Randomization.NumberGenerator.Crypto.Next(toExclusive.Y));
-    /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    public static Point3 FromRandomZero(int toExlusiveX, int toExclusiveY, int toExclusiveZ)
-      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExlusiveX * 2) - toExlusiveX, Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2) - toExclusiveY, Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2) - toExclusiveZ);
-    /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
-    public static Point3 FromRandomZero(in Point3 toExclusive)
-      => FromRandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
+    public static Point3 FromRandom(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
+      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
+    /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
+    public static Point3 FromRandomZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
+      => new Point3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static int ScalarTripleProduct(Point3 p1, Point3 p2, Point3 p3)
@@ -210,71 +195,93 @@ namespace Flux.Geometry
     #endregion "Unique" index
 
     #region Overloaded operators
-    public static bool operator ==(in Point3 p1, in Point3 p2)
+    public static bool operator ==(Point3 p1, Point3 p2)
       => p1.Equals(p2);
-    public static bool operator !=(in Point3 p1, in Point3 p2)
+    public static bool operator !=(Point3 p1, Point3 p2)
       => !p1.Equals(p2);
 
-    public static Point3 operator -(in Point3 p)
+    public static Point3 operator -(Point3 p)
       => new Point3(-p.X, -p.Y, -p.Z);
 
-    public static Point3 operator ~(in Point3 p)
+    public static Point3 operator ~(Point3 p)
       => new Point3(~p.X, ~p.Y, ~p.Z);
 
-    public static Point3 operator --(in Point3 p)
+    public static Point3 operator --(Point3 p)
       => new Point3(p.X - 1, p.Y - 1, p.Z - 1);
-    public static Point3 operator ++(in Point3 p)
+    public static Point3 operator ++(Point3 p)
       => new Point3(p.X + 1, p.Y + 1, p.Z + 1);
 
-    public static Point3 operator +(in Point3 p1, in Point3 p2)
+    public static Point3 operator +(Point3 p1, Point3 p2)
       => new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
-    public static Point3 operator +(in Point3 p, int v)
+    public static Point3 operator +(Point3 p, int v)
       => new Point3(p.X + v, p.Y + v, p.Z + v);
+    public static Point3 operator +(int v, Point3 p)
+      => new Point3(v + p.X, v + p.Y, v + p.Z);
 
-    public static Point3 operator -(in Point3 p1, in Point3 p2)
+    public static Point3 operator -(Point3 p1, Point3 p2)
       => new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
-    public static Point3 operator -(in Point3 p, int v)
+    public static Point3 operator -(Point3 p, int v)
       => new Point3(p.X - v, p.Y - v, p.Z - v);
+    public static Point3 operator -(int v, Point3 p)
+      => new Point3(v - p.X, v - p.Y, v - p.Z);
 
-    public static Point3 operator *(in Point3 p1, in Point3 p2)
+    public static Point3 operator *(Point3 p1, Point3 p2)
       => new Point3(p1.X * p2.X, p1.Y * p2.Y, p1.Z * p2.Z);
-    public static Point3 operator *(in Point3 p, int v)
+    public static Point3 operator *(Point3 p, int v)
       => new Point3(p.X * v, p.Y * v, p.Z * v);
-    public static Point3 operator *(in Point3 p, double v)
-      => new Point3(System.Convert.ToInt32(p.X * v), System.Convert.ToInt32(p.Y * v), System.Convert.ToInt32(p.Z * v));
+    public static Point3 operator *(Point3 p, double v)
+      => new Point3((int)(p.X * v), (int)(p.Y * v), (int)(p.Z * v));
+    public static Point3 operator *(int v, Point3 p)
+      => new Point3(v * p.X, v * p.Y, v * p.Z);
+    public static Point3 operator *(double v, Point3 p)
+      => new Point3((int)(v * p.X), (int)(v * p.Y), (int)(v * p.Z));
 
-    public static Point3 operator /(in Point3 p1, in Point3 p2)
+    public static Point3 operator /(Point3 p1, Point3 p2)
       => new Point3(p1.X / p2.X, p1.Y / p2.Y, p1.Z / p2.Z);
-    public static Point3 operator /(in Point3 p, int v)
+    public static Point3 operator /(Point3 p, int v)
       => new Point3(p.X / v, p.Y / v, p.Z / v);
-    public static Point3 operator /(in Point3 p, double v)
-      => new Point3(System.Convert.ToInt32(p.X * v), System.Convert.ToInt32(p.Y * v), System.Convert.ToInt32(p.Z * v));
+    public static Point3 operator /(Point3 p, double v)
+      => new Point3((int)(p.X / v), (int)(p.Y / v), (int)(p.Z / v));
+    public static Point3 operator /(int v, Point3 p)
+      => new Point3(v / p.X, v / p.Y, v / p.Z);
+    public static Point3 operator /(double v, Point3 p)
+      => new Point3((int)(v / p.X), (int)(v / p.Y), (int)(v / p.Z));
 
-    public static Point3 operator %(in Point3 p1, in Point3 p2)
+    public static Point3 operator %(Point3 p1, Point3 p2)
       => new Point3(p1.X % p2.X, p1.Y % p2.Y, p1.Z % p2.Z);
-    public static Point3 operator %(in Point3 p, int v)
+    public static Point3 operator %(Point3 p, int v)
       => new Point3(p.X % v, p.Y % v, p.Z % v);
-    public static Point3 operator %(in Point3 p, double v)
-      => new Point3(System.Convert.ToInt32(p.X % v), System.Convert.ToInt32(p.Y % v), System.Convert.ToInt32(p.Z % v));
+    public static Point3 operator %(Point3 p, double v)
+      => new Point3((int)(p.X % v), (int)(p.Y % v), (int)(p.Z % v));
+    public static Point3 operator %(int v, Point3 p)
+      => new Point3(v % p.X, v % p.Y, v % p.Z);
+    public static Point3 operator %(double v, Point3 p)
+      => new Point3((int)(v % p.X), (int)(v % p.Y), (int)(v % p.Z));
 
-    public static Point3 operator &(in Point3 p1, in Point3 p2)
+    public static Point3 operator &(Point3 p1, Point3 p2)
       => new Point3(p1.X & p2.X, p1.Y & p2.Y, p1.Z & p2.Z);
-    public static Point3 operator &(in Point3 p, int v)
+    public static Point3 operator &(Point3 p, int v)
       => new Point3(p.X & v, p.Y & v, p.Z & v);
+    public static Point3 operator &(int v, Point3 p)
+      => new Point3(v & p.X, v & p.Y, v & p.Z);
 
-    public static Point3 operator |(in Point3 p1, in Point3 p2)
+    public static Point3 operator |(Point3 p1, Point3 p2)
       => new Point3(p1.X | p2.X, p1.Y | p2.Y, p1.Z | p2.Z);
-    public static Point3 operator |(in Point3 p, int v)
+    public static Point3 operator |(Point3 p, int v)
       => new Point3(p.X | v, p.Y | v, p.Z | v);
+    public static Point3 operator |(int v, Point3 p)
+      => new Point3(v | p.X, v | p.Y, v | p.Z);
 
-    public static Point3 operator ^(in Point3 p1, in Point3 p2)
+    public static Point3 operator ^(Point3 p1, Point3 p2)
       => new Point3(p1.X ^ p2.X, p1.Y ^ p2.Y, p1.Z ^ p2.Z);
-    public static Point3 operator ^(in Point3 p, int v)
+    public static Point3 operator ^(Point3 p, int v)
       => new Point3(p.X ^ v, p.Y ^ v, p.Z ^ v);
+    public static Point3 operator ^(int v, Point3 p)
+      => new Point3(v ^ p.X, v ^ p.Y, v ^ p.Z);
 
-    public static Point3 operator <<(in Point3 p, int v)
+    public static Point3 operator <<(Point3 p, int v)
       => new Point3(p.X << v, p.Y << v, p.Z << v);
-    public static Point3 operator >>(in Point3 p, int v)
+    public static Point3 operator >>(Point3 p, int v)
       => new Point3(p.X >> v, p.Y >> v, p.Z >> v);
     #endregion Overloaded operators
 
@@ -294,7 +301,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(X, Y, Z);
     public override string ToString()
-      => $"<Point {X}, {Y}, {Z}>";
+      => $"<{GetType().Name}: {X}, {Y}, {Z}>";
     #endregion Object overrides
   }
 }
