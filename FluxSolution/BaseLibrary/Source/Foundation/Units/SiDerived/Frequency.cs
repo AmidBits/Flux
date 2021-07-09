@@ -13,35 +13,33 @@ namespace Flux.Units
     public double Hertz
       => m_hertz;
 
-    public Angle ToAngle()
-      => Angle.FromUnitValue(AngleUnit.Revolution, m_hertz);
+    /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
+    public Time ToPeriod()
+      => new Time(1.0 / m_hertz);
 
     #region Static methods
-    /// <summary>Computes the normalized frequency of the specified frequency and sample rate.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
-    public static double ComputeNormalizedFrequency(double frequency, double sampleRate)
-      => frequency / sampleRate;
-    /// <summary>Returns the phase speed (in meters per second, a.k.a. m/s) at the specified frequency and wavelength.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Phase_velocity"/>
-    public static double ComputePhaseVelocity(double frequency, double waveLength)
-      => frequency * waveLength;
-    /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
-    public static double ComputeSamplesPerCycle(double frequency, double sampleRate)
-      => sampleRate / frequency;
-    /// <summary>The wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per seond) for the wavelength distance.</summary>
-    /// <param name="phaseVelocity">The constant speed of the traveling wave. If sound waves then typically speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
-    /// <returns>The wave length in the unit specified (default is in meters per second, i.e. 343.21 m/s).</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
-    public static double ComputeWaveLength(double frequency, double phaseVelocity)
-      => phaseVelocity / frequency;
-    /// <summary>Computes the time (in seconds) it takes to complete one cycle at the specified frequency.</summary>
-    public static double GetPeriod(double frequency)
-      => 1.0 / frequency;
     /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>
     /// <param name="soundVelocity"></param>
     /// <param name="wavelength"></param>
-    public static Frequency From(Speed soundVelocity, Length wavelength)
+    public static Frequency ComputeFrequency(Speed soundVelocity, Length wavelength)
       => new Frequency(soundVelocity.MeterPerSecond / wavelength.Meter);
+    /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
+    public static double ComputeNormalizedFrequency(double frequency, double sampleRate)
+      => frequency / sampleRate;
+    /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
+    /// <param name="frequency"></param>
+    /// <param name="cents"></param>
+    public static Frequency ComputePitchShift(Frequency frequency, Cent cents)
+      => new Frequency(frequency.Hertz * Cent.ConvertCentToFrequencyRatio(cents.Value));
+    /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
+    /// <param name="frequency"></param>
+    /// <param name="semitones"></param>
+    public static Frequency ComputePitchShift(Frequency frequency, Semitone semitones)
+      => new Frequency(frequency.Hertz * Semitone.ConvertSemitoneToFrequencyRatio(semitones.Value));
+    /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
+    public static double ComputeSamplesPerCycle(double frequency, double sampleRate)
+      => sampleRate / frequency;
     #endregion Static methods
 
     #region Overloaded operators

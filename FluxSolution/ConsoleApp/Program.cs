@@ -68,12 +68,24 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var point1 = new Flux.Geometry.Point2(0, 9);
+      var p1 = point1;
+      System.Console.WriteLine(p1);
+      var point2 = -(point1 / 2.0);
+      System.Console.WriteLine(point2);
+      var p2 = point1.PerpendicularCw() - point2;
+      System.Console.WriteLine(p2);
+      var p3 = point1.PerpendicularCcw() - point2;
+      System.Console.WriteLine(p3);
+
+
+
       var c1 = new Flux.Units.Cent(1);
       var c2 = new Flux.Units.Cent(2);
       var c3 = c1 + c2;
 
-      var f1 = Flux.Units.Cent.ShiftPitch(440, 600);
-      var f2 = Flux.Units.Semitone.ShiftPitch(440, 6);
+      var f1 = Flux.Units.Cent.PitchShift(440, 600);
+      var f2 = Flux.Units.Semitone.PitchShift(440, 6);
 
 
       var pr10 = Flux.Units.PowerRatio.FromDecibelChange(10);

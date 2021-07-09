@@ -13,17 +13,6 @@ namespace Flux.Units
     public double RadianPerSecond
       => m_radianPerSecond;
 
-    public (Angle angle, Time time) ToParts(AngleUnit angleUnit, TimeUnit timeUnit)
-      => (Angle.FromUnitValue(AngleUnit.Radian, m_radianPerSecond), Time.FromUnitValue(TimeUnit.Second, 1));
-
-    #region Static methods
-    /// <summary>Creates a new AngularVelocity instance from the specified angle and time.</summary>
-    /// <param name="angle"></param>
-    /// <param name="time"></param>
-    public AngularVelocity From(Angle angle, Time time)
-      => new AngularVelocity(angle.Radian / time.Second);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(AngularVelocity v)
       => v.m_radianPerSecond;

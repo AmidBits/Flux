@@ -16,22 +16,29 @@ namespace Flux.Units
     public int Value
       => m_value;
 
+    /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public Frequency ShiftPitch(Frequency frequency)
+      => new Frequency(PitchShift(frequency.Hertz, m_value));
+
     public double ToFrequencyRatio()
       => ConvertCentToFrequencyRatio(m_value);
 
     #region Static methods
-    /// <summary>Convert a specified interval ratio to cents.</summary>
-    public static int ConvertFrequencyRatioToCent(double frequencyRatio)
-      => (int)(System.Math.Log(frequencyRatio, 2.0) * 1200.0);
-    /// <summary>Convert a specified cents to an interval ratio.</summary>
+    /// <summary>Convert a specified interval ratio to a number of cents.</summary>
+    public static double ConvertFrequencyRatioToCent(double frequencyRatio)
+      => System.Math.Log(frequencyRatio, 2) * 1200;
+    /// <summary>Convert a specified number of cents to an interval ratio.</summary>
     public static double ConvertCentToFrequencyRatio(int cents)
-      => System.Math.Pow(2.0, cents / 1200.0);
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int cents)
-      => frequency * ConvertCentToFrequencyRatio(cents);
+      => System.Math.Pow(2, cents / 1200.0);
 
+    /// <summary>Creates a new Cent instance from the specified frequency ratio.</summary>
+    /// <param name="frequencyRatio"></param>
     public static Cent FromFrequencyRatio(double frequencyRatio)
-      => new Cent(ConvertFrequencyRatioToCent(frequencyRatio));
+      => new Cent((int)ConvertFrequencyRatioToCent(frequencyRatio));
+
+    /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    public static double PitchShift(double frequency, int cents)
+      => frequency * ConvertCentToFrequencyRatio(cents);
     #endregion Static methods
 
     #region Overloaded operators

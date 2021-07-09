@@ -16,27 +16,34 @@ namespace Flux.Units
     public int Value
       => m_value;
 
+    /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
+    public Frequency ShiftPitch(Frequency frequency)
+      => new Frequency(PitchShift(frequency.Hertz, m_value));
+
     public Cent ToCent()
       => new Cent(ConvertSemitoneToCent(m_value));
     public double ToFrequencyRatio()
       => ConvertSemitoneToFrequencyRatio(m_value);
 
     #region Static methods
-    /// <summary>Convert a specified interval ratio to cents.</summary>
-    public static int ConvertFrequencyRatioToSemitone(double frequencyRatio)
-      => (int)(System.Math.Log(frequencyRatio, 2.0) * 12.0);
-    /// <summary>Convert a specified semitone to cents.</summary>
+    /// <summary>Convert a specified interval ratio to a number of semitones.</summary>
+    public static double ConvertFrequencyRatioToSemitone(double frequencyRatio)
+      => System.Math.Log(frequencyRatio, 2) * 12;
+    /// <summary>Convert a specified number of semitones to cents.</summary>
     public static int ConvertSemitoneToCent(int semitones)
       => semitones * 100;
-    /// <summary>Convert a specified semitone to an interval ratio.</summary>
+    /// <summary>Convert a specified number of semitones to an interval ratio.</summary>
     public static double ConvertSemitoneToFrequencyRatio(int semitones)
-      => System.Math.Pow(2.0, semitones / 12.0);
-    /// <summary>Adjusts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public static double ShiftPitch(double frequency, int semitones)
-      => frequency * ConvertSemitoneToFrequencyRatio(semitones);
+      => System.Math.Pow(2, semitones / 12.0);
 
+    /// <summary>Creates a new Semitone instance from the specified frequency ratio.</summary>
+    /// <param name="frequencyRatio"></param>
     public static Semitone FromFrequencyRatio(double frequencyRatio)
-      => new Semitone(ConvertFrequencyRatioToSemitone(frequencyRatio));
+      => new Semitone((int)ConvertFrequencyRatioToSemitone(frequencyRatio));
+
+    /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
+    public static double PitchShift(double frequency, int semitones)
+      => frequency * ConvertSemitoneToFrequencyRatio(semitones);
     #endregion Static methods
 
     #region Overloaded operators

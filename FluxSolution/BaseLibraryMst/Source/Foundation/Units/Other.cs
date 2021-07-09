@@ -19,7 +19,7 @@ namespace Foundation.Units
     public void AmplitudeRatio()
     {
       Assert.AreEqual(1.1220184543019633, Flux.Units.AmplitudeRatio.FromDecibelChange(1).DecibelVolt);
-      Assert.AreEqual(29.999237311923803, Flux.Units.AmplitudeRatio.FromAmplitudeRatio(new Flux.Units.Voltage(31.62), new Flux.Units.Voltage(1)).DecibelVolt);
+      Assert.AreEqual(29.999237311923803, Flux.Units.AmplitudeRatio.From(new Flux.Units.Voltage(31.62), new Flux.Units.Voltage(1)).DecibelVolt);
     }
 
     [TestMethod]
@@ -75,8 +75,8 @@ namespace Foundation.Units
     public void PowerRatio()
     {
       Assert.AreEqual(1.2589254117941673, Flux.Units.PowerRatio.FromDecibelChange(1).DecibelWatt);
-      Assert.AreEqual(30, Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(1000), new Flux.Units.Power(1)).DecibelWatt);
-      Assert.AreEqual(40, Flux.Units.PowerRatio.FromPowerRatio(new Flux.Units.Power(10), new Flux.Units.Power(0.001)).DecibelWatt);
+      Assert.AreEqual(30, Flux.Units.PowerRatio.From(new Flux.Units.Power(1000), new Flux.Units.Power(1)).DecibelWatt);
+      Assert.AreEqual(40, Flux.Units.PowerRatio.From(new Flux.Units.Power(10), new Flux.Units.Power(0.001)).DecibelWatt);
     }
 
     [TestMethod]

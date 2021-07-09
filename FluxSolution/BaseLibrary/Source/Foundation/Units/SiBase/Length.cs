@@ -57,12 +57,14 @@ namespace Flux.Units
     }
 
     #region Static methods
-    /// <summary>Creates a new Length instance representing the acoustic property of wave length.</summary>
-    /// <param name="soundVelocity"></param>
+    /// <summary>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</summary>
+    /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
     /// <param name="frequency"></param>
-    /// <returns>Returns the wave length.</returns>
-    public static Frequency From(Speed soundVelocity, Frequency frequency)
-      => new Frequency(soundVelocity.MeterPerSecond / frequency.Hertz);
+    /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
+    public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency)
+      => new Length(phaseVelocity.MeterPerSecond / frequency.Hertz);
+
     public static Length FromUnitValue(LengthUnit unit, double value)
     {
       switch (unit)

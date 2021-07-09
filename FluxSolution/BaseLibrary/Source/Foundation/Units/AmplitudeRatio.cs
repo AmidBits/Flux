@@ -19,10 +19,15 @@ namespace Flux.Units
       => new PowerRatio(System.Math.Pow(m_decibelVolt, 2));
 
     #region Static methods
-    public static AmplitudeRatio FromAmplitudeRatio(Voltage numerator, Voltage denominator)
+    /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>
+    /// <param name="numerator"></param>
+    /// <param name="denominator"></param>
+    public static AmplitudeRatio From(Voltage numerator, Voltage denominator)
       => new AmplitudeRatio(ScalingFactor * System.Math.Log10(numerator.Volt / denominator.Volt));
+    /// <summary>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
+    /// <param name="decibelChange"></param>
     public static AmplitudeRatio FromDecibelChange(double decibelChange)
-      => new AmplitudeRatio(System.Math.Pow(10, decibelChange / ScalingFactor)); // Pow inverse of Log10.
+      => new AmplitudeRatio(System.Math.Pow(10, decibelChange / ScalingFactor));
     #endregion Static methods
 
     #region Overloaded operators

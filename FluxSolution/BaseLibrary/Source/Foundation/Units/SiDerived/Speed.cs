@@ -47,17 +47,19 @@ namespace Flux.Units
     }
 
     #region Static methods
+    /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Phase_velocity"/>
+    /// <param name="frequency"></param>
+    /// <param name="wavelength"></param>
+    public static Speed ComputePhaseVelocity(Frequency frequency, Length wavelength)
+      => new Speed(frequency.Hertz * wavelength.Meter);
+
     /// <summary>Creates a new Speed instance from the specified length and time.</summary>
     /// <param name="length"></param>
     /// <param name="time"></param>
     /// <returns></returns>
     public static Speed From(Length length, Time time)
       => new Speed(length.Meter / time.Second);
-    /// <summary>Create a new Speed instance from the specified acoustic properties of frequency and wavelength.</summary>
-    /// <param name="frequency"></param>
-    /// <param name="wavelength"></param>
-    public static Speed From(Frequency frequency, Length wavelength)
-      => new Speed(frequency.Hertz * wavelength.Meter);
     public static Speed FromUnitValue(SpeedUnit unit, double value)
     {
       switch (unit)

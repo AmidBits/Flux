@@ -53,7 +53,5 @@ namespace Flux.Randomization
 
       return unchecked((m_z << 16) + m_w);
     }
-    //internal override uint SampleUInt32()
-    //  => unchecked(((m_z = 36969 * (m_z & 65535) + (m_z >> 16)) << 16) + (m_w = 18000 * (m_w & 65535) + (m_w >> 16)));
   }
 }
