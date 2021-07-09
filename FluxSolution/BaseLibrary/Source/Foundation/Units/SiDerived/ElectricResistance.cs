@@ -14,11 +14,7 @@ namespace Flux.Units
       => m_ohm;
 
     #region Static methods
-    public static ElectricResistance Add(ElectricResistance left, ElectricResistance right)
-      => new ElectricResistance(left.m_ohm + right.m_ohm);
-    public static ElectricResistance Divide(ElectricResistance left, ElectricResistance right)
-      => new ElectricResistance(left.m_ohm / right.m_ohm);
-    public static ElectricResistance FromVI(Voltage v, ElectricCurrent i)
+    public static ElectricResistance From(Voltage v, ElectricCurrent i)
       => new ElectricResistance(v.Volt / i.Ampere);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
@@ -36,14 +32,6 @@ namespace Flux.Units
         sum += resistor;
       return (ElectricResistance)sum;
     }
-    public static ElectricResistance Multiply(ElectricResistance left, ElectricResistance right)
-      => new ElectricResistance(left.m_ohm * right.m_ohm);
-    public static ElectricResistance Negate(ElectricResistance value)
-      => new ElectricResistance(-value.m_ohm);
-    public static ElectricResistance Remainder(ElectricResistance dividend, ElectricResistance divisor)
-      => new ElectricResistance(dividend.m_ohm % divisor.m_ohm);
-    public static ElectricResistance Subtract(ElectricResistance left, ElectricResistance right)
-      => new ElectricResistance(left.m_ohm - right.m_ohm);
     #endregion Static methods
 
     #region Overloaded operators
@@ -66,18 +54,18 @@ namespace Flux.Units
     public static bool operator !=(ElectricResistance a, ElectricResistance b)
       => !a.Equals(b);
 
-    public static ElectricResistance operator +(ElectricResistance a, ElectricResistance b)
-      => Add(a, b);
-    public static ElectricResistance operator /(ElectricResistance a, ElectricResistance b)
-      => Divide(a, b);
-    public static ElectricResistance operator *(ElectricResistance a, ElectricResistance b)
-      => Multiply(a, b);
     public static ElectricResistance operator -(ElectricResistance v)
-      => Negate(v);
+      => new ElectricResistance(-v.m_ohm);
+    public static ElectricResistance operator +(ElectricResistance a, ElectricResistance b)
+      => new ElectricResistance(a.m_ohm + b.m_ohm);
+    public static ElectricResistance operator /(ElectricResistance a, ElectricResistance b)
+      => new ElectricResistance(a.m_ohm / b.m_ohm);
+    public static ElectricResistance operator *(ElectricResistance a, ElectricResistance b)
+      => new ElectricResistance(a.m_ohm * b.m_ohm);
     public static ElectricResistance operator %(ElectricResistance a, ElectricResistance b)
-      => Remainder(a, b);
+      => new ElectricResistance(a.m_ohm % b.m_ohm);
     public static ElectricResistance operator -(ElectricResistance a, ElectricResistance b)
-      => Subtract(a, b);
+      => new ElectricResistance(a.m_ohm - b.m_ohm);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -23,15 +23,6 @@ namespace Flux.Units
       => new AmplitudeRatio(ScalingFactor * System.Math.Log10(numerator.Volt / denominator.Volt));
     public static AmplitudeRatio FromDecibelChange(double decibelChange)
       => new AmplitudeRatio(System.Math.Pow(10, decibelChange / ScalingFactor)); // Pow inverse of Log10.
-
-    private static double LogAdd(double leftDecibelWatt, double rightDecibelWatt)
-      => ScalingFactor * System.Math.Log10(System.Math.Pow(10, leftDecibelWatt / ScalingFactor) + System.Math.Pow(10, rightDecibelWatt / ScalingFactor));
-    private static double LogDivide(double leftDecibelWatt, double rightDecibelWatt)
-      => leftDecibelWatt - rightDecibelWatt;
-    private static double LogMultiply(double leftDecibelWatt, double rightDecibelWatt)
-      => leftDecibelWatt + rightDecibelWatt;
-    private static double LogSubtract(double leftDecibelWatt, double rightDecibelWatt)
-      => ScalingFactor * System.Math.Log10(System.Math.Pow(10, leftDecibelWatt / ScalingFactor) - System.Math.Pow(10, rightDecibelWatt / ScalingFactor));
     #endregion Static methods
 
     #region Overloaded operators
@@ -55,31 +46,15 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static AmplitudeRatio operator -(AmplitudeRatio v)
-      => new AmplitudeRatio(-v.DecibelVolt);
+      => new AmplitudeRatio(-v.m_decibelVolt);
     public static AmplitudeRatio operator +(AmplitudeRatio a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogAdd(a.DecibelVolt, b.DecibelVolt));
-    public static AmplitudeRatio operator +(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(LogAdd(a.DecibelVolt, b));
-    public static AmplitudeRatio operator +(double a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogAdd(a, b.DecibelVolt));
+      => new AmplitudeRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_decibelVolt / ScalingFactor) + System.Math.Pow(10, b.m_decibelVolt / ScalingFactor)));
     public static AmplitudeRatio operator /(AmplitudeRatio a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogDivide(a.DecibelVolt, b.DecibelVolt));
-    public static AmplitudeRatio operator /(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(LogDivide(a.DecibelVolt, b));
-    public static AmplitudeRatio operator /(double a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogDivide(a, b.DecibelVolt));
+      => new AmplitudeRatio(a.m_decibelVolt - b.m_decibelVolt);
     public static AmplitudeRatio operator *(AmplitudeRatio a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogMultiply(a.DecibelVolt, b.DecibelVolt));
-    public static AmplitudeRatio operator *(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(LogMultiply(a.DecibelVolt, b));
-    public static AmplitudeRatio operator *(double a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogMultiply(a, b.DecibelVolt));
+      => new AmplitudeRatio(a.m_decibelVolt + b.m_decibelVolt);
     public static AmplitudeRatio operator -(AmplitudeRatio a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogSubtract(a.DecibelVolt, b.DecibelVolt));
-    public static AmplitudeRatio operator -(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(LogSubtract(a.DecibelVolt, b));
-    public static AmplitudeRatio operator -(double a, AmplitudeRatio b)
-      => new AmplitudeRatio(LogSubtract(a, b.DecibelVolt));
+      => new AmplitudeRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_decibelVolt / ScalingFactor) - System.Math.Pow(10, b.m_decibelVolt / ScalingFactor)));
     #endregion Overloaded operators
 
     #region Implemented interfaces

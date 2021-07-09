@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Coulomb
       => m_coulomb;
 
-    #region Static methods
-    public static ElectricCharge Add(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_coulomb + right.m_coulomb);
-    public static ElectricCharge Divide(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_coulomb / right.m_coulomb);
-    public static ElectricCharge Multiply(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_coulomb * right.m_coulomb);
-    public static ElectricCharge Negate(ElectricCharge value)
-      => new ElectricCharge(-value.m_coulomb);
-    public static ElectricCharge Remainder(ElectricCharge dividend, ElectricCharge divisor)
-      => new ElectricCharge(dividend.m_coulomb % divisor.m_coulomb);
-    public static ElectricCharge Subtract(ElectricCharge left, ElectricCharge right)
-      => new ElectricCharge(left.m_coulomb - right.m_coulomb);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(ElectricCharge v)
       => v.m_coulomb;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(ElectricCharge a, ElectricCharge b)
       => !a.Equals(b);
 
-    public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b)
-      => Add(a, b);
-    public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b)
-      => Divide(a, b);
-    public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b)
-      => Multiply(a, b);
     public static ElectricCharge operator -(ElectricCharge v)
-      => Negate(v);
+      => new ElectricCharge(-v.m_coulomb);
+    public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b)
+      => new ElectricCharge(a.m_coulomb + b.m_coulomb);
+    public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b)
+      => new ElectricCharge(a.m_coulomb / b.m_coulomb);
+    public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b)
+      => new ElectricCharge(a.m_coulomb * b.m_coulomb);
     public static ElectricCharge operator %(ElectricCharge a, ElectricCharge b)
-      => Remainder(a, b);
+      => new ElectricCharge(a.m_coulomb % b.m_coulomb);
     public static ElectricCharge operator -(ElectricCharge a, ElectricCharge b)
-      => Subtract(a, b);
+      => new ElectricCharge(a.m_coulomb - b.m_coulomb);
     #endregion Overloaded operators
 
     #region Implemented interfaces

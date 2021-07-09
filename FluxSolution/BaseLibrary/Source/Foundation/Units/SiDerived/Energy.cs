@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Joule
       => m_joule;
 
-    #region Static methods
-    public static Energy Add(Energy left, Energy right)
-      => new Energy(left.m_joule + right.m_joule);
-    public static Energy Divide(Energy left, Energy right)
-      => new Energy(left.m_joule / right.m_joule);
-    public static Energy Multiply(Energy left, Energy right)
-      => new Energy(left.m_joule * right.m_joule);
-    public static Energy Negate(Energy value)
-      => new Energy(-value.m_joule);
-    public static Energy Remainder(Energy dividend, Energy divisor)
-      => new Energy(dividend.m_joule % divisor.m_joule);
-    public static Energy Subtract(Energy left, Energy right)
-      => new Energy(left.m_joule - right.m_joule);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Energy v)
       => v.m_joule;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Energy a, Energy b)
       => !a.Equals(b);
 
-    public static Energy operator +(Energy a, Energy b)
-      => Add(a, b);
-    public static Energy operator /(Energy a, Energy b)
-      => Divide(a, b);
-    public static Energy operator *(Energy a, Energy b)
-      => Multiply(a, b);
     public static Energy operator -(Energy v)
-      => Negate(v);
+      => new Energy(-v.m_joule);
+    public static Energy operator +(Energy a, Energy b)
+      => new Energy(a.m_joule + b.m_joule);
+    public static Energy operator /(Energy a, Energy b)
+      => new Energy(a.m_joule / b.m_joule);
+    public static Energy operator *(Energy a, Energy b)
+      => new Energy(a.m_joule * b.m_joule);
     public static Energy operator %(Energy a, Energy b)
-      => Remainder(a, b);
+      => new Energy(a.m_joule % b.m_joule);
     public static Energy operator -(Energy a, Energy b)
-      => Subtract(a, b);
+      => new Energy(a.m_joule - b.m_joule);
     #endregion Overloaded operators
 
     #region Implemented interfaces

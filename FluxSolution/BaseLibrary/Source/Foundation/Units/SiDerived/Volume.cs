@@ -14,20 +14,8 @@ namespace Flux.Units
       => m_cubicMeter;
 
     #region Static methods
-    public static Volume Add(Volume left, Volume right)
-      => new Volume(left.m_cubicMeter + right.m_cubicMeter);
-    public static Volume Divide(Volume left, Volume right)
-      => new Volume(left.m_cubicMeter / right.m_cubicMeter);
     public static Volume FromRectangularCuboid(double lengthInMeters, double widthInMeters, double heightInMeters)
       => new Volume(lengthInMeters * widthInMeters * heightInMeters);
-    public static Volume Multiply(Volume left, Volume right)
-      => new Volume(left.m_cubicMeter * right.m_cubicMeter);
-    public static Volume Negate(Volume value)
-      => new Volume(-value.m_cubicMeter);
-    public static Volume Remainder(Volume dividend, Volume divisor)
-      => new Volume(dividend.m_cubicMeter % divisor.m_cubicMeter);
-    public static Volume Subtract(Volume left, Volume right)
-      => new Volume(left.m_cubicMeter - right.m_cubicMeter);
     #endregion Static methods
 
     #region Overloaded operators
@@ -50,18 +38,18 @@ namespace Flux.Units
     public static bool operator !=(Volume a, Volume b)
       => !a.Equals(b);
 
-    public static Volume operator +(Volume a, Volume b)
-      => Add(a, b);
-    public static Volume operator /(Volume a, Volume b)
-      => Divide(a, b);
-    public static Volume operator *(Volume a, Volume b)
-      => Multiply(a, b);
     public static Volume operator -(Volume v)
-      => Negate(v);
+      => new Volume(-v.m_cubicMeter);
+    public static Volume operator +(Volume a, Volume b)
+      => new Volume(a.m_cubicMeter + b.m_cubicMeter);
+    public static Volume operator /(Volume a, Volume b)
+      => new Volume(a.m_cubicMeter / b.m_cubicMeter);
+    public static Volume operator *(Volume a, Volume b)
+      => new Volume(a.m_cubicMeter * b.m_cubicMeter);
     public static Volume operator %(Volume a, Volume b)
-      => Remainder(a, b);
+      => new Volume(a.m_cubicMeter % b.m_cubicMeter);
     public static Volume operator -(Volume a, Volume b)
-      => Subtract(a, b);
+      => new Volume(a.m_cubicMeter - b.m_cubicMeter);
     #endregion Overloaded operators
 
     #region Implemented interfaces

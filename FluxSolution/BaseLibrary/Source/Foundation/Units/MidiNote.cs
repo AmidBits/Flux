@@ -121,37 +121,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static MidiNote operator -(MidiNote v)
-      => new MidiNote(-v.Number);
+      => new MidiNote(-v.m_number);
     public static MidiNote operator +(MidiNote a, MidiNote b)
-      => new MidiNote(a.Number + b.Number);
-    public static MidiNote operator +(MidiNote a, int b)
-      => new MidiNote(a.Number + b);
-    public static MidiNote operator +(int a, MidiNote b)
-      => new MidiNote(a + b.Number);
+      => new MidiNote(a.m_number + b.m_number);
     public static MidiNote operator /(MidiNote a, MidiNote b)
-      => new MidiNote(a.Number / b.Number);
-    public static MidiNote operator /(MidiNote a, int b)
-      => new MidiNote(a.Number / b);
-    public static MidiNote operator /(int a, MidiNote b)
-      => new MidiNote(a / b.Number);
+      => new MidiNote(a.m_number / b.m_number);
     public static MidiNote operator *(MidiNote a, MidiNote b)
-      => new MidiNote(a.Number * b.Number);
-    public static MidiNote operator *(MidiNote a, int b)
-      => new MidiNote(a.Number * b);
-    public static MidiNote operator *(int a, MidiNote b)
-      => new MidiNote(a * b.Number);
+      => new MidiNote(a.m_number * b.m_number);
     public static MidiNote operator %(MidiNote a, MidiNote b)
-      => new MidiNote(a.Number % b.Number);
-    public static MidiNote operator %(MidiNote a, int b)
-      => new MidiNote(a.Number % b);
-    public static MidiNote operator %(int a, MidiNote b)
-      => new MidiNote(a % b.Number);
+      => new MidiNote(a.m_number % b.m_number);
     public static MidiNote operator -(MidiNote a, MidiNote b)
-      => new MidiNote(a.Number - b.Number);
-    public static MidiNote operator -(MidiNote a, int b)
-      => new MidiNote(a.Number - b);
-    public static MidiNote operator -(int a, MidiNote b)
-      => new MidiNote(a - b.Number);
+      => new MidiNote(a.m_number - b.m_number);
     #endregion Overloaded operators
 
     #region Implemented interfaces

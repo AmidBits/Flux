@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Henry
       => m_henry;
 
-    #region Static methods
-    public static Inductance Add(Inductance left, Inductance right)
-      => new Inductance(left.m_henry + right.m_henry);
-    public static Inductance Divide(Inductance left, Inductance right)
-      => new Inductance(left.m_henry / right.m_henry);
-    public static Inductance Multiply(Inductance left, Inductance right)
-      => new Inductance(left.m_henry * right.m_henry);
-    public static Inductance Negate(Inductance value)
-      => new Inductance(-value.m_henry);
-    public static Inductance Remainder(Inductance dividend, Inductance divisor)
-      => new Inductance(dividend.m_henry % divisor.m_henry);
-    public static Inductance Subtract(Inductance left, Inductance right)
-      => new Inductance(left.m_henry - right.m_henry);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Inductance v)
       => v.m_henry;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Inductance a, Inductance b)
       => !a.Equals(b);
 
-    public static Inductance operator +(Inductance a, Inductance b)
-      => Add(a, b);
-    public static Inductance operator /(Inductance a, Inductance b)
-      => Divide(a, b);
-    public static Inductance operator *(Inductance a, Inductance b)
-      => Multiply(a, b);
     public static Inductance operator -(Inductance v)
-      => Negate(v);
+      => new Inductance(-v.m_henry);
+    public static Inductance operator +(Inductance a, Inductance b)
+       => new Inductance(a.m_henry + b.m_henry);
+    public static Inductance operator /(Inductance a, Inductance b)
+      => new Inductance(a.m_henry / b.m_henry);
+    public static Inductance operator *(Inductance a, Inductance b)
+      => new Inductance(a.m_henry * b.m_henry);
     public static Inductance operator %(Inductance a, Inductance b)
-      => Remainder(a, b);
+      => new Inductance(a.m_henry % b.m_henry);
     public static Inductance operator -(Inductance a, Inductance b)
-      => Subtract(a, b);
+      => new Inductance(a.m_henry - b.m_henry);
     #endregion Overloaded operators
 
     #region Implemented interfaces

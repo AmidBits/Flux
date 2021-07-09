@@ -13,21 +13,6 @@ namespace Flux.Units
     public double CubicMeterPerSecond
       => m_cubicMeterPerSecond;
 
-    #region Static methods
-    public static Flow Add(Flow left, Flow right)
-      => new Flow(left.m_cubicMeterPerSecond + right.m_cubicMeterPerSecond);
-    public static Flow Divide(Flow left, Flow right)
-      => new Flow(left.m_cubicMeterPerSecond / right.m_cubicMeterPerSecond);
-    public static Flow Multiply(Flow left, Flow right)
-      => new Flow(left.m_cubicMeterPerSecond * right.m_cubicMeterPerSecond);
-    public static Flow Negate(Flow value)
-      => new Flow(-value.m_cubicMeterPerSecond);
-    public static Flow Remainder(Flow dividend, Flow divisor)
-      => new Flow(dividend.m_cubicMeterPerSecond % divisor.m_cubicMeterPerSecond);
-    public static Flow Subtract(Flow left, Flow right)
-      => new Flow(left.m_cubicMeterPerSecond - right.m_cubicMeterPerSecond);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Flow v)
       => v.m_cubicMeterPerSecond;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Flow a, Flow b)
       => !a.Equals(b);
 
-    public static Flow operator +(Flow a, Flow b)
-      => Add(a, b);
-    public static Flow operator /(Flow a, Flow b)
-      => Divide(a, b);
-    public static Flow operator *(Flow a, Flow b)
-      => Multiply(a, b);
     public static Flow operator -(Flow v)
-      => Negate(v);
+      => new Flow(-v.m_cubicMeterPerSecond);
+    public static Flow operator +(Flow a, Flow b)
+      => new Flow(a.m_cubicMeterPerSecond + b.m_cubicMeterPerSecond);
+    public static Flow operator /(Flow a, Flow b)
+      => new Flow(a.m_cubicMeterPerSecond / b.m_cubicMeterPerSecond);
+    public static Flow operator *(Flow a, Flow b)
+      => new Flow(a.m_cubicMeterPerSecond * b.m_cubicMeterPerSecond);
     public static Flow operator %(Flow a, Flow b)
-      => Remainder(a, b);
+      => new Flow(a.m_cubicMeterPerSecond % b.m_cubicMeterPerSecond);
     public static Flow operator -(Flow a, Flow b)
-      => Subtract(a, b);
+      => new Flow(a.m_cubicMeterPerSecond - b.m_cubicMeterPerSecond);
     #endregion Overloaded operators
 
     #region Implemented interfaces

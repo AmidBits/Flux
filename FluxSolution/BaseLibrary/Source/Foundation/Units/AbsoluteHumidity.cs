@@ -34,37 +34,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static AbsoluteHumidity operator -(AbsoluteHumidity v)
-      => new AbsoluteHumidity(-v.GramPerCubicMeter);
+      => new AbsoluteHumidity(-v.m_gramPerCubicMeter);
     public static AbsoluteHumidity operator +(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter + b.GramPerCubicMeter);
-    public static AbsoluteHumidity operator +(AbsoluteHumidity a, double b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter + b);
-    public static AbsoluteHumidity operator +(double a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a + b.GramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_gramPerCubicMeter + b.m_gramPerCubicMeter);
     public static AbsoluteHumidity operator /(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter / b.GramPerCubicMeter);
-    public static AbsoluteHumidity operator /(AbsoluteHumidity a, double b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter / b);
-    public static AbsoluteHumidity operator /(double a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a / b.GramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_gramPerCubicMeter / b.m_gramPerCubicMeter);
     public static AbsoluteHumidity operator *(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter * b.GramPerCubicMeter);
-    public static AbsoluteHumidity operator *(AbsoluteHumidity a, double b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter * b);
-    public static AbsoluteHumidity operator *(double a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a * b.GramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_gramPerCubicMeter * b.m_gramPerCubicMeter);
     public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter % b.GramPerCubicMeter);
-    public static AbsoluteHumidity operator %(AbsoluteHumidity a, double b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter % b);
-    public static AbsoluteHumidity operator %(double a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a % b.GramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_gramPerCubicMeter % b.m_gramPerCubicMeter);
     public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter - b.GramPerCubicMeter);
-    public static AbsoluteHumidity operator -(AbsoluteHumidity a, double b)
-      => new AbsoluteHumidity(a.GramPerCubicMeter - b);
-    public static AbsoluteHumidity operator -(double a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a - b.GramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_gramPerCubicMeter - b.m_gramPerCubicMeter);
     #endregion Overloaded operators
 
     #region Implemented interfaces

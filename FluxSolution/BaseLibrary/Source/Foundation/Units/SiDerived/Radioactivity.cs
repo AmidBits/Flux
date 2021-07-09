@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Becquerel
       => m_becquerel;
 
-    #region Static methods
-    public static Radioactivity Add(Radioactivity left, Radioactivity right)
-      => new Radioactivity(left.m_becquerel + right.m_becquerel);
-    public static Radioactivity Divide(Radioactivity left, Radioactivity right)
-      => new Radioactivity(left.m_becquerel / right.m_becquerel);
-    public static Radioactivity Multiply(Radioactivity left, Radioactivity right)
-      => new Radioactivity(left.m_becquerel * right.m_becquerel);
-    public static Radioactivity Negate(Radioactivity value)
-      => new Radioactivity(-value.m_becquerel);
-    public static Radioactivity Remainder(Radioactivity dividend, Radioactivity divisor)
-      => new Radioactivity(dividend.m_becquerel % divisor.m_becquerel);
-    public static Radioactivity Subtract(Radioactivity left, Radioactivity right)
-      => new Radioactivity(left.m_becquerel - right.m_becquerel);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Radioactivity v)
       => v.m_becquerel;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Radioactivity a, Radioactivity b)
       => !a.Equals(b);
 
-    public static Radioactivity operator +(Radioactivity a, Radioactivity b)
-      => Add(a, b);
-    public static Radioactivity operator /(Radioactivity a, Radioactivity b)
-      => Divide(a, b);
-    public static Radioactivity operator *(Radioactivity a, Radioactivity b)
-      => Multiply(a, b);
     public static Radioactivity operator -(Radioactivity v)
-      => Negate(v);
+      => new Radioactivity(-v.m_becquerel);
+    public static Radioactivity operator +(Radioactivity a, Radioactivity b)
+      => new Radioactivity(a.m_becquerel + b.m_becquerel);
+    public static Radioactivity operator /(Radioactivity a, Radioactivity b)
+      => new Radioactivity(a.m_becquerel / b.m_becquerel);
+    public static Radioactivity operator *(Radioactivity a, Radioactivity b)
+      => new Radioactivity(a.m_becquerel * b.m_becquerel);
     public static Radioactivity operator %(Radioactivity a, Radioactivity b)
-      => Remainder(a, b);
+      => new Radioactivity(a.m_becquerel % b.m_becquerel);
     public static Radioactivity operator -(Radioactivity a, Radioactivity b)
-      => Subtract(a, b);
+      => new Radioactivity(a.m_becquerel - b.m_becquerel);
     #endregion Overloaded operators
 
     #region Implemented interfaces

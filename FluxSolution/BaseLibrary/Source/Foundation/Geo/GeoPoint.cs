@@ -329,29 +329,32 @@ namespace Flux
       result = Empty;
       return false;
     }
+    #endregion Static members
 
-    // Operators
-
+    #region Overloaded operators
     public static bool operator ==(GeoPoint a, GeoPoint b)
       => a.Equals(b);
     public static bool operator !=(GeoPoint a, GeoPoint b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
-    #endregion Static members
-
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(GeoPoint other)
       => Height == other.Height && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new Formatting.GeopositionFormatter(), format ?? $"<{nameof(GeoPoint)}: {{0:DMS}}>", this);
-    // Overrides
+    #endregion Implemented interfaces
+
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is GeoPoint o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Height, Latitude, Longitude);
     public override string ToString()
       => ToString(null, null);
+    #endregion Object overrides
   }
 }
 

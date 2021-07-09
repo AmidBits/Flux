@@ -13,21 +13,6 @@ namespace Flux.Units
     public double NewtonMeter
       => m_newtonMeter;
 
-    #region Static methods
-    public static Torque Add(Torque left, Torque right)
-      => new Torque(left.m_newtonMeter + right.m_newtonMeter);
-    public static Torque Divide(Torque left, Torque right)
-      => new Torque(left.m_newtonMeter / right.m_newtonMeter);
-    public static Torque Multiply(Torque left, Torque right)
-      => new Torque(left.m_newtonMeter * right.m_newtonMeter);
-    public static Torque Negate(Torque value)
-      => new Torque(-value.m_newtonMeter);
-    public static Torque Remainder(Torque dividend, Torque divisor)
-      => new Torque(dividend.m_newtonMeter % divisor.m_newtonMeter);
-    public static Torque Subtract(Torque left, Torque right)
-      => new Torque(left.m_newtonMeter - right.m_newtonMeter);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(Torque v)
       => v.m_newtonMeter;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(Torque a, Torque b)
       => !a.Equals(b);
 
-    public static Torque operator +(Torque a, Torque b)
-      => Add(a, b);
-    public static Torque operator /(Torque a, Torque b)
-      => Divide(a, b);
-    public static Torque operator *(Torque a, Torque b)
-      => Multiply(a, b);
     public static Torque operator -(Torque v)
-      => Negate(v);
+      => new Torque(-v.m_newtonMeter);
+    public static Torque operator +(Torque a, Torque b)
+      => new Torque(a.m_newtonMeter + b.m_newtonMeter);
+    public static Torque operator /(Torque a, Torque b)
+      => new Torque(a.m_newtonMeter / b.m_newtonMeter);
+    public static Torque operator *(Torque a, Torque b)
+      => new Torque(a.m_newtonMeter * b.m_newtonMeter);
     public static Torque operator %(Torque a, Torque b)
-      => Remainder(a, b);
+      => new Torque(a.m_newtonMeter % b.m_newtonMeter);
     public static Torque operator -(Torque a, Torque b)
-      => Subtract(a, b);
+      => new Torque(a.m_newtonMeter - b.m_newtonMeter);
     #endregion Overloaded operators
 
     #region Implemented interfaces

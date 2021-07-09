@@ -37,37 +37,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Probability operator -(Probability v)
-      => new Probability(-v.Ratio);
+      => new Probability(-v.m_ratio);
     public static Probability operator +(Probability a, Probability b)
-      => new Probability(a.Ratio + b.Ratio);
-    public static Probability operator +(Probability a, double b)
-      => new Probability(a.Ratio + b);
-    public static Probability operator +(double a, Probability b)
-      => new Probability(a + b.Ratio);
+      => new Probability(a.m_ratio + b.m_ratio);
     public static Probability operator /(Probability a, Probability b)
-      => new Probability(a.Ratio / b.Ratio);
-    public static Probability operator /(Probability a, double b)
-      => new Probability(a.Ratio / b);
-    public static Probability operator /(double a, Probability b)
-      => new Probability(a / b.Ratio);
+      => new Probability(a.m_ratio / b.m_ratio);
     public static Probability operator *(Probability a, Probability b)
-      => new Probability(a.Ratio * b.Ratio);
-    public static Probability operator *(Probability a, double b)
-      => new Probability(a.Ratio * b);
-    public static Probability operator *(double a, Probability b)
-      => new Probability(a * b.Ratio);
+      => new Probability(a.m_ratio * b.m_ratio);
     public static Probability operator %(Probability a, Probability b)
-      => new Probability(a.Ratio % b.Ratio);
-    public static Probability operator %(Probability a, double b)
-      => new Probability(a.Ratio % b);
-    public static Probability operator %(double a, Probability b)
-      => new Probability(a % b.Ratio);
+      => new Probability(a.m_ratio % b.m_ratio);
     public static Probability operator -(Probability a, Probability b)
-      => new Probability(a.Ratio - b.Ratio);
-    public static Probability operator -(Probability a, double b)
-      => new Probability(a.Ratio - b);
-    public static Probability operator -(double a, Probability b)
-      => new Probability(a - b.Ratio);
+      => new Probability(a.m_ratio - b.m_ratio);
     #endregion Overloaded operators
 
     #region Implemented interfaces

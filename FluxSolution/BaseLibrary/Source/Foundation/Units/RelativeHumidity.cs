@@ -34,37 +34,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static RelativeHumidity operator -(RelativeHumidity v)
-      => new RelativeHumidity(-v.Percent);
+      => new RelativeHumidity(-v.m_percent);
     public static RelativeHumidity operator +(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.Percent + b.Percent);
-    public static RelativeHumidity operator +(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.Percent + b);
-    public static RelativeHumidity operator +(double a, RelativeHumidity b)
-      => new RelativeHumidity(a + b.Percent);
+      => new RelativeHumidity(a.m_percent + b.m_percent);
     public static RelativeHumidity operator /(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.Percent / b.Percent);
-    public static RelativeHumidity operator /(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.Percent / b);
-    public static RelativeHumidity operator /(double a, RelativeHumidity b)
-      => new RelativeHumidity(a / b.Percent);
+      => new RelativeHumidity(a.m_percent / b.m_percent);
     public static RelativeHumidity operator *(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.Percent * b.Percent);
-    public static RelativeHumidity operator *(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.Percent * b);
-    public static RelativeHumidity operator *(double a, RelativeHumidity b)
-      => new RelativeHumidity(a * b.Percent);
+      => new RelativeHumidity(a.m_percent * b.m_percent);
     public static RelativeHumidity operator %(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.Percent % b.Percent);
-    public static RelativeHumidity operator %(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.Percent % b);
-    public static RelativeHumidity operator %(double a, RelativeHumidity b)
-      => new RelativeHumidity(a % b.Percent);
+      => new RelativeHumidity(a.m_percent % b.m_percent);
     public static RelativeHumidity operator -(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.Percent - b.Percent);
-    public static RelativeHumidity operator -(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.Percent - b);
-    public static RelativeHumidity operator -(double a, RelativeHumidity b)
-      => new RelativeHumidity(a - b.Percent);
+      => new RelativeHumidity(a.m_percent - b.m_percent);
     #endregion Overloaded operators
 
     #region Implemented interfaces

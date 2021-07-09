@@ -55,37 +55,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Cent operator -(Cent v)
-      => new Cent(-v.Value);
+      => new Cent(-v.m_value);
     public static Cent operator +(Cent a, Cent b)
-      => new Cent(a.Value + b.Value);
-    public static Cent operator +(Cent a, int b)
-      => new Cent(a.Value + b);
-    public static Cent operator +(int a, Cent b)
-      => new Cent(a + b.Value);
+      => new Cent(a.m_value + b.m_value);
     public static Cent operator /(Cent a, Cent b)
-      => new Cent(a.Value / b.Value);
-    public static Cent operator /(Cent a, int b)
-      => new Cent(a.Value / b);
-    public static Cent operator /(int a, Cent b)
-      => new Cent(a / b.Value);
+      => new Cent(a.m_value / b.m_value);
     public static Cent operator *(Cent a, Cent b)
-      => new Cent(a.Value * b.Value);
-    public static Cent operator *(Cent a, int b)
-      => new Cent(a.Value * b);
-    public static Cent operator *(int a, Cent b)
-      => new Cent(a * b.Value);
+      => new Cent(a.m_value * b.m_value);
     public static Cent operator %(Cent a, Cent b)
-      => new Cent(a.Value % b.Value);
-    public static Cent operator %(Cent a, int b)
-      => new Cent(a.Value % b);
-    public static Cent operator %(int a, Cent b)
-      => new Cent(a % b.Value);
+      => new Cent(a.m_value % b.m_value);
     public static Cent operator -(Cent a, Cent b)
-      => new Cent(a.Value - b.Value);
-    public static Cent operator -(Cent a, int b)
-      => new Cent(a.Value - b);
-    public static Cent operator -(int a, Cent b)
-      => new Cent(a - b.Value);
+      => new Cent(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces

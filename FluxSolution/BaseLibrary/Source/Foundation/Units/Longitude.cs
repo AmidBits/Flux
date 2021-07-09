@@ -48,37 +48,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Longitude operator -(Longitude v)
-      => new Longitude(-v.Angle);
+      => new Longitude(-v.m_angle);
     public static Longitude operator +(Longitude a, Longitude b)
-      => new Longitude(a.Angle + b.Angle);
-    public static Longitude operator +(Longitude a, double b)
-      => new Longitude(a.Angle.Degree + b);
-    public static Longitude operator +(double a, Longitude b)
-      => new Longitude(a + b.Angle.Degree);
+      => new Longitude(a.m_angle + b.m_angle);
     public static Longitude operator /(Longitude a, Longitude b)
-      => new Longitude(a.Angle / b.Angle);
-    public static Longitude operator /(Longitude a, double b)
-      => new Longitude(a.Angle.Degree / b);
-    public static Longitude operator /(double a, Longitude b)
-      => new Longitude(a / b.Angle.Degree);
+      => new Longitude(a.m_angle / b.m_angle);
     public static Longitude operator *(Longitude a, Longitude b)
-      => new Longitude(a.Angle * b.Angle);
-    public static Longitude operator *(Longitude a, double b)
-      => new Longitude(a.Angle.Degree * b);
-    public static Longitude operator *(double a, Longitude b)
-      => new Longitude(a * b.Angle.Degree);
+      => new Longitude(a.m_angle * b.m_angle);
     public static Longitude operator %(Longitude a, Longitude b)
-      => new Longitude(a.Angle % b.Angle);
-    public static Longitude operator %(Longitude a, double b)
-      => new Longitude(a.Angle.Degree % b);
-    public static Longitude operator %(double a, Longitude b)
-      => new Longitude(a % b.Angle.Degree);
+      => new Longitude(a.m_angle % b.m_angle);
     public static Longitude operator -(Longitude a, Longitude b)
-      => new Longitude(a.Angle - b.Angle);
-    public static Longitude operator -(Longitude a, double b)
-      => new Longitude(a.Angle.Degree - b);
-    public static Longitude operator -(double a, Longitude b)
-      => new Longitude(a - b.Angle.Degree);
+      => new Longitude(a.m_angle - b.m_angle);
     #endregion Overloaded operators
 
     #region Implemented interfaces

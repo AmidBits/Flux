@@ -95,37 +95,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Latitude operator -(Latitude v)
-      => new Latitude(-v.Angle);
+      => new Latitude(-v.m_angle);
     public static Latitude operator +(Latitude a, Latitude b)
-      => new Latitude(a.Angle + b.Angle);
-    public static Latitude operator +(Latitude a, double b)
-      => new Latitude(a.Angle.Degree + b);
-    public static Latitude operator +(double a, Latitude b)
-      => new Latitude(a + b.Angle.Degree);
+      => new Latitude(a.m_angle + b.m_angle);
     public static Latitude operator /(Latitude a, Latitude b)
-      => new Latitude(a.Angle / b.Angle);
-    public static Latitude operator /(Latitude a, double b)
-      => new Latitude(a.Angle.Degree / b);
-    public static Latitude operator /(double a, Latitude b)
-      => new Latitude(a / b.Angle.Degree);
+      => new Latitude(a.m_angle / b.m_angle);
     public static Latitude operator *(Latitude a, Latitude b)
-      => new Latitude(a.Angle * b.Angle);
-    public static Latitude operator *(Latitude a, double b)
-      => new Latitude(a.Angle.Degree * b);
-    public static Latitude operator *(double a, Latitude b)
-      => new Latitude(a * b.Angle.Degree);
+      => new Latitude(a.m_angle * b.m_angle);
     public static Latitude operator %(Latitude a, Latitude b)
-      => new Latitude(a.Angle % b.Angle);
-    public static Latitude operator %(Latitude a, double b)
-      => new Latitude(a.Angle.Degree % b);
-    public static Latitude operator %(double a, Latitude b)
-      => new Latitude(a % b.Angle.Degree);
+      => new Latitude(a.m_angle % b.m_angle);
     public static Latitude operator -(Latitude a, Latitude b)
-      => new Latitude(a.Angle - b.Angle);
-    public static Latitude operator -(Latitude a, double b)
-      => new Latitude(a.Angle.Degree - b);
-    public static Latitude operator -(double a, Latitude b)
-      => new Latitude(a - b.Angle.Degree);
+      => new Latitude(a.m_angle - b.m_angle);
     #endregion Overloaded operators
 
     #region Implemented interfaces

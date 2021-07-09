@@ -16,24 +16,12 @@ namespace Flux.Units
       => ConvertLuxToLumens(m_lux);
 
     #region Static methods
-    public static Illuminance Add(Illuminance left, Illuminance right)
-      => new Illuminance(left.m_lux + right.m_lux);
     public static double ConvertLuxToLumens(double lux)
       => lux * 0.0929;
     public static double ConvertLumensToLux(double lumens)
       => lumens / 0.0929;
-    public static Illuminance Divide(Illuminance left, Illuminance right)
-      => new Illuminance(left.m_lux / right.m_lux);
     public static Illuminance FromLumens(double lumens)
       => new Illuminance(ConvertLumensToLux(lumens));
-    public static Illuminance Multiply(Illuminance left, Illuminance right)
-      => new Illuminance(left.m_lux * right.m_lux);
-    public static Illuminance Negate(Illuminance value)
-      => new Illuminance(-value.m_lux);
-    public static Illuminance Remainder(Illuminance dividend, Illuminance divisor)
-      => new Illuminance(dividend.m_lux % divisor.m_lux);
-    public static Illuminance Subtract(Illuminance left, Illuminance right)
-      => new Illuminance(left.m_lux - right.m_lux);
     #endregion Static methods
 
     #region Overloaded operators
@@ -56,18 +44,18 @@ namespace Flux.Units
     public static bool operator !=(Illuminance a, Illuminance b)
       => !a.Equals(b);
 
-    public static Illuminance operator +(Illuminance a, Illuminance b)
-      => Add(a, b);
-    public static Illuminance operator /(Illuminance a, Illuminance b)
-      => Divide(a, b);
-    public static Illuminance operator *(Illuminance a, Illuminance b)
-      => Multiply(a, b);
     public static Illuminance operator -(Illuminance v)
-      => Negate(v);
+      => new Illuminance(-v.m_lux);
+    public static Illuminance operator +(Illuminance a, Illuminance b)
+      => new Illuminance(a.m_lux + b.m_lux);
+    public static Illuminance operator /(Illuminance a, Illuminance b)
+      => new Illuminance(a.m_lux / b.m_lux);
+    public static Illuminance operator *(Illuminance a, Illuminance b)
+      => new Illuminance(a.m_lux * b.m_lux);
     public static Illuminance operator %(Illuminance a, Illuminance b)
-      => Remainder(a, b);
+      => new Illuminance(a.m_lux % b.m_lux);
     public static Illuminance operator -(Illuminance a, Illuminance b)
-      => Subtract(a, b);
+      => new Illuminance(a.m_lux - b.m_lux);
     #endregion Overloaded operators
 
     #region Implemented interfaces

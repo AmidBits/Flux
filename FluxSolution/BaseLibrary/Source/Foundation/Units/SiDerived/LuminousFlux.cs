@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Lumen
       => m_lumen;
 
-    #region Static methods
-    public static LuminousFlux Add(LuminousFlux left, LuminousFlux right)
-      => new LuminousFlux(left.m_lumen + right.m_lumen);
-    public static LuminousFlux Divide(LuminousFlux left, LuminousFlux right)
-      => new LuminousFlux(left.m_lumen / right.m_lumen);
-    public static LuminousFlux Multiply(LuminousFlux left, LuminousFlux right)
-      => new LuminousFlux(left.m_lumen * right.m_lumen);
-    public static LuminousFlux Negate(LuminousFlux value)
-      => new LuminousFlux(-value.m_lumen);
-    public static LuminousFlux Remainder(LuminousFlux dividend, LuminousFlux divisor)
-      => new LuminousFlux(dividend.m_lumen % divisor.m_lumen);
-    public static LuminousFlux Subtract(LuminousFlux left, LuminousFlux right)
-      => new LuminousFlux(left.m_lumen - right.m_lumen);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(LuminousFlux v)
       => v.m_lumen;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(LuminousFlux a, LuminousFlux b)
       => !a.Equals(b);
 
-    public static LuminousFlux operator +(LuminousFlux a, LuminousFlux b)
-      => Add(a, b);
-    public static LuminousFlux operator /(LuminousFlux a, LuminousFlux b)
-      => Divide(a, b);
-    public static LuminousFlux operator *(LuminousFlux a, LuminousFlux b)
-      => Multiply(a, b);
     public static LuminousFlux operator -(LuminousFlux v)
-      => Negate(v);
+      => new LuminousFlux(-v.m_lumen);
+    public static LuminousFlux operator +(LuminousFlux a, LuminousFlux b)
+      => new LuminousFlux(a.m_lumen + b.m_lumen);
+    public static LuminousFlux operator /(LuminousFlux a, LuminousFlux b)
+      => new LuminousFlux(a.m_lumen / b.m_lumen);
+    public static LuminousFlux operator *(LuminousFlux a, LuminousFlux b)
+      => new LuminousFlux(a.m_lumen * b.m_lumen);
     public static LuminousFlux operator %(LuminousFlux a, LuminousFlux b)
-      => Remainder(a, b);
+      => new LuminousFlux(a.m_lumen % b.m_lumen);
     public static LuminousFlux operator -(LuminousFlux a, LuminousFlux b)
-      => Subtract(a, b);
+      => new LuminousFlux(a.m_lumen - b.m_lumen);
     #endregion Overloaded operators
 
     #region Implemented interfaces

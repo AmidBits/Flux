@@ -13,21 +13,6 @@ namespace Flux.Units
     public double Siemens
       => m_siemens;
 
-    #region Static methods
-    public static ElectricalConductance Add(ElectricalConductance left, ElectricalConductance right)
-      => new ElectricalConductance(left.m_siemens + right.m_siemens);
-    public static ElectricalConductance Divide(ElectricalConductance left, ElectricalConductance right)
-      => new ElectricalConductance(left.m_siemens / right.m_siemens);
-    public static ElectricalConductance Multiply(ElectricalConductance left, ElectricalConductance right)
-      => new ElectricalConductance(left.m_siemens * right.m_siemens);
-    public static ElectricalConductance Negate(ElectricalConductance value)
-      => new ElectricalConductance(-value.m_siemens);
-    public static ElectricalConductance Remainder(ElectricalConductance dividend, ElectricalConductance divisor)
-      => new ElectricalConductance(dividend.m_siemens % divisor.m_siemens);
-    public static ElectricalConductance Subtract(ElectricalConductance left, ElectricalConductance right)
-      => new ElectricalConductance(left.m_siemens - right.m_siemens);
-    #endregion Static methods
-
     #region Overloaded operators
     public static explicit operator double(ElectricalConductance v)
       => v.m_siemens;
@@ -48,18 +33,18 @@ namespace Flux.Units
     public static bool operator !=(ElectricalConductance a, ElectricalConductance b)
       => !a.Equals(b);
 
-    public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b)
-      => Add(a, b);
-    public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b)
-      => Divide(a, b);
-    public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b)
-      => Multiply(a, b);
     public static ElectricalConductance operator -(ElectricalConductance v)
-      => Negate(v);
+      => new ElectricalConductance(-v.m_siemens);
+    public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b)
+      => new ElectricalConductance(a.m_siemens + b.m_siemens);
+    public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b)
+      => new ElectricalConductance(a.m_siemens / b.m_siemens);
+    public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b)
+      => new ElectricalConductance(a.m_siemens * b.m_siemens);
     public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b)
-      => Remainder(a, b);
+      => new ElectricalConductance(a.m_siemens % b.m_siemens);
     public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b)
-      => Subtract(a, b);
+      => new ElectricalConductance(a.m_siemens - b.m_siemens);
     #endregion Overloaded operators
 
     #region Implemented interfaces

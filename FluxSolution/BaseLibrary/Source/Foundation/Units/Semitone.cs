@@ -60,37 +60,17 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Semitone operator -(Semitone v)
-      => new Semitone(-v.Value);
+      => new Semitone(-v.m_value);
     public static Semitone operator +(Semitone a, Semitone b)
-      => new Semitone(a.Value + b.Value);
-    public static Semitone operator +(Semitone a, int b)
-      => new Semitone(a.Value + b);
-    public static Semitone operator +(int a, Semitone b)
-      => new Semitone(a + b.Value);
+      => new Semitone(a.m_value + b.m_value);
     public static Semitone operator /(Semitone a, Semitone b)
-      => new Semitone(a.Value / b.Value);
-    public static Semitone operator /(Semitone a, int b)
-      => new Semitone(a.Value / b);
-    public static Semitone operator /(int a, Semitone b)
-      => new Semitone(a / b.Value);
+      => new Semitone(a.m_value / b.m_value);
     public static Semitone operator *(Semitone a, Semitone b)
-      => new Semitone(a.Value * b.Value);
-    public static Semitone operator *(Semitone a, int b)
-      => new Semitone(a.Value * b);
-    public static Semitone operator *(int a, Semitone b)
-      => new Semitone(a * b.Value);
+      => new Semitone(a.m_value * b.m_value);
     public static Semitone operator %(Semitone a, Semitone b)
-      => new Semitone(a.Value % b.Value);
-    public static Semitone operator %(Semitone a, int b)
-      => new Semitone(a.Value % b);
-    public static Semitone operator %(int a, Semitone b)
-      => new Semitone(a % b.Value);
+      => new Semitone(a.m_value % b.m_value);
     public static Semitone operator -(Semitone a, Semitone b)
-      => new Semitone(a.Value - b.Value);
-    public static Semitone operator -(Semitone a, int b)
-      => new Semitone(a.Value - b);
-    public static Semitone operator -(int a, Semitone b)
-      => new Semitone(a - b.Value);
+      => new Semitone(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
