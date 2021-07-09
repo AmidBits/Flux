@@ -46,43 +46,6 @@ namespace Flux.Geometry
       => new int[] { X, Y, Z };
 
     #region Static methods
-    /// <summary>Create a new vector with the sum from the vector added by the other.</summary>
-    public static Point3 Add(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
-    /// <summary>Create a new vector with the sum from each member added to the value.</summary>
-    public static Point3 Add(in Point3 p, int value)
-      => new Point3(p.X + value, p.Y + value, p.Z + value);
-    /// <summary>Create a new vector by left bit shifting the members of the vector by the specified count.</summary>
-    public static Point3 LeftShift(in Point3 p, int count)
-      => new Point3(p.X << count, p.Y << count, p.Z << count);
-    /// <summary>Create a new vector by right bit shifting the members of the vector by the specified count.</summary>
-    public static Point3 RightShift(in Point3 p, int count)
-      => new Point3(p.X << count, p.Y << count, p.Z << count);
-    /// <summary>Create a new vector by performing an AND operation of each member on the vector and the other vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#AND"/>
-    public static Point3 BitwiseAnd(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X & p2.X, p1.Y & p2.Y, p1.Z & p2.Z);
-    /// <summary>Create a new vector by performing an AND operation of each member on the vector and the value.</summary>
-    public static Point3 BitwiseAnd(in Point3 p, int value)
-      => new Point3(p.X & value, p.Y & value, p.Z & value);
-    /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the other.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#XOR"/>
-    public static Point3 Xor(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X ^ p2.X, p1.Y ^ p2.Y, p1.Z ^ p2.Z);
-    /// <summary>Create a new vector by performing an eXclusive OR operation on each member of the vector and the value.</summary>
-    public static Point3 Xor(in Point3 p, int value)
-      => new Point3(p.X ^ value, p.Y ^ value, p.Z ^ value);
-    /// <summary>Create a new vector by performing a NOT operation on each member of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#NOT"/>
-    public static Point3 OnesComplement(in Point3 p)
-      => new Point3(~p.X, ~p.Y, ~p.Z); // .NET performs a one's complement (bitwise logical NOT) on integral types.
-    /// <summary>Create a new vector by performing an OR operation on each member of the vector and the other.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bitwise_operation#OR"/>
-    public static Point3 BitwiseOr(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X | p2.X, p1.Y | p2.Y, p1.Z | p2.Z);
-    /// <summary>Create a new vector by performing an OR operation on each member of the vector and the value.</summary>
-    public static Point3 BitwiseOr(in Point3 p, int value)
-      => new Point3(p.X | value, p.Y | value, p.Z | value);
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Point3 p1, in Point3 p2)
@@ -91,18 +54,6 @@ namespace Flux.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
     public static Point3 CrossProduct(in Point3 p1, in Point3 p2)
       => new Point3(p1.Y * p2.Z - p1.Z * p2.Y, p1.Z * p2.X - p1.X * p2.Z, p1.X * p2.Y - p1.Y * p2.X);
-    /// <summary>Create a new vector with each member subtracted by 1.</summary>
-    public static Point3 Decrement(in Point3 p1)
-      => Subtract(p1, 1);
-    /// <summary>Create a new vector with the quotient from the vector divided by the other.</summary>
-    public static Point3 Divide(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X / p2.X, p1.Y / p2.Y, p1.Z / p2.Z);
-    /// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
-    public static Point3 Divide(in Point3 p, int value)
-      => new Point3(p.X / value, p.Y / value, p.Z / value);
-    /// <summary>Create a new vector with the quotient from each member divided by the value.</summary>
-    public static Point3 Divide(in Point3 p, double value)
-      => new Point3(System.Convert.ToInt32(p.X / value), System.Convert.ToInt32(p.Y / value), System.Convert.ToInt32(p.Z / value));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point3 DivideCeiling(in Point3 p, double value)
       => new Point3((int)System.Math.Ceiling(p.X / value), (int)System.Math.Ceiling(p.Y / value), (int)System.Math.Ceiling(p.Z / value));
@@ -150,9 +101,6 @@ namespace Flux.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
     public static int GetOctantNumber(Point3 source, in Point3 center)
       => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0) + (source.Z >= center.Z ? 4 : 0);
-    /// <summary>Create a new vector with 1 added to each member.</summary>
-    public static Point3 Increment(in Point3 p1)
-      => Add(p1, 1);
 
     public static Point3 InterpolateCosine(Point3 y1, Point3 y2, double mu)
       => mu >= 0 && mu <= 1 && ((1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0) is double mu2
@@ -189,7 +137,7 @@ namespace Flux.Geometry
       var a2 = mu3 - mu2;
       var a3 = -2 * mu3 + 3 * mu2;
 
-      return a0 * y1 + a1 * m0 + a2 * m1 + a3 * y2;
+      return y1 * a0 + m0 * a1 + m1 * a2 + y2 * a3;
     }
     public static Point3 InterpolateLinear(Point3 y1, Point3 y2, double mu)
       => y1 * (1 - mu) + y2 * mu;
@@ -198,25 +146,12 @@ namespace Flux.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(in Point3 p1, in Point3 p2)
       => System.Math.Abs(p2.X - p1.X) + System.Math.Abs(p2.Y - p1.Y) + System.Math.Abs(p2.Z - p1.Z);
-    /// <summary>Create a new vector with the product from the vector multiplied with the other.</summary>
-    public static Point3 Multiply(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X * p2.X, p1.Y * p2.Y, p1.Z * p2.Z);
-    /// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
-    public static Point3 Multiply(in Point3 p, int value)
-      => new Point3(p.X * value, p.Y * value, p.Z * value);
-    /// <summary>Create a new vector with the product from each member multiplied with the value.</summary>
-    public static Point3 Multiply(in Point3 p, double value)
-      => new Point3(System.Convert.ToInt32(p.X * value), System.Convert.ToInt32(p.Y * value), System.Convert.ToInt32(p.Z * value));
     /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
     public static Point3 MultiplyCeiling(in Point3 p, double value)
       => new Point3((int)System.Math.Ceiling(p.X * value), (int)System.Math.Ceiling(p.Y * value), (int)System.Math.Ceiling(p.Z * value));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point3 MultiplyFloor(in Point3 p, double value)
       => new Point3((int)System.Math.Floor(p.X * value), (int)System.Math.Floor(p.Y * value), (int)System.Math.Floor(p.Z * value));
-    /// <summary>Create a new vector from the additive inverse, i.e. a negation of the members in the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Additive_inverse"/>
-    public static Point3 Negate(in Point3 p)
-      => new Point3(-p.X, -p.Y, -p.Z); // Negate the members of the vector.
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
     public static Point3 Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
@@ -247,25 +182,10 @@ namespace Flux.Geometry
     /// <summary>Create a new random vector in the range [-toExclusive, toExclusive] using the crypto-grade rng.</summary>
     public static Point3 FromRandomZero(in Point3 toExclusive)
       => FromRandomZero(toExclusive.X, toExclusive.Y, toExclusive.Z);
-    /// <summary>Create a new vector with the remainder from the vector divided by the other.</summary>
-    public static Point3 Remainder(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X % p2.X, p1.Y % p2.Y, p1.Z % p2.Z);
-    /// <summary>Create a new vector with the remainder from each member divided by the value.</summary>
-    public static Point3 Remainder(in Point3 p, int value)
-      => new Point3(p.X % value, p.Y % value, p.Z % value);
-    /// <summary>Create a new vector with the floor(remainder) from each member divided by the value.</summary>
-    public static Point3 Remainder(in Point3 p, double value)
-      => new Point3((int)(p.X % value), (int)(p.Y % value), (int)(p.Z % value));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static int ScalarTripleProduct(Point3 p1, Point3 p2, Point3 p3)
       => DotProduct(p1, CrossProduct(p2, p3));
-    /// <summary>Create a new vector with the difference from the vector subtracted by the other.</summary>
-    public static Point3 Subtract(in Point3 p1, in Point3 p2)
-      => new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
-    /// <summary>Create a new vector with the difference from each member subtracted by the value.</summary>
-    public static Point3 Subtract(in Point3 p, int value)
-      => new Point3(p.X - value, p.Y - value, p.Z - value);
     /// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
     public static Size3 ToSize3(Point3 point)
       => new Size3(point.X, point.Y, point.Z);
@@ -295,45 +215,67 @@ namespace Flux.Geometry
     public static bool operator !=(in Point3 p1, in Point3 p2)
       => !p1.Equals(p2);
 
-    public static Point3 operator -(in Point3 v) => Negate(v);
+    public static Point3 operator -(in Point3 p)
+      => new Point3(-p.X, -p.Y, -p.Z);
 
-    public static Point3 operator ~(in Point3 v) => OnesComplement(v);
+    public static Point3 operator ~(in Point3 p)
+      => new Point3(~p.X, ~p.Y, ~p.Z);
 
-    public static Point3 operator --(in Point3 v) => Decrement(v);
-    public static Point3 operator ++(in Point3 v) => Increment(v);
+    public static Point3 operator --(in Point3 p)
+      => new Point3(p.X - 1, p.Y - 1, p.Z - 1);
+    public static Point3 operator ++(in Point3 p)
+      => new Point3(p.X + 1, p.Y + 1, p.Z + 1);
 
-    public static Point3 operator +(in Point3 p1, in Point3 p2) => Add(p1, p2);
-    public static Point3 operator +(in Point3 p1, int v) => Add(p1, v);
+    public static Point3 operator +(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z);
+    public static Point3 operator +(in Point3 p, int v)
+      => new Point3(p.X + v, p.Y + v, p.Z + v);
 
-    public static Point3 operator -(in Point3 p1, in Point3 p2) => Subtract(p1, p2);
-    public static Point3 operator -(in Point3 p1, int v) => Subtract(p1, v);
+    public static Point3 operator -(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
+    public static Point3 operator -(in Point3 p, int v)
+      => new Point3(p.X - v, p.Y - v, p.Z - v);
 
-    public static Point3 operator *(in Point3 p1, in Point3 p2) => Multiply(p1, p2);
-    public static Point3 operator *(in Point3 p1, int v) => Multiply(p1, v);
-    public static Point3 operator *(int v, in Point3 p1) => Multiply(p1, v);
-    public static Point3 operator *(in Point3 p1, double v) => Multiply(p1, v);
-    public static Point3 operator *(double v, in Point3 p1) => Multiply(p1, v);
+    public static Point3 operator *(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X * p2.X, p1.Y * p2.Y, p1.Z * p2.Z);
+    public static Point3 operator *(in Point3 p, int v)
+      => new Point3(p.X * v, p.Y * v, p.Z * v);
+    public static Point3 operator *(in Point3 p, double v)
+      => new Point3(System.Convert.ToInt32(p.X * v), System.Convert.ToInt32(p.Y * v), System.Convert.ToInt32(p.Z * v));
 
-    public static Point3 operator /(in Point3 p1, in Point3 p2) => Divide(p1, p2);
-    public static Point3 operator /(in Point3 p1, int v) => Divide(p1, v);
-    public static Point3 operator /(int v, in Point3 p1) => Divide(p1, v);
-    public static Point3 operator /(in Point3 p1, double v) => Divide(p1, v);
-    public static Point3 operator /(double v, in Point3 p1) => Divide(p1, v);
+    public static Point3 operator /(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X / p2.X, p1.Y / p2.Y, p1.Z / p2.Z);
+    public static Point3 operator /(in Point3 p, int v)
+      => new Point3(p.X / v, p.Y / v, p.Z / v);
+    public static Point3 operator /(in Point3 p, double v)
+      => new Point3(System.Convert.ToInt32(p.X * v), System.Convert.ToInt32(p.Y * v), System.Convert.ToInt32(p.Z * v));
 
-    public static Point3 operator %(in Point3 p1, int v) => Remainder(p1, v);
-    public static Point3 operator %(in Point3 p1, double v) => Remainder(p1, v);
+    public static Point3 operator %(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X % p2.X, p1.Y % p2.Y, p1.Z % p2.Z);
+    public static Point3 operator %(in Point3 p, int v)
+      => new Point3(p.X % v, p.Y % v, p.Z % v);
+    public static Point3 operator %(in Point3 p, double v)
+      => new Point3(System.Convert.ToInt32(p.X % v), System.Convert.ToInt32(p.Y % v), System.Convert.ToInt32(p.Z % v));
 
-    public static Point3 operator &(in Point3 p1, in Point3 p2) => BitwiseAnd(p1, p2);
-    public static Point3 operator &(in Point3 p1, int v) => BitwiseAnd(p1, v);
+    public static Point3 operator &(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X & p2.X, p1.Y & p2.Y, p1.Z & p2.Z);
+    public static Point3 operator &(in Point3 p, int v)
+      => new Point3(p.X & v, p.Y & v, p.Z & v);
 
-    public static Point3 operator |(in Point3 p1, in Point3 p2) => BitwiseOr(p1, p2);
-    public static Point3 operator |(in Point3 p1, int v) => BitwiseOr(p1, v);
+    public static Point3 operator |(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X | p2.X, p1.Y | p2.Y, p1.Z | p2.Z);
+    public static Point3 operator |(in Point3 p, int v)
+      => new Point3(p.X | v, p.Y | v, p.Z | v);
 
-    public static Point3 operator ^(in Point3 p1, in Point3 p2) => Xor(p1, p2);
-    public static Point3 operator ^(in Point3 p1, int v) => Xor(p1, v);
+    public static Point3 operator ^(in Point3 p1, in Point3 p2)
+      => new Point3(p1.X ^ p2.X, p1.Y ^ p2.Y, p1.Z ^ p2.Z);
+    public static Point3 operator ^(in Point3 p, int v)
+      => new Point3(p.X ^ v, p.Y ^ v, p.Z ^ v);
 
-    public static Point3 operator <<(in Point3 p1, int v) => LeftShift(p1, v);
-    public static Point3 operator >>(in Point3 p1, int v) => RightShift(p1, v);
+    public static Point3 operator <<(in Point3 p, int v)
+      => new Point3(p.X << v, p.Y << v, p.Z << v);
+    public static Point3 operator >>(in Point3 p, int v)
+      => new Point3(p.X >> v, p.Y >> v, p.Z >> v);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -140,7 +140,7 @@ namespace Flux
       var a2 = mu3 - mu2;
       var a3 = -2 * mu3 + 3 * mu2;
 
-      return a0 * y1 + a1 * m0 + a2 * m1 + a3 * y2;
+      return y1 * a0 + m0 * a1 + m1 * a2 + y2 * a3;
     }
     public static Geometry.Point2 InterpolateLinear(this Geometry.Point2 y1, Geometry.Point2 y2, double mu)
       => y1 * (1 - mu) + y2 * mu;
