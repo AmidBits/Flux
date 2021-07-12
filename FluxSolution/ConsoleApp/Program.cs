@@ -68,6 +68,9 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var r1 = new Flux.Units.Ratio(63, 462, false);
+      System.Console.WriteLine(r1);
+
       var point1 = new Flux.Geometry.Point2(0, 10);
       var p1 = point1;
       System.Console.WriteLine(p1);
