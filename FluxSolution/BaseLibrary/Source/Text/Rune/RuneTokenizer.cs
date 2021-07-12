@@ -1,42 +1,8 @@
 /// <summary>A rune is a Unicode code point.</summary>
-namespace Flux.Text.Tokenization.Rune
+namespace Flux.Text
 {
-  /// <summary>An implementation of a demarcated and classified section of a rune.</summary>
-  public class Token
-    : IToken<System.Text.Rune>
-  {
-    public int Index { get; }
-    public System.Text.Rune Value { get; }
-
-    public Token(int index, System.Text.Rune rune)
-    {
-      Index = index;
-      Value = rune;
-    }
-
-    public override string ToString()
-      => $"<{System.Text.Rune.GetUnicodeCategory(Value)}=\"{Value}\"@{Index}+{Value.Utf16SequenceLength}>";
-  }
-
-  public class TokenRange
-    : Token
-  {
-    public int? Depth { get; set; }
-    public int? Group { get; set; }
-
-    public TokenRange(int index, System.Text.Rune rune, int depth, int group)
-      : base(index, rune)
-    {
-      Depth = depth;
-      Group = group;
-    }
-
-    public override string ToString()
-      => base.ToString() is var s && Depth.HasValue && Group.HasValue ? s.Insert(s.Length - 1, $"[Depth={Depth},Group={Group}]") : s;
-  }
-
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
-  public class Tokenizer
+  public class RuneTokenizer
     : ITokenizer<IToken<System.Text.Rune>>
   {
     public bool Normalize { get; } = true;
@@ -64,20 +30,20 @@ namespace Flux.Text.Tokenization.Rune
         {
           case System.Globalization.UnicodeCategory.OpenPunctuation:
             punctuationBracketGroups.Push(++punctuationBracketGroup);
-            yield return new TokenRange(index, rune, ++punctuationBracketDepth, punctuationBracketGroups.Peek());
+            yield return new RuneTokenRange(index, rune, ++punctuationBracketDepth, punctuationBracketGroups.Peek());
             break;
           case System.Globalization.UnicodeCategory.InitialQuotePunctuation:
             punctuationQuotationGroups.Push(++punctuationQuotationGroup);
-            yield return new TokenRange(index, rune, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
+            yield return new RuneTokenRange(index, rune, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
             break;
           case System.Globalization.UnicodeCategory.ClosePunctuation:
-            yield return new TokenRange(index, rune, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
+            yield return new RuneTokenRange(index, rune, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
             break;
           case System.Globalization.UnicodeCategory.FinalQuotePunctuation:
-            yield return new TokenRange(index, rune, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
+            yield return new RuneTokenRange(index, rune, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
             break;
           default:
-            yield return new Token(index, rune);
+            yield return new RuneToken(index, rune);
             break;
         }
 
