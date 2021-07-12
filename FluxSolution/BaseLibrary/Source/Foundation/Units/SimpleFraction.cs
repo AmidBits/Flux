@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Ratio indicates how many times one number contains another.</summary>
+  /// <summary>Fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public struct SimpleFraction
     : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IStandardizedScalar
@@ -128,6 +128,9 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator double(SimpleFraction v)
+      => v.Value;
+
     public static bool operator <(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) < 0;
     public static bool operator <=(SimpleFraction a, SimpleFraction b)
@@ -198,7 +201,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"<{GetType().Name}: {m_numerator}:{m_denominator} ({Value})>";
+      => $"<{GetType().Name}: {m_numerator}\u2236{m_denominator} ({Value})>";
     #endregion Object overrides
   }
 }
