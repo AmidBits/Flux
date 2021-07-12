@@ -68,57 +68,8 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var r1 = new Flux.Units.RatioFraction(63, 462, false);
-      System.Console.WriteLine(r1);
-
-      var point1 = new Flux.Geometry.Point2(0, 10);
-      var p1 = point1;
-      System.Console.WriteLine(p1);
-      var point2 = -(point1 / 2.0);
-      System.Console.WriteLine(point2);
-      var p2 = point1.PerpendicularCw() - point2;
-      System.Console.WriteLine(p2);
-      var p3 = point1.PerpendicularCcw() - point2;
-      System.Console.WriteLine(p3);
-
-      System.Console.WriteLine();
-      var (x1, y1) = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 0).ToCartesianEx();
-      var (x2, y2) = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 120).ToCartesianEx();
-      var (x3, y3) = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 240).ToCartesianEx();
-      var (x4, y4) = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, 180).ToCartesianEx();
-
-      x1 *= 10;
-      y1 *= 10;
-      x2 *= 10;
-      y2 *= 10;
-      x3 *= 10;
-      y3 *= 10;
-      x4 *= 10;
-      y4 *= 10;
-
-      System.Console.WriteLine($"{x1:N1}, {y1:N1} : {x2:N1}, {y2:N1} : {x3:N1}, {y3:N1}");
-      System.Console.WriteLine($"{System.Convert.ToInt32(x4)}, {System.Convert.ToInt32(y4)}");
-
-
-      foreach (var pnt in Flux.Geometry.Ellipse.CreateCircularArcPoints(4, 10, 10, (x, y) => $"XY = {x:N1}, {y:N1}", 0.0, 0.0))
-        System.Console.WriteLine(pnt);
-
-      var c1 = new Flux.Units.Cent(1);
-      var c2 = new Flux.Units.Cent(2);
-      var c3 = c1 + c2;
-
-      var f1 = Flux.Units.Cent.PitchShift(440, 600);
-      var f2 = Flux.Units.Semitone.PitchShift(440, 6);
-
-
-      var pr10 = Flux.Units.PowerRatio.FromDecibelChange(10);
-      var pr8 = Flux.Units.PowerRatio.FromDecibelChange(8);
-      var pr7 = Flux.Units.PowerRatio.FromDecibelChange(7);
-
-      var pr25 = pr10 + pr8 + pr7;
-
-      var pr = Flux.Units.PowerRatio.FromDecibelChange(25);
-      var ar = Flux.Units.AmplitudeRatio.FromDecibelChange(25);
+      foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
+        System.Console.WriteLine(s);
 
       //var cad = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
 
