@@ -2,13 +2,13 @@ namespace Flux.Units
 {
   /// <summary>Ratio indicates how many times one number contains another.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
-  public struct Ratio
-    : System.IComparable<Ratio>, System.IEquatable<Ratio>, IStandardizedScalar
+  public struct RatioFraction
+    : System.IComparable<RatioFraction>, System.IEquatable<RatioFraction>, IStandardizedScalar
   {
     private readonly long m_numerator;
     private readonly long m_denominator;
 
-    public Ratio(long numerator, long denominator, bool reduceIfPossible)
+    public RatioFraction(long numerator, long denominator, bool reduceIfPossible)
     {
       if (reduceIfPossible && IsReducible(numerator, denominator, out var gcd))
       {
@@ -21,7 +21,7 @@ namespace Flux.Units
         m_denominator = denominator;
       }
     }
-    public Ratio(long numerator, long denominator)
+    public RatioFraction(long numerator, long denominator)
       : this(numerator, denominator, true)
     { }
 
@@ -43,53 +43,53 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator <(Ratio a, Ratio b)
+    public static bool operator <(RatioFraction a, RatioFraction b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(Ratio a, Ratio b)
+    public static bool operator <=(RatioFraction a, RatioFraction b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(Ratio a, Ratio b)
+    public static bool operator >(RatioFraction a, RatioFraction b)
       => a.CompareTo(b) < 0;
-    public static bool operator >=(Ratio a, Ratio b)
+    public static bool operator >=(RatioFraction a, RatioFraction b)
       => a.CompareTo(b) <= 0;
 
-    public static bool operator ==(Ratio a, Ratio b)
+    public static bool operator ==(RatioFraction a, RatioFraction b)
       => a.Equals(b);
-    public static bool operator !=(Ratio a, Ratio b)
+    public static bool operator !=(RatioFraction a, RatioFraction b)
       => !a.Equals(b);
 
-    public static Ratio operator -(Ratio v)
-      => new Ratio(-v.m_numerator, -v.m_denominator, false);
-    public static Ratio operator +(Ratio a, Ratio b)
+    public static RatioFraction operator -(RatioFraction v)
+      => new RatioFraction(-v.m_numerator, -v.m_denominator, false);
+    public static RatioFraction operator +(RatioFraction a, RatioFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
 
       var an = lcm / a.m_denominator * a.m_numerator;
       var bn = lcm / b.m_denominator * b.m_numerator;
 
-      return new Ratio(an + bn, lcm);
+      return new RatioFraction(an + bn, lcm);
     }
-    public static Ratio operator /(Ratio a, Ratio b)
-      => new Ratio(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
-    public static Ratio operator *(Ratio a, Ratio b)
-      => new Ratio(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
-    public static Ratio operator -(Ratio a, Ratio b)
+    public static RatioFraction operator /(RatioFraction a, RatioFraction b)
+      => new RatioFraction(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
+    public static RatioFraction operator *(RatioFraction a, RatioFraction b)
+      => new RatioFraction(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
+    public static RatioFraction operator -(RatioFraction a, RatioFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
 
       var an = lcm / a.m_denominator * a.m_numerator;
       var bn = lcm / b.m_denominator * b.m_numerator;
 
-      return new Ratio(an - bn, lcm);
+      return new RatioFraction(an - bn, lcm);
     }
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Ratio other)
+    public int CompareTo(RatioFraction other)
       => Value.CompareTo(other.Value);
 
     // IEquatable
-    public bool Equals(Ratio other)
+    public bool Equals(RatioFraction other)
       => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
 
     // IUnitStandardized
@@ -99,7 +99,7 @@ namespace Flux.Units
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Ratio o && Equals(o);
+      => obj is RatioFraction o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
