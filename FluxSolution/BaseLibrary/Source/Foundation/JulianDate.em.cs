@@ -14,10 +14,16 @@ namespace Flux
 
     private readonly double m_value;
 
+    /// <summary>Create a Julian Date (JD) from the specified Julian Day Number (JDN).</summary>
+    /// <param name="julianDayNumber"></param>
     public JulianDate(int julianDayNumber)
       => m_value = julianDayNumber;
+    /// <summary>Create a Julian Date (JD) from the specified Julian Day Number (JDN) with optional fractions (time of day).</summary>
     public JulianDate(double julianDate)
       => m_value = julianDate;
+    /// <summary>Create a Julian Date (JD) from the specified Julian Day Number (JDN), hour, minute and second.</summary>
+    public JulianDate(int julianDayNumber, int hour, int minute, int second)
+      => m_value = julianDayNumber + (hour - 12) / 24.0 + minute / 1440.0 + second / 86400.0;
 
     public bool IsEmpty
       => Equals(Empty);
@@ -93,13 +99,12 @@ namespace Flux
     public static JulianDate FromGregorianCalendarDate(int year, int month, int day)
       => new JulianDate((1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075);
     //{
-    //	var a = (14 - month) / 12;
-    //	var y = year + 4800 - a;
-    //	var m = month + 12 * a - 3;
+    //  var a = (14 - month) / 12;
+    //  var y = year + 4800 - a;
+    //  var m = month + 12 * a - 3;
 
-    //	return day + (153 * m + 2) / 5 + 365 * y + y / 4 - y / 100 + y / 400 - 32045;
+    //  return new JulianDate(day + (153 * m + 2) / 5 + 365 * y + y / 4 - y / 100 + y / 400 - 32045);
     //}
-
     /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Julian Calendar.</summary>
     /// <param name="year"></param>
     /// <param name="month"></param>
@@ -109,20 +114,19 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Proleptic_Julian_calendar"/>
     public static JulianDate FromJulianCalendarDate(int year, int month, int day)
       => new JulianDate(367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
+    //public static double FromGregorianCalendarDate(int year, int month, double day)
+    //{
+    //  if (month == 1 || month == 2)
+    //  {
+    //    year -= 1;
+    //    month += 12;
+    //  }
 
-    public static double FromGregorianCalendarDate(int year, int month, double day)
-    {
-      if (month == 1 || month == 2)
-      {
-        year -= 1;
-        month += 12;
-      }
+    //  var A = year / 100;
+    //  var B = 2 - A + (A / 4);
 
-      var A = year / 100;
-      var B = 2 - A + (A / 4);
-
-      return (int)(365.25 * (year + 4716)) + (int)(30.6001 * (month + 1)) + day + B - 1524.5;
-    }
+    //  return (int)(365.25 * (year + 4716)) + (int)(30.6001 * (month + 1)) + day + B - 1524.5;
+    //}
 
     /// <summary>Returns a day of week value which spans 0 (Monday) through 6 (Sunday) from the specified Julian Day Number 0 (which was a Monday noon).</summary>
     /// <returns>0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday.</returns>
@@ -131,14 +135,18 @@ namespace Flux
     /// <summary>Returns the time part from the specified Julian Date.</summary>
     public static (int hour, int minute, int second) GetTimePart(double julianDate)
     {
-      var time = julianDate % 1;
+      double time = julianDate % 1;
 
-      time = (time >= 0.5 ? time - 0.5 : time + 0.5) * 86400;
-      var hour = (int)(time / 3600);
-      time -= (hour * 3600.0);
-      var minute = (int)(time / 60);
-      time -= (minute * 60.0);
-      var second = (int)time;
+      time = (time >= 0.5 ? time - 0.5 : time + 0.5);
+      time *= 86400;
+
+      var hour = (int)System.Math.Round(time / 3600);
+      time -= (hour * 3600);
+
+      var minute = (int)System.Math.Round(time / 60);
+      time -= (minute * 60);
+
+      var second = (int)System.Math.Round(time);
 
       return (hour, minute, second);
     }
@@ -149,6 +157,7 @@ namespace Flux
     /// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
     public static bool IsNonProlepticGregorianCalendar(int year, int month, int day)
       => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+
     /// <summary>Returns whether the Julian Day is considered in the (proleptic) Julian Calendar, i.e. on or before Thursday, October 4, 1582.</summary>
     public static bool IsProlepticJulianCalendar(double julianDate)
       => julianDate < 2299160.5;
@@ -156,8 +165,9 @@ namespace Flux
     public static bool IsProlepticJulianCalendar(int year, int month, int day)
       => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
 
+    /// <summary>Returns whether the specified year, month and day is a value.</summary>
     public static bool IsValidDate(int year, int month, int day)
-      => !(year == 1582 && month == 10 && day >= 5 && day <= 14); // Exclude the 10 day numbers that were jumped in the transition from the Julian Calendar to the Gregorian Calendar.
+      => !(year == 1582 && month == 10 && day >= 5 && day <= 14); // Excludes the 10 day numbers that were jumped in the transition from the Gregorian Calendar to the Julian Calendar.
 
     /// <summary>Returns the proleptic Julian date corresponding to the specified Julian Day Number (JDN).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>

@@ -68,6 +68,17 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var jd0 = new Flux.JulianDate(2456293.520833);
+      System.Console.WriteLine($"{jd0}, GC={jd0.ToGregorianCalendarDateString()}, JC={jd0.ToJulianCalendarDateString()}, PGCD={Flux.JulianDate.ToProlepticGregorianCalendarDate(jd0.JulianDayNumber)}, PJCD={Flux.JulianDate.ToProlepticJulianCalendarDate(jd0.JulianDayNumber)}");
+      var jd1 = Flux.JulianDate.FromGregorianCalendarDate(2013, 1, 1);
+      System.Console.WriteLine($"GC={jd1.ToGregorianCalendarDateString()}, JC={jd1.ToJulianCalendarDateString()}, PGCD={Flux.JulianDate.ToProlepticGregorianCalendarDate(jd1.JulianDayNumber)}, PJCD={Flux.JulianDate.ToProlepticJulianCalendarDate(jd1.JulianDayNumber)}");
+      var jd2 = Flux.JulianDate.FromJulianCalendarDate(2013, 1, 1);
+      System.Console.WriteLine($"GC={jd2.ToGregorianCalendarDateString()}, JC={jd2.ToJulianCalendarDateString()}, PGCD={Flux.JulianDate.ToProlepticGregorianCalendarDate(jd2.JulianDayNumber)}, PJCD={Flux.JulianDate.ToProlepticJulianCalendarDate(jd2.JulianDayNumber)}");
+      var jd3 = new Flux.JulianDate(2456293.5208333335);
+      System.Console.WriteLine($"GC={jd3.ToGregorianCalendarDateString()}, JC={jd3.ToJulianCalendarDateString()}, PGCD={Flux.JulianDate.ToProlepticGregorianCalendarDate(jd3.JulianDayNumber)}, PJCD={Flux.JulianDate.ToProlepticJulianCalendarDate(jd3.JulianDayNumber)}");
+      var jd4 = new Flux.JulianDate(2456293, 0, 30, 0);
+      System.Console.WriteLine($"GC={jd4.ToGregorianCalendarDateString()}, JC={jd4.ToJulianCalendarDateString()}, PGCD={Flux.JulianDate.ToProlepticGregorianCalendarDate(jd4.JulianDayNumber)}, PJCD={Flux.JulianDate.ToProlepticJulianCalendarDate(jd4.JulianDayNumber)}");
+
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
         System.Console.WriteLine(s);
 
