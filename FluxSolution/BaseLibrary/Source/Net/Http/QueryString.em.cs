@@ -17,14 +17,12 @@ namespace Flux
           changed.Add(kvp.Key, kvp.Value);
 
       foreach (var kvp in change)
-      {
         if (kvp.Value.Count > 0 && (defaults is null || !defaults.ContainsKey(kvp.Key) || !kvp.Value.SequenceEqual(defaults[kvp.Key])))
         {
           if (changed.ContainsKey(kvp.Key)) changed[kvp.Key] = kvp.Value;
           else changed.Add(kvp.Key, kvp.Value);
         }
         else if (changed.ContainsKey(kvp.Key)) changed.Remove(kvp.Key);
-      }
 
       return changed;
     }
@@ -48,11 +46,28 @@ namespace Flux
       return removed;
     }
 
-    public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ToQueryStringDictionary(this string source)
-      => ((source ?? throw new System.ArgumentNullException(nameof(source))).Length > 0 && source[0] == '?' ? source.Substring(1) : source).Split('&').Select(s => s.Split('=')).Where(a => a.Length == 2).GroupBy(a => a[0]).ToDictionary(g => System.Net.WebUtility.UrlDecode(g.Key), g => g.Select(a => System.Net.WebUtility.UrlDecode(a[1])).ToList());
-
-    /// <summary>Generate a query string from the 'query dictionary'.</summary>
+    /// <summary>Generate a query string from the 'query string dictionary'.</summary>
     public static string ToQueryString(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
-      => (source ?? throw new System.ArgumentNullException(nameof(source))).Count > 0 ? $"{'?'}{string.Join(@"&", source.OrderBy(kvp => kvp.Key).Where(kvp => kvp.Value.Count > 0).SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}={v}")))}" : string.Empty;
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      return source.Count > 0 ? $"{'?'}{string.Join(@"&", source.OrderBy(kvp => kvp.Key).Where(kvp => kvp.Value.Count > 0).SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}={v}")))}" : string.Empty;
+    }
+
+    /// <summary>Generate a 'query string dictionary' from the specified query string.</summary>
+    public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ToQueryStringDictionary(this string source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      return (source.Length > 0 && source[0] == '?' ? source.Substring(1) : source).Split('&').Select(s => s.Split('=')).Where(a => a.Length == 2).GroupBy(a => a[0]).ToDictionary(g => System.Net.WebUtility.UrlDecode(g.Key), g => g.Select(a => System.Net.WebUtility.UrlDecode(a[1])).ToList());
+    }
+
+    /// <summary>Generate a 'simplified query string dictionary' from the 'query string dictionary'.</summary>
+    public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedQueryDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      return source.ToDictionary(kvp => kvp.Key, kvp => string.Join('|', kvp.Value));
+    }
   }
 }
