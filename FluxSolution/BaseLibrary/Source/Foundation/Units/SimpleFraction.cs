@@ -101,11 +101,7 @@ namespace Flux.Units
     /// <param name="gcd"></param>
     /// <returns></returns>
     public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger gcd)
-    {
-      gcd = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator);
-
-      return gcd > 1;
-    }
+      => (gcd = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator)) > 1;
     /// <summary>Returns the least common multiple (LCM) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: |a*c| / (gcd(a,c) * gcd(b,d)), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>lcm((a/b),(c/d)) = lcm(a,c) / gcd(b,d) = (|a*c| / gcd(a,c)) / gcd(b,d)</example>
