@@ -12,7 +12,7 @@ namespace Flux.Geometry.Hexagon
 
     public HexF(double q, double r, double s)
     {
-      if (System.Math.Round(q + r + s) != 0) throw new System.ArgumentException("q + r + s must be 0");
+      if (!IsCubeCoordinate(q, r, s)) throw new System.InvalidOperationException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {System.Math.Round(q + r + s)}).");
 
       Q = q;
       R = r;
@@ -22,35 +22,33 @@ namespace Flux.Geometry.Hexagon
     : this(q, r, -q - r)
     { }
 
-    public Hex ToHex()
-    {
-      var qi = (int)System.Math.Round(Q);
-      var ri = (int)System.Math.Round(R);
-      var si = (int)System.Math.Round(S);
-
-      double q_diff = System.Math.Abs(qi - Q);
-      double r_diff = System.Math.Abs(ri - R);
-      double s_diff = System.Math.Abs(si - S);
-
-      if (q_diff > r_diff && q_diff > s_diff)
-      {
-        qi = -ri - si;
-      }
-      else if (r_diff > s_diff)
-      {
-        ri = -qi - si;
-      }
-      else
-      {
-        si = -qi - ri;
-      }
-
-      return new Hex(qi, ri, si);
-    }
+    public Hex ToRoundedHex()
+      => RoundToNearest(Q, R, S);
 
     #region Static methods
+    public static bool IsCubeCoordinate(double q, double r, double s)
+      => System.Math.Round(q + r + s) == 0;
     public static HexF Lerp(HexF source, HexF target, double mu)
-      => new HexF(source.Q * (1.0 - mu) + target.Q * mu, source.R * (1.0 - mu) + target.R * mu, source.S * (1.0 - mu) + target.S * mu);
+      => new HexF(source.Q * (1 - mu) + target.Q * mu, source.R * (1 - mu) + target.R * mu, source.S * (1 - mu) + target.S * mu);
+    public static Hex RoundToNearest(double q, double r, double s)
+    {
+      var rq = (int)System.Math.Round(q);
+      var rr = (int)System.Math.Round(r);
+      var rs = (int)System.Math.Round(s);
+
+      double q_diff = System.Math.Abs(rq - q);
+      double r_diff = System.Math.Abs(rr - r);
+      double s_diff = System.Math.Abs(rs - s);
+
+      if (q_diff > r_diff && q_diff > s_diff)
+        rq = -rr - rs;
+      else if (r_diff > s_diff)
+        rr = -rq - rs;
+      else
+        rs = -rq - rr;
+
+      return new Hex(rq, rr, rs);
+    }
     #endregion Static methods
 
     #region Overloaded operators
