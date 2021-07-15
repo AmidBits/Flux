@@ -47,13 +47,13 @@ namespace Flux.Geometry.Hexagon
       ? Directions[direction]
       : throw new System.ArgumentOutOfRangeException(nameof(direction));
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
-    public static int DistanceBetween(Hex a, Hex b)
-      => Length(Subtract(a, b));
+    public static int Distance(Hex a, Hex b)
+      => Magnitude(Subtract(a, b));
     /// <summary>Determines wheter the specified coordinate components make up a valid cube hex.</summary>
     public static bool IsCubeCoordinate(int q, int r, int s)
       => q + r + s == 0;
-    /// <summary>The length of a hex vector is half of a hex grid Manhattan distance.</summary>
-    public static int Length(Hex hex)
+    /// <summary>The magnitude (length) of a hex vector is half of a hex grid Manhattan distance.</summary>
+    public static int Magnitude(Hex hex)
       => (System.Math.Abs(hex.Q) + System.Math.Abs(hex.R) + System.Math.Abs(hex.S)) / 2;
     /// <summary>Returns a new hex representing the product of the specified hex vector and the scalar value.</summary>
     public static Hex Multiply(Hex h, int scalar)
