@@ -68,14 +68,6 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var h1 = new Flux.Geometry.Hexagon.Hex(-2, 2, 0);
-      var h2 = Flux.Geometry.Hexagon.Hex.NextCornerCw(h1);
-      var h3 = Flux.Geometry.Hexagon.Hex.NextCornerCcw(h1);
-
-      var count = 0;
-      foreach (var hex in Flux.Geometry.Hexagon.Hex.GetRing(Flux.Geometry.Hexagon.Hex.Empty, 1, 0))
-        System.Console.WriteLine($"{++count} = {hex}");
-
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
         System.Console.WriteLine(s);

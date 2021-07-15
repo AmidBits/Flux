@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Linq;
-
 namespace Flux.Model
 {
   /// <summary>Tower of Hanoi puzzle solver.</summary>
@@ -77,9 +74,7 @@ namespace Flux.Model
     //    var potential_moves = new int[disks - 1];
 
     //    for (var i = 1; i < disks; i++)
-    //    {
     //      potential_moves[i - 1] = 2 * Solve(rods, i) + Solve(rods - 1, disks - i);
-    //    }
 
     //    return Min(potential_moves, disks - 1);
     //  }
