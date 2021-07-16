@@ -108,8 +108,8 @@ namespace Flux
 
     #region Static methods
     /// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
-    public static bool IsNonProlepticGregorianCalendar(int year, int month, int day)
-      => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+    public static bool IsProlepticGregorianCalendarDate(int year, int month, int day)
+      => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
 
     /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Gregorian Calendar. The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713 (per Wikipedia).</summary>
     /// <param name="year"></param>
