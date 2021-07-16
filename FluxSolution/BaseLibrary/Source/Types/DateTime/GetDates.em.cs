@@ -21,11 +21,7 @@ namespace Flux
 
     /// <summary>Yields the dates in the current calendar quarter of the source.</summary>
     public static System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInQuarter(this System.DateTime source)
-    {
-      var (firstDate, lastDate) = source.GetQuarters().ElementAt(source.QuarterOfYear() - 1);
-
-      return firstDate.GetDatesTo(lastDate, true);
-    }
+      => FirstDayOfQuarter(source).GetDatesTo(LastDayOfQuarter(source), true);
 
     /// <summary>Yields the dates in the week of the source.</summary>
     public static System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInWeek(this System.DateTime source)

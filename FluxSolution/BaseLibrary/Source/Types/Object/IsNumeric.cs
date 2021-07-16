@@ -1,6 +1,7 @@
-namespace Flux.Reflexion
+namespace Flux
 {
-	public static partial class Types
+	/// <summary>This static class was created to not bloat every single object with extension methods for this functionality.</summary>
+	public static partial class Object
 	{
 		/// <summary>Returns whether the source type is a primitive numeric data type (e.g. <see cref="System.Int32"/> or <see cref="System.Int64"/>) and whether to consider <see cref="System.Numerics.BigInteger"/>.</summary>
 		public static bool IsNumeric(object source, bool considerBigInteger = true)

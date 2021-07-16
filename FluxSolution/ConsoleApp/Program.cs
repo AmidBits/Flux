@@ -68,6 +68,34 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var jd1 = System.DateTime.Now.ToJulianDate();
+
+      System.Console.WriteLine(jd1);
+
+      var gdt = new System.DateTime(2021, 7, 16, 20, 27, 0, 0, DateTimeKind.Utc);
+
+      var jdt = gdt.ToJulianDate();
+
+      System.Console.WriteLine($"GD: {gdt}, JD: {jdt}, MJD:{jdt.ModifiedJD}, RJD:{jdt.ReducedJD}, MTD:{jdt.TruncatedJD}, JC: {jdt.ToJulianCalendarDateString()}, GC: {jdt.ToGregorianCalendarDateString()}, TS: {jdt.ToTimeString()}");
+
+      //var date = (Y: 837, M: 4, D: 10.3);
+
+      //if (date.M <= 2)
+      //{
+      //  date.Y = date.Y - 1;
+      //  date.M = date.M + 12;
+      //}
+
+      //var isGC = !JulianDate.IsProlepticGregorianCalendar(date.Y, date.M, (int)date.D);
+      //var isJC = JulianDate.IsProlepticGregorianCalendar(date.Y, date.M, (int)date.D);
+
+      //var a = isGC ? date.Y / 400 : isJC ? date.Y / 400 : throw new System.InvalidOperationException();
+      //var b = isGC ? 2 - a + a / 4 : isJC ? 0 : throw new System.InvalidOperationException();
+
+      //var jd = (365.25 * (date.Y + 4716)) + (30.6001 * (date.M + 1)) + date.D + b - 1524.5;
+
+      //System.Console.WriteLine($"{date} = {jd}");
+
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
         System.Console.WriteLine(s);

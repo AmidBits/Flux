@@ -37,7 +37,7 @@ namespace Types
 		[TestMethod]
 		public void DayOfWeekNext()
 		{
-			var next = source.Next(System.DayOfWeek.Friday, false);
+			var next = source.NextDayOfWeek(System.DayOfWeek.Friday, false);
 
 			var expected = new System.DateTime(1967, 6, 2);
 
@@ -46,7 +46,7 @@ namespace Types
 		[TestMethod]
 		public void DayOfWeekPrevious()
 		{
-			var next = source.Previous(System.DayOfWeek.Friday, false);
+			var next = source.PreviousDayOfWeek(System.DayOfWeek.Friday, false);
 
 			var expected = new System.DateTime(1967, 5, 26);
 
@@ -127,13 +127,6 @@ namespace Types
 		{
 			Assert.AreEqual(source.DaysInYear(), source.GetDatesInYear().Count());
 			Assert.AreEqual(target.DaysInYear(), target.GetDatesInYear().Count());
-		}
-
-		[TestMethod]
-		public void GetQuartersOfYear()
-		{
-			Assert.AreEqual(4, source.GetQuarters().Count());
-			Assert.AreEqual(4, target.GetQuarters().Count());
 		}
 
 		[TestMethod]

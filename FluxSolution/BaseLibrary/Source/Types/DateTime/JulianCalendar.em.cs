@@ -1,25 +1,25 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-    public static System.DateTime FromJulianDate(this double julianDate)
-      => System.DateTime.FromOADate(julianDate - 2415018.5);
-    public static System.DateTime FromModifiedJulianDate(this double modifiedJulianDate)
-      => FromJulianDate(modifiedJulianDate + 2400000.5);
-    public static System.DateTime FromReducedJulianDate(this double reducedJulianDate)
-      => FromJulianDate(reducedJulianDate + 2400000);
-    public static System.DateTime FromTruncatedJulianDate(this double truncatedJulianDate)
-      => FromJulianDate(truncatedJulianDate + 2440000.5);
+  //public static partial class ExtensionMethods
+  //{
+  //  public static System.DateTime FromJulianDate(this double julianDate)
+  //    => System.DateTime.FromOADate(julianDate - 2415018.5);
+  //  public static System.DateTime FromModifiedJulianDate(this double modifiedJulianDate)
+  //    => FromJulianDate(modifiedJulianDate + 2400000.5);
+  //  public static System.DateTime FromReducedJulianDate(this double reducedJulianDate)
+  //    => FromJulianDate(reducedJulianDate + 2400000);
+  //  public static System.DateTime FromTruncatedJulianDate(this double truncatedJulianDate)
+  //    => FromJulianDate(truncatedJulianDate + 2440000.5);
 
-    public static double ToJulianDate(this System.DateTime date)
-      => date.ToOADate() + 2415018.5;
-    public static double ToModifiedJulianDate(this System.DateTime date)
-      => date.ToJulianDate() - 2400000.5;
-    public static double ToReducedJulianDate(this System.DateTime date)
-      => date.ToJulianDate() - 2400000;
-    public static double ToTruncatedJulianDate(this System.DateTime date)
-      => System.Math.Floor(date.ToJulianDate() - 2440000.5);
-  }
+  //  public static double ToJulianDate(this System.DateTime date)
+  //    => date.ToOADate() + 2415018.5;
+  //  public static double ToModifiedJulianDate(this System.DateTime date)
+  //    => date.ToJulianDate() - 2400000.5;
+  //  public static double ToReducedJulianDate(this System.DateTime date)
+  //    => date.ToJulianDate() - 2400000;
+  //  public static double ToTruncatedJulianDate(this System.DateTime date)
+  //    => System.Math.Floor(date.ToJulianDate() - 2440000.5);
+  //}
   //https://ia802807.us.archive.org/20/items/astronomicalalgorithmsjeanmeeus1991/Astronomical%20Algorithms-%20Jean%20Meeus%20%281991%29.pdf
   //public static class JulianDate
   //{

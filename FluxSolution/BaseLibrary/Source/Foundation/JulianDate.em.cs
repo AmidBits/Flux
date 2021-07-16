@@ -1,11 +1,31 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static bool IsNonProlepticGregorianCalendar(this System.DateTime source)
+      => source.Year > 1582 || (source.Year == 1582 && (source.Month > 10 || (source.Month == 10 && source.Day >= 15)));
+
+    public static bool IsProlepticGregorianCalendar(this System.DateTime source)
+      => source.Year < 1582 || (source.Year == 1582 && (source.Month < 10 || (source.Month == 10 && source.Day <= 4)));
+
+    public static JulianDate ToJulianDate(this System.DateTime source)
+      => new JulianDate(source.ToOADate() + 2415018.5);
+  }
+
   /// <summary>Julian Day struct</summary>
   /// <remarks>The Julian Day, Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
   {
+    public const double CalendarCutover = 2299160.5;
+
+    public System.DateTime GregorianCalendarStartDate
+      => new System.DateTime(1582, 10, 15);
+
+    public System.DateTime JulianCalendarEndDate
+      => new System.DateTime(1582, 10, 4);
+
     public const double HoursPerDay = 24;
     public const double MinutesPerDay = 1440;
     public const double SecondsPerDay = 86400;
@@ -28,8 +48,23 @@ namespace Flux
     public bool IsEmpty
       => Equals(Empty);
 
+    /// <summary>Returns whether the Julian Date is considered in the proleptic Gregorian Calendar, i.e. before Friday, October 15, 1582.</summary>
+    public bool IsProlepticGregorianCalendar
+      => m_value < 2299160.5;
+
     public int JulianDayNumber
-      => (int)m_value;
+      => (int)System.Math.Floor(m_value);
+
+    public System.TimeSpan Time
+      => System.TimeSpan.FromSeconds((m_value % 1 is var f && f >= 0.5 ? f - 0.5 : f + 0.5) * 86400);
+
+    public double ModifiedJD
+      => m_value - 2400000.5;
+    public double ReducedJD
+      => m_value - 2400000;
+    public double TruncatedJD
+      => System.Math.Floor(m_value - 2440000.5);
+
 
     public double Value
       => m_value;
@@ -47,48 +82,35 @@ namespace Flux
       => (System.DayOfWeek)((GetDayOfWeek((int)m_value) + 1) % 7);
 
     public int GetAstronomicalYearNumber()
-      => IsProlepticJulianCalendar(m_value)
-      ? ToProlepticJulianCalendarDate(JulianDayNumber).year
-      : ToProlepticGregorianCalendarDate(JulianDayNumber).year;
+      => IsProlepticGregorianCalendar
+      ? ToJulianCalendarDate(JulianDayNumber).year
+      : ToGregorianCalendarDate(JulianDayNumber).Year;
 
     public string ToDateString()
-    {
-      if (IsProlepticJulianCalendar(m_value))
-      {
-        var (year, month, day) = ToProlepticJulianCalendarDate(JulianDayNumber);
+      => IsProlepticGregorianCalendar
+      ? ToJulianCalendarDateString()
+      : ToGregorianCalendarDateString();
 
-        return $"{GetDayOfWeek()}, {System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {GetAstronomicalYearNumber()} ({(year < 1 ? $"{System.Math.Abs(year) + 1} BC" : $"{year} AD")})";
-      }
-      else
-      {
-        var (year, month, day) = ToProlepticGregorianCalendarDate(JulianDayNumber);
-
-        return $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {GetAstronomicalYearNumber()}";
-      }
-    }
-
-    public string ToGregorianCalendarDateString()
-    {
-      var (year, month, day) = ToProlepticGregorianCalendarDate(JulianDayNumber);
-
-      return $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {(year <= 0 ? System.Math.Abs(year) + 1 : year)} {(year > 0 ? "AD" : "BC")}";
-    }
+    public string ToGregorianCalendarDateString(bool astronomicalYearNumber = true)
+      => ToGregorianCalendarDate(JulianDayNumber) is var ymd && astronomicalYearNumber
+      ? $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ymd.Month)} {ymd.Day}, {GetAstronomicalYearNumber()}"
+      : $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ymd.Month)} {ymd.Day}, {(ymd.Year <= 0 ? System.Math.Abs(ymd.Year) + 1 : ymd.Year)} {(ymd.Year > 0 ? "AD" : "BC")}";
 
     public string ToJulianCalendarDateString()
     {
-      var (year, month, day) = ToProlepticJulianCalendarDate(JulianDayNumber);
+      var (year, month, day) = ToJulianCalendarDate(JulianDayNumber);
 
-      return $"{GetDayOfWeek()}, {System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {(year <= 0 ? System.Math.Abs(year) + 1 : year)} {(year > 0 ? "AD" : "BC")}";
+      return $"{GetDayOfWeek()}, {System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {GetAstronomicalYearNumber()} ({(year <= 0 ? $"{System.Math.Abs(year) + 1} BC" : $"{year} AD")})";
     }
 
     public string ToTimeString()
-    {
-      var (hour, minute, second) = GetTimePart(m_value);
-
-      return $"{hour:D2}:{minute:D2}:{second:D2}";
-    }
+      => GetTime(m_value).ToString(@"hh\:mm\:ss");
 
     #region Static methods
+    /// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
+    public static bool IsNonProlepticGregorianCalendar(int year, int month, int day)
+      => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+
     /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Gregorian Calendar. The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713 (per Wikipedia).</summary>
     /// <param name="year"></param>
     /// <param name="month"></param>
@@ -98,13 +120,15 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
     public static JulianDate FromGregorianCalendarDate(int year, int month, int day)
       => new JulianDate((1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075);
-    //{
-    //  var a = (14 - month) / 12;
-    //  var y = year + 4800 - a;
-    //  var m = month + 12 * a - 3;
-
-    //  return new JulianDate(day + (153 * m + 2) / 5 + 365 * y + y / 4 - y / 100 + y / 400 - 32045);
-    //}
+    /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Gregorian Calendar. The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713 (per Wikipedia).</summary>
+    /// <param name="year"></param>
+    /// <param name="month"></param>
+    /// <param name="day"></param>
+    /// <returns>The Julian day number corresponding to the specified Gregorian calendar date.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
+    public static JulianDate FromGregorianCalendarDate(System.DateTime dateTime)
+      => FromGregorianCalendarDate(dateTime.Year, dateTime.Month, dateTime.Day);
     /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Julian Calendar.</summary>
     /// <param name="year"></param>
     /// <param name="month"></param>
@@ -114,56 +138,47 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Proleptic_Julian_calendar"/>
     public static JulianDate FromJulianCalendarDate(int year, int month, int day)
       => new JulianDate(367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
-    //public static double FromGregorianCalendarDate(int year, int month, double day)
-    //{
-    //  if (month == 1 || month == 2)
-    //  {
-    //    year -= 1;
-    //    month += 12;
-    //  }
-
-    //  var A = year / 100;
-    //  var B = 2 - A + (A / 4);
-
-    //  return (int)(365.25 * (year + 4716)) + (int)(30.6001 * (month + 1)) + day + B - 1524.5;
-    //}
+    /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Julian Calendar.</summary>
+    /// <param name="year"></param>
+    /// <param name="month"></param>
+    /// <param name="day"></param>
+    /// <returns>The Julian day number corresponding to the specified Julian calendar date.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <see cref="https://en.wikipedia.org/wiki/Proleptic_Julian_calendar"/>
+    public static JulianDate FromJulianCalendarDate(System.DateTime dateTime)
+      => FromJulianCalendarDate(dateTime.Year, dateTime.Month, dateTime.Day);
 
     /// <summary>Returns a day of week value which spans 0 (Monday) through 6 (Sunday) from the specified Julian Day Number 0 (which was a Monday noon).</summary>
     /// <returns>0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday.</returns>
     public static int GetDayOfWeek(int julianDayNumber)
       => julianDayNumber % 7;
+    /// <summary>Returns the time fraction from the specified Julian Date.</summary>
+    public static System.TimeSpan GetTime(double julianDate)
+      => System.TimeSpan.FromSeconds((julianDate % 1 is var f && f >= 0.5 ? f - 0.5 : f + 0.5) * 86400);
     /// <summary>Returns the time part from the specified Julian Date.</summary>
-    public static (int hour, int minute, int second) GetTimePart(double julianDate)
+    public static (int hour, int minute, int second, int milliseconds) GetTimePart(double julianDate)
     {
-      double time = julianDate % 1;
+      var ts = GetTime(julianDate);
 
-      time = (time >= 0.5 ? time - 0.5 : time + 0.5);
-      time *= 86400;
-
-      var hour = (int)System.Math.Round(time / 3600);
-      time -= (hour * 3600);
-
-      var minute = (int)System.Math.Round(time / 60);
-      time -= (minute * 60);
-
-      var second = (int)System.Math.Round(time);
-
-      return (hour, minute, second);
+      return (ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
     }
 
     /// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
-    public static bool IsNonProlepticGregorianCalendar(double julianDate)
-      => julianDate >= 2299160.5;
+    //public static bool IsNonProlepticGregorianCalendar(double julianDate)
+    //  => julianDate >= 2299160.5;
     /// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
-    public static bool IsNonProlepticGregorianCalendar(int year, int month, int day)
-      => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+    //public static bool IsProlepticGregorianCalendar(double julianDate)
+    //  => julianDate < 2299160.5;
+    ///// <summary>Returns whether the Julian Day is considered in the Gregorian Calendar (non-proleptic), i.e. on or after Friday, October 15, 1582.</summary>
+    //public static bool IsNonProlepticGregorianCalendar(int year, int month, int day)
+    //  => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
 
-    /// <summary>Returns whether the Julian Day is considered in the (proleptic) Julian Calendar, i.e. on or before Thursday, October 4, 1582.</summary>
-    public static bool IsProlepticJulianCalendar(double julianDate)
-      => julianDate < 2299160.5;
-    /// <summary>Returns whether the Julian Day is considered in the (proleptic) Julian Calendar, i.e. on or before Thursday, October 4, 1582.</summary>
-    public static bool IsProlepticJulianCalendar(int year, int month, int day)
-      => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
+    ///// <summary>Returns whether the Julian Day is considered in the (proleptic) Julian Calendar, i.e. on or before Thursday, October 4, 1582.</summary>
+    //public static bool IsProlepticJulianCalendar(double julianDate)
+    //  => julianDate < 2299160.5;
+    ///// <summary>Returns whether the Julian Day is considered in the (proleptic) Julian Calendar, i.e. on or before Thursday, October 4, 1582.</summary>
+    //public static bool IsProlepticJulianCalendar(int year, int month, int day)
+    //  => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
 
     /// <summary>Returns whether the specified year, month and day is a value.</summary>
     public static bool IsValidDate(int year, int month, int day)
@@ -172,7 +187,7 @@ namespace Flux
     /// <summary>Returns the proleptic Julian date corresponding to the specified Julian Day Number (JDN).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
-    public static (int year, int month, int day) ToProlepticJulianCalendarDate(int julianDayNumber)
+    public static (int year, int month, int day) ToJulianCalendarDate(int julianDayNumber)
     {
       if (julianDayNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber));
 
@@ -205,7 +220,7 @@ namespace Flux
     /// <summary>Returns the proleptic Gregorian date corresponding to the specified Julian Day Number (JDN).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
-    public static (int year, int month, int day) ToProlepticGregorianCalendarDate(int julianDayNumber)
+    public static System.DateTime ToGregorianCalendarDate(int julianDayNumber)
     {
       if (julianDayNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber));
 
@@ -233,17 +248,17 @@ namespace Flux
       var M = ((h / s + m) % n) + 1;
       var Y = (e / p) - y + (n + m - M) / n;
 
-      return (Y, M, D);
+      return new System.DateTime(Y, M, D);
     }
     #endregion Static methods
 
     #region Overloaded operators
-    public static JulianDate operator +(JulianDate a, double b)
-      => new JulianDate(a.m_value + b);
+    //public static JulianDate operator +(JulianDate a, double b)
+    //  => new JulianDate(a.m_value + b);
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
       => new JulianDate(a.m_value + b.Days + ((b.Hours - 12) / HoursPerDay) + (b.Minutes / MinutesPerDay) + (b.Seconds / SecondsPerDay));
-    public static JulianDate operator -(JulianDate a, double b)
-      => new JulianDate(a.m_value - b);
+    //public static JulianDate operator -(JulianDate a, double b)
+    //  => new JulianDate(a.m_value - b);
 
     public static bool operator <(JulianDate a, JulianDate b)
       => a.CompareTo(b) < 0;
