@@ -13,7 +13,7 @@ namespace Flux
       ? JulianDate.ConvertJulianCalendarToJulianDayNumber(source.Year, source.Month, source.Day)
       : JulianDate.ConvertGregorianCalendarToJulianDayNumber(source.Year, source.Month, source.Day);
 
-      var julianDateFraction = JulianDate.ConvertTimeToJulianDate(new Units.Time(source.TimeOfDay.TotalSeconds));
+      var julianDateFraction = JulianDate.ConvertTimeToJulianDateFraction(new Units.Time(source.TimeOfDay.TotalSeconds));
 
       return new JulianDate(julianDayNumber + julianDateFraction);
     }
@@ -25,6 +25,12 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
   {
+    public enum CalendarConversion
+    {
+      GregorianCalendar,
+      JulianCalendar,
+    }
+
     public const double CalendarCutover = 2299160.5;
 
     public System.DateTime GregorianCalendarStartDate
@@ -72,7 +78,6 @@ namespace Flux
     public double TruncatedJD
       => System.Math.Floor(m_value - 2440000.5);
 
-
     public double Value
       => m_value;
 
@@ -98,10 +103,10 @@ namespace Flux
       ? ToJulianCalendarDateString()
       : ToGregorianCalendarDateString();
 
-    public string ToGregorianCalendarDateString(bool astronomicalYearNumber = true)
+    public string ToGregorianCalendarDateString(bool astronomicalYearNumber = false)
       => ConvertJulianDayNumberToGregorianCalendar(JulianDayNumber) is var ymd && astronomicalYearNumber
       ? $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ymd.month)} {ymd.day}, {GetAstronomicalYearNumber()}"
-      : $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ymd.month)} {ymd.day}, {(ymd.year <= 0 ? System.Math.Abs(ymd.year) + 1 : ymd.year)} {(ymd.year > 0 ? "AD" : "BC")}";
+      : $"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(ymd.month)} {ymd.day}, {(ymd.year <= 0 ? System.Math.Abs(ymd.year) + 1 : ymd.year)} {(ymd.year > 0 ? "AD" : "BC")} ({GetAstronomicalYearNumber()})";
 
     public string ToJulianCalendarDateString()
     {
@@ -111,7 +116,7 @@ namespace Flux
     }
 
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(ConvertJulianDateToTime(m_value).Second).ToString(@"hh\:mm\:ss");
+      => System.TimeSpan.FromSeconds(ConvertJulianDateFractionToTime(m_value).Second).ToString(@"hh\:mm\:ss");
 
     #region Static methods
     /// <summary>returns the Julian Day Number (JDN) from the specified year, month and day from the Gregorian Calendar. The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713 (per Wikipedia).</summary>
@@ -132,11 +137,16 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Proleptic_Julian_calendar"/>
     public static int ConvertJulianCalendarToJulianDayNumber(int year, int month, int day)
       => (367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
-    /// <summary>Returns the time from the specified Julian Date (fraction).</summary>
-    public static Units.Time ConvertJulianDateToTime(double julianDate)
-      => new Units.Time((julianDate % 1 is var f && f >= 0.5 ? f - 0.5 : f + 0.5) * SecondsPerDay);
+
+    public static double ConvertJulianDateToModified(double julianDate)
+      => julianDate - 2400000.5;
+    public static double ConvertJulianDateToReduced(double julianDate)
+      => julianDate - 2400000;
+    public static double ConvertJulianDateToTruncated(double julianDate)
+      => System.Math.Floor(julianDate - 2440000.5);
+
     /// <summary>Returns the proleptic Gregorian date corresponding to the specified Julian Day Number (JDN).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <see cref="https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
     public static (int year, int month, int day) ConvertJulianDayNumberToGregorianCalendar(int julianDayNumber)
     {
@@ -169,7 +179,7 @@ namespace Flux
       return (Y, M, D);
     }
     /// <summary>Returns the proleptic Julian date corresponding to the specified Julian Day Number (JDN).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <see cref="https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar"/>
     public static (int year, int month, int day) ConvertJulianDayNumberToJulianCalendar(int julianDayNumber)
     {
@@ -201,18 +211,24 @@ namespace Flux
 
       return (Y, M, D);
     }
+
+    /// <summary>Returns the time from the specified Julian Date (fraction).</summary>
+    public static Units.Time ConvertJulianDateFractionToTime(double julianDate)
+      => new Units.Time((julianDate % 1 is var f && f >= 0.5 ? f - 0.5 : f + 0.5) * SecondsPerDay);
     /// <summary>Returns the time fraction from the specified unit time.</summary>
-    public static double ConvertTimeToJulianDate(Units.Time time)
+    public static double ConvertTimeToJulianDateFraction(Units.Time time)
      => time.Second / 86400 is var f && f >= 0.5 ? f - 0.5 : f + 0.5;
 
     /// <summary>Returns a day of week value which spans 0 (Monday) through 6 (Sunday) from the specified Julian Day Number 0 (which was a Monday noon).</summary>
     /// <returns>0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday.</returns>
     public static int DayOfWeek(int julianDayNumber)
       => julianDayNumber % 7;
+
     public static JulianDate From(int year, int month, int day)
       => IsProlepticGregorianCalendarDate(year, month, day)
       ? new JulianDate(ConvertJulianCalendarToJulianDayNumber(year, month, day))
       : new JulianDate(ConvertGregorianCalendarToJulianDayNumber(year, month, day));
+
     /// <summary>Returns whether the date is in the proleptic Gregorian calendar, i.e. before Friday, October 15, 1582.</summary>
     public static bool IsProlepticGregorianCalendarDate(int year, int month, int day)
       => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
