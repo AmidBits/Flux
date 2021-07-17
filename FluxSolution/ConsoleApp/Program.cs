@@ -10,67 +10,15 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public interface IM<T> { }
-
-  public interface IX { }
-  public class A
-    : IX, IM<A>
-  {
-  }
-
-  public interface IY { }
-  public class B
-    : A, IY, IM<B>
-  {
-  }
-
-  public interface IZ { }
-  public class C
-    : B, IZ, IM<C>
-  {
-  }
-
   class Program
   {
-    public enum PRODUCT_TYPE
-    {
-      VER_NT_WORKSTATION = 0x0000001,
-      VER_NT_DOMAIN_CONTROLLER = 0x0000002,
-      VER_NT_SERVER = 0x0000003
-    }
-
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
-    public struct OSVERSIONINFOEXW
-    {
-      public int dwOSVersionInfoSize;
-      public int dwMajorVersion;
-      public int dwMinorVersion;
-      public int dwBuildNumber;
-      public int dwPlatformId;
-      [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)] public string szCSDVersion;
-      public ushort wServicePackMajor;
-      public ushort wServicePackMinor;
-      public ushort wSuiteMask;
-      public PRODUCT_TYPE wProductType;
-      public byte wReserved;
-    }
-
-    [System.Runtime.InteropServices.DllImport("ntdll.dll", SetLastError = true)]
-    public static extern bool RtlGetVersion(ref OSVERSIONINFOEXW versionInfo);
-
-    public static OSVERSIONINFOEXW RtlGetVersion()
-    {
-      var osv = new OSVERSIONINFOEXW();
-      osv.dwOSVersionInfoSize = System.Runtime.InteropServices.Marshal.SizeOf(osv);
-      RtlGetVersion(ref osv);
-      return osv;
-    }
-
     private static void TimedMain(string[] _)
     {
       var jd1 = System.DateTime.Now.ToJulianDate();
 
       System.Console.WriteLine(jd1);
+
+
 
       var gdt = new System.DateTime(2021, 7, 16, 20, 27, 0, 0, DateTimeKind.Utc);
 

@@ -130,12 +130,9 @@ namespace Types
 		}
 
 		[TestMethod]
-		public void JuliuanCalendar()
+		public void JulianCalendar()
 		{
 			Assert.AreEqual(2439640.5, source.ToJulianDate(), "JulianDate");
-			Assert.AreEqual(39640, source.ToModifiedJulianDate(), "ModifiedJulianDate");
-			Assert.AreEqual(39640.5, source.ToReducedJulianDate(), "ReducedJulianDate");
-			Assert.AreEqual(-360, source.ToTruncatedJulianDate(), "TruncatedJulianDate");
 		}
 
 		[TestMethod]
