@@ -16,11 +16,11 @@ namespace Flux
         case 1:
           return new System.DateTime(source.Year, 1, 1);
         case 2:
-          return new System.DateTime(source.Year, 1, 1);
+          return new System.DateTime(source.Year, 4, 1);
         case 3:
-          return new System.DateTime(source.Year, 1, 1);
+          return new System.DateTime(source.Year, 7, 1);
         case 4:
-          return new System.DateTime(source.Year, 1, 1);
+          return new System.DateTime(source.Year, 10, 1);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(quarter));
       }
