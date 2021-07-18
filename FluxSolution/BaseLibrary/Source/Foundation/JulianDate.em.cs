@@ -25,12 +25,6 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
   {
-    public enum CalendarConversion
-    {
-      GregorianCalendar,
-      JulianCalendar,
-    }
-
     public const double CalendarCutover = 2299160.5;
 
     public System.DateTime GregorianCalendarStartDate
