@@ -129,11 +129,11 @@ namespace Types
       Assert.AreEqual(target.DaysInYear(), target.GetDatesInYear().Count());
     }
 
-    [TestMethod]
-    public void JulianCalendar()
-    {
-      Assert.AreEqual(2439640.5, Flux.JulianDate.FromGregorianCalendar(source.Year, source.Month, source.Day).Value, "JulianDate");
-    }
+    //[TestMethod]
+    //public void JulianCalendar()
+    //{
+    //  Assert.AreEqual(2439640.5, Flux.JulianDate.FromGregorianCalendar(source.Year, source.Month, source.Day).Value, "JulianDate");
+    //}
 
     [TestMethod]
     public void LastDayOfMonth()

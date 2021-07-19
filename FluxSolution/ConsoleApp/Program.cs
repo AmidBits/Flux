@@ -14,6 +14,18 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+
+      var m1 = new Flux.MomentUtc(-4712, 1, 13, 12, 0, 0);
+      var m2 = new Flux.MomentUtc(1582, 10, 4, 12, 0, 0);
+      var m3 = new Flux.MomentUtc(1582, 10, 14, 12, 0, 0);
+      var m4 = new Flux.MomentUtc(1582, 10, 15, 12, 0, 0);
+      var mgc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.GregorianCalendar, true);
+      var mjc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.JulianCalendar, true);
+
+      var jd1 = new Flux.JulianDate(3.5);
+      var x1 = Flux.JulianDate.ConvertJulianDateFractionToTime(jd1.Value);
+      var jd2 = new Flux.JulianDate(1);
+
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
         System.Console.WriteLine(s);
