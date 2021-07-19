@@ -132,7 +132,7 @@ namespace Types
     [TestMethod]
     public void JulianCalendar()
     {
-      Assert.AreEqual(2439640.5, Flux.JulianDate.ConvertGregorianCalendarToJulianDayNumber(source.Year, source.Month, source.Day)-0.5, "JulianDate");
+      Assert.AreEqual(2439640.5, Flux.JulianDate.FromGregorianCalendar(source.Year, source.Month, source.Day).Value, "JulianDate");
     }
 
     [TestMethod]
