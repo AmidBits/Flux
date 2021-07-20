@@ -14,17 +14,26 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var now = System.DateTime.Now.ToJulianDate(ConversionCalendar.GregorianCalendar);
+
+      var x = Flux.JulianDate.ComputeJulianPeriod(17, 12, 14);
 
       var m1 = new Flux.MomentUtc(-4712, 1, 13, 12, 0, 0);
       var m2 = new Flux.MomentUtc(1582, 10, 4, 12, 0, 0);
       var m3 = new Flux.MomentUtc(1582, 10, 14, 12, 0, 0);
       var m4 = new Flux.MomentUtc(1582, 10, 15, 12, 0, 0);
-      var mgc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.GregorianCalendar, true);
-      var mjc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.JulianCalendar, true);
+      var mgc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.GregorianCalendar);
+      var mjc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.JulianCalendar);
 
       var jd1 = new Flux.JulianDate(1442454);
       var jd2 = new Flux.JulianDate(1566839);
       var jd3 = new Flux.JulianDate(2400000.5);
+
+      var ts1 = new System.TimeSpan(1,0,0,0);
+
+      var nowp = now + ts1;
+      var nowm = now - ts1;
+
       var x1 = jd1.TimeOfDay;
 
       /*

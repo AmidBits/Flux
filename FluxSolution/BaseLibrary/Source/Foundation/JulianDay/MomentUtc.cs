@@ -1,9 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static MomentUtc ToMomentUtc(this System.DateTime source)
+      => new MomentUtc(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond);
+  }
+
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
   public struct MomentUtc
-    : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
+  : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
   {
+    public static readonly MomentUtc Empty;
+
     public int m_year;
     public int m_month;
     public int m_day;
@@ -44,6 +52,9 @@ namespace Flux
     public int Millisecond
       => m_millisecond;
 
+    public bool IsEmpty
+      => Equals(Empty);
+
     /// <summary>Dates on or after 15 Oct 1582 are considered Gregorian dates and dates on or prior to 4 Oct 1582 are Julian dates. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
     public bool IsGregorianCalendar
       => m_year > 1582 || (m_year == 1582 && (m_month > 10 || (m_month == 10 && m_day >= 15)));
@@ -51,7 +62,7 @@ namespace Flux
       => m_year < 1582 || (m_year == 1582 && (m_month < 10 || (m_month == 10 && m_day < 15)));
 
     public Units.Time TimeOfDay
-      => new Units.Time(m_hour / 24.0 + m_minute / 1440.0 + (m_second + m_millisecond / 1000.0) / 86400);
+      => new Units.Time(ComputeJulianDateTimeOfDay(m_hour, m_minute, m_second, m_millisecond));
 
     public Units.Time TotalSeconds
       => new Units.Time(m_year * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0);
@@ -61,19 +72,31 @@ namespace Flux
        => GetJulianDayNumber(calendar) + TimeOfDay.Second;
     /// <summary>Compute a Julian Day Number (JDN) from this instance and the specified calendar.</summary>
     public int GetJulianDayNumber(ConversionCalendar calendar)
+      => ComputeJulianDayNumber(m_year, m_month, m_day, calendar);
+
+    public JulianDate ToJulianDate(ConversionCalendar calendar)
+      => new JulianDate(GetJulianDate(calendar));
+
+    #region Static methods
+    /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
+    public static int ComputeJulianDayNumber(int year, int month, int day, ConversionCalendar calendar)
     {
       switch (calendar)
       {
         case ConversionCalendar.GregorianCalendar:
-          return ((1461 * (m_year + 4800 + (m_month - 14) / 12)) / 4 + (367 * (m_month - 2 - 12 * ((m_month - 14) / 12))) / 12 - (3 * ((m_year + 4900 + (m_month - 14) / 12) / 100)) / 4 + m_day - 32075);
+          return ((1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075);
         case ConversionCalendar.JulianCalendar:
-          return (367 * m_year - (7 * (m_year + 5001 + (m_month - 9) / 7)) / 4 + (275 * m_month) / 9 + m_day + 1729777);
+          return (367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(calendar));
       }
     }
-
-    #region Static methods
+    /// <summary>Computes the Julian Date (JD) "time-of-day" fraction for the specified time components.</summary>
+    public static double ComputeJulianDateTimeOfDay(int hour, int minute, int second, int millisecond)
+      => hour / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
+    /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
+    public static double ComputeJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
+      => ComputeJulianDayNumber(year, month, day, calendar) + ComputeJulianDateTimeOfDay(hour, minute, second, millisecond);
     #endregion Static methods
 
     #region Overloaded operators
@@ -108,7 +131,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
     public override string? ToString()
-      => $"<{GetType().Name} {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3}>";
+      => $"<{GetType().Name}: {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3}>";
     #endregion Object overrides
   }
 }

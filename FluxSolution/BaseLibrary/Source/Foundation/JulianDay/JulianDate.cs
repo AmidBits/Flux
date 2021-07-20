@@ -1,19 +1,11 @@
+using System.Linq;
+
 namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    //public static JulianDate ToJulianDate(this System.DateTime source)
-    //  => JulianDate.From(source.Year, source.Month, source.Day);
-    //public static JulianDate ToJulianDate(this System.DateTime source)
-    //{
-    //  var julianDayNumber = JulianDayNumber.IsProlepticGregorianCalendarDate(source.Year, source.Month, source.Day)
-    //  ? JulianDayNumber.ConvertJulianCalendarToJulianDayNumber(source.Year, source.Month, source.Day)
-    //  : JulianDayNumber.ConvertGregorianCalendarToJulianDayNumber(source.Year, source.Month, source.Day);
-
-    //  var julianDateFraction = JulianDate.ConvertTimeToJulianDateFraction(new Units.Time(source.TimeOfDay.TotalSeconds));
-
-    //  return new JulianDate(julianDayNumber + julianDateFraction);
-    //}
+    public static JulianDate ToJulianDate(this System.DateTime source, ConversionCalendar calendar)
+      => source.ToMomentUtc().ToJulianDate(calendar);
   }
 
   /// <summary>Julian Day struct</summary>
@@ -22,18 +14,6 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
   {
-    public const double CalendarCutover = 2299160.5;
-
-    //public System.DateTime GregorianCalendarStartDate
-    //  => new System.DateTime(1582, 10, 15);
-
-    //public System.DateTime JulianCalendarEndDate
-    //  => new System.DateTime(1582, 10, 4);
-
-    public const double HoursPerDay = 24;
-    public const double MinutesPerDay = 1440;
-    public const double SecondsPerDay = 86400;
-
     public static readonly JulianDate Empty;
 
     private readonly double m_value;
@@ -43,15 +23,20 @@ namespace Flux
       => m_value = julianDate;
 
     public JulianDate AddWeeks(int weeks)
-      => AddDays(weeks * 7);
+      => new JulianDate(m_value + weeks * 7);
     public JulianDate AddDays(int days)
       => new JulianDate(m_value + days);
     public JulianDate AddHours(int hours)
-      => new JulianDate(m_value + hours / HoursPerDay);
+      => new JulianDate(m_value + hours / 24.0);
     public JulianDate AddMinutes(int minutes)
-      => new JulianDate(m_value + minutes / MinutesPerDay);
+      => new JulianDate(m_value + minutes / 1440.0);
     public JulianDate AddSeconds(int seconds)
-      => new JulianDate(m_value + seconds / SecondsPerDay);
+      => new JulianDate(m_value + seconds / 86400.0);
+    public JulianDate AddMillieconds(int milliseconds)
+      => new JulianDate(m_value + (milliseconds / 1000.0) / 86400);
+
+    public System.DayOfWeek DayOfWeek
+      => (System.DayOfWeek)((ComputeDayOfWeek((int)m_value) + 1) % 7);
 
     public bool IsEmpty
       => Equals(Empty);
@@ -74,21 +59,19 @@ namespace Flux
       return new MomentUtc(year, month, day, hour, minute, second, millisecond);
     }
 
-    public string ToDateString(ConversionCalendar calendar, bool includeHistoricalYearLabel = false)
+    public string ToDateString(ConversionCalendar calendar)
     {
       var sb = new System.Text.StringBuilder();
 
       if (calendar == ConversionCalendar.JulianCalendar)
-        sb.Append($"{ComputeDayOfWeek((int)m_value, out _)}, ");
+        sb.Append($"{DayOfWeek}, ");
 
       ComputeDateComponents((int)m_value, calendar, out var year, out var month, out var day);
 
       sb.Append($"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {year}");
 
-      if (includeHistoricalYearLabel)
-        sb.Append($", a.k.a. {(year <= 0 ? $"{System.Math.Abs(year) + 1} BC" : $"{year} AD")}");
-
-      sb.Append($" ({calendar.ToString()})");
+      if (year <= 0)
+        sb.Append($" ({System.Math.Abs(year) + 1} BC)");
 
       return sb.ToString();
     }
@@ -117,7 +100,8 @@ namespace Flux
       const int C = -38;
 
       var f = J + j;
-      if (calendar == ConversionCalendar.GregorianCalendar) f += (((4 * J + B) / 146097) * 3) / 4 + C;
+      if (calendar == ConversionCalendar.GregorianCalendar)
+        f += (((4 * J + B) / 146097) * 3) / 4 + C;
       var e = r * f + v;
       var g = (e % p) / r;
       var h = u * g + w;
@@ -126,6 +110,15 @@ namespace Flux
       month = ((h / s + m) % n) + 1;
       year = (e / p) - y + (n + m - month) / n;
     }
+    /// <summary>Returns a day of week [0 (Monday), 6 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday.</summary>
+    public static int ComputeDayOfWeek(int julianDayNumber)
+      => julianDayNumber % 7;
+    /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
+    /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
+    /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
+    /// <param name="indictionCycle">That year's position in the 15-year indiction cycle.</param>
+    public static double ComputeJulianPeriod(int solarCycle, int lunarCycle, int indictionCycle)
+      => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28);
     /// <summary>This method is only concerned with the time portion of the Julian Date.</summary>
     public static void ComputeTimeComponents(double julianDate, out int hour, out int minute, out int second, out int millisecond)
     {
@@ -142,19 +135,21 @@ namespace Flux
 
       millisecond = (int)System.Math.Round(f);
     }
-    /// <summary>Returns a day of week [0 (Monday), 6 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday.</summary>
-    /// <returns>0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday.</returns>
-    public static System.DayOfWeek ComputeDayOfWeek(int julianDayNumber, out int dayOfWeek)
-      => (System.DayOfWeek)(((dayOfWeek = julianDayNumber % 7) + 1) % 7);
     #endregion Static methods
 
     #region Overloaded operators
-    //public static JulianDate operator +(JulianDate a, double b)
-    //  => new JulianDate(a.m_value + b);
+    public static JulianDate operator +(JulianDate a, double b)
+      => new JulianDate(a.m_value + b);
+    public static JulianDate operator +(JulianDate a, Units.Time b)
+      => a + (b.Second / 86400.0);
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
-      => new JulianDate(a.m_value + b.Days + ((b.Hours - 12) / HoursPerDay) + (b.Minutes / MinutesPerDay) + (b.Seconds / SecondsPerDay));
-    //public static JulianDate operator -(JulianDate a, double b)
-    //  => new JulianDate(a.m_value - b);
+      => a.AddDays(b.Days).AddHours(b.Hours).AddMinutes(b.Minutes).AddSeconds(b.Seconds).AddMillieconds(b.Milliseconds);
+    public static JulianDate operator -(JulianDate a, double b)
+      => new JulianDate(a.m_value - b);
+    public static JulianDate operator -(JulianDate a, Units.Time b)
+      => a - (b.Second / 86400.0);
+    public static JulianDate operator -(JulianDate a, System.TimeSpan b)
+      => a.AddDays(-b.Days).AddHours(-b.Hours).AddMinutes(-b.Minutes).AddSeconds(-b.Seconds).AddMillieconds(-b.Milliseconds);
 
     public static bool operator <(JulianDate a, JulianDate b)
       => a.CompareTo(b) < 0;
@@ -187,7 +182,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string? ToString()
-      => $"<{GetType().Name} {m_value} ({(IsGregorianCalendar ? ToDateString(ConversionCalendar.GregorianCalendar, true) : ToDateString(ConversionCalendar.JulianCalendar, true))} {ToTimeString()})>";
+      => $"<{GetType().Name}: {m_value} ({(IsGregorianCalendar ? ToDateString(ConversionCalendar.GregorianCalendar) : ToDateString(ConversionCalendar.JulianCalendar))}, {ToTimeString()})>";
     #endregion Object overrides
   }
 }
