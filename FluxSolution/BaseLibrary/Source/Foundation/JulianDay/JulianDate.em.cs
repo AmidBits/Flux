@@ -24,11 +24,11 @@ namespace Flux
   {
     public const double CalendarCutover = 2299160.5;
 
-    public System.DateTime GregorianCalendarStartDate
-      => new System.DateTime(1582, 10, 15);
+    //public System.DateTime GregorianCalendarStartDate
+    //  => new System.DateTime(1582, 10, 15);
 
-    public System.DateTime JulianCalendarEndDate
-      => new System.DateTime(1582, 10, 4);
+    //public System.DateTime JulianCalendarEndDate
+    //  => new System.DateTime(1582, 10, 4);
 
     public const double HoursPerDay = 24;
     public const double MinutesPerDay = 1440;
@@ -63,6 +63,9 @@ namespace Flux
     public Units.Time TimeOfDay
       => new Units.Time(m_value % 1 * 86400);
 
+    public double Value
+      => m_value;
+
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ComputeDateComponents((int)m_value, calendar, out var year, out var month, out var day);
@@ -70,9 +73,6 @@ namespace Flux
 
       return new MomentUtc(year, month, day, hour, minute, second, millisecond);
     }
-
-    public double Value
-      => m_value;
 
     public string ToDateString(ConversionCalendar calendar, bool includeHistoricalYearLabel = false)
     {
