@@ -9,6 +9,85 @@ namespace Foundation
   public class JulianDate
   {
     [TestMethod]
+    public void ComputeJulianPeriod()
+    {
+      Assert.AreEqual(2015, Flux.JulianDate.ComputeJulianPeriod(8, 2, 8));
+    }
+
+    [TestMethod]
+    public void IsGregorianCalendar()
+    {
+      Assert.AreEqual(true, Flux.JulianDate.FirstGregorianDate.IsGregorianCalendar);
+      Assert.AreEqual(false, Flux.JulianDate.FirstJulianDate.IsGregorianCalendar);
+      Assert.AreEqual(false, Flux.JulianDate.LastJulianDate.IsGregorianCalendar);
+    }
+
+    [TestMethod]
+    public void FirstGregorianDate()
+    {
+      var fgd = Flux.JulianDate.FirstGregorianDate;
+
+      Assert.AreEqual(2299161.5, fgd.Value);
+    }
+    [TestMethod]
+    public void FirstJulianDate()
+    {
+      var fjd = Flux.JulianDate.FirstJulianDate;
+
+      Assert.AreEqual(0.5, fjd.Value);
+    }
+    [TestMethod]
+    public void LastJulianDate()
+    {
+      var ljd = Flux.JulianDate.LastJulianDate;
+
+      Assert.AreEqual(2299160.5, ljd.Value);
+    }
+
+    [TestMethod]
+    public void AddDays()
+    {
+      var jd = new Flux.JulianDate(0).AddDays(1);
+
+      Assert.AreEqual(1, jd.Value);
+    }
+    [TestMethod]
+    public void AddHours()
+    {
+      var jd = new Flux.JulianDate(0).AddHours(1);
+
+      Assert.AreEqual(0.041666666666666664, jd.Value);
+    }
+    [TestMethod]
+    public void AddMillieconds()
+    {
+      var jd = new Flux.JulianDate(0).AddMillieconds(1);
+
+      Assert.AreEqual(1.1574074074074074E-08, jd.Value);
+    }
+    [TestMethod]
+    public void AddMinutes()
+    {
+      var jd = new Flux.JulianDate(0).AddMinutes(1);
+
+      Assert.AreEqual(0.0006944444444444445, jd.Value);
+    }
+    [TestMethod]
+    public void AddSeconds()
+    {
+      var jd = new Flux.JulianDate(0).AddSeconds(1);
+
+      Assert.AreEqual(1.1574074074074073E-05, jd.Value);
+    }
+    [TestMethod]
+    public void AddWeeks()
+    {
+      var jd = new Flux.JulianDate(0).AddWeeks(1);
+
+      Assert.AreEqual(7, jd.Value);
+    }
+
+    [TestMethod]
     public void DayOfWeek()
     {
       var jd1 = new Flux.MomentUtc(1991, 7, 11).ToJulianDate(ConversionCalendar.GregorianCalendar);
