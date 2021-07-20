@@ -14,7 +14,14 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
   {
-    public static readonly JulianDate Empty;
+    public static JulianDate FirstGregorianDate
+      => new MomentUtc(1582, 10, 15, 12, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
+    public static JulianDate LastJulianDate
+      => new MomentUtc(1582, 10, 4, 12, 0, 0).ToJulianDate(ConversionCalendar.JulianCalendar);
+    public static JulianDate FirstJulianDate
+      => new MomentUtc(-4712, 1, 1, 12, 0, 0).ToJulianDate(ConversionCalendar.JulianCalendar);
+
+    public static readonly JulianDate Zero;
 
     private readonly double m_value;
 
@@ -37,9 +44,6 @@ namespace Flux
 
     public System.DayOfWeek DayOfWeek
       => (System.DayOfWeek)((ComputeDayOfWeek((int)m_value) + 1) % 7);
-
-    public bool IsEmpty
-      => Equals(Empty);
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
     public bool IsGregorianCalendar
@@ -118,7 +122,7 @@ namespace Flux
     /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
     /// <param name="indictionCycle">That year's position in the 15-year indiction cycle.</param>
     public static double ComputeJulianPeriod(int solarCycle, int lunarCycle, int indictionCycle)
-      => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28);
+      => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28) is var year && year > 4713 ? year - 4713 : year < 4714 ? -(4714 - year) : year;
     /// <summary>This method is only concerned with the time portion of the Julian Date.</summary>
     public static void ComputeTimeComponents(double julianDate, out int hour, out int minute, out int second, out int millisecond)
     {

@@ -28,6 +28,14 @@ namespace Foundation
     }
 
     [TestMethod]
+    public void TimeOfDay()
+    {
+      var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
+
+      Assert.AreEqual(0.5091898148148147, m.TimeOfDay.Second);
+    }
+
+    [TestMethod]
     public void TotalSeconds()
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
