@@ -1,29 +1,29 @@
 namespace Flux.Units
 {
-  /// <summary>Area.</summary>
+  /// <summary>Area unit of square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
     : System.IComparable<Area>, System.IEquatable<Area>, IStandardizedScalar
   {
-    private readonly double m_squareMeter;
+    private readonly double m_value;
 
     public Area(double squareMeter)
-      => m_squareMeter = squareMeter;
+      => m_value = squareMeter;
 
-    public double SquareMeter
-      => m_squareMeter;
+    public double Value
+      => m_value;
 
     #region Static methods
     /// <summary>Creates a new Area instance from the specified rectangular length and width.</summary>
     /// <param name="length"></param>
     /// <param name="width"></param>
     public static Area From(Length length, Length width)
-      => new Area(length.Meter * width.Meter);
+      => new Area(length.Value * width.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Area v)
-      => v.m_squareMeter;
+      => v.m_value;
     public static explicit operator Area(double v)
       => new Area(v);
 
@@ -42,40 +42,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Area operator -(Area v)
-      => new Area(-v.m_squareMeter);
+      => new Area(-v.m_value);
     public static Area operator +(Area a, Area b)
-      => new Area(a.m_squareMeter + b.m_squareMeter);
+      => new Area(a.m_value + b.m_value);
     public static Area operator /(Area a, Area b)
-      => new Area(a.m_squareMeter + b.m_squareMeter);
+      => new Area(a.m_value + b.m_value);
     public static Area operator *(Area a, Area b)
-      => new Area(a.m_squareMeter + b.m_squareMeter);
+      => new Area(a.m_value + b.m_value);
     public static Area operator %(Area a, Area b)
-      => new Area(a.m_squareMeter + b.m_squareMeter);
+      => new Area(a.m_value + b.m_value);
     public static Area operator -(Area a, Area b)
-      => new Area(a.m_squareMeter + b.m_squareMeter);
+      => new Area(a.m_value + b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Area other)
-      => m_squareMeter.CompareTo(other.m_squareMeter);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Area other)
-      => m_squareMeter == other.m_squareMeter;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_squareMeter;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Area o && Equals(o);
     public override int GetHashCode()
-      => m_squareMeter.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_squareMeter} m²>";
+      => $"<{GetType().Name}: {m_value} m²>";
     #endregion Object overrides
   }
 }

@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Frequency is a mutable data type to accomodate changes across multiple consumers.</summary>
+  /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
     : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IStandardizedScalar
   {
-    private readonly double m_gramPerCubicMeter;
+    private readonly double m_value;
 
-    public AbsoluteHumidity(double gramPerCubicMeter)
-      => m_gramPerCubicMeter = gramPerCubicMeter;
+    public AbsoluteHumidity(double gramsPerCubicMeter)
+      => m_value = gramsPerCubicMeter;
 
-    public double GramPerCubicMeter
-      => m_gramPerCubicMeter;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(AbsoluteHumidity v)
-      => v.m_gramPerCubicMeter;
+      => v.m_value;
     public static explicit operator AbsoluteHumidity(double v)
       => new AbsoluteHumidity(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static AbsoluteHumidity operator -(AbsoluteHumidity v)
-      => new AbsoluteHumidity(-v.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(-v.m_value);
     public static AbsoluteHumidity operator +(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_gramPerCubicMeter + b.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_value + b.m_value);
     public static AbsoluteHumidity operator /(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_gramPerCubicMeter / b.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_value / b.m_value);
     public static AbsoluteHumidity operator *(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_gramPerCubicMeter * b.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_value * b.m_value);
     public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_gramPerCubicMeter % b.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_value % b.m_value);
     public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_gramPerCubicMeter - b.m_gramPerCubicMeter);
+      => new AbsoluteHumidity(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(AbsoluteHumidity other)
-      => m_gramPerCubicMeter.CompareTo(other.m_gramPerCubicMeter);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(AbsoluteHumidity other)
-      => m_gramPerCubicMeter == other.m_gramPerCubicMeter;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_gramPerCubicMeter;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is AbsoluteHumidity o && Equals(o);
     public override int GetHashCode()
-      => m_gramPerCubicMeter.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_gramPerCubicMeter} g/m³>";
+      => $"<{GetType().Name}: {m_value} g/m³>";
     #endregion Object overrides
   }
 }

@@ -6,27 +6,27 @@ namespace Flux.Units
     Ampere,
   }
 
-  /// <summary>Electric current.</summary>
+  /// <summary>Electric current unit of ampere.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
     : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IStandardizedScalar
   {
-    private readonly double m_ampere;
+    private readonly double m_value;
 
     public ElectricCurrent(double ampere)
-      => m_ampere = ampere;
+      => m_value = ampere;
 
-    public double Ampere
-      => m_ampere;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(ElectricCurrentUnit unit)
     {
       switch (unit)
       {
         case ElectricCurrentUnit.Milliampere:
-          return m_ampere * 1000;
+          return m_value * 1000;
         case ElectricCurrentUnit.Ampere:
-          return m_ampere;
+          return m_value;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -37,12 +37,12 @@ namespace Flux.Units
     /// <param name="power"></param>
     /// <param name="voltage"></param>
     public static ElectricCurrent From(Power power, Voltage voltage)
-      => new ElectricCurrent(power.Watt / voltage.Volt);
+      => new ElectricCurrent(power.Value / voltage.Value);
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new ElectricCurrent(voltage.Volt / resistance.Ohm);
+      => new ElectricCurrent(voltage.Value / resistance.Value);
     public static ElectricCurrent FromUnitValue(ElectricCurrentUnit unit, double value)
     {
       switch (unit)
@@ -59,7 +59,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(ElectricCurrent v)
-      => v.m_ampere;
+      => v.m_value;
     public static explicit operator ElectricCurrent(double v)
       => new ElectricCurrent(v);
 
@@ -78,40 +78,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static ElectricCurrent operator -(ElectricCurrent v)
-      => new ElectricCurrent(-v.m_ampere);
+      => new ElectricCurrent(-v.m_value);
     public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_ampere + b.m_ampere);
+      => new ElectricCurrent(a.m_value + b.m_value);
     public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_ampere / b.m_ampere);
+      => new ElectricCurrent(a.m_value / b.m_value);
     public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_ampere * b.m_ampere);
+      => new ElectricCurrent(a.m_value * b.m_value);
     public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_ampere % b.m_ampere);
+      => new ElectricCurrent(a.m_value % b.m_value);
     public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_ampere - b.m_ampere);
+      => new ElectricCurrent(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(ElectricCurrent other)
-      => m_ampere.CompareTo(other.m_ampere);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(ElectricCurrent other)
-      => m_ampere == other.m_ampere;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_ampere;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is ElectricCurrent o && Equals(o);
     public override int GetHashCode()
-      => m_ampere.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_ampere} A>";
+      => $"<{GetType().Name}: {m_value} A>";
     #endregion Object overrides
   }
 }

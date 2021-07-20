@@ -1,10 +1,10 @@
 namespace Flux
 {
-	public static partial class Maths
-	{
-		public static double MaxRange(double initialVelocityMPS, double initialAngleRAD, double gravitationalPull = EarthNullGravityMPS)
-			=> System.Math.Sin(2 * initialAngleRAD) * initialVelocityMPS * initialVelocityMPS / gravitationalPull;
-		public static double MaxHeight(double initialVelocityMPS, double initialAngleRAD, double gravitationalPull = EarthNullGravityMPS)
-			=> System.Math.Pow(System.Math.Sin(initialAngleRAD), 2) * initialVelocityMPS * initialVelocityMPS / (2 * gravitationalPull);
-	}
+  public static partial class Maths
+  {
+    public static double MaxRange(double initialVelocityMps, double initialAngleRad, double gravitationalPull = EarthNullGravityMeterPerSecond)
+      => System.Math.Sin(2 * initialAngleRad) * initialVelocityMps * initialVelocityMps / gravitationalPull;
+    public static double MaxHeight(double initialVelocityMps, double initialAngleRad, double gravitationalPull = EarthNullGravityMeterPerSecond)
+      => System.Math.Pow(System.Math.Sin(initialAngleRad), 2) * initialVelocityMps * initialVelocityMps / (2 * gravitationalPull);
+  }
 }

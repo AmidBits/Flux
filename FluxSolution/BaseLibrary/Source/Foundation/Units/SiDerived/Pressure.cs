@@ -6,27 +6,27 @@ namespace Flux.Units
     PSI,
   }
 
-  /// <summary>Pressure.</summary>
+  /// <summary>Pressure unit of Pascal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
     : System.IComparable<Pressure>, System.IEquatable<Pressure>, IStandardizedScalar
   {
-    private readonly double m_pascal;
+    private readonly double m_value;
 
     public Pressure(double pascal)
-      => m_pascal = pascal;
+      => m_value = pascal;
 
-    public double Pascal
-      => m_pascal;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(PressureUnit unit)
     {
       switch (unit)
       {
         case PressureUnit.Pascal:
-          return m_pascal;
+          return m_value;
         case PressureUnit.PSI:
-          return m_pascal * (1290320000.0 / 8896443230521.0);
+          return m_value * (1290320000.0 / 8896443230521.0);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -49,7 +49,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Pressure v)
-      => v.m_pascal;
+      => v.m_value;
     public static explicit operator Pressure(double v)
       => new Pressure(v);
 
@@ -68,40 +68,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Pressure operator -(Pressure v)
-      => new Pressure(-v.m_pascal);
+      => new Pressure(-v.m_value);
     public static Pressure operator +(Pressure a, Pressure b)
-      => new Pressure(a.m_pascal + b.m_pascal);
+      => new Pressure(a.m_value + b.m_value);
     public static Pressure operator /(Pressure a, Pressure b)
-      => new Pressure(a.m_pascal / b.m_pascal);
+      => new Pressure(a.m_value / b.m_value);
     public static Pressure operator *(Pressure a, Pressure b)
-      => new Pressure(a.m_pascal * b.m_pascal);
+      => new Pressure(a.m_value * b.m_value);
     public static Pressure operator %(Pressure a, Pressure b)
-      => new Pressure(a.m_pascal % b.m_pascal);
+      => new Pressure(a.m_value % b.m_value);
     public static Pressure operator -(Pressure a, Pressure b)
-      => new Pressure(a.m_pascal - b.m_pascal);
+      => new Pressure(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Pressure other)
-      => m_pascal.CompareTo(other.m_pascal);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Pressure other)
-      => m_pascal == other.m_pascal;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_pascal;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Pressure o && Equals(o);
     public override int GetHashCode()
-      => m_pascal.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_pascal} Pa>";
+      => $"<{GetType().Name}: {m_value} Pa>";
     #endregion Object overrides
   }
 }

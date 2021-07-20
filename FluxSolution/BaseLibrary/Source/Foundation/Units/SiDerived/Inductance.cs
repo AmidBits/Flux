@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Electrical inductance.</summary>
+  /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
     : System.IComparable<Inductance>, System.IEquatable<Inductance>, IStandardizedScalar
   {
-    private readonly double m_henry;
+    private readonly double m_value;
 
     public Inductance(double henry)
-      => m_henry = henry;
+      => m_value = henry;
 
-    public double Henry
-      => m_henry;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(Inductance v)
-      => v.m_henry;
+      => v.m_value;
     public static explicit operator Inductance(double v)
       => new Inductance(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Inductance operator -(Inductance v)
-      => new Inductance(-v.m_henry);
+      => new Inductance(-v.m_value);
     public static Inductance operator +(Inductance a, Inductance b)
-       => new Inductance(a.m_henry + b.m_henry);
+       => new Inductance(a.m_value + b.m_value);
     public static Inductance operator /(Inductance a, Inductance b)
-      => new Inductance(a.m_henry / b.m_henry);
+      => new Inductance(a.m_value / b.m_value);
     public static Inductance operator *(Inductance a, Inductance b)
-      => new Inductance(a.m_henry * b.m_henry);
+      => new Inductance(a.m_value * b.m_value);
     public static Inductance operator %(Inductance a, Inductance b)
-      => new Inductance(a.m_henry % b.m_henry);
+      => new Inductance(a.m_value % b.m_value);
     public static Inductance operator -(Inductance a, Inductance b)
-      => new Inductance(a.m_henry - b.m_henry);
+      => new Inductance(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Inductance other)
-      => m_henry.CompareTo(other.m_henry);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Inductance other)
-      => m_henry == other.m_henry;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_henry;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Inductance o && Equals(o);
     public override int GetHashCode()
-      => m_henry.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_henry} H>";
+      => $"<{GetType().Name}: {m_value} H>";
     #endregion Object overrides
   }
 }

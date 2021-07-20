@@ -8,10 +8,10 @@ namespace Flux.Units
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    private readonly Angle m_angle;
+    private readonly Angle m_value;
 
     public Latitude(double degree)
-      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, System.Math.Clamp(degree, MinValue, MaxValue));
+      => m_value = Angle.FromUnitValue(AngleUnit.Degree, System.Math.Clamp(degree, MinValue, MaxValue));
     public Latitude(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
@@ -29,7 +29,10 @@ namespace Flux.Units
       => new Length(ComputeApproximateRadius(Angle.Degree));
 
     public Angle Angle
-      => m_angle;
+      => m_value;
+
+    public double Value
+      => m_value.Degree;
 
     #region Static methods
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
@@ -76,7 +79,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Latitude v)
-      => v.m_angle.Degree;
+      => v.m_value.Degree;
     public static explicit operator Latitude(double v)
       => new Latitude(v);
 
@@ -95,40 +98,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Latitude operator -(Latitude v)
-      => new Latitude(-v.m_angle);
+      => new Latitude(-v.m_value);
     public static Latitude operator +(Latitude a, Latitude b)
-      => new Latitude(a.m_angle + b.m_angle);
+      => new Latitude(a.m_value + b.m_value);
     public static Latitude operator /(Latitude a, Latitude b)
-      => new Latitude(a.m_angle / b.m_angle);
+      => new Latitude(a.m_value / b.m_value);
     public static Latitude operator *(Latitude a, Latitude b)
-      => new Latitude(a.m_angle * b.m_angle);
+      => new Latitude(a.m_value * b.m_value);
     public static Latitude operator %(Latitude a, Latitude b)
-      => new Latitude(a.m_angle % b.m_angle);
+      => new Latitude(a.m_value % b.m_value);
     public static Latitude operator -(Latitude a, Latitude b)
-      => new Latitude(a.m_angle - b.m_angle);
+      => new Latitude(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Latitude other)
-      => m_angle.CompareTo(other.m_angle);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Latitude other)
-      => m_angle == other.m_angle;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_angle.Degree;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
-      => m_angle.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_angle.Degree}\u00B0>";
+      => $"<{GetType().Name}: {m_value.Degree}\u00B0>";
     #endregion Object overrides
   }
 }

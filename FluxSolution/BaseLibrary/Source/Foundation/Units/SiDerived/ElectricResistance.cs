@@ -1,24 +1,24 @@
 namespace Flux.Units
 {
-  /// <summary>Electric resistance.</summary>
+  /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IStandardizedScalar
   {
-    private readonly double m_ohm;
+    private readonly double m_value;
 
     public ElectricResistance(double ohm)
-      => m_ohm = ohm;
+      => m_value = ohm;
 
-    public double Ohm
-      => m_ohm;
+    public double Value
+      => m_value;
 
     #region Static methods
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
     /// <param name="voltage"></param>
     /// <param name="current"></param>
     public static ElectricResistance From(Voltage voltage, ElectricCurrent current)
-      => new ElectricResistance(voltage.Volt / current.Ampere);
+      => new ElectricResistance(voltage.Value / current.Value);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
     {
@@ -39,7 +39,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(ElectricResistance v)
-      => v.m_ohm;
+      => v.m_value;
     public static explicit operator ElectricResistance(double v)
       => new ElectricResistance(v);
 
@@ -58,40 +58,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static ElectricResistance operator -(ElectricResistance v)
-      => new ElectricResistance(-v.m_ohm);
+      => new ElectricResistance(-v.m_value);
     public static ElectricResistance operator +(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_ohm + b.m_ohm);
+      => new ElectricResistance(a.m_value + b.m_value);
     public static ElectricResistance operator /(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_ohm / b.m_ohm);
+      => new ElectricResistance(a.m_value / b.m_value);
     public static ElectricResistance operator *(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_ohm * b.m_ohm);
+      => new ElectricResistance(a.m_value * b.m_value);
     public static ElectricResistance operator %(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_ohm % b.m_ohm);
+      => new ElectricResistance(a.m_value % b.m_value);
     public static ElectricResistance operator -(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_ohm - b.m_ohm);
+      => new ElectricResistance(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(ElectricResistance other)
-      => m_ohm.CompareTo(other.m_ohm);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(ElectricResistance other)
-      => m_ohm == other.m_ohm;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_ohm;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is ElectricResistance o && Equals(o);
     public override int GetHashCode()
-      => m_ohm.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_ohm} \u03A9>";
+      => $"<{GetType().Name}: {m_value} \u03A9>";
     #endregion Object overrides
   }
 }

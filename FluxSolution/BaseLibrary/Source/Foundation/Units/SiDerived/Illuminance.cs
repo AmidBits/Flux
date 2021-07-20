@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Illuminance.</summary>
+  /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
     : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IStandardizedScalar
   {
-    private readonly double m_lux;
+    private readonly double m_value;
 
     public Illuminance(double lux)
-      => m_lux = lux;
+      => m_value = lux;
 
-    public double Lux
-      => m_lux;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(Illuminance v)
-      => v.m_lux;
+      => v.m_value;
     public static explicit operator Illuminance(double v)
       => new Illuminance(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Illuminance operator -(Illuminance v)
-      => new Illuminance(-v.m_lux);
+      => new Illuminance(-v.m_value);
     public static Illuminance operator +(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_lux + b.m_lux);
+      => new Illuminance(a.m_value + b.m_value);
     public static Illuminance operator /(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_lux / b.m_lux);
+      => new Illuminance(a.m_value / b.m_value);
     public static Illuminance operator *(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_lux * b.m_lux);
+      => new Illuminance(a.m_value * b.m_value);
     public static Illuminance operator %(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_lux % b.m_lux);
+      => new Illuminance(a.m_value % b.m_value);
     public static Illuminance operator -(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_lux - b.m_lux);
+      => new Illuminance(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Illuminance other)
-      => m_lux.CompareTo(other.m_lux);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Illuminance other)
-      => m_lux == other.m_lux;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_lux;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Illuminance o && Equals(o);
     public override int GetHashCode()
-      => m_lux.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_lux} lx>";
+      => $"<{GetType().Name}: {m_value} lx>";
     #endregion Object overrides
   }
 }

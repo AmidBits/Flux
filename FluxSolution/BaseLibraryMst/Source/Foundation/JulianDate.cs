@@ -126,7 +126,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(43993.99999999993, m.TimeOfDay.Second);
+      Assert.AreEqual(43993.99999999993, m.TimeOfDay.Value);
     }
 
     [TestMethod]

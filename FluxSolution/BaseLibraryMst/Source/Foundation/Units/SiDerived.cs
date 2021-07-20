@@ -12,7 +12,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Acceleration(1);
 
-      Assert.AreEqual(1, u.MeterPerSecondSquare);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -33,7 +33,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.AngularAcceleration(1);
 
-      Assert.AreEqual(1, u.RadianPerSecondSquare);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -41,7 +41,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.AngularVelocity(1);
 
-      Assert.AreEqual(1, u.RadianPerSecond);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -49,7 +49,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Area(1);
 
-      Assert.AreEqual(1, u.SquareMeter);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -57,7 +57,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Capacitance(1);
 
-      Assert.AreEqual(1, u.Farad);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -65,7 +65,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.CatalyticActivity(1);
 
-      Assert.AreEqual(1, u.Katal);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -73,7 +73,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Density(1);
 
-      Assert.AreEqual(1, u.KilogramPerCubicMeter);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -81,7 +81,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.ElectricalConductance(1);
 
-      Assert.AreEqual(1, u.Siemens);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -89,7 +89,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.ElectricCharge(1);
 
-      Assert.AreEqual(1, u.Coulomb);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -97,7 +97,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.ElectricResistance(1);
 
-      Assert.AreEqual(1, u.Ohm);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -105,7 +105,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Energy(1);
 
-      Assert.AreEqual(1, u.Joule);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -113,7 +113,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Flow(1);
 
-      Assert.AreEqual(1, u.CubicMeterPerSecond);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -121,7 +121,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Force(1);
 
-      Assert.AreEqual(1, u.Newton);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Frequency(1);
 
-      Assert.AreEqual(1, u.Hertz);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -137,7 +137,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Illuminance(1);
 
-      Assert.AreEqual(1, u.Lux);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -145,7 +145,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Inductance(1);
 
-      Assert.AreEqual(1, u.Henry);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -153,7 +153,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.LuminousFlux(1);
 
-      Assert.AreEqual(1, u.Lumen);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -161,7 +161,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Power(1);
 
-      Assert.AreEqual(1, u.Watt);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -169,7 +169,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Pressure(1);
 
-      Assert.AreEqual(1, u.Pascal);
+      Assert.AreEqual(1, u.Value);
       Assert.AreEqual(0.0001450377377302092, u.ToUnitValue(Flux.Units.PressureUnit.PSI));
     }
 
@@ -178,7 +178,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Radioactivity(1);
 
-      Assert.AreEqual(1, u.Becquerel);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -189,7 +189,7 @@ namespace Foundation.Units
       Assert.AreEqual(3.2808398950131235, u.ToUnitValue(Flux.Units.SpeedUnit.FeetPerSecond));
       Assert.AreEqual(3.6, u.ToUnitValue(Flux.Units.SpeedUnit.KilometersPerHour));
       Assert.AreEqual(1.9438444924406046, u.ToUnitValue(Flux.Units.SpeedUnit.Knots));
-      Assert.AreEqual(1, u.MeterPerSecond);
+      Assert.AreEqual(1, u.Value);
       Assert.AreEqual(2.2369362920544025, u.ToUnitValue(Flux.Units.SpeedUnit.MilesPerHour));
     }
 
@@ -198,7 +198,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Torque(1);
 
-      Assert.AreEqual(1, u.NewtonMeter);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -206,7 +206,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Voltage(1);
 
-      Assert.AreEqual(1, u.Volt);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
@@ -214,7 +214,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Volume(1);
 
-      Assert.AreEqual(1, u.CubicMeter);
+      Assert.AreEqual(1, u.Value);
     }
   }
 }

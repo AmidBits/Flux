@@ -28,6 +28,9 @@ namespace Flux.Units
     public double Radian
       => m_radian;
 
+    public double Value
+      => m_radian;
+
     public (double x, double y) ToCartesian()
       => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
     public (double x, double y) ToCartesianEx()
@@ -161,10 +164,6 @@ namespace Flux.Units
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_radian;
     #endregion Implemented interfaces
 
     #region Object overrides

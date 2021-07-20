@@ -8,7 +8,7 @@ namespace Flux.Units
     Rankine,
   }
 
-  /// <summary>Temperature.</summary>
+  /// <summary>Temperature unit of kelvin.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
     : System.IComparable<Temperature>, System.IEquatable<Temperature>, IStandardizedScalar
@@ -29,26 +29,26 @@ namespace Flux.Units
     public const double RankineBoilingPoint = 671.64102;
     public const double RankineIcePoint = 491.67;
 
-    private readonly double m_kelvin;
+    private readonly double m_value;
 
     public Temperature(double kelvin)
-      => m_kelvin = kelvin;
+      => m_value = kelvin;
 
-    public double Kelvin
-      => m_kelvin;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(TemperatureUnit unit)
     {
       switch (unit)
       {
         case TemperatureUnit.Celsius:
-          return m_kelvin - KelvinIcePoint;
+          return m_value - KelvinIcePoint;
         case TemperatureUnit.Fahrenheit:
-          return m_kelvin * 1.8 + FahrenheitAbsoluteZero;
+          return m_value * 1.8 + FahrenheitAbsoluteZero;
         case TemperatureUnit.Kelvin:
-          return m_kelvin;
+          return m_value;
         case TemperatureUnit.Rankine:
-          return m_kelvin * 1.8;
+          return m_value * 1.8;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -112,7 +112,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Temperature v)
-      => v.m_kelvin;
+      => v.m_value;
     public static explicit operator Temperature(double v)
       => new Temperature(v);
 
@@ -131,40 +131,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Temperature operator -(Temperature v)
-      => new Temperature(-v.m_kelvin);
+      => new Temperature(-v.m_value);
     public static Temperature operator +(Temperature a, Temperature b)
-      => new Temperature(a.m_kelvin + b.m_kelvin);
+      => new Temperature(a.m_value + b.m_value);
     public static Temperature operator /(Temperature a, Temperature b)
-      => new Temperature(a.m_kelvin / b.m_kelvin);
+      => new Temperature(a.m_value / b.m_value);
     public static Temperature operator %(Temperature a, Temperature b)
-      => new Temperature(a.m_kelvin % b.m_kelvin);
+      => new Temperature(a.m_value % b.m_value);
     public static Temperature operator *(Temperature a, Temperature b)
-      => new Temperature(a.m_kelvin * b.m_kelvin);
+      => new Temperature(a.m_value * b.m_value);
     public static Temperature operator -(Temperature a, Temperature b)
-      => new Temperature(a.m_kelvin - b.m_kelvin);
+      => new Temperature(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Temperature other)
-      => m_kelvin.CompareTo(other.m_kelvin);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable<Angle>
     public bool Equals(Temperature other)
-      => m_kelvin == other.m_kelvin;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_kelvin;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Temperature o && Equals(o);
     public override int GetHashCode()
-      => m_kelvin.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_kelvin} K>";
+      => $"<{GetType().Name}: {m_value} K>";
     #endregion Object overrides
   }
 }

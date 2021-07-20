@@ -1,29 +1,29 @@
 namespace Flux.Units
 {
-  /// <summary>Power.</summary>
+  /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
     : System.IComparable<Power>, System.IEquatable<Power>, IStandardizedScalar
   {
-    private readonly double m_watt;
+    private readonly double m_value;
 
     public Power(double watt)
-      => m_watt = watt;
+      => m_value = watt;
 
-    public double Watt
-      => m_watt;
+    public double Value
+      => m_value;
 
     #region Static methods
     /// <summary>Creates a new Power instance from the specified current and voltage.</summary>
     /// <param name="current"></param>
     /// <param name="voltage"></param>
     public static Power From(ElectricCurrent current, Voltage voltage)
-      => new Power(current.Ampere * voltage.Volt);
+      => new Power(current.Value * voltage.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Power v)
-      => v.m_watt;
+      => v.m_value;
     public static explicit operator Power(double v)
       => new Power(v);
 
@@ -42,40 +42,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Power operator -(Power v)
-      => new Power(-v.m_watt);
+      => new Power(-v.m_value);
     public static Power operator +(Power a, Power b)
-      => new Power(a.m_watt + b.m_watt);
+      => new Power(a.m_value + b.m_value);
     public static Power operator /(Power a, Power b)
-      => new Power(a.m_watt / b.m_watt);
+      => new Power(a.m_value / b.m_value);
     public static Power operator *(Power a, Power b)
-      => new Power(a.m_watt * b.m_watt);
+      => new Power(a.m_value * b.m_value);
     public static Power operator %(Power a, Power b)
-      => new Power(a.m_watt % b.m_watt);
+      => new Power(a.m_value % b.m_value);
     public static Power operator -(Power a, Power b)
-      => new Power(a.m_watt - b.m_watt);
+      => new Power(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Power other)
-      => m_watt.CompareTo(other.m_watt);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Power other)
-      => m_watt == other.m_watt;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_watt;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Power o && Equals(o);
     public override int GetHashCode()
-      => m_watt.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_watt} W>";
+      => $"<{GetType().Name}: {m_value} W>";
     #endregion Object overrides
   }
 }

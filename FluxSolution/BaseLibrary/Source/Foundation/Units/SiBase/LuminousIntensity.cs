@@ -5,25 +5,25 @@ namespace Flux.Units
     Candela,
   }
 
-  /// <summary>A unit for amount of substance.</summary>
+  /// <summary>Luminous intensity unit of candela.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity
     : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IStandardizedScalar
   {
-    private readonly double m_candela;
+    private readonly double m_value;
 
     public LuminousIntensity(double candela)
-      => m_candela = candela;
+      => m_value = candela;
 
-    public double Candela
-      => m_candela;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(LuminousIntensityUnit unit)
     {
       switch (unit)
       {
         case LuminousIntensityUnit.Candela:
-          return m_candela;
+          return m_value;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -44,7 +44,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(LuminousIntensity v)
-      => v.m_candela;
+      => v.m_value;
     public static explicit operator LuminousIntensity(double v)
       => new LuminousIntensity(v);
 
@@ -63,40 +63,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static LuminousIntensity operator -(LuminousIntensity v)
-      => new LuminousIntensity(-v.m_candela);
+      => new LuminousIntensity(-v.m_value);
     public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_candela + b.m_candela);
+      => new LuminousIntensity(a.m_value + b.m_value);
     public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_candela / b.m_candela);
+      => new LuminousIntensity(a.m_value / b.m_value);
     public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_candela * b.m_candela);
+      => new LuminousIntensity(a.m_value * b.m_value);
     public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_candela % b.m_candela);
+      => new LuminousIntensity(a.m_value % b.m_value);
     public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_candela - b.m_candela);
+      => new LuminousIntensity(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(LuminousIntensity other)
-      => m_candela.CompareTo(other.m_candela);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(LuminousIntensity other)
-      => m_candela == other.m_candela;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_candela;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is LuminousIntensity o && Equals(o);
     public override int GetHashCode()
-      => m_candela.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_candela} cd>";
+      => $"<{GetType().Name}: {m_value} cd>";
     #endregion Object overrides
   }
 }

@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Flow.</summary>
+  /// <summary>Flow unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
     : System.IComparable<Flow>, System.IEquatable<Flow>, IStandardizedScalar
   {
-    private readonly double m_cubicMeterPerSecond;
+    private readonly double m_value;
 
     public Flow(double cubicMeterPerSecond)
-      => m_cubicMeterPerSecond = cubicMeterPerSecond;
+      => m_value = cubicMeterPerSecond;
 
-    public double CubicMeterPerSecond
-      => m_cubicMeterPerSecond;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(Flow v)
-      => v.m_cubicMeterPerSecond;
+      => v.m_value;
     public static explicit operator Flow(double v)
       => new Flow(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Flow operator -(Flow v)
-      => new Flow(-v.m_cubicMeterPerSecond);
+      => new Flow(-v.m_value);
     public static Flow operator +(Flow a, Flow b)
-      => new Flow(a.m_cubicMeterPerSecond + b.m_cubicMeterPerSecond);
+      => new Flow(a.m_value + b.m_value);
     public static Flow operator /(Flow a, Flow b)
-      => new Flow(a.m_cubicMeterPerSecond / b.m_cubicMeterPerSecond);
+      => new Flow(a.m_value / b.m_value);
     public static Flow operator *(Flow a, Flow b)
-      => new Flow(a.m_cubicMeterPerSecond * b.m_cubicMeterPerSecond);
+      => new Flow(a.m_value * b.m_value);
     public static Flow operator %(Flow a, Flow b)
-      => new Flow(a.m_cubicMeterPerSecond % b.m_cubicMeterPerSecond);
+      => new Flow(a.m_value % b.m_value);
     public static Flow operator -(Flow a, Flow b)
-      => new Flow(a.m_cubicMeterPerSecond - b.m_cubicMeterPerSecond);
+      => new Flow(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Flow other)
-      => m_cubicMeterPerSecond.CompareTo(other.m_cubicMeterPerSecond);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Flow other)
-      => m_cubicMeterPerSecond == other.m_cubicMeterPerSecond;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_cubicMeterPerSecond;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Flow o && Equals(o);
     public override int GetHashCode()
-      => m_cubicMeterPerSecond.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_cubicMeterPerSecond} m³/s>";
+      => $"<{GetType().Name}: {m_value} m³/s>";
     #endregion Object overrides
   }
 }

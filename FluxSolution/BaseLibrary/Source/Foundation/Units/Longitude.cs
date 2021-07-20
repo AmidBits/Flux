@@ -8,19 +8,22 @@ namespace Flux.Units
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly Angle m_angle;
+    private readonly Angle m_value;
 
     public Longitude(double degree)
-      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
+      => m_value = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
     public Longitude(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public Angle Angle
-      => m_angle;
+      => m_value;
+
+    public double Value
+      => m_value.Degree;
 
     public int TheoreticalTimezoneOffset
-      => ComputeTheoreticalTimezoneOffset(m_angle.Degree);
+      => ComputeTheoreticalTimezoneOffset(m_value.Degree);
 
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double longitude)
@@ -29,7 +32,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Longitude v)
-      => v.m_angle.Degree;
+      => v.m_value.Degree;
     public static explicit operator Longitude(double v)
       => new Longitude(v);
 
@@ -48,40 +51,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Longitude operator -(Longitude v)
-      => new Longitude(-v.m_angle);
+      => new Longitude(-v.m_value);
     public static Longitude operator +(Longitude a, Longitude b)
-      => new Longitude(a.m_angle + b.m_angle);
+      => new Longitude(a.m_value + b.m_value);
     public static Longitude operator /(Longitude a, Longitude b)
-      => new Longitude(a.m_angle / b.m_angle);
+      => new Longitude(a.m_value / b.m_value);
     public static Longitude operator *(Longitude a, Longitude b)
-      => new Longitude(a.m_angle * b.m_angle);
+      => new Longitude(a.m_value * b.m_value);
     public static Longitude operator %(Longitude a, Longitude b)
-      => new Longitude(a.m_angle % b.m_angle);
+      => new Longitude(a.m_value % b.m_value);
     public static Longitude operator -(Longitude a, Longitude b)
-      => new Longitude(a.m_angle - b.m_angle);
+      => new Longitude(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Longitude other)
-      => m_angle.CompareTo(other.m_angle);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Longitude other)
-      => m_angle == other.m_angle;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_angle.Degree;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Longitude o && Equals(o);
     public override int GetHashCode()
-      => m_angle.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_angle.Degree}\u00B0>";
+      => $"<{GetType().Name}: {m_value.Degree}\u00B0>";
     #endregion Object overrides
   }
 }

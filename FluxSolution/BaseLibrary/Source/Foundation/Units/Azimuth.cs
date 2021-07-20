@@ -25,20 +25,23 @@ namespace Flux.Units
     public const double NorthWest = 315;
     public const double NorthNorthWest = 337.5;
 
-    private readonly Angle m_angle;
+    private readonly Angle m_value;
 
     public Azimuth(double degree)
-      => m_angle = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
+      => m_value = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue) % MaxValue);
     public Azimuth(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public Angle Angle
-      => m_angle;
+      => m_value;
+
+    public double Value
+      => m_value.Degree;
 
     #region Overloaded operators
     public static explicit operator double(Azimuth v)
-     => v.m_angle.Degree;
+     => v.m_value.Degree;
     public static explicit operator Azimuth(double v)
       => new Azimuth(v);
 
@@ -57,40 +60,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Azimuth operator -(Azimuth v)
-      => new Azimuth(-v.m_angle);
+      => new Azimuth(-v.m_value);
     public static Azimuth operator +(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_angle + b.m_angle);
+      => new Azimuth(a.m_value + b.m_value);
     public static Azimuth operator /(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_angle / b.m_angle);
+      => new Azimuth(a.m_value / b.m_value);
     public static Azimuth operator *(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_angle * b.m_angle);
+      => new Azimuth(a.m_value * b.m_value);
     public static Azimuth operator %(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_angle % b.m_angle);
+      => new Azimuth(a.m_value % b.m_value);
     public static Azimuth operator -(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_angle - b.m_angle);
+      => new Azimuth(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Azimuth other)
-      => m_angle.CompareTo(other.m_angle);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Azimuth other)
-      => m_angle == other.m_angle;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_angle.Degree;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Azimuth o && Equals(o);
     public override int GetHashCode()
-      => m_angle.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_angle.Degree}\u00B0>";
+      => $"<{GetType().Name}: {m_value.Degree}\u00B0>";
     #endregion Object overrides
   }
 }

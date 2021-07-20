@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -80,7 +78,7 @@ namespace Flux
       return sb.ToString();
     }
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(TimeOfDay.Second).ToString(@"hh\:mm\:ss");
+      => System.TimeSpan.FromSeconds(TimeOfDay.Value).ToString(@"hh\:mm\:ss");
 
     #region Static methods
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
@@ -145,13 +143,13 @@ namespace Flux
     public static JulianDate operator +(JulianDate a, double b)
       => new JulianDate(a.m_value + b);
     public static JulianDate operator +(JulianDate a, Units.Time b)
-      => a + (b.Second / 86400.0);
+      => a + (b.Value / 86400.0);
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
       => a.AddDays(b.Days).AddHours(b.Hours).AddMinutes(b.Minutes).AddSeconds(b.Seconds).AddMillieconds(b.Milliseconds);
     public static JulianDate operator -(JulianDate a, double b)
       => new JulianDate(a.m_value - b);
     public static JulianDate operator -(JulianDate a, Units.Time b)
-      => a - (b.Second / 86400.0);
+      => a - (b.Value / 86400.0);
     public static JulianDate operator -(JulianDate a, System.TimeSpan b)
       => a.AddDays(-b.Days).AddHours(-b.Hours).AddMinutes(-b.Minutes).AddSeconds(-b.Seconds).AddMillieconds(-b.Milliseconds);
 

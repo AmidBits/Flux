@@ -1,17 +1,17 @@
 namespace Flux.Units
 {
-  /// <summary>Volume.</summary>
+  /// <summary>Volume unit of cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
     : System.IComparable<Volume>, System.IEquatable<Volume>, IStandardizedScalar
   {
-    private readonly double m_cubicMeter;
+    private readonly double m_value;
 
     public Volume(double cubicMeter)
-      => m_cubicMeter = cubicMeter;
+      => m_value = cubicMeter;
 
-    public double CubicMeter
-      => m_cubicMeter;
+    public double Value
+      => m_value;
 
     #region Static methods
     /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>
@@ -19,12 +19,12 @@ namespace Flux.Units
     /// <param name="width"></param>
     /// <param name="height"></param>
     public static Volume From(Length length, Length width, Length height)
-      => new Volume(length.Meter * width.Meter * height.Meter);
+      => new Volume(length.Value * width.Value * height.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Volume v)
-      => v.m_cubicMeter;
+      => v.m_value;
     public static explicit operator Volume(double v)
       => new Volume(v);
 
@@ -43,40 +43,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Volume operator -(Volume v)
-      => new Volume(-v.m_cubicMeter);
+      => new Volume(-v.m_value);
     public static Volume operator +(Volume a, Volume b)
-      => new Volume(a.m_cubicMeter + b.m_cubicMeter);
+      => new Volume(a.m_value + b.m_value);
     public static Volume operator /(Volume a, Volume b)
-      => new Volume(a.m_cubicMeter / b.m_cubicMeter);
+      => new Volume(a.m_value / b.m_value);
     public static Volume operator *(Volume a, Volume b)
-      => new Volume(a.m_cubicMeter * b.m_cubicMeter);
+      => new Volume(a.m_value * b.m_value);
     public static Volume operator %(Volume a, Volume b)
-      => new Volume(a.m_cubicMeter % b.m_cubicMeter);
+      => new Volume(a.m_value % b.m_value);
     public static Volume operator -(Volume a, Volume b)
-      => new Volume(a.m_cubicMeter - b.m_cubicMeter);
+      => new Volume(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Volume other)
-      => m_cubicMeter.CompareTo(other.m_cubicMeter);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Volume other)
-      => m_cubicMeter == other.m_cubicMeter;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_cubicMeter;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Volume o && Equals(o);
     public override int GetHashCode()
-      => m_cubicMeter.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_cubicMeter} m³>";
+      => $"<{GetType().Name}: {m_value} m³>";
     #endregion Object overrides
   }
 }

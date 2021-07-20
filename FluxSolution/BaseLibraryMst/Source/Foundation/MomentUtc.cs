@@ -32,7 +32,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
 
-      Assert.AreEqual(0.5091898148148147, m.TimeOfDay.Second);
+      Assert.AreEqual(0.5091898148148147, m.TimeOfDay.Value);
     }
 
     [TestMethod]
@@ -40,7 +40,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
 
-      Assert.AreEqual(-148593836806, m.TotalSeconds.Second);
+      Assert.AreEqual(-148593836806, m.TotalSeconds.Value);
     }
 
     [TestMethod]

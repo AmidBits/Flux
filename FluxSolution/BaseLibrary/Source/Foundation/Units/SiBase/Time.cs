@@ -13,43 +13,43 @@ namespace Flux.Units
     Fortnight,
   }
 
-  /// <summary>Time.</summary>
+  /// <summary>Time unit of second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
     : System.IComparable<Time>, System.IEquatable<Time>, IStandardizedScalar
   {
-    private readonly double m_second;
+    private readonly double m_value;
 
     public Time(double seconds)
-      => m_second = seconds;
+      => m_value = seconds;
 
-    public double Second
-      => m_second;
+    public double Value
+      => m_value;
 
     public System.TimeSpan ToTimeSpan()
-      => System.TimeSpan.FromSeconds(m_second);
+      => System.TimeSpan.FromSeconds(m_value);
     public double ToUnitValue(TimeUnit unit)
     {
       switch (unit)
       {
         case TimeUnit.Nanosecond:
-          return m_second * 1000000000;
+          return m_value * 1000000000;
         case TimeUnit.Microsecond:
-          return m_second * 1000000;
+          return m_value * 1000000;
         case TimeUnit.Millisecond:
-          return m_second * 1000;
+          return m_value * 1000;
         case TimeUnit.Second:
-          return m_second;
+          return m_value;
         case TimeUnit.Minute:
-          return m_second / 60;
+          return m_value / 60;
         case TimeUnit.Hour:
-          return m_second / 3600;
+          return m_value / 3600;
         case TimeUnit.Day:
-          return m_second / 86400;
+          return m_value / 86400;
         case TimeUnit.Week:
-          return m_second / 604800;
+          return m_value / 604800;
         case TimeUnit.Fortnight:
-          return m_second / 1209600;
+          return m_value / 1209600;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -89,7 +89,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Time v)
-      => v.m_second;
+      => v.m_value;
     public static explicit operator Time(double v)
       => new Time(v);
 
@@ -108,40 +108,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Time operator -(Time v)
-      => new Time(-v.m_second);
+      => new Time(-v.m_value);
     public static Time operator +(Time a, Time b)
-      => new Time(a.m_second + b.m_second);
+      => new Time(a.m_value + b.m_value);
     public static Time operator /(Time a, Time b)
-      => new Time(a.m_second / b.m_second);
+      => new Time(a.m_value / b.m_value);
     public static Time operator *(Time a, Time b)
-      => new Time(a.m_second * b.m_second);
+      => new Time(a.m_value * b.m_value);
     public static Time operator %(Time a, Time b)
-      => new Time(a.m_second % b.m_second);
+      => new Time(a.m_value % b.m_value);
     public static Time operator -(Time a, Time b)
-      => new Time(a.m_second - b.m_second);
+      => new Time(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Time other)
-      => m_second.CompareTo(other.m_second);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Time other)
-      => m_second == other.m_second;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_second;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Time o && Equals(o);
     public override int GetHashCode()
-      => m_second.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_second} s>";
+      => $"<{GetType().Name}: {m_value} s>";
     #endregion Object overrides
   }
 }

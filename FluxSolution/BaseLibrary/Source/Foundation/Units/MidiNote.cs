@@ -1,10 +1,10 @@
 namespace Flux.Units
 {
-  /// <summary>A MIDI note is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
+  /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, IStandardizedScalar
   {
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
@@ -20,6 +20,9 @@ namespace Flux.Units
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     public int Number
+      => m_number;
+
+    public double Value
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
@@ -48,7 +51,7 @@ namespace Flux.Units
       => IsMidiNote(midiNoteNumber) ? ConvertMidiNoteToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Frequency frequency)
-      => new MidiNote(ConvertFrequencyToMidiNote(frequency.Hertz));
+      => new MidiNote(ConvertFrequencyToMidiNote(frequency.Value));
     /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
     public static bool IsMidiNote(int midiNoteNumber)
       => midiNoteNumber >= 0 && midiNoteNumber <= 127;
@@ -138,6 +141,7 @@ namespace Flux.Units
     // IComparable
     public int CompareTo(MidiNote other)
       => m_number.CompareTo(other.m_number);
+
     // IEquatable
     public bool Equals(MidiNote other)
       => m_number == other.m_number;

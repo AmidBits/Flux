@@ -2,6 +2,6 @@
 {
   interface IStandardizedScalar
   {
-    double GetScalar();
+    double Value { get; }
   }
 }

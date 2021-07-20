@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Catalytic activity.</summary>
+  /// <summary>Catalytic activity unit of katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
     : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IStandardizedScalar
   {
-    private readonly double m_katal;
+    private readonly double m_value;
 
     public CatalyticActivity(double katal)
-      => m_katal = katal;
+      => m_value = katal;
 
-    public double Katal
-      => m_katal;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(CatalyticActivity v)
-      => v.m_katal;
+      => v.m_value;
     public static explicit operator CatalyticActivity(double v)
       => new CatalyticActivity(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static CatalyticActivity operator -(CatalyticActivity v)
-      => new CatalyticActivity(-v.m_katal);
+      => new CatalyticActivity(-v.m_value);
     public static CatalyticActivity operator +(CatalyticActivity a, CatalyticActivity b)
-      => new CatalyticActivity(a.m_katal + b.m_katal);
+      => new CatalyticActivity(a.m_value + b.m_value);
     public static CatalyticActivity operator /(CatalyticActivity a, CatalyticActivity b)
-      => new CatalyticActivity(a.m_katal / b.m_katal);
+      => new CatalyticActivity(a.m_value / b.m_value);
     public static CatalyticActivity operator %(CatalyticActivity a, CatalyticActivity b)
-      => new CatalyticActivity(a.m_katal % b.m_katal);
+      => new CatalyticActivity(a.m_value % b.m_value);
     public static CatalyticActivity operator *(CatalyticActivity a, CatalyticActivity b)
-      => new CatalyticActivity(a.m_katal * b.m_katal);
+      => new CatalyticActivity(a.m_value * b.m_value);
     public static CatalyticActivity operator -(CatalyticActivity a, CatalyticActivity b)
-      => new CatalyticActivity(a.m_katal - b.m_katal);
+      => new CatalyticActivity(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(CatalyticActivity other)
-      => m_katal.CompareTo(other.m_katal);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(CatalyticActivity other)
-      => m_katal == other.m_katal;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_katal;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is CatalyticActivity o && Equals(o);
     public override int GetHashCode()
-      => m_katal.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_katal} kat>";
+      => $"<{GetType().Name}: {m_value} kat>";
     #endregion Object overrides
   }
 }

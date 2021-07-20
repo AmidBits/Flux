@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Force.</summary>
+  /// <summary>Force unit of newton.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
     : System.IComparable<Force>, System.IEquatable<Force>, IStandardizedScalar
   {
-    private readonly double m_newton;
+    private readonly double m_value;
 
     public Force(double newton)
-      => m_newton = newton;
+      => m_value = newton;
 
-    public double Newton
-      => m_newton;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(Force v)
-      => v.m_newton;
+      => v.m_value;
     public static explicit operator Force(double v)
       => new Force(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Force operator -(Force v)
-      => new Force(-v.m_newton);
+      => new Force(-v.m_value);
     public static Force operator +(Force a, Force b)
-      => new Force(a.m_newton + b.m_newton);
+      => new Force(a.m_value + b.m_value);
     public static Force operator /(Force a, Force b)
-      => new Force(a.m_newton / b.m_newton);
+      => new Force(a.m_value / b.m_value);
     public static Force operator %(Force a, Force b)
-      => new Force(a.m_newton % b.m_newton);
+      => new Force(a.m_value % b.m_value);
     public static Force operator *(Force a, Force b)
-      => new Force(a.m_newton * b.m_newton);
+      => new Force(a.m_value * b.m_value);
     public static Force operator -(Force a, Force b)
-      => new Force(a.m_newton - b.m_newton);
+      => new Force(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Force other)
-      => m_newton.CompareTo(other.m_newton);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Force other)
-      => m_newton == other.m_newton;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_newton;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Force o && Equals(o);
     public override int GetHashCode()
-      => m_newton.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_newton} N>";
+      => $"<{GetType().Name}: {m_value} N>";
     #endregion Object overrides
   }
 }

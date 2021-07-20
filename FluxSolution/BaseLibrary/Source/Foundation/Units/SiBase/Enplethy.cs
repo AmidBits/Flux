@@ -5,25 +5,25 @@ namespace Flux.Units
     Mole,
   }
 
-  /// <summary>A unit for amount of substance.</summary>
+  /// <summary>Enplethy, or amount of substance, unit of mole.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
     : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IStandardizedScalar
   {
-    private readonly double m_mole;
+    private readonly double m_value;
 
     public Enplethy(double mole)
-      => m_mole = mole;
+      => m_value = mole;
 
-    public double Mole
-      => m_mole;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(EnplethyUnit unit)
     {
       switch (unit)
       {
         case EnplethyUnit.Mole:
-          return m_mole;
+          return m_value;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -44,7 +44,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Enplethy v)
-      => v.m_mole;
+      => v.m_value;
     public static explicit operator Enplethy(double v)
       => new Enplethy(v);
 
@@ -63,40 +63,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Enplethy operator -(Enplethy v)
-      => new Enplethy(-v.Mole);
+      => new Enplethy(-v.Value);
     public static Enplethy operator +(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_mole + b.m_mole);
+      => new Enplethy(a.m_value + b.m_value);
     public static Enplethy operator /(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_mole / b.m_mole);
+      => new Enplethy(a.m_value / b.m_value);
     public static Enplethy operator *(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_mole * b.m_mole);
+      => new Enplethy(a.m_value * b.m_value);
     public static Enplethy operator %(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_mole % b.m_mole);
+      => new Enplethy(a.m_value % b.m_value);
     public static Enplethy operator -(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_mole - b.m_mole);
+      => new Enplethy(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Enplethy other)
-      => m_mole.CompareTo(other.m_mole);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Enplethy other)
-      => m_mole == other.m_mole;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_mole;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Enplethy o && Equals(o);
     public override int GetHashCode()
-      => m_mole.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_mole} mol>";
+      => $"<{GetType().Name}: {m_value} mol>";
     #endregion Object overrides
   }
 }

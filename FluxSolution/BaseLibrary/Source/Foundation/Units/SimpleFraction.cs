@@ -185,10 +185,6 @@ namespace Flux.Units
     // IEquatable
     public bool Equals(SimpleFraction other)
       => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => Value;
     #endregion Implemented interfaces
 
     #region Object overrides

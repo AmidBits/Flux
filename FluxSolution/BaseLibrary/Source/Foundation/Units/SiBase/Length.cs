@@ -14,43 +14,43 @@ namespace Flux.Units
     Kilometer,
   }
 
-  /// <summary>Length.</summary>
+  /// <summary>Length unit of meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, IStandardizedScalar
   {
-    private readonly double m_meter;
+    private readonly double m_value;
 
     public Length(double meter)
-      => m_meter = meter;
+      => m_value = meter;
 
-    public double Meter
-      => m_meter;
+    public double Value
+      => m_value;
 
     public double ToUnitValue(LengthUnit unit)
     {
       switch (unit)
       {
         case LengthUnit.Millimeter:
-          return m_meter * 1000;
+          return m_value * 1000;
         case LengthUnit.Centimeter:
-          return m_meter * 100;
+          return m_value * 100;
         case LengthUnit.Inch:
-          return m_meter / 0.0254;
+          return m_value / 0.0254;
         case LengthUnit.Decimeter:
-          return m_meter * 10;
+          return m_value * 10;
         case LengthUnit.Foot:
-          return m_meter / 0.3048;
+          return m_value / 0.3048;
         case LengthUnit.Yard:
-          return m_meter / 0.9144;
+          return m_value / 0.9144;
         case LengthUnit.Meter:
-          return m_meter;
+          return m_value;
         case LengthUnit.NauticalMile:
-          return m_meter / 1852;
+          return m_value / 1852;
         case LengthUnit.Mile:
-          return m_meter / 1609.344;
+          return m_value / 1609.344;
         case LengthUnit.Kilometer:
-          return m_meter / 1000;
+          return m_value / 1000;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -63,7 +63,7 @@ namespace Flux.Units
     /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
     public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency)
-      => new Length(phaseVelocity.MeterPerSecond / frequency.Hertz);
+      => new Length(phaseVelocity.Value / frequency.Value);
 
     public static Length FromUnitValue(LengthUnit unit, double value)
     {
@@ -97,7 +97,7 @@ namespace Flux.Units
 
     #region Overloaded operators
     public static explicit operator double(Length v)
-      => v.m_meter;
+      => v.m_value;
     public static explicit operator Length(double v)
       => new Length(v);
 
@@ -116,40 +116,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static Length operator -(Length v)
-      => new Length(-v.m_meter);
+      => new Length(-v.m_value);
     public static Length operator +(Length a, Length b)
-      => new Length(a.m_meter + b.m_meter);
+      => new Length(a.m_value + b.m_value);
     public static Length operator /(Length a, Length b)
-      => new Length(a.m_meter / b.m_meter);
+      => new Length(a.m_value / b.m_value);
     public static Length operator *(Length a, Length b)
-      => new Length(a.m_meter * b.m_meter);
+      => new Length(a.m_value * b.m_value);
     public static Length operator %(Length a, Length b)
-      => new Length(a.m_meter % b.m_meter);
+      => new Length(a.m_value % b.m_value);
     public static Length operator -(Length a, Length b)
-      => new Length(a.m_meter - b.m_meter);
+      => new Length(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Length other)
-      => m_meter.CompareTo(other.m_meter);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(Length other)
-      => m_meter == other.m_meter;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_meter;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Length o && Equals(o);
     public override int GetHashCode()
-      => m_meter.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{nameof(Length)}: {m_meter} m>";
+      => $"<{nameof(Length)}: {m_value} m>";
     #endregion Object overrides
   }
 }

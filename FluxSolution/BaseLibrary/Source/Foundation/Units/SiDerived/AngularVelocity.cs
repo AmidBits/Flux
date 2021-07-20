@@ -1,21 +1,21 @@
 namespace Flux.Units
 {
-  /// <summary>Angular velocity.</summary>
+  /// <summary>Angular velocity unit of radians per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
     : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IStandardizedScalar
   {
-    private readonly double m_radianPerSecond;
+    private readonly double m_value;
 
     public AngularVelocity(double radianPerSecond)
-      => m_radianPerSecond = radianPerSecond;
+      => m_value = radianPerSecond;
 
-    public double RadianPerSecond
-      => m_radianPerSecond;
+    public double Value
+      => m_value;
 
     #region Overloaded operators
     public static explicit operator double(AngularVelocity v)
-      => v.m_radianPerSecond;
+      => v.m_value;
     public static explicit operator AngularVelocity(double v)
       => new AngularVelocity(v);
 
@@ -34,40 +34,36 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static AngularVelocity operator -(AngularVelocity v)
-      => new AngularVelocity(-v.m_radianPerSecond);
+      => new AngularVelocity(-v.m_value);
     public static AngularVelocity operator +(AngularVelocity a, AngularVelocity b)
-      => new AngularVelocity(a.m_radianPerSecond + b.m_radianPerSecond);
+      => new AngularVelocity(a.m_value + b.m_value);
     public static AngularVelocity operator /(AngularVelocity a, AngularVelocity b)
-      => new AngularVelocity(a.m_radianPerSecond / b.m_radianPerSecond);
+      => new AngularVelocity(a.m_value / b.m_value);
     public static AngularVelocity operator *(AngularVelocity a, AngularVelocity b)
-      => new AngularVelocity(a.m_radianPerSecond * b.m_radianPerSecond);
+      => new AngularVelocity(a.m_value * b.m_value);
     public static AngularVelocity operator %(AngularVelocity a, AngularVelocity b)
-      => new AngularVelocity(a.m_radianPerSecond % b.m_radianPerSecond);
+      => new AngularVelocity(a.m_value % b.m_value);
     public static AngularVelocity operator -(AngularVelocity a, AngularVelocity b)
-      => new AngularVelocity(a.m_radianPerSecond - b.m_radianPerSecond);
+      => new AngularVelocity(a.m_value - b.m_value);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(AngularVelocity other)
-      => m_radianPerSecond.CompareTo(other.m_radianPerSecond);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable
     public bool Equals(AngularVelocity other)
-      => m_radianPerSecond == other.m_radianPerSecond;
-
-    // IUnitStandardized
-    public double GetScalar()
-      => m_radianPerSecond;
+      => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is AngularVelocity o && Equals(o);
     public override int GetHashCode()
-      => m_radianPerSecond.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_radianPerSecond} rad/s>";
+      => $"<{GetType().Name}: {m_value} rad/s>";
     #endregion Object overrides
   }
 }
