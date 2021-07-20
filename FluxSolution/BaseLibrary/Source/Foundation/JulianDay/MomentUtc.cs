@@ -29,6 +29,21 @@ namespace Flux
       : this(year, month, day, 0, 0, 0)
     { }
 
+    public int Year
+      => m_year;
+    public int Month
+      => m_month;
+    public int Day
+      => m_day;
+    public int Hour
+      => m_hour;
+    public int Minute
+      => m_minute;
+    public int Second
+      => m_second;
+    public int Millisecond
+      => m_millisecond;
+
     /// <summary>Dates on or after 15 Oct 1582 are considered Gregorian dates and dates on or prior to 4 Oct 1582 are Julian dates. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
     public bool IsGregorianCalendar
       => m_year > 1582 || (m_year == 1582 && (m_month > 10 || (m_month == 10 && m_day >= 15)));
@@ -36,7 +51,10 @@ namespace Flux
       => m_year < 1582 || (m_year == 1582 && (m_month < 10 || (m_month == 10 && m_day < 15)));
 
     public Units.Time TimeOfDay
-      => new Units.Time((m_hour / 24.0) + (m_minute / 1440.0) + (m_second + m_millisecond / 1000.0) / 86400);
+      => new Units.Time(m_hour / 24.0 + m_minute / 1440.0 + (m_second + m_millisecond / 1000.0) / 86400);
+
+    public Units.Time TotalSeconds
+      => new Units.Time(m_year * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0);
 
     /// <summary>Compute a Julian Date (JD) from this instance and the specified calendar.</summary>
     public double GetJulianDate(ConversionCalendar calendar)
@@ -58,17 +76,26 @@ namespace Flux
     #region Static methods
     #endregion Static methods
 
+    #region Overloaded operators
+    public static bool operator <(MomentUtc a, MomentUtc b)
+      => a.CompareTo(b) < 0;
+    public static bool operator <=(MomentUtc a, MomentUtc b)
+      => a.CompareTo(b) <= 0;
+    public static bool operator >(MomentUtc a, MomentUtc b)
+      => a.CompareTo(b) < 0;
+    public static bool operator >=(MomentUtc a, MomentUtc b)
+      => a.CompareTo(b) <= 0;
+
+    public static bool operator ==(MomentUtc a, MomentUtc b)
+      => a.Equals(b);
+    public static bool operator !=(MomentUtc a, MomentUtc b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
+
     #region Implemented interfaces
     // IComparable
     public int CompareTo(MomentUtc other)
-      => m_year < other.m_year ? -1 : m_year > other.m_year ? 1
-      : m_month < other.m_month ? -1 : m_month > other.m_month ? 1
-      : m_day < other.m_day ? -1 : m_day > other.m_day ? 1
-      : m_hour < other.m_hour ? -1 : m_hour > other.m_hour ? 1
-      : m_minute < other.m_minute ? -1 : m_minute > other.m_minute ? 1
-      : m_second < other.m_second ? -1 : m_second > other.m_second ? 1
-      : m_millisecond < other.m_millisecond ? -1 : m_millisecond > other.m_millisecond ? 1
-      : 0;
+      => TotalSeconds < other.TotalSeconds ? -1 : TotalSeconds > other.TotalSeconds ? 1 : 0;
 
     // IEquatable
     public bool Equals(MomentUtc other)

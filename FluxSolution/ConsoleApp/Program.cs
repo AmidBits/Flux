@@ -22,9 +22,10 @@ namespace ConsoleApp
       var mgc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.GregorianCalendar, true);
       var mjc = new Flux.JulianDate(0).ToDateString(ConversionCalendar.JulianCalendar, true);
 
-      var jd1 = new Flux.JulianDate(3.5);
-      var x1 = Flux.JulianDate.ConvertJulianDateFractionToTime(jd1.Value);
-      var jd2 = new Flux.JulianDate(1);
+      var jd1 = new Flux.JulianDate(1442454);
+      var jd2 = new Flux.JulianDate(1566839);
+      var jd3 = new Flux.JulianDate(2400000.5);
+      var x1 = jd1.TimeOfDay;
 
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))

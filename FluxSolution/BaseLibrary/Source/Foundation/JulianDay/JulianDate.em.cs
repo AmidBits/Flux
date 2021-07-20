@@ -42,15 +42,26 @@ namespace Flux
     public JulianDate(double julianDate)
       => m_value = julianDate;
 
+    public JulianDate AddWeeks(int weeks)
+      => AddDays(weeks * 7);
+    public JulianDate AddDays(int days)
+      => new JulianDate(m_value + days);
+    public JulianDate AddHours(int hours)
+      => new JulianDate(m_value + hours / HoursPerDay);
+    public JulianDate AddMinutes(int minutes)
+      => new JulianDate(m_value + minutes / MinutesPerDay);
+    public JulianDate AddSeconds(int seconds)
+      => new JulianDate(m_value + seconds / SecondsPerDay);
+
     public bool IsEmpty
       => Equals(Empty);
 
-    /// <summary>The numerical value of the Julian Date Number (JDN).</summary>
-    public int JulianDayNumber
-      => (int)m_value;
+    /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
+    public bool IsGregorianCalendar
+      => m_value > 2299160.5;
 
-    public System.TimeSpan Time
-      => System.TimeSpan.FromSeconds((m_value % 1 is var f && f >= 0.5 ? f - 0.5 : f + 0.5) * 86400);
+    public Units.Time TimeOfDay
+      => new Units.Time(m_value % 1 * 86400);
 
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
@@ -62,17 +73,6 @@ namespace Flux
 
     public double Value
       => m_value;
-
-    public JulianDate AddWeeks(int weeks)
-      => AddDays(weeks * 7);
-    public JulianDate AddDays(int days)
-      => new JulianDate(m_value + days);
-    public JulianDate AddHours(int hours)
-      => new JulianDate(m_value + hours / HoursPerDay);
-    public JulianDate AddMinutes(int minutes)
-      => new JulianDate(m_value + minutes / MinutesPerDay);
-    public JulianDate AddSeconds(int seconds)
-      => new JulianDate(m_value + seconds / SecondsPerDay);
 
     public string ToDateString(ConversionCalendar calendar, bool includeHistoricalYearLabel = false)
     {
@@ -93,7 +93,7 @@ namespace Flux
       return sb.ToString();
     }
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(ConvertJulianDateFractionToTime(m_value).Second).ToString(@"hh\:mm\:ss");
+      => System.TimeSpan.FromSeconds(TimeOfDay.Second).ToString(@"hh\:mm\:ss");
 
     #region Static methods
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
@@ -146,24 +146,6 @@ namespace Flux
     /// <returns>0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday.</returns>
     public static System.DayOfWeek ComputeDayOfWeek(int julianDayNumber, out int dayOfWeek)
       => (System.DayOfWeek)(((dayOfWeek = julianDayNumber % 7) + 1) % 7);
-
-    /// <summary>Returns the time from the specified Julian Date (fraction).</summary>
-    public static Units.Time ConvertJulianDateFractionToTime(double julianDate)
-      => new Units.Time((julianDate % 1) * 86400);
-    /// <summary>Returns the time fraction from the specified unit time.</summary>
-    public static double ConvertTimeToJulianDateFraction(Units.Time time)
-     => time.Second / 86400 is var f && f >= 0.5 ? f - 0.5 : f + 0.5;
-
-    public static double ConvertToModifiedJulianDate(double julianDate)
-      => julianDate - 2400000.5;
-    public static double ConvertToReducedJulianDate(double julianDate)
-      => julianDate - 2400000;
-    public static double ConvertToTruncatedJulianDate(double julianDate)
-      => System.Math.Floor(julianDate - 2440000.5);
-
-    /// <summary>Returns whether the Julian Date value is considered in the proleptic Gregorian Calendar.</summary>
-    public static bool IsProlepticGregorianCalendar(double julianDate)
-      => julianDate < 2299160.5;
     #endregion Static methods
 
     #region Overloaded operators
@@ -205,7 +187,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string? ToString()
-      => $"<{GetType().Name} {m_value} ({ToDateString(ConversionCalendar.GregorianCalendar, true)} {ToTimeString()})>";
+      => $"<{GetType().Name} {m_value} ({(IsGregorianCalendar ? ToDateString(ConversionCalendar.GregorianCalendar, true) : ToDateString(ConversionCalendar.JulianCalendar, true))} {ToTimeString()})>";
     #endregion Object overrides
   }
 }
