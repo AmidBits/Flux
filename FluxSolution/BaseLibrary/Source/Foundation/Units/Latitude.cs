@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90].</summary>
+  /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90].</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, IStandardizedScalar

@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Energy unit of joule.</summary>
+  /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
     : System.IComparable<Energy>, System.IEquatable<Energy>, IStandardizedScalar

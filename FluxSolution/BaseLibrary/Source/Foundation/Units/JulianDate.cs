@@ -6,8 +6,8 @@ namespace Flux
       => source.ToMomentUtc().ToJulianDate(calendar);
   }
 
-  /// <summary>Julian Day struct</summary>
-  /// <remarks>The Julian Day, Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
+  /// <summary>Julian Date unit of days with time of day fraction.</summary>
+  /// <remarks>Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>

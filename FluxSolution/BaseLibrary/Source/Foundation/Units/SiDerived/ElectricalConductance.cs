@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Electrical conductance unit of siemens.</summary>
+  /// <summary>Electrical conductance unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct ElectricalConductance
     : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IStandardizedScalar

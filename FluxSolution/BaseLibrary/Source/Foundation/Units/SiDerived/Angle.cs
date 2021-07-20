@@ -8,7 +8,7 @@ namespace Flux.Units
     Revolution,
   }
 
-  /// <summary>Represents an angle (stored as a radians and explicitly convertible to/from double as radian).</summary>
+  /// <summary>Angle unit of radian (explicitly convertible to/from double as radian).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IStandardizedScalar

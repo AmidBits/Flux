@@ -1,6 +1,6 @@
 namespace Flux.Units
 {
-  /// <summary>Azimuth.</summary>
+  /// <summary>Azimuth unit of degree.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
     : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IStandardizedScalar
