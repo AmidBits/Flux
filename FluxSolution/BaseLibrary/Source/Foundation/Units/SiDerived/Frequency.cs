@@ -5,6 +5,9 @@ namespace Flux.Units
   public struct Frequency
     : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedUnit
   {
+    public static Frequency HyperfineTransitionFrequencyOfCs133
+      => new Frequency(9192631770);
+
     private readonly double m_value;
 
     public Frequency(double hertz)

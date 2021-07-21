@@ -11,6 +11,11 @@ namespace Flux.Units
   public struct Pressure
     : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValuedUnit
   {
+    public static Pressure StandardAtmosphere
+      => new Pressure(101325);
+    public static Pressure StandardStatePressure
+      => new Pressure(100000);
+
     private readonly double m_value;
 
     public Pressure(double pascal)

@@ -9,20 +9,27 @@ namespace Flux.Units
     MilesPerHour,
   }
 
-  /// <summary>Speed unit of meters per second.</summary>
+  /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
     : System.IComparable<Speed>, System.IEquatable<Speed>, IValuedUnit
   {
-    public static Speed SpeedOfLight
+    public static Speed SpeedOfLightInVacuum
       => new Speed(299792458);
-    public static Speed SpeedOfSound
-      => new Speed(343.2);
+
+    public static Speed ApproximateSpeedOfSoundInAir
+      => new Speed(343);
+    public static Speed ApproximateSpeedOfSoundInDiamond
+      => new Speed(12000);
+    public static Speed ApproximateSpeedOfSoundInIron
+      => new Speed(5120);
+    public static Speed ApproximateSpeedOfSoundInWater
+      => new Speed(1481);
 
     private readonly double m_value;
 
-    public Speed(double meterPerSecond)
-      => m_value = meterPerSecond;
+    public Speed(double metersPerSecond)
+      => m_value = metersPerSecond;
 
     public double Value
       => m_value;

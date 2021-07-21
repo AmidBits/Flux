@@ -14,6 +14,9 @@ namespace Flux.Units
   public struct Mass
     : System.IComparable<Mass>, System.IEquatable<Mass>, IValuedUnit
   {
+    public static Mass ElectronMass
+      => new Mass(9.1093837015e-31);
+
     private readonly double m_value;
 
     public Mass(double kilogram)

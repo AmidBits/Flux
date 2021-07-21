@@ -5,6 +5,9 @@ namespace Flux.Units
   public struct ElectricCharge
     : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedUnit
   {
+    public static ElectricCharge ElementaryCharge
+      => new ElectricCharge(1.602176634e-19);
+
     private readonly double m_value;
 
     public ElectricCharge(double coulomb)

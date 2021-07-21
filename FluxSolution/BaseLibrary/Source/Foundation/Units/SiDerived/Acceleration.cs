@@ -5,7 +5,7 @@ namespace Flux.Units
   public struct Acceleration
     : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValuedUnit
   {
-    public static Acceleration GravitationalAccelerationOnEarth
+    public static Acceleration StandardAccelerationOfGravity
       => new Acceleration(9.80665);
 
     private readonly double m_value;

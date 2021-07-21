@@ -27,27 +27,26 @@ namespace Flux
     : System.IEquatable<GeoPoint>, System.IFormattable
   {
     public static readonly GeoPoint Empty;
-    public bool IsEmpty => Equals(Empty);
-
-    //public const string SymbolDegrees = "\u00B0";
-    //public const string SymbolMinutes = "\u2032";
-    //public const string SymbolSeconds = "\u2033";
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Units.Length Height { get; }
-
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     public Units.Latitude Latitude { get; }
-
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Units.Longitude Longitude { get; }
 
-    public GeoPoint(double latitude, double longitude, double altitude = 1.0)
+    public GeoPoint(Units.Latitude latitude, Units.Longitude longitude, Units.Length altitude)
     {
-      Latitude = new Units.Latitude(latitude); // Units.Angle.FromDegree(Maths.Wrap(latitude, -90, +90));
-      Longitude = new Units.Longitude(longitude); // Units.Angle.FromDegree(Maths.Wrap(longitude, -180, +180));
-      Height = new Units.Length(altitude);
+      Height = altitude;
+      Latitude = latitude;
+      Longitude = longitude;
     }
+    public GeoPoint(double latitude, double longitude, double altitude = 1.0)
+      : this(new Units.Latitude(latitude), new Units.Longitude(longitude), new Units.Length(altitude))
+    { }
+
+    public bool IsEmpty
+      => Equals(Empty);
 
     /// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     /// <param name="trackStart"></param>

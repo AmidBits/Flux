@@ -2,6 +2,8 @@ namespace Flux.Units
 {
   public enum AngleUnit
   {
+    Arcminute,
+    Arcsecond,
     Degree,
     Gradian,
     Radian,
@@ -13,6 +15,10 @@ namespace Flux.Units
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedUnit
   {
+    public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
+    public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
+    public const char PrimeSymbol = '\u2032'; // Designates arc minute.
+
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
     public const double OneFullRotationInRadians = System.Math.PI * 2;
@@ -39,6 +45,10 @@ namespace Flux.Units
     {
       switch (unit)
       {
+        case AngleUnit.Arcminute:
+          return ConvertRadianToArcminute(m_value);
+        case AngleUnit.Arcsecond:
+          return ConvertRadianToArcsecond(m_value);
         case AngleUnit.Degree:
           return ConvertRadianToDegree(m_value);
         case AngleUnit.Gradian:
@@ -53,6 +63,12 @@ namespace Flux.Units
     }
 
     #region Static methods
+    /// <summary>Convert the angle specified in arcminutes to radians.</summary>
+    public static double ConvertArcminuteToRadian(double arcminute)
+      => arcminute / 3437.746771;
+    /// <summary>Convert the angle specified in arcseconds to radians.</summary>
+    public static double ConvertArcsecondToRadian(double arcsecond)
+      => arcsecond / 206264.806247;
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static double ConvertCartesianToRotationAngle(double x, double y)
@@ -77,6 +93,12 @@ namespace Flux.Units
       => gradian * (System.Math.PI / 200);
     public static double ConvertGradianToRevolution(double gradian)
       => gradian / 400;
+    /// <summary>Convert the angle specified in radians to arcminutes.</summary>
+    public static double ConvertRadianToArcminute(double radian)
+      => radian * 3437.746771;
+    /// <summary>Convert the angle specified in radians to arcseconds.</summary>
+    public static double ConvertRadianToArcsecond(double radian)
+      => radian * 206264.806247;
     /// <summary>Convert the angle specified in radians to degrees.</summary>
     public static double ConvertRadianToDegree(double radian)
       => radian * (180 / System.Math.PI);
@@ -104,6 +126,10 @@ namespace Flux.Units
     {
       switch (unit)
       {
+        case AngleUnit.Arcminute:
+          return new Angle(ConvertArcminuteToRadian(value));
+        case AngleUnit.Arcsecond:
+          return new Angle(ConvertArcsecondToRadian(value));
         case AngleUnit.Degree:
           return new Angle(ConvertDegreeToRadian(value));
         case AngleUnit.Gradian:
@@ -182,7 +208,7 @@ namespace Flux.Units
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}\u00B0 rad>";
+      => $"<{GetType().Name}: {m_value} rad>";
     #endregion Object overrides
   }
 }

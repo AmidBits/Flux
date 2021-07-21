@@ -19,6 +19,9 @@ namespace Flux.Units
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, IValuedUnit
   {
+    public static Length OneMeter
+      => new Length(1);
+
     private readonly double m_value;
 
     public Length(double meter)

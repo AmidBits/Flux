@@ -14,7 +14,7 @@ namespace Flux.Model.Trajectories
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
     public TrajectoryFlat2D(Units.Angle initialAngle, Units.Speed initialVelocity)
-      : this(initialAngle, initialVelocity, Units.Acceleration.GravitationalAccelerationOnEarth)
+      : this(initialAngle, initialVelocity, Units.Acceleration.StandardAccelerationOfGravity)
     { }
 
     /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>

@@ -5,6 +5,9 @@ namespace Flux.Units
   public struct ElectricResistance
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValuedUnit
   {
+    public static ElectricResistance VonKlitzing
+      => new ElectricResistance(25812.80745); // 25812.80745;
+
     private readonly double m_value;
 
     public ElectricResistance(double ohm)

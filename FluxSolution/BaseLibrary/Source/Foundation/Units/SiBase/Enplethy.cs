@@ -10,6 +10,10 @@ namespace Flux.Units
   public struct Enplethy
     : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedUnit
   {
+    // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
+    public static Enplethy AvagadroConstant
+      => new Enplethy(6.02214076e23);
+
     private readonly double m_value;
 
     public Enplethy(double mole)

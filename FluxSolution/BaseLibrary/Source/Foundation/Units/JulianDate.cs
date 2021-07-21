@@ -84,7 +84,7 @@ namespace Flux
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
     public static void ComputeDateComponents(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
     {
-      if (julianDayNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber));
+      if (julianDayNumber < -1401) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber), $"The algorithm can only convert Julian Date values greater than or equal to -1401.");
 
       var J = julianDayNumber;
 
@@ -114,7 +114,7 @@ namespace Flux
     }
     /// <summary>Returns a day of week [0 (Monday), 6 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday.</summary>
     public static int ComputeDayOfWeek(int julianDayNumber)
-      => julianDayNumber % 7;
+      => julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow;
     /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
     /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
@@ -171,9 +171,9 @@ namespace Flux
       => new JulianDate(a.m_value - b);
 
     public static JulianDate operator +(JulianDate a, Units.Time b)
-      => a + (b.Value / 86400.0);
+      => a + (b.Value / 86400);
     public static JulianDate operator -(JulianDate a, Units.Time b)
-      => a - (b.Value / 86400.0);
+      => a - (b.Value / 86400);
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
       => a + (b.TotalSeconds / 86400);
