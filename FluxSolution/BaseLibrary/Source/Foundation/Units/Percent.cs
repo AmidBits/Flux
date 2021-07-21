@@ -10,6 +10,9 @@ namespace Flux.Units
     public Percent(double percent)
       => m_value = percent;
 
+    public double Fraction
+      => m_value / 100;
+
     public double Value
       => m_value;
 

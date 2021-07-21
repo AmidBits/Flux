@@ -10,6 +10,9 @@ namespace Flux.Units
     public Permill(double permill)
       => m_value = permill;
 
+    public double Fraction
+      => m_value / 1000;
+
     public double Value
       => m_value;
 
