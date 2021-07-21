@@ -114,9 +114,9 @@ namespace Flux.Units
     public static bool operator <=(MidiNote a, MidiNote b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(MidiNote a, MidiNote b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(MidiNote a, MidiNote b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(MidiNote a, MidiNote b)
       => a.Equals(b);
@@ -125,16 +125,26 @@ namespace Flux.Units
 
     public static MidiNote operator -(MidiNote v)
       => new MidiNote(-v.m_number);
+    public static MidiNote operator +(MidiNote a, int b)
+      => new MidiNote(a.m_number + b);
     public static MidiNote operator +(MidiNote a, MidiNote b)
-      => new MidiNote(a.m_number + b.m_number);
+      => a + b.m_number;
+    public static MidiNote operator /(MidiNote a, int b)
+      => new MidiNote(a.m_number / b);
     public static MidiNote operator /(MidiNote a, MidiNote b)
-      => new MidiNote(a.m_number / b.m_number);
+      => a / b.m_number;
+    public static MidiNote operator *(MidiNote a, int b)
+      => new MidiNote(a.m_number * b);
     public static MidiNote operator *(MidiNote a, MidiNote b)
-      => new MidiNote(a.m_number * b.m_number);
+      => a * b.m_number;
+    public static MidiNote operator %(MidiNote a, int b)
+      => new MidiNote(a.m_number % b);
     public static MidiNote operator %(MidiNote a, MidiNote b)
-      => new MidiNote(a.m_number % b.m_number);
+      => a % b.m_number;
+    public static MidiNote operator -(MidiNote a, int b)
+      => new MidiNote(a.m_number - b);
     public static MidiNote operator -(MidiNote a, MidiNote b)
-      => new MidiNote(a.m_number - b.m_number);
+      => a - b.m_number;
     #endregion Overloaded operators
 
     #region Implemented interfaces

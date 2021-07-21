@@ -68,9 +68,9 @@ namespace Flux.Units
     public static bool operator <=(ElectricCurrent a, ElectricCurrent b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricCurrent a, ElectricCurrent b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
       => a.Equals(b);
@@ -79,16 +79,26 @@ namespace Flux.Units
 
     public static ElectricCurrent operator -(ElectricCurrent v)
       => new ElectricCurrent(-v.m_value);
+    public static ElectricCurrent operator +(ElectricCurrent a, double b)
+      => new ElectricCurrent(a.m_value + b);
     public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static ElectricCurrent operator /(ElectricCurrent a, double b)
+      => new ElectricCurrent(a.m_value / b);
     public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static ElectricCurrent operator *(ElectricCurrent a, double b)
+      => new ElectricCurrent(a.m_value * b);
     public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static ElectricCurrent operator %(ElectricCurrent a, double b)
+      => new ElectricCurrent(a.m_value % b);
     public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static ElectricCurrent operator -(ElectricCurrent a, double b)
+      => new ElectricCurrent(a.m_value - b);
     public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
-      => new ElectricCurrent(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

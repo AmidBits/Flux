@@ -32,9 +32,9 @@ namespace Flux.Units
     public static bool operator <=(Power a, Power b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Power a, Power b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Power a, Power b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Power a, Power b)
       => a.Equals(b);
@@ -43,16 +43,26 @@ namespace Flux.Units
 
     public static Power operator -(Power v)
       => new Power(-v.m_value);
+    public static Power operator +(Power a, double b)
+      => new Power(a.m_value + b);
     public static Power operator +(Power a, Power b)
-      => new Power(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Power operator /(Power a, double b)
+      => new Power(a.m_value / b);
     public static Power operator /(Power a, Power b)
-      => new Power(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Power operator *(Power a, double b)
+      => new Power(a.m_value * b);
     public static Power operator *(Power a, Power b)
-      => new Power(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Power operator %(Power a, double b)
+      => new Power(a.m_value % b);
     public static Power operator %(Power a, Power b)
-      => new Power(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Power operator -(Power a, double b)
+      => new Power(a.m_value - b);
     public static Power operator -(Power a, Power b)
-      => new Power(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(Radioactivity a, Radioactivity b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Radioactivity a, Radioactivity b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Radioactivity a, Radioactivity b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Radioactivity a, Radioactivity b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static Radioactivity operator -(Radioactivity v)
       => new Radioactivity(-v.m_value);
+    public static Radioactivity operator +(Radioactivity a, double b)
+      => new Radioactivity(a.m_value + b);
     public static Radioactivity operator +(Radioactivity a, Radioactivity b)
-      => new Radioactivity(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Radioactivity operator /(Radioactivity a, double b)
+      => new Radioactivity(a.m_value / b);
     public static Radioactivity operator /(Radioactivity a, Radioactivity b)
-      => new Radioactivity(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Radioactivity operator *(Radioactivity a, double b)
+      => new Radioactivity(a.m_value * b);
     public static Radioactivity operator *(Radioactivity a, Radioactivity b)
-      => new Radioactivity(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Radioactivity operator %(Radioactivity a, double b)
+      => new Radioactivity(a.m_value % b);
     public static Radioactivity operator %(Radioactivity a, Radioactivity b)
-      => new Radioactivity(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Radioactivity operator -(Radioactivity a, double b)
+      => new Radioactivity(a.m_value - b);
     public static Radioactivity operator -(Radioactivity a, Radioactivity b)
-      => new Radioactivity(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

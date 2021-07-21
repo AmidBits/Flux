@@ -1,6 +1,6 @@
 ﻿namespace Flux.Units
 {
-  interface IValuedUnit
+  public interface IValuedUnit
   {
     double Value { get; }
   }

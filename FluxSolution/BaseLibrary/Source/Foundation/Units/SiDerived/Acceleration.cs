@@ -27,9 +27,9 @@ namespace Flux.Units
     public static bool operator <=(Acceleration a, Acceleration b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Acceleration a, Acceleration b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Acceleration a, Acceleration b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Acceleration a, Acceleration b)
       => a.Equals(b);
@@ -38,16 +38,26 @@ namespace Flux.Units
 
     public static Acceleration operator -(Acceleration v)
       => new Acceleration(-v.m_value);
+    public static Acceleration operator +(Acceleration a, double b)
+      => new Acceleration(a.m_value + b);
     public static Acceleration operator +(Acceleration a, Acceleration b)
-      => new Acceleration(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Acceleration operator /(Acceleration a, double b)
+      => new Acceleration(a.m_value / b);
     public static Acceleration operator /(Acceleration a, Acceleration b)
-      => new Acceleration(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Acceleration operator *(Acceleration a, double b)
+      => new Acceleration(a.m_value * b);
     public static Acceleration operator *(Acceleration a, Acceleration b)
-      => new Acceleration(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Acceleration operator %(Acceleration a, double b)
+      => new Acceleration(a.m_value % b);
     public static Acceleration operator %(Acceleration a, Acceleration b)
-      => new Acceleration(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Acceleration operator -(Acceleration a, double b)
+      => new Acceleration(a.m_value - b);
     public static Acceleration operator -(Acceleration a, Acceleration b)
-      => new Acceleration(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

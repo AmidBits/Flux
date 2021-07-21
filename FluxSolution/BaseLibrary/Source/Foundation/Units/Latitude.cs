@@ -88,9 +88,9 @@ namespace Flux.Units
     public static bool operator <=(Latitude a, Latitude b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Latitude a, Latitude b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Latitude a, Latitude b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Latitude a, Latitude b)
       => a.Equals(b);
@@ -99,16 +99,26 @@ namespace Flux.Units
 
     public static Latitude operator -(Latitude v)
       => new Latitude(-v.m_value);
+    public static Latitude operator +(Latitude a, double b)
+      => new Latitude(a.m_value + b);
     public static Latitude operator +(Latitude a, Latitude b)
-      => new Latitude(a.m_value + b.m_value);
+      => a + b.Value;
+    public static Latitude operator /(Latitude a, double b)
+      => new Latitude(a.m_value / b);
     public static Latitude operator /(Latitude a, Latitude b)
-      => new Latitude(a.m_value / b.m_value);
+      => a / b.Value;
+    public static Latitude operator *(Latitude a, double b)
+      => new Latitude(a.m_value * b);
     public static Latitude operator *(Latitude a, Latitude b)
-      => new Latitude(a.m_value * b.m_value);
+      => a * b.Value;
+    public static Latitude operator %(Latitude a, double b)
+      => new Latitude(a.m_value % b);
     public static Latitude operator %(Latitude a, Latitude b)
-      => new Latitude(a.m_value % b.m_value);
+      => a % b.Value;
+    public static Latitude operator -(Latitude a, double b)
+      => new Latitude(a.m_value - b);
     public static Latitude operator -(Latitude a, Latitude b)
-      => new Latitude(a.m_value - b.m_value);
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -106,9 +106,9 @@ namespace Flux.Units
     public static bool operator <=(Length a, Length b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Length a, Length b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Length a, Length b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Length a, Length b)
       => a.Equals(b);
@@ -117,16 +117,26 @@ namespace Flux.Units
 
     public static Length operator -(Length v)
       => new Length(-v.m_value);
+    public static Length operator +(Length a, double b)
+      => new Length(a.m_value + b);
     public static Length operator +(Length a, Length b)
-      => new Length(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Length operator /(Length a, double b)
+      => new Length(a.m_value / b);
     public static Length operator /(Length a, Length b)
-      => new Length(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Length operator *(Length a, double b)
+      => new Length(a.m_value * b);
     public static Length operator *(Length a, Length b)
-      => new Length(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Length operator %(Length a, double b)
+      => new Length(a.m_value % b);
     public static Length operator %(Length a, Length b)
-      => new Length(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Length operator -(Length a, double b)
+      => new Length(a.m_value - b);
     public static Length operator -(Length a, Length b)
-      => new Length(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -2,7 +2,7 @@
 {
   public class GraphemeCluster
   {
-    public char[] Chars { get; }
+    public string Chars { get; }
     public System.Collections.Generic.IReadOnlyList<System.Text.Rune> Runes { get; }
 
     public int SourceIndex { get; }
@@ -12,7 +12,7 @@
       if (textElement is null) throw new System.ArgumentNullException(nameof(textElement));
       if (new System.Globalization.StringInfo(textElement).LengthInTextElements != 1) throw new System.ArgumentOutOfRangeException(textElement);
 
-      Chars = textElement.ToCharArray();
+      Chars = textElement;
       Runes = new System.Collections.Generic.List<System.Text.Rune>(textElement.EnumerateRunes());
 
       SourceIndex = sourceIndex;

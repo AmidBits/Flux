@@ -41,9 +41,9 @@ namespace Flux.Units
     public static bool operator <=(Longitude a, Longitude b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Longitude a, Longitude b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Longitude a, Longitude b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Longitude a, Longitude b)
       => a.Equals(b);
@@ -52,16 +52,26 @@ namespace Flux.Units
 
     public static Longitude operator -(Longitude v)
       => new Longitude(-v.m_value);
+    public static Longitude operator +(Longitude a, double b)
+      => new Longitude(a.m_value + b);
     public static Longitude operator +(Longitude a, Longitude b)
-      => new Longitude(a.m_value + b.m_value);
+      => a + b.Value;
+    public static Longitude operator /(Longitude a, double b)
+      => new Longitude(a.m_value / b);
     public static Longitude operator /(Longitude a, Longitude b)
-      => new Longitude(a.m_value / b.m_value);
+      => a / b.Value;
+    public static Longitude operator *(Longitude a, double b)
+      => new Longitude(a.m_value * b);
     public static Longitude operator *(Longitude a, Longitude b)
-      => new Longitude(a.m_value * b.m_value);
+      => a * b.Value;
+    public static Longitude operator %(Longitude a, double b)
+      => new Longitude(a.m_value % b);
     public static Longitude operator %(Longitude a, Longitude b)
-      => new Longitude(a.m_value % b.m_value);
+      => a % b.Value;
+    public static Longitude operator -(Longitude a, double b)
+      => new Longitude(a.m_value - b);
     public static Longitude operator -(Longitude a, Longitude b)
-      => new Longitude(a.m_value - b.m_value);
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

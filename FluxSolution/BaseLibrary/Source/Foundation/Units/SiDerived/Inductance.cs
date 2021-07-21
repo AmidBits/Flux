@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(Inductance a, Inductance b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Inductance a, Inductance b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Inductance a, Inductance b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Inductance a, Inductance b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static Inductance operator -(Inductance v)
       => new Inductance(-v.m_value);
+    public static Inductance operator +(Inductance a, double b)
+      => new Inductance(a.m_value + b);
     public static Inductance operator +(Inductance a, Inductance b)
-       => new Inductance(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Inductance operator /(Inductance a, double b)
+      => new Inductance(a.m_value / b);
     public static Inductance operator /(Inductance a, Inductance b)
-      => new Inductance(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Inductance operator *(Inductance a, double b)
+      => new Inductance(a.m_value * b);
     public static Inductance operator *(Inductance a, Inductance b)
-      => new Inductance(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Inductance operator %(Inductance a, double b)
+      => new Inductance(a.m_value % b);
     public static Inductance operator %(Inductance a, Inductance b)
-      => new Inductance(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Inductance operator -(Inductance a, double b)
+      => new Inductance(a.m_value - b);
     public static Inductance operator -(Inductance a, Inductance b)
-      => new Inductance(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -121,9 +121,9 @@ namespace Flux.Units
     public static bool operator <=(Temperature a, Temperature b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Temperature a, Temperature b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Temperature a, Temperature b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Temperature a, Temperature b)
       => a.Equals(b);
@@ -132,16 +132,26 @@ namespace Flux.Units
 
     public static Temperature operator -(Temperature v)
       => new Temperature(-v.m_value);
+    public static Temperature operator +(Temperature a, double b)
+      => new Temperature(a.m_value + b);
     public static Temperature operator +(Temperature a, Temperature b)
-      => new Temperature(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Temperature operator /(Temperature a, double b)
+      => new Temperature(a.m_value / b);
     public static Temperature operator /(Temperature a, Temperature b)
-      => new Temperature(a.m_value / b.m_value);
-    public static Temperature operator %(Temperature a, Temperature b)
-      => new Temperature(a.m_value % b.m_value);
+      => a / b.m_value;
+    public static Temperature operator *(Temperature a, double b)
+      => new Temperature(a.m_value * b);
     public static Temperature operator *(Temperature a, Temperature b)
-      => new Temperature(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Temperature operator %(Temperature a, double b)
+      => new Temperature(a.m_value % b);
+    public static Temperature operator %(Temperature a, Temperature b)
+      => a % b.m_value;
+    public static Temperature operator -(Temperature a, double b)
+      => new Temperature(a.m_value - b);
     public static Temperature operator -(Temperature a, Temperature b)
-      => new Temperature(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

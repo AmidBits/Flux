@@ -13,6 +13,11 @@ namespace Flux.Units
     public double Value
       => m_value;
 
+    #region Static methods
+    public static AngularVelocity From(Angle angle, Time time)
+      => new AngularVelocity(angle.Value / time.Value);
+    #endregion Static methods
+
     #region Overloaded operators
     public static explicit operator double(AngularVelocity v)
       => v.m_value;
@@ -24,9 +29,9 @@ namespace Flux.Units
     public static bool operator <=(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(AngularVelocity a, AngularVelocity b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(AngularVelocity a, AngularVelocity b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(AngularVelocity a, AngularVelocity b)
       => a.Equals(b);
@@ -45,6 +50,17 @@ namespace Flux.Units
       => new AngularVelocity(a.m_value % b.m_value);
     public static AngularVelocity operator -(AngularVelocity a, AngularVelocity b)
       => new AngularVelocity(a.m_value - b.m_value);
+
+    public static AngularVelocity operator +(AngularVelocity a, double b)
+      => new AngularVelocity(a.m_value + b);
+    public static AngularVelocity operator /(AngularVelocity a, double b)
+      => new AngularVelocity(a.m_value / b);
+    public static AngularVelocity operator *(AngularVelocity a, double b)
+      => new AngularVelocity(a.m_value * b);
+    public static AngularVelocity operator %(AngularVelocity a, double b)
+      => new AngularVelocity(a.m_value % b);
+    public static AngularVelocity operator -(AngularVelocity a, double b)
+      => new AngularVelocity(a.m_value - b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

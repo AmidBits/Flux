@@ -53,9 +53,9 @@ namespace Flux.Units
     public static bool operator <=(LuminousIntensity a, LuminousIntensity b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(LuminousIntensity a, LuminousIntensity b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(LuminousIntensity a, LuminousIntensity b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(LuminousIntensity a, LuminousIntensity b)
       => a.Equals(b);
@@ -64,16 +64,26 @@ namespace Flux.Units
 
     public static LuminousIntensity operator -(LuminousIntensity v)
       => new LuminousIntensity(-v.m_value);
+    public static LuminousIntensity operator +(LuminousIntensity a, double b)
+      => new LuminousIntensity(a.m_value + b);
     public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static LuminousIntensity operator /(LuminousIntensity a, double b)
+      => new LuminousIntensity(a.m_value / b);
     public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static LuminousIntensity operator *(LuminousIntensity a, double b)
+      => new LuminousIntensity(a.m_value * b);
     public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static LuminousIntensity operator %(LuminousIntensity a, double b)
+      => new LuminousIntensity(a.m_value % b);
     public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static LuminousIntensity operator -(LuminousIntensity a, double b)
+      => new LuminousIntensity(a.m_value - b);
     public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b)
-      => new LuminousIntensity(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

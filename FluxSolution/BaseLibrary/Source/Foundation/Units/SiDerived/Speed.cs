@@ -91,9 +91,9 @@ namespace Flux.Units
     public static bool operator <=(Speed a, Speed b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Speed a, Speed b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Speed a, Speed b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Speed a, Speed b)
       => a.Equals(b);
@@ -102,16 +102,26 @@ namespace Flux.Units
 
     public static Speed operator -(Speed v)
       => new Speed(-v.m_value);
+    public static Speed operator +(Speed a, double b)
+      => new Speed(a.m_value + b);
     public static Speed operator +(Speed a, Speed b)
-      => new Speed(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Speed operator /(Speed a, double b)
+      => new Speed(a.m_value / b);
     public static Speed operator /(Speed a, Speed b)
-      => new Speed(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Speed operator *(Speed a, double b)
+      => new Speed(a.m_value * b);
     public static Speed operator *(Speed a, Speed b)
-      => new Speed(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Speed operator %(Speed a, double b)
+      => new Speed(a.m_value % b);
     public static Speed operator %(Speed a, Speed b)
-      => new Speed(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Speed operator -(Speed a, double b)
+      => new Speed(a.m_value - b);
     public static Speed operator -(Speed a, Speed b)
-      => new Speed(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -9,7 +9,7 @@ namespace Flux.Text
     public GraphemeEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
     {
       if (textReader is null) throw new System.ArgumentNullException(nameof(textReader));
-      if (bufferSize < 8) throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
+      if (bufferSize < 128) throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
 
       m_textReader = textReader;
       m_bufferSize = bufferSize;

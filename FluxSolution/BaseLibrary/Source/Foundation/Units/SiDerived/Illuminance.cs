@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(Illuminance a, Illuminance b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Illuminance a, Illuminance b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Illuminance a, Illuminance b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Illuminance a, Illuminance b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static Illuminance operator -(Illuminance v)
       => new Illuminance(-v.m_value);
+    public static Illuminance operator +(Illuminance a, double b)
+      => new Illuminance(a.m_value + b);
     public static Illuminance operator +(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Illuminance operator /(Illuminance a, double b)
+      => new Illuminance(a.m_value / b);
     public static Illuminance operator /(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Illuminance operator *(Illuminance a, double b)
+      => new Illuminance(a.m_value * b);
     public static Illuminance operator *(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Illuminance operator %(Illuminance a, double b)
+      => new Illuminance(a.m_value % b);
     public static Illuminance operator %(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Illuminance operator -(Illuminance a, double b)
+      => new Illuminance(a.m_value - b);
     public static Illuminance operator -(Illuminance a, Illuminance b)
-      => new Illuminance(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

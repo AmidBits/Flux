@@ -53,9 +53,9 @@ namespace Flux.Units
     public static bool operator <=(Frequency a, Frequency b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Frequency a, Frequency b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Frequency a, Frequency b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Frequency a, Frequency b)
       => a.Equals(b);
@@ -64,16 +64,26 @@ namespace Flux.Units
 
     public static Frequency operator -(Frequency v)
       => new Frequency(-v.m_value);
+    public static Frequency operator +(Frequency a, double b)
+      => new Frequency(a.m_value + b);
     public static Frequency operator +(Frequency a, Frequency b)
-      => new Frequency(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Frequency operator /(Frequency a, double b)
+      => new Frequency(a.m_value / b);
     public static Frequency operator /(Frequency a, Frequency b)
-      => new Frequency(a.m_value / b.m_value);
-    public static Frequency operator %(Frequency a, Frequency b)
-      => new Frequency(a.m_value % b.m_value);
+      => a / b.m_value;
+    public static Frequency operator *(Frequency a, double b)
+      => new Frequency(a.m_value * b);
     public static Frequency operator *(Frequency a, Frequency b)
-      => new Frequency(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Frequency operator %(Frequency a, double b)
+      => new Frequency(a.m_value % b);
+    public static Frequency operator %(Frequency a, Frequency b)
+      => a % b.m_value;
+    public static Frequency operator -(Frequency a, double b)
+      => new Frequency(a.m_value - b);
     public static Frequency operator -(Frequency a, Frequency b)
-      => new Frequency(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

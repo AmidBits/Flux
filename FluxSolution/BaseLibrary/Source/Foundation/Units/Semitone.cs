@@ -60,9 +60,9 @@ namespace Flux.Units
     public static bool operator <=(Semitone a, Semitone b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Semitone a, Semitone b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Semitone a, Semitone b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Semitone a, Semitone b)
       => a.Equals(b);
@@ -71,16 +71,26 @@ namespace Flux.Units
 
     public static Semitone operator -(Semitone v)
       => new Semitone(-v.m_value);
+    public static Semitone operator +(Semitone a, int b)
+      => new Semitone(a.m_value + b);
     public static Semitone operator +(Semitone a, Semitone b)
-      => new Semitone(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Semitone operator /(Semitone a, int b)
+      => new Semitone(a.m_value / b);
     public static Semitone operator /(Semitone a, Semitone b)
-      => new Semitone(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Semitone operator *(Semitone a, int b)
+      => new Semitone(a.m_value * b);
     public static Semitone operator *(Semitone a, Semitone b)
-      => new Semitone(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Semitone operator %(Semitone a, int b)
+      => new Semitone(a.m_value % b);
     public static Semitone operator %(Semitone a, Semitone b)
-      => new Semitone(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Semitone operator -(Semitone a, int b)
+      => new Semitone(a.m_value - b);
     public static Semitone operator -(Semitone a, Semitone b)
-      => new Semitone(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

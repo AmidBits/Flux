@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(ElectricalConductance a, ElectricalConductance b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricalConductance a, ElectricalConductance b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(ElectricalConductance a, ElectricalConductance b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(ElectricalConductance a, ElectricalConductance b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static ElectricalConductance operator -(ElectricalConductance v)
       => new ElectricalConductance(-v.m_value);
+    public static ElectricalConductance operator +(ElectricalConductance a, double b)
+      => new ElectricalConductance(a.m_value + b);
     public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b)
-      => new ElectricalConductance(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static ElectricalConductance operator /(ElectricalConductance a, double b)
+      => new ElectricalConductance(a.m_value / b);
     public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b)
-      => new ElectricalConductance(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static ElectricalConductance operator *(ElectricalConductance a, double b)
+      => new ElectricalConductance(a.m_value * b);
     public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b)
-      => new ElectricalConductance(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static ElectricalConductance operator %(ElectricalConductance a, double b)
+      => new ElectricalConductance(a.m_value % b);
     public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b)
-      => new ElectricalConductance(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static ElectricalConductance operator -(ElectricalConductance a, double b)
+      => new ElectricalConductance(a.m_value - b);
     public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b)
-      => new ElectricalConductance(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -50,9 +50,9 @@ namespace Flux.Units
     public static bool operator <=(Azimuth a, Azimuth b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Azimuth a, Azimuth b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Azimuth a, Azimuth b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Azimuth a, Azimuth b)
       => a.Equals(b);
@@ -61,16 +61,26 @@ namespace Flux.Units
 
     public static Azimuth operator -(Azimuth v)
       => new Azimuth(-v.m_value);
+    public static Azimuth operator +(Azimuth a, double b)
+      => new Azimuth(a.m_value + b);
     public static Azimuth operator +(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_value + b.m_value);
+      => a + b.Value;
+    public static Azimuth operator /(Azimuth a, double b)
+      => new Azimuth(a.m_value / b);
     public static Azimuth operator /(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_value / b.m_value);
+      => a / b.Value;
+    public static Azimuth operator *(Azimuth a, double b)
+      => new Azimuth(a.m_value * b);
     public static Azimuth operator *(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_value * b.m_value);
+      => a * b.Value;
+    public static Azimuth operator %(Azimuth a, double b)
+      => new Azimuth(a.m_value % b);
     public static Azimuth operator %(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_value % b.m_value);
+      => a % b.Value;
+    public static Azimuth operator -(Azimuth a, double b)
+      => new Azimuth(a.m_value - b);
     public static Azimuth operator -(Azimuth a, Azimuth b)
-      => new Azimuth(a.m_value - b.m_value);
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

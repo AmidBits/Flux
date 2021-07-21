@@ -32,9 +32,9 @@ namespace Flux.Units
     public static bool operator <=(Area a, Area b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Area a, Area b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Area a, Area b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Area a, Area b)
       => a.Equals(b);
@@ -43,16 +43,26 @@ namespace Flux.Units
 
     public static Area operator -(Area v)
       => new Area(-v.m_value);
+    public static Area operator +(Area a, double b)
+      => new Area(a.m_value + b);
     public static Area operator +(Area a, Area b)
-      => new Area(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Area operator /(Area a, double b)
+      => new Area(a.m_value / b);
     public static Area operator /(Area a, Area b)
-      => new Area(a.m_value + b.m_value);
+      => a / b.m_value;
+    public static Area operator *(Area a, double b)
+      => new Area(a.m_value * b);
     public static Area operator *(Area a, Area b)
-      => new Area(a.m_value + b.m_value);
+      => a * b.m_value;
+    public static Area operator %(Area a, double b)
+      => new Area(a.m_value % b);
     public static Area operator %(Area a, Area b)
-      => new Area(a.m_value + b.m_value);
+      => a % b.m_value;
+    public static Area operator -(Area a, double b)
+      => new Area(a.m_value - b);
     public static Area operator -(Area a, Area b)
-      => new Area(a.m_value + b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

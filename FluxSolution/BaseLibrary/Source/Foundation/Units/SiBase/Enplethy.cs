@@ -53,9 +53,9 @@ namespace Flux.Units
     public static bool operator <=(Enplethy a, Enplethy b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Enplethy a, Enplethy b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Enplethy a, Enplethy b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Enplethy a, Enplethy b)
       => a.Equals(b);
@@ -64,16 +64,26 @@ namespace Flux.Units
 
     public static Enplethy operator -(Enplethy v)
       => new Enplethy(-v.Value);
+    public static Enplethy operator +(Enplethy a, double b)
+      => new Enplethy(a.m_value + b);
     public static Enplethy operator +(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Enplethy operator /(Enplethy a, double b)
+      => new Enplethy(a.m_value / b);
     public static Enplethy operator /(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Enplethy operator *(Enplethy a, double b)
+      => new Enplethy(a.m_value * b);
     public static Enplethy operator *(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Enplethy operator %(Enplethy a, double b)
+      => new Enplethy(a.m_value % b);
     public static Enplethy operator %(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Enplethy operator -(Enplethy a, double b)
+      => new Enplethy(a.m_value - b);
     public static Enplethy operator -(Enplethy a, Enplethy b)
-      => new Enplethy(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

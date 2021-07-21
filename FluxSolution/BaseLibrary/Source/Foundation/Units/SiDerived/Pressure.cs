@@ -58,9 +58,9 @@ namespace Flux.Units
     public static bool operator <=(Pressure a, Pressure b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Pressure a, Pressure b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Pressure a, Pressure b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Pressure a, Pressure b)
       => a.Equals(b);
@@ -69,16 +69,26 @@ namespace Flux.Units
 
     public static Pressure operator -(Pressure v)
       => new Pressure(-v.m_value);
+    public static Pressure operator +(Pressure a, double b)
+      => new Pressure(a.m_value + b);
     public static Pressure operator +(Pressure a, Pressure b)
-      => new Pressure(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Pressure operator /(Pressure a, double b)
+      => new Pressure(a.m_value / b);
     public static Pressure operator /(Pressure a, Pressure b)
-      => new Pressure(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Pressure operator *(Pressure a, double b)
+      => new Pressure(a.m_value * b);
     public static Pressure operator *(Pressure a, Pressure b)
-      => new Pressure(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Pressure operator %(Pressure a, double b)
+      => new Pressure(a.m_value % b);
     public static Pressure operator %(Pressure a, Pressure b)
-      => new Pressure(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Pressure operator -(Pressure a, double b)
+      => new Pressure(a.m_value - b);
     public static Pressure operator -(Pressure a, Pressure b)
-      => new Pressure(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

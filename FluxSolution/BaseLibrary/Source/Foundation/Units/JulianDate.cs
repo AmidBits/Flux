@@ -140,32 +140,45 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static JulianDate operator +(JulianDate a, double b)
-      => new JulianDate(a.m_value + b);
-    public static JulianDate operator +(JulianDate a, Units.Time b)
-      => a + (b.Value / 86400.0);
-    public static JulianDate operator +(JulianDate a, System.TimeSpan b)
-      => a.AddDays(b.Days).AddHours(b.Hours).AddMinutes(b.Minutes).AddSeconds(b.Seconds).AddMillieconds(b.Milliseconds);
-    public static JulianDate operator -(JulianDate a, double b)
-      => new JulianDate(a.m_value - b);
-    public static JulianDate operator -(JulianDate a, Units.Time b)
-      => a - (b.Value / 86400.0);
-    public static JulianDate operator -(JulianDate a, System.TimeSpan b)
-      => a.AddDays(-b.Days).AddHours(-b.Hours).AddMinutes(-b.Minutes).AddSeconds(-b.Seconds).AddMillieconds(-b.Milliseconds);
-
     public static bool operator <(JulianDate a, JulianDate b)
       => a.CompareTo(b) < 0;
     public static bool operator <=(JulianDate a, JulianDate b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(JulianDate a, JulianDate b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(JulianDate a, JulianDate b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(JulianDate a, JulianDate b)
       => a.Equals(b);
     public static bool operator !=(JulianDate a, JulianDate b)
       => !a.Equals(b);
+
+    public static JulianDate operator -(JulianDate jd)
+      => new JulianDate(-jd.m_value);
+    public static double operator -(JulianDate a, JulianDate b)
+      => a.m_value - b.m_value;
+
+    public static JulianDate operator +(JulianDate a, double b)
+      => new JulianDate(a.m_value + b);
+    public static JulianDate operator /(JulianDate a, double b)
+      => new JulianDate(a.m_value / b);
+    public static JulianDate operator *(JulianDate a, double b)
+      => new JulianDate(a.m_value * b);
+    public static JulianDate operator %(JulianDate a, double b)
+      => new JulianDate(a.m_value % b);
+    public static JulianDate operator -(JulianDate a, double b)
+      => new JulianDate(a.m_value - b);
+
+    public static JulianDate operator +(JulianDate a, Units.Time b)
+      => a + (b.Value / 86400.0);
+    public static JulianDate operator -(JulianDate a, Units.Time b)
+      => a - (b.Value / 86400.0);
+
+    public static JulianDate operator +(JulianDate a, System.TimeSpan b)
+      => a + (b.TotalSeconds / 86400);
+    public static JulianDate operator -(JulianDate a, System.TimeSpan b)
+      => a - (b.TotalSeconds / 86400);
     #endregion Overloaded operators
 
     #region Implemented interfaces

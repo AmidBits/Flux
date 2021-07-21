@@ -18,35 +18,35 @@ namespace Flux.Units
     public const double OneFullRotationInRadians = System.Math.PI * 2;
     public const double OneFullRotationInRevolutions = 1;
 
-    private readonly double m_radian;
+    private readonly double m_value;
 
     public Angle(double radian)
-      => m_radian = radian;
+      => m_value = radian;
 
     public double Degree
-      => ConvertRadianToDegree(m_radian);
+      => ConvertRadianToDegree(m_value);
     public double Radian
-      => m_radian;
+      => m_value;
 
     public double Value
-      => m_radian;
+      => m_value;
 
     public (double x, double y) ToCartesian()
-      => ConvertRotationAngleToCartesian(m_radian, out var _, out var _);
+      => ConvertRotationAngleToCartesian(m_value, out var _, out var _);
     public (double x, double y) ToCartesianEx()
-      => ConvertRotationAngleToCartesianEx(m_radian, out var _, out var _);
+      => ConvertRotationAngleToCartesianEx(m_value, out var _, out var _);
     public double ToUnitValue(AngleUnit unit)
     {
       switch (unit)
       {
         case AngleUnit.Degree:
-          return ConvertRadianToDegree(m_radian);
+          return ConvertRadianToDegree(m_value);
         case AngleUnit.Gradian:
-          return ConvertRadianToGradian(m_radian);
+          return ConvertRadianToGradian(m_value);
         case AngleUnit.Radian:
-          return m_radian;
+          return m_value;
         case AngleUnit.Revolution:
-          return ConvertRadianToRevolution(m_radian);
+          return ConvertRadianToRevolution(m_value);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -122,7 +122,7 @@ namespace Flux.Units
     public static explicit operator Angle(double value)
       => new Angle(value);
     public static explicit operator double(Angle value)
-      => value.m_radian;
+      => value.m_value;
 
     public static bool operator ==(Angle a, Angle b)
       => a.Equals(b);
@@ -130,36 +130,46 @@ namespace Flux.Units
       => !a.Equals(b);
 
     public static bool operator <(Angle a, Angle b)
-   => a.CompareTo(b) < 0;
+      => a.CompareTo(b) < 0;
     public static bool operator <=(Angle a, Angle b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Angle a, Angle b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Angle a, Angle b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static Angle operator -(Angle v)
-      => new Angle(-v.m_radian);
+      => new Angle(-v.m_value);
+    public static Angle operator +(Angle a, double b)
+      => new Angle(a.m_value + b);
     public static Angle operator +(Angle a, Angle b)
-      => new Angle(a.m_radian + b.m_radian);
+      => a + b.m_value;
+    public static Angle operator /(Angle a, double b)
+      => new Angle(a.m_value / b);
     public static Angle operator /(Angle a, Angle b)
-      => new Angle(a.m_radian / b.m_radian);
-    public static Angle operator %(Angle a, Angle b)
-      => new Angle(a.m_radian % b.m_radian);
+      => a / b.m_value;
+    public static Angle operator *(Angle a, double b)
+      => new Angle(a.m_value * b);
     public static Angle operator *(Angle a, Angle b)
-      => new Angle(a.m_radian * b.m_radian);
+      => a * b.m_value;
+    public static Angle operator %(Angle a, double b)
+      => new Angle(a.m_value % b);
+    public static Angle operator %(Angle a, Angle b)
+      => a % b.m_value;
+    public static Angle operator -(Angle a, double b)
+      => new Angle(a.m_value - b);
     public static Angle operator -(Angle a, Angle b)
-      => new Angle(a.m_radian - b.m_radian);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Angle other)
-      => m_radian.CompareTo(other.m_radian);
+      => m_value.CompareTo(other.m_value);
 
     // IEquatable<Angle>
     public bool Equals(Angle other)
-      => m_radian == other.m_radian;
+      => m_value == other.m_value;
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
@@ -170,9 +180,9 @@ namespace Flux.Units
     public override bool Equals(object? obj)
       => obj is Angle o && Equals(o);
     public override int GetHashCode()
-      => m_radian.GetHashCode();
+      => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_radian}\u00B0 rad>";
+      => $"<{GetType().Name}: {m_value}\u00B0 rad>";
     #endregion Object overrides
   }
 }

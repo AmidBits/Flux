@@ -4,13 +4,13 @@ using System.Linq;
 namespace Flux.Text
 {
   /// <summary>An implementation of a demarcated and classified section of a grapheme.</summary>
-  public struct GraphemeToken
-    : IToken<string>
+  public class GraphemeToken
+    : IToken<GraphemeCluster>
   {
     public int Index { get; }
-    public string Value { get; }
+    public GraphemeCluster Value { get; }
 
-    public GraphemeToken(int index, string value)
+    public GraphemeToken(int index, GraphemeCluster value)
     {
       Index = index;
       Value = value;
@@ -35,6 +35,6 @@ namespace Flux.Text
     }
 
     public override string ToString()
-      => $"<\"{Value}\" @{Index}{(string.Concat(GetNormalizationForms(Value, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : string.Empty)}>";
+      => $"<\"{Value}\" @{Index}{(string.Concat(GetNormalizationForms(Value.Chars, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : string.Empty)}>";
   }
 }

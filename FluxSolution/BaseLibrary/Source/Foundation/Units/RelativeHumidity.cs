@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(RelativeHumidity a, RelativeHumidity b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(RelativeHumidity a, RelativeHumidity b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(RelativeHumidity a, RelativeHumidity b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(RelativeHumidity a, RelativeHumidity b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static RelativeHumidity operator -(RelativeHumidity v)
       => new RelativeHumidity(-v.m_value);
+    public static RelativeHumidity operator +(RelativeHumidity a, double b)
+      => new RelativeHumidity(a.m_value + b);
     public static RelativeHumidity operator +(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static RelativeHumidity operator /(RelativeHumidity a, double b)
+      => new RelativeHumidity(a.m_value / b);
     public static RelativeHumidity operator /(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static RelativeHumidity operator *(RelativeHumidity a, double b)
+      => new RelativeHumidity(a.m_value * b);
     public static RelativeHumidity operator *(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static RelativeHumidity operator %(RelativeHumidity a, double b)
+      => new RelativeHumidity(a.m_value % b);
     public static RelativeHumidity operator %(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static RelativeHumidity operator -(RelativeHumidity a, double b)
+      => new RelativeHumidity(a.m_value - b);
     public static RelativeHumidity operator -(RelativeHumidity a, RelativeHumidity b)
-      => new RelativeHumidity(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

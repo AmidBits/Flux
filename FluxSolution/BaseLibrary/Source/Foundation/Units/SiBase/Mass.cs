@@ -73,9 +73,9 @@ namespace Flux.Units
     public static bool operator <=(Mass a, Mass b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Mass a, Mass b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Mass a, Mass b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Mass a, Mass b)
       => a.Equals(b);
@@ -84,16 +84,26 @@ namespace Flux.Units
 
     public static Mass operator -(Mass v)
       => new Mass(-v.m_value);
+    public static Mass operator +(Mass a, double b)
+      => new Mass(a.m_value + b);
     public static Mass operator +(Mass a, Mass b)
-      => new Mass(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Mass operator /(Mass a, double b)
+      => new Mass(a.m_value / b);
     public static Mass operator /(Mass a, Mass b)
-      => new Mass(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Mass operator *(Mass a, double b)
+      => new Mass(a.m_value * b);
     public static Mass operator *(Mass a, Mass b)
-      => new Mass(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Mass operator %(Mass a, double b)
+      => new Mass(a.m_value % b);
     public static Mass operator %(Mass a, Mass b)
-      => new Mass(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Mass operator -(Mass a, double b)
+      => new Mass(a.m_value - b);
     public static Mass operator -(Mass a, Mass b)
-      => new Mass(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

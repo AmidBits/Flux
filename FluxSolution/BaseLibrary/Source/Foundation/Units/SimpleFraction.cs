@@ -132,9 +132,9 @@ namespace Flux.Units
     public static bool operator <=(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(SimpleFraction a, SimpleFraction b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(SimpleFraction a, SimpleFraction b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(SimpleFraction a, SimpleFraction b)
       => a.Equals(b);

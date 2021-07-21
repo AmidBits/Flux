@@ -55,9 +55,9 @@ namespace Flux.Units
     public static bool operator <=(Cent a, Cent b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Cent a, Cent b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Cent a, Cent b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Cent a, Cent b)
       => a.Equals(b);
@@ -66,16 +66,26 @@ namespace Flux.Units
 
     public static Cent operator -(Cent v)
       => new Cent(-v.m_value);
+    public static Cent operator +(Cent a, int b)
+      => new Cent(a.m_value + b);
     public static Cent operator +(Cent a, Cent b)
-      => new Cent(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Cent operator /(Cent a, int b)
+      => new Cent(a.m_value / b);
     public static Cent operator /(Cent a, Cent b)
-      => new Cent(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Cent operator *(Cent a, int b)
+      => new Cent(a.m_value * b);
     public static Cent operator *(Cent a, Cent b)
-      => new Cent(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Cent operator %(Cent a, int b)
+      => new Cent(a.m_value % b);
     public static Cent operator %(Cent a, Cent b)
-      => new Cent(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Cent operator -(Cent a, int b)
+      => new Cent(a.m_value - b);
     public static Cent operator -(Cent a, Cent b)
-      => new Cent(a.m_value - b.m_value);
+      => a-b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

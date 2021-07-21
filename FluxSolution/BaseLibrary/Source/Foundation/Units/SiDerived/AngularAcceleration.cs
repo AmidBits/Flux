@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(AngularAcceleration a, AngularAcceleration b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(AngularAcceleration a, AngularAcceleration b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static AngularAcceleration operator -(AngularAcceleration v)
       => new AngularAcceleration(-v.m_value);
+    public static AngularAcceleration operator +(AngularAcceleration a, double b)
+      => new AngularAcceleration(a.m_value + b);
     public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b)
-      => new AngularAcceleration(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static AngularAcceleration operator /(AngularAcceleration a, double b)
+      => new AngularAcceleration(a.m_value / b);
     public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b)
-      => new AngularAcceleration(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static AngularAcceleration operator *(AngularAcceleration a, double b)
+      => new AngularAcceleration(a.m_value * b);
     public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b)
-      => new AngularAcceleration(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static AngularAcceleration operator %(AngularAcceleration a, double b)
+      => new AngularAcceleration(a.m_value % b);
     public static AngularAcceleration operator %(AngularAcceleration a, AngularAcceleration b)
-      => new AngularAcceleration(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static AngularAcceleration operator -(AngularAcceleration a, double b)
+      => new AngularAcceleration(a.m_value - b);
     public static AngularAcceleration operator -(AngularAcceleration a, AngularAcceleration b)
-      => new AngularAcceleration(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(ElectricCharge a, ElectricCharge b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricCharge a, ElectricCharge b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(ElectricCharge a, ElectricCharge b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(ElectricCharge a, ElectricCharge b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static ElectricCharge operator -(ElectricCharge v)
       => new ElectricCharge(-v.m_value);
+    public static ElectricCharge operator +(ElectricCharge a, double b)
+      => new ElectricCharge(a.m_value + b);
     public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b)
-      => new ElectricCharge(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static ElectricCharge operator /(ElectricCharge a, double b)
+      => new ElectricCharge(a.m_value / b);
     public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b)
-      => new ElectricCharge(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static ElectricCharge operator *(ElectricCharge a, double b)
+      => new ElectricCharge(a.m_value * b);
     public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b)
-      => new ElectricCharge(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static ElectricCharge operator %(ElectricCharge a, double b)
+      => new ElectricCharge(a.m_value % b);
     public static ElectricCharge operator %(ElectricCharge a, ElectricCharge b)
-      => new ElectricCharge(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static ElectricCharge operator -(ElectricCharge a, double b)
+      => new ElectricCharge(a.m_value - b);
     public static ElectricCharge operator -(ElectricCharge a, ElectricCharge b)
-      => new ElectricCharge(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

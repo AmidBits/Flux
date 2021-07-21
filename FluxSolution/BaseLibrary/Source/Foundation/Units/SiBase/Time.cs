@@ -102,9 +102,9 @@ namespace Flux.Units
     public static bool operator <=(Time a, Time b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Time a, Time b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Time a, Time b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Time a, Time b)
       => a.Equals(b);
@@ -113,16 +113,26 @@ namespace Flux.Units
 
     public static Time operator -(Time v)
       => new Time(-v.m_value);
+    public static Time operator +(Time a, double b)
+      => new Time(a.m_value + b);
     public static Time operator +(Time a, Time b)
-      => new Time(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Time operator /(Time a, double b)
+      => new Time(a.m_value / b);
     public static Time operator /(Time a, Time b)
-      => new Time(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Time operator *(Time a, double b)
+      => new Time(a.m_value * b);
     public static Time operator *(Time a, Time b)
-      => new Time(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Time operator %(Time a, double b)
+      => new Time(a.m_value % b);
     public static Time operator %(Time a, Time b)
-      => new Time(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Time operator -(Time a, double b)
+      => new Time(a.m_value - b);
     public static Time operator -(Time a, Time b)
-      => new Time(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

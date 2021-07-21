@@ -37,9 +37,9 @@ namespace Flux.Units
     public static bool operator <=(Voltage a, Voltage b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Voltage a, Voltage b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Voltage a, Voltage b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Voltage a, Voltage b)
       => a.Equals(b);
@@ -48,16 +48,26 @@ namespace Flux.Units
 
     public static Voltage operator -(Voltage v)
       => new Voltage(-v.m_value);
+    public static Voltage operator +(Voltage a, double b)
+      => new Voltage(a.m_value + b);
     public static Voltage operator +(Voltage a, Voltage b)
-      => new Voltage(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Voltage operator /(Voltage a, double b)
+      => new Voltage(a.m_value / b);
     public static Voltage operator /(Voltage a, Voltage b)
-      => new Voltage(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Voltage operator *(Voltage a, double b)
+      => new Voltage(a.m_value * b);
     public static Voltage operator *(Voltage a, Voltage b)
-      => new Voltage(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Voltage operator %(Voltage a, double b)
+      => new Voltage(a.m_value % b);
     public static Voltage operator %(Voltage a, Voltage b)
-      => new Voltage(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Voltage operator -(Voltage a, double b)
+      => new Voltage(a.m_value - b);
     public static Voltage operator -(Voltage a, Voltage b)
-      => new Voltage(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

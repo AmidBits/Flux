@@ -13,6 +13,13 @@ namespace Flux.Units
     public double Value
       => m_value;
 
+    #region Static methods
+    public static AbsoluteHumidity From(double grams, Volume volume)
+      => new AbsoluteHumidity(grams / volume.Value);
+    public static AbsoluteHumidity From(Mass mass, Volume volume)
+      => From(mass.Value * 1000, volume);
+    #endregion Static methods
+
     #region Overloaded operators
     public static explicit operator double(AbsoluteHumidity v)
       => v.m_value;
@@ -24,9 +31,9 @@ namespace Flux.Units
     public static bool operator <=(AbsoluteHumidity a, AbsoluteHumidity b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(AbsoluteHumidity a, AbsoluteHumidity b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(AbsoluteHumidity a, AbsoluteHumidity b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(AbsoluteHumidity a, AbsoluteHumidity b)
       => a.Equals(b);
@@ -35,16 +42,26 @@ namespace Flux.Units
 
     public static AbsoluteHumidity operator -(AbsoluteHumidity v)
       => new AbsoluteHumidity(-v.m_value);
+    public static AbsoluteHumidity operator +(AbsoluteHumidity a, double b)
+      => new AbsoluteHumidity(a.m_value + b);
     public static AbsoluteHumidity operator +(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static AbsoluteHumidity operator /(AbsoluteHumidity a, double b)
+      => new AbsoluteHumidity(a.m_value / b);
     public static AbsoluteHumidity operator /(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static AbsoluteHumidity operator *(AbsoluteHumidity a, double b)
+      => new AbsoluteHumidity(a.m_value * b);
     public static AbsoluteHumidity operator *(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static AbsoluteHumidity operator %(AbsoluteHumidity a, double b)
+      => new AbsoluteHumidity(a.m_value % b);
     public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static AbsoluteHumidity operator -(AbsoluteHumidity a, double b)
+      => new AbsoluteHumidity(a.m_value - b);
     public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b)
-      => new AbsoluteHumidity(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

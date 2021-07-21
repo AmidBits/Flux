@@ -24,9 +24,9 @@ namespace Flux.Units
     public static bool operator <=(Force a, Force b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Force a, Force b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Force a, Force b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Force a, Force b)
       => a.Equals(b);
@@ -35,16 +35,26 @@ namespace Flux.Units
 
     public static Force operator -(Force v)
       => new Force(-v.m_value);
+    public static Force operator +(Force a, double b)
+      => new Force(a.m_value + b);
     public static Force operator +(Force a, Force b)
-      => new Force(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Force operator /(Force a, double b)
+      => new Force(a.m_value / b);
     public static Force operator /(Force a, Force b)
-      => new Force(a.m_value / b.m_value);
-    public static Force operator %(Force a, Force b)
-      => new Force(a.m_value % b.m_value);
+      => a / b.m_value;
+    public static Force operator *(Force a, double b)
+      => new Force(a.m_value * b);
     public static Force operator *(Force a, Force b)
-      => new Force(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Force operator %(Force a, double b)
+      => new Force(a.m_value % b);
+    public static Force operator %(Force a, Force b)
+      => a % b.m_value;
+    public static Force operator -(Force a, double b)
+      => new Force(a.m_value - b);
     public static Force operator -(Force a, Force b)
-      => new Force(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

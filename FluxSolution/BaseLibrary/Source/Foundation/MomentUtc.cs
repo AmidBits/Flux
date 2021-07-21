@@ -105,9 +105,9 @@ namespace Flux
     public static bool operator <=(MomentUtc a, MomentUtc b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(MomentUtc a, MomentUtc b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(MomentUtc a, MomentUtc b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(MomentUtc a, MomentUtc b)
       => a.Equals(b);

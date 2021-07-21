@@ -48,9 +48,9 @@ namespace Flux.Units
     public static bool operator <=(ElectricResistance a, ElectricResistance b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricResistance a, ElectricResistance b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(ElectricResistance a, ElectricResistance b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(ElectricResistance a, ElectricResistance b)
       => a.Equals(b);
@@ -59,16 +59,26 @@ namespace Flux.Units
 
     public static ElectricResistance operator -(ElectricResistance v)
       => new ElectricResistance(-v.m_value);
+    public static ElectricResistance operator +(ElectricResistance a, double b)
+      => new ElectricResistance(a.m_value + b);
     public static ElectricResistance operator +(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static ElectricResistance operator /(ElectricResistance a, double b)
+      => new ElectricResistance(a.m_value / b);
     public static ElectricResistance operator /(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static ElectricResistance operator *(ElectricResistance a, double b)
+      => new ElectricResistance(a.m_value * b);
     public static ElectricResistance operator *(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static ElectricResistance operator %(ElectricResistance a, double b)
+      => new ElectricResistance(a.m_value % b);
     public static ElectricResistance operator %(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static ElectricResistance operator -(ElectricResistance a, double b)
+      => new ElectricResistance(a.m_value - b);
     public static ElectricResistance operator -(ElectricResistance a, ElectricResistance b)
-      => new ElectricResistance(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

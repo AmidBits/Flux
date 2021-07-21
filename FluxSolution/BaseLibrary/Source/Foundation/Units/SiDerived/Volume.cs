@@ -33,9 +33,9 @@ namespace Flux.Units
     public static bool operator <=(Volume a, Volume b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(Volume a, Volume b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(Volume a, Volume b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(Volume a, Volume b)
       => a.Equals(b);
@@ -44,16 +44,26 @@ namespace Flux.Units
 
     public static Volume operator -(Volume v)
       => new Volume(-v.m_value);
+    public static Volume operator +(Volume a, double b)
+      => new Volume(a.m_value + b);
     public static Volume operator +(Volume a, Volume b)
-      => new Volume(a.m_value + b.m_value);
+      => a + b.m_value;
+    public static Volume operator /(Volume a, double b)
+      => new Volume(a.m_value / b);
     public static Volume operator /(Volume a, Volume b)
-      => new Volume(a.m_value / b.m_value);
+      => a / b.m_value;
+    public static Volume operator *(Volume a, double b)
+      => new Volume(a.m_value * b);
     public static Volume operator *(Volume a, Volume b)
-      => new Volume(a.m_value * b.m_value);
+      => a * b.m_value;
+    public static Volume operator %(Volume a, double b)
+      => new Volume(a.m_value % b);
     public static Volume operator %(Volume a, Volume b)
-      => new Volume(a.m_value % b.m_value);
+      => a % b.m_value;
+    public static Volume operator -(Volume a, double b)
+      => new Volume(a.m_value - b);
     public static Volume operator -(Volume a, Volume b)
-      => new Volume(a.m_value - b.m_value);
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -70,9 +70,9 @@ namespace Flux
     public static bool operator <=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
     public static bool operator >(VersionEx a, VersionEx b)
-      => a.CompareTo(b) < 0;
+      => a.CompareTo(b) > 0;
     public static bool operator >=(VersionEx a, VersionEx b)
-      => a.CompareTo(b) <= 0;
+      => a.CompareTo(b) >= 0;
 
     public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
