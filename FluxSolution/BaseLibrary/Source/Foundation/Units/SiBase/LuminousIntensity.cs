@@ -8,7 +8,7 @@ namespace Flux.Units
   /// <summary>Luminous intensity unit of candela.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity
-    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IStandardizedScalar
+    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValuedUnit
   {
     private readonly double m_value;
 

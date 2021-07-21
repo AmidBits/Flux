@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IStandardizedScalar
+    : System.IComparable<Power>, System.IEquatable<Power>, IValuedUnit
   {
     private readonly double m_value;
 

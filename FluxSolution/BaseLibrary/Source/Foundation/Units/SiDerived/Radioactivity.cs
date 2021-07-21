@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Radioactivity
-    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IStandardizedScalar
+    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IValuedUnit
   {
     private readonly double m_value;
 

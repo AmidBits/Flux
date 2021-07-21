@@ -9,7 +9,7 @@ namespace Flux.Units
   /// <summary>Electric current unit of ampere.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IStandardizedScalar
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValuedUnit
   {
     private readonly double m_value;
 

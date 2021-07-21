@@ -11,7 +11,7 @@ namespace Flux.Units
   /// <summary>Angle unit of radian (explicitly convertible to/from double as radian).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IStandardizedScalar
+    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedUnit
   {
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;

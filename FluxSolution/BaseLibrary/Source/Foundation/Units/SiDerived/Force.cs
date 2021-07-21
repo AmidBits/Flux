@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Force unit of newton.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IStandardizedScalar
+    : System.IComparable<Force>, System.IEquatable<Force>, IValuedUnit
   {
     private readonly double m_value;
 

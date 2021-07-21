@@ -9,7 +9,7 @@ namespace Flux.Units
   /// <summary>Pressure unit of Pascal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IStandardizedScalar
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValuedUnit
   {
     private readonly double m_value;
 

@@ -8,7 +8,7 @@ namespace Flux.Units
   /// <summary>Enplethy, or amount of substance, unit of mole.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IStandardizedScalar
+    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedUnit
   {
     private readonly double m_value;
 

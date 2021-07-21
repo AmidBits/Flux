@@ -4,7 +4,7 @@ namespace Flux.Units
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Cent
-    : System.IComparable<Cent>, System.IEquatable<Cent>, IStandardizedScalar
+    : System.IComparable<Cent>, System.IEquatable<Cent>, IValuedUnit
   {
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 

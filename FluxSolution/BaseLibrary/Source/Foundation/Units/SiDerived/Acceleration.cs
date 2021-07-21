@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Acceleration unit of meters per second square.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IStandardizedScalar
+    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValuedUnit
   {
     public static Acceleration GravitationalAccelerationOnEarth
       => new Acceleration(9.80665);

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousFlux
-    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IStandardizedScalar
+    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValuedUnit
   {
     private readonly double m_value;
 

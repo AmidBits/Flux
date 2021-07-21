@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IStandardizedScalar
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValuedUnit
   {
     private readonly double m_value;
 

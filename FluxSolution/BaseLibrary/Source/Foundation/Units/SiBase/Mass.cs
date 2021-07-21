@@ -12,7 +12,7 @@ namespace Flux.Units
   /// <summary>Mass unit of kilogram.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable<Mass>, System.IEquatable<Mass>, IStandardizedScalar
+    : System.IComparable<Mass>, System.IEquatable<Mass>, IValuedUnit
   {
     private readonly double m_value;
 

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Angular acceleration unit of radians per second square.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration
-    : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IStandardizedScalar
+    : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IValuedUnit
   {
     private readonly double m_value;
 

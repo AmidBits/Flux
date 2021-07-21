@@ -17,7 +17,7 @@ namespace Flux.Units
   /// <summary>Length unit of meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IEquatable<Length>, IStandardizedScalar
+    : System.IComparable<Length>, System.IEquatable<Length>, IValuedUnit
   {
     private readonly double m_value;
 

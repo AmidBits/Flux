@@ -1,6 +1,6 @@
 ﻿namespace Flux.Units
 {
-  interface IStandardizedScalar
+  interface IValuedUnit
   {
     double Value { get; }
   }

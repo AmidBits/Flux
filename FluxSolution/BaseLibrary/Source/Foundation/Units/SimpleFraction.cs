@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public struct SimpleFraction
-    : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IStandardizedScalar
+    : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IValuedUnit
   {
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne

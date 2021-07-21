@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>, IStandardizedScalar
+    : System.IComparable<Density>, System.IEquatable<Density>, IValuedUnit
   {
     private readonly double m_value;
 

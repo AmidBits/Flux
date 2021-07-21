@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Azimuth unit of degree.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
-    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IStandardizedScalar
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IValuedUnit
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;

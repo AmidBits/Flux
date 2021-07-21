@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
-    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>
+    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Units.IValuedUnit
   {
     public static JulianDate FirstGregorianDate
       => new MomentUtc(1582, 10, 15, 12, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);

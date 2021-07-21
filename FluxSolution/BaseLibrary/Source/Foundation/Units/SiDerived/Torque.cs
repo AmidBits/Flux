@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>, IStandardizedScalar
+    : System.IComparable<Torque>, System.IEquatable<Torque>, IValuedUnit
   {
     private readonly double m_value;
 

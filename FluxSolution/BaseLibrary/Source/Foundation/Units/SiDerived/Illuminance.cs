@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IStandardizedScalar
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValuedUnit
   {
     private readonly double m_value;
 

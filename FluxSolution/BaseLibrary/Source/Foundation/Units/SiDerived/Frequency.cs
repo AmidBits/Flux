@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Temporal frequency unit of Hertz.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IStandardizedScalar
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedUnit
   {
     private readonly double m_value;
 

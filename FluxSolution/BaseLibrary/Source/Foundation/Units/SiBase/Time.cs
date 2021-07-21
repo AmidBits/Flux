@@ -16,7 +16,7 @@ namespace Flux.Units
   /// <summary>Time unit of second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IEquatable<Time>, IStandardizedScalar
+    : System.IComparable<Time>, System.IEquatable<Time>, IValuedUnit
   {
     private readonly double m_value;
 

@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Area unit of square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IEquatable<Area>, IStandardizedScalar
+    : System.IComparable<Area>, System.IEquatable<Area>, IValuedUnit
   {
     private readonly double m_value;
 

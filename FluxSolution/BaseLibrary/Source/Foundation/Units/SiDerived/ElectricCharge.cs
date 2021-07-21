@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IStandardizedScalar
+    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedUnit
   {
     private readonly double m_value;
 

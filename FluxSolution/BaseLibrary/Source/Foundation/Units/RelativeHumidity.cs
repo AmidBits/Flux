@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IStandardizedScalar
+    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IValuedUnit
   {
     private readonly double m_value;
 

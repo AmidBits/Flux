@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IStandardizedScalar
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValuedUnit
   {
     private readonly double m_value;
 

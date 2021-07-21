@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Volume unit of cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable<Volume>, System.IEquatable<Volume>, IStandardizedScalar
+    : System.IComparable<Volume>, System.IEquatable<Volume>, IValuedUnit
   {
     private readonly double m_value;
 

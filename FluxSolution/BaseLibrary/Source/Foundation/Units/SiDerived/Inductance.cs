@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IStandardizedScalar
+    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IValuedUnit
   {
     private readonly double m_value;
 
