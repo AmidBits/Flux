@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Flux.Text.Csv
 {
-	public class CsvWriter
+	public sealed class CsvWriter
 		: Disposable
 	{
 		private readonly char[] m_escapeCharacters;

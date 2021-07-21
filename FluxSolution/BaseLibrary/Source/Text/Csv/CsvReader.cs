@@ -11,21 +11,25 @@ namespace Flux.Text.Csv
     EndLine
   }
 
-  public class CsvReader
+  public sealed class CsvReader
     : Data.TabularDataReader
-  //: Flux.Disposable, System.Collections.Generic.IEnumerable<string[]>
   {
     private readonly CsvOptions m_options;
 
-    private readonly System.IO.StreamReader m_streamReader;
+    private readonly System.IO.TextReader m_textReader;
+    //private readonly System.IO.StreamReader m_streamReader;
 
     /// <summary>Creates a new CSV reader on the stream with the specified options.</summary>
-    public CsvReader(System.IO.Stream stream, CsvOptions options)
+    public CsvReader(System.IO.TextReader textReader, CsvOptions options)
     {
       m_options = options ?? new CsvOptions();
 
-      m_streamReader = new System.IO.StreamReader(stream, m_options.Encoding);
+      m_textReader = textReader;
     }
+    /// <summary>Creates a new CSV reader on the stream with the specified options.</summary>
+    public CsvReader(System.IO.Stream stream, CsvOptions options)
+      : this(new System.IO.StreamReader(stream, options.Encoding), options)
+    { }
     /// <summary>Creates a new CSV reader on the stream with the specified options.</summary>
     public CsvReader(System.IO.Stream stream, CsvOptions options, System.Collections.Generic.IList<string> fieldNames)
       : this(stream, options)
@@ -48,46 +52,46 @@ namespace Flux.Text.Csv
 
       var isQuotedField = false;
 
-      for (var peek = m_streamReader.Peek(); peek != -1; peek = m_streamReader.Peek())
+      for (var peek = m_textReader.Peek(); peek != -1; peek = m_textReader.Peek())
       {
         if (isQuotedField) // We are inside double quoted field, so really the only 'important' character will be an 'exit field' double quote.
         {
           if (peek == '"') // Read is a double quote.
           {
-            m_streamReader.Read(); // Discard the current peek.
+            m_textReader.Read(); // Discard the current peek.
 
-            if (m_streamReader.Peek() != '"') // Was it a single double quote?
+            if (m_textReader.Peek() != '"') // Was it a single double quote?
               isQuotedField = false; // Yes, so let's exit double quoted field.
             else // No, since the 'second' peek is a double quote, this is, or should be, an escape sequence.
-              m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Withdraw and store the 'second' double quote (since it was escaped as one).
+              m_csvValue.Append(char.ConvertFromUtf32(m_textReader.Read())); // Withdraw and store the 'second' double quote (since it was escaped as one).
           }
           else // For a double quoted field, anything else goes here.
-            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read()));
+            m_csvValue.Append(char.ConvertFromUtf32(m_textReader.Read()));
         }
         else // We are outside of any double quotes, and so various characters are important.
         {
           if (peek == '"') // Peek is a double quote.
           {
-            m_streamReader.Read();
+            m_textReader.Read();
             isQuotedField = true; // Enter double quoted field.
           }
           else if (peek == m_options.FieldSeparator) // Read is a field separator.
           {
-            m_streamReader.Read();
+            m_textReader.Read();
             break;
           }
           else if (peek == '\r')
           {
-            m_streamReader.Read();
+            m_textReader.Read();
             break;
           }
           else if (peek == '\n')
           {
-            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read())); // Save this single line feed for the token evaluation.
+            m_csvValue.Append(char.ConvertFromUtf32(m_textReader.Read())); // Save this single line feed for the token evaluation.
             break;
           }
           else // For a field not double quoted, anything else goes here.
-            m_csvValue.Append(char.ConvertFromUtf32(m_streamReader.Read()));
+            m_csvValue.Append(char.ConvertFromUtf32(m_textReader.Read()));
         }
       }
 
@@ -99,7 +103,7 @@ namespace Flux.Text.Csv
       switch (TokenType)
       {
         case CsvTokenType.None:
-          if (m_streamReader.Peek() != -1)
+          if (m_textReader.Peek() != -1)
           {
             m_tokenType = CsvTokenType.StartLine;
           }
@@ -134,7 +138,7 @@ namespace Flux.Text.Csv
           }
           break;
         case CsvTokenType.EndLine:
-          m_tokenType = m_streamReader.Peek() == -1 ? CsvTokenType.None : CsvTokenType.StartLine;
+          m_tokenType = m_textReader.Peek() == -1 ? CsvTokenType.None : CsvTokenType.StartLine;
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(TokenType));
@@ -179,23 +183,9 @@ namespace Flux.Text.Csv
     // Disposable
     protected override void DisposeManaged()
     {
-      m_streamReader?.Dispose();
+      m_textReader?.Dispose();
 
       base.DisposeManaged();
     }
-
-    //// IEnumerable<string[]>
-    //public System.Collections.Generic.IEnumerator<string[]> GetEnumerator()
-    //{
-    //	return ReadArrays().Cast<string[]>().GetEnumerator();
-
-    //	System.Collections.Generic.IEnumerable<string[]> ReadArrays()
-    //	{
-    //		while (ReadToToken(CsvTokenType.EndLine))
-    //			yield return CsvValues.ToArray();
-    //	}
-    //}
-    //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    //	=> GetEnumerator();
   }
 }
