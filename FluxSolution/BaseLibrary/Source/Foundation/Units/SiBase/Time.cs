@@ -18,6 +18,10 @@ namespace Flux.Units
   public struct Time
     : System.IComparable<Time>, System.IEquatable<Time>, IValuedUnit
   {
+    /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
+    public static Time Flick
+      => new Time(1.0 / 705600000.0);
+
     private readonly double m_value;
 
     public Time(double seconds)
