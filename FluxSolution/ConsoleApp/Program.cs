@@ -15,7 +15,6 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
 
-      var r = 1.23e-4;
 
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
