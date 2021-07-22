@@ -22,9 +22,9 @@ namespace Flux.Music
     }
 
     public static System.Collections.Generic.IEnumerable<double> GetFrequencyRatios()
-      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Units.Semitone.ConvertSemitoneToFrequencyRatio(i));
+      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Quantity.Semitone.ConvertSemitoneToFrequencyRatio(i));
 
     public static System.Collections.Generic.IEnumerable<int> GetCents()
-      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Units.Semitone.ConvertSemitoneToCent(i));
+      => System.Enum.GetValues(typeof(Name)).Cast<int>().Select(i => Quantity.Semitone.ConvertSemitoneToCent(i));
   }
 }

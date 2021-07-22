@@ -3,30 +3,30 @@ namespace Flux.Model.Trajectories
   public struct TrajectoryDownhill2D
     : System.IEquatable<TrajectoryDownhill2D>, ITrajectory2D
   {
-    private Units.Acceleration m_gravitationalAcceleration;
-    private Units.Angle m_initialAngle;
-    private Units.Speed m_initialVelocity;
-    private Units.Length m_verticalDifference;
+    private Quantity.Acceleration m_gravitationalAcceleration;
+    private Quantity.Angle m_initialAngle;
+    private Quantity.Speed m_initialVelocity;
+    private Quantity.Length m_verticalDifference;
 
-    public TrajectoryDownhill2D(Units.Length verticalDifference, Units.Angle initialAngle, Units.Speed initialVelocity, Units.Acceleration gravitationalAcceleration)
+    public TrajectoryDownhill2D(Quantity.Length verticalDifference, Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
     {
       m_verticalDifference = verticalDifference;
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public TrajectoryDownhill2D(Units.Length verticalDifference, Units.Angle initialAngle, Units.Speed initialVelocity)
-      : this(verticalDifference, initialAngle, initialVelocity, Units.Acceleration.StandardAccelerationOfGravity)
+    public TrajectoryDownhill2D(Quantity.Length verticalDifference, Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
+      : this(verticalDifference, initialAngle, initialVelocity, Quantity.Acceleration.StandardAccelerationOfGravity)
     { }
 
     /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>
-    public Units.Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
+    public Quantity.Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
     /// <summary>Initial angle in radians (RAD).</summary>
-    public Units.Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
+    public Quantity.Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public Units.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
     /// <summary>The difference of vertical level in meters (M).</summary>
-    public Units.Length VerticalDifference { get => m_verticalDifference; set => m_verticalDifference = value; }
+    public Quantity.Length VerticalDifference { get => m_verticalDifference; set => m_verticalDifference = value; }
 
     public double MaxHeight
       => m_verticalDifference.Value + System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Radian), 2) / (2 * m_gravitationalAcceleration.Value);

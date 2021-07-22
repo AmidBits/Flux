@@ -57,7 +57,7 @@ namespace Flux.Geometry
         if (probabilityOfRandom > Flux.Maths.Epsilon1E7)
           angle += Flux.Randomization.NumberGenerator.Crypto.NextDouble(0, circularArc * probabilityOfRandom);
 
-        Flux.Units.Angle.ConvertRotationAngleToCartesianEx(angle, out var x, out var y);
+        Flux.Quantity.Angle.ConvertRotationAngleToCartesianEx(angle, out var x, out var y);
 
         yield return resultSelector(x * radiusX, y * radiusY);
       }
@@ -113,7 +113,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()
-      => $"<{GetType().Name}: {Width}, {Height}, {Units.Angle.FromUnitValue(Units.AngleUnit.Radian, Angle)}>";
+      => $"<{GetType().Name}: {Width}, {Height}, {Quantity.Angle.FromUnitValue(Quantity.AngleUnit.Radian, Angle)}>";
     #endregion Object overrides
   }
 }

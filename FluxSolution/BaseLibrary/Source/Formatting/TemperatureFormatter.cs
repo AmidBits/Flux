@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Units.Temperature temperature)
+      if (!string.IsNullOrEmpty(format) && arg is Quantity.Temperature temperature)
       {
         if (m_regexFormat.Match(format.ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
@@ -33,13 +33,13 @@ namespace Flux.Formatting
             switch (unitString)
             {
               case var celsius when @"Celsius".StartsWith(celsius, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Celsius)) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
+                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Celsius)) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
               case var fahrenheit when @"Fahrenheit".StartsWith(fahrenheit, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Fahrenheit)) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
+                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Fahrenheit)) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
               case var kelvin when @"Kelvin".StartsWith(kelvin, System.StringComparison.InvariantCultureIgnoreCase):
                 return string.Format(null, formatString, temperature.Value) + (UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
               case var rankine when @"Rankine".StartsWith(rankine, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Units.TemperatureUnit.Rankine)) + " \u00B0R";
+                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Rankine)) + " \u00B0R";
               default:
                 break;
             }

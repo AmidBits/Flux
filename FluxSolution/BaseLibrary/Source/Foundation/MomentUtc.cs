@@ -61,11 +61,11 @@ namespace Flux
     public bool IsJulianCalendar
       => m_year < 1582 || (m_year == 1582 && (m_month < 10 || (m_month == 10 && m_day < 15)));
 
-    public Units.Time TimeOfDay
-      => new Units.Time(ComputeJulianDateTimeOfDay(m_hour, m_minute, m_second, m_millisecond));
+    public Quantity.Time TimeOfDay
+      => new Quantity.Time(ComputeJulianDateTimeOfDay(m_hour, m_minute, m_second, m_millisecond));
 
-    public Units.Time TotalSeconds
-      => new Units.Time(m_year * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0);
+    public Quantity.Time TotalSeconds
+      => new Quantity.Time(m_year * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0);
 
     /// <summary>Compute a Julian Date (JD) from this instance and the specified calendar.</summary>
     public double GetJulianDate(ConversionCalendar calendar)

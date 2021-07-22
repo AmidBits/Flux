@@ -14,7 +14,27 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var length = Flux.Quantity.Length.FromUnitValue(Flux.Quantity.LengthUnit.Kilometer, 60);
+      var time = Flux.Quantity.Time.FromUnitValue(Flux.Quantity.TimeUnit.Hour, 1);
 
+      var rate = new Flux.Quantity.Rate<Flux.Quantity.Length, Flux.Quantity.Time>(length, time);
+
+      var speed = new Flux.Quantity.Speed(length.Value / time.Value);
+
+      var miles = rate.Numerator.ToUnitValue(Flux.Quantity.LengthUnit.Mile);
+      var hours = rate.Denominator.ToUnitValue(Flux.Quantity.TimeUnit.Hour);
+
+      var ratio = miles / hours;
+      var inverseRatio = 1 / ratio;
+
+      var mph = speed.ToUnitValue(Flux.Quantity.SpeedUnit.MilesPerHour);
+
+      var a = new System.Numerics.Complex(3, 0);
+      var b = System.Numerics.Complex.One;
+      var c = b / a;
+      c = System.Numerics.Complex.Sqrt(-System.Numerics.Complex.One);
+      c = c * c;
+      System.Console.WriteLine($"{c} = Imaginary={c.Imaginary}, Magnitude={c.Magnitude}, Phase={c.Phase}, Real={c.Real}");
 
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))

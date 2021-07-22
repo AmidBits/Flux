@@ -153,10 +153,10 @@ namespace Flux.Services.Nmea
 
     public System.DateTime UtcTime
       => NmeaSentence.ParseUtcTime(m_values[1]);
-    public Units.Latitude Latitude
-      => new Units.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[2], m_values[3]));
-    public Units.Longitude Longitude
-      => new Units.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[4], m_values[5]));
+    public Quantity.Latitude Latitude
+      => new Quantity.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[2], m_values[3]));
+    public Quantity.Longitude Longitude
+      => new Quantity.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[4], m_values[5]));
     public NmeaPositionFixIndicator PositionFixIndicator
       => m_values.Length > 6 && int.TryParse(m_values[6], out var result) ? (NmeaPositionFixIndicator)result : NmeaPositionFixIndicator.Unknown;
     public int SatellitesUsed
@@ -170,10 +170,10 @@ namespace Flux.Services.Nmea
       : base(sentence)
     { }
 
-    public Units.Latitude Latitude
-      => new Units.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[1], m_values[2]));
-    public Units.Longitude Longitude
-      => new Units.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[3], m_values[4]));
+    public Quantity.Latitude Latitude
+      => new Quantity.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[1], m_values[2]));
+    public Quantity.Longitude Longitude
+      => new Quantity.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[3], m_values[4]));
     public System.DateTime UtcTime
       => NmeaSentence.ParseUtcTime(m_values[5]);
     public NmeaDataStatus DataStatus
@@ -189,14 +189,14 @@ namespace Flux.Services.Nmea
 
     public NmeaDataStatus DataStatus
       => ParseDataStatus(m_values[2]);
-    public Units.Latitude Latitude
-      => new Units.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[3], m_values[4]));
-    public Units.Longitude Longitude
-      => new Units.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[5], m_values[6]));
-    public Units.Speed SpeedOverGround
-      => Units.Speed.FromUnitValue(Units.SpeedUnit.Knots, m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0);
-    public Units.Azimuth CourseOverGround
-      => new Units.Azimuth(m_values.Length > 8 && double.TryParse(m_values[8], out var result) ? result : 0);
+    public Quantity.Latitude Latitude
+      => new Quantity.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[3], m_values[4]));
+    public Quantity.Longitude Longitude
+      => new Quantity.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[5], m_values[6]));
+    public Quantity.Speed SpeedOverGround
+      => Quantity.Speed.FromUnitValue(Quantity.SpeedUnit.Knots, m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0);
+    public Quantity.Azimuth CourseOverGround
+      => new Quantity.Azimuth(m_values.Length > 8 && double.TryParse(m_values[8], out var result) ? result : 0);
     public System.DateTime UtcDateTime
       => ParseUtcDate(m_values.Length > 9 ? m_values[9] : null) + ParseUtcTime(m_values[1]).TimeOfDay;
   }

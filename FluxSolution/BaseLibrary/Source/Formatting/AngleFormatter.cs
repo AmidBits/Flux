@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Units.Angle angle)
+      if (!string.IsNullOrEmpty(format) && arg is Quantity.Angle angle)
       {
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
@@ -33,11 +33,11 @@ namespace Flux.Formatting
             switch (unitString)
             {
               case var degrees when @"Degrees".StartsWith(degrees, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.ToUnitValue(Units.AngleUnit.Degree)) + @" degs";
+                return string.Format(null, formatString, angle.ToUnitValue(Quantity.AngleUnit.Degree)) + @" degs";
               case var gradians when @"Gradians".StartsWith(gradians, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.ToUnitValue(Units.AngleUnit.Gradian)) + @" gons";
+                return string.Format(null, formatString, angle.ToUnitValue(Quantity.AngleUnit.Gradian)) + @" gons";
               case var radians when @"Radians".StartsWith(radians, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, angle.ToUnitValue(Units.AngleUnit.Radian)) + @" radians";
+                return string.Format(null, formatString, angle.ToUnitValue(Quantity.AngleUnit.Radian)) + @" radians";
               case var revolutions when @"Revolutions".StartsWith(revolutions, System.StringComparison.InvariantCultureIgnoreCase):
                 return string.Format(null, formatString, angle.Radian) + @" turns";
               default:
