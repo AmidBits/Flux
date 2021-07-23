@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct ElectricalConductance
     : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"S";
-
     private readonly double m_value;
 
     public ElectricalConductance(double siemens)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} S>";
     #endregion Object overrides
   }
 }

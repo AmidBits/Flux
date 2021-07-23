@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Force
     : System.IComparable<Force>, System.IEquatable<Force>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"N";
-
     private readonly double m_value;
 
     public Force(double newton)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} N>";
     #endregion Object overrides
   }
 }

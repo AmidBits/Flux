@@ -15,8 +15,6 @@ namespace Flux.Quantity
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"rad";
-
     public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
     public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
     public const char PrimeSymbol = '\u2032'; // Designates arc minute.
@@ -210,7 +208,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} rad>";
     #endregion Object overrides
   }
 }

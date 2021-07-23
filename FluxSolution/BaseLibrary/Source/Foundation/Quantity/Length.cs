@@ -20,10 +20,9 @@ namespace Flux.Quantity
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"m";
-
-    public static Length OneMeter
+    public static Length One
       => new Length(1);
+    public static Length Zero { get; }
 
     private readonly double m_value;
 
@@ -165,7 +164,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{nameof(Length)}: {m_value} {Symbol}>";
+      => $"<{nameof(Length)}: {m_value} m>";
     #endregion Object overrides
   }
 }

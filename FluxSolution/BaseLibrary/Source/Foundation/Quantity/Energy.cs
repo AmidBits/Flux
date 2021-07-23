@@ -11,8 +11,6 @@ namespace Flux.Quantity
   public struct Energy
     : System.IComparable<Energy>, System.IEquatable<Energy>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"J";
-
     private readonly double m_value;
 
     public Energy(double joule)
@@ -109,7 +107,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} J>";
     #endregion Object overrides
   }
 }

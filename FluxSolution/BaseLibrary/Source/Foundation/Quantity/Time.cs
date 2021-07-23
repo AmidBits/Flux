@@ -18,8 +18,6 @@ namespace Flux.Quantity
   public struct Time
     : System.IComparable<Time>, System.IEquatable<Time>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"s";
-
     /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
     public static Time Flick
       => new Time(1.0 / 705600000.0);
@@ -153,7 +151,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} s>";
     #endregion Object overrides
   }
 }

@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Capacitance
     : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IValuedUnit
   {
-    public const string Symbol = @"F";
-
     private readonly double m_value;
 
     public Capacitance(double farad)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} F>";
     #endregion Object overrides
   }
 }

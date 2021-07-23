@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct ElectricResistance
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValuedSiDerivedUnit
   {
-    public const string Symbol = "\u2126";
-
     public static ElectricResistance VonKlitzing
       => new ElectricResistance(25812.80745); // 25812.80745;
 
@@ -102,7 +100,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} \u2126>";
     #endregion Object overrides
   }
 }

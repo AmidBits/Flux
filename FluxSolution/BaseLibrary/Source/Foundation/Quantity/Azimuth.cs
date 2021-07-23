@@ -8,23 +8,6 @@ namespace Flux.Quantity
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
-    public const double North = 0;
-    public const double NorthNorthEast = 22.5;
-    public const double NorthEast = 45;
-    public const double EastNorthEast = 67.5;
-    public const double East = 90;
-    public const double EastSouthEast = 112.5;
-    public const double SouthEast = 135;
-    public const double SouthSouthEast = 157.5;
-    public const double South = 180;
-    public const double SouthSouthWest = 202.5;
-    public const double SouthWest = 225;
-    public const double WestSouthWest = 247.5;
-    public const double West = 270;
-    public const double WestNorthWest = 292.5;
-    public const double NorthWest = 315;
-    public const double NorthNorthWest = 337.5;
-
     private readonly Angle m_value;
 
     public Azimuth(double degree)
@@ -99,7 +82,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value.Degree}\u00B0>";
+      => $"<{GetType().Name}: {m_value.Degree}{Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

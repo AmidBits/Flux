@@ -11,8 +11,6 @@ namespace Flux.Quantity
   public struct Pressure
     : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"Pa";
-
     public static Pressure StandardAtmosphere
       => new Pressure(101325);
     public static Pressure StandardStatePressure
@@ -114,7 +112,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} Pa>";
     #endregion Object overrides
   }
 }

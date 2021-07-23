@@ -13,8 +13,6 @@ namespace Flux.Quantity
   public struct Temperature
     : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"K";
-
     public const double CelsiusAbsoluteZero = -273.15;
     public const double CelsiusBoilingPoint = 99.9839;
     public const double CelsiusIcePoint = 0;
@@ -172,7 +170,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} K>";
     #endregion Object overrides
   }
 }

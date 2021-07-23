@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct LuminousFlux
     : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"lm";
-
     private readonly double m_value;
 
     public LuminousFlux(double lumen)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} lm>";
     #endregion Object overrides
   }
 }

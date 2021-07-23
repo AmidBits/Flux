@@ -10,8 +10,6 @@ namespace Flux.Quantity
   public struct Enplethy
     : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"mol";
-
     // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
     public static Enplethy AvagadroConstant
       => new Enplethy(6.02214076e23);
@@ -108,7 +106,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} mol>";
     #endregion Object overrides
   }
 }

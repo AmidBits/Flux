@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct CatalyticActivity
     : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IValuedUnit
   {
-    public const string Symbol = @"kat";
-
     private readonly double m_value;
 
     public CatalyticActivity(double katal)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} kat>";
     #endregion Object overrides
   }
 }

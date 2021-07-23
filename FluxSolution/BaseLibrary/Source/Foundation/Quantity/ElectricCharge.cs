@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct ElectricCharge
     : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"C";
-
     public static ElectricCharge ElementaryCharge
       => new ElectricCharge(1.602176634e-19);
 
@@ -78,7 +76,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} C>";
     #endregion Object overrides
   }
 }

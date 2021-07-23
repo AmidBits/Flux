@@ -16,8 +16,6 @@ namespace Flux.Quantity
   public struct Mass
     : System.IComparable<Mass>, System.IEquatable<Mass>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"kg";
-
     public static Mass ElectronMass
       => new Mass(9.1093837015e-31);
 
@@ -133,7 +131,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} kg>";
     #endregion Object overrides
   }
 }

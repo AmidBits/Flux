@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Inductance
     : System.IComparable<Inductance>, System.IEquatable<Inductance>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"H";
-
     private readonly double m_value;
 
     public Inductance(double henry)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} H>";
     #endregion Object overrides
   }
 }

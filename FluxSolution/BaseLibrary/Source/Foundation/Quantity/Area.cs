@@ -11,8 +11,6 @@ namespace Flux.Quantity
   public struct Area
     : System.IComparable<Area>, System.IEquatable<Area>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"m²";
-
     private readonly double m_value;
 
     public Area(double squareMeter)
@@ -114,7 +112,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} m²>";
     #endregion Object overrides
   }
 }

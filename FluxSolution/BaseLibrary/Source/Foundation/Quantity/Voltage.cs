@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Voltage
     : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"V";
-
     private readonly double m_value;
 
     public Voltage(double volt)
@@ -88,7 +86,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} V>";
     #endregion Object overrides
   }
 }

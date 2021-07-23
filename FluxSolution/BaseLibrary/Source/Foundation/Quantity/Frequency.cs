@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Frequency
     : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"Hz";
-
     public static Frequency HyperfineTransitionFrequencyOfCs133
       => new Frequency(9192631770);
 
@@ -107,7 +105,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} Hz>";
     #endregion Object overrides
   }
 }

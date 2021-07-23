@@ -137,7 +137,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value.Degree}\u00B0>";
+      => $"<{GetType().Name}: {m_value.Degree}{Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

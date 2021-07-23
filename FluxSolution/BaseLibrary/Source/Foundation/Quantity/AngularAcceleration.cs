@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct AngularAcceleration
     : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"rad/s²";
-
     private readonly double m_value;
 
     public AngularAcceleration(double radianPerSecondSquare)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} rad/s²>";
     #endregion Object overrides
   }
 }

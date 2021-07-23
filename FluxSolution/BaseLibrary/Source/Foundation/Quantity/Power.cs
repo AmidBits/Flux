@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Power
     : System.IComparable<Power>, System.IEquatable<Power>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"W";
-
     private readonly double m_value;
 
     public Power(double watt)
@@ -83,7 +81,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} W>";
     #endregion Object overrides
   }
 }

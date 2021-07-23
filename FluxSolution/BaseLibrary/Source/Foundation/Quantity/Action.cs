@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Action
     : System.IComparable<Action>, System.IEquatable<Action>, IValuedSiDerivedUnit
   {
-    public const string SiUnit = @"J s";
-
     private readonly double m_value;
 
     public Action(double jouleSecond)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {SiUnit}>";
+      => $"<{GetType().Name}: {m_value} J s>";
     #endregion Object overrides
   }
 }

@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Density
     : System.IComparable<Density>, System.IEquatable<Density>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"kg/m³";
-
     private readonly double m_value;
 
     public Density(double kilogramsPerCubicMeter)
@@ -80,7 +78,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} kg/m³>";
     #endregion Object overrides
   }
 }

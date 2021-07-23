@@ -11,8 +11,6 @@ namespace Flux.Quantity
   public struct ElectricCurrent
     : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"A";
-
     private readonly double m_value;
 
     public ElectricCurrent(double ampere)
@@ -119,7 +117,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} A>";
     #endregion Object overrides
   }
 }

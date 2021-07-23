@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Acceleration
     : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"m/s²";
-
     public static Acceleration StandardAccelerationOfGravity
       => new Acceleration(9.80665);
 
@@ -78,7 +76,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} m/s²>";
     #endregion Object overrides
   }
 }

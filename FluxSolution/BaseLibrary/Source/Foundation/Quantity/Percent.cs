@@ -7,17 +7,17 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
+    /// <summary>Initialize with a per mille value, e.g. 0.05 for 5%.</summary>
     public Percent(double percent)
       => m_value = percent;
-
-    public double Fraction
-      => m_value / 100;
 
     public double Value
       => m_value;
 
-    public Permill ToPermill()
-      => new Permill(m_value * 10);
+    #region Static methods
+    public static Percent FromPercentage(double percentage)
+      => new Percent(percentage / 100);
+    #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Percent v)
@@ -36,6 +36,29 @@ namespace Flux.Quantity
       => a.Equals(b);
     public static bool operator !=(Percent a, Percent b)
       => !a.Equals(b);
+
+    public static Percent operator -(Percent v)
+      => new Percent(-v.m_value);
+    public static Percent operator +(Percent a, double b)
+      => new Percent(a.m_value + b);
+    public static Percent operator +(Percent a, Percent b)
+      => a + b.m_value;
+    public static Percent operator /(Percent a, double b)
+      => new Percent(a.m_value / b);
+    public static Percent operator /(Percent a, Percent b)
+      => a / b.m_value;
+    public static Percent operator *(Percent a, double b)
+      => new Percent(a.m_value * b);
+    public static Percent operator *(Percent a, Percent b)
+      => a * b.m_value;
+    public static Percent operator %(Percent a, double b)
+      => new Percent(a.m_value % b);
+    public static Percent operator %(Percent a, Percent b)
+      => a % b.m_value;
+    public static Percent operator -(Percent a, double b)
+      => new Percent(a.m_value - b);
+    public static Percent operator -(Percent a, Percent b)
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -54,7 +77,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} \u0025>";
+      => $"<{GetType().Name}: {m_value * 100}\u0025>";
     #endregion Object overrides
   }
 }

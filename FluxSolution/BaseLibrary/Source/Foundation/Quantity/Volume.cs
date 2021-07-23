@@ -17,8 +17,6 @@ namespace Flux.Quantity
   public struct Volume
     : System.IComparable<Volume>, System.IEquatable<Volume>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"m³";
-
     private readonly double m_value;
 
     public Volume(double cubicMeter)
@@ -145,7 +143,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} m³>";
     #endregion Object overrides
   }
 }

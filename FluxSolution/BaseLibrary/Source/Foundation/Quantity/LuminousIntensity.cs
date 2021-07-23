@@ -10,8 +10,6 @@ namespace Flux.Quantity
   public struct LuminousIntensity
     : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValuedSiBaseUnit
   {
-    public const string Symbol = @"cd";
-
     private readonly double m_value;
 
     public LuminousIntensity(double candela)
@@ -104,7 +102,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} cd>";
     #endregion Object overrides
   }
 }

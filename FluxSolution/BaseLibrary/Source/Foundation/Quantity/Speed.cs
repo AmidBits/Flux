@@ -14,8 +14,6 @@ namespace Flux.Quantity
   public struct Speed
     : System.IComparable<Speed>, System.IEquatable<Speed>, IValuedUnit
   {
-    public const string Symbol = @"m/s";
-
     public static Speed SpeedOfLightInVacuum
       => new Speed(299792458);
 
@@ -149,7 +147,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} m/s>";
     #endregion Object overrides
   }
 }

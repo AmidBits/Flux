@@ -7,17 +7,17 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
+    /// <summary>Initialize with a per mille value, e.g. 0.005 for 5‰.</summary>
     public Permill(double permill)
       => m_value = permill;
-
-    public double Fraction
-      => m_value / 1000;
 
     public double Value
       => m_value;
 
-    public Percent ToPercent()
-      => new Percent(m_value / 10);
+    #region Static methods
+    public static Permill FromPermillage(double permillage)
+      => new Permill(permillage / 1000);
+    #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Permill v)
@@ -36,6 +36,29 @@ namespace Flux.Quantity
       => a.Equals(b);
     public static bool operator !=(Permill a, Permill b)
       => !a.Equals(b);
+
+    public static Permill operator -(Permill v)
+      => new Permill(-v.m_value);
+    public static Permill operator +(Permill a, double b)
+      => new Permill(a.m_value + b);
+    public static Permill operator +(Permill a, Permill b)
+      => a + b.m_value;
+    public static Permill operator /(Permill a, double b)
+      => new Permill(a.m_value / b);
+    public static Permill operator /(Permill a, Permill b)
+      => a / b.m_value;
+    public static Permill operator *(Permill a, double b)
+      => new Permill(a.m_value * b);
+    public static Permill operator *(Permill a, Permill b)
+      => a * b.m_value;
+    public static Permill operator %(Permill a, double b)
+      => new Permill(a.m_value % b);
+    public static Permill operator %(Permill a, Permill b)
+      => a % b.m_value;
+    public static Permill operator -(Permill a, double b)
+      => new Permill(a.m_value - b);
+    public static Permill operator -(Permill a, Permill b)
+      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -54,7 +77,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} \u2030>";
+      => $"<{GetType().Name}: {m_value * 1000}\u2030>";
     #endregion Object overrides
   }
 }

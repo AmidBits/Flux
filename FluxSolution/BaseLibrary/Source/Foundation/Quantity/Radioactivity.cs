@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Radioactivity
     : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"Bq";
-
     private readonly double m_value;
 
     public Radioactivity(double becquerel)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} Bq>";
     #endregion Object overrides
   }
 }

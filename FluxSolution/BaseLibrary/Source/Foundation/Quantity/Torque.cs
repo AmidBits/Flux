@@ -5,8 +5,6 @@ namespace Flux.Quantity
   public struct Torque
     : System.IComparable<Torque>, System.IEquatable<Torque>, IValuedSiDerivedUnit
   {
-    public const string Symbol = @"N m";
-
     private readonly double m_value;
 
     public Torque(double newtonMeter)
@@ -75,7 +73,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} {Symbol}>";
+      => $"<{GetType().Name}: {m_value} N m>";
     #endregion Object overrides
   }
 }
