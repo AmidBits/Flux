@@ -1,5 +1,11 @@
 namespace Flux.Quantity
 {
+  public enum AreaUnit
+  {
+    SquareMeter,
+    Hectare,
+  }
+
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
@@ -15,12 +21,37 @@ namespace Flux.Quantity
     public double Value
       => m_value;
 
+    public double ToUnitValue(AreaUnit unit)
+    {
+      switch (unit)
+      {
+        case AreaUnit.SquareMeter:
+          return m_value;
+        case AreaUnit.Hectare:
+          return m_value / 10000;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+
     #region Static methods
     /// <summary>Creates a new Area instance from the specified rectangular length and width.</summary>
     /// <param name="length"></param>
     /// <param name="width"></param>
     public static Area From(Length length, Length width)
       => new Area(length.Value * width.Value);
+    public static Area FromUnitValue(AreaUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case AreaUnit.SquareMeter:
+          return new Area(value);
+        case AreaUnit.Hectare:
+          return new Area(value * 10000);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators

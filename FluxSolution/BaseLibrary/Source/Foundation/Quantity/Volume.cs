@@ -1,5 +1,17 @@
 namespace Flux.Quantity
 {
+  public enum VolumeUnit
+  {
+    Millilitre,
+    Centilitre,
+    Decilitre,
+    Litre,
+    UKGallon,
+    USGallon,
+    CubicFeet,
+    CubicMeter,
+  }
+
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
@@ -15,6 +27,31 @@ namespace Flux.Quantity
     public double Value
       => m_value;
 
+    public double ToUnitValue(VolumeUnit unit)
+    {
+      switch (unit)
+      {
+        case VolumeUnit.Millilitre:
+          return m_value * 1000000;
+        case VolumeUnit.Centilitre:
+          return m_value * 100000;
+        case VolumeUnit.Decilitre:
+          return m_value * 10000;
+        case VolumeUnit.Litre:
+          return m_value * 1000;
+        case VolumeUnit.UKGallon:
+          return m_value / 0.004546;
+        case VolumeUnit.USGallon:
+          return m_value / 0.003785;
+        case VolumeUnit.CubicFeet:
+          return m_value * (1953125000.0 / 55306341.0);
+        case VolumeUnit.CubicMeter:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    //473176473/125000000000 m^3 (cubic meters)
     #region Static methods
     /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>
     /// <param name="length"></param>
@@ -22,6 +59,30 @@ namespace Flux.Quantity
     /// <param name="height"></param>
     public static Volume From(Length length, Length width, Length height)
       => new Volume(length.Value * width.Value * height.Value);
+    public static Volume FromUnitValue(VolumeUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case VolumeUnit.Millilitre:
+          return new Volume(value / 1000000);
+        case VolumeUnit.Centilitre:
+          return new Volume(value / 100000);
+        case VolumeUnit.Decilitre:
+          return new Volume(value / 10000);
+        case VolumeUnit.Litre:
+          return new Volume(value / 1000);
+        case VolumeUnit.UKGallon:
+          return new Volume(value * 0.004546);
+        case VolumeUnit.USGallon:
+          return new Volume(value * 0.003785);
+        case VolumeUnit.CubicFeet:
+          return new Volume(value / (1953125000.0 / 55306341.0));
+        case VolumeUnit.CubicMeter:
+          return new Volume(value);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators

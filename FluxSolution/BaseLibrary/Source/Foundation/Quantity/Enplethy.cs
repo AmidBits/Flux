@@ -36,7 +36,7 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    public static Enplethy FromUnitValue(double value, EnplethyUnit unit)
+    public static Enplethy FromUnitValue(EnplethyUnit unit, double value)
     {
       switch (unit)
       {

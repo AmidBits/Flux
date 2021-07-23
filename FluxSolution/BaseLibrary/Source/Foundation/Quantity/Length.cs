@@ -12,6 +12,7 @@ namespace Flux.Quantity
     NauticalMile,
     Mile,
     Kilometer,
+    AstronomicalUnit
   }
 
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
@@ -56,6 +57,8 @@ namespace Flux.Quantity
           return m_value / 1609.344;
         case LengthUnit.Kilometer:
           return m_value / 1000;
+        case LengthUnit.AstronomicalUnit:
+          return m_value / 149597870700;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -94,6 +97,8 @@ namespace Flux.Quantity
           return new Length(value * 1609.344);
         case LengthUnit.Kilometer:
           return new Length(value * 1000);
+        case LengthUnit.AstronomicalUnit:
+          return new Length(value * 149597870700);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }

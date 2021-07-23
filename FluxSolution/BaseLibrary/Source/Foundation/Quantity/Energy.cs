@@ -1,5 +1,11 @@
 namespace Flux.Quantity
 {
+  public enum EnergyUnit
+  {
+    Joule,
+    ElectronVolt,
+  }
+
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
@@ -14,6 +20,34 @@ namespace Flux.Quantity
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(EnergyUnit unit)
+    {
+      switch (unit)
+      {
+        case EnergyUnit.Joule:
+          return m_value;
+        case EnergyUnit.ElectronVolt:
+          return m_value * 1.602176634e-19;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+
+    #region Static methods
+    public static Energy FromUnitValue(EnergyUnit unit, double value)
+    {
+      switch (unit)
+      {
+        case EnergyUnit.Joule:
+          return new Energy(value);
+        case EnergyUnit.ElectronVolt:
+          return new Energy(value / 1.602176634e-19);
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Energy v)

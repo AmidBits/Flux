@@ -14,36 +14,26 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var length = Flux.Quantity.Length.FromUnitValue(Flux.Quantity.LengthUnit.Kilometer, 60);
-      var time = Flux.Quantity.Time.FromUnitValue(Flux.Quantity.TimeUnit.Hour, 1);
-
-      var rate = new Flux.Quantity.Rate<Flux.Quantity.Length, Flux.Quantity.Time>(length, time);
-
-      var speed = new Flux.Quantity.Speed(length.Value / time.Value);
-
-      var miles = rate.Numerator.ToUnitValue(Flux.Quantity.LengthUnit.Mile);
-      var hours = rate.Denominator.ToUnitValue(Flux.Quantity.TimeUnit.Hour);
-
-      var mph = speed.ToUnitValue(Flux.Quantity.SpeedUnit.MilesPerHour);
+      var align = (160 / 11.25);
 
       /*
       foreach (var s in Flux.Geometry.Ellipse.CreateCircularArcPoints(6, 10, 10, (x, y) => $"XY = {$"{x:N1}".PadLeft(6, ' ')}, {$"{y:N1}".PadLeft(6, ' ')}", 0.0, 0.0))
         System.Console.WriteLine(s);
       */
 
-      /*
+
       for (var i = 0; i <= 360; i += 15)
       {
-        var a = Flux.Units.Angle.FromUnitValue(Flux.Units.AngleUnit.Degree, i);
+        var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, i);
 
-        var c = Flux.Units.Angle.ConvertRotationAngleToCartesian(a.Radian, out var cx, out var cy);
-        var c1 = Flux.Units.Angle.ConvertCartesianToRotationAngle(cx, cy);
-        var ce = Flux.Units.Angle.ConvertRotationAngleToCartesianEx(a.Radian, out var cxe, out var cye);
-        var ce1 = Flux.Units.Angle.ConvertCartesianToRotationAngleEx(cxe, cye);
+        var c = Flux.Quantity.Angle.ConvertRotationAngleToCartesian(a.Radian, out var cx, out var cy);
+        var c1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngle(cx, cy);
+        var ce = Flux.Quantity.Angle.ConvertRotationAngleToCartesianEx(a.Radian, out var cxe, out var cye);
+        var ce1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngleEx(cxe, cye);
 
         System.Console.WriteLine($"{i} = {a.Degree:N1} = {a.Radian:N5} = ({c.x:N3}, {c.y:N3} = {c1:N5}) = ({ce.x:N3}, {ce.y:N3} = {ce1:N5})");
       }
-      */
+
 
       /*
       var allInts = new char[] { 'a', 'b', 'f', 'd', 'd', 'a', 'z', 'z', 'b', 'z', 'd', 'a', 'd', 'b', 'd', 'h', 'a', 'b', 'd' };
@@ -109,7 +99,7 @@ namespace ConsoleApp
       */
 
       /*
-      var set = new Flux.Numerics.BigDecimal[] { 1, 2, 2, 3, 5 };
+      var set = new double[] { 1, 2, 2, 3, 5 };
       System.Console.WriteLine($"{System.Environment.NewLine}Set:{System.Environment.NewLine}{string.Join(System.Environment.NewLine, set.Select(v => $"{v:G2}"))}");
 
       var histogram = set.Histogram(out var sumOfFrequencies);

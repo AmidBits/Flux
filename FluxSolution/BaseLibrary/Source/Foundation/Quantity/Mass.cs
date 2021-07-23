@@ -7,6 +7,8 @@ namespace Flux.Quantity
     Ounce,
     Pound,
     Kilogram,
+    /// <summary>Metric Tonne</summary>
+    Tonne,
   }
 
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
@@ -41,6 +43,8 @@ namespace Flux.Quantity
           return m_value / 0.45359237;
         case MassUnit.Kilogram:
           return m_value;
+        case MassUnit.Tonne:
+          return m_value / 1000;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -61,6 +65,8 @@ namespace Flux.Quantity
           return new Mass(value * 0.45359237);
         case MassUnit.Kilogram:
           return new Mass(value);
+        case MassUnit.Tonne:
+          return new Mass(value * 1000);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }

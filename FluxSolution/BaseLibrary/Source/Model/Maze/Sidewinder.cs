@@ -5,32 +5,19 @@ namespace Flux.Model.Maze
   public class SidewinderMaze
     : AMaze
   {
-    private InterCardinalDirection m_diagonal = InterCardinalDirection.NE;
+    private int m_diagonal = (int)InterCardinalDirection.NE;
     public InterCardinalDirection Diagonal
     {
-      get { return m_diagonal; }
-      set
-      {
-        switch (value)
-        {
-          case InterCardinalDirection.NE:
-          case InterCardinalDirection.NW:
-          case InterCardinalDirection.SE:
-          case InterCardinalDirection.SW:
-            m_diagonal = value;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(value), "Must be a diagonal.");
-        }
-      }
+      get { return (InterCardinalDirection)m_diagonal; }
+      set { m_diagonal = (int)value; }
     }
 
     public override void CarveMaze(Grid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      var direction1 = (int)m_diagonal - 45;
-      var direction2 = (int)m_diagonal + 45;
+      var direction1 = m_diagonal - 4;
+      var direction2 = (m_diagonal + 4) % 32;
 
       var run = new System.Collections.Generic.List<Cell>();
 
