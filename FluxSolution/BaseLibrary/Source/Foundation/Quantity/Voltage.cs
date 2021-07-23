@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValuedSiDerivedNamedUnit
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValuedSiDerivedUnit
   {
     public const string Symbol = @"V";
 

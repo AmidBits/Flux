@@ -13,7 +13,7 @@ namespace Flux.Quantity
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedSiDerivedNamedUnit
+    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedSiDerivedUnit
   {
     public const string Symbol = @"rad";
 

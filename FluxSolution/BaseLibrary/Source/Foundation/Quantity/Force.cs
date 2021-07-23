@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IValuedSiDerivedNamedUnit
+    : System.IComparable<Force>, System.IEquatable<Force>, IValuedSiDerivedUnit
   {
     public const string Symbol = @"N";
 

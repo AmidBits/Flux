@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedSiDerivedUnit, IValuedSiDerivedNamedUnit
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedSiDerivedUnit
   {
     public const string Symbol = @"Hz";
 

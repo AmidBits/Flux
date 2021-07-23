@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IValuedSiDerivedNamedUnit
+    : System.IComparable<Power>, System.IEquatable<Power>, IValuedSiDerivedUnit
   {
     public const string Symbol = @"W";
 

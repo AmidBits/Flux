@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable<Energy>, System.IEquatable<Energy>, IValuedSiDerivedNamedUnit
+    : System.IComparable<Energy>, System.IEquatable<Energy>, IValuedSiDerivedUnit
   {
     public const string Symbol = @"J";
 
