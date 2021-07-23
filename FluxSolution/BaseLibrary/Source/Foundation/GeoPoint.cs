@@ -143,19 +143,14 @@ namespace Flux
 
     /// <summary>Compass point (to given precision) for specified bearing.</summary>
     /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
-    /// <param name="bearing">The direction in radians.</param>
-    /// <param name="precision">1 = the four cardinal directions, 2 = the four cardinals and four ordinals or intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 3 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 4 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
+    /// <param name="absoluteBearingInRadians">The direction in radians.</param>
+    /// <param name="precision">4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
     /// <returns></returns>
-    public static string? CompassPoint(double bearing, PointsOfTheCompass precision)
+    public static ThirtytwoWindCompassRose CompassPoint(double absoluteBearingInRadians, PointsOfTheCompass precision, out double notch)
     {
-      var compassNotch = System.Math.Round(Maths.Wrap(bearing, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
+      notch = System.Math.Round(Maths.Wrap(absoluteBearingInRadians, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
 
-      return precision switch
-      {
-        PointsOfTheCompass.CardinalDirections => System.Enum.GetName(typeof(CardinalDirection), (int)compassNotch),
-        PointsOfTheCompass.EightWinds => System.Enum.GetName(typeof(EightWindCompassRose), (int)compassNotch),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(precision), $"Precision must be one of {string.Join(", ", System.Enum.GetNames(typeof(PointsOfTheCompass)))}."),
-      };
+      return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
@@ -188,7 +183,8 @@ namespace Flux
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2) => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
+    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2) 
+      => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
 
     ///// <summary>Computes the square of half the chord length between the points, often labeled "a" in C implementations.</summary>
     ///// <returns>The square of half the chord length between the points.</returns>

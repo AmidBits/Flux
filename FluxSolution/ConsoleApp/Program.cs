@@ -22,17 +22,17 @@ namespace ConsoleApp
       */
 
 
-      for (var i = 0; i <= 360; i += 15)
-      {
-        var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, i);
+      //for (var i = 0; i <= 360; i += 15)
+      //{
+      //  var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, i);
 
-        var c = Flux.Quantity.Angle.ConvertRotationAngleToCartesian(a.Radian, out var cx, out var cy);
-        var c1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngle(cx, cy);
-        var ce = Flux.Quantity.Angle.ConvertRotationAngleToCartesianEx(a.Radian, out var cxe, out var cye);
-        var ce1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngleEx(cxe, cye);
+      //  var c = Flux.Quantity.Angle.ConvertRotationAngleToCartesian(a.Radian, out var cx, out var cy);
+      //  var c1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngle(cx, cy);
+      //  var ce = Flux.Quantity.Angle.ConvertRotationAngleToCartesianEx(a.Radian, out var cxe, out var cye);
+      //  var ce1 = Flux.Quantity.Angle.ConvertCartesianToRotationAngleEx(cxe, cye);
 
-        System.Console.WriteLine($"{i} = {a.Degree:N1} = {a.Radian:N5} = ({c.x:N3}, {c.y:N3} = {c1:N5}) = ({ce.x:N3}, {ce.y:N3} = {ce1:N5})");
-      }
+      //  System.Console.WriteLine($"{i} = {a.Degree:N1} = {a.Radian:N5} = ({c.x:N3}, {c.y:N3} = {c1:N5}) = ({ce.x:N3}, {ce.y:N3} = {ce1:N5})");
+      //}
 
 
       /*

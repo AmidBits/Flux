@@ -3,57 +3,60 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an Azimuth, i.e. a value in the range [0, 359].</summary>
-    public static Quantity.Azimuth GetAzimuth(this ThirtyTwoWindCompassRose thirtyTwoWindCompassRose)
-      => new Quantity.Azimuth(thirtyTwoWindCompassRose switch
+    public static Quantity.Bearing GetAzimuth(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
+      => new Quantity.Bearing(thirtyTwoWindCompassRose switch
       {
-        ThirtyTwoWindCompassRose.N => 0,
-        ThirtyTwoWindCompassRose.NbE => 11.25,
-        ThirtyTwoWindCompassRose.NNE => 22.5,
-        ThirtyTwoWindCompassRose.NEbN => 33.75,
-        ThirtyTwoWindCompassRose.NE => 45,
-        ThirtyTwoWindCompassRose.NEbE => 56.25,
-        ThirtyTwoWindCompassRose.ENE => 67.5,
-        ThirtyTwoWindCompassRose.EbN => 78.75,
-        ThirtyTwoWindCompassRose.E => 90,
-        ThirtyTwoWindCompassRose.EbS => 101.25,
-        ThirtyTwoWindCompassRose.ESE => 112.5,
-        ThirtyTwoWindCompassRose.SEbE => 123.75,
-        ThirtyTwoWindCompassRose.SE => 135,
-        ThirtyTwoWindCompassRose.SEbS => 146.25,
-        ThirtyTwoWindCompassRose.SSE => 157.5,
-        ThirtyTwoWindCompassRose.SbE => 168.75,
-        ThirtyTwoWindCompassRose.S => 180,
-        ThirtyTwoWindCompassRose.SbW => 191.25,
-        ThirtyTwoWindCompassRose.SSW => 202.5,
-        ThirtyTwoWindCompassRose.SWbS => 213.75,
-        ThirtyTwoWindCompassRose.SW => 225,
-        ThirtyTwoWindCompassRose.SWbW => 236.25,
-        ThirtyTwoWindCompassRose.WSW => 247.5,
-        ThirtyTwoWindCompassRose.WbS => 258.75,
-        ThirtyTwoWindCompassRose.W => 270,
-        ThirtyTwoWindCompassRose.WbN => 281.25,
-        ThirtyTwoWindCompassRose.WNW => 292.5,
-        ThirtyTwoWindCompassRose.NWbW => 303.75,
-        ThirtyTwoWindCompassRose.NW => 315,
-        ThirtyTwoWindCompassRose.NWbN => 326.25,
-        ThirtyTwoWindCompassRose.NNW => 337.5,
-        ThirtyTwoWindCompassRose.NbW => 348.75,
+        ThirtytwoWindCompassRose.N => 0,
+        ThirtytwoWindCompassRose.NbE => 11.25,
+        ThirtytwoWindCompassRose.NNE => 22.5,
+        ThirtytwoWindCompassRose.NEbN => 33.75,
+        ThirtytwoWindCompassRose.NE => 45,
+        ThirtytwoWindCompassRose.NEbE => 56.25,
+        ThirtytwoWindCompassRose.ENE => 67.5,
+        ThirtytwoWindCompassRose.EbN => 78.75,
+        ThirtytwoWindCompassRose.E => 90,
+        ThirtytwoWindCompassRose.EbS => 101.25,
+        ThirtytwoWindCompassRose.ESE => 112.5,
+        ThirtytwoWindCompassRose.SEbE => 123.75,
+        ThirtytwoWindCompassRose.SE => 135,
+        ThirtytwoWindCompassRose.SEbS => 146.25,
+        ThirtytwoWindCompassRose.SSE => 157.5,
+        ThirtytwoWindCompassRose.SbE => 168.75,
+        ThirtytwoWindCompassRose.S => 180,
+        ThirtytwoWindCompassRose.SbW => 191.25,
+        ThirtytwoWindCompassRose.SSW => 202.5,
+        ThirtytwoWindCompassRose.SWbS => 213.75,
+        ThirtytwoWindCompassRose.SW => 225,
+        ThirtytwoWindCompassRose.SWbW => 236.25,
+        ThirtytwoWindCompassRose.WSW => 247.5,
+        ThirtytwoWindCompassRose.WbS => 258.75,
+        ThirtytwoWindCompassRose.W => 270,
+        ThirtytwoWindCompassRose.WbN => 281.25,
+        ThirtytwoWindCompassRose.WNW => 292.5,
+        ThirtytwoWindCompassRose.NWbW => 303.75,
+        ThirtytwoWindCompassRose.NW => 315,
+        ThirtytwoWindCompassRose.NWbN => 326.25,
+        ThirtytwoWindCompassRose.NNW => 337.5,
+        ThirtytwoWindCompassRose.NbW => 348.75,
         _ => throw new System.NotImplementedException(),
       });
 
-    public static Quantity.Azimuth GetAzimuth(CardinalDirection cardinalDirection)
-      => GetAzimuth((ThirtyTwoWindCompassRose)(int)cardinalDirection);
+    public static Quantity.Bearing GetAzimuth(SixteenWindCompassRose sixteenWindCompassRose)
+      => GetAzimuth((ThirtytwoWindCompassRose)(int)sixteenWindCompassRose);
 
-    public static Quantity.Azimuth GetAzimuth(InterCardinalDirection interCardinalDirection)
-      => GetAzimuth((ThirtyTwoWindCompassRose)(int)interCardinalDirection);
+    public static Quantity.Bearing GetAzimuth(EightWindCompassRose eightWindCompassRose)
+      => GetAzimuth((ThirtytwoWindCompassRose)(int)eightWindCompassRose);
 
-    public static Quantity.Azimuth GetAzimuth(EightWindCompassRose eightWindCompassRose)
-      => GetAzimuth((ThirtyTwoWindCompassRose)(int)eightWindCompassRose);
+    public static Quantity.Bearing GetAzimuth(InterCardinalDirection interCardinalDirection)
+      => GetAzimuth((ThirtytwoWindCompassRose)(int)interCardinalDirection);
+
+    public static Quantity.Bearing GetAzimuth(CardinalDirection cardinalDirection)
+      => GetAzimuth((ThirtytwoWindCompassRose)(int)cardinalDirection);
   }
 
   /// <summary>The 32-wind compass rose is yielded from the eight principal winds, eight half-winds and sixteen quarter-winds combined together, with each compass direction point at an 11.25° angle from the next.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
-  public enum ThirtyTwoWindCompassRose
+  public enum ThirtytwoWindCompassRose
   {
     N,
     NbE,
@@ -90,36 +93,57 @@ namespace Flux
   }
   /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 45° from its two neighbours. The directional values are the degrees they represent.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
+  public enum SixteenWindCompassRose
+  {
+    N = ThirtytwoWindCompassRose.N,
+    NNE = ThirtytwoWindCompassRose.NNE,
+    NE = ThirtytwoWindCompassRose.NE,
+    ENE = ThirtytwoWindCompassRose.ENE,
+    E = ThirtytwoWindCompassRose.E,
+    ESE = ThirtytwoWindCompassRose.ESE,
+    SE = ThirtytwoWindCompassRose.SE,
+    SSE = ThirtytwoWindCompassRose.SSE,
+    S = ThirtytwoWindCompassRose.S,
+    SSW = ThirtytwoWindCompassRose.SSW,
+    SW = ThirtytwoWindCompassRose.SW,
+    WSW = ThirtytwoWindCompassRose.WSW,
+    W = ThirtytwoWindCompassRose.W,
+    WNW = ThirtytwoWindCompassRose.WNW,
+    NW = ThirtytwoWindCompassRose.NW,
+    NNW = ThirtytwoWindCompassRose.NNW
+  }
+  /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 45° from its two neighbours. The directional values are the degrees they represent.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
   public enum EightWindCompassRose
   {
-    E = ThirtyTwoWindCompassRose.E,
-    NE = ThirtyTwoWindCompassRose.NE,
-    N = ThirtyTwoWindCompassRose.N,
-    NW = ThirtyTwoWindCompassRose.NW,
-    W = ThirtyTwoWindCompassRose.W,
-    SW = ThirtyTwoWindCompassRose.SW,
-    S = ThirtyTwoWindCompassRose.S,
-    SE = ThirtyTwoWindCompassRose.SE,
+    N = ThirtytwoWindCompassRose.N,
+    NE = ThirtytwoWindCompassRose.NE,
+    E = ThirtytwoWindCompassRose.E,
+    SE = ThirtytwoWindCompassRose.SE,
+    S = ThirtytwoWindCompassRose.S,
+    SW = ThirtytwoWindCompassRose.SW,
+    W = ThirtytwoWindCompassRose.W,
+    NW = ThirtytwoWindCompassRose.NW
   }
-  /// <summary>The intercardinal (intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions. The directional values are the degrees they represent.</summary>
+  /// <summary>The intercardinal(intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions.The directional values are the degrees they represent.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum InterCardinalDirection
   {
-    NE = EightWindCompassRose.NE,
-    SE = EightWindCompassRose.SE,
-    SW = EightWindCompassRose.SW,
-    NW = EightWindCompassRose.NW,
+    NE = ThirtytwoWindCompassRose.NE,
+    SE = ThirtytwoWindCompassRose.SE,
+    SW = ThirtytwoWindCompassRose.SW,
+    NW = ThirtytwoWindCompassRose.NW
   }
   /// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W. The directional values are the degrees they represent.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum CardinalDirection
   {
-    N = EightWindCompassRose.N,
-    E = EightWindCompassRose.E,
-    S = EightWindCompassRose.S,
-    W = EightWindCompassRose.W,
+    N = ThirtytwoWindCompassRose.N,
+    E = ThirtytwoWindCompassRose.E,
+    S = ThirtytwoWindCompassRose.S,
+    W = ThirtytwoWindCompassRose.W
   }
 
   /// <summary>The compass point directions.</summary>
@@ -128,6 +152,7 @@ namespace Flux
   {
     CardinalDirections = 4,
     EightWinds = 8,
-    ThirtyTwiWinds = 32,
+    SixteenWinds = 16,
+    ThirtytwoWinds = 32
   }
 }
