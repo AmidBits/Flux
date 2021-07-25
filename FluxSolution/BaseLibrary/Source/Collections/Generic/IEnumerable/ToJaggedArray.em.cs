@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
 	public static partial class ExtensionMethods
@@ -18,7 +20,7 @@ namespace Flux
 			foreach (var element in source)
 				list.Add(arraySelector(element, index++));
 
-			return list.AsArray();
+			return list.ToArray();
 		}
 	}
 }
