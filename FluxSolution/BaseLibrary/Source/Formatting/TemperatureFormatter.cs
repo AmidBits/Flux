@@ -12,37 +12,23 @@ namespace Flux.Formatting
   public class TemperatureFormatter
     : AFormatter
   {
-    public bool UseUnicodeSymbolWhenAvailable { get; set; }
-
-    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"^(?<Unit>[A-Za-z]+)(?<DecimalPlaces>[0-9]+)?$");
+    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"^(?<Unit>[A-Za-z]+)(?<DecimalPlaces>[0-9]+)?$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Quantity.Temperature temperature)
+      if (!string.IsNullOrWhiteSpace(format) && arg is Quantity.Temperature temperature)
       {
-        if (m_regexFormat.Match(format.ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+        if (m_regexFormat.Match(format) is System.Text.RegularExpressions.Match m && m.Success)
         {
           if (m.Groups[@"Unit"] is var g0 && g0.Success && g0.Value is var unitString)
           {
             if (!(m.Groups[@"DecimalPlaces"] is var g1 && g1.Success && g1.Value is var decimalPlacesString && int.TryParse(decimalPlacesString, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
-              decimalPlaces = -1;
+              decimalPlaces = 2;
 
-            var formatString = $"{{0:N{(decimalPlaces >= 0 ? decimalPlaces : 4)}}}";
-
-            switch (unitString)
-            {
-              case var celsius when @"Celsius".StartsWith(celsius, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Celsius)) + (UseUnicodeSymbolWhenAvailable ? " \u2103" : " \u00B0C");
-              case var fahrenheit when @"Fahrenheit".StartsWith(fahrenheit, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Fahrenheit)) + (UseUnicodeSymbolWhenAvailable ? " \u2109" : " \u00B0F");
-              case var kelvin when @"Kelvin".StartsWith(kelvin, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.Value) + (UseUnicodeSymbolWhenAvailable ? " \u212A" : " \u00B0K");
-              case var rankine when @"Rankine".StartsWith(rankine, System.StringComparison.InvariantCultureIgnoreCase):
-                return string.Format(null, formatString, temperature.ToUnitValue(Quantity.TemperatureUnit.Rankine)) + " \u00B0R";
-              default:
-                break;
-            }
+            foreach (var unit in (Quantity.TemperatureUnit[])System.Enum.GetValues(typeof(Quantity.TemperatureUnit)))
+              if (unit.ToString().StartsWith(unitString, System.StringComparison.InvariantCultureIgnoreCase))
+                return string.Format(null, $"{{0:N{decimalPlaces}}}", temperature.ToUnitValue(unit)) + Quantity.Temperature.GetUnitSymbol(unit);
           }
         }
       }

@@ -9,7 +9,7 @@ namespace Flux.Formatting
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class GeopositionFormatter
+  public class GeopointFormatter
     : AFormatter
   {
     public bool InsertSpaces { get; set; }
@@ -19,7 +19,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is GeoPoint geo)
+      if (!string.IsNullOrEmpty(format) && arg is Geopoint geo)
       {
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
@@ -35,12 +35,12 @@ namespace Flux.Formatting
             var sb = new System.Text.StringBuilder();
 
             sb.Append($"{FormatParts(geo.Latitude.Angle.Degree, parts, decimalPlaces)}{spacing}");
-            sb.Append($"{(geo.Latitude.Angle.Degree >= 0 ? 'N' : 'S')}");
-            sb.Append($",{spacing}");
+            sb.Append(geo.Latitude.Angle.Degree >= 0 ? 'N' : 'S');
+            sb.Append(@", ");
             sb.Append($"{FormatParts(geo.Longitude.Angle.Degree, parts, decimalPlaces)}{spacing}");
-            sb.Append($"{(geo.Longitude.Angle.Degree >= 0 ? 'E' : 'W')}");
-            sb.Append($",{spacing}");
-            sb.Append($"{geo.Height.Value}{spacing}m");
+            sb.Append(geo.Longitude.Angle.Degree >= 0 ? 'E' : 'W');
+            sb.Append(@", ");
+            sb.Append($"{geo.Height.Value}{spacing} m");
 
             return sb.ToString();
 

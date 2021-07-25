@@ -142,6 +142,27 @@ namespace Flux.Quantity
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
+
+    public static string GetUnitSymbol(AngleUnit unit)
+    {
+      switch (unit)
+      {
+        case AngleUnit.Arcminute:
+          return PrimeSymbol.ToString();
+        case AngleUnit.Arcsecond:
+          return DoublePrimeSymbol.ToString();
+        case AngleUnit.Degree:
+          return @" deg";
+        case AngleUnit.Gradian:
+          return @" grad";
+        case AngleUnit.Radian:
+          return @" rad";
+        case AngleUnit.Revolution:
+          return @" turns";
+        default:
+          return string.Empty;
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators

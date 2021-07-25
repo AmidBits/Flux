@@ -108,6 +108,23 @@ namespace Flux.Quantity
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
+
+    public static string GetUnitSymbol(TemperatureUnit unit)
+    {
+      switch (unit)
+      {
+        case TemperatureUnit.Celsius:
+          return $" {Angle.DegreeSymbol}C";
+        case TemperatureUnit.Fahrenheit:
+          return $" {Angle.DegreeSymbol}F";
+        case TemperatureUnit.Kelvin:
+          return $" K";
+        case TemperatureUnit.Rankine:
+          return $" {Angle.DegreeSymbol}R";
+        default:
+          return string.Empty;
+      }
+    }
     #endregion Static methods
 
     #region Overloaded operators

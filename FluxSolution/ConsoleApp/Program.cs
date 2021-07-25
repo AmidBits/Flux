@@ -14,10 +14,8 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var l = new int[]{ 2, 3, 5, 7 };
-
-      var ros = l.AsReadOnlySpan();
-      var s = l.AsSpan();
+      var g = new Flux.Geopoint(32.253460, -110.911789, 728);
+      System.Console.WriteLine(g.ToString());
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

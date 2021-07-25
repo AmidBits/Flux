@@ -23,10 +23,10 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
-  public struct GeoPoint
-    : System.IEquatable<GeoPoint>, System.IFormattable
+  public struct Geopoint
+    : System.IEquatable<Geopoint>, System.IFormattable
   {
-    public static readonly GeoPoint Empty;
+    public static readonly Geopoint Empty;
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Quantity.Length Height { get; }
@@ -35,13 +35,13 @@ namespace Flux
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Quantity.Longitude Longitude { get; }
 
-    public GeoPoint(Quantity.Latitude latitude, Quantity.Longitude longitude, Quantity.Length altitude)
+    public Geopoint(Quantity.Latitude latitude, Quantity.Longitude longitude, Quantity.Length altitude)
     {
       Height = altitude;
       Latitude = latitude;
       Longitude = longitude;
     }
-    public GeoPoint(double latitude, double longitude, double altitude = 1.0)
+    public Geopoint(double latitude, double longitude, double altitude = 1.0)
       : this(new Quantity.Latitude(latitude), new Quantity.Longitude(longitude), new Quantity.Length(altitude))
     { }
 
@@ -53,48 +53,48 @@ namespace Flux
     /// <param name="trackEnd"></param>
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
-    public double AlongTrackDistance(GeoPoint trackStart, GeoPoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+    public double AlongTrackDistance(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
       => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
     /// <summary>The shortest distance of this position from the specified track.</summary>
     /// <remarks>The cross track error, i.e. the distance off course.</remarks>
-    public double CrossTrackError(GeoPoint trackStart, GeoPoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+    public double CrossTrackError(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
       => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
     // <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
     /// <param name="bearingDegrees"></param>
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
-    public GeoPoint DestinationPointAt(double bearingDegrees, double angularDistance)
+    public Geopoint DestinationPointAt(double bearingDegrees, double angularDistance)
     {
       EndPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, Quantity.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new GeoPoint(Quantity.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Quantity.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Value);
+      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Quantity.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Value);
     }
 
     /// <summary>The distance from the point to the specified target.</summary>
     /// <param name="targetPoint"></param>
     /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
     /// <returns></returns>
-    public double DistanceTo(GeoPoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
+    public double DistanceTo(Geopoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
       => earthRadius * CentralAngleVincentyFormula(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian);
 
-    public double InitialBearingTo(GeoPoint targetPoint)
+    public double InitialBearingTo(Geopoint targetPoint)
       => Quantity.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian));
 
     /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
-    public GeoPoint IntermediaryPointTo(GeoPoint target, double unitInterval)
+    public Geopoint IntermediaryPointTo(Geopoint target, double unitInterval)
     {
       IntermediaryPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, unitInterval, out var lat, out var lon);
 
-      return new GeoPoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
+      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
     }
 
     /// <summary>The midpoint between this point and the specified target.</summary>
-    public GeoPoint MidpointTo(GeoPoint target)
+    public Geopoint MidpointTo(Geopoint target)
     {
       Midpoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, out var lat, out var lon);
 
-      return new GeoPoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
+      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
     }
 
     #region Static members
@@ -313,11 +313,11 @@ namespace Flux
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeoPoint result, double earthRadius = EarthRadii.MeanInMeters)
+    public static bool TryParse(string latitudeDMS, string longitudeDMS, out Geopoint result, double earthRadius = EarthRadii.MeanInMeters)
     {
       if (Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
       {
-        result = new GeoPoint(latitude, longitude, earthRadius);
+        result = new Geopoint(latitude, longitude, earthRadius);
         return true;
       }
 
@@ -327,28 +327,28 @@ namespace Flux
     #endregion Static members
 
     #region Overloaded operators
-    public static bool operator ==(GeoPoint a, GeoPoint b)
+    public static bool operator ==(Geopoint a, Geopoint b)
       => a.Equals(b);
-    public static bool operator !=(GeoPoint a, GeoPoint b)
+    public static bool operator !=(Geopoint a, Geopoint b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(GeoPoint other)
+    public bool Equals(Geopoint other)
       => Height == other.Height && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new Formatting.GeopositionFormatter(), format ?? $"<{nameof(GeoPoint)}: {{0:DMS}}>", this);
+      => string.Format(formatProvider ?? new Formatting.GeopointFormatter(), format ?? $"<{nameof(Geopoint)}: {{0:DMS}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is GeoPoint o && Equals(o);
+      => obj is Geopoint o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Height, Latitude, Longitude);
     public override string ToString()
-      => ToString(null, null);
+      => ToString($"<{nameof(Geopoint)}: {{0:DMS}}>", new Formatting.GeopointFormatter());
     #endregion Object overrides
   }
 }
