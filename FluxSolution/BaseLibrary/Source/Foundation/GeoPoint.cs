@@ -183,7 +183,7 @@ namespace Flux
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2) 
+    public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2)
       => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
 
     ///// <summary>Computes the square of half the chord length between the points, often labeled "a" in C implementations.</summary>

@@ -40,7 +40,7 @@ namespace Flux.Formatting
             sb.Append($"{FormatParts(geo.Longitude.Angle.Degree, parts, decimalPlaces)}{spacing}");
             sb.Append(geo.Longitude.Angle.Degree >= 0 ? 'E' : 'W');
             sb.Append(@", ");
-            sb.Append($"{geo.Height.Value}{spacing} m");
+            sb.Append($"{geo.Height.Value} m");
 
             return sb.ToString();
 

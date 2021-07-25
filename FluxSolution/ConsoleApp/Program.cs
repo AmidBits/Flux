@@ -15,7 +15,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       var g = new Flux.Geopoint(32.253460, -110.911789, 728);
-      System.Console.WriteLine(g.ToString());
+      System.Console.WriteLine($"Tucson: {g.ToString()}");
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
