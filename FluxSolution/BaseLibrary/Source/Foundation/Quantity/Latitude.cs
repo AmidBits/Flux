@@ -35,6 +35,8 @@ namespace Flux.Quantity
       => new Length(ComputeApproximateRadius(m_value.Radian));
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
+    /// https://en.wikipedia.org/wiki/Mercator_projection
+    /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double MercatorProjectY
       => System.Math.Clamp(System.Math.Log(System.Math.Abs(System.Math.Tan(System.Math.PI / 4 + Angle.Radian / 2))), -System.Math.PI, System.Math.PI);
 

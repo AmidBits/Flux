@@ -23,6 +23,8 @@ namespace Flux.Quantity
       => m_value.Degree;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
+    /// https://en.wikipedia.org/wiki/Mercator_projection
+    /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double MercatorProjectX
       => Angle.Radian;
 
