@@ -48,54 +48,54 @@ namespace Flux
     public bool IsEmpty
       => Equals(Empty);
 
-    /// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
-    /// <param name="trackStart"></param>
-    /// <param name="trackEnd"></param>
-    /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
-    /// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
-    public double AlongTrackDistance(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
+    ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
+    ///// <param name="trackStart"></param>
+    ///// <param name="trackEnd"></param>
+    ///// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
+    ///// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
+    //public double AlongTrackDistance(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+    //  => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
-    /// <summary>The shortest distance of this position from the specified track.</summary>
-    /// <remarks>The cross track error, i.e. the distance off course.</remarks>
-    public double CrossTrackError(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
+    ///// <summary>The shortest distance of this position from the specified track.</summary>
+    ///// <remarks>The cross track error, i.e. the distance off course.</remarks>
+    //public double CrossTrackError(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
+    //  => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
 
-    // <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
-    /// <param name="bearingDegrees"></param>
-    /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
-    public Geopoint DestinationPointAt(double bearingDegrees, double angularDistance)
-    {
-      EndPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, Quantity.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
+    //// <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
+    ///// <param name="bearingDegrees"></param>
+    ///// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
+    //public Geopoint DestinationPointAt(double bearingDegrees, double angularDistance)
+    //{
+    //  EndPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, Quantity.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
 
-      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Quantity.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Value);
-    }
+    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Quantity.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Value);
+    //}
 
-    /// <summary>The distance from the point to the specified target.</summary>
-    /// <param name="targetPoint"></param>
-    /// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
-    /// <returns></returns>
-    public double DistanceTo(Geopoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
-      => earthRadius * CentralAngleVincentyFormula(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian);
+    ///// <summary>The distance from the point to the specified target.</summary>
+    ///// <param name="targetPoint"></param>
+    ///// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
+    ///// <returns></returns>
+    //public double DistanceTo(Geopoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
+    //  => earthRadius * CentralAngleVincentyFormula(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian);
 
-    public double InitialBearingTo(Geopoint targetPoint)
-      => Quantity.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian));
+    //public double InitialBearingTo(Geopoint targetPoint)
+    //  => Quantity.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian));
 
-    /// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
-    public Geopoint IntermediaryPointTo(Geopoint target, double unitInterval)
-    {
-      IntermediaryPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, unitInterval, out var lat, out var lon);
+    ///// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
+    //public Geopoint IntermediaryPointTo(Geopoint target, double unitInterval)
+    //{
+    //  IntermediaryPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, unitInterval, out var lat, out var lon);
 
-      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
-    }
+    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
+    //}
 
-    /// <summary>The midpoint between this point and the specified target.</summary>
-    public Geopoint MidpointTo(Geopoint target)
-    {
-      Midpoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, out var lat, out var lon);
+    ///// <summary>The midpoint between this point and the specified target.</summary>
+    //public Geopoint MidpointTo(Geopoint target)
+    //{
+    //  Midpoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, out var lat, out var lon);
 
-      return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
-    }
+    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
+    //}
 
     #region Static members
 
@@ -196,13 +196,13 @@ namespace Flux
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double InitialBearing(double latitude1, double longitude1, double latitude2, double longitude2)
+    public static double InitialBearing(double radLat1, double radLon1, double radLat2, double radLon2)
     {
-      var cosLat2 = System.Math.Cos(latitude2);
-      var lonD = longitude2 - longitude1;
+      var cosLat2 = System.Math.Cos(radLat2);
+      var lonD = radLon2 - radLon1;
 
       var y = System.Math.Sin(lonD) * cosLat2;
-      var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
+      var x = System.Math.Cos(radLat1) * System.Math.Sin(radLat2) - System.Math.Sin(radLat1) * cosLat2 * System.Math.Cos(lonD);
 
       return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees)
     }
@@ -269,33 +269,34 @@ namespace Flux
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
-    public static double MaximumLatitude(double latitude, double bearing) => System.Math.Acos(System.Math.Abs(System.Math.Sin(bearing) * System.Math.Cos(latitude)));
+    public static double MaximumLatitude(double latitude, double bearing)
+      => System.Math.Acos(System.Math.Abs(System.Math.Sin(bearing) * System.Math.Cos(latitude)));
 
     /// <summary></summary>
     /// <example>
     /// var pixel = Flux.Mercator.MercatorProjectPixel(5, 9.95, 10000, 10000);
     /// var ll = Flux.Mercator.MercatorUnprojectPixel(pixel.X, pixel.Y, 10000, 10000);
     /// </example>
-    public static (double X, double Y) MercatorProjectPixel(double latitude, double longitude, int pixelCanvasWidth, int pixelCanvasHeight)
-    {
-      var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
+    //public static (double X, double Y) MercatorProjectPixel(double latitude, double longitude, int pixelCanvasWidth, int pixelCanvasHeight)
+    //{
+    //  var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
 
-      var mpForward = System.Math.Log(System.Math.Tan((Quantity.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Maths.PiOver4));
+    //  var mpForward = System.Math.PI - System.Math.Log(System.Math.Tan((Quantity.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Maths.PiOver4));
 
-      var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Maths.PiX2));
+    //  var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Maths.PiX2));
 
-      return (x, y);
-    }
-    public static (double Latitude, double Longitude) MercatorUnprojectPixel(double x, double y, int pixelCanvasWidth, int pixelCanvasHeight)
-    {
-      var longitude = x * 360.0 / pixelCanvasWidth - 180.0;
+    //  return (x, y);
+    //}
+    //public static (double Latitude, double Longitude) MercatorUnprojectPixel(double x, double y, int pixelCanvasWidth, int pixelCanvasHeight)
+    //{
+    //  var longitude = x * 360.0 / pixelCanvasWidth - 180.0;
 
-      var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Maths.PiX2);
+    //  var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Maths.PiX2);
 
-      var latitude = Quantity.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Maths.PiOver4) * 2.0);
+    //  var latitude = Quantity.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Maths.PiOver4) * 2.0);
 
-      return (latitude, longitude);
-    }
+    //  return (latitude, longitude);
+    //}
 
     /// <summary>This is the halfway point along a great circle path between the two points.</summary>
     public static void Midpoint(double latitude1, double longitude1, double latitude2, double longitude2, out double latitudeOut, out double longitudeOut)

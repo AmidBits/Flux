@@ -20,10 +20,6 @@ namespace Flux.Quantity
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, IValuedSiBaseUnit
   {
-    public static Length One
-      => new Length(1);
-    public static Length Zero { get; }
-
     private readonly double m_value;
 
     public Length(double meter)

@@ -22,12 +22,16 @@ namespace Flux.Quantity
     public double Value
       => m_value.Degree;
 
+    /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
+    public double MercatorProjectX
+      => Angle.Radian;
+
     public int TheoreticalTimezoneOffset
       => ComputeTheoreticalTimezoneOffset(m_value.Degree);
 
     #region Static methods
-    public static int ComputeTheoreticalTimezoneOffset(double longitude)
-      => (int)Maths.RoundToNearest((longitude + System.Math.CopySign(7.5, longitude)) / 15, RoundingBehavior.RoundTowardZero);
+    public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
+      => (int)Maths.RoundToNearest((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, RoundingBehavior.RoundTowardZero);
     #endregion Static methods
 
     #region Overloaded operators

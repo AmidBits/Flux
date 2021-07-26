@@ -9,7 +9,10 @@ namespace Flux.Quantity
     UKGallon,
     USGallon,
     CubicFeet,
+    CubicYard,
     CubicMeter,
+    CubicMile,
+    CubicKilometer,
   }
 
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
@@ -43,8 +46,14 @@ namespace Flux.Quantity
           return m_value / 0.003785;
         case VolumeUnit.CubicFeet:
           return m_value * (1953125000.0 / 55306341.0);
+        case VolumeUnit.CubicYard:
+          return m_value * (1953125000.0 / 1493271207.0);
         case VolumeUnit.CubicMeter:
           return m_value;
+        case VolumeUnit.CubicMile:
+          return m_value / (8140980127813632.0 / 1953125.0);
+        case VolumeUnit.CubicKilometer:
+          return m_value / 1e9;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -75,8 +84,14 @@ namespace Flux.Quantity
           return new Volume(value * 0.003785);
         case VolumeUnit.CubicFeet:
           return new Volume(value / (1953125000.0 / 55306341.0));
+        case VolumeUnit.CubicYard:
+          return new Volume(value / (1953125000.0 / 1493271207.0));
         case VolumeUnit.CubicMeter:
           return new Volume(value);
+        case VolumeUnit.CubicMile:
+          return new Volume(value * (8140980127813632.0 / 1953125.0)); // 
+        case VolumeUnit.CubicKilometer:
+          return new Volume(value * 1e9);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }

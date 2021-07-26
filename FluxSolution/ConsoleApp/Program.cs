@@ -14,8 +14,68 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var g = new Flux.Geopoint(32.253460, -110.911789, 728);
-      System.Console.WriteLine($"Tucson: {g.ToString()}");
+      //var lat1 = Flux.Quantity.Angle.ConvertDegreeToRadian(80);
+      //var lon1 = Flux.Quantity.Angle.ConvertDegreeToRadian(-85);
+      var sm_a = 200.0;
+      var sm_b = 200.0;
+
+      for (double lat1 = -90, lon1 = -180; lat1 <= 90 && lon1 <= 180; lat1 += .1, lon1 += .2)
+      {
+        var lat = new Flux.Quantity.Latitude(lat1);
+        var lon = new Flux.Quantity.Longitude(lon1);
+        ////var cos = System.Math.Cos(lon1r);
+        ////var sin = System.Math.Sin(lon1r);
+        ////var tan = System.Math.Cos(lon1r);
+        ////System.Console.WriteLine($"{lon1r} = cos({cos}) = sin({sin}) = tan({tan})");
+        //var x1 = (lon1r);
+        //var tanx = System.Math.Tan(System.Math.PI / 4 + lat1r / 2);
+        //var abs = System.Math.Abs(tanx);
+        ////if (abs <= -System.Math.PI)
+        ////  abs += 0.1;
+        ////if (abs >= System.Math.PI)
+        ////  abs -= 0.1;
+        //// abs = System.Math.Clamp(abs, 0.001, System.Math.PI - 0.001);
+        //var y1 = System.Math.Log(abs);
+        //y1 = System.Math.Clamp(y1, -System.Math.PI, System.Math.PI);
+
+        //x1 = (x1+System.Math.PI)*sm_a / Maths.PiX2;
+        //y1 =(y1+ System.Math.PI)*sm_b/Maths.PiX2;
+
+        var x1 = lon.MercatorProjectX;
+        var y1 = lat.MercatorProjectY;
+
+        System.Console.WriteLine($"{lat}, {lon} = {x1}, {y1}");
+      }
+
+      //var pixel = Flux.Geopoint.MercatorProjectPixel(-80, 10, 100, 100);
+      //var ll = Flux.Geopoint.MercatorUnprojectPixel(pixel.X, pixel.Y, 100, 100);
+
+
+      //var a = 0.5;
+      //var b = 0.5;
+
+      //var ec1 = Flux.Geometry.Ellipse.EccentricityEx(a, b);
+      //var ec2 = Flux.Geometry.Ellipse.EccentricityEx(b, a);
+      //var eh1 = Flux.Geometry.Ellipse.H(a, b);
+      //var eh2 = Flux.Geometry.Ellipse.H(b, a);
+      //var h31 = eh1 * 3;
+      //var h32 = eh2 * 3;
+      //var hp1 = eh1 * System.Math.PI;
+      //var hp2 = eh2 * System.Math.PI;
+
+      //var sp = Flux.Geometry.Ellipse.SurfacePerimeter(a, b);
+
+      //return;
+
+      //foreach (var p in Flux.Reflect.GetPropertyInfos(typeof(Flux.Earth)))
+      //  System.Console.WriteLine($"{p.Name} = '{p.GetValueEx(typeof(Flux.Earth))}'");
+      //System.Console.WriteLine(Flux.Earth.Volume.ToUnitValue(Flux.Quantity.VolumeUnit.CubicKilometer));
+      //System.Console.WriteLine(Flux.Earth.Volume.ToUnitValue(Flux.Quantity.VolumeUnit.CubicMile));
+
+      //System.Console.WriteLine(Flux.Earth.EquatorialCircumference.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
+      //System.Console.WriteLine(Flux.Earth.PolarCircumference.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
+      //var g = new Flux.Geopoint(32.253460, -110.911789, 728);
+      //System.Console.WriteLine($"Tucson: {g.ToString()}");
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
