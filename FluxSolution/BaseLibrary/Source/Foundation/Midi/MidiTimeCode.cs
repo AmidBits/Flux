@@ -4,76 +4,45 @@ namespace Flux.Midi
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
   public class MidiTimeCode
   {
-    private MidiTimeCodeRate m_rate;
-    public MidiTimeCodeRate Rate
-    {
-      get => m_rate;
-      set => m_rate = value;
-    }
+    private MidiTimeCodeType m_rate;
+    private byte m_hour;
+    private byte m_minute;
+    private byte m_second;
+    private byte m_frame;
 
-    private int m_hour;
-    public int Hour
-    {
-      get => m_hour;
-      set => m_hour = value >= 0 && value <= 23 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-    }
+    public MidiTimeCodeType Rate
+      => m_rate;
+    public byte Hour
+      => m_hour;
+    public byte Minute
+      => m_minute;
+    public byte Second
+      => m_second;
+    public byte Frame
+      => m_frame;
 
-    private int m_minute;
-    public int Minute
-    {
-      get => m_minute;
-      set => m_minute = value >= 0 && value <= 59 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-    }
-
-    private int m_second;
-    public int Second
-    {
-      get => m_second;
-      set => m_second = value >= 0 && value <= 59 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-    }
-
-    private int m_frame;
-    public int Frame
-    {
-      get => m_frame;
-      set => m_frame = value >= 0 && value < (int)m_rate ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-    }
-
-    public MidiTimeCode(MidiTimeCodeRate rate, int hour, int minute, int second, int frame)
+    public MidiTimeCode(MidiTimeCodeType rate, int hour, int minute, int second, int frame)
     {
       m_rate = rate;
-      m_hour = hour >= 0 && hour <= 23 ? hour : throw new System.ArgumentOutOfRangeException(nameof(hour));
-      m_minute = minute >= 0 && minute <= 59 ? minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
-      m_second = second >= 0 && second <= 59 ? second : throw new System.ArgumentOutOfRangeException(nameof(second));
-      m_frame = frame >= 0 && frame < (int)rate ? frame : throw new System.ArgumentOutOfRangeException(nameof(frame));
+      m_hour = hour >= 0 && hour <= 23 ? (byte)hour : throw new System.ArgumentOutOfRangeException(nameof(hour));
+      m_minute = minute >= 0 && minute <= 59 ? (byte)minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
+      m_second = second >= 0 && second <= 59 ? (byte)second : throw new System.ArgumentOutOfRangeException(nameof(second));
+      m_frame = frame >= 0 && frame < (int)rate ? (byte)frame : throw new System.ArgumentOutOfRangeException(nameof(frame));
     }
 
     public MidiTimeCode AddHours(int value)
-    {
-      var quotient = System.Math.DivRem(m_hour + value, 24, out var reminder);
-
-      if (quotient > 0) throw new System.ArithmeticException($"The maximum value for the hour part is 23.");
-
-      return new MidiTimeCode(m_rate, reminder, m_minute, m_second, m_frame);
-    }
+      => System.Math.DivRem(m_hour + value, 24, out var reminder) is var quotient && quotient > 0
+      ? throw new System.ArithmeticException($"The maximum value for the hour part is 23.")
+      : new MidiTimeCode(m_rate, reminder, m_minute, m_second, m_frame);
     public MidiTimeCode AddMinutes(int value)
-    {
-      var quotient = System.Math.DivRem(m_minute + value, 60, out var reminder);
-
-      return new MidiTimeCode(m_rate, m_hour + quotient, reminder, m_second, m_frame);
-    }
+      => new MidiTimeCode(m_rate, m_hour + System.Math.DivRem(m_minute + value, 60, out var reminder), reminder, m_second, m_frame);
     public MidiTimeCode AddSeconds(int value)
-    {
-      var quotient = System.Math.DivRem(m_second + value, 60, out var reminder);
-
-      return new MidiTimeCode(m_rate, m_hour, m_minute + quotient, reminder, m_frame);
-    }
+      => new MidiTimeCode(m_rate, m_hour, m_minute + System.Math.DivRem(m_second + value, 60, out var reminder), reminder, m_frame);
     public MidiTimeCode AddFrames(int value)
-    {
-      var quotient = System.Math.DivRem(m_frame + value, (int)m_rate, out var reminder);
+      => new MidiTimeCode(m_rate, m_hour, m_minute, m_second + System.Math.DivRem(m_frame + value, (int)m_rate, out var reminder), reminder);
 
-      return new MidiTimeCode(m_rate, m_hour, m_minute, m_second + quotient, reminder);
-    }
+    public static byte[] MakeFullFrame(int rate, int hour, int minute, int second, int frame)
+      => new byte[] { (int)SystemCommonStatus.StartOfExclusive, 0x7F, 0x7F, 0x01, 0x01, (byte)((rate >= 0 && rate <= 3 ? rate << 5 : throw new System.ArgumentOutOfRangeException(nameof(rate))) | (hour >= 0 && hour <= 23 ? hour : throw new System.ArgumentOutOfRangeException(nameof(hour)))), (byte)(minute >= 0 && minute <= 59 ? minute : throw new System.ArgumentOutOfRangeException(nameof(minute))), (byte)(second >= 0 && second <= 59 ? second : throw new System.ArgumentOutOfRangeException(nameof(second))), (byte)(frame >= 0 && frame <= 29 ? frame : throw new System.ArgumentOutOfRangeException(nameof(frame))), (byte)SystemCommonStatus.EndOfExclusive };
 
     public byte[] ToFullFrameBytes()
       => Protocol.MtcFullFrame((int)m_rate, m_hour, m_minute, m_second, m_frame);
