@@ -19,27 +19,11 @@ namespace ConsoleApp
       var sm_a = 200.0;
       var sm_b = 200.0;
 
-      for (double lat1 = -90, lon1 = -180; lat1 <= 90 && lon1 <= 180; lat1 += .1, lon1 += .2)
+      //for (int lat1 = -90, lon1 = -180; lat1 <= 90 && lon1 <= 180; lat1 += .1, lon1 += .2)
+      for (var index = -360; index <= 360; index += 15)
       {
-        var lat = new Flux.Quantity.Latitude(lat1);
-        var lon = new Flux.Quantity.Longitude(lon1);
-        ////var cos = System.Math.Cos(lon1r);
-        ////var sin = System.Math.Sin(lon1r);
-        ////var tan = System.Math.Cos(lon1r);
-        ////System.Console.WriteLine($"{lon1r} = cos({cos}) = sin({sin}) = tan({tan})");
-        //var x1 = (lon1r);
-        //var tanx = System.Math.Tan(System.Math.PI / 4 + lat1r / 2);
-        //var abs = System.Math.Abs(tanx);
-        ////if (abs <= -System.Math.PI)
-        ////  abs += 0.1;
-        ////if (abs >= System.Math.PI)
-        ////  abs -= 0.1;
-        //// abs = System.Math.Clamp(abs, 0.001, System.Math.PI - 0.001);
-        //var y1 = System.Math.Log(abs);
-        //y1 = System.Math.Clamp(y1, -System.Math.PI, System.Math.PI);
-
-        //x1 = (x1+System.Math.PI)*sm_a / Maths.PiX2;
-        //y1 =(y1+ System.Math.PI)*sm_b/Maths.PiX2;
+        var lat = new Flux.Quantity.Latitude(index / 4.0);
+        var lon = new Flux.Quantity.Longitude(index / 2.0);
 
         var x1 = lon.MercatorProjectX;
         var y1 = lat.MercatorProjectY;
