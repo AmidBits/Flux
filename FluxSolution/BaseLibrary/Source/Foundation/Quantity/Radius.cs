@@ -10,6 +10,13 @@ namespace Flux.Quantity
     public Radius(double radius)
       => m_value = radius;
 
+    /// <summary>Area of a circle with the radius.</summary>
+    public double Area
+      => System.Math.PI * m_value * m_value;
+    /// <summary>Circumference of a circle with the radius.</summary>
+    public double Circumference
+      => m_value * Maths.PiX2;
+    /// <summary>Diameter of the radius.</summary>
     public double Diameter
       => m_value * System.Math.PI;
 
@@ -17,6 +24,13 @@ namespace Flux.Quantity
       => m_value;
 
     #region Static members
+    /// <summary>Create radius from the specified area (of a circle).</summary>
+    public Radius FromArea(double area)
+      => new Radius(System.Math.Sqrt(area / System.Math.PI));
+    /// <summary>Create radius from the specified circumference.</summary>
+    public Radius FromCircumference(double circumference)
+      => new Radius(circumference / Maths.PiX2);
+    /// <summary>Create radius from the specified diameter.</summary>
     public Radius FromDiameter(double diameter)
       => new Radius(diameter / System.Math.PI);
     #endregion Static members

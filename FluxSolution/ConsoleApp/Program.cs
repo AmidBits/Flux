@@ -14,52 +14,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //var lat1 = Flux.Quantity.Angle.ConvertDegreeToRadian(80);
-      //var lon1 = Flux.Quantity.Angle.ConvertDegreeToRadian(-85);
-      var sm_a = 200.0;
-      var sm_b = 200.0;
-
-      //for (int lat1 = -90, lon1 = -180; lat1 <= 90 && lon1 <= 180; lat1 += .1, lon1 += .2)
-      for (var index = -360; index <= 360; index += 15)
-      {
-        var lat = new Flux.Quantity.Latitude(index / 4.0);
-        var lon = new Flux.Quantity.Longitude(index / 2.0);
-
-        var x1 = lon.MercatorProjectX;
-        var y1 = lat.MercatorProjectY;
-
-        System.Console.WriteLine($"{lat}, {lon} = {x1}, {y1}");
-      }
-
-      //var pixel = Flux.Geopoint.MercatorProjectPixel(-80, 10, 100, 100);
-      //var ll = Flux.Geopoint.MercatorUnprojectPixel(pixel.X, pixel.Y, 100, 100);
-
-
-      //var a = 0.5;
-      //var b = 0.5;
-
-      //var ec1 = Flux.Geometry.Ellipse.EccentricityEx(a, b);
-      //var ec2 = Flux.Geometry.Ellipse.EccentricityEx(b, a);
-      //var eh1 = Flux.Geometry.Ellipse.H(a, b);
-      //var eh2 = Flux.Geometry.Ellipse.H(b, a);
-      //var h31 = eh1 * 3;
-      //var h32 = eh2 * 3;
-      //var hp1 = eh1 * System.Math.PI;
-      //var hp2 = eh2 * System.Math.PI;
-
-      //var sp = Flux.Geometry.Ellipse.SurfacePerimeter(a, b);
-
-      //return;
-
-      //foreach (var p in Flux.Reflect.GetPropertyInfos(typeof(Flux.Earth)))
-      //  System.Console.WriteLine($"{p.Name} = '{p.GetValueEx(typeof(Flux.Earth))}'");
-      //System.Console.WriteLine(Flux.Earth.Volume.ToUnitValue(Flux.Quantity.VolumeUnit.CubicKilometer));
-      //System.Console.WriteLine(Flux.Earth.Volume.ToUnitValue(Flux.Quantity.VolumeUnit.CubicMile));
-
-      //System.Console.WriteLine(Flux.Earth.EquatorialCircumference.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
-      //System.Console.WriteLine(Flux.Earth.PolarCircumference.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
-      //var g = new Flux.Geopoint(32.253460, -110.911789, 728);
-      //System.Console.WriteLine($"Tucson: {g.ToString()}");
+      
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

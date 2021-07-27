@@ -1,6 +1,6 @@
 namespace Flux.Quantity
 {
-  /// <summary>Fraction.</summary>
+  /// <summary>Simple fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public struct SimpleFraction
     : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IValuedUnit

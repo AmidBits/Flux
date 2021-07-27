@@ -8,28 +8,30 @@ namespace Flux.Quantity
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly Angle m_value;
+    private readonly double m_value;
 
     public Longitude(double degree)
-      => m_value = Angle.FromUnitValue(AngleUnit.Degree, Maths.Wrap(degree, MinValue, MaxValue));
+      => m_value = Maths.Wrap(degree, MinValue, MaxValue);
     public Longitude(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
-    public Angle Angle
-      => m_value;
-
+    public double Radian
+      => Angle.ConvertDegreeToRadian(m_value);
     public double Value
-      => m_value.Degree;
+      => m_value;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double MercatorProjectX
-      => Angle.Radian;
+    public double GetMercatorProjectX()
+      => Radian;
+    /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
+    public int GetTheoreticalTimezoneOffset()
+      => ComputeTheoreticalTimezoneOffset(m_value);
 
-    public int TheoreticalTimezoneOffset
-      => ComputeTheoreticalTimezoneOffset(m_value.Degree);
+    public Angle ToAngle()
+      => new Angle(Radian);
 
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
@@ -38,7 +40,7 @@ namespace Flux.Quantity
 
     #region Overloaded operators
     public static explicit operator double(Longitude v)
-      => v.m_value.Degree;
+      => v.m_value;
     public static explicit operator Longitude(double v)
       => new Longitude(v);
 
@@ -96,7 +98,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value.Degree}{Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_value}{Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

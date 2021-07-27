@@ -34,7 +34,7 @@ namespace Flux.Quantity
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Frequency ToFrequency()
-      => new Quantity.Frequency(ConvertMidiNoteToFrequency(m_number));
+      => new Frequency(ConvertMidiNoteToFrequency(m_number));
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -52,6 +52,19 @@ namespace Flux.Quantity
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Frequency frequency)
       => new MidiNote(ConvertFrequencyToMidiNote(frequency.Value));
+    /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
+    public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
+    {
+      try
+      {
+        result = FromFrequency(frequency);
+        return true;
+      }
+      catch { }
+
+      result = default;
+      return false;
+    }
     /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
     public static bool IsMidiNote(int midiNoteNumber)
       => midiNoteNumber >= 0 && midiNoteNumber <= 127;
@@ -73,19 +86,6 @@ namespace Flux.Quantity
       }
 
       throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
-    }
-    /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
-    public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
-    {
-      try
-      {
-        result = FromFrequency(frequency);
-        return true;
-      }
-      catch { }
-
-      result = default;
-      return false;
     }
     /// <summary>Attempts to parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>

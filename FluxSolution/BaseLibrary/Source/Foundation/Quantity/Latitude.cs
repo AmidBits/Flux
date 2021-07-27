@@ -8,37 +8,38 @@ namespace Flux.Quantity
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    private readonly Angle m_value;
+    private readonly double m_value;
 
     public Latitude(double degree)
-      => m_value = Angle.FromUnitValue(AngleUnit.Degree, System.Math.Clamp(degree, MinValue, MaxValue));
+      => m_value = Maths.Wrap(degree, MinValue, MaxValue);
     public Latitude(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
-    public Angle Angle
-        => m_value;
-
+    public double Radian
+      => Angle.ConvertDegreeToRadian(m_value);
     public double Value
-      => m_value.Degree;
+      => m_value;
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
-    public Length ApproximateLatitudinalHeight
-      => new Length(ComputeApproximateLatitudinalHeight(m_value.Radian));
+    public Length GetApproximateLatitudinalHeight()
+      => new Length(ComputeApproximateLatitudinalHeight(Radian));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
-    public Length ApproximateLongitudinalWidth
-      => new Length(ComputeApproximateLongitudinalWidth(m_value.Radian));
+    public Length GetApproximateLongitudinalWidth()
+      => new Length(ComputeApproximateLongitudinalWidth(Radian));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-    public Length ApproximateRadius
-      => new Length(ComputeApproximateRadius(m_value.Radian));
-
+    public Length GetApproximateRadius()
+      => new Length(ComputeApproximateRadius(Radian));
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double MercatorProjectY
-      => System.Math.Clamp(System.Math.Log(System.Math.Abs(System.Math.Tan(System.Math.PI / 4 + Angle.Radian / 2))), -System.Math.PI, System.Math.PI);
+    public double GetMercatorProjectY()
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(System.Math.PI / 4 + Radian / 2))), -System.Math.PI, System.Math.PI);
+
+    public Angle ToAngle()
+      => new Angle(Radian);
 
     #region Static methods
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
@@ -64,7 +65,7 @@ namespace Flux.Quantity
 
     #region Overloaded operators
     public static explicit operator double(Latitude v)
-      => v.m_value.Degree;
+      => v.m_value;
     public static explicit operator Latitude(double v)
       => new Latitude(v);
 
@@ -122,7 +123,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value.Degree}{Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_value}{Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

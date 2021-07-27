@@ -23,13 +23,13 @@ namespace Foundation.Units
     }
 
     [TestMethod]
-    public void Azimuth()
+    public void Bearing()
     {
       var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
 
       var u = new Flux.Quantity.Bearing(a);
 
-      Assert.AreEqual(a, u.Angle);
+      Assert.AreEqual(a.Degree, u.Value);
     }
 
     [TestMethod]
@@ -48,7 +48,7 @@ namespace Foundation.Units
 
       var u = new Flux.Quantity.Latitude(a);
 
-      Assert.AreEqual(a, u.Angle);
+      Assert.AreEqual(a.Degree, u.Value);
     }
 
     [TestMethod]
@@ -58,7 +58,7 @@ namespace Foundation.Units
 
       var u = new Flux.Quantity.Longitude(a);
 
-      Assert.AreEqual(a, u.Angle);
+      Assert.AreEqual(a.Degree, u.Value);
     }
 
     [TestMethod]
