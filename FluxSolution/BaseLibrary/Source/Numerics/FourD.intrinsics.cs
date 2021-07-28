@@ -57,9 +57,6 @@ namespace Flux.Numerics
       => Vector256.Create(System.Math.PI * 2);
 
     private readonly Vector256<double> m_v256;
-    /// <summary>Retreives the Vector256 store for the instance.</summary>
-    public Vector256<double> V256
-      => m_v256;
 
     public double X
       => m_v256.GetElement(0);
@@ -87,8 +84,9 @@ namespace Flux.Numerics
     public double LengthSquared()
       => DotProduct3D(m_v256, m_v256).GetElement(0);
 
-    public Vector256<double> ToVector256()
-      => Vector256.Create(m_v256.GetElement(0), m_v256.GetElement(1), m_v256.GetElement(2), m_v256.GetElement(3));
+    /// <summary>Retreives a copy of the Vector256 store for the instance.</summary>
+    public Vector256<double> V256
+      => m_v256;
 
     #region Static methods
     /// <summary>Returns the vector with absolute values.</summary>
