@@ -153,7 +153,7 @@ namespace Flux.Text
 
 			var result = System.Text.Json.JsonSerializer.Deserialize<T>(ref newJsonReader, options);
 			DeserializePost();
-			return result;
+			return result!;
 		}
 
 		public System.Text.Json.JsonDocument GetJsonDocument()

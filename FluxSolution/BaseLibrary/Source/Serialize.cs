@@ -17,16 +17,16 @@ namespace Flux
 
     /// <summary>Serialize the source from a JSON string to T, using the specified options.</summary>
     public static TTarget FromJson<TTarget>(string source, System.Text.Json.JsonSerializerOptions options)
-      => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source, options);
+      => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source, options)!;
     /// <summary>Serialize the source from a JSON string to T.</summary>
     public static TTarget FromJson<TTarget>(string source)
-      => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source);
+      => System.Text.Json.JsonSerializer.Deserialize<TTarget>(source)!;
     /// <summary>Serialize the source from an XML string to T.</summary>
     public static TTarget FromXml<TTarget>(string source)
     {
       using var ms = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(source));
       using var xr = System.Xml.XmlReader.Create(ms);
-      return (TTarget)new System.Xml.Serialization.XmlSerializer(typeof(TTarget)).Deserialize(xr);
+      return (TTarget)new System.Xml.Serialization.XmlSerializer(typeof(TTarget)).Deserialize(xr)!;
     }
 
     /// <summary>Serialize the source to a JSON string, using the specified options.</summary>
