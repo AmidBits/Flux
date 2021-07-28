@@ -10,7 +10,7 @@ namespace Flux.Data
 
     protected System.Collections.Generic.List<System.Type> m_fieldTypes = new System.Collections.Generic.List<System.Type>();
     ///// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
-    public System.Collections.Generic.IReadOnlyList<System.Type> FieldTypes { get => m_fieldTypes; init => m_fieldTypes.AddRange(value); }
+    public System.Collections.Generic.IReadOnlyList<System.Type> FieldTypes { get => m_fieldTypes; set => m_fieldTypes.AddRange(value); }
 
     protected System.Collections.Generic.List<object> m_fieldValues = new System.Collections.Generic.List<object>();
     /// <summary>An array of field values for the result.</summary>

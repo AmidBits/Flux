@@ -145,7 +145,7 @@ namespace Flux.Text
 			return tokenStartIndex;
 		}
 
-		public T? Deserialize<T>(System.Text.Json.JsonSerializerOptions? options = null)
+		public T Deserialize<T>(System.Text.Json.JsonSerializerOptions? options = null)
 		{
 			var tokenStartIndex = DeserializePre(out var firstSegment, out var firstSegmentStartIndex);
 

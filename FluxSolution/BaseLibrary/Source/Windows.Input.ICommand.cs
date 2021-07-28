@@ -6,14 +6,14 @@
 	{
 		public event System.EventHandler? CanExecuteChanged = delegate { };
 
-		private readonly System.Func<T?, bool> m_canExecute;
-		private readonly System.Action<T?> m_execute;
+		private readonly System.Func<T, bool> m_canExecute;
+		private readonly System.Action<T> m_execute;
 
-		public Command(System.Action<T?> execute)
+		public Command(System.Action<T> execute)
 			: this(execute, (T) => { return true; })
 		{
 		}
-		public Command(System.Action<T?> Execute, System.Func<T?, bool> CanExecute)
+		public Command(System.Action<T> Execute, System.Func<T, bool> CanExecute)
 		{
 			m_canExecute = CanExecute;
 			m_execute = Execute;
@@ -26,8 +26,8 @@
 
 		// ICommand
 		public bool CanExecute(object? Parameter)
-			=> m_canExecute?.Invoke((T?)Parameter) ?? true;
+			=> m_canExecute?.Invoke((T)Parameter!) ?? true;
 		public void Execute(object? Parameter)
-			=> m_execute((T?)Parameter);
+			=> m_execute((T)Parameter!);
 	}
 }

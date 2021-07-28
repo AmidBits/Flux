@@ -164,14 +164,14 @@ namespace Flux.Collections
 
 		/// <summary>Perform a depth limited search (DLS) on a tree hierarchy.</summary>
 		/// <seealso cref="https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search#Algorithm_for_Directed_Graphs"/>
-		public static (T? itemFound, bool itemsRemaining) DepthLimitedSearch<T>(T node, int depth, System.Func<T, bool> predicateGoal, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
+		public static (T itemFound, bool itemsRemaining) DepthLimitedSearch<T>(T node, int depth, System.Func<T, bool> predicateGoal, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
 		{
 			if (predicateGoal is null) throw new System.ArgumentNullException(nameof(predicateGoal));
 			if (selectorChildNodes is null) throw new System.ArgumentNullException(nameof(selectorChildNodes));
 
 			if (depth == 0)
 			{
-				return predicateGoal(node) ? (node, true) : (default, true);
+				return predicateGoal(node) ? (node, true) : (default!, true);
 			}
 			else if (depth > 0)
 			{
@@ -187,7 +187,7 @@ namespace Flux.Collections
 						anyItemsRemaining = true;
 				}
 
-				return (default, anyItemsRemaining);
+				return (default!, anyItemsRemaining);
 			}
 			else throw new System.ArgumentOutOfRangeException(nameof(depth));
 		}

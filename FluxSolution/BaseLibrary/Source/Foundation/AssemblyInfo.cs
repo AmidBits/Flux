@@ -51,7 +51,7 @@ namespace Flux
     public string VersionString
       => Version.ToString();
 
-    public System.Reflection.Assembly Assembly { get; init; }
+    public System.Reflection.Assembly Assembly { get; set; }
 
     public AssemblyInfo(System.Reflection.Assembly assembly)
       => Assembly = assembly;

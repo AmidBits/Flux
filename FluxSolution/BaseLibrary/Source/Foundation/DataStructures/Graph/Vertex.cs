@@ -20,7 +20,7 @@
 
     // Equatable
     public bool Equals(Vertex<TVertex>? other)
-      => other is not null && Value.Equals(other.Value) && Degree.Equals(other.Degree);
+      => !(other is null) && Value.Equals(other.Value) && Degree.Equals(other.Degree);
 
     // Overrides
     public override bool Equals(object? obj)

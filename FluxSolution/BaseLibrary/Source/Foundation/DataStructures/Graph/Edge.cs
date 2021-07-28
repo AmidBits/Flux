@@ -26,7 +26,7 @@
 
     // Equatable
     public bool Equals(Edge<TVertex, TWeight>? other)
-      => other is not null && Source == other.Source && Target == other.Target && Weight.Equals(other.Weight);
+      => !(other is null) && Source == other.Source && Target == other.Target && Weight.Equals(other.Weight);
 
     // Overrides
     public override bool Equals(object? obj)

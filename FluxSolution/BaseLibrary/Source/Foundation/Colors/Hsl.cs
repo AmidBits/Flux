@@ -43,27 +43,27 @@ namespace Flux.Colors
 
       switch (h1)
       {
-        case >= 0 and <= 1:
+        case var h01 when h01 >= 0 && h01 <= 1:
           r1 += c;
           g1 += x;
           break;
-        case > 1 and <= 2:
+        case var h11 when h11 > 1 && h11 <= 2:
           r1 += x;
           g1 += c;
           break;
-        case > 2 and <= 3:
+        case var h23 when h23 > 2 && h23 <= 3:
           g1 += c;
           b1 += x;
           break;
-        case > 3 and <= 4:
+        case var h34 when h34 > 3 && h34 <= 4:
           g1 += x;
           b1 += c;
           break;
-        case > 4 and <= 5:
+        case var h45 when h45 > 4 && h45 <= 5:
           r1 += x;
           b1 += c;
           break;
-        case > 5 and <= 6:
+        case var h56 when h56 > 5 && h56 <= 6:
           r1 += c;
           b1 += x;
           break;

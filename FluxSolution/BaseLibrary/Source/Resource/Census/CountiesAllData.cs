@@ -30,10 +30,14 @@ namespace Flux.Resources.Census
 
           for (var i = objectArray.Length - 1; i >= 0; i--)
           {
-            objectArray[i] = i switch
+            switch(i)
             {
-              >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
-              _ => e.Current[i],
+              case var ic when ic >= 5:
+                objectArray[i] = System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null);
+                break;
+              default:
+                objectArray[i] = e.Current[i];
+                break;
             };
           }
 

@@ -128,10 +128,10 @@ namespace Flux.Memory.Metrics
   public class OptimalStringAlignmentEx<T>
     : AMetrics<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
   {
-    public double CostOfDeletion { get; init; } = 1;
-    public double CostOfInsertion { get; init; } = 1;
-    public double CostOfSubstitution { get; init; } = 1;
-    public double CostOfTransposition { get; init; } = 1;
+    public double CostOfDeletion { get; set; } = 1;
+    public double CostOfInsertion { get; set; } = 1;
+    public double CostOfSubstitution { get; set; } = 1;
+    public double CostOfTransposition { get; set; } = 1;
 
     public OptimalStringAlignmentEx()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)

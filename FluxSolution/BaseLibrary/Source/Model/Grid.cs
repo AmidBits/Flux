@@ -16,14 +16,14 @@
     }
 
     /// <summary>The preferred way to access the grid values.</summary>
-    public TValue? this[Geometry.Point2 point]
+    public TValue this[Geometry.Point2 point]
     {
-      get => m_map.TryGetValue(point, out var value) ? value : default;
+      get => m_map.TryGetValue(point, out var value) ? value : default!;
       set => m_map[point] = value!;
     }
 
     /// <summary>Access with [row, column] is provided for convenience in for loops.</summary>
-    public TValue? this[int row, int column]
+    public TValue this[int row, int column]
     {
       get => this[new Geometry.Point2(column, row)];
       set => this[new Geometry.Point2(column, row)] = value;
@@ -35,7 +35,7 @@
       => point.X + (point.Y * Size.Width);
 
     /// <summary>Access with [index] is provided for convenience in loops.</summary>
-    public TValue? this[int index]
+    public TValue this[int index]
     {
       get => this[IndexToPoint(index)];
       set => this[IndexToPoint(index)] = value;
