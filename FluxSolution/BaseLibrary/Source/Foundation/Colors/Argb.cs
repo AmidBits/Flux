@@ -1,57 +1,57 @@
 namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
-  public struct Rgba
-    : System.IEquatable<Rgba>
+  public struct Argb
+    : System.IEquatable<Argb>
   {
-    public static readonly Rgba Empty;
+    public static readonly Argb Empty;
     public bool IsEmpty => Equals(Empty);
 
-    private byte m_alpha;
     private Rgb m_rgb;
+    private byte m_alpha;
 
-    public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
     public Rgb RGB { get => m_rgb; set => m_rgb = value; }
+    public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
-    public Rgba(Rgb rgb, int alpha)
+    public Argb(int alpha, Rgb rgb)
     {
-      m_rgb = rgb;
       m_alpha = alpha >= 0 && alpha <= 255 ? (byte)alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
+      m_rgb = rgb;
     }
-    public Rgba(int red, int green, int blue, int alpha)
-      : this(new Rgb(red, green, blue), alpha)
+    public Argb(int alpha, int red, int green, int blue)
+      : this(alpha, new Rgb(red, green, blue))
     { }
 
-    public static Rgba FromRandom(System.Random rng)
+    public static Argb FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       var bytes = rng.GetRandomBytes(4);
 
-      return new Rgba(bytes[0], bytes[1], bytes[2], bytes[3]);
+      return new Argb(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
-    public static Rgba FromRandom()
+    public static Argb FromRandom()
       => FromRandom(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
-    public Rgba ToGrayscale(GrayscaleMethod method)
-      => new Rgba(m_rgb.ToGrayscale(method), Alpha);
+    public Argb ToGrayscale(GrayscaleMethod method)
+      => new Argb(m_alpha, m_rgb.ToGrayscale(method));
 
     /// <summary>Creates a CMYKA color corresponding to the RGBA instance.</summary>
-    public Cmyka ToCmyka()
-      => new Cmyka(RGB.ToCmyk(), Alpha / 255.0);
+    public Acmyk ToAcmyk()
+      => new Acmyk(m_alpha / 255.0, RGB.ToCmyk());
     /// <summary>Creates an HSIA color corresponding to the RGBA instance.</summary>
-    public Hsia ToHsia()
-      => new Hsia(RGB.ToHsi(), Alpha / 255.0);
+    public Ahsi ToAhsi()
+      => new Ahsi(m_alpha / 255.0, RGB.ToHsi());
     /// <summary>Creates an HSLA color corresponding to the RGBA instance.</summary>
-    public Hsla ToHsla()
-      => new Hsla(RGB.ToHsl(), Alpha / 255.0);
+    public Ahsl ToAhsl()
+      => new Ahsl(m_alpha / 255.0, RGB.ToHsl());
     /// <summary>Creates an HSVA color corresponding to the RGBA instance.</summary>
-    public Hsva ToHsva()
-      => new Hsva(RGB.ToHsv(), Alpha / 255.0);
+    public Ahsv ToAhsv()
+      => new Ahsv(m_alpha / 255.0, RGB.ToHsv());
     /// <summary>Creates an HWBA color corresponding to the RGBA instance.</summary>
-    public Hwba ToHwba()
-      => new Hwba(RGB.ToHwb(), Alpha / 255.0);
+    public Ahwb ToAhwb()
+      => new Ahwb(m_alpha / 255.0, RGB.ToHwb());
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
     //public Hwb ToHwb()
@@ -85,22 +85,22 @@ namespace Flux.Colors
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
     public string ToStringHtmlHex()
-      => $"#{Alpha:X2}{RGB.Red:X2}{RGB.Green:X2}{RGB.Blue:X2}";
+      => $"#{m_alpha:X2}{RGB.Red:X2}{RGB.Green:X2}{RGB.Blue:X2}";
     public string ToStringHtmlRgba()
-      => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {Alpha / 255.0})";
+      => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha / 255.0})";
     /// <summary>Converts a Color value to a scRGB string representation of the value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/ScRGB"/>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
     public string ToStringHtmlSc()
-      => $"sc#{Alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
+      => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
 
     #region Static methods
-    public static int ToInt(Rgba rgba)
+    public static int ToInt(Argb rgba)
       => (rgba.Alpha << 24) | (rgba.RGB.Red << 16) | (rgba.RGB.Green << 8) | (rgba.RGB.Blue << 0);
     /// <summary>Creates a new RGBA color by parsing the specified string.</summary>
     /// <param name="colorString">The color string. Any format used in XAML should work.</param>
-    public static Rgba Parse(string colorString)
+    public static Argb Parse(string colorString)
     {
       if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
 
@@ -109,9 +109,9 @@ namespace Flux.Colors
         switch (colorString)
         {
           case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
-            return new Rgba((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
+            return new Argb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
           case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
-            return new Rgba((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
+            return new Argb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
           case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
             var a5 = (byte)(c >> 12);
             var r5 = (byte)((c >> 8) & 0xf);
@@ -121,7 +121,7 @@ namespace Flux.Colors
             r5 = (byte)(r5 << 4 | r5);
             g5 = (byte)(g5 << 4 | g5);
             b5 = (byte)(b5 << 4 | b5);
-            return new Rgba(r5, g5, b5, a5);
+            return new Argb(r5, g5, b5, a5);
           case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
             var r4 = (byte)((ci4 >> 8) & 0xf);
             var g4 = (byte)((ci4 >> 4) & 0xf);
@@ -129,7 +129,7 @@ namespace Flux.Colors
             r4 = (byte)(r4 << 4 | r4);
             g4 = (byte)(g4 << 4 | g4);
             b4 = (byte)(b4 << 4 | b4);
-            return new Rgba(r4, g4, b4, 255);
+            return new Argb(r4, g4, b4, 255);
           default:
             throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
         }
@@ -139,43 +139,43 @@ namespace Flux.Colors
       {
         return (colorString.Substring(3).Split(',')) switch
         {
-          var s4 when s4.Length == 4 => new Rgba((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
-          var s3 when s3.Length == 3 => new Rgba((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
+          var s4 when s4.Length == 4 => new Argb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
+          var s3 when s3.Length == 3 => new Argb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
           _ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
         };
       }
 
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
-    public static Rgba FromInt(int rgba)
-      => unchecked(new Rgba((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba));
+    public static Argb FromInt(int rgba)
+      => unchecked(new Argb((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba));
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator int(Rgba v)
+    public static explicit operator int(Argb v)
       => (v.Alpha << 24) | (v.RGB.Red << 16) | (v.RGB.Green << 8) | (v.RGB.Blue << 0);
-    public static explicit operator Rgba(int v)
-      => unchecked(new Rgba((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
+    public static explicit operator Argb(int v)
+      => unchecked(new Argb((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
 
-    public static bool operator ==(Rgba a, Rgba b)
+    public static bool operator ==(Argb a, Argb b)
       => a.Equals(b);
-    public static bool operator !=(Rgba a, Rgba b)
+    public static bool operator !=(Argb a, Argb b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgba other)
-      => RGB == other.RGB && Alpha == other.Alpha;
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Argb other)
+      => m_alpha == other.m_alpha && RGB.Equals(other.RGB);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Rgba o && Equals(o);
+      => obj is Argb o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(RGB, Alpha);
+      => System.HashCode.Combine(m_alpha, RGB);
     public override string ToString()
-      => $"<{GetType().Name}: {RGB.Red}, {RGB.Green}, {RGB.Blue}, {Alpha}>";
+      => $"<{GetType().Name}: {RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha}>";
     #endregion Object overrides
   }
 

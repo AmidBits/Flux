@@ -18,12 +18,12 @@ namespace Flux.Colors
     public double Yellow { get => m_yellow; set => m_yellow = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
     public double Key { get => m_key; set => m_key = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
-    public Cmyk(double cyan, double magenta, double yellow, double black)
+    public Cmyk(double cyan, double magenta, double yellow, double key)
     {
       m_cyan = cyan >= 0 && cyan <= 1 ? cyan : throw new System.ArgumentOutOfRangeException(nameof(cyan));
       m_magenta = magenta >= 0 && magenta <= 1 ? magenta : throw new System.ArgumentOutOfRangeException(nameof(magenta));
       m_yellow = yellow >= 0 && yellow <= 1 ? yellow : throw new System.ArgumentOutOfRangeException(nameof(yellow));
-      m_key = black >= 0 && black <= 1 ? black : throw new System.ArgumentOutOfRangeException(nameof(black));
+      m_key = key >= 0 && key <= 1 ? key : throw new System.ArgumentOutOfRangeException(nameof(key));
     }
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>

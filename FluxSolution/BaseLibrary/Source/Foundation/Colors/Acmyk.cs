@@ -1,58 +1,58 @@
 namespace Flux.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
-  public struct Cmyka
-    : System.IEquatable<Cmyka>
+  public struct Acmyk
+    : System.IEquatable<Acmyk>
   {
-    public static readonly Cmyka Empty;
+    public static readonly Acmyk Empty;
     public bool IsEmpty => Equals(Empty);
 
-    private Cmyk m_cmyk;
     private double m_alpha;
+    private Cmyk m_cmyk;
 
-    public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
     public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
 
-    public Cmyka(Cmyk cmyk, double alpha)
+    public Acmyk(double alpha, Cmyk cmyk)
     {
-      m_cmyk = cmyk;
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
+      m_cmyk = cmyk;
     }
-    public Cmyka(double cyan, double magenta, double yellow, double black, double alpha)
-      : this(new Cmyk(cyan, magenta, yellow, black), alpha)
+    public Acmyk(double alpha, double cyan, double magenta, double yellow, double black)
+      : this(alpha, new Cmyk(cyan, magenta, yellow, black))
     { }
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
-    public Rgba ToRgba()
-      => new Rgba(CMYK.ToRgb(), System.Convert.ToByte(Alpha * 255));
+    public Argb ToArgb()
+      => new Argb(System.Convert.ToByte(Alpha * 255), CMYK.ToRgb());
 
     #region Static members
-    public static Cmyka FromRandom(System.Random rng)
+    public static Acmyk FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
-      return new Cmyka(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
+      return new Acmyk(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     }
-    public static Cmyka FromRandom()
+    public static Acmyk FromRandom()
       => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static members
 
     #region Overloaded operators
-    public static bool operator ==(Cmyka a, Cmyka b)
+    public static bool operator ==(Acmyk a, Acmyk b)
       => a.Equals(b);
-    public static bool operator !=(Cmyka a, Cmyka b)
+    public static bool operator !=(Acmyk a, Acmyk b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Cmyka other)
-      => CMYK == other.CMYK && Alpha == other.Alpha;
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Acmyk other)
+      => m_alpha == other.m_alpha && CMYK.Equals(other.CMYK);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Cmyka o && Equals(o);
+      => obj is Acmyk o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(CMYK, Alpha);
     public override string ToString()

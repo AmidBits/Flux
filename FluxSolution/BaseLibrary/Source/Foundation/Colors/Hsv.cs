@@ -100,7 +100,7 @@ namespace Flux.Colors
     #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
-      => Hue == other.Hue && Saturation == other.Saturation && Value == other.Value;
+      => m_hue == other.m_hue && m_saturation == other.m_saturation && m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

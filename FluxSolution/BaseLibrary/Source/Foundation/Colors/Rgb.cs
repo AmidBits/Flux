@@ -187,7 +187,7 @@ namespace Flux.Colors
     //}
 
     public int ToInt()
-      => (byte)(Red << 16) | (byte)(Green << 8) | (byte)(Blue << 0);
+      => (Red << 16) | (byte)(Green << 8) | (byte)(Blue << 0);
 
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>

@@ -14,7 +14,8 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      
+      System.Console.WriteLine(Flux.Maths.GreatestCommonDivisor(9, 7));
+      System.Console.WriteLine(Flux.Maths.GreatestCommonDivisor(-9, -7));
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

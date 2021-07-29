@@ -102,14 +102,14 @@ namespace Flux.Colors
     #region Implemented interface
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsl other)
-      => Hue == other.Hue && Saturation == other.Saturation && Lightness == other.Lightness;
+      => m_hue == other.m_hue && m_saturation == other.m_saturation && m_lightness == other.m_lightness;
     #endregion Implemented interface
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsl o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Hue, Saturation, Lightness);
+      => System.HashCode.Combine(m_hue, m_saturation, m_lightness);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_lightness * 100):N1}%>";
     #endregion Object overrides

@@ -1,61 +1,61 @@
 namespace Flux.Colors
 {
   /// <summary>Hsva is the same as Hsv with the addition of an alpha channel.</summary>
-  public struct Hsva
-    : System.IEquatable<Hsva>
+  public struct Ahsv
+    : System.IEquatable<Ahsv>
   {
-    public static readonly Hsva Empty;
+    public static readonly Ahsv Empty;
     public bool IsEmpty => Equals(Empty);
 
-    private Hsv m_hsv;
     private double m_alpha;
+    private Hsv m_hsv;
 
-    public Hsv HSV { get => m_hsv; set => m_hsv = value; }
     public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Hsv HSV { get => m_hsv; set => m_hsv = value; }
 
-    public Hsva(Hsv hsv, double alpha)
+    public Ahsv(double alpha, Hsv hsv)
     {
-      m_hsv = hsv;
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
+      m_hsv = hsv;
     }
-    public Hsva(double hue, double saturation, double value, double alpha)
-      : this(new Hsv(hue, saturation, value), alpha)
+    public Ahsv(double alpha, double hue, double saturation, double value)
+      : this(alpha, new Hsv(hue, saturation, value))
     { }
 
     /// <summary>Creates an HSL color corresponding to the HSV instance.</summary>
-    public Hsla ToHsla()
-      => new Hsla(HSV.ToHsl(), Alpha);
+    public Ahsl ToAhsl()
+      => new Ahsl(m_alpha, HSV.ToHsl());
     /// <summary>Creates an RGB color corresponding to the HSV instance.</summary>
-    public Rgba ToRgba()
-      => new Rgba(HSV.ToRgb(), System.Convert.ToByte(Alpha * 255));
+    public Argb ToArgb()
+      => new Argb(System.Convert.ToByte(m_alpha * 255), HSV.ToRgb());
 
     #region Static methods
-    public static Hsva FromRandom(System.Random rng)
-      => new Hsva(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    public static Hsva FromRandom()
+    public static Ahsv FromRandom(System.Random rng)
+      => new Ahsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
+    public static Ahsv FromRandom()
       => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Hsva a, Hsva b)
+    public static bool operator ==(Ahsv a, Ahsv b)
       => a.Equals(b);
-    public static bool operator !=(Hsva a, Hsva b)
+    public static bool operator !=(Ahsv a, Ahsv b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsva other)
-      => HSV == other.HSV && Alpha == other.Alpha;
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Ahsv other)
+      => m_alpha == other.m_alpha && HSV.Equals(other.HSV);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Hsva o && Equals(o);
+      => obj is Ahsv o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(HSV, Alpha);
+      => System.HashCode.Combine(m_alpha, HSV);
     public override string ToString()
-      => $"<{GetType().Name}: {HSV.Hue}, {HSV.Saturation}, {HSV.Value}, {Alpha}>";
+      => $"<{GetType().Name}: {HSV.Hue}, {HSV.Saturation}, {HSV.Value}, {m_alpha}>";
     #endregion Object overrides
   }
 }

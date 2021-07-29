@@ -22,17 +22,17 @@ namespace Flux.Colors
     }
 
     public double GetChroma()
-      => 3 * Intensity * Saturation / (1 + (1 - System.Math.Abs((Hue / 60 % 2) - 1)));
+      => 3 * m_intensity * m_saturation / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Rgb ToRgb()
     {
-      double hue1 = Hue / 60;
+      double hue1 = m_hue / 60;
       double z = 1 - System.Math.Abs((hue1 % 2) - 1);
-      double chroma = (3 * Intensity * Saturation) / (1 + z);
+      double chroma = (3 * m_intensity * m_saturation) / (1 + z);
       double x = chroma * z;
 
-      double m = Intensity * (1 - Saturation);
+      double m = m_intensity * (1 - m_saturation);
       double r1 = m, g1 = m, b1 = m;
 
       switch (hue1)
@@ -91,14 +91,14 @@ namespace Flux.Colors
     #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsi other)
-      => Hue == other.Hue && Saturation == other.Saturation && Intensity == other.Intensity;
+      => m_hue == other.m_hue && m_saturation == other.m_saturation && m_intensity == other.m_intensity;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hsi o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Hue, Saturation, Intensity);
+      => System.HashCode.Combine(m_hue, m_saturation, m_intensity);
     public override string ToString()
       => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_intensity * 100):N1}%>";
     #endregion Object overrides
