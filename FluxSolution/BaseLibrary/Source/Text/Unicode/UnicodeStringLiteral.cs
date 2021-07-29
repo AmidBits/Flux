@@ -23,7 +23,7 @@ namespace Flux.Text
     }
 
     /// <summary>Convert the Unicode codepoint to a string literal format, i.e. "\uxxxx" (four hex characters) or "\UXXXXXXXX" (eight hex characters).</summary>
-    public static string ToString(char character)
-      => character <= 0xFFFF ? $@"\u{((int)character):X4}" : $@"\U{((int)character):X8}";
+    public static string ToString(System.Text.Rune rune)
+      => rune.Value <= 0xFFFF ? $@"\u{rune.Value:X4}" : $@"\U{rune.Value:X8}";
   }
 }

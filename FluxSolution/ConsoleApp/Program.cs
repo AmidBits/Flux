@@ -14,8 +14,25 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      System.Console.WriteLine(Flux.Maths.GreatestCommonDivisor(9, 7));
-      System.Console.WriteLine(Flux.Maths.GreatestCommonDivisor(-9, -7));
+
+      System.Console.WriteLine("This is how you say hello in Japanese: こんにちは");
+
+      var text = "2 + 3 * 5";
+
+      System.Console.WriteLine(text);
+
+      text = string.Concat(text.Select(c => c.ToString() + string.Concat(Flux.Text.UnicodeBlock.CombiningDiacriticalMarks.GetCodePoints().RandomElements(0.01))));
+
+      //System.Console.WriteLine('"' + string.Concat(text.Select(c => Flux.Text.UnicodeStringLiteral.ToString((System.Text.Rune)c))) + '"');
+
+      System.Console.WriteLine(text);
+
+      var tokenizer = new Flux.Text.GraphemeTokenizer();
+
+      foreach (var token in tokenizer.GetTokens(text)) //.GroupAdjacent(r => System.Text.Rune.GetUnicodeCategory(r.Value)))
+      {
+        System.Console.WriteLine($"{token}");
+      }
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
@@ -64,10 +81,32 @@ namespace ConsoleApp
 
     static void Main(string[] args)
     {
-      System.Console.InputEncoding = System.Text.Encoding.UTF8;
-      System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+      var originalOutputEncoding = System.Console.OutputEncoding;
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+      try
+      {
+        try
+        {
+          System.Console.OutputEncoding = new System.Text.UnicodeEncoding(!System.BitConverter.IsLittleEndian, false);
+          System.Console.WriteLine("Output encoding set to UTF-16");
+        }
+        catch
+        {
+          System.Console.OutputEncoding = System.Text.UnicodeEncoding.UTF8;
+          System.Console.WriteLine("Output encoding set to UTF-8");
+        }
+
+        System.Console.WriteLine($"The console encoding is {System.Console.OutputEncoding.EncodingName} (code page {System.Console.OutputEncoding.CodePage})");
+
+        System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+
+        System.Console.WriteLine(Flux.Text.UnicodeBlock.BasicLatin.ToConsoleTable());
+      }
+      catch { }
+      finally
+      {
+        Console.OutputEncoding = originalOutputEncoding;
+      }
 
       System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
       System.Console.ReadKey();
