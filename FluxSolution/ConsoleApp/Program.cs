@@ -100,7 +100,7 @@ namespace ConsoleApp
 
         System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 
-        System.Console.WriteLine(Flux.Text.UnicodeBlock.BasicLatin.ToConsoleTable());
+        System.Console.WriteLine(Flux.Text.UnicodeBlock.BasicLatin.ToConsoleTable(32, 0));
       }
       catch { }
       finally

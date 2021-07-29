@@ -16,12 +16,12 @@ namespace Flux
         yield return (System.Text.Rune)codePoint;
     }
 
-    public static string ToConsoleTable(this Text.UnicodeBlock block)
+    public static string ToConsoleTable(this Text.UnicodeBlock block, int skipStart, int skipEnd)
     {
       var sb = new System.Text.StringBuilder();
 
-      var start = GetCodePointFirst(block);
-      var end = GetCodePointLast(block);
+      var start = GetCodePointFirst(block) + skipStart;
+      var end = GetCodePointLast(block) - skipEnd;
 
       var last = RoundUpToMultipleOf(0x10, end);
       var first = RoundDownToMultipleOf(0x10, start);
