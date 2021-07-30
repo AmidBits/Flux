@@ -14,7 +14,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      System.Console.WriteLine(Flux.Text.UnicodeBlock.PlayingCards.ToConsoleTable(0, 0));
+      System.Console.WriteLine(Flux.Text.UnicodeBlock.Cyrillic.ToConsoleTable(0, 0));
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

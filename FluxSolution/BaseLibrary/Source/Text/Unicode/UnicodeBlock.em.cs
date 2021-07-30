@@ -16,7 +16,7 @@ namespace Flux
         yield return (System.Text.Rune)codePoint;
     }
 
-    public static string ToConsoleTable(this Text.UnicodeBlock source, int skipFirst, int skipLast)
+    public static string ToConsoleTable(this Text.UnicodeBlock source, int skipFirst, int skipLast, bool includeTitle = true)
     {
       var sb = new System.Text.StringBuilder();
 
@@ -26,32 +26,43 @@ namespace Flux
       var last = RoundUpToMultipleOf(0x10, end);
       var first = RoundDownToMultipleOf(0x10, start);
 
-      var digitCount = System.Convert.ToInt32(System.Math.Log10(last));
+      var digitCount = System.Math.Max(System.Convert.ToInt32(System.Math.Log10(last)), 4);
 
-      sb.Append("  " + new string(' ', digitCount));
+      if (includeTitle)
+        sb.AppendLine(source.ToString());
+
+      sb.Append(@"  ");
+      sb.Append(' ', digitCount);
       for (var columnHeading = 0; columnHeading < 0x10; columnHeading++)
-        sb.Append($" {columnHeading.ToString("X1")}");
+      {
+        sb.Append(' ');
+        sb.Append(columnHeading.ToString("X1"));
+      }
       sb.AppendLine();
 
       var format = $"U+{{0:x{digitCount}}}";
 
       for (int row = 0, maxRows = (last - first) / 0x10; row < maxRows; ++row)
       {
-        //sb.Append($"U+{(first + 0x10 * r):x5}".Substring(0, 6) + 'x');
         sb.Append(string.Format(format, first + 0x10 * row).Substring(0, 2 + digitCount - 1) + 'x');
+
         for (var column = 0; column < 0x10; ++column)
         {
-          var current = (first + 0x10 * row + column);
+          var current = first + 0x10 * row + column;
 
-          if (current < start || current > end) sb.Append($"  ");
-          else
+          var chars = char.ConvertFromUtf32(current);
+
+          sb.Append(' ');
+
+          switch (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(chars[0]))
           {
-            var chars = char.ConvertFromUtf32(current);
-
-            if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(chars[0]) is var uc && (uc == System.Globalization.UnicodeCategory.OtherNotAssigned || uc == System.Globalization.UnicodeCategory.PrivateUse))
-              sb.Append(@"  ");
-            else
-              sb.Append($" {chars}");
+            case System.Globalization.UnicodeCategory.OtherNotAssigned:
+            case System.Globalization.UnicodeCategory.PrivateUse:
+              sb.Append(' ');
+              break;
+            default:
+              sb.Append(chars);
+              break;
           }
         }
 
