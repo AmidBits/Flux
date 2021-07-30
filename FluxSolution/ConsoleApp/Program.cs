@@ -14,25 +14,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-
-      System.Console.WriteLine("This is how you say hello in Japanese: こんにちは");
-
-      var text = "2 + 3 * 5";
-
-      System.Console.WriteLine(text);
-
-      text = string.Concat(text.Select(c => c.ToString() + string.Concat(Flux.Text.UnicodeBlock.CombiningDiacriticalMarks.GetCodePoints().RandomElements(0.01))));
-
-      //System.Console.WriteLine('"' + string.Concat(text.Select(c => Flux.Text.UnicodeStringLiteral.ToString((System.Text.Rune)c))) + '"');
-
-      System.Console.WriteLine(text);
-
-      var tokenizer = new Flux.Text.GraphemeTokenizer();
-
-      foreach (var token in tokenizer.GetTokens(text)) //.GroupAdjacent(r => System.Text.Rune.GetUnicodeCategory(r.Value)))
-      {
-        System.Console.WriteLine($"{token}");
-      }
+      System.Console.WriteLine(Flux.Text.UnicodeBlock.PlayingCards.ToConsoleTable(0, 0));
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
@@ -97,10 +79,9 @@ namespace ConsoleApp
         }
 
         System.Console.WriteLine($"The console encoding is {System.Console.OutputEncoding.EncodingName} (code page {System.Console.OutputEncoding.CodePage})");
+        System.Console.WriteLine();
 
         System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
-
-        System.Console.WriteLine(Flux.Text.UnicodeBlock.BasicLatin.ToConsoleTable(32, 0));
       }
       catch { }
       finally
