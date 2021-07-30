@@ -1,8 +1,7 @@
 namespace Flux.Text
 {
   /// <summary>Each value contains both the first and the last code points for the block name (high 32-bits = first, low 32-bits = last).</summary>
-  public enum UnicodeBlock
-    : long
+  public enum UnicodeBlock : long
   {
     BasicLatin = 0x000000000000007F,
     Latin1Supplement = 0x00000080000000FF,

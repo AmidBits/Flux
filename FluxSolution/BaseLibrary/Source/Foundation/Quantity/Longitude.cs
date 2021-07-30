@@ -35,7 +35,7 @@ namespace Flux.Quantity
 
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
-      => (int)Maths.RoundToNearest((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, RoundingBehavior.RoundTowardZero);
+      => (int)Maths.RoundToNearest((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, FullRoundingBehavior.TowardZero);
     #endregion Static methods
 
     #region Overloaded operators

@@ -14,7 +14,23 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      System.Console.WriteLine(Flux.Text.UnicodeBlock.Cyrillic.ToConsoleTable(0, 0));
+      //var positive = 16;
+      //var pc = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullCeiling);
+      //var pf = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullFloor);
+      //var ptz = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullTowardZero);
+      //var pafz = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullAwayFromZero);
+      //System.Console.WriteLine($"(F:{pf}, C:{pc}) TZ:{ptz} < N:{positive} < AFZ:{pafz}");
+      //var negative = -positive;
+      //var nc = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullCeiling);
+      //var nf = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullFloor);
+      //var ntz = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullTowardZero);
+      //var nafz = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullAwayFromZero);
+      //System.Console.WriteLine($"(F:{nf}, C:{nc}) AFZ:{nafz} < N:{negative} < TZ:{ntz}");
+
+      foreach (var block in System.Enum.GetValues(typeof(Flux.Text.UnicodeBlock)).Cast<Flux.Text.UnicodeBlock>().Select(b => (ublock: b, count: b.GetUtf32Last() - b.GetUtf32First())).OrderByDescending(b => b.count))
+        System.Console.WriteLine($"{block.ublock.ToString()} = {block.count}");
+
+      System.Console.WriteLine(Flux.Text.UnicodeBlock.MathematicalOperators.ToConsoleTable(0, 0));
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
