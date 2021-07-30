@@ -73,11 +73,6 @@ namespace Flux
       }
 
       return sb.ToString();
-
-      static int RoundUpToMultipleOf(int alignment, int number)
-        => RoundDownToMultipleOf(alignment, number) + alignment;
-      static int RoundDownToMultipleOf(int alignment, int number)
-        => number - (number % alignment);
     }
     public static string ToConsoleTable(this Text.UnicodeBlock source)
       => ToConsoleTable(source, 0, 0);

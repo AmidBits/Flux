@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Returns the nth root (index) of a specified value (radicand).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Nth_root"/>
-    public static double Nthrt(double radicand, int root)
+    public static double NthRoot(double radicand, int root)
     {
       if (radicand < 0)
         return double.NaN;
