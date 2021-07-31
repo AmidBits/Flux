@@ -2,9 +2,9 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Determines whether the character is of the specified  unicode category major code.</summary>
-    public static bool IsUnicodeMajorCode(this System.Text.Rune source, Text.UnicodeCategoryMajorCode majorCode)
-      => System.Text.Rune.GetUnicodeCategory(source).ToMajorCode() == majorCode;
+    /// <summary>Determines whether the character is any of the specified unicode category major codes.</summary>
+    public static bool IsUnicodeMajorCode(this System.Text.Rune source, params Text.UnicodeCategoryMajorCode[] majorCodes)
+      => System.Text.Rune.GetUnicodeCategory(source).ToMajorCode() is var majorCode && System.Array.Exists(majorCodes, mc => mc == majorCode);
 
     public static bool IsUnicodeLetter(this System.Text.Rune source)
       => System.Text.Rune.GetUnicodeCategory(source).ToMajorCode() == Text.UnicodeCategoryMajorCode.Letter;

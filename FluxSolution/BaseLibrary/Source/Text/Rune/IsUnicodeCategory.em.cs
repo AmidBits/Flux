@@ -2,12 +2,9 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Determines whether the character is in the specified unicode category.</summary>
-    public static bool IsUnicodeCategory(this System.Text.Rune source, System.Globalization.UnicodeCategory category)
-      => System.Text.Rune.GetUnicodeCategory(source) == category;
     /// <summary>Determines whether the character is in any of the specified unicode categories.</summary>
     public static bool IsUnicodeCategory(this System.Text.Rune source, params System.Globalization.UnicodeCategory[] category)
-      => System.Array.Exists(category, uc => System.Text.Rune.GetUnicodeCategory(source) == uc);
+      => System.Text.Rune.GetUnicodeCategory(source) is var unicodeCategory && System.Array.Exists(category, uc => uc == unicodeCategory);
 
     public static bool IsUnicodeLowercaseLetter(this System.Text.Rune source)
       => System.Text.Rune.GetUnicodeCategory(source) == System.Globalization.UnicodeCategory.LowercaseLetter;
