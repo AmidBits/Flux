@@ -2,15 +2,12 @@ namespace Flux
 {
   public struct WaveForm
   {
-    public double m_amplitude { get; }
-
     public double m_period { get; }
 
     public double m_periodMultiplierFor2PI { get; }
 
     public double m_periodOver2 { get; }
     public double m_periodOver4 { get; }
-    public double m_periodOver8 { get; }
 
     public double m_phase;
     public double Phase { get => m_phase; set => m_phase = ConstrainToPeriod(m_phaseOffset + value); }
@@ -20,17 +17,14 @@ namespace Flux
     public double m_pulseWidth;
     public double PulseWidth { get => m_pulseWidth; set => m_pulseWidth = ConstrainToPeriod(value); }
 
-    public WaveForm(double amplitude, double period, double phaseOffset)
+    public WaveForm(double amplitudePeak, double periodLength, double phaseOffset)
     {
-      m_amplitude = amplitude;
-
-      m_period = period;
+      m_period = periodLength;
 
       m_periodMultiplierFor2PI = 1 / (m_period / Maths.PiX2);
 
       m_periodOver2 = m_period / 2;
       m_periodOver4 = m_period / 4;
-      m_periodOver8 = m_period / 8;
 
       m_phase = 0;
 
@@ -43,27 +37,27 @@ namespace Flux
       => Maths.Wrap(value, 0, m_period) % m_period;
 
     /// <summary>Generates a pulse wave.</summary>
-    public double PulseWave
-      => m_phase < m_pulseWidth ? m_amplitude : -m_amplitude;
-  
-    /// <summary>Generates a sawtooth wave.</summary>
-    public double SawWave
-      => (1 - m_phase / m_periodOver2) * m_amplitude;
- 
-    /// <summary>Generates a sine wave.</summary>
-    public double SineWave
-      => System.Math.Sin(m_phase * m_periodMultiplierFor2PI) * m_amplitude;
- 
-    /// <summary>Generates a square wave.</summary>
-    public double SquareWave
-      => m_phase < m_periodOver2 ? m_amplitude : -m_amplitude;
-  
-    /// <summary>Generates a triangle wave.</summary>
-    public double TriangleWave
-      => (m_phase < m_periodOver2 ? m_phase / m_periodOver4 - 1 : 3 - m_phase / m_periodOver4) * m_amplitude;
+    public double PulseWave()
+      => m_phase < m_pulseWidth ? 1 : -1;
 
-    public double WhiteNoise
-      => (1 - 2 * Randomization.NumberGenerator.Crypto.NextDouble()) * m_amplitude;
+    /// <summary>Generates a sawtooth wave.</summary>
+    public double SawWave()
+      => (1 - m_phase / m_periodOver2);
+
+    /// <summary>Generates a sine wave.</summary>
+    public double SineWave()
+      => System.Math.Sin(m_phase * m_periodMultiplierFor2PI);
+
+    /// <summary>Generates a square wave.</summary>
+    public double SquareWave()
+      => m_phase < m_periodOver2 ? 1 : -1;
+
+    /// <summary>Generates a triangle wave.</summary>
+    public double TriangleWave()
+      => m_phase < m_periodOver2 ? m_phase / m_periodOver4 - 1 : 3 - m_phase / m_periodOver4;
+
+    public double WhiteNoise()
+      => 1 - 2 * Randomization.NumberGenerator.Crypto.NextDouble();
   }
 
   public static partial class Maths
