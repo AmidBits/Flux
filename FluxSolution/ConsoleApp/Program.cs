@@ -14,6 +14,16 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var wf = new Flux.WaveForm(1, 1, 0);
+      wf.Phase = 0.75;
+      var pw = wf.PulseWave;
+      var sw = wf.SawWave;
+      var sn = wf.SineWave;
+      var sq = wf.SquareWave;
+      var tr = wf.TriangleWave;
+
+      return;
+
       //var positive = 16;
       //var pc = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullCeiling);
       //var pf = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullFloor);
