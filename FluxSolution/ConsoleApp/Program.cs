@@ -14,13 +14,44 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var wf = new Flux.WaveForm(1, 1, 0);
-      wf.Phase = 0.75;
-      var pw = wf.PulseWave();
-      var sw = wf.SawWave();
-      var sn = wf.SineWave();
-      var sq = wf.SquareWave();
-      var tr = wf.TriangleWave();
+      //for (var i = 0; i < 10; i++)
+      //    System.Console.WriteLine($"{i} = {Flux.PeriodicFunctions.Triangle(i + Maths.PiX2)} = {Flux.PeriodicFunctions.Triangle(i)}");
+
+      //System.Console.WriteLine(nameof(System.Math.Cos));
+      //Loop(System.Math.Cos);
+      //System.Console.WriteLine(nameof(System.Math.Sin));
+      //Loop(System.Math.Sin);
+      //System.Console.WriteLine(nameof(SawWave));
+      //Loop(SawWave);
+      //System.Console.WriteLine(nameof(SquareWave));
+      //Loop(SquareWave);
+      System.Console.WriteLine(nameof(Flux.Dsp.WaveGenerator.TriangleWave.SamplePi2));
+      Loop(Flux.Dsp.WaveGenerator.TriangleWave.SamplePi2);
+
+      //for (var phase = -System.Math.PI; phase <= System.Math.PI; phase += System.Math.PI / 8)
+      //{
+      //  System.Console.WriteLine($"Cos={System.Math.Cos(phase)}");
+      //  System.Console.WriteLine($"Sin={System.Math.Sin(phase)}");
+      //  System.Console.WriteLine($"Saw={SawWave(phase)}");
+      //  System.Console.WriteLine($"Sqr={SquareWave(phase)}");
+      //  System.Console.WriteLine($"Tri={TriangleWave(phase)}");
+      //}
+      static void Loop(System.Func<double, double> periodic)
+      {
+        const int resolution = 16;
+        const double increments = Maths.PiX2 / resolution;
+        for (var phase = 0; phase <= resolution; phase++)
+          System.Console.WriteLine($"({phase}) = {periodic(phase * increments)}");
+
+      }
+
+      //var wf = new Flux.WaveForm(1, 1, 0);
+      //wf.Phase = 0.75;
+      //var pw = wf.PulseWave();
+      //var sw = wf.SawWave();
+      //var sn = wf.SineWave();
+      //var sq = wf.SquareWave();
+      //var tr = wf.TriangleWave();
 
       return;
 

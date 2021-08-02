@@ -26,7 +26,7 @@ namespace Flux.Dsp.AudioProcessor
       get => m_exponent;
       set
       {
-        m_exponent = System.Math.Clamp(value, -1.0, 1.0);
+        m_exponent = System.Math.Clamp(value, -1, 1);
 
         m_exponentExpanded = (-m_exponent) switch
         {
@@ -57,5 +57,12 @@ namespace Flux.Dsp.AudioProcessor
         MonoQuadraticMode.SymmetricInverse => (sample < 0 ? -(2 * ((System.Math.Pow(m_exponent, -sample + 1) - 1) / (System.Math.Pow(m_exponent, 2) - 1.0)) - 1) : 2.0 * ((System.Math.Pow(m_exponent, sample + 1.0) - 1.0) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1),
         _ => (sample),
       });
+
+    /// <summary>Introduces concave curvature (i.e. more narrow across the x axis) to the waveform signal in the range [0, 2PI] (0 = no change and the closer to 2PI the more narrow).</summary>
+    public static double ApplyConcavity(double sample, double amountPi2)
+      => System.Math.Pow(sample, 1 + Tools.AbsolutePhasePi2(amountPi2) * 1.5);
+    /// <summary>Introduces convex curvature (i.e. more width across the x axis) to the waveform signal in the (clamped) range [0, 2PI] (0 = no change and the closer to 2PI the more width).</summary>
+    public static double ApplyConvexity(double sample, double amountPi2)
+      => System.Math.Pow(sample, 1 - 6 / Tools.AbsolutePhasePi2(amountPi2));
   }
 }

@@ -17,6 +17,15 @@
     public double GenerateWave(double phase)
       => phase < 0.5 ? 1 : -1;
 
-    // public static double Sample(double phase, double dutyCycle) => phase < dutyCycle ? 1.0 : -1.0;
+    /// <summary>Generates a pulse wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
+    public static double SampleMu(double phaseMu, double pulseWidthMu)
+      => Tools.AbsolutePhaseMu(phaseMu) < Tools.AbsolutePhaseMu(pulseWidthMu)
+      ? 1
+      : -1;
+    /// <summary>Generates a pulse wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2 * <see cref="System.Math.PI"/>.</summary>
+    public static double SamplePi2(double phasePi2, double pulseWidthPi2)
+      => Tools.AbsolutePhasePi2(phasePi2) < Tools.AbsolutePhasePi2(pulseWidthPi2)
+      ? 1
+      : -1;
   }
 }

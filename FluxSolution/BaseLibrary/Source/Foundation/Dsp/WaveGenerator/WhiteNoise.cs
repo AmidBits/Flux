@@ -13,5 +13,8 @@
 
     public virtual double GenerateWave(double phase2Pi)
       => Rng.NextDouble() * 2 - 1;
+
+    public static double Sample()
+      => 1 - 2 * Randomization.NumberGenerator.Crypto.NextDouble();
   }
 }
