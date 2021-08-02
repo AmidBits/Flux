@@ -1,5 +1,30 @@
 namespace Flux
 {
+  public struct Phase
+  {
+    public double m_offset;
+
+    public double m_period;
+    public double m_periodMultiplierFor2PI { get; }
+    public double m_periodOver2 { get; }
+    public double m_periodOver4 { get; }
+
+    public double m_position;
+
+    public Phase(double period, double offset)
+    {
+      m_offset = offset;
+
+      m_period = period;
+
+      m_periodOver2 = m_period / 2;
+      m_periodOver4 = m_period / 4;
+    }
+
+    public double ConstrainToPeriod(double value)
+      => Maths.Wrap(value, 0, m_period) % m_period;
+  }
+
   public struct WaveForm
   {
     public double m_period { get; }
