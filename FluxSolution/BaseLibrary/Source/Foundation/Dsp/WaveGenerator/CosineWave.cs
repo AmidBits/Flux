@@ -7,6 +7,11 @@ namespace Flux.Dsp.WaveGenerator
     public double GenerateWave(double phase)
       => System.Math.Cos(phase * Maths.PiX2);
 
-    // public static double Sample(double phase) => System.Math.Cos(phase * Math.PiX2);
+    /// <summary>Generates a cosine wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
+    public static double SampleMu(double phaseMu)
+      => System.Math.Cos(phaseMu * Maths.PiX2);
+    /// <summary>Generates a cosine wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2 * <see cref="System.Math.PI"/>.</summary>
+    public static double SamplePi2(double phasePi2)
+      => System.Math.Cos(phasePi2);
   }
 }

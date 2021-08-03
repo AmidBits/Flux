@@ -9,7 +9,7 @@ namespace Foundation.Dsp
   public class WaveGenerator
   {
     private readonly Flux.Dsp.IWaveGenerator m_pulseWave = new Flux.Dsp.WaveGenerator.PulseWave();
-    private readonly Flux.Dsp.IWaveGenerator m_sawtoothWave = new Flux.Dsp.WaveGenerator.SawtoothWave();
+    private readonly Flux.Dsp.IWaveGenerator m_sawtoothWave = new Flux.Dsp.WaveGenerator.SawWave();
     private readonly Flux.Dsp.IWaveGenerator m_sineWave = new Flux.Dsp.WaveGenerator.SineWave();
     private readonly Flux.Dsp.IWaveGenerator m_squareWave = new Flux.Dsp.WaveGenerator.SquareWave();
     private readonly Flux.Dsp.IWaveGenerator m_triangleWave = new Flux.Dsp.WaveGenerator.TriangleWave();
