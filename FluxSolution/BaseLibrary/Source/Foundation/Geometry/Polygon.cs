@@ -2,127 +2,10 @@ using System.Linq;
 
 namespace Flux.Geometry
 {
-  //public enum PolygonType
-  //{
-  //  #region Enumeration of polygon types named from the number of edges or vertices it consists of.
-  //  Monogon = 1,
-  //  Digon = 2,
-  //  Trigon = 3,
-  //  Tetragon = 4,
-  //  Pentagon = 5,
-  //  Hexagon = 6,
-  //  Heptagon = 7,
-  //  Octagon = 8,
-  //  Nonagon = 9,
-  //  Decagon = 10,
-  //  Hendecagon = 11,
-  //  Dodecagon = 12,
-  //  Tridecagon = 13,
-  //  Tetradecagon = 14,
-  //  Pentadecagon = 15,
-  //  Hexadecagon = 16,
-  //  Heptadecagon = 17,
-  //  Octadecagon = 18,
-  //  Enneadecagon = 19,
-  //  Icosagon = 20,
-  //  Icosihenagon = 21,
-  //  Icosidigon = 22,
-  //  Icositrigon = 23,
-  //  Icositetragon = 24,
-  //  Icosipentagon = 25,
-  //  Icosihexagon = 26,
-  //  Icosiheptagon = 27,
-  //  Icosioctagon = 28,
-  //  Icosienneagon = 29,
-  //  Triacontagon = 30,
-  //  Triacontahenagon = 31,
-  //  Triacontadigon = 32,
-  //  Triacontatrigon = 33,
-  //  Triacontatetragon = 34,
-  //  Triacontapentagon = 35,
-  //  Triacontahexagon = 36,
-  //  Triacontaheptagon = 37,
-  //  Triacontaoctagon = 38,
-  //  Triacontaenneagon = 39,
-  //  Tetracontagon = 40,
-  //  Tetracontahenagon = 41,
-  //  Tetracontadigon = 42,
-  //  Tetracontatrigon = 43,
-  //  Tetracontatetragon = 44,
-  //  Tetracontapentagon = 45,
-  //  Tetracontahexagon = 46,
-  //  Tetracontaheptagon = 47,
-  //  Tetracontaoctagon = 48,
-  //  Tetracontaenneagon = 49,
-  //  Pentacontagon = 50,
-  //  Pentacontahenagon = 51,
-  //  Pentacontadigon = 52,
-  //  Pentacontatrigon = 53,
-  //  Pentacontatetragon = 54,
-  //  Pentacontapentagon = 55,
-  //  Pentacontahexagon = 56,
-  //  Pentacontaheptagon = 57,
-  //  Pentacontaoctagon = 58,
-  //  Pentacontaenneagon = 59,
-  //  Hexacontagon = 60,
-  //  Hexacontahenagon = 61,
-  //  Hexacontadigon = 62,
-  //  Hexacontatrigon = 63,
-  //  Hexacontatetragon = 64,
-  //  Hexacontapentagon = 65,
-  //  Hexacontahexagon = 66,
-  //  Hexacontaheptagon = 67,
-  //  Hexacontaoctagon = 68,
-  //  Hexacontaenneagon = 69,
-  //  Heptacontagon = 70,
-  //  Heptacontahenagon = 71,
-  //  Heptacontadigon = 72,
-  //  Heptacontatrigon = 73,
-  //  Heptacontatetragon = 74,
-  //  Heptacontapentagon = 75,
-  //  Heptacontahexagon = 76,
-  //  Heptacontaheptagon = 77,
-  //  Heptacontaoctagon = 78,
-  //  Heptacontaenneagon = 79,
-  //  Octacontagon = 80,
-  //  Octacontahenagon = 81,
-  //  Octacontadigon = 82,
-  //  Octacontatrigon = 83,
-  //  Octacontatetragon = 84,
-  //  Octacontapentagon = 85,
-  //  Octacontahexagon = 86,
-  //  Octacontaheptagon = 87,
-  //  Octacontaoctagon = 88,
-  //  Octacontaenneagon = 89,
-  //  Enneacontagon = 90,
-  //  Enneacontahenagon = 91,
-  //  Enneacontadigon = 92,
-  //  Enneacontatrigon = 93,
-  //  Enneacontatetragon = 94,
-  //  Enneacontapentagon = 95,
-  //  Enneacontahexagon = 96,
-  //  Enneacontaheptagon = 97,
-  //  Enneacontaoctagon = 98,
-  //  Enneacontaenneagon = 99,
-  //  Hectogon = 100
-  //  #endregion Enumeration of polygon types named from the number of edges or vertices it consists of.
-  //}
-
-  public enum TriangulationType
-  {
-    Sequential,
-    SmallestAngle,
-    LargestAngle,
-    MostSquare,
-    LeastSquare,
-    Randomized,
-  }
-
   public struct Polygon
-    : System.IEquatable<Polygon>, System.IFormattable
+    : System.IEquatable<Polygon>
   {
     public static readonly Polygon Empty;
-    public bool IsEmpty => Equals(Empty);
 
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> Vertices { get; }
 
@@ -184,6 +67,31 @@ namespace Flux.Geometry
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
+
+    public static bool TryGetAxisAlignedBoundingBox(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, out System.Numerics.Vector3 min, out System.Numerics.Vector3 max)
+    {
+      
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext())
+      {
+        min = e.Current;
+        max = min;
+
+        while (e.MoveNext())
+        {
+          min = System.Numerics.Vector3.Min(min, e.Current);
+          max = System.Numerics.Vector3.Max(max, e.Current);
+        }
+
+        return true;
+      }
+
+      min = System.Numerics.Vector3.Zero;
+      max = System.Numerics.Vector3.Zero;
+
+      return false;
+    }
 
     /// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
@@ -753,6 +661,7 @@ namespace Flux.Geometry
     public static bool operator !=(Polygon a, Polygon b)
       => !a.Equals(b);
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(Polygon other)
     {
@@ -765,17 +674,15 @@ namespace Flux.Geometry
 
       return true;
     }
+    #endregion Implemented interfaces
 
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? provider)
-      => $"<{nameof(Polygon)}: {string.Join(@", ", Vertices.Select(v => v.ToString(format, provider)))}>";
-
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
       => Vertices.CombineHashCore();
     public override string? ToString()
-      => ToString(default, System.Globalization.CultureInfo.CurrentCulture);
+      => $"<{nameof(Polygon)}: {string.Join(@", ", Vertices)}>";
+    #endregion Object overrides
   }
 }

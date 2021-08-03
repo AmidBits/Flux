@@ -7,17 +7,17 @@ namespace Flux.Geometry
     public bool IsEmpty => Equals(Empty);
 
     /// <summary>The width (X axis) of the ellipse.</summary>
-    public readonly double m_width;
+    public readonly double Width;
     /// <summary>The height (Y axis) of the ellipse.</summary>
-    public readonly double m_height;
+    public readonly double Height;
     /// <summary>The angle (in radians) of rotational tilt.</summary>
-    public readonly double m_angle;
+    public readonly double Angle;
 
     public Ellipse(double width, double height, double angle)
     {
-      m_width = width;
-      m_height = height;
-      m_angle = angle;
+      Width = width;
+      Height = height;
+      Angle = angle;
     }
     public Ellipse(Size2 size, double angle)
       : this(size.Width, size.Height, angle)
@@ -30,7 +30,7 @@ namespace Flux.Geometry
     public static Ellipse ToEllipse(System.Numerics.Vector2 vector2)
       => new Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
     public static System.Numerics.Vector2 FromEllipse(Ellipse ellipse)
-      => new System.Numerics.Vector2((float)(System.Math.Cos(ellipse.m_angle) * ellipse.m_width), (float)(System.Math.Sin(ellipse.m_angle) * ellipse.m_height));
+      => new System.Numerics.Vector2((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
     /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy
@@ -100,16 +100,16 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(Ellipse other)
-      => m_width == other.m_width && m_height == other.m_height && m_angle == other.m_angle;
+      => Width == other.Width && Height == other.Height && Angle == other.Angle;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_width, m_height, m_angle);
+      => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()
-      => $"<{GetType().Name}: {m_width}, {m_height}, {Quantity.Angle.FromUnitValue(Quantity.AngleUnit.Radian, m_angle)}>";
+      => $"<{GetType().Name}: {Width}, {Height}, {Quantity.Angle.FromUnitValue(Quantity.AngleUnit.Radian, Angle)}>";
     #endregion Object overrides
   }
 }

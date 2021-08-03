@@ -3,22 +3,17 @@ namespace Flux.Geometry
   public struct Size3
     : System.IEquatable<Size3>
   {
-    public static readonly Size3 Empty;
-    public bool IsEmpty => Equals(Empty);
+    public static readonly Size3 Zero;
 
-    private int m_width;
-    private int m_height;
-    private int m_depth;
-
-    public int Width { get => m_width; set => m_width = value; }
-    public int Height { get => m_height; set => m_height = value; }
-    public int Depth { get => m_depth; set => m_depth = value; }
+    public int Width;
+    public int Height;
+    public int Depth;
 
     public Size3(int width, int height, int depth)
     {
-      m_width = width;
-      m_height = height;
-      m_depth = depth;
+      Width = width;
+      Height = height;
+      Depth = depth;
     }
 
     public Point3 Center()

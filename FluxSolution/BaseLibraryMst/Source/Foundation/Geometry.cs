@@ -33,9 +33,9 @@ namespace Foundation
     {
       var geometry = new Flux.Geometry.Ellipse(5, 7, 11);
 
-      Assert.AreEqual(11, geometry.m_angle);
-      Assert.AreEqual(7, geometry.m_height);
-      Assert.AreEqual(5, geometry.m_width);
+      Assert.AreEqual(11, geometry.Angle);
+      Assert.AreEqual(7, geometry.Height);
+      Assert.AreEqual(5, geometry.Width);
     }
 
     [TestMethod]
@@ -43,10 +43,10 @@ namespace Foundation
     {
       var geometry = new Flux.Geometry.Line(5, 7, 11, 13);
 
-      Assert.AreEqual(5, geometry.X1);
-      Assert.AreEqual(7, geometry.Y1);
-      Assert.AreEqual(11, geometry.X2);
-      Assert.AreEqual(13, geometry.Y2);
+      Assert.AreEqual(5, geometry.P1.X);
+      Assert.AreEqual(7, geometry.P1.Y);
+      Assert.AreEqual(11, geometry.P2.X);
+      Assert.AreEqual(13, geometry.P2.Y);
     }
 
     [TestMethod]

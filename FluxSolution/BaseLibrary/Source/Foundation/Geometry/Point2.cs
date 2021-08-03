@@ -3,56 +3,26 @@ namespace Flux.Geometry
   public struct Point2
     : System.IComparable<Point2>, System.IEquatable<Point2>
   {
-    public static readonly Point2 Empty;
-    public bool IsEmpty => Equals(Empty);
+    /// <summary>Returns the vector (0,0).</summary>
+    public static readonly Point2 Zero;
 
-    private int m_x;
-    private int m_y;
-
-    public int X { get => m_x; set => m_x = value; }
-    public int Y { get => m_y; set => m_y = value; }
+    public int X;
+    public int Y;
 
     public Point2(int value)
       : this(value, value) { }
     public Point2(int x, int y)
     {
-      m_x = x;
-      m_y = y;
+      X = x;
+      Y = y;
     }
     public Point2(int[] array, int startIndex)
     {
       if (array is null || array.Length - startIndex < 2) throw new System.ArgumentOutOfRangeException(nameof(array));
 
-      m_x = array[startIndex++];
-      m_y = array[startIndex];
+      X = array[startIndex++];
+      Y = array[startIndex];
     }
-
-    #region Static Instances
-    /// <summary>Returns the vector (1,0,0).</summary>
-    public static readonly Point2 UnitX = new Point2(1, 0);
-    /// <summary>Returns the vector (0,1,0).</summary>
-    public static readonly Point2 UnitY = new Point2(0, 1);
-
-    /// <summary>Returns the vector (0,0).</summary>
-    public static readonly Point2 Zero;
-
-    ///// <summary>Returns the vector (0,1).</summary>
-    //public static Point2 North => new Point2(0, 1);
-    ///// <summary>Returns the vector (1,1).</summary>
-    //public static Point2 NorthEast => new Point2(1, 1);
-    ///// <summary>Returns the vector (1,0).</summary>
-    //public static Point2 East => new Point2(1, 0);
-    ///// <summary>Returns the vector (1,-1).</summary>
-    //public static Point2 SouthEast => new Point2(1, -1);
-    ///// <summary>Returns the vector (0,-1).</summary>
-    //public static Point2 South => new Point2(0, -1);
-    ///// <summary>Returns the vector (-1,-1).</summary>
-    //public static Point2 SouthWest => new Point2(-1, -1);
-    ///// <summary>Returns the vector (-1,0).</summary>
-    //public static Point2 West => new Point2(-1, 0);
-    ///// <summary>Returns the vector (-1,1).</summary>
-    //public static Point2 NorthWest => new Point2(-1, 1);
-    #endregion Static Instances
 
     public System.Numerics.Vector2 ToVector2()
       => new System.Numerics.Vector2(X, Y);

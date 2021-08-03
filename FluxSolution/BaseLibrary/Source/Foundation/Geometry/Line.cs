@@ -12,14 +12,6 @@ namespace Flux.Geometry
     public System.Numerics.Vector3 P1 { get => m_p1; set => m_p1 = value; }
     public System.Numerics.Vector3 P2 { get => m_p2; set => m_p2 = value; }
 
-    public float X1 { get => m_p1.X; set => m_p1.X = value; }
-    public float Y1 { get => m_p1.Y; set => m_p1.Y = value; }
-    public float Z1 { get => m_p1.Z; set => m_p1.Z = value; }
-
-    public float X2 { get => m_p2.X; set => m_p2.X = value; }
-    public float Y2 { get => m_p2.Y; set => m_p2.Y = value; }
-    public float Z2 { get => m_p2.Z; set => m_p2.Z = value; }
-
     public Line(System.Numerics.Vector3 p1, System.Numerics.Vector3 p2)
     {
       m_p1 = p1;
@@ -27,12 +19,10 @@ namespace Flux.Geometry
     }
     public Line(float x1, float y1, float z1, float x2, float y2, float z2)
       : this(new System.Numerics.Vector3(x1, y1, z1), new System.Numerics.Vector3(x2, y2, z2))
-    {
-    }
+    { }
     public Line(float x1, float y1, float x2, float y2)
       : this(new System.Numerics.Vector3(x1, y1, default), new System.Numerics.Vector3(x2, y2, default))
-    {
-    }
+    { }
 
     public static (double a, double b, double c) GetLineEquationCoefficients(double aX, double aY, double bX, double bY) => (aY - bY, bX - aX, aX * bY - bX * aY);
     public static System.Numerics.Vector3 GetLineEquationCoefficients(in System.Numerics.Vector2 a, in System.Numerics.Vector2 b) => new System.Numerics.Vector3(a.Y - b.Y, b.X - a.X, a.X * b.Y - b.X * a.Y);

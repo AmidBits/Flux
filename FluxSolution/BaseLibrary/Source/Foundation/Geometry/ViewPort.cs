@@ -1,12 +1,10 @@
 namespace Flux.Geometry
 {
   /// <summary></summary>
-  /// <remarks>NOTE! ViewPort does not currently have any properties.</remarks>
   public struct ViewPort
     : System.IEquatable<ViewPort>
   {
     public static readonly ViewPort Empty;
-    public bool IsEmpty => Equals(Empty);
 
     public readonly float CanvasHeight;
     public readonly float CanvasWidth;

@@ -29,17 +29,20 @@ namespace Flux.Geometry.Hexagon
       StartAngle = startAngle;
     }
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(HexOrientation a, HexOrientation b)
       => a.Equals(b);
     public static bool operator !=(HexOrientation a, HexOrientation b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(HexOrientation other)
       => F0 == other.F0 && F1 == other.F1 && F2 == other.F2 && F3 == other.F3 && B0 == other.B0 && B1 == other.B1 && B2 == other.B2 && B3 == other.B3 && StartAngle == other.StartAngle;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is HexOrientation o && Equals(o);
     public override int GetHashCode()
@@ -58,5 +61,6 @@ namespace Flux.Geometry.Hexagon
     }
     public override string? ToString()
       => $"<{GetType().Name}: [{F0}, {F1}, {F2}, {F3}], [{B0}, {B1}, {B2}, {B3}], {StartAngle}°>";
+    #endregion Object overrides
   }
 }

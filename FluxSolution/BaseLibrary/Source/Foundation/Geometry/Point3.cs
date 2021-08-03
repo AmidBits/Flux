@@ -3,22 +3,18 @@ namespace Flux.Geometry
   public struct Point3
     : System.IComparable<Point3>, System.IEquatable<Point3>
   {
-    public static readonly Point3 Empty;
-    public bool IsEmpty => Equals(Empty);
+    /// <summary>Returns the vector (0,0).</summary>
+    public static readonly Point3 Zero;
 
-    private int m_x;
-    private int m_y;
-    private int m_z;
-
-    public int X { get => m_x; set => m_x = value; }
-    public int Y { get => m_y; set => m_y = value; }
-    public int Z { get => m_z; set => m_z = value; }
+    public int X;
+    public int Y;
+    public int Z;
 
     public Point3(int x, int y, int z)
     {
-      m_x = x;
-      m_y = y;
-      m_z = z;
+      X = x;
+      Y = y;
+      Z = z;
     }
     public Point3(Point2 value, int z)
       : this(value.X, value.Y, z) { }
@@ -32,9 +28,9 @@ namespace Flux.Geometry
 
       if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
 
-      m_x = array[startIndex++];
-      m_y = array[startIndex++];
-      m_z = array[startIndex];
+      X = array[startIndex++];
+      Y = array[startIndex++];
+      Z = array[startIndex];
     }
 
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>

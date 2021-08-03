@@ -4,7 +4,6 @@ namespace Flux.Geometry
     : System.IEquatable<LineTestResult>
   {
     public static readonly LineTestResult Empty;
-    public bool IsEmpty => Equals(Empty);
 
     public LineTestOutcome Outcome { get; }
 

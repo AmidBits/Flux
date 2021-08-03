@@ -4,7 +4,6 @@ namespace Flux.Geometry.Hexagon
     : System.IEquatable<HexLayout>
   {
     public static readonly HexLayout Empty;
-    public bool IsEmpty => Equals(Empty);
 
     public readonly Geometry.Size2 Size;
     public readonly Geometry.Point2 Origin;
@@ -61,22 +60,26 @@ namespace Flux.Geometry.Hexagon
       return corners;
     }
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(HexLayout a, HexLayout b)
       => a.Equals(b);
     public static bool operator !=(HexLayout a, HexLayout b)
       => !a.Equals(b);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // IEquatable
     public bool Equals(HexLayout other)
       => Orientation == other.Orientation && Size == other.Size && Origin == other.Origin;
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is HexLayout o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Orientation, Size, Origin);
     public override string? ToString()
       => $"<{GetType().Name}: {Orientation}, {Size}, {Origin}>";
+    #endregion Object overrides
   }
 }

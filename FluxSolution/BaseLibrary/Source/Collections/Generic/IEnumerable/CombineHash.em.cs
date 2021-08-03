@@ -14,14 +14,14 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       var hash = new System.HashCode();
-      foreach (var o in source)
-        hash.Add(o);
+      foreach (var item in source)
+        hash.Add(item);
       return hash.ToHashCode();
     }
 
-    /// <summary>Combines the hash codes for the elements in the sequence, using a custom simplicity by Custom Sauce (see link).</summary>
+    /// <summary>Combines the hash codes for the elements in the sequence, using a custom simplicity by Special Sauce (see link).</summary>
     /// <see cref="https://stackoverflow.com/a/34006336/3178666"/>
-    public static int CombineHashCustom<T>(this System.Collections.Generic.IEnumerable<T> source, int seed, int factor)
+    public static int CombineHashCustom<T>(this System.Collections.Generic.IEnumerable<T> source, int seed = 1009, int factor = 9176)
       => ThrowOnNull(source).Aggregate(seed, (hash, e) => unchecked(hash * factor + (e?.GetHashCode() ?? 0)), (hash) => hash);
   }
 }

@@ -18,9 +18,9 @@ namespace Flux.Geometry.Hexagon
 
     public static readonly Hex Empty;
 
-    public int Q { get; }
-    public int R { get; }
-    public int S { get; }
+    public readonly int Q;
+    public readonly int R;
+    public readonly int S;
 
     public Hex(int q, int r, int s)
     {
