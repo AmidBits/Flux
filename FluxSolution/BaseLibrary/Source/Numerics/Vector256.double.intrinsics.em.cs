@@ -67,18 +67,24 @@ namespace Flux
     /// </remarks>
     public static Vector256<double> CrossProduct3D(this in Vector256<double> source, in Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW))), MaskW)
+      ? Mask3D(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW))))
       : Vector256.Create(source.GetElement(1) * target.GetElement(2) - source.GetElement(2) * target.GetElement(1), source.GetElement(2) * target.GetElement(0) - source.GetElement(0) * target.GetElement(2), source.GetElement(0) * target.GetElement(1) - source.GetElement(1) * target.GetElement(0), 0);
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
-    public static Vector256<double> Divide(this in Vector256<double> source, in Vector256<double> divisor)
+    public static Vector256<double> Divide(this in Vector256<double> source, in Vector256<double> denominator)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor)
-      : Vector256.Create(source.GetElement(0) / divisor.GetElement(0), source.GetElement(1) / divisor.GetElement(1), source.GetElement(2) / divisor.GetElement(2), source.GetElement(3) / divisor.GetElement(3));
+      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, denominator)
+      : Vector256.Create(source.GetElement(0) / denominator.GetElement(0), source.GetElement(1) / denominator.GetElement(1), source.GetElement(2) / denominator.GetElement(2), source.GetElement(3) / denominator.GetElement(3));
     /// <summary>Returns a new vector with the quotient of the vector components and the scalar value.</summary>
-    public static Vector256<double> Divide(this in Vector256<double> v, double divisor)
+    public static Vector256<double> Divide(this in Vector256<double> source, double denominator)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? Subtract(v, Vector256.Create(divisor))
-      : Vector256.Create(v.GetElement(0) / divisor, v.GetElement(1) / divisor, v.GetElement(2) / divisor, v.GetElement(3) / divisor);
+      ? Subtract(source, Vector256.Create(denominator))
+      : Vector256.Create(source.GetElement(0) / denominator, source.GetElement(1) / denominator, source.GetElement(2) / denominator, source.GetElement(3) / denominator);
+    public static Vector256<double> DivRem(this in Vector256<double> source, in Vector256<double> denominator, out Vector256<double> remainder)
+    {
+      var quotient = Divide(source, denominator);
+      remainder = Subtract(source, Multiply(Truncate(quotient), denominator));
+      return quotient;
+    }
     /// <summary>Returns the dot product of the two given vectors.</summary>
     public static Vector256<double> DotProduct2D(this in Vector256<double> source, in Vector256<double> target)
     {
@@ -106,7 +112,7 @@ namespace Flux
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
       {
-        var result = System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Multiply(source, target), MaskW); // Normal multiply of the four components and mask out W = (X, Y, Z, 0).
+        var result = Mask3D(System.Runtime.Intrinsics.X86.Avx.Multiply(source, target)); // Normal multiply of the four components and mask out W = (X, Y, Z, 0).
         result = System.Runtime.Intrinsics.X86.Avx.HorizontalAdd(result, result); // Add component pairs = (X + Y, X + Y, Z + 0, Z + 0).
         result = System.Runtime.Intrinsics.X86.Avx.Add(result, System.Runtime.Intrinsics.X86.Avx.Permute2x128(result, result, 0b_0000_0001)); // Swap the two halfs and add it to the previous result = (X + Z, Y + W, Z + X, W + Y).
         return result; // Each element contains the dot product (3D).
@@ -130,28 +136,28 @@ namespace Flux
     /// <summary>Duplicate the two values in the V128 into four values in a V256.</summary>
     public static Vector256<double> DuplicateV128IntoV256(this in Vector128<double> source)
       => Vector256.Create(source, source);
-    /// <summary>Returns the length of the given Vector2D.</summary>
+    /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> Length2D(this in Vector256<double> source)
       => Sqrt(DotProduct2D(source, source));
-    /// <summary>Returns the Euclidean length (magnitude) of the vector.</summary>
+    /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> Length3D(this in Vector256<double> source)
       => Sqrt(DotProduct3D(source, source));
-    /// <summary>Returns the length of the given Vector2D.</summary>
+    /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> LengthSquared2D(this in Vector256<double> source)
       => DotProduct2D(source, source);
-    /// <summary>Returns the squared Euclidean length (magnitude) of the vector.</summary>
+    /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> LengthSquared3D(this in Vector256<double> source)
       => DotProduct3D(source, source);
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
     public static Vector256<double> Lerp(this in Vector256<double> source, in Vector256<double> target, double mu)
       => Add(source, Multiply(Subtract(target, source), Vector256.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
-    /// <summary>Returns a new vector with the first 2 components of the specified vector, Z = 0 and W = 0.</summary>
+    /// <summary>Returns a new vector with the first two components of the vector and the last two components set to zero: Z = 0 and W = 0.</summary>
     public static Vector256<double> Mask2D(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.And(source, MaskZW)
       : Vector256.Create(source.GetElement(0), source.GetElement(1), 0, 0);
-    /// <summary>Returns a new vector with the first 3 components of the specified vector, W = 0.</summary>
+    /// <summary>Returns a new vector with the first three components of the vector and the last component set to zero: W = 0.</summary>
     public static Vector256<double> Mask3D(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.And(source, MaskW)
@@ -166,7 +172,8 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Min(source, target)
       : Vector256.Create(System.Math.Min(source.GetElement(0), target.GetElement(0)), System.Math.Min(source.GetElement(1), target.GetElement(1)), System.Math.Min(source.GetElement(2), target.GetElement(2)), System.Math.Min(source.GetElement(3), target.GetElement(3)));
-    public static Vector256<double> Mod2PI(this in Vector256<double> source)
+    /// <summary>Returns a new vector with the remainder of each component modulo PI*2.</summary>
+    public static Vector256<double> ModPi2(this in Vector256<double> source)
       => Subtract(source, Multiply(Round(Multiply(source, OneOverPI2)), PI2));
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this in Vector256<double> source, in Vector256<double> target)
@@ -179,15 +186,15 @@ namespace Flux
       ? Multiply(source, Vector256.Create(scalar))
       : Vector256.Create(source.GetElement(0) * scalar, source.GetElement(1) * scalar, source.GetElement(2) * scalar, source.GetElement(3) * scalar);
     /// <summary>Returns (x * y) + z on each element of a <see cref="Vector256{Double}"/>, rounded as one ternary operation.</summary>
-    /// <param name="source">The vector to be multiplied with <paramref name="targetMultiply"/></param>
-    /// <param name="targetMultiply">The vector to be multiplied with <paramref name="source"/></param>
-    /// <param name="targetAdd">The vector to be added to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="targetMultiply"/></param>
+    /// <param name="source">The vector to be multiplied with <paramref name="multiply"/></param>
+    /// <param name="multiply">The vector to be multiplied with <paramref name="source"/></param>
+    /// <param name="add">The vector to be added to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="multiply"/></param>
     /// <returns>(x * y) + z on each element, rounded as one ternary operation</returns>
-    public static Vector256<double> MultiplyAdd(this in Vector256<double> source, in Vector256<double> targetMultiply, in Vector256<double> targetAdd)
+    public static Vector256<double> MultiplyAdd(this in Vector256<double> source, in Vector256<double> multiply, in Vector256<double> add)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
-      ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(source, targetMultiply, targetAdd)
-      : Vector256.Create(source.GetElement(0) * targetMultiply.GetElement(0) + targetAdd.GetElement(0), source.GetElement(1) * targetMultiply.GetElement(1) + targetAdd.GetElement(1), source.GetElement(2) * targetMultiply.GetElement(2) + targetAdd.GetElement(2), source.GetElement(3) * targetMultiply.GetElement(3) + targetAdd.GetElement(3));
-    /// <summary>Returns the values negated.</summary>
+      ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(source, multiply, add)
+      : Vector256.Create(source.GetElement(0) * multiply.GetElement(0) + add.GetElement(0), source.GetElement(1) * multiply.GetElement(1) + add.GetElement(1), source.GetElement(2) * multiply.GetElement(2) + add.GetElement(2), source.GetElement(3) * multiply.GetElement(3) + add.GetElement(3));
+    /// <summary>Returns a new vector with the components negated.</summary>
     public static Vector256<double> Negate(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.Xor(MaskNotSign, source);
     /// <summary>Returns a new vector that is a normalized linear interpolation of the two specified vectors. This is the 3D version because nlerp use normalize which is 2D or 3D dependent.</summary>
@@ -202,10 +209,12 @@ namespace Flux
     /// <summary>Scales the Vector3D to unit length.</summary>
     public static Vector256<double> Normalize3D(this in Vector256<double> source)
       => Divide(source, Length3D(source));
+    /// <summary>Returns a new vector with the reciprocal (1.0 / x) of each component.</summary>
     public static Vector256<double> Reciprocal(this in Vector256<double> source)
       => Divide(One, source);
+    /// <summary>Returns a new vector with the reciprocal of the square root (1.0 / sqrt(x)) of each component.</summary>
     public static Vector256<double> ReciprocalSqrt(this in Vector256<double> source)
-      => Divide(One, Sqrt(source));
+      => Reciprocal(Sqrt(source));
     /// <summary>Calculates the reflection of an incident ray. Reflection: (incident - (2 * DotProduct(incident, normal)) * normal)</summary>
     /// <param name="source">The incident ray's vector.</param>
     /// <param name="normal">The normal of the mirror upon which the ray is reflecting.</param>
@@ -219,11 +228,11 @@ namespace Flux
     public static Vector256<double> Reflect3D(this in Vector256<double> source, in Vector256<double> normal)
       => Subtract(source, Multiply(Multiply(DotProduct3D(source, normal), 2), normal)); // reflection = incident - (2 * DotProduct(incident, normal)) * normal
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
-    public static Vector256<double> Remainder(this in Vector256<double> source, in Vector256<double> target)
-      => Subtract(source, Multiply(Truncate(Divide(source, target)), target));
+    public static Vector256<double> Remainder(this in Vector256<double> source, in Vector256<double> denominator)
+      => Subtract(source, Multiply(Truncate(Divide(source, denominator)), denominator));
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector256<double> Remainder(this in Vector256<double> source, double scalar)
-      => Remainder(source, Vector256.Create(scalar));
+    public static Vector256<double> Remainder(this in Vector256<double> source, double denominator)
+      => Remainder(source, Vector256.Create(denominator));
     /// <summary>Returns a new vector that is a normalized linear interpolation of the two specified vectors. This is the 2D version because nlerp use normalize which is 2D or 3D dependent.</summary>
     public static Vector256<double> Round(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -233,15 +242,17 @@ namespace Flux
       : Vector256.Create(System.Math.Round(source.GetElement(0)), System.Math.Round(source.GetElement(1)), System.Math.Round(source.GetElement(2)), System.Math.Round(source.GetElement(3)));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static Vector256<double> ScalarTripleProduct3D(this in Vector256<double> source, in Vector256<double> target1, in Vector256<double> target2)
-      => DotProduct3D(source, CrossProduct3D(target1, target2));
+    public static Vector256<double> ScalarTripleProduct3D(this in Vector256<double> source, in Vector256<double> second, in Vector256<double> third)
+      => DotProduct3D(source, CrossProduct3D(second, third));
     /// <summary>Returns a new vector with the sign of the components. This is unlike System.Math.Sign().</summary>
-    public static Vector256<double> Sign(this in Vector256<double> source)
+    internal static Vector256<double> Sign(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.And(source, MaskNotSign);
+    /// <summary>Returns a new vector with the square root of each component.</summary>
     public static Vector256<double> Sqrt(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Sqrt(source)
       : Vector256.Create(System.Math.Sqrt(source.GetElement(0)), System.Math.Sqrt(source.GetElement(1)), System.Math.Sqrt(source.GetElement(2)), System.Math.Sqrt(source.GetElement(3)));
+    /// <summary>Returns a new vector with the square of each component.</summary>
     public static Vector256<double> Square(this in Vector256<double> source)
       => Multiply(source, source);
     /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified vectors. This is the 2D version because slerp use other functionality that is 2D dependent.</summary>
@@ -303,9 +314,9 @@ namespace Flux
       : Vector256.Create(System.Math.Truncate(source.GetElement(0)), System.Math.Truncate(source.GetElement(1)), System.Math.Truncate(source.GetElement(2)), System.Math.Truncate(source.GetElement(3)));
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Vector256<double> VectorTripleProduct3D(this in Vector256<double> source, in Vector256<double> target1, in Vector256<double> target2)
-      => CrossProduct3D(source, CrossProduct3D(target1, target2));
-    /// <summary></summary>
+    public static Vector256<double> VectorTripleProduct3D(this in Vector256<double> source, in Vector256<double> second, in Vector256<double> third)
+      => CrossProduct3D(source, CrossProduct3D(second, third));
+    /// <summary>Returns a new vector with...</summary>
     public static Vector256<double> WithinBounds(this in Vector256<double> source, in Vector256<double> bound)
       => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(source, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(source, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
   }
