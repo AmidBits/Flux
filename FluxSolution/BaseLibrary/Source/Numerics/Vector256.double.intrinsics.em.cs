@@ -4,28 +4,29 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    private const byte ShuffleYXYX = (0 << 6) | (1 << 4) | (0 << 2) | 1;
-    private const byte ShuffleYZXW = (3 << 6) | (0 << 4) | (2 << 2) | 1;
-    private const byte ShuffleZXYW = (3 << 6) | (1 << 4) | (0 << 2) | 2;
+    internal const byte ShuffleYXYX = (0 << 6) | (1 << 4) | (0 << 2) | 1;
+    internal const byte ShuffleYZXW = (3 << 6) | (0 << 4) | (2 << 2) | 1;
+    internal const byte ShuffleZXYW = (3 << 6) | (1 << 4) | (0 << 2) | 2;
 
-    private static Vector256<double> MaskNotSign
+    internal static Vector256<double> MaskNotSign
       => Vector256.Create(~long.MaxValue).AsDouble();
-    private static Vector256<double> MaskW
-      => Vector256.Create(-1, -1, -1, +0).AsDouble();
-    private static Vector256<double> MaskZW
-      => Vector256.Create(-1, -1, +0, +0).AsDouble();
+    internal static Vector256<double> MaskW
+      => Vector256.Create(-1d, -1d, -1d, +0d);
+    internal static Vector256<double> MaskZW
+      => Vector256.Create(-1d, -1d, +0d, +0d);
 
-    private static Vector256<double> One
-      => Vector256.Create(1).AsDouble();
+    public static Vector256<double> One
+      => Vector256.Create(1d);
 
-    private static Vector256<double> OneOverPI2
+    internal static Vector256<double> OneOverPI2
       => Vector256.Create(1 / (2 * System.Math.PI));
-    private static Vector256<double> PI2
+    internal static Vector256<double> PI2
       => Vector256.Create(System.Math.PI * 2);
 
     /// <summary>Returns the vector with absolute values.</summary>
     public static Vector256<double> Abs(this in Vector256<double> source)
       => Max(Subtract(Vector256<double>.Zero, source), source);
+
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector256<double> Add(this in Vector256<double> source, in Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -36,6 +37,11 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? Add(source, Vector256.Create(scalar))
       : Vector256.Create(source.GetElement(0) + scalar, source.GetElement(1) + scalar, source.GetElement(2) + scalar, source.GetElement(3) + scalar);
+    /// <summary>Returns a new vector with the smallest integral value that is greater than or equal to the source, for each component.</summary>
+    public static Vector256<double> Ceiling(this in Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Ceiling(source)
+      : Vector256.Create(System.Math.Ceiling(source.GetElement(0)), System.Math.Ceiling(source.GetElement(1)), System.Math.Ceiling(source.GetElement(2)), System.Math.Ceiling(source.GetElement(3)));
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
     public static Vector256<double> Clamp(this in Vector256<double> source, in Vector256<double> min, in Vector256<double> max)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported // If no support, we can optimize this somewhat by using clamp ourselves.
@@ -44,7 +50,7 @@ namespace Flux
     /// <summary>Returns the vector with the values from clamped between min and max.</summary>
     /// <remarks>No fallback available.</remarks>
     public static Vector256<double> CopySign(this in Vector256<double> source, in Vector256<double> sign)
-      => System.Runtime.Intrinsics.X86.Avx.Or(Sign(sign), Abs(source));
+      => System.Runtime.Intrinsics.X86.Avx.Or(SignMasked(sign), Abs(source));
     /// <summary>Returns the cross product of the vector.</summary>
     /// <remarks>
     /// Cross product of A(x, y, z, _) and B(x, y, z, _) is
@@ -136,6 +142,11 @@ namespace Flux
     /// <summary>Duplicate the two values in the V128 into four values in a V256.</summary>
     public static Vector256<double> DuplicateV128IntoV256(this in Vector128<double> source)
       => Vector256.Create(source, source);
+    /// <summary>Returns a new vector with the largest integral value that is less than or equal to the source, for each component.</summary>
+    public static Vector256<double> Floor(this in Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Floor(source)
+      : Vector256.Create(System.Math.Floor(source.GetElement(0)), System.Math.Floor(source.GetElement(1)), System.Math.Floor(source.GetElement(2)), System.Math.Floor(source.GetElement(3)));
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> Length2D(this in Vector256<double> source)
       => Sqrt(DotProduct2D(source, source));
@@ -174,7 +185,7 @@ namespace Flux
       : Vector256.Create(System.Math.Min(source.GetElement(0), target.GetElement(0)), System.Math.Min(source.GetElement(1), target.GetElement(1)), System.Math.Min(source.GetElement(2), target.GetElement(2)), System.Math.Min(source.GetElement(3), target.GetElement(3)));
     /// <summary>Returns a new vector with the remainder of each component modulo PI*2.</summary>
     public static Vector256<double> ModPi2(this in Vector256<double> source)
-      => Subtract(source, Multiply(Round(Multiply(source, OneOverPI2)), PI2));
+      => Subtract(source, Multiply(RoundToEven(Multiply(source, OneOverPI2)), PI2));
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this in Vector256<double> source, in Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -233,20 +244,38 @@ namespace Flux
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
     public static Vector256<double> Remainder(this in Vector256<double> source, double denominator)
       => Remainder(source, Vector256.Create(denominator));
-    /// <summary>Returns a new vector that is a normalized linear interpolation of the two specified vectors. This is the 2D version because nlerp use normalize which is 2D or 3D dependent.</summary>
-    public static Vector256<double> Round(this in Vector256<double> source)
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values.</summary>
+    public static Vector256<double> RoundToEven(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToNearestInteger(source)
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported && source.GetLower() is var lower && source.GetUpper() is var upper
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(upper))
       : Vector256.Create(System.Math.Round(source.GetElement(0)), System.Math.Round(source.GetElement(1)), System.Math.Round(source.GetElement(2)), System.Math.Round(source.GetElement(3)));
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards negative infinity.</summary>
+    public static Vector256<double> RoundToNegativeInfinity(this in Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.RoundToNegativeInfinity(source)
+      : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToNegativeInfinity));
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards positive infinity.</summary>
+    public static Vector256<double> RoundToPositiveInfinity(this in Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.RoundToPositiveInfinity(source)
+      : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToPositiveInfinity));
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards zero.</summary>
+    public static Vector256<double> RoundToZero(this in Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(source)
+      : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToZero));
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static Vector256<double> ScalarTripleProduct3D(this in Vector256<double> source, in Vector256<double> second, in Vector256<double> third)
       => DotProduct3D(source, CrossProduct3D(second, third));
-    /// <summary>Returns a new vector with the sign of the components. This is unlike System.Math.Sign().</summary>
-    internal static Vector256<double> Sign(this in Vector256<double> source)
+    /// <summary>Returns a new vector with the sign of the components.</summary>
+    /// <remarks>This is unlike System.Math.Sign(), which is why it's currently marked internal.</remarks>
+    internal static Vector256<double> SignMasked(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.And(source, MaskNotSign);
+    public static Vector256<double> Sign(this in Vector256<double> source)
+      => Vector256.Create((double)System.Math.Sign(source.GetElement(0)), (double)System.Math.Sign(source.GetElement(1)), (double)System.Math.Sign(source.GetElement(2)), (double)System.Math.Sign(source.GetElement(3)));
     /// <summary>Returns a new vector with the square root of each component.</summary>
     public static Vector256<double> Sqrt(this in Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported

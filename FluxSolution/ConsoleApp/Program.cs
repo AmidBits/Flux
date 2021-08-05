@@ -29,6 +29,8 @@ namespace ConsoleApp
 
       var weight = 0.5;
 
+      var signedAs = n3d1.Sign();
+
       var s = n3d2.CopySign(n3d1);
       var l = n3d1.Lerp(n3d2, weight);
       var nl = n3d1.Nlerp3D(n3d2, weight);
