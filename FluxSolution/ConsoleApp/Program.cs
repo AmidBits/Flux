@@ -14,28 +14,10 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      //var va = new Flux.Numerics.FourD(1, 2, 3);
-      //var vb = new Flux.Numerics.FourD(4, 3, 2);
-      //var d0 = Flux.Numerics.FourD.DotProduct4D(va.V256, vb.V256);
+      var gol = new Flux.Model.Gaming.GameOfLife.Game();
 
-      //var v1 = new Flux.Numerics.FourD(10, 100, 0);
-      //var v2 = new Flux.Numerics.FourD(100, 30, 0);
-
-      //var n3d1 = v1.V256.Normalize3D();
-      //var n3d2 = v2.V256.Normalize3D();
-
-      var n3d1 = System.Runtime.Intrinsics.Vector256.Create(-10.0, -100.0, 0.0, 0.0);
-      var n3d2 = System.Runtime.Intrinsics.Vector256.Create(100.0, 30.0, 0.0, 0.0);
-
-      var weight = 0.5;
-
-      var signedAs = n3d1.Sign();
-
-      var s = n3d2.CopySign(n3d1);
-      var l = n3d1.Lerp(n3d2, weight);
-      var nl = n3d1.Nlerp3D(n3d2, weight);
-      var sla = n3d1.Slerp3D(n3d2, weight);
-
+      gol.Run();
+   
       //for (var i = 0; i < 10; i++)
       //    System.Console.WriteLine($"{i} = {Flux.PeriodicFunctions.Triangle(i + Maths.PiX2)} = {Flux.PeriodicFunctions.Triangle(i)}");
 
@@ -146,27 +128,21 @@ namespace ConsoleApp
 
       try
       {
-        try
-        {
-          System.Console.OutputEncoding = new System.Text.UnicodeEncoding(!System.BitConverter.IsLittleEndian, false);
-          System.Console.WriteLine("Output encoding set to UTF-16");
-        }
-        catch
-        {
-          System.Console.OutputEncoding = System.Text.UnicodeEncoding.UTF8;
-          System.Console.WriteLine("Output encoding set to UTF-8");
-        }
-
-        System.Console.WriteLine($"The console encoding is {System.Console.OutputEncoding.EncodingName} (code page {System.Console.OutputEncoding.CodePage})");
-        System.Console.WriteLine();
-
-        System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+        System.Console.OutputEncoding = new System.Text.UnicodeEncoding(!System.BitConverter.IsLittleEndian, false);
+        System.Console.WriteLine("Output encoding set to UTF-16");
       }
-      catch { }
-      finally
+      catch
       {
-        Console.OutputEncoding = originalOutputEncoding;
+        System.Console.OutputEncoding = System.Text.UnicodeEncoding.UTF8;
+        System.Console.WriteLine("Output encoding set to UTF-8");
       }
+
+      System.Console.WriteLine($"The console encoding is {System.Console.OutputEncoding.EncodingName} (code page {System.Console.OutputEncoding.CodePage})");
+      System.Console.WriteLine();
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+
+      Console.OutputEncoding = originalOutputEncoding;
 
       System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
       System.Console.ReadKey();

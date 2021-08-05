@@ -9,29 +9,33 @@ namespace Flux
 
 		/// <summary>Max routine for 3 values.</summary>
 		public static System.Numerics.BigInteger Max(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Numerics.BigInteger.Max(System.Numerics.BigInteger.Max(a, b), c);
+
 		/// <summary>Max routine for 3 values.</summary>
 		public static decimal Max(decimal a, decimal b, decimal c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Math.Max(System.Math.Max(a, b), c);
+
 		/// <summary>Max routine for 3 values. Provided for consistent call site. Internally using System.Math.Max().</summary>
 		public static double Max(double a, double b, double c)
 			=> System.Math.Max(System.Math.Max(a, b), c);
 		/// <summary>Max routine for 3 values. Provided for consistent call site. Internally using System.Math.Max().</summary>
 		public static float Max(float a, float b, float c)
 			=> System.Math.Max(System.Math.Max(a, b), c);
+
 		/// <summary>Max routine for 3 values.</summary>
 		public static int Max(int a, int b, int c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Math.Max(System.Math.Max(a, b), c);
 		/// <summary>Max routine for 3 values.</summary>
 		public static long Max(long a, long b, long c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Math.Max(System.Math.Max(a, b), c);
+
 		/// <summary>Max routine for 3 values.</summary>
 		[System.CLSCompliant(false)]
 		public static uint Max(uint a, uint b, uint c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Math.Max(System.Math.Max(a, b), c);
 		/// <summary>Max routine for 3 values.</summary>
 		[System.CLSCompliant(false)]
 		public static ulong Max(ulong a, ulong b, ulong c)
-			=> (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+			=> System.Math.Max(System.Math.Max(a, b), c);
 	}
 }

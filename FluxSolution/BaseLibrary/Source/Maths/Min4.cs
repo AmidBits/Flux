@@ -9,29 +9,33 @@ namespace Flux
 
 		/// <summary>Min routine for 4 values.</summary>
 		public static System.Numerics.BigInteger Min(System.Numerics.BigInteger a, System.Numerics.BigInteger b, System.Numerics.BigInteger c, System.Numerics.BigInteger d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Numerics.BigInteger.Min(System.Numerics.BigInteger.Min(a, b), System.Numerics.BigInteger.Min(c, d));
+
 		/// <summary>Min routine for 4 values.</summary>
 		public static decimal Min(decimal a, decimal b, decimal c, decimal d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
+
 		/// <summary>Min routine for 4 values. Provided for consistent call site. Internally using System.Math.Min().</summary>
 		public static double Min(double a, double b, double c, double d)
 			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
 		/// <summary>Min routine for 4 values. Provided for consistent call site. Internally using System.Math.Min().</summary>
 		public static float Min(float a, float b, float c, float d)
 			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
+
 		/// <summary>Min routine for 4 values.</summary>
 		public static int Min(int a, int b, int c, int d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
 		/// <summary>Min routine for 4 values.</summary>
 		public static long Min(long a, long b, long c, long d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
+
 		/// <summary>Min routine for 4 values.</summary>
 		[System.CLSCompliant(false)]
 		public static uint Min(uint a, uint b, uint c, uint d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
 		/// <summary>Min routine for 4 values.</summary>
 		[System.CLSCompliant(false)]
 		public static ulong Min(ulong a, ulong b, ulong c, ulong d)
-			=> (a < b) ? (a < c ? (a < d ? a : d) : (c < d ? c : d)) : (b < c ? (b < d ? b : d) : (c < d ? c : d));
+			=> System.Math.Min(System.Math.Min(a, b), System.Math.Min(c, d));
 	}
 }
