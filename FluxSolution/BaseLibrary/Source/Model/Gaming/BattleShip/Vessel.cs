@@ -45,34 +45,35 @@ namespace Flux
 
   namespace Model.Gaming.BattleShip
   {
-    public struct Vessel
+    public class Vessel
       : System.IEquatable<Vessel>
     {
-      private static readonly double[] m_proximityProbabilities = new double[] { 1.0, 0.5, 0.3333333333333333, 0.25, 0.2, 0.1666666666666666 };
-      public static System.Collections.Generic.IReadOnlyList<double> ProximityProbabilities => m_proximityProbabilities;
-
-      public static readonly Vessel Empty;
-      public bool IsEmpty => Equals(Empty);
-
       private readonly System.Collections.Generic.List<Geometry.Point2> m_locations;
-      public Geometry.Point2 Location => m_locations.Count > 0 ? m_locations[0] : throw new System.InvalidOperationException(nameof(Empty));
-      public System.Collections.Generic.IReadOnlyList<Geometry.Point2> Locations => m_locations;
 
-      public VesselOrientation Orientation { get; set; }
-
-      public int Length
-        => m_locations.Count;
+      public VesselOrientation m_orientation;
 
       public Vessel(int length, Geometry.Point2 location, VesselOrientation orientation)
       {
         if (length <= 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
-        Orientation = orientation;
+        m_orientation = orientation;
 
         m_locations = new System.Collections.Generic.List<Geometry.Point2>();
+
         for (int i = 0; i < length; i++)
-          m_locations.Add(Orientation == VesselOrientation.Horizontal ? new Geometry.Point2(location.X + i, location.Y) : new Geometry.Point2(location.X, location.Y + i));
+          m_locations.Add(orientation == VesselOrientation.Horizontal ? new Geometry.Point2(location.X + i, location.Y) : new Geometry.Point2(location.X, location.Y + i));
       }
+
+      public int Length
+        => m_locations.Count;
+
+      public Geometry.Point2 Location
+        => m_locations[0];
+      public System.Collections.Generic.IReadOnlyList<Geometry.Point2> Locations
+        => m_locations;
+
+      public VesselOrientation Orientation
+        => m_orientation;
 
       public bool IsValid(Geometry.Size2 boardSize)
       {
@@ -141,6 +142,9 @@ namespace Flux
         }
       }
 
+      public static double ProximityProbabilities(int proximity) // Max length of 9, could leave wide open.
+        => proximity >= 0 && proximity <= 9 ? 1.0 / (proximity + 1) : throw new System.ArgumentOutOfRangeException(nameof(proximity));
+
       public static System.Collections.Generic.List<Vessel> StageFleet(Geometry.Size2 gridSize, params int[] shipSizes)
       {
         var ships = new System.Collections.Generic.List<Vessel>();
@@ -168,8 +172,11 @@ namespace Flux
         => !a.Equals(b);
 
       // IEquatable
-      public bool Equals(Vessel other)
+      public bool Equals(Vessel? other)
       {
+        if (other is null)
+          return false;
+
         if (Orientation != other.Orientation)
           return false;
 

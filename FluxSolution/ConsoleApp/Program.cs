@@ -14,10 +14,11 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var gol = new Flux.Model.Gaming.GameOfLife.Game();
+      var game = new Flux.Model.Gaming.GameOfLife.Game(25, 25, true);
 
-      gol.Run();
-   
+      var cv = new Flux.Model.Gaming.GameOfLife.Console(game);
+      cv.Run();
+      return;
       //for (var i = 0; i < 10; i++)
       //    System.Console.WriteLine($"{i} = {Flux.PeriodicFunctions.Triangle(i + Maths.PiX2)} = {Flux.PeriodicFunctions.Triangle(i)}");
 

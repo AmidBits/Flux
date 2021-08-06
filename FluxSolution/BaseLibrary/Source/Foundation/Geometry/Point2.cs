@@ -169,8 +169,10 @@ namespace Flux.Geometry
       => new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
 
     /// <summary>Converts the 2D point to an index, based on the specified grid lengths of axes.</summary>
+    public static long ToUniqueIndex(int x, int y, Size2 bounds)
+      => x + (y * bounds.Width);
     public static long ToUniqueIndex(Point2 point, Size2 bounds)
-      => point.X + (point.Y * bounds.Width);
+      => ToUniqueIndex(point.X, point.Y, bounds);
     #endregion "Unique" index
 
     #region Overloaded operators
