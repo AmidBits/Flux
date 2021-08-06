@@ -164,7 +164,7 @@ namespace Flux.DataStructures.Graph
           grid[i0 + 1, i1 + 1] = weightFormatter(m_weights[i0, i1])!;
       }
 
-      return grid.ToConsoleString(uniformWidth: true, centerContent: true);
+      return grid.ToConsoleBlock(uniformWidth: true, centerContent: true);
     }
 
     // Overrides.

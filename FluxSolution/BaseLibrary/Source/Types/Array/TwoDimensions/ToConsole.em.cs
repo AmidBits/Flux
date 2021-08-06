@@ -51,7 +51,7 @@ namespace Flux
       }
     }
     /// <summary>Returns the two-dimensional array as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
-    public static string ToConsoleString<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015', bool uniformWidth = false, bool centerContent = false)
+    public static string ToConsoleBlock<T>(this T[,] source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u2015', bool uniformWidth = false, bool centerContent = false)
       => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformWidth, centerContent));
   }
 }

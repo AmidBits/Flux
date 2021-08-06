@@ -29,7 +29,7 @@ namespace Flux
       }
     }
     /// <summary>Returns the data table as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
-    public static string ToConsoleString(this System.Data.DataTable source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool includeColumnNames = true)
+    public static string ToConsoleBlock(this System.Data.DataTable source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool includeColumnNames = true)
       => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformMaxWidth, includeColumnNames));
   }
 }

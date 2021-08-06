@@ -25,60 +25,48 @@ namespace Flux.Model
       }
     }
 
-    //public static int Power(int a, int b)
-    //{
-    //  int p = 1, i;
-    //  for (i = 0; i < b; i++)
-    //  {
-    //    p *= a;
-    //  }
-    //  return p;
-    //}
+    public static int Pow(int value, int exponent)
+    {
+      var p = 1;
+      for (var i = 0; i < exponent; i++)
+        p *= value;
+      return p;
+    }
 
-    //public static int Min(int[] abc, int n)
-    //{
-    //  System.Diagnostics.Debug.WriteLine($"Min {string.Join(", ", abc.Select(n => n.ToString()))} : {n}");
-    //  if (abc is null) throw new System.ArgumentNullException(nameof(abc));
+    public static int Min(int[] abc, int n)
+    {
+      if (abc is null) throw new System.ArgumentNullException(nameof(abc));
 
-    //  var min = abc[0];
+      var min = abc[0];
 
-    //  for (var i = 1; i < n; i++)
-    //    if (abc[i] < min)
-    //      min = abc[i];
+      for (var i = 1; i < n; i++)
+        if (abc[i] < min)
+          min = abc[i];
 
-    //  return min;
-    //}
+      return min;
+    }
 
-    //public static int FrameStewartNumberOfMoves(int rods, int disks)
-    //{
-    //  int moves = 2147483647;
+    public static int FrameStewartNumberOfMoves(int rods, int disks)
+    {
+      var moves = int.MaxValue;
 
-    //  if (disks == 0)
-    //  {
-    //    System.Diagnostics.Debug.WriteLine($"Solve,disks==0");
-    //    return 0;
-    //  }
-    //  if (disks == 1)
-    //  {
-    //    System.Diagnostics.Debug.WriteLine($"Solve,disks==1");
-    //    return 1;
-    //  }
-    //  if (rods == 3)
-    //  {
-    //    System.Diagnostics.Debug.WriteLine($"Solve,rods==3");
-    //    return Power(2, disks) - 1;
-    //  }
-    //  if (rods >= 3 && disks > 0)
-    //  {
-    //    System.Diagnostics.Debug.WriteLine($"Solve,rods>=3&disks>0");
-    //    var potential_moves = new int[disks - 1];
+      if (disks == 0)
+        return 0;
+      if (disks == 1)
+        return 1;
+      if (rods == 3)
+        return Pow(2, disks) - 1;
+      if (rods >= 3 && disks > 0)
+      {
+        var potential_moves = new int[disks - 1];
 
-    //    for (var i = 1; i < disks; i++)
-    //      potential_moves[i - 1] = 2 * Solve(rods, i) + Solve(rods - 1, disks - i);
+        for (var i = 1; i < disks; i++)
+          potential_moves[i - 1] = 2 * FrameStewartNumberOfMoves(rods, i) + FrameStewartNumberOfMoves(rods - 1, disks - i);
 
-    //    return Min(potential_moves, disks - 1);
-    //  }
-    //  return moves;
-    //}
+        return Min(potential_moves, disks - 1);
+      }
+
+      return moves;
+    }
   }
 }

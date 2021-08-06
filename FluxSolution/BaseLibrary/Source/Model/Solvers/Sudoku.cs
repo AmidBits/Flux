@@ -10,13 +10,16 @@ namespace Flux.Model
     public const string RowLabels = @"ABCDEFGHI";
 
     /// <summary>A list of squares representing the Sudoku board using row characters and column digits, e.g. "C2".</summary>
-    public static readonly System.Collections.Generic.List<int> Squares = System.Linq.Enumerable.Range(0, 81).ToList();
+    public static System.Collections.Generic.List<int> Squares
+      => System.Linq.Enumerable.Range(0, 81).ToList();
 
     /// <summary>A list of all squares and their respective list of 3 unit lists, e.g. { "C2", [ ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2"], ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"], ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"] ] }.</summary>
-    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>> Units = Squares.Select(i => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>> Units
+      => Squares.Select(i => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
 
     /// <summary>A list of all squares and their respective list of 20 peer squares, e.g. ["A2", "B2", "D2", "E2", "F2", "G2", "H2", "I2", "C1", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "A1", "A3", "B1", "B3"].</summary>
-    public static readonly System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers = Squares.Select(i => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();
+    public static System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers
+      => Squares.Select(i => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();
 
     /// <summary>Assign a single digit to a square, by eliminating all the other values (except the specified digit) from values[square] and propagate.</summary>
     /// <returns>Null in case of failure to assign, otherwise the updated values dictionary is returned.</returns>
@@ -146,52 +149,49 @@ namespace Flux.Model
       return Create(count);
     }
 
-    public static int GetUnitBoxBaseIndex(int index) => (((index % 9) / 3) * 3) + ((index / 27) * 27);
     public static System.Collections.Generic.IEnumerable<int> GetUnitBox(int index)
     {
-      var baseIndex = GetUnitBoxBaseIndex(index);
+      var baseUnitBoxIndex = (((index % 9) / 3) * 3) + ((index / 27) * 27);
 
-      yield return baseIndex + 0;
-      yield return baseIndex + 1;
-      yield return baseIndex + 2;
-      yield return baseIndex + 9;
-      yield return baseIndex + 10;
-      yield return baseIndex + 11;
-      yield return baseIndex + 18;
-      yield return baseIndex + 19;
-      yield return baseIndex + 20;
+      yield return baseUnitBoxIndex + 0;
+      yield return baseUnitBoxIndex + 1;
+      yield return baseUnitBoxIndex + 2;
+      yield return baseUnitBoxIndex + 9;
+      yield return baseUnitBoxIndex + 10;
+      yield return baseUnitBoxIndex + 11;
+      yield return baseUnitBoxIndex + 18;
+      yield return baseUnitBoxIndex + 19;
+      yield return baseUnitBoxIndex + 20;
     }
 
-    public static int GetUnitColumnBaseIndex(int index) => index % 9;
     public static System.Collections.Generic.IEnumerable<int> GetUnitColumn(int index)
     {
-      var columnIndex = GetUnitColumnBaseIndex(index);
+      var baseUnitColumnIndex = index % 9;
 
-      yield return columnIndex + 0;
-      yield return columnIndex + 9;
-      yield return columnIndex + 18;
-      yield return columnIndex + 27;
-      yield return columnIndex + 36;
-      yield return columnIndex + 45;
-      yield return columnIndex + 54;
-      yield return columnIndex + 63;
-      yield return columnIndex + 72;
+      yield return baseUnitColumnIndex + 0;
+      yield return baseUnitColumnIndex + 9;
+      yield return baseUnitColumnIndex + 18;
+      yield return baseUnitColumnIndex + 27;
+      yield return baseUnitColumnIndex + 36;
+      yield return baseUnitColumnIndex + 45;
+      yield return baseUnitColumnIndex + 54;
+      yield return baseUnitColumnIndex + 63;
+      yield return baseUnitColumnIndex + 72;
     }
 
-    public static int GetUnitRowBaseIndex(int index) => (index / 9) * 9;
     public static System.Collections.Generic.IEnumerable<int> GetUnitRow(int index)
     {
-      var rowIndex = GetUnitRowBaseIndex(index);
+      var baseUnitRowIndex = (index / 9) * 9;
 
-      yield return rowIndex + 0;
-      yield return rowIndex + 1;
-      yield return rowIndex + 2;
-      yield return rowIndex + 3;
-      yield return rowIndex + 4;
-      yield return rowIndex + 5;
-      yield return rowIndex + 6;
-      yield return rowIndex + 7;
-      yield return rowIndex + 8;
+      yield return baseUnitRowIndex + 0;
+      yield return baseUnitRowIndex + 1;
+      yield return baseUnitRowIndex + 2;
+      yield return baseUnitRowIndex + 3;
+      yield return baseUnitRowIndex + 4;
+      yield return baseUnitRowIndex + 5;
+      yield return baseUnitRowIndex + 6;
+      yield return baseUnitRowIndex + 7;
+      yield return baseUnitRowIndex + 8;
     }
 
     public static string ToConsoleString(System.Collections.Generic.List<string> values)

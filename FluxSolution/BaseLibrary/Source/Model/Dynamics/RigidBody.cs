@@ -2,7 +2,7 @@ namespace Flux.Model.Dynamics
 {
   // http://www.enchantedage.com/node/68
   public class RigidBody
-    : Gaming.Engine.IObjectPositionable, Gaming.Engine.IObjectRotatable, Gaming.Engine.IObjectScalable
+    : GameEngine.IObjectPositionable, GameEngine.IObjectRotatable, GameEngine.IObjectScalable
   {
     public System.Collections.Generic.List<ForceGenerators.IForceGenerator> ForceGenerators { get; } = new System.Collections.Generic.List<ForceGenerators.IForceGenerator>();
 
