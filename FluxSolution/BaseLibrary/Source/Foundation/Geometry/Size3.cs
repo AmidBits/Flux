@@ -19,6 +19,21 @@ namespace Flux.Geometry
     public Point3 Center()
       => new Point3(Width / 2, Height / 2, Depth / 2);
 
+    /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>
+    public Point3 UniqueIndexToPoint(long index)
+    {
+      var xy = (long)Width * (long)Height;
+      var irxy = index % xy;
+
+      return new Point3((int)(irxy % Width), (int)(irxy / Width), (int)(index / xy));
+    }
+    /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
+    public long PointToUniqueIndex(int x, int y, int z)
+      => x + (y * Width) + (z * Width * Height);
+    /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
+    public long PointToUniqueIndex(in Point3 point)
+      => PointToUniqueIndex(point.X, point.Y, point.Z);
+
     #region Static methods
     /// <summary>Adds a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
     public static Size3 Add(in Size3 a, in Size3 b)

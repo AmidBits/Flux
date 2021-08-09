@@ -3,13 +3,13 @@
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
   public class Game
   {
-    private System.Collections.BitArray m_aliveOrDead;
-    private bool m_canLifeLogicWrapAroundEdges;
-    private Geometry.Size2 m_cellGrid;
+    private System.Collections.BitArray m_deadOrAlive;
+    private readonly bool m_canLifeLogicWrapAroundEdges;
+    private readonly Geometry.Size2 m_cellGrid;
 
     public Game(Geometry.Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
-      m_aliveOrDead = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
+      m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
       m_cellGrid = cellGrid;
 
@@ -21,7 +21,7 @@
         {
           var index = (int)Geometry.Point2.ToUniqueIndex(c, r, m_cellGrid);
 
-          m_aliveOrDead[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
+          m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
@@ -41,52 +41,48 @@
       {
         for (var c = m_cellGrid.Width - 1; c >= 0; c--)
         {
-          var point = new Geometry.Point2(c, r);
-          var index = (int)Geometry.Point2.ToUniqueIndex(point, m_cellGrid);
+          var index = (int)m_cellGrid.PointToUniqueIndex(c, r);
 
-          var count = CountLiveNeighbors(point);
-          var state = m_aliveOrDead[index];
+          var state = m_deadOrAlive[index];
 
-          if (state && (count == 2 || count == 3)) // A live cell dies unless it has exactly 2 or 3 live neighbors.
-            array[index] = true;
-          else if (!state && count == 3) // A dead cell remains dead unless it has exactly 3 live neighbors.
-            array[index] = true;
-          else
-            array[index] = false;
+          var count = CountLiveNeighbors(c, r);
+
+          // A live cell dies unless it has exactly 2 or 3 live neighbors. A dead cell comes to life if it has exactly 3 live neighbors. Otherwise the cell is dead.
+          array[index] = (state && (count == 2 || count == 3)) || (!state && count == 3);
         }
       }
 
-      m_aliveOrDead = array;
+      m_deadOrAlive = array;
     }
 
     /// <summary>Returns the number of live neighbors around the cell at position (x,y).</summary>
-    private int CountLiveNeighbors(Geometry.Point2 position)
+    private int CountLiveNeighbors(int x, int y)
     {
       var cn = 0;
 
       for (var r = -1; r <= 1; r++) // Loop "rows".
       {
-        if (!m_canLifeLogicWrapAroundEdges && (position.Y + r < 0 || position.Y + r >= m_cellGrid.Height))
+        if (!m_canLifeLogicWrapAroundEdges && (y + r < 0 || y + r >= m_cellGrid.Height))
           continue;
 
-        var y = (position.Y + r + m_cellGrid.Height) % m_cellGrid.Height; // Loop around the edges if y+j is off the board.
+        var y1 = (y + r + m_cellGrid.Height) % m_cellGrid.Height; // Loop around the edges if y+j is off the board.
 
         for (var c = -1; c <= 1; c++) // Loop "columns".
         {
-          if (!m_canLifeLogicWrapAroundEdges && (position.X + c < 0 || position.X + c >= m_cellGrid.Width))
+          if (!m_canLifeLogicWrapAroundEdges && (x + c < 0 || x + c >= m_cellGrid.Width))
             continue;
 
-          var x = (position.X + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
+          var x1 = (x + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)Geometry.Point2.ToUniqueIndex(x, y, m_cellGrid);
+          var pointIndex = (int)Geometry.Point2.ToUniqueIndex(x1, y1, m_cellGrid);
 
-          cn += m_aliveOrDead[pointIndex] ? 1 : 0;
+          cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
       }
 
-      var positionIndex = (int)Geometry.Point2.ToUniqueIndex(position, m_cellGrid);
+      var positionIndex = (int)m_cellGrid.PointToUniqueIndex(x, y);
 
-      cn -= m_aliveOrDead[positionIndex] ? 1 : 0;
+      cn -= m_deadOrAlive[positionIndex] ? 1 : 0;
 
       return cn;
     }
@@ -101,7 +97,7 @@
         {
           var index = (int)Geometry.Point2.ToUniqueIndex(x, y, m_cellGrid);
 
-          var c = m_aliveOrDead[index] ? '\u2588' : ' ';
+          var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 
           sb.Append(c);
           sb.Append(c); // Each cell is two characters wide for symmetrical visual.

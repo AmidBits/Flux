@@ -17,6 +17,16 @@ namespace Flux.Geometry
     public Point2 Center()
       => new Point2(Width / 2, Height / 2);
 
+    /// <summary>Convert a mapped index to a 2D point. This index is uniquely mapped using the size</summary>
+    public Point2 UniqueIndexToPoint(long index)
+      => new Point2((int)(index % Width), (int)(index / Width));
+    /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
+    public long PointToUniqueIndex(int x, int y)
+      => x + (y * Width);
+    /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
+    public long PointToUniqueIndex(Point2 point)
+      => PointToUniqueIndex(point.X, point.Y);
+
     #region Static methods
     /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
     public static Size2 Add(Size2 a, Size2 b)

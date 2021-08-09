@@ -2,9 +2,9 @@
 {
   public struct SampleMono
     : System.IEquatable<SampleMono>
-    , IAudioChannelFc
+    , IAudioChannelFrontCenter
   {
-    public static SampleMono Silent
+    public static SampleMono Zero
       => new SampleMono();
 
     public double FrontCenter { get; }
@@ -18,8 +18,6 @@
       => new SampleStereo(FrontCenter, FrontCenter);
 
     #region Static methods
-    public static double ConvertStereoToMono(double frontLeft, double frontRight)
-      => (frontLeft + frontRight) / 2;
     #endregion Static methods
 
     #region Overloaded operators

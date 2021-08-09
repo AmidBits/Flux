@@ -2,7 +2,7 @@
 {
   public struct SampleQuadraphonic
     : System.IEquatable<SampleQuadraphonic>
-    , IAudioChannelFl, IAudioChannelFr, IAudioChannelBl, IAudioChannelBr
+    , IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelBackLeft, IAudioChannelBackRight
   {
     public double FrontLeft { get; }
     public double FrontRight { get; }

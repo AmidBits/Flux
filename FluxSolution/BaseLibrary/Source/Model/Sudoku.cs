@@ -124,7 +124,8 @@ namespace Flux.Model
 
     /// <summary>Solve the specified puzzle by process of variable/value ordering searching and constraint propagation.</summary>
     /// <returns>Null in case of failure to solve and find a solution, otherwise a solved values dictionary is returned.</returns>
-    public static System.Collections.Generic.List<string>? Solve(string puzzle) => Search(Parse(puzzle).Last());
+    public static System.Collections.Generic.List<string>? Solve(string puzzle)
+      => Search(Parse(puzzle).Last());
 
     /// <summary>Create a new random sudoku puzzle.</summary>
     public static System.Collections.Generic.List<string> Create(int count = 17)
@@ -215,10 +216,13 @@ namespace Flux.Model
       return sb.ToString().Substring(0, sb.Length - 2);
     }
 
-    public static int ToIndex(string label) => label is null ? throw new System.ArgumentNullException(nameof(label)) : (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1], System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
-    public static string ToLabel(int index) => (index >= 0 && index < 81) ? $"{RowLabels[index / 9]}{ColumnLabels[index % 9]}" : throw new System.ArgumentOutOfRangeException(nameof(index));
+    public static int ToIndex(string label)
+      => label is null ? throw new System.ArgumentNullException(nameof(label)) : (label.Length == 2 && RowLabels.Contains(label[0], System.StringComparison.Ordinal) && ColumnLabels.Contains(label[1], System.StringComparison.Ordinal)) ? RowLabels.IndexOf(label[0], System.StringComparison.Ordinal) * 9 + ColumnLabels.IndexOf(label[1], System.StringComparison.Ordinal) : throw new System.ArgumentOutOfRangeException(nameof(label));
+    public static string ToLabel(int index)
+      => (index >= 0 && index < 81) ? $"{RowLabels[index / 9]}{ColumnLabels[index % 9]}" : throw new System.ArgumentOutOfRangeException(nameof(index));
 
-    public static string ToString(System.Collections.Generic.List<string> puzzle) => string.Concat(puzzle.Select(s => s.Length == 1 ? s : @"."));
+    public static string ToString(System.Collections.Generic.List<string> puzzle)
+      => string.Concat(puzzle.Select(s => s.Length == 1 ? s : @"."));
 
     #region Preset Puzzles
     public const string Puzzle1439 = ".....5.8....6.1.43..........1.5........1.6...3.......553.....61........4.........";

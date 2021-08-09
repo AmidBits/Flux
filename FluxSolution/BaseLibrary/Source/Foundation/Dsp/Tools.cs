@@ -5,16 +5,16 @@ namespace Flux.Dsp
   // https://github.com/safchain/sa_dsp/blob/master/jni/dsp/limit/SimpleLimit.cpp
   public static class Tools
   {
-    /// <summary>Returns the absolute phase (negative phase align correctly on positive side).</summary>
-    public static double AbsolutePhasePi2(double phase2PI)
-      => phase2PI < 0
-      ? phase2PI % Maths.PiX2 + Maths.PiX2
-      : phase2PI % Maths.PiX2;
-    /// <summary>Returns the absolute phase (negative phase align correctly on positive side).</summary>
+    /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to unit interval [0, 1).</summary>
     public static double AbsolutePhaseMu(double phaseMU)
       => phaseMU < 0
-      ? phaseMU % 1 + 1
+      ? (phaseMU % 1) + 1
       : phaseMU % 1;
+    /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to 2*PI [0, 2*PI).</summary>
+    public static double AbsolutePhasePi2(double phase2PI)
+      => phase2PI < 0
+      ? (phase2PI % Maths.PiX2) + Maths.PiX2
+      : phase2PI % Maths.PiX2;
 
     /// <summary>Compute the root mean square (RMS) of the samples in the sequence.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Root_mean_square"/>

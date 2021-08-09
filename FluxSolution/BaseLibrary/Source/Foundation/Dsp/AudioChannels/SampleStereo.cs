@@ -2,9 +2,9 @@
 {
   public struct SampleStereo
     : System.IEquatable<SampleStereo>
-    , IAudioChannelFl, IAudioChannelFr
+    , IAudioChannelFrontLeft, IAudioChannelFrontRight
   {
-    public static SampleStereo Silent
+    public static SampleStereo Zero
       => new SampleStereo();
 
     public double FrontLeft { get; }

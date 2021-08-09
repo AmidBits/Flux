@@ -2,7 +2,7 @@
 {
   public struct Sample51
     : System.IEquatable<Sample51>
-    , IAudioChannelBl, IAudioChannelBr, IAudioChannelFc, IAudioChannelFl, IAudioChannelFr, IAudioChannelLfe
+    , IAudioChannelBackLeft, IAudioChannelBackRight, IAudioChannelFrontCenter, IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelLowFrequencyEffect
   {
     public double FrontLeft { get; }
     public double FrontRight { get; }
