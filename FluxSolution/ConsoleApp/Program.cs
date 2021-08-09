@@ -14,7 +14,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var moves = Flux.Model.TowerOfHanoi.FrameStewartNumberOfMoves(3, 10);
+      var moves = Flux.Model.TowerOfHanoi.FrameStewart.NumberOfMoves(4, 15);
 
       //var game = new Flux.Model.Gaming.GameOfLife.Game(32, 32, true, 0.5);
 
