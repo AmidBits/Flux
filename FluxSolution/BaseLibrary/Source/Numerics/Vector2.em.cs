@@ -4,6 +4,49 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    #region 2D vector computations.
+    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
+
+    public static double LineSlopeX(this System.Numerics.Vector2 source)
+      => System.Math.CopySign(source.X / source.Y, source.X);
+    public static double LineSlopeY(this System.Numerics.Vector2 source)
+      => System.Math.CopySign(source.Y / source.X, source.Y);
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+      => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
+      => new System.Numerics.Vector2(-source.Y, source.X);
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
+      => new System.Numerics.Vector2(source.Y, -source.X);
+
+    /// <summary>Perpendicular distance to the to the line.</summary>
+    public static double PerpendicularDistanceToLine(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    {
+      var bma = b - a;
+
+      return (bma * (source - a)).Length() / bma.Length();
+    }
+
+    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
+
+    /// <summary>Rotate the vector around the specified axis.</summary>
+    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
+    /// <summary>Rotate the vector around the world axes.</summary>
+    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
+    #endregion 2D vector computations.
+
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
@@ -91,7 +134,7 @@ namespace Flux
     }
 
     /// <summary>Determines whether the specified polygons A and B intersect.</summary>
-    public static bool IntersectingPolygon(System.Collections.Generic.IList<System.Numerics.Vector2> a, System.Collections.Generic.IList<System.Numerics.Vector2> b)
+    public static bool IntersectingPolygon(System.Collections.Generic.IList<Geometry.Vector2> a, System.Collections.Generic.IList<Geometry.Vector2> b)
     {
       if (a is null) throw new System.ArgumentNullException(nameof(a));
       if (b is null) throw new System.ArgumentNullException(nameof(b));
@@ -185,13 +228,6 @@ namespace Flux
     public static System.Numerics.Vector2 NlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
       => System.Numerics.Vector2.Normalize(System.Numerics.Vector2.Lerp(source, target, percent));
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
-      => new System.Numerics.Vector2(-source.Y, source.X);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
-      => new System.Numerics.Vector2(source.Y, -source.X);
-
     /// <summary>Perpendicular distance to the to the line.</summary>
     public static double PerpendicularDistance(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
     {
@@ -219,15 +255,11 @@ namespace Flux
       => -1 * (a * source.X + b * source.Y + c) / (a * a + b * b) * new System.Numerics.Vector2(a + source.X, b + source.Y);
 
     /// <summary>Rotate the vector around the specified axis.</summary>
-    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
+    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, double angle)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, (float)angle));
     /// <summary>Rotate the vector around the world axes.</summary>
-    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
-
-    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
+    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, double yaw, double pitch, double roll)
+      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll((float)yaw, (float)pitch, (float)roll));
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static System.Numerics.Vector2 SlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
@@ -345,6 +377,9 @@ namespace Flux
         yield return new System.Numerics.Vector2[] { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
       }
     }
+
+    public static Geometry.Ellipse2D ToEllipse(this System.Numerics.Vector2 vector2)
+      => new Geometry.Ellipse2D(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
     /// <summary>Convert a 2D vector to a 3D vector.</summary>
     public static System.Numerics.Vector3 ToVector3(this System.Numerics.Vector2 source)

@@ -14,10 +14,27 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
+      var a = new System.Numerics.Vector2(-5, 5);
+      var b = new System.Numerics.Vector2(25, -10);
+      var x = Flux.Geometry.Line.TwoPointForm(7.5f, a, b, out var slope, out var absoluteX);
 
-      var cv = new Flux.Model.GameOfLife.Console(game);
-      cv.Run(300);
+      var c = b - a;
+
+      var ySlope = Flux.Geometry.Line.TwoPointSlope(a, b);
+
+      static double LineSlopeX(double x, double y)
+        => System.Math.CopySign(x / y, x);
+
+      static double LineSlopeY(double x, double y)
+        => System.Math.CopySign(y / x, y);
+
+      var slopeX = LineSlopeX(c.X, c.Y);
+      var slopeY = LineSlopeY(c.Y, c.X);
+
+      //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
+
+      //var cv = new Flux.Model.GameOfLife.Console(game);
+      //cv.Run(300);
       return;
 
       //for (var i = 0; i < 10; i++)

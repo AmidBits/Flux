@@ -21,8 +21,12 @@ namespace Flux
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistanceTo(this Geometry.Point2 a, Geometry.Point2 b, double edgeLength = 1)
-      => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
+    public static double ChebyshevDistanceTo(this Geometry.Point2 source, Geometry.Point2 target, double edgeLength = 1)
+      => ChebyshevLength(target - source, edgeLength);
+    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(this Geometry.Point2 source, double edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<Geometry.Point2> source)
@@ -43,21 +47,24 @@ namespace Flux
     /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
     public static double CrossProduct(this Geometry.Point2 p1, Geometry.Point2 p2)
       => p1.X * p2.Y - p1.Y * p2.X;
+
     /// <summary>Returns the dot product of the two vectors.</summary>
     public static double DotProduct(this Geometry.Point2 p1, Geometry.Point2 p2)
       => p1.X * p2.X + p1.Y * p2.Y;
 
-    public static double EuclideanDistanceSquaredTo(this Geometry.Point2 a, Geometry.Point2 b)
-      => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
-    public static double EuclideanDistanceTo(this Geometry.Point2 a, Geometry.Point2 b)
-      => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
-
-    /// <summary>Returns the length (squared) of the vector.</summary>
-    public static double EuclideanLengthSquared(this Geometry.Point2 v)
-      => v.X * v.X + v.Y * v.Y;
+    /// <summary>Compute the distance (or magnitude) squared between the two vectors.</summary>
+    public static double EuclideanDistanceSquaredTo(this Geometry.Point2 source, Geometry.Point2 target)
+      => EuclideanLengthSquared(target - source);
+    /// <summary>Compute the distance (or magnitude) between the two vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanDistanceTo(this Geometry.Point2 source, Geometry.Point2 target)
+      => EuclideanLength(target - source);
     /// <summary>Returns the length of the vector.</summary>
-    public static double EuclideanLength(this Geometry.Point2 v)
-      => System.Math.Sqrt(EuclideanLengthSquared(v));
+    public static double EuclideanLength(this Geometry.Point2 source)
+      => System.Math.Sqrt(EuclideanLengthSquared(source));
+    /// <summary>Returns the length (squared) of the vector.</summary>
+    public static double EuclideanLengthSquared(this Geometry.Point2 source)
+      => source.X * source.X + source.Y * source.Y;
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<Geometry.Point2> source)
@@ -105,10 +112,12 @@ namespace Flux
       return wn;
     }
 
+    /// <summary>Returns a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Geometry.Point2 InterpolateCosine(this Geometry.Point2 y1, Geometry.Point2 y2, double mu)
       => mu >= 0 && mu <= 1 && ((1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0) is double mu2
       ? (y1 * (1.0 - mu2) + y2 * mu2)
       : throw new System.ArgumentNullException(nameof(mu));
+    /// <summary>Returns a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Geometry.Point2 InterpolateCubic(this Geometry.Point2 y0, Geometry.Point2 y1, Geometry.Point2 y2, Geometry.Point2 y3, double mu)
     {
       var mu2 = mu * mu;
@@ -120,6 +129,7 @@ namespace Flux
 
       return a0 * mu * mu2 + a1 * mu2 + a2 * mu + a3;
     }
+    /// <summary>Returns a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Geometry.Point2 InterpolateHermite(this Geometry.Point2 y0, Geometry.Point2 y1, Geometry.Point2 y2, Geometry.Point2 y3, double mu, double tension, double bias)
     {
       var mu2 = mu * mu;
@@ -142,33 +152,33 @@ namespace Flux
 
       return y1 * a0 + m0 * a1 + m1 * a2 + y2 * a3;
     }
+    /// <summary>Returns a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Geometry.Point2 InterpolateLinear(this Geometry.Point2 y1, Geometry.Point2 y2, double mu)
       => y1 * (1 - mu) + y2 * mu;
 
     /// <summary>Determines whether the specified polygons A and B intersect.</summary>
-    public static bool IntersectingPolygon(System.Collections.Generic.IList<Geometry.Point2> a, System.Collections.Generic.IList<Geometry.Point2> b)
-    {
-      if (a is null) throw new System.ArgumentNullException(nameof(a));
-      if (b is null) throw new System.ArgumentNullException(nameof(b));
+    //public static bool IntersectingPolygon(System.Collections.Generic.IList<Geometry.Vector2> a, System.Collections.Generic.IList<Geometry.Vector2> b)
+    //{
+    //  if (a is null) throw new System.ArgumentNullException(nameof(a));
+    //  if (b is null) throw new System.ArgumentNullException(nameof(b));
 
-      if (Geometry.Line.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
-        return true;
+    //  if (Geometry.Line.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+    //    return true;
 
-      for (int i = 1; i < a.Count; i++)
-      {
-        if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
-          return true;
+    //  for (int i = 1; i < a.Count; i++)
+    //  {
+    //    if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+    //      return true;
 
-        for (int p = 1; p < b.Count; p++)
-        {
-          if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
-            return true;
-        }
-      }
+    //    for (int p = 1; p < b.Count; p++)
+    //    {
+    //      if (Geometry.Line.IntersectionTest(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+    //        return true;
+    //    }
+    //  }
 
-      return false;
-      //return t.Any(point => point.InsidePolygon(polygon)) || polygon.Any(point => point.InsidePolygon(t));
-    }
+    //  return false;
+    //}
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<Geometry.Point2> source)
@@ -229,23 +239,20 @@ namespace Flux
       return true;
     }
 
-    public static Geometry.Point2 LerpTo(this Geometry.Point2 source, Geometry.Point2 target, in double percent = 0.5)
-      => source.NlerpTo(target, percent);
+    public static Geometry.Point2 LerpTo(this Geometry.Point2 source, Geometry.Point2 target, in double mu = 0.5)
+      => source + (target - source) * mu;
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistanceTo(this Geometry.Point2 a, Geometry.Point2 b, float edgeLength = 1)
       => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength;
 
-    public static Geometry.Point2 NlerpTo(this Geometry.Point2 source, Geometry.Point2 target, in double percent = 0.5)
-      => source.NlerpTo(target, percent).Normalize();
+    public static Geometry.Point2 NlerpTo(this Geometry.Point2 source, Geometry.Point2 target, in double mu = 0.5)
+      => source.NlerpTo(target, mu).Normalize();
 
+    /// <summary>Create a new vector with the source components normalized.</summary>
     public static Geometry.Point2 Normalize(this Geometry.Point2 source)
-    {
-      var length = source.EuclideanLength();
-
-      return source / length;
-    }
+      => source / source.EuclideanLength();
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static Geometry.Point2 PerpendicularCcw(this Geometry.Point2 source)
