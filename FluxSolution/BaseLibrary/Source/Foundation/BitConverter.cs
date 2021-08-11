@@ -19,10 +19,8 @@ namespace Flux
     /// <param name="index">The first index into the array to copy the bytes into</param>
     void CopyBytes(long value, int bytes, byte[] buffer, int index)
     {
-      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer), "Byte array must not be null");
-
-      if (buffer.Length < index + bytes) throw new System.ArgumentOutOfRangeException(nameof(buffer), "Buffer not big enough for value");
-
+      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer), @"Byte array must not be null.");
+      if (buffer.Length < index + bytes) throw new System.ArgumentOutOfRangeException(nameof(buffer), @"Buffer not big enough for value.");
       CopyBytesImpl(value, bytes, buffer, index);
     }
 
@@ -112,9 +110,7 @@ namespace Flux
     private byte[] GetBytes(long value, int bytes)
     {
       var buffer = new byte[bytes];
-
       CopyBytes(value, bytes, buffer, 0);
-
       return buffer;
     }
 
@@ -256,8 +252,7 @@ namespace Flux
     /// <returns>A decimal  formed by sixteen bytes beginning at startIndex.</returns>
     public decimal ToDecimal(byte[] value, int startIndex)
     {
-      // HACK: This always assumes four parts, each in their own endianness,
-      // starting with the first part at the start of the byte array.
+      // HACK: This always assumes four parts, each in their own endianness, starting with the first part at the start of the byte array.
       // On the other hand, there's no real format specified...
       var bytes = new int[4];
       for (int i = 0; i < 4; i++)
@@ -326,11 +321,9 @@ namespace Flux
       protected override void CopyBytesImpl(long value, int bytes, byte[] buffer, int index)
       {
         var endOffset = index + bytes - 1;
-
         for (int i = 0; i < bytes; i++)
         {
           buffer[endOffset - i] = unchecked((byte)(value & 0xff));
-
           value >>= 8;
         }
       }
@@ -363,7 +356,6 @@ namespace Flux
         for (var i = 0; i < bytes; i++)
         {
           buffer[i + index] = unchecked((byte)(value & 0xff));
-
           value >>= 8;
         }
       }
