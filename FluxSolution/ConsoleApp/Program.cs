@@ -19,65 +19,6 @@ namespace ConsoleApp
       cv.Run(300);
       return;
 
-      //for (var i = 0; i < 10; i++)
-      //    System.Console.WriteLine($"{i} = {Flux.PeriodicFunctions.Triangle(i + Maths.PiX2)} = {Flux.PeriodicFunctions.Triangle(i)}");
-
-      //System.Console.WriteLine(nameof(System.Math.Cos));
-      //Loop(System.Math.Cos);
-      //System.Console.WriteLine(nameof(System.Math.Sin));
-      //Loop(System.Math.Sin);
-      //System.Console.WriteLine(nameof(SawWave));
-      //Loop(SawWave);
-      //System.Console.WriteLine(nameof(SquareWave));
-      //Loop(SquareWave);
-      System.Console.WriteLine(nameof(Flux.Dsp.WaveGenerator.TriangleWave.SamplePi2));
-      Loop(Flux.Dsp.WaveGenerator.TriangleWave.SamplePi2);
-
-      //for (var phase = -System.Math.PI; phase <= System.Math.PI; phase += System.Math.PI / 8)
-      //{
-      //  System.Console.WriteLine($"Cos={System.Math.Cos(phase)}");
-      //  System.Console.WriteLine($"Sin={System.Math.Sin(phase)}");
-      //  System.Console.WriteLine($"Saw={SawWave(phase)}");
-      //  System.Console.WriteLine($"Sqr={SquareWave(phase)}");
-      //  System.Console.WriteLine($"Tri={TriangleWave(phase)}");
-      //}
-      static void Loop(System.Func<double, double> periodic)
-      {
-        const int resolution = 16;
-        const double increments = Maths.PiX2 / resolution;
-        for (var phase = 0; phase <= resolution; phase++)
-          System.Console.WriteLine($"({phase}) = {periodic(phase * increments)}");
-
-      }
-
-      //var wf = new Flux.WaveForm(1, 1, 0);
-      //wf.Phase = 0.75;
-      //var pw = wf.PulseWave();
-      //var sw = wf.SawWave();
-      //var sn = wf.SineWave();
-      //var sq = wf.SquareWave();
-      //var tr = wf.TriangleWave();
-
-      return;
-
-      //var positive = 16;
-      //var pc = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullCeiling);
-      //var pf = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullFloor);
-      //var ptz = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullTowardZero);
-      //var pafz = Flux.Maths.RoundToInterval(positive, 16, FullRoundingBehavior.FullAwayFromZero);
-      //System.Console.WriteLine($"(F:{pf}, C:{pc}) TZ:{ptz} < N:{positive} < AFZ:{pafz}");
-      //var negative = -positive;
-      //var nc = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullCeiling);
-      //var nf = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullFloor);
-      //var ntz = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullTowardZero);
-      //var nafz = Flux.Maths.RoundToInterval(negative, 16, FullRoundingBehavior.FullAwayFromZero);
-      //System.Console.WriteLine($"(F:{nf}, C:{nc}) AFZ:{nafz} < N:{negative} < TZ:{ntz}");
-
-      foreach (var block in System.Enum.GetValues(typeof(Flux.Text.UnicodeBlock)).Cast<Flux.Text.UnicodeBlock>().Select(b => (ublock: b, count: b.GetUtf32Last() - b.GetUtf32First())).OrderByDescending(b => b.count))
-        System.Console.WriteLine($"{block.ublock.ToString()} = {block.count}");
-
-      System.Console.WriteLine(Flux.Text.UnicodeBlock.MathematicalOperators.ToConsoleTable(0, 0));
-
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
     }
