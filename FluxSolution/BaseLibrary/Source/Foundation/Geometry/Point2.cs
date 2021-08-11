@@ -31,40 +31,50 @@ namespace Flux.Geometry
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(Point2 p1, Point2 p2)
-      => System.Math.Max(System.Math.Abs(p2.X - p1.X), System.Math.Abs(p2.Y - p1.Y));
+      => ChebyshevLength(p2 - p1);
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(Point2 p)
+      => System.Math.Max(System.Math.Abs(p.X), System.Math.Abs(p.Y));
+
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     public static Point2 ComputePoint(double angle, double distance)
       => new Point2(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
+
     /// <summary>Returns the cross product of the two vectors.</summary>
     /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
     public static int CrossProduct(Point2 p1, Point2 p2)
       => p1.X * p2.Y - p1.Y * p2.X;
+
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point2 DivideCeiling(Point2 p, double value)
       => new Point2(System.Convert.ToInt32(System.Math.Ceiling(p.X / value)), System.Convert.ToInt32(System.Math.Ceiling(p.Y / value)));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point2 DivideFloor(Point2 p, double value)
       => new Point2(System.Convert.ToInt32(System.Math.Floor(p.X / value)), System.Convert.ToInt32(System.Math.Floor(p.Y / value)));
+
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
     public static int DotProduct(Point2 p1, Point2 p2)
       => p1.X * p2.X + p1.Y * p2.Y;
+
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(Point2 p1, Point2 p2)
-      => GetLength(p1 - p2);
+      => EuclideanLength(p2 - p1);
     /// <summary>Compute the euclidean distance squared of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistanceSquare(Point2 p1, Point2 p2)
-      => GetLengthSquared(p1 - p2);
+      => EuclideanLengthSquared(p2 - p1);
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLength(Point2 p)
-      => System.Math.Sqrt(p.X * p.X + p.Y * p.Y);
+    public static double EuclideanLength(Point2 p)
+      => System.Math.Sqrt(EuclideanLengthSquared(p));
     /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double GetLengthSquared(Point2 p)
+    public static double EuclideanLengthSquared(Point2 p)
       => p.X * p.X + p.Y * p.Y;
+
     /// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
     public static System.Collections.Generic.IEnumerable<Point2> GetQuadrantCenterVectors(Point2 source, Size2 subQuadrant)
@@ -79,10 +89,13 @@ namespace Flux.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
     public static int GetQuadrantNumber(Point2 source, Point2 center)
       => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0);
+
+    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCosine(Point2 y1, Point2 y2, double mu)
       => mu >= 0 && mu <= 1 && ((1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0) is double mu2
       ? (y1 * (1.0 - mu2) + y2 * mu2)
       : throw new System.ArgumentNullException(nameof(mu));
+    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCubic(Point2 y0, Point2 y1, Point2 y2, Point2 y3, double mu)
     {
       var mu2 = mu * mu;
@@ -94,6 +107,7 @@ namespace Flux.Geometry
 
       return a0 * mu * mu2 + a1 * mu2 + a2 * mu + a3;
     }
+    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateHermite(Point2 y0, Point2 y1, Point2 y2, Point2 y3, double mu, double tension, double bias)
     {
       var mu2 = mu * mu;
@@ -116,18 +130,26 @@ namespace Flux.Geometry
 
       return y1 * a0 + m0 * a1 + m1 * a2 + y2 * a3;
     }
+    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateLinear(Point2 y1, Point2 y2, double mu)
       => y1 * (1 - mu) + y2 * mu;
+
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(Point2 p1, Point2 p2)
-      => System.Math.Abs(p2.X - p1.X) + System.Math.Abs(p2.Y - p1.Y);
+      => ManhattanLength(p2 - p1);
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static int ManhattanLength(Point2 p)
+      => System.Math.Abs(p.X) + System.Math.Abs(p.Y);
+
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point2 MultiplyCeiling(Point2 p, double value)
       => new Point2(System.Convert.ToInt32(System.Math.Ceiling(p.X * value)), System.Convert.ToInt32(System.Math.Ceiling(p.Y * value)));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point2 MultiplyFloor(Point2 p, double value)
       => new Point2(System.Convert.ToInt32(System.Math.Floor(p.X * value)), System.Convert.ToInt32(System.Math.Floor(p.Y * value)));
+
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
     public static Point2 Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
@@ -146,18 +168,21 @@ namespace Flux.Geometry
         return false;
       }
     }
+
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static Point2 PerpendicularCcw(Point2 p)
       => new Point2(-p.Y, p.X);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     public static Point2 PerpendicularCw(Point2 p)
       => new Point2(p.Y, -p.X);
+
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point2 FromRandom(int toExclusiveX, int toExclusiveY)
       => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static Point2 FromRandomZero(int toExclusiveX, int toExclusiveY)
       => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
     public static Size2 ToSize2(Point2 point)
       => new Size2(point.X, point.Y);

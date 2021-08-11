@@ -3,8 +3,8 @@ using System.Linq;
 namespace Flux.Geometry
 {
   public struct Polygon
-    : System.IEquatable<Polygon>,
-    I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
+    : System.IEquatable<Polygon>
+    //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
   {
     public static readonly Polygon Empty;
 
@@ -42,27 +42,27 @@ namespace Flux.Geometry
       }
     }
 
-    /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    public double GetSurfaceAreaSigned()
-      => Vertices.ComputeAreaSigned();
-    /// <summary>The surface area of the polygon.</summary>
-    public double Get2DSurfaceArea()
-      => Vertices.ComputeArea();
+    ///// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    //public double GetSurfaceAreaSigned()
+    //  => Vertices.ComputeAreaSigned();
+    ///// <summary>The surface area of the polygon.</summary>
+    //public double Get2DSurfaceArea()
+    //  => Vertices.ComputeArea();
 
-    /// <summary>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public System.Numerics.Vector3 GetSurfaceCentroid()
-      => Vertices.ComputeCentroid();
-    //public (double x, double y) GetSurfaceCentroid()
-    //  => Vertices.ComputeCentroid() is var c ? (c.X, c.Y) : throw new System.ArithmeticException();
+    ///// <summary>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    //public System.Numerics.Vector3 GetSurfaceCentroid()
+    //  => Vertices.ComputeCentroid();
+    ////public (double x, double y) GetSurfaceCentroid()
+    ////  => Vertices.ComputeCentroid() is var c ? (c.X, c.Y) : throw new System.ArithmeticException();
 
-    /// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon).</summary>
-    //  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
-    public System.Numerics.Vector3 GetSurfaceNormal()
-      => Vertices.ComputeNormal();
+    ///// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon).</summary>
+    ////  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
+    //public System.Numerics.Vector3 GetSurfaceNormal()
+    //  => Vertices.ComputeNormal();
 
-    /// <summary>Compute the perimeter length of the polygon.</summary>
-    public double Get2DSurfacePerimeter()
-      => Vertices.ComputePerimeter();
+    ///// <summary>Compute the perimeter length of the polygon.</summary>
+    //public double Get2DSurfacePerimeter()
+    //  => Vertices.ComputePerimeter();
 
     #region Static methods
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>

@@ -16,7 +16,7 @@ namespace Flux.Geometry.Hexagon
         new Hex(0, 1, -1),
       };
 
-    public static readonly Hex Empty;
+    public static readonly Hex Zero;
 
     public readonly int Q;
     public readonly int R;
@@ -33,9 +33,6 @@ namespace Flux.Geometry.Hexagon
     public Hex(int q, int r)
       : this(q, r, -q - r)
     { }
-
-    public bool IsEmpty
-      => Equals(Empty);
 
     #region Static methods
     /// <summary>Returns a new hex representing the sum of the two specified hex vectors.</summary>

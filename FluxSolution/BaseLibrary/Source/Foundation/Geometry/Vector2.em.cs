@@ -137,6 +137,17 @@ namespace Flux
     public static Geometry.Vector2 PerpendicularCw(this Geometry.Vector2 source)
       => new Geometry.Vector2(source.Y, -source.X);
 
+    /// <summary>Perpendicular distance to the to the line.</summary>
+    public static double PerpendicularDistanceToLine(this Geometry.Vector2 source, Geometry.Line line)
+    {
+      var a = new Geometry.Vector2(line.X1, line.Y1);
+      var b = new Geometry.Vector2(line.X2, line.Y2);
+
+      var ab = b - a;
+
+      return (ab * (source - a)).EuclideanLength() / ab.EuclideanLength();
+    }
+
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static int SideTest(this Geometry.Vector2 source, Geometry.Vector2 a, Geometry.Vector2 b)
       => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (a.X - b.X) * (source.Y - b.Y));
@@ -150,5 +161,12 @@ namespace Flux
 
       return source * System.Math.Cos(theta) + (target - source * dot).Normalize() * System.Math.Sin(theta);
     }
+
+    /// <summary>Creates a new Point2 from the rounded components in the vector.</summary>
+    public static Geometry.Point2 ToPoint2(this Geometry.Vector2 source)
+      => new Geometry.Point2(System.Convert.ToInt32(source.X), System.Convert.ToInt32(source.Y));
+    /// <summary>Creates a new Point2 from the rounded components in the vector.</summary>
+    public static System.Numerics.Vector2 ToVector2(this Geometry.Vector2 source)
+      => new System.Numerics.Vector2((float)source.X, (float)source.Y);
   }
 }

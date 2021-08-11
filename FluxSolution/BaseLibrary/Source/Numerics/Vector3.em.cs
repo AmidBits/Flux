@@ -329,9 +329,8 @@ namespace Flux
       }
     }
 
-    /// <summary>Convert a 3D vector to a 2D vector.</summary>
-    public static System.Numerics.Vector2 ToVector2(this System.Numerics.Vector3 source)
-      => new System.Numerics.Vector2(source.X, source.Y);
+    public static Geometry.Point3 ToPoint3(this System.Numerics.Vector3 source)
+      => new Geometry.Point3(System.Convert.ToInt32(source.X), System.Convert.ToInt32(source.Y), System.Convert.ToInt32(source.Z));
 
     /// <summary>Create a new vector by computing the vector triple product (Lagrange's formula), i.e. the cross product of one vector with the cross product of the other two.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>

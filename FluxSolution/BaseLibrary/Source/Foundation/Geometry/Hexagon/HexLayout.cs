@@ -3,8 +3,6 @@ namespace Flux.Geometry.Hexagon
   public struct HexLayout
     : System.IEquatable<HexLayout>
   {
-    public static readonly HexLayout Empty;
-
     public readonly Geometry.Size2 Size;
     public readonly Geometry.Point2 Origin;
     public readonly HexOrientation Orientation;

@@ -43,10 +43,10 @@ namespace Foundation
     {
       var geometry = new Flux.Geometry.Line(5, 7, 11, 13);
 
-      Assert.AreEqual(5, geometry.V1.X);
-      Assert.AreEqual(7, geometry.V1.Y);
-      Assert.AreEqual(11, geometry.V2.X);
-      Assert.AreEqual(13, geometry.V2.Y);
+      Assert.AreEqual(5, geometry.X1);
+      Assert.AreEqual(7, geometry.Y1);
+      Assert.AreEqual(11, geometry.X2);
+      Assert.AreEqual(13, geometry.Y2);
     }
 
     [TestMethod]

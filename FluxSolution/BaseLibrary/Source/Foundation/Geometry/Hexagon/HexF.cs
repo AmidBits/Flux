@@ -3,7 +3,7 @@ namespace Flux.Geometry.Hexagon
   public struct HexF
     : System.IEquatable<HexF>
   {
-    public static readonly HexF Empty;
+    public static readonly HexF Zero;
 
     public readonly double Q;
     public readonly double R;

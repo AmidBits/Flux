@@ -109,5 +109,8 @@ namespace Flux
     ///// <see cref="https://www.redblobgames.com/grids/hexagons/"/>
     //public static Vector2I AsHexagonCubeToDoubleWidth(this Vector3I source)
     //  => new Vector2I(2 * source.X + source.Z, source.Z);
+
+    public static System.Numerics.Vector3 ToVector3(this Geometry.Point3 source)
+      => new System.Numerics.Vector3(source.X, source.Y, source.Z);
   }
 }

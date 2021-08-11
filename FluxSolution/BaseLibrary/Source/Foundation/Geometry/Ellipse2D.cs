@@ -4,7 +4,7 @@ namespace Flux.Geometry
     : System.IEquatable<Ellipse2D>,
     I2DSurfaceArea, I2DSurfacePerimeter
   {
-    public static readonly Ellipse2D Empty;
+    public static readonly Ellipse2D Zero;
 
     /// <summary>The width (X axis) of the ellipse.</summary>
     public readonly double Width;

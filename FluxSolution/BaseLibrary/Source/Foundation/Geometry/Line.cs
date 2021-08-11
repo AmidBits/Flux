@@ -5,17 +5,18 @@ namespace Flux.Geometry
   {
     public static readonly Line Empty;
 
-    public Vector2 V1;
-    public Vector2 V2;
+    public double X1;
+    public double Y1;
+    public double X2;
+    public double Y2;
 
-    public Line(Vector2 v1, Vector2 v2)
-    {
-      V1 = v1;
-      V2 = v2;
-    }
     public Line(double x1, double y1, double x2, double y2)
-      : this(new Vector2(x1, y1), new Vector2(x2, y2))
-    { }
+    {
+      X1 = x1;
+      Y1 = y1;
+      X2 = x2;
+      Y2 = y2;
+    }
 
     #region Static methods
     public static (double a, double b, double c) GetLineEquationCoefficients(double aX, double aY, double bX, double bY)
@@ -99,16 +100,16 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(Line other)
-      => V1 == other.V1 && V2 == other.V2;
+      => X1 == other.X1 && Y1 == other.Y1 && X2 == other.X2 && Y2 == other.Y2;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Line o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(V1, V2);
+      => System.HashCode.Combine(X1, Y1, X2, Y2);
     public override string? ToString()
-      => $"<{nameof(Line)} {V1}, {V2}>";
+      => $"<{nameof(Line)}: {X1}, {Y1}, {X2}, {Y2}>";
     #endregion Object overrides
   }
 }
