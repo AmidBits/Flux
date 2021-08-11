@@ -1,4 +1,4 @@
-﻿namespace Flux.Numerics
+﻿namespace Flux
 {
   public static partial class BitOps
   {

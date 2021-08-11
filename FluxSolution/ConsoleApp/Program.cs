@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Buffers;
 using System.Linq;
-using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"

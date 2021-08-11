@@ -12,7 +12,7 @@
 
 			if (number > 0)
 			{
-				var bitLength = Numerics.BitOps.BitLength(number);
+				var bitLength = BitOps.BitLength(number);
 
 				var root = System.Numerics.BigInteger.One << (bitLength >> 1);
 
