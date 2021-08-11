@@ -445,7 +445,7 @@ namespace Wormhole
 
 			private static Flux.Data.TsqlName _logTableName;
 			public static Flux.Data.TsqlName LogTableName
-				=> _logTableName.IsEmpty ? (_logTableName = Flux.Data.TsqlName.Parse(System.Configuration.ConfigurationManager.AppSettings[nameof(LogTableName)] ?? throw new System.ArgumentOutOfRangeException(nameof(LogTableName)))) : _logTableName;
+				=> _logTableName == Flux.Data.TsqlName.Empty ? (_logTableName = Flux.Data.TsqlName.Parse(System.Configuration.ConfigurationManager.AppSettings[nameof(LogTableName)] ?? throw new System.ArgumentOutOfRangeException(nameof(LogTableName)))) : _logTableName;
 
 			private static string m_logScript;
 			public static string LogScript
