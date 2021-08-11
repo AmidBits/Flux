@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Data
 {
-  public static partial class Xtensions
+  public static partial class ExtensionMethods
   {
     /// System.Data.SqlClient is not in .NetStandard OBVIOUSLY! :)
     /// static System.Reflection.FieldInfo _rowsCopiedField = null;
@@ -23,22 +23,41 @@ namespace Flux.Data
   public struct TsqlName
     : System.IEquatable<TsqlName>
   {
+    public const string CsApplicationName = @"Application Name";
+    public const string CsDatabase = @"Database";
+    public const string CsDataSource = @"Data Source";
+    public const string CsDriver = @"Driver";
+    public const string CsInitialCatalog = @"Initial Catalog";
+    public const string CsIntegratedSecurity = @"Integrated Security";
+    public const string CsProvider = @"Provider";
+    public const string CsServer = @"Server";
+    public const string CsTrustedConnection = @"Trusted_Connection";
+    public const string CsWorkstationID = @"Workstation ID";
+
     public static readonly TsqlName Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private readonly string[] m_parts;
 
-    /// <summary>Returns the sql instance.</summary>
-    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.TsqlUnenquote(); }
-    /// <summary>Returns the sql instance qouted.</summary>
-    public string ServerNameQuoted
-      => m_parts[0].TsqlEnquote();
+    public TsqlName(string serverName, string databaseName, string schemaName, string objectName)
+    {
+      m_parts = new string[4] { serverName.TsqlUnenquote(), databaseName.TsqlUnenquote(), schemaName.TsqlUnenquote(), objectName.TsqlUnenquote() };
+
+      ApplicationName = AssemblyInfo.Entry.Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
+      WorkstationID = System.Environment.MachineName;
+    }
+
+    /// <summary></summary>
+    public string? ApplicationName { get; set; }
 
     /// <summary>Returns the database name.</summary>
     public string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.TsqlUnenquote(); }
     /// <summary>Returns the database name quoted.</summary>
     public string DatabaseNameQuoted
       => m_parts[1].TsqlEnquote();
+
+    /// <summary></summary>
+    public TsqlName DefaultMergeName
+      => new TsqlName() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
 
     /// <summary>Returns the schema name.</summary>
     public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.TsqlUnenquote(); }
@@ -52,31 +71,11 @@ namespace Flux.Data
     public string ObjectNameQuoted
       => m_parts[3].TsqlEnquote();
 
-    public string QualifiedName(int count)
-      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count)) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
-    public string QualifiedNameQuoted(int count)
-      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.TsqlEnquote())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
-
-    /// <summary></summary>
-    public string? ApplicationName { get; set; }
-
-    /// <summary></summary>
-    public TsqlName DefaultMergeName
-      => new TsqlName() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
-
-    /// <summary></summary>
-    public string? WorkstationID { get; set; }
-
-    public const string CsApplicationName = @"Application Name";
-    public const string CsDatabase = @"Database";
-    public const string CsDataSource = @"Data Source";
-    public const string CsDriver = @"Driver";
-    public const string CsInitialCatalog = @"Initial Catalog";
-    public const string CsIntegratedSecurity = @"Integrated Security";
-    public const string CsProvider = @"Provider";
-    public const string CsServer = @"Server";
-    public const string CsTrustedConnection = @"Trusted_Connection";
-    public const string CsWorkstationID = @"Workstation ID";
+    /// <summary>Returns the sql instance.</summary>
+    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.TsqlUnenquote(); }
+    /// <summary>Returns the sql instance qouted.</summary>
+    public string ServerNameQuoted
+      => m_parts[0].TsqlEnquote();
 
     /// <summary></summary>
     /// <remarks>return $"Driver=SQL Server;Server={ServerName};Database={DatabaseName};Trusted_Connection=Yes;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
@@ -138,14 +137,15 @@ namespace Flux.Data
       }
     }
 
-    public TsqlName(string serverName, string databaseName, string schemaName, string objectName)
-    {
-      m_parts = new string[4] { serverName.TsqlUnenquote(), databaseName.TsqlUnenquote(), schemaName.TsqlUnenquote(), objectName.TsqlUnenquote() };
+    /// <summary></summary>
+    public string? WorkstationID { get; set; }
 
-      ApplicationName = AssemblyInfo.Entry.Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
-      WorkstationID = System.Environment.MachineName;
-    }
+    public string QualifiedName(int count)
+      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count)) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
+    public string QualifiedNameQuoted(int count)
+      => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.TsqlEnquote())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
 
+    #region Static methods
     private static readonly System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new System.Text.RegularExpressions.Regex(@"(?<!\[[^\]])\.(?![^\[]*\])");
 
     public static TsqlName Parse(string qualifiedName)
@@ -171,23 +171,28 @@ namespace Flux.Data
       result = default;
       return false;
     }
+    #endregion Static methods
 
-    // Operators
+    #region Overloaded operators
     public static bool operator ==(TsqlName left, TsqlName right)
       => left.Equals(right);
     public static bool operator !=(TsqlName left, TsqlName right)
       => !left.Equals(right);
+    #endregion Overloaded operators
 
+    #region Implemented interfaces
     // System.IEquatable<SqlName>
     public bool Equals(TsqlName other)
       => ToString() == other.ToString();
+    #endregion Implemented interfaces
 
-    // Object overrides
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is TsqlName o && Equals(o);
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
       => QualifiedNameQuoted(4);
+    #endregion Object overrides
   }
 }

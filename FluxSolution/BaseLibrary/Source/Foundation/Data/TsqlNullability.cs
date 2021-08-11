@@ -3,19 +3,20 @@ namespace Flux.Data
   public struct TsqlNullability
     : System.IEquatable<TsqlNullability>
   {
+    public const string CsNotNull = @"NOT NULL";
+    public const string CsNull = @"NULL";
+
     public static TsqlNullability NotNull
       => new TsqlNullability(false);
     public static TsqlNullability Null
       => new TsqlNullability(true);
 
-    public const string CsNotNull = @"NOT NULL";
-    public const string CsNull = @"NULL";
-
-    public bool IsNullable { get; private set; }
+    public readonly bool IsNullable;
 
     private TsqlNullability(bool isNullable)
       => IsNullable = isNullable;
 
+    #region Static methods
     public static TsqlNullability FromBoolean(bool value)
       => value ? Null : NotNull;
     public static TsqlNullability Parse(string expression)
@@ -41,6 +42,7 @@ namespace Flux.Data
       result = default;
       return false;
     }
+    #endregion Static methods
 
     #region Overloaded operators
     public static bool operator ==(TsqlNullability left, TsqlNullability right)
