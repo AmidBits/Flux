@@ -23,7 +23,7 @@ namespace ConsoleApp
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
     }
 
-    #region Serial vs. Parallel Loops
+    #region Serial vs. Parallel loops
     //static void RegularForLoop(int taskCount = 10, double taskLoad = 1)
     //{
     //  //var startDateTime = DateTime.Now;
@@ -62,8 +62,9 @@ namespace ConsoleApp
     //    total += i;
     //  return total;
     //}
-    #endregion Serial vs. Parallel Loops
+    #endregion Serial vs. Parallel loops
 
+    #region Main method
     static void Main(string[] args)
     {
       var originalOutputEncoding = System.Console.OutputEncoding;
@@ -89,5 +90,6 @@ namespace ConsoleApp
       System.Console.WriteLine($"{System.Environment.NewLine}Press any key to exit...");
       System.Console.ReadKey();
     }
+    #endregion Main method
   }
 }

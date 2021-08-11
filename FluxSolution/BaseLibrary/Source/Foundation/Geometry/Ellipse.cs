@@ -1,10 +1,10 @@
 namespace Flux.Geometry
 {
-  public struct Ellipse2D
-    : System.IEquatable<Ellipse2D>,
+  public struct Ellipse
+    : System.IEquatable<Ellipse>,
     I2DSurfaceArea, I2DSurfacePerimeter
   {
-    public static readonly Ellipse2D Zero;
+    public static readonly Ellipse Zero;
 
     /// <summary>The width (X axis) of the ellipse.</summary>
     public readonly double Width;
@@ -13,17 +13,17 @@ namespace Flux.Geometry
     /// <summary>The angle (in radians) of rotational tilt.</summary>
     public readonly double Angle;
 
-    public Ellipse2D(double width, double height, double angle)
+    public Ellipse(double width, double height, double angle)
     {
       Width = width;
       Height = height;
       Angle = angle;
     }
-    public Ellipse2D(Size2 size, double angle)
+    public Ellipse(Size2 size, double angle)
       : this(size.Width, size.Height, angle)
     { }
     /// <summary>As a circle.</summary>
-    public Ellipse2D(double radius, double angle)
+    public Ellipse(double radius, double angle)
       : this(radius * 2, radius * 2, angle)
     { }
 
@@ -38,9 +38,9 @@ namespace Flux.Geometry
       => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b), 2) / System.Math.Pow(System.Math.Max(a, b), 2));
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static Ellipse2D FromCartesian(double x, double y)
-      => new Ellipse2D(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    public static System.Numerics.Vector2 FromEllipse(Ellipse2D ellipse)
+    public static Ellipse FromCartesian(double x, double y)
+      => new Ellipse(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+    public static System.Numerics.Vector2 FromEllipse(Ellipse ellipse)
       => new System.Numerics.Vector2((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
@@ -92,21 +92,21 @@ namespace Flux.Geometry
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Ellipse2D a, Ellipse2D b)
+    public static bool operator ==(Ellipse a, Ellipse b)
       => a.Equals(b);
-    public static bool operator !=(Ellipse2D a, Ellipse2D b)
+    public static bool operator !=(Ellipse a, Ellipse b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(Ellipse2D other)
+    public bool Equals(Ellipse other)
       => Width == other.Width && Height == other.Height && Angle == other.Angle;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Ellipse2D o && Equals(o);
+      => obj is Ellipse o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()

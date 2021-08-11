@@ -31,7 +31,7 @@ namespace Foundation
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.Geometry.Ellipse2D(5, 7, 11);
+      var geometry = new Flux.Geometry.Ellipse(5, 7, 11);
 
       Assert.AreEqual(11, geometry.Angle);
       Assert.AreEqual(7, geometry.Height);

@@ -378,8 +378,8 @@ namespace Flux
       }
     }
 
-    public static Geometry.Ellipse2D ToEllipse(this System.Numerics.Vector2 vector2)
-      => new Geometry.Ellipse2D(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
+    public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
+      => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
     public static Geometry.Point2 ToPoint2(this System.Numerics.Vector2 source)
       => new Geometry.Point2(System.Convert.ToInt32(source.X), System.Convert.ToInt32(source.Y));
