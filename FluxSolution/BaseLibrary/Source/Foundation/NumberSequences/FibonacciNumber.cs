@@ -1,13 +1,13 @@
 namespace Flux.Numerics
 {
   public class FibonacciNumber
-    : INumberSequence<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence
     /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
     {
       var n1 = System.Numerics.BigInteger.Zero;
       var n2 = System.Numerics.BigInteger.One;
@@ -21,12 +21,6 @@ namespace Flux.Numerics
         n2 += n1;
       }
     }
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

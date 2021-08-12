@@ -1,6 +1,6 @@
 namespace Flux.Dsp.WaveFilter
 {
-  public class TripleEQ
+  public class TripleEq
     : IWaveFilterMono, IWaveProcessorMono
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
@@ -29,7 +29,7 @@ namespace Flux.Dsp.WaveFilter
     private double m_midGain;
     public double GainMPF { get => m_midGain; set => m_midGain = value; }
 
-    public TripleEQ(double lpfCutoff = 880.0, double hpfCutoff = 5000.0, double sampleRate = 44100.0)
+    public TripleEq(double lpfCutoff = 880.0, double hpfCutoff = 5000.0, double sampleRate = 44100.0)
     {
       m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * (lpfCutoff / sampleRate));
       m_hpfCutoff = 2 * System.Math.Sin(System.Math.PI * (hpfCutoff / sampleRate));

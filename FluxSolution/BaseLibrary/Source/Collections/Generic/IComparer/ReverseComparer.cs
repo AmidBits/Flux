@@ -3,10 +3,10 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static System.Collections.Generic.IComparer<T> CreateReverseComparer<T>(this System.Collections.Generic.IComparer<T> source)
-      => new Collections.Generic.ReverseComparer<T>(source);
+      => new DataStructures.Generic.ReverseComparer<T>(source);
   }
 
-  namespace Collections.Generic
+  namespace DataStructures.Generic
   {
     public sealed class ReverseComparer<T>
       : System.Collections.Generic.Comparer<T>

@@ -3,19 +3,13 @@ using System.Linq;
 namespace Flux.Numerics
 {
   public class PerrinNumber
-    : INumberSequence<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetPerrinNumbers();
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

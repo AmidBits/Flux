@@ -3,16 +3,12 @@ using System.Linq;
 namespace Flux.Numerics
 {
   public class MersenneNumber
-  : INumberSequence<System.Numerics.BigInteger>
+  : ASequencedNumbers<System.Numerics.BigInteger>
   {
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
-
+    // INumberSequence
     /// <summary>Results in a sequence of mersenne numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetMersenneNumbers();
 
     /// <summary>Results in the mersenne number for the specified number.</summary>

@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public class VanEckSequence
-  : INumberSequence<System.Numerics.BigInteger>
+  : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartWith { get; set; }
 
@@ -13,14 +13,8 @@ namespace Flux.Numerics
     /// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetVanEckSequence(StartWith);
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

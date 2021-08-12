@@ -6,7 +6,18 @@ namespace Flux.Dsp.WaveFilter
 	public sealed class BiQuad
     : IWaveFilterMono, IWaveProcessorMono
   {
-    public FrequencyFunction FilterType { get; private set; }
+    public enum BiQuadFrequencyFunction
+    {
+      BandPass = Dsp.FrequencyFunction.BandPass,
+      HighPass = Dsp.FrequencyFunction.HighPass,
+      HighShelf = Dsp.FrequencyFunction.HighShelf,
+      LowPass = Dsp.FrequencyFunction.LowPass,
+      LowShelf = Dsp.FrequencyFunction.LowShelf,
+      Notch = Dsp.FrequencyFunction.Notch,
+      Peak = Dsp.FrequencyFunction.Peak,
+    }
+
+    public BiQuadFrequencyFunction Function { get; private set; }
 
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
@@ -25,11 +36,11 @@ namespace Flux.Dsp.WaveFilter
     /// <summary>Sets the sample rate used for filter calculations.</summary>
     public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_Q, m_gain, value); }
 
-    public BiQuad(FrequencyFunction frequencyFunction, double cutoff, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
+    public BiQuad(BiQuadFrequencyFunction frequencyFunction, double cutoff, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
     {
       ClearState();
 
-      FilterType = frequencyFunction;
+      Function = frequencyFunction;
 
       SetCoefficients(cutoff, Q, gain, sampleRate);
     }
@@ -53,39 +64,6 @@ namespace Flux.Dsp.WaveFilter
       a2 = -a0;
       b1 = 2.0 * (kk - 1.0) * norm;
       b2 = (1.0 - kQ + kk) * norm;
-    }
-    private void SetCoefficientsLowPass()
-    {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
-
-      a0 = kk * norm;
-      a1 = 2.0 * a0;
-      a2 = a0;
-      b1 = 2.0 * (kk - 1.0) * norm;
-      b2 = (1.0 - kQ + kk) * norm;
-    }
-    private void SetCoefficientsLowShelf()
-    {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
-
-      if (m_gain >= 0) // boost
-      {
-        var norm = 1.0 / (1.0 + sqrt2k + kk);
-        a0 = (1.0 + sqrt2vk + vkk) * norm;
-        a1 = 2.0 * (vkk - 1.0) * norm;
-        a2 = (1.0 - sqrt2vk + vkk) * norm;
-        b1 = 2.0 * (kk - 1.0) * norm;
-        b2 = (1.0 - sqrt2k + kk) * norm;
-      }
-      else // cut
-      {
-        var norm = 1.0 / (1.0 + sqrt2vk + vkk);
-        a0 = (1.0 + sqrt2k + kk) * norm;
-        a1 = 2.0 * (kk - 1.0) * norm;
-        a2 = (1.0 - sqrt2k + kk) * norm;
-        b1 = 2.0 * (vkk - 1.0) * norm;
-        b2 = (1.0 - sqrt2vk + vkk) * norm;
-      }
     }
     private void SetCoefficientsHighPass()
     {
@@ -118,6 +96,39 @@ namespace Flux.Dsp.WaveFilter
         a2 = (1.0 - sqrt2k + kk) * norm;
         b1 = 2.0 * (kk - v) * norm;
         b2 = (v - sqrt2vk + kk) * norm;
+      }
+    }
+    private void SetCoefficientsLowPass()
+    {
+      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
+
+      a0 = kk * norm;
+      a1 = 2.0 * a0;
+      a2 = a0;
+      b1 = 2.0 * (kk - 1.0) * norm;
+      b2 = (1.0 - kQ + kk) * norm;
+    }
+    private void SetCoefficientsLowShelf()
+    {
+      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
+
+      if (m_gain >= 0) // boost
+      {
+        var norm = 1.0 / (1.0 + sqrt2k + kk);
+        a0 = (1.0 + sqrt2vk + vkk) * norm;
+        a1 = 2.0 * (vkk - 1.0) * norm;
+        a2 = (1.0 - sqrt2vk + vkk) * norm;
+        b1 = 2.0 * (kk - 1.0) * norm;
+        b2 = (1.0 - sqrt2k + kk) * norm;
+      }
+      else // cut
+      {
+        var norm = 1.0 / (1.0 + sqrt2vk + vkk);
+        a0 = (1.0 + sqrt2k + kk) * norm;
+        a1 = 2.0 * (kk - 1.0) * norm;
+        a2 = (1.0 - sqrt2k + kk) * norm;
+        b1 = 2.0 * (vkk - 1.0) * norm;
+        b2 = (1.0 - sqrt2vk + vkk) * norm;
       }
     }
     private void SetCoefficientsNotch()
@@ -165,31 +176,31 @@ namespace Flux.Dsp.WaveFilter
       m_gain = gain;
       m_sampleRate = sampleRate;
 
-      switch (FilterType)
+      switch (Function)
       {
-        case FrequencyFunction.BandPass:
+        case BiQuadFrequencyFunction.BandPass:
           SetCoefficientsBandPass();
           break;
-        case FrequencyFunction.LowPass:
-          SetCoefficientsLowPass();
-          break;
-        case FrequencyFunction.LowShelf:
-          SetCoefficientsLowShelf();
-          break;
-        case FrequencyFunction.HighPass:
+        case BiQuadFrequencyFunction.HighPass:
           SetCoefficientsHighPass();
           break;
-        case FrequencyFunction.HighShelf:
+        case BiQuadFrequencyFunction.HighShelf:
           SetCoefficientsHighShelf();
           break;
-        case FrequencyFunction.Notch:
+        case BiQuadFrequencyFunction.LowPass:
+          SetCoefficientsLowPass();
+          break;
+        case BiQuadFrequencyFunction.LowShelf:
+          SetCoefficientsLowShelf();
+          break;
+        case BiQuadFrequencyFunction.Notch:
           SetCoefficientsNotch();
           break;
-        case FrequencyFunction.Peak:
+        case BiQuadFrequencyFunction.Peak:
           SetCoefficientsPeak();
           break;
         default:
-          throw new System.NotImplementedException($"{nameof(FilterType)}={FilterType}");
+          throw new System.NotImplementedException($"{nameof(Function)}={Function}");
       }
 
       // double k = System.Math.Tan(System.Math.PI * (cutoff / sampleRate));

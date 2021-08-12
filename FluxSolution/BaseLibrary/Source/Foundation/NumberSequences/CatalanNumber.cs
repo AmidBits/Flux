@@ -1,23 +1,17 @@
 namespace Flux.Numerics
 {
   public class CatalanNumber
-  : INumberSequence<System.Numerics.BigInteger>
+  : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
     {
       for (var number = System.Numerics.BigInteger.Zero; ; number++)
         yield return GetCatalanNumber(number);
     }
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

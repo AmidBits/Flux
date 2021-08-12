@@ -1,10 +1,10 @@
 namespace Flux.Numerics
 {
   public class BellNumber
-    : INumberSequence<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
     {
       var current = new System.Numerics.BigInteger[1] { 1 };
 
@@ -20,11 +20,11 @@ namespace Flux.Numerics
       }
     }
 
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
+    //// IEnumerable
+    //public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+    //  => GetSequence().GetEnumerator();
+    //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    //  => GetEnumerator();
   }
 
   //public static partial class Maths

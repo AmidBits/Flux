@@ -99,8 +99,10 @@
     //public System.TimeSpan GetDelay()
     //  => (TransmitTimestamp - ReferenceTimestamp) - (ReceiveTimestamp - OriginateTimestamp);
 
-    public System.DateTime TransmittedDateTime
-      => new System.DateTime(1900, 1, 1).AddSeconds(TransmitTimestampSeconds).AddMilliseconds(TransmitTimestampFraction * 1000UL / 0x100000000UL).AddHours(-7);
+    public System.DateTime TransmittedDateTimeLocal
+      => TransmittedDateTimeUtc.ToLocalTime();
+    public System.DateTime TransmittedDateTimeUtc
+      => new System.DateTime(1900, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(TransmitTimestampSeconds).AddMilliseconds(TransmitTimestampFraction * 1000UL / 0x100000000UL);
 
     public System.DateTime Request(string ntpHost)
     {
@@ -113,7 +115,7 @@
         socket.Receive(m_data);
       }
 
-      return TransmittedDateTime;
+      return TransmittedDateTimeLocal;
     }
     public System.DateTime Request()
     {

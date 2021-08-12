@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Numerics
 {
   public class PrimeNumber
-    : INumberSequence<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     #region Constants
 
@@ -34,14 +34,8 @@ namespace Flux.Numerics
     #endregion Constants
 
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetAscendingPrimes(2);
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 
@@ -472,7 +466,7 @@ namespace Flux.Numerics
   }
 
   public class PrimeNumberReverse
-    : INumberSequence<System.Numerics.BigInteger>
+    : ISequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartAt { get; }
 
@@ -480,12 +474,12 @@ namespace Flux.Numerics
       => StartAt = startAt;
 
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => PrimeNumber.GetDescendingPrimes(StartAt);
 
     // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
+      => GetNumberSequence().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

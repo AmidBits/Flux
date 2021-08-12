@@ -41,11 +41,11 @@ namespace Flux.Dsp
     public static double StereoToMono(double sampleL, double sampleR)
       => ((sampleL + sampleR) / 2);
 
-    /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals.</summary>
+    /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals. This is a stab, not a/the mathematical solution.</summary>
     /// <param name="sampleFl">Front left.</param>
     /// <param name="sampleFr">Front right.</param>
     /// <see cref="https://hydrogenaud.io/index.php?PHPSESSID=1n6jd2rvvcdc1g2cjmdbml0g17&topic=17267.msg174102#msg174102"/>
     public static (double sampleFl, double sampleFc, double sampleFr) FlFr2FlFcFr(double sampleFl, double sampleFr)
-      => (sampleFl - 0.5 * sampleFr, (sampleFl + sampleFr) * 0.5, sampleFr - 0.5 * sampleFl);
+      => (sampleFl - sampleFr / 2, (sampleFl + sampleFr) / 2, sampleFr - sampleFl / 2);
   }
 }

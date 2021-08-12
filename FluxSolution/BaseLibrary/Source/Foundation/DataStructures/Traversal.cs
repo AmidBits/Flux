@@ -1,4 +1,4 @@
-namespace Flux.Collections
+namespace Flux.DataStructures
 {
 	public static partial class Traversal
 	{

@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public class Divisors
-    : INumberSequence<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; set; }
 
@@ -9,14 +9,8 @@ namespace Flux.Numerics
       => Number = number;
 
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetDivisors(Number);
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

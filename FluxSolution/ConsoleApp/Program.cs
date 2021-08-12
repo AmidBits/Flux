@@ -12,9 +12,12 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      foreach (var x in new Flux.Numerics.MoserDeBruijnSequence(10))
+        System.Console.WriteLine(x);
+
       var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       var cv = new Flux.Model.GameOfLife.Console(game);
-      cv.Run(300);
+      cv.Run(100);
       return;
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));

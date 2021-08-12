@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public class MoserDeBruijnSequence
-  : INumberSequence<System.Numerics.BigInteger>
+  : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public int MaxNumber { get; set; }
 
@@ -11,14 +11,8 @@ namespace Flux.Numerics
     // INumberSequence
     /// <summary>Creates a new sequence with Moser/DeBruijn numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    public override  System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetMoserDeBruijnSequence(MaxNumber);
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 

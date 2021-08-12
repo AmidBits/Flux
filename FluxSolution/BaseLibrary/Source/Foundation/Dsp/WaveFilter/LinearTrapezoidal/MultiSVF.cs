@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>Calculates all filter frequency functions all at once.</summary>
-  public class MultiSVF
+  public class MultiSvf
     : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;
@@ -23,7 +23,7 @@
     public double Notch { get; private set; }
     public double Peak { get; private set; }
 
-    public MultiSVF(double cutoffFrequency, double Q = 0.5, double sampleRate = 44100.0)
+    public MultiSvf(double cutoffFrequency, double Q = 0.5, double sampleRate = 44100.0)
     {
       ClearState();
 

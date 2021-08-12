@@ -1,4 +1,4 @@
-namespace Flux.Collections.Generic
+namespace Flux.DataStructures.Generic
 {
   public class SequenceComparer<T>
     : System.Collections.Generic.IComparer<System.Collections.Generic.IEnumerable<T>>

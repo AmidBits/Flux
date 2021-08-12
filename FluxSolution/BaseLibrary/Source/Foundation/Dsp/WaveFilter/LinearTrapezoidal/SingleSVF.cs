@@ -3,10 +3,10 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <summary>A linear trapezoidal integrated state variable filter (SVF) collection</summary>
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
-  public class SingleSVF
+  public class SingleSvf
     : IWaveFilterMono, IWaveProcessorMono
   {
-    public enum FrequencyFunction
+    public enum SingleSvfFrequencyFunction
     {
       AllPass = Dsp.FrequencyFunction.AllPass,
       BandPass = Dsp.FrequencyFunction.BandPass,
@@ -19,7 +19,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       Peak = Dsp.FrequencyFunction.Peak,
     }
 
-    public FrequencyFunction Function { get; private set; }
+    public SingleSvfFrequencyFunction Function { get; private set; }
 
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
@@ -37,7 +37,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
     /// <summary>Sets the sample rate used for filter calculations.</summary>
     public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_Q, m_gain, value); }
 
-    public SingleSVF(FrequencyFunction frequencyFunction, double cutoffFrequency, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
+    public SingleSvf(SingleSvfFrequencyFunction frequencyFunction, double cutoffFrequency, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
     {
       ClearState();
 
@@ -75,7 +75,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 
       switch (Function)
       {
-        case FrequencyFunction.AllPass:
+        case SingleSvfFrequencyFunction.AllPass:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -83,7 +83,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = -2.0 * k;
           m2 = 0.0;
           break;
-        case FrequencyFunction.BandPass:
+        case SingleSvfFrequencyFunction.BandPass:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -91,7 +91,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = 1.0;
           m2 = 0.0;
           break;
-        case FrequencyFunction.Bell:
+        case SingleSvfFrequencyFunction.Bell:
           A = System.Math.Pow(10.0, gain / 40.0);
           k = 1.0 / (Q * A);
           a1 = 1.0 / (1.0 + g * (g + k));
@@ -101,7 +101,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = k * (A * A - 1.0);
           m2 = 0.0;
           break;
-        case FrequencyFunction.HighPass:
+        case SingleSvfFrequencyFunction.HighPass:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -109,7 +109,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = -k;
           m2 = -1.0;
           break;
-        case FrequencyFunction.HighShelf:
+        case SingleSvfFrequencyFunction.HighShelf:
           A = System.Math.Pow(10.0, gain / 40.0);
           g /= System.Math.Sqrt(A);
           a1 = 1.0 / (1.0 + g * (g + k));
@@ -119,7 +119,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = k * (1.0 - A) * A;
           m2 = (1.0 - A * A);
           break;
-        case FrequencyFunction.LowPass:
+        case SingleSvfFrequencyFunction.LowPass:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -127,7 +127,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = 0.0;
           m2 = 1.0;
           break;
-        case FrequencyFunction.LowShelf:
+        case SingleSvfFrequencyFunction.LowShelf:
           A = System.Math.Pow(10.0, gain / 40.0);
           g /= System.Math.Sqrt(A);
           a1 = 1.0 / (1.0 + g * (g + k));
@@ -137,7 +137,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = k * (A - 1.0);
           m2 = (A * A - 1.0);
           break;
-        case FrequencyFunction.Notch:
+        case SingleSvfFrequencyFunction.Notch:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -145,7 +145,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m1 = -k;
           m2 = 0.0;
           break;
-        case FrequencyFunction.Peak:
+        case SingleSvfFrequencyFunction.Peak:
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -154,7 +154,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m2 = -2;
           break;
         default:
-          throw new System.NotImplementedException();
+          throw new System.NotImplementedException($"{nameof(Function)}={Function}");
       }
     }
 

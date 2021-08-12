@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public class CenteredPolygonalNumber
-    : INumberSequence<int>
+    : ASequencedNumbers<int>
   {
     public int NumberOfSides { get; set; }
 
@@ -12,17 +12,11 @@ namespace Flux.Numerics
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public System.Collections.Generic.IEnumerable<int> GetSequence()
+    public override System.Collections.Generic.IEnumerable<int> GetNumberSequence()
     {
       for (var index = 0; ; index++)
         yield return GetNumber(index, NumberOfSides);
     }
-
-    // IEnumerable
-    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
-      => GetSequence().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
 
     #region Statics
 
@@ -32,7 +26,7 @@ namespace Flux.Numerics
     {
       yield return (1, 1, 1);
 
-      foreach (var v in new CenteredPolygonalNumber(numberOfSides).GetSequence().PartitionTuple2(false, (min, max, index) => (min, max)))
+      foreach (var v in new CenteredPolygonalNumber(numberOfSides).GetNumberSequence().PartitionTuple2(false, (min, max, index) => (min, max)))
         yield return (v.min + 1, v.max, v.max - v.min);
     }
 
