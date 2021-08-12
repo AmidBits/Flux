@@ -12,8 +12,14 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
-      foreach (var x in new Flux.Numerics.MoserDeBruijnSequence(10))
-        System.Console.WriteLine(x);
+      var cc = new Flux.CartesianCoord(10, 15, 20);
+      var pc = cc.ToPolarCoord();
+      var ccpc = pc.ToCartesianCoord();
+      var sc = cc.ToSphericalCoord();
+      var ccsc = sc.ToCartesianCoord();
+      var cy = sc.ToCylindricalCoord();
+      var cysc = cy.ToSphericalCoord();
+      var cycc = cy.ToCartesianCoord();
 
       var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       var cv = new Flux.Model.GameOfLife.Console(game);

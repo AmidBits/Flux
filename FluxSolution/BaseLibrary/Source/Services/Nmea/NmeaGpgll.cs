@@ -7,10 +7,10 @@ namespace Flux.Services.Nmea
       : base(sentence)
     { }
 
-    public Quantity.Latitude Latitude
-      => new Quantity.Latitude(NmeaSentence.ParseDecimalLatitude(m_values[1], m_values[2]));
-    public Quantity.Longitude Longitude
-      => new Quantity.Longitude(NmeaSentence.ParseDecimalLongitude(m_values[3], m_values[4]));
+    public Latitude Latitude
+      => new Latitude(NmeaSentence.ParseDecimalLatitude(m_values[1], m_values[2]));
+    public Longitude Longitude
+      => new Longitude(NmeaSentence.ParseDecimalLongitude(m_values[3], m_values[4]));
     public System.DateTime UtcTime
       => NmeaSentence.ParseUtcTime(m_values[5]);
     public NmeaDataStatus DataStatus

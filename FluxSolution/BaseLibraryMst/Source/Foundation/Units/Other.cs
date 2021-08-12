@@ -35,10 +35,10 @@ namespace Foundation.Units
     [TestMethod]
     public void Cent()
     {
-      var u = new Flux.Quantity.Cent(1);
+      var u = new Flux.Music.Cent(1);
 
       Assert.AreEqual(1, u.Cents);
-      Assert.AreEqual(Flux.Quantity.Cent.FrequencyRatio, u.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Music.Cent.FrequencyRatio, u.ToFrequencyRatio());
     }
 
     [TestMethod]
@@ -46,7 +46,7 @@ namespace Foundation.Units
     {
       var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
 
-      var u = new Flux.Quantity.Latitude(a);
+      var u = new Flux.Latitude(a);
 
       Assert.AreEqual(a.Degree, u.Value);
     }
@@ -56,7 +56,7 @@ namespace Foundation.Units
     {
       var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
 
-      var u = new Flux.Quantity.Longitude(a);
+      var u = new Flux.Longitude(a);
 
       Assert.AreEqual(a.Degree, u.Value);
     }
@@ -64,7 +64,7 @@ namespace Foundation.Units
     [TestMethod]
     public void MidiNote()
     {
-      var u = new Flux.Quantity.MidiNote(69);
+      var u = new Flux.Midi.MidiNote(69);
 
       Assert.AreEqual(69, u.Number);
       Assert.AreEqual(4, u.Octave);
@@ -98,11 +98,11 @@ namespace Foundation.Units
     [TestMethod]
     public void Semitone()
     {
-      var u = new Flux.Quantity.Semitone(1);
+      var u = new Flux.Music.Semitone(1);
 
       Assert.AreEqual(1, u.Semitones);
       Assert.AreEqual(100, u.ToCent().Cents);
-      Assert.AreEqual(Flux.Quantity.Semitone.FrequencyRatio, u.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Music.Semitone.FrequencyRatio, u.ToFrequencyRatio());
     }
   }
 }

@@ -1,9 +1,9 @@
-namespace Flux.Quantity
+namespace Flux
 {
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
-    : System.IComparable<Longitude>, System.IEquatable<Longitude>, IValuedUnit
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -12,12 +12,12 @@ namespace Flux.Quantity
 
     public Longitude(double degree)
       => m_value = Maths.Wrap(degree, MinValue, MaxValue);
-    public Longitude(Angle angle)
+    public Longitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public double Radian
-      => Angle.ConvertDegreeToRadian(m_value);
+      => Quantity.Angle.ConvertDegreeToRadian(m_value);
     public double Value
       => m_value;
 
@@ -30,8 +30,8 @@ namespace Flux.Quantity
     public int GetTheoreticalTimezoneOffset()
       => ComputeTheoreticalTimezoneOffset(m_value);
 
-    public Angle ToAngle()
-      => new Angle(Radian);
+    public Quantity.Angle ToAngle()
+      => new Quantity.Angle(Radian);
 
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
@@ -98,7 +98,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}{Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_value}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

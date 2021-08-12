@@ -1,10 +1,10 @@
-namespace Flux.Quantity
+namespace Flux.Music
 {
   /// <summary>Semitone unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Semitone
-    : System.IComparable<Semitone>, System.IEquatable<Semitone>, IValuedUnit
+    : System.IComparable<Semitone>, System.IEquatable<Semitone>, Quantity.IValuedUnit
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
@@ -20,8 +20,8 @@ namespace Flux.Quantity
       => m_value;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
-    public Frequency ShiftPitch(Frequency frequency)
-      => new Frequency(PitchShift(frequency.Value, m_value));
+    public Quantity.Frequency ShiftPitch(Quantity.Frequency frequency)
+      => new Quantity.Frequency(PitchShift(frequency.Value, m_value));
 
     public Cent ToCent()
       => new Cent(ConvertSemitoneToCent(m_value));

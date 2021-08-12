@@ -33,13 +33,13 @@ namespace Flux.Quantity
     /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
     /// <param name="frequency"></param>
     /// <param name="cents"></param>
-    public static Frequency ComputePitchShift(Frequency frequency, Cent cents)
-      => new Frequency(frequency.Value * Cent.ConvertCentToFrequencyRatio(cents.Cents));
+    public static Frequency ComputePitchShift(Frequency frequency, Music.Cent cents)
+      => new Frequency(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cents.Cents));
     /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
     /// <param name="frequency"></param>
     /// <param name="semitones"></param>
-    public static Frequency ComputePitchShift(Frequency frequency, Semitone semitones)
-      => new Frequency(frequency.Value * Semitone.ConvertSemitoneToFrequencyRatio(semitones.Semitones));
+    public static Frequency ComputePitchShift(Frequency frequency, Music.Semitone semitones)
+      => new Frequency(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitones.Semitones));
     /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
     public static double ComputeSamplesPerCycle(double frequency, double sampleRate)
       => sampleRate / frequency;

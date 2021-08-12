@@ -1,9 +1,9 @@
-namespace Flux.Quantity
+namespace Flux
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90].</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>, IValuedUnit
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -12,34 +12,34 @@ namespace Flux.Quantity
 
     public Latitude(double degree)
       => m_value = Maths.Wrap(degree, MinValue, MaxValue);
-    public Latitude(Angle angle)
+    public Latitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
     public double Radian
-      => Angle.ConvertDegreeToRadian(m_value);
+      => Quantity.Angle.ConvertDegreeToRadian(m_value);
     public double Value
       => m_value;
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
-    public Length GetApproximateLatitudinalHeight()
-      => new Length(ComputeApproximateLatitudinalHeight(Radian));
+    public Quantity.Length GetApproximateLatitudinalHeight()
+      => new Quantity.Length(ComputeApproximateLatitudinalHeight(Radian));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
-    public Length GetApproximateLongitudinalWidth()
-      => new Length(ComputeApproximateLongitudinalWidth(Radian));
+    public Quantity.Length GetApproximateLongitudinalWidth()
+      => new Quantity.Length(ComputeApproximateLongitudinalWidth(Radian));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-    public Length GetApproximateRadius()
-      => new Length(ComputeApproximateRadius(Radian));
+    public Quantity.Length GetApproximateRadius()
+      => new Quantity.Length(ComputeApproximateRadius(Radian));
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectY()
       => System.Math.Clamp(System.Math.Log((System.Math.Tan(System.Math.PI / 4 + Radian / 2))), -System.Math.PI, System.Math.PI);
 
-    public Angle ToAngle()
-      => new Angle(Radian);
+    public Quantity.Angle ToAngle()
+      => new Quantity.Angle(Radian);
 
     #region Static methods
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
@@ -123,7 +123,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}{Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_value}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }
