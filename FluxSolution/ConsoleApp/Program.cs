@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -20,6 +21,7 @@ namespace ConsoleApp
       var cy = sc.ToCylindricalCoord();
       var cysc = cy.ToSphericalCoord();
       var cycc = cy.ToCartesianCoord();
+      return;
 
       var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       var cv = new Flux.Model.GameOfLife.Console(game);
