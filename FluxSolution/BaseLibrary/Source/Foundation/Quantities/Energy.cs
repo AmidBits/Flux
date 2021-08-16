@@ -13,13 +13,25 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Energy(double joule)
-      => m_value = joule;
+    public Energy(double value, EnergyUnit unit = EnergyUnit.Joule)
+    {
+      switch (unit)
+      {
+        case EnergyUnit.Joule:
+          m_value = value;
+          break;
+        case EnergyUnit.ElectronVolt:
+          m_value = value / 1.602176634e-19;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(EnergyUnit unit)
+    public double ToUnitValue(EnergyUnit unit = EnergyUnit.Joule)
     {
       switch (unit)
       {
@@ -33,18 +45,6 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    public static Energy FromUnitValue(EnergyUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case EnergyUnit.Joule:
-          return new Energy(value);
-        case EnergyUnit.ElectronVolt:
-          return new Energy(value / 1.602176634e-19);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

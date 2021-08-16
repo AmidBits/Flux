@@ -31,13 +31,31 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Temperature(double kelvin)
-      => m_value = kelvin;
+    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin)
+    {
+      switch (unit)
+      {
+        case TemperatureUnit.Celsius:
+          m_value = value - CelsiusAbsoluteZero;
+          break;
+        case TemperatureUnit.Fahrenheit:
+          m_value = (value - FahrenheitAbsoluteZero) / 1.8;
+          break;
+        case TemperatureUnit.Kelvin:
+          m_value = value;
+          break;
+        case TemperatureUnit.Rankine:
+          m_value = value / 1.8;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(TemperatureUnit unit)
+    public double ToUnitValue(TemperatureUnit unit = TemperatureUnit.Kelvin)
     {
       switch (unit)
       {
@@ -91,23 +109,6 @@ namespace Flux.Quantity
     /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
     public static double ConvertRankineToFahrenheit(double rankine)
       => rankine - RankineIcePoint;
-
-    public static Temperature FromUnitValue(TemperatureUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case TemperatureUnit.Celsius:
-          return new Temperature(value - CelsiusAbsoluteZero);
-        case TemperatureUnit.Fahrenheit:
-          return new Temperature((value - FahrenheitAbsoluteZero) / 1.8);
-        case TemperatureUnit.Kelvin:
-          return new Temperature(value);
-        case TemperatureUnit.Rankine:
-          return new Temperature(value / 1.8);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
 
     public static string GetUnitSymbol(TemperatureUnit unit)
     {

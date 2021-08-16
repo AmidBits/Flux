@@ -37,10 +37,15 @@ namespace Flux
     }
 
     #region Static methods
-    public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double inclination, double azimuth)
-      => (radius * System.Math.Cos(azimuth) * System.Math.Sin(inclination), radius * System.Math.Sin(azimuth) * System.Math.Cos(inclination), radius * System.Math.Cos(inclination));
+    public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double inclinationRad, double azimuthRad)
+    {
+      var sinInclination = System.Math.Sin(inclinationRad);
+
+      return (radius * System.Math.Cos(azimuthRad) * sinInclination, radius * System.Math.Sin(azimuthRad) * sinInclination, radius * System.Math.Cos(inclinationRad));
+    }
+
     public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double radius, double inclinationRad, double azimuthRad)
-      => (radius * System.Math.Cos(inclinationRad), azimuthRad, radius * System.Math.Sin(inclinationRad));
+      => (radius * System.Math.Sin(inclinationRad), azimuthRad, radius * System.Math.Cos(inclinationRad));
     #endregion Static methods
 
     #region Overloaded operators

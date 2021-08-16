@@ -13,13 +13,25 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Area(double squareMeter)
-      => m_value = squareMeter;
+    public Area(double value, AreaUnit unit = AreaUnit.SquareMeter)
+    {
+      switch (unit)
+      {
+        case AreaUnit.SquareMeter:
+          m_value = value;
+          break;
+        case AreaUnit.Hectare:
+          m_value = value * 10000;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(AreaUnit unit)
+    public double ToUnitValue(AreaUnit unit = AreaUnit.SquareMeter)
     {
       switch (unit)
       {
@@ -38,18 +50,6 @@ namespace Flux.Quantity
     /// <param name="width"></param>
     public static Area From(Length length, Length width)
       => new Area(length.Value * width.Value);
-    public static Area FromUnitValue(AreaUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case AreaUnit.SquareMeter:
-          return new Area(value);
-        case AreaUnit.Hectare:
-          return new Area(value * 10000);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

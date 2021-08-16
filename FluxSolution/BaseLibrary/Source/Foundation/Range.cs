@@ -18,8 +18,6 @@
     public T Low => m_lo;
     public T High => m_hi;
 
-    public bool IsEmpty
-      => Equals(Empty);
     public bool IsValid
        => m_lo.CompareTo(m_hi) < 0;
 

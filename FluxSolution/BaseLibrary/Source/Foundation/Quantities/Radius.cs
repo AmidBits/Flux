@@ -25,13 +25,13 @@ namespace Flux.Quantity
 
     #region Static members
     /// <summary>Create radius from the specified area (of a circle).</summary>
-    public Radius FromArea(double area)
+    public static Radius FromArea(double area)
       => new Radius(System.Math.Sqrt(area / System.Math.PI));
     /// <summary>Create radius from the specified circumference.</summary>
-    public Radius FromCircumference(double circumference)
+    public static Radius FromCircumference(double circumference)
       => new Radius(circumference / Maths.PiX2);
     /// <summary>Create radius from the specified diameter.</summary>
-    public Radius FromDiameter(double diameter)
+    public static Radius FromDiameter(double diameter)
       => new Radius(diameter / System.Math.PI);
     #endregion Static members
 

@@ -16,13 +16,22 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Enplethy(double mole)
-      => m_value = mole;
+    public Enplethy(double value, EnplethyUnit unit = EnplethyUnit.Mole)
+    {
+      switch (unit)
+      {
+        case EnplethyUnit.Mole:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(EnplethyUnit unit)
+    public double ToUnitValue(EnplethyUnit unit = EnplethyUnit.Mole)
     {
       switch (unit)
       {
@@ -34,16 +43,6 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    public static Enplethy FromUnitValue(EnplethyUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case EnplethyUnit.Mole:
-          return new Enplethy(value);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

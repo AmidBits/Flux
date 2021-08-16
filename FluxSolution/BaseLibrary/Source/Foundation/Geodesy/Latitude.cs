@@ -5,13 +5,18 @@ namespace Flux
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit
   {
+    public static Latitude TropicOfCancer
+      => new Latitude(23.43648);
+    public static Latitude TropicOfCapricorn
+      => new Latitude(-23.43648);
+
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
     private readonly double m_value;
 
     public Latitude(double degree)
-      => m_value = Maths.Wrap(degree, MinValue, MaxValue);
+      => m_value = Maths.Fold(degree, MinValue, MaxValue);
     public Latitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }

@@ -24,15 +24,52 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Time(double seconds)
-      => m_value = seconds;
+    public Time(double value, TimeUnit unit = TimeUnit.Second)
+    {
+      switch (unit)
+      {
+        case TimeUnit.Nanosecond:
+          m_value = value / 1000000000;
+          break;
+        case TimeUnit.Microsecond:
+          m_value = value / 1000000;
+          break;
+        case TimeUnit.Millisecond:
+          m_value = value / 1000;
+          break;
+        case TimeUnit.Second:
+          m_value = value;
+          break;
+        case TimeUnit.Minute:
+          m_value = value * 60;
+          break;
+        case TimeUnit.Hour:
+          m_value = value * 3600;
+          break;
+        case TimeUnit.Day:
+          m_value = value * 86400;
+          break;
+        case TimeUnit.Week:
+          m_value = value * 604800;
+          break;
+        case TimeUnit.Fortnight:
+          m_value = value * 1209600;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
+    /// <summary>Creates a new Time instance from the specified <paramref name="timeSpan"/>.</summary>
+    public Time(System.TimeSpan timeSpan)
+      : this(timeSpan.TotalSeconds)
+    { }
 
     public double Value
       => m_value;
 
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_value);
-    public double ToUnitValue(TimeUnit unit)
+    public double ToUnitValue(TimeUnit unit = TimeUnit.Second)
     {
       switch (unit)
       {
@@ -60,35 +97,6 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    /// <summary>Creates a new Time instance from the specified <paramref name="timeSpan"/>.</summary>
-    public static Time From(System.TimeSpan timeSpan)
-      => new Time(timeSpan.TotalSeconds);
-    public static Time FromUnitValue(TimeUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case TimeUnit.Nanosecond:
-          return new Time(value / 1000000000);
-        case TimeUnit.Microsecond:
-          return new Time(value / 1000000);
-        case TimeUnit.Millisecond:
-          return new Time(value / 1000);
-        case TimeUnit.Second:
-          return new Time(value);
-        case TimeUnit.Minute:
-          return new Time(value * 60);
-        case TimeUnit.Hour:
-          return new Time(value * 3600);
-        case TimeUnit.Day:
-          return new Time(value * 86400);
-        case TimeUnit.Week:
-          return new Time(value * 604800);
-        case TimeUnit.Fortnight:
-          return new Time(value * 1209600);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

@@ -3,8 +3,8 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an Azimuth, i.e. a value in the range [0, 359].</summary>
-    public static Quantity.Bearing GetAzimuth(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
-      => new Quantity.Bearing(thirtyTwoWindCompassRose switch
+    public static Quantity.Azimuth GetAzimuth(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
+      => new Quantity.Azimuth(thirtyTwoWindCompassRose switch
       {
         ThirtytwoWindCompassRose.N => 0,
         ThirtytwoWindCompassRose.NbE => 11.25,
@@ -41,16 +41,16 @@ namespace Flux
         _ => throw new System.NotImplementedException(),
       });
 
-    public static Quantity.Bearing GetAzimuth(SixteenWindCompassRose sixteenWindCompassRose)
+    public static Quantity.Azimuth GetAzimuth(SixteenWindCompassRose sixteenWindCompassRose)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)sixteenWindCompassRose);
 
-    public static Quantity.Bearing GetAzimuth(EightWindCompassRose eightWindCompassRose)
+    public static Quantity.Azimuth GetAzimuth(EightWindCompassRose eightWindCompassRose)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)eightWindCompassRose);
 
-    public static Quantity.Bearing GetAzimuth(InterCardinalDirection interCardinalDirection)
+    public static Quantity.Azimuth GetAzimuth(InterCardinalDirection interCardinalDirection)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)interCardinalDirection);
 
-    public static Quantity.Bearing GetAzimuth(CardinalDirection cardinalDirection)
+    public static Quantity.Azimuth GetAzimuth(CardinalDirection cardinalDirection)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)cardinalDirection);
   }
 

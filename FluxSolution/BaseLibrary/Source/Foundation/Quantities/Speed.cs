@@ -28,13 +28,34 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Speed(double metersPerSecond)
-      => m_value = metersPerSecond;
+    public Speed(double value, SpeedUnit unit = SpeedUnit.MetersPerSecond)
+    {
+      switch (unit)
+      {
+        case SpeedUnit.FeetPerSecond:
+          m_value = value * (381.0 / 1250.0);
+          break;
+        case SpeedUnit.KilometersPerHour:
+          m_value = value * (5.0 / 18.0);
+          break;
+        case SpeedUnit.Knots:
+          m_value = value * (1852.0 / 3600.0);
+          break;
+        case SpeedUnit.MetersPerSecond:
+          m_value = value;
+          break;
+        case SpeedUnit.MilesPerHour:
+          m_value = value * (1397.0 / 3125.0);
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(SpeedUnit unit)
+    public double ToUnitValue(SpeedUnit unit = SpeedUnit.MetersPerSecond)
     {
       switch (unit)
       {
@@ -67,24 +88,6 @@ namespace Flux.Quantity
     /// <returns></returns>
     public static Speed From(Length length, Time time)
       => new Speed(length.Value / time.Value);
-    public static Speed FromUnitValue(SpeedUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case SpeedUnit.FeetPerSecond:
-          return new Speed(value * (381.0 / 1250.0));
-        case SpeedUnit.KilometersPerHour:
-          return new Speed(value * (5.0 / 18.0));
-        case SpeedUnit.Knots:
-          return new Speed(value * (1852.0 / 3600.0));
-        case SpeedUnit.MetersPerSecond:
-          return new Speed(value);
-        case SpeedUnit.MilesPerHour:
-          return new Speed(value * (1397.0 / 3125.0));
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

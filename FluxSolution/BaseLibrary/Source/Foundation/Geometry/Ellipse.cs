@@ -110,7 +110,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()
-      => $"<{GetType().Name}: {Width}, {Height}, {Quantity.Angle.FromUnitValue(Quantity.AngleUnit.Radian, Angle)}>";
+      => $"<{GetType().Name}: {Width}, {Height}, {new Quantity.Angle(Angle)}>";
     #endregion Object overrides
   }
 }

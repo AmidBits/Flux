@@ -52,9 +52,6 @@ namespace Flux
     public int Millisecond
       => m_millisecond;
 
-    public bool IsEmpty
-      => Equals(Empty);
-
     /// <summary>Dates on or after 15 Oct 1582 are considered Gregorian dates and dates on or prior to 4 Oct 1582 are Julian dates. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
     public bool IsGregorianCalendar
       => m_year > 1582 || (m_year == 1582 && (m_month > 10 || (m_month == 10 && m_day >= 15)));
@@ -78,6 +75,12 @@ namespace Flux
       => new JulianDate(GetJulianDate(calendar));
 
     #region Static methods
+    /// <summary>Computes the Julian Date (JD) "time-of-day" fraction for the specified time components.</summary>
+    public static double ComputeJulianDateTimeOfDay(int hour, int minute, int second, int millisecond)
+      => hour / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
+    /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
+    public static double ComputeJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
+      => ComputeJulianDayNumber(year, month, day, calendar) + ComputeJulianDateTimeOfDay(hour, minute, second, millisecond);
     /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
     public static int ComputeJulianDayNumber(int year, int month, int day, ConversionCalendar calendar)
     {
@@ -91,12 +94,6 @@ namespace Flux
           throw new System.ArgumentOutOfRangeException(nameof(calendar));
       }
     }
-    /// <summary>Computes the Julian Date (JD) "time-of-day" fraction for the specified time components.</summary>
-    public static double ComputeJulianDateTimeOfDay(int hour, int minute, int second, int millisecond)
-      => hour / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
-    /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
-    public static double ComputeJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
-      => ComputeJulianDayNumber(year, month, day, calendar) + ComputeJulianDateTimeOfDay(hour, minute, second, millisecond);
     #endregion Static methods
 
     #region Overloaded operators

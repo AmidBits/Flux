@@ -25,9 +25,9 @@ namespace Foundation.Units
     [TestMethod]
     public void Bearing()
     {
-      var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
+      var a = new Flux.Quantity.Angle(1, Flux.Quantity.AngleUnit.Degree);
 
-      var u = new Flux.Quantity.Bearing(a);
+      var u = new Flux.Quantity.Azimuth(a);
 
       Assert.AreEqual(a.Degree, u.Value);
     }
@@ -44,7 +44,7 @@ namespace Foundation.Units
     [TestMethod]
     public void Latitude()
     {
-      var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
+      var a = new Flux.Quantity.Angle(1, Flux.Quantity.AngleUnit.Degree);
 
       var u = new Flux.Latitude(a);
 
@@ -54,7 +54,7 @@ namespace Foundation.Units
     [TestMethod]
     public void Longitude()
     {
-      var a = Flux.Quantity.Angle.FromUnitValue(Flux.Quantity.AngleUnit.Degree, 1);
+      var a = new Flux.Quantity.Angle(1, Flux.Quantity.AngleUnit.Degree);
 
       var u = new Flux.Longitude(a);
 

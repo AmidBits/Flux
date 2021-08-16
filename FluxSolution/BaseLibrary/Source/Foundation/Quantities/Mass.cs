@@ -21,13 +21,37 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Mass(double kilogram)
-      => m_value = kilogram;
+    public Mass(double value, MassUnit unit = MassUnit.Kilogram)
+    {
+      switch (unit)
+      {
+        case MassUnit.Milligram:
+          m_value = value / 1000000;
+          break;
+        case MassUnit.Gram:
+          m_value = value / 1000;
+          break;
+        case MassUnit.Ounce:
+          m_value = value / 35.27396195;
+          break;
+        case MassUnit.Pound:
+          m_value = value * 0.45359237;
+          break;
+        case MassUnit.Kilogram:
+          m_value = value;
+          break;
+        case MassUnit.Tonne:
+          m_value = value * 1000;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(MassUnit unit)
+    public double ToUnitValue(MassUnit unit = MassUnit.Kilogram)
     {
       switch (unit)
       {
@@ -49,26 +73,6 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    public static Mass FromUnitValue(MassUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case MassUnit.Milligram:
-          return new Mass(value / 1000000);
-        case MassUnit.Gram:
-          return new Mass(value / 1000);
-        case MassUnit.Ounce:
-          return new Mass(value / 35.27396195);
-        case MassUnit.Pound:
-          return new Mass(value * 0.45359237);
-        case MassUnit.Kilogram:
-          return new Mass(value);
-        case MassUnit.Tonne:
-          return new Mass(value * 1000);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

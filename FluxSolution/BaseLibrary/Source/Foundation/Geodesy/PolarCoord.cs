@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Polar coordinate.</summary>
+  /// <summary>Polar coordinate. Please note that polar coordinates are two dimensional.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   public struct PolarCoord
     : System.IEquatable<PolarCoord>
@@ -27,8 +27,8 @@ namespace Flux
     }
 
     #region Static methods
-    public static (double x, double y) ConvertToCartesianCoordinate(double r, double a)
-      => (r * System.Math.Cos(a), r * System.Math.Sin(a));
+    public static (double x, double y) ConvertToCartesianCoordinate(double radius, double angleRad)
+      => (radius * System.Math.Cos(angleRad), radius * System.Math.Sin(angleRad));
     #endregion Static methods
 
     #region Overloaded operators
@@ -50,7 +50,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_angle, m_radius);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius}, {m_angle}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_radius}, {m_angle.ToUnitValue(Quantity.AngleUnit.Degree)}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

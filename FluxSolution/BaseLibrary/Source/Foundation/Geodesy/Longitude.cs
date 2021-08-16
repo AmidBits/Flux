@@ -61,23 +61,23 @@ namespace Flux
     public static Longitude operator -(Longitude v)
       => new Longitude(-v.m_value);
     public static Longitude operator +(Longitude a, double b)
-      => new Longitude(a.m_value + b);
+      => new Longitude(Maths.Wrap(a.m_value + b, MinValue, MaxValue));
     public static Longitude operator +(Longitude a, Longitude b)
       => a + b.Value;
     public static Longitude operator /(Longitude a, double b)
-      => new Longitude(a.m_value / b);
+      => new Longitude(Maths.Wrap(a.m_value / b, MinValue, MaxValue));
     public static Longitude operator /(Longitude a, Longitude b)
       => a / b.Value;
     public static Longitude operator *(Longitude a, double b)
-      => new Longitude(a.m_value * b);
+      => new Longitude(Maths.Wrap(a.m_value * b, MinValue, MaxValue));
     public static Longitude operator *(Longitude a, Longitude b)
       => a * b.Value;
     public static Longitude operator %(Longitude a, double b)
-      => new Longitude(a.m_value % b);
+      => new Longitude(Maths.Wrap(a.m_value % b, MinValue, MaxValue));
     public static Longitude operator %(Longitude a, Longitude b)
       => a % b.Value;
     public static Longitude operator -(Longitude a, double b)
-      => new Longitude(a.m_value - b);
+      => new Longitude(Maths.Wrap(a.m_value - b, MinValue, MaxValue));
     public static Longitude operator -(Longitude a, Longitude b)
       => a - b.Value;
     #endregion Overloaded operators

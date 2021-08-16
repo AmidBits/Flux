@@ -23,30 +23,27 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
-  public struct Geopoint
-    : System.IEquatable<Geopoint>, System.IFormattable
+  public struct GeographicCoord
+    : System.IEquatable<GeographicCoord>, System.IFormattable
   {
-    public static readonly Geopoint Empty;
+    public static readonly GeographicCoord Empty;
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Quantity.Length Height { get; }
+    public Quantity.Length Altitude { get; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     public Latitude Latitude { get; }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Longitude Longitude { get; }
 
-    public Geopoint(Latitude latitude, Longitude longitude, Quantity.Length altitude)
+    public GeographicCoord(Latitude latitude, Longitude longitude, Quantity.Length altitude)
     {
-      Height = altitude;
+      Altitude = altitude;
       Latitude = latitude;
       Longitude = longitude;
     }
-    public Geopoint(double latitude, double longitude, double altitude = 1.0)
+    public GeographicCoord(double latitude, double longitude, double altitude = 1.0)
       : this(new Latitude(latitude), new Longitude(longitude), new Quantity.Length(altitude))
     { }
-
-    public bool IsEmpty
-      => Equals(Empty);
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     ///// <param name="trackStart"></param>
@@ -314,11 +311,11 @@ namespace Flux
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDMS, string longitudeDMS, out Geopoint result, double earthRadius = EarthRadii.MeanInMeters)
+    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoord result, double earthRadius = EarthRadii.MeanInMeters)
     {
       if (Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
       {
-        result = new Geopoint(latitude, longitude, earthRadius);
+        result = new GeographicCoord(latitude, longitude, earthRadius);
         return true;
       }
 
@@ -328,28 +325,28 @@ namespace Flux
     #endregion Static members
 
     #region Overloaded operators
-    public static bool operator ==(Geopoint a, Geopoint b)
+    public static bool operator ==(GeographicCoord a, GeographicCoord b)
       => a.Equals(b);
-    public static bool operator !=(Geopoint a, Geopoint b)
+    public static bool operator !=(GeographicCoord a, GeographicCoord b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(Geopoint other)
-      => Height == other.Height && Latitude == other.Latitude && Longitude == other.Longitude;
+    public bool Equals(GeographicCoord other)
+      => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new Formatting.GeopointFormatter(), format ?? $"<{nameof(Geopoint)}: {{0:DMS}}>", this);
+      => string.Format(formatProvider ?? new Formatting.GeopointFormatter(), format ?? $"<{nameof(GeographicCoord)}: {{0:DMS}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Geopoint o && Equals(o);
+      => obj is GeographicCoord o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Height, Latitude, Longitude);
+      => System.HashCode.Combine(Altitude, Latitude, Longitude);
     public override string ToString()
-      => ToString($"<{nameof(Geopoint)}: {{0:DMS}}>", new Formatting.GeopointFormatter());
+      => ToString($"<{nameof(GeographicCoord)}: {{0:DMS}}>", new Formatting.GeopointFormatter());
     #endregion Object overrides
   }
 }

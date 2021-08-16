@@ -26,8 +26,32 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Angle(double radian)
-      => m_value = radian;
+    public Angle(double value, AngleUnit unit = AngleUnit.Radian)
+    {
+      switch (unit)
+      {
+        case AngleUnit.Arcminute:
+          m_value = ConvertArcminuteToRadian(value);
+          break;
+        case AngleUnit.Arcsecond:
+          m_value = ConvertArcsecondToRadian(value);
+          break;
+        case AngleUnit.Degree:
+          m_value = ConvertDegreeToRadian(value);
+          break;
+        case AngleUnit.Gradian:
+          m_value = ConvertGradianToRadian(value);
+          break;
+        case AngleUnit.Radian:
+          m_value = value;
+          break;
+        case AngleUnit.Revolution:
+          m_value = ConvertRevolutionToRadian(value);
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Degree
       => ConvertRadianToDegree(m_value);
@@ -41,7 +65,7 @@ namespace Flux.Quantity
       => ConvertRotationAngleToCartesian(m_value, out var _, out var _);
     public (double x, double y) ToCartesianEx()
       => ConvertRotationAngleToCartesianEx(m_value, out var _, out var _);
-    public double ToUnitValue(AngleUnit unit)
+    public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
     {
       switch (unit)
       {
@@ -122,26 +146,6 @@ namespace Flux.Quantity
       => new Angle(ConvertCartesianToRotationAngle(x, y));
     public static Angle FromCartesianEx(double x, double y)
       => new Angle(ConvertCartesianToRotationAngleEx(x, y));
-    public static Angle FromUnitValue(AngleUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case AngleUnit.Arcminute:
-          return new Angle(ConvertArcminuteToRadian(value));
-        case AngleUnit.Arcsecond:
-          return new Angle(ConvertArcsecondToRadian(value));
-        case AngleUnit.Degree:
-          return new Angle(ConvertDegreeToRadian(value));
-        case AngleUnit.Gradian:
-          return new Angle(ConvertGradianToRadian(value));
-        case AngleUnit.Radian:
-          return new Angle(value);
-        case AngleUnit.Revolution:
-          return new Angle(ConvertRevolutionToRadian(value));
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
 
     public static string GetUnitSymbol(AngleUnit unit)
     {

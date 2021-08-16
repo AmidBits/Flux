@@ -22,13 +22,52 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Length(double meter)
-      => m_value = meter;
+    public Length(double value, LengthUnit unit = LengthUnit.Meter)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+          m_value = value / 1000;
+          break;
+        case LengthUnit.Centimeter:
+          m_value = value / 100;
+          break;
+        case LengthUnit.Inch:
+          m_value = value * 0.0254;
+          break;
+        case LengthUnit.Decimeter:
+          m_value = value / 10;
+          break;
+        case LengthUnit.Foot:
+          m_value = value * 0.3048;
+          break;
+        case LengthUnit.Yard:
+          m_value = value * 0.9144;
+          break;
+        case LengthUnit.Meter:
+          m_value = value;
+          break;
+        case LengthUnit.NauticalMile:
+          m_value = value * 1852;
+          break;
+        case LengthUnit.Mile:
+          m_value = value * 1609.344;
+          break;
+        case LengthUnit.Kilometer:
+          m_value = value * 1000;
+          break;
+        case LengthUnit.AstronomicalUnit:
+          m_value = value * 149597870700;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(LengthUnit unit)
+    public double ToUnitValue(LengthUnit unit = LengthUnit.Meter)
     {
       switch (unit)
       {
@@ -67,37 +106,6 @@ namespace Flux.Quantity
     /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
     public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency)
       => new Length(phaseVelocity.Value / frequency.Value);
-
-    public static Length FromUnitValue(LengthUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case LengthUnit.Millimeter:
-          return new Length(value / 1000);
-        case LengthUnit.Centimeter:
-          return new Length(value / 100);
-        case LengthUnit.Inch:
-          return new Length(value * 0.0254);
-        case LengthUnit.Decimeter:
-          return new Length(value / 10);
-        case LengthUnit.Foot:
-          return new Length(value * 0.3048);
-        case LengthUnit.Yard:
-          return new Length(value * 0.9144);
-        case LengthUnit.Meter:
-          return new Length(value);
-        case LengthUnit.NauticalMile:
-          return new Length(value * 1852);
-        case LengthUnit.Mile:
-          return new Length(value * 1609.344);
-        case LengthUnit.Kilometer:
-          return new Length(value * 1000);
-        case LengthUnit.AstronomicalUnit:
-          return new Length(value * 149597870700);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

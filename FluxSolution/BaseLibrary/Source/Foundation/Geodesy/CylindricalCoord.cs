@@ -31,15 +31,15 @@ namespace Flux
     }
     public SphericalCoord ToSphericalCoord()
     {
-      var (radius, inclination, azimuth) = ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
+      var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
 
-      return new SphericalCoord(radius, new Quantity.Angle(inclination), new Quantity.Angle(azimuth));
+      return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
     }
 
     #region Static methods
     public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double azimuthRad, double height)
       => (radius * System.Math.Cos(azimuthRad), radius * System.Math.Sin(azimuthRad), height);
-    public static (double radius, double inclination, double azimuth) ConvertToSphericalCoordinate(double radius, double azimuthRad, double height)
+    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double radius, double azimuthRad, double height)
       => (System.Math.Sqrt(radius * radius + height * height), System.Math.Atan2(radius, height), azimuthRad);
     #endregion Static methods
 

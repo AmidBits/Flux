@@ -18,13 +18,25 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Pressure(double pascal)
-      => m_value = pascal;
+    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal)
+    {
+      switch (unit)
+      {
+        case PressureUnit.Pascal:
+          m_value = value;
+          break;
+        case PressureUnit.PSI:
+          m_value = value * (8896443230521.0 / 1290320000.0);
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(PressureUnit unit)
+    public double ToUnitValue(PressureUnit unit = PressureUnit.Pascal)
     {
       switch (unit)
       {
@@ -38,18 +50,6 @@ namespace Flux.Quantity
     }
 
     #region Static methods
-    public static Pressure FromUnitValue(PressureUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case PressureUnit.Pascal:
-          return new Pressure(value);
-        case PressureUnit.PSI:
-          return new Pressure(value * (8896443230521.0 / 1290320000.0));
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

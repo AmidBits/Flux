@@ -2,8 +2,8 @@ namespace Flux.Quantity
 {
   /// <summary>Azimuth unit of degree.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
-  public struct Bearing
-    : System.IComparable<Bearing>, System.IEquatable<Bearing>, IValuedUnit
+  public struct Azimuth
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IValuedUnit
   {
     //public static Interval Interval
     //  => new Interval(false, true, 0, 360);
@@ -13,9 +13,9 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Bearing(double degree)
+    public Azimuth(double degree)
       => m_value = IsBearing(degree) ? degree : Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
-    public Bearing(Angle angle)
+    public Azimuth(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
@@ -37,62 +37,62 @@ namespace Flux.Quantity
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Bearing v)
+    public static explicit operator double(Azimuth v)
      => v.m_value;
-    public static explicit operator Bearing(double v)
-      => new Bearing(v);
+    public static explicit operator Azimuth(double v)
+      => new Azimuth(v);
 
-    public static bool operator <(Bearing a, Bearing b)
+    public static bool operator <(Azimuth a, Azimuth b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(Bearing a, Bearing b)
+    public static bool operator <=(Azimuth a, Azimuth b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(Bearing a, Bearing b)
+    public static bool operator >(Azimuth a, Azimuth b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(Bearing a, Bearing b)
+    public static bool operator >=(Azimuth a, Azimuth b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Bearing a, Bearing b)
+    public static bool operator ==(Azimuth a, Azimuth b)
       => a.Equals(b);
-    public static bool operator !=(Bearing a, Bearing b)
+    public static bool operator !=(Azimuth a, Azimuth b)
       => !a.Equals(b);
 
-    public static Bearing operator -(Bearing v)
-      => new Bearing(-v.m_value);
-    public static Bearing operator +(Bearing a, double b)
-      => new Bearing(a.m_value + b);
-    public static Bearing operator +(Bearing a, Bearing b)
+    public static Azimuth operator -(Azimuth v)
+      => new Azimuth(-v.m_value);
+    public static Azimuth operator +(Azimuth a, double b)
+      => new Azimuth(a.m_value + b);
+    public static Azimuth operator +(Azimuth a, Azimuth b)
       => a + b.Value;
-    public static Bearing operator /(Bearing a, double b)
-      => new Bearing(a.m_value / b);
-    public static Bearing operator /(Bearing a, Bearing b)
+    public static Azimuth operator /(Azimuth a, double b)
+      => new Azimuth(a.m_value / b);
+    public static Azimuth operator /(Azimuth a, Azimuth b)
       => a / b.Value;
-    public static Bearing operator *(Bearing a, double b)
-      => new Bearing(a.m_value * b);
-    public static Bearing operator *(Bearing a, Bearing b)
+    public static Azimuth operator *(Azimuth a, double b)
+      => new Azimuth(a.m_value * b);
+    public static Azimuth operator *(Azimuth a, Azimuth b)
       => a * b.Value;
-    public static Bearing operator %(Bearing a, double b)
-      => new Bearing(a.m_value % b);
-    public static Bearing operator %(Bearing a, Bearing b)
+    public static Azimuth operator %(Azimuth a, double b)
+      => new Azimuth(a.m_value % b);
+    public static Azimuth operator %(Azimuth a, Azimuth b)
       => a % b.Value;
-    public static Bearing operator -(Bearing a, double b)
-      => new Bearing(a.m_value - b);
-    public static Bearing operator -(Bearing a, Bearing b)
+    public static Azimuth operator -(Azimuth a, double b)
+      => new Azimuth(a.m_value - b);
+    public static Azimuth operator -(Azimuth a, Azimuth b)
       => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Bearing other)
+    public int CompareTo(Azimuth other)
       => m_value.CompareTo(other.m_value);
 
     // IEquatable
-    public bool Equals(Bearing other)
+    public bool Equals(Azimuth other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Bearing o && Equals(o);
+      => obj is Azimuth o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

@@ -13,13 +13,25 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public ElectricCurrent(double ampere)
-      => m_value = ampere;
+    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
+    {
+      switch (unit)
+      {
+        case ElectricCurrentUnit.Milliampere:
+          m_value = value / 1000;
+          break;
+        case ElectricCurrentUnit.Ampere:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
-    public double ToUnitValue(ElectricCurrentUnit unit)
+    public double ToUnitValue(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
     {
       switch (unit)
       {
@@ -43,18 +55,6 @@ namespace Flux.Quantity
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
       => new ElectricCurrent(voltage.Value / resistance.Value);
-    public static ElectricCurrent FromUnitValue(ElectricCurrentUnit unit, double value)
-    {
-      switch (unit)
-      {
-        case ElectricCurrentUnit.Milliampere:
-          return new ElectricCurrent(value / 1000);
-        case ElectricCurrentUnit.Ampere:
-          return new ElectricCurrent(value);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
     #endregion Static methods
 
     #region Overloaded operators

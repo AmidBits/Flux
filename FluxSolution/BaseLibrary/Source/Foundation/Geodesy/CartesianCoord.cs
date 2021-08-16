@@ -23,6 +23,13 @@ namespace Flux
     public double Z
       => m_z;
 
+    public CylindricalCoord ToCylindricalCoord()
+    //=> new CylindricalCoord(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), new Quantity.Angle(System.Math.Atan2(m_y, m_x)), m_z);
+    {
+      var (radius, azimuthRad, height) = ConvertToCylindricalCoordinate(m_x, m_y, m_z);
+
+      return new CylindricalCoord(radius, new Quantity.Angle(azimuthRad), height);
+    }
     public PolarCoord ToPolarCoord()
     {
       var (radius, angle) = ConvertToPolarCoordinate(m_x, m_y);
@@ -35,14 +42,17 @@ namespace Flux
 
       return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
     }
+
     #region Static methods
-    public static (double radius, double angle) ConvertToPolarCoordinate(double x, double y)
+    public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double x, double y, double z)
+      => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x), z);
+    public static (double radius, double angleRad) ConvertToPolarCoordinate(double x, double y)
       => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
     public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double x, double y, double z)
     {
-      var radius = System.Math.Sqrt(x * x + y * y + z * z);
+      var x2y2 = x * x + y * y;
 
-      return (radius, z / radius, System.Math.Atan2(y, x));
+      return (System.Math.Sqrt(x2y2 + z * z), System.Math.Atan2(System.Math.Sqrt(x2y2), z), System.Math.Atan2(y, x));
     }
     #endregion Static methods
 
