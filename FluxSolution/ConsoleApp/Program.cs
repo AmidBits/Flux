@@ -13,6 +13,15 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2020, 6, 30));
+      var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
+      var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
+      var ri = Flux.Range<System.DateTime>.Intersect(r1, r2);
+      var rsd = Flux.Range<System.DateTime>.SymmetricDifference(r1, r2);
+      var ru = Flux.Range<System.DateTime>.Union(r1, r2);
+      return;
+
+
       var cc = new Flux.CartesianCoord(10, 15, 20);
       var pc = cc.ToPolarCoord();
       var ccpc = pc.ToCartesianCoord();
