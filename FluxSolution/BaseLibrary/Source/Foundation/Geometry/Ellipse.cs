@@ -85,6 +85,9 @@ namespace Flux.Geometry
     /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public static double SurfacePerimeter(double a, double b)
     {
+      if (a == b) // For a circle, use (PI * diameter);
+        return System.Math.PI * (a + b);
+
       var h3 = H(a, b) * 3;
 
       return System.Math.PI * (a + b) * (1.0 + h3 / (10.0 + System.Math.Sqrt(4.0 - h3)));

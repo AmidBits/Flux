@@ -13,6 +13,9 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] _)
     {
+      foreach (var pi in Flux.Reflect.GetPropertyInfos(typeof(Flux.Earth)))
+        System.Console.WriteLine($"{pi.Name} = {pi.GetValueEx(typeof(Flux.Earth))}");
+
       //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2020, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
       //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
@@ -21,16 +24,22 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
+      var gc = Flux.GeographicCoord.Tucson;
+      var sc = gc.ToSphericalCoordinate();
+      var cy = sc.ToCylindricalCoord();
+      var ca = cy.ToCartesianCoord();
+      var sc2 = ca.ToSphericalCoord();
+      var gc2 = sc2.ToGeographicCoord();
 
-      var cc = new Flux.CartesianCoord(10, 15, 20);
+      //var cc = new Flux.CartesianCoord(10, 15, 20);
 
-      var cccy = cc.ToCylindricalCoord();
-      var cysc = cccy.ToSphericalCoord();
-      var cycc = cccy.ToCartesianCoord();
+      //var cccy = cc.ToCylindricalCoord();
+      //var cysc = cccy.ToSphericalCoord();
+      //var cycc = cccy.ToCartesianCoord();
 
-      var ccsc = cc.ToSphericalCoord();
-      var sccc = ccsc.ToCartesianCoord();
-      var sccy = ccsc.ToCylindricalCoord();
+      //var ccsc = cc.ToSphericalCoord();
+      //var sccc = ccsc.ToCartesianCoord();
+      //var sccy = ccsc.ToCylindricalCoord();
 
       return;
 

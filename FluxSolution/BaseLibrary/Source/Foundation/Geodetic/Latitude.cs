@@ -21,11 +21,6 @@ namespace Flux
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
-    public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_value);
-    public double Value
-      => m_value;
-
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Quantity.Length GetApproximateLatitudinalHeight()
       => new Quantity.Length(ComputeApproximateLatitudinalHeight(Radian));
@@ -43,8 +38,11 @@ namespace Flux
     public double GetMercatorProjectY()
       => System.Math.Clamp(System.Math.Log((System.Math.Tan(System.Math.PI / 4 + Radian / 2))), -System.Math.PI, System.Math.PI);
 
-    public Quantity.Angle ToAngle()
-      => new Quantity.Angle(Radian);
+    public double Radian
+      => Quantity.Angle.ConvertDegreeToRadian(m_value);
+
+    public double Value
+      => m_value;
 
     #region Static methods
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
@@ -61,8 +59,8 @@ namespace Flux
       var cos = System.Math.Cos(radLatitude);
       var sin = System.Math.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(EarthRadii.EquatorialInMeters, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(EarthRadii.PolarInMeters, 2) * sin, 2);
-      var denominator = System.Math.Pow(EarthRadii.EquatorialInMeters * cos, 2) + System.Math.Pow(EarthRadii.PolarInMeters * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.Value, 2) * sin, 2);
+      var denominator = System.Math.Pow(Earth.EquatorialRadius.Value * cos, 2) + System.Math.Pow(Earth.PolarRadius.Value * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }

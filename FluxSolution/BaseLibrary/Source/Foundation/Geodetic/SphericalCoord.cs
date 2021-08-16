@@ -35,17 +35,28 @@ namespace Flux
 
       return new CylindricalCoord(radius, new Quantity.Angle(azimuthRad), height);
     }
+    public GeographicCoord ToGeographicCoord()
+    {
+      var (latitudeRad, longitudeRad, altitude) = ConvertToGeographicCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
+      return new GeographicCoord(new Latitude(new Quantity.Angle(latitudeRad)), new Longitude(new Quantity.Angle(longitudeRad)), new Quantity.Length(altitude));
+    }
 
     #region Static methods
     public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double inclinationRad, double azimuthRad)
     {
       var sinInclination = System.Math.Sin(inclinationRad);
-
       return (radius * System.Math.Cos(azimuthRad) * sinInclination, radius * System.Math.Sin(azimuthRad) * sinInclination, radius * System.Math.Cos(inclinationRad));
     }
-
     public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double radius, double inclinationRad, double azimuthRad)
       => (radius * System.Math.Sin(inclinationRad), azimuthRad, radius * System.Math.Cos(inclinationRad));
+    public static (double latitudeRad, double longitudeRad, double altitude) ConvertToGeographicCoordinate(double radius, double inclinationRad, double azimuthRad)
+    {
+      var halfExtent = Earth.EquatorialCircumference.Value / 2;
+      var longitudeRad = azimuthRad / halfExtent * 180;
+      var latitudeRad = inclinationRad / halfExtent * 180;
+      latitudeRad = 180 / System.Math.PI * (2 * System.Math.Atan(System.Math.Exp(latitudeRad * System.Math.PI / 180)) - System.Math.PI / 2);
+      return (latitudeRad, longitudeRad, radius);
+    }
     #endregion Static methods
 
     #region Overloaded operators

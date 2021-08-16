@@ -5,9 +5,6 @@ namespace Flux.Quantity
   public struct Azimuth
     : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IValuedUnit
   {
-    //public static Interval Interval
-    //  => new Interval(false, true, 0, 360);
-
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
@@ -21,11 +18,9 @@ namespace Flux.Quantity
 
     public double Radian
       => Angle.ConvertDegreeToRadian(m_value);
+
     public double Value
       => m_value;
-
-    public Angle ToAngle()
-      => new Angle(Radian);
 
     #region Static methods
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>

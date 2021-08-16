@@ -1,25 +1,5 @@
 namespace Flux
 {
-  #region Earth radius (static class)
-  public static class EarthRadii
-  {
-    public const double EquatorialInKilometers = 6378.1370;
-    public const double EquatorialInMeters = 6378137.0;
-    public const double EquatorialInMiles = 3963.1906;
-    public const double EquatorialInNauticalMiles = 3441.7305567067;
-
-    public const double MeanInKilometers = 6371.0088;
-    public const double MeanInMeters = 6371008.8;
-    public const double MeanInMiles = 3958.7613;
-    public const double MeanInNauticalMiles = 3440.07;
-
-    public const double PolarInKilometers = 6356.7523142;
-    public const double PolarInMeters = 6356752.3142;
-    public const double PolarInMiles = 3949.9028;
-    public const double PolarInNauticalMiles = 3430.1920370562;
-  }
-  #endregion Earth radius
-
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
@@ -27,6 +7,9 @@ namespace Flux
     : System.IEquatable<GeographicCoord>, System.IFormattable
   {
     public static readonly GeographicCoord Empty;
+
+    public static GeographicCoord Tucson
+      => new GeographicCoord(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Quantity.Length Altitude { get; }
@@ -44,6 +27,13 @@ namespace Flux
     public GeographicCoord(double latitude, double longitude, double altitude = 1.0)
       : this(new Latitude(latitude), new Longitude(longitude), new Quantity.Length(altitude))
     { }
+
+    public SphericalCoord ToSphericalCoordinate()
+    {
+      var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
+
+      return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
+    }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     ///// <param name="trackStart"></param>
@@ -95,7 +85,6 @@ namespace Flux
     //}
 
     #region Static members
-
     /// <summary>right-handed vector: x -> 0°E,0°N; y -> 90°E,0°N, z -> 90°N</summary>
     //public static System.Numerics.Vector3 ToVector3RH(double latitudeR, double longitudeR) => new System.Numerics.Vector3((float)System.Math.Cos(latitudeR) * (float)System.Math.Cos(longitudeR), (float)System.Math.Cos(latitudeR) * (float)System.Math.Sin(longitudeR), (float)System.Math.Sin(latitudeR));
     //public static Geoposition FromVector3RH(double x, double y, double z) => new Geoposition() { Latitude = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y)), Longitude = System.Math.Atan2(y, x) };
@@ -148,6 +137,19 @@ namespace Flux
       notch = System.Math.Round(Maths.Wrap(absoluteBearingInRadians, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
 
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
+    }
+
+    /// <summary>Convert geographical coordinate to sperical coordinate.</summary>
+    /// <param name="latitudeRad"></param>
+    /// <param name="longitudeRad"></param>
+    /// <param name="altitude"></param>
+    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitudeRad, double longitudeRad, double altitude)
+    {
+      var halfExtent = Earth.EquatorialCircumference.Value / 2;
+      var x = longitudeRad * halfExtent / 180;
+      var y = System.Math.Log(System.Math.Tan((90 + latitudeRad) * System.Math.PI / 360)) / (System.Math.PI / 180);
+      y = y * halfExtent / 180;
+      return (altitude, y, x);
     }
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
@@ -311,7 +313,7 @@ namespace Flux
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoord result, double earthRadius = EarthRadii.MeanInMeters)
+    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoord result, double earthRadius)
     {
       if (Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
       {

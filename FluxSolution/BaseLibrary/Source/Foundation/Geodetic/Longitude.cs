@@ -16,11 +16,6 @@ namespace Flux
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
-    public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_value);
-    public double Value
-      => m_value;
-
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
@@ -30,8 +25,11 @@ namespace Flux
     public int GetTheoreticalTimezoneOffset()
       => ComputeTheoreticalTimezoneOffset(m_value);
 
-    public Quantity.Angle ToAngle()
-      => new Quantity.Angle(Radian);
+    public double Radian
+      => Quantity.Angle.ConvertDegreeToRadian(m_value);
+
+    public double Value
+      => m_value;
 
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
