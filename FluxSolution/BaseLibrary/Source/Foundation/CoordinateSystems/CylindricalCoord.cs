@@ -26,13 +26,11 @@ namespace Flux
     public CartesianCoord ToCartesianCoord()
     {
       var (x, y, z) = ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height);
-
       return new CartesianCoord(x, y, z);
     }
     public SphericalCoord ToSphericalCoord()
     {
       var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
-
       return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
     }
 

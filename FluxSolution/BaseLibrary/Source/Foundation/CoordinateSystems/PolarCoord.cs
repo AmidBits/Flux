@@ -6,29 +6,28 @@ namespace Flux
     : System.IEquatable<PolarCoord>
   {
     private readonly double m_radius;
-    private readonly Quantity.Angle m_angle;
+    private readonly Quantity.Angle m_azimuth;
 
-    public PolarCoord(double radius, Quantity.Angle angle)
+    public PolarCoord(double radius, Quantity.Angle azimuth)
     {
       m_radius = radius;
-      m_angle = angle;
+      m_azimuth = azimuth;
     }
 
     public double Radius
       => m_radius;
     public Quantity.Angle Angle
-      => m_angle;
+      => m_azimuth;
 
     public CartesianCoord ToCartesianCoord()
     {
-      var (x, y) = ConvertToCartesianCoordinate(m_radius, m_angle.Radian);
-
+      var (x, y) = ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian);
       return new CartesianCoord(x, y, 0);
     }
 
     #region Static methods
-    public static (double x, double y) ConvertToCartesianCoordinate(double radius, double angleRad)
-      => (radius * System.Math.Cos(angleRad), radius * System.Math.Sin(angleRad));
+    public static (double x, double y) ConvertToCartesianCoordinate(double radius, double azimuthRad)
+      => (radius * System.Math.Cos(azimuthRad), radius * System.Math.Sin(azimuthRad));
     #endregion Static methods
 
     #region Overloaded operators
@@ -41,16 +40,16 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     public bool Equals(PolarCoord other)
-      => m_angle == other.m_angle && m_radius == other.m_radius;
+      => m_azimuth == other.m_azimuth && m_radius == other.m_radius;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is PolarCoord o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_angle, m_radius);
+      => System.HashCode.Combine(m_azimuth, m_radius);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius}, {m_angle.ToUnitValue(Quantity.AngleUnit.Degree)}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_radius}, {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree)}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

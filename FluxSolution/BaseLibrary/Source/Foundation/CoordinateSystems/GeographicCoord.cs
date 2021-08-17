@@ -31,7 +31,6 @@ namespace Flux
     public SphericalCoord ToSphericalCoord()
     {
       var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
-
       return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
     }
 

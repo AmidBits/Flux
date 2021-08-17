@@ -26,13 +26,11 @@ namespace Flux
     public CartesianCoord ToCartesianCoord()
     {
       var (x, y, z) = ConvertToCartesianCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
-
       return new CartesianCoord(x, y, z);
     }
     public CylindricalCoord ToCylindricalCoord()
     {
       var (radius, azimuthRad, height) = ConvertToCylindricalCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
-
       return new CylindricalCoord(radius, new Quantity.Angle(azimuthRad), height);
     }
     public GeographicCoord ToGeographicCoord()
