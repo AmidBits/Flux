@@ -24,7 +24,6 @@ namespace Flux
       => m_z;
 
     public CylindricalCoord ToCylindricalCoord()
-    //=> new CylindricalCoord(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), new Quantity.Angle(System.Math.Atan2(m_y, m_x)), m_z);
     {
       var (radius, azimuthRad, height) = ConvertToCylindricalCoordinate(m_x, m_y, m_z);
 

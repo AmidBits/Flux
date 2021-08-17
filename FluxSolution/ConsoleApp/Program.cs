@@ -25,7 +25,7 @@ namespace ConsoleApp
       //return;
 
       var gc = Flux.GeographicCoord.Tucson;
-      var sp = gc.ToSphericalCoordinate();
+      var sp = gc.ToSphericalCoord();
       var cy = sp.ToCylindricalCoord();
       var ca = cy.ToCartesianCoord();
       var cy2 = ca.ToCylindricalCoord();

@@ -28,7 +28,7 @@ namespace Flux
       : this(new Latitude(latitude), new Longitude(longitude), new Quantity.Length(altitude))
     { }
 
-    public SphericalCoord ToSphericalCoordinate()
+    public SphericalCoord ToSphericalCoord()
     {
       var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
 
