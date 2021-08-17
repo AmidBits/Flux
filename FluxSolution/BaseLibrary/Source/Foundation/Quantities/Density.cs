@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum DensityUnit
+  {
+    KilogramsPerCubicMeter,
+  }
+
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Density(double kilogramsPerCubicMeter)
-      => m_value = kilogramsPerCubicMeter;
+    public Density(double value, DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
+    {
+      switch (unit)
+      {
+        case DensityUnit.KilogramsPerCubicMeter:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
+    {
+      switch (unit)
+      {
+        case DensityUnit.KilogramsPerCubicMeter:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static Density From(Mass mass, Volume volume)

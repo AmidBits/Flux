@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum RelativeHumidityUnit
+  {
+    Percent,
+  }
+
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public RelativeHumidity(double percent)
-      => m_value = percent;
+    public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
+    {
+      switch (unit)
+      {
+        case RelativeHumidityUnit.Percent:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
+    {
+      switch (unit)
+      {
+        case RelativeHumidityUnit.Percent:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(RelativeHumidity v)

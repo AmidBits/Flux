@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AngularVelocityUnit
+  {
+    RadianPerSecond,
+  }
+
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public AngularVelocity(double radianPerSecond)
-      => m_value = radianPerSecond;
+    public AngularVelocity(double value, AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
+    {
+      switch (unit)
+      {
+        case AngularVelocityUnit.RadianPerSecond:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
+    {
+      switch (unit)
+      {
+        case AngularVelocityUnit.RadianPerSecond:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static AngularVelocity From(Angle angle, Time time)

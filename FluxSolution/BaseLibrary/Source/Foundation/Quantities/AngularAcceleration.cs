@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AngularAccelerationUnit
+  {
+    RadianPerSecondSquare,
+  }
+
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public AngularAcceleration(double radianPerSecondSquare)
-      => m_value = radianPerSecondSquare;
+    public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
+    {
+      switch (unit)
+      {
+        case AngularAccelerationUnit.RadianPerSecondSquare:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
+    {
+      switch (unit)
+      {
+        case AngularAccelerationUnit.RadianPerSecondSquare:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(AngularAcceleration v)

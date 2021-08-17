@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ActionUnit
+  {
+    JouleSecond,
+  }
+
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Action
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Action(double jouleSecond)
-      => m_value = jouleSecond;
+    public Action(double value, ActionUnit unit = ActionUnit.JouleSecond)
+    {
+      switch (unit)
+      {
+        case ActionUnit.JouleSecond:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(ActionUnit unit = ActionUnit.JouleSecond)
+    {
+      switch (unit)
+      {
+        case ActionUnit.JouleSecond:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Action v)

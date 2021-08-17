@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum InductanceUnit
+  {
+    Henry,
+  }
+
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Inductance(double henry)
-      => m_value = henry;
+    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry)
+    {
+      switch (unit)
+      {
+        case InductanceUnit.Henry:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(InductanceUnit unit = InductanceUnit.Henry)
+    {
+      switch (unit)
+      {
+        case InductanceUnit.Henry:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Inductance v)

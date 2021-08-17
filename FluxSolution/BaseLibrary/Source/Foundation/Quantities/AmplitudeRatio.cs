@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AmplitudeRatioUnit
+  {
+    DecibelVolt,
+  }
+
   /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct AmplitudeRatio
@@ -9,14 +14,34 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public AmplitudeRatio(double decibelVolt)
-      => m_value = decibelVolt;
+    public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
+    {
+      switch (unit)
+      {
+        case AmplitudeRatioUnit.DecibelVolt:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
 
     public PowerRatio ToPowerRatio()
       => new PowerRatio(System.Math.Pow(m_value, 2));
+
+    public double ToUnitValue(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
+    {
+      switch (unit)
+      {
+        case AmplitudeRatioUnit.DecibelVolt:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>

@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum PowerUnit
+  {
+    Watt,
+  }
+
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Power(double watt)
-      => m_value = watt;
+    public Power(double value, PowerUnit unit = PowerUnit.Watt)
+    {
+      switch (unit)
+      {
+        case PowerUnit.Watt:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(PowerUnit unit = PowerUnit.Watt)
+    {
+      switch (unit)
+      {
+        case PowerUnit.Watt:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     /// <summary>Creates a new Power instance from the specified current and voltage.</summary>

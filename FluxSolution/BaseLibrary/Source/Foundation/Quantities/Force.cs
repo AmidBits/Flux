@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ForceUnit
+  {
+    Newton,
+  }
+
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Force(double newton)
-      => m_value = newton;
+    public Force(double value, ForceUnit unit = ForceUnit.Newton)
+    {
+      switch (unit)
+      {
+        case ForceUnit.Newton:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(ForceUnit unit = ForceUnit.Newton)
+    {
+      switch (unit)
+      {
+        case ForceUnit.Newton:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Force v)

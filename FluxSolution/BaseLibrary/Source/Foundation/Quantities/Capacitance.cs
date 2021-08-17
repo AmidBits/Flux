@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum CapacitanceUnit
+  {
+    Farad,
+  }
+
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Capacitance(double farad)
-      => m_value = farad;
+    public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad)
+    {
+      switch (unit)
+      {
+        case CapacitanceUnit.Farad:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(CapacitanceUnit unit = CapacitanceUnit.Farad)
+    {
+      switch (unit)
+      {
+        case CapacitanceUnit.Farad:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Capacitance v)

@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum CatalyticActivityUnit
+  {
+    Katal,
+  }
+
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public CatalyticActivity(double katal)
-      => m_value = katal;
+    public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
+    {
+      switch (unit)
+      {
+        case CatalyticActivityUnit.Katal:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
+    {
+      switch (unit)
+      {
+        case CatalyticActivityUnit.Katal:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(CatalyticActivity v)

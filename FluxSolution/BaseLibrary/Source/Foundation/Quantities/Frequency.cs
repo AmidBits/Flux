@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum FrequencyUnit
+  {
+    Hertz,
+  }
+
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
@@ -10,8 +15,17 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Frequency(double hertz)
-      => m_value = hertz;
+    public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz)
+    {
+      switch (unit)
+      {
+        case FrequencyUnit.Hertz:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
@@ -19,6 +33,17 @@ namespace Flux.Quantity
     /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
     public Time ToPeriod()
       => new Time(1.0 / m_value);
+
+    public double ToUnitValue(FrequencyUnit unit = FrequencyUnit.Hertz)
+    {
+      switch (unit)
+      {
+        case FrequencyUnit.Hertz:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>

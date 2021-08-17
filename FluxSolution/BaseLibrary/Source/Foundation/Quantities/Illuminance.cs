@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum IlluminanceUnit
+  {
+    Lux,
+  }
+
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Illuminance(double lux)
-      => m_value = lux;
+    public Illuminance(double value, IlluminanceUnit unit = IlluminanceUnit.Lux)
+    {
+      switch (unit)
+      {
+        case IlluminanceUnit.Lux:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(IlluminanceUnit unit = IlluminanceUnit.Lux)
+    {
+      switch (unit)
+      {
+        case IlluminanceUnit.Lux:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Illuminance v)

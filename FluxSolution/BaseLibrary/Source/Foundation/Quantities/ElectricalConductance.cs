@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ElectricalConductanceUnit
+  {
+    Siemens,
+  }
+
   /// <summary>Electrical conductance unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct ElectricalConductance
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public ElectricalConductance(double siemens)
-      => m_value = siemens;
+    public ElectricalConductance(double value, ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens)
+    {
+      switch (unit)
+      {
+        case ElectricalConductanceUnit.Siemens:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens)
+    {
+      switch (unit)
+      {
+        case ElectricalConductanceUnit.Siemens:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(ElectricalConductance v)

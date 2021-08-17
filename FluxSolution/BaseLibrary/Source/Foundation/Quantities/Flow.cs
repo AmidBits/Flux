@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum FlowUnit
+  {
+    CubicMetersPerSecond,
+  }
+
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Flow(double cubicMetersPerSecond)
-      => m_value = cubicMetersPerSecond;
+    public Flow(double value, FlowUnit unit = FlowUnit.CubicMetersPerSecond)
+    {
+      switch (unit)
+      {
+        case FlowUnit.CubicMetersPerSecond:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(FlowUnit unit = FlowUnit.CubicMetersPerSecond)
+    {
+      switch (unit)
+      {
+        case FlowUnit.CubicMetersPerSecond:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     public static Flow From(Volume volume, Time time)

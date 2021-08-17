@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AccelerationUnit
+  {
+    MetersPerSecondSquare,
+  }
+
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
@@ -10,11 +15,31 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public Acceleration(double metersPerSecondSquare)
-      => m_value = metersPerSecondSquare;
+    public Acceleration(double value, AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
+    {
+      switch (unit)
+      {
+        case AccelerationUnit.MetersPerSecondSquare:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
+    {
+      switch (unit)
+      {
+        case AccelerationUnit.MetersPerSecondSquare:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Acceleration v)

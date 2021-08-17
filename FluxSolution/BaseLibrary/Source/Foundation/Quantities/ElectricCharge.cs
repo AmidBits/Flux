@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ElectricChargeUnit
+  {
+    Coulomb,
+  }
+
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
@@ -10,11 +15,31 @@ namespace Flux.Quantity
 
     private readonly double m_value;
 
-    public ElectricCharge(double coulomb)
-      => m_value = coulomb;
+    public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
+    {
+      switch (unit)
+      {
+        case ElectricChargeUnit.Coulomb:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
+    {
+      switch (unit)
+      {
+        case ElectricChargeUnit.Coulomb:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(ElectricCharge v)

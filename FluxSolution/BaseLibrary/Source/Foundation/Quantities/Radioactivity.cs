@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum RadioactivityUnit
+  {
+    Becquerel,
+  }
+
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Radioactivity
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Radioactivity(double becquerel)
-      => m_value = becquerel;
+    public Radioactivity(double value, RadioactivityUnit unit = RadioactivityUnit.Becquerel)
+    {
+      switch (unit)
+      {
+        case RadioactivityUnit.Becquerel:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(RadioactivityUnit unit = RadioactivityUnit.Becquerel)
+    {
+      switch (unit)
+      {
+        case RadioactivityUnit.Becquerel:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Overloaded operators
     public static explicit operator double(Radioactivity v)
