@@ -144,13 +144,7 @@ namespace Flux
     /// <param name="longitudeRad"></param>
     /// <param name="altitude"></param>
     public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitudeRad, double longitudeRad, double altitude)
-    {
-      var halfExtent = Earth.EquatorialCircumference.Value / 2;
-      var x = longitudeRad * halfExtent / 180;
-      var y = System.Math.Log(System.Math.Tan((90 + latitudeRad) * System.Math.PI / 360)) / (System.Math.PI / 180);
-      y = y * halfExtent / 180;
-      return (altitude, y, x);
-    }
+      => (altitude, System.Math.PI - (latitudeRad + Maths.PiOver2), longitudeRad + System.Math.PI);
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>

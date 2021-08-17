@@ -25,11 +25,12 @@ namespace ConsoleApp
       //return;
 
       var gc = Flux.GeographicCoord.Tucson;
-      var sc = gc.ToSphericalCoordinate();
-      var cy = sc.ToCylindricalCoord();
+      var sp = gc.ToSphericalCoordinate();
+      var cy = sp.ToCylindricalCoord();
       var ca = cy.ToCartesianCoord();
-      var sc2 = ca.ToSphericalCoord();
-      var gc2 = sc2.ToGeographicCoord();
+      var cy2 = ca.ToCylindricalCoord();
+      var sp2 = cy2.ToSphericalCoord();
+      var gc2 = sp2.ToGeographicCoord();
 
       //var cc = new Flux.CartesianCoord(10, 15, 20);
 

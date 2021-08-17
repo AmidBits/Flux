@@ -50,13 +50,7 @@ namespace Flux
     public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double radius, double inclinationRad, double azimuthRad)
       => (radius * System.Math.Sin(inclinationRad), azimuthRad, radius * System.Math.Cos(inclinationRad));
     public static (double latitudeRad, double longitudeRad, double altitude) ConvertToGeographicCoordinate(double radius, double inclinationRad, double azimuthRad)
-    {
-      var halfExtent = Earth.EquatorialCircumference.Value / 2;
-      var longitudeRad = azimuthRad / halfExtent * 180;
-      var latitudeRad = inclinationRad / halfExtent * 180;
-      latitudeRad = 180 / System.Math.PI * (2 * System.Math.Atan(System.Math.Exp(latitudeRad * System.Math.PI / 180)) - System.Math.PI / 2);
-      return (latitudeRad, longitudeRad, radius);
-    }
+      => (System.Math.PI - (inclinationRad - Maths.PiOver2), azimuthRad - System.Math.PI, radius);
     #endregion Static methods
 
     #region Overloaded operators
