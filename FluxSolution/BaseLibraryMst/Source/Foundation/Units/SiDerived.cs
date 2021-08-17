@@ -20,12 +20,12 @@ namespace Foundation.Units
     {
       var u = new Flux.Quantity.Angle(1);
 
-      Assert.AreEqual((0.5403023058681398, 0.8414709848078965), u.ToCartesian());
-      Assert.AreEqual((0.8414709848078966, 0.5403023058681394), u.ToCartesianEx());
+      Assert.AreEqual(new CartesianCoordinate2(0.5403023058681398, 0.8414709848078965), u.ToCartesian2());
+      Assert.AreEqual(new CartesianCoordinate2(0.8414709848078966, 0.5403023058681394), u.ToCartesian2Ex());
       Assert.AreEqual(57.29577951308232, u.Degree);
       Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Quantity.AngleUnit.Gradian));
       Assert.AreEqual(1, u.Radian);
-      Assert.AreEqual(0.15915494309189535, u.ToUnitValue(Flux.Quantity.AngleUnit.Revolution));
+      Assert.AreEqual(0.15915494309189535, u.ToUnitValue(Flux.Quantity.AngleUnit.Turn));
     }
 
     [TestMethod]

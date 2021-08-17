@@ -66,7 +66,7 @@ namespace Flux.Geometry
         if (maxRandomVariation > Flux.Maths.Epsilon1E7)
           angle += Randomization.NumberGenerator.Crypto.NextDouble(0, circularArc * maxRandomVariation);
 
-        Quantity.Angle.ConvertRotationAngleToCartesianEx(angle, out var x, out var y);
+        var (x, y) = Quantity.Angle.ConvertRotationAngleToCartesian2Ex(angle);
 
         yield return resultSelector(x * radiusX, y * radiusY);
       }

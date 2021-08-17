@@ -24,13 +24,13 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      var gc = Flux.GeographicCoord.Tucson;
-      var sp = gc.ToSphericalCoord();
-      var cy = sp.ToCylindricalCoord();
-      var ca = cy.ToCartesianCoord();
-      var cy2 = ca.ToCylindricalCoord();
-      var sp2 = cy2.ToSphericalCoord();
-      var gc2 = sp2.ToGeographicCoord();
+      var gc = Flux.GeographicCoordinate.Tucson;
+      var sp = gc.ToSphericalCoordinate();
+      var cy = sp.ToCylindricalCoordinate();
+      var ca = cy.ToCartesianCoordinate3();
+      var cy2 = ca.ToCylindricalCoordinate();
+      var sp2 = cy2.ToSphericalCoordinate();
+      var gc2 = sp2.ToGeographicCoordinate();
 
       //var cc = new Flux.CartesianCoord(10, 15, 20);
 

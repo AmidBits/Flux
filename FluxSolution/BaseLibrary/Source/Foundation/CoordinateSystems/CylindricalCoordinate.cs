@@ -2,19 +2,22 @@ namespace Flux
 {
   /// <summary>Cylindrical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
-  public struct CylindricalCoord
-    : System.IEquatable<CylindricalCoord>
+  public struct CylindricalCoordinate
+    : System.IEquatable<CylindricalCoordinate>
   {
     private readonly double m_radius;
     private readonly Quantity.Angle m_azimuth;
     private readonly double m_height;
 
-    public CylindricalCoord(double radius, Quantity.Angle azimuth, double height)
+    public CylindricalCoordinate(double radius, double azimuthRad, double height)
     {
       m_radius = radius;
-      m_azimuth = azimuth;
+      m_azimuth = new Quantity.Angle(azimuthRad);
       m_height = height;
     }
+    public CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
+      : this(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3)
+    { }
 
     public double Radius
       => m_radius;
@@ -23,16 +26,10 @@ namespace Flux
     public double Height
       => m_height;
 
-    public CartesianCoord ToCartesianCoord()
-    {
-      var (x, y, z) = ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height);
-      return new CartesianCoord(x, y, z);
-    }
-    public SphericalCoord ToSphericalCoord()
-    {
-      var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
-      return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
-    }
+    public CartesianCoordinate3 ToCartesianCoordinate3()
+      => new CartesianCoordinate3(ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height));
+    public SphericalCoordinate ToSphericalCoordinate()
+      => new SphericalCoordinate(ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height));
 
     #region Static methods
     public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double azimuthRad, double height)
@@ -42,21 +39,21 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(CylindricalCoord a, CylindricalCoord b)
+    public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b)
       => a.Equals(b);
-    public static bool operator !=(CylindricalCoord a, CylindricalCoord b)
+    public static bool operator !=(CylindricalCoordinate a, CylindricalCoordinate b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(CylindricalCoord other)
+    public bool Equals(CylindricalCoordinate other)
       => m_radius == other.m_radius && m_azimuth == other.m_azimuth && m_height == other.m_height;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is CylindricalCoord o && Equals(o);
+      => obj is CylindricalCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_azimuth, m_height);
     public override string ToString()

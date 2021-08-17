@@ -7,7 +7,7 @@ namespace Flux.Quantity
     Degree,
     Gradian,
     Radian,
-    Revolution,
+    Turn,
   }
 
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
     public const double OneFullRotationInRadians = System.Math.PI * 2;
-    public const double OneFullRotationInRevolutions = 1;
+    public const double OneFullRotationInTurns = 1;
 
     private readonly double m_value;
 
@@ -45,8 +45,8 @@ namespace Flux.Quantity
         case AngleUnit.Radian:
           m_value = value;
           break;
-        case AngleUnit.Revolution:
-          m_value = ConvertRevolutionToRadian(value);
+        case AngleUnit.Turn:
+          m_value = ConvertTurnToRadian(value);
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
@@ -61,10 +61,15 @@ namespace Flux.Quantity
     public double Value
       => m_value;
 
-    public (double x, double y) ToCartesian()
-      => ConvertRotationAngleToCartesian(m_value, out var _, out var _);
-    public (double x, double y) ToCartesianEx()
-      => ConvertRotationAngleToCartesianEx(m_value, out var _, out var _);
+    /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public CartesianCoordinate2 ToCartesian2()
+      => new CartesianCoordinate2(ConvertRotationAngleToCartesian2(m_value));
+    /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public CartesianCoordinate2 ToCartesian2Ex()
+      => new CartesianCoordinate2(ConvertRotationAngleToCartesian2Ex(m_value));
+
     public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
     {
       switch (unit)
@@ -79,8 +84,8 @@ namespace Flux.Quantity
           return ConvertRadianToGradian(m_value);
         case AngleUnit.Radian:
           return m_value;
-        case AngleUnit.Revolution:
-          return ConvertRadianToRevolution(m_value);
+        case AngleUnit.Turn:
+          return ConvertRadianToTurn(m_value);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
@@ -93,21 +98,13 @@ namespace Flux.Quantity
     /// <summary>Convert the angle specified in arcseconds to radians.</summary>
     public static double ConvertArcsecondToRadian(double arcsecond)
       => arcsecond / 206264.806247;
-    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertCartesianToRotationAngle(double x, double y)
-      => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
-    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertCartesianToRotationAngleEx(double x, double y)
-      => Maths.PiX2 - ConvertCartesianToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
     public static double ConvertDegreeToGradian(double degree)
       => degree * (10d / 9d);
     /// <summary>Convert the angle specified in degrees to radians.</summary>
     public static double ConvertDegreeToRadian(double degree)
       => degree * (System.Math.PI / 180);
-    public static double ConvertDegreeToRevolution(double degree)
+    public static double ConvertDegreeToTurn(double degree)
       => degree / 360;
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
     public static double ConvertGradianToDegree(double gradian)
@@ -115,7 +112,7 @@ namespace Flux.Quantity
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
     public static double ConvertGradianToRadian(double gradian)
       => gradian * (System.Math.PI / 200);
-    public static double ConvertGradianToRevolution(double gradian)
+    public static double ConvertGradianToTurn(double gradian)
       => gradian / 400;
     /// <summary>Convert the angle specified in radians to arcminutes.</summary>
     public static double ConvertRadianToArcminute(double radian)
@@ -129,23 +126,23 @@ namespace Flux.Quantity
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
     public static double ConvertRadianToGradian(double radian)
       => radian * (200 / System.Math.PI);
-    public static double ConvertRadianToRevolution(double radian)
+    public static double ConvertRadianToTurn(double radian)
       => radian / (System.Math.PI * 2);
-    public static double ConvertRevolutionToRadian(double revolutions)
-      => revolutions * (System.Math.PI * 2);
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static (double x, double y) ConvertRotationAngleToCartesian(double radian, out double x, out double y)
-      => (x = System.Math.Cos(radian), y = System.Math.Sin(radian));
+    public static (double x, double y) ConvertRotationAngleToCartesian2(double radian)
+      => (System.Math.Cos(radian), System.Math.Sin(radian));
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static (double x, double y) ConvertRotationAngleToCartesianEx(double radian, out double x, out double y)
-      => ConvertRotationAngleToCartesian(Maths.PiX2 - (radian >= Maths.PiX2 ? radian % Maths.PiX2 : radian) + Maths.PiOver2, out x, out y);
+    public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radian)
+      => ConvertRotationAngleToCartesian2(Maths.PiX2 - (radian >= Maths.PiX2 ? radian % Maths.PiX2 : radian) + Maths.PiOver2);
+    public static double ConvertTurnToRadian(double revolutions)
+      => revolutions * (System.Math.PI * 2);
 
-    public static Angle FromCartesian(double x, double y)
-      => new Angle(ConvertCartesianToRotationAngle(x, y));
-    public static Angle FromCartesianEx(double x, double y)
-      => new Angle(ConvertCartesianToRotationAngleEx(x, y));
+    //public static Angle FromCartesian2(double x, double y)
+    //  => new Angle(CartesianCoord2.ConvertToRotationAngle(x, y));
+    //public static Angle FromCartesian2Ex(double x, double y)
+    //  => new Angle(CartesianCoord2.ConvertToRotationAngleEx(x, y));
 
     public static string GetUnitSymbol(AngleUnit unit)
     {
@@ -161,7 +158,7 @@ namespace Flux.Quantity
           return @" grad";
         case AngleUnit.Radian:
           return @" rad";
-        case AngleUnit.Revolution:
+        case AngleUnit.Turn:
           return @" turns";
         default:
           return string.Empty;

@@ -9,7 +9,7 @@ namespace Flux.Formatting
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class DmsFormatter
+  public class LongitudeFormatter
     : AFormatter
   {
     public bool InsertSpaces { get; set; }
@@ -17,21 +17,14 @@ namespace Flux.Formatting
     public System.Text.Rune SymbolMinutes { get; set; } = new System.Text.Rune('\u2032');
     public System.Text.Rune SymbolSeconds { get; set; } = new System.Text.Rune('\u2033');
 
-    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?(?<AxisCardinalDirections>(NS|EW))?");
+    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
 
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format))
-      {
-        if (Convert.TryTypeConverter<double>(arg ?? string.Empty, out var signedDecimalDegrees, null))
-        {
-          if (TryFormat(signedDecimalDegrees, format, out var dms))
-          {
-            return dms;
-          }
-        }
-      }
+      if (!string.IsNullOrEmpty(format) && arg is Longitude longitude)
+        if (TryFormat(longitude.Value, format, out var dms))
+          return dms;
 
       return HandleOtherFormats(format, arg);
     }
@@ -77,11 +70,8 @@ namespace Flux.Formatting
                 break;
             }
 
-            if (m.Groups["AxisCardinalDirections"] is System.Text.RegularExpressions.Group group && group.Success && group.Value is string axisCardinalDirections && axisCardinalDirections.Length == 2)
-            {
-              sb.Append(space);
-              sb.Append(value >= 0 ? axisCardinalDirections[0] : axisCardinalDirections[1]);
-            }
+            sb.Append(space);
+            sb.Append(value >= 0 ? 'E' : 'W');
           }
 
           result = sb.ToString();
@@ -99,31 +89,23 @@ namespace Flux.Formatting
     {
       try
       {
-        var regex = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^NSEW]*(?<CompassDirection>[NSEW])?");
+        var regex = new System.Text.RegularExpressions.Regex(@"(?<D>\d+(\.\d+)?)[^0-9\.]*(?<M>\d+(\.\d+)?)[^0-9\.]*(?<S>\d+(\.\d+)?)[^EW]*(?<C>[EW])?");
 
         var value = 0.0;
 
         if (regex.Match(dms) is var m && m.Success)
         {
-          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var decimalDegrees))
-          {
+          if (m.Groups["D"] is var g1 && g1.Success && double.TryParse(g1.Value, out var decimalDegrees))
             value += decimalDegrees;
-          }
 
-          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var decimalMinutes))
-          {
+          if (m.Groups["M"] is var g2 && g2.Success && double.TryParse(g2.Value, out var decimalMinutes))
             value += decimalMinutes / 60;
-          }
 
-          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
-          {
+          if (m.Groups["S"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
             value += decimalSeconds / 3600;
-          }
 
-          if (m.Groups["CompassDirection"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
-          {
+          if (m.Groups["C"] is var g4 && g4.Success && g4.Value[0] == 'E')
             value = -value;
-          }
 
           result = value;
           return true;

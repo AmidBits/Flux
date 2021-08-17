@@ -3,7 +3,7 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Decrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
-		public static void Decrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
+		public static void Decrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Aes))
 		{
 			using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
 
@@ -17,7 +17,7 @@ namespace Flux
 			input?.CopyTo(cs); // input.WriteTo(cs);
 		}
 		/// <summary>Encrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
-		public static void Encrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Rijndael))
+		public static void Encrypt(this System.IO.Stream input, System.IO.Stream output, string key, string salt, string algorithm = nameof(System.Security.Cryptography.Aes))
 		{
 			using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
 

@@ -37,7 +37,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<(Geometry.Vector2 v1, Geometry.Vector2 vm, Geometry.Vector2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<Geometry.Vector2> source)
       => ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
 
-    /// <summary>Determines the inclusion of a vector in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
+    /// <summary>Determines the inclusion of a vector in the polygon (2D planar). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
     public static int InsidePolygon(this System.Collections.Generic.IList<Geometry.Vector2> source, Geometry.Vector2 vector)
     {
@@ -89,7 +89,6 @@ namespace Flux
     }
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
     public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Geometry.Vector2> source)
-    //=> source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).AllEqual(out _);
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -108,7 +107,6 @@ namespace Flux
     }
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Geometry.Vector2> source)
-    //=> source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).AllEqual(out _);
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

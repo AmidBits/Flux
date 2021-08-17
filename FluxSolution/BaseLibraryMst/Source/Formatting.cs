@@ -12,15 +12,29 @@ namespace Formatting
     double _dms1tp = 40.1875;
 
     [TestMethod]
-    public void Formatter()
+    public void LatitudeFormatter()
     {
-      Assert.AreEqual(string.Format(new Flux.Formatting.DmsFormatter(), @"{0:DMS}", _dms1), _dms1);
+      Assert.AreEqual(string.Format(new Flux.Formatting.LatitudeFormatter(), @"{0:DMS}", _dms1), _dms1);
     }
 
     [TestMethod]
-    public void TryParse()
+    public void LatitudeTryParse()
     {
-      Flux.Formatting.DmsFormatter.TryParse(_dms1, out var dms1tp);
+      Flux.Formatting.LatitudeFormatter.TryParse(_dms1, out var dms1tp);
+
+      Assert.AreEqual(_dms1tp, dms1tp);
+    }
+
+    [TestMethod]
+    public void LongitudeFormatter()
+    {
+      Assert.AreEqual(string.Format(new Flux.Formatting.LongitudeFormatter(), @"{0:DMS}", _dms1), _dms1);
+    }
+
+    [TestMethod]
+    public void LongitudeTryParse()
+    {
+      Flux.Formatting.LongitudeFormatter.TryParse(_dms1, out var dms1tp);
 
       Assert.AreEqual(_dms1tp, dms1tp);
     }

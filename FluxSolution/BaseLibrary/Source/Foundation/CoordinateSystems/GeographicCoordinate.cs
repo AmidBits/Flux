@@ -3,13 +3,16 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
-  public struct GeographicCoord
-    : System.IEquatable<GeographicCoord>, System.IFormattable
+  public struct GeographicCoordinate
+    : System.IEquatable<GeographicCoordinate>
   {
-    public static readonly GeographicCoord Empty;
+    public const double MaxAltitudeInMeters = 1500000000;
+    public const double MinAltitudeInMeters = -11000;
 
-    public static GeographicCoord Tucson
-      => new GeographicCoord(32.221667, -110.926389, 728);
+    public static readonly GeographicCoordinate Empty;
+
+    public static GeographicCoordinate Tucson
+      => new GeographicCoordinate(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Quantity.Length Altitude { get; }
@@ -18,21 +21,21 @@ namespace Flux
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Longitude Longitude { get; }
 
-    public GeographicCoord(Latitude latitude, Longitude longitude, Quantity.Length altitude)
+    public GeographicCoordinate(Latitude latitude, Longitude longitude, Quantity.Length altitude)
     {
-      Altitude = altitude;
+      Altitude = ValidAltitude(altitude.Value) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
       Latitude = latitude;
       Longitude = longitude;
     }
-    public GeographicCoord(double latitude, double longitude, double altitude = 1.0)
-      : this(new Latitude(latitude), new Longitude(longitude), new Quantity.Length(altitude))
+    public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeInMeters = 1.0)
+      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeInMeters))
+    { }
+    public GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
+      : this(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3)
     { }
 
-    public SphericalCoord ToSphericalCoord()
-    {
-      var (radius, inclinationRad, azimuthRad) = ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
-      return new SphericalCoord(radius, new Quantity.Angle(inclinationRad), new Quantity.Angle(azimuthRad));
-    }
+    public SphericalCoordinate ToSphericalCoordinate()
+      => new SphericalCoordinate(ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value));
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     ///// <param name="trackStart"></param>
@@ -306,42 +309,69 @@ namespace Flux
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoord result, double earthRadius)
+    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
     {
-      if (Formatting.DmsFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.DmsFormatter.TryParse(longitudeDMS, out var longitude))
+      if (Formatting.LatitudeFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.LongitudeFormatter.TryParse(longitudeDMS, out var longitude))
       {
-        result = new GeographicCoord(latitude, longitude, earthRadius);
+        result = new GeographicCoordinate(latitude, longitude, earthRadius);
         return true;
       }
 
       result = Empty;
       return false;
     }
+
+    public static bool ValidAltitude(double altitudeInMeters)
+      => altitudeInMeters >= MinAltitudeInMeters && altitudeInMeters <= MaxAltitudeInMeters;
     #endregion Static members
 
     #region Overloaded operators
-    public static bool operator ==(GeographicCoord a, GeographicCoord b)
+    public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
       => a.Equals(b);
-    public static bool operator !=(GeographicCoord a, GeographicCoord b)
+    public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(GeographicCoord other)
+    public bool Equals(GeographicCoordinate other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider ?? new Formatting.GeopointFormatter(), format ?? $"<{nameof(GeographicCoord)}: {{0:DMS}}>", this);
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is GeographicCoord o && Equals(o);
+      => obj is GeographicCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Altitude, Latitude, Longitude);
     public override string ToString()
-      => ToString($"<{nameof(GeographicCoord)}: {{0:DMS}}>", new Formatting.GeopointFormatter());
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append('<');
+      sb.Append(GetType().Name);
+      sb.Append(':');
+      sb.Append(' ');
+      sb.AppendFormat(new Formatting.LatitudeFormatter(), $"{{0:DMS}}", Latitude);
+      sb.Append(' ');
+      sb.Append('(');
+      sb.AppendFormat(null, @"{0:N6}", Latitude.Value);
+      sb.Append(Quantity.Angle.DegreeSymbol);
+      sb.Append(')');
+      sb.Append(',');
+      sb.Append(' ');
+      sb.AppendFormat(new Formatting.LongitudeFormatter(), $"{{0:DMS}}", Longitude);
+      sb.Append(' ');
+      sb.Append('(');
+      sb.AppendFormat(null, @"{0:N6}", Longitude.Value);
+      sb.Append(Quantity.Angle.DegreeSymbol);
+      sb.Append(')');
+      sb.Append(',');
+      sb.Append(' ');
+      sb.AppendFormat(null, @"{0:N0}", Altitude.Value);
+      sb.Append(' ');
+      sb.Append('m');
+      sb.Append('>');
+      return sb.ToString();
+    }
     #endregion Object overrides
   }
 }

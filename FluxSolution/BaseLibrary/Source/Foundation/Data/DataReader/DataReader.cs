@@ -47,7 +47,7 @@ namespace Flux.Data
       => (bool)GetValue(index);
     public virtual byte GetByte(int index)
       => (byte)GetValue(index);
-    public virtual long GetBytes(int index, long fieldIndex, byte[] buffer, int bufferIndex, int length)
+    public virtual long GetBytes(int index, long fieldIndex, byte[]? buffer, int bufferIndex, int length)
     {
       var field = (byte[])GetValue(index);
 
@@ -74,7 +74,7 @@ namespace Flux.Data
     }
     public virtual char GetChar(int index)
       => (char)GetValue(index);
-    public virtual long GetChars(int index, long fieldIndex, char[] buffer, int bufferIndex, int length)
+    public virtual long GetChars(int index, long fieldIndex, char[]? buffer, int bufferIndex, int length)
     {
       var field = (char[])GetValue(index);
 

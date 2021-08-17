@@ -6,8 +6,8 @@ namespace Flux
     {
       try
       {
-        using var wc = new System.Net.WebClient();
-        using var s = wc.OpenRead(uri);
+        using var wc = new System.Net.Http.HttpClient();
+        using var s = wc.GetStreamAsync(uri);
 
         return true;
       }

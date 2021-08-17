@@ -26,11 +26,10 @@ namespace Flux.Hashing
 
       for (int index = 0; index < 8; index++) desKey[index] = System.Convert.ToByte(sb.ToString(index * 8, 8), 2);
 
-      using var des = new System.Security.Cryptography.DESCryptoServiceProvider
-      {
-        Key = desKey,
-        IV = new byte[8]
-      };
+      using var des = System.Security.Cryptography.DESCryptoServiceProvider.Create();
+
+      des.Key = desKey;
+      des.IV = new byte[8];
 
       using var ms = new System.IO.MemoryStream();
       using var cs = new System.Security.Cryptography.CryptoStream(ms, des.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);

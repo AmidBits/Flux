@@ -5,18 +5,18 @@ namespace Flux
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit
   {
+    public const double MaxValue = +90;
+    public const double MinValue = -90;
+
     public static Latitude TropicOfCancer
       => new Latitude(23.43648);
     public static Latitude TropicOfCapricorn
       => new Latitude(-23.43648);
 
-    public const double MaxValue = +90;
-    public const double MinValue = -90;
-
     private readonly double m_value;
 
-    public Latitude(double degree)
-      => m_value = Maths.Fold(degree, MinValue, MaxValue);
+    public Latitude(double latitudeDeg)
+      => m_value = IsLatitude(latitudeDeg) ? latitudeDeg : throw new System.ArgumentOutOfRangeException(nameof(latitudeDeg));
     public Latitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
@@ -64,6 +64,9 @@ namespace Flux
 
       return System.Math.Sqrt(numerator / denominator);
     }
+    /// <summary>Returns whether the specified latitude (in degrees) is a valid latitude, i.e. [-90, +90].</summary>
+    public static bool IsLatitude(double latitudeDeg)
+      => latitudeDeg >= MinValue && latitudeDeg <= MaxValue;
     #endregion Static methods
 
     #region Overloaded operators

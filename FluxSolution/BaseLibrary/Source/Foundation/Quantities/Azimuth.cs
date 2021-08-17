@@ -25,7 +25,7 @@ namespace Flux.Quantity
     #region Static methods
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>
     public static bool IsBearing(double degBearing)
-      => degBearing >= 0 && degBearing < 360;
+      => degBearing >= MinValue && degBearing < MaxValue;
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
     public static int LatchNeedle(double radBearing, int positions)
       => (int)System.Math.Round(Maths.Wrap(radBearing, 0, Maths.PiX2) / (Maths.PiX2 / positions) % positions);

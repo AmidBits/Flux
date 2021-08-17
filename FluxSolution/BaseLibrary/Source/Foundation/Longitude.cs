@@ -10,8 +10,8 @@ namespace Flux
 
     private readonly double m_value;
 
-    public Longitude(double degree)
-      => m_value = Maths.Wrap(degree, MinValue, MaxValue);
+    public Longitude(double longitudeDeg)
+      => m_value = IsLongitude(longitudeDeg) ? longitudeDeg : throw new System.ArgumentOutOfRangeException(nameof(longitudeDeg));
     public Longitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
@@ -34,6 +34,9 @@ namespace Flux
     #region Static methods
     public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
       => (int)Maths.RoundTo((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, FullRoundingBehavior.TowardZero);
+    /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
+    public static bool IsLongitude(double longitudeDeg)
+      => longitudeDeg >= MinValue && longitudeDeg <= MaxValue;
     #endregion Static methods
 
     #region Overloaded operators
