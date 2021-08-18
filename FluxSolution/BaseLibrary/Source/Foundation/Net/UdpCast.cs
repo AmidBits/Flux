@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Net
 {
   /// <summary>Event arguments for when data is received.</summary>
   public class UdpCastDataReceivedEventArgs

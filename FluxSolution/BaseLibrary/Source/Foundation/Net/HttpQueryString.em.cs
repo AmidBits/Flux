@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux
+namespace FluxMOMOMO
 {
   public static partial class ExtensionMethods
   {

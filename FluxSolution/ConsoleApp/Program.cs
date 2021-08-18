@@ -37,6 +37,37 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      var countRunes = 1000;
+      var lastRune = (-1, (System.Text.Rune)0);
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Trial.csv", System.Text.Encoding.UTF8))
+        foreach (var rune in sr.EnumerateRunes())
+        {
+          lastRune = rune;
+          if (countRunes-- <= 0)
+            break;
+        }
+      //System.Console.Write(rune.value);
+      System.Console.WriteLine();
+      System.Console.WriteLine($"{lastRune.Item1} 0x{lastRune.Item2.Value:X4} {lastRune.Item2.Utf16SequenceLength}");
+      System.Console.WriteLine();
+
+      var countTextElements = 1000;
+      var lastTextElement = (-1, string.Empty);
+      using (var sr = new System.IO.StreamReader(@"C:\Test\Trial.csv", System.Text.Encoding.UTF8))
+        foreach (var textElement in sr.EnumerateTextElements())
+        {
+          lastTextElement = textElement;
+          if (countTextElements-- <= 0)
+            break;
+        }
+      //System.Console.Write(textElement.value);
+      System.Console.WriteLine();
+      System.Console.WriteLine($"{lastTextElement.Item1} {string.Join('|', lastTextElement.Item2.Select(c => $"0x{new System.Text.Rune(c).Value:X4}"))}({ lastTextElement.Item2.Length})");
+      System.Console.WriteLine();
+
+
+      return;
+
       var sarg = string.Join(' ', args);
       sarg = "--port 123 /f /a test";
       //foreach (var token in new Flux.Text.RuneTokenizer().GetTokens(sarg))
