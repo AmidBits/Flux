@@ -5,7 +5,7 @@ namespace Flux.Wpf
     /// <summary>Returns the angle, in radians, according to the laws of cosine. Zero is to the top.</summary>
     public static double PointToAngularRotation(this System.Windows.Point point, bool inDegrees = false)
     {
-      var angle = CartesianCoordinate2.ConvertToRotationAngleEx(point.X, point.Y);
+      var angle = Flux.CoordinateSystems.CartesianCoordinate2.ConvertToRotationAngleEx(point.X, point.Y);
 
       return inDegrees ? Quantity.Angle.ConvertRadianToDegree(angle) : angle;
     }

@@ -55,7 +55,7 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      var gc = Flux.GeographicCoordinate.Tucson;
+      var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
       var sp = gc.ToSphericalCoordinate();
       var cy = sp.ToCylindricalCoordinate();
       var ca = cy.ToCartesianCoordinate3();

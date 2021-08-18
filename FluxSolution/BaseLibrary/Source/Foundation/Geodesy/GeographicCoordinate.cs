@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>

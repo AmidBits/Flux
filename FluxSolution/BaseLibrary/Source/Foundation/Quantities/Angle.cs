@@ -63,12 +63,12 @@ namespace Flux.Quantity
 
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public CartesianCoordinate2 ToCartesian2()
-      => new CartesianCoordinate2(ConvertRotationAngleToCartesian2(m_value));
+    public CoordinateSystems.CartesianCoordinate2 ToCartesian2()
+      => new CoordinateSystems.CartesianCoordinate2(ConvertRotationAngleToCartesian2(m_value));
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public CartesianCoordinate2 ToCartesian2Ex()
-      => new CartesianCoordinate2(ConvertRotationAngleToCartesian2Ex(m_value));
+    public CoordinateSystems.CartesianCoordinate2 ToCartesian2Ex()
+      => new CoordinateSystems.CartesianCoordinate2(ConvertRotationAngleToCartesian2Ex(m_value));
 
     public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
     {

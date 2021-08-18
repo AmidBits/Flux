@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   /// <summary>Cylindrical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
