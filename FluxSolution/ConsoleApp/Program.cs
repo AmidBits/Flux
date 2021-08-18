@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Flux;
 
@@ -11,10 +13,39 @@ namespace ConsoleApp
 {
   class Program
   {
-    private static void TimedMain(string[] _)
+    public static string GetCommandString(string commandLine)
     {
-      foreach (var pi in Flux.Reflect.GetPropertyInfos(typeof(Flux.Earth)))
-        System.Console.WriteLine($"{pi.Name} = {pi.GetValueEx(typeof(Flux.Earth))}");
+      var line = commandLine.AsSpan();
+
+      var spaceIndex = line.Length;
+
+      while (spaceIndex > 0)
+      {
+        line = line.Slice(0, spaceIndex);
+
+        if (System.IO.File.Exists(line.ToString()))
+          return line.ToString();
+
+        spaceIndex = line.LastIndexOf(@" ");
+      }
+
+      return string.Empty;
+    }
+
+    public static string GetArgumentString()
+      => System.Environment.CommandLine is var cl && GetCommandString(cl) is var cs && cs.Length > 0 && cs.Length < cl.Length ? cl.Substring(cs.Length + 1) : string.Empty;
+
+    private static void TimedMain(string[] args)
+    {
+      var sarg = string.Join(' ', args);
+      sarg = "--port 123 /f /a test";
+      //foreach (var token in new Flux.Text.RuneTokenizer().GetTokens(sarg))
+      //  System.Console.WriteLine(token);
+
+      using var re = new Flux.Text.RuneEnumerator(new System.IO.StringReader(sarg));
+
+      foreach (var q in re)
+        System.Console.WriteLine(q);
 
       //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2020, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));

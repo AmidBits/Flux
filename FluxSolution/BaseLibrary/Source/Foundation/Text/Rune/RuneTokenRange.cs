@@ -7,8 +7,8 @@ namespace Flux.Text
     public int Index { get; }
     public System.Text.Rune Value { get; }
 
-    public int? Depth { get; set; }
-    public int? Group { get; set; }
+    public int? Depth { get; }
+    public int? Group { get; }
 
     public RuneTokenRange(int index, System.Text.Rune rune, int depth, int group)
     {

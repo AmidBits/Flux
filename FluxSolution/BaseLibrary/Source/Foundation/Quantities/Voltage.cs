@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum VoltageUnit
+  {
+    Volt,
+  }
+
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
@@ -7,11 +12,31 @@ namespace Flux.Quantity
   {
     private readonly double m_value;
 
-    public Voltage(double volt)
-      => m_value = volt;
+    public Voltage(double value, VoltageUnit unit = VoltageUnit.Volt)
+    {
+      switch (unit)
+      {
+        case VoltageUnit.Volt:
+          m_value = value;
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     public double Value
       => m_value;
+
+    public double ToUnitValue(VoltageUnit unit = VoltageUnit.Volt)
+    {
+      switch (unit)
+      {
+        case VoltageUnit.Volt:
+          return m_value;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(unit));
+      }
+    }
 
     #region Static methods
     /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>

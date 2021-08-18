@@ -48,6 +48,8 @@ namespace Flux.Text
         m_current = default!;
       }
 
+      private int m_overallIndex = 0;
+
       public System.Text.Rune Current
         => m_current;
       object System.Collections.IEnumerator.Current
@@ -72,6 +74,8 @@ namespace Flux.Text
           m_bufferIndex += charCount; // Adjust the buffer index by the number of chars in the rune.
 
           m_current = rune; // Set current to the rune.
+
+          m_overallIndex += charCount;
 
           return true;
         }

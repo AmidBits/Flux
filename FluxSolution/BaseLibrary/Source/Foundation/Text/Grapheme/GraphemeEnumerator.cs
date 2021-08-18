@@ -35,12 +35,12 @@ namespace Flux.Text
       private int m_bufferIndex;
       private int m_bufferCount;
 
+      private GraphemeCluster m_current;
+
       private readonly System.Globalization.StringInfo m_stringInfo;
 
       private int m_textElementIndex;
       private int m_textElementCount;
-
-      private GraphemeCluster m_current;
 
       public GraphemeIterator(GraphemeEnumerator enumerator)
       {
@@ -58,12 +58,12 @@ namespace Flux.Text
         m_current = default!;
       }
 
+      private int m_overallIndex = 0;
+
       public GraphemeCluster Current
         => m_current;
       object System.Collections.IEnumerator.Current
         => m_current!;
-
-      private int m_overallIndex = 0;
 
       public bool MoveNext()
       {

@@ -16,11 +16,11 @@ namespace Flux.Quantity
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
-    public double Radian
-      => Angle.ConvertDegreeToRadian(m_value);
-
     public double Value
       => m_value;
+
+    public Angle ToAngle()
+      => new Angle(m_value, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>
