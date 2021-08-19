@@ -13,58 +13,39 @@ namespace ConsoleApp
 {
   class Program
   {
-    public static string GetCommandString(string commandLine)
+    private static void AmbTest()
     {
-      var line = commandLine.AsSpan();
+      var amb = new Flux.AmbOps.Amb();
 
-      var spaceIndex = line.Length;
+      var set1 = amb.Choose("the", "that", "a");
+      var set2 = amb.Choose("frog", "tramp", "thing");
+      amb.Require(() => set1.Value.Last() == set2.Value[0]);
+      var set3 = amb.Choose("walked", "hauled", "treaded", "grows");
+      amb.Require(() => set2.Value.Last() == set3.Value[0]);
+      var set4 = amb.Choose("slowly", "quickly");
+      amb.RequireFinal(() => set3.Value.Last() == set4.Value[0]);
 
-      while (spaceIndex > 0)
-      {
-        line = line.Slice(0, spaceIndex);
+      System.Console.WriteLine($"{set1} {set2} {set3} {set4}");
+      System.Console.Read();
 
-        if (System.IO.File.Exists(line.ToString()))
-          return line.ToString();
+      // problem from http://www.randomhacks.net/articles/2005/10/11/amb-operator
+      amb = new Flux.AmbOps.Amb();
 
-        spaceIndex = line.LastIndexOf(@" ");
-      }
+      var x = amb.Choose(1, 2, 3);
+      var y = amb.Choose(4, 5, 6);
+      amb.RequireFinal(() => x.Value + y.Value == 8);
 
-      return string.Empty;
+      System.Console.WriteLine($"{x} + {y} = 8");
+      System.Console.Read();
+      System.Console.Read();
     }
-
-    public static string GetArgumentString()
-      => System.Environment.CommandLine is var cl && GetCommandString(cl) is var cs && cs.Length > 0 && cs.Length < cl.Length ? cl.Substring(cs.Length + 1) : string.Empty;
 
     private static void TimedMain(string[] args)
     {
-      var countRunes = 1000;
-      var lastRune = (-1, (System.Text.Rune)0);
-      using (var sr = new System.IO.StreamReader(@"C:\Test\Trial.csv", System.Text.Encoding.UTF8))
-        foreach (var rune in sr.EnumerateRunes())
-        {
-          lastRune = rune;
-          if (countRunes-- <= 0)
-            break;
-        }
-      //System.Console.Write(rune.value);
-      System.Console.WriteLine();
-      System.Console.WriteLine($"{lastRune.Item1} 0x{lastRune.Item2.Value:X4} {lastRune.Item2.Utf16SequenceLength}");
-      System.Console.WriteLine();
+      var text = "ABC ABCDAB ABCDABCDABDE";
+      var word = "AB";
 
-      var countTextElements = 1000;
-      var lastTextElement = (-1, string.Empty);
-      using (var sr = new System.IO.StreamReader(@"C:\Test\Trial.csv", System.Text.Encoding.UTF8))
-        foreach (var textElement in sr.EnumerateTextElements())
-        {
-          lastTextElement = textElement;
-          if (countTextElements-- <= 0)
-            break;
-        }
-      //System.Console.Write(textElement.value);
-      System.Console.WriteLine();
-      System.Console.WriteLine($"{lastTextElement.Item1} {string.Join('|', lastTextElement.Item2.Select(c => $"0x{new System.Text.Rune(c).Value:X4}"))}({ lastTextElement.Item2.Length})");
-      System.Console.WriteLine();
-
+      var l = Flux.Text.KnuthMorrisPratt.Search(word, text);
 
       return;
 
