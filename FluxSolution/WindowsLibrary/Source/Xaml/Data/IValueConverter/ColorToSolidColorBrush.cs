@@ -18,7 +18,7 @@ namespace Flux.Wpf.IValueConverter
         return new System.Windows.Media.SolidColorBrush(color);
 
       if (value is System.Windows.Media.SolidColorBrush && targetType == typeof(System.Windows.Media.Color))
-        return (value as System.Windows.Media.SolidColorBrush).Color;
+        return ((System.Windows.Media.SolidColorBrush)value).Color;
 
       throw new System.NotSupportedException(string.Format("{0} from type '{1}' to type '{2}'.'.", caller, value.GetType().FullName, targetType.FullName));
     }

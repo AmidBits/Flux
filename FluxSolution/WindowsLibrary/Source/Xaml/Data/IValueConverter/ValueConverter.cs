@@ -1,6 +1,7 @@
 namespace Flux.Wpf.IValueConverter
 {
-  public class ValueConverter : System.Windows.DependencyObject, System.Windows.Data.IValueConverter
+  public class ValueConverter 
+    : System.Windows.DependencyObject, System.Windows.Data.IValueConverter
   {
     public virtual object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {

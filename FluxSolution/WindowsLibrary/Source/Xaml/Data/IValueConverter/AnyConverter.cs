@@ -2,8 +2,8 @@ namespace Flux.Wpf.IValueConverter
 {
   public class AnyConverter : ValueConverter
   {
-    public string FormatStringForToString { get; set; }
-    public string MatchPatternForParse { get; set; }
+    public string FormatStringForToString { get; set; } = default!;
+    public string MatchPatternForParse { get; set; } = default!;
 
     public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {

@@ -1,5 +1,4 @@
-﻿#if Microsoft_Extensions_Logging
-namespace Flux
+﻿namespace Flux
 {
   // https://stackoverflow.com/questions/5646820/logger-wrapper-best-practice/5646876#5646876
   // https://asp.net-hacker.rocks/2017/05/05/add-custom-logging-in-aspnetcore.html
@@ -73,4 +72,3 @@ namespace Flux
       };
   }
 }
-#endif

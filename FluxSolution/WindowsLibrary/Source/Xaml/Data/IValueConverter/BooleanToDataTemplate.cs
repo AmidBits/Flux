@@ -5,8 +5,8 @@ namespace Flux.Wpf.IValueConverter
 	{
 		public bool BooleanInverse { get; set; }
 
-		public System.Windows.DataTemplate DataTemplateWhenFalse { get; set; }
-		public System.Windows.DataTemplate DataTemplateWhenTrue { get; set; }
+		public System.Windows.DataTemplate DataTemplateWhenFalse { get; set; } = default!;
+		public System.Windows.DataTemplate DataTemplateWhenTrue { get; set; } = default!;
 
 		public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{

@@ -3,7 +3,7 @@ namespace Flux.Wpf.IValueConverter
   public class Polynomial : ValueConverter
   {
     /// <summary>Gets or sets the coefficients of the polynomial.</summary>
-    public System.Windows.Media.DoubleCollection Coefficients { get; set; }
+    public System.Windows.Media.DoubleCollection Coefficients { get; set; } = default!;
 
     public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {

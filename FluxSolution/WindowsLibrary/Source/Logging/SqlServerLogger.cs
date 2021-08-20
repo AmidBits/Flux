@@ -1,5 +1,4 @@
-﻿#if Microsoft_Extensions_Logging
-namespace Flux.Logging
+﻿namespace Flux.Logging
 {
   public static class SqlServerLoggerExtensions
   {
@@ -96,7 +95,8 @@ namespace Flux.Logging
     }
   }
 
-  public class SqlServerLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider
+  public class SqlServerLoggerProvider
+    : Flux.Disposable, Microsoft.Extensions.Logging.ILoggerProvider
   {
     private readonly SqlServerLoggerConfiguration _config;
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, SqlServerLogger> _loggers = new System.Collections.Concurrent.ConcurrentDictionary<string, SqlServerLogger>();
@@ -106,8 +106,8 @@ namespace Flux.Logging
     [System.CLSCompliant(false)]
     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new SqlServerLogger(name, _config));
 
-    public void Dispose() => _loggers.Clear();
+    protected override void DisposeManaged()
+      => _loggers.Clear();
   }
 
 }
-#endif

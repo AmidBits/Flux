@@ -1,8 +1,8 @@
-#if DirectoryServices
 using System.Linq;
 
 namespace Flux
 {
+  [System.Runtime.Versioning.SupportedOSPlatform("windows")]
   public static partial class DirectoryEm
   {
     public static string ToCombineOperatorString(this Directory.CombineOperator combineOperator)
@@ -131,6 +131,7 @@ namespace Flux
       USER_USE_AES_KEYS = unchecked((int)0x80000000)
     }
 
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public static class Query
     {
       /// <summary>Returns a concatenated string based on groupType bits.</summary>
@@ -213,7 +214,7 @@ namespace Flux
       {
         var distinguishedName = GetCurrentUser().TryGetValue(@"distinguishedName", out var dn) ? dn.First().ToString() : throw new System.Exception();
 
-        var filter = includeNestedGroups ? CompareMatchingRule(distinguishedName, MatchingRule.InChain, @"member") : CompareOne(distinguishedName, CompareOperator.Equal, @"member");
+        var filter = includeNestedGroups ? CompareMatchingRule(distinguishedName ?? string.Empty, MatchingRule.InChain, @"member") : CompareOne(distinguishedName ?? string.Empty, CompareOperator.Equal, @"member");
 
         return GetAllEx(filter, 100, 1000).ToArray();
       }
@@ -322,7 +323,7 @@ namespace Flux
         return propertyValues.ToArray();
       }
 
-#region Query helpers
+      #region Query helpers
       public static string CompareAll(CombineOperator combinationOperator, string value, CompareOperator comparisonOperator, params string[] propertyNames)
         => $"({combinationOperator.ToCombineOperatorString()}{string.Concat(propertyNames.Select(pn => CompareOne(value, comparisonOperator, pn)))})";
       public static string CompareMatchingRule(string value, MatchingRule matchingRule, string propertyName)
@@ -338,8 +339,7 @@ namespace Flux
         => $"(&(objectCategory=group){filter})";
       public static string FilterUser(string filter)
         => $"(&(objectCategory=user){filter})";
-#endregion Query helpers
+      #endregion Query helpers
     }
   }
 }
-#endif

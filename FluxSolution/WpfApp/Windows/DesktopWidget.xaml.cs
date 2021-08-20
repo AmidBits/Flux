@@ -143,12 +143,16 @@ namespace WpfApp
       => SetWindowPos(new System.Windows.Interop.WindowInteropHelper(window).Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
     #endregion SetWindowPos, SendWindowToBack
 
+
+
     void Update()
     {
       UpdateGrid(GenerateValues());
 
       UpdateWindow();
     }
+
+    const string windowsCurrentVersionRegistryPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
 
     System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, object>> GenerateValues()
     {

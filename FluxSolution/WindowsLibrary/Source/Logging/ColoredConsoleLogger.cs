@@ -1,5 +1,4 @@
-﻿#if Microsoft_Extensions_Logging
-namespace LoggerApp
+﻿namespace LoggerApp
 {
   public static class ColoredConsoleLoggerExtensions
   {
@@ -69,7 +68,8 @@ namespace LoggerApp
     }
   }
 
-  public class ColoredConsoleLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider
+  public class ColoredConsoleLoggerProvider
+    : Flux.Disposable, Microsoft.Extensions.Logging.ILoggerProvider
   {
     private readonly ColoredConsoleLoggerConfiguration _config;
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, ColoredConsoleLogger> _loggers = new System.Collections.Concurrent.ConcurrentDictionary<string, ColoredConsoleLogger>();
@@ -79,7 +79,7 @@ namespace LoggerApp
     [System.CLSCompliant(false)]
     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, name => new ColoredConsoleLogger(name, _config));
 
-    public void Dispose() => _loggers.Clear();
+    protected override void DisposeManaged()
+      => _loggers.Clear();
   }
 }
-#endif

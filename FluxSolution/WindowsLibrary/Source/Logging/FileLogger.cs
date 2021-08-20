@@ -1,5 +1,4 @@
-﻿#if Microsoft_Extensions_Logging
-using System.Linq;
+﻿using System.Linq;
 
 namespace LoggerApp
 {
@@ -154,7 +153,8 @@ namespace LoggerApp
     }
   }
 
-  public class FileLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider
+  public class FileLoggerProvider
+    : Flux.Disposable, Microsoft.Extensions.Logging.ILoggerProvider
   {
     private readonly FileLoggerConfiguration m_config;
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, FileLogger> m_loggers = new System.Collections.Concurrent.ConcurrentDictionary<string, FileLogger>();
@@ -164,7 +164,7 @@ namespace LoggerApp
     [System.CLSCompliant(false)]
     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => m_loggers.GetOrAdd(categoryName, name => new FileLogger(name, m_config));
 
-    public void Dispose() => m_loggers.Clear();
+    protected override void DisposeManaged()
+      => m_loggers.Clear();
   }
 }
-#endif

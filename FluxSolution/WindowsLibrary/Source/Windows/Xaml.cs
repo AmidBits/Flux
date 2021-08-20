@@ -13,7 +13,7 @@ namespace Flux.Wpf
 
       using var xr = System.Xml.XmlReader.Create(xaml);
 
-      return System.Windows.Markup.XamlReader.Load(xr) as System.Windows.Shapes.Path;
+      return (System.Windows.Shapes.Path)System.Windows.Markup.XamlReader.Load(xr);
     }
     /// <summary>Parse xaml markup path data to a Geometry.</summary>
     /// <example>

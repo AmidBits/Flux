@@ -84,11 +84,15 @@
       C[n + 1] = C[n] + (Nc[a >> g] >= E[n] % 4 ? 0 : 1);
     }
 
+    [System.CLSCompliant(false)]
     public Fifteen(int n, ulong g)
     {
       E[0] = n;
       B[0] = g;
     }
+    public Fifteen(int n, long g)
+      : this(n, unchecked((ulong)g))
+    { }
 
     public void Solve()
     {
