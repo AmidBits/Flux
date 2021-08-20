@@ -1,4 +1,4 @@
-namespace Flux.Midi
+namespace Flux.Midi.Protocol
 {
   public enum ControllerChangeNumber
   {

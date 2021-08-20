@@ -23,7 +23,7 @@ namespace Flux
   namespace Midi
   {
     public enum MidiTimeCodeType
-    : byte
+      : byte
     {
       TwentyFour = 24,
       TwentyFive = 25,

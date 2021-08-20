@@ -1,6 +1,6 @@
-namespace Flux.Midi
+namespace Flux.Midi.Protocol
 {
-  public enum SystemRealtimeStatus
+  public enum RealtimeStatus
   {
     /// <summary>Sent 24 times per quarter note when synchronization is required.</summary>
     TimingClock = 0xF8,
