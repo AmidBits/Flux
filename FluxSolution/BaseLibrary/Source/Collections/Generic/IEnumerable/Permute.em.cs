@@ -68,6 +68,7 @@ namespace Flux
     }
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> source)
       => Permute(source, System.Collections.Generic.Comparer<T>.Default);
+
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
       => Permute(new System.Collections.Generic.List<T>(source), comparer);
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IEnumerable<T> source)

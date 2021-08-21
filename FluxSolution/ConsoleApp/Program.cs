@@ -45,7 +45,7 @@ namespace ConsoleApp
       var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 
       System.Console.WriteLine(seq.Extrema(seq => seq));
-      System.Console.WriteLine(seq.ExtremaNearestReference(seq => seq, 13));
+      System.Console.WriteLine(seq.ExtremaNearestKey(seq => seq, 13));
 
       return;
 
