@@ -12,7 +12,7 @@ namespace Flux
 namespace Flux.Numerics
 {
   public struct Vector3
-      : System.IEquatable<Vector3>
+    : System.IEquatable<Vector3>
   {
     private readonly System.Runtime.Intrinsics.Vector256<double> m_v256;
 
