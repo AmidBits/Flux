@@ -11,12 +11,10 @@ namespace Flux.Metrics
   {
     public LongestCommonSubsequence()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     /// <summary></summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

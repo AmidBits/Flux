@@ -15,9 +15,7 @@ namespace Flux.DataStructures
 		System.Collections.Generic.IEnumerable<T> ExtractAll()
 		{
 			while (!IsEmpty)
-			{
 				yield return Extract();
-			}
 		}
 	}
 }

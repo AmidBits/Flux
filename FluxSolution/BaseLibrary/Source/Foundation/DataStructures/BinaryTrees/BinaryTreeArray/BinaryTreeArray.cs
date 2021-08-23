@@ -31,8 +31,7 @@ namespace Flux.DataStructures
     }
     public BinaryTreeArray()
       : this(1)
-    {
-    }
+    { }
 
     public bool IsBST(int index, TKey minimumKey, TKey maximumKey)
     {

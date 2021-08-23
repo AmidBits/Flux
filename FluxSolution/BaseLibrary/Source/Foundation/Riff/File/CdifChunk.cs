@@ -9,8 +9,7 @@ namespace Flux.Riff
 
     public CdifChunk()
       : base(ID, 8)
-    {
-    }
+    { }
     public CdifChunk(byte[] buffer)
       : base(buffer)
     { }

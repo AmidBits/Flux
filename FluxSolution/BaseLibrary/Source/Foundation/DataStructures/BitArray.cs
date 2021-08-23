@@ -16,21 +16,17 @@
       m_bitLength = length;
 
       if (defaultValue)
-      {
         SetAll(defaultValue);
-      }
       else
-      {
         System.Array.Clear(m_bitArray, 0, m_bitArray.Length);
-      }
     }
     public BitArray(int length)
       : this(length, false)
-    {
-    }
+    { }
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    public bool Get(long index) => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
+    public bool Get(long index)
+      => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public void Set(long index, bool value)
@@ -38,13 +34,9 @@
       if (index < 0 || (ulong)index >= (ulong)m_bitLength) throw new System.ArgumentOutOfRangeException(nameof(index));
 
       if (value)
-      {
         m_bitArray[index >> 6] |= (1L << (int)(index % 64));
-      }
       else
-      {
         m_bitArray[index >> 6] &= ~(1L << (int)(index % 64));
-      }
     }
 
     public void SetAll(bool value)
@@ -52,9 +44,7 @@
       var fillValue = value ? -1L : 0L;
 
       for (int i = 0; i < m_bitLength; i++)
-      {
         m_bitArray[i] = fillValue;
-      }
     }
 
     public long Length

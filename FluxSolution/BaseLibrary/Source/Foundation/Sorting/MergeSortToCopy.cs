@@ -15,13 +15,10 @@ namespace Flux.Sorting
 
     public MergeSortToCopy(MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-      m_type = type;
-    }
+      => m_type = type;
     public MergeSortToCopy()
       : this(MergeSortType.TopDown, System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public T[] SortToCopy(System.ReadOnlySpan<T> source)
     {

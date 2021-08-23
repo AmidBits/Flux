@@ -11,12 +11,10 @@ namespace Flux.Metrics
   {
     public DamerauLevenshteinDistance()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
@@ -223,12 +221,10 @@ namespace Flux.Metrics
 
     public DamerauLevenshteinDistanceEx()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public DamerauLevenshteinDistanceEx(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public double[,] GetCustomFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

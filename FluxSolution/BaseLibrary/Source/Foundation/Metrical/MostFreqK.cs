@@ -32,8 +32,7 @@ namespace Flux.Metrics
     }
     public MostFreqK(int k, int maxDistance)
       : this(k, maxDistance, System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
 
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> Hashing(System.Collections.Generic.IEnumerable<T> source)
     {

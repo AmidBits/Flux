@@ -7,12 +7,10 @@ namespace Flux.Sorting
   {
     public MergeSort(System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-    }
+    { }
     public MergeSort()
       : base(System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public void SortInPlace(System.Span<T> source)
       => Sort(source, 0, source.Length - 1);

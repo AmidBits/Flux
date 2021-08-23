@@ -15,12 +15,10 @@ namespace Flux.Metrics
 
     public JaroWinklerDistance()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     public double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1 - GetNormalizedSimilarity(source, target);

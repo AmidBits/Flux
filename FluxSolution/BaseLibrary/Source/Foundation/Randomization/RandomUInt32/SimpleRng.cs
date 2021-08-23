@@ -25,8 +25,7 @@ namespace Flux.Randomization
     }
     public SimpleRng(int seed1, int seed2)
       : this(unchecked((uint)seed1), unchecked((uint)seed2))
-    {
-    }
+    { }
     public SimpleRng(SeedEnum seed)
     {
       switch (seed)
@@ -43,8 +42,7 @@ namespace Flux.Randomization
     }
     public SimpleRng()
       : this(SeedEnum.TimerMechanism)
-    {
-    }
+    { }
 
     internal override uint SampleUInt32()
     {

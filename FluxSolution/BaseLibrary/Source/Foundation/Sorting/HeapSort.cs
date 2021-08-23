@@ -15,13 +15,10 @@ namespace Flux.Sorting
 
     public HeapSort(HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-      m_type = type;
-    }
+      => m_type = type;
     public HeapSort()
       : this(HeapSortType.FloydDown, System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public void SortInPlace(System.Span<T> source)
     {

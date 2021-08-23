@@ -18,9 +18,7 @@ namespace Flux.Geometry
     public static System.Collections.Generic.IEnumerable<int> GetCenteredNumbers(int count)
     {
       for (var nth = 1; nth <= count; nth++)
-      {
         yield return 3 * nth * (nth - 1) + 1;
-      }
     }
 
     /// <summary></summary>
@@ -45,28 +43,32 @@ namespace Flux.Geometry
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2> Points { get => m_points; }
 
     public HexagonShape(HexagonOrientation orientation, double outerDiameter = 1.0)
-    {
-      m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Quantity.Angle.ConvertDegreeToRadian(90)).ToArray() : Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
-    }
+      => m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Quantity.Angle.ConvertDegreeToRadian(90)).ToArray() : Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
 
     /// <summary>Creates an array with the vertices for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static System.Numerics.Vector2[] GetPoints(double length, double angleOffset) => Ellipse.CreateCircularArcPoints(6, length, length, (x, y) => new System.Numerics.Vector2((float)x, (float)y), angleOffset).ToArray();
+    public static System.Numerics.Vector2[] GetPoints(double length, double angleOffset)
+      => Ellipse.CreateCircularArcPoints(6, length, length, (x, y) => new System.Numerics.Vector2((float)x, (float)y), angleOffset).ToArray();
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceArea(double length) => 3 * length * length * Maths.SquareRootOf3 / 2.0;
+    public static double SurfaceArea(double length)
+      => 3 * length * length * Maths.SquareRootOf3 / 2.0;
     /// <summary>Calculates the surface inner diameter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceInnerDiameter(double length) => length * Maths.SquareRootOf3;
+    public static double SurfaceInnerDiameter(double length)
+      => length * Maths.SquareRootOf3;
     /// <summary>Calculates the surface inner radius for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceInnerRadius(double length) => length * Maths.SquareRootOf3 / 2.0;
+    public static double SurfaceInnerRadius(double length)
+      => length * Maths.SquareRootOf3 / 2.0;
     /// <summary>Calculates the surface outer diameter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfaceOuterDiameter(double length) => length * 2;
+    public static double SurfaceOuterDiameter(double length)
+      => length * 2;
     /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double SurfacePerimeter(double length) => length * 6;
+    public static double SurfacePerimeter(double length)
+      => length * 6;
   }
 }

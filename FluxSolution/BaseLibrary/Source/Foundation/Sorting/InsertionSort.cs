@@ -7,12 +7,10 @@ namespace Flux.Sorting
   {
     public InsertionSort(System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-    }
+    { }
     public InsertionSort()
       : this(System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public void SortInPlaceOld(System.Span<T> source)
     {

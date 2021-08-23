@@ -7,12 +7,10 @@ namespace Flux.Sorting
   {
     public QuickSort(System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-    }
+    { }
     public QuickSort()
       : this(System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public void SortInPlace(System.Span<T> source)
       => QuickSortImpl(source, 0, source.Length - 1);

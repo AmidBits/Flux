@@ -8,12 +8,10 @@ namespace Flux.Metrics
   {
     public HammingDistance()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public HammingDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {

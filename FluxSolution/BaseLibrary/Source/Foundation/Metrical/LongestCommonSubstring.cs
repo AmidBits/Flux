@@ -8,12 +8,10 @@ namespace Flux.Metrics
   {
     public LongestCommonSubstring()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public LongestCommonSubstring(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     private int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
     {

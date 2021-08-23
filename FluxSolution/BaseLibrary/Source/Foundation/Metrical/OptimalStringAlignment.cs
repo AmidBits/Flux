@@ -9,12 +9,10 @@ namespace Flux.Metrics
   {
     public OptimalStringAlignment()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
+    { }
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

@@ -23,12 +23,10 @@ namespace Flux.Randomization
     }
     public Xoshiro256SS(long seed)
       : this(unchecked((ulong)seed))
-    {
-    }
+    { }
     public Xoshiro256SS()
       : this(System.Diagnostics.Stopwatch.GetTimestamp())
-    {
-    }
+    { }
 
     internal override ulong SampleUInt64()
     {

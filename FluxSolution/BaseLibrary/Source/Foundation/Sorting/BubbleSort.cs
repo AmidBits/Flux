@@ -7,12 +7,10 @@ namespace Flux.Sorting
   {
     public BubbleSort(System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    {
-    }
+    { }
     public BubbleSort()
       : this(System.Collections.Generic.Comparer<T>.Default)
-    {
-    }
+    { }
 
     public void SortInPlace(System.Span<T> source)
     {
