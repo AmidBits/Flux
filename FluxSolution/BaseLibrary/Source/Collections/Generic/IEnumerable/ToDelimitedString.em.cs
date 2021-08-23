@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-	public static partial class ExtensionMethods
+  public static partial class ExtensionMethods
 	{
 		/// <summary>Concatenates item data into a string from the sequence with the specified delimiter, by means of a <see cref="System.Text.StringBuilder"/> selector.</summary>
 		private static string ToDelimitedString<T>(System.Collections.Generic.IEnumerable<T> source, string delimiter, System.Func<System.Text.StringBuilder, T, System.Text.StringBuilder> stringBuilder)

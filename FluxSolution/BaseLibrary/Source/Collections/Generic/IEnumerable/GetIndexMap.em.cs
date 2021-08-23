@@ -25,7 +25,8 @@ namespace Flux
         {
           if (equalityComparer.Equals(sourceKey, targetItem))
           {
-            if (!map.ContainsKey(sourceKey)) map.Add(sourceKey, new System.Collections.Generic.List<int>());
+            if (!map.ContainsKey(sourceKey))
+              map.Add(sourceKey, new System.Collections.Generic.List<int>());
 
             map[sourceKey].Add(index);
 
