@@ -234,12 +234,14 @@ namespace Flux
     /// <param name="value">An array of bytes.</param>
     /// <param name="startIndex">The starting position within value.</param>
     /// <returns>true if the byte at startIndex in value is nonzero; otherwise, false.</returns>
-    public static bool ToBoolean(byte[] value, int startIndex)
-    {
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
-      if (startIndex < 0 || startIndex > value.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      return System.BitConverter.ToBoolean(value, startIndex);
-    }
+    //public static bool ToBoolean(byte[] value, int startIndex)
+    //{
+    //  if (value is null) throw new System.ArgumentNullException(nameof(value));
+    //  if (startIndex < 0 || startIndex > value.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+    //  return System.BitConverter.ToBoolean(value, startIndex);
+    //}
+    public bool ToBoolean(byte[] value, int startIndex)
+      => System.BitConverter.ToBoolean(value, startIndex);
     /// <summary>Returns a Unicode character converted from two bytes at a specified position in a byte array.</summary>
     /// <param name="value">An array of bytes.</param>
     /// <param name="startIndex">The starting position within value.</param>

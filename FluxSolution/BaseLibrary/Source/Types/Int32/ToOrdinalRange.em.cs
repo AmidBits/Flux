@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static System.Collections.Generic.IList<int> ToOrdinalRange(this System.Collections.Generic.IEnumerable<int> source, int maxNumber)
+    public static System.Collections.Generic.List<int> ToOrdinalRange(this System.Collections.Generic.IEnumerable<int> source, int maxNumber)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

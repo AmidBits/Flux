@@ -192,11 +192,11 @@ namespace Flux.Model.PlayingCards.FullFrench
 		}
 
 		/// <summary>Creates a new sequence of the standard 52 Unicode French cards.</summary>
-		public static System.Collections.Generic.IList<Card> CreateDeck52()
+		public static System.Collections.Generic.List<Card> CreateDeck52()
 			=> CreateDeck(false, false).Select(rune => new Card(rune, 1)).ToList();
 
 		/// <summary>Creates a new sequence with each element having a deck of Unicode French cards.</summary>
-		public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<Card>> CreateDecks(bool includeKnights, bool includeJokers, int decks = 1)
+		public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<Card>> CreateDecks(bool includeKnights, bool includeJokers, int decks = 1)
 		{
 			if (decks < 1 || decks > ushort.MaxValue) throw new System.ArgumentOutOfRangeException(nameof(decks));
 

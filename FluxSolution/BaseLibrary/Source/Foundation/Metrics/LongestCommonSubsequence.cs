@@ -40,7 +40,7 @@ namespace Flux.Metrics
     }
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
-    public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var lcs = new System.Collections.Generic.List<T>();
 

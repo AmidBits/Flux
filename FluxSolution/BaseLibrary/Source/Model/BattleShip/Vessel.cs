@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string ToConsoleString(this System.Collections.Generic.List<Model.BattleShip.Vessel> ships, Geometry.Size2 size)
+    public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Geometry.Size2 size)
     {
       if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 

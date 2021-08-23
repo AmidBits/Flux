@@ -42,29 +42,29 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+      //var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 
-      System.Console.WriteLine(seq.Extrema(seq => seq));
-      System.Console.WriteLine(seq.ExtremaClosestToKey(seq => seq, 13));
+      //System.Console.WriteLine(seq.Extrema(seq => seq));
+      //System.Console.WriteLine(seq.ExtremaClosestToKey(seq => seq, 13));
 
-      return;
+      //return;
 
-      var text = "ABC ABCDAB ABCDABCDABDE";
-      var word = "AB";
+      //var text = "ABC ABCDAB ABCDABCDABDE";
+      //var word = "AB";
 
-      var l = Flux.Text.KnuthMorrisPratt.Search(word, text);
+      //var l = Flux.Text.KnuthMorrisPratt.Search(word, text);
 
-      return;
+      //return;
 
-      var sarg = string.Join(' ', args);
-      sarg = "--port 123 /f /a test";
-      //foreach (var token in new Flux.Text.RuneTokenizer().GetTokens(sarg))
-      //  System.Console.WriteLine(token);
+      //var sarg = string.Join(' ', args);
+      //sarg = "--port 123 /f /a test";
+      ////foreach (var token in new Flux.Text.RuneTokenizer().GetTokens(sarg))
+      ////  System.Console.WriteLine(token);
 
-      using var re = new Flux.Text.RuneEnumerator(new System.IO.StringReader(sarg));
+      //using var re = new Flux.Text.RuneEnumerator(new System.IO.StringReader(sarg));
 
-      foreach (var q in re)
-        System.Console.WriteLine(q);
+      //foreach (var q in re)
+      //  System.Console.WriteLine(q);
 
       //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2020, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
@@ -74,25 +74,15 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
-      var sp = gc.ToSphericalCoordinate();
-      var cy = sp.ToCylindricalCoordinate();
-      var ca = cy.ToCartesianCoordinate3();
-      var cy2 = ca.ToCylindricalCoordinate();
-      var sp2 = cy2.ToSphericalCoordinate();
-      var gc2 = sp2.ToGeographicCoordinate();
+      //var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
+      //var sp = gc.ToSphericalCoordinate();
+      //var cy = sp.ToCylindricalCoordinate();
+      //var ca = cy.ToCartesianCoordinate3();
+      //var cy2 = ca.ToCylindricalCoordinate();
+      //var sp2 = cy2.ToSphericalCoordinate();
+      //var gc2 = sp2.ToGeographicCoordinate();
 
-      //var cc = new Flux.CartesianCoord(10, 15, 20);
-
-      //var cccy = cc.ToCylindricalCoord();
-      //var cysc = cccy.ToSphericalCoord();
-      //var cycc = cccy.ToCartesianCoord();
-
-      //var ccsc = cc.ToSphericalCoord();
-      //var sccc = ccsc.ToCartesianCoord();
-      //var sccy = ccsc.ToCylindricalCoord();
-
-      return;
+      //return;
 
       var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       var cv = new Flux.Model.GameOfLife.Console(game);

@@ -10,7 +10,7 @@
 
     void NewGame(Geometry.Size2 size, System.TimeSpan timeSpan, int[] shipSizes);
 
-    System.Collections.Generic.IList<Vessel> PlaceShips();
+    System.Collections.Generic.List<Vessel> PlaceShips();
 
     Geometry.Point2 GetShot();
 

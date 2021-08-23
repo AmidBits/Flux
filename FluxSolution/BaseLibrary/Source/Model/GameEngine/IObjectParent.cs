@@ -2,6 +2,6 @@
 {
 	public interface IObjectParent
 	{
-		System.Collections.Generic.IList<IObject> ChildObjects { get; }
+		System.Collections.Generic.List<IObject> ChildObjects { get; }
 	}
 }

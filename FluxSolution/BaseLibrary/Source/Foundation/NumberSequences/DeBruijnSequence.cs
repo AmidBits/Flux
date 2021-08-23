@@ -16,7 +16,7 @@ namespace Flux.Numerics
     }
 
     /// <summary>Creates a new sequence with the code indices expanded.</summary>
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<int>> GetExpandedSequence<T>()
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<int>> GetExpandedSequence<T>()
       => GetNumberSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
 
     // INumberSequence
@@ -25,7 +25,7 @@ namespace Flux.Numerics
 
     #region Statics
     /// <summary>Creates a new sequence with DeBruijn numbers, which are the indices in a k-sized alphabet of order_n size.</summary>
-    public static System.Collections.Generic.IList<int> GetDeBruijnSequence(int size_k, int order_n)
+    public static System.Collections.Generic.List<int> GetDeBruijnSequence(int size_k, int order_n)
     {
       var sequence = new System.Collections.Generic.List<int>();
 
@@ -74,9 +74,9 @@ namespace Flux.Numerics
   {
     public int OrderN { get; }
     public int SizeK { get; }
-    System.Collections.Generic.IList<T> Alphabet { get; }
+    System.Collections.Generic.List<T> Alphabet { get; }
 
-    public DeBruijnSequence(int sizeK, int orderN, System.Collections.Generic.IList<T> alphabet)
+    public DeBruijnSequence(int sizeK, int orderN, System.Collections.Generic.List<T> alphabet)
     {
       OrderN = orderN;
       SizeK = sizeK;
@@ -84,12 +84,12 @@ namespace Flux.Numerics
     }
 
     /// <summary>Creates a new sequence with the code indices expanded.</summary>
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> GetExpandedSequence()
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<T>> GetExpandedSequence()
       => GetNumberSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
 
     // INumberSequence
     public System.Collections.Generic.IEnumerable<T> GetNumberSequence()
-      => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, Alphabet);
+      => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, (System.Collections.Generic.IList<T>)Alphabet);
 
     // IEnumerable
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()

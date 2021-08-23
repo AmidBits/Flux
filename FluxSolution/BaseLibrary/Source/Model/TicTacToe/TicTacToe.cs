@@ -88,7 +88,7 @@ namespace Flux.Model.TicTacToe
       return 0; // No winner yet.
     }
 
-    public System.Collections.Generic.IList<Move> GetOptionsForPlayer1()
+    public System.Collections.Generic.List<Move> GetOptionsForPlayer1()
     {
       var moves = new System.Collections.Generic.List<Move>();
 
@@ -107,7 +107,7 @@ namespace Flux.Model.TicTacToe
 
       return moves;
     }
-    public System.Collections.Generic.IList<Move> GetOptionsForPlayer2()
+    public System.Collections.Generic.List<Move> GetOptionsForPlayer2()
     {
       var moves = new System.Collections.Generic.List<Move>();
 

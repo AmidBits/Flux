@@ -5,7 +5,7 @@ namespace Flux.DataStructures
   public class LazyListCollection<T>
     : Disposable, System.Collections.Generic.IList<T>
   {
-    private readonly System.Collections.Generic.IList<T> m_cache = new System.Collections.Generic.List<T>();
+    private readonly System.Collections.Generic.List<T> m_cache = new System.Collections.Generic.List<T>();
     private readonly System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>> m_enumerators = new System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>>();
     private int m_version;
 
@@ -50,7 +50,7 @@ namespace Flux.DataStructures
 
     public int Count => m_cache.Count;
 
-    public bool IsReadOnly => m_cache.IsReadOnly;
+    public bool IsReadOnly => false;
 
     public void Add(T item)
     {

@@ -10,7 +10,7 @@ namespace Flux.Model
 
     public Geometry.Size2 Size { get; }
 
-    private System.Collections.Generic.IList<TValue> Values;// { get; protected set; }
+    private TValue[] Values;// { get; protected set; }
 
     public (int row, int column) IndexToRowColumn(int index)
       => (index / Size.Width, index % Size.Width);
@@ -44,7 +44,7 @@ namespace Flux.Model
 
     public System.Collections.Generic.IEnumerable<TValue> GetValues()
     {
-      for (var index = 0; index < Values.Count; index++)
+      for (var index = 0; index < Values.Length; index++)
         yield return GetValue(index);
     }
 
@@ -55,7 +55,7 @@ namespace Flux.Model
 
     public virtual void Reset()
     {
-      for (var index = 0; index < Values.Count; index++)
+      for (var index = 0; index < Values.Length; index++)
         Values[index] = default!;
     }
 

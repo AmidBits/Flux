@@ -192,7 +192,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitAlongMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitAlongMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     {
       var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector3>();
 
@@ -209,7 +209,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, Geometry.TriangulationType mode)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, Geometry.TriangulationType mode)
     {
       var copy = source.ToList();
 
@@ -237,18 +237,18 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => ComputeCentroid(source) is var c ? ExtensionMethods.PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
     /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
       => ComputeCentroid(source) is var c ? ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 2 if odd count vertices and figure 9 if even count vertices, in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     {
       var polygon1 = new System.Collections.Generic.List<System.Numerics.Vector3>();
       var polygon2 = new System.Collections.Generic.List<System.Numerics.Vector3>();
@@ -283,7 +283,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the specified polygon index to all midpoints, splitting all triangles at their midpoint along the polygon perimeter. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 2, in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitVertexToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitVertexToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
     {
       var angles = GetAnglesEx(source).ToList();
 
@@ -309,7 +309,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector3>> SplitVertexToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitVertexToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, int index)
     {
       var angles = GetAnglesEx(source).ToList();
 

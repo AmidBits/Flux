@@ -50,7 +50,7 @@ namespace Flux.Metrics
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetFullMatrix(source, target, out var _, out var _, out var _);
 
-    public System.Collections.Generic.IList<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var lcs = new System.Collections.Generic.List<T>();
 
