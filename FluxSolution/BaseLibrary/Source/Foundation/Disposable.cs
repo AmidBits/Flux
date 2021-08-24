@@ -12,9 +12,7 @@ namespace Flux
       if (!IsDisposed)
       {
         if (isDisposing)
-        {
           DisposeManaged();
-        }
 
         DisposeUnmanaged();
 
@@ -24,13 +22,11 @@ namespace Flux
 
     /// <summary>Override for disposal of managed resources.</summary>
     protected virtual void DisposeManaged()
-    {
-    }
+    { }
 
     /// <summary>Override for disposal of unmanaged resources.</summary>
     protected virtual void DisposeUnmanaged()
-    {
-    }
+    { }
 
     // System.IDisposable
     public void Dispose()
