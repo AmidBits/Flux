@@ -1,28 +1,9 @@
-﻿namespace Flux.Services
+﻿namespace Flux.Net
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
   public class NetworkTimeProtocol
   {
-    public enum LeapIndicatorEnum
-    {
-      NoWarning = 0b00,
-      LastMinuteHas61Seconds = 0b01,
-      LastMinuteHas59Seconds = 0b10,
-      ClockNotSynchronized = 0x11,
-    }
-    public enum ModeEnum
-    {
-      Reserved = 0b000,
-      SymmetricActive = 0b001,
-      SymmetricPassive = 0b010,
-      Client = 0b011,
-      Server = 0b100,
-      Broadcast = 0b101,
-      ReservedForNtpControlMessage = 0b110,
-      ReservedForPrivateUse = 0b111,
-    }
-
     // private const ulong m_ntpTimestampDelta = 2208988800UL;
 
     /// <summary>Default DNS entries of NTP server hosts.</summary>
@@ -32,12 +13,12 @@
     /// <summary>The 48 byte NTP data structure.</summary>
     private byte[] m_data = new byte[48];
 
-    public LeapIndicatorEnum LeapIndicator
-      => (LeapIndicatorEnum)(m_data[0] >> 6);
+    public NtpLeapIndicator LeapIndicator
+      => (NtpLeapIndicator)(m_data[0] >> 6);
     public int VersionNumber
       => (m_data[0] >> 3) & 0b00000111;
-    public ModeEnum Mode
-      => (ModeEnum)(m_data[0] & 0b00000111);
+    public NtpMode Mode
+      => (NtpMode)(m_data[0] & 0b00000111);
     public byte StratumLevel
       => m_data[1];
     public byte MaximumPollInterval

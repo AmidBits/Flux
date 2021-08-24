@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Returns an Azimuth, i.e. a value in the range [0, 359].</summary>
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 32 degrees from 0), from a thirty-two value compass point [0, 31].</summary>
     public static Quantity.Azimuth GetAzimuth(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
       => new Quantity.Azimuth(thirtyTwoWindCompassRose switch
       {
@@ -40,17 +40,17 @@ namespace Flux
         ThirtytwoWindCompassRose.NbW => 348.75,
         _ => throw new System.NotImplementedException(),
       });
-
-    public static Quantity.Azimuth GetAzimuth(SixteenWindCompassRose sixteenWindCompassRose)
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 16 degrees from 0), from a fifteen value compass point [0, 15].</summary>
+    public static Quantity.Azimuth GetAzimuth(this SixteenWindCompassRose sixteenWindCompassRose)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)sixteenWindCompassRose);
-
-    public static Quantity.Azimuth GetAzimuth(EightWindCompassRose eightWindCompassRose)
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 45, 90, 135, 180, 225, 270, 315], from an eight value compass point [0, 1, 2, 3, 4, 5, 6, 7].</summary>
+    public static Quantity.Azimuth GetAzimuth(this EightWindCompassRose eightWindCompassRose)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)eightWindCompassRose);
-
-    public static Quantity.Azimuth GetAzimuth(InterCardinalDirection interCardinalDirection)
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [45, 135, 225, 315], from a four value inter-cardinal direction compass point [0, 1, 2, 3].</summary>
+    public static Quantity.Azimuth GetAzimuth(this InterCardinalDirection interCardinalDirection)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)interCardinalDirection);
-
-    public static Quantity.Azimuth GetAzimuth(CardinalDirection cardinalDirection)
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270], from a four value cardinal direction compass point [0, 1, 2, 3].</summary>
+    public static Quantity.Azimuth GetAzimuth(this CardinalDirection cardinalDirection)
       => GetAzimuth((ThirtytwoWindCompassRose)(int)cardinalDirection);
   }
 
