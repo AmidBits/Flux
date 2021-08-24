@@ -40,7 +40,7 @@ namespace Flux.Geometry.Hexagon
       => new Hex(a.Q + b.Q, a.R + b.R, a.S + b.S);
     /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
-      => Flux.LinqX.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
+      => Flux.Linq.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
     /// <summary>Returns the count of hexes in the ring of the specified radius.</summary>
     public static int ComputeRingCount(int radius)
       => radius * 6;

@@ -1,8 +1,8 @@
 namespace Flux
 {
-  public static partial class LinqX
+  public static partial class ExtensionMethods
   {
-    public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinary<TArgL, TArgR, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
+    public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinary<TArgL, TArgR, TResult>(this System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {
       if (body is null) throw new System.ArgumentNullException(nameof(body));
 
@@ -18,7 +18,7 @@ namespace Flux
         return delegate { throw new System.InvalidOperationException((ex.Message as string)); };
       }
     }
-    public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinaryWithCast<TArgL, TArgR, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
+    public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinaryWithCast<TArgL, TArgR, TResult>(this System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {
       if (body is null) throw new System.ArgumentNullException(nameof(body));
 
@@ -49,7 +49,7 @@ namespace Flux
       }
     }
 
-    public static System.Func<TArg, TResult> CreateExpressionUnary<TArg, TResult>(System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.UnaryExpression> body)
+    public static System.Func<TArg, TResult> CreateExpressionUnary<TArg, TResult>(this System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.UnaryExpression> body)
     {
       if (body is null) throw new System.ArgumentNullException(nameof(body));
 

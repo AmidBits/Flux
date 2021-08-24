@@ -42,6 +42,8 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      var pns = Flux.Numerics.PrimeNumber.GetAscendingPotentialPrimes(2).Take(10000000).AsParallel().Select(bi => Flux.Numerics.PrimeNumber.IsPrimeNumber(bi) ? bi : 0).Where(bi => bi > 0).ToArray();
+      return;
       //var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 
       //System.Console.WriteLine(seq.Extrema(seq => seq));
