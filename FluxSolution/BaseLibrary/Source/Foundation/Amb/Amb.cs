@@ -2,39 +2,42 @@
 {
   public sealed class Amb
   {
-    interface IChoices
-    {
-      int Length { get; }
-      int Index { get; set; }
-    }
-
-    interface IConstraint
-    {
-      int AppliesForItems { get; }
-      bool Invoke();
-    }
+    private readonly System.Collections.Generic.List<IChoices> m_choices = new System.Collections.Generic.List<IChoices>();
+    private readonly System.Collections.Generic.List<IConstraint> m_constraints = new System.Collections.Generic.List<IConstraint>();
 
     public IValue<T> Choose<T>(params T[] choices)
     {
-      var array = new ChoiceArray<T>(choices);
-      m_itemsChoices.Add(array);
+      var array = new Choices<T>(choices);
+      m_choices.Add(array);
       return array;
     }
 
-    public void Require(System.Func<bool> predicate)
-      => m_constraints.Add(new Constraint(predicate, m_itemsChoices.Count));
-
-    public bool RequireFinal(System.Func<bool> predicate)
+    private void Disambiguate(int itemsTracked, int constraintIndex)
     {
-      Require(predicate);
-      return Disambiguate();
-    }
+      while (constraintIndex < m_constraints.Count && m_constraints[constraintIndex].AppliesForItems <= itemsTracked)
+      {
+        if (!m_constraints[constraintIndex].Invoke())
+          return;
 
+        constraintIndex++;
+      }
+
+      if (itemsTracked == m_choices.Count)
+        throw new System.Exception("Success");
+
+      for (var i = 0; i < m_choices[itemsTracked].Length; i++)
+      {
+        m_choices[itemsTracked].Index = i;
+
+        Disambiguate(itemsTracked + 1, constraintIndex);
+      }
+    }
     public bool Disambiguate()
     {
       try
       {
         Disambiguate(0, 0);
+
         return false;
       }
       catch (System.Exception ex) when (ex.Message == "Success")
@@ -43,68 +46,60 @@
       }
     }
 
-    System.Collections.Generic.List<IChoices> m_itemsChoices = new System.Collections.Generic.List<IChoices>();
-    System.Collections.Generic.List<IConstraint> m_constraints = new System.Collections.Generic.List<IConstraint>();
+    public void Require(System.Func<bool> predicate)
+      => m_constraints.Add(new Constraint(predicate, m_choices.Count));
 
-    void Disambiguate(int itemsTracked, int constraintIndex)
+    public bool RequireFinal(System.Func<bool> predicate)
     {
-      while (constraintIndex < m_constraints.Count && m_constraints[constraintIndex].AppliesForItems <= itemsTracked)
-      {
-        if (!m_constraints[constraintIndex].Invoke())
-          return;
-        constraintIndex++;
-      }
+      Require(predicate);
 
-      if (itemsTracked == m_itemsChoices.Count)
-      {
-        throw new System.Exception("Success");
-      }
+      return Disambiguate();
+    }
 
-      for (var i = 0; i < m_itemsChoices[itemsTracked].Length; i++)
-      {
-        m_itemsChoices[itemsTracked].Index = i;
-        Disambiguate(itemsTracked + 1, constraintIndex);
-      }
+    class Choices<T>
+      : IChoices, IValue<T>
+    {
+      private readonly T[] Values;
+
+      public Choices(params T[] values)
+        => Values = values;
+
+      public T Value
+        => Values[Index];
+
+      #region Implemented interfaces
+      // IChoices
+      public int Index
+      { get; set; }
+      public int Length
+        => Values.Length;
+      #endregion Implemented interfaces
+
+      #region Object overrides
+      public override string ToString()
+        => Value?.ToString() ?? string.Empty;
+      #endregion Object overrides
     }
 
     class Constraint
       : IConstraint
     {
-      private int AppliesForItems;
-
-      int IConstraint.AppliesForItems
-        => AppliesForItems;
-
-      private System.Func<bool> Predicate;
+      private readonly int AppliesForItems;
+      private readonly System.Func<bool> Predicate;
 
       public Constraint(System.Func<bool> predicate, int appliesForItems)
       {
-        Predicate = predicate;
         AppliesForItems = appliesForItems;
+        Predicate = predicate;
       }
 
+      #region Implemented interfaces
+      // IConstraint
+      int IConstraint.AppliesForItems
+        => AppliesForItems;
       public bool Invoke()
         => Predicate?.Invoke() ?? default;
-    }
-
-    class ChoiceArray<T>
-      : IChoices, IValue<T>
-    {
-      private T[] Values;
-
-      public ChoiceArray(params T[] values)
-        => Values = values;
-
-      public int Index { get; set; }
-
-      public T Value
-        => Values[Index];
-
-      public int Length
-        => Values.Length;
-
-      public override string ToString()
-        => Value?.ToString() ?? string.Empty;
+      #endregion Implemented interfaces
     }
   }
 }
