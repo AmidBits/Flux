@@ -241,7 +241,6 @@
         m_disposed = true;
 
         ((System.IDisposable)m_stream).Dispose();
-        m_stream = null;
       }
     }
   }

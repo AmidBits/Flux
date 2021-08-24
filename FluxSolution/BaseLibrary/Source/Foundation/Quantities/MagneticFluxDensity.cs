@@ -5,8 +5,8 @@ namespace Flux.Quantity
     Tesla,
   }
 
-  /// <summary>Luminous flux unit of lumen.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
+  /// <summary>Magnetic flux density unit of tesla.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity
     : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValuedUnit
   {
