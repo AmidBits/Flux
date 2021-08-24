@@ -19,10 +19,13 @@ namespace Flux.CoordinateSystems
       : this(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3)
     { }
 
+    /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
       => m_radius;
+    /// <summary>Angular position or angular coordinate.</summary>
     public Quantity.Angle Azimuth
       => m_azimuth;
+    /// <summary>Also known as altitude.</summary>
     public double Height
       => m_height;
 

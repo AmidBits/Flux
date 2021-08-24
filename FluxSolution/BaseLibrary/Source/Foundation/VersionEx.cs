@@ -7,7 +7,6 @@ namespace Flux
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>
   {
     public static readonly VersionEx Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private static readonly char[] m_separatorsArray = new char[] { '.' };
     private readonly int[] m_parts;

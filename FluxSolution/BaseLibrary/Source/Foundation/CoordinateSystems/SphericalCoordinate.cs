@@ -19,10 +19,13 @@ namespace Flux.CoordinateSystems
       : this(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3)
     { }
 
+    /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
       => m_radius;
+    /// <summary>Polar angle or angular coordinate.</summary>
     public Quantity.Angle Inclination
       => m_inclination;
+    /// <summary>Azimuthal angle.</summary>
     public Quantity.Angle Azimuth
       => m_azimuth;
 
