@@ -1,4 +1,4 @@
-namespace Flux.Metrics
+namespace Flux.Metrical
 {
   /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
   /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
@@ -6,7 +6,7 @@ namespace Flux.Metrics
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public class DamerauLevenshteinDistance<T>
-    : AMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     where T : notnull
   {
     public DamerauLevenshteinDistance()
@@ -211,7 +211,7 @@ namespace Flux.Metrics
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public class DamerauLevenshteinDistanceEx<T>
-    : AMetrics<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
+    : AMetrical<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
     where T : notnull
   {
     public double CostOfDeletion { get; set; } = 1;

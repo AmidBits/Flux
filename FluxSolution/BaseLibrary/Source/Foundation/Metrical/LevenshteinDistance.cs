@@ -1,10 +1,10 @@
-namespace Flux.Metrics
+namespace Flux.Metrical
 {
   /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</summary>
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public class LevenshteinDistance<T>
-    : AMetrics<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IFullMatrix<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public LevenshteinDistance()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -155,7 +155,7 @@ namespace Flux.Metrics
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public class LevenshteinDistanceEx<T>
-    : AMetrics<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
+    : AMetrical<T>, ICustomFullMatrix<T>, ICustomMetricDistance<T>
   {
     public double CostOfDeletion { get; set; } = 1;
     public double CostOfInsertion { get; set; } = 1;

@@ -1,4 +1,4 @@
-namespace Flux.Metrics
+namespace Flux.Metrical
 {
 	/// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
 	public interface IFullMatrix<T>

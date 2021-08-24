@@ -32,7 +32,7 @@ namespace Flux.Hashing
 
       if (td0l != bd0l || td1l != bd1l) throw new System.ArgumentOutOfRangeException(nameof(board), $"The board does not have the same boundaries as the Zobrist table.");
 
-      ulong hash = 0;
+      var hash = 0UL;
 
       for (var d0i = 0; d0i < td0l; d0i++)
       {

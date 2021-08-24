@@ -1,4 +1,4 @@
-namespace Flux.Metrics
+namespace Flux.Metrical
 {
   /// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
 	public interface ISimilarityCoefficient<T>
@@ -6,6 +6,6 @@ namespace Flux.Metrics
 		/// <summary>Compute a coefficient representing the similarity of the two sequences.</summary>
 		/// <param name="source">The source sequence.</param>
 		/// <param name="target">The target sequence.</param>
-		double GetCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
+		double GetSimilarityCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
 	}
 }

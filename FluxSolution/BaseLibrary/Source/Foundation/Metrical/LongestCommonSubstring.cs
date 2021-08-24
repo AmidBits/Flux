@@ -1,10 +1,10 @@
-namespace Flux.Metrics
+namespace Flux.Metrical
 {
   /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public class LongestCommonSubstring<T>
-  : AMetrics<T>, IFullMatrix<T>, IMeasuredLength<T>
+  : AMetrical<T>, IFullMatrix<T>, IMeasuredLength<T>
   {
     public LongestCommonSubstring()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
