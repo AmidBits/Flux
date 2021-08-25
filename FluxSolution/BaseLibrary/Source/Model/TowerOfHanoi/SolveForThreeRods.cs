@@ -1,12 +1,11 @@
-namespace Flux.Model.TowerOfHanoi
+namespace Flux.Model
 {
-  /// <summary>Tower of Hanoi puzzle solver.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi"/>
-  public static class ThreeRods
+  public partial class TowerOfHanoi
   {
     /// <summary>Tower of Hanoi puzzle solver for three rods.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi"/>
-    public static System.Collections.Generic.IEnumerable<(TRod source, TRod target)> Solve<TRod>(int numberOfDisks, TRod source, TRod auxiliary, TRod target)
+    /// <returns>The moves to solve the TOH for a three rod setup.</returns>
+    public static System.Collections.Generic.IEnumerable<(TRod source, TRod target)> SolveForThreeRods<TRod>(int numberOfDisks, TRod source, TRod auxiliary, TRod target)
     {
       return Moves(numberOfDisks, source, target, auxiliary);
 
@@ -34,5 +33,4 @@ namespace Flux.Model.TowerOfHanoi
   var counter = 1;
   foreach (var move in Flux.Model.TowerOfHanoi.ThreeRods.Solve(numberOfDisks, 'A', 'B', 'C'))
     System.Console.WriteLine($"{counter++}/{optimalNumberOfMoves} = {move}");
-
 */

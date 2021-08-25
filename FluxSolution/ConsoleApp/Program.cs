@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Flux;
 
@@ -13,35 +11,27 @@ namespace ConsoleApp
 {
   class Program
   {
-    private static void AmbTest()
-    {
-      var amb = new Flux.AmbOps.Amb();
-
-      var set1 = amb.Choose("the", "that", "a");
-      var set2 = amb.Choose("frog", "tramp", "thing");
-      amb.Require(() => set1.Value.Last() == set2.Value[0]);
-      var set3 = amb.Choose("walked", "hauled", "treaded", "grows");
-      amb.Require(() => set2.Value.Last() == set3.Value[0]);
-      var set4 = amb.Choose("slowly", "quickly");
-      amb.RequireFinal(() => set3.Value.Last() == set4.Value[0]);
-
-      System.Console.WriteLine($"{set1} {set2} {set3} {set4}");
-      System.Console.Read();
-
-      // problem from http://www.randomhacks.net/articles/2005/10/11/amb-operator
-      amb = new Flux.AmbOps.Amb();
-
-      var x = amb.Choose(1, 2, 3);
-      var y = amb.Choose(4, 5, 6);
-      amb.RequireFinal(() => x.Value + y.Value == 8);
-
-      System.Console.WriteLine($"{x} + {y} = 8");
-      System.Console.Read();
-      System.Console.Read();
-    }
-
     private static void TimedMain(string[] args)
     {
+      var p = new Flux.Geometry.Point2(4, 3);
+
+      for (var r = 0; r < 8; r++)
+      {
+        for (var c = 0; c < 8; c++)
+        {
+          System.Console.SetCursorPosition(c, r);
+          System.Console.Write(c == p.X && r == p.Y ? '=' : '-');
+        }
+      }
+
+      foreach (var m in Flux.Model.Chess.GetMovesOfKnight(p))
+      {
+        System.Console.SetCursorPosition(m.X, m.Y);
+        System.Console.Write('+');
+      }
+
+      System.Console.SetCursorPosition(0, 10);
+
       return;
       //var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 

@@ -1,10 +1,10 @@
-namespace Flux.Model.TowerOfHanoi
+namespace Flux.Model
 {
-  /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi#With_four_pegs_and_beyond"/>
-  /// <see cref="https://core.ac.uk/download/pdf/81954097.pdf"/>
-  public static class FrameStewartAlgorithm
+  public partial class TowerOfHanoi
   {
+    /// <summary>The Frame-Stewart algorithm computes the optimal number of moves.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi#With_four_pegs_and_beyond"/>
+    /// <see cref="https://core.ac.uk/download/pdf/81954097.pdf"/>
     public static int OptimalNumberOfMoves(int numberOfRods, int numberOfDisks)
     {
       if (numberOfRods < 3) throw new System.ArgumentOutOfRangeException(nameof(numberOfRods));
