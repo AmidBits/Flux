@@ -19,7 +19,9 @@ namespace Flux.Resources.ProjectGutenberg
 
       var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-      using var e = Uri.GetStream().ReadLines(System.Text.Encoding.UTF8, true).GetEnumerator();
+      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+      using var e = sr.ReadLines(true).GetEnumerator();
 
       var entry = new System.Text.StringBuilder();
 

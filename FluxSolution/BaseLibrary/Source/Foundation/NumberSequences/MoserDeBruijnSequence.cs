@@ -11,11 +11,10 @@ namespace Flux.Numerics
     // INumberSequence
     /// <summary>Creates a new sequence with Moser/DeBruijn numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
-    public override  System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetMoserDeBruijnSequence(MaxNumber);
 
-    #region Statics
-
+    #region Static methods
     /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
     /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
@@ -40,7 +39,6 @@ namespace Flux.Numerics
 
       return sequence;
     }
-
-    #endregion Statics
+    #endregion Static methods
   }
 }

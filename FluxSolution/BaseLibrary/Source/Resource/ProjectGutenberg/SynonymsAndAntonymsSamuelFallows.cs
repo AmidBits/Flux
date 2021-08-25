@@ -31,7 +31,9 @@ namespace Flux.Resources.ProjectGutenberg
       {
         var lines = new System.Text.StringBuilder();
 
-        foreach (var line in Uri.GetStream().ReadLines(System.Text.Encoding.UTF8))
+        using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+        foreach (var line in sr.ReadLines())
         {
           if (line == @"=" || line.Length == 0)
           {

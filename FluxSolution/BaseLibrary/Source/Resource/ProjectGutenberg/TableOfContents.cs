@@ -23,7 +23,9 @@ namespace Flux.Resources.ProjectGutenberg
       var reMatch = new System.Text.RegularExpressions.Regex(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled);
       var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-      foreach (var item in Uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(s => s.Length == 78 && reMatch.IsMatch(s)).Select(s => reSplit.Split(s)))
+      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+      foreach (var item in sr.ReadLines().Where(s => s.Length == 78 && reMatch.IsMatch(s)).Select(s => reSplit.Split(s)))
         yield return item;
     }
   }

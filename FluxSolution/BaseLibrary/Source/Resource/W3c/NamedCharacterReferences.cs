@@ -21,7 +21,9 @@ namespace Flux.Resources.W3c
 
       var m_reMatchUnicodeNotation = new System.Text.RegularExpressions.Regex(@"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-      using var jd = System.Text.Json.JsonDocument.Parse(Uri.GetStream().ReadAllText(System.Text.Encoding.UTF8));
+      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+      using var jd = System.Text.Json.JsonDocument.Parse(sr.ReadToEnd());
 
       foreach (var jp in jd.RootElement.EnumerateObject())
       {

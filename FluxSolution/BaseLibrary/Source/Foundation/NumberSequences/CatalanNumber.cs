@@ -13,14 +13,12 @@ namespace Flux.Numerics
         yield return GetCatalanNumber(number);
     }
 
-    #region Statics
-
+    #region Static methods
     /// <summary>Returns the Catalan number for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
     public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number)
       => Maths.Factorial(number * 2) / (Maths.Factorial(number + 1) * Maths.Factorial(number));
-
-    #endregion Statics
+    #endregion Static methods
   }
 
   //public static partial class Maths

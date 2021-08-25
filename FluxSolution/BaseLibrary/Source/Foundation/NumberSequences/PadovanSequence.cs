@@ -10,11 +10,11 @@ namespace Flux.Numerics
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetPadovanSequence();
 
-    #region Statics
+    #region Static methods
     /// <summary>Creates a new sequence with padovan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPadovanSequence()
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPadovanSequence()
     {
       int p1 = 1, p2 = 1, p3 = 1;
 
@@ -33,7 +33,7 @@ namespace Flux.Numerics
         p1 = pn;
       }
     }
-    #endregion Statics
+    #endregion Static methods
   }
 
   //public static partial class Maths

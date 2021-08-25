@@ -11,13 +11,11 @@ namespace Flux.Numerics
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetPerrinNumbers();
 
-    #region Statics
-
+    #region Static methods
     /// <summary>Yields a Perrin number of the specified value number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
     public static System.Numerics.BigInteger GetPerrinNumber(System.Numerics.BigInteger index)
       => GetPerrinNumbers().Where((e, i) => i == index).First();
-
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPerrinNumbers()
@@ -39,8 +37,7 @@ namespace Flux.Numerics
         yield return p;
       }
     }
-
-    #endregion Statics
+    #endregion Static methods
   }
 
   //public static partial class Maths

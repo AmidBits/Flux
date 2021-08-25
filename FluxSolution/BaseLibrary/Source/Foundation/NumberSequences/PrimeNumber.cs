@@ -6,7 +6,6 @@ namespace Flux.Numerics
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     #region Constants
-
     /// <summary>Represents the largest prime number possible in a byte (unsigned).</summary>
     public const byte LargestPrimeByte = 251;
     /// <summary>Represents the largest prime number possible in a 16-bit integer.</summary>
@@ -30,7 +29,6 @@ namespace Flux.Numerics
 
     /// <summary>Represents the smallest prime number.</summary>
     public const int SmallestPrime = 2;
-
     #endregion Constants
 
     // INumberSequence
@@ -38,7 +36,6 @@ namespace Flux.Numerics
       => GetAscendingPrimes(2);
 
     #region Statics
-
     /// <summary>Creates a new sequence of ascending potential primes, greater than the specified number.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPotentialPrimes(System.Numerics.BigInteger startAt)
     {
@@ -461,7 +458,6 @@ namespace Flux.Numerics
 
       return true;
     }
-
     #endregion Statics
   }
 
@@ -476,7 +472,6 @@ namespace Flux.Numerics
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => PrimeNumber.GetDescendingPrimes(StartAt);
-
     // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetNumberSequence().GetEnumerator();

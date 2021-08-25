@@ -18,8 +18,7 @@ namespace Flux.Numerics
         yield return GetNumber(index, NumberOfSides);
     }
 
-    #region Statics
-
+    #region Static methods
     /// <summary></summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<(int minCenteredNumber, int maxCenteredNumber, int count)> GetLayers(int numberOfSides)
@@ -39,8 +38,7 @@ namespace Flux.Numerics
 
       return (numberOfSides * index * index + numberOfSides * index + 2) / 2;
     }
-
-    #endregion Statics
+    #endregion Static methods
   }
 
   //public static partial class Maths

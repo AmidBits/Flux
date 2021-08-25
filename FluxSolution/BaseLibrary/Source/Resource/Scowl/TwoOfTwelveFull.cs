@@ -26,7 +26,9 @@ namespace Flux.Resources.Scowl
 
 			var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=[\-0-9]+[:#&=]?)\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-			foreach (var item in Uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Select(s => reSplit.Split(s.Trim())))
+			using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+			foreach (var item in sr.ReadLines().Select(s => reSplit.Split(s.Trim())))
 				yield return item;
 		}
 	}

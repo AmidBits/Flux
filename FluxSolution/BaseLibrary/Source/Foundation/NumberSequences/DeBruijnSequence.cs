@@ -23,7 +23,7 @@ namespace Flux.Numerics
     public override System.Collections.Generic.IEnumerable<int> GetNumberSequence()
       => GetDeBruijnSequence(SizeK, OrderN);
 
-    #region Statics
+    #region Static methods
     /// <summary>Creates a new sequence with DeBruijn numbers, which are the indices in a k-sized alphabet of order_n size.</summary>
     public static System.Collections.Generic.List<int> GetDeBruijnSequence(int size_k, int order_n)
     {
@@ -66,7 +66,7 @@ namespace Flux.Numerics
     /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
     public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence<T>(int size_k, int order_n, params T[] alphabet)
       => GetDeBruijnSequence(size_k, order_n, (System.Collections.Generic.IList<T>)alphabet);
-    #endregion Statics
+    #endregion Static methods
   }
 
   public class DeBruijnSequence<T>

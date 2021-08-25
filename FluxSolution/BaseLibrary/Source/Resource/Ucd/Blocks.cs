@@ -61,7 +61,9 @@ namespace Flux.Resources.Ucd
 
         var m_reSplit = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
 
-        foreach (var stringArray in uri.GetStream().ReadLines(System.Text.Encoding.UTF8).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplit.Split(line)))
+        using var sr = new System.IO.StreamReader(uri.GetStream(), System.Text.Encoding.UTF8);
+
+        foreach (var stringArray in sr.ReadLines().Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplit.Split(line)))
           yield return stringArray;
       }
     }

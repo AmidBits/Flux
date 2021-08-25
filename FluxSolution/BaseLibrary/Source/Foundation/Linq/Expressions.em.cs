@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Linq
   {
     public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinary<TArgL, TArgR, TResult>(this System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {
