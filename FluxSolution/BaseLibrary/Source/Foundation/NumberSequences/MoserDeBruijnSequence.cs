@@ -22,9 +22,7 @@ namespace Flux.Numerics
     {
       if (maxNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
 
-      var sequence = new System.Collections.Generic.List<System.Numerics.BigInteger>();
-
-      sequence.Add(0);
+      var sequence = new System.Collections.Generic.List<System.Numerics.BigInteger>() { 0 };
 
       if (maxNumber > 0)
         sequence.Add(1);

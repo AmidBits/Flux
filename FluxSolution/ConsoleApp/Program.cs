@@ -13,6 +13,8 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      System.Console.Clear();
+
       var p = new Flux.Geometry.Point2(4, 3);
 
       for (var r = 0; r < 8; r++)
