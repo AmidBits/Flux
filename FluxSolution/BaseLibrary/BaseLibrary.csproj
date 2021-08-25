@@ -4,13 +4,16 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<Authors>Robert Hugo</Authors>
-		<Company></Company>
+		<Company>Private</Company>
 		<PackageId>BaseLibrary</PackageId>
 		<Product>Flux</Product>
 		<Description>Flux is a free .NET extension API with various functionalities.</Description>
-		<Copyright></Copyright>
+		<Copyright>Freeware</Copyright>
 		<PackageProjectUrl>https://github.com/AmidBits/Flux</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/AmidBits/Flux</RepositoryUrl>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<Version>1.0.0.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

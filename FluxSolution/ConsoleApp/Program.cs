@@ -13,53 +13,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      System.Console.Clear();
-
-      var p = new Flux.Geometry.Point2(4, 3);
-
-      for (var r = 0; r < 8; r++)
-      {
-        for (var c = 0; c < 8; c++)
-        {
-          System.Console.SetCursorPosition(c, r);
-          System.Console.Write(c == p.X && r == p.Y ? '=' : '-');
-        }
-      }
-
-      foreach (var m in Flux.Model.Chess.GetMovesOfKnight(p))
-      {
-        System.Console.SetCursorPosition(m.X, m.Y);
-        System.Console.Write('+');
-      }
-
-      System.Console.SetCursorPosition(0, 10);
-
-      return;
-      //var seq = new int[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
-
-      //System.Console.WriteLine(seq.Extrema(seq => seq));
-      //System.Console.WriteLine(seq.ExtremaClosestToKey(seq => seq, 13));
-
-      //return;
-
-      //var text = "ABC ABCDAB ABCDABCDABDE";
-      //var word = "AB";
-
-      //var l = Flux.Text.KnuthMorrisPratt.Search(word, text);
-
-      //return;
-
-      //var sarg = string.Join(' ', args);
-      //sarg = "--port 123 /f /a test";
-      ////foreach (var token in new Flux.Text.RuneTokenizer().GetTokens(sarg))
-      ////  System.Console.WriteLine(token);
-
-      //using var re = new Flux.Text.RuneEnumerator(new System.IO.StringReader(sarg));
-
-      //foreach (var q in re)
-      //  System.Console.WriteLine(q);
-
-      //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2020, 6, 30));
+      //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2021, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
       //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
       //var ri = Flux.Range<System.DateTime>.Intersect(r1, r2);
@@ -74,13 +28,12 @@ namespace ConsoleApp
       //var cy2 = ca.ToCylindricalCoordinate();
       //var sp2 = cy2.ToSphericalCoordinate();
       //var gc2 = sp2.ToGeographicCoordinate();
-
       //return;
 
-      var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
-      var cv = new Flux.Model.GameOfLife.Console(game);
-      cv.Run(100);
-      return;
+      //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
+      //var cv = new Flux.Model.GameOfLife.Console(game);
+      //cv.Run(100);
+      //return;
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
