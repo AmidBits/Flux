@@ -4,14 +4,14 @@ namespace Flux.Net
   public class UdpCastDataReceivedEventArgs
     : System.EventArgs
   {
-    public System.Collections.Generic.IList<byte> Bytes { get; private set; }
-    public System.Net.EndPoint Remote { get; private set; }
-
     public UdpCastDataReceivedEventArgs(byte[] bytes, System.Net.EndPoint remote)
     {
       Bytes = bytes;
       Remote = remote;
     }
+
+    public System.Collections.Generic.IList<byte> Bytes { get; }
+    public System.Net.EndPoint Remote { get; }
   }
 
   public class UdpCast
@@ -20,20 +20,17 @@ namespace Flux.Net
     private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new System.Text.RegularExpressions.Regex(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
     private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new System.Text.RegularExpressions.Regex(@"255.255.255.255");
 
-    public static readonly System.Net.IPEndPoint MulticastTest = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
+    public static System.Net.IPEndPoint MulticastTest
+      => new System.Net.IPEndPoint(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
 
-    public static UdpCast CreateTestMulticast() => new UdpCast(MulticastTest);
-    public static UdpCast CreateTestBroadcast() => new UdpCast(new System.Net.IPEndPoint(System.Net.IPAddress.Broadcast, 0));
+    public static UdpCast CreateMulticastTest()
+      => new UdpCast(MulticastTest);
 
     #region "Event Handling"
-    private System.Threading.Thread Thread;
+    private System.Threading.Thread m_thread;
 
     public event System.EventHandler<UdpCastDataReceivedEventArgs>? DataReceived;
     #endregion
-
-    public System.Net.IPEndPoint RemoteAddress { get; private set; }
-
-    public System.Net.Sockets.Socket Socket { get; private set; }
 
     public UdpCast(System.Net.IPEndPoint remoteAddress)
     {
@@ -45,18 +42,18 @@ namespace Flux.Net
       Socket.Bind(new System.Net.IPEndPoint(System.Net.IPAddress.Any, RemoteAddress.Port));
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.DontFragment, true);
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.IpTimeToLive, 0);
-      if (m_regexMulticast.IsMatch(RemoteAddress.Address.ToString()))
-      {
-        Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.AddMembership, new System.Net.Sockets.MulticastOption(RemoteAddress.Address));
-      }
-      if (m_regexBroadcast.IsMatch(RemoteAddress.Address.ToString()))
-      {
-        Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.Broadcast, true);
-      }
 
-      Thread = new System.Threading.Thread(Thread_SocketReceiver);
-      Thread.Start();
+      if (m_regexMulticast.IsMatch(RemoteAddress.Address.ToString()))
+        Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.AddMembership, new System.Net.Sockets.MulticastOption(RemoteAddress.Address));
+      if (m_regexBroadcast.IsMatch(RemoteAddress.Address.ToString()))
+        Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.Broadcast, true);
+
+      m_thread = new System.Threading.Thread(Thread_SocketReceiver);
+      m_thread.Start();
     }
+
+    public System.Net.IPEndPoint RemoteAddress { get; }
+    public System.Net.Sockets.Socket Socket { get; }
 
     private void Thread_SocketReceiver()
     {
@@ -82,16 +79,11 @@ namespace Flux.Net
 
     protected override void DisposeManaged()
     {
-      if (Thread != null)
-      {
-        Thread = null!;
-      }
+      if (m_thread is not null)
+        m_thread = null!;
 
-      if (Socket != null)
-      {
+      if (Socket is not null)
         Socket.Dispose();
-        Socket = null!;
-      }
     }
   }
 }
