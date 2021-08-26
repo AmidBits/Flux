@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using Flux;
 
 // C# Interactive commands:
@@ -13,6 +19,8 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+
+
       //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2021, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
       //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
