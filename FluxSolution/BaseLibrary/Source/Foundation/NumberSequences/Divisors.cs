@@ -114,9 +114,9 @@ namespace Flux.Numerics
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     public static System.Numerics.BigInteger GetCountOfDivisors(System.Numerics.BigInteger number)
     {
-      var count = 2;
+      var count = System.Numerics.BigInteger.Zero;
       var sqrt = Maths.ISqrt(number);
-      for (var counter = (System.Numerics.BigInteger)2; counter <= sqrt; counter++)
+      for (var counter = System.Numerics.BigInteger.One; counter <= sqrt; counter++)
         if (number % counter == 0)
           count += (number / counter == counter ? 1 : 2);
       return count;
@@ -143,9 +143,9 @@ namespace Flux.Numerics
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number)
     {
-      var sum = 1 + number;
+      var sum = System.Numerics.BigInteger.Zero;
       var sqrt = Maths.ISqrt(number);
-      for (var counter = (System.Numerics.BigInteger)2; counter <= sqrt; counter++)
+      for (var counter = System.Numerics.BigInteger.One; counter <= sqrt; counter++)
         if (number % counter == 0)
         {
           sum += counter;

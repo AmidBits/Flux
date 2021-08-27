@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Metrical
 {
   /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
@@ -21,18 +23,14 @@ namespace Flux.Metrical
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
+      for (int si = source.Length - 1; si >= 0; si--)
+        lcsg[si, 0] = 0;
+      for (int ti = target.Length - 1; ti >= 0; ti--)
+        lcsg[0, ti] = 0;
+
       for (int si = 0; si <= source.Length; si++)
-      {
         for (int ti = 0; ti <= target.Length; ti++)
-        {
-          if (si == 0 || ti == 0)
-            lcsg[si, ti] = 0;
-          else if (EqualityComparer.Equals(source[si - 1], target[ti - 1]))
-            lcsg[si, ti] = lcsg[si - 1, ti - 1] + 1;
-          else
-            lcsg[si, ti] = System.Math.Max(lcsg[si - 1, ti], lcsg[si, ti - 1]);
-        }
-      }
+          lcsg[si, ti] = EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? lcsg[si - 1, ti - 1] + 1 : System.Math.Max(lcsg[si - 1, ti], lcsg[si, ti - 1]);
 
       return lcsg;
     }
@@ -44,25 +42,38 @@ namespace Flux.Metrical
 
       var lcsg = GetFullMatrix(source, target);
 
-      var k = source.Length - 1;
-      var l = target.Length - 1;
+      var bt = Backtrack(lcsg, source, target, source.Length, target.Length).ToList();
 
-      while (k >= 0 && l >= 0)
+      var k = source.Length;
+      var l = target.Length;
+
+      while (k > 0 && l > 0)
       {
-        if (EqualityComparer.Equals(source[k], target[l]))
+        if (EqualityComparer.Equals(source[k - 1], target[l - 1]))
         {
-          lcs.Insert(0, source[k]);
+          lcs.Insert(0, source[k - 1]);
 
           k--;
           l--;
         }
-        else if (lcsg[k, l + 1] > lcsg[k + 1, l]) // If not same, then go in the direction of the greater one.
-          k--;
-        else
+        else if (lcsg[k, l - 1] > lcsg[k - 1, l]) // If not same, then go in the direction of the greater one.
           l--;
+        else
+          k--;
       }
 
       return lcs;
+
+      System.Collections.Generic.IEnumerable<T> Backtrack(int[,] C, System.ReadOnlySpan<T> aStr, System.ReadOnlySpan<T> bStr, int x, int y)
+      {
+        if (x == 0 | y == 0)
+          return System.Linq.Enumerable.Empty<T>();
+        if (EqualityComparer.Equals(aStr[x - 1], bStr[y - 1])) // x-1, y-1
+          return Backtrack(C, aStr, bStr, x - 1, y - 1).Append(aStr[x - 1]); // x-1
+        if (C[x, y - 1] > C[x - 1, y])
+          return Backtrack(C, aStr, bStr, x, y - 1);
+        return Backtrack(C, aStr, bStr, x - 1, y);
+      }
     }
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

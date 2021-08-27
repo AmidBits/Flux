@@ -35,22 +35,7 @@ namespace Flux
         }
       }
 
-      if (items is null || items.Length == 0)
-        items = new T[target.GetLength(dimension)];
-
-      var minLength = System.Math.Min(source.GetLength(dimension), items.Length);
-
-      switch (dimension)
-      {
-        case 0:
-          for (var index0 = 0; index0 < minLength; index0++)
-            target[index, index0] = items[index0];
-          break;
-        case 1:
-          for (int index1 = 0; index1 < minLength; index1++)
-            target[index1, index] = items[index1];
-          break;
-      }
+      Fill(target, dimension, index, true, items);
 
       return target;
     }
