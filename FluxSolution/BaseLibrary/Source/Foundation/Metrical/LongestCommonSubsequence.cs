@@ -23,14 +23,14 @@ namespace Flux.Metrical
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
-      for (int si = source.Length - 1; si >= 0; si--)
-        lcsg[si, 0] = 0;
-      for (int ti = target.Length - 1; ti >= 0; ti--)
-        lcsg[0, ti] = 0;
+      for (int i = source.Length - 1; i >= 0; i--)
+        lcsg[i, 0] = 0;
+      for (int j = target.Length - 1; j >= 0; j--)
+        lcsg[0, j] = 0;
 
-      for (int si = 0; si <= source.Length; si++)
-        for (int ti = 0; ti <= target.Length; ti++)
-          lcsg[si, ti] = EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? lcsg[si - 1, ti - 1] + 1 : System.Math.Max(lcsg[si - 1, ti], lcsg[si, ti - 1]);
+      for (int i = 0; i < source.Length; i++)
+        for (int j = 0; j < target.Length; j++)
+          lcsg[i + 1, j + 1] = EqualityComparer.Equals(source[i], target[j]) ? lcsg[i, j] + 1 : System.Math.Max(lcsg[i + 1, j], lcsg[i, j + 1]);
 
       return lcsg;
     }
@@ -41,8 +41,6 @@ namespace Flux.Metrical
       var lcs = new System.Collections.Generic.List<T>();
 
       var lcsg = GetFullMatrix(source, target);
-
-      var bt = Backtrack(lcsg, source, target, source.Length, target.Length).ToList();
 
       var k = source.Length;
       var l = target.Length;
@@ -63,17 +61,6 @@ namespace Flux.Metrical
       }
 
       return lcs;
-
-      System.Collections.Generic.IEnumerable<T> Backtrack(int[,] C, System.ReadOnlySpan<T> aStr, System.ReadOnlySpan<T> bStr, int x, int y)
-      {
-        if (x == 0 | y == 0)
-          return System.Linq.Enumerable.Empty<T>();
-        if (EqualityComparer.Equals(aStr[x - 1], bStr[y - 1])) // x-1, y-1
-          return Backtrack(C, aStr, bStr, x - 1, y - 1).Append(aStr[x - 1]); // x-1
-        if (C[x, y - 1] > C[x - 1, y])
-          return Backtrack(C, aStr, bStr, x, y - 1);
-        return Backtrack(C, aStr, bStr, x - 1, y);
-      }
     }
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

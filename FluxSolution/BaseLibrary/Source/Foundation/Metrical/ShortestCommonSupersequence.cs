@@ -13,10 +13,15 @@ namespace Flux.Metrical
       : base(equalityComparer)
     { }
 
-    /// <summary></summary>
+    /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var scsg = new int[source.Length + 1, target.Length + 1];
+
+      for (int i = source.Length - 1; i >= 0; i--)
+        scsg[i, 0] = 0;
+      for (int j = target.Length - 1; j >= 0; j--)
+        scsg[0, j] = 0;
 
       for (var i = 0; i < source.Length; i++)
         for (var j = 0; j < target.Length; j++)
@@ -28,9 +33,7 @@ namespace Flux.Metrical
     /// <summary>Returns the items comprising the shortest common super-sequence.</summary>
     public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var lcs = new LongestCommonSubsequence<T>(EqualityComparer);
-
-      var lcsl = lcs.GetList(source, target);
+      var lcsl = Backtrack(GetFullMatrix(source, target), source, target, source.Length, target.Length);
 
       var si = 0;
       var ti = 0;
@@ -38,7 +41,7 @@ namespace Flux.Metrical
 
       while (li < lcsl.Count)
       {
-        if (si<source.Length&&!EqualityComparer.Equals(source[si], lcsl[li]))
+        if (si < source.Length && !EqualityComparer.Equals(source[si], lcsl[li]))
         {
           lcsl.Insert(li++, source[si++]);
           continue;
@@ -77,3 +80,13 @@ namespace Flux.Metrical
       => 1.0 - GetSimpleMatchingCoefficient(source, target);
   }
 }
+
+/*
+  var scs = new Flux.Metrical.ShortestCommonSupersequence<char>();
+
+  var a = @"abcbdab";
+  var b = @"bdcaba";
+
+  var fm = scs.GetFullMatrix(a, b);
+  var l = scs.GetList(a, b);
+*/
