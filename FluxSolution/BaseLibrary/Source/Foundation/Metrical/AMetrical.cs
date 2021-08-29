@@ -8,19 +8,19 @@ namespace Flux.Metrical
       => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
 
     /// <summary>This can be used to backtrack a dynamically programmed matrix.</summary>
-    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int x, int y)
+    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
     {
-      if (x == 0 | y == 0)
+      if (si == 0 | ti == 0)
         return new System.Collections.Generic.List<T>();
-      if (EqualityComparer.Equals(source[x - 1], target[y - 1]))
+      if (EqualityComparer.Equals(source[si - 1], target[ti - 1]))
       {
-        var list = Backtrack(matrix, source, target, x - 1, y - 1);
-        list.Add(source[x - 1]);
+        var list = Backtrack(matrix, source, target, si - 1, ti - 1);
+        list.Add(source[si - 1]);
         return list;
       }
-      if (matrix[x, y - 1] > matrix[x - 1, y])
-        return Backtrack(matrix, source, target, x, y - 1);
-      return Backtrack(matrix, source, target, x - 1, y);
+      if (matrix[si, ti - 1] > matrix[si - 1, ti])
+        return Backtrack(matrix, source, target, si, ti - 1);
+      return Backtrack(matrix, source, target, si - 1, ti);
     }
 
     /// <summary>This can be used to trim the start and end of a sequence.</summary>

@@ -93,7 +93,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim0()
     {
-      var insert0 = (int[,])original.Insert(0, 1, -1, -2, -3);
+      var insert0 = (int[,])original.Insert(0, 1, true, -1, -2, -3);
 
       var expected = new int[4, 3] { { 1, 2, 3 }, { -1, -2, -3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
@@ -103,7 +103,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim1()
     {
-      var insert1 = (int[,])original.Insert(1, 1, -1, -2, -3);
+      var insert1 = (int[,])original.Insert(1, 1, true, -1, -2, -3);
 
       var expected = new int[3, 4] { { 1, -1, 2, 3 }, { 4, -2, 5, 6 }, { 7, -3, 8, 9 } };
 

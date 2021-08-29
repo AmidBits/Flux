@@ -754,7 +754,7 @@ namespace Flux
     /// </summary>
     public static readonly Parser<string> Number = Numeric.AtLeastOnce().Text();
 
-    static Parser<string> DecimalWithoutLeadingDigits(CultureInfo ci = null)
+    static Parser<string> DecimalWithoutLeadingDigits(CultureInfo? ci = null)
     {
       return from nothing in Return("")
                // dummy so that CultureInfo.CurrentCulture is evaluated later
@@ -763,7 +763,7 @@ namespace Flux
              select dot + fraction;
     }
 
-    static Parser<string> DecimalWithLeadingDigits(CultureInfo ci = null)
+    static Parser<string> DecimalWithLeadingDigits(CultureInfo? ci = null)
     {
       return Number.Then(n => DecimalWithoutLeadingDigits(ci).XOr(Return("")).Select(f => n + f));
     }

@@ -14,13 +14,13 @@ namespace Flux
 
       switch (dimension)
       {
-        case 0: // Flip dimension 0.
+        case 0:
           int sl0m1 = sourceLength0 - 1, sl0d2 = sourceLength0 / 2;
           for (var s1 = 0; s1 < sourceLength1; s1++)
             for (var s0 = 0; s0 <= sl0d2; s0++)
               Swap(ref source, s0, s1, sl0m1 - s0, s1);
           break;
-        case 1: // Flip dimension 1.
+        case 1:
           int sl1m1 = sourceLength1 - 1, sl1d2 = sourceLength1 / 2;
           for (var s0 = 0; s0 < sourceLength0; s0++)
             for (var s1 = 0; s1 < sl1d2; s1++)

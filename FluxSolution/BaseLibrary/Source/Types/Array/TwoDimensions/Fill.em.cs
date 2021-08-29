@@ -12,13 +12,13 @@ namespace Flux
 
       switch (dimension)
       {
-        case 0: // Fill dimension 0.
-          for (var i = source.GetLength(dimension) - 1; i >= 0; i--)
-            source[i, index] = value;
+        case 0:
+          for (var i0 = source.GetLength(dimension) - 1; i0 >= 0; i0--)
+            source[i0, index] = value;
           break;
-        case 1: // Fill dimension 1.
-          for (var i = source.GetLength(dimension) - 1; i >= 0; i--)
-            source[index, i] = value;
+        case 1:
+          for (var i1 = source.GetLength(dimension) - 1; i1 >= 0; i1--)
+            source[index, i1] = value;
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));
@@ -39,12 +39,12 @@ namespace Flux
       switch (dimension)
       {
         case 0:
-          for (var i = 0; i < minLength; i++)
-            source[index, i] = fillItems![i % itemsLength];
+          for (var i0 = 0; i0 < minLength; i0++)
+            source[index, i0] = fillItems![i0 % itemsLength];
           break;
         case 1:
-          for (int i = 0; i < minLength; i++)
-            source[i, index] = fillItems![i % itemsLength];
+          for (int i1 = 0; i1 < minLength; i1++)
+            source[i1, index] = fillItems![i1 % itemsLength];
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));

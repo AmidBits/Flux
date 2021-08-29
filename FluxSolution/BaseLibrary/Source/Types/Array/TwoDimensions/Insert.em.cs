@@ -9,7 +9,7 @@ namespace Flux
     /// <param name="index">The index in the dimension where the items should be added, e.g. which row or column to fill. If -1 then add at the end of the dimension.</param>
     /// <param name="items">The items to fill at index. If less or more than the number of slots in the array, as many as can be copied will be.</param>
     /// <returns></returns>
-    public static T[,] Insert<T>(this T[,] source, int dimension, int index, params T[] items)
+    public static T[,] Insert<T>(this T[,] source, int dimension, int index, bool repeatFillPatternIfNotEnough, params T[] items)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
@@ -35,7 +35,7 @@ namespace Flux
         }
       }
 
-      Fill(target, dimension, index, true, items);
+      Fill(target, dimension, index, repeatFillPatternIfNotEnough, items);
 
       return target;
     }

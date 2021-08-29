@@ -33,15 +33,15 @@ namespace Flux.Metrical
 
       ldg[0, 0] = maxDistance;
 
-      for (var i = source.Length + 1; i >= 1; i--)
+      for (var si = source.Length + 1; si >= 1; si--)
       {
-        ldg[i, 1] = i - 1;
-        ldg[i, 0] = maxDistance;
+        ldg[si, 1] = si - 1;
+        ldg[si, 0] = maxDistance;
       }
-      for (var j = target.Length + 1; j >= 1; j--)
+      for (var ti = target.Length + 1; ti >= 1; ti--)
       {
-        ldg[1, j] = j - 1;
-        ldg[0, j] = maxDistance;
+        ldg[1, ti] = ti - 1;
+        ldg[0, ti] = maxDistance;
       }
 
       for (var si = 1; si <= source.Length; si++)
@@ -92,15 +92,15 @@ namespace Flux.Metrical
 
       ldg[0, 0] = maxDistance;
 
-      for (var i = source.Length + 1; i >= 1; i--)
+      for (var si = source.Length + 1; si >= 1; si--)
       {
-        ldg[i, 1] = (i - 1);
-        ldg[i, 0] = maxDistance;
+        ldg[si, 1] = (si - 1);
+        ldg[si, 0] = maxDistance;
       }
-      for (var j = target.Length + 1; j >= 1; j--)
+      for (var ti = target.Length + 1; ti >= 1; ti--)
       {
-        ldg[1, j] = (j - 1);
-        ldg[0, j] = maxDistance;
+        ldg[1, ti] = (ti - 1);
+        ldg[0, ti] = maxDistance;
       }
 
       for (var si = 1; si <= source.Length; si++)

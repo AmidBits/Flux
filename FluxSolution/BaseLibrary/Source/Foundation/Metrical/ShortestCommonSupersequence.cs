@@ -18,14 +18,14 @@ namespace Flux.Metrical
     {
       var scsg = new int[source.Length + 1, target.Length + 1];
 
-      for (int i = source.Length - 1; i >= 0; i--)
-        scsg[i, 0] = 0;
-      for (int j = target.Length - 1; j >= 0; j--)
-        scsg[0, j] = 0;
+      for (int si = source.Length - 1; si >= 0; si--)
+        scsg[si, 0] = 0;
+      for (int ti = target.Length - 1; ti >= 0; ti--)
+        scsg[0, ti] = 0;
 
-      for (var i = 0; i < source.Length; i++)
-        for (var j = 0; j < target.Length; j++)
-          scsg[i + 1, j + 1] = EqualityComparer.Equals(source[i], target[j]) ? scsg[i, j] + 1 : System.Math.Max(scsg[i + 1, j], scsg[i, j + 1]);
+      for (var si = 0; si < source.Length; si++)
+        for (var ti = 0; ti < target.Length; ti++)
+          scsg[si + 1, ti + 1] = EqualityComparer.Equals(source[si], target[ti]) ? scsg[si, ti] + 1 : System.Math.Max(scsg[si + 1, ti], scsg[si, ti + 1]);
 
       return scsg;
     }

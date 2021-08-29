@@ -16,7 +16,7 @@ namespace Flux
 
       switch (dimension)
       {
-        case 0: // Flip dimension 0.
+        case 0:
           int l0m1 = sourceLength0 - 1, l0d2 = sourceLength0 / 2;
           for (var s1 = 0; s1 < sourceLength1; s1++)
             for (var s0 = 0; s0 <= l0d2; s0++)
@@ -25,7 +25,7 @@ namespace Flux
               target[l0m1 - s0, s1] = source[s0, s1];
             }
           break;
-        case 1: // Flip dimension 1.
+        case 1:
           int l1m1 = sourceLength1 - 1, l1d2 = sourceLength1 / 2;
           for (var s0 = 0; s0 < sourceLength0; s0++)
             for (var s1 = 0; s1 <= l1d2; s1++)

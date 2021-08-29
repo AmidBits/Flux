@@ -11,7 +11,7 @@ namespace Flux
     /// <param name="pattern">The regex expression.</param>
     /// <param name="description">Description of characters that don't match.</param>
     /// <returns>a parse of string</returns>
-    public static Parser<string> Regex(string pattern, string description = null)
+    public static Parser<string> Regex(string pattern, string? description = null)
     {
       if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
@@ -24,7 +24,7 @@ namespace Flux
     /// <param name="regex">The regex expression.</param>
     /// <param name="description">Description of characters that don't match.</param>
     /// <returns>a parse of string</returns>
-    public static Parser<string> Regex(Regex regex, string description = null)
+    public static Parser<string> Regex(Regex regex, string? description = null)
     {
       if (regex == null) throw new ArgumentNullException(nameof(regex));
 
@@ -38,7 +38,7 @@ namespace Flux
     /// <param name="pattern">The regex expression.</param>
     /// <param name="description">Description of characters that don't match.</param>
     /// <returns>A parser of regex match objects.</returns>
-    public static Parser<Match> RegexMatch(string pattern, string description = null)
+    public static Parser<Match> RegexMatch(string pattern, string? description = null)
     {
       if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
@@ -52,7 +52,7 @@ namespace Flux
     /// <param name="regex">The regex expression.</param>
     /// <param name="description">Description of characters that don't match.</param>
     /// <returns>A parser of regex match objects.</returns>
-    public static Parser<Match> RegexMatch(Regex regex, string description = null)
+    public static Parser<Match> RegexMatch(Regex regex, string? description = null)
     {
       if (regex == null) throw new ArgumentNullException(nameof(regex));
 

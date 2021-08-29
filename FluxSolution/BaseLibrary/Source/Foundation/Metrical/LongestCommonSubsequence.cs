@@ -23,14 +23,14 @@ namespace Flux.Metrical
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
-      for (int i = source.Length - 1; i >= 0; i--)
-        lcsg[i, 0] = 0;
-      for (int j = target.Length - 1; j >= 0; j--)
-        lcsg[0, j] = 0;
+      for (int si = source.Length - 1; si >= 0; si--)
+        lcsg[si, 0] = 0;
+      for (int ti = target.Length - 1; ti >= 0; ti--)
+        lcsg[0, ti] = 0;
 
-      for (int i = 0; i < source.Length; i++)
-        for (int j = 0; j < target.Length; j++)
-          lcsg[i + 1, j + 1] = EqualityComparer.Equals(source[i], target[j]) ? lcsg[i, j] + 1 : System.Math.Max(lcsg[i + 1, j], lcsg[i, j + 1]);
+      for (int si = 0; si < source.Length; si++)
+        for (int ti = 0; ti < target.Length; ti++)
+          lcsg[si + 1, ti + 1] = EqualityComparer.Equals(source[si], target[ti]) ? lcsg[si, ti] + 1 : System.Math.Max(lcsg[si + 1, ti], lcsg[si, ti + 1]);
 
       return lcsg;
     }
@@ -42,22 +42,22 @@ namespace Flux.Metrical
 
       var lcsg = GetFullMatrix(source, target);
 
-      var k = source.Length;
-      var l = target.Length;
+      var si = source.Length;
+      var ti = target.Length;
 
-      while (k > 0 && l > 0)
+      while (si > 0 && ti > 0)
       {
-        if (EqualityComparer.Equals(source[k - 1], target[l - 1]))
+        if (EqualityComparer.Equals(source[si - 1], target[ti - 1]))
         {
-          lcs.Insert(0, source[k - 1]);
+          lcs.Insert(0, source[si - 1]);
 
-          k--;
-          l--;
+          si--;
+          ti--;
         }
-        else if (lcsg[k, l - 1] > lcsg[k - 1, l]) // If not same, then go in the direction of the greater one.
-          l--;
+        else if (lcsg[si, ti - 1] > lcsg[si - 1, ti]) // If not same, then go in the direction of the greater one.
+          ti--;
         else
-          k--;
+          si--;
       }
 
       return lcs;

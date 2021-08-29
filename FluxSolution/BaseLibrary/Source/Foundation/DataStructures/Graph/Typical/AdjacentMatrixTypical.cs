@@ -43,8 +43,8 @@ namespace Flux.DataStructures.Graph
         m_vertices.Add(vertex);
         m_valuesOfVertices.Add(value);
 
-        m_matrix = m_matrix.Insert(0, index, 0);
-        m_matrix = m_matrix.Insert(1, index, 0);
+        m_matrix = m_matrix.Insert(0, index, true, 0);
+        m_matrix = m_matrix.Insert(1, index, true, 0);
 
         m_valuesOfEdges = m_valuesOfEdges.Insert(0, index, default!);
         m_valuesOfEdges = m_valuesOfEdges.Insert(1, index, default!);

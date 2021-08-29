@@ -65,21 +65,21 @@ namespace Flux.Metrical
       var v1 = new int[targetCount + 1]; // Row of costs, one row back (previous row).
       var v0 = new int[targetCount + 1]; // Row of costs, current row.
 
-      for (var j = 0; j <= targetCount; j++)
-        v0[j] = j; // Initialize the 'previous' (swapped to 'v1' in loop) row.
+      for (var ti = 0; ti <= targetCount; ti++)
+        v0[ti] = ti; // Initialize the 'previous' (swapped to 'v1' in loop) row.
 
-      for (var i = 0; i < sourceCount; i++)
+      for (var si = 0; si < sourceCount; si++)
       {
         var rotate = v1; v1 = v0; v0 = rotate;
 
-        v0[0] = i + 1; // The first element is delete (i + 1) chars from source to match empty target.
+        v0[0] = si + 1; // The first element is delete (i + 1) chars from source to match empty target.
 
-        for (var j = 0; j < targetCount; j++)
+        for (var ti = 0; ti < targetCount; ti++)
         {
-          v0[j + 1] = Maths.Min(
-            v1[j + 1] + 1, // Deletion.
-            v0[j] + 1, // Insertion.
-            EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + 1 // Substitution.
+          v0[ti + 1] = Maths.Min(
+            v1[ti + 1] + 1, // Deletion.
+            v0[ti] + 1, // Insertion.
+            EqualityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
           );
         }
       }
