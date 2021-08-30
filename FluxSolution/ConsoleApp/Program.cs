@@ -17,8 +17,64 @@ namespace ConsoleApp
 {
   class Program
   {
+
     private static void TimedMain(string[] args)
     {
+      const string csF = "F";
+      const string csP = "P";
+      const string csT = "T";
+
+      var ls = new System.Collections.Generic.List<string>();
+      ls.Add(csF);
+      ls.Add(csP);
+      ls.Add(csT);
+
+      var ds = new System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double>();
+      ds.Add(new KeyValuePair<string, string>(csF, csT), 257);
+      ds.Add(new KeyValuePair<string, string>(csT, csF), 257);
+      ds.Add(new KeyValuePair<string, string>(csP, csF), 145);
+      ds.Add(new KeyValuePair<string, string>(csF, csP), 145);
+      ds.Add(new KeyValuePair<string, string>(csT, csP), 113);
+      ds.Add(new KeyValuePair<string, string>(csP, csT), 113);
+
+      static IEnumerable<System.Collections.Generic.Dictionary<string, string>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
+      {
+        var v1 = v.ToList();
+        v1.Add(l);
+
+        var r = ls.Where(l2 => !v1.Contains(l2)).ToList();
+
+        if (r.Any())
+        {
+          foreach (var l1 in r)
+          {
+            var rs = new System.Collections.Generic.Dictionary<string, string>();
+            rs.Add(l, l1);
+            foreach (var dics in Tsp(l1, v1, ls, ds))
+              foreach (var kvp in dics)
+                rs.Add(kvp.Key, kvp.Value);
+            yield return rs;
+          }
+        }
+        else
+          yield return new System.Collections.Generic.Dictionary<string, string>();
+      }
+
+foreach(var r in       Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
+      {
+
+      }
+
+      //var ints = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
+
+      //var lis = new Flux.Metrical.LongestIncreasingSubsequence<int>().GetLongestIncreasingSubsequence(ints.ToReadOnlySpan());
+
+      //string X = "ABCBDAB", Y = "BDCABA";
+
+      //var scs = new Flux.Metrical.ShortestCommonSupersequence<char>();
+
+      //var l = scs.GetList(X, Y, out var m);
+      return;
       //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2021, 6, 30));
       //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
       //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
