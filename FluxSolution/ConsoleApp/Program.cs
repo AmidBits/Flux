@@ -15,11 +15,42 @@ using Flux;
 
 namespace ConsoleApp
 {
+
+
   class Program
   {
 
     private static void TimedMain(string[] args)
     {
+      var sm = new int[,]
+      {
+        { 2, -1, 1, -1 },
+        { -1, 2, -1, 1 },
+        { 1, -1, 2, -1 },
+        { -1, 1, -1, 2 },
+      };
+
+      static int LetterToInteger(char letter)
+        => letter == 'A' ? 0 : letter == 'C' ? 1 : letter == 'G' ? 2 : letter == 'T' ? 3 : throw new System.ArgumentOutOfRangeException(nameof(letter));
+
+      var sdp = new Flux.Matrices.StandardDynamicProgramming<char>() { SubstitutionMatrix = (s, t) => sm[LetterToInteger(s), LetterToInteger(t)], LinearGapPenalty = -2 };
+      var z = sdp.GetFullMatrix("CCTAAG", "ACGGTAG");
+       sdp.TraceMatrix(z, "CCTAAG", "ACGGTAG");
+      System.Console.WriteLine(z.ToConsoleBlock());
+      return;
+      var ld = new Flux.Metrical.LevenshteinDistance<char>();
+
+      var d1 = ld.GetFullMatrix("sitting", "kitten");
+      System.Console.WriteLine(d1.ToConsoleBlock());
+      System.Console.WriteLine(ld.GetMetricDistance("sitting", "kitten"));
+
+      var d2 = ld.GetFullMatrix("Sunday", "Saturday");
+      System.Console.WriteLine(d2.ToConsoleBlock());
+      System.Console.WriteLine(ld.GetMetricDistance("Sunday", "Saturday"));
+      System.Console.WriteLine();
+
+      //Flux.QwertyProximity.Distance('e', 'c');
+      return;
       const string csF = "F";
       const string csP = "P";
       const string csT = "T";
@@ -66,8 +97,8 @@ namespace ConsoleApp
             yield return rs;
             last = l1;
           }
- //         if (r.Count == 1)
-   //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
+          //         if (r.Count == 1)
+          //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
         }
         else
           yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();

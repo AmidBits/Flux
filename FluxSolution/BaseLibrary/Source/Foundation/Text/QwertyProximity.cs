@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
   // https://en.wikipedia.org/wiki/QWERTY
@@ -21,8 +23,62 @@ namespace Flux
     }
   }
 
+  //public static class User32Interop
+  //{
+  //  [System.Runtime.InteropServices.DllImport("user32.dll")]
+  //  static extern short VkKeyScan(char c);
+
+  //  public static char ToAscii(Keys key, Keys modifiers)
+  //  {
+  //    var outputBuilder = new System.Text.StringBuilder(2);
+  //    int result = ToAscii((uint)key, 0, GetKeyState(modifiers), outputBuilder, 0);
+  //    if (result == 1)
+  //      return outputBuilder[0];
+  //    else
+  //      throw new System.Exception("Invalid key");
+  //  }
+
+  //  private const byte HighBit = 0x80;
+  //  private static byte[] GetKeyState(Keys modifiers)
+  //  {
+  //    var keyState = new byte[256];
+  //    foreach (Keys key in System.Enum.GetValues(typeof(Keys)))
+  //    {
+  //      if ((modifiers & key) == key)
+  //      {
+  //        keyState[(int)key] = HighBit;
+  //      }
+  //    }
+  //    return keyState;
+  //  }
+
+  //  [System.Runtime.InteropServices.DllImport("user32.dll")]
+  //  private static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState, [System.Runtime.InteropServices.Out] System.Text.StringBuilder lpChar, uint uFlags);
+  //}
   public static class QwertyProximity
   {
+    //public static void Distance(char source, char target)
+    //{
+
+    //  var v = new System.Collections.Generic.List<char>();
+
+    //  var l = InternalDistance(source, English[source].ToCharArray(), target);
+
+    //  System.Collections.Generic.KeyValuePair<System.Collections.Generic.List<char>, int> InternalDistance(char s, char[] n, char t)
+    //  {
+    //    if (n.Contains(t))
+    //      return new System.Collections.Generic.KeyValuePair<System.Collections.Generic.List<char>, int>(new System.Collections.Generic.List<char>() { s, t }, 1);
+
+    //    v.Add(s);
+    //    v.AddRange(n);
+
+    //    foreach (var c in n.SelectMany(c => English[c]).Where(c => !v.Contains(c)))
+    //    {
+    //      return InternalDistance(s, .ToArray(), t);
+    //    }
+    //  }
+    //}
+
     public static readonly System.Collections.Generic.Dictionary<char, string> English = new System.Collections.Generic.Dictionary<char, string>()
     {
       { 'a', "swqz" },
@@ -51,6 +107,10 @@ namespace Flux
       { 'x', "sdcz " },
       { 'y', "thug67" },
       { 'z', "asx" },
+      { '1', "2q\t`" },
+      { '2', "3wq1" },
+      { '3', "4ew2" },
+      { '4', "re3" },
 
       { 'A', "SWQZ" },
       { 'B', "NHGV " },
