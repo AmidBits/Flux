@@ -23,11 +23,13 @@ namespace ConsoleApp
       const string csF = "F";
       const string csP = "P";
       const string csT = "T";
+      const string csY = "Y";
 
       var ls = new System.Collections.Generic.List<string>();
       ls.Add(csF);
       ls.Add(csP);
       ls.Add(csT);
+      ls.Add(csY);
 
       var ds = new System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double>();
       ds.Add(new KeyValuePair<string, string>(csF, csT), 257);
@@ -36,8 +38,14 @@ namespace ConsoleApp
       ds.Add(new KeyValuePair<string, string>(csF, csP), 145);
       ds.Add(new KeyValuePair<string, string>(csT, csP), 113);
       ds.Add(new KeyValuePair<string, string>(csP, csT), 113);
+      ds.Add(new KeyValuePair<string, string>(csT, csY), 238);
+      ds.Add(new KeyValuePair<string, string>(csY, csT), 238);
+      ds.Add(new KeyValuePair<string, string>(csP, csY), 185);
+      ds.Add(new KeyValuePair<string, string>(csY, csP), 185);
+      ds.Add(new KeyValuePair<string, string>(csF, csY), 318);
+      ds.Add(new KeyValuePair<string, string>(csY, csF), 318);
 
-      static IEnumerable<System.Collections.Generic.Dictionary<string, string>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
+      static IEnumerable<System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
       {
         var v1 = v.ToList();
         v1.Add(l);
@@ -46,23 +54,31 @@ namespace ConsoleApp
 
         if (r.Any())
         {
+          System.Console.WriteLine(r.Count);
+          var last = string.Empty;
           foreach (var l1 in r)
           {
-            var rs = new System.Collections.Generic.Dictionary<string, string>();
-            rs.Add(l, l1);
+            var rs = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
+            System.Console.WriteLine(new KeyValuePair<string, string>(l, l1));
             foreach (var dics in Tsp(l1, v1, ls, ds))
               foreach (var kvp in dics)
-                rs.Add(kvp.Key, kvp.Value);
+                System.Console.WriteLine(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
             yield return rs;
+            last = l1;
           }
+ //         if (r.Count == 1)
+   //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
         }
         else
-          yield return new System.Collections.Generic.Dictionary<string, string>();
+          yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
       }
 
-foreach(var r in       Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
+      foreach (var list in Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
       {
+        foreach (var kvp in list)
+          System.Console.WriteLine(kvp);
 
+        System.Console.WriteLine();
       }
 
       //var ints = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
