@@ -1,102 +1,102 @@
-﻿using System.Linq;
+﻿//using System.Linq;
 
-namespace Flux.Csp
-{
-  public class AllDifferentInteger
-    : IConstraint
-  {
-    private readonly VariableInteger[] variableArray;
-    private readonly IDomain<int>[] domainArray;
-    private BipartiteGraph Graph { get; set; }
-    private readonly CycleDetection cycleDetection;
+//namespace Flux.Csp
+//{
+//  public class AllDifferentInteger
+//    : IConstraint
+//  {
+//    private readonly VariableInteger[] variableArray;
+//    private readonly IDomain<int>[] domainArray;
+//    private BipartiteGraph Graph { get; set; }
+//    private readonly CycleDetection cycleDetection;
 
-    private IState<int> State { get; set; }
-    private int Depth
-    {
-      get
-      {
-        if (this.State == null)
-          this.State = this.variableArray[0].State;
+//    private IState<int> State { get; set; }
+//    private int Depth
+//    {
+//      get
+//      {
+//        if (this.State == null)
+//          this.State = this.variableArray[0].State;
 
-        return this.State.Depth;
-      }
-    }
+//        return this.State.Depth;
+//      }
+//    }
 
-    public AllDifferentInteger(System.Collections.Generic.IEnumerable<VariableInteger> variables)
-    {
-      this.variableArray = variables.ToArray();
-      this.domainArray = new IDomain<int>[this.variableArray.Length];
-      this.cycleDetection = new CycleDetection();
-    }
+//    public AllDifferentInteger(System.Collections.Generic.IEnumerable<VariableInteger> variables)
+//    {
+//      this.variableArray = variables.ToArray();
+//      this.domainArray = new IDomain<int>[this.variableArray.Length];
+//      this.cycleDetection = new CycleDetection();
+//    }
 
-    public void Check(out ConstraintOperationResult result)
-    {
-      for (var i = 0; i < this.variableArray.Length; ++i)
-        this.domainArray[i] = variableArray[i].Domain;
+//    public void Check(out ConstraintOperationResult result)
+//    {
+//      for (var i = 0; i < this.variableArray.Length; ++i)
+//        this.domainArray[i] = variableArray[i].Domain;
 
-      if (!FindMatching())
-      {
-        result = ConstraintOperationResult.Violated;
-        return;
-      }
+//      if (!FindMatching())
+//      {
+//        result = ConstraintOperationResult.Violated;
+//        return;
+//      }
 
-      if (this.variableArray.Cast<IVariable<int>>().Any(variable => !variable.Instantiated()))
-      {
-        result = ConstraintOperationResult.Undecided;
-        return;
-      }
+//      if (this.variableArray.Cast<IVariable<int>>().Any(variable => !variable.Instantiated()))
+//      {
+//        result = ConstraintOperationResult.Undecided;
+//        return;
+//      }
 
-      result = ConstraintOperationResult.Satisfied;
-    }
+//      result = ConstraintOperationResult.Satisfied;
+//    }
 
-    private bool FindMatching()
-    {
-      return this.Graph.MaximalMatching() >= this.variableArray.Length;
-    }
+//    private bool FindMatching()
+//    {
+//      return this.Graph.MaximalMatching() >= this.variableArray.Length;
+//    }
 
-    public void Propagate(out ConstraintOperationResult result)
-    {
-      this.Graph = new BipartiteGraph(this.variableArray);
+//    public void Propagate(out ConstraintOperationResult result)
+//    {
+//      this.Graph = new BipartiteGraph(this.variableArray);
 
-      if (!FindMatching())
-      {
-        result = ConstraintOperationResult.Violated;
-        return;
-      }
+//      if (!FindMatching())
+//      {
+//        result = ConstraintOperationResult.Violated;
+//        return;
+//      }
 
-      this.cycleDetection.Graph = this.Graph;
-      this.cycleDetection.DetectCycle();
+//      this.cycleDetection.Graph = this.Graph;
+//      this.cycleDetection.DetectCycle();
 
-      result = ConstraintOperationResult.Undecided;
-      foreach (var cycle in this.cycleDetection.StronglyConnectedComponents)
-      {
-        foreach (var node in cycle)
-        {
-          if (!(node is NodeVariable) || node == this.Graph.NullNode)
-            continue;
+//      result = ConstraintOperationResult.Undecided;
+//      foreach (var cycle in this.cycleDetection.StronglyConnectedComponents)
+//      {
+//        foreach (var node in cycle)
+//        {
+//          if (!(node is NodeVariable) || node == this.Graph.NullNode)
+//            continue;
 
-          var variable = ((NodeVariable)node).Variable;
-          foreach (var value in variable.Domain.Cast<int>().Where(value =>
-            this.Graph.Values[value].CycleIndex != node.CycleIndex &&
-            ((NodeValue)this.Graph.Pair[node]).Value != value))
-          {
-            result = ConstraintOperationResult.Propagated;
+//          var variable = ((NodeVariable)node).Variable;
+//          foreach (var value in variable.Domain.Cast<int>().Where(value =>
+//            this.Graph.Values[value].CycleIndex != node.CycleIndex &&
+//            ((NodeValue)this.Graph.Pair[node]).Value != value))
+//          {
+//            result = ConstraintOperationResult.Propagated;
 
-            variable.Remove(value, this.Depth, out DomainOperationResult domainResult);
+//            variable.Remove(value, this.Depth, out DomainOperationResult domainResult);
 
-            if (domainResult != DomainOperationResult.EmptyDomain)
-              continue;
+//            if (domainResult != DomainOperationResult.EmptyDomain)
+//              continue;
 
-            result = ConstraintOperationResult.Violated;
-            return;
-          }
-        }
-      }
-    }
+//            result = ConstraintOperationResult.Violated;
+//            return;
+//          }
+//        }
+//      }
+//    }
 
-    public bool StateChanged()
-    {
-      return this.variableArray.Where((t, i) => t.Domain != this.domainArray[i]).Any();
-    }
-  }
-}
+//    public bool StateChanged()
+//    {
+//      return this.variableArray.Where((t, i) => t.Domain != this.domainArray[i]).Any();
+//    }
+//  }
+//}

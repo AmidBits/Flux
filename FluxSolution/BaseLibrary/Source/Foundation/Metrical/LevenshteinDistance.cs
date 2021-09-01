@@ -16,15 +16,18 @@ namespace Flux.Metrical
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var ldg = new int[source.Length + 1, target.Length + 1];
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      for (var si = 1; si <= source.Length; si++)
+      var ldg = new int[sourceLength + 1, targetLength + 1];
+
+      for (var si = 1; si <= sourceLength; si++)
         ldg[si, 0] = si;
-      for (var ti = 1; ti <= target.Length; ti++)
+      for (var ti = 1; ti <= targetLength; ti++)
         ldg[0, ti] = ti;
 
-      for (var si = 1; si <= source.Length; si++)
-        for (var ti = 1; ti <= target.Length; ti++)
+      for (var si = 1; si <= sourceLength; si++)
+        for (var ti = 1; ti <= targetLength; ti++)
           ldg[si, ti] = Maths.Min(
             ldg[si - 1, ti] + 1, // Deletion.
             ldg[si, ti - 1] + 1, // Insertion.
@@ -34,26 +37,29 @@ namespace Flux.Metrical
       return ldg;
     }
 
-    /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution)
-    {
-      var ldg = new double[source.Length + 1, target.Length + 1];
+    ///// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+    //public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution)
+    //{
+    //  var sourceLength = source.Length;
+    //  var targetLength = target.Length;
 
-      for (var si = 1; si <= source.Length; si++)
-        ldg[si, 0] = si * costOfInsertion;
-      for (var ti = 1; ti <= target.Length; ti++)
-        ldg[0, ti] = ti * costOfInsertion;
+    //  var ldg = new double[sourceLength + 1, targetLength + 1];
 
-      for (var si = 1; si <= source.Length; si++)
-        for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = Maths.Min(
-            ldg[si - 1, ti] + costOfDeletion,
-            ldg[si, ti - 1] + costOfInsertion,
-            EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
-          );
+    //  for (var si = 1; si <= sourceLength; si++)
+    //    ldg[si, 0] = si * costOfInsertion;
+    //  for (var ti = 1; ti <= targetLength; ti++)
+    //    ldg[0, ti] = ti * costOfInsertion;
 
-      return ldg;
-    }
+    //  for (var si = 1; si <= sourceLength; si++)
+    //    for (var ti = 1; ti <= targetLength; ti++)
+    //      ldg[si, ti] = Maths.Min(
+    //        ldg[si - 1, ti] + costOfDeletion,
+    //        ldg[si, ti - 1] + costOfInsertion,
+    //        EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
+    //      );
+
+    //  return ldg;
+    //}
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
@@ -173,15 +179,18 @@ namespace Flux.Metrical
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public double[,] GetCustomFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var ldg = new double[source.Length + 1, target.Length + 1];
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      for (var si = 1; si <= source.Length; si++)
+      var ldg = new double[sourceLength + 1, targetLength + 1];
+
+      for (var si = 1; si <= sourceLength; si++)
         ldg[si, 0] = si * CostOfInsertion;
-      for (var ti = 1; ti <= target.Length; ti++)
+      for (var ti = 1; ti <= targetLength; ti++)
         ldg[0, ti] = ti * CostOfInsertion;
 
-      for (var si = 1; si <= source.Length; si++)
-        for (var ti = 1; ti <= target.Length; ti++)
+      for (var si = 1; si <= sourceLength; si++)
+        for (var ti = 1; ti <= targetLength; ti++)
           ldg[si, ti] = Maths.Min(
             ldg[si - 1, ti] + CostOfDeletion,
             ldg[si, ti - 1] + CostOfInsertion,

@@ -17,18 +17,21 @@ namespace Flux.Metrical
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var ldg = new int[source.Length + 1, target.Length + 1];
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      for (var si = 1; si <= source.Length; si++)
+      var ldg = new int[sourceLength + 1, targetLength + 1];
+
+      for (var si = 1; si <= sourceLength; si++)
         ldg[si, 0] = si;
-      for (var ti = 1; ti <= target.Length; ti++)
+      for (var ti = 1; ti <= targetLength; ti++)
         ldg[0, ti] = ti;
 
-      for (int si = 1; si <= source.Length; si++)
+      for (int si = 1; si <= sourceLength; si++)
       {
         var sourceItem = source[si - 1];
 
-        for (int ti = 1; ti <= target.Length; ti++)
+        for (int ti = 1; ti <= targetLength; ti++)
         {
           var targetItem = target[ti - 1];
 
@@ -44,35 +47,35 @@ namespace Flux.Metrical
       return ldg;
     }
 
-    /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution, double costOfTransposition)
-    {
-      var ldg = new double[source.Length + 1, target.Length + 1];
+    ///// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+    //public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution, double costOfTransposition)
+    //{
+    //  var ldg = new double[source.Length + 1, target.Length + 1];
 
-      for (var si = 1; si <= source.Length; si++)
-        ldg[si, 0] = si * costOfInsertion;
-      for (var ti = 1; ti <= target.Length; ti++)
-        ldg[0, ti] = ti * costOfInsertion;
+    //  for (var si = 1; si <= source.Length; si++)
+    //    ldg[si, 0] = si * costOfInsertion;
+    //  for (var ti = 1; ti <= target.Length; ti++)
+    //    ldg[0, ti] = ti * costOfInsertion;
 
-      for (int si = 1; si <= source.Length; si++)
-      {
-        var sourceItem = source[si - 1];
+    //  for (int si = 1; si <= source.Length; si++)
+    //  {
+    //    var sourceItem = source[si - 1];
 
-        for (int ti = 1; ti <= target.Length; ti++)
-        {
-          var targetItem = target[ti - 1];
+    //    for (int ti = 1; ti <= target.Length; ti++)
+    //    {
+    //      var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = Maths.Min(
-            ldg[si - 1, ti] + costOfDeletion,
-            ldg[si, ti - 1] + costOfInsertion,
-            EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution,
-            si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + costOfTransposition : double.MaxValue
-          );
-        }
-      }
+    //      ldg[si, ti] = ldg[si, ti] = Maths.Min(
+    //        ldg[si - 1, ti] + costOfDeletion,
+    //        ldg[si, ti - 1] + costOfInsertion,
+    //        EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution,
+    //        si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + costOfTransposition : double.MaxValue
+    //      );
+    //    }
+    //  }
 
-      return ldg;
-    }
+    //  return ldg;
+    //}
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
@@ -143,18 +146,21 @@ namespace Flux.Metrical
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public double[,] GetCustomFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var ldg = new double[source.Length + 1, target.Length + 1];
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      for (var si = 1; si <= source.Length; si++)
+      var ldg = new double[sourceLength + 1, targetLength + 1];
+
+      for (var si = 1; si <= sourceLength; si++)
         ldg[si, 0] = si * CostOfInsertion;
-      for (var ti = 1; ti <= target.Length; ti++)
+      for (var ti = 1; ti <= targetLength; ti++)
         ldg[0, ti] = ti * CostOfInsertion;
 
-      for (int si = 1; si <= source.Length; si++)
+      for (int si = 1; si <= sourceLength; si++)
       {
         var sourceItem = source[si - 1];
 
-        for (int ti = 1; ti <= target.Length; ti++)
+        for (int ti = 1; ti <= targetLength; ti++)
         {
           var targetItem = target[ti - 1];
 

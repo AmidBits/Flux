@@ -1,14 +1,14 @@
-﻿namespace Flux.Csp
-{
-  public class DeciderException
-    : System.Exception
-  {
-    public DeciderException()
-      : base()
-    { }
+﻿//namespace Flux.Csp
+//{
+//  public class DeciderException
+//    : System.Exception
+//  {
+//    public DeciderException()
+//      : base()
+//    { }
 
-    public DeciderException(string message)
-      : base(message)
-    { }
-  }
-}
+//    public DeciderException(string message)
+//      : base(message)
+//    { }
+//  }
+//}

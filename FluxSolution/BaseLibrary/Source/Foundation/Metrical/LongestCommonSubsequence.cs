@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Metrical
 {
   /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
