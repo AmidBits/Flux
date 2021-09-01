@@ -43,38 +43,51 @@
       return matrix;
     }
 
-    public void TraceMatrix(int[,] D, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public void TraceBackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var i = D.GetLength(0)-1 ;
-      var j = D.GetLength(1) -1;
+      var i = matrix.GetLength(0) - 1;
+      var j = matrix.GetLength(1) - 1;
 
       System.Collections.Generic.List<T> s = new System.Collections.Generic.List<T>();
       System.Collections.Generic.List<T> t = new System.Collections.Generic.List<T>();
 
-      while (i > 1 && j > 1)
+      while (i > 0 && j > 0)
       {
-        if (D[i, j] - SubstitutionMatrix(source[i - 1], target[j - 1]) == D[i - 1, j - 1])
+        if (matrix[i, j] - SubstitutionMatrix(source[i - 1], target[j - 1]) == matrix[i - 1, j - 1])
         {
-          t.Add(target[j - 1]);
-          s.Add(source[i- 1]);
-          i = i - 1;
-          j = j - 1;
+          i -= 1;
+          j -= 1;
+          s.Insert(0, source[i]);
+          t.Insert(0, target[j]);
         }
-        else if (D[i, j] - LinearGapPenalty == D[i, j - 1])
+        else if (matrix[i, j] - LinearGapPenalty == matrix[i, j - 1])
         {
-          s.Add(source[i - 1]);
-          t.Add(default!);
-          j = j - 1;
+          j -= 1;
+          s.Insert(0, target[j]);
+          t.Insert(0, default!);
         }
-        else if (D[i, j] - LinearGapPenalty == D[i - 1, j])
+        else if (matrix[i, j] - LinearGapPenalty == matrix[i - 1, j])
         {
-          s.Add(default!);
-          t.Add(target[j - 1]);
-          i = i - 1;
+          i -= 1;
+          s.Insert(0, default!);
+          t.Insert(0, source[i]);
         }
-        else
-          throw new System.Exception("should not happen");
       }
+
+      while (j > 0)
+      {
+        j -= 1;
+        s.Insert(0, target[j]);
+        t.Insert(0, default!);
+      }
+
+      while (i > 0)
+      {
+        i -= 1;
+        s.Insert(0, default!);
+        t.Insert(0, source[i]);
+      }
+
     }
   }
 }

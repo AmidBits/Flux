@@ -35,7 +35,7 @@ namespace ConsoleApp
 
       var sdp = new Flux.Matrices.StandardDynamicProgramming<char>() { SubstitutionMatrix = (s, t) => sm[LetterToInteger(s), LetterToInteger(t)], LinearGapPenalty = -2 };
       var z = sdp.GetFullMatrix("CCTAAG", "ACGGTAG");
-       sdp.TraceMatrix(z, "CCTAAG", "ACGGTAG");
+       sdp.TraceBackPath(z, "CCTAAG", "ACGGTAG");
       System.Console.WriteLine(z.ToConsoleBlock());
       return;
       var ld = new Flux.Metrical.LevenshteinDistance<char>();
