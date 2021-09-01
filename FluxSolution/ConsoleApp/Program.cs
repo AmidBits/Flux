@@ -15,113 +15,70 @@ using Flux;
 
 namespace ConsoleApp
 {
-
-
   class Program
   {
-
     private static void TimedMain(string[] args)
     {
-      var sm = new int[,]
-      {
-        { 2, -1, 1, -1 },
-        { -1, 2, -1, 1 },
-        { 1, -1, 2, -1 },
-        { -1, 1, -1, 2 },
-      };
+      //const string csF = "F";
+      //const string csP = "P";
+      //const string csT = "T";
+      //const string csY = "Y";
 
-      static int LetterToInteger(char letter)
-        => letter == 'A' ? 0 : letter == 'C' ? 1 : letter == 'G' ? 2 : letter == 'T' ? 3 : throw new System.ArgumentOutOfRangeException(nameof(letter));
+      //var ls = new System.Collections.Generic.List<string>();
+      //ls.Add(csF);
+      //ls.Add(csP);
+      //ls.Add(csT);
+      //ls.Add(csY);
 
-      var sdp = new Flux.Matrices.NeedlemanWunschAlgorithm<char>() { GapPlaceholder = '-' };
+      //var ds = new System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double>();
+      //ds.Add(new KeyValuePair<string, string>(csF, csT), 257);
+      //ds.Add(new KeyValuePair<string, string>(csT, csF), 257);
+      //ds.Add(new KeyValuePair<string, string>(csP, csF), 145);
+      //ds.Add(new KeyValuePair<string, string>(csF, csP), 145);
+      //ds.Add(new KeyValuePair<string, string>(csT, csP), 113);
+      //ds.Add(new KeyValuePair<string, string>(csP, csT), 113);
+      //ds.Add(new KeyValuePair<string, string>(csT, csY), 238);
+      //ds.Add(new KeyValuePair<string, string>(csY, csT), 238);
+      //ds.Add(new KeyValuePair<string, string>(csP, csY), 185);
+      //ds.Add(new KeyValuePair<string, string>(csY, csP), 185);
+      //ds.Add(new KeyValuePair<string, string>(csF, csY), 318);
+      //ds.Add(new KeyValuePair<string, string>(csY, csF), 318);
 
-      var y = "GCATGCU";
-      var x = "GATTACA";
+      //static IEnumerable<System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
+      //{
+      //  var v1 = v.ToList();
+      //  v1.Add(l);
 
-      var z = sdp.GetFullMatrix(x, y);
-      System.Console.WriteLine(z.ToConsoleBlock());
-      System.Console.WriteLine();
+      //  var r = ls.Where(l2 => !v1.Contains(l2)).ToList();
 
-      var a = sdp.TracebackPath(z, x, y);
-      System.Console.WriteLine(string.Concat(a.source));
-      System.Console.WriteLine();
-      System.Console.WriteLine(string.Concat(a.target));
-      System.Console.WriteLine();
+      //  if (r.Any())
+      //  {
+      //    System.Console.WriteLine(r.Count);
+      //    var last = string.Empty;
+      //    foreach (var l1 in r)
+      //    {
+      //      var rs = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
+      //      System.Console.WriteLine(new KeyValuePair<string, string>(l, l1));
+      //      foreach (var dics in Tsp(l1, v1, ls, ds))
+      //        foreach (var kvp in dics)
+      //          System.Console.WriteLine(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
+      //      yield return rs;
+      //      last = l1;
+      //    }
+      //    //         if (r.Count == 1)
+      //    //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
+      //  }
+      //  else
+      //    yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
+      //}
 
-      return;
-      var ld = new Flux.Metrical.LevenshteinDistance<char>();
+      //foreach (var list in Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
+      //{
+      //  foreach (var kvp in list)
+      //    System.Console.WriteLine(kvp);
 
-      var d1 = ld.GetFullMatrix("sitting", "kitten");
-      System.Console.WriteLine(d1.ToConsoleBlock());
-      System.Console.WriteLine(ld.GetMetricDistance("sitting", "kitten"));
-
-      var d2 = ld.GetFullMatrix("Sunday", "Saturday");
-      System.Console.WriteLine(d2.ToConsoleBlock());
-      System.Console.WriteLine(ld.GetMetricDistance("Sunday", "Saturday"));
-      System.Console.WriteLine();
-
-      //Flux.QwertyProximity.Distance('e', 'c');
-      return;
-      const string csF = "F";
-      const string csP = "P";
-      const string csT = "T";
-      const string csY = "Y";
-
-      var ls = new System.Collections.Generic.List<string>();
-      ls.Add(csF);
-      ls.Add(csP);
-      ls.Add(csT);
-      ls.Add(csY);
-
-      var ds = new System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double>();
-      ds.Add(new KeyValuePair<string, string>(csF, csT), 257);
-      ds.Add(new KeyValuePair<string, string>(csT, csF), 257);
-      ds.Add(new KeyValuePair<string, string>(csP, csF), 145);
-      ds.Add(new KeyValuePair<string, string>(csF, csP), 145);
-      ds.Add(new KeyValuePair<string, string>(csT, csP), 113);
-      ds.Add(new KeyValuePair<string, string>(csP, csT), 113);
-      ds.Add(new KeyValuePair<string, string>(csT, csY), 238);
-      ds.Add(new KeyValuePair<string, string>(csY, csT), 238);
-      ds.Add(new KeyValuePair<string, string>(csP, csY), 185);
-      ds.Add(new KeyValuePair<string, string>(csY, csP), 185);
-      ds.Add(new KeyValuePair<string, string>(csF, csY), 318);
-      ds.Add(new KeyValuePair<string, string>(csY, csF), 318);
-
-      static IEnumerable<System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
-      {
-        var v1 = v.ToList();
-        v1.Add(l);
-
-        var r = ls.Where(l2 => !v1.Contains(l2)).ToList();
-
-        if (r.Any())
-        {
-          System.Console.WriteLine(r.Count);
-          var last = string.Empty;
-          foreach (var l1 in r)
-          {
-            var rs = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
-            System.Console.WriteLine(new KeyValuePair<string, string>(l, l1));
-            foreach (var dics in Tsp(l1, v1, ls, ds))
-              foreach (var kvp in dics)
-                System.Console.WriteLine(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
-            yield return rs;
-            last = l1;
-          }
-          //         if (r.Count == 1)
-          //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
-        }
-        else
-          yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
-      }
-
-      foreach (var list in Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
-      {
-        foreach (var kvp in list)
-          System.Console.WriteLine(kvp);
-
-        System.Console.WriteLine();
-      }
+      //  System.Console.WriteLine();
+      //}
 
       //var ints = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
 
@@ -132,23 +89,30 @@ namespace ConsoleApp
       //var scs = new Flux.Metrical.ShortestCommonSupersequence<char>();
 
       //var l = scs.GetList(X, Y, out var m);
-      return;
-      //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2019, 1, 1), new System.DateTime(2021, 6, 30));
-      //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 12, 31));
+      //return;
+      //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 8, 31));
+      //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 4, 1), new System.DateTime(2021, 12, 31));
       //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
       //var ri = Flux.Range<System.DateTime>.Intersect(r1, r2);
       //var rsd = Flux.Range<System.DateTime>.SymmetricDifference(r1, r2);
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      //var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
-      //var sp = gc.ToSphericalCoordinate();
-      //var cy = sp.ToCylindricalCoordinate();
-      //var ca = cy.ToCartesianCoordinate3();
-      //var cy2 = ca.ToCylindricalCoordinate();
-      //var sp2 = cy2.ToSphericalCoordinate();
-      //var gc2 = sp2.ToGeographicCoordinate();
-      //return;
+      var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
+      System.Console.WriteLine(gc);
+      var sp = gc.ToSphericalCoordinate();
+      System.Console.WriteLine(sp);
+      var cy = sp.ToCylindricalCoordinate();
+      System.Console.WriteLine(cy);
+      var ca = cy.ToCartesianCoordinate3();
+      System.Console.WriteLine(ca);
+      var cy2 = ca.ToCylindricalCoordinate();
+      System.Console.WriteLine(cy2);
+      var sp2 = cy2.ToSphericalCoordinate();
+      System.Console.WriteLine(sp2);
+      var gc2 = sp2.ToGeographicCoordinate();
+      System.Console.WriteLine(gc2);
+      return;
 
       //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       //var cv = new Flux.Model.GameOfLife.Console(game);

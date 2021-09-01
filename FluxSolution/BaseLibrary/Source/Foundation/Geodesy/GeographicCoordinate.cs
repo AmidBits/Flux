@@ -34,8 +34,56 @@ namespace Flux.CoordinateSystems
       : this(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3)
     { }
 
+    public CartesianCoordinate3 ToEqualEarthProjection()
+    {
+      const double A1 = 1.340264;
+      const double A2 = -0.081106;
+      const double A3 = 0.000893;
+      const double A4 = 0.003796;
+      const double A23 = A2 * 3;
+      const double A37 = A3 * 7;
+      const double A49 = A4 * 9;
+
+      var M = System.Math.Sqrt(3) / 2;
+      var p = System.Math.Asin(M * System.Math.Sin(Latitude.Radian)); // parametric latitude
+      var p2 = System.Math.Pow(p, 2);
+      var p6 = System.Math.Pow(p, 6);
+      var x = Longitude.Radian * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
+      var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
+    public CartesianCoordinate3 ToNaturalEarthProjection()
+    {
+      var lat = Latitude.Radian;
+      var lon = Longitude.Radian;
+
+      var latP2 = System.Math.Pow(lat, 2);
+      var latP4 = latP2 * latP2;
+      var latP6 = System.Math.Pow(lat, 6);
+      var latP8 = latP4 * latP4;
+      var latP10 = System.Math.Pow(lat, 10);
+      var latP12 = latP6 * latP6;
+
+      var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
+      var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value));
+    => new SphericalCoordinate(ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value));
+    public CartesianCoordinate3 ToWinkelTripelProjection()
+    {
+      var lat = Latitude.Radian;
+      var lon = Longitude.Radian;
+
+      var sinc = Maths.Sincu(System.Math.Acos(System.Math.Cos(lat) * System.Math.Cos(lon / 2)));
+
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(2 / System.Math.PI)) + ((2 * System.Math.Cos(lat) * System.Math.Sin(lon / 2)) / sinc));
+      var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     ///// <param name="trackStart"></param>
@@ -87,6 +135,41 @@ namespace Flux.CoordinateSystems
     //}
 
     #region Static members
+    // https://github.com/dneuman/EqualEarth/blob/master/EqualEarth.py
+    public GeographicCoordinate FromEqualEarthProjection(double x, double y)
+    {
+      const double A1 = 1.340264;
+      const double A2 = -0.081106;
+      const double A3 = 0.000893;
+      const double A4 = 0.003796;
+      const double A23 = A2 * 3;
+      const double A37 = A3 * 7;
+      const double A49 = A4 * 9;
+
+      var iterations = 20;
+      var limit = 1e-8;
+      var M = System.Math.Sqrt(3) / 2;
+
+      var p = y; // Initial estimate for parametric latitude.
+      var dp = 0.0; // No change at start.
+      var dy = 0.0;
+
+      for (var i = iterations - 1; i >= 0 && System.Math.Abs(dp) > limit; i--)
+      {
+        p -= dp;
+        var p2 = System.Math.Pow(p, 2);
+        var p6 = System.Math.Pow(p, 6);
+        var fy = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2)) - y; // fy is the function you need the root of.
+        dy = A1 + A23 * p2 + p6 * (A37 + A49 * p2); // dy is the derivative of the function
+        dp = fy / dy; // dp is fy/dy or the change in estimate.
+      }
+
+      var lon = M * x * dy / System.Math.Cos(p);
+      var lat = System.Math.Asin(System.Math.Sin(p) / M);
+
+      return new GeographicCoordinate((lat, lon, Earth.MeanRadius.Value));
+    }
+
     /// <summary>right-handed vector: x -> 0°E,0°N; y -> 90°E,0°N, z -> 90°N</summary>
     //public static System.Numerics.Vector3 ToVector3RH(double latitudeR, double longitudeR) => new System.Numerics.Vector3((float)System.Math.Cos(latitudeR) * (float)System.Math.Cos(longitudeR), (float)System.Math.Cos(latitudeR) * (float)System.Math.Sin(longitudeR), (float)System.Math.Sin(latitudeR));
     //public static Geoposition FromVector3RH(double x, double y, double z) => new Geoposition() { Latitude = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y)), Longitude = System.Math.Atan2(y, x) };
@@ -180,6 +263,8 @@ namespace Flux.CoordinateSystems
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
     public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2)
       => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
+
+    //    public static GeographicCoordinate From 
 
     ///// <summary>Computes the square of half the chord length between the points, often labeled "a" in C implementations.</summary>
     ///// <returns>The square of half the chord length between the points.</returns>

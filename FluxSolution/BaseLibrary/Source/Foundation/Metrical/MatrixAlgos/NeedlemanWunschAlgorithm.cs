@@ -5,6 +5,7 @@
   /// </summary>
   /// <see cref="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm"/>
+  /// <seealso cref="http://www.biorecipes.com/DynProgBasic/code.html"/>
   public class NeedlemanWunschAlgorithm<T>
   {
     public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; init; }
@@ -99,3 +100,31 @@
     }
   }
 }
+
+/*
+  var sm = new int[,]
+  {
+    { 2, -1, 1, -1 },
+    { -1, 2, -1, 1 },
+    { 1, -1, 2, -1 },
+    { -1, 1, -1, 2 },
+  };
+
+  static int LetterToInteger(char letter)
+    => letter == 'A' ? 0 : letter == 'C' ? 1 : letter == 'G' ? 2 : letter == 'T' ? 3 : throw new System.ArgumentOutOfRangeException(nameof(letter));
+
+  var sdp = new Flux.Matrices.NeedlemanWunschAlgorithm<char>() { GapPlaceholder = '-' };
+
+  var y = "GCATGCU";
+  var x = "GATTACA";
+
+  var z = sdp.GetFullMatrix(x, y);
+  System.Console.WriteLine(z.ToConsoleBlock());
+  System.Console.WriteLine();
+
+  var a = sdp.TracebackPath(z, x, y);
+  System.Console.WriteLine(string.Concat(a.source));
+  System.Console.WriteLine();
+  System.Console.WriteLine(string.Concat(a.target));
+  System.Console.WriteLine();
+*/
