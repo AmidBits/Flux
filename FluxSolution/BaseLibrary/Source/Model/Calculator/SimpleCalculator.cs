@@ -75,14 +75,7 @@
 //		protected internal virtual Parser<LambdaExpression> Lambda =>
 //			Expr.End().Select(body => Expression.Lambda<Func<double>>(body));
 
-<<<<<<< HEAD
-		public virtual Expression<Func<double>>? ParseExpression(string text) =>
-			Lambda.Parse(text) as Expression<Func<double>>;
-	}
-}
-=======
-//		public virtual Expression<Func<double>> ParseExpression(string text) =>
+//		public virtual Expression<Func<double>>? ParseExpression(string text) =>
 //			Lambda.Parse(text) as Expression<Func<double>>;
 //	}
 //}
->>>>>>> 5d90945ace2018ef216bdfb2933f94f9d71845a4
