@@ -59,7 +59,7 @@ namespace Flux.Csp
       return this[Index.Value];
     }
 
-    private Bounds<int> EvaluateBounds(ExpressionInteger left, ExpressionInteger right)
+    private Bounds<int> EvaluateBounds(ExpressionInteger left, ExpressionInteger? right)
     {
       var elements = Elements();
 

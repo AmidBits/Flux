@@ -1,9 +1,7 @@
-﻿using System.Linq;
-
-namespace Flux.Csp
+﻿namespace Flux.Csp
 {
   internal class Graph
   {
-    public System.Collections.Generic.List<Node> Nodes { get; set; }
+    public System.Collections.Generic.List<Node> Nodes { get; set; } = new System.Collections.Generic.List<Node>();
   }
 }

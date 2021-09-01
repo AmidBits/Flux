@@ -380,7 +380,7 @@ namespace Flux
     {
       if (reference == null) throw new ArgumentNullException(nameof(reference));
 
-      Parser<T> p = null;
+      Parser<T>? p = null;
 
       return i =>
       {

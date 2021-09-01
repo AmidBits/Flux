@@ -24,7 +24,7 @@ namespace Flux
 #if STRING_JOIN_ENUMERABLE
             return string.Join(separator, values);
 #else
-      return string.Join(separator, values.Select(v => v.ToString()).ToArray());
+      return string.Join(separator, values.Select(v => v?.ToString() ?? string.Empty).ToArray());
 #endif
     }
   }

@@ -75,7 +75,7 @@ namespace Flux.Model.Calculator
 		protected internal virtual Parser<LambdaExpression> Lambda =>
 			Expr.End().Select(body => Expression.Lambda<Func<double>>(body));
 
-		public virtual Expression<Func<double>> ParseExpression(string text) =>
+		public virtual Expression<Func<double>>? ParseExpression(string text) =>
 			Lambda.Parse(text) as Expression<Func<double>>;
 	}
 }

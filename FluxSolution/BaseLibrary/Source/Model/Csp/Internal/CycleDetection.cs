@@ -4,17 +4,18 @@ namespace Flux.Csp
 {
 	internal class CycleDetection
 	{
-		private System.Collections.Generic.Stack<Node> nodeStack;
 		private int index;
+		private System.Collections.Generic.Stack<Node> nodeStack;
 
+		internal Graph Graph { get; set; } = new Graph();
 		internal System.Collections.Generic.List<System.Collections.Generic.List<Node>> StronglyConnectedComponents { get; set; }
-		internal Graph Graph { get; set; }
 
 		internal void DetectCycle()
 		{
-			StronglyConnectedComponents = new System.Collections.Generic.List<System.Collections.Generic.List<Node>>();
 			index = 0;
 			nodeStack = new System.Collections.Generic.Stack<Node>();
+
+			StronglyConnectedComponents = new System.Collections.Generic.List<System.Collections.Generic.List<Node>>();
 
 			var cycles = 0;
 			foreach (var node in this.Graph.Nodes.Where(node => node.Index < 0))
@@ -45,7 +46,9 @@ namespace Flux.Csp
 				return;
 
 			var stronglyConnectedComponent = new System.Collections.Generic.List<Node>();
+			
 			Node lastNode;
+			
 			do
 			{
 				lastNode = nodeStack.Pop();
@@ -54,7 +57,8 @@ namespace Flux.Csp
 			} while (node != lastNode);
 
 			++cycles;
-			this.StronglyConnectedComponents.Add(stronglyConnectedComponent);
+			
+			StronglyConnectedComponents.Add(stronglyConnectedComponent);
 		}
 	}
 }
