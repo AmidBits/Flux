@@ -33,10 +33,21 @@ namespace ConsoleApp
       static int LetterToInteger(char letter)
         => letter == 'A' ? 0 : letter == 'C' ? 1 : letter == 'G' ? 2 : letter == 'T' ? 3 : throw new System.ArgumentOutOfRangeException(nameof(letter));
 
-      var sdp = new Flux.Matrices.StandardDynamicProgramming<char>() { SubstitutionMatrix = (s, t) => sm[LetterToInteger(s), LetterToInteger(t)], LinearGapPenalty = -2 };
-      var z = sdp.GetFullMatrix("CCTAAG", "ACGGTAG");
-       sdp.TraceBackPath(z, "CCTAAG", "ACGGTAG");
+      var sdp = new Flux.Matrices.NeedlemanWunschAlgorithm<char>() { GapPlaceholder = '-' };
+
+      var y = "GCATGCU";
+      var x = "GATTACA";
+
+      var z = sdp.GetFullMatrix(x, y);
       System.Console.WriteLine(z.ToConsoleBlock());
+      System.Console.WriteLine();
+
+      var a = sdp.TracebackPath(z, x, y);
+      System.Console.WriteLine(string.Concat(a.source));
+      System.Console.WriteLine();
+      System.Console.WriteLine(string.Concat(a.target));
+      System.Console.WriteLine();
+
       return;
       var ld = new Flux.Metrical.LevenshteinDistance<char>();
 
