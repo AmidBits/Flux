@@ -51,7 +51,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_azimuth, m_radius);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius}, {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree)}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: radius = {m_radius}, azimuth = {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

@@ -60,7 +60,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_azimuth, m_height);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius}, {m_azimuth.Degree}{Quantity.Angle.DegreeSymbol}, {m_height}>";
+      => $"<{GetType().Name}: radius = {m_radius}, azimuth = {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol}, height = {m_height}>";
     #endregion Object overrides
   }
 }
