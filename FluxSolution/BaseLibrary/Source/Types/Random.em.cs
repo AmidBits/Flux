@@ -177,7 +177,7 @@ namespace Flux
 
     /// <summary>Using the Box-Muller algorithm.</summary>
     public static double NextNormal(this System.Random source)
-      => System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin(2 * System.Math.PI * NextUniform(source));
+      => System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin(Maths.PiOver2 * NextUniform(source));
     /// <summary>Get normal (Gaussian) random sample with specified mean and standard deviation.</summary>
     public static double NextNormal(this System.Random source, double mean, double standardDeviation)
       => standardDeviation > 0 ? mean + standardDeviation * NextNormal(source) : throw new System.ArgumentOutOfRangeException(nameof(standardDeviation), $"{standardDeviation} > 0");

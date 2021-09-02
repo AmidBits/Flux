@@ -10,7 +10,7 @@ namespace Flux
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public static Quantity.Length EquatorialCircumference
-      => EquatorialRadius * System.Math.PI * 2;
+      => EquatorialRadius * Maths.PiX2;
     /// <summary>Diameter of Earth's semi-major axis.</summary>
     public static Quantity.Length EquatorialDiameter
       => EquatorialRadius * 2;
@@ -38,6 +38,6 @@ namespace Flux
       => new Quantity.Length(10001965.729); // WGS-84
 
     public static Quantity.Volume Volume
-      => new Quantity.Volume((4.0 / 3.0) * System.Math.PI * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
+      => new Quantity.Volume(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
   }
 }

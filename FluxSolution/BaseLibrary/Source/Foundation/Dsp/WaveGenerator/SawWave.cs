@@ -9,7 +9,7 @@
 
     public static double SampleMu(double phaseMu)
      => 1 - Tools.AbsolutePhaseMu(phaseMu) * 2;
-    /// <summary>Generates a saw wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2 * <see cref="System.Math.PI"/>.</summary>
+    /// <summary>Generates a saw wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
       => 1 - Tools.AbsolutePhasePi2(phasePi2) / System.Math.PI;
 

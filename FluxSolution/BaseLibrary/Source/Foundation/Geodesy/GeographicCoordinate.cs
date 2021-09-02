@@ -79,7 +79,7 @@ namespace Flux.CoordinateSystems
 
       var sinc = Maths.Sincu(System.Math.Acos(System.Math.Cos(lat) * System.Math.Cos(lon / 2)));
 
-      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(2 / System.Math.PI)) + ((2 * System.Math.Cos(lat) * System.Math.Sin(lon / 2)) / sinc));
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * System.Math.Cos(lat) * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
       return new CartesianCoordinate3(x, y, Altitude.Value);
@@ -435,7 +435,7 @@ namespace Flux.CoordinateSystems
       sb.Append(GetType().Name);
       sb.Append(':');
       sb.Append(' ');
-      sb.AppendFormat(new Formatting.LatitudeFormatter(), $"{{0:DMS}}", Latitude);
+      sb.AppendFormat(new Formatting.LatitudeFormatter(), $"{{0:DMS}}", Latitude.Value);
       sb.Append(' ');
       sb.Append('(');
       sb.AppendFormat(null, @"{0:N6}", Latitude.Value);
@@ -443,7 +443,7 @@ namespace Flux.CoordinateSystems
       sb.Append(')');
       sb.Append(',');
       sb.Append(' ');
-      sb.AppendFormat(new Formatting.LongitudeFormatter(), $"{{0:DMS}}", Longitude);
+      sb.AppendFormat(new Formatting.LongitudeFormatter(), $"{{0:DMS}}", Longitude.Value);
       sb.Append(' ');
       sb.Append('(');
       sb.AppendFormat(null, @"{0:N6}", Longitude.Value);

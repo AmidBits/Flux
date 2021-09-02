@@ -43,7 +43,7 @@ namespace Flux.Dsp.WaveFilter
 			m_cutoffFrequency = cutoff;
 			m_sampleRate = sampleRate;
 
-			m_normalizedCutoffFrequency = 2 * System.Math.PI * (m_cutoffFrequency / m_sampleRate);
+			m_normalizedCutoffFrequency = Maths.PiOver2 * (m_cutoffFrequency / m_sampleRate);
 		}
 
 		public double FilterAudioMono(double value)

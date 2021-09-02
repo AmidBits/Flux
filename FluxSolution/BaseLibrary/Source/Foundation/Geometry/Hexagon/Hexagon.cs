@@ -36,7 +36,7 @@ namespace Flux.Geometry
 
     public const double RatioOfOuterToInnerDiameter = Maths.SquareRootOf3 / 2.0;
 
-    public const double SixtyDegreesInRadians = System.Math.PI / 180 * 60.0;
+    public const double SixtyDegreesInRadians = Maths.PiOver180 * 60.0;
 
     private readonly System.Numerics.Vector2[] m_points = new System.Numerics.Vector2[6];
     /// <summary>The six hexagon points.</summary>

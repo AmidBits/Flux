@@ -23,9 +23,9 @@ namespace Flux
       => Vector256.Create(1d);
 
     internal static Vector256<double> OneOverPI2
-      => Vector256.Create(1 / (2 * System.Math.PI));
+      => Vector256.Create(1 / Maths.PiOver2);
     internal static Vector256<double> PI2
-      => Vector256.Create(System.Math.PI * 2);
+      => Vector256.Create(Maths.PiOver2);
 
     /// <summary>Returns the vector with absolute values.</summary>
     public static Vector256<double> Abs(this in Vector256<double> source)
@@ -477,11 +477,11 @@ namespace Flux
 //    //  => Vector256.Create(0, 0, 0, 1).AsDouble();
 
 //    //public static Vector256<double> OneOverPI
-//    //  => Vector256.Create(1 / System.Math.PI);
+//    //  => Vector256.Create(Maths.PiInto1);
 //    public static Vector256<double> OneOverPI2
-//      => Vector256.Create(1 / (2 * System.Math.PI));
+//      => Vector256.Create(1 / Maths.PiOver2);
 //    public static Vector256<double> PI2
-//      => Vector256.Create(System.Math.PI * 2);
+//      => Vector256.Create(Maths.PiOver2);
 
 //    private readonly Vector256<double> m_v256;
 

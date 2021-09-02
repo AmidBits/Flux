@@ -40,6 +40,7 @@ namespace Flux.Quantity
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
+
     #region Static methods
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
     /// <param name="voltage"></param>

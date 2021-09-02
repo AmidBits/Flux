@@ -36,7 +36,7 @@ namespace Flux
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(System.Math.PI / 4 + Radian / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + Radian / 2))), -System.Math.PI, System.Math.PI);
 
     public double Radian
       => Quantity.Angle.ConvertDegreeToRadian(m_value);

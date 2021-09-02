@@ -27,7 +27,7 @@ namespace Flux.Dsp.WaveFilter
       m_cutoffFrequency = cutoffFrequency;
       m_sampleRate = sampleRate;
 
-      m_b1 = System.Math.Exp(-2.0 * System.Math.PI * (m_cutoffFrequency / m_sampleRate));
+      m_b1 = System.Math.Exp(-Maths.PiX2 * (m_cutoffFrequency / m_sampleRate));
       m_a0 = 1.0 - m_b1;
     }
 

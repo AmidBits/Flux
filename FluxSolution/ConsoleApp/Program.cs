@@ -99,6 +99,7 @@ namespace ConsoleApp
       //return;
 
       var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
+
       System.Console.WriteLine(gc);
       var sp = gc.ToSphericalCoordinate();
       System.Console.WriteLine(sp);

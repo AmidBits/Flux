@@ -14,11 +14,11 @@ namespace Flux
 
       if (test > 0.499 * unit) // singularity at north pole
       {
-        return new System.Numerics.Vector3((float)(System.Math.Atan2(source.X, source.W) * 2), (float)(System.Math.PI / 2), 0);
+        return new System.Numerics.Vector3((float)(System.Math.Atan2(source.X, source.W) * 2), (float)Maths.PiOver2, 0);
       }
       else if (test < -0.499 * unit) // singularity at south pole
       {
-        return new System.Numerics.Vector3((float)(System.Math.Atan2(source.X, source.W) * -2), (float)(-System.Math.PI / 2), 0);
+        return new System.Numerics.Vector3((float)(System.Math.Atan2(source.X, source.W) * -2), (float)-Maths.PiOver2, 0);
       }
       else
       {

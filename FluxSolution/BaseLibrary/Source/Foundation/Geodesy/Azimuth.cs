@@ -11,7 +11,7 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Azimuth(double degree)
-      => m_value = IsBearing(degree) ? degree : Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
+      => m_value = IsAzimuth(degree) ? degree : Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
     public Azimuth(Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
@@ -24,7 +24,7 @@ namespace Flux.Quantity
 
     #region Static methods
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>
-    public static bool IsBearing(double degBearing)
+    public static bool IsAzimuth(double degBearing)
       => degBearing >= MinValue && degBearing < MaxValue;
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
     public static int LatchNeedle(double radBearing, int positions)

@@ -36,7 +36,7 @@ namespace Flux.Geometry.Hexagon
 
     public void HexCornerOffset(int corner, out double x, out double y)
     {
-      var angle = 2.0 * System.Math.PI * (Orientation.StartAngle - corner) / 6.0;
+      var angle = Maths.PiX2 * (Orientation.StartAngle - corner) / 6.0;
 
       x = Size.Width * (float)System.Math.Cos(angle);
       y = Size.Height * (float)System.Math.Sin(angle);

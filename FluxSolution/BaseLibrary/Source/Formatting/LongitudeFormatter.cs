@@ -22,8 +22,8 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && arg is Longitude longitude)
-        if (TryFormat(longitude.Value, format, out var dms))
+      if (!string.IsNullOrEmpty(format) && arg is double longitude)
+        if (TryFormat(longitude, format, out var dms))
           return dms;
 
       return HandleOtherFormats(format, arg);

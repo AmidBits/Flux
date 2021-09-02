@@ -50,11 +50,11 @@
 //    //  => Vector256.Create(0, 0, 0, 1).AsDouble();
 
 //    //public static Vector256<double> OneOverPI
-//    //  => Vector256.Create(1 / System.Math.PI);
+//    //  => Vector256.Create(Maths.PiInto1);
 //    public static Vector256<double> OneOverPI2
-//      => Vector256.Create(1 / (2 * System.Math.PI));
+//      => Vector256.Create(1 / Maths.PiX2);
 //    public static Vector256<double> PI2
-//      => Vector256.Create(System.Math.PI * 2);
+//      => Vector256.Create(Maths.PiX2);
 
 //    private readonly Vector256<double> m_v256;
 

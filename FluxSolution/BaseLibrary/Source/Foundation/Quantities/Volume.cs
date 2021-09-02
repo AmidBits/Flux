@@ -97,7 +97,7 @@ namespace Flux.Quantity
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }
     }
-    //473176473/125000000000 m^3 (cubic meters)
+
     #region Static methods
     /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>
     /// <param name="length"></param>

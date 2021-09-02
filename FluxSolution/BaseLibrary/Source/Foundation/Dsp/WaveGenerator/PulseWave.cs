@@ -22,7 +22,7 @@
       => Tools.AbsolutePhaseMu(phaseMu) < Tools.AbsolutePhaseMu(pulseWidthMu)
       ? 1
       : -1;
-    /// <summary>Generates a pulse wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2 * <see cref="System.Math.PI"/>.</summary>
+    /// <summary>Generates a pulse wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2, double pulseWidthPi2)
       => Tools.AbsolutePhasePi2(phasePi2) < Tools.AbsolutePhasePi2(pulseWidthPi2)
       ? 1
