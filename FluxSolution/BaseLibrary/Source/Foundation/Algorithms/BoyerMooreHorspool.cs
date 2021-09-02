@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux.Text
+﻿namespace Flux.Text
 {
   public class BoyerMooreHorspool
   {

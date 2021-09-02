@@ -52,25 +52,24 @@ namespace Flux
     public int Millisecond
       => m_millisecond;
 
-    /// <summary>Dates on or after 15 Oct 1582 are considered Gregorian dates and dates on or prior to 4 Oct 1582 are Julian dates. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
-    public bool IsGregorianCalendar
-      => m_year > 1582 || (m_year == 1582 && (m_month > 10 || (m_month == 10 && m_day >= 15)));
-    public bool IsJulianCalendar
-      => m_year < 1582 || (m_year == 1582 && (m_month < 10 || (m_month == 10 && m_day < 15)));
-
-    public Quantity.Time TimeOfDay
-      => new Quantity.Time(ComputeJulianDateTimeOfDay(m_hour, m_minute, m_second, m_millisecond));
+    /// <summary>Dates on or after 15 Oct 1582 are considered to be Gregorian dates. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
+    public bool InGregorianCalendar
+      => InGregorianCalendarEra(m_year, m_month, m_day);
+    /// <summary>Dates on or before 4 Oct 1582 are considered to be Julian dates, though this calendard are still in use today. Any date in the 10 day gap is invalid in the Gregorian calendar.</summary>
+    public bool InJulianCalendar
+      => InJulianCalendarEra(m_year, m_month, m_day);
 
     public Quantity.Time TotalSeconds
-      => new Quantity.Time(m_year * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0);
+      => new Quantity.Time(System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year));
 
     /// <summary>Compute a Julian Date (JD) from this instance and the specified calendar.</summary>
     public double GetJulianDate(ConversionCalendar calendar)
-       => GetJulianDayNumber(calendar) + TimeOfDay.Value;
+       => ComputeJulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
     /// <summary>Compute a Julian Day Number (JDN) from this instance and the specified calendar.</summary>
     public int GetJulianDayNumber(ConversionCalendar calendar)
       => ComputeJulianDayNumber(m_year, m_month, m_day, calendar);
 
+    /// <summary>Create a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
       => new JulianDate(GetJulianDate(calendar));
 
@@ -94,6 +93,16 @@ namespace Flux
           throw new System.ArgumentOutOfRangeException(nameof(calendar));
       }
     }
+
+    /// <summary>Returns whether the date is considered to be in the Gregorian Calendar.</summary>
+    public static bool InGregorianCalendarEra(int year, int month, int day)
+      => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+    /// <summary>Returns whether the date is considered to be in the traditional Julian Calendar.</summary>
+    public static bool InJulianCalendarEra(int year, int month, int day)
+      => year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
+
+    public static bool IsValidGregorianCalendarDate(int year, int month, int day)
+      => InGregorianCalendarEra(year, month, day) && month >= 1 && month <= 12 && day >= 1 && day <= System.DateTime.DaysInMonth(year, month);
     #endregion Static methods
 
     #region Overloaded operators
@@ -115,7 +124,7 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(MomentUtc other)
-      => TotalSeconds < other.TotalSeconds ? -1 : TotalSeconds > other.TotalSeconds ? 1 : 0;
+      => TotalSeconds is var ts && other.TotalSeconds is var ots && ts < ots ? -1 : ts > ots ? 1 : 0;
 
     // IEquatable
     public bool Equals(MomentUtc other)

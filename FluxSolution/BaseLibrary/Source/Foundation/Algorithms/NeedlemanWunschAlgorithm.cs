@@ -1,4 +1,4 @@
-﻿namespace Flux.Matrices
+﻿namespace Flux.Algorithms
 {
   /// <summary>
   /// 

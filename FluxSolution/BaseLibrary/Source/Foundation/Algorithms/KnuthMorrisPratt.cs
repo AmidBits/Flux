@@ -1,10 +1,10 @@
 ﻿namespace Flux.Text
 {
-  public class KnuthMorrisPratt
+  public class KnuthMorrisPratt<T>
   {
     /// <summary>Creates the amount of safely skippable</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.Dictionary<int, int> Table(System.ReadOnlySpan<char> word)
+    public static System.Collections.Generic.Dictionary<int, int> Table(System.ReadOnlySpan<T> word, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       var table = new System.Collections.Generic.Dictionary<int, int>();
 
@@ -15,7 +15,7 @@
 
       while (pi < word.Length)
       {
-        if (word[pi] == word[ci])
+        if (equalityComparer.Equals(word[pi], word[ci]))
         {
           table[pi] = table[ci];
         }
@@ -23,7 +23,7 @@
         {
           table[pi] = ci;
 
-          while (ci >= 0 && word[pi] != word[ci])
+          while (ci >= 0 && !equalityComparer.Equals(word[pi], word[ci]))
             ci = table[ci];
         }
 
@@ -35,10 +35,12 @@
 
       return table;
     }
+    public static System.Collections.Generic.Dictionary<int, int> Table(System.ReadOnlySpan<T> word)
+      => Table(word, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    public static System.Collections.Generic.List<int> Search(System.ReadOnlySpan<char> word, System.ReadOnlySpan<char> text)
+    public static System.Collections.Generic.List<int> Search(System.ReadOnlySpan<T> word, System.ReadOnlySpan<T> text, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var table = Table(word);
+      var table = Table(word, equalityComparer);
 
       var indices = new System.Collections.Generic.List<int>();
 
@@ -47,7 +49,7 @@
 
       while (ti < text.Length)
       {
-        if (word[wi] == text[ti])
+        if (equalityComparer.Equals(word[wi], text[ti]))
         {
           ti++;
           wi++;
@@ -73,5 +75,7 @@
 
       return indices;
     }
+    public static System.Collections.Generic.List<int> Search(System.ReadOnlySpan<T> word, System.ReadOnlySpan<T> text)
+      => Search(word, text, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
