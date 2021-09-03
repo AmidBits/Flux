@@ -13,9 +13,9 @@ namespace Flux.CoordinateSystems
       m_radius = radius;
       m_azimuth = new Quantity.Angle(azimuthRad);
     }
-    public PolarCoordinate(System.ValueTuple<double, double> radius_azimuthRad)
-      : this(radius_azimuthRad.Item1, radius_azimuthRad.Item2)
-    { }
+    //public PolarCoordinate(System.ValueTuple<double, double> radius_azimuthRad)
+    //  : this(radius_azimuthRad.Item1, radius_azimuthRad.Item2)
+    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
@@ -25,7 +25,7 @@ namespace Flux.CoordinateSystems
       => m_azimuth;
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
-      => new CartesianCoordinate2(ConvertToCartesianCoordinate2(m_radius, m_azimuth.Radian));
+      => (CartesianCoordinate2)ConvertToCartesianCoordinate2(m_radius, m_azimuth.Radian);
 
     #region Static methods
     public static (double x, double y) ConvertToCartesianCoordinate2(double radius, double azimuthRad)
@@ -33,6 +33,9 @@ namespace Flux.CoordinateSystems
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator PolarCoordinate(System.ValueTuple<double, double> radius_azimuthRad)
+      => new PolarCoordinate(radius_azimuthRad.Item1, radius_azimuthRad.Item2);
+
     public static bool operator ==(PolarCoordinate a, PolarCoordinate b)
       => a.Equals(b);
     public static bool operator !=(PolarCoordinate a, PolarCoordinate b)
@@ -51,7 +54,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_azimuth, m_radius);
     public override string ToString()
-      => $"<{GetType().Name}: radius = {m_radius}, azimuth = {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_radius} radius, {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol} azimuth>";
     #endregion Object overrides
   }
 }

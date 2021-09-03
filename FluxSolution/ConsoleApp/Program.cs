@@ -98,21 +98,28 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      var gc = Flux.CoordinateSystems.GeographicCoordinate.Tucson;
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.Tucson);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.Madrid);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.Takapau);
 
-      System.Console.WriteLine(gc);
-      var sp = gc.ToSphericalCoordinate();
-      System.Console.WriteLine(sp);
-      var cy = sp.ToCylindricalCoordinate();
-      System.Console.WriteLine(cy);
-      var ca = cy.ToCartesianCoordinate3();
-      System.Console.WriteLine(ca);
-      var cy2 = ca.ToCylindricalCoordinate();
-      System.Console.WriteLine(cy2);
-      var sp2 = cy2.ToSphericalCoordinate();
-      System.Console.WriteLine(sp2);
-      var gc2 = sp2.ToGeographicCoordinate();
-      System.Console.WriteLine(gc2);
+      static void Draw(Flux.CoordinateSystems.GeographicCoordinate coord)
+      {
+        var gc1 = coord;
+        System.Console.WriteLine(gc1);
+        var sp1 = gc1.ToSphericalCoordinate();
+        System.Console.WriteLine(sp1);
+        var cy1 = sp1.ToCylindricalCoordinate();
+        System.Console.WriteLine(cy1);
+        var ca1 = cy1.ToCartesianCoordinate3();
+        System.Console.WriteLine(ca1);
+        var cy2 = ca1.ToCylindricalCoordinate();
+        System.Console.WriteLine(cy2);
+        var sp2 = cy2.ToSphericalCoordinate();
+        System.Console.WriteLine(sp2);
+        var gc2 = sp2.ToGeographicCoordinate();
+        System.Console.WriteLine(gc2);
+        System.Console.WriteLine();
+      }
       return;
 
       //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);

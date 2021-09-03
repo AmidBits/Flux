@@ -15,9 +15,9 @@ namespace Flux.CoordinateSystems
       m_azimuth = new Quantity.Angle(azimuthRad);
       m_height = height;
     }
-    public CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
-      : this(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3)
-    { }
+    //public CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
+    //  : this(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3)
+    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
@@ -30,9 +30,9 @@ namespace Flux.CoordinateSystems
       => m_height;
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
-      => new CartesianCoordinate3(ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height));
+      => (CartesianCoordinate3)ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height);
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height));
+      => (SphericalCoordinate)ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
 
     #region Static methods
     public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double azimuthRad, double height)
@@ -42,6 +42,9 @@ namespace Flux.CoordinateSystems
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
+      => new CylindricalCoordinate(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3);
+
     public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b)
       => a.Equals(b);
     public static bool operator !=(CylindricalCoordinate a, CylindricalCoordinate b)
@@ -60,7 +63,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_azimuth, m_height);
     public override string ToString()
-      => $"<{GetType().Name}: radius = {m_radius}, azimuth = {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol}, height = {m_height}>";
+      => $"<{GetType().Name}: {m_radius} radius, {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol} azimuth, {m_height} height>";
     #endregion Object overrides
   }
 }

@@ -13,9 +13,9 @@ namespace Flux.CoordinateSystems
       m_x = x;
       m_y = y;
     }
-    public CartesianCoordinate2(System.ValueTuple<double, double> xy)
-      : this(xy.Item1, xy.Item2)
-    { }
+    //public CartesianCoordinate2(System.ValueTuple<double, double> xy)
+    //  : this(xy.Item1, xy.Item2)
+    //{ }
 
     public double X
       => m_x;
@@ -27,9 +27,14 @@ namespace Flux.CoordinateSystems
     public Quantity.Angle ToRotationAngleEx()
       => new Quantity.Angle(ConvertToRotationAngleEx(m_x, m_y));
     public PolarCoordinate ToPolarCoordinate()
-      => new PolarCoordinate(ConvertToPolarCoordinate(m_x, m_y));
+      => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
 
     #region Static methods
+    public static double ComputeEuclideanLength(double x, double y)
+      => System.Math.Sqrt(ComputeEuclideanLengthSquared(x, y));
+    public static double ComputeEuclideanLengthSquared(double x, double y)
+      => x * x + y * y;
+
     public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
       => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
@@ -43,6 +48,9 @@ namespace Flux.CoordinateSystems
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
+      => new CartesianCoordinate2(xy.Item1, xy.Item2);
+
     public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.Equals(b);
     public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b)
@@ -61,7 +69,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
-      => $"<{GetType().Name}: {m_x}, {m_y}>";
+      => $"<{GetType().Name}: {m_x} x, {m_y} y, ({ComputeEuclideanLength(m_x, m_y)} length)>";
     #endregion Object overrides
   }
 }

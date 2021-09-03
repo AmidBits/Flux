@@ -15,9 +15,9 @@ namespace Flux.CoordinateSystems
       m_inclination = new Quantity.Angle(inclinationRad);
       m_azimuth = new Quantity.Angle(azimuthRad);
     }
-    public SphericalCoordinate(System.ValueTuple<double, double, double> radius_inclinationRad_azimuthRad)
-      : this(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3)
-    { }
+    //public SphericalCoordinate(System.ValueTuple<double, double, double> radius_inclinationRad_azimuthRad)
+    //  : this(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3)
+    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
@@ -30,13 +30,20 @@ namespace Flux.CoordinateSystems
       => m_azimuth;
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
-      => new CartesianCoordinate3(ConvertToCartesianCoordinate3(m_radius, m_inclination.Radian, m_azimuth.Radian));
+      => (CartesianCoordinate3)ConvertToCartesianCoordinate3(m_radius, m_inclination.Radian, m_azimuth.Radian);
     public CylindricalCoordinate ToCylindricalCoordinate()
-      => new CylindricalCoordinate(ConvertToCylindricalCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian));
+      => (CylindricalCoordinate)ConvertToCylindricalCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
     public GeographicCoordinate ToGeographicCoordinate()
-      => new GeographicCoordinate(ConvertToGeographicCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian));
+      => (GeographicCoordinate)ConvertToGeographicCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
 
     #region Static methods
+    /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
+    public static double ConvertInclinationToElevation(double inclinationRad)
+      => Maths.PiOver2 - inclinationRad;
+    /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
+    public static double ConvertElevationToInclination(double elevationRad)
+      => Maths.PiOver2 - elevationRad;
+
     public static (double x, double y, double z) ConvertToCartesianCoordinate3(double radius, double inclinationRad, double azimuthRad)
     {
       var sinInclination = System.Math.Sin(inclinationRad);
@@ -45,10 +52,13 @@ namespace Flux.CoordinateSystems
     public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double radius, double inclinationRad, double azimuthRad)
       => (radius * System.Math.Sin(inclinationRad), azimuthRad, radius * System.Math.Cos(inclinationRad));
     public static (double latitudeRad, double longitudeRad, double altitude) ConvertToGeographicCoordinate(double radius, double inclinationRad, double azimuthRad)
-      => ((System.Math.PI - inclinationRad) - Maths.PiOver2, azimuthRad - System.Math.PI, radius);
+      => (System.Math.PI - inclinationRad - Maths.PiOver2, azimuthRad - System.Math.PI, radius);
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator SphericalCoordinate(System.ValueTuple<double, double, double> radius_inclinationRad_azimuthRad)
+      => new SphericalCoordinate(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3);
+
     public static bool operator ==(SphericalCoordinate a, SphericalCoordinate b)
       => a.Equals(b);
     public static bool operator !=(SphericalCoordinate a, SphericalCoordinate b)
@@ -67,7 +77,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
     public override string ToString()
-      => $"<{GetType().Name}: radius = {m_radius}, inclination = {m_inclination.Degree:N1}{Quantity.Angle.DegreeSymbol}, azimuth = {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_radius} radius, {m_inclination.Degree:N1}{Quantity.Angle.DegreeSymbol} inclination ({Quantity.Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.Value)):N1}{Quantity.Angle.DegreeSymbol} elevation), {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol} azimuth>";
     #endregion Object overrides
   }
 }

@@ -15,9 +15,9 @@ namespace Flux.CoordinateSystems
       m_y = y;
       m_z = z;
     }
-    public CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
-      : this(xyz.Item1, xyz.Item2, xyz.Item3)
-    { }
+    //public CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
+    //  : this(xyz.Item1, xyz.Item2, xyz.Item3)
+    //{ }
 
     public double X
       => m_x;
@@ -27,15 +27,25 @@ namespace Flux.CoordinateSystems
       => m_z;
 
     public CylindricalCoordinate ToCylindricalCoordinate()
-      => new CylindricalCoordinate(ConvertToCylindricalCoordinate(m_x, m_y, m_z));
+      => (CylindricalCoordinate)ConvertToCylindricalCoordinate(m_x, m_y, m_z);
     public PolarCoordinate ToPolarCoordinate()
-      => new PolarCoordinate(ConvertToPolarCoordinate(m_x, m_y));
+      => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(ConvertToSphericalCoordinate(m_x, m_y, m_z));
+      => (SphericalCoordinate)ConvertToSphericalCoordinate(m_x, m_y, m_z);
 
     #region Static methods
+    public static double ComputeEuclideanLength(double x, double y, double z)
+      => System.Math.Sqrt(ComputeEuclideanLengthSquared(x, y, z));
+    public static double ComputeEuclideanLengthSquared(double x, double y, double z)
+      => x * x + y * y + z * z;
+
     public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double x, double y, double z)
-      => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x), z);
+    {
+      var radius = System.Math.Sqrt(x * x + y * y);
+      var azimuthRad = (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2;
+      var height = z;
+      return (radius, azimuthRad, height);
+    }
     public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
       => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
     public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double x, double y, double z)
@@ -46,6 +56,9 @@ namespace Flux.CoordinateSystems
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
+      => new CartesianCoordinate3(xyz.Item1, xyz.Item2, xyz.Item3);
+
     public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => a.Equals(b);
     public static bool operator !=(CartesianCoordinate3 a, CartesianCoordinate3 b)
@@ -64,7 +77,7 @@ namespace Flux.CoordinateSystems
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z);
     public override string ToString()
-      => $"<{GetType().Name}: {m_x}, {m_y}, {m_z}>";
+      => $"<{GetType().Name}: {m_x} x, {m_y} y, {m_z} z, ({ComputeEuclideanLength(m_x, m_y, m_z)} length)>";
     #endregion Object overrides
   }
 }

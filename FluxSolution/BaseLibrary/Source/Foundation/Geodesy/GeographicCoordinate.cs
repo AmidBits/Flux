@@ -11,6 +11,14 @@ namespace Flux.CoordinateSystems
 
     public static readonly GeographicCoordinate Empty;
 
+    /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
+    public static GeographicCoordinate Madrid
+      => new GeographicCoordinate(40.416667, -3.716667, 820);
+    /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
+    public static GeographicCoordinate Takapau
+      => new GeographicCoordinate(-40.033333, 176.35, 221);
+
+    /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
     public static GeographicCoordinate Tucson
       => new GeographicCoordinate(32.221667, -110.926389, 728);
 
@@ -30,9 +38,9 @@ namespace Flux.CoordinateSystems
     public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeInMeters = 1.0)
       : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeInMeters))
     { }
-    public GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
-      : this(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3)
-    { }
+    //public GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
+    //  : this(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3)
+    //{ }
 
     public CartesianCoordinate3 ToEqualEarthProjection()
     {
@@ -71,7 +79,7 @@ namespace Flux.CoordinateSystems
       return new CartesianCoordinate3(x, y, Altitude.Value);
     }
     public SphericalCoordinate ToSphericalCoordinate()
-    => new SphericalCoordinate(ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value));
+    => (SphericalCoordinate)ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {
       var lat = Latitude.Radian;
@@ -167,7 +175,7 @@ namespace Flux.CoordinateSystems
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate((lat, lon, Earth.MeanRadius.Value));
+      return (GeographicCoordinate)(lat, lon, Earth.MeanRadius.Value);
     }
 
     /// <summary>right-handed vector: x -> 0°E,0°N; y -> 90°E,0°N, z -> 90°N</summary>
@@ -411,6 +419,9 @@ namespace Flux.CoordinateSystems
     #endregion Static members
 
     #region Overloaded operators
+    public static explicit operator GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
+      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3);
+
     public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
       => a.Equals(b);
     public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)
