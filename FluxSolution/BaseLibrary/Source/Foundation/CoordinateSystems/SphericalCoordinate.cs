@@ -15,9 +15,6 @@ namespace Flux.CoordinateSystems
       m_inclination = new Quantity.Angle(inclinationRad);
       m_azimuth = new Quantity.Angle(azimuthRad);
     }
-    //public SphericalCoordinate(System.ValueTuple<double, double, double> radius_inclinationRad_azimuthRad)
-    //  : this(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3)
-    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius

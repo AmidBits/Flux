@@ -13,9 +13,6 @@ namespace Flux.CoordinateSystems
       m_x = x;
       m_y = y;
     }
-    //public CartesianCoordinate2(System.ValueTuple<double, double> xy)
-    //  : this(xy.Item1, xy.Item2)
-    //{ }
 
     public double X
       => m_x;

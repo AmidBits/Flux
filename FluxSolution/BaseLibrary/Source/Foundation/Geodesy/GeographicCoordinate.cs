@@ -38,9 +38,6 @@ namespace Flux.CoordinateSystems
     public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeInMeters = 1.0)
       : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeInMeters))
     { }
-    //public GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
-    //  : this(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3)
-    //{ }
 
     public CartesianCoordinate3 ToEqualEarthProjection()
     {

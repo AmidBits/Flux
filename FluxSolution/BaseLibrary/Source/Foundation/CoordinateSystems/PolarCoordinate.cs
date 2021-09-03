@@ -13,9 +13,6 @@ namespace Flux.CoordinateSystems
       m_radius = radius;
       m_azimuth = new Quantity.Angle(azimuthRad);
     }
-    //public PolarCoordinate(System.ValueTuple<double, double> radius_azimuthRad)
-    //  : this(radius_azimuthRad.Item1, radius_azimuthRad.Item2)
-    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius

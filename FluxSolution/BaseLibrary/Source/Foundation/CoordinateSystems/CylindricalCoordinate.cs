@@ -15,9 +15,6 @@ namespace Flux.CoordinateSystems
       m_azimuth = new Quantity.Angle(azimuthRad);
       m_height = height;
     }
-    //public CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
-    //  : this(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3)
-    //{ }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius
