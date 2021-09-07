@@ -1,72 +1,83 @@
-namespace Flux.CoordinateSystems
+namespace Flux
 {
-  /// <summary>Cartesian coordinate.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
-  public struct CartesianCoordinate2
-    : System.IEquatable<CartesianCoordinate2>
+  public static partial class ExtensionMethods
   {
-    private readonly double m_x;
-    private readonly double m_y;
+    public static CoordinateSystems.CartesianCoordinate2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
+      => new CoordinateSystems.CartesianCoordinate2(source.X, source.Y);
+    public static System.Numerics.Vector2 ToVector2(this CoordinateSystems.CartesianCoordinate2 source)
+      => new System.Numerics.Vector2((float)source.X, (float)source.Y);
+  }
 
-    public CartesianCoordinate2(double x, double y)
+  namespace CoordinateSystems
+  {
+    /// <summary>Cartesian coordinate.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
+    public struct CartesianCoordinate2
+      : System.IEquatable<CartesianCoordinate2>
     {
-      m_x = x;
-      m_y = y;
+      private readonly double m_x;
+      private readonly double m_y;
+
+      public CartesianCoordinate2(double x, double y)
+      {
+        m_x = x;
+        m_y = y;
+      }
+
+      public double X
+        => m_x;
+      public double Y
+        => m_y;
+
+      public Quantity.Angle ToRotationAngle()
+        => new Quantity.Angle(ConvertToRotationAngle(m_x, m_y));
+      public Quantity.Angle ToRotationAngleEx()
+        => new Quantity.Angle(ConvertToRotationAngleEx(m_x, m_y));
+      public PolarCoordinate ToPolarCoordinate()
+        => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
+
+      #region Static methods
+      public static double ComputeEuclideanLength(double x, double y)
+        => System.Math.Sqrt(ComputeEuclideanLengthSquared(x, y));
+      public static double ComputeEuclideanLengthSquared(double x, double y)
+        => x * x + y * y;
+
+      public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
+        => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+      /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      public static double ConvertToRotationAngle(double x, double y)
+        => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
+      /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      public static double ConvertToRotationAngleEx(double x, double y)
+        => Maths.PiX2 - ConvertToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
+      #endregion Static methods
+
+      #region Overloaded operators
+      public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
+        => new CartesianCoordinate2(xy.Item1, xy.Item2);
+
+      public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
+        => a.Equals(b);
+      public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b)
+        => !a.Equals(b);
+      #endregion Overloaded operators
+
+      #region Implemented interfaces
+      // IEquatable
+      public bool Equals(CartesianCoordinate2 other)
+        => m_x == other.m_x && m_y == other.m_y;
+      #endregion Implemented interfaces
+
+      #region Object overrides
+      public override bool Equals(object? obj)
+        => obj is CartesianCoordinate2 o && Equals(o);
+      public override int GetHashCode()
+        => System.HashCode.Combine(m_x, m_y);
+      public override string ToString()
+        => $"<{GetType().Name}: {m_x} x, {m_y} y, ({ComputeEuclideanLength(m_x, m_y)} length)>";
+      #endregion Object overrides
     }
-
-    public double X
-      => m_x;
-    public double Y
-      => m_y;
-
-    public Quantity.Angle ToRotationAngle()
-      => new Quantity.Angle(ConvertToRotationAngle(m_x, m_y));
-    public Quantity.Angle ToRotationAngleEx()
-      => new Quantity.Angle(ConvertToRotationAngleEx(m_x, m_y));
-    public PolarCoordinate ToPolarCoordinate()
-      => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
-
-    #region Static methods
-    public static double ComputeEuclideanLength(double x, double y)
-      => System.Math.Sqrt(ComputeEuclideanLengthSquared(x, y));
-    public static double ComputeEuclideanLengthSquared(double x, double y)
-      => x * x + y * y;
-
-    public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
-      => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertToRotationAngle(double x, double y)
-      => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
-    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertToRotationAngleEx(double x, double y)
-      => Maths.PiX2 - ConvertToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
-    #endregion Static methods
-
-    #region Overloaded operators
-    public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
-      => new CartesianCoordinate2(xy.Item1, xy.Item2);
-
-    public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => a.Equals(b);
-    public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(CartesianCoordinate2 other)
-      => m_x == other.m_x && m_y == other.m_y;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is CartesianCoordinate2 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y);
-    public override string ToString()
-      => $"<{GetType().Name}: {m_x} x, {m_y} y, ({ComputeEuclideanLength(m_x, m_y)} length)>";
-    #endregion Object overrides
   }
 }
