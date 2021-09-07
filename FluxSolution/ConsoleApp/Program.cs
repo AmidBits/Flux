@@ -19,6 +19,18 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var jd = Flux.JulianDate.FirstGregorianCalendarDate;
+      var x = 25;
+      while (x > 0)
+      {
+        System.Console.WriteLine(jd);
+
+        jd = jd.AddHours(-3);
+
+        x--;
+      }
+      return;
+
       //System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate);
       //System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate);
       //System.Console.WriteLine(Flux.JulianDate.LastJulianCalendarDate);
