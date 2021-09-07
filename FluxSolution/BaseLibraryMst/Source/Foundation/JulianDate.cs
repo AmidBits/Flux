@@ -49,7 +49,7 @@ namespace Foundation
     {
       var ljd = Flux.JulianDate.LastJulianCalendarDate;
 
-      Assert.AreEqual(2299160.4999999884, ljd.Value);
+      Assert.AreEqual(2299160.499988426, ljd.Value);
     }
 
     [TestMethod]
@@ -132,23 +132,23 @@ namespace Foundation
     [TestMethod]
     public void ToMomentUtcGC()
     {
-      var m1 = new Flux.JulianDate(2400000.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
-      var m2 = new Flux.MomentUtc(1858, 11, 16, 12, 0, 0);
-      Assert.AreEqual(m1, m2);
+      var actual = new Flux.JulianDate(2400000.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
+      var expected = new Flux.MomentUtc(1858, 11, 17, 0, 0, 0);
+      Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcProlepticGC()
     {
-      var m1 = new Flux.JulianDate(1566839.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
-      var m2 = new Flux.MomentUtc(-423, 10, 4, 12, 0, 0);
-      Assert.AreEqual(m1, m2);
+      var actual = new Flux.JulianDate(1566839.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
+      var expected = new Flux.MomentUtc(-423, 10, 5, 0, 0, 0);
+      Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcJC()
     {
-      var m1 = new Flux.JulianDate(1442454.5).ToMomentUtc(ConversionCalendar.JulianCalendar);
-      var m2 = new Flux.MomentUtc(-763, 3, 23, 12, 0, 0);
-      Assert.AreEqual(m1, m2);
+      var actual = new Flux.JulianDate(1442454.5).ToMomentUtc(ConversionCalendar.JulianCalendar);
+      var expected = new Flux.MomentUtc(-763, 3, 24, 0, 0, 0);
+      Assert.AreEqual(expected, actual);
     }
   }
 }
