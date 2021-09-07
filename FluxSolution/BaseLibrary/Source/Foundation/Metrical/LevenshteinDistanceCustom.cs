@@ -3,89 +3,71 @@ namespace Flux.Metrical
   /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</summary>
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
-  public class LevenshteinDistance<T>
-    : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+  public class LevenshteinDistanceCustom<T>
+    : AMetrical<T>, IMatrixCustomDp<T>, IMetricDistanceCustom<T>
   {
-    public LevenshteinDistance()
+    public double CostOfDeletion { get; set; } = 1;
+    public double CostOfInsertion { get; set; } = 1;
+    public double CostOfSubstitution { get; set; } = 1;
+
+    public LevenshteinDistanceCustom()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
-    public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    {
+    }
+    public LevenshteinDistanceCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    { }
+    {
+    }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double[,] GetCustomDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;
 
-      var ldg = new int[sourceLength + 1, targetLength + 1];
+      var ldg = new double[sourceLength + 1, targetLength + 1];
 
       for (var si = 1; si <= sourceLength; si++)
-        ldg[si, 0] = si;
+        ldg[si, 0] = si * CostOfInsertion;
       for (var ti = 1; ti <= targetLength; ti++)
-        ldg[0, ti] = ti;
+        ldg[0, ti] = ti * CostOfInsertion;
 
       for (var si = 1; si <= sourceLength; si++)
         for (var ti = 1; ti <= targetLength; ti++)
           ldg[si, ti] = Maths.Min(
-            ldg[si - 1, ti] + 1, // Deletion.
-            ldg[si, ti - 1] + 1, // Insertion.
-            EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1 // Substitution.
+            ldg[si - 1, ti] + CostOfDeletion,
+            ldg[si, ti - 1] + CostOfInsertion,
+            EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
           );
 
       return ldg;
     }
 
-    ///// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    //public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution)
-    //{
-    //  var sourceLength = source.Length;
-    //  var targetLength = target.Length;
-
-    //  var ldg = new double[sourceLength + 1, targetLength + 1];
-
-    //  for (var si = 1; si <= sourceLength; si++)
-    //    ldg[si, 0] = si * costOfInsertion;
-    //  for (var ti = 1; ti <= targetLength; ti++)
-    //    ldg[0, ti] = ti * costOfInsertion;
-
-    //  for (var si = 1; si <= sourceLength; si++)
-    //    for (var ti = 1; ti <= targetLength; ti++)
-    //      ldg[si, ti] = Maths.Min(
-    //        ldg[si - 1, ti] + costOfDeletion,
-    //        ldg[si, ti - 1] + costOfInsertion,
-    //        EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
-    //      );
-
-    //  return ldg;
-    //}
-
-    public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double GetCustomMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
       if (sourceCount == 0) return targetCount;
       else if (targetCount == 0) return sourceCount;
 
-      var v1 = new int[targetCount + 1]; // Row of costs, one row back (previous row).
-      var v0 = new int[targetCount + 1]; // Row of costs, current row.
+      var v1 = new double[targetCount + 1]; // Row of costs, one row back (previous row).
+      var v0 = new double[targetCount + 1]; // Row of costs, current row.
 
-      for (var ti = 0; ti <= targetCount; ti++)
-        v0[ti] = ti; // Initialize the 'previous' (swapped to 'v1' in loop) row.
+      for (var j = 0; j <= targetCount; j++)
+        v0[j] = j * CostOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
 
-      for (var si = 0; si < sourceCount; si++)
+      for (var i = 0; i < sourceCount; i++)
       {
         var rotate = v1; v1 = v0; v0 = rotate;
 
-        v0[0] = si + 1; // The first element is delete (i + 1) chars from source to match empty target.
+        v0[0] = i + CostOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
 
-        for (var ti = 0; ti < targetCount; ti++)
+        for (var j = 0; j < targetCount; j++)
         {
-          v0[ti + 1] = Maths.Min(
-            v1[ti + 1] + 1, // Deletion.
-            v0[ti] + 1, // Insertion.
-            EqualityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
+          v0[j + 1] = Maths.Min(
+            v1[j + 1] + CostOfDeletion, // Deletion.
+            v0[j] + CostOfInsertion, // Insertion.
+            EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.
           );
         }
       }
@@ -148,11 +130,5 @@ namespace Flux.Metrical
       //return v[target.Length];
       #endregion Another optimized version with one vector and temp variables this time, not yet tested!
     }
-
-    public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => 1.0 - GetSimpleMatchingDistance(source, target);
-
-    public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => (double)GetMetricDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }
 }

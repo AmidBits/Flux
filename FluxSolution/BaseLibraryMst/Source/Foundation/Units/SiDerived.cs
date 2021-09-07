@@ -20,8 +20,16 @@ namespace Foundation.Units
     {
       var u = new Flux.Quantity.Angle(1);
 
-      Assert.AreEqual(new Flux.CoordinateSystems.CartesianCoordinate2(0.5403023058681398, 0.8414709848078965), u.ToCartesian2());
-      Assert.AreEqual(new Flux.CoordinateSystems.CartesianCoordinate2(0.8414709848078966, 0.5403023058681394), u.ToCartesian2Ex());
+      var expected = new Flux.CoordinateSystems.CartesianCoordinate2(0.5403023058681397, 0.8414709848078965);
+      var actual = u.ToCartesian2();
+      Assert.AreEqual(expected.X, actual.X);
+      Assert.AreEqual(expected.Y, actual.Y);
+
+      expected = new Flux.CoordinateSystems.CartesianCoordinate2(0.8414709848078966, 0.5403023058681394);
+      actual = u.ToCartesian2Ex();
+      Assert.AreEqual(expected.X, actual.X);
+      Assert.AreEqual(expected.Y, actual.Y);
+
       Assert.AreEqual(57.29577951308232, u.Degree);
       Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Quantity.AngleUnit.Gradian));
       Assert.AreEqual(1, u.Radian);

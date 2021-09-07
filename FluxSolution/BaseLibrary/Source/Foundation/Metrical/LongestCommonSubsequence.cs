@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
   /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
   public class LongestCommonSubsequence<T>
-    : AMetrical<T>, IFullMatrix<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public LongestCommonSubsequence()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -17,7 +17,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary></summary>
-    public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
@@ -34,11 +34,11 @@ namespace Flux.Metrical
     }
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
-    public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.List<T> GetDpList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
       var lcs = new System.Collections.Generic.List<T>();
 
-      var lcsg = GetFullMatrix(source, target);
+      matrix = GetDpMatrix(source, target);
 
       var si = source.Length;
       var ti = target.Length;
@@ -52,7 +52,7 @@ namespace Flux.Metrical
           si--;
           ti--;
         }
-        else if (lcsg[si, ti - 1] > lcsg[si - 1, ti]) // If not same, then go in the direction of the greater one.
+        else if (matrix[si, ti - 1] > matrix[si - 1, ti]) // If not same, then go in the direction of the greater one.
           ti--;
         else
           si--;

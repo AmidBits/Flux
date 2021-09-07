@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
   public class LongestIncreasingSubsequence<T>
   {
-    private System.Collections.Generic.IComparer<T> m_comparer;
+    private readonly System.Collections.Generic.IComparer<T> m_comparer;
 
     public LongestIncreasingSubsequence(System.Collections.Generic.IComparer<T> comparer)
       => m_comparer = comparer;
@@ -16,8 +16,8 @@ namespace Flux.Metrical
     {
       var sourceLength = source.Length;
 
-      var pi = new int[sourceLength];
-      var ki = new int[sourceLength + 1];
+      var v1 = new int[sourceLength];
+      var v0 = new int[sourceLength + 1];
 
       var length = 0;
 
@@ -30,7 +30,7 @@ namespace Flux.Metrical
         {
           var mid = System.Convert.ToInt32(System.Math.Ceiling((lo + hi) / 2.0)); // Binary middle index.
 
-          if (m_comparer.Compare(source[ki[mid]], source[i]) < 0)
+          if (m_comparer.Compare(source[v0[mid]], source[i]) < 0)
             lo = mid + 1;
           else
             hi = mid - 1;
@@ -38,20 +38,18 @@ namespace Flux.Metrical
 
         var newLength = lo; // After searching, lo is 1 greater than the length of the longest prefix of X[i].
 
-        pi[i] = ki[newLength - 1]; // The predecessor of X[i] is the last index of the subsequence of length newL-1;
-        ki[newLength] = i;
+        v1[i] = v0[newLength - 1]; // The predecessor of X[i] is the last index of the subsequence of length newL-1;
+        v0[newLength] = i;
 
         if (newLength > length)
           length = newLength;
       }
 
       var lis = new T[length]; // Reconstruct the longest increasing subsequence (LIS).
-      var k = ki[length];
-      for (int i = length - 1; i >= 0; i--)
-      {
+
+      for (int i = length - 1, k = v0[length]; i >= 0; i--, k = v1[k])
         lis[i] = source[k];
-        k = pi[k];
-      }
+
       return lis;
     }
   }

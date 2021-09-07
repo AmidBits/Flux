@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public class LongestCommonSubstring<T>
-  : AMetrical<T>, IFullMatrix<T>, IMeasuredLength<T>
+  : AMetrical<T>, IMatrixDp<T>, IMeasuredLength<T>
   {
     public LongestCommonSubstring()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -13,7 +13,7 @@ namespace Flux.Metrical
       : base(equalityComparer)
     { }
 
-    private int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
+    private int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
@@ -45,18 +45,18 @@ namespace Flux.Metrical
 
       return lcsg;
     }
-    public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetFullMatrix(source, target, out var _, out var _, out var _);
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      => GetDpMatrix(source, target, out var _, out var _, out var _);
 
-    public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.List<T> GetDpList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
       var lcs = new System.Collections.Generic.List<T>();
 
-      var lcsg = GetFullMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
+      matrix = GetDpMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
 
       if (length > 0)
       {
-        while (lcsg[sourceIndex, targetIndex] != 0)
+        while (matrix[sourceIndex, targetIndex] != 0)
         {
           lcs.Insert(0, source[sourceIndex - 1]); // Can also use target[targetIndex - 1].
 

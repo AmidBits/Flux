@@ -29,8 +29,6 @@ namespace Flux
       m_minute = minute >= 0 && minute <= 59 ? minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
       m_second = second >= 0 && second <= 59 ? second : throw new System.ArgumentOutOfRangeException(nameof(second));
       m_millisecond = millisecond >= 0 && millisecond <= 999 ? millisecond : throw new System.ArgumentOutOfRangeException(nameof(millisecond));
-
-      TotalTime = new Quantity.Time(System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year));
     }
     public MomentUtc(int year, int month, int day, int hour, int minute, int second)
       : this(year, month, day, hour, minute, second, 0)
@@ -54,8 +52,9 @@ namespace Flux
     public int Millisecond
       => m_millisecond;
 
-    /// <summary>Returns a number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
-    public Quantity.Time TotalTime { get; }
+    ///// <summary>Returns a number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
+    //public double TotalTime
+    //  => System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year);
 
     /// <summary>Create a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
@@ -67,7 +66,7 @@ namespace Flux
       => ComputeJulianDayNumber(year, month, day, calendar) + ComputeJulianDateTimeOfDay(hour, minute, second, millisecond);
     /// <summary>Computes the Julian Date (JD) "time-of-day" fraction for the specified time components. This is not the same as the number of seconds.</summary>
     public static double ComputeJulianDateTimeOfDay(int hour, int minute, int second, int millisecond)
-      => hour / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
+      => (hour - 12) / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
     /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
     public static int ComputeJulianDayNumber(int year, int month, int day, ConversionCalendar calendar)
     {
@@ -113,11 +112,24 @@ namespace Flux
     #region Implemented interfaces
     // IComparable<>
     public int CompareTo(MomentUtc other)
-      => TotalTime < other.TotalTime ? -1 : TotalTime > other.TotalTime ? 1 : 0;
+      => m_year < other.m_year ? -1 : m_year > other.m_year ? 1
+      : m_month < other.m_month ? -1 : m_month > other.m_month ? 1
+      : m_day < other.m_day ? -1 : m_day > other.m_day ? 1
+      : m_hour < other.m_hour ? -1 : m_hour > other.m_hour ? 1
+      : m_minute < other.m_minute ? -1 : m_minute > other.m_minute ? 1
+      : m_second < other.m_second ? -1 : m_second > other.m_second ? 1
+      : m_millisecond < other.m_millisecond ? -1 : m_millisecond > other.m_millisecond ? 1
+      : 0; // This means this instance is equal to the other.
 
     // IEquatable<>
     public bool Equals(MomentUtc other)
-      => m_year == other.m_year && m_month == other.m_month && m_day == other.m_day && m_hour == other.m_hour && m_minute == other.m_minute && m_second == other.m_second && m_millisecond == other.m_millisecond;
+      => m_year == other.m_year
+      && m_month == other.m_month
+      && m_day == other.m_day
+      && m_hour == other.m_hour
+      && m_minute == other.m_minute
+      && m_second == other.m_second
+      && m_millisecond == other.m_millisecond;
     #endregion Implemented interfaces
 
     #region Object overrides

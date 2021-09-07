@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
   public class ShortestCommonSupersequence<T>
-    : AMetrical<T>, IFullMatrix<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public ShortestCommonSupersequence()
       : base(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -17,7 +17,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
-    public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;
@@ -36,7 +36,7 @@ namespace Flux.Metrical
       return scsg;
     }
 
-    private System.Collections.Generic.List<T> GetList(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
+    private System.Collections.Generic.List<T> GetDpList(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
     {
       if (si == 0) // If the end of the first string is reached, return the second string.
         return target.Slice(0, ti).ToArray().ToList();
@@ -45,7 +45,7 @@ namespace Flux.Metrical
 
       if (EqualityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
       {
-        var list = GetList(matrix, source, target, si - 1, ti - 1);
+        var list = GetDpList(matrix, source, target, si - 1, ti - 1);
         list.Add(source[si - 1]);
         return list;
       }
@@ -53,23 +53,23 @@ namespace Flux.Metrical
       {
         if (matrix[si - 1, ti] < matrix[si, ti - 1]) // If the top cell of has less value than the left cell, then include the current source element and find SCS of substring less the one added.
         {
-          var list = GetList(matrix, source, target, si - 1, ti);
+          var list = GetDpList(matrix, source, target, si - 1, ti);
           list.Add(source[si - 1]);
           return list;
         }
         else // If the left cell has less value than the top cell, then include the current target element find SCS of substring less the one added.
         {
-          var list = GetList(matrix, source, target, si, ti - 1);
+          var list = GetDpList(matrix, source, target, si, ti - 1);
           list.Add(target[ti - 1]);
           return list;
         }
       }
     }
-    public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
+    public System.Collections.Generic.List<T> GetDpList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      matrix = GetFullMatrix(source, target);
+      matrix = GetDpMatrix(source, target);
 
-      return GetList(matrix, source, target, source.Length, target.Length);
+      return GetDpList(matrix, source, target, source.Length, target.Length);
     }
 
     ///// <summary>Returns the items comprising the shortest common super-sequence by means of longest common subsequence (LCS).</summary>
@@ -113,7 +113,7 @@ namespace Flux.Metrical
       => source.Length + target.Length - 2 * GetMetricLength(source, target);
 
     public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetFullMatrix(source, target)[source.Length, target.Length];
+      => GetDpMatrix(source, target)[source.Length, target.Length];
 
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetMetricLength(source, target) / (double)System.Math.Max(source.Length, target.Length);

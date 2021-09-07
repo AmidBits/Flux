@@ -15,33 +15,41 @@ namespace Foundation
     }
 
     [TestMethod]
+    public void ComputeTimeOfDay()
+    {
+      var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
+
+      Assert.AreEqual(793.9999999999259, Flux.JulianDate.ComputeTimeOfDay(m.Value));
+    }
+
+    [TestMethod]
     public void IsGregorianCalendar()
     {
-      Assert.AreEqual(true, Flux.JulianDate.FirstGregorianDate.IsGregorianCalendar);
-      Assert.AreEqual(false, Flux.JulianDate.FirstJulianDate.IsGregorianCalendar);
-      Assert.AreEqual(false, Flux.JulianDate.LastJulianDate.IsGregorianCalendar);
+      Assert.AreEqual(true, Flux.JulianDate.FirstGregorianCalendarDate.IsGregorianCalendar);
+      Assert.AreEqual(false, Flux.JulianDate.FirstJulianCalendarDate.IsGregorianCalendar);
+      Assert.AreEqual(false, Flux.JulianDate.LastJulianCalendarDate.IsGregorianCalendar);
     }
 
     [TestMethod]
-    public void FirstGregorianDate()
+    public void FirstGregorianCalendarDate()
     {
-      var fgd = Flux.JulianDate.FirstGregorianDate;
+      var fgd = Flux.JulianDate.FirstGregorianCalendarDate;
 
-      Assert.AreEqual(2299161.5, fgd.Value);
+      Assert.AreEqual(2299160.5, fgd.Value);
     }
     [TestMethod]
-    public void FirstJulianDate()
+    public void FirstJulianCalendarDate()
     {
-      var fjd = Flux.JulianDate.FirstJulianDate;
+      var fjd = Flux.JulianDate.FirstJulianCalendarDate;
 
-      Assert.AreEqual(0.5, fjd.Value);
+      Assert.AreEqual(0, fjd.Value);
     }
     [TestMethod]
-    public void LastJulianDate()
+    public void LastJulianCalendarDate()
     {
-      var ljd = Flux.JulianDate.LastJulianDate;
+      var ljd = Flux.JulianDate.LastJulianCalendarDate;
 
-      Assert.AreEqual(2299160.5, ljd.Value);
+      Assert.AreEqual(2299160.4999999884, ljd.Value);
     }
 
     [TestMethod]
@@ -61,7 +69,7 @@ namespace Foundation
     [TestMethod]
     public void AddMillieconds()
     {
-      var jd = new Flux.JulianDate(0).AddMillieconds(1);
+      var jd = new Flux.JulianDate(0).AddMilliseconds(1);
 
       Assert.AreEqual(1.1574074074074074E-08, jd.Value);
     }
@@ -119,14 +127,6 @@ namespace Foundation
       var diff12 = jd2.Value - jd1.Value;
 
       Assert.AreEqual(27689, diff12);
-    }
-
-    [TestMethod]
-    public void TimeOfDay()
-    {
-      var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
-
-      Assert.AreEqual(43993.99999999993, m.TimeOfDay.Value);
     }
 
     [TestMethod]

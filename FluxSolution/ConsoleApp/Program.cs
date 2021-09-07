@@ -19,6 +19,14 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate);
+      System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate);
+      System.Console.WriteLine(Flux.JulianDate.LastJulianCalendarDate);
+      System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate.ToMomentUtc(ConversionCalendar.GregorianCalendar));
+      System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate.ToMomentUtc(ConversionCalendar.JulianCalendar));
+      System.Console.WriteLine(Flux.JulianDate.LastJulianCalendarDate.ToMomentUtc(ConversionCalendar.JulianCalendar));
+      return;
+
       //const string csF = "F";
       //const string csP = "P";
       //const string csT = "T";

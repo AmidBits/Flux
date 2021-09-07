@@ -12,20 +12,20 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IValuedUnit
   {
-    public static JulianDate FirstGregorianDate
-      => new MomentUtc(1582, 10, 15, 12, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
-    public static JulianDate LastJulianDate
-      => new MomentUtc(1582, 10, 4, 12, 0, 0).ToJulianDate(ConversionCalendar.JulianCalendar);
-    public static JulianDate FirstJulianDate
-      => new MomentUtc(-4712, 1, 1, 12, 0, 0).ToJulianDate(ConversionCalendar.JulianCalendar);
+    public static JulianDate FirstGregorianCalendarDate
+       => new MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
+    public static JulianDate FirstJulianCalendarDate
+      => new JulianDate(0);
+    public static JulianDate LastJulianCalendarDate
+      => new MomentUtc(1582, 10, 4, 23, 59, 59).ToJulianDate(ConversionCalendar.JulianCalendar);
 
     public static readonly JulianDate Zero;
 
     private readonly double m_value;
 
-    /// <summary>Create a Julian Date (JD) from the specified <paramref name="julianDate"/>.</summary>
-    public JulianDate(double julianDate)
-      => m_value = julianDate;
+    /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>
+    public JulianDate(double value)
+      => m_value = value;
 
     public JulianDate AddWeeks(int weeks)
       => new JulianDate(m_value + weeks * 7);
@@ -37,26 +37,23 @@ namespace Flux
       => new JulianDate(m_value + minutes / 1440.0);
     public JulianDate AddSeconds(int seconds)
       => new JulianDate(m_value + seconds / 86400.0);
-    public JulianDate AddMillieconds(int milliseconds)
+    public JulianDate AddMilliseconds(int milliseconds)
       => new JulianDate(m_value + (milliseconds / 1000.0) / 86400);
 
     public System.DayOfWeek DayOfWeek
-      => (System.DayOfWeek)((ComputeDayOfWeek((int)m_value) + 1) % 7);
+      => (System.DayOfWeek)(ComputeDayOfWeekIso((int)(m_value + 0.5)) % 7);
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
     public bool IsGregorianCalendar
-      => m_value > 2299160.5;
-
-    public Quantity.Time TimeOfDay
-      => new Quantity.Time(m_value % 1 * 86400);
+      => m_value >= 2299160.5;
 
     public double Value
       => m_value;
 
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
-      ComputeDateComponents((int)m_value, calendar, out var year, out var month, out var day);
-      ComputeTimeComponents(m_value % 1, out var hour, out var minute, out var second, out var millisecond);
+      ComputeDateComponents((int)(m_value + 0.5), calendar, out var year, out var month, out var day);
+      ComputeTimeComponents(m_value, out var hour, out var minute, out var second, out var millisecond);
 
       return new MomentUtc(year, month, day, hour, minute, second, millisecond);
     }
@@ -68,7 +65,7 @@ namespace Flux
       if (calendar == ConversionCalendar.JulianCalendar)
         sb.Append($"{DayOfWeek}, ");
 
-      ComputeDateComponents((int)m_value, calendar, out var year, out var month, out var day);
+      ComputeDateComponents((int)(m_value + 0.5), calendar, out var year, out var month, out var day); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
       sb.Append($"{System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {day}, {year}");
 
@@ -77,8 +74,9 @@ namespace Flux
 
       return sb.ToString();
     }
+    /// <summary>Returns the time string of the time-of-day portion of the Julian Date.</summary>
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(TimeOfDay.Value).ToString(@"hh\:mm\:ss");
+      => System.TimeSpan.FromSeconds(43200 + ComputeTimeOfDay(m_value)).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 
     #region Static methods
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
@@ -112,9 +110,9 @@ namespace Flux
       month = ((h / s + m) % n) + 1;
       year = (e / p) - y + (n + m - month) / n;
     }
-    /// <summary>Returns a day of week [0 (Monday), 6 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday.</summary>
-    public static int ComputeDayOfWeek(int julianDayNumber)
-      => julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow;
+    /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, simply do "ComputeDayOfWeekIso(JDN) % 7".</summary>
+    public static int ComputeDayOfWeekIso(int julianDayNumber)
+      => (julianDayNumber % 7 is var dow && dow <= 0 ? dow + 7 : dow) + 1;
     /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
     /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
@@ -124,19 +122,25 @@ namespace Flux
     /// <summary>This method is only concerned with the time portion of the Julian Date.</summary>
     public static void ComputeTimeComponents(double julianDate, out int hour, out int minute, out int second, out int millisecond)
     {
-      double f = julianDate % 1 * 86400;
+      var totalSeconds = ComputeTimeOfDay(julianDate);
 
-      hour = (int)System.Math.Round(f / 3600);
-      f -= hour * 3600;
+      if (totalSeconds <= 43200)
+        totalSeconds = (totalSeconds + 43200) % 86400;
 
-      minute = (int)System.Math.Round(f / 60);
-      f -= minute * 60;
+      hour = (int)(totalSeconds / 3600);
+      totalSeconds -= hour * 3600;
 
-      second = (int)System.Math.Round(f);
-      f -= second;
+      minute = (int)(totalSeconds / 60);
+      totalSeconds -= minute * 60;
 
-      millisecond = (int)System.Math.Round(f);
+      second = (int)totalSeconds;
+      totalSeconds -= second;
+
+      millisecond = (int)totalSeconds;
     }
+    /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>
+    public static double ComputeTimeOfDay(double julianDate)
+      => julianDate % 1 * 86400;
     #endregion Static methods
 
     #region Overloaded operators
