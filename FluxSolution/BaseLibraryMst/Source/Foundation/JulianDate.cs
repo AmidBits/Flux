@@ -11,7 +11,7 @@ namespace Foundation
     [TestMethod]
     public void ComputeJulianPeriod()
     {
-      Assert.AreEqual(2015, Flux.JulianDate.ComputeJulianPeriod(8, 2, 8));
+      Assert.AreEqual(2015, Flux.JulianDayNumber.GetJulianPeriod(8, 2, 8));
     }
 
     [TestMethod]
@@ -19,15 +19,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(793.9999999999259, Flux.JulianDate.ComputeTimeOfDay(m.Value));
-    }
-
-    [TestMethod]
-    public void IsGregorianCalendar()
-    {
-      Assert.AreEqual(true, Flux.JulianDate.FirstGregorianCalendarDate.IsGregorianCalendar);
-      Assert.AreEqual(false, Flux.JulianDate.FirstJulianCalendarDate.IsGregorianCalendar);
-      Assert.AreEqual(false, Flux.JulianDate.LastJulianCalendarDate.IsGregorianCalendar);
+      Assert.AreEqual(793.9999999999259, Flux.JulianDate.GetTimeSinceNoon(m.Value).Value);
     }
 
     [TestMethod]
@@ -49,7 +41,7 @@ namespace Foundation
     {
       var ljd = Flux.JulianDate.LastJulianCalendarDate;
 
-      Assert.AreEqual(2299160.499988426, ljd.Value);
+      Assert.AreEqual(2299160.4999999884, ljd.Value);
     }
 
     [TestMethod]
@@ -98,7 +90,7 @@ namespace Foundation
     [TestMethod]
     public void DayOfWeek()
     {
-      var jd1 = new Flux.MomentUtc(1991, 7, 11).ToJulianDate(ConversionCalendar.GregorianCalendar);
+      var jd1 = new Flux.MomentUtc(1991, 7, 11).ToJulianDayNumber(ConversionCalendar.GregorianCalendar);
 
       Assert.AreEqual(System.DayOfWeek.Thursday, jd1.DayOfWeek);
     }

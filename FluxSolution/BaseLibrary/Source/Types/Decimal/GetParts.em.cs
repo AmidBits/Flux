@@ -4,17 +4,17 @@ namespace Flux
   {
     /// <summary>Deconstructs the decimal number into its basic components as a named ValueType for use.</summary>
     [System.CLSCompliant(false)]
-    public static (uint[] bits, bool isNegative, decimal mantissa, byte scale, decimal originalValue) GetParts(this decimal source)
+    public static decimal GetParts(this decimal source, out uint[] bits, out bool isNegative, out decimal mantissa, out byte scale)
     {
-      var bits = (uint[])(object)decimal.GetBits(source);
+      bits = (uint[])(object)decimal.GetBits(source);
 
-      var isNegative = (bits[3] & 0x80000000) == 0x80000000;
+      isNegative = (bits[3] & 0x80000000) == 0x80000000;
 
-      var mantissa = (bits[2] * 4294967296m * 4294967296m) + (bits[1] * 4294967296m) + bits[0];
+      mantissa = (bits[2] * 4294967296m * 4294967296m) + (bits[1] * 4294967296m) + bits[0];
 
-      var scale = (byte)((bits[3] >> 16) & 31); // The number of total decimals points.
+      scale = (byte)((bits[3] >> 16) & 31); // The number of total decimals points.
 
-      return (bits, isNegative, mantissa, scale, source);
+      return source;
     }
   }
 }

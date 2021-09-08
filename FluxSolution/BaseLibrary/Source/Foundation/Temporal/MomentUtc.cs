@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static MomentUtc ToMomentUtc(this System.DateTime source)
-      => new MomentUtc(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond);
+      => new MomentUtc(source);
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
@@ -36,6 +36,9 @@ namespace Flux
     public MomentUtc(int year, int month, int day)
       : this(year, month, day, 0, 0, 0, 0)
     { }
+    public MomentUtc(System.DateTime dateTime)
+      : this(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond)
+    { }
 
     public int Year
       => m_year;
@@ -56,31 +59,17 @@ namespace Flux
     //public double TotalTime
     //  => System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year);
 
-    /// <summary>Create a new <see cref="JulianDate"/> from this instance.</summary>
+    /// <summary>Creates a new <see cref="System.DateTime"/> from this instance.</summary>
+    public System.DateTime ToDateTime()
+      => new System.DateTime(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
+    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
+    public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
+      => new JulianDayNumber(m_year, m_month, m_day, calendar);
+    /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
-      => new JulianDate(ComputeJulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar));
+      => new JulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
 
     #region Static methods
-    /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
-    public static double ComputeJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
-      => ComputeJulianDayNumber(year, month, day, calendar) + ComputeJulianDateTimeOfDay(hour, minute, second, millisecond);
-    /// <summary>Computes the Julian Date (JD) "time-of-day" fraction for the specified time components. This is not the same as the number of seconds.</summary>
-    public static double ComputeJulianDateTimeOfDay(int hour, int minute, int second, int millisecond)
-      => (hour - 12) / 24.0 + minute / 1440.0 + (second + millisecond / 1000.0) / 86400;
-    /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
-    public static int ComputeJulianDayNumber(int year, int month, int day, ConversionCalendar calendar)
-    {
-      switch (calendar)
-      {
-        case ConversionCalendar.GregorianCalendar:
-          return ((1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075);
-        case ConversionCalendar.JulianCalendar:
-          return (367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(calendar));
-      }
-    }
-
     /// <summary>Returns whether the date is considered to be in the modern Gregorian Calendar.</summary>
     public static bool IsGregorianCalendar(int year, int month, int day)
       => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));

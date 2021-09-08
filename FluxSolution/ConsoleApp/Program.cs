@@ -25,11 +25,13 @@ namespace ConsoleApp
       {
         System.Console.WriteLine(jd);
 
-        jd = jd.AddHours(-3);
+        jd = jd.AddHours(-6);
+
+        System.Console.WriteLine($"{jd} = {jd.ToJulianDayNumber()} = {jd.ToJulianDayNumber().ToJulianDate()}");
 
         x--;
       }
-      return;
+      //return;
 
       //System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate);
       //System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate);
