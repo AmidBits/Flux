@@ -7,11 +7,20 @@ namespace Flux
   }
 
   /// <summary>Julian Date unit of days with time of day fraction.</summary>
-  /// <remarks>Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
+  /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IValuedUnit
   {
+    public static JulianDate EpochDublinJD
+      => new Flux.JulianDate(1899, 12, 31, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+    public static JulianDate EpochModifiedJD
+      => new Flux.JulianDate(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+    public static JulianDate EpochReducedJD
+      => new Flux.JulianDate(1858, 11, 16, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+    public static JulianDate EpochTruncatedJD
+      => new Flux.JulianDate(1968, 5, 24, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+
     public static JulianDate FirstGregorianCalendarDate
        => new MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
     public static JulianDate FirstJulianCalendarDate
@@ -32,20 +41,23 @@ namespace Flux
     { }
 
     public JulianDate AddWeeks(int weeks)
-      => new JulianDate(m_value + weeks * 7);
+      => this + (weeks * 7);
     public JulianDate AddDays(int days)
-      => new JulianDate(m_value + days);
+      => this + days;
     public JulianDate AddHours(int hours)
-      => new JulianDate(m_value + hours / 24.0);
+      => this + (hours / 24.0);
     public JulianDate AddMinutes(int minutes)
-      => new JulianDate(m_value + minutes / 1440.0);
+      => this + (minutes / 1440.0);
     public JulianDate AddSeconds(int seconds)
-      => new JulianDate(m_value + seconds / 86400.0);
+      => this + (seconds / 86400.0);
     public JulianDate AddMilliseconds(int milliseconds)
-      => new JulianDate(m_value + (milliseconds / 1000.0) / 86400.0);
+      => this + (milliseconds / 1000.0 / 86400);
 
     public double Value
       => m_value;
+
+    public ConversionCalendar GetConversionCalendar()
+      => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
 
     public void GetParts(ConversionCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
     {

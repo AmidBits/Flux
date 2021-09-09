@@ -6,21 +6,12 @@ namespace Flux
       => ToMomentUtc(source).ToJulianDayNumber(calendar);
   }
 
-  /// <summary>Julian Date unit of days with time of day fraction.</summary>
-  /// <remarks>Julian Day Number and Julian Date for this code, has nothing to do with the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
+  /// <summary>Julian Day Number unit of days.</summary>
+  /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDayNumber
     : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit
   {
-    public const int DaysInWeek = 7;
-
-    public static JulianDayNumber FirstGregorianCalendarDate
-       => new MomentUtc(1582, 10, 15).ToJulianDayNumber(ConversionCalendar.GregorianCalendar);
-    public static JulianDayNumber FirstJulianCalendarDate
-      => new JulianDayNumber(0);
-    public static JulianDayNumber LastJulianCalendarDate
-      => new MomentUtc(1582, 10, 4).ToJulianDayNumber(ConversionCalendar.JulianCalendar);
-
     public static readonly JulianDayNumber Zero;
 
     private readonly int m_value;
@@ -34,16 +25,16 @@ namespace Flux
     { }
 
     public JulianDayNumber AddWeeks(int weeks)
-      => new JulianDayNumber(m_value + weeks * DaysInWeek);
+      => this + (weeks * 7);
     public JulianDayNumber AddDays(int days)
-      => new JulianDayNumber(m_value + days);
+      => this + days;
 
     /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
     public System.DayOfWeek DayOfWeek
-      => (System.DayOfWeek)(DayOfWeekIso % DaysInWeek);
+      => (System.DayOfWeek)(DayOfWeekIso % 7);
     /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, simply do "ComputeDayOfWeekIso(JDN) % 7".</summary>
     public int DayOfWeekIso
-      => (m_value % DaysInWeek is var dow && dow <= 0 ? dow + DaysInWeek : dow) + 1;
+      => (m_value % 7 is var dow && dow <= 0 ? dow + 7 : dow) + 1;
 
     public double Value
       => m_value;
@@ -104,33 +95,19 @@ namespace Flux
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
     public static void ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
     {
-      if (julianDayNumber < -1401) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber), $"The algorithm can only convert Julian Date values greater than or equal to -1401.");
+      if (julianDayNumber < -1401) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber), @"The algorithm can only convert Julian Date values greater than or equal to -1401.");
 
-      var J = julianDayNumber;
+      var f = julianDayNumber + 1401;
 
-      const int y = 4716;
-      const int v = 3;
-      const int j = 1401;
-      const int u = 5;
-      const int m = 2;
-      const int s = 153;
-      const int n = 12;
-      const int w = 2;
-      const int r = 4;
-      const int B = 274277;
-      const int p = 1461;
-      const int C = -38;
-
-      var f = J + j;
       if (calendar == ConversionCalendar.GregorianCalendar)
-        f += (((4 * J + B) / 146097) * 3) / 4 + C;
-      var e = r * f + v;
-      var g = (e % p) / r;
-      var h = u * g + w;
+        f += (4 * julianDayNumber + 274277) / 146097 * 3 / 4 + -38;
 
-      day = (h % s) / u + 1;
-      month = ((h / s + m) % n) + 1;
-      year = (e / p) - y + (n + m - month) / n;
+      var eq = System.Math.DivRem(4 * f + 3, 1461, out var er);
+      var hq = System.Math.DivRem(5 * (er / 4) + 2, 153, out var hr);
+
+      day = hr / 5 + 1;
+      month = ((hq + 2) % 12) + 1;
+      year = eq - 4716 + (14 - month) / 12;
     }
 
     /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
@@ -140,9 +117,9 @@ namespace Flux
     public static int GetJulianPeriod(int solarCycle, int lunarCycle, int indictionCycle)
       => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28) is var year && year > 4713 ? year - 4713 : year < 4714 ? -(4714 - year) : year;
 
-    ///// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-    //public bool IsGregorianCalendar(int julianDayNumber)
-    //  => julianDayNumber >= 2299161;
+    /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
+    public bool IsGregorianCalendar(int julianDayNumber)
+      => julianDayNumber >= 2299161;
     #endregion Static methods
 
     #region Overloaded operators
@@ -193,7 +170,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string? ToString()
-      => $"<{GetType().Name}: {m_value} " + (JulianDate.IsGregorianCalendar(m_value) ? $"({ToDateString(ConversionCalendar.GregorianCalendar)})" : $"({ToDateString(ConversionCalendar.JulianCalendar)})*");
+      => $"<{GetType().Name}: {m_value} " + (IsGregorianCalendar(m_value) ? $"({ToDateString(ConversionCalendar.GregorianCalendar)})" : $"({ToDateString(ConversionCalendar.JulianCalendar)})*");
     #endregion Object overrides
   }
 }

@@ -19,6 +19,25 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      Flux.CoordinateSystems.GeographicCoordinate.WikiCourse(Flux.Quantity.Angle.ConvertDegreeToRadian(-33), Flux.Quantity.Angle.ConvertDegreeToRadian(-71.6), Flux.Quantity.Angle.ConvertDegreeToRadian(31.4), Flux.Quantity.Angle.ConvertDegreeToRadian(121.8), out var ic, out var fc, out var ca, out var datgc);
+
+      var today = DateTime.Now;
+      today = new System.DateTime(2020, 2, 29);
+      var birth = new System.DateTime(2020, 2, 29);
+
+      // Calculate the age.
+      var age = today.Year - birth.Year;
+
+      // Go back to the year in which the person was born in case of a leap year
+      if (birth.Date > today.AddYears(-age)) age--;
+
+      System.Console.WriteLine(age);
+
+      System.Console.WriteLine($"{today.AgeInYears(birth)} or {birth.AgeInYears(today)}");
+      System.Console.WriteLine($"{today.AgeInTotalYears(birth)} or {birth.AgeInTotalYears(today)}");
+      return;
+
+
       var jd = Flux.JulianDate.FirstGregorianCalendarDate;
       var x = 25;
       while (x > 0)
@@ -31,7 +50,9 @@ namespace ConsoleApp
 
         x--;
       }
-      //return;
+      var mjd = new Flux.JulianDate(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+
+      return;
 
       //System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate);
       //System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate);

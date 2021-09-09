@@ -237,7 +237,7 @@ namespace Flux
       public override int GetHashCode()
         => m_value.GetHashCode();
       public override string ToString()
-        => $"<{GetType().Name}: {m_value} rad>";
+        => $"<{GetType().Name}: {m_value} rad ({Degree:N2}{DegreeSymbol})>";
       #endregion Object overrides
     }
   }

@@ -175,10 +175,6 @@ namespace Flux.CoordinateSystems
       return (GeographicCoordinate)(lat, lon, Earth.MeanRadius.Value);
     }
 
-    /// <summary>right-handed vector: x -> 0°E,0°N; y -> 90°E,0°N, z -> 90°N</summary>
-    //public static System.Numerics.Vector3 ToVector3RH(double latitudeR, double longitudeR) => new System.Numerics.Vector3((float)System.Math.Cos(latitudeR) * (float)System.Math.Cos(longitudeR), (float)System.Math.Cos(latitudeR) * (float)System.Math.Sin(longitudeR), (float)System.Math.Sin(latitudeR));
-    //public static Geoposition FromVector3RH(double x, double y, double z) => new Geoposition() { Latitude = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y)), Longitude = System.Math.Atan2(y, x) };
-
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
     public static double AlongTrackCentralAngle(double latitude1, double longitude1, double latitude2, double longitude2, double latitude3, double longitude3, out double crossTrackCentralAngle)
@@ -186,6 +182,39 @@ namespace Flux.CoordinateSystems
       crossTrackCentralAngle = CrossTrackCentralAngle(latitude1, longitude1, latitude2, longitude2, latitude3, longitude3, out var trackCentralAngle13);
 
       return System.Math.Acos(System.Math.Cos(trackCentralAngle13) / System.Math.Cos(crossTrackCentralAngle));
+    }
+
+    /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
+    public static bool BoundingBox(double latitude, double longitude, double boxRadiusInMeters, out double angularDistance, out double longitudeDelta, out double latitudeMin, out double longitudeMin, out double latitudeMax, out double longitudeMax)
+    {
+      boxRadiusInMeters = System.Math.Max(boxRadiusInMeters, 1);
+
+      angularDistance = boxRadiusInMeters / Earth.EquatorialRadius.Value;
+
+      longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(latitude));
+
+      latitudeMin = latitude - angularDistance;
+      latitudeMax = latitude + angularDistance;
+
+      if (latitudeMin <= -Maths.PiOver2 || latitudeMax >= Maths.PiOver2) // A pole is within the given distance.
+      {
+        latitudeMin = System.Math.Max(latitudeMin, -Maths.PiOver2);
+        longitudeMin = -System.Math.PI;
+        latitudeMax = System.Math.Min(latitudeMax, Maths.PiOver2);
+        longitudeMax = System.Math.PI;
+
+        return false;
+      }
+
+      longitudeMin = longitude - longitudeDelta;
+      longitudeMax = longitude + longitudeDelta;
+
+      if (longitudeMin < -System.Math.PI)
+        longitudeMin += Maths.PiX2;
+      if (longitudeMax > System.Math.PI)
+        longitudeMax -= Maths.PiX2;
+
+      return true;
     }
 
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
@@ -214,27 +243,27 @@ namespace Flux.CoordinateSystems
 
       var cosLat2LonD = cosLat2 * System.Math.Cos(lonD);
 
-      return System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat2 * System.Math.Sin(lonD), 2) + System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), (sinLat1 * sinLat2 + cosLat1 * cosLat2LonD));
+      return System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat2 * System.Math.Sin(lonD), 2) + System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
     }
 
     /// <summary>Compass point (to given precision) for specified bearing.</summary>
     /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
-    /// <param name="absoluteBearingInRadians">The direction in radians.</param>
+    /// <param name="absoluteBearing">The direction in radians.</param>
     /// <param name="precision">4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
     /// <returns></returns>
-    public static ThirtytwoWindCompassRose CompassPoint(double absoluteBearingInRadians, PointsOfTheCompass precision, out double notch)
+    public static ThirtytwoWindCompassRose CompassPoint(double absoluteBearing, PointsOfTheCompass precision, out double notch)
     {
-      notch = System.Math.Round(Maths.Wrap(absoluteBearingInRadians, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
+      notch = System.Math.Round(Maths.Wrap(absoluteBearing, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
 
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
 
     /// <summary>Convert geographical coordinate to sperical coordinate.</summary>
-    /// <param name="latitudeRad"></param>
-    /// <param name="longitudeRad"></param>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
     /// <param name="altitude"></param>
-    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitudeRad, double longitudeRad, double altitude)
-      => (altitude, System.Math.PI - (latitudeRad + Maths.PiOver2), longitudeRad + System.Math.PI);
+    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitude, double longitude, double altitude)
+      => (altitude, System.Math.PI - (latitude + Maths.PiOver2), longitude + System.Math.PI);
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
@@ -269,37 +298,27 @@ namespace Flux.CoordinateSystems
     public static double FinalBearing(double latitude1, double longitude1, double latitude2, double longitude2)
       => (InitialBearing(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Maths.PiX2;
 
-    //    public static GeographicCoordinate From 
-
-    ///// <summary>Computes the square of half the chord length between the points, often labeled "a" in C implementations.</summary>
-    ///// <returns>The square of half the chord length between the points.</returns>
-    //public static double HaversineFormulaA(double latitude1, double longitude1, double latitude2, double longitude2) => Math.Haversin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Math.Haversin(longitude2 - longitude1);
-    ///// <summary>Computes the angular distance in radians, often labeled "c" in C implementations.</summary>
-    ///// <returns>The angular distance in radians.</returns>
-    ///// <remarks>An alternative to this method is to pass the specified parmater (haversineFormulaA) to the inverse half versine function: Flux.Math.HaversinInverse(haversineFormulaA).</remarks>
-    //public static double HaversineFormulaC(double haversineFormulaA) => 2 * System.Math.Atan2(System.Math.Sqrt(haversineFormulaA), System.Math.Sqrt(1 - haversineFormulaA));
-
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double InitialBearing(double radLat1, double radLon1, double radLat2, double radLon2)
+    public static double InitialBearing(double latitude1, double longitude1, double latitude2, double longitude2)
     {
-      var cosLat2 = System.Math.Cos(radLat2);
-      var lonD = radLon2 - radLon1;
+      var cosLat2 = System.Math.Cos(latitude2);
+      var lonD = longitude2 - longitude1;
 
       var y = System.Math.Sin(lonD) * cosLat2;
-      var x = System.Math.Cos(radLat1) * System.Math.Sin(radLat2) - System.Math.Sin(radLat1) * cosLat2 * System.Math.Cos(lonD);
+      var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
 
-      return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees)
+      return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // Atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees).
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
-    /// <param name="unitInterval">Unit interval is a fraction along great circle route (0=Latitude1,Longitude1, 1=Latitude2,Longitude2)</param>
-    public static void IntermediaryPoint(double latitude1, double longitude1, double latitude2, double longitude2, double unitInterval, out double latitudeOut, out double longitudeOut)
+    /// <param name="mu">Unit interval is a fraction along great circle route (0=Latitude1,Longitude1, 1=Latitude2,Longitude2)</param>
+    public static void IntermediaryPoint(double latitude1, double longitude1, double latitude2, double longitude2, double mu, out double latitudeOut, out double longitudeOut)
     {
       var centralAngle = CentralAngleVincentyFormula(latitude1, longitude1, latitude2, longitude2);
 
-      var a = System.Math.Sin((1.0 - unitInterval) * centralAngle) / System.Math.Sin(centralAngle);
-      var b = System.Math.Sin(unitInterval * centralAngle) / System.Math.Sin(centralAngle);
+      var a = System.Math.Sin((1.0 - mu) * centralAngle) / System.Math.Sin(centralAngle);
+      var b = System.Math.Sin(mu * centralAngle) / System.Math.Sin(centralAngle);
 
       var cosLat1 = System.Math.Cos(latitude1);
       var cosLat2 = System.Math.Cos(latitude2);
@@ -312,23 +331,47 @@ namespace Flux.CoordinateSystems
       longitudeOut = System.Math.Atan2(y, x);
     }
 
-    public static (double, double) IntersectionOfPaths(double lat1, double lon1, double bearing1, double lat2, double lon2, double bearing2)
+    // https://en.wikipedia.org/wiki/Great-circle_navigation
+    public static void WikiCourse(double latitude1, double longitude1, double latitude2, double longitude2, out Quantity.Angle initialCourse, out Quantity.Angle finalCourse, out Quantity.Angle centralAngle, out Quantity.Length distanceAlongTgc)
     {
-      var dLat = lat2 - lat1;
-      var dLon = lon2 - lon1;
+      var lat12 = latitude2 - latitude1;
+      var lon12 = longitude2 - longitude1;
 
-      var cosLat1 = System.Math.Cos(lat1);
-      var cosLat2 = System.Math.Cos(lat2);
-      var sinLat1 = System.Math.Sin(lat1);
-      var sinLat2 = System.Math.Sin(lat2);
+      var cosLon12 = System.Math.Cos(lon12);
+      var sinLon12 = System.Math.Sin(lon12);
 
-      var d12 = 2 * System.Math.Asin(System.Math.Sqrt(System.Math.Pow(System.Math.Sin(dLat / 2), 2) + cosLat1 * cosLat2 * System.Math.Pow(System.Math.Sin(dLon / 2), 2)));
+      var cosLat1 = System.Math.Cos(latitude1);
+      var cosLat2 = System.Math.Cos(latitude2);
+      var sinLat1 = System.Math.Sin(latitude1);
+      var sinLat2 = System.Math.Sin(latitude2);
 
-      var φ1 = System.Math.Acos(sinLat2 - sinLat1 * System.Math.Cos(d12) / System.Math.Sin(d12) * cosLat1);
-      var φ2 = System.Math.Acos(sinLat1 - sinLat2 * System.Math.Cos(d12) / System.Math.Sin(d12) * cosLat2);
+      initialCourse = (Quantity.Angle)System.Math.Atan2(cosLat2 * sinLon12, cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLon12);
+      finalCourse = (Quantity.Angle)System.Math.Atan2(cosLat1 * sinLon12, -cosLat2 * sinLat1 + sinLat2 * cosLat1 * cosLon12);
 
-      var bearing12 = System.Math.Sin(dLon) > 0 ? φ1 : Maths.PiX2 - φ1;
-      var bearing21 = System.Math.Sin(dLon) > 0 ? Maths.PiX2 - φ2 : φ2;
+      centralAngle = (Quantity.Angle)System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLon12, 2) + System.Math.Pow(cosLat2 * sinLon12, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosLon12);
+
+      distanceAlongTgc = Earth.EquatorialRadius * centralAngle.Value;
+    }
+    public static void IntersectionOfPaths(double latitude1, double longitude1, double bearing1, double latitude2, double longitude2, double bearing2, out double latitudeOut, out double longitudeOut)
+    {
+      var latD = latitude2 - latitude1;
+      var lonD = longitude2 - longitude1;
+      var sinlonD = System.Math.Sin(lonD);
+
+      var cosLat1 = System.Math.Cos(latitude1);
+      var cosLat2 = System.Math.Cos(latitude2);
+      var sinLat1 = System.Math.Sin(latitude1);
+      var sinLat2 = System.Math.Sin(latitude2);
+
+      var d12 = 2 * System.Math.Asin(System.Math.Sqrt(System.Math.Pow(System.Math.Sin(latD / 2), 2) + cosLat1 * cosLat2 * System.Math.Pow(System.Math.Sin(lonD / 2), 2)));
+      var cosd12 = System.Math.Cos(d12);
+      var sind12 = System.Math.Sin(d12);
+
+      var φ1 = System.Math.Acos(sinLat2 - sinLat1 * cosd12 / sind12 * cosLat1);
+      var φ2 = System.Math.Acos(sinLat1 - sinLat2 * cosd12 / sind12 * cosLat2);
+
+      var bearing12 = sinlonD > 0 ? φ1 : Maths.PiX2 - φ1;
+      var bearing21 = sinlonD > 0 ? Maths.PiX2 - φ2 : φ2;
 
       var α1 = (bearing1 - bearing12 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
       var α1cos = System.Math.Cos(α1);
@@ -338,50 +381,22 @@ namespace Flux.CoordinateSystems
       var α2cos = System.Math.Cos(α2);
       var α2sin = System.Math.Sin(α2);
 
-      var α3 = System.Math.Acos(-α1cos * α2cos + α1sin * α2sin * System.Math.Cos(d12));
+      var α3 = System.Math.Acos(-α1cos * α2cos + α1sin * α2sin * cosd12);
 
-      var d13 = System.Math.Atan2(System.Math.Sin(d12) * α1sin * α2sin, α2cos + α1cos * System.Math.Cos(α3));
+      var d13 = System.Math.Atan2(sind12 * α1sin * α2sin, α2cos + α1cos * System.Math.Cos(α3));
       var d13cos = System.Math.Cos(d13);
       var d13sin = System.Math.Sin(d13);
 
-      var lat3 = System.Math.Asin(sinLat1 * d13cos + cosLat1 * d13sin * System.Math.Cos(bearing1));
+      latitudeOut = System.Math.Asin(sinLat1 * d13cos + cosLat1 * d13sin * System.Math.Cos(bearing1));
 
-      var dLon13 = System.Math.Atan2(System.Math.Sin(bearing1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(lat3));
+      var dLon13 = System.Math.Atan2(System.Math.Sin(bearing1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(latitudeOut));
 
-      var lon3 = (lon1 + dLon13 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
-
-      return (lat3, lon3);
+      longitudeOut = (longitude1 + dLon13 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
     public static double MaximumLatitude(double latitude, double bearing)
       => System.Math.Acos(System.Math.Abs(System.Math.Sin(bearing) * System.Math.Cos(latitude)));
-
-    /// <summary></summary>
-    /// <example>
-    /// var pixel = Flux.Mercator.MercatorProjectPixel(5, 9.95, 10000, 10000);
-    /// var ll = Flux.Mercator.MercatorUnprojectPixel(pixel.X, pixel.Y, 10000, 10000);
-    /// </example>
-    //public static (double X, double Y) MercatorProjectPixel(double latitude, double longitude, int pixelCanvasWidth, int pixelCanvasHeight)
-    //{
-    //  var x = (longitude + 180.0) * pixelCanvasWidth / 360.0;
-
-    //  var mpForward = System.Math.PI - System.Math.Log(System.Math.Tan((Quantity.Angle.ConvertDegreeToRadian(latitude) / 2.0) + Maths.PiOver4));
-
-    //  var y = (pixelCanvasHeight / 2.0) - (mpForward * (pixelCanvasWidth / Maths.PiX2));
-
-    //  return (x, y);
-    //}
-    //public static (double Latitude, double Longitude) MercatorUnprojectPixel(double x, double y, int pixelCanvasWidth, int pixelCanvasHeight)
-    //{
-    //  var longitude = x * 360.0 / pixelCanvasWidth - 180.0;
-
-    //  var mpInverse = ((pixelCanvasHeight / 2.0) - y) / (pixelCanvasWidth / Maths.PiX2);
-
-    //  var latitude = Quantity.Angle.ConvertRadianToDegree((System.Math.Atan(System.Math.Pow(System.Math.E, mpInverse)) - Maths.PiOver4) * 2.0);
-
-    //  return (latitude, longitude);
-    //}
 
     /// <summary>This is the halfway point along a great circle path between the two points.</summary>
     public static void Midpoint(double latitude1, double longitude1, double latitude2, double longitude2, out double latitudeOut, out double longitudeOut)
@@ -411,6 +426,7 @@ namespace Flux.CoordinateSystems
       return false;
     }
 
+    /// <summary>Returns whether the altitude is valid on Earth.</summary>
     public static bool ValidAltitude(double altitudeInMeters)
       => altitudeInMeters >= MinAltitudeInMeters && altitudeInMeters <= MaxAltitudeInMeters;
     #endregion Static members
