@@ -11,7 +11,7 @@ namespace Flux
         case Quantity.AngleUnit.Arcsecond:
           return Quantity.Angle.DoublePrimeSymbol.ToString();
         case Quantity.AngleUnit.Degree:
-          return @" deg";
+          return Quantity.Angle.DegreeSymbol.ToString();
         case Quantity.AngleUnit.Gradian:
           return @" grad";
         case Quantity.AngleUnit.Radian:
@@ -97,6 +97,8 @@ namespace Flux
       public CoordinateSystems.CartesianCoordinate2 ToCartesian2Ex()
         => (CoordinateSystems.CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
+      public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null)
+        => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
       {
         switch (unit)
@@ -237,7 +239,7 @@ namespace Flux
       public override int GetHashCode()
         => m_value.GetHashCode();
       public override string ToString()
-        => $"<{GetType().Name}: {m_value} rad ({Degree:N2}{DegreeSymbol})>";
+        => $"<{GetType().Name}: {ToUnitString()} ({ToUnitString(AngleUnit.Degree, @"N2")})>";
       #endregion Object overrides
     }
   }
