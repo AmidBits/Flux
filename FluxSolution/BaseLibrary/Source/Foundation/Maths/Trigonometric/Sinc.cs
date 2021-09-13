@@ -6,6 +6,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
     public static double Sincn(double value)
       => Sincu(System.Math.PI * value);
+
     /// <summary>Returns the unnormalized sinc of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
     public static double Sincu(double value)

@@ -332,7 +332,7 @@ namespace Flux.CoordinateSystems
     }
 
     // https://en.wikipedia.org/wiki/Great-circle_navigation
-    public static void WikiCourse(double latitude1, double longitude1, double latitude2, double longitude2, out Quantity.Angle initialCourse, out Quantity.Angle finalCourse, out Quantity.Angle centralAngle, out Quantity.Length distanceAlongTgc)
+    public static void WikiCourse(double latitude1, double longitude1, double latitude2, double longitude2, out Quantity.Angle a1, out Quantity.Angle a2, out Quantity.Angle centralAngle, out Quantity.Length distanceAlongTgc)
     {
       var lat12 = latitude2 - latitude1;
       var lon12 = longitude2 - longitude1;
@@ -345,12 +345,19 @@ namespace Flux.CoordinateSystems
       var sinLat1 = System.Math.Sin(latitude1);
       var sinLat2 = System.Math.Sin(latitude2);
 
-      initialCourse = (Quantity.Angle)System.Math.Atan2(cosLat2 * sinLon12, cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLon12);
-      finalCourse = (Quantity.Angle)System.Math.Atan2(cosLat1 * sinLon12, -cosLat2 * sinLat1 + sinLat2 * cosLat1 * cosLon12);
+      // initialCourse
+      a1 = (Quantity.Angle)System.Math.Atan2(cosLat2 * sinLon12, cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLon12);
+      // finalCourse
+      a2 = (Quantity.Angle)System.Math.Atan2(cosLat1 * sinLon12, -cosLat2 * sinLat1 + sinLat2 * cosLat1 * cosLon12);
 
       centralAngle = (Quantity.Angle)System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLon12, 2) + System.Math.Pow(cosLat2 * sinLon12, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosLon12);
 
       distanceAlongTgc = Earth.EquatorialRadius * centralAngle.Value;
+
+      var sinA1 = System.Math.Sin(a1.Value);
+
+      var a0 = (Quantity.Angle)System.Math.Atan((sinA1 * cosLat1) / (System.Math.Pow(System.Math.Cos(a1.Value), 2) + System.Math.Pow(sinA1, 2) * System.Math.Pow(sinLat1, 2)));
+
     }
     public static void IntersectionOfPaths(double latitude1, double longitude1, double bearing1, double latitude2, double longitude2, double bearing2, out double latitudeOut, out double longitudeOut)
     {
