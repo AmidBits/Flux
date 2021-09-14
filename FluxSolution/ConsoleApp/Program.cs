@@ -19,136 +19,13 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      // Working on the WikiCourse method to understand how to compute various properties, see the link at the method.
-      var lat1 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(-33);
-      var lon1 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(-71.6);
-      var lat2 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(31.4);
-      var lon2 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(121.8);
-      var mu = 0.5;
-
-      Flux.CoordinateSystems.GeographicCoordinate.IntermediaryPoint(lat1.Value, lon1.Value, lat2.Value, lon2.Value, mu, out var lat3, out var lon3);
-      var lat3b = (Flux.Quantity.Angle)lat3;
-      var lon3b = (Flux.Quantity.Angle)lon3;
-
-      var t = Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa;
-      var p = Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa;
-
-      var d = Flux.CoordinateSystems.GeographicCoordinate.ComputeDistance(t.Latitude.Radian, t.Longitude.Radian, p.Latitude.Radian, p.Longitude.Radian, Earth.MeanRadius.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
-
-      var birth = new System.DateTime(1968, 2, 28);
-      var today = new System.DateTime(2020, 2, 29);
-
-      System.Console.WriteLine($"{today.AgeInYears(birth)} or {birth.AgeInYears(today)}");
-      System.Console.WriteLine($"{today.AgeInTotalYears(birth)} or {birth.AgeInTotalYears(today)}");
-      return;
 
 
-      var jd = Flux.JulianDate.FirstGregorianCalendarDate;
-      var x = 25;
-      while (x > 0)
-      {
-        System.Console.WriteLine(jd);
-
-        jd = jd.AddHours(-6);
-
-        System.Console.WriteLine($"{jd} = {jd.ToJulianDayNumber()} = {jd.ToJulianDayNumber().ToJulianDate()}");
-
-        x--;
-      }
-      var mjd = new Flux.JulianDate(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
-
-      return;
-
-      //System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate);
-      //System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate);
-      //System.Console.WriteLine(Flux.JulianDate.LastJulianCalendarDate);
-      //System.Console.WriteLine(Flux.JulianDate.FirstGregorianCalendarDate.ToMomentUtc(ConversionCalendar.GregorianCalendar));
-      //System.Console.WriteLine(Flux.JulianDate.FirstJulianCalendarDate.ToMomentUtc(ConversionCalendar.JulianCalendar));
-      //System.Console.WriteLine(Flux.JulianDate.LastJulianCalendarDate.ToMomentUtc(ConversionCalendar.JulianCalendar));
-      //return;
-
-      //const string csF = "F";
-      //const string csP = "P";
-      //const string csT = "T";
-      //const string csY = "Y";
-
-      //var ls = new System.Collections.Generic.List<string>();
-      //ls.Add(csF);
-      //ls.Add(csP);
-      //ls.Add(csT);
-      //ls.Add(csY);
-
-      //var ds = new System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double>();
-      //ds.Add(new KeyValuePair<string, string>(csF, csT), 257);
-      //ds.Add(new KeyValuePair<string, string>(csT, csF), 257);
-      //ds.Add(new KeyValuePair<string, string>(csP, csF), 145);
-      //ds.Add(new KeyValuePair<string, string>(csF, csP), 145);
-      //ds.Add(new KeyValuePair<string, string>(csT, csP), 113);
-      //ds.Add(new KeyValuePair<string, string>(csP, csT), 113);
-      //ds.Add(new KeyValuePair<string, string>(csT, csY), 238);
-      //ds.Add(new KeyValuePair<string, string>(csY, csT), 238);
-      //ds.Add(new KeyValuePair<string, string>(csP, csY), 185);
-      //ds.Add(new KeyValuePair<string, string>(csY, csP), 185);
-      //ds.Add(new KeyValuePair<string, string>(csF, csY), 318);
-      //ds.Add(new KeyValuePair<string, string>(csY, csF), 318);
-
-      //static IEnumerable<System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>> Tsp(string l, System.Collections.Generic.List<string> v, System.Collections.Generic.List<string> ls, System.Collections.Generic.Dictionary<System.Collections.Generic.KeyValuePair<string, string>, double> ds)
-      //{
-      //  var v1 = v.ToList();
-      //  v1.Add(l);
-
-      //  var r = ls.Where(l2 => !v1.Contains(l2)).ToList();
-
-      //  if (r.Any())
-      //  {
-      //    System.Console.WriteLine(r.Count);
-      //    var last = string.Empty;
-      //    foreach (var l1 in r)
-      //    {
-      //      var rs = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
-      //      System.Console.WriteLine(new KeyValuePair<string, string>(l, l1));
-      //      foreach (var dics in Tsp(l1, v1, ls, ds))
-      //        foreach (var kvp in dics)
-      //          System.Console.WriteLine(new KeyValuePair<string, string>(kvp.Key, kvp.Value));
-      //      yield return rs;
-      //      last = l1;
-      //    }
-      //    //         if (r.Count == 1)
-      //    //         yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { new KeyValuePair<string, string>(last, v1.First()) };
-      //  }
-      //  else
-      //    yield return new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
-      //}
-
-      //foreach (var list in Tsp(csT, new System.Collections.Generic.List<string>(), ls, ds))
-      //{
-      //  foreach (var kvp in list)
-      //    System.Console.WriteLine(kvp);
-
-      //  System.Console.WriteLine();
-      //}
-
-      //var ints = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
-
-      //var lis = new Flux.Metrical.LongestIncreasingSubsequence<int>().GetLongestIncreasingSubsequence(ints.ToReadOnlySpan());
-
-      //string X = "ABCBDAB", Y = "BDCABA";
-
-      //var scs = new Flux.Metrical.ShortestCommonSupersequence<char>();
-
-      //var l = scs.GetList(X, Y, out var m);
-      //return;
-      //var r1 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 1, 1), new System.DateTime(2021, 8, 31));
-      //var r2 = new Flux.Range<System.DateTime>(new System.DateTime(2021, 4, 1), new System.DateTime(2021, 12, 31));
-      //var rd = Flux.Range<System.DateTime>.Difference(r1, r2);
-      //var ri = Flux.Range<System.DateTime>.Intersect(r1, r2);
-      //var rsd = Flux.Range<System.DateTime>.SymmetricDifference(r1, r2);
-      //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
-      //return;
 
       Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.Madrid);
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.Takapau);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.MadridSpain);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.TakapauNewZealand);
 
       static void Draw(Flux.CoordinateSystems.GeographicCoordinate coord)
       {
@@ -168,7 +45,6 @@ namespace ConsoleApp
         System.Console.WriteLine(gc2);
         System.Console.WriteLine();
       }
-      return;
 
       //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       //var cv = new Flux.Model.GameOfLife.Console(game);

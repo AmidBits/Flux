@@ -41,9 +41,9 @@ namespace Flux
         => (SphericalCoordinate)ConvertToSphericalCoordinate(m_x, m_y, m_z);
 
       #region Static methods
-      public static double ComputeEuclideanLength(double x, double y, double z)
-        => System.Math.Sqrt(ComputeEuclideanLengthSquared(x, y, z));
-      public static double ComputeEuclideanLengthSquared(double x, double y, double z)
+      public static double GetEuclideanLength(double x, double y, double z)
+        => System.Math.Sqrt(GetEuclideanLengthSquared(x, y, z));
+      public static double GetEuclideanLengthSquared(double x, double y, double z)
         => x * x + y * y + z * z;
 
       public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double x, double y, double z)
@@ -84,7 +84,7 @@ namespace Flux
       public override int GetHashCode()
         => System.HashCode.Combine(m_x, m_y, m_z);
       public override string ToString()
-        => $"<{GetType().Name}: {m_x} x, {m_y} y, {m_z} z, ({ComputeEuclideanLength(m_x, m_y, m_z)} length)>";
+        => $"<{GetType().Name}: {m_x} x, {m_y} y, {m_z} z, ({GetEuclideanLength(m_x, m_y, m_z)} length)>";
       #endregion Object overrides
     }
   }

@@ -62,12 +62,12 @@ namespace Flux
     /// <summary>Creates a new <see cref="System.DateTime"/> from this instance.</summary>
     public System.DateTime ToDateTime()
       => new System.DateTime(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
-    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
-    public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
-      => new JulianDayNumber(m_year, m_month, m_day, calendar);
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
       => new JulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
+    public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
+      => new JulianDayNumber(m_year, m_month, m_day, calendar);
 
     #region Static methods
     /// <summary>Returns whether the date is considered to be in the modern Gregorian Calendar.</summary>

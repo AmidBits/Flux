@@ -75,7 +75,7 @@ namespace Flux
       return new MomentUtc(year, month, day, hour, minute, second, millisecond);
     }
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(43200 + GetTimeSinceNoon(m_value).Value).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
+      => System.TimeSpan.FromSeconds(43200 + GetTimeSinceNoon(m_value)).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 
     #region Static methods
     /// <summary>Converts the time components to a Julian Date (JD) "time-of-day" fraction value. This is not the same as the number of seconds.</summary>
@@ -84,7 +84,7 @@ namespace Flux
     /// <summary>Converts the Julian Date (JD) to discrete time components. This method is only concerned with the time portion of the Julian Date.</summary>
     public static void ConvertToTimeParts(double julianDate, out int hour, out int minute, out int second, out int millisecond)
     {
-      var totalSeconds = GetTimeSinceNoon(julianDate).Value;
+      var totalSeconds = GetTimeSinceNoon(julianDate);
 
       if (totalSeconds <= 43200)
         totalSeconds = (totalSeconds + 43200) % 86400;
@@ -101,10 +101,9 @@ namespace Flux
       millisecond = (int)totalSeconds;
     }
 
-    /// <summary>Returns the time string of the time-of-day portion of the Julian Date.</summary>
     /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>
-    public static Quantity.Time GetTimeSinceNoon(double julianDate)
-      => new Quantity.Time(julianDate.GetFraction() * 86400);
+    public static double GetTimeSinceNoon(double julianDate)
+      => julianDate.GetFraction() * 86400;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
     public static bool IsGregorianCalendar(double julianDate)

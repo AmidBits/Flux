@@ -18,14 +18,15 @@ namespace Flux
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }
 
+    /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
+    public int TheoreticalTimezoneOffset
+      => GetTheoreticalTimezoneOffset(m_value);
+
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double GetMercatorProjectX()
+    public double GetMercatorProjectedX()
       => Radian;
-    /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
-    public int GetTheoreticalTimezoneOffset()
-      => ComputeTheoreticalTimezoneOffset(m_value);
 
     public double Radian
       => Quantity.Angle.ConvertDegreeToRadian(m_value);
@@ -34,8 +35,11 @@ namespace Flux
       => m_value;
 
     #region Static methods
-    public static int ComputeTheoreticalTimezoneOffset(double degLongitude)
+    /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
+    /// <param name="degLongitude"></param>
+    public static int GetTheoreticalTimezoneOffset(double degLongitude)
       => (int)Maths.RoundTo((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, FullRoundingBehavior.TowardZero);
+
     /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
     public static bool IsLongitude(double longitudeDeg)
       => longitudeDeg >= MinValue && longitudeDeg <= MaxValue;
