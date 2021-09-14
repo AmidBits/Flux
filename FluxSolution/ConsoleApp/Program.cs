@@ -22,8 +22,8 @@ namespace ConsoleApp
       // Working on the WikiCourse method to understand how to compute various properties, see the link at the method.
       Flux.CoordinateSystems.GeographicCoordinate.WikiCourse(Flux.Quantity.Angle.ConvertDegreeToRadian(-33), Flux.Quantity.Angle.ConvertDegreeToRadian(-71.6), Flux.Quantity.Angle.ConvertDegreeToRadian(31.4), Flux.Quantity.Angle.ConvertDegreeToRadian(121.8), out var ic, out var fc, out var ca, out var datgc);
 
-      var today = new System.DateTime(1968, 2, 28);
-      var birth = new System.DateTime(2020, 2, 29);
+      var birth = new System.DateTime(1968, 2, 28);
+      var today = new System.DateTime(2020, 2, 29);
 
       System.Console.WriteLine($"{today.AgeInYears(birth)} or {birth.AgeInYears(today)}");
       System.Console.WriteLine($"{today.AgeInTotalYears(birth)} or {birth.AgeInTotalYears(today)}");

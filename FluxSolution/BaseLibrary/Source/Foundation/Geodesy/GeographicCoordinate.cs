@@ -140,6 +140,43 @@ namespace Flux.CoordinateSystems
     //}
 
     #region Static members
+    /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
+    public static bool ComputeBoundingBox(double radLatitude, double radLongitude, double metersBoxRadius, out double latitudeMin, out double longitudeMin, out double latitudeMax, out double longitudeMax)
+    {
+      metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
+
+      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.Value;
+
+      var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(radLatitude));
+
+      latitudeMin = radLatitude - angularDistance;
+      latitudeMax = radLatitude + angularDistance;
+
+      if (latitudeMin <= -Maths.PiOver2 || latitudeMax >= Maths.PiOver2) // A pole is within the given distance.
+      {
+        latitudeMin = System.Math.Max(latitudeMin, -Maths.PiOver2);
+        longitudeMin = -System.Math.PI;
+        latitudeMax = System.Math.Min(latitudeMax, Maths.PiOver2);
+        longitudeMax = System.Math.PI;
+
+        return false;
+      }
+
+      longitudeMin = radLongitude - longitudeDelta;
+      longitudeMax = radLongitude + longitudeDelta;
+
+      if (longitudeMin < -System.Math.PI)
+        longitudeMin += Maths.PiX2;
+      if (longitudeMax > System.Math.PI)
+        longitudeMax -= Maths.PiX2;
+
+      return true;
+    }
+
+    /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
+    public static double ComputeMaximumLatitude(double radLatitude, double degAzimuth)
+      => System.Math.Acos(System.Math.Abs(System.Math.Sin(degAzimuth) * System.Math.Cos(radLatitude)));
+
     // https://github.com/dneuman/EqualEarth/blob/master/EqualEarth.py
     public GeographicCoordinate FromEqualEarthProjection(double x, double y)
     {
@@ -182,39 +219,6 @@ namespace Flux.CoordinateSystems
       crossTrackCentralAngle = CrossTrackCentralAngle(latitude1, longitude1, latitude2, longitude2, latitude3, longitude3, out var trackCentralAngle13);
 
       return System.Math.Acos(System.Math.Cos(trackCentralAngle13) / System.Math.Cos(crossTrackCentralAngle));
-    }
-
-    /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool BoundingBox(double latitude, double longitude, double boxRadiusInMeters, out double angularDistance, out double longitudeDelta, out double latitudeMin, out double longitudeMin, out double latitudeMax, out double longitudeMax)
-    {
-      boxRadiusInMeters = System.Math.Max(boxRadiusInMeters, 1);
-
-      angularDistance = boxRadiusInMeters / Earth.EquatorialRadius.Value;
-
-      longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(latitude));
-
-      latitudeMin = latitude - angularDistance;
-      latitudeMax = latitude + angularDistance;
-
-      if (latitudeMin <= -Maths.PiOver2 || latitudeMax >= Maths.PiOver2) // A pole is within the given distance.
-      {
-        latitudeMin = System.Math.Max(latitudeMin, -Maths.PiOver2);
-        longitudeMin = -System.Math.PI;
-        latitudeMax = System.Math.Min(latitudeMax, Maths.PiOver2);
-        longitudeMax = System.Math.PI;
-
-        return false;
-      }
-
-      longitudeMin = longitude - longitudeDelta;
-      longitudeMax = longitude + longitudeDelta;
-
-      if (longitudeMin < -System.Math.PI)
-        longitudeMin += Maths.PiX2;
-      if (longitudeMax > System.Math.PI)
-        longitudeMax -= Maths.PiX2;
-
-      return true;
     }
 
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
@@ -278,19 +282,19 @@ namespace Flux.CoordinateSystems
     }
 
     /// <summary>Given a start point, initial bearing, and angularDistance, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
-    /// <param name="bearing">Bearing is the direction or course.</param>
+    /// <param name="azimuthBearing">Bearing is the direction or course.</param>
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     /// <remarks>The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</remarks>
-    public static void EndPoint(double latitude, double longitude, double bearing, double angularDistance, out double latitudeOut, out double longitudeOut)
+    public static void EndPoint(double radLatitude, double radLongitude, double azimuthBearing, double angularDistance, out double latitudeOut, out double longitudeOut)
     {
-      var cosLat = System.Math.Cos(latitude);
-      var sinLat = System.Math.Sin(latitude);
+      var cosLat = System.Math.Cos(radLatitude);
+      var sinLat = System.Math.Sin(radLatitude);
 
       var cosAd = System.Math.Cos(angularDistance);
       var sinAd = System.Math.Sin(angularDistance);
 
-      latitudeOut = System.Math.Asin(sinLat * cosAd + cosLat * sinAd * System.Math.Cos(bearing));
-      longitudeOut = longitude + System.Math.Atan2(System.Math.Sin(bearing) * sinAd * cosLat, cosAd - sinLat * System.Math.Sin(latitude));
+      latitudeOut = System.Math.Asin(sinLat * cosAd + cosLat * sinAd * System.Math.Cos(azimuthBearing));
+      longitudeOut = radLongitude + System.Math.Atan2(System.Math.Sin(azimuthBearing) * sinAd * cosLat, cosAd - sinLat * System.Math.Sin(radLatitude));
     }
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
@@ -308,7 +312,7 @@ namespace Flux.CoordinateSystems
       var y = System.Math.Sin(lonD) * cosLat2;
       var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
 
-      return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // Atan2 returns values in the range -π - +π radians (i.e. -180 - +180 degrees), so we normalize to 0 - (PI * 2) radians (i.e. 0 - 360 degrees).
+      return (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
@@ -359,6 +363,7 @@ namespace Flux.CoordinateSystems
       var a0 = (Quantity.Angle)System.Math.Atan((sinA1 * cosLat1) / (System.Math.Pow(System.Math.Cos(a1.Value), 2) + System.Math.Pow(sinA1, 2) * System.Math.Pow(sinLat1, 2)));
 
     }
+
     public static void IntersectionOfPaths(double latitude1, double longitude1, double bearing1, double latitude2, double longitude2, double bearing2, out double latitudeOut, out double longitudeOut)
     {
       var latD = latitude2 - latitude1;
@@ -400,10 +405,6 @@ namespace Flux.CoordinateSystems
 
       longitudeOut = (longitude1 + dLon13 + System.Math.PI) % Maths.PiX2 - System.Math.PI;
     }
-
-    /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
-    public static double MaximumLatitude(double latitude, double bearing)
-      => System.Math.Acos(System.Math.Abs(System.Math.Sin(bearing) * System.Math.Cos(latitude)));
 
     /// <summary>This is the halfway point along a great circle path between the two points.</summary>
     public static void Midpoint(double latitude1, double longitude1, double latitude2, double longitude2, out double latitudeOut, out double longitudeOut)
