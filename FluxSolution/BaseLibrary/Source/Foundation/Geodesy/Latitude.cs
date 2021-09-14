@@ -64,9 +64,12 @@ namespace Flux
 
       return System.Math.Sqrt(numerator / denominator);
     }
+    /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
+    public static double ComputeMaximumLatitude(double radLatitude, double radAzimuth)
+      => System.Math.Acos(System.Math.Abs(System.Math.Sin(radAzimuth) * System.Math.Cos(radLatitude)));
     /// <summary>Returns whether the specified latitude (in degrees) is a valid latitude, i.e. [-90, +90].</summary>
-    public static bool IsLatitude(double latitudeDeg)
-      => latitudeDeg >= MinValue && latitudeDeg <= MaxValue;
+    public static bool IsLatitude(double degLatitude)
+      => degLatitude >= MinValue && degLatitude <= MaxValue;
     #endregion Static methods
 
     #region Overloaded operators

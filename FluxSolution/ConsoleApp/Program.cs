@@ -20,7 +20,20 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       // Working on the WikiCourse method to understand how to compute various properties, see the link at the method.
-      Flux.CoordinateSystems.GeographicCoordinate.WikiCourse(Flux.Quantity.Angle.ConvertDegreeToRadian(-33), Flux.Quantity.Angle.ConvertDegreeToRadian(-71.6), Flux.Quantity.Angle.ConvertDegreeToRadian(31.4), Flux.Quantity.Angle.ConvertDegreeToRadian(121.8), out var ic, out var fc, out var ca, out var datgc);
+      var lat1 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(-33);
+      var lon1 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(-71.6);
+      var lat2 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(31.4);
+      var lon2 = (Flux.Quantity.Angle)Flux.Quantity.Angle.ConvertDegreeToRadian(121.8);
+      var mu = 0.5;
+
+      Flux.CoordinateSystems.GeographicCoordinate.IntermediaryPoint(lat1.Value, lon1.Value, lat2.Value, lon2.Value, mu, out var lat3, out var lon3);
+      var lat3b = (Flux.Quantity.Angle)lat3;
+      var lon3b = (Flux.Quantity.Angle)lon3;
+
+      var t = Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa;
+      var p = Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa;
+
+      var d = Flux.CoordinateSystems.GeographicCoordinate.ComputeDistance(t.Latitude.Radian, t.Longitude.Radian, p.Latitude.Radian, p.Longitude.Radian, Earth.MeanRadius.ToUnitValue(Flux.Quantity.LengthUnit.Mile));
 
       var birth = new System.DateTime(1968, 2, 28);
       var today = new System.DateTime(2020, 2, 29);
@@ -133,7 +146,7 @@ namespace ConsoleApp
       //var ru = Flux.Range<System.DateTime>.Union(r1, r2);
       //return;
 
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.Tucson);
+      Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
       Draw(Flux.CoordinateSystems.GeographicCoordinate.Madrid);
       Draw(Flux.CoordinateSystems.GeographicCoordinate.Takapau);
 
