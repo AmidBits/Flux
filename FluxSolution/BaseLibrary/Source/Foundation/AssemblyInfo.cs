@@ -51,6 +51,7 @@ namespace Flux
     public string VersionString
       => Version.ToString();
 
+    [System.Diagnostics.CodeAnalysis.DisallowNull]
     public System.Reflection.Assembly Assembly { get; set; }
 
     public AssemblyInfo(System.Reflection.Assembly assembly)

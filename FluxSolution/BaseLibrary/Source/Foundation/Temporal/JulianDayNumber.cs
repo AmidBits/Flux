@@ -118,7 +118,7 @@ namespace Flux
       => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28) is var year && year > 4713 ? year - 4713 : year < 4714 ? -(4714 - year) : year;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-    public bool IsGregorianCalendar(int julianDayNumber)
+    public static bool IsGregorianCalendar(int julianDayNumber)
       => julianDayNumber >= 2299161;
     #endregion Static methods
 

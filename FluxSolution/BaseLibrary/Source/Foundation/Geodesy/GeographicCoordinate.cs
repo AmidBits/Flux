@@ -151,7 +151,7 @@ namespace Flux.CoordinateSystems
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return (lat, lon, z.HasValue ? z.Value : Earth.MeanRadius.Value);
+      return (lat, lon, z ?? Earth.MeanRadius.Value);
     }
     /// <summary>Converts the specified geographical coordinate components to Equal Earth projected X, Y coordinate components with Z optionally containing the altitude.</summary>
     public static (double x, double y, double z) ConvertToEqualEarthProjection(double radLatitude, double radLongitude, double metersAltitude)
@@ -192,7 +192,7 @@ namespace Flux.CoordinateSystems
     public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitude, double longitude, double altitude)
       => (altitude, System.Math.PI - (latitude + Maths.PiOver2), longitude + System.Math.PI);
     /// <summary>Converts the specified geographical coordinate components to Winkel Tripel projected X, Y coordinate components with Z optionally containing the altitude.</summary>
-    public (double x, double y, double z) ConvertToWinkelTripelProjection(double radLatitude, double radLongitude, double metersAltitude)
+    public static (double x, double y, double z) ConvertToWinkelTripelProjection(double radLatitude, double radLongitude, double metersAltitude)
     {
       var sinc = Maths.Sincu(System.Math.Acos(System.Math.Cos(radLatitude) * System.Math.Cos(radLongitude / 2)));
 

@@ -19,7 +19,20 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      var rng = new System.Random();
 
+      var bi = new Flux.Numerics.FibonacciNumber().GetNumberSequence().ElementAt(300);
+      var bip = bi + 1;
+
+      var value = rng.NextBigInteger(bip);
+
+      while (value >= 0 && value <= bi)
+      {
+        if (value == bi || value <= 1000)
+          System.Console.WriteLine(value);
+
+        value = rng.NextBigInteger(bip);
+      }
 
 
       Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
