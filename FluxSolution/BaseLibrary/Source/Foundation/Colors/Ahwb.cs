@@ -9,9 +9,6 @@ namespace Flux.Colors
     private double m_alpha;
     private Hwb m_hwb;
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Hwb HWB { get => m_hwb; set => m_hwb = value; }
-
     public Ahwb(double alpha, Hwb hwb)
     {
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
@@ -20,6 +17,9 @@ namespace Flux.Colors
     public Ahwb(double alpha, double hue, double white, double black)
       : this(alpha, new Hwb(hue, white, black))
     { }
+
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Hwb HWB { get => m_hwb; set => m_hwb = value; }
 
     /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
     public Ahsv ToAhsv()

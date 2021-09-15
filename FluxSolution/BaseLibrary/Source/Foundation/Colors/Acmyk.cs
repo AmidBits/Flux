@@ -10,9 +10,6 @@ namespace Flux.Colors
     private double m_alpha;
     private Cmyk m_cmyk;
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
-
     public Acmyk(double alpha, Cmyk cmyk)
     {
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
@@ -22,9 +19,12 @@ namespace Flux.Colors
       : this(alpha, new Cmyk(cyan, magenta, yellow, black))
     { }
 
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
+
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(Alpha * 255), CMYK.ToRgb());
+      => new Argb(System.Convert.ToByte(m_alpha * 255), CMYK.ToRgb());
 
     #region Static members
     public static Acmyk FromRandom(System.Random rng)

@@ -27,21 +27,14 @@ namespace Flux.CoordinateSystems
       => m_height;
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
-      => (CartesianCoordinate3)ConvertToCartesianCoordinate(m_radius, m_azimuth.Radian, m_height);
+    {
+      var radAzimuth = m_azimuth.Radian;
+      return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth), m_height);
+    }
     public SphericalCoordinate ToSphericalCoordinate()
-      => (SphericalCoordinate)ConvertToSphericalCoordinate(m_radius, m_azimuth.Radian, m_height);
-
-    #region Static methods
-    public static (double x, double y, double z) ConvertToCartesianCoordinate(double radius, double azimuthRad, double height)
-      => (radius * System.Math.Cos(azimuthRad), radius * System.Math.Sin(azimuthRad), height);
-    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double radius, double azimuthRad, double height)
-      => (System.Math.Sqrt(radius * radius + height * height), System.Math.Atan2(radius, height), azimuthRad);
-    #endregion Static methods
+      => new SphericalCoordinate(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth.Radian);
 
     #region Overloaded operators
-    public static explicit operator CylindricalCoordinate(System.ValueTuple<double, double, double> radius_azimuthRad_height)
-      => new CylindricalCoordinate(radius_azimuthRad_height.Item1, radius_azimuthRad_height.Item2, radius_azimuthRad_height.Item3);
-
     public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b)
       => a.Equals(b);
     public static bool operator !=(CylindricalCoordinate a, CylindricalCoordinate b)

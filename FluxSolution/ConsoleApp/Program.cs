@@ -19,45 +19,47 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var rng = new System.Random();
+      int[,] board = {
+        { 1, 2, 1 },
+        { 2, 0, 0 },
+        { 0, 0, 0 }
+      };
 
-      var bi = new Flux.Numerics.FibonacciNumber().GetNumberSequence().ElementAt(300);
-      var bip = bi + 1;
+      System.Console.WriteLine(board.ToConsoleBlock());
 
-      var value = rng.NextBigInteger(bip);
+      var bpms = Flux.Model.TicTacToe2.Game.GetMovesForPlayer1(board);
+      var bpmsmax = bpms.Values.Max();
+      while (bpms.Any(kvp => kvp.Value < bpmsmax))
+        bpms.Remove(bpms.First(kvp => kvp.Value < bpmsmax).Key);
 
-      while (value >= 0 && value <= bi)
-      {
-        if (value == bi || value <= 1000)
-          System.Console.WriteLine(value);
+      foreach (var move in bpms)
+        System.Console.WriteLine(move);
+      System.Console.WriteLine();
 
-        value = rng.NextBigInteger(bip);
-      }
+      var boms = Flux.Model.TicTacToe2.Game.GetMovesForPlayer2(board);
+      while (boms.Any(kvp => !bpms.Keys.Contains(kvp.Key)))
+        boms.Remove(boms.First(kvp => !bpms.Keys.Contains(kvp.Key)).Key);
 
+      foreach (var move in boms)
+        System.Console.WriteLine(move);
+      System.Console.WriteLine();
 
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.MadridSpain);
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa);
-      Draw(Flux.CoordinateSystems.GeographicCoordinate.TakapauNewZealand);
+      //if(boms.Any())
 
-      static void Draw(Flux.CoordinateSystems.GeographicCoordinate coord)
-      {
-        var gc1 = coord;
-        System.Console.WriteLine(gc1);
-        var sp1 = gc1.ToSphericalCoordinate();
-        System.Console.WriteLine(sp1);
-        var cy1 = sp1.ToCylindricalCoordinate();
-        System.Console.WriteLine(cy1);
-        var ca1 = cy1.ToCartesianCoordinate3();
-        System.Console.WriteLine(ca1);
-        var cy2 = ca1.ToCylindricalCoordinate();
-        System.Console.WriteLine(cy2);
-        var sp2 = cy2.ToSphericalCoordinate();
-        System.Console.WriteLine(sp2);
-        var gc2 = sp2.ToGeographicCoordinate();
-        System.Console.WriteLine(gc2);
-        System.Console.WriteLine();
-      }
+      var bm = bpms.OrderByDescending(pm => pm.Value).FirstOrValue(pm => boms.OrderBy(om => om.Value).Any(om => om.Key == pm.Key), bpms.OrderByDescending(pm => pm.Value).First());
+
+      System.Console.WriteLine(bm);
+
+      //      var scores = new int[] { 3, 5, 6, 9, 1, 2, 0, -1 };
+
+      //      var mm = new Flux.Model.MinMax();
+
+      //System.Console.WriteLine(      mm.Minimax(true, scores));
+
+      //      var liss = new Flux.Metrical.LongestIncreasingSubsequence<int>();
+      //      var seq = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
+
+      //      var glis = liss.GetLongestIncreasingSubsequence(seq);
 
       //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
       //var cv = new Flux.Model.GameOfLife.Console(game);

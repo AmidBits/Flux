@@ -34,11 +34,14 @@ namespace Flux
         => m_z;
 
       public CylindricalCoordinate ToCylindricalCoordinate()
-        => (CylindricalCoordinate)ConvertToCylindricalCoordinate(m_x, m_y, m_z);
+        => new CylindricalCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
       public PolarCoordinate ToPolarCoordinate()
-        => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
+        => new PolarCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
       public SphericalCoordinate ToSphericalCoordinate()
-        => (SphericalCoordinate)ConvertToSphericalCoordinate(m_x, m_y, m_z);
+      {
+        var x2y2 = m_x * m_x + m_y * m_y;
+        return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
+      }
 
       #region Static methods
       public static double GetEuclideanLength(double x, double y, double z)
@@ -46,20 +49,6 @@ namespace Flux
       public static double GetEuclideanLengthSquared(double x, double y, double z)
         => x * x + y * y + z * z;
 
-      public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double x, double y, double z)
-      {
-        var radius = System.Math.Sqrt(x * x + y * y);
-        var azimuthRad = (System.Math.Atan2(y, x) + Maths.PiX2) % Maths.PiX2;
-        var height = z;
-        return (radius, azimuthRad, height);
-      }
-      public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
-        => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-      public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double x, double y, double z)
-      {
-        var x2y2 = x * x + y * y;
-        return (System.Math.Sqrt(x2y2 + z * z), System.Math.Atan2(System.Math.Sqrt(x2y2), z) + System.Math.PI, System.Math.Atan2(y, x) + System.Math.PI);
-      }
       #endregion Static methods
 
       #region Overloaded operators

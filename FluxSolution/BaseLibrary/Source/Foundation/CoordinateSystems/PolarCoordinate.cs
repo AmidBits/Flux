@@ -22,17 +22,12 @@ namespace Flux.CoordinateSystems
       => m_azimuth;
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
-      => (CartesianCoordinate2)ConvertToCartesianCoordinate2(m_radius, m_azimuth.Radian);
-
-    #region Static methods
-    public static (double x, double y) ConvertToCartesianCoordinate2(double radius, double azimuthRad)
-      => (radius * System.Math.Cos(azimuthRad), radius * System.Math.Sin(azimuthRad));
-    #endregion Static methods
+    {
+      var radAzimuth = m_azimuth.Radian;
+      return new CartesianCoordinate2(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth));
+    }
 
     #region Overloaded operators
-    public static explicit operator PolarCoordinate(System.ValueTuple<double, double> radius_azimuthRad)
-      => new PolarCoordinate(radius_azimuthRad.Item1, radius_azimuthRad.Item2);
-
     public static bool operator ==(PolarCoordinate a, PolarCoordinate b)
       => a.Equals(b);
     public static bool operator !=(PolarCoordinate a, PolarCoordinate b)

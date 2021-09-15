@@ -38,8 +38,8 @@ namespace Flux.CoordinateSystems
       Latitude = latitude;
       Longitude = longitude;
     }
-    public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeInMeters = 1.0)
-      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeInMeters))
+    public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeMeters = 1.0)
+      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeMeters))
     { }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
@@ -50,7 +50,7 @@ namespace Flux.CoordinateSystems
       => (CartesianCoordinate3)ConvertToNaturalEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => (SphericalCoordinate)ConvertToSphericalCoordinate(Latitude.Radian, Longitude.Radian, Altitude.Value);
+      => new SphericalCoordinate(Altitude.Value, System.Math.PI - (Latitude.Radian + Maths.PiOver2), Longitude.Radian + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
       => (CartesianCoordinate3)ConvertToWinkelTripelProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
@@ -188,9 +188,6 @@ namespace Flux.CoordinateSystems
 
       return (x, y, metersAltitude);
     }
-    /// <summary>Converts the specified geographical coordinate components to sperical coordinate components.</summary>
-    public static (double radius, double inclinationRad, double azimuthRad) ConvertToSphericalCoordinate(double latitude, double longitude, double altitude)
-      => (altitude, System.Math.PI - (latitude + Maths.PiOver2), longitude + System.Math.PI);
     /// <summary>Converts the specified geographical coordinate components to Winkel Tripel projected X, Y coordinate components with Z optionally containing the altitude.</summary>
     public static (double x, double y, double z) ConvertToWinkelTripelProjection(double radLatitude, double radLongitude, double metersAltitude)
     {
@@ -475,9 +472,6 @@ namespace Flux.CoordinateSystems
     #endregion Static members
 
     #region Overloaded operators
-    public static explicit operator GeographicCoordinate(System.ValueTuple<double, double, double> latitudeRad_longitudeRad_altitude)
-      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item1), Quantity.Angle.ConvertRadianToDegree(latitudeRad_longitudeRad_altitude.Item2), latitudeRad_longitudeRad_altitude.Item3);
-
     public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
       => a.Equals(b);
     public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)

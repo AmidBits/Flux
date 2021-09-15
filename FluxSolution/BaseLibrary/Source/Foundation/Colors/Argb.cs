@@ -10,9 +10,6 @@ namespace Flux.Colors
     private Rgb m_rgb;
     private byte m_alpha;
 
-    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
-    public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-
     public Argb(int alpha, Rgb rgb)
     {
       m_alpha = alpha >= 0 && alpha <= 255 ? (byte)alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
@@ -21,17 +18,12 @@ namespace Flux.Colors
     public Argb(int alpha, int red, int green, int blue)
       : this(alpha, new Rgb(red, green, blue))
     { }
+    public Argb(int argb)
+      : this((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb)
+    { }
 
-    public static Argb FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      var bytes = rng.GetRandomBytes(4);
-
-      return new Argb(bytes[0], bytes[1], bytes[2], bytes[3]);
-    }
-    public static Argb FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
+    public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Argb ToGrayscale(GrayscaleMethod method)
@@ -81,6 +73,9 @@ namespace Flux.Colors
     //  return (Alpha << 24) | ((byte)((RGB.Red * a) >> 8) << 16) | ((byte)((RGB.Green * a) >> 8) << 8) | (byte)((RGB.Blue * a) >> 8);
     //}
 
+    public int ToInt()
+      => (m_alpha << 24) | RGB.ToInt();
+
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
@@ -96,8 +91,17 @@ namespace Flux.Colors
       => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
 
     #region Static methods
-    public static int ToInt(Argb rgba)
-      => (rgba.Alpha << 24) | (rgba.RGB.Red << 16) | (rgba.RGB.Green << 8) | (rgba.RGB.Blue << 0);
+    public static Argb FromRandom(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      var bytes = rng.GetRandomBytes(4);
+
+      return new Argb(bytes[0], bytes[1], bytes[2], bytes[3]);
+    }
+    public static Argb FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
+
     /// <summary>Creates a new RGBA color by parsing the specified string.</summary>
     /// <param name="colorString">The color string. Any format used in XAML should work.</param>
     public static Argb Parse(string colorString)
@@ -147,8 +151,6 @@ namespace Flux.Colors
 
       throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     }
-    public static Argb FromInt(int rgba)
-      => unchecked(new Argb((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba));
     #endregion Static methods
 
     #region Overloaded operators

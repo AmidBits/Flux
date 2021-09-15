@@ -34,7 +34,7 @@ namespace Flux
       public Quantity.Angle ToRotationAngleEx()
         => new Quantity.Angle(ConvertToRotationAngleEx(m_x, m_y));
       public PolarCoordinate ToPolarCoordinate()
-        => (PolarCoordinate)ConvertToPolarCoordinate(m_x, m_y);
+        => new PolarCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
 
       #region Static methods
       public static double ComputeEuclideanLength(double x, double y)
@@ -42,8 +42,6 @@ namespace Flux
       public static double ComputeEuclideanLengthSquared(double x, double y)
         => x * x + y * y;
 
-      public static (double radius, double azimuthRad) ConvertToPolarCoordinate(double x, double y)
-        => (System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
       /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static double ConvertToRotationAngle(double x, double y)

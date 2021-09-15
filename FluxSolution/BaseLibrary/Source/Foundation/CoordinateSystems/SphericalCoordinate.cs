@@ -27,11 +27,19 @@ namespace Flux.CoordinateSystems
       => m_azimuth;
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
-      => (CartesianCoordinate3)ConvertToCartesianCoordinate3(m_radius, m_inclination.Radian, m_azimuth.Radian);
+    {
+      var radInclination = m_inclination.Radian;
+      var radAzimuth = m_azimuth.Radian;
+      var sinInclination = System.Math.Sin(radInclination);
+      return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth) * sinInclination, m_radius * System.Math.Sin(radAzimuth) * sinInclination, m_radius * System.Math.Cos(radInclination));
+    }
     public CylindricalCoordinate ToCylindricalCoordinate()
-      => (CylindricalCoordinate)ConvertToCylindricalCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
+    {
+      var radInclination = m_inclination.Radian;
+      return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.Radian, m_radius * System.Math.Cos(radInclination));
+    }
     public GeographicCoordinate ToGeographicCoordinate()
-      => (GeographicCoordinate)ConvertToGeographicCoordinate(m_radius, m_inclination.Radian, m_azimuth.Radian);
+      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Radian - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.Radian - System.Math.PI), m_radius);
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
@@ -40,22 +48,9 @@ namespace Flux.CoordinateSystems
     /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
     public static double ConvertElevationToInclination(double elevationRad)
       => Maths.PiOver2 - elevationRad;
-
-    public static (double x, double y, double z) ConvertToCartesianCoordinate3(double radius, double inclinationRad, double azimuthRad)
-    {
-      var sinInclination = System.Math.Sin(inclinationRad);
-      return (radius * System.Math.Cos(azimuthRad) * sinInclination, radius * System.Math.Sin(azimuthRad) * sinInclination, radius * System.Math.Cos(inclinationRad));
-    }
-    public static (double radius, double azimuthRad, double height) ConvertToCylindricalCoordinate(double radius, double inclinationRad, double azimuthRad)
-      => (radius * System.Math.Sin(inclinationRad), azimuthRad, radius * System.Math.Cos(inclinationRad));
-    public static (double latitudeRad, double longitudeRad, double altitude) ConvertToGeographicCoordinate(double radius, double inclinationRad, double azimuthRad)
-      => (System.Math.PI - inclinationRad - Maths.PiOver2, azimuthRad - System.Math.PI, radius);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator SphericalCoordinate(System.ValueTuple<double, double, double> radius_inclinationRad_azimuthRad)
-      => new SphericalCoordinate(radius_inclinationRad_azimuthRad.Item1, radius_inclinationRad_azimuthRad.Item2, radius_inclinationRad_azimuthRad.Item3);
-
     public static bool operator ==(SphericalCoordinate a, SphericalCoordinate b)
       => a.Equals(b);
     public static bool operator !=(SphericalCoordinate a, SphericalCoordinate b)
@@ -78,3 +73,28 @@ namespace Flux.CoordinateSystems
     #endregion Object overrides
   }
 }
+
+/*
+  Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
+  Draw(Flux.CoordinateSystems.GeographicCoordinate.MadridSpain);
+  Draw(Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa);
+  Draw(Flux.CoordinateSystems.GeographicCoordinate.TakapauNewZealand);
+
+  static void Draw(Flux.CoordinateSystems.GeographicCoordinate c0)
+  {
+    System.Console.WriteLine(c0);
+    var c1 = c0.ToSphericalCoordinate();
+    System.Console.WriteLine(c1);
+    var c2 = c1.ToCylindricalCoordinate();
+    System.Console.WriteLine(c2);
+    var c3 = c2.ToCartesianCoordinate3();
+    System.Console.WriteLine(c3);
+    var c4 = c3.ToCylindricalCoordinate();
+    System.Console.WriteLine(c4);
+    var c5 = c4.ToSphericalCoordinate();
+    System.Console.WriteLine(c5);
+    var c6 = c5.ToGeographicCoordinate();
+    System.Console.WriteLine(c6);
+    System.Console.WriteLine();
+  }
+*/

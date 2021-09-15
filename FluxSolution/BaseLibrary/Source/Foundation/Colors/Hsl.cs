@@ -10,10 +10,6 @@ namespace Flux.Colors
     private double m_saturation;
     private double m_lightness;
 
-    public double Hue { get => m_hue; set => m_hue = value >= 0 && value <= 360 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Saturation { get => m_saturation; set => m_saturation = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Lightness { get => m_lightness; set => m_lightness = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-
     public Hsl(double hue, double saturation, double lightness)
     {
       m_hue = hue >= 0 && hue <= 360 ? hue : throw new System.ArgumentOutOfRangeException(nameof(hue));
@@ -21,15 +17,19 @@ namespace Flux.Colors
       m_lightness = lightness >= 0 && lightness <= 1 ? lightness : throw new System.ArgumentOutOfRangeException(nameof(lightness));
     }
 
+    public double Hue { get => m_hue; set => m_hue = value >= 0 && value <= 360 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Saturation { get => m_saturation; set => m_saturation = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Lightness { get => m_lightness; set => m_lightness = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+
     public double GetChroma()
       => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;
 
     /// <summary>Creates an HSV color corresponding to the HSL instance.</summary>
     public Hsv ToHsv()
     {
-      var v = m_lightness + m_saturation * System.Math.Min(m_lightness, 1 - m_lightness);
+      var value = m_lightness + m_saturation * System.Math.Min(m_lightness, 1 - m_lightness);
 
-      return new Hsv(m_hue, v == 0 ? 0 : 2 * (1 - m_lightness / v), v);
+      return new Hsv(m_hue, value == 0 ? 0 : 2 * (1 - m_lightness / value), value);
     }
     /// <summary>Creates an RGB color corresponding to the HSL instance.</summary>
     public Rgb ToRgb()

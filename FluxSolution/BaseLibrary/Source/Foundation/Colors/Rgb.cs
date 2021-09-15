@@ -10,27 +10,19 @@ namespace Flux.Colors
     private byte m_green;
     private byte m_red;
 
-    public int Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public int Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public int Blue { get => m_blue; set => m_blue = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-
     public Rgb(int red, int green, int blue)
     {
       m_red = red >= 0 && red <= 255 ? (byte)red : throw new System.ArgumentOutOfRangeException(nameof(red));
       m_green = green >= 0 && green <= 255 ? (byte)green : throw new System.ArgumentOutOfRangeException(nameof(green));
       m_blue = blue >= 0 && blue <= 255 ? (byte)blue : throw new System.ArgumentOutOfRangeException(nameof(blue));
     }
+    public Rgb(int rgb)
+      : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
+    { }
 
-    public static Rgb FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      var bytes = rng.GetRandomBytes(3);
-
-      return new Rgb(bytes[0], bytes[1], bytes[2]);
-    }
-    public static Rgb FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+    public int Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Blue { get => m_blue; set => m_blue = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
 
     /// <summary>Returns the chroma for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>
@@ -198,8 +190,17 @@ namespace Flux.Colors
       => $"rgb({Red}, {Green}, {Blue})";
 
     #region Static methods
-    public static Rgb FromInt(int rgb)
-      => unchecked(new Rgb((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb));
+    public static Rgb FromRandom(System.Random rng)
+    {
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
+
+      var bytes = rng.GetRandomBytes(3);
+
+      return new Rgb(bytes[0], bytes[1], bytes[2]);
+    }
+    public static Rgb FromRandom()
+      => FromRandom(Randomization.NumberGenerator.Crypto);
+
     public static double GetChroma(byte red, byte green, byte blue, out byte min, out byte max)
     {
       max = System.Math.Max(System.Math.Max(red, green), blue);
@@ -268,8 +269,6 @@ namespace Flux.Colors
 
       return hue;
     }
-    public static int ToInt(Rgb rgb)
-      => (rgb.Red << 16) | (rgb.Green << 8) | (rgb.Blue << 0);
     #endregion Static methods
 
     #region Overloaded operators

@@ -10,9 +10,6 @@ namespace Flux.Colors
     private double m_alpha;
     private Hsi m_hsi;
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Hsi HSI { get => m_hsi; set => m_hsi = value; }
-
     public Ahsi(double alpha, Hsi hsi)
     {
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
@@ -21,6 +18,9 @@ namespace Flux.Colors
     public Ahsi(double alpha, double hue, double saturation, double intensity)
       : this(alpha, new Hsi(hue, saturation, intensity))
     { }
+
+    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Hsi HSI { get => m_hsi; set => m_hsi = value; }
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Argb ToArgb()

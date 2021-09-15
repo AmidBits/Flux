@@ -141,9 +141,9 @@ namespace Flux.Model.TicTacToe
       int score = Evaluate(isMax);
 
       if (score == 10)
-        return score - depth; // Maximizer won.
+        return score - depth; // Maximizer has a winning won.
       if (score == -10)
-        return score + depth; // Minimizer won.
+        return score + depth; // Minimizer has a winning won.
 
       if (!HasEmptySquares())
         return 0; // No more moves and no winner, it's a tie.

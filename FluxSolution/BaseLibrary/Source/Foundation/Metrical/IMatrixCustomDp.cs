@@ -1,6 +1,6 @@
 namespace Flux.Metrical
 {
-	/// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
+	/// <summary>Represents some arbitrary measure of distance between two sequences using a custom dynamic programming matrix.</summary>
 	public interface IMatrixCustomDp<T>
 	{
     /// <summary>Compute a measured distance for the two sequences.</summary>
