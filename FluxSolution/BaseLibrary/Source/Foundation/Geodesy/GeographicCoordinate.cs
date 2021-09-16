@@ -44,16 +44,60 @@ namespace Flux.CoordinateSystems
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToEqualEarthProjection()
-      => (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
+    {
+      const double A1 = 1.340264;
+      const double A2 = -0.081106;
+      const double A3 = 0.000893;
+      const double A4 = 0.003796;
+      const double A23 = A2 * 3;
+      const double A37 = A3 * 7;
+      const double A49 = A4 * 9;
+
+      var M = System.Math.Sqrt(3) / 2;
+      var p = System.Math.Asin(M * System.Math.Sin(Latitude.Radian)); // parametric latitude
+      var p2 = System.Math.Pow(p, 2);
+      var p6 = System.Math.Pow(p, 6);
+      var x = Longitude.Radian * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
+      var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
+    //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToNaturalEarthProjection()
-      => (CartesianCoordinate3)ConvertToNaturalEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
+    {
+      var radLatitude = Latitude.Radian;
+
+      var latP2 = System.Math.Pow(radLatitude, 2);
+      var latP4 = latP2 * latP2;
+      var latP6 = System.Math.Pow(radLatitude, 6);
+      var latP8 = latP4 * latP4;
+      var latP10 = System.Math.Pow(radLatitude, 10);
+      var latP12 = latP6 * latP6;
+
+      var x = Longitude.Radian * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
+      var y = radLatitude * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
       => new SphericalCoordinate(Altitude.Value, System.Math.PI - (Latitude.Radian + Maths.PiOver2), Longitude.Radian + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
-      => (CartesianCoordinate3)ConvertToWinkelTripelProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
+    {
+      var radLatitude = Latitude.Radian;
+      var radLongitude = Longitude.Radian;
+
+      var cosLatitude = System.Math.Cos(radLatitude);
+
+      var sinc = Maths.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(radLongitude / 2)));
+
+      var x = 0.5 * (radLongitude * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(radLongitude / 2)) / sinc));
+      var y = 0.5 * (radLatitude + (System.Math.Sin(radLatitude) / sinc));
+
+      return new CartesianCoordinate3(x, y, Altitude.Value);
+    }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
     ///// <param name="trackStart"></param>
@@ -120,7 +164,7 @@ namespace Flux.CoordinateSystems
     /// <summary>Converts the specified Equal Earth projected X, Y coordinate components with Z optionally containing the altitude to geographical coordinate components.</summary>
     /// <param name="z">Optional altitude (in meters).</param>
     /// <see cref="https://github.com/dneuman/EqualEarth/blob/master/EqualEarth.py"/>
-    public static (double radLatitude, double radLongitude, double metersAltitude) ConvertFromEqualEarthProjection(double x, double y, double? z)
+    public static GeographicCoordinate FromEqualEarthProjection(double x, double y, double? z)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -151,52 +195,7 @@ namespace Flux.CoordinateSystems
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return (lat, lon, z ?? Earth.MeanRadius.Value);
-    }
-    /// <summary>Converts the specified geographical coordinate components to Equal Earth projected X, Y coordinate components with Z optionally containing the altitude.</summary>
-    public static (double x, double y, double z) ConvertToEqualEarthProjection(double radLatitude, double radLongitude, double metersAltitude)
-    {
-      const double A1 = 1.340264;
-      const double A2 = -0.081106;
-      const double A3 = 0.000893;
-      const double A4 = 0.003796;
-      const double A23 = A2 * 3;
-      const double A37 = A3 * 7;
-      const double A49 = A4 * 9;
-
-      var M = System.Math.Sqrt(3) / 2;
-      var p = System.Math.Asin(M * System.Math.Sin(radLatitude)); // parametric latitude
-      var p2 = System.Math.Pow(p, 2);
-      var p6 = System.Math.Pow(p, 6);
-      var x = radLongitude * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
-      var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
-
-      return (x, y, metersAltitude);
-    }
-    /// <summary>Converts the specified geographical coordinate components to Natural Earth projected X, Y coordinate components with Z optionally containing the altitude.</summary>
-    public static (double x, double y, double z) ConvertToNaturalEarthProjection(double radLatitude, double radLongitude, double metersAltitude)
-    {
-      var latP2 = System.Math.Pow(radLatitude, 2);
-      var latP4 = latP2 * latP2;
-      var latP6 = System.Math.Pow(radLatitude, 6);
-      var latP8 = latP4 * latP4;
-      var latP10 = System.Math.Pow(radLatitude, 10);
-      var latP12 = latP6 * latP6;
-
-      var x = radLongitude * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
-      var y = radLatitude * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
-
-      return (x, y, metersAltitude);
-    }
-    /// <summary>Converts the specified geographical coordinate components to Winkel Tripel projected X, Y coordinate components with Z optionally containing the altitude.</summary>
-    public static (double x, double y, double z) ConvertToWinkelTripelProjection(double radLatitude, double radLongitude, double metersAltitude)
-    {
-      var sinc = Maths.Sincu(System.Math.Acos(System.Math.Cos(radLatitude) * System.Math.Cos(radLongitude / 2)));
-
-      var x = 0.5 * (radLongitude * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * System.Math.Cos(radLatitude) * System.Math.Sin(radLongitude / 2)) / sinc));
-      var y = 0.5 * (radLatitude + (System.Math.Sin(radLatitude) / sinc));
-
-      return (x, y, metersAltitude);
+      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.Value);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
