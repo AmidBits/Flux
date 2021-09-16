@@ -20,35 +20,35 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       int[,] board = {
-        { 1, 2, 1 },
-        { 2, 0, 0 },
-        { 0, 0, 0 }
+        { 1, 0, 2 },
+        { 1, 0, 0 },
+        { 0, 0, 2 }
       };
 
-      System.Console.WriteLine(board.ToConsoleBlock());
+      int[,] board4 = {
+        { 0, 0, 0, 0 },
+        { 0, 0, 2, 0 },
+        { 0, 1, 3, 0 },
+        { 0, 0, 0, 0 },
+        //{ 0, 0, 0, 0, 0 },
+        //{ 0, 0, 0, 0 },
+        //{ 0, 0, 0, 0, 0, 0 },
+      };
 
-      var bpms = Flux.Model.TicTacToe2.Game.GetMovesForPlayer1(board);
-      var bpmsmax = bpms.Values.Max();
-      while (bpms.Any(kvp => kvp.Value < bpmsmax))
-        bpms.Remove(bpms.First(kvp => kvp.Value < bpmsmax).Key);
+      System.Console.WriteLine(board4.ToConsoleBlock());
 
-      foreach (var move in bpms)
-        System.Console.WriteLine(move);
+      System.Console.WriteLine(Flux.Model.TicTacToe2.Game.GetCounts(board4, out var playerUp).ToConsoleString());
+      System.Console.WriteLine(playerUp);
       System.Console.WriteLine();
 
-      var boms = Flux.Model.TicTacToe2.Game.GetMovesForPlayer2(board);
-      while (boms.Any(kvp => !bpms.Keys.Contains(kvp.Key)))
-        boms.Remove(boms.First(kvp => !bpms.Keys.Contains(kvp.Key)).Key);
+      var moves = Flux.Model.TicTacToe2.Game.GetMoves4(board4, out var maxMove, out var minMove);
 
-      foreach (var move in boms)
-        System.Console.WriteLine(move);
+      System.Console.WriteLine($"Best for max: {maxMove} and best for min: {minMove}");
       System.Console.WriteLine();
 
-      //if(boms.Any())
-
-      var bm = bpms.OrderByDescending(pm => pm.Value).FirstOrValue(pm => boms.OrderBy(om => om.Value).Any(om => om.Key == pm.Key), bpms.OrderByDescending(pm => pm.Value).First());
-
-      System.Console.WriteLine(bm);
+      foreach (var move in moves)
+        System.Console.WriteLine(move);
+      System.Console.WriteLine();
 
       //      var scores = new int[] { 3, 5, 6, 9, 1, 2, 0, -1 };
 
