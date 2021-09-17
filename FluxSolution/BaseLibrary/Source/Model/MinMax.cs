@@ -303,12 +303,12 @@ namespace Flux.Model.TicTacToe2
         {
           if (nextMove.MaxScore > maxMove.MaxScore)
             maxMove = nextMove;
-          else if (nextMove.MaxScore == maxMove.MaxScore && nextMove.MinScore < maxMove.MinScore)
+          else if (nextMove.MaxScore == maxMove.MaxScore && nextMove.MinScore > maxMove.MinScore)
             maxMove = nextMove;
 
           if (nextMove.MinScore < minMove.MinScore)
             minMove = nextMove;
-          else if (nextMove.MinScore == minMove.MinScore && nextMove.MaxScore > minMove.MaxScore)
+          else if (nextMove.MinScore == minMove.MinScore && nextMove.MaxScore < minMove.MaxScore)
             minMove = nextMove;
         }
       }
