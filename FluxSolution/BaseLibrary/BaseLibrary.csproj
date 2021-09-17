@@ -21,11 +21,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Source\Model\Calculator\Parse.Primitives.cs" />
+	  <Compile Remove="Source\Foundation\Model\Calculator\Parse.Primitives.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Source\Model\Calculator\Parse.Primitives.cs" />
+	  <None Include="Source\Foundation\Model\Calculator\Parse.Primitives.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
