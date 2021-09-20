@@ -39,7 +39,7 @@ namespace Flux.Dsp
       => new SampleStereo(sampleM, sampleM);
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
     public static double StereoToMono(double sampleL, double sampleR)
-      => ((sampleL + sampleR) / 2);
+      => (sampleL + sampleR) / 2;
 
     /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals. This is a stab, not a/the mathematical solution.</summary>
     /// <param name="sampleFl">Front left.</param>

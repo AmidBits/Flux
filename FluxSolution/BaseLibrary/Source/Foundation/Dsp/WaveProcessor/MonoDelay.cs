@@ -72,12 +72,10 @@ namespace Flux.Dsp.AudioProcessor
     }
     public MonoDelay(int maxDelayTimeInSeconds)
       : this(maxDelayTimeInSeconds, 44100.0)
-    {
-    }
+    { }
     public MonoDelay()
       : this(1)
-    {
-    }
+    { }
 
     //public double ProcessAudioMono(double sample)
     //{

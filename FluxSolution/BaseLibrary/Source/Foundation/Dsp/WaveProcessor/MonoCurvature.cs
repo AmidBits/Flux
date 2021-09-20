@@ -22,8 +22,7 @@ namespace Flux.Dsp.AudioProcessor
     }
     public MonoCurvature()
       : this(0)
-    {
-    }
+    { }
 
     public double ProcessAudio(double sample)
       => 2 * ((System.Math.Pow(m_contourScaled, (sample + 1) * 50) - 1) / (System.Math.Pow(m_contourScaled, 100) - 1)) - 1;

@@ -22,20 +22,15 @@ namespace Flux.Dsp.AudioProcessor
         m_multiplier = System.Math.Clamp(value, -1.0, 1.0);
 
         if (m_multiplier > Maths.EpsilonCpp32)
-        {
           m_multiplier = m_multiplier * 9.0 + 1.0;
-        }
         else if (m_multiplier < -Maths.EpsilonCpp32)
-        {
           m_multiplier += 1.0;
-        }
       }
     }
 
     public MonoFolder(double polarBias, double multiplier)
     {
       PolarBias = polarBias;
-
       Multiplier = multiplier;
     }
     public MonoFolder() : this(0, 0) { }

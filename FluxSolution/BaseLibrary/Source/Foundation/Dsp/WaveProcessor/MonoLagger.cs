@@ -6,7 +6,11 @@ namespace Flux.Dsp.AudioProcessor
   {
     private double m_amount;
     /// <summary>The amount of lag desired in the range [0, 1], where 0 is no lag and 1 is the most possible.</summary>
-    public double Amount { get => m_amount; set => m_amount = System.Math.Clamp(value, 0.0, 1.0); }
+    public double Amount
+    {
+      get => m_amount;
+      set => m_amount = System.Math.Clamp(value, 0.0, 1.0);
+    }
 
     private double m_previousSample;
 
@@ -14,10 +18,9 @@ namespace Flux.Dsp.AudioProcessor
       => m_amount = amount;
     public MonoLagger()
       : this(0.75)
-    {
-    }
+    { }
 
     public double ProcessAudio(double sample)
-      => (m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.InterpolateCosine(sample, m_previousSample, m_amount) : sample);
+      => m_amount > Maths.EpsilonCpp32 ? m_previousSample = Maths.InterpolateCosine(sample, m_previousSample, m_amount) : sample;
   }
 }

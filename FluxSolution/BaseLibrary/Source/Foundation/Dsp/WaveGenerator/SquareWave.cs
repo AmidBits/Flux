@@ -14,7 +14,7 @@
       : -1;
     /// <summary>Generates a square wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SquarePi2(double phasePi2)
-      => Tools.AbsolutePhasePi2(phasePi2) < System.Math.PI
+      => Tools.AbsolutePhasePiX2(phasePi2) < System.Math.PI
       ? 1
       : -1;
   }

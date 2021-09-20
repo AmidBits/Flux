@@ -17,9 +17,6 @@
     public SampleStereo ToStereo()
       => new SampleStereo(FrontCenter, FrontCenter);
 
-    #region Static methods
-    #endregion Static methods
-
     #region Overloaded operators
     public static bool operator ==(in SampleMono a, in SampleMono b)
       => a.Equals(b);

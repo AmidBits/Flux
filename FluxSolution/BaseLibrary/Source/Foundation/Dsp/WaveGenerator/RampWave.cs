@@ -13,6 +13,6 @@
       => Tools.AbsolutePhaseMu(phaseMu) * 2 - 1;
     /// <summary>Generates a ramp (inverted saw) wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
-      => Tools.AbsolutePhasePi2(phasePi2) / System.Math.PI - 1;
+      => Tools.AbsolutePhasePiX2(phasePi2) / System.Math.PI - 1;
   }
 }

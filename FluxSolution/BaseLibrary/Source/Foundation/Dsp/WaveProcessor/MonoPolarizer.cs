@@ -20,15 +20,17 @@
     {
       Mode = mode;
     }
-    public MonoPolarizer() : this(MonoPolarizerMode.BipolarToUnipolarPositive) { }
+    public MonoPolarizer()
+      : this(MonoPolarizerMode.BipolarToUnipolarPositive)
+    { }
 
     public double ProcessAudio(double sample) => (Mode switch
     {
-      MonoPolarizerMode.BipolarToUnipolarNegative => (sample / 2.0 - 0.5),
-      MonoPolarizerMode.BipolarToUnipolarPositive => (sample / 2.0 + 0.5),
-      MonoPolarizerMode.UnipolarNegativeToBipolar => (sample < 0.0 ? sample * 2.0 + 1.0 : 0.0),
-      MonoPolarizerMode.UnipolarPositiveToBipolar => (sample > 0.0 ? sample * 2.0 - 1.0 : 0.0),
-      _ => (sample),
+      MonoPolarizerMode.BipolarToUnipolarNegative => sample / 2.0 - 0.5,
+      MonoPolarizerMode.BipolarToUnipolarPositive => sample / 2.0 + 0.5,
+      MonoPolarizerMode.UnipolarNegativeToBipolar => sample < 0.0 ? sample * 2.0 + 1.0 : 0.0,
+      MonoPolarizerMode.UnipolarPositiveToBipolar => sample > 0.0 ? sample * 2.0 - 1.0 : 0.0,
+      _ => sample,
     });
 
     public static double ApplyBipolarToUnipolarNegative(double sample)

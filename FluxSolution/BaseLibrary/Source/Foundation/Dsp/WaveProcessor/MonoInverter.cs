@@ -23,16 +23,15 @@
       => Mode = mode;
     public MonoInverter()
       : this(MonoInverterMode.PeekToPeek)
-    {
-    }
+    { }
 
     public double ProcessAudio(double sample) => (Mode switch
     {
-      MonoInverterMode.PeekToPeek => (-sample),
-      MonoInverterMode.PeeksIndependently when sample < 0 => (-sample - 1),
-      MonoInverterMode.NegativePeekOnly when sample < 0 => (-sample - 1),
-      MonoInverterMode.PeeksIndependently when sample > 0 => (-sample + 1),
-      MonoInverterMode.PositivePeekOnly when sample > 0 => (-sample + 1),
+      MonoInverterMode.PeekToPeek => -sample,
+      MonoInverterMode.PeeksIndependently when sample < 0 => -sample - 1,
+      MonoInverterMode.NegativePeekOnly when sample < 0 => -sample - 1,
+      MonoInverterMode.PeeksIndependently when sample > 0 => -sample + 1,
+      MonoInverterMode.PositivePeekOnly when sample > 0 => -sample + 1,
       _ => (sample),
     });
 
