@@ -11,14 +11,14 @@ namespace Flux.CoordinateSystems
 
     public static readonly GeographicCoordinate Empty;
 
-    /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
+    /// <summary>This is a reference coordinate for Madrid, in Spain on Europe, which is antipodal to Takapau, in New Zeeland.</summary>
     public static GeographicCoordinate MadridSpain
       => new GeographicCoordinate(40.416667, -3.716667, 820);
-    /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
+    /// <summary>This is a reference coordinate for Takapau, in New Zeeland, which is antipodal to Madrid, in Spain on Europe.</summary>
     public static GeographicCoordinate TakapauNewZealand
       => new GeographicCoordinate(-40.033333, 176.35, 221);
 
-    /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
+    /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
     public static GeographicCoordinate PhoenixAzUsa
       => new GeographicCoordinate(33.448333, -112.073889, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>

@@ -5,54 +5,54 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     #region 2D vector computations.
-    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
-      => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
+    ///// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    //public static double ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+    //  => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
-    public static double LineSlopeX(this System.Numerics.Vector2 source)
-      => System.Math.CopySign(source.X / source.Y, source.X);
-    public static double LineSlopeY(this System.Numerics.Vector2 source)
-      => System.Math.CopySign(source.Y / source.X, source.Y);
+    //public static double LineSlopeX(this System.Numerics.Vector2 source)
+    //  => System.Math.CopySign(source.X / source.Y, source.X);
+    //public static double LineSlopeY(this System.Numerics.Vector2 source)
+    //  => System.Math.CopySign(source.Y / source.X, source.Y);
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
-      => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
+    ///// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    //public static double ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+    //  => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
-      => new System.Numerics.Vector2(-source.Y, source.X);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
-      => new System.Numerics.Vector2(source.Y, -source.X);
+    ///// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    //public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
+    //  => new System.Numerics.Vector2(-source.Y, source.X);
+    ///// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    //public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
+    //  => new System.Numerics.Vector2(source.Y, -source.X);
 
-    /// <summary>Perpendicular distance to the to the line.</summary>
-    public static double PerpendicularDistanceToLine(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-    {
-      var bma = b - a;
+    ///// <summary>Perpendicular distance to the to the line.</summary>
+    //public static double PerpendicularDistanceToLine(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    //{
+    //  var bma = b - a;
 
-      return (bma * (source - a)).Length() / bma.Length();
-    }
+    //  return (bma * (source - a)).Length() / bma.Length();
+    //}
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
 
-    /// <summary>Rotate the vector around the specified axis.</summary>
-    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
-    /// <summary>Rotate the vector around the world axes.</summary>
-    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
+    ///// <summary>Rotate the vector around the specified axis.</summary>
+    //public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
+    //  => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
+    ///// <summary>Rotate the vector around the world axes.</summary>
+    //public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
+    //  => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
     #endregion 2D vector computations.
 
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
 
-    public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
-      => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
+    //public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
+    //  => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
 
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
@@ -62,30 +62,30 @@ namespace Flux
     public static double AngleTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
       => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
-      => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
+    ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    //public static double ChebyshevDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
+    //  => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
 
-    /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, i) => a / 2);
-    /// <summary>Compute the surface area of the polygon.</summary>
-    public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => System.Math.Abs(ComputeAreaSigned(source));
+    ///// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    //public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, i) => a / 2);
+    ///// <summary>Compute the surface area of the polygon.</summary>
+    //public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector2 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => source.Aggregate(System.Numerics.Vector2.Zero, (a, e, i) => a + e, (a, c) => a / c);
 
-    /// <summary>Compute the perimeter length of the polygon.</summary>
-    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
+    ///// <summary>Compute the perimeter length of the polygon.</summary>
+    //public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
 
-    public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
-    public static double EuclideanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
+    //public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    //  => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
+    //public static double EuclideanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    //  => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
@@ -217,58 +217,58 @@ namespace Flux
       return true;
     }
 
-    public static System.Numerics.Vector2 LerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
-      => System.Numerics.Vector2.Lerp(source, target, percent);
+    //public static System.Numerics.Vector2 LerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+    //  => System.Numerics.Vector2.Lerp(source, target, percent);
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
-      => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength;
+    ///// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    //public static double ManhattanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
+    //  => System.Math.Abs(b.X - a.X) / edgeLength + System.Math.Abs(b.Y - a.Y) / edgeLength;
 
-    public static System.Numerics.Vector2 NlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
-      => System.Numerics.Vector2.Normalize(System.Numerics.Vector2.Lerp(source, target, percent));
+    //public static System.Numerics.Vector2 NlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+    //  => System.Numerics.Vector2.Normalize(System.Numerics.Vector2.Lerp(source, target, percent));
 
-    /// <summary>Perpendicular distance to the to the line.</summary>
-    public static double PerpendicularDistance(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-    {
-      var ab = b - a;
+    ///// <summary>Perpendicular distance to the to the line.</summary>
+    //public static double PerpendicularDistance(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    //{
+    //  var ab = b - a;
 
-      return (ab * (source - a)).Length() / ab.Length();
-    }
+    //  return (ab * (source - a)).Length() / ab.Length();
+    //}
 
-    /// <summary>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</summary>
-    /// <see cref="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
-    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
-    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
-    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
-    /// <param name="source">A given point.</param>
-    public static double PerpendicularDistance(this System.Numerics.Vector2 source, float a, float b, float c)
-      => System.Math.Abs(a * source.X + b * source.Y + c) / System.Math.Sqrt(a * a + b * b);
+    ///// <summary>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</summary>
+    ///// <see cref="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
+    ///// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
+    ///// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
+    ///// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
+    ///// <param name="source">A given point.</param>
+    //public static double PerpendicularDistance(this System.Numerics.Vector2 source, float a, float b, float c)
+    //  => System.Math.Abs(a * source.X + b * source.Y + c) / System.Math.Sqrt(a * a + b * b);
 
-    /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
-    /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
-    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
-    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
-    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
-    /// <param name="source">A given point.</param>
-    public static System.Numerics.Vector2 PerpendicularFoot(this System.Numerics.Vector2 source, float a, float b, float c)
-      => -1 * (a * source.X + b * source.Y + c) / (a * a + b * b) * new System.Numerics.Vector2(a + source.X, b + source.Y);
+    ///// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
+    ///// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
+    ///// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
+    ///// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
+    ///// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
+    ///// <param name="source">A given point.</param>
+    //public static System.Numerics.Vector2 PerpendicularFoot(this System.Numerics.Vector2 source, float a, float b, float c)
+    //  => -1 * (a * source.X + b * source.Y + c) / (a * a + b * b) * new System.Numerics.Vector2(a + source.X, b + source.Y);
 
-    /// <summary>Rotate the vector around the specified axis.</summary>
-    public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, double angle)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, (float)angle));
-    /// <summary>Rotate the vector around the world axes.</summary>
-    public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, double yaw, double pitch, double roll)
-      => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll((float)yaw, (float)pitch, (float)roll));
+    ///// <summary>Rotate the vector around the specified axis.</summary>
+    //public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, double angle)
+    //  => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, (float)angle));
+    ///// <summary>Rotate the vector around the world axes.</summary>
+    //public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, double yaw, double pitch, double roll)
+    //  => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll((float)yaw, (float)pitch, (float)roll));
 
-    /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static System.Numerics.Vector2 SlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
-    {
-      var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
-      var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
-      var relative = System.Numerics.Vector2.Normalize(target - source * dot);
-      return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
-    }
+    ///// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    //public static System.Numerics.Vector2 SlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+    //{
+    //  var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
+    //  var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
+    //  var relative = System.Numerics.Vector2.Normalize(target - source * dot);
+    //  return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+    //}
 
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
@@ -378,14 +378,14 @@ namespace Flux
       }
     }
 
-    public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
-      => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
+    //public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
+    //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
-    public static Geometry.Point2 ToPoint2(this System.Numerics.Vector2 source)
-      => new Geometry.Point2(System.Convert.ToInt32(source.X), System.Convert.ToInt32(source.Y));
-    public static Geometry.Vector2 ToVector(this System.Numerics.Vector2 source)
-      => new Geometry.Vector2(source.X, source.Y);
-    public static System.Numerics.Vector3 ToVector3(this System.Numerics.Vector2 source)
-      => new System.Numerics.Vector3(source, 0);
+    //public static Geometry.Point2 ToPoint2(this System.Numerics.Vector2 source)
+    //  => new Geometry.Point2(System.Convert.ToInt32(source.X), System.Convert.ToInt32(source.Y));
+    //public static Geometry.Vector2 ToVector(this System.Numerics.Vector2 source)
+    //  => new Geometry.Vector2(source.X, source.Y);
+    //public static System.Numerics.Vector3 ToVector3(this System.Numerics.Vector2 source)
+    //  => new System.Numerics.Vector3(source, 0);
   }
 }
