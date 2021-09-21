@@ -28,7 +28,11 @@ namespace Flux.Dsp.Synthesis
     public IOscillator? RingModulator { get; set; }
 
     private readonly double m_maximumAmplitude;
+    public double MaxAmplitude
+      => m_maximumAmplitude;
     private readonly double m_minimumAmplitude;
+    public double MinAmplitude
+      => m_minimumAmplitude;
 
     //public ComputedRange PeakToPeak { get; private set; }
 
@@ -41,7 +45,9 @@ namespace Flux.Dsp.Synthesis
       m_minimumAmplitude = Reference - Peak;
       m_maximumAmplitude = Reference + Peak;
     }
-    public Amplitude() : this(1.0, 0.0) { }
+    public Amplitude()
+      : this(1.0, 0.0)
+    { }
 
     public void Reset(bool resetModulators)
     {

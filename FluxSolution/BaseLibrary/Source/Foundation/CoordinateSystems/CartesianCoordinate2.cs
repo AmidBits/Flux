@@ -86,7 +86,7 @@ namespace Flux
       /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
       public static double ChebyshevLength(double x, double y, double edgeLength = 1)
-        => System.Math.Max(System.Math.Abs(x / edgeLength), System.Math.Abs(x / edgeLength));
+        => System.Math.Max(System.Math.Abs(x / edgeLength), System.Math.Abs(y / edgeLength));
 
       /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
       public static double EuclideanDistance(double x1, double y1, double x2, double y2)

@@ -230,6 +230,7 @@ namespace Flux
     /// <returns>The converted number</returns>
     protected abstract long FromBytes(byte[] value, int startIndex, int bytesToConvert);
 
+
     /// <summary>Returns a Boolean value converted from one byte at a specified position in a byte array.</summary>
     /// <param name="value">An array of bytes.</param>
     /// <param name="startIndex">The starting position within value.</param>
@@ -240,6 +241,7 @@ namespace Flux
     //  if (startIndex < 0 || startIndex > value.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
     //  return System.BitConverter.ToBoolean(value, startIndex);
     //}
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     public bool ToBoolean(byte[] value, int startIndex)
       => System.BitConverter.ToBoolean(value, startIndex);
     /// <summary>Returns a Unicode character converted from two bytes at a specified position in a byte array.</summary>

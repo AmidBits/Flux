@@ -2,7 +2,7 @@
 {
   public class Console
   {
-    private Game m_game;
+    private readonly Game m_game;
 
     public Console(Game game)
       => m_game = game;

@@ -99,6 +99,11 @@ namespace Flux.Numerics
       => v1.m_v256.Subtract(scalar).ToVector3();
 
     #region Overloaded operators
+    public static bool operator ==(Vector3 a, Vector3 b)
+      => a.Equals(b);
+    public static bool operator !=(Vector3 a, Vector3 b)
+      => !a.Equals(b);
+
     public static Vector3 operator +(Vector3 a, Vector3 b)
       => Add(a, b);
     public static Vector3 operator +(Vector3 a, double b)

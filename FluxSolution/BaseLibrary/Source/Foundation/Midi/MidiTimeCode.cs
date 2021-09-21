@@ -4,11 +4,11 @@ namespace Flux.Midi
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
   public class MidiTimeCode
   {
-    private MidiTimeCodeType m_rate;
-    private byte m_hour;
-    private byte m_minute;
-    private byte m_second;
-    private byte m_frame;
+    private readonly MidiTimeCodeType m_rate;
+    private readonly byte m_hour;
+    private readonly byte m_minute;
+    private readonly byte m_second;
+    private readonly byte m_frame;
 
     public MidiTimeCode(MidiTimeCodeType rate, int hour, int minute, int second, int frame)
     {

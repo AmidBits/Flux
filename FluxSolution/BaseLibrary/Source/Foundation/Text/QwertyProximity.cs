@@ -4,24 +4,24 @@ namespace Flux
 {
   // https://en.wikipedia.org/wiki/QWERTY
 
-  public static partial class ExtensionMethods
-  {
-    public static System.ReadOnlySpan<char> AdjacentQwertyKeys(this char source)
-      => QwertyProximity.English.ContainsKey(source) ? QwertyProximity.English[source] : string.Empty;
+  //public static partial class ExtensionMethods
+  //{
+  //  public static System.ReadOnlySpan<char> AdjacentQwertyKeys(this char source)
+  //    => QwertyProximity.English.ContainsKey(source) ? QwertyProximity.English[source] : string.Empty;
 
-    public static void GetRelativeFrequencyOfLetters(this System.Globalization.CultureInfo source)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+  //  public static void GetRelativeFrequencyOfLetters(this System.Globalization.CultureInfo source)
+  //  {
+  //    if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var table = new System.Collections.Generic.Dictionary<char, double>();
+  //    var table = new System.Collections.Generic.Dictionary<char, double>();
 
-      if (source.Name.StartsWith("en", System.StringComparison.Ordinal))
-      {
-      }
+  //    if (source.Name.StartsWith("en", System.StringComparison.Ordinal))
+  //    {
+  //    }
 
-      //return table;
-    }
-  }
+  //    //return table;
+  //  }
+  //}
 
   //public static class User32Interop
   //{

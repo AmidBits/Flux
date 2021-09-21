@@ -29,9 +29,9 @@ namespace Flux.DataStructures.Graph
 
     public System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source)
     {
-      foreach (var matrix in m_matrix.GetElements(0, m_vertices.IndexOf(source)))
-        if (matrix.item != 0)
-          yield return m_vertices[matrix.index1];
+      foreach (var (_, index1, item) in m_matrix.GetElements(0, m_vertices.IndexOf(source)))
+        if (item != 0)
+          yield return m_vertices[index1];
     }
 
     public void AddVertex(TVertex vertex, TValue value)

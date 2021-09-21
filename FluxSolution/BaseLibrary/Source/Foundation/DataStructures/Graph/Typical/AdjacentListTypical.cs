@@ -43,13 +43,11 @@ namespace Flux.DataStructures.Graph
     public System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source)
       => m_data[source].Keys;
 
-    public void AddVertex(TVertex vertex, TValue value)
+    public void AddVertex(TVertex vertex)
     {
       if (!m_data.ContainsKey(vertex))
         m_data.Add(vertex, new OrderedDictionary<TVertex, System.Collections.Generic.List<TValue>>());
     }
-    public void AddVertex(TVertex vertex)
-      => AddVertex(vertex, default!);
     public void RemoveVertex(TVertex vertex)
     {
       if (m_data.ContainsKey(vertex))

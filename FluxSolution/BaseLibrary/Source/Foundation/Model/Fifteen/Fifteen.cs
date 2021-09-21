@@ -2,15 +2,15 @@
 {
   public class Fifteen
   {
-    private int[] Nr = new[] { 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
-    private int[] Nc = new[] { 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2 };
+    private readonly int[] Nr = new[] { 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
+    private readonly int[] Nc = new[] { 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2 };
 
-    int n, _n;
-    int[] E = new int[100];
-    int[] M = new int[100];
-    int[] C = new int[100];
+    private int n, _n;
+    private readonly int[] E = new int[100];
+    private readonly int[] M = new int[100];
+    private readonly int[] C = new int[100];
 
-    private ulong[] B = new ulong[100];
+    private readonly ulong[] B = new ulong[100];
 
     private bool Ti()
     {

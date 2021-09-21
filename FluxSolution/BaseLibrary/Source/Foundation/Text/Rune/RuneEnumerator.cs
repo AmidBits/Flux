@@ -48,7 +48,9 @@ namespace Flux.Text
         m_current = default!;
       }
 
-      private int m_overallIndex = 0;
+      private int m_overallPosition = 0;
+      public int OverallPosition
+        => m_overallPosition;
 
       public System.Text.Rune Current
         => m_current;
@@ -75,7 +77,7 @@ namespace Flux.Text
 
           m_current = rune; // Set current to the rune.
 
-          m_overallIndex += charCount;
+          m_overallPosition += charCount;
 
           return true;
         }

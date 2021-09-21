@@ -1,10 +1,11 @@
 ﻿namespace Flux
 {
+  /// <summary>Range (of T) object for various range operations, difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
   public struct Range<T>
     : System.IEquatable<Range<T>>
     where T : System.IComparable<T>, System.IEquatable<T>
   {
-    public static Range<T> Empty;
+    public readonly static Range<T> Empty;
 
     private readonly T m_lo;
     private readonly T m_hi;
@@ -73,6 +74,13 @@
     public static T MinLo(Range<T> a, Range<T> b)
       => a.m_lo.CompareTo(b.m_lo) <= 0 ? a.m_lo : b.m_lo;
     #endregion Static methods
+
+    #region Overloaded operators
+    public static bool operator ==(Range<T> a, Range<T> b)
+      => a.Equals(b);
+    public static bool operator !=(Range<T> a, Range<T> b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
 
     #region Implemented interfaces
     public bool Equals(Range<T> other)

@@ -25,8 +25,7 @@ namespace Flux.Riff
     public override string ToString()
     {
       var s = base.ToString();
-      s.Insert(s.Length - 1, $", \"{FormType}\"");
-      return s;
+      return s.Insert(s.Length - 1, $", \"{FormType}\"");
     }
   }
 

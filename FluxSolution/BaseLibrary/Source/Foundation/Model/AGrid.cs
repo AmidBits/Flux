@@ -10,7 +10,7 @@ namespace Flux.Model
 
     public Geometry.Size2 Size { get; }
 
-    private TValue[] Values;// { get; protected set; }
+    private readonly TValue[] Values;// { get; protected set; }
 
     public (int row, int column) IndexToRowColumn(int index)
       => (index / Size.Width, index % Size.Width);

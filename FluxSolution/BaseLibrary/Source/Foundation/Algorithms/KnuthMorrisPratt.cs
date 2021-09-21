@@ -6,9 +6,10 @@
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     public static System.Collections.Generic.Dictionary<int, int> Table(System.ReadOnlySpan<T> word, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var table = new System.Collections.Generic.Dictionary<int, int>();
-
-      table[0] = -1;
+      var table = new System.Collections.Generic.Dictionary<int, int>
+      {
+        [0] = -1
+      };
 
       var pi = 1; // Position index.
       var ci = 0; // Current candidate index.

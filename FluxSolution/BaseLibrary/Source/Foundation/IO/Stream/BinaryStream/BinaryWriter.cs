@@ -5,20 +5,16 @@
   /// the EndianBitConverter it is constructed with.
   /// </summary>
   public class BinaryWriter
-    : System.IDisposable
+    : Disposable
   {
-    /// <summary>
-    /// Whether or not this writer has been disposed yet.
-    /// </summary>
-    private bool m_disposed = false;
     /// <summary>
     /// Buffer used for temporary storage during conversion from primitives
     /// </summary>
-    private byte[] m_buffer = new byte[16];
+    private readonly byte[] m_buffer = new byte[16];
     /// <summary>
     /// Buffer used for Write(char)
     /// </summary>
-    private char[] m_charBuffer = new char[1];
+    private readonly char[] m_charBuffer = new char[1];
 
     /// <summary>
     /// Constructs a new binary writer with the given bit converter, writing
@@ -38,27 +34,24 @@
     /// <param name="encoding">Encoding to use when writing character data</param>
     public BinaryWriter(BitConverter bitConverter, System.IO.Stream stream, System.Text.Encoding encoding)
     {
-      if (bitConverter == null) throw new System.ArgumentNullException(nameof(bitConverter));
-      if (stream == null) throw new System.ArgumentNullException(nameof(stream));
-      if (encoding == null) throw new System.ArgumentNullException(nameof(encoding));
-      if (!stream.CanWrite) throw new System.ArgumentException("Stream isn't writable", nameof(stream));
+      m_stream = stream ?? throw new System.ArgumentNullException(nameof(stream));
+      m_bitConverter = bitConverter ?? throw new System.ArgumentNullException(nameof(bitConverter));
+      m_encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
 
-      m_stream = stream;
-      m_bitConverter = bitConverter;
-      m_encoding = encoding;
+      if (!stream.CanWrite) throw new System.ArgumentException("Stream isn't writable", nameof(stream));
     }
 
-    BitConverter m_bitConverter;
+    private readonly BitConverter m_bitConverter;
     /// <summary>The bit converter used to write values to the stream.</summary>
     public BitConverter BitConverter
       => m_bitConverter;
 
-    System.Text.Encoding m_encoding;
+    private readonly System.Text.Encoding m_encoding;
     /// <summary>The encoding used to write strings.</summary>
     public System.Text.Encoding Encoding
       => m_encoding;
 
-    System.IO.Stream m_stream;
+    private readonly System.IO.Stream m_stream;
     /// <summary>Gets the underlying stream of the BinaryWriter.</summary>
     public System.IO.Stream BaseStream
       => m_stream;
@@ -161,7 +154,8 @@
     /// <summary>Writes an array of bytes to the stream.</summary>
     public void Write(byte[] value)
     {
-      if (value is null) throw (new System.ArgumentNullException("value"));
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+
       WriteInternal(value, value.Length);
     }
     /// <summary>Writes a portion of an array of bytes to the stream.</summary>
@@ -182,7 +176,8 @@
     /// <summary>Writes an array of characters to the stream, using the encoding for this writer.</summary>
     public void Write(char[] value)
     {
-      if (value is null) throw new System.ArgumentNullException("value");
+      if (value is null) throw new System.ArgumentNullException(nameof(value));
+
       CheckDisposed();
       byte[] data = Encoding.GetBytes(value, 0, value.Length);
       WriteInternal(data, data.Length);
@@ -194,7 +189,8 @@
     /// <exception cref="ArgumentNullException">value is null</exception>
     public void Write(string value)
     {
-      if (value == null) throw new System.ArgumentNullException("value");
+      if (value == null) throw new System.ArgumentNullException(nameof(value));
+
       CheckDisposed();
       byte[] data = Encoding.GetBytes(value);
       Write7BitEncodedInt(data.Length);
@@ -204,12 +200,12 @@
     public void Write7BitEncodedInt(int value)
     {
       CheckDisposed();
-      if (value < 0) throw new System.ArgumentOutOfRangeException("value", "Value must be greater than or equal to 0.");
+      if (value < 0) throw new System.ArgumentOutOfRangeException(nameof(value), "Value must be greater than or equal to 0.");
       int index = 0;
       while (value >= 128)
       {
         m_buffer[index++] = (byte)((value & 0x7f) | 0x80);
-        value = value >> 7;
+        value >>= 7;
         index++;
       }
       m_buffer[index++] = (byte)value;
@@ -219,7 +215,7 @@
     /// <summary>Checks whether or not the writer has been disposed, throwing an exception if so.</summary>
     private void CheckDisposed()
     {
-      if (m_disposed) throw new System.ObjectDisposedException("EndianBinaryWriter");
+      if (IsDisposed) throw new System.ObjectDisposedException("EndianBinaryWriter");
     }
 
     /// <summary>Writes the specified number of bytes from the start of the given byte array, after checking whether or not the writer has been disposed.</summary>
@@ -231,17 +227,13 @@
       m_stream.Write(bytes, 0, length);
     }
 
-    /// <summary>Disposes of the underlying stream.</summary>
-    public void Dispose()
+    protected override void DisposeManaged()
     {
-      if (!m_disposed)
-      {
-        Flush();
+      Flush();
 
-        m_disposed = true;
+      ((System.IDisposable)m_stream).Dispose();
 
-        ((System.IDisposable)m_stream).Dispose();
-      }
+      base.DisposeManaged();
     }
   }
 }

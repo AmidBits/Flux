@@ -5,19 +5,19 @@
   /// the EndianBitConverter it is constructed with. No data is buffered in the
   /// reader; the client may seek within the stream at will.
   /// </summary>
-  public class BinaryReader
+  public sealed class BinaryReader
     : System.IDisposable
   {
     /// <summary>Whether or not this reader has been disposed yet.</summary>
     private bool m_disposed = false;
     /// <summary>Decoder to use for string conversions.</summary>
-    private System.Text.Decoder m_decoder;
+    private readonly System.Text.Decoder m_decoder;
     /// <summary>Buffer used for temporary storage before conversion into primitives.</summary>
-    private byte[] m_buffer = new byte[16];
+    private readonly byte[] m_buffer = new byte[16];
     /// <summary>Buffer used for temporary storage when reading a single character.</summary>
-    private char[] m_charBuffer = new char[1];
+    private readonly char[] m_charBuffer = new char[1];
     /// <summary>Minimum number of bytes used to encode a character.</summary>
-    private int m_minBytesPerChar;
+    private readonly int m_minBytesPerChar;
 
     /// <summary>Equivalent of System.IO.BinaryWriter, but with either endianness, depending on the EndianBitConverter it is constructed with.</summary>
     /// <param name="bitConverter">Converter to use when reading data</param>
@@ -45,17 +45,17 @@
       m_minBytesPerChar = encoding is System.Text.UnicodeEncoding ? 2 : 1;
     }
 
-    private BitConverter m_bitConverter;
+    private readonly BitConverter m_bitConverter;
     /// <summary>The bit converter used to read values from the stream.</summary>
     public BitConverter BitConverter
       => m_bitConverter;
 
-    private System.Text.Encoding m_encoding;
+    private readonly System.Text.Encoding m_encoding;
     /// <summary>The encoding used to read strings.</summary>
     public System.Text.Encoding Encoding
       => m_encoding;
 
-    private System.IO.Stream m_stream;
+    private readonly System.IO.Stream m_stream;
     /// <summary>Gets the underlying stream of the EndianBinaryReader.</summary>
     public System.IO.Stream BaseStream
       => m_stream;
@@ -332,7 +332,7 @@
         {
           throw new System.IO.EndOfStreamException();
         }
-        ret = ret | ((b & 0x7f) << shift);
+        ret |= (b & 0x7f) << shift;
         if ((b & 0x80) == 0)
         {
           return ret;

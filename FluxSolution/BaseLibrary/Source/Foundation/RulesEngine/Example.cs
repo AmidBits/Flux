@@ -18,11 +18,12 @@
 
     public static void ShowCase()
     {
-      var rules = new RulesDictionary();
-
-      rules.Add("AgeLimit", new Rule("Age", "GreaterThan", 20));
-      rules.Add("NameRequirement", new Rule("Name", "Equal", "John"));
-      rules.Add("CountryOfBirth", new Rule("BirthCountry", "Equal", "Canada"));
+      var rules = new RulesDictionary
+      {
+        { "AgeLimit", new Rule("Age", "GreaterThan", 20) },
+        { "NameRequirement", new Rule("Name", "Equal", "John") },
+        { "CountryOfBirth", new Rule("BirthCountry", "Equal", "Canada") }
+      };
 
       var rulesCompiled = rules.CompileRules<User>();
       foreach (var rule in rules)

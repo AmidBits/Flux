@@ -6,9 +6,9 @@
       where TKey : notnull
       => new ProjectionEqualityComparer<TSource, TKey>(projection);
 
-    public static ProjectionEqualityComparer<TSource, TKey> Create<TSource, TKey>(TSource ignored, System.Func<TSource, TKey> projection)
-      where TKey : notnull
-      => new ProjectionEqualityComparer<TSource, TKey>(projection);
+    //public static ProjectionEqualityComparer<TSource, TKey> Create<TSource, TKey>(TSource ignored, System.Func<TSource, TKey> projection)
+    //  where TKey : notnull
+    //  => new ProjectionEqualityComparer<TSource, TKey>(projection);
   }
 
   public static class ProjectionEqualityComparer<TSource>
@@ -38,8 +38,8 @@
     { }
 
     public bool Equals(TSource? x, TSource? y)
-      => (x == null && y == null) ? true : (x is null || y is null) ? false : m_equalityComparer.Equals(m_projection(x), m_projection(y));
+      => x is not null && y is not null && ((x is null && y is null) || m_equalityComparer.Equals(m_projection(x), m_projection(y)));
     public int GetHashCode(TSource obj)
-      => (obj is null) ? throw new System.ArgumentNullException(nameof(obj)) : m_equalityComparer.GetHashCode(m_projection(obj));
+      => obj is null ? throw new System.ArgumentNullException(nameof(obj)) : m_equalityComparer.GetHashCode(m_projection(obj));
   }
 }

@@ -138,15 +138,15 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      AmbTest();
-      return;
+      //AmbTest();
+      //return;
 
       while (KnownFacts.Any(kf => kf.House.Count > 1))
       {
-        //System.Console.Clear();
-        //RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
+        System.Console.Clear();
+        RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
 
-        //System.Console.ReadKey();
+        System.Console.ReadKey();
 
         // This part performs what is known as constraint propagation.
         foreach (var kf in KnownFacts)

@@ -40,7 +40,7 @@
         if (Same(text.Slice(skip), word, word.Length))
           return skip;
 
-        skip =skip+ skippable[text[skip + word.Length - 1]];
+        skip += skippable[text[skip + word.Length - 1]];
       }
 
       return -1;
