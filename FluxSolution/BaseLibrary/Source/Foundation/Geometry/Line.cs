@@ -23,7 +23,7 @@ namespace Flux.Geometry
       => (aY - bY, bX - aX, aX * bY - bX * aY);
 
     /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
-    public static Vector2 IntermediaryPoint(Vector2 a, Vector2 b, double scalar = 0.5)
+    public static CoordinateSystems.CartesianCoordinate2 IntermediaryPoint(CoordinateSystems.CartesianCoordinate2 a, CoordinateSystems.CartesianCoordinate2 b, double scalar = 0.5)
       => (a + b) * scalar;
 
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
@@ -59,14 +59,14 @@ namespace Flux.Geometry
       }
     }
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static LineTestResult IntersectionTest(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+    public static LineTestResult IntersectionTest(CoordinateSystems.CartesianCoordinate2 a1, CoordinateSystems.CartesianCoordinate2 a2, CoordinateSystems.CartesianCoordinate2 b1, CoordinateSystems.CartesianCoordinate2 b2)
       => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
 
     /// <summary>Returns the corresponding y from the specified x, slope and the point.</summary>
     /// <param name="x"></param>
     /// <param name="slope"></param>
     /// <param name="p1"></param>
-    public static double PointSlopeForm(double x, double slope, Vector2 p1)
+    public static double PointSlopeForm(double x, double slope, CoordinateSystems.CartesianCoordinate2 p1)
       => p1.Y + slope * (x - p1.X);
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>

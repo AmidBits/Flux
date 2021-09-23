@@ -89,7 +89,7 @@ namespace Flux.Geometry
     /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
     public static int GetOctantNumber(Point3 source, Point3 center)
-      => (source.X >= center.X ? 1 : 0) + (source.Y >= center.Y ? 2 : 0) + (source.Z >= center.Z ? 4 : 0);
+      => (source.X >= center.X ? 4 : 0) + (source.Y >= center.Y ? 2 : 0) + (source.Z >= center.Z ? 4 : 0);
     public static Point3 InterpolateCosine(Point3 y1, Point3 y2, double mu)
       => mu >= 0 && mu <= 1 && ((1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0) is double mu2
       ? (y1 * (1.0 - mu2) + y2 * mu2)

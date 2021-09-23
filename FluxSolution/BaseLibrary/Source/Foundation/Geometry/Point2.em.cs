@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Geometry.Vector2 ToVector(this Geometry.Point2 source)
-      => new Geometry.Vector2(source.X, source.Y);
-    public static System.Numerics.Vector2 ToVector2(this Geometry.Point2 source)
-      => new System.Numerics.Vector2(source.X, source.Y);
-    public static System.Numerics.Vector3 ToVector3(this Geometry.Point2 source)
-      => new System.Numerics.Vector3(source.X, source.Y, 0);
+    //public static Geometry.Vector2 ToVector(this Geometry.Point2 source)
+    //  => new Geometry.Vector2(source.X, source.Y);
+    //public static System.Numerics.Vector2 ToVector2(this Geometry.Point2 source)
+    //  => new System.Numerics.Vector2(source.X, source.Y);
+    //public static System.Numerics.Vector3 ToVector3(this Geometry.Point2 source)
+    //  => new System.Numerics.Vector3(source.X, source.Y, 0);
 
     //    /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     //    public static double AngleBetween(this Geometry.Point2 source, Geometry.Point2 before, Geometry.Point2 after)
