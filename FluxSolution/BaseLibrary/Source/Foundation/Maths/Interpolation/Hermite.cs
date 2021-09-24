@@ -13,20 +13,16 @@ namespace Flux
       var mu2 = mu * mu;
       var mu3 = mu2 * mu;
 
-      var onePbias = 1 + bias;
-      var oneMbias = 1 - bias;
+      var biasP = (1 + bias) * (1 - tension);
+      var biasM = (1 - bias) * (1 - tension);
 
-      var oneMtension = 1 - tension;
+      var m0 = (y1 - y0) * biasP / 2 + (y2 - y1) * biasM / 2;
+      var m1 = (y2 - y1) * biasP / 2 + (y3 - y2) * biasM / 2;
 
-      var m0 = (y1 - y0) * onePbias * oneMtension / 2;
-      m0 += (y2 - y1) * oneMbias * oneMtension / 2;
-      var m1 = (y2 - y1) * onePbias * oneMtension / 2;
-      m1 += (y3 - y2) * oneMbias * oneMtension / 2;
-
-      var a0 = 2 * mu3 - 3 * mu2 + 1;
-      var a1 = mu3 - 2 * mu2 + mu;
-      var a2 = mu3 - mu2;
-      var a3 = -2 * mu3 + 3 * mu2;
+      var a0 = (2 * mu3 - 3 * mu2 + 1);
+      var a1 = (mu3 - 2 * mu2 + mu);
+      var a2 = (mu3 - mu2);
+      var a3 = (-2 * mu3 + 3 * mu2);
 
       return a0 * y1 + a1 * m0 + a2 * m1 + a3 * y2;
     }

@@ -32,7 +32,7 @@ namespace Flux.Geometry
       => x + (y * Width) + (z * Width * Height);
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
     public long PointToUniqueIndex(in Point3 point)
-      => PointToUniqueIndex(point.X, point.Y, point.Z);
+      => PointToUniqueIndex(point.X, point.Y, point.X);
 
     #region Static methods
     /// <summary>Adds a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>

@@ -1,8 +1,7 @@
 namespace Flux.Geometry
 {
   public struct Ellipse
-    : System.IEquatable<Ellipse>,
-    I2DSurfaceArea, I2DSurfacePerimeter
+    : System.IEquatable<Ellipse>
   {
     public static readonly Ellipse Zero;
 
@@ -26,11 +25,6 @@ namespace Flux.Geometry
     public Ellipse(double radius, double angle)
       : this(radius * 2, radius * 2, angle)
     { }
-
-    public double Get2DSurfaceArea()
-      => SurfaceArea(Width, Height);
-    public double Get2DSurfacePerimeter()
-      => SurfacePerimeter(Width, Height);
 
     #region Static methods
     /// <summary>Returns the eccentricity of the ellipse. The order of radii does not matter.</summary>

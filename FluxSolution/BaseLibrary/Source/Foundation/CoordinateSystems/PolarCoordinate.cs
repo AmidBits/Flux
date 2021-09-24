@@ -1,4 +1,4 @@
-namespace Flux.CoordinateSystems
+namespace Flux
 {
   /// <summary>Polar coordinate. Please note that polar coordinates are two dimensional.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>

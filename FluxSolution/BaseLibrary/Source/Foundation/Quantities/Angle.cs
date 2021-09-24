@@ -52,6 +52,8 @@ namespace Flux
 
       private readonly double m_value;
 
+      private Angle(double value)
+        => m_value = value;
       public Angle(double value, AngleUnit unit = AngleUnit.Radian)
       {
         switch (unit)
@@ -90,12 +92,12 @@ namespace Flux
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public CoordinateSystems.CartesianCoordinate2 ToCartesian2()
-        => (CoordinateSystems.CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_value);
+      public CartesianCoordinate2 ToCartesian2()
+        => (CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_value);
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public CoordinateSystems.CartesianCoordinate2 ToCartesian2Ex()
-        => (CoordinateSystems.CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
+      public CartesianCoordinate2 ToCartesian2Ex()
+        => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
       public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
