@@ -6,8 +6,8 @@ namespace Flux.Geometry
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point2 Zero;
 
-    private int m_x;
-    private int m_y;
+    private readonly int m_x;
+    private readonly int m_y;
 
     public Point2(int x, int y)
     {
