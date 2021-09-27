@@ -31,8 +31,10 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
-      if (index < 0 || (source.GetLength(dimension == 0 ? 1 : 0) is var sourceLengthX && index >= sourceLengthX)) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (fillItems is null || fillItems.Length is var itemsLength && itemsLength == 0) throw new System.ArgumentOutOfRangeException(nameof(fillItems));
+      if (index < 0 || (source.GetLength(dimension == 0 ? 1 : 0) is var sourceLengthX && index > sourceLengthX)) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (fillItems is null || fillItems.Length == 0) fillItems = new T[] { default! };
+
+      var itemsLength = fillItems.Length;
 
       var minLength = repeatItemsIfNeeded ? sourceLengthX : System.Math.Min(sourceLengthX, itemsLength);
 

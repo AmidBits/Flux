@@ -17,7 +17,9 @@ namespace Flux
     public static void UpdateMinMax<T>(this System.ReadOnlySpan<T> source, ref T min, ref T max)
       where T : System.IComparable<T>
     {
-      for (var i = 0; i < source.Length; i++)
+      if (source.Length == 0) throw new System.ArgumentOutOfRangeException(nameof(source));
+
+      for (var i = source.Length - 1; i >= 0; i--)
       {
         var t = source[i];
 

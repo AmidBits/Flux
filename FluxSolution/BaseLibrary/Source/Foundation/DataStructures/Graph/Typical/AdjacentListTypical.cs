@@ -32,8 +32,7 @@ namespace Flux.DataStructures.Graph
     where TVertex : System.IEquatable<TVertex>
     where TValue : System.IEquatable<TValue>
   {
-    private readonly OrderedDictionary<TVertex, OrderedDictionary<TVertex, System.Collections.Generic.List<TValue>>> m_data
-      = new OrderedDictionary<TVertex, OrderedDictionary<TVertex, System.Collections.Generic.List<TValue>>>();
+    private readonly System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TValue>>> m_data = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TValue>>>();
 
     public bool IsAdjacent(TVertex source, TVertex target)
       => m_data.ContainsKey(source) && m_data[source].ContainsKey(target);
@@ -46,7 +45,7 @@ namespace Flux.DataStructures.Graph
     public void AddVertex(TVertex vertex)
     {
       if (!m_data.ContainsKey(vertex))
-        m_data.Add(vertex, new OrderedDictionary<TVertex, System.Collections.Generic.List<TValue>>());
+        m_data.Add(vertex, new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TValue>>());
     }
     public void RemoveVertex(TVertex vertex)
     {
@@ -92,8 +91,10 @@ namespace Flux.DataStructures.Graph
     public System.Collections.Generic.IEnumerable<(TVertex vertex, int degree)> GetVertices()
     //=> m_data.Select(kvp => (kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count) + m_data.Sum(kvpSub => kvpSub.Value.ContainsKey(kvp.Key) ? kvpSub.Value[kvp.Key].Count : 0)));
     {
+      var edges = GetEdges().ToList();
+
       foreach (var vertex in m_data.Keys)
-        yield return (vertex, GetEdges().Sum(e => e.source.Equals(vertex) || e.target.Equals(vertex) ? e.source.Equals(e.target) ? 2 : 1 : 0));
+        yield return (vertex, edges.Count(e => e.source.Equals(vertex) || e.target.Equals(vertex) ));
     }
     public System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TValue value)> GetEdges()
     {

@@ -126,9 +126,7 @@ namespace Flux.DataStructures.Graph
 
         for (var column = m_vertices.Count - 1; column >= 0; column--)
         {
-          if (!m_weights[row, column].Equals(default!))
-            degree++;
-          if (!m_weights[column, row].Equals(default!))
+          if (!m_weights[row, column].Equals(default!) || !m_weights[column, row].Equals(default!))
             degree++;
         }
 

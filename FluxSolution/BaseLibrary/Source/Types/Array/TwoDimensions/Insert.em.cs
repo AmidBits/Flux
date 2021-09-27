@@ -35,7 +35,8 @@ namespace Flux
         }
       }
 
-      Fill(target, dimension, index, repeatFillPatternIfNotEnough, items);
+      if (target.GetLength(0) > 0 && target.GetLength(1) > 0)
+        Fill(target, dimension, index, repeatFillPatternIfNotEnough, items);
 
       return target;
     }

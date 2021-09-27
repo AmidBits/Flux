@@ -11,6 +11,9 @@
     void AddEdge(TVertex source, TVertex target);
     void RemoveEdge(TVertex source, TVertex target);
 
+    System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TValue value)> GetEdges();
+    System.Collections.Generic.IEnumerable<(TVertex vertex, int degree)> GetVertices();
+
     //TValue GetVertexValue(TVertex vertex);
     //void SetVertexValue(TVertex vertex, TValue value);
     //TValue GetEdgeValue(TVertex source, TVertex target);

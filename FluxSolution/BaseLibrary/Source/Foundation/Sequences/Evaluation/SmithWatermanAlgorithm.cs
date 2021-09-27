@@ -1,15 +1,13 @@
 ﻿namespace Flux.Algorithms
 {
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm"/>
   public class SmithWatermanAlgorithm<T>
   {
     public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; init; }
 
-    public int LinearGapPenalty { get; init; } = 1;
-    public System.Func<T, T, int> SubstitutionMatrix { get; init; } = (s, t) => 1;
+    public int LinearGapPenalty { get; init; }
+    public System.Func<T, T, int> SubstitutionMatrix { get; init; }
 
     public T GapPlaceholder { get; init; } = default!;
 
@@ -41,8 +39,6 @@
       for (var j = target.Length; j >= 0; j--)
         matrix[0, j] = j * LinearGapPenalty;
 
-      System.Console.WriteLine(matrix.ToConsoleBlock());
-
       for (var si = 1; si <= source.Length; si++)
       {
         var se = source[si - 1];
@@ -59,54 +55,52 @@
         }
       }
 
-      System.Console.WriteLine(matrix.ToConsoleBlock());
-
       return matrix;
     }
 
     public (System.Collections.Generic.List<T> source, System.Collections.Generic.List<T> target) TracebackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var i = matrix.GetLength(0) - 1;
-      var j = matrix.GetLength(1) - 1;
+      var si = matrix.GetLength(0) - 1;
+      var ti = matrix.GetLength(1) - 1;
 
       var s = new System.Collections.Generic.List<T>();
       var t = new System.Collections.Generic.List<T>();
 
-      while (i > 0 && j > 0)
+      while (si > 0 && ti > 0)
       {
-        if (matrix[i, j] - SubstitutionMatrix(source[i - 1], target[j - 1]) == matrix[i - 1, j - 1])
+        if (matrix[si, ti] - SubstitutionMatrix(source[si - 1], target[ti - 1]) == matrix[si - 1, ti - 1])
         {
-          i -= 1;
-          j -= 1;
-          s.Insert(0, target[j]);
-          t.Insert(0, source[i]);
+          si -= 1;
+          ti -= 1;
+          s.Insert(0, target[ti]);
+          t.Insert(0, source[si]);
         }
-        else if (matrix[i, j] - LinearGapPenalty == matrix[i, j - 1])
+        else if (matrix[si, ti] - LinearGapPenalty == matrix[si, ti - 1])
         {
-          j -= 1;
-          s.Insert(0, target[j]);
+          ti -= 1;
+          s.Insert(0, target[ti]);
           t.Insert(0, GapPlaceholder);
         }
-        else if (matrix[i, j] - LinearGapPenalty == matrix[i - 1, j])
+        else if (matrix[si, ti] - LinearGapPenalty == matrix[si - 1, ti])
         {
-          i -= 1;
+          si -= 1;
           s.Insert(0, GapPlaceholder);
-          t.Insert(0, source[i]);
+          t.Insert(0, source[si]);
         }
       }
 
-      while (j > 0)
+      while (ti > 0)
       {
-        j -= 1;
-        s.Insert(0, target[j]);
+        ti -= 1;
+        s.Insert(0, target[ti]);
         t.Insert(0, GapPlaceholder);
       }
 
-      while (i > 0)
+      while (si > 0)
       {
-        i -= 1;
+        si -= 1;
         s.Insert(0, GapPlaceholder);
-        t.Insert(0, source[i]);
+        t.Insert(0, source[si]);
       }
 
       return (s, t);

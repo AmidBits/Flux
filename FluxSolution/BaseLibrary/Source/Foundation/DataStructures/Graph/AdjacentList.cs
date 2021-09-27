@@ -32,7 +32,7 @@ namespace Flux.DataStructures.Graph
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IEquatable<TWeight>
   {
-    private readonly System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data 
+    private readonly System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>> m_data
       = new System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.Dictionary<TVertex, System.Collections.Generic.List<TWeight>>>();
 
     public bool AddVertex(TVertex vertex)

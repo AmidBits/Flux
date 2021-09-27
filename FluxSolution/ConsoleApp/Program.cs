@@ -15,10 +15,99 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public class MyDate
+  {
+    public int year;
+    public int month;
+    public int day;
+  }
+
+  public class Lad
+  {
+    public string firstName;
+    public string lastName;
+    public MyDate dateOfBirth;
+  }
+
   class Program
   {
     private static void TimedMain(string[] args)
     {
+      //var am = new Flux.DataStructures.Graph.AdjacentMatrix<char, double>(i => i);
+
+      //am.AddVertex('a');
+      //am.AddVertex('b');
+      //am.AddVertex('c');
+      //am.AddVertex('d');
+      //am.AddVertex('e');
+      //am.AddVertex('f');
+
+      //am.AddDirectedEdge('a', 'b', 1.5);
+      //am.AddDirectedEdge('a', 'c', 2.5);
+      //am.AddDirectedEdge('b', 'd', 1.75);
+      //am.AddDirectedEdge('c', 'e', 1.25);
+      //am.AddDirectedEdge('d', 'f', 1.75);
+      //am.AddDirectedEdge('e', 'f', 2.25);
+
+      //am.DijkstraShortestPath('a', 'f');
+
+      var am = new Flux.DataStructures.Graph.AdjacentListTypical<int, double>();
+
+      am.AddVertex(0);
+      am.AddVertex(1);
+      am.AddVertex(2);
+      am.AddVertex(3);
+      am.AddVertex(4);
+      am.AddVertex(5);
+      am.AddVertex(6);
+      am.AddVertex(7);
+      am.AddVertex(8);
+
+      am.AddEdge(0, 1, 4);
+      am.AddEdge(0, 7, 8);
+      //am.AddEdge(1, 0, 4);
+      am.AddEdge(1, 2, 8);
+      am.AddEdge(1, 7, 11);
+      //am.AddEdge(7, 0, 8);
+      am.AddEdge(7, 1, 11);
+      am.AddEdge(7, 8, 7);
+      am.AddEdge(7, 6, 1);
+      //am.AddEdge(2, 1, 8);
+      am.AddEdge(2, 8, 2);
+      am.AddEdge(2, 5, 4);
+      am.AddEdge(2, 3, 7);
+      am.AddEdge(8, 2, 2);
+      //am.AddEdge(8, 7, 7);
+      am.AddEdge(8, 6, 6);
+      //am.AddEdge(3, 2, 7);
+      am.AddEdge(3, 5, 14);
+      am.AddEdge(3, 4, 9);
+      //am.AddEdge(6, 7, 1);
+      am.AddEdge(6, 8, 6);
+      am.AddEdge(6, 5, 2);
+      //am.AddEdge(5, 6, 2);
+      //am.AddEdge(5, 2, 4);
+      am.AddEdge(5, 3, 14);
+      am.AddEdge(5, 4, 10);
+      //am.AddEdge(4, 5, 10);
+      //am.AddEdge(4, 3, 9);
+
+      var vertices = am.GetVertices().ToList();
+      var edges = am.GetEdges().ToList();
+
+      //var distances = am.PrimsSpanningTree('a', i => i);
+
+      var distances = am.DijkstraShortestPath(0, i => i);
+      return;
+
+      var s1 = "and";
+      var s2 = @"Wishing to have an extensive list of Synonyms and Antonyms for another project, I settled on Fallows’ amazing publication. However, I could not find an OCR text which was clear of the many OCR-scan errors.I did my own OCR, which joined many of the line-end hyphenated words automatically, but which still resulted in a very large number of nearly identical(to other OCR scans) errors.This is probably not the fault of the OCR software, but rather of the quality of the 19th Century source type and ink, which tended to be far from crisp.The software was not entirely perfect though and it would often invert n and u, or render either of those letters as ii, and render i as l (lower case L). R and K were regularly mixed, so ROCK could be rendered as KOCR – if it managed to get the circular letters correct.Just one example of variation is to be found in the rendering of the coded abbreviation for SYNONYM, ‘SYN.’ It might be rendered with a period, comma, both or none; and some of these variations were recorded:  \ BTH \ 2vN. \ 8_vs. \ BYN, \ KYN. \ PYN. \ RYN. \ SIN, \ Srn. \ STIC. \ STK. \ STN. \ STN., \ STW. \ SVN_ \ SXN. \ SY.V. \ SY:. \ SYH. \ SYK. \ SYN, \ Syn, \ SYN. \ SYN. \ SYN._ \ SYS,. \ SYS. \ SYW. \ SYX\. and \ YX\. !I know! Grrr!";
+      var s3 = @"bbaaccaadd";
+
+      var bmh = new Flux.Text.BoothsAlgorithm<char>();
+
+      var r = bmh.MinimalRotation(s3);
+
       //Flux.AmbOps.Amb.Example();
       //System.Console.WriteLine();
 
