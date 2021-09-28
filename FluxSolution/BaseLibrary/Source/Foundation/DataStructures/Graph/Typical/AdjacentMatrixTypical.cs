@@ -51,8 +51,6 @@ namespace Flux.DataStructures.Graph
     }
     public void AddVertex(TVertex vertex)
       => AddVertex(vertex, default!);
-    //public bool ContainsVertex(TVertex vertex)
-    //  => m_vertices.Contains(vertex);
     public void RemoveVertex(TVertex vertex)
     {
       if (m_vertices.Contains(vertex))
@@ -78,7 +76,7 @@ namespace Flux.DataStructures.Graph
     public System.Collections.Generic.IEnumerable<(TVertex vertex, TVertexValue value, int degree)> GetVertices()
     {
       foreach (var vertex in m_vertices)
-        yield return (vertex, GetVertexValue(vertex), m_matrix.GetElements(0, m_vertices.IndexOf(vertex)).Sum(vt => vt.item));
+        yield return (vertex, GetVertexValue(vertex), m_matrix.GetElements(0, m_vertices.IndexOf(vertex)).Sum(vt => vt.item) + m_matrix.GetElements(1, m_vertices.IndexOf(vertex)).Sum(vt => vt.item));
     }
 
     public void AddEdge(TVertex source, TVertex target, TEdgeValue value)
@@ -114,8 +112,16 @@ namespace Flux.DataStructures.Graph
     public System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TEdgeValue value)> GetEdges()
     {
       foreach (var source in m_vertices)
-        foreach (var target in GetNeighbors(source))
-          yield return (source, target, GetEdgeValue(source, target));
+      {
+        foreach (var target in m_vertices)
+        {
+          if (IsAdjacent(source, target))
+            yield return (source, target, m_edgeValues[m_vertices.IndexOf(source), m_vertices.IndexOf(target)]);
+
+          //if (IsAdjacent(target, source))
+          //  yield return (target, source, m_edgeValues[ m_vertices.IndexOf(target), m_vertices.IndexOf(source)]);
+        }
+      }
     }
 
     //public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
@@ -246,7 +252,6 @@ namespace Flux.DataStructures.Graph
       sb.Insert(0, $"<{nameof(AdjacentMatrixTypical<TVertex, TVertexValue, TEdgeValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
-
   }
 }
 

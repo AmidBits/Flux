@@ -37,7 +37,7 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var am = new Flux.DataStructures.Graph.AdjacentListTypical<int, char, double>();
+      Flux.DataStructures.Graph.IGraphTypical<int, char, double> am = new Flux.DataStructures.Graph.AdjacentListTypical<int, char, double>();
 
       am.AddVertex(0, 'a');
       am.AddVertex(1, 'b');
@@ -51,6 +51,7 @@ namespace ConsoleApp
 
       am.AddEdge(0, 1, 4);
       am.AddEdge(0, 7, 8);
+      am.AddEdge(7, 0, 8);
       //am.AddEdge(1, 0, 4);
       am.AddEdge(1, 2, 8);
       am.AddEdge(1, 7, 11);
@@ -81,9 +82,10 @@ namespace ConsoleApp
       var vertices = am.GetVertices().ToList();
       var edges = am.GetEdges().ToList();
 
-      //var distances = am.PrimsSpanningTree('a', i => i);
+      var distances = am.DijkstraShortestPath(0, i => i);
 
-      //var distances = am.DijkstraShortestPath(0, i => i);
+      System.Console.WriteLine(am.ToString());
+
       return;
 
       var s1 = "and";

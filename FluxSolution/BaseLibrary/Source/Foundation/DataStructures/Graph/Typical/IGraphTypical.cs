@@ -7,6 +7,7 @@
     System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source);
     bool IsAdjacent(TVertex source, TVertex target);
 
+    void AddVertex(TVertex vertex, TVertexValue value);
     void AddVertex(TVertex vertex);
     void RemoveVertex(TVertex vertex);
 
@@ -15,6 +16,7 @@
 
     System.Collections.Generic.IEnumerable<(TVertex vertex, TVertexValue value, int degree)> GetVertices();
 
+    void AddEdge(TVertex source, TVertex target, TEdgeValue value);
     void AddEdge(TVertex source, TVertex target);
     void RemoveEdge(TVertex source, TVertex target);
 
