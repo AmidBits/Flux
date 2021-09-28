@@ -37,54 +37,72 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      Flux.DataStructures.Graph.IGraphTypical<int, char, double> am = new Flux.DataStructures.Graph.AdjacentListTypical<int, char, double>();
+      var dal = new Flux.DataStructures.Graph.DirectedAdjacentList<int, char, double>();
 
-      am.AddVertex(0, 'a');
-      am.AddVertex(1, 'b');
-      am.AddVertex(2, 'c');
-      am.AddVertex(3, 'd');
-      am.AddVertex(4, 'e');
-      am.AddVertex(5, 'f');
-      am.AddVertex(6, 'g');
-      am.AddVertex(7, 'h');
-      am.AddVertex(8, 'i');
+      dal.AddVertex(0, 'a');
+      dal.AddVertex(1, 'b');
+      dal.AddVertex(2, 'c');
+      dal.AddVertex(3, 'd');
+      dal.AddVertex(4, 'e');
+      dal.AddVertex(5, 'f');
+      dal.AddVertex(6, 'g');
+      dal.AddVertex(7, 'h');
+      dal.AddVertex(8, 'i');
 
-      am.AddEdge(0, 1, 4);
-      am.AddEdge(0, 7, 8);
-      am.AddEdge(7, 0, 8);
+      dal.AddEdge(0, 0, 0.5);
+      dal.AddEdge(0, 1, 4);
+      dal.AddEdge(0, 1, 12);
+      dal.AddEdge(0, 7, 8.5);
+      dal.AddEdge(7, 0, 7.5);
       //am.AddEdge(1, 0, 4);
-      am.AddEdge(1, 2, 8);
-      am.AddEdge(1, 7, 11);
+      dal.AddEdge(1, 2, 8);
+      dal.AddEdge(1, 7, 11);
       //am.AddEdge(7, 0, 8);
-      am.AddEdge(7, 1, 11);
-      am.AddEdge(7, 8, 7);
-      am.AddEdge(7, 6, 1);
+      dal.AddEdge(7, 1, 11);
+      dal.AddEdge(7, 8, 7);
+      dal.AddEdge(7, 6, 1);
       //am.AddEdge(2, 1, 8);
-      am.AddEdge(2, 8, 2);
-      am.AddEdge(2, 5, 4);
-      am.AddEdge(2, 3, 7);
-      am.AddEdge(8, 2, 2);
+      dal.AddEdge(2, 8, 2);
+      dal.AddEdge(2, 5, 4);
+      dal.AddEdge(2, 3, 7);
+      dal.AddEdge(8, 2, 2);
       //am.AddEdge(8, 7, 7);
-      am.AddEdge(8, 6, 6);
+      dal.AddEdge(8, 6, 6);
       //am.AddEdge(3, 2, 7);
-      am.AddEdge(3, 5, 14);
-      am.AddEdge(3, 4, 9);
+      dal.AddEdge(3, 5, 14);
+      dal.AddEdge(3, 4, 9);
       //am.AddEdge(6, 7, 1);
-      am.AddEdge(6, 8, 6);
-      am.AddEdge(6, 5, 2);
+      dal.AddEdge(6, 8, 6);
+      dal.AddEdge(6, 5, 2);
       //am.AddEdge(5, 6, 2);
       //am.AddEdge(5, 2, 4);
-      am.AddEdge(5, 3, 14);
-      am.AddEdge(5, 4, 10);
+      dal.AddEdge(5, 3, 14);
+      dal.AddEdge(5, 4, 10);
       //am.AddEdge(4, 5, 10);
       //am.AddEdge(4, 3, 9);
 
-      var vertices = am.GetVertices().ToList();
-      var edges = am.GetEdges().ToList();
+      var lvertices = dal.GetVertices().ToList();
+      var ledges = dal.GetEdges().ToList();
 
-      var distances = am.DijkstraShortestPath(0, i => i);
+      var ldistances = dal.DijkstraShortestPath(0, i => i);
 
-      System.Console.WriteLine(am.ToString());
+      System.Console.WriteLine(dal.ToString());
+      System.Console.WriteLine();
+
+      var dam = new Flux.DataStructures.Graph.DirectedAdjacentMatrix<int, char, double>();
+
+      foreach (var vertex in lvertices)
+        dam.AddVertex(vertex, dal.GetVertexValue(vertex));
+      foreach (var edge in ledges)
+        dam.AddEdge(edge.source, edge.target, edge.value);
+
+      var mvertices = dam.GetVertices().ToList();
+      var medges = dam.GetEdges().ToList();
+
+      var mdistances = dam.DijkstraShortestPath(0, i => i);
+
+      System.Console.WriteLine(dam.ToString());
+      System.Console.WriteLine();
 
       return;
 

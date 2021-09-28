@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source columns reversed (mirrored).</summary>
-    public static System.Data.DataTable ReverseColumns(this System.Data.DataTable source)
+    public static System.Data.DataTable FlipColumns(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -24,7 +24,7 @@ namespace Flux
     }
 
     /// <summary>Reverse the columns of the <see cref="System.Data.DataTable"/> in-line. The process re-orders the columns (using the SetOrdinal() method) within the data table.</summary>
-    public static void ReverseColumnsInline(this System.Data.DataTable source, int startIndex, int count)
+    public static void FlipColumnsInline(this System.Data.DataTable source, int startIndex, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (startIndex < 0 || startIndex > source.Columns.Count - 2) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
@@ -35,7 +35,7 @@ namespace Flux
     }
 
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rows reversed (mirrored).</summary>
-    public static System.Data.DataTable ReverseRows(this System.Data.DataTable source)
+    public static System.Data.DataTable FlipRows(this System.Data.DataTable source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -55,7 +55,7 @@ namespace Flux
     }
 
     /// <summary>Reverse the rows of the <see cref="System.Data.DataTable"/> in-line. The process swaps itemArray's within the data table.</summary>
-    public static void ReverseRowsInline(this System.Data.DataTable source, int startIndex, int count)
+    public static void FlipRowsInline(this System.Data.DataTable source, int startIndex, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (startIndex < 0 || startIndex > source.Rows.Count - 2) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
