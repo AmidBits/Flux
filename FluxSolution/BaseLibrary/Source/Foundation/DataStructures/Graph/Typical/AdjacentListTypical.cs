@@ -101,7 +101,7 @@ namespace Flux.DataStructures.Graph
             yield return (source, target, value);
     }
 
-    // Overrides.
+    #region Object overrides.
     public override string ToString()
     {
       var sb = new System.Text.StringBuilder();
@@ -111,6 +111,7 @@ namespace Flux.DataStructures.Graph
       sb.Insert(0, $"<{nameof(AdjacentListTypical<TVertex, TVertexValue, TEdgeValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
+    #endregion Object overrides.
 
     //public System.Collections.Generic.List<Edge<TPoint, TWeight>> KruskalMinimumSpanningTree()
     //{

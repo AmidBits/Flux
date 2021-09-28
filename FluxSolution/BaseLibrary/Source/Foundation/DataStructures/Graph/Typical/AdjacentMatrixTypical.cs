@@ -242,7 +242,7 @@ namespace Flux.DataStructures.Graph
       return grid.ToConsoleBlock(uniformWidth: true, centerContent: true);
     }
 
-    // Overrides.
+    #region Object overrides.
     public override string ToString()
     {
       var sb = new System.Text.StringBuilder();
@@ -252,6 +252,7 @@ namespace Flux.DataStructures.Graph
       sb.Insert(0, $"<{nameof(AdjacentMatrixTypical<TVertex, TVertexValue, TEdgeValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
+    #endregion Object overrides.
   }
 }
 
