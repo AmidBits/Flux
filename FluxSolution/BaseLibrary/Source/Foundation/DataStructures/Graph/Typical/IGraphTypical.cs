@@ -1,23 +1,27 @@
 ﻿namespace Flux.DataStructures.Graph
 {
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
-  public interface IGraphTypical<TVertex, TValue>
+  public interface IGraphTypical<TVertex, TVertexValue, TEdgeValue>
     where TVertex : System.IEquatable<TVertex>
   {
-    bool IsAdjacent(TVertex source, TVertex target);
     System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source);
+    bool IsAdjacent(TVertex source, TVertex target);
+
     void AddVertex(TVertex vertex);
     void RemoveVertex(TVertex vertex);
+
+    TVertexValue GetVertexValue(TVertex vertex);
+    void SetVertexValue(TVertex vertex, TVertexValue value);
+
+    System.Collections.Generic.IEnumerable<(TVertex vertex, TVertexValue value, int degree)> GetVertices();
+
     void AddEdge(TVertex source, TVertex target);
     void RemoveEdge(TVertex source, TVertex target);
 
-    System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TValue value)> GetEdges();
-    System.Collections.Generic.IEnumerable<(TVertex vertex, int degree)> GetVertices();
+    System.Collections.Generic.List<TEdgeValue> GetEdgeValues(TVertex source, TVertex target);
+    void SetEdgeValues(TVertex source, TVertex target, System.Collections.Generic.List<TEdgeValue> value);
 
-    //TValue GetVertexValue(TVertex vertex);
-    //void SetVertexValue(TVertex vertex, TValue value);
-    //TValue GetEdgeValue(TVertex source, TVertex target);
-    //void SetEdgeValue(TVertex source, TVertex target, TValue value);
+    System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TEdgeValue value)> GetEdges();
   }
 }
 

@@ -7,17 +7,23 @@ namespace Flux.DataStructures.Graph
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class AdjacentMatrixTypical<TVertex, TValue>
-    : IGraphTypical<TVertex, TValue>
+  public class AdjacentMatrixTypical<TVertex, TVertexValue, TEdgeValue>
+    : IGraphTypical<TVertex, TVertexValue, TEdgeValue>
     where TVertex : System.IEquatable<TVertex>
-    where TValue : System.IEquatable<TValue>
   {
+    private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();
     private readonly System.Collections.Generic.List<TVertex> m_vertices = new System.Collections.Generic.List<TVertex>();
-    private readonly System.Collections.Generic.List<TValue> m_valuesOfVertices = new System.Collections.Generic.List<TValue>();
 
     private int[,] m_matrix = new int[0, 0];
 
-    private TValue[,] m_valuesOfEdges = new TValue[0, 0];
+    private TEdgeValue[,] m_edgeValues = new TEdgeValue[0, 0];
+
+    public System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source)
+    {
+      foreach (var (_, index1, item) in m_matrix.GetElements(0, m_vertices.IndexOf(source)))
+        if (item != 0)
+          yield return m_vertices[index1];
+    }
 
     public bool IsAdjacent(TVertex source, TVertex target)
     {
@@ -27,27 +33,20 @@ namespace Flux.DataStructures.Graph
       return sourceIndex > -1 && targetIndex > -1 && m_matrix[sourceIndex, targetIndex] != 0;
     }
 
-    public System.Collections.Generic.IEnumerable<TVertex> GetNeighbors(TVertex source)
-    {
-      foreach (var (_, index1, item) in m_matrix.GetElements(0, m_vertices.IndexOf(source)))
-        if (item != 0)
-          yield return m_vertices[index1];
-    }
-
-    public void AddVertex(TVertex vertex, TValue value)
+    public void AddVertex(TVertex vertex, TVertexValue value)
     {
       if (!m_vertices.Contains(vertex))
       {
         var index = m_vertices.Count;
 
         m_vertices.Add(vertex);
-        m_valuesOfVertices.Add(value);
+        m_vertexValues.Add(value);
 
         m_matrix = m_matrix.Insert(0, index, true, 0);
         m_matrix = m_matrix.Insert(1, index, true, 0);
 
-        m_valuesOfEdges = m_valuesOfEdges.Insert(0, index, default!);
-        m_valuesOfEdges = m_valuesOfEdges.Insert(1, index, default!);
+        m_edgeValues = m_edgeValues.Insert(0, index, default!);
+        m_edgeValues = m_edgeValues.Insert(1, index, default!);
       }
     }
     public void AddVertex(TVertex vertex)
@@ -60,18 +59,29 @@ namespace Flux.DataStructures.Graph
       {
         var index = m_vertices.IndexOf(vertex);
 
-        m_valuesOfEdges = m_valuesOfEdges.Remove(0, index);
-        m_valuesOfEdges = m_valuesOfEdges.Remove(1, index);
+        m_edgeValues = m_edgeValues.Remove(0, index);
+        m_edgeValues = m_edgeValues.Remove(1, index);
 
         m_matrix = m_matrix.Remove(0, index);
         m_matrix = m_matrix.Remove(1, index);
 
-        m_valuesOfVertices.RemoveAt(index);
+        m_vertexValues.RemoveAt(index);
         m_vertices.RemoveAt(index);
       }
     }
 
-    public void AddEdge(TVertex source, TVertex target, TValue value)
+    public TVertexValue GetVertexValue(TVertex vertex)
+      => m_vertexValues[m_vertices.IndexOf(vertex)];
+    public void SetVertexValue(TVertex vertex, TVertexValue value)
+      => m_vertexValues[m_vertices.IndexOf(vertex)] = value;
+
+    public System.Collections.Generic.IEnumerable<(TVertex vertex, TVertexValue value, int degree)> GetVertices()
+    {
+      foreach (var vertex in m_vertices)
+        yield return (vertex, GetVertexValue(vertex), m_matrix.GetElements(0, m_vertices.IndexOf(vertex)).Sum(vt => vt.item));
+    }
+
+    public void AddEdge(TVertex source, TVertex target, TEdgeValue value)
     {
       AddVertex(source);
       AddVertex(target);
@@ -91,33 +101,21 @@ namespace Flux.DataStructures.Graph
         m_matrix[sourceIndex, targetIndex] = 0;
     }
 
-    public TValue GetVertexValue(TVertex vertex)
-      => m_valuesOfVertices[m_vertices.IndexOf(vertex)];
-    public void SetVertexValue(TVertex vertex, TValue value)
-      => m_valuesOfVertices[m_vertices.IndexOf(vertex)] = value;
+    public TEdgeValue GetEdgeValue(TVertex source, TVertex target)
+      => m_edgeValues[m_vertices.IndexOf(source), m_vertices.IndexOf(target)];
+    public void SetEdgeValue(TVertex source, TVertex target, TEdgeValue value)
+      => m_edgeValues[m_vertices.IndexOf(source), m_vertices.IndexOf(target)] = value;
 
-    public TValue GetEdgeValue(TVertex source, TVertex target)
-      => m_valuesOfEdges[m_vertices.IndexOf(source), m_vertices.IndexOf(target)];
-    public void SetEdgeValue(TVertex source, TVertex target, TValue value)
-      => m_valuesOfEdges[m_vertices.IndexOf(source), m_vertices.IndexOf(target)] = value;
+    public System.Collections.Generic.List<TEdgeValue> GetEdgeValues(TVertex source, TVertex target)
+      => new System.Collections.Generic.List<TEdgeValue>() { GetEdgeValue(source, target) };
+    public void SetEdgeValues(TVertex source, TVertex target, System.Collections.Generic.List<TEdgeValue> value)
+      => SetEdgeValue(source, target, value.Single());
 
-    public System.Collections.Generic.IEnumerable<(TVertex vertex, int degree)> GetVertices()
-    {
-      foreach (var vertex in m_vertices)
-        yield return (vertex, m_matrix.GetElements(0, m_vertices.IndexOf(vertex)).Sum(vt => vt.item));
-    }
-
-    public System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TValue value)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(TVertex source, TVertex target, TEdgeValue value)> GetEdges()
     {
       foreach (var source in m_vertices)
         foreach (var target in GetNeighbors(source))
           yield return (source, target, GetEdgeValue(source, target));
-      //var vertices = GetVertices().ToList();
-
-      //for (var row = 0; row < m_vertices.Count; row++)
-      //  for (var column = 0; column < m_vertices.Count; column++)
-      //    if (m_matrix[row, column] != 0)
-      //      yield return (vertices[row].vertex, vertices[column].vertex, m_valuesOfEdges[row, column]);
     }
 
     //public void AddDirectedEdge(TVertex source, TVertex target, TWeight weight)
@@ -245,7 +243,7 @@ namespace Flux.DataStructures.Graph
       var index = 0;
       foreach (var edge in GetEdges())
         sb.AppendLine($"#{++index}: {edge}");
-      sb.Insert(0, $"<{nameof(AdjacentMatrixTypical<TVertex, TValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
+      sb.Insert(0, $"<{nameof(AdjacentMatrixTypical<TVertex, TVertexValue, TEdgeValue>)}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
 

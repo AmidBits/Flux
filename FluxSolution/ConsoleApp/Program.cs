@@ -15,20 +15,6 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public class MyDate
-  {
-    public int year;
-    public int month;
-    public int day;
-  }
-
-  public class Lad
-  {
-    public string firstName;
-    public string lastName;
-    public MyDate dateOfBirth;
-  }
-
   class Program
   {
     private static void TimedMain(string[] args)
@@ -51,17 +37,17 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var am = new Flux.DataStructures.Graph.AdjacentListTypical<int, double>();
+      var am = new Flux.DataStructures.Graph.AdjacentListTypical<int, char, double>();
 
-      am.AddVertex(0);
-      am.AddVertex(1);
-      am.AddVertex(2);
-      am.AddVertex(3);
-      am.AddVertex(4);
-      am.AddVertex(5);
-      am.AddVertex(6);
-      am.AddVertex(7);
-      am.AddVertex(8);
+      am.AddVertex(0, 'a');
+      am.AddVertex(1, 'b');
+      am.AddVertex(2, 'c');
+      am.AddVertex(3, 'd');
+      am.AddVertex(4, 'e');
+      am.AddVertex(5, 'f');
+      am.AddVertex(6, 'g');
+      am.AddVertex(7, 'h');
+      am.AddVertex(8, 'i');
 
       am.AddEdge(0, 1, 4);
       am.AddEdge(0, 7, 8);
@@ -97,7 +83,7 @@ namespace ConsoleApp
 
       //var distances = am.PrimsSpanningTree('a', i => i);
 
-      var distances = am.DijkstraShortestPath(0, i => i);
+      //var distances = am.DijkstraShortestPath(0, i => i);
       return;
 
       var s1 = "and";

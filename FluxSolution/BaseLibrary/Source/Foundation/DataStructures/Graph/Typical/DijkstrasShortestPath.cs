@@ -4,13 +4,12 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPath<TVertex, TValue>(this DataStructures.Graph.IGraphTypical<TVertex, TValue> graph, TVertex start, System.Func<TValue, double> distanceSelector)
+    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPath<TVertex, TVertexValue, TEdgeValue>(this DataStructures.Graph.IGraphTypical<TVertex, TVertexValue, TEdgeValue> graph, TVertex start, System.Func<TEdgeValue, double> distanceSelector)
       where TVertex : System.IEquatable<TVertex>
-      where TValue : System.IEquatable<TValue>
     {
       System.Collections.Generic.Dictionary<TVertex, double> vertices = new System.Collections.Generic.Dictionary<TVertex, double>();
 
-      foreach (var (vertex, degree) in graph.GetVertices())
+      foreach (var (vertex, value, degree) in graph.GetVertices())
       {
         if (vertex.Equals(start))
           vertices.Add(vertex, 0);
