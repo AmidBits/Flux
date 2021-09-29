@@ -7,9 +7,9 @@ namespace Flux.DataStructures.Graph
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class DirectedAdjacentMatrix<TKey, TVertexValue, TEdgeValue>
-    : IGraphTypical<TKey, TVertexValue, TEdgeValue>
-    where TKey : notnull//System.IEquatable<TKey>
+  public class DigraphAdjacentMatrix<TKey, TVertexValue, TEdgeValue>
+    : IDigraph<TKey, TVertexValue, TEdgeValue>, ISimpleGraph<TKey, TVertexValue, TEdgeValue>
+    where TKey : notnull
   {
     private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();
     private readonly System.Collections.Generic.List<TKey> m_vertices = new System.Collections.Generic.List<TKey>(); // Vertices are kept in a list for indexing in the matrix.

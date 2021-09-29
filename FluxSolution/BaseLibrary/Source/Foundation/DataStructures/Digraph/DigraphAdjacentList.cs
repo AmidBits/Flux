@@ -7,8 +7,8 @@ namespace Flux.DataStructures.Graph
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
-  public class DirectedAdjacentList<TKey, TVertexValue, TEdgeValue>
-    : IGraphTypical<TKey, TVertexValue, TEdgeValue>
+  public class DigraphAdjacentList<TKey, TVertexValue, TEdgeValue>
+    : IDigraph<TKey, TVertexValue, TEdgeValue>, IMultiGraph<TKey, TVertexValue, TEdgeValue>
     where TKey : notnull
     where TEdgeValue : System.IEquatable<TEdgeValue>
   {
@@ -89,14 +89,17 @@ namespace Flux.DataStructures.Graph
         m_list[source].Remove(target);
     }
 
+    /// <summary>Adds a value to an existing edge.</summary>
     public void AddEdgeValue(TKey source, TKey target, TEdgeValue value)
     {
       var ev = GetEdgeValues(source, target);
       ev.Add(value);
       SetEdgeValues(source, target, ev);
     }
+    /// <summary>Determines whether an edge has the specified value.</summary>
     public bool ContainsEdgeValue(TKey source, TKey target, TEdgeValue value)
       => GetEdgeValues(source, target).Contains(value);
+    /// <summary>Removes a value from an existing edge.</summary>
     public bool RemoveEdgeValue(TKey source, TKey target, TEdgeValue value)
     {
       var ev = GetEdgeValues(source, target);
@@ -104,10 +107,18 @@ namespace Flux.DataStructures.Graph
       SetEdgeValues(source, target, ev);
       return rv;
     }
+    /// <summary>Removes the specified values from an existing edge. Values that do not exist, are ignored.</summary>
+    public void RemoveEdgeValues(TKey source, TKey target, params TEdgeValue[] values)
+    {
+      var ev = GetEdgeValues(source, target);
+      for (var index = values.Length - 1; index >= 0; index--)
+        ev.Remove(values[index]);
+      SetEdgeValues(source, target, ev);
+    }
 
     /// <summary>Returns all edge values (edges) between <paramref name="source"/> and <paramref name="target"/>.</summary>
     public System.Collections.Generic.List<TEdgeValue> GetEdgeValues(TKey source, TKey target)
-      => ContainsEdge(source, target) ? m_list[source][target] : new System.Collections.Generic.List<TEdgeValue>();
+      => m_list[source][target];
     /// <summary>Replaces all edge values (edges) with the specified values.</summary>
     public void SetEdgeValues(TKey source, TKey target, System.Collections.Generic.List<TEdgeValue> list)
       => m_list[source][target] = list ?? throw new System.ArgumentNullException(nameof(list));

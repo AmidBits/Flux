@@ -2,9 +2,6 @@ namespace Flux
 {
   public static partial class Reflect
   {
-    public static bool EqualsEx<TClass>(this TClass source, TClass target)
-      => source is null || target is null ? source is null && target is null : source.Equals(target);
-
     /// <summary>Get the C# alias of the .NET type.</summary>
     public static string GetCsharpAlias(this System.Type type)
     {

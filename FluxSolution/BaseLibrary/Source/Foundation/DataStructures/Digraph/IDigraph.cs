@@ -1,7 +1,7 @@
 ﻿namespace Flux.DataStructures.Graph
 {
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
-  public interface IGraphTypical<TKey, TVertexValue, TEdgeValue>
+  public interface IDigraph<TKey, TVertexValue, TEdgeValue>
     where TKey : notnull
   {
     /// <summary>Returns the degree of the vertex.</summary>
@@ -17,6 +17,8 @@
     void AddVertex(TKey vertex, TVertexValue value);
     /// <summary>Adds a vertex.</summary>
     void AddVertex(TKey vertex);
+    /// <summary>Determines whether the graph contains the specified vertex.</summary>
+    bool ContainsVertex(TKey vertex);
     /// <summary>Removes a vertex.</summary>
     void RemoveVertex(TKey vertex);
 
@@ -32,6 +34,8 @@
     void AddEdge(TKey source, TKey target, TEdgeValue value);
     /// <summary>Adds an edge without any values (if it already exists, nothing changes).</summary>
     void AddEdge(TKey source, TKey target);
+    /// <summary>Determines whether the graph contains the specified edge.</summary>
+    bool ContainsEdge(TKey source, TKey target);
     /// <summary>Removes an edge.</summary>
     void RemoveEdge(TKey source, TKey target);
 
@@ -47,35 +51,3 @@
     System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdges();
   }
 }
-
-/*
-      // Adjacent Matrix.
-
-      var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
-
-      am.AddVertex('a');
-      am.AddVertex('b');
-      am.AddVertex('c');
-      am.AddVertex('d');
-
-      //am.AddDirectedEdge('a', 'b', 1);
-      //am.AddDirectedEdge('a', 'c', 1);
-      //am.AddDirectedEdge('b', 'a', 1);
-      //am.AddDirectedEdge('b', 'c', 1);
-      //am.AddDirectedEdge('c', 'a', 1);
-      //am.AddDirectedEdge('c', 'b', 1);
-      //am.AddDirectedEdge('c', 'd', 1);
-      //am.AddDirectedEdge('d', 'c', 1);
-
-      am.AddDirectedEdge('a', 'b', 2);
-      am.AddUndirectedEdge('a', 'c', 1);
-      am.AddUndirectedEdge('b', 'c', 1);
-      am.AddUndirectedEdge('c', 'd', 1);
-
-      am.RemoveUndirectedEdge('c', 'b', 1);
-
-      System.Console.WriteLine(am.ToConsoleString());
-
-      foreach (var edge in am.GetEdges())
-        System.Console.WriteLine(edge);
- */

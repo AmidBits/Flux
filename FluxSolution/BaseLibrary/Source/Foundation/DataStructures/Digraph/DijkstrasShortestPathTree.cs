@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Computes the shortest path from the start vertex to all reachable vertices.</summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
-    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPath<TVertex, TVertexValue, TEdgeValue>(this DataStructures.Graph.IGraphTypical<TVertex, TVertexValue, TEdgeValue> source, TVertex start, System.Func<TEdgeValue, double> distanceSelector)
+    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPathTree<TVertex, TVertexValue, TEdgeValue>(this DataStructures.Graph.IDigraph<TVertex, TVertexValue, TEdgeValue> source, TVertex start, System.Func<TEdgeValue, double> distanceSelector)
       where TVertex : System.IEquatable<TVertex>
     {
       var distances = source.GetVertices().ToDictionary(v => v, v => v.Equals(start) ? 0 : double.PositiveInfinity);

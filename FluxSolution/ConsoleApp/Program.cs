@@ -37,7 +37,8 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var dal = new Flux.DataStructures.Graph.DirectedAdjacentList<int, char, double>();
+      var dal = new Flux.DataStructures.Graph.DigraphAdjacentList<int, char, double>();
+      var daligraph = (Flux.DataStructures.Graph.IDigraph<int, char, double>)dal;
 
       dal.AddVertex(0, 'a');
       dal.AddVertex(1, 'b');
@@ -49,47 +50,38 @@ namespace ConsoleApp
       dal.AddVertex(7, 'h');
       dal.AddVertex(8, 'i');
 
-      dal.AddEdge(0, 0, 0.5);
       dal.AddEdge(0, 1, 4);
-      //dal.AddEdge(0, 1, 12);
-      dal.AddEdge(0, 7, 8.5);
-      dal.AddEdge(7, 0, 7.5);
-      //dal.AddEdge(1, 0, 4);
+      dal.AddEdge(0, 7, 8);
       dal.AddEdge(1, 2, 8);
       dal.AddEdge(1, 7, 11);
-      //am.AddEdge(7, 0, 8);
-      dal.AddEdge(7, 1, 11);
-      dal.AddEdge(7, 8, 7);
-      dal.AddEdge(7, 6, 1);
-      //am.AddEdge(2, 1, 8);
       dal.AddEdge(2, 8, 2);
       dal.AddEdge(2, 5, 4);
       dal.AddEdge(2, 3, 7);
-      dal.AddEdge(8, 2, 2);
-      //am.AddEdge(8, 7, 7);
-      dal.AddEdge(8, 6, 6);
-      //am.AddEdge(3, 2, 7);
       dal.AddEdge(3, 5, 14);
       dal.AddEdge(3, 4, 9);
-      //am.AddEdge(6, 7, 1);
-      dal.AddEdge(6, 8, 6);
-      dal.AddEdge(6, 5, 2);
-      //am.AddEdge(5, 6, 2);
-      //am.AddEdge(5, 2, 4);
+      //dal.AddEdge(4, 3, 9);
+      //dal.AddEdge(4, 5, 10);
       dal.AddEdge(5, 3, 14);
       dal.AddEdge(5, 4, 10);
-      //am.AddEdge(4, 5, 10);
-      //am.AddEdge(4, 3, 9);
+      dal.AddEdge(6, 8, 6);
+      dal.AddEdge(6, 5, 2);
+      dal.AddEdge(7, 1, 11);
+      dal.AddEdge(7, 8, 7);
+      dal.AddEdge(7, 6, 1);
+      dal.AddEdge(8, 2, 2);
+      dal.AddEdge(8, 6, 6);
 
       var lvertices = dal.GetVertices().ToList();
       var ledges = dal.GetEdges().ToList();
 
-      var ldistances = dal.DijkstraShortestPath(0, i => i);
+      var ldspt = daligraph.DijkstraShortestPathTree(0, i => i);
+      //var lpmst = daligraph.PrimsMinimumSpanningTree(0, i => i);
 
       System.Console.WriteLine(dal.ToString());
       System.Console.WriteLine();
 
-      var dam = new Flux.DataStructures.Graph.DirectedAdjacentMatrix<int, char, double>();
+      var dam = new Flux.DataStructures.Graph.DigraphAdjacentMatrix<int, char, double>();
+      var damigraph = (Flux.DataStructures.Graph.IDigraph<int, char, double>)dam;
 
       foreach (var vertex in lvertices)
         dam.AddVertex(vertex, dal.GetVertexValue(vertex));
@@ -99,7 +91,25 @@ namespace ConsoleApp
       var mvertices = dam.GetVertices().ToList();
       var medges = dam.GetEdges().ToList();
 
-      var mdistances = dam.DijkstraShortestPath(0, i => i);
+      var edgeVertices = medges.SelectMany(e => new int[] { e.source, e.target }).Distinct().Count();
+
+      var mverts = new System.Collections.Generic.HashSet<int>();
+
+      int c = 0, e = 0;
+      foreach (var edge in medges.RandomElements(1))
+      {
+        e++;
+        if (!mverts.Contains(edge.source))
+          mverts.Add(edge.source);
+        if (!mverts.Contains(edge.target))
+          mverts.Add(edge.target);
+        c++;
+        if (mverts.Count == mvertices.Count)
+          break;
+      }
+
+      var mdspt = damigraph.DijkstraShortestPathTree(0, i => i);
+      //var mpmst= damigraph.PrimsMinimumSpanningTree(0, i => i);
 
       System.Console.WriteLine(dam.ToString());
       System.Console.WriteLine();
