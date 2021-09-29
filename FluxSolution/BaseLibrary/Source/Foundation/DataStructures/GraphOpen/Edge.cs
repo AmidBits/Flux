@@ -62,7 +62,7 @@
     //  && IsDirected == other.IsDirected;
     public bool Equals(Edge<TKey, TValue> other)
     {
-      
+      throw new System.NotImplementedException();
     }
     //#endregion Implemented interfaces
 
