@@ -63,7 +63,7 @@ namespace Flux.DataStructures.Graph
     }
 
     public TVertexValue GetVertexValue(TKey vertex)
-      => m_vertexValues.ContainsKey(vertex) ? m_vertexValues[vertex] : throw new System.ArgumentOutOfRangeException(nameof(vertex), @"Vertex value not found.");
+      => m_vertexValues.ContainsKey(vertex) ? m_vertexValues[vertex] : default!;
     public void SetVertexValue(TKey vertex, TVertexValue value)
       => m_vertexValues[vertex] = value;
 
@@ -107,7 +107,7 @@ namespace Flux.DataStructures.Graph
 
     /// <summary>Returns all edge values (edges) between <paramref name="source"/> and <paramref name="target"/>.</summary>
     public System.Collections.Generic.List<TEdgeValue> GetEdgeValues(TKey source, TKey target)
-      => ContainsEdge(source, target) ? m_list[source][target] : throw new System.ArgumentException($"Edge <{source}> to <{target}> does not exist.");
+      => ContainsEdge(source, target) ? m_list[source][target] : new System.Collections.Generic.List<TEdgeValue>();
     /// <summary>Replaces all edge values (edges) with the specified values.</summary>
     public void SetEdgeValues(TKey source, TKey target, System.Collections.Generic.List<TEdgeValue> list)
       => m_list[source][target] = list ?? throw new System.ArgumentNullException(nameof(list));

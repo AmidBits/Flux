@@ -51,10 +51,10 @@ namespace ConsoleApp
 
       dal.AddEdge(0, 0, 0.5);
       dal.AddEdge(0, 1, 4);
-      dal.AddEdge(0, 1, 12);
+      //dal.AddEdge(0, 1, 12);
       dal.AddEdge(0, 7, 8.5);
       dal.AddEdge(7, 0, 7.5);
-      //am.AddEdge(1, 0, 4);
+      //dal.AddEdge(1, 0, 4);
       dal.AddEdge(1, 2, 8);
       dal.AddEdge(1, 7, 11);
       //am.AddEdge(7, 0, 8);
