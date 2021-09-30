@@ -8,9 +8,9 @@ namespace Flux
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			return PermutateHeaps2(source);
+			return Permutate(source);
 
-			static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> PermutateHeaps2(System.Collections.Generic.IList<T> list)
+			static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permutate(System.Collections.Generic.IList<T> list)
 			{
 				var stackState = new int[list.Count];
 

@@ -60,7 +60,7 @@
     //  && TargetKey.Equals(other.TargetKey)
     //  && Value.EqualsEx(other.Value)
     //  && IsDirected == other.IsDirected;
-    public bool Equals(Edge<TKey, TValue> other)
+    public bool Equals(Edge<TKey, TValue>? other)
     {
       throw new System.NotImplementedException();
     }
