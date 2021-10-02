@@ -20,8 +20,8 @@ namespace Flux.DataStructures.Graph
     {
       var degree = 0;
 
-      foreach (var edge in GetEdges())
-        if (edge.source.Equals(vertex) || edge.target.Equals(vertex))
+      foreach (var (source, target, value) in GetEdges())
+        if (source.Equals(vertex) || target.Equals(vertex))
           degree++;
 
       return degree;

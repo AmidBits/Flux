@@ -66,7 +66,7 @@ namespace Flux
     }
 
     // These are known facts.
-    public static System.Collections.Generic.List<Fact> KnownFacts = new System.Collections.Generic.List<Fact>()
+    public readonly static System.Collections.Generic.List<Fact> KnownFacts = new System.Collections.Generic.List<Fact>()
     {
       new Fact() { Color = EnumColor.Red, Nationality = EnumNationality.Brit },
       new Fact() { Nationality = EnumNationality.Swede, Animal = EnumAnimal.Dog },

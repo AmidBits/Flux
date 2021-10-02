@@ -23,7 +23,7 @@ namespace Flux.Model
     public const string AlphaLower = "abcdefghijklmnopqrstuvwxyz";
     public const string AlphaUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public const string Numeric = "0123456789";
-    public const string Space = @" ";
+    public const char Space = ' ';
     public const string Symbols1 = "!\"#$%&'()*+,-./"; // Note the escaped double quote.
     public const string Symbols2 = ":;<=>?@";
     public const string Symbols3 = "[\\]^_`"; // Note the escaped slash.
