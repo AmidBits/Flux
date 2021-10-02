@@ -7,6 +7,6 @@ namespace Flux
       => source.Count == 0
       ? false // An empty set is not a proper superset of any set.
       : (target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0) // If target is an empty set then this is a superset.
-      || SetOps.ComputeCounts(source, target, true) is var (uniqueCount, unfoundCount) && unfoundCount == 0 && uniqueCount < source.Count;
+      || SetOps.ComputeCounts(source, target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < source.Count;
   }
 }

@@ -5,9 +5,9 @@ namespace Flux
     /// <summary>Returns the number of unfound (not found) and the number of unique elements. Optionally the function returns early if there are unfound elements. Uses the specified equality comparer.</summary>
     public static (int unfoundCount, int uniqueCount) ComputeCounts<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var unique = new System.Collections.Generic.HashSet<T>(equalityComparer);
-
       var unfoundCount = 0;
+
+      var unique = new System.Collections.Generic.HashSet<T>(equalityComparer);
 
       foreach (var t in target)
       {

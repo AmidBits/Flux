@@ -1,18 +1,18 @@
 ﻿namespace Flux.DataStructures
 {
   public class OrderedSet<T>
-    : System.Collections.Generic.ISet<T>
+    : IOrderedSet<T>
     where T : notnull
   {
     private readonly System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-    private readonly System.Collections.Generic.IDictionary<T, System.Collections.Generic.LinkedListNode<T>> m_dictionary;
-    private readonly System.Collections.Generic.LinkedList<T> m_linkedList;
+    private readonly System.Collections.Generic.IDictionary<T, int> m_dictionary;
+    private readonly System.Collections.Generic.List<T> m_values;
 
     public OrderedSet(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       m_equalityComparer = equalityComparer;
-      m_dictionary = new System.Collections.Generic.Dictionary<T, System.Collections.Generic.LinkedListNode<T>>(equalityComparer);
-      m_linkedList = new System.Collections.Generic.LinkedList<T>();
+      m_dictionary = new System.Collections.Generic.Dictionary<T, int>(equalityComparer);
+      m_values = new System.Collections.Generic.List<T>();
     }
     public OrderedSet()
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -28,6 +28,28 @@
       : this(collection, System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
+    // IOrderedSet<>
+    public int GetIndex(T value)
+      => m_dictionary[value];
+
+    public void Insert(int index, T value)
+    {
+      if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      m_dictionary.Add(value, index);
+      m_values.Insert(index, value);
+    }
+
+    public T this[int index]
+    {
+      get => m_values[index];
+      set
+      {
+        m_values[index] = value;
+      }
+    }
+
+    // ISet<>
     public int Count
       => m_dictionary.Count;
 
@@ -39,7 +61,8 @@
       if (m_dictionary.ContainsKey(item))
         return false;
 
-      var node = m_linkedList.AddLast(item);
+      var node = m_values.Count;
+      m_values.Add(item);
       m_dictionary.Add(item, node);
       return true;
     }
@@ -58,7 +81,7 @@
 
     public void Clear()
     {
-      m_linkedList.Clear();
+      m_values.Clear();
       m_dictionary.Clear();
     }
 
@@ -66,32 +89,7 @@
       => m_dictionary.ContainsKey(item);
 
     public void CopyTo(T[] array, int arrayIndex)
-        => m_linkedList.CopyTo(array, arrayIndex);
-
-    //private (int unfoundCount, int uniqueCount) GetCounts(System.Collections.Generic.IEnumerable<T> other, bool returnIfUnfound)
-    //{
-    //  var unique = new System.Collections.Generic.HashSet<T>();
-
-    //  var unfoundCount = 0;
-
-    //  foreach (var t in other)
-    //  {
-    //    if (Contains(t))
-    //    {
-    //      if (!unique.Contains(t))
-    //        unique.Add(t);
-    //    }
-    //    else
-    //    {
-    //      unfoundCount++;
-
-    //      if (returnIfUnfound)
-    //        break;
-    //    }
-    //  }
-
-    //  return (unfoundCount, unique.Count);
-    //}
+        => m_values.CopyTo(array, arrayIndex);
 
     /// <summary>Removes all elements in the specified collection from the current set.</summary>
     public void ExceptWith(System.Collections.Generic.IEnumerable<T> other)
@@ -103,7 +101,7 @@
         return false;
 
       m_dictionary.Remove(item);
-      m_linkedList.Remove(node);
+      m_values.RemoveAt(node);
       return true;
     }
     public int RemoveRange(System.Collections.Generic.IEnumerable<T> collection)
@@ -126,12 +124,12 @@
     }
 
     public bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, false) is var (uniqueCount, unfoundCount) && unfoundCount > 0 && uniqueCount == Count;
+      => SetOps.ComputeCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == Count;
     public bool IsProperSupersetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, true) is var (uniqueCount, unfoundCount) && unfoundCount == 0 && uniqueCount < Count;
+      => SetOps.ComputeCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < Count;
 
     public bool IsSubsetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, false) is var (uniqueCount, unfoundCount) && unfoundCount >= 0 && uniqueCount == Count;
+      => SetOps.ComputeCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
     public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other)
       => SetOps.ContainsAll(this, other);
 
@@ -140,7 +138,7 @@
       => this.ContainsAny(other);
 
     public bool SetEquals(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, true) is var (uniqueCount, unfoundCount) && unfoundCount == 0 && uniqueCount == Count;
+      => SetOps.ComputeCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
 
     /// <summary>Modifies the current set so that it contains only elements that are present either in the current set or in the specified collection, but not both.</summary>
     public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other)
@@ -161,7 +159,7 @@
       => AddRange(other);
 
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => m_linkedList.GetEnumerator();
+      => m_values.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

@@ -10,8 +10,7 @@ namespace Flux.DataStructures
     private readonly System.Collections.Generic.List<TKey> m_listOfKeys = new System.Collections.Generic.List<TKey>();
     private readonly System.Collections.Generic.List<TValue> m_listOfValues = new System.Collections.Generic.List<TValue>();
 
-    // IOrderedDictionary
-
+    // IOrderedDictionary<>
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> CreateKeyValuePairs()
     {
       for (var index = 0; index < Count; index++)
@@ -37,8 +36,7 @@ namespace Flux.DataStructures
       m_listOfValues.Insert(index, value);
     }
 
-    // IDictionary
-
+    // IDictionary<>
     public TValue this[int index]
     {
       get => m_listOfValues[index];

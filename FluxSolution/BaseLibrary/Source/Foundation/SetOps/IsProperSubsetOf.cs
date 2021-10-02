@@ -6,6 +6,6 @@ namespace Flux
     public static bool IsProperSubsetOf<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
       => source.Count == 0 && target is System.Collections.Generic.ICollection<T> ic
       ? (ic.Count > 0) // An empty set is a proper subset of anything but the empty set.
-      : SetOps.ComputeCounts(source, target, false) is var (uniqueCount, unfoundCount) && unfoundCount > 0 && uniqueCount == source.Count;
+      : SetOps.ComputeCounts(source, target, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == source.Count;
   }
 }

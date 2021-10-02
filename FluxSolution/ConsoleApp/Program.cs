@@ -20,45 +20,70 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };
+
+      System.Console.WriteLine(nameof(os1));
+      foreach (var item in os1)
+        System.Console.WriteLine(item);
+      System.Console.WriteLine();
+
       var os2 = new Flux.DataStructures.OrderedSet<int>() { 4, 5, 6, 7, 8, 9 };
 
+      System.Console.WriteLine(nameof(os2));
+      foreach (var item in os2)
+        System.Console.WriteLine(item);
+      System.Console.WriteLine();
+
+      System.Console.WriteLine(nameof(Flux.SetOps.SourceDifference));
       foreach (var item in Flux.SetOps.SourceDifference(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.SymmetricDifference));
       foreach (var item in Flux.SetOps.SymmetricDifference(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.TargetDifference));
       foreach (var item in Flux.SetOps.TargetDifference(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.Intersection));
       foreach (var item in Flux.SetOps.Intersection(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.Union));
       foreach (var item in Flux.SetOps.Union(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.UnionAll));
       foreach (var item in Flux.SetOps.UnionAll(os1, os2))
         System.Console.WriteLine(item);
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.SetEquals));
       System.Console.WriteLine(Flux.SetOps.SetEquals(os1, os2));
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.IsOverlapping));
       System.Console.WriteLine(Flux.SetOps.IsOverlapping(os1, os2));
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.IsSubsetOf));
       System.Console.WriteLine(Flux.SetOps.IsSubsetOf(os1, os2));
       System.Console.WriteLine();
+
+      System.Console.WriteLine(nameof(Flux.SetOps.IsProperSubsetOf));
       System.Console.WriteLine(Flux.SetOps.IsProperSubsetOf(os1, os2));
       System.Console.WriteLine();
 
+      System.Console.WriteLine(nameof(Flux.SetOps.IsSupersetOf));
       System.Console.WriteLine(Flux.SetOps.IsSupersetOf(os1, os2));
       System.Console.WriteLine();
+
+      System.Console.WriteLine(nameof(Flux.SetOps.IsProperSupersetOf));
       System.Console.WriteLine(Flux.SetOps.IsProperSupersetOf(os1, os2));
       System.Console.WriteLine();
 
