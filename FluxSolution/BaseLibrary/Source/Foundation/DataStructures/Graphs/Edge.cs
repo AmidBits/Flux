@@ -5,17 +5,17 @@
     where TKey : System.IComparable<TKey>, System.IEquatable<TKey>
     where TValue : System.IComparable<TValue>, System.IEquatable<TValue>
   {
-    public Edge(TKey sourceKey, TKey targetKey, bool isDirected, params TValue[] values)
+    public Edge(TKey sourceKey, TKey targetKey, bool isDirected, TValue value)
     {
       SourceKey = sourceKey;
       TargetKey = targetKey;
       IsDirected = isDirected;
-      Values = new System.Collections.Generic.List<TValue>(values);
+      Value = value;
     }
 
     public TKey SourceKey { get; }
     public TKey TargetKey { get; }
-    public System.Collections.Generic.List<TValue> Values { get; set; }
+    public TValue Value { get; set; }
 
     /// <summary>If true the edge points only from source to target, otherwise the edge goes both ways.</summary>
     public bool IsDirected { get; set; }
@@ -70,16 +70,9 @@
     public override bool Equals(object? obj)
       => obj is Edge<TKey, TValue> o && Equals(o);
     public override int GetHashCode()
-    {
-      var hc = new System.HashCode();
-      hc.Add(SourceKey);
-      hc.Add(TargetKey);
-      hc.Add(IsDirected);
-      Values.ForEach(v => hc.Add(v));
-      return hc.ToHashCode();
-    }
+      => System.HashCode.Combine(SourceKey, TargetKey, IsDirected, Value);
     public override string ToString()
-      => $"<{nameof(Edge<TKey, TValue>)}: {SourceKey}, {TargetKey} (Directed: {IsDirected}, {Values.Count})>";
+      => $"<{nameof(Edge<TKey, TValue>)}: {SourceKey}, {TargetKey} (Directed: {IsDirected}, {Value})>";
     #endregion Object overrides
   }
 }

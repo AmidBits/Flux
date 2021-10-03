@@ -105,81 +105,49 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var dal = new Flux.DataStructures.Graph.DigraphAdjacentList<int, char, double>();
-      var daligraph = (Flux.DataStructures.Graph.IDigraph<int, char, double>)dal;
+      var g = new Flux.DataStructures.Graphs.Graph<int, char, double>();
 
-      dal.AddVertex(0, 'a');
-      dal.AddVertex(1, 'b');
-      dal.AddVertex(2, 'c');
-      dal.AddVertex(3, 'd');
-      dal.AddVertex(4, 'e');
-      dal.AddVertex(5, 'f');
-      dal.AddVertex(6, 'g');
-      dal.AddVertex(7, 'h');
-      dal.AddVertex(8, 'i');
+      g.AddVertex(0, 'a');
+      g.AddVertex(1, 'b');
+      g.AddVertex(2, 'c');
+      g.AddVertex(3, 'd');
+      g.AddVertex(4, 'e');
+      g.AddVertex(5, 'f');
+      g.AddVertex(6, 'g');
+      g.AddVertex(7, 'h');
+      g.AddVertex(8, 'i');
 
-      dal.AddEdge(0, 1, 4);
-      dal.AddEdge(0, 7, 8);
-      dal.AddEdge(1, 2, 8);
-      dal.AddEdge(1, 7, 11);
-      dal.AddEdge(2, 8, 2);
-      dal.AddEdge(2, 5, 4);
-      dal.AddEdge(2, 3, 7);
-      dal.AddEdge(3, 5, 14);
-      dal.AddEdge(3, 4, 9);
-      //dal.AddEdge(4, 3, 9);
-      //dal.AddEdge(4, 5, 10);
-      dal.AddEdge(5, 3, 14);
-      dal.AddEdge(5, 4, 10);
-      dal.AddEdge(6, 8, 6);
-      dal.AddEdge(6, 5, 2);
-      dal.AddEdge(7, 1, 11);
-      dal.AddEdge(7, 8, 7);
-      dal.AddEdge(7, 6, 1);
-      dal.AddEdge(8, 2, 2);
-      dal.AddEdge(8, 6, 6);
+      g.AddEdge(0, 1, false, 4);
+      g.AddEdge(0, 7, false, 8);
+      g.AddEdge(1, 2, false, 8);
+      g.AddEdge(1, 7, true, 11);
+      g.AddEdge(2, 8, true, 2);
+      g.AddEdge(2, 5, false, 4);
+      g.AddEdge(2, 3, false, 7);
+      g.AddEdge(3, 5, true, 14);
+      g.AddEdge(3, 4, false, 9);
+      g.AddEdge(5, 3, true, 14);
+      g.AddEdge(5, 4, false, 10);
+      g.AddEdge(6, 8, true, 6);
+      g.AddEdge(6, 5, false, 2);
+      g.AddEdge(7, 1, true, 11);
+      g.AddEdge(7, 8, false, 7);
+      g.AddEdge(7, 6, false, 1);
+      g.AddEdge(8, 2, true, 2);
+      g.AddEdge(8, 6, true, 6);
 
-      var lvertices = dal.GetVertices().ToList();
-      var ledges = dal.GetEdges().ToList();
+      var vertices = g.GetVertices().ToList();
+      var edges = g.GetEdgesSorted().ToList();
 
-      var ldspt = daligraph.DijkstraShortestPathTree(0, i => i);
+      var dspt = g.GetDijkstraShortestPathTree(0, i => i);
       //var lpmst = daligraph.PrimsMinimumSpanningTree(0, i => i);
 
-      System.Console.WriteLine(dal.ToString());
-      System.Console.WriteLine();
-
-      var dam = new Flux.DataStructures.Graph.DigraphAdjacentMatrix<int, char, double>();
-      var damigraph = (Flux.DataStructures.Graph.IDigraph<int, char, double>)dam;
-
-      foreach (var vertex in lvertices)
-        dam.AddVertex(vertex, dal.GetVertexValue(vertex));
-      foreach (var edge in ledges)
-        dam.AddEdge(edge.source, edge.target, edge.value);
-
-      var mvertices = dam.GetVertices().ToList();
-      var medges = dam.GetEdges().ToList();
-
-      var edgeVertices = medges.SelectMany(e => new int[] { e.source, e.target }).Distinct().Count();
-
-      var mverts = new System.Collections.Generic.HashSet<int>();
-
-      int c = 0, e = 0;
-      foreach (var edge in medges.RandomElements(1))
-      {
-        e++;
-        if (!mverts.Contains(edge.source))
-          mverts.Add(edge.source);
-        if (!mverts.Contains(edge.target))
-          mverts.Add(edge.target);
-        c++;
-        if (mverts.Count == mvertices.Count)
-          break;
-      }
-
-      var mdspt = damigraph.DijkstraShortestPathTree(0, i => i);
-      //var mpmst= damigraph.PrimsMinimumSpanningTree(0, i => i);
-
-      System.Console.WriteLine(dam.ToString());
+      System.Console.WriteLine(@"Graph Vertices (key, value):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (destination-key, distance):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, dspt.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine();
 
       return;

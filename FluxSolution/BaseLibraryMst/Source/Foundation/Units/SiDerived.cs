@@ -20,7 +20,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Quantity.Angle(1);
 
-      var expected = new Flux.CartesianCoordinate2(0.5403023058681397, 0.8414709848078965);
+      var expected = new Flux.CartesianCoordinate2(0.5403023058681398, 0.8414709848078965);
       var actual = u.ToCartesian2();
       Assert.AreEqual(expected.X, actual.X);
       Assert.AreEqual(expected.Y, actual.Y);
