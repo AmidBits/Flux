@@ -10,8 +10,13 @@
     where TVertexValue : System.IComparable<TVertexValue>, System.IEquatable<TVertexValue>
     where TEdgeValue : System.IComparable<TEdgeValue>, System.IEquatable<TEdgeValue>
   {
-    private readonly System.Collections.Generic.HashSet<Vertex<TKey, TVertexValue>> m_vertices = new System.Collections.Generic.HashSet<Vertex<TKey, TVertexValue>>();
     private readonly System.Collections.Generic.HashSet<Edge<TKey, TEdgeValue>> m_edges = new System.Collections.Generic.HashSet<Edge<TKey, TEdgeValue>>();
+    private readonly System.Collections.Generic.HashSet<Vertex<TKey, TVertexValue>> m_vertices = new System.Collections.Generic.HashSet<Vertex<TKey, TVertexValue>>();
+
+    public System.Collections.Generic.HashSet<Edge<TKey, TEdgeValue>> Edges
+      => m_edges;
+    public System.Collections.Generic.HashSet<Vertex<TKey, TVertexValue>> Vertices
+      => m_vertices;
 
     public bool AddVertex(Vertex<TKey, TVertexValue> vertex)
     {
@@ -141,7 +146,7 @@
 
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v.key, v => v.key.Equals(origin) ? 0 : double.PositiveInfinity);
 
-      var edges = System.Linq.Enumerable.ToList(GetEdges()); // Cache edges, because we need it while there are available distances.
+      var edges = System.Linq.Enumerable.ToList(GetEdgesExploded()); // Cache edges, because we need it while there are available distances.
 
       while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
       {
@@ -166,7 +171,7 @@
     }
 
     /// <summary>Returns all edges in the graph.</summary>
-    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdgesExploded()
     {
       foreach (var edge in m_edges)
         if (edge.IsDirected)
@@ -180,14 +185,38 @@
         }
     }
     /// <summary>Returns all edges in the graph sorted by source, target and value.</summary>
-    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdgesSorted()
-      => System.Linq.Enumerable.OrderBy(System.Linq.Enumerable.OrderBy(System.Linq.Enumerable.OrderBy(GetEdges(), e => e.value), e => e.target), e => e.source);
+    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdgesExplodedAndSorted()
+      => System.Linq.Enumerable.OrderBy(System.Linq.Enumerable.OrderBy(System.Linq.Enumerable.OrderBy(GetEdgesExploded(), e => e.value), e => e.target), e => e.source);
 
     /// <summary>Returns all vertices in the graph.</summary>
     public System.Collections.Generic.IEnumerable<(TKey key, TVertexValue value)> GetVertices()
     {
       foreach (var vertex in m_vertices)
         yield return (vertex.Key, vertex.Value);
+    }
+    /// <summary>Returns all vertices in the graph as well as the degree of each vertex.</summary>
+    public System.Collections.Generic.IEnumerable<(TKey key, TVertexValue value, int degree, int indegree, int outdegree)> GetVerticesWithDegrees()
+    {
+      var degrees = System.Linq.Enumerable.ToDictionary(m_vertices, v => v.Key, v => 0);
+      var inDegrees = System.Linq.Enumerable.ToDictionary(m_vertices, v => v.Key, v => 0);
+      var outDegrees = System.Linq.Enumerable.ToDictionary(m_vertices, v => v.Key, v => 0);
+
+      foreach (var edge in m_edges)
+      {
+        if (edge.IsDirected)
+        {
+          inDegrees[edge.SourceKey]++;
+          outDegrees[edge.TargetKey]++;
+        }
+        else
+        {
+          degrees[edge.SourceKey]++;
+          degrees[edge.TargetKey]++;
+        }
+      }
+
+      foreach (var vertex in m_vertices)
+        yield return (vertex.Key, vertex.Value, degrees[vertex.Key], inDegrees[vertex.Key], outDegrees[vertex.Key]);
     }
 
     //public System.Collections.Generic.Dictionary<TKey, double> GetDijkstraShortestPathTree(TKey start, System.Func<TEdgeValue, double> distanceSelector)
@@ -227,7 +256,7 @@
     {
       var sb = new System.Text.StringBuilder();
       var index = 0;
-      foreach (var edge in GetEdges())
+      foreach (var edge in GetEdgesExploded())
         sb.AppendLine($"#{++index}: {edge}");
       sb.Insert(0, $"<{GetType().Name}: ({m_vertices.Count} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();

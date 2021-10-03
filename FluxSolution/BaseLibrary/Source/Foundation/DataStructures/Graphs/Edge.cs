@@ -73,7 +73,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(SourceKey, TargetKey, IsDirected, Value);
     public override string ToString()
-      => $"<{nameof(Edge<TKey, TValue>)}: {SourceKey}, {TargetKey} (Directed: {IsDirected}, {Value})>";
+      => $"<{nameof(Edge<TKey, TValue>)}: {SourceKey}, {TargetKey} ({(IsDirected ? @"Directed" : @"Undirected")}, {Value})>";
     #endregion Object overrides
   }
 }
