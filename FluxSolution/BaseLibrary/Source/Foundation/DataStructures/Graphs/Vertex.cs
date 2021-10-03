@@ -11,7 +11,10 @@
       Value = value;
     }
 
+    /// <summary>The vertex key (identifier).</summary>
     public TKey Key { get; }
+
+    /// <summary>The user value associated with the vertex.</summary>
     public TValue Value { get; set; }
 
     #region Overloaded operators

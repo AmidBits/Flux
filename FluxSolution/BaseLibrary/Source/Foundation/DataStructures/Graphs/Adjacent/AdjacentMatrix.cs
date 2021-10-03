@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.DataStructures.Graph
+namespace Flux.DataStructures.Graphs
 {
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Graph
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public class AdjacentMatrix<TVertex, TWeight>
-    : IGraph<TVertex, TWeight>
+    : IAdjacentGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IEquatable<TWeight>
   {
@@ -118,7 +118,7 @@ namespace Flux.DataStructures.Graph
       m_weights[targetIndex, sourceIndex] = weight;
     }
 
-    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
+    public System.Collections.Generic.IEnumerable<AdjacentVertex<TVertex>> GetVertices()
     {
       for (var row = 0; row < m_vertices.Count; row++)
       {
@@ -130,18 +130,18 @@ namespace Flux.DataStructures.Graph
             degree++;
         }
 
-        yield return new Vertex<TVertex>(m_vertices[row], degree);
+        yield return new AdjacentVertex<TVertex>(m_vertices[row], degree);
       }
     }
 
-    public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
+    public System.Collections.Generic.IEnumerable<AdjacentEdge<TVertex, TWeight>> GetEdges()
     {
       var vertices = GetVertices().ToList();
 
       for (var row = 0; row < m_vertices.Count; row++)
         for (var column = 0; column < m_vertices.Count; column++)
           if (m_weights[row, column] is var weight && !weight.Equals(default!))
-            yield return new Edge<TVertex, TWeight>(vertices[row], vertices[column], weight);
+            yield return new AdjacentEdge<TVertex, TWeight>(vertices[row], vertices[column], weight);
     }
 
     public string ToConsoleString<TResult>(System.Func<TWeight, TResult> weightFormatter)

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.DataStructures.Graph
+namespace Flux.DataStructures.Graphs
 {
   ///// <summary>
   ///// Helper data structure for Prim and Dijstra
@@ -28,7 +28,7 @@ namespace Flux.DataStructures.Graph
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
   public class AdjacentList<TVertex, TWeight>
-    : IGraph<TVertex, TWeight>
+    : IAdjacentGraph<TVertex, TWeight>
     where TVertex : System.IEquatable<TVertex>
     where TWeight : System.IEquatable<TWeight>
   {
@@ -116,17 +116,17 @@ namespace Flux.DataStructures.Graph
       return true;
     }
 
-    public System.Collections.Generic.IEnumerable<Vertex<TVertex>> GetVertices()
-      => m_data.Select(kvp => new Vertex<TVertex>(kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count) + m_data.Sum(kvpSub => kvpSub.Value.ContainsKey(kvp.Key) ? kvpSub.Value[kvp.Key].Count : 0)));
+    public System.Collections.Generic.IEnumerable<AdjacentVertex<TVertex>> GetVertices()
+      => m_data.Select(kvp => new AdjacentVertex<TVertex>(kvp.Key, kvp.Value.Sum(kvp => kvp.Value.Count) + m_data.Sum(kvpSub => kvpSub.Value.ContainsKey(kvp.Key) ? kvpSub.Value[kvp.Key].Count : 0)));
 
-    public System.Collections.Generic.IEnumerable<Edge<TVertex, TWeight>> GetEdges()
+    public System.Collections.Generic.IEnumerable<AdjacentEdge<TVertex, TWeight>> GetEdges()
     {
       var vertices = GetVertices().ToList();
 
       foreach (var source in vertices)
         foreach (var target in m_data[source.Value].Keys.Select(key => vertices.First(v => v.Value.Equals(key))))
           foreach (var weight in m_data[source.Value][target.Value])
-            yield return new Edge<TVertex, TWeight>(source, target, weight);
+            yield return new AdjacentEdge<TVertex, TWeight>(source, target, weight);
     }
 
     // Overrides.

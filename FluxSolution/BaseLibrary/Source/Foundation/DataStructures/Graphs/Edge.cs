@@ -13,58 +13,59 @@
       Value = value;
     }
 
-    public TKey SourceKey { get; }
-    public TKey TargetKey { get; }
-    public TValue Value { get; set; }
-
-    /// <summary>If true the edge points only from source to target, otherwise the edge goes both ways.</summary>
+    /// <summary>If true the edge points only from source to target, i.e. it is directed, otherwise the edge goes both ways, i.e. it is undirected.</summary>
     public bool IsDirected { get; set; }
 
     /// <summary>True if source and target are equal, otherwise false.</summary>
     public bool IsLoop
       => SourceKey.Equals(TargetKey);
 
-    //#region Overloaded operators
-    //public static bool operator <(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => a.CompareTo(b) < 0;
-    //public static bool operator >(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => a.CompareTo(b) > 0;
-    //public static bool operator <=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => a.CompareTo(b) <= 0;
-    //public static bool operator >=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => a.CompareTo(b) >= 0;
+    /// <summary>The source endpoint of the edge.</summary>
+    public TKey SourceKey { get; }
+    /// <summary>The target endpoint of the edge.</summary>
+    public TKey TargetKey { get; }
 
-    //public static bool operator ==(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => a.Equals(b);
-    //public static bool operator !=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
-    //  => !a.Equals(b);
-    //#endregion Overloaded operators
+    /// <summary>The user value associated with the edge.</summary>
+    public TValue Value { get; set; }
 
-    //#region Implemented interfaces
-    //// IComparable<>
-    //public int CompareTo(Edge<TKey, TValue> other)
-    //  => SourceKey.CompareTo(other.SourceKey) is var csk && csk != 0
-    //  ? csk
-    //  : TargetKey.CompareTo(other.TargetKey) is var ctk && ctk != 0
-    //  ? ctk
-    //  : Value.CompareTo(other.Value) is var cv && cv != 0
-    //  ? cv
-    //  : IsDirected && !other.IsDirected
-    //  ? -1
-    //  : !IsDirected && other.IsDirected
-    //  ? 1
-    //  : 0;
-    //// IEquatable<>
-    //public bool Equals(Edge<TKey, TValue> other)
-    //  => SourceKey.Equals(other.SourceKey)
-    //  && TargetKey.Equals(other.TargetKey)
-    //  && Value.EqualsEx(other.Value)
-    //  && IsDirected == other.IsDirected;
+    #region Overloaded operators
+    public static bool operator <(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => a.CompareTo(b) < 0;
+    public static bool operator >(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => a.CompareTo(b) > 0;
+    public static bool operator <=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => a.CompareTo(b) <= 0;
+    public static bool operator >=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => a.CompareTo(b) >= 0;
+
+    public static bool operator ==(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => a.Equals(b);
+    public static bool operator !=(Edge<TKey, TValue> a, Edge<TKey, TValue> b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IComparable<>
+    public int CompareTo(Edge<TKey, TValue> other)
+      => SourceKey.CompareTo(other.SourceKey) is var csk && csk != 0
+      ? csk
+      : TargetKey.CompareTo(other.TargetKey) is var ctk && ctk != 0
+      ? ctk
+      : Value.CompareTo(other.Value) is var cv && cv != 0
+      ? cv
+      : IsDirected && !other.IsDirected
+      ? -1
+      : !IsDirected && other.IsDirected
+      ? 1
+      : 0;
+    // IEquatable<>
     public bool Equals(Edge<TKey, TValue>? other)
-    {
-      throw new System.NotImplementedException();
-    }
-    //#endregion Implemented interfaces
+      => other is not null
+      && SourceKey.Equals(other.SourceKey)
+      && TargetKey.Equals(other.TargetKey)
+      && Value.EqualsEx(other.Value)
+      && IsDirected == other.IsDirected;
+    #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)

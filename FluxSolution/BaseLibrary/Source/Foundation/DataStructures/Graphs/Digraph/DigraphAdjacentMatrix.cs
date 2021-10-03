@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.DataStructures.Graph
+namespace Flux.DataStructures.Graphs
 {
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Graph
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public class DigraphAdjacentMatrix<TKey, TVertexValue, TEdgeValue>
-    : IDigraph<TKey, TVertexValue, TEdgeValue>, ISimpleGraph<TKey, TVertexValue, TEdgeValue>
+    : IDigraph<TKey, TVertexValue, TEdgeValue>, IDigraphSimple<TKey, TVertexValue, TEdgeValue>
     where TKey : notnull
   {
     private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();

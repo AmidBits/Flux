@@ -68,7 +68,7 @@ namespace Flux.DataStructures
 
     public void CopyTo(T[] array, int arrayIndex) => m_cache.CopyTo(array, arrayIndex);
 
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => AllEnumeratorsExhausted ? m_cache.GetEnumerator() : new ExhaustEnumerators(this);
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => AllEnumeratorsExhausted ? m_cache.GetEnumerator() : new LazyListEnumerator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     public int IndexOf(T item) => m_cache.IndexOf(item);
@@ -92,7 +92,7 @@ namespace Flux.DataStructures
     }
     #endregion Implementation of IList<T>
 
-    private class ExhaustEnumerators
+    private class LazyListEnumerator
       : System.Collections.Generic.IEnumerator<T>
     {
       private T m_current;
@@ -101,7 +101,7 @@ namespace Flux.DataStructures
       private readonly LazyListCollection<T> m_source;
       private readonly int m_version;
 
-      public ExhaustEnumerators(LazyListCollection<T> source)
+      public LazyListEnumerator(LazyListCollection<T> source)
       {
         m_source = source;
         m_version = source.m_version;

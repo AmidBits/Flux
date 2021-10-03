@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Flux.DataStructures.Graph
+namespace Flux.DataStructures.Graphs
 {
   /// <summary>Represents a graph using an adjacency list. Can represent a multigraph (i.e. it allows multiple edges to have the same pair of endpoints). Loops can be represented.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Graph
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)/
   public class DigraphAdjacentList<TKey, TVertexValue, TEdgeValue>
-    : IDigraph<TKey, TVertexValue, TEdgeValue>, IMultiGraph<TKey, TVertexValue, TEdgeValue>
+    : IDigraph<TKey, TVertexValue, TEdgeValue>, IDigraphMulti<TKey, TVertexValue, TEdgeValue>
     where TKey : notnull
     where TEdgeValue : System.IEquatable<TEdgeValue>
   {

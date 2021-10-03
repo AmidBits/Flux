@@ -1,4 +1,4 @@
-﻿namespace Flux.DataStructures.Graph
+﻿namespace Flux.DataStructures.Graphs
 {
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
   public interface IDigraph<TKey, TVertexValue, TEdgeValue>

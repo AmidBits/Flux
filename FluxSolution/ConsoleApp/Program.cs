@@ -146,7 +146,7 @@ namespace ConsoleApp
       System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (destination-key, distance):");
+      System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (SPT) (destination-key, distance):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, dspt.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine();
 

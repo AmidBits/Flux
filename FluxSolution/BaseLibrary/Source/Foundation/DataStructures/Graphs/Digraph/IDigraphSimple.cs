@@ -1,7 +1,7 @@
-﻿namespace Flux.DataStructures.Graph
+﻿namespace Flux.DataStructures.Graphs
 {
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"/>
-  public interface ISimpleGraph<TKey, TVertexValue, TEdgeValue>
+  public interface IDigraphSimple<TKey, TVertexValue, TEdgeValue>
     where TKey : notnull
   {
     /// <summary>Returns the value of the edge.</summary>

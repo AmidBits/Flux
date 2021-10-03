@@ -1,6 +1,4 @@
-﻿//using System.Linq;
-
-namespace Flux.DataStructures.Graphs
+﻿namespace Flux.DataStructures.Graphs
 {
   /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -154,14 +152,14 @@ namespace Flux.DataStructures.Graphs
 
         distances.Remove(shortest.Key); // This node is now final, so remove it.
 
-        foreach (var edge in System.Linq.Enumerable.Where(edges, e => e.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        foreach (var (source, target, value) in System.Linq.Enumerable.Where(edges, e => e.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
         {
-          if (distances.TryGetValue(edge.target, out var distanceToEdgeTarget))
+          if (distances.TryGetValue(target, out var distanceToEdgeTarget))
           {
-            var distanceViaShortest = shortest.Value + distanceSelector(edge.value); // Distance via the current node.
+            var distanceViaShortest = shortest.Value + distanceSelector(value); // Distance via the current node.
 
             if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
-              distances[edge.target] = distanceViaShortest;
+              distances[target] = distanceViaShortest;
           }
         }
       }

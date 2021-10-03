@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Computes the shortest path from the start vertex to all reachable vertices.</summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
-    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPathTree<TVertex, TVertexValue, TEdgeValue>(this DataStructures.Graph.IDigraph<TVertex, TVertexValue, TEdgeValue> source, TVertex start, System.Func<TEdgeValue, double> distanceSelector)
+    public static System.Collections.Generic.Dictionary<TVertex, double> DijkstraShortestPathTree<TVertex, TVertexValue, TEdgeValue>(this DataStructures.Graphs.IDigraph<TVertex, TVertexValue, TEdgeValue> source, TVertex start, System.Func<TEdgeValue, double> distanceSelector)
       where TVertex : System.IEquatable<TVertex>
     {
       var distances = source.GetVertices().ToDictionary(v => v, v => v.Equals(start) ? 0 : double.PositiveInfinity);
@@ -24,14 +24,14 @@ namespace Flux
 
         distances.Remove(shortest.Key); // This node is now final, so remove it.
 
-        foreach (var next in edges.Where(edge => edge.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        foreach (var (from, to, value) in edges.Where(edge => edge.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
         {
-          if (distances.ContainsKey(next.target)) // If it's currently in distances.
+          if (distances.TryGetValue(to, out var distanceToEdgeTarget)) // If it's currently in distances.
           {
-            var distanceViaShortest = shortest.Value + distanceSelector(next.value); // Distance via the current node.
+            var distanceViaShortest = shortest.Value + distanceSelector(value); // Distance via the current node.
 
-            if (distanceViaShortest < distances[next.target]) // If the distance via the current node is shorter than the currently recorded distance, replace it.
-              distances[next.target] = distanceViaShortest;
+            if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
+              distances[to] = distanceViaShortest;
           }
         }
       }
