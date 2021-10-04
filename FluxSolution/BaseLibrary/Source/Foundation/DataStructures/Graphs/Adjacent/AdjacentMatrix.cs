@@ -30,10 +30,8 @@ namespace Flux.DataStructures.Graphs
 
       return true;
     }
-
     public bool ContainsVertex(TVertex vertex)
       => m_vertices.Contains(vertex);
-
     public bool RemoveVertex(TVertex vertex)
     {
       if (!m_vertices.Contains(vertex))

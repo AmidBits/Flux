@@ -105,7 +105,7 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var g = new Flux.DataStructures.Graphs.Graph<int, char, double>();
+      var g = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, char, double>();
 
       g.AddVertex(0, 'a');
       g.AddVertex(1, 'b');
@@ -117,42 +117,42 @@ namespace ConsoleApp
       g.AddVertex(7, 'h');
       g.AddVertex(8, 'i');
 
-      g.AddEdge(0, 1, false, 4);
-      g.AddEdge(0, 7, false, 8);
-      g.AddEdge(1, 2, false, 8);
-      g.AddEdge(1, 7, true, 11);
-      g.AddEdge(2, 8, true, 2);
-      g.AddEdge(2, 5, false, 4);
-      g.AddEdge(2, 3, false, 7);
-      g.AddEdge(3, 5, true, 14);
-      g.AddEdge(3, 4, false, 9);
-      g.AddEdge(5, 3, true, 14);
-      g.AddEdge(5, 4, false, 10);
-      g.AddEdge(6, 8, true, 6);
-      g.AddEdge(6, 5, false, 2);
-      g.AddEdge(7, 1, true, 11);
-      g.AddEdge(7, 8, false, 7);
-      g.AddEdge(7, 6, false, 1);
-      g.AddEdge(8, 2, true, 2);
-      g.AddEdge(8, 6, true, 6);
+      g.AddEdgeUndirected(0, 1, 4);
+      g.AddEdgeUndirected(0, 7, 8);
+      g.AddEdgeUndirected(1, 2, 8);
+      g.AddEdge(1, 7, 11);
+      g.AddEdge(2, 8, 2);
+      g.AddEdgeUndirected(2, 5, 4);
+      g.AddEdgeUndirected(2, 3, 7);
+      g.AddEdge(3, 5, 14);
+      g.AddEdgeLoop(3, 13);
+      g.AddEdgeUndirected(3, 4, 9);
+      g.AddEdge(5, 3, 14);
+      g.AddEdgeUndirected(5, 4, 10);
+      g.AddEdge(6, 8, 6);
+      g.AddEdgeUndirected(6, 5, 2);
+      g.AddEdge(7, 1, 11);
+      g.AddEdgeUndirected(7, 8, 7);
+      g.AddEdgeUndirected(7, 6, 1);
+      g.AddEdge(8, 2, 2);
+      g.AddEdge(8, 6, 6);
 
-      var vertices = g.GetVertices().ToList();
-      var edges = g.Edges;
-      var edgesExploded = g.GetEdgesExplodedAndSorted().ToList();
+      var vertices = g.GetVerticesWithValueAndDegree().ToList();
+      var edges = g.GetEdges().ToList();
 
       var dspt = g.GetDijkstraShortestPathTree(0, i => i);
       //var lpmst = daligraph.PrimsMinimumSpanningTree(0, i => i);
 
-      var verticesWithDegrees = g.GetVerticesWithDegrees().ToList();
+      //var verticesWithDegrees = g.GetVerticesWithDegrees().ToList();
 
-      System.Console.WriteLine(@"Graph Vertices (key, value):");
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      //System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine(@"Graph Edges (source-key, target-key, matrix, value):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      System.Console.WriteLine(@"Graph Edges Exploded (source-key, target-key, value):");
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, edgesExploded.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      //System.Console.WriteLine(@"Graph Edges Exploded (source-key, target-key, value):");
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, edgesExploded.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (SPT) (destination-key, distance):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, dspt.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine();
