@@ -26,7 +26,7 @@ namespace Flux.DataStructures.Graphs
 
       foreach (var (source, target, value) in GetEdges())
         if (source.Equals(vertex) || target.Equals(vertex))
-          degree++;
+          degree += source.Equals(target) ? 2 : 1;
 
       return degree;
     }

@@ -105,7 +105,7 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var g = new Flux.DataStructures.Graphs.AdjacencyList<int, char, double>();
+      var g = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, char, double>();
 
       g.AddVertex(0, 'a');
       g.AddVertex(1, 'b');
@@ -149,7 +149,7 @@ namespace ConsoleApp
       System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
       //System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      System.Console.WriteLine(@"Graph Edges (source-key, target-key, matrix, value):");
+      System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
       //System.Console.WriteLine(@"Graph Edges Exploded (source-key, target-key, value):");
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, edgesExploded.Select((e, i) => $"{(i + 1):D2} = {e}")));
