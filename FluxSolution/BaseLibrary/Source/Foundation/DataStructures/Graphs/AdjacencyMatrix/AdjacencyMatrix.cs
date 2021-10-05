@@ -220,7 +220,7 @@ namespace Flux.DataStructures.Graphs
 
         distances.Remove(shortest.Key); // This node is now final, so remove it.
 
-        foreach (var (source, target, matrix, value) in System.Linq.Enumerable.Where(edges, e => e.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        foreach (var (source, target, value) in System.Linq.Enumerable.Where(edges, e => e.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
         {
           if (distances.TryGetValue(target, out var distanceToEdgeTarget))
           {
@@ -234,14 +234,14 @@ namespace Flux.DataStructures.Graphs
     }
 
     /// <summary>Creates a new sequence with all existing edges.</summary>
-    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, int matrix, TEdgeValue value)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdges()
     {
       var verticesLength = m_vertices.Count;
 
       for (var sourceIndex = 0; sourceIndex < verticesLength; sourceIndex++)
         for (var targetIndex = 0; targetIndex < verticesLength; targetIndex++)
           if (m_matrix[sourceIndex, targetIndex] is var matrix && matrix > 0)
-            yield return (m_vertices[sourceIndex], m_vertices[targetIndex], matrix, m_edgeValues[sourceIndex, targetIndex]);
+            yield return (m_vertices[sourceIndex], m_vertices[targetIndex], m_edgeValues[sourceIndex, targetIndex]);
     }
 
     /// <summary>Creates a new sequence with all vertices and their respective value.</summary>
