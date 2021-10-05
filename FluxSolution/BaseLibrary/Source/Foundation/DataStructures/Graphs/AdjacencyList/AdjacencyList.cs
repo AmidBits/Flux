@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿//using System.Linq;
 
-namespace Flux.DataStructures.Graphs2
+namespace Flux.DataStructures.Graphs
 {
   /// <summary>Represents a graph using an adjacency list. Can represent a multigraph (i.e. it allows multiple edges to have the same pair of endpoints). Loops can be represented.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
@@ -18,7 +18,6 @@ namespace Flux.DataStructures.Graphs2
 
     public System.Collections.Generic.IReadOnlyCollection<TKey> Vertices
       => m_list.Keys;
-
 
     /// <summary>Returns the degree of the specified vertex. Returns -1 if not found.</summary>
     public int GetDegree(TKey vertex)
@@ -65,13 +64,12 @@ namespace Flux.DataStructures.Graphs2
           if (kvp.Value is var targets && targets.ContainsKey(vertex))
             targets.Remove(vertex); // Remove any vertex as a target.
 
-
         m_list.Remove(vertex); // Remove vertex as a source.
       }
     }
 
     /// <summary>Tries to get the value for the specified vertex and returns whether it succeeded.</summary>
-    public bool TryGetVertexValue(TKey vertex, TVertexValue value)
+    public bool TryGetVertexValue(TKey vertex, out TVertexValue value)
     {
       if (m_vertexValues.ContainsKey(vertex))
       {
@@ -95,60 +93,112 @@ namespace Flux.DataStructures.Graphs2
       return true;
     }
 
-    public void AddEdge(TKey source, TKey target)
-    {
-    }
+    /// <summary>Adds a directed edge with a value to the graph.</summary>
     public void AddEdge(TKey source, TKey target, TEdgeValue value)
     {
       if (m_list.ContainsKey(source) && m_list.ContainsKey(target))
-        if (!m_list[source].ContainsKey(target))
+      {
+        if (m_list[source].ContainsKey(target))
+          m_list[source][target].Add(value);
+        else // No matching endpoint exists, so we add it.
           m_list[source].Add(target, new System.Collections.Generic.List<TEdgeValue>() { value });
-
-      AddEdge(source, target);
-      AddEdgeValue(source, target, value);
+      }
     }
+    /// <summary>Adds a directed edge with the default value to the graph.</summary>
+    public void AddEdge(TKey source, TKey target)
+      => AddEdge(source, target, default!);
+    /// <summary>Adds a looped edge with a value to the graph.</summary>
+    public void AddEdgeAsLoop(TKey vertex, TEdgeValue value)
+      => AddEdge(vertex, vertex, value);
+    /// <summary>Adds a undirected edge with a value to the graph.</summary>
+    public void AddEdgeAsUndirected(TKey source, TKey target, TEdgeValue value)
+    {
+      AddEdge(source, target, value);
+      AddEdge(target, source, value);
+    }
+    /// <summary>Determines whether an edge exists in the graph.</summary>
     public bool ContainsEdge(TKey source, TKey target)
-      => m_list.ContainsKey(source) && m_list[source].ContainsKey(target) && m_list[source][target].Count > 0;
+      => ContainsVertex(source) && m_list[source].ContainsKey(target);
+    /// <summary>Determines whether an edge with the specified value exists in the graph.</summary>
+    public bool ContainsEdge(TKey source, TKey target, TEdgeValue value)
+      => ContainsEdge(source, target) && m_list[source][target].Contains(value);
+    /// <summary>Removes the edge matching the specified value. If no such value is found, nothing is removed.</summary>
+    public void RemoveEdge(TKey source, TKey target, TEdgeValue value)
+    {
+      if (ContainsEdge(source, target))
+      {
+        m_list[source][target].Remove(value);
+
+        if (m_list[source][target].Count == 0)
+        {
+          m_list[source].Remove(target);
+
+          if (m_list[source].Count == 0)
+            m_list.Remove(source);
+        }
+      }
+    }
+    /// <summary>Removes the edge regardless of the number of weights it contains.</summary>
     public void RemoveEdge(TKey source, TKey target)
+      => RemoveEdge(source, target, default!);
+
+    /// <summary>Tries to get the values for the specified edge and returns whether it succeeded.</summary>
+    public bool TryGetEdgeValues(TKey source, TKey target, out System.Collections.Generic.List<TEdgeValue> list)
     {
-      if (m_list.ContainsKey(source) && m_list[source].ContainsKey(target))
-        m_list[source].Remove(target);
+      if (ContainsEdge(source, target))
+      {
+        list = m_list[source][target];
+        return true;
+      }
+
+      list = default!;
+      return false;
+    }
+    /// <summary>Tries to set the values for the specified edge and returns whether it succeeded.</summary>
+    public bool TrySetEdgeValues(TKey source, TKey target, System.Collections.Generic.List<TEdgeValue> list)
+    {
+      if (ContainsEdge(source, target))
+      {
+        m_list[source][target] = list ?? throw new System.ArgumentNullException(nameof(list));
+        return true;
+      }
+
+      return false;
     }
 
-    /// <summary>Adds a value to an existing edge.</summary>
-    public void AddEdgeValue(TKey source, TKey target, TEdgeValue value)
+    /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
+    /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
+    public System.Collections.Generic.IEnumerable<(TKey destination, double distance)> GetDijkstraShortestPathTree(TKey origin, System.Func<TEdgeValue, double> distanceSelector)
     {
-      var ev = GetEdgeValues(source, target);
-      ev.Add(value);
-      SetEdgeValues(source, target, ev);
-    }
-    /// <summary>Determines whether an edge has the specified value.</summary>
-    public bool ContainsEdgeValue(TKey source, TKey target, TEdgeValue value)
-      => GetEdgeValues(source, target).Contains(value);
-    /// <summary>Removes a value from an existing edge.</summary>
-    public bool RemoveEdgeValue(TKey source, TKey target, TEdgeValue value)
-    {
-      var ev = GetEdgeValues(source, target);
-      var rv = ev.Remove(value);
-      SetEdgeValues(source, target, ev);
-      return rv;
-    }
-    /// <summary>Removes the specified values from an existing edge. Values that do not exist, are ignored.</summary>
-    public void RemoveEdgeValues(TKey source, TKey target, params TEdgeValue[] values)
-    {
-      var ev = GetEdgeValues(source, target);
-      for (var index = values.Length - 1; index >= 0; index--)
-        ev.Remove(values[index]);
-      SetEdgeValues(source, target, ev);
+      var vertices = System.Linq.Enumerable.ToList(Vertices);
+
+      var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
+
+      var edges = System.Linq.Enumerable.ToList(GetEdges()); // Cache edges, because we need it while there are available distances.
+
+      while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
+      {
+        var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
+
+        if (shortest.Value < double.PositiveInfinity) // If the distance to the node is less than infinity, it was reachable so it should be returned.
+          yield return (shortest.Key, shortest.Value);
+
+        distances.Remove(shortest.Key); // This node is now final, so remove it.
+
+        foreach (var (source, target, value) in System.Linq.Enumerable.Where(edges, e => e.source.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        {
+          if (distances.TryGetValue(target, out var distanceToEdgeTarget))
+          {
+            var distanceViaShortest = shortest.Value + distanceSelector(value); // Distance via the current node.
+
+            if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
+              distances[target] = distanceViaShortest;
+          }
+        }
+      }
     }
 
-    /// <summary>Returns all edge values (edges) between <paramref name="source"/> and <paramref name="target"/>.</summary>
-    public System.Collections.Generic.List<TEdgeValue> GetEdgeValues(TKey source, TKey target)
-      => m_list[source][target];
-    /// <summary>Replaces all edge values (edges) with the specified values.</summary>
-    public void SetEdgeValues(TKey source, TKey target, System.Collections.Generic.List<TEdgeValue> list)
-      => m_list[source][target] = list ?? throw new System.ArgumentNullException(nameof(list));
-
+    /// <summary>Creates a new sequence with all existing edges.</summary>
     public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdges()
     {
       foreach (var source in m_list.Keys)
@@ -157,8 +207,12 @@ namespace Flux.DataStructures.Graphs2
             yield return (source, target, value);
     }
 
-    public System.Collections.Generic.IEnumerable<TKey> GetVertices()
-      => m_list.Keys;
+    /// <summary>Creates a new sequence with all vertices and their respective value.</summary>
+    public System.Collections.Generic.IEnumerable<(TKey key, TVertexValue value)> GetVerticesWithValue()
+      => System.Linq.Enumerable.Select(m_list.Keys, vk => (vk, m_vertexValues[vk]));
+    /// <summary>Creates a new sequence with all vertices and their respective value and degree.</summary>
+    public System.Collections.Generic.IEnumerable<(TKey key, TVertexValue value, int degree)> GetVerticesWithValueAndDegree()
+      => System.Linq.Enumerable.Select(m_list.Keys, vk => (vk, m_vertexValues[vk], GetDegree(vk)));
 
     #region Object overrides.
     public override string ToString()
@@ -167,7 +221,7 @@ namespace Flux.DataStructures.Graphs2
       var index = 0;
       foreach (var edge in GetEdges())
         sb.AppendLine($"#{++index}: {edge}");
-      sb.Insert(0, $"<{GetType().Name}: ({GetVertices().Count()} vertices, {index} edges)>{System.Environment.NewLine}");
+      sb.Insert(0, $"<{GetType().Name}: ({Vertices.Count} vertices, {index} edges)>{System.Environment.NewLine}");
       return sb.ToString();
     }
     #endregion Object overrides.

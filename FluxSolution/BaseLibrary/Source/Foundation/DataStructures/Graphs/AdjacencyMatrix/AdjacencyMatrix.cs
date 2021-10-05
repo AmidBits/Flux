@@ -132,92 +132,34 @@ namespace Flux.DataStructures.Graphs
       return false;
     }
 
-    /// <summary>Adds a directed edge with the default value to the graph.</summary>
-    public void AddEdge(TKey source, TKey target)
-    {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
-        m_matrix[sourceIndex, targetIndex] = source.Equals(target) ? 2 : 1;
-    }
     /// <summary>Adds a directed edge with a value to the graph.</summary>
     public void AddEdge(TKey source, TKey target, TEdgeValue value)
     {
-      AddEdge(source, target);
-      TrySetEdgeValue(source, target, value);
+      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
+      {
+        m_matrix[sourceIndex, targetIndex] = source.Equals(target) ? 2 : 1;
+
+        TrySetEdgeValue(source, target, value);
+      }
     }
+    /// <summary>Adds a directed edge with the default value to the graph.</summary>
+    public void AddEdge(TKey source, TKey target)
+      => AddEdge(source, target, default!);
     /// <summary>Adds a looped edge with a value to the graph.</summary>
-    public void AddEdgeLoop(TKey vertex, TEdgeValue value)
-    {
-      AddEdge(vertex, vertex);
-      TrySetEdgeValue(vertex, vertex, value);
-    }
-    /// <summary>Adds a looped edge with the default value to the graph.</summary>
-    public void AddEdgeLoop(TKey vertex)
-      => AddEdgeLoop(vertex, default!);
+    public void AddEdgeAsLoop(TKey vertex, TEdgeValue value)
+      => AddEdge(vertex, vertex, value);
     /// <summary>Adds a undirected edge with a value to the graph.</summary>
-    public void AddEdgeUndirected(TKey source, TKey target, TEdgeValue value)
+    public void AddEdgeAsUndirected(TKey source, TKey target, TEdgeValue value)
     {
       AddEdge(source, target, value);
-
-      AddEdge(target, source);
-      TrySetEdgeValue(target, source, value);
+      AddEdge(target, source, value);
     }
-    /// <summary>Adds a undirected edge with the default value to the graph.</summary>
-    public void AddEdgeUndirected(TKey source, TKey target)
-      => AddEdgeUndirected(source, target, default!);
-
-    //private bool ContainsEdge(TKey source, TKey target)
-    //  => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0;
-    //public bool IsLoop(TKey source, TKey target)
-    //{
-    //  if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
-    //    return m_matrix[sourceIndex, targetIndex] == 2;
-    //}
-    //private bool GetEdge(TKey source, TKey target, out int sourceIndex, out int targetIndex, out int matrix, out TEdgeValue value)
-    //{
-    //  var sourceContains = ContainsVertex(source, out sourceIndex);
-    //  var targetContains = ContainsVertex(target, out targetIndex);
-
-    //  if (sourceContains && targetContains)
-    //  {
-    //    matrix = m_matrix[sourceIndex, targetIndex];
-    //    value = m_edgeValues[sourceIndex, targetIndex];
-    //    return true;
-    //  }
-    //  else
-    //  {
-    //    matrix = default;
-    //    value = default!;
-    //    return false;
-    //  }
-    //}
-    //private bool GetEdgeEx(TKey source, TKey target, out int sourceIndex, out int sourceMatrix, out TEdgeValue sourceValue, out int targetIndex, out int targetMatrix, out TEdgeValue targetValue)
-    //{
-    //  var sourceContains = ContainsVertex(source, out sourceIndex);
-    //  var targetContains = ContainsVertex(target, out targetIndex);
-
-    //  if (sourceContains && targetContains)
-    //  {
-    //    sourceMatrix = m_matrix[sourceIndex, targetIndex];
-    //    sourceValue = m_edgeValues[sourceIndex, targetIndex];
-    //    targetMatrix = m_matrix[targetIndex, sourceIndex];
-    //    targetValue = m_edgeValues[targetIndex, sourceIndex];
-    //    return true;
-    //  }
-    //  else
-    //  {
-    //    sourceMatrix = default;
-    //    sourceValue = default!;
-    //    targetMatrix = default;
-    //    targetValue = default!;
-    //    return false;
-    //  }
-    //}
-    //private bool IsLoop(TKey source, TKey target)
-    //  => source.Equals(target) && ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] == 2; // Only loops has a value of 2.
-    //private bool IsEdgeDirected(TKey source, TKey target)
-    //  => !source.Equals(target) && ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && (m_matrix[sourceIndex, targetIndex] == 1 || m_matrix[targetIndex, sourceIndex] == 1) && !m_edgeValues[sourceIndex, targetIndex].Equals(m_edgeValues[targetIndex, sourceIndex]);
-    //private bool IsEdgeUndirected(TKey source, TKey target)
-    //  => !source.Equals(target) && ContainsVertex(source, out var si) && ContainsVertex(target, out var ti) && m_matrix[si, ti] == 1 && m_matrix[ti, si] == 1 && m_edgeValues[si, ti].Equals(m_edgeValues[ti, si]);
+    /// <summary>Determines whether an edge exists in the graph.</summary>
+    public bool ContainsEdge(TKey source, TKey target)
+      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0;
+    /// <summary>Determines whether an edge with the specified value exists in the graph.</summary>
+    public bool ContainsEdge(TKey source, TKey target, TEdgeValue value)
+      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0 && m_edgeValues[sourceIndex, targetIndex].Equals(value);
     /// <summary>Removes an edge from the graph.</summary>
     public void RemoveEdge(TKey source, TKey target)
     {
@@ -228,10 +170,13 @@ namespace Flux.DataStructures.Graphs
         m_matrix[sourceIndex, targetIndex] = 0;
       }
     }
+    ///// <summary>Removes an edge as if undirected from the graph.</summary>
+    //public void RemoveEdgeAsUndirected(TKey source, TKey target)
+    //{
+    //  RemoveEdge(source, target);
+    //  RemoveEdge(target, source);
+    //}
 
-    /// <summary>Determines whether the specified edge equals the value.</summary>
-    public bool IsEdgeValueEqualTo(TKey source, TKey target, TEdgeValue value)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_edgeValues[sourceIndex, targetIndex].Equals(value);
     /// <summary>Tries to get the value for the specified edge and returns whether it succeeded.</summary>
     public bool TryGetEdgeValue(TKey source, TKey target, out TEdgeValue value)
     {

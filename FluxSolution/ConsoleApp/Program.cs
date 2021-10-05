@@ -105,7 +105,7 @@ namespace ConsoleApp
 
       //am.DijkstraShortestPath('a', 'f');
 
-      var g = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, char, double>();
+      var g = new Flux.DataStructures.Graphs.AdjacencyList<int, char, double>();
 
       g.AddVertex(0, 'a');
       g.AddVertex(1, 'b');
@@ -117,23 +117,23 @@ namespace ConsoleApp
       g.AddVertex(7, 'h');
       g.AddVertex(8, 'i');
 
-      g.AddEdgeUndirected(0, 1, 4);
-      g.AddEdgeUndirected(0, 7, 8);
-      g.AddEdgeUndirected(1, 2, 8);
+      g.AddEdgeAsUndirected(0, 1, 4);
+      g.AddEdgeAsUndirected(0, 7, 8);
+      g.AddEdgeAsUndirected(1, 2, 8);
       g.AddEdge(1, 7, 11);
       g.AddEdge(2, 8, 2);
-      g.AddEdgeUndirected(2, 5, 4);
-      g.AddEdgeUndirected(2, 3, 7);
+      g.AddEdgeAsUndirected(2, 5, 4);
+      g.AddEdgeAsUndirected(2, 3, 7);
       g.AddEdge(3, 5, 14);
-      g.AddEdgeLoop(3, 13);
-      g.AddEdgeUndirected(3, 4, 9);
+      g.AddEdgeAsLoop(3, 13);
+      g.AddEdgeAsUndirected(3, 4, 9);
       g.AddEdge(5, 3, 14);
-      g.AddEdgeUndirected(5, 4, 10);
+      g.AddEdgeAsUndirected(5, 4, 10);
       g.AddEdge(6, 8, 6);
-      g.AddEdgeUndirected(6, 5, 2);
+      g.AddEdgeAsUndirected(6, 5, 2);
       g.AddEdge(7, 1, 11);
-      g.AddEdgeUndirected(7, 8, 7);
-      g.AddEdgeUndirected(7, 6, 1);
+      g.AddEdgeAsUndirected(7, 8, 7);
+      g.AddEdgeAsUndirected(7, 6, 1);
       g.AddEdge(8, 2, 2);
       g.AddEdge(8, 6, 6);
 
