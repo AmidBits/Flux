@@ -15,10 +15,180 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public class BellmanFordMinCostMaxFlow
+  {
+    // Stores the found edges
+    bool[] found;
+
+    // Stores the number of nodes
+    int m_NumberOfVertices;
+
+    // Stores the capacity
+    // of each edge
+    public double[,] cap;
+
+    double[,] flow;
+
+    // Stores the cost per
+    // unit flow of each edge
+    public double[,] cost;
+
+    // Stores the distance from each node
+    // and picked edges for each node
+    int[] dad;
+    double[] dist;
+    double[] pi;
+
+    public BellmanFordMinCostMaxFlow(int numberOfVertices)
+    {
+      m_NumberOfVertices = numberOfVertices;
+
+      found = new bool[m_NumberOfVertices];
+      flow = new double[m_NumberOfVertices, m_NumberOfVertices];
+      dist = new double[m_NumberOfVertices + 1];
+      dad = new int[m_NumberOfVertices];
+      pi = new double[m_NumberOfVertices];
+    }
+
+    // Function to check if it is possible to
+    // have a flow from the src to sink
+    public bool Search(int source, int target)
+    {
+      System.Array.Fill(found, false); // Initialise found[] to false.
+
+      System.Array.Fill(dist, double.PositiveInfinity); // Initialise the dist[] to INF.
+
+      dist[source] = 0; // Distance from the source node.
+
+      while (source != m_NumberOfVertices) // Iterate until source reaches the number of vertices.
+      {
+        var best = m_NumberOfVertices;
+
+        found[source] = true;
+
+        for (var k = 0; k < m_NumberOfVertices; k++)
+        {
+          if (found[k]) // If already found, continue.
+            continue;
+
+          if (flow[k, source] != 0) // Evaluate while flow is still in supply.
+          {
+            var val = dist[source] + pi[source] - pi[k] - cost[k, source]; // Obtain the total value.
+
+            if (dist[k] > val)// If dist[k] is > minimum value, update.
+            {
+              dist[k] = val;
+              dad[k] = source;
+            }
+          }
+
+          if (flow[source, k] < cap[source, k])
+          {
+            var val = dist[source] + pi[source] - pi[k] + cost[source, k];
+
+            if (dist[k] > val) // If dist[k] is > minimum value, update.
+            {
+              dist[k] = val;
+              dad[k] = source;
+            }
+          }
+
+          if (dist[k] < dist[best])
+            best = k;
+        }
+
+        source = best; // Update src to best for next iteration.
+      }
+
+      for (int k = 0; k < m_NumberOfVertices; k++)
+        pi[k] = System.Math.Min(pi[k] + dist[k], double.PositiveInfinity);
+
+      return found[target]; // Return the value obtained at target.
+    }
+
+    // Function to obtain the maximum Flow
+    public (double totalFlow, double totalCost) GetMaxFlow(int source, int target)
+    {
+      var totalFlow = 0d;
+      var totalCost = 0d;
+
+      while (Search(source, target)) // If a path exist from source to target.
+      {
+        var amt = double.PositiveInfinity; // Set the default amount.
+
+        for (var x = target; x != source; x = dad[x])
+          amt = System.Math.Min(amt, flow[x, dad[x]] != 0 ? flow[x, dad[x]] : cap[dad[x], x] - flow[dad[x], x]);
+
+        for (var x = target; x != source; x = dad[x])
+        {
+          if (flow[x, dad[x]] != 0)
+          {
+            flow[x, dad[x]] -= amt;
+            totalCost -= amt * cost[x, dad[x]];
+          }
+          else
+          {
+            flow[dad[x], x] += amt;
+            totalCost += amt * cost[dad[x], x];
+          }
+        }
+
+        totalFlow += amt;
+      }
+
+      return (totalFlow, totalCost); // Return pair total flow and cost.
+    }
+
+  }
+
+
   class Program
   {
     private static void TimedMain(string[] args)
     {
+
+      //  // Creating an object flow
+      var flow = new BellmanFordMinCostMaxFlow(5);
+
+      int s = 0, t = 4;
+
+      flow.cap = new double[,] {
+        { 0, 3, 1, 0, 3 },
+        { 0, 0, 2, 0, 0 },
+        { 0, 0, 0, 1, 6 },
+        { 0, 0, 0, 0, 2 },
+        { 0, 0, 0, 0, 0 },
+      };
+
+      flow.cost = new double[,] {
+        { 0, 1, 0, 0, 2 },
+        { 0, 0, 0, 3, 0 },
+        { 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 1 },
+        { 0, 0, 0, 0, 0 }
+      };
+
+      flow.cap = new double[,] {
+        { 0, 3, 4, 5, 0 },
+        { 0, 0, 2, 0, 0 },
+        { 0, 0, 0, 4, 1 },
+        { 0, 0, 0, 0, 10 },
+        { 0, 0, 0, 0, 0 }
+      };
+      flow.cost = new double[,] {
+        { 0, 1, 0, 0, 0 },
+        { 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0 }
+      };
+      // 10 1
+
+      var ret = flow.GetMaxFlow(s, t);
+
+      //  System.out.println(ret[0] + " " + ret[1]);
+
+
       var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };
 
       System.Console.WriteLine(nameof(os1));
@@ -117,44 +287,68 @@ namespace ConsoleApp
       g.AddVertex(7, 'h');
       g.AddVertex(8, 'i');
 
-      g.AddEdgeAsUndirected(0, 1, 4);
-      g.AddEdgeAsUndirected(0, 7, 8);
-      g.AddEdgeAsUndirected(1, 2, 8);
-      g.AddEdge(1, 7, 11);
-      g.AddEdge(2, 8, 2);
-      g.AddEdgeAsUndirected(2, 5, 4);
-      g.AddEdgeAsUndirected(2, 3, 7);
-      g.AddEdge(3, 5, 14);
-      g.AddEdgeAsLoop(3, 13);
-      g.AddEdgeAsUndirected(3, 4, 9);
-      g.AddEdge(5, 3, 14);
-      g.AddEdgeAsUndirected(5, 4, 10);
-      g.AddEdge(6, 8, 6);
-      g.AddEdgeAsUndirected(6, 5, 2);
-      g.AddEdge(7, 1, 11);
-      g.AddEdgeAsUndirected(7, 8, 7);
-      g.AddEdgeAsUndirected(7, 6, 1);
-      g.AddEdge(8, 2, 2);
-      g.AddEdge(8, 6, 6);
+      g.AddSimpleDirectedEdge(0, 1, 4);
+      g.AddSimpleDirectedEdge(1, 0, 4);
 
-      var vertices = g.GetVerticesWithValueAndDegree().ToList();
-      var edges = g.GetEdges().ToList();
+      g.AddSimpleDirectedEdge(0, 7, 8);
+
+      g.AddSimpleDirectedEdge(1, 2, 8);
+
+      g.AddSimpleDirectedEdge(2, 1, 8);
+      g.AddSimpleDirectedEdge(2, 3, 7);
+      g.AddSimpleDirectedEdge(2, 5, 4);
+      g.AddSimpleDirectedEdge(2, 8, 2);
+
+      g.AddSimpleDirectedEdge(3, 2, 7);
+      g.AddSimpleDirectedEdge(3, 5, 14);
+      g.AddSimpleDirectedEdge(3, 3, 13);
+      g.AddSimpleDirectedEdge(3, 4, 9);
+
+      g.AddSimpleDirectedEdge(4, 3, 9);
+      g.AddSimpleDirectedEdge(4, 5, 10);
+
+      g.AddSimpleDirectedEdge(5, 2, 4);
+      g.AddSimpleDirectedEdge(5, 3, 14);
+      g.AddSimpleDirectedEdge(5, 4, 10);
+      g.AddSimpleDirectedEdge(5, 6, 2);
+
+      g.AddSimpleDirectedEdge(6, 5, 2);
+      g.AddSimpleDirectedEdge(6, 7, 1);
+      g.AddSimpleDirectedEdge(6, 8, 6);
+
+      g.AddSimpleDirectedEdge(7, 0, 8);
+      g.AddSimpleDirectedEdge(7, 1, 11);
+      g.AddSimpleDirectedEdge(7, 6, 1);
+      g.AddSimpleDirectedEdge(7, 8, 7);
+
+      g.AddSimpleDirectedEdge(8, 2, 2);
+      g.AddSimpleDirectedEdge(8, 6, 6);
+      g.AddSimpleDirectedEdge(8, 7, 7);
+
+      var vertices = g.GetVertices().ToList();
+      var edges = g.GetDirectedEdges().ToList();
 
       var dspt = g.GetDijkstraShortestPathTree(0, i => i);
       //var lpmst = daligraph.PrimsMinimumSpanningTree(0, i => i);
 
-      //var verticesWithDegrees = g.GetVerticesWithDegrees().ToList();
+      var verticesWithDegrees = g.GetVerticesWithDegree();
+      var verticesWithValues = g.GetVerticesWithValue();
 
       System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine(@"Graph Vertices (key, degree):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine(@"Graph Vertices (key, value):");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithValues.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
       //System.Console.WriteLine(@"Graph Edges Exploded (source-key, target-key, value):");
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, edgesExploded.Select((e, i) => $"{(i + 1):D2} = {e}")));
       System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (SPT) (destination-key, distance):");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, dspt.Select((e, i) => $"{(i + 1):D2} = {e}")));
+      System.Console.WriteLine();
+
+      System.Console.WriteLine(g.ToConsoleString());
       System.Console.WriteLine();
 
       return;
