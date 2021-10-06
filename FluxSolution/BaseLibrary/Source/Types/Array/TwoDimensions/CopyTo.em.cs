@@ -10,16 +10,16 @@ namespace Flux
       if (target is null) throw new System.ArgumentNullException(nameof(target));
 
       var sourceLength0 = source.GetLength(0);
-      if (sourceIndex0 < 0 || sourceIndex0 > sourceLength0) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex0));
+      if (sourceIndex0 < 0 || sourceIndex0 >= sourceLength0) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex0));
 
       var sourceLength1 = source.GetLength(1);
-      if (sourceIndex1 < 0 || sourceIndex1 > sourceLength1) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex1));
+      if (sourceIndex1 < 0 || sourceIndex1 >= sourceLength1) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex1));
 
       var targetLength0 = target.GetLength(0);
-      if (targetIndex0 < 0 || targetIndex0 > targetLength0) throw new System.ArgumentOutOfRangeException(nameof(targetIndex0));
+      if (targetIndex0 < 0 || targetIndex0 >= targetLength0) throw new System.ArgumentOutOfRangeException(nameof(targetIndex0));
 
       var targetLength1 = target.GetLength(1);
-      if (targetIndex1 < 0 || targetIndex1 > targetLength1) throw new System.ArgumentOutOfRangeException(nameof(targetIndex1));
+      if (targetIndex1 < 0 || targetIndex1 >= targetLength1) throw new System.ArgumentOutOfRangeException(nameof(targetIndex1));
 
       if (sourceIndex0 + count0 > sourceLength0 || targetIndex0 + count0 > targetLength0) throw new System.ArgumentOutOfRangeException(nameof(count0));
       if (sourceIndex1 + count1 > sourceLength1 || targetIndex1 + count1 > targetLength1) throw new System.ArgumentOutOfRangeException(nameof(count1));

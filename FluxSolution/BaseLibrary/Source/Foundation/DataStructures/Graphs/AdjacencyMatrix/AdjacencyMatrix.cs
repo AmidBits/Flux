@@ -5,76 +5,88 @@
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class AdjacencyMatrix<TKey, TVertexValue, TEdgeValue>
-    : IGraphVertexValue<TKey, TVertexValue>, IGraphDirectedSimple<TKey, TEdgeValue>
-    where TKey : System.IEquatable<TKey>
-    where TVertexValue : System.IEquatable<TVertexValue>
-    where TEdgeValue : System.IEquatable<TEdgeValue>
+  public class AdjacencyMatrix
   {
-    #region Graph storage
-    private TEdgeValue[,] m_edgeValues = new TEdgeValue[0, 0];
-
     private int[,] m_matrix = new int[0, 0];
 
-    private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();
-    private readonly System.Collections.Generic.List<TKey> m_vertices = new System.Collections.Generic.List<TKey>(); // Vertices are kept in a list for indexing in the matrix.
-    #endregion Graph storage
+    public int[,] Matrix => m_matrix;
 
-    public TEdgeValue this[int source, int target]
-      => m_matrix[source, target] > 0 ? m_edgeValues[source, target] : default!;
+    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues = new System.Collections.Generic.Dictionary<int, object>();
+    private readonly System.Collections.Generic.Dictionary<(int, int), object> m_edgeValues = new System.Collections.Generic.Dictionary<(int, int), object>();
 
-    // IGraphCommon<>
-    public int GetDegree(TKey vertex)
+    public int Count
+      => m_matrix.GetLength(0);
+
+    /// <summary>Returns the degree of the vertex x.</summary>
+    public int GetDegree(int x)
     {
       var count = 0;
 
-      if (ContainsVertex(vertex, out var vertexIndex))
+      for (var i = Count - 1; i >= 0; i--)
       {
-        for (var index = m_vertices.Count - 1; index >= 0; index--)
-        {
-          if (index == vertexIndex) count += m_matrix[index, vertexIndex];
-          else
-          {
-            count += m_matrix[index, vertexIndex];
-            count += m_matrix[vertexIndex, index];
-          }
-        }
+        count += m_matrix[x, i];
+
+        if (i != x) // Exclude if the vertex is both source and target.
+          count += m_matrix[i, x];
       }
 
       return count;
     }
-    public System.Collections.Generic.IEnumerable<TKey> GetNeighbors(TKey vertex)
+    /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y.</summary>
+    public System.Collections.Generic.IEnumerable<int> GetNeighbors(int v)
     {
-      var vertexIndex = m_vertices.IndexOf(vertex);
+      var count = Count;
 
-      var verticesLength = m_vertices.Count;
-
-      for (var index = 0; index < verticesLength; index++)
-        if (m_matrix[vertexIndex, index] > 0)
-          yield return m_vertices[index];
+      for (var i = 0; i < count; i++)
+        if (m_matrix[v, i] is var m && m == 1)
+          yield return i;
     }
-    public bool IsAdjacent(TKey source, TKey target)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] == 1;
+    /// <summary>Tests whether there is an edge from the vertex x to the vertex y.</summary>
+    public bool IsAdjacent(int x, int y)
+      => ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] == 1;
 
-    // IGraphVertex<>
-    public bool AddVertex(TKey vertex)
-      => AddVertex(vertex, default!);
-    public bool ContainsVertex(TKey vertex)
-      => m_vertices.Contains(vertex);
-    public System.Collections.Generic.ICollection<TKey> GetVertices()
-      => m_vertices;
-    public bool RemoveVertex(TKey vertex)
+    /// <summary>Adds the vertex x, if it is not there.</summary>
+    public bool AddVertex(int x)
     {
-      if (ContainsVertex(vertex, out var index))
+      var count = Count;
+
+      if (x >= count)
       {
-        m_edgeValues = m_edgeValues.Remove(0, index); // Remove dimension 0 to accomodate the new vertex as a source.
-        m_edgeValues = m_edgeValues.Remove(1, index); // Remove dimension 1 to accomodate the new vertex as a target.
+        for (var i = count; i <= x; i++)
+        {
+          m_matrix = m_matrix.Insert(0, i, true, 0); // Add dimension 0 to accomodate the new vertex as a source.
+          m_matrix = m_matrix.Insert(1, i, true, 0); // Add dimension 1 to accomodate the new vertex as a target.
+        }
 
-        m_matrix = m_matrix.Remove(0, index); // Add dimension 0 to accomodate vertex values.
-        m_matrix = m_matrix.Remove(1, index); // Add dimension 1 to accomodate vertex values.
+        return true;
+      }
 
-        m_vertexValues.RemoveAt(index);
-        m_vertices.RemoveAt(index);
+      return false;
+    }
+    /// <summary>Adds the vertex x with the value vv, if it is not there.</summary>
+    public bool AddVertex(int x, object vv)
+    {
+      if (AddVertex(x))
+      {
+        SetVertexValue(x, vv);
+
+        return true;
+      }
+
+      return false;
+    }
+    /// <summary>Tests whether there is a vertex x.</summary>
+    public bool ContainsVertex(int x)
+      => x >= 0 && x < Count;
+    /// <summary>Removes the vertex x, if it is there.</summary>
+    public bool RemoveVertex(int x)
+    {
+      var count = Count;
+
+      if (x >= 0 && x < count)
+      {
+        m_matrix = m_matrix.Remove(0, x); // Add dimension 0 to accomodate vertex values.
+        m_matrix = m_matrix.Remove(1, x); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }
@@ -82,124 +94,251 @@
       return false;
     }
 
-    /// <summary>Determins whether a vertex exists in the graph and if so, returns its index.</summary>
-    private bool ContainsVertex(TKey vertex, out int index)
-      => (index = m_vertices.IndexOf(vertex)) > -1;
+    /// <summary>Returns the value associated with the vertex x.</summary>
+    public bool TryGetVertexValue(int x, out object v)
+      => m_vertexValues.TryGetValue(x, out v!);
+    /// <summary>Sets the value associated with the vertex x to v.</summary>
+    public void SetVertexValue(int x, object v)
+      => m_vertexValues[x] = v;
 
-    // IGraphVertexValue<>
-    public bool AddVertex(TKey vertex, TVertexValue value)
+    /// <summary>Adds the edge from the vertex x to the vertex y, if it is not there.</summary>
+    public bool AddEdge(int x, int y)
     {
-      if (!ContainsVertex(vertex))
+      if (ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] == 0)
       {
-        var index = m_vertices.Count; // This will be the next index.
-
-        m_vertices.Add(vertex);
-        m_vertexValues.Add(value!);
-
-        m_matrix = m_matrix.Insert(0, index, true, 0); // Add dimension 0 to accomodate the new vertex as a source.
-        m_matrix = m_matrix.Insert(1, index, true, 0); // Add dimension 1 to accomodate the new vertex as a target.
-
-        m_edgeValues = m_edgeValues.Insert(0, index, true, default!); // Add dimension 0 to accomodate vertex values.
-        m_edgeValues = m_edgeValues.Insert(1, index, true, default!); // Add dimension 1 to accomodate vertex values.
+        m_matrix[x, y] = x != y ? 1 : 2;
 
         return true;
       }
 
       return false;
     }
-    public bool IsVertexValueEqualTo(TKey vertex, TVertexValue value)
-      => TryGetVertexValue(vertex, out var vertexValue) && vertexValue.Equals(value);
-    public bool TryGetVertexValue(TKey vertex, out TVertexValue value)
+    /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
+    public bool AddEdge(int x, int y, object ev)
     {
-      if (ContainsVertex(vertex, out var index))
+      if (AddEdge(x, y))
       {
-        value = m_vertexValues[index];
-        return true;
-      }
-      else
-      {
-        value = default!;
-        return false;
-      }
-    }
-    public bool TrySetVertexValue(TKey vertex, TVertexValue value)
-    {
-      if (ContainsVertex(vertex, out var index))
-      {
-        m_vertexValues[index] = value;
-        return true;
-      }
-
-      return false;
-    }
-
-    // IGraphDirected<>
-    public System.Collections.Generic.IEnumerable<(TKey keySource, TKey keyTarget, TEdgeValue value)> GetDirectedEdges()
-    {
-      var verticesLength = m_vertices.Count;
-
-      for (var sourceIndex = 0; sourceIndex < verticesLength; sourceIndex++)
-        for (var targetIndex = 0; targetIndex < verticesLength; targetIndex++)
-          if (m_matrix[sourceIndex, targetIndex] is var matrix && matrix > 0)
-            yield return (m_vertices[sourceIndex], m_vertices[targetIndex], m_edgeValues[sourceIndex, targetIndex]);
-    }
-    // IGraphDirectedSimple<>
-    public bool AddSimpleDirectedEdge(TKey source, TKey target, TEdgeValue value)
-    {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
-      {
-        m_matrix[sourceIndex, targetIndex] = source.Equals(target) ? 2 : 1;
-
-        TrySetSimpleDirectedEdgeValue(source, target, value);
+        SetEdgeValue(x, y, ev);
 
         return true;
       }
 
       return false;
     }
-    public bool AddSimpleDirectedEdge(TKey source, TKey target)
-      => AddSimpleDirectedEdge(source, target, default!);
-    public bool ContainsSimpleDirectedEdge(TKey source, TKey target)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0;
-    public bool ContainsSimpleDirectedEdge(TKey source, TKey target, TEdgeValue value)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0 && m_edgeValues[sourceIndex, targetIndex].Equals(value);
-    public bool RemoveSimpleDirectedEdge(TKey source, TKey target)
+    /// <summary>Removes the edge from the vertex x to the vertex y, if it is there.</summary>
+    public bool RemoveEdge(int x, int y)
     {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0)
+      if (ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] > 0)
       {
-        m_edgeValues[sourceIndex, targetIndex] = default!;
-
-        m_matrix[sourceIndex, targetIndex] = 0;
+        m_matrix[x, y] = 0;
 
         return true;
       }
 
       return false;
     }
-    public bool TryGetSimpleDirectedEdgeValue(TKey source, TKey target, out TEdgeValue value)
+
+    /// <summary>Returns the value associated with the edge (x, y).</summary>
+    public bool TryGetEdgeValue(int x, int y, out object v)
+      => m_edgeValues.TryGetValue((x, y), out v!);
+    /// <summary>Sets the value associated with the edge (x, y) to v.</summary>
+    public void SetEdgeValue(int x, int y, object v)
+      => m_edgeValues[(x, y)] = v;
+
+    /// <summary>Returns the maximum flow/minimum cost using the Bellman-Ford algorithm.</summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="capacitySelector"></param>
+    /// <param name="costSelector"></param>
+    /// <returns></returns>
+    public (double totalFlow, double totalCost) GetBellmanFordMaxFlowMinCost(int x, int y, System.Func<object, double> capacitySelector, System.Func<object, double> costSelector)
     {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
+      if (!ContainsVertex(x)) throw new System.ArgumentOutOfRangeException(nameof(x));
+      if (!ContainsVertex(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
+      if (capacitySelector is null) throw new System.ArgumentNullException(nameof(capacitySelector));
+      if (costSelector is null) throw new System.ArgumentNullException(nameof(costSelector));
+
+      var vertexCount = Count;
+
+      var found = new bool[vertexCount];
+      var flow = new double[vertexCount, vertexCount];
+      var distance = new double[vertexCount + 1];
+      var dad = new int[vertexCount];
+      var pi = new double[vertexCount];
+
+      double Capacity(int s, int t)
+        => capacitySelector(TryGetEdgeValue(s, t, out var v) ? v : default!);
+      double Cost(int s, int t)
+        => costSelector(TryGetEdgeValue(s, t, out var v) ? v : default!);
+
+      return GetMaxFlow(x, y);
+
+      // Determine if it is possible to have a flow from the source to target.
+      bool Search(int source, int target)
       {
-        value = m_edgeValues[sourceIndex, targetIndex];
-        return true;
+        System.Array.Fill(found!, false); // Initialise found[] to false.
+
+        System.Array.Fill(distance!, double.PositiveInfinity); // Initialise the dist[] to INF.
+
+        distance![source] = 0; // Distance from the source node.
+
+        while (source != vertexCount) // Iterate until source reaches the number of vertices.
+        {
+          var best = vertexCount;
+
+          found![source] = true;
+
+          for (var i = 0; i < vertexCount; i++)
+          {
+            if (found![i]) // If already found, continue.
+              continue;
+
+            if (flow![i, source] != 0) // Evaluate while flow is still in supply.
+            {
+              var minValue = distance[source] + pi![source] - pi[i] - Cost(i, source); // Obtain the total value.
+              if (minValue < distance[i])// If dist[k] is > minimum value, update.
+              {
+                distance[i] = minValue;
+                dad![i] = source;
+              }
+            }
+
+            if (flow[source, i] < Capacity(source, i))
+            {
+              var minValue = distance[source] + pi![source] - pi[i] + Cost(source, i);
+              if (minValue < distance[i]) // If dist[k] is > minimum value, update.
+              {
+                distance[i] = minValue;
+                dad![i] = source;
+              }
+            }
+
+            if (distance[i] < distance[best])
+              best = i;
+          }
+
+          source = best; // Update src to best for next iteration.
+        }
+
+        for (var i = 0; i < vertexCount; i++)
+          pi![i] = System.Math.Min(pi[i] + distance[i], double.PositiveInfinity);
+
+        return found![target]; // Return the value obtained at target.
       }
 
-      value = default!;
-      return false;
+      // Obtain the maximum Flow.
+      (double totalFlow, double totalCost) GetMaxFlow(int source, int target)
+      {
+        var totalFlow = 0d;
+        var totalCost = 0d;
+
+        while (Search(source, target)) // If a path exist from source to target.
+        {
+          var amt = double.PositiveInfinity; // Set the default amount.
+
+          for (var i = target; i != source; i = dad[i])
+            amt = System.Math.Min(amt, flow[i, dad[i]] != 0 ? flow[i, dad[i]] : Capacity(dad[i], i) - flow[dad[i], i]);
+
+          for (var i = target; i != source; i = dad[i])
+          {
+            if (flow[i, dad[i]] != 0)
+            {
+              flow[i, dad[i]] -= amt;
+              totalCost -= amt * Cost(i, dad[i]);
+            }
+            else
+            {
+              flow[dad[i], i] += amt;
+              totalCost += amt * Cost(dad[i], i);
+            }
+          }
+
+          totalFlow += amt;
+        }
+
+        return (totalFlow, totalCost); // Return pair total flow and cost.
+      }
     }
-    public bool TrySetSimpleDirectedEdgeValue(TKey source, TKey target, TEdgeValue value)
-    {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
-      {
-        m_edgeValues[sourceIndex, targetIndex] = value;
-        return true;
-      }
 
-      return false;
+    /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
+    /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
+    public System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree(int origin, System.Func<object, double> distanceSelector)
+    {
+      var vertices = System.Linq.Enumerable.ToList(GetVertices());
+
+      var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
+
+      var edges = System.Linq.Enumerable.ToList(GetEdgesWithValue()); // Cache edges, because we need it while there are available distances.
+
+      while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
+      {
+        var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
+
+        if (shortest.Value < double.PositiveInfinity) // If the distance to the node is less than infinity, it was reachable so it should be returned.
+          yield return (shortest.Key, shortest.Value);
+
+        distances.Remove(shortest.Key); // This node is now final, so remove it.
+
+        foreach (var (x, y, v) in System.Linq.Enumerable.Where(edges, e => e.x.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        {
+          if (distances.TryGetValue(y, out var distanceToEdgeTarget))
+          {
+            var distanceViaShortest = shortest.Value + distanceSelector(v); // Distance via the current node.
+
+            if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
+              distances[y] = distanceViaShortest;
+          }
+        }
+      }
+    }
+
+    public System.Collections.Generic.IEnumerable<(int x, int y)> GetEdges()
+    {
+      var count = Count;
+
+      for (var x = 0; x < count; x++)
+        for (var y = 0; y < count; y++)
+          if (m_matrix[x, y] > 0)
+            yield return (x, y);
+    }
+    public System.Collections.Generic.IEnumerable<(int x, int y, object v)> GetEdgesWithValue()
+    {
+      var count = Count;
+
+      for (var x = 0; x < count; x++)
+        for (var y = 0; y < count; y++)
+          if (m_matrix[x, y] > 0)
+            yield return (x, y, TryGetEdgeValue(x, y, out var v) ? v : default!);
+    }
+
+    public System.Collections.Generic.IEnumerable<int> GetVertices()
+    {
+      var count = Count;
+
+      for (var i = 0; i < count; i++)
+        yield return i;
+    }
+    public System.Collections.Generic.IEnumerable<(int x, object v)> GetVerticesWithValue()
+    {
+      var count = Count;
+
+      for (var i = 0; i < count; i++)
+        yield return (i, TryGetVertexValue(i, out var vv) ? vv : default!);
+    }
+    public System.Collections.Generic.IEnumerable<(int x, object v, int d)> GetVerticesWithValueAndDegree()
+    {
+      var count = Count;
+
+      for (var i = 0; i < count; i++)
+        yield return (i, TryGetVertexValue(i, out var v) ? v : default!, GetDegree(i));
     }
 
     public string ToConsoleString()
     {
+      var sb = new System.Text.StringBuilder();
+
+      sb.AppendLine(ToString());
+
       var l0 = m_matrix.GetLength(0);
       var l1 = m_matrix.GetLength(1);
 
@@ -207,26 +346,33 @@
 
       for (var i0 = l0 - 1; i0 >= 0; i0--)
       {
-        grid[i0 + 1, 0] = m_vertices[i0];
-        grid[0, i0 + 1] = m_vertices[i0];
+        var vv = i0; // TryGetVertexValue(i0, out var v) ? v : default!;
+
+        grid[i0 + 1, 0] = vv;
+        grid[0, i0 + 1] = vv;
 
         for (var i1 = l1 - 1; i1 >= 0; i1--)
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      return grid.ToConsoleBlock(uniformWidth: true, centerContent: true);
+      sb.AppendLine(grid.ToConsoleBlock(uniformWidth: true, centerContent: true));
+
+      sb.AppendLine();
+
+      sb.AppendLine(@"Vertices (x, value, degree):");
+      sb.AppendJoin(System.Environment.NewLine, GetVerticesWithValueAndDegree()).AppendLine();
+
+      sb.AppendLine();
+
+      sb.AppendLine(@"Edges (x, y, value):");
+      sb.AppendJoin(System.Environment.NewLine, GetEdgesWithValue()).AppendLine();
+
+      return sb.ToString();
     }
 
     #region Object overrides.
     public override string ToString()
-    {
-      var sb = new System.Text.StringBuilder();
-      var edgeCount = 0;
-      foreach (var edge in GetDirectedEdges())
-        sb.AppendLine($"#{++edgeCount}: {edge}");
-      sb.Insert(0, $"<{GetType().Name}: ({m_vertices.Count} vertices, {edgeCount} edges)>{System.Environment.NewLine}");
-      return sb.ToString();
-    }
+      => $"<{GetType().Name}: ({Count} vertices, {System.Linq.Enumerable.Count(GetEdges())} edges)>{System.Environment.NewLine}";
     #endregion Object overrides.
   }
 }
