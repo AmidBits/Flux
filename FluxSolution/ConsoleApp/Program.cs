@@ -19,20 +19,25 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      var m1 = new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-      System.Console.WriteLine(m1.ToConsoleBlock());
+      var m1 = new int[,] { 
+        { 1, 2, 3, 4 }, 
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 },
+        { 13, 14, 15, 16 }
+      };
+      System.Console.WriteLine(m1.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
       var m2 = m1.Insert(1, 1, 2, -9);
-      System.Console.WriteLine(m2.ToConsoleBlock());
+      System.Console.WriteLine(m2.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
       m2.Fill(1, 1, 2, 2, -1, -2, -3);
-      System.Console.WriteLine(m2.ToConsoleBlock());
+      System.Console.WriteLine(m2.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
       var m3 = m2.Flip(0);
-      System.Console.WriteLine(m3.ToConsoleBlock());
+      System.Console.WriteLine(m3.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
-      var m4 = m3.Remove(1, 1);
-      System.Console.WriteLine(m4.ToConsoleBlock());
+      var m4 = m3.Remove(1, 1, 2);
+      System.Console.WriteLine(m4.ToConsoleBlock(uniformWidth: true, centerContent:true));
       System.Console.WriteLine();
       //var m3 = m1.RotateClockwise().Duplicate(4, 4, 3, 3, 0, 0, 1, 1);
       //System.Console.WriteLine(m3.ToConsoleBlock());

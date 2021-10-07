@@ -9,8 +9,8 @@ namespace Flux
 
 			if (totalWidth > source.Length)
 			{
-				PadLeft(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
-				PadRight(source, totalWidth, paddingRight);
+				PadRight(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
+				PadLeft(source, totalWidth, paddingRight);
 			}
 
 			return source;
@@ -22,8 +22,8 @@ namespace Flux
 
 			if (totalWidth > source.Length)
 			{
-				PadLeft(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
-				PadRight(source, totalWidth, paddingRight);
+				PadRight(source, source.Length + (totalWidth - source.Length) / 2, paddingLeft);
+				PadLeft(source, totalWidth, paddingRight);
 			}
 
 			return source;

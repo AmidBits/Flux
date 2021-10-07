@@ -19,7 +19,7 @@ namespace Flux
       switch (dimension)
       {
         case 0:
-          indices.RemoveWhere(i => i >= 0 && i < sourceLength0);
+          indices.RemoveWhere(i => i < 0 && i < sourceLength0);
           target = new T[sourceLength0 - indices.Count, sourceLength1];
           for (int s0 = 0, t0 = 0; s0 < sourceLength0; s0++)
             if (!indices.Contains(s0))
@@ -31,7 +31,7 @@ namespace Flux
             }
           break;
         case 1:
-          indices.RemoveWhere(i => i >= 0 && i < sourceLength1);
+          indices.RemoveWhere(i => i < 0 && i < sourceLength1);
           target = new T[sourceLength0, sourceLength1 - indices.Count];
           for (var s0 = 0; s0 < sourceLength0; s0++) // All dimension 0 elements are always copied.
             for (int s1 = 0, t1 = 0; s1 < sourceLength1; s1++)
