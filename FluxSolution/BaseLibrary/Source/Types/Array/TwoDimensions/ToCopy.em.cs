@@ -4,7 +4,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Creates a new two-dimensional array with data from the source array. Use pre and post arguments to add surrounding space in the array.</summary>
-    public static T[,] ToNewArray<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1, int preCount0, int preCount1, int postCount0, int postCount1)
+    public static T[,] ToCopy<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1, int preCount0, int preCount1, int postCount0, int postCount1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -12,12 +12,9 @@ namespace Flux
       CopyTo(source, target, sourceIndex0, sourceIndex1, preCount0, preCount1, count0, count1);
       return target;
     }
-    /// <summary>Creates a new two-dimensional array with data from the source array, a sort of sub-array.</summary>
-    public static T[,] ToNewArray<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1)
-      => ToNewArray(source, sourceIndex0, sourceIndex1, count0, count1, 0, 0, 0, 0);
 
     /// <summary>Creates a new two-dimensional array with data from the source array.</summary>
-    public static T[,] ToNewArray<T>(this T[,] source)
+    public static T[,] ToCopy<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

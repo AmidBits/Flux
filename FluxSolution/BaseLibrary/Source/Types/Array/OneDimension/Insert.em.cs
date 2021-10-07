@@ -12,7 +12,7 @@ namespace Flux
 			var sourceLength = source.Length;
 			var insertLength = insert.Length;
 
-			if (index < 0 || index > sourceLength) throw new System.ArgumentOutOfRangeException(nameof(source));
+			if (index < 0 || index >= sourceLength) throw new System.ArgumentOutOfRangeException(nameof(source));
 
 			var targetLength = sourceLength + insertLength;
 

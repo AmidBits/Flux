@@ -7,10 +7,8 @@ namespace Flux
     public static T[] ToNewArray<T>(this T[] source, int sourceIndex, int count, int preCount, int postCount)
     {
       var target = new T[preCount + count + postCount];
-
       while (count-- > 0)
         target[preCount++] = source[sourceIndex++];
-
       return target;
     }
     /// <summary>Creates a new two-dimensional array with data from the source array.</summary>

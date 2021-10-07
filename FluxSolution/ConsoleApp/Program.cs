@@ -22,15 +22,24 @@ namespace ConsoleApp
       var m1 = new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
       System.Console.WriteLine(m1.ToConsoleBlock());
       System.Console.WriteLine();
-      var m2 = (int[,])m1.Clone();
+      var m2 = m1.Insert(1, 1, 2, -9);
       System.Console.WriteLine(m2.ToConsoleBlock());
       System.Console.WriteLine();
-      var m3 = m1.RotateClockwise().Duplicate(4,4,3,3,0,0,1,1);
+      m2.Fill(1, 1, 2, 2, -1, -2, -3);
+      System.Console.WriteLine(m2.ToConsoleBlock());
+      System.Console.WriteLine();
+      var m3 = m2.Flip(0);
       System.Console.WriteLine(m3.ToConsoleBlock());
       System.Console.WriteLine();
-      var m4 = m1.RotateClockwise().ToNewArray(0,0,3,3,1,1,0,0);
+      var m4 = m3.Remove(1, 1);
       System.Console.WriteLine(m4.ToConsoleBlock());
       System.Console.WriteLine();
+      //var m3 = m1.RotateClockwise().Duplicate(4, 4, 3, 3, 0, 0, 1, 1);
+      //System.Console.WriteLine(m3.ToConsoleBlock());
+      //System.Console.WriteLine();
+      //var m4 = m1.RotateClockwise().ToNewArray(0,0,3,3,1,1,0,0);
+      //System.Console.WriteLine(m4.ToConsoleBlock());
+      //System.Console.WriteLine();
 
       return;
 

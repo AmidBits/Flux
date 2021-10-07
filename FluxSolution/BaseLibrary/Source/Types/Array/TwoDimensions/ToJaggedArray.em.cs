@@ -21,10 +21,8 @@ namespace Flux
           for (int s0 = 0; s0 < sourceLength0; s0++)
           {
             var jaggedDimension = new T[sourceLength1];
-
             for (var s1 = 0; s1 < sourceLength1; s1++)
               jaggedDimension[s1] = source[s0, s1];
-
             target[s0] = jaggedDimension;
           }
           break;
@@ -32,13 +30,13 @@ namespace Flux
           for (var s1 = 0; s1 < sourceLength1; s1++)
           {
             var jaggedDimension = new T[sourceLength0];
-
             for (var s0 = 0; s0 < sourceLength0; s0++)
               jaggedDimension[s0] = source[s0, s1];
-
             target[s1] = jaggedDimension;
           }
           break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(dimension));
       }
 
       return target;

@@ -95,11 +95,11 @@
         m_vertices.Add(vertex);
         m_vertexValues.Add(value!);
 
-        m_matrix = m_matrix.Insert(0, index, true, 0); // Add dimension 0 to accomodate the new vertex as a source.
-        m_matrix = m_matrix.Insert(1, index, true, 0); // Add dimension 1 to accomodate the new vertex as a target.
+        m_matrix = m_matrix.Insert(0, index, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
+        m_matrix = m_matrix.Insert(1, index, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
 
-        m_edgeValues = m_edgeValues.Insert(0, index, true, default!); // Add dimension 0 to accomodate vertex values.
-        m_edgeValues = m_edgeValues.Insert(1, index, true, default!); // Add dimension 1 to accomodate vertex values.
+        m_edgeValues = m_edgeValues.Insert(0, index, 1, default!); // Add dimension 0 to accomodate vertex values.
+        m_edgeValues = m_edgeValues.Insert(1, index, 1, default!); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }

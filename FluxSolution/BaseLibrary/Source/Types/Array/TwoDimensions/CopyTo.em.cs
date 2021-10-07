@@ -8,6 +8,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
+      if (source.Rank != target.Rank) throw new System.ArgumentException($"Arrays of different rank ({source.Rank} vs {target.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);
       if (sourceIndex0 < 0 || sourceIndex0 >= sourceLength0) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex0));

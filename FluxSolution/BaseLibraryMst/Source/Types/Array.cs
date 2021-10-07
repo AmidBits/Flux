@@ -13,7 +13,7 @@ namespace Types
     [TestMethod]
     public void EmCreate()
     {
-      var actual = original.Duplicate(3, 3, 3, 3, 0, 0, 0, 0);
+      var actual = original.ToCopy(0, 0, 3, 3, 0, 0, 0, 0);
 
       CollectionAssert.AreEqual(original, actual);
     }
@@ -25,7 +25,7 @@ namespace Types
 
       CollectionAssert.AreEqual(original, clone);
 
-      var array0 = clone.GetElements(0).Select(vt => vt.item).ToArray();
+      var array0 = clone.GetAllElements(0).Select(vt => vt.item).ToArray();
 
       var original0 = new int[9] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -39,7 +39,7 @@ namespace Types
 
       CollectionAssert.AreEqual(original, clone);
 
-      var array1 = clone.GetElements(1).Select(vt => vt.item).ToArray();
+      var array1 = clone.GetAllElements(1).Select(vt => vt.item).ToArray();
 
       var original1 = new int[9] { 1, 4, 7, 2, 5, 8, 3, 6, 9 };
 
@@ -93,7 +93,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim0()
     {
-      var insert0 = (int[,])original.Insert(0, 1, true, -1, -2, -3);
+      var insert0 = (int[,])original.Insert(0, 1, 1, -1, -2, -3);
 
       var expected = new int[4, 3] { { 1, 2, 3 }, { -1, -2, -3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
@@ -103,7 +103,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim1()
     {
-      var insert1 = (int[,])original.Insert(1, 1, true, -1, -2, -3);
+      var insert1 = (int[,])original.Insert(1, 1, 1, -1, -2, -3);
 
       var expected = new int[3, 4] { { 1, -1, 2, 3 }, { 4, -2, 5, 6 }, { 7, -3, 8, 9 } };
 

@@ -54,8 +54,8 @@
       {
         for (var i = count; i <= x; i++)
         {
-          m_matrix = m_matrix.Insert(0, i, true, 0); // Add dimension 0 to accomodate the new vertex as a source.
-          m_matrix = m_matrix.Insert(1, i, true, 0); // Add dimension 1 to accomodate the new vertex as a target.
+          m_matrix = m_matrix.Insert(0, i, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
+          m_matrix = m_matrix.Insert(1, i, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
         }
 
         return true;

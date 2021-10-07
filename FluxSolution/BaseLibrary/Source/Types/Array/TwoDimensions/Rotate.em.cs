@@ -30,6 +30,7 @@ namespace Flux
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var target = new T[sourceLength1, sourceLength0]; // Swap the length of the dimensions.
 

@@ -9,10 +9,10 @@ namespace Flux
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (insert is null) throw new System.ArgumentNullException(nameof(insert));
 
-			var insertLength = insert.Length;
 			var sourceLength = source.Length;
+			var insertLength = insert.Length;
 
-			if (index < 0 || index > sourceLength) throw new System.ArgumentOutOfRangeException(nameof(source));
+			if (index < 0 || index >= sourceLength) throw new System.ArgumentOutOfRangeException(nameof(source));
 
 			if (insertLength > 0)
 			{
