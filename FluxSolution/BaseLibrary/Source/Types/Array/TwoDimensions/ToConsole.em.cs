@@ -13,7 +13,6 @@ namespace Flux
       var length0 = source.GetLength(0);
       var length1 = source.GetLength(1);
 
-
       var maxWidths = new int[length1];
       var maxWidth = 0;
 
