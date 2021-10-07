@@ -409,7 +409,7 @@ namespace Wormhole
 					return;
 				}
 
-				var messages = message.ToNewArray(1, message.Length - 1).Prepend($"{System.DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffffff} {message[0]}").ToArray();
+				var messages = message.ToCopy(1, message.Length - 1).Prepend($"{System.DateTime.Now:yyyy-MM-ddTHH:mm:ss.fffffff} {message[0]}").ToArray();
 
 				try
 				{

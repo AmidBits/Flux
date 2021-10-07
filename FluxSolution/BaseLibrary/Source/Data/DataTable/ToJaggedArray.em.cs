@@ -11,7 +11,7 @@ namespace Flux
       var array = new object?[rowCount][];
 
       for (var row = rowStartIndex + rowCount - 1; row >= rowStartIndex; row--)
-        array[row] = source.Rows[row].ItemArray.ToNewArray(columnStartIndex, columnCount);
+        array[row] = source.Rows[row].ItemArray.ToCopy(columnStartIndex, columnCount);
 
       return array;
     }
