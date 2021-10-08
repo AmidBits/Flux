@@ -124,21 +124,21 @@
     }
 
     public bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == Count;
+      => SetOps.SetCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == Count;
     public bool IsProperSupersetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < Count;
+      => SetOps.SetCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < Count;
 
     public bool IsSubsetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
+      => SetOps.SetCounts(this, other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
     public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ContainsAll(this, other);
+      => SetOps.SetContainsAll(this, other);
 
     /// <summary>Determines whether the current set overlaps with the specified collection.</summary>
     public bool Overlaps(System.Collections.Generic.IEnumerable<T> other)
       => this.ContainsAny(other);
 
     public bool SetEquals(System.Collections.Generic.IEnumerable<T> other)
-      => SetOps.ComputeCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
+      => SetOps.SetCounts(this, other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
 
     /// <summary>Modifies the current set so that it contains only elements that are present either in the current set or in the specified collection, but not both.</summary>
     public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other)
