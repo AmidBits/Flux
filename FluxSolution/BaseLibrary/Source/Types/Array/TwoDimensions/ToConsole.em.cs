@@ -26,13 +26,8 @@ namespace Flux
 
           target[i0, i1] = v01;
 
-          if (v01.Length > maxWidths[i1])
-          {
-            maxWidths[i1] = v01.Length;
-
-            if (v01.Length > maxWidth)
-              maxWidth = v01.Length;
-          }
+          maxWidths[i1] = System.Math.Max(maxWidths[i1], v01.Length);
+          maxWidth = System.Math.Max(maxWidth, v01.Length);
         }
       }
 

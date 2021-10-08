@@ -37,7 +37,7 @@ namespace ConsoleApp
       System.Console.WriteLine(m3.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
       var m4 = m3.Remove(1, 1, 2);
-      System.Console.WriteLine(m4.ToConsoleBlock(uniformWidth: true, centerContent:true));
+      System.Console.WriteLine(m4.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
       //var m3 = m1.RotateClockwise().Duplicate(4, 4, 3, 3, 0, 0, 1, 1);
       //System.Console.WriteLine(m3.ToConsoleBlock());
