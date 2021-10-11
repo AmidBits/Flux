@@ -15,8 +15,8 @@ namespace Flux
 
       var target = new T[sourceLength1, sourceLength0]; // Swap the length of the dimensions.
 
-      for (var s0 = 0; s0 < sourceLength0; s0++)
-        for (var s1 = 0; s1 < sourceLength1; s1++)
+      for (var s0 = sourceLength0 - 1; s0 >= 0; s0--)
+        for (var s1 = sourceLength1 - 1; s1 >= 0; s1--)
           target[s1, s0] = source[s0, s1];
 
       return target;
