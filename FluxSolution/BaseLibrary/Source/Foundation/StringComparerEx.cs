@@ -33,6 +33,7 @@ namespace Flux
     // IEqualityComparer<string>
     public override bool Equals(string? x, string? y)
       => m_stringComparer.Equals(x, y);
+    // Object overrides
     public override int GetHashCode(string s)
       => m_stringComparer.GetHashCode(s);
 
@@ -42,6 +43,7 @@ namespace Flux
     // IEqualityComparer<char>
     public bool Equals(char x, char y)
       => m_stringComparer.Equals(x.ToString(), y.ToString());
+    // Object overrides
     public int GetHashCode(char c)
       => m_stringComparer.GetHashCode(c.ToString());
   }

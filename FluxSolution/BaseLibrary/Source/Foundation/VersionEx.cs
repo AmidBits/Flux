@@ -9,13 +9,14 @@ namespace Flux
     public static readonly VersionEx Empty;
 
     private static readonly char[] m_separatorsArray = new char[] { '.' };
-    private readonly int[] m_parts;
 
-    public int Count
-      => m_parts.Length;
+    private readonly int[] m_parts;
 
     public int this[int index]
       => index >= 0 && index < m_parts.Length ? m_parts[index] : throw new System.ArgumentOutOfRangeException(nameof(index));
+
+    public int Count
+      => m_parts.Length;
 
     public int Major { get => m_parts.Length > 0 ? m_parts[0] : throw new System.NotSupportedException(); set => m_parts[0] = m_parts.Length > 0 ? value : throw new System.NotSupportedException(); }
     public int Minor { get => m_parts.Length > 1 ? m_parts[1] : throw new System.NotSupportedException(); set => m_parts[1] = m_parts.Length > 1 ? value : throw new System.NotSupportedException(); }
@@ -31,17 +32,20 @@ namespace Flux
         _ => throw new System.NotSupportedException()
       };
 
-    public VersionEx(params int[] parts)
+    public VersionEx(int numberOfParts)
     {
-      if (parts.Length < 1) throw new System.ArgumentOutOfRangeException(nameof(parts));
+      if (numberOfParts < 1 || numberOfParts > 4) throw new System.ArgumentOutOfRangeException(nameof(numberOfParts));
 
-      m_parts = (int[])parts.Clone();
+      m_parts = new int[numberOfParts];
     }
+    public VersionEx(params int[] parts)
+      : this((parts ?? throw new System.ArgumentNullException(nameof(parts))).Length)
+      => System.Array.Copy(parts, m_parts, parts.Length);
     public VersionEx(string version)
     {
-      if (!TryParse(version, out var result)) throw new System.ArgumentException(@"Failed to parse.", nameof(version));
+      if (!TryParse(version, out var vex)) throw new System.ArgumentException(@"Could not parse version string.", nameof(version));
 
-      m_parts = result.m_parts;
+      m_parts = vex.m_parts;
     }
 
     #region Static methods
@@ -83,12 +87,12 @@ namespace Flux
     // IComparable
     public int CompareTo(VersionEx other)
     {
-      if (m_parts.Length != other.m_parts.Length)
-        return m_parts.Length > other.m_parts.Length ? 1 : -1;
+      if (m_parts.Length is var pl && other.m_parts.Length is var opl && pl != opl)
+        return pl > opl ? 1 : -1;
 
-      for (var index = 0; index < m_parts.Length; index++)
-        if (m_parts[index] != other.m_parts[index])
-          return m_parts[index] > other.m_parts[index] ? 1 : -1;
+      for (var index = 0; index < pl; index++)
+        if (m_parts[index] is var pi && other.m_parts[index] is var opi && pi != opi)
+          return pi > opi ? 1 : -1;
 
       return 0;
     }
@@ -96,7 +100,8 @@ namespace Flux
     // IEquatable
     public bool Equals(VersionEx other)
     {
-      if (m_parts.Length != other.m_parts.Length) return false;
+      if (m_parts.Length != other.m_parts.Length)
+        return false;
 
       for (var index = 0; index < m_parts.Length; index++)
         if (m_parts[index] != other.m_parts[index])
