@@ -35,8 +35,8 @@ namespace Flux
       return normlizedIndex == source.Length ? source : source.Remove(normlizedIndex, source.Length - normlizedIndex);
     }
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
-    public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char> comparer, params char[] characters)
-      => source.NormalizeAll(replacement, t => characters.Contains(t, comparer));
+    public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char> equalityComparer, params char[] characters)
+      => source.NormalizeAll(replacement, t => characters.Contains(t, equalityComparer));
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
     public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, params char[] characters)
       => source.NormalizeAll(replacement, characters.Contains);

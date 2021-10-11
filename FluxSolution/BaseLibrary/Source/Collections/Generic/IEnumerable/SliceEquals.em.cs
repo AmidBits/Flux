@@ -3,15 +3,15 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns whether a sub-sequence of elements in the source equal the target elements. Uses the specified equality comparer.</summary>
-    public static bool SliceEquals<T>(this System.Collections.Generic.IEnumerable<T> source, int sourceStartAt, System.Collections.Generic.IEnumerable<T> target, int targetStartAt, int length, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static bool SliceEquals<T>(this System.Collections.Generic.IEnumerable<T> source, int sourceStartAt, System.Collections.Generic.IEnumerable<T> target, int targetStartAt, int length, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (target is null) throw new System.ArgumentNullException(nameof(target));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       if (source is null || target is null || sourceStartAt < 0 || targetStartAt < 0 || length <= 0) return false;
 
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       using var es = source!.GetEnumerator();
       var sourceIndex = 0;
@@ -27,11 +27,11 @@ namespace Flux
       if (targetIndex != targetStartAt)
         return false;
 
-      comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       while (length-- > 0 && es.MoveNext() && et.MoveNext())
       {
-        if (!comparer.Equals(es.Current, et.Current))
+        if (!equalityComparer.Equals(es.Current, et.Current))
           return false;
       }
 

@@ -3,11 +3,11 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Creates a new sequence of equal (based on the specified keySelector) adjacent (consecutive) items grouped together as a key and a list. Uses the specified equality comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer)
+    public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       using var e = source.GetEnumerator();
 
@@ -19,7 +19,7 @@ namespace Flux
         {
           var key = keySelector(e.Current);
 
-          if (comparer.Equals(g.Key, key))
+          if (equalityComparer.Equals(g.Key, key))
           {
             g.Add(e.Current);
           }

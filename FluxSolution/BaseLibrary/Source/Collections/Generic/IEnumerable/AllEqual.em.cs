@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static bool AllEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TValue> comparer)
+    public static bool AllEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TValue> equalityComparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       using var enumerator = source.GetEnumerator();
 
@@ -16,7 +16,7 @@ namespace Flux
         {
           var currentValue = valueSelector(enumerator.Current);
 
-          if (!comparer.Equals(currentValue, firstValue))
+          if (!equalityComparer.Equals(currentValue, firstValue))
             return false;
         }
 

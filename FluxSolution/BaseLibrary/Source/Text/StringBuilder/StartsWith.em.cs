@@ -3,10 +3,10 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Indicates whether the source starts with value. Uses the specified comparer.</summary>
-		public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			var sourceLength = source.Length;
 			var targetLength = target.Length;
@@ -15,7 +15,7 @@ namespace Flux
 				return false;
 
 			for (var index = targetLength - 1; index >= 0; index--)
-				if (!comparer.Equals(source[index], target[index]))
+				if (!equalityComparer.Equals(source[index], target[index]))
 					return false;
 
 			return true;

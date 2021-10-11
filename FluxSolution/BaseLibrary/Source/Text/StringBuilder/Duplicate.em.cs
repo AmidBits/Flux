@@ -17,7 +17,7 @@ namespace Flux
 		}
 
 		/// <summary>Returns the string builder with the specified characters duplicated by the specified count throughout. If no characters are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified comparer.</summary>
-		public static System.Text.StringBuilder Duplicate(this System.Text.StringBuilder source, System.ReadOnlySpan<char> characters, int count, System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static System.Text.StringBuilder Duplicate(this System.Text.StringBuilder source, System.ReadOnlySpan<char> characters, int count, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -25,7 +25,7 @@ namespace Flux
 			{
 				var sourceChar = source[index];
 
-				if (characters.Length == 0 || characters.IndexOf(sourceChar, comparer) > -1)
+				if (characters.Length == 0 || characters.IndexOf(sourceChar, equalityComparer) > -1)
 				{
 					source.Insert(index, sourceChar.ToString(), count);
 

@@ -3,10 +3,10 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Indicates whether the source ends with value. Uses the specified comparer.</summary>
-		public static bool EndsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static bool EndsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			var sourceIndex = source.Length;
 			var targetIndex = target.Length;
@@ -15,7 +15,7 @@ namespace Flux
 				return false;
 
 			while (--sourceIndex >= 0 && --targetIndex >= 0)
-				if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
+				if (!equalityComparer.Equals(source[sourceIndex], target[targetIndex]))
 					return false;
 
 			return true;

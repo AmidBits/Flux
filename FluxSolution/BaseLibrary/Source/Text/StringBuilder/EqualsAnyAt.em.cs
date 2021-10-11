@@ -5,11 +5,11 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Determines whether <paramref name="count"/> characters from any of the specified <paramref name="targets"/> is found in the <paramref name="source"/> at the specified <paramref name="startIndex"/>. Uses the specified comparer.</summary>
-		public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startIndex, int count, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startIndex, int count, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			if (startIndex < 0 || startIndex >= source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
 			if (count <= 0 || (startIndex + count) >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
@@ -23,7 +23,7 @@ namespace Flux
 				var targetIndex = count;
 
 				while (--sourceIndex >= 0 && --targetIndex >= 0)
-					if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
+					if (!equalityComparer.Equals(source[sourceIndex], target[targetIndex]))
 						break;
 
 				if (targetIndex < 0)

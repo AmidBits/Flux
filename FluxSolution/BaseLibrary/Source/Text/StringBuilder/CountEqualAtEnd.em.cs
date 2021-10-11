@@ -3,10 +3,10 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Yields the number of characters that the source and the target have in common at the end.</summary>
-		public static int CountEqualAtEnd(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static int CountEqualAtEnd(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			var sourceIndex = source.Length;
 			var targetIndex = target.Length;
@@ -14,7 +14,7 @@ namespace Flux
 			var minLength = System.Math.Min(sourceIndex, targetIndex);
 
 			for (var atEnd = 0; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
-				if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
+				if (!equalityComparer.Equals(source[sourceIndex], target[targetIndex]))
 					return atEnd;
 
 			return minLength;

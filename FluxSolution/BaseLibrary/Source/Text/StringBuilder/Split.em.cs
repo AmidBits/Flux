@@ -5,7 +5,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Creates a sequence of substrings, as a split of the StringBuilder content based on the characters in an array. There is no change to the StringBuilder content.</summary>
-    public static System.Collections.Generic.IEnumerable<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.Collections.Generic.IList<char> separators, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static System.Collections.Generic.IEnumerable<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.Collections.Generic.IList<char> separators, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -15,7 +15,7 @@ namespace Flux
 
       for (var index = startIndex; index < sourceLength; index++)
       {
-        if (separators.Any(c => comparer.Equals(c, source[index])))
+        if (separators.Any(c => equalityComparer.Equals(c, source[index])))
         {
           if (index != startIndex || options != System.StringSplitOptions.RemoveEmptyEntries) yield return source.ToString(startIndex, index - startIndex);
 

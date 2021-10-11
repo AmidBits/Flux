@@ -43,8 +43,8 @@ namespace Flux
 			return source;
 		}
 		/// <summary>Replace all specified characters with the specified character.</summary>
-		public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params char[] replace)
-			=> source.ReplaceAll(replacement, t => replace.Contains(t, comparer));
+		public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer, params char[] replace)
+			=> source.ReplaceAll(replacement, t => replace.Contains(t, equalityComparer));
 		/// <summary>Replace all specified characters with the specified character.</summary>
 		public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, params char[] replace)
 			=> source.ReplaceAll(replacement, replace.Contains);

@@ -5,11 +5,11 @@ namespace Flux
 	public static partial class ExtensionMethods
 	{
 		/// <summary>Returns the first index of any of the specified characters within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
-		public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			var sourceLength = source.Length;
 			var targetsCount = targets.Count;
@@ -17,7 +17,7 @@ namespace Flux
 			for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
 				if (source[sourceIndex] is var sourceChar)
 					for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
-						if (comparer.Equals(sourceChar, targets[targetsIndex]))
+						if (equalityComparer.Equals(sourceChar, targets[targetsIndex]))
 							return sourceIndex;
 
 			return -1;
@@ -27,18 +27,18 @@ namespace Flux
 			=> IndexOfAny(source, targets, System.Collections.Generic.EqualityComparer<char>.Default);
 
 		/// <summary>Reports the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
-		public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer)
+		public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer)
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
-			if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
 			var sourceLength = source.Length;
 			var targetsCount = targets.Count;
 
 			for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
 				for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
-					if (EqualsAt(source, sourceIndex, targets[targetsIndex], comparer))
+					if (EqualsAt(source, sourceIndex, targets[targetsIndex], equalityComparer))
 						return sourceIndex;
 
 			return -1;

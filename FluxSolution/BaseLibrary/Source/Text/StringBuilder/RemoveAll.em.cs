@@ -23,8 +23,8 @@ namespace Flux
       return source.Remove(removedIndex, source.Length - removedIndex);
     }
     /// <summary>Remove the specified characters. Uses the specified comparer.</summary>
-    public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> comparer, params char[] remove)
-      => RemoveAll(source, t => remove.Contains(t, comparer));
+    public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer, params char[] remove)
+      => RemoveAll(source, t => remove.Contains(t, equalityComparer));
     /// <summary>Remove the specified characters. Uses the default comparer.</summary>
     public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, params char[] remove)
       => RemoveAll(source, remove.Contains);

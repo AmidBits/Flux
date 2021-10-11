@@ -3,11 +3,11 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
-    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char> comparer, System.ReadOnlySpan<char> characters)
+    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char> equalityComparer, System.ReadOnlySpan<char> characters)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var index = 0;
       var previous = '\0';
@@ -18,8 +18,8 @@ namespace Flux
         var current = source[indexOfSource];
 
         var isEqual = characters.Length > 0 // Use list or just characters?
-          ? (characters.IndexOf(current, comparer) > -1 && characters.IndexOf(previous, comparer) > -1) // Is both current and previous in characters?
-          : comparer.Equals(current, previous); // Is current and previous character equal?
+          ? (characters.IndexOf(current, equalityComparer) > -1 && characters.IndexOf(previous, equalityComparer) > -1) // Is both current and previous in characters?
+          : equalityComparer.Equals(current, previous); // Is current and previous character equal?
 
         if (!isEqual || adjacentLength < maxAdjacentLength)
         {
