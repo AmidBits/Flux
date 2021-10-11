@@ -6,8 +6,10 @@ namespace Flux
   {
     public static T[] ImplicitJoin<T>(params T[][] source)
     {
+      var sourceLength = source.Length;
+
       var ij = System.Array.Empty<T>();
-      for (var index = 0; index < source.Length; index++)
+      for (var index = 0; index < sourceLength; index++)
         ij = index == 0 ? source[index] : ij.Join(source[index], outer => outer, inner => inner, (outer, inner) => inner).ToArray();
       return ij;
     }

@@ -5,18 +5,18 @@ namespace Flux
   {
     public static bool IsArraySymmetrical(this System.Array source)
     {
-      var length = source.GetLength(0); // Load the first dimensional length.
+      var sourceLength = source.GetLength(0); // Load the first dimensional length.
 
       if (IsJaggedArray(source))
       {
-        for (var index = length - 1; index > 0; index--)
-          if (source.GetValue(index) is System.Array array && (array is null || array.GetLength(0) != length))
+        for (var index = sourceLength - 1; index > 0; index--)
+          if (source.GetValue(index) is System.Array array && (array is null || array.GetLength(0) != sourceLength))
             return false;
       }
       else
       {
         for (var index = source.Rank - 1; index > 0; index--)
-          if (source.GetLength(index) != length)
+          if (source.GetLength(index) != sourceLength)
             return false;
       }
 
