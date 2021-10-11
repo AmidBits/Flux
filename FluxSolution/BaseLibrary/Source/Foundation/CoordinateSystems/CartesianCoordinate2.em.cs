@@ -1,5 +1,3 @@
-//using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -33,7 +31,6 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2 v1, CartesianCoordinate2 v2, CartesianCoordinate2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
-
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<CartesianCoordinate2> GetMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => ExtensionMethods.PartitionTuple2(source, true, (v1, v2, index) => (v1 + v2) / 2);
@@ -49,24 +46,38 @@ namespace Flux
 
       int wn = 0;
 
-      for (int i = 0; i < source.Count; i++)
-      {
-        var a = source[i];
-        var b = (i == source.Count - 1 ? source[0] : source[i + 1]);
+      //for (int i = 0; i < source.Count; i++)
+      //{
+      //  var a = source[i];
+      //  var b = (i == source.Count - 1 ? source[0] : source[i + 1]);
 
+      //  if (a.Y <= vector.Y)
+      //  {
+      //    if (b.Y > vector.Y && vector.SideTest(a, b) > 0)
+      //    {
+      //      wn++;
+      //    }
+      //  }
+      //  else
+      //  {
+      //    if (b.Y <= vector.Y && vector.SideTest(a, b) < 0)
+      //    {
+      //      wn--;
+      //    }
+      //  }
+      //}
+
+      foreach (var (a, b) in source.PartitionTuple2(true, (a, b, i) => (a, b)))
+      {
         if (a.Y <= vector.Y)
         {
           if (b.Y > vector.Y && vector.SideTest(a, b) > 0)
-          {
             wn++;
-          }
         }
         else
         {
           if (b.Y <= vector.Y && vector.SideTest(a, b) < 0)
-          {
             wn--;
-          }
         }
       }
 

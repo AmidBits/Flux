@@ -129,17 +129,17 @@ namespace Flux.Geometry
     //}
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 InterpolateCosine(Point2 y1, Point2 y2, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateCosine(y1.X, y2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(y1.Y, y2.Y, mu)));
+    public static Point2 InterpolateCosine(Point2 p1, Point2 p2, double mu)
+      => new Point2(System.Convert.ToInt32(Maths.InterpolateCosine(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Y, p2.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 InterpolateCubic(Point2 y0, Point2 y1, Point2 y2, Point2 y3, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateCubic(y0.X, y1.X, y2.X, y3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(y0.Y, y1.Y, y2.Y, y3.Y, mu)));
+    public static Point2 InterpolateCubic(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu)
+      => new Point2(System.Convert.ToInt32(Maths.InterpolateCubic(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 InterpolateHermite2(Point2 y0, Point2 y1, Point2 y2, Point2 y3, double mu, double tension, double bias)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateHermite(y0.X, y1.X, y2.X, y3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(y0.Y, y1.Y, y2.Y, y3.Y, mu, tension, bias)));
+    public static Point2 InterpolateHermite2(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu, double tension, double bias)
+      => new Point2(System.Convert.ToInt32(Maths.InterpolateHermite(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 InterpolateLinear(Point2 y1, Point2 y2, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateLinear(y1.X, y2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(y1.Y, y2.Y, mu)));
+    public static Point2 InterpolateLinear(Point2 p1, Point2 p2, double mu)
+      => new Point2(System.Convert.ToInt32(Maths.InterpolateLinear(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Y, p2.Y, mu)));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static Point2 Lerp(Point2 source, Point2 target, double mu)
