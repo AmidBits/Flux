@@ -23,25 +23,21 @@ namespace Flux
       switch (dimension)
       {
         case 0:
-          {
-            var target = new T[sourceLength0 + count, sourceLength1];
-            for (var s0 = sourceLength0 - 1; s0 >= 0; s0--)
-              for (var s1 = sourceLength1 - 1; s1 >= 0; s1--)
-                target[s0 + (s0 >= index ? count : 0), s1] = source[s0, s1];
-            if (items.Length > 0)
-              Fill(target, index, 0, count, target.GetLength(1), items);
-            return target;
-          }
+          var target0 = new T[sourceLength0 + count, sourceLength1];
+          for (var s0 = sourceLength0 - 1; s0 >= 0; s0--)
+            for (var s1 = sourceLength1 - 1; s1 >= 0; s1--)
+              target0[s0 + (s0 >= index ? count : 0), s1] = source[s0, s1];
+          if (items.Length > 0)
+            Fill(target0, index, 0, count, target0.GetLength(1), items);
+          return target0;
         case 1:
-          {
-            var target = new T[sourceLength0, sourceLength1 + count];
-            for (var s0 = sourceLength0 - 1; s0 >= 0; s0--)
-              for (var s1 = sourceLength1 - 1; s1 >= 0; s1--)
-                target[s0, s1 + (s1 >= index ? count : 0)] = source[s0, s1];
-            if (items.Length > 0)
-              Fill(target, 0, index, target.GetLength(0), count, items);
-            return target;
-          }
+          var target1 = new T[sourceLength0, sourceLength1 + count];
+          for (var s0 = sourceLength0 - 1; s0 >= 0; s0--)
+            for (var s1 = sourceLength1 - 1; s1 >= 0; s1--)
+              target1[s0, s1 + (s1 >= index ? count : 0)] = source[s0, s1];
+          if (items.Length > 0)
+            Fill(target1, 0, index, target1.GetLength(0), count, items);
+          return target1;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));
       }

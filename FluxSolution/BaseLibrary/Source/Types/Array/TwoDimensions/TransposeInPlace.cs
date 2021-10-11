@@ -15,8 +15,11 @@ namespace Flux
 
       if (sourceLength0 != sourceLength1) throw new System.ArgumentException("In-place transposition requires dimensions of equal length.");
 
-      for (int s0 = 0, sl0m2 = sourceLength0 - 2; s0 <= sl0m2; s0++)
-        for (int s1 = s0 + 1, sl1m1 = sourceLength1 - 1; s1 <= sl1m1; s1++)
+      var sl0m2 = sourceLength0 - 2;
+      var sl1m1 = sourceLength1 - 1;
+
+      for (var s0 = 0; s0 <= sl0m2; s0++)
+        for (var s1 = s0 + 1; s1 <= sl1m1; s1++)
           Swap(ref source, s1, s0, s0, s1);
     }
   }
