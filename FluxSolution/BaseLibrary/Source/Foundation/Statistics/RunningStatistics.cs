@@ -4,12 +4,8 @@
     : System.IEquatable<RunningStatistics>, System.IFormattable
   {
     public static readonly RunningStatistics Empty = Create();
-    public bool IsEmpty => Equals(Empty);
 
     private long m_count;
-    /// <summary>The number of samples.</summary>
-    public long Count
-      => m_count;
 
     private double m_max;
     private double m_min;
@@ -23,10 +19,13 @@
     private double m_reciprocalSum; // The sum of reciprocal of all values.
     private double m_sum; // The sum of all values.
 
+    /// <summary>The number of samples.</summary>
+    public long Count
+      => m_count;
+
     /// <summary>Returns the maximum value of all samples, or NaN if no data/any entry is NaN.</summary>
     public double Maximum
       => m_count > 0 ? m_max : double.NaN;
-
     /// <summary>Returns the minimum value of all samples. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Minimum
       => m_count > 0 ? m_min : double.NaN;
@@ -34,7 +33,6 @@
     /// <summary>The product of all samples. Returns NaN if no data or any sample is NaN.</summary>
     public double Product
       => m_count > 0 ? m_product : double.NaN;
-
     /// <summary>The sum of all samples. Returns NaN if no data or any sample is NaN.</summary>
     public double Sum
       => m_count > 0 ? m_sum : double.NaN;
@@ -42,11 +40,9 @@
     /// <summary>Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Mean
       => m_count > 0 ? m_m1 : double.NaN;
-
     /// <summary>Evaluates the geometric mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>    
     public double GeometricMean
       => m_count > 0 ? System.Math.Pow(m_product, 1.0 / m_count) : double.NaN;
-
     /// <summary>Evaluates the harmonic mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>
     public double HarmonicMean
       => m_count > 0 ? m_count / m_reciprocalSum : double.NaN;
@@ -54,7 +50,6 @@
     /// <summary>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
     public double Variance
       => m_count < 2 ? double.NaN : m_m2 / (m_count - 1);
-
     /// <summary>Evaluates the variance from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double PopulationVariance
       => m_count < 2 ? double.NaN : m_m2 / m_count;
@@ -62,7 +57,6 @@
     /// <summary> Estimates the unbiased population standard deviation from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
     public double StandardDeviation
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / (m_count - 1));
-
     /// <summary>Evaluates the standard deviation from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double PopulationStandardDeviation
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / m_count);
@@ -70,7 +64,6 @@
     /// <summary>Estimates the unbiased population skewness from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
     public double Skewness
       => m_count < 3 ? double.NaN : (m_count * m_m3 * System.Math.Sqrt(m_m2 / (m_count - 1)) / (m_m2 * m_m2 * (m_count - 2))) * (m_count - 1);
-
     /// <summary>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than two entries or if any entry is NaN. </summary>
     public double PopulationSkewness
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_count) * m_m3 / System.Math.Pow(m_m2, 1.5);
@@ -78,7 +71,6 @@
     /// <summary>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than four entries or if any entry is NaN.</summary>
     public double Kurtosis
       => m_count < 4 ? double.NaN : ((double)m_count * m_count - 1) / ((m_count - 2) * (m_count - 3)) * (m_count * m_m4 / (m_m2 * m_m2) - 3 + 6.0 / (m_count + 1));
-
     /// <summary>Evaluates the population kurtosis from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
     public double PopulationKurtosis
       => m_count < 3 ? double.NaN : m_count * m_m4 / (m_m2 * m_m2) - 3.0;
@@ -127,7 +119,6 @@
     }
 
     #region Static members
-
     /// <summary>Create a new running statistics over the combined samples of two existing running statistics.</summary>
     public static RunningStatistics Combine(RunningStatistics a, RunningStatistics b)
     {
@@ -186,18 +177,18 @@
       rs.AddRange(values);
       return rs;
     }
+    #endregion Static members
 
-    // Operators
-
+    #region Overloaded operators
     public static bool operator ==(in RunningStatistics a, in RunningStatistics b)
       => a.Equals(b);
     public static bool operator !=(in RunningStatistics a, in RunningStatistics b)
       => !a.Equals(b);
     public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b)
       => Combine(a, b);
+    #endregion Overloaded operators
 
-    #endregion Static members
-
+    #region Implemented interfaces
     // IEquatable<RunningStatistics>
     public bool Equals(RunningStatistics other)
       => m_count == other.m_count && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_min == other.m_min && m_product == other.m_product && m_reciprocalSum == other.m_reciprocalSum && m_sum == other.m_sum;
@@ -205,13 +196,15 @@
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"<{GetType().Name}: count={m_count}, m=[{m_m1}, {m_m2}, {m_m3}, {m_m4}], min/max=[{m_min}, {m_max}], product={m_product}, sum={m_sum}>";
+    #endregion Implemented interfaces
 
-    // Object (overrides)
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4);
     public override string? ToString()
       => ToString(null, null);
+    #endregion Object overrides
   }
 }
