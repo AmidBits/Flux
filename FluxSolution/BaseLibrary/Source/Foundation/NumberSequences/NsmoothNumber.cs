@@ -3,7 +3,7 @@ namespace Flux.Numerics
   public class NsmoothNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
-    private System.Collections.Generic.List<System.Numerics.BigInteger> m_primeNumbers;
+    private readonly System.Collections.Generic.List<System.Numerics.BigInteger> m_primeNumbers;
 
     public NsmoothNumber(System.Numerics.BigInteger n)
       => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(PrimeNumber.GetAscendingPrimes(2), p => p <= n));

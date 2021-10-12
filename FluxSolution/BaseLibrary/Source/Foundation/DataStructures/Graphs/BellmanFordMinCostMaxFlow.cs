@@ -4,17 +4,17 @@
   public class BellmanFordMinCostMaxFlow
   {
     // Stores the found edges
-    private bool[] m_found;
+    private readonly bool[] m_found;
 
     // Stores the number of nodes
-    private int m_numberOfVertices;
+    private readonly int m_numberOfVertices;
 
-    private double[,] m_flow;
+    private readonly double[,] m_flow;
 
     // Stores the distance from each node and picked edges for each node
-    private int[] m_dad;
-    private double[] m_dist;
-    private double[] m_pi;
+    private readonly int[] m_dad;
+    private readonly double[] m_dist;
+    private readonly double[] m_pi;
 
     // Stores the capacity of each edge
     public double[,] Capacity;
