@@ -19,11 +19,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-
-
-
-
-
       var m = new int[,] {
         { 1, 2, 3, 4 },
         { 5, 6, 7, 8 },
