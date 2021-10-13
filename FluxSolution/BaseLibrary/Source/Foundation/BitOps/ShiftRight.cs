@@ -2,6 +2,8 @@ namespace Flux
 {
 	public static partial class BitOps
 	{
+		/// <summary>Shifts the bits one position to the right.</summary>
+		/// <returns>Whether the LSB (least significant BIT), or overflow bit, was set.</returns>
 		[System.CLSCompliant(false)]
 		public static bool ShiftRight(ref uint value)
 		{

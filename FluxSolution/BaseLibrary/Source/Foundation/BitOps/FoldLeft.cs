@@ -1,8 +1,11 @@
 namespace Flux
 {
+  // <seealso cref="http://aggregate.org/MAGIC/"/>
+  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
+
   public static partial class BitOps
   {
-    /// The fold 'left' (or up towards MSB) function is the opposite of the recursive fold of all bits right (<see cref="FoldRight"/> ), until all bits, lower than the MS1B, will have been set to 1.
+    // The fold 'left' (or up towards MSB) function, is the opposite of (<see cref="FoldRight"/>), sets all bits from LS1B and 'up' (or 'left'), to 1.
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
@@ -29,11 +32,11 @@ namespace Flux
     {
       if (value != 0)
       {
-        value |= (value << 1);
-        value |= (value << 2);
-        value |= (value << 4);
-        value |= (value << 8);
-        value |= (value << 16);
+        value |= value << 1;
+        value |= value << 2;
+        value |= value << 4;
+        value |= value << 8;
+        value |= value << 16;
       }
     }
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
@@ -52,12 +55,12 @@ namespace Flux
     {
       if (value != 0)
       {
-        value |= (value << 1);
-        value |= (value << 2);
-        value |= (value << 4);
-        value |= (value << 8);
-        value |= (value << 16);
-        value |= (value << 32);
+        value |= value << 1;
+        value |= value << 2;
+        value |= value << 4;
+        value |= value << 8;
+        value |= value << 16;
+        value |= value << 32;
       }
     }
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>

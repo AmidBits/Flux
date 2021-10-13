@@ -5,7 +5,7 @@ namespace Flux.Randomization
   /// <seealso cref="http://burtleburtle.net/bob/rand/isaacafa.html"/>
   /// <seealso cref="http://rosettacode.org/wiki/The_ISAAC_Cipher#C.23"/>
   public class IsaacRandom
-    : RandomUInt32
+    : ARandomUInt32
   {
     public static System.Random Default
       => new IsaacRandom();

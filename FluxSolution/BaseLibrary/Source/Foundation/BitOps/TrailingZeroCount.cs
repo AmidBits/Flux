@@ -29,8 +29,8 @@ namespace Flux
       return System.Numerics.BitOperations.TrailingZeroCount(value);
 #else
 			return (value == 0)
-				      ? 32
-              : PopCount(LeastSignificant1Bit(value) - 1);
+				? 32
+        : PopCount(LeastSignificant1Bit(value) - 1);
 #endif
     }
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
@@ -41,8 +41,8 @@ namespace Flux
       return System.Numerics.BitOperations.TrailingZeroCount(value);
 #else
 			return ((uint)value == 0)
-				      ? 32 + TrailingZeroCount((uint)(value >> 32))
-              : TrailingZeroCount((uint)value);
+				? 32 + TrailingZeroCount((uint)(value >> 32))
+        : TrailingZeroCount((uint)value);
 #endif
     }
   }

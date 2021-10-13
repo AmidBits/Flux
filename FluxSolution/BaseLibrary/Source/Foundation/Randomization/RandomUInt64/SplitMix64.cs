@@ -3,7 +3,7 @@ namespace Flux.Randomization
   /// <see cref="http://xoshiro.di.unimi.it/"/>
   /// <seealso cref="	/// <see cref="http://xoshiro.di.unimi.it/splitmix64.c"/>
   public class SplitMix64
-    : RandomUInt64
+    : ARandomUInt64
   {
     public static System.Random Default
       => new SplitMix64();

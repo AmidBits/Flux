@@ -37,8 +37,8 @@ namespace Flux
       return System.Numerics.BitOperations.LeadingZeroCount(value);
 #else
       return (value == 0)
-              ? 32
-              : 31 - Log2(value);
+        ? 32
+        : 31 - Log2(value);
 #endif
     }
     /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
@@ -49,8 +49,8 @@ namespace Flux
       return System.Numerics.BitOperations.LeadingZeroCount(value);
 #else
       return (value <= uint.MaxValue)
-              ? 32 + LeadingZeroCount((uint)value)
-              : LeadingZeroCount((uint)(value >> 32));
+        ? 32 + LeadingZeroCount((uint)value)
+        : LeadingZeroCount((uint)(value >> 32));
 #endif
     }
   }
