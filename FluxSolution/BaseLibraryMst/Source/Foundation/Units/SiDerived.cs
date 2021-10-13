@@ -178,7 +178,7 @@ namespace Foundation.Units
       var u = new Flux.Quantity.Pressure(1);
 
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(0.0001450377377302092, u.ToUnitValue(Flux.Quantity.PressureUnit.PSI));
+      Assert.AreEqual(0.0001450377377302092, u.ToUnitValue(Flux.Quantity.PressureUnit.Psi));
     }
 
     [TestMethod]

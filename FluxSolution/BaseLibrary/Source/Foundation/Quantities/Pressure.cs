@@ -19,7 +19,7 @@ namespace Flux.Quantity
         case PressureUnit.Pascal:
           m_value = value;
           break;
-        case PressureUnit.PSI:
+        case PressureUnit.Psi:
           m_value = value * (8896443230521.0 / 1290320000.0);
           break;
         default:
@@ -36,7 +36,7 @@ namespace Flux.Quantity
       {
         case PressureUnit.Pascal:
           return m_value;
-        case PressureUnit.PSI:
+        case PressureUnit.Psi:
           return m_value * (1290320000.0 / 8896443230521.0);
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
