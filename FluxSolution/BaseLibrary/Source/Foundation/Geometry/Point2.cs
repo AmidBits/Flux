@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   public struct Point2
-    : /*System.IComparable<Point2>,*/ System.IEquatable<Point2>
+    : System.IEquatable<Point2>
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point2 Zero;
@@ -118,6 +118,10 @@ namespace Flux.Geometry
     public static Point2 FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
       => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
+    /// <summary>Convert an index to a 2D point, based on the specified grid lengths of axes.</summary>
+    public static Point2 FromUniqueIndex(long index, Size2 bounds)
+      => new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
+
     ///// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
     //public static System.Collections.Generic.IEnumerable<Point2> GetQuadrantCenterVectors(Point2 source, Size2 subQuadrant)
@@ -193,19 +197,13 @@ namespace Flux.Geometry
 
       return new Point2(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
     }
-    #endregion Static methods
-
-    #region "Unique" index
-    /// <summary>Convert an index to a 2D point, based on the specified grid lengths of axes.</summary>
-    public static Point2 FromUniqueIndex(long index, Size2 bounds)
-      => new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
 
     /// <summary>Converts the 2D point to an index, based on the specified grid lengths of axes.</summary>
     public static long ToUniqueIndex(int x, int y, Size2 bounds)
       => x + (y * bounds.Width);
     public static long ToUniqueIndex(Point2 point, Size2 bounds)
       => ToUniqueIndex(point.m_x, point.m_y, bounds);
-    #endregion "Unique" index
+    #endregion Static methods
 
     #region Overloaded operators
     public static bool operator ==(Point2 p1, Point2 p2)
@@ -299,11 +297,6 @@ namespace Flux.Geometry
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // System.IComparable
-    //public int CompareTo(Point2 other)
-    //  => m_x < other.m_x ? -1 : m_x > other.m_x ? 1 : m_y < other.m_y ? -1 : m_y > other.m_y ? 1 : 0;
-
-    // System.IEquatable
     public bool Equals(Point2 other)
       => m_x == other.m_x && m_y == other.m_y;
     #endregion Implemented interfaces

@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   public struct Point3
-    : /*System.IComparable<Point3>,*/ System.IEquatable<Point3>
+    : System.IEquatable<Point3>
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point3 Zero;
@@ -115,6 +115,15 @@ namespace Flux.Geometry
     public static Point3 FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
       => new Point3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
 
+    /// <summary>Convert a "mapped" index to a 3D point. This index is uniquely mapped using the specified size vector.</summary>
+    public static Point3 FromUniqueIndex(long index, in Size3 bounds)
+    {
+      var xy = (long)bounds.Width * (long)bounds.Height;
+      var irxy = index % xy;
+
+      return new Point3((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
+    }
+
     ///// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
     //public static System.Collections.Generic.IEnumerable<Point3> GetOctantCenterVectors(Point3 source, Size3 subOctant)
@@ -204,21 +213,11 @@ namespace Flux.Geometry
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static Point3 VectorTripleProduct(Point3 p1, Point3 p2, Point3 p3)
       => CrossProduct(p1, CrossProduct(p2, p3));
-    #endregion Static methods
 
-    #region "Unique" index
-    /// <summary>Convert a "mapped" index to a 3D point. This index is uniquely mapped using the specified size vector.</summary>
-    public static Point3 FromUniqueIndex(long index, in Size3 bounds)
-    {
-      var xy = (long)bounds.Width * (long)bounds.Height;
-      var irxy = index % xy;
-
-      return new Point3((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
-    }
     /// <summary>Converts the point to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
     public static long ToUniqueIndex(in Point3 point, in Size3 bounds)
       => point.m_x + (point.m_y * bounds.Width) + (point.m_z * bounds.Width * bounds.Height);
-    #endregion "Unique" index
+    #endregion Static methods
 
     #region Overloaded operators
     public static bool operator ==(Point3 p1, Point3 p2)
@@ -312,11 +311,6 @@ namespace Flux.Geometry
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // System.IComparable
-    //public int CompareTo(Point3 other)
-    //  => m_x < other.m_x ? -1 : m_x > other.m_x ? 1 : m_y < other.m_y ? -1 : m_y > other.m_y ? 1 : m_z < other.m_z ? -1 : m_z > other.m_z ? 1 : 0;
-
-    // System.IEquatable
     public bool Equals(Point3 other)
       => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
     #endregion Implemented interfaces
