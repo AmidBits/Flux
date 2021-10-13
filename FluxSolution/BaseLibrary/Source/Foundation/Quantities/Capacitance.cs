@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum CapacitanceUnit
-  {
-    Farad,
-  }
-
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance

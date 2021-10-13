@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum AngularVelocityUnit
-  {
-    RadianPerSecond,
-  }
-
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity

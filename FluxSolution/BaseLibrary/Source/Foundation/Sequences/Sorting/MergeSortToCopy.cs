@@ -1,11 +1,5 @@
 namespace Flux.Sorting
 {
-  public enum MergeSortType
-  {
-    BottomUp,
-    TopDown
-  }
-
   /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
   public class MergeSortToCopy<T>

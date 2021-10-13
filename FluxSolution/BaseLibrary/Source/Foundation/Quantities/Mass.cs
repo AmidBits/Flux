@@ -26,16 +26,6 @@ namespace Flux
 
   namespace Quantity
   {
-    public enum MassUnit
-    {
-      Milligram,
-      Gram,
-      Ounce,
-      Pound,
-      Kilogram,
-      MetricTon,
-    }
-
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
     public struct Mass

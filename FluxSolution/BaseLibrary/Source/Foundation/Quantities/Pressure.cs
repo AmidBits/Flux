@@ -1,11 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum PressureUnit
-  {
-    Pascal,
-    PSI,
-  }
-
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure

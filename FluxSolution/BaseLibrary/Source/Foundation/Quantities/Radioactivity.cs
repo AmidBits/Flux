@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum RadioactivityUnit
-  {
-    Becquerel,
-  }
-
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Radioactivity

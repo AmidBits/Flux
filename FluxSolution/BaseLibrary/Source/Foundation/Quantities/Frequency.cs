@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum FrequencyUnit
-  {
-    Hertz,
-  }
-
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency

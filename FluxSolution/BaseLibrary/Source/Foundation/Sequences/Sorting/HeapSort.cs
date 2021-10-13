@@ -1,11 +1,5 @@
 namespace Flux.Sorting
 {
-  public enum HeapSortType
-  {
-    BasicDown,
-    FloydDown
-  }
-
   /// <summary>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
   public class HeapSort<T>

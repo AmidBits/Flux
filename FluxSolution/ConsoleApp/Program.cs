@@ -23,6 +23,13 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      foreach (var type in typeof(Flux.AssemblyInfo).Assembly.GetTypes().Where(t => t.IsEnum).OrderBy(t => t.FullName))
+        System.Console.WriteLine(type.FullName);
+
+      return;
+
+
+
       var m = new int[,] {
         { 1, 2, 3, 4 },
         { 5, 6, 7, 8 },
@@ -36,7 +43,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(mrotatec));
       System.Console.WriteLine(mrotatec.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
-        
+
       var mrotatecc = m.RotateCounterClockwise();
       System.Console.WriteLine(nameof(mrotatecc));
       System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));

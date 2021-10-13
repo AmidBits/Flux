@@ -30,26 +30,6 @@ namespace Flux
 
   namespace Quantity
   {
-    public enum PartsPerNotationUnit
-    {
-      /// <summary>Percent.</summary>
-      Hundred,
-      /// <summary>Permille.</summary>
-      Thousand,
-      /// <summary>Permyriad.</summary>
-      TenThousand,
-      /// <summary>Per cent mille, abbreviated "pcm".</summary>
-      HundredThousand,
-      /// <summary>Abbreviated "ppm".</summary>
-      Million,
-      /// <summary>Abbreviated "ppb".</summary>
-      Billion,
-      /// <summary>Abbreviated "ppt".</summary>
-      Trillion,
-      /// <summary>Abbreviated "ppq".</summary>
-      Quadrillion,
-    }
-
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
     public struct PartsPerNotation

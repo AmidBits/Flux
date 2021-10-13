@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum LuminousFluxUnit
-  {
-    Lumen,
-  }
-
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousFlux

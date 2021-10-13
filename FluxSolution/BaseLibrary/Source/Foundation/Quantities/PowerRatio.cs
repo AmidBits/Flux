@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum PowerRatioUnit
-  {
-    DecibelWatt,
-  }
-
   /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct PowerRatio

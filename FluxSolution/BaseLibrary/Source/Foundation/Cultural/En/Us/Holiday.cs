@@ -2,16 +2,11 @@ namespace Flux.Cultural.EnUs
 {
   public static partial class Holiday
   {
-    public enum Scope
-    {
-      Federal
-    }
-
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> Get(System.DateTime source, Scope scope)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> Get(System.DateTime source, HolidayScope scope)
     {
       switch (scope)
       {
-        case Scope.Federal:
+        case HolidayScope.Federal:
           yield return System.Collections.Generic.KeyValuePair.Create(@"New Year's Day", new System.DateTime(source.Year, 1, 1));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Birthday of Martin Luther King, Jr", new System.DateTime(source.Year, 1, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Washington's Birthday", new System.DateTime(source.Year, 2, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));

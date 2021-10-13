@@ -1,11 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum ElectricCurrentUnit
-  {
-    Milliampere,
-    Ampere,
-  }
-
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent

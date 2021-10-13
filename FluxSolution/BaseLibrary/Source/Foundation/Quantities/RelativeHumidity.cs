@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum RelativeHumidityUnit
-  {
-    Percent,
-  }
-
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity

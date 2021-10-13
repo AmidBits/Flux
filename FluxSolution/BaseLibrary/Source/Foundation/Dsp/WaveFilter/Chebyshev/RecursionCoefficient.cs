@@ -5,24 +5,18 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
   /// <see cref="http://www.dspguide.com/ch20.htm"/>
   public static class RecursionCoefficient
   {
-    public enum FrequencyFunction
-    {
-      LowPass = Dsp.FrequencyFunction.LowPass,
-      HighPass = Dsp.FrequencyFunction.HighPass
-    }
-
     /// <summary>An easy entry method to the function as presented by "The Scientist and Engineer's Guide to Digital Signal Processing" By Steven W.Smith, Ph.D.</summary>
     /// <param name="cutoffFrequency">The cutoff frequency in Hz up to half the sample rate.</param>
     /// <param name="function">The filter type is an option between a low pass or a high pass filter.</param>
     /// <param name="rippleInUnitInterval">Percent ripple as a unit interval (0-1).</param>
     /// <param name="evenNumberOfPoles">An even number of poles in the filter between 2 and 20.</param>
     /// <see cref="http://www.dspguide.com/CH20.PDF"/>
-    public static (double[] A, double[] B) Calculate(FrequencyFunction frequencyFunction, double cutoffFrequency, double rippleInUnitInterval, int evenNumberOfPoles, double sampleRate = 44100.0)
+    public static (double[] A, double[] B) Calculate(RecursionCoefficientFrequencyFunction frequencyFunction, double cutoffFrequency, double rippleInUnitInterval, int evenNumberOfPoles, double sampleRate = 44100.0)
     {
       var function = frequencyFunction switch
       {
-        FrequencyFunction.LowPass => 0,
-        FrequencyFunction.HighPass => 1,
+        RecursionCoefficientFrequencyFunction.LowPass => 0,
+        RecursionCoefficientFrequencyFunction.HighPass => 1,
         _ => throw new System.ArgumentOutOfRangeException(nameof(frequencyFunction))
       };
       var normalizedFrequency = cutoffFrequency / sampleRate;

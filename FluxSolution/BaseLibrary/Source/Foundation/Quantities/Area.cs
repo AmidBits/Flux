@@ -1,11 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum AreaUnit
-  {
-    SquareMeter,
-    Hectare,
-  }
-
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area

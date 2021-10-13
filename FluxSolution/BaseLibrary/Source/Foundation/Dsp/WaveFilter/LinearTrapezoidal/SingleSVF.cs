@@ -6,19 +6,6 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   public class SingleSvf
     : IWaveFilterMono, IWaveProcessorMono
   {
-    public enum SingleSvfFrequencyFunction
-    {
-      AllPass = Dsp.FrequencyFunction.AllPass,
-      BandPass = Dsp.FrequencyFunction.BandPass,
-      Bell = Dsp.FrequencyFunction.Bell,
-      HighPass = Dsp.FrequencyFunction.HighPass,
-      HighShelf = Dsp.FrequencyFunction.HighShelf,
-      LowPass = Dsp.FrequencyFunction.LowPass,
-      LowShelf = Dsp.FrequencyFunction.LowShelf,
-      Notch = Dsp.FrequencyFunction.Notch,
-      Peak = Dsp.FrequencyFunction.Peak,
-    }
-
     public SingleSvfFrequencyFunction Function { get; private set; }
 
     private double m_cutoff;

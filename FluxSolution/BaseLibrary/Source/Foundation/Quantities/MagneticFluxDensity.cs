@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum MagneticFluxDensityUnit
-  {
-    Tesla,
-  }
-
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity

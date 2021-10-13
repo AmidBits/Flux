@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum InductanceUnit
-  {
-    Henry,
-  }
-
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance

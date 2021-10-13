@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum TorqueUnit
-  {
-    NewtonMeter,
-  }
-
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque

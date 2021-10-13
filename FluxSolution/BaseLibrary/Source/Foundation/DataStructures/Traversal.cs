@@ -2,14 +2,6 @@ namespace Flux.DataStructures
 {
 	public static partial class Traversal
 	{
-		public enum BinaryTreeSearchDepthOrder
-		{
-			InOrder,
-			PostOrder,
-			PreOrder,
-			ReverseInOrder,
-		}
-
 		/// <summary>Performs a depth-first-search (DFS) on a binary tree type hierarchy, using a recursive algorithm.</summary>
 		/// <see cref="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
 		public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsR<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeSearchDepthOrder order, System.Func<T, bool> predicate)

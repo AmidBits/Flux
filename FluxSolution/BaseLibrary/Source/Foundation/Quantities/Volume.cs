@@ -1,20 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum VolumeUnit
-  {
-    Millilitre,
-    Centilitre,
-    Decilitre,
-    Litre,
-    UKGallon,
-    USGallon,
-    CubicFeet,
-    CubicYard,
-    CubicMeter,
-    CubicMile,
-    CubicKilometer,
-  }
-
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume

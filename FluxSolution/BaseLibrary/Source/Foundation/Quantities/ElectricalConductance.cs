@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum ElectricalConductanceUnit
-  {
-    Siemens,
-  }
-
   /// <summary>Electrical conductance unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct ElectricalConductance

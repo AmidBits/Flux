@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum ForceUnit
-  {
-    Newton,
-  }
-
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force

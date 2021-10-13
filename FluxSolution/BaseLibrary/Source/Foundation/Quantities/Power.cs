@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum PowerUnit
-  {
-    Watt,
-  }
-
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power

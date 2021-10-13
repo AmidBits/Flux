@@ -2,15 +2,6 @@ using System.Linq;
 
 namespace Flux.Text.Csv
 {
-  public enum CsvTokenType
-  {
-    None,
-    StartLine,
-    StartField,
-    EndField,
-    EndLine
-  }
-
   public sealed class CsvReader
     : Data.TabularDataReader
   {

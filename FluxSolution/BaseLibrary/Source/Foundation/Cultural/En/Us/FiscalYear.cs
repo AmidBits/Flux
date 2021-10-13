@@ -2,34 +2,22 @@ namespace Flux.Cultural.EnUs
 {
   public static partial class FiscalYear
   {
-    public enum Scope
-    {
-      FederalGovernment,
-      OtherStates,
-      OtherTerritories,
-      StateOfAlabama,
-      StateOfMichigan,
-      StateOfNewYork,
-      StateOfTexas,
-      TerritoryOfPuertoRico,
-    }
-
     /// <summary>Gets the fiscal year of the specified scope for the datetime.</summary>
-    public static int Get(System.DateTime source, Scope scope)
+    public static int Get(System.DateTime source, FiscalYearScope scope)
     {
       switch (scope)
       {
-        case Scope.OtherStates:
-        case Scope.TerritoryOfPuertoRico:
+        case FiscalYearScope.OtherStates:
+        case FiscalYearScope.TerritoryOfPuertoRico:
           return source.Month >= 7 ? source.Year + 1 : source.Year;
-        case Scope.FederalGovernment:
-        case Scope.OtherTerritories:
-        case Scope.StateOfAlabama:
-        case Scope.StateOfMichigan:
+        case FiscalYearScope.FederalGovernment:
+        case FiscalYearScope.OtherTerritories:
+        case FiscalYearScope.StateOfAlabama:
+        case FiscalYearScope.StateOfMichigan:
           return source.Month >= 10 ? source.Year + 1 : source.Year;
-        case Scope.StateOfTexas:
+        case FiscalYearScope.StateOfTexas:
           return source.Month >= 9 ? source.Year + 1 : source.Year;
-        case Scope.StateOfNewYork:
+        case FiscalYearScope.StateOfNewYork:
           return source.Month >= 3 ? source.Year + 1 : source.Year;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(scope));

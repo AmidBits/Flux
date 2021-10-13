@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum DensityUnit
-  {
-    KilogramsPerCubicMeter,
-  }
-
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density

@@ -1,10 +1,5 @@
 namespace Flux.Quantity
 {
-  public enum AccelerationUnit
-  {
-    MetersPerSecondSquare,
-  }
-
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
