@@ -12,7 +12,7 @@ namespace Flux
   public struct JulianDayNumber
     : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit
   {
-    public static readonly JulianDayNumber Zero;
+    public static readonly JulianDayNumber Epoch;
 
     private readonly int m_value;
 

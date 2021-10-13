@@ -28,7 +28,7 @@ namespace Flux
     public static JulianDate LastJulianCalendarDate
       => new MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-    public static readonly JulianDate Zero;
+    public static readonly JulianDate Epoch;
 
     private readonly double m_value;
 
