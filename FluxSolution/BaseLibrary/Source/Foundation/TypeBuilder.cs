@@ -16,9 +16,7 @@ namespace Flux
       var propertyName = name;
 
       if (isNullable && (type.IsValueType || type.IsGenericType)) // This is not needed if the type is a reference type, since reference types can always be null.
-      {
         type = typeof(System.Nullable<>).MakeGenericType(type);
-      }
 
       var fieldBuilder = typeBuilder.DefineField(@"_" + propertyName, type, System.Reflection.FieldAttributes.Private);
 

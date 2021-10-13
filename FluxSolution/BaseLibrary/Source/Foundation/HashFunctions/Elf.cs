@@ -3,18 +3,18 @@ namespace Flux.Hashing
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/PJW_hash_function"/>
   public struct Elf
-    : ISimpleHash32, System.IEquatable<Elf>
+    : ISimpleHashGenerator32, System.IEquatable<Elf>
   {
     public static readonly Elf Empty;
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash;
 
-    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Elf(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int ComputeSimpleHash32(byte[] bytes, int startAt, int count)
+    public int GenerateSimpleHash32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -32,7 +32,7 @@ namespace Flux.Hashing
         }
       }
 
-      return Code;
+      return SimpleHash32;
     }
 
     // Operators

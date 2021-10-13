@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Maths
   {
-    // Hyperbolic reciprocals:
+    // Hyperbolic reciprocals (1 divided by):
 
     /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
@@ -22,14 +22,14 @@ namespace Flux
     /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
     static public double Acsch(double v)
-      => System.Math.Asinh(1 / v); // System.Math.Log((1 / x) + System.Math.Sqrt((1 / x * x) + 1));
+      => System.Math.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
     /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
     static public double Asech(double v)
-      => System.Math.Acosh(1 / v); // System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
+      => System.Math.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
     /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
     static public double Acoth(double v)
-      => System.Math.Atanh(1 / v); // System.Math.Log((x + 1) / (x - 1)) / 2;
+      => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
   }
 }

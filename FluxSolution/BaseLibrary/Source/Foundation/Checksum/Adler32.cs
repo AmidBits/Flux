@@ -3,18 +3,18 @@ namespace Flux.Checksum
 	/// <summary></summary>
 	/// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
 	public struct Adler32
-		: IChecksum32, System.IEquatable<Adler32>
+		: IChecksumGenerator32, System.IEquatable<Adler32>
 	{
 		public static readonly Adler32 Empty;
 		public bool IsEmpty => Equals(Empty);
 
 		private uint m_hash;// = 1;
 
-		public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+		public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
 		public Adler32(int hash = 1) => m_hash = unchecked((uint)hash);
 
-		public int ComputeChecksum32(byte[] bytes, int startAt, int count)
+		public int GenerateChecksum32(byte[] bytes, int startAt, int count)
 		{
 			if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -38,7 +38,7 @@ namespace Flux.Checksum
 				m_hash = (b << 16) | a;
 			}
 
-			return Code;
+			return Checksum32;
 		}
 
 		// Operators

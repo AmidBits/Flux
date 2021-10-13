@@ -3,18 +3,18 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/BSD_checksum"/>
   public struct Bsd
-    : IChecksum32, System.IEquatable<Bsd>
+    : IChecksumGenerator32, System.IEquatable<Bsd>
   {
     public static readonly Bsd Empty;
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash;
 
-    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Bsd(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int ComputeChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -26,7 +26,7 @@ namespace Flux.Checksum
         }
       }
 
-      return Code;
+      return Checksum32;
     }
 
     // Operators

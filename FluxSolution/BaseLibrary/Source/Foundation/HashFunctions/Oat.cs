@@ -3,18 +3,18 @@ namespace Flux.Hashing
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>
   public struct Oat
-    : ISimpleHash32, System.IEquatable<Oat>
+    : ISimpleHashGenerator32, System.IEquatable<Oat>
   {
     public static readonly Oat Empty;
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash;
 
-    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Oat(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int ComputeSimpleHash32(byte[] bytes, int startAt, int count)
+    public int GenerateSimpleHash32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -32,7 +32,7 @@ namespace Flux.Hashing
         m_hash += m_hash << 15;
       }
 
-      return Code;
+      return SimpleHash32;
     }
 
     // Operators

@@ -3,14 +3,14 @@ namespace Flux.Hashing
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function"/>
   public struct Fnv1a
-    : ISimpleHash32, System.IEquatable<Fnv1a>
+    : ISimpleHashGenerator32, System.IEquatable<Fnv1a>
   {
     public static readonly Fnv1a Empty;
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash; // = 2166136261U;
 
-    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     private uint m_primeMultiplier; // = 16777619U;
     public int Prime { get => (int)m_primeMultiplier; set => m_primeMultiplier = (uint)value; }
@@ -22,7 +22,7 @@ namespace Flux.Hashing
       m_primeMultiplier = unchecked((uint)primeMultiplier);
     }
 
-    public int ComputeSimpleHash32(byte[] bytes, int startAt, int count)
+    public int GenerateSimpleHash32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -35,7 +35,7 @@ namespace Flux.Hashing
         }
       }
 
-      return Code;
+      return SimpleHash32;
     }
 
     // Operators

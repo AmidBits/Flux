@@ -3,18 +3,18 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
   public struct Fletcher32
-    : IChecksum32, System.IEquatable<Fletcher32>
+    : IChecksumGenerator32, System.IEquatable<Fletcher32>
   {
     public static readonly Fletcher32 Empty;
     public bool IsEmpty => Equals(Empty);
 
     private uint m_hash;
 
-    public int Code { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Fletcher32(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int ComputeChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -30,7 +30,7 @@ namespace Flux.Checksum
 
         m_hash = (sum2 << 16) | sum1;
 
-        return Code;
+        return Checksum32;
       }
     }
 

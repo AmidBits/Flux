@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Maths
   {
-    // Reciprocals:
+    // Reciprocals (1 divided by):
 
     /// <summary>Returns the cosecant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>

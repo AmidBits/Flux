@@ -22,6 +22,7 @@ namespace ConsoleApp
       var m = new int[,] {
         { 1, 2, 3, 4 },
         { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 },
       };
       System.Console.WriteLine(nameof(m));
       System.Console.WriteLine(m.ToConsoleBlock(uniformWidth: true));
@@ -46,7 +47,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(minsert));
       System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
-      minsert.Fill(0, 1, 2, 4, 9);
+      minsert.Fill(0, 1, 3, 4, 9);
       System.Console.WriteLine(nameof(minsert.Fill));
       System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
@@ -61,7 +62,7 @@ namespace ConsoleApp
       System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
 
-      var mremove = m.Remove(1, 1, 2);
+      var mremove = m.Remove(1, 1);
       System.Console.WriteLine(nameof(mremove));
       System.Console.WriteLine(mremove.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();

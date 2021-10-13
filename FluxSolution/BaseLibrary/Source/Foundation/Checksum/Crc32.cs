@@ -5,7 +5,7 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
   public struct Crc32
-    : IChecksum32, System.IEquatable<Crc32>
+    : IChecksumGenerator32, System.IEquatable<Crc32>
   {
     public static readonly Crc32 Empty;
     public bool IsEmpty => Equals(Empty);
@@ -14,7 +14,7 @@ namespace Flux.Checksum
 
     private uint m_hash;
 
-    public int Code { get => unchecked((int)(m_hash ^ 0xFFFFFFFF)); set => m_hash = unchecked((uint)value ^ 0xFFFFFFFF); }
+    public int Checksum32 { get => unchecked((int)(m_hash ^ 0xFFFFFFFF)); set => m_hash = unchecked((uint)value ^ 0xFFFFFFFF); }
 
     public Crc32(int hash = unchecked((int)0xFFFFFFFF))
     {
@@ -33,7 +33,7 @@ namespace Flux.Checksum
       m_lookupTable = lookupTable.Select(i => (uint)i).ToArray();
     }
 
-    public int ComputeChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -47,7 +47,7 @@ namespace Flux.Checksum
         }
       }
 
-      return Code;
+      return Checksum32;
     }
 
     // Operators

@@ -20,6 +20,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
     public static double Cvcos(double value)
       => 1 + System.Math.Sin(value);
+
+    // Haversed functions (half of the versed versions above):
+
     /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
     public static double Hvsin(double value)
@@ -54,22 +57,25 @@ namespace Flux
     /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
     public static double Acvcos(double y)
-      => System.Math.Acos(y - 1);
+      => System.Math.Asin(y - 1);
+
+    // Inversed haversed functions:
+
     /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
     public static double Ahvsin(double y)
-      => 2 * System.Math.Asin(System.Math.Sqrt(y));
+      => System.Math.Acos(1 - 2 * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
     /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
     public static double Ahvcos(double y)
-      => 2 * System.Math.Acos(System.Math.Sqrt(y));
+      => System.Math.Acos(2 * y - 1); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
     /// <summary>Returns the inverse of cohaversed sine of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
     public static double Ahcvsin(double y)
-      => System.Math.Asin(1 - (2 * y));
+      => System.Math.Asin(1 - 2 * y);
     /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
     public static double Ahcvcos(double y)
-      => System.Math.Asin((2 * y) - 1);
+      => System.Math.Asin(2 * y - 1);
   }
 }
