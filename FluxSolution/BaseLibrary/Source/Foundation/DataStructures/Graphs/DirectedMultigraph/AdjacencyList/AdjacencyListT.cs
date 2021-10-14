@@ -38,7 +38,7 @@
       => AddVertex(vertex, default!);
     public bool ContainsVertex(TKey vertex)
       => m_list.ContainsKey(vertex);
-    public System.Collections.Generic.ICollection<TKey> GetVertices()
+    public System.Collections.Generic.IEnumerable<TKey> GetVertices()
       => m_list.Keys;
     public bool RemoveVertex(TKey vertex)
     {

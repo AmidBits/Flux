@@ -25,7 +25,7 @@ namespace Flux
       /// <summary>Determins whether a vertex exists in the graph.</summary>
       bool ContainsVertex(TKey key);
       /// <summary>Creates a new sequence with all vertices in the graph.</summary>
-      System.Collections.Generic.ICollection<TKey> GetVertices();
+      System.Collections.Generic.IEnumerable<TKey> GetVertices();
       /// <summary>Removes a vertex from the graph, if it exists.</summary>
       bool RemoveVertex(TKey key);
     }

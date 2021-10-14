@@ -10,10 +10,10 @@ namespace Flux
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var length0 = source.GetLength(0);
-      if (index0 < 0 || index0 >= length0) throw new System.ArgumentOutOfRangeException(nameof(index0));
+      if (index0 < 0 || index0 > length0) throw new System.ArgumentOutOfRangeException(nameof(index0));
 
       var length1 = source.GetLength(1);
-      if (index1 < 0 || index1 >= length1) throw new System.ArgumentOutOfRangeException(nameof(index1));
+      if (index1 < 0 || index1 > length1) throw new System.ArgumentOutOfRangeException(nameof(index1));
 
       if (index0 + count0 > length0) throw new System.ArgumentOutOfRangeException(nameof(count0));
       if (index1 + count1 > length1) throw new System.ArgumentOutOfRangeException(nameof(count1));

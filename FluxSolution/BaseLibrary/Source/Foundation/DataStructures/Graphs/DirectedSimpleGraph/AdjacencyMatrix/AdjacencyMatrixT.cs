@@ -5,75 +5,52 @@
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class IncidenceMatrix<TKey, TVertexValue, TEdgeValue>
+  public class AdjacencyMatrix<TKey, TVertexValue, TEdgeValue>
     : IGraphVertexValue<TKey, TVertexValue>, IGraphDirectedSimple<TKey, TEdgeValue>
     where TKey : System.IEquatable<TKey>
     where TVertexValue : System.IEquatable<TVertexValue>
     where TEdgeValue : System.IEquatable<TEdgeValue>
   {
-    #region Graph storage
-    private TEdgeValue[,] m_edgeValues = new TEdgeValue[0, 0];
+    public AdjacencyMatrix m_am = new AdjacencyMatrix();
+    //#region Graph storage
+    //private TEdgeValue[,] m_edgeValues = new TEdgeValue[0, 0];
 
-    private int[,] m_matrix = new int[0, 0];
+    //private int[,] m_matrix = new int[0, 0];
 
-    private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();
+    //private readonly System.Collections.Generic.List<TVertexValue> m_vertexValues = new System.Collections.Generic.List<TVertexValue>();
     private readonly System.Collections.Generic.List<TKey> m_vertices = new System.Collections.Generic.List<TKey>(); // Vertices are kept in a list for indexing in the matrix.
-    #endregion Graph storage
+    //#endregion Graph storage
 
-    public TEdgeValue this[int source, int target]
-      => m_matrix[source, target] > 0 ? m_edgeValues[source, target] : default!;
+    //public TEdgeValue this[int source, int target]
+    //  => m_matrix[source, target] > 0 ? m_edgeValues[source, target] : default!;
 
-    // IGraphVertex<>
+    // IGraphCommon<>
+
     public int GetDegree(TKey vertex)
-    {
-      var count = 0;
-
-      if (ContainsVertex(vertex, out var vertexIndex))
-      {
-        for (var index = m_vertices.Count - 1; index >= 0; index--)
-        {
-          if (index == vertexIndex) count += m_matrix[index, vertexIndex];
-          else
-          {
-            count += m_matrix[index, vertexIndex];
-            count += m_matrix[vertexIndex, index];
-          }
-        }
-      }
-
-      return count;
-    }
+      => ContainsVertex(vertex, out var vertexIndex) ? m_am.GetDegree(vertexIndex) : 0;
     public System.Collections.Generic.IEnumerable<TKey> GetNeighbors(TKey vertex)
     {
-      var vertexIndex = m_vertices.IndexOf(vertex);
-
-      var verticesLength = m_vertices.Count;
-
-      for (var index = 0; index < verticesLength; index++)
-        if (m_matrix[vertexIndex, index] > 0)
-          yield return m_vertices[index];
+      if (m_vertices.IndexOf(vertex) is var vertexIndex)
+        foreach (var v in System.Linq.Enumerable.Select(m_am.GetNeighbors(vertexIndex), i => m_vertices[i]))
+          yield return v;
     }
     public bool IsAdjacent(TKey source, TKey target)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] == 1;
+      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_am.IsAdjacent(sourceIndex, targetIndex);
 
+    // IGraphVertex<>
     public bool AddVertex(TKey vertex)
       => AddVertex(vertex, default!);
     public bool ContainsVertex(TKey vertex)
       => m_vertices.Contains(vertex);
-    public System.Collections.Generic.IEnumerable<TKey> GetVertices()
-      => m_vertices;
+    //public System.Collections.Generic.ICollection<TKey> GetVertices()
+    //  => m_vertices;
     public bool RemoveVertex(TKey vertex)
     {
       if (ContainsVertex(vertex, out var index))
       {
-        m_edgeValues = m_edgeValues.Remove(0, index); // Remove dimension 0 to accomodate the new vertex as a source.
-        m_edgeValues = m_edgeValues.Remove(1, index); // Remove dimension 1 to accomodate the new vertex as a target.
+        m_am.RemoveVertex(index);
 
-        m_matrix = m_matrix.Remove(0, index); // Add dimension 0 to accomodate vertex values.
-        m_matrix = m_matrix.Remove(1, index); // Add dimension 1 to accomodate vertex values.
-
-        m_vertexValues.RemoveAt(index);
-        m_vertices.RemoveAt(index);
+        m_vertices.Remove(vertex);
 
         return true;
       }
@@ -88,18 +65,14 @@
     // IGraphVertexValue<>
     public bool AddVertex(TKey vertex, TVertexValue value)
     {
-      if (!ContainsVertex(vertex))
+      if (!ContainsVertex(vertex, out var index))
       {
-        var index = m_vertices.Count; // This will be the next index.
+        index = m_vertices.Count; // This will be the next index.
+
+        m_am.AddVertex(index);
+        m_am.SetVertexValue(index, value);
 
         m_vertices.Add(vertex);
-        m_vertexValues.Add(value!);
-
-        m_matrix = m_matrix.Insert(0, index, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
-        m_matrix = m_matrix.Insert(1, index, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
-
-        m_edgeValues = m_edgeValues.Insert(0, index, 1, default!); // Add dimension 0 to accomodate vertex values.
-        m_edgeValues = m_edgeValues.Insert(1, index, 1, default!); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }
@@ -110,9 +83,8 @@
       => TryGetVertexValue(vertex, out var vertexValue) && vertexValue.Equals(value);
     public bool TryGetVertexValue(TKey vertex, out TVertexValue value)
     {
-      if (ContainsVertex(vertex, out var index))
+      if (ContainsVertex(vertex, out var index) && TryGetVertexValue(vertex, out value))
       {
-        value = m_vertexValues[index];
         return true;
       }
       else
@@ -125,7 +97,8 @@
     {
       if (ContainsVertex(vertex, out var index))
       {
-        m_vertexValues[index] = value;
+        m_am.SetVertexValue(index, value);
+
         return true;
       }
 
@@ -135,21 +108,15 @@
     // IGraphDirected<>
     public System.Collections.Generic.IEnumerable<(TKey keySource, TKey keyTarget, TEdgeValue value)> GetDirectedEdges()
     {
-      var verticesLength = m_vertices.Count;
-
-      for (var sourceIndex = 0; sourceIndex < verticesLength; sourceIndex++)
-        for (var targetIndex = 0; targetIndex < verticesLength; targetIndex++)
-          if (m_matrix[sourceIndex, targetIndex] is var matrix && matrix > 0)
-            yield return (m_vertices[sourceIndex], m_vertices[targetIndex], m_edgeValues[sourceIndex, targetIndex]);
+      foreach (var vt in m_am.GetEdges())
+        yield return (m_vertices[vt.x], m_vertices[vt.y], (TEdgeValue)(vt.v));
     }
     // IGraphDirectedSimple<>
     public bool AddEdge(TKey source, TKey target, TEdgeValue value)
     {
       if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
       {
-        m_matrix[sourceIndex, targetIndex] = source.Equals(target) ? 2 : 1;
-
-        TrySetEdgeValue(source, target, value);
+        m_am.AddEdge(sourceIndex, targetIndex, value);
 
         return true;
       }
@@ -159,27 +126,14 @@
     public bool AddEdge(TKey source, TKey target)
       => AddEdge(source, target, default!);
     public bool ContainsEdge(TKey source, TKey target)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0;
-    public bool ContainsEdge(TKey source, TKey target, TEdgeValue value)
-      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0 && m_edgeValues[sourceIndex, targetIndex].Equals(value);
+      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_am.EdgeExists(sourceIndex, targetIndex);
     public bool RemoveEdge(TKey source, TKey target)
-    {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_matrix[sourceIndex, targetIndex] > 0)
-      {
-        m_edgeValues[sourceIndex, targetIndex] = default!;
-
-        m_matrix[sourceIndex, targetIndex] = 0;
-
-        return true;
-      }
-
-      return false;
-    }
+      => ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_am.RemoveEdge(sourceIndex, targetIndex);
     public bool TryGetEdgeValue(TKey source, TKey target, out TEdgeValue value)
     {
-      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
+      if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex) && m_am.TryGetEdgeValue(sourceIndex, targetIndex, out var v))
       {
-        value = m_edgeValues[sourceIndex, targetIndex];
+        value = (TEdgeValue)v;
         return true;
       }
 
@@ -190,17 +144,35 @@
     {
       if (ContainsVertex(source, out var sourceIndex) && ContainsVertex(target, out var targetIndex))
       {
-        m_edgeValues[sourceIndex, targetIndex] = value;
+        m_am.SetEdgeValue(sourceIndex, targetIndex, value);
         return true;
       }
 
       return false;
     }
 
+    public System.Collections.Generic.IEnumerable<(TKey source, TKey target)> GetEdges()
+      => System.Linq.Enumerable.Select(m_am.GetEdges(), vt => (m_vertices[vt.x], m_vertices[vt.y]));
+    public System.Collections.Generic.IEnumerable<(TKey source, TKey target, TEdgeValue value)> GetEdgesWithValue()
+      => System.Linq.Enumerable.Select(m_am.GetEdges(), vt => (m_vertices[vt.x], m_vertices[vt.y], (TEdgeValue)(vt.v)));
+
+    public System.Collections.Generic.IEnumerable<TKey> GetVertices()
+      => System.Linq.Enumerable.Select(m_am.GetVertices(), v => (TKey)m_vertices[v]);
+    public System.Collections.Generic.IEnumerable<(TKey vertex, TVertexValue value)> GetVerticesWithValue()
+      => System.Linq.Enumerable.Select(m_am.GetVerticesWithValue(), vt => ((TKey)m_vertices[vt.x], (TVertexValue)(vt.v)));
+    public System.Collections.Generic.IEnumerable<(TKey vertex, TVertexValue value, int degree)> GetVerticesWithValueAndDegree()
+      => System.Linq.Enumerable.Select(m_am.GetVerticesWithValueAndDegree(), vt => ((TKey)m_vertices[vt.x], (TVertexValue)(vt.v), vt.d));
+
     public string ToConsoleString()
     {
-      var l0 = m_matrix.GetLength(0);
-      var l1 = m_matrix.GetLength(1);
+      var sb = new System.Text.StringBuilder();
+
+      sb.AppendLine(ToString());
+
+      var m = m_am.Matrix;
+
+      var l0 = m.GetLength(0);
+      var l1 = m.GetLength(1);
 
       var grid = new object[l0 + 1, l1 + 1];
 
@@ -210,10 +182,22 @@
         grid[0, i0 + 1] = m_vertices[i0];
 
         for (var i1 = l1 - 1; i1 >= 0; i1--)
-          grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
+          grid[i0 + 1, i1 + 1] = m[i0, i1];
       }
 
-      return grid.ToConsoleBlock(uniformWidth: true, centerContent: true);
+      sb.AppendLine(grid.ToConsoleBlock(uniformWidth: true, centerContent: true));
+
+      sb.AppendLine();
+
+      sb.AppendLine(@"Vertices (x, value, degree):");
+      sb.AppendJoin(System.Environment.NewLine, GetVerticesWithValueAndDegree()).AppendLine();
+
+      sb.AppendLine();
+
+      sb.AppendLine(@"Edges (x, y, value):");
+      sb.AppendJoin(System.Environment.NewLine, GetEdgesWithValue()).AppendLine();
+
+      return sb.ToString();
     }
 
     #region Object overrides.

@@ -7,17 +7,31 @@
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public class AdjacencyMatrix
   {
-    private int[,] m_matrix = new int[0, 0];
+    private int[,] m_matrix;
 
-    public int[,] Matrix => m_matrix;
+    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues;
+    private readonly System.Collections.Generic.Dictionary<(int, int), object> m_edgeValues;
 
-    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues = new System.Collections.Generic.Dictionary<int, object>();
-    private readonly System.Collections.Generic.Dictionary<(int, int), object> m_edgeValues = new System.Collections.Generic.Dictionary<(int, int), object>();
+    public AdjacencyMatrix(int[,] matrix)
+    {
+      m_matrix = matrix.IsArraySymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
 
+      m_vertexValues = new System.Collections.Generic.Dictionary<int, object>();
+      m_edgeValues = new System.Collections.Generic.Dictionary<(int, int), object>();
+    }
+    public AdjacencyMatrix()
+      : this(new int[0, 0])
+    { }
+
+    /// <summary>Returns the count of vertices within the adjacency matrix.</summary>
     public int Count
       => m_matrix.GetLength(0);
 
-    /// <summary>Returns the degree of the vertex x.</summary>
+    /// <summary>Returns the basic adjacency matrix.</summary>
+    public int[,] Matrix
+      => m_matrix;
+
+    /// <summary>Returns the degree of the vertex x. Loops are not counted.</summary>
     public int GetDegree(int x)
     {
       var count = 0;
@@ -32,7 +46,7 @@
 
       return count;
     }
-    /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y.</summary>
+    /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y. Loops are not considered neighbors.</summary>
     public System.Collections.Generic.IEnumerable<int> GetNeighbors(int v)
     {
       var count = Count;
@@ -43,7 +57,7 @@
     }
     /// <summary>Tests whether there is an edge from the vertex x to the vertex y.</summary>
     public bool IsAdjacent(int x, int y)
-      => ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] == 1;
+      => VertexExists(x) && VertexExists(y) && m_matrix[x, y] == 1;
 
     /// <summary>Adds the vertex x, if it is not there.</summary>
     public bool AddVertex(int x)
@@ -64,11 +78,11 @@
       return false;
     }
     /// <summary>Adds the vertex x with the value vv, if it is not there.</summary>
-    public bool AddVertex(int x, object vv)
+    public bool AddVertex(int x, object v)
     {
       if (AddVertex(x))
       {
-        SetVertexValue(x, vv);
+        SetVertexValue(x, v);
 
         return true;
       }
@@ -76,15 +90,15 @@
       return false;
     }
     /// <summary>Tests whether there is a vertex x.</summary>
-    public bool ContainsVertex(int x)
+    public bool VertexExists(int x)
       => x >= 0 && x < Count;
     /// <summary>Removes the vertex x, if it is there.</summary>
     public bool RemoveVertex(int x)
     {
-      var count = Count;
-
-      if (x >= 0 && x < count)
+      if (VertexExists(x))
       {
+        RemoveVertexValue(x);
+
         m_matrix = m_matrix.Remove(0, x); // Add dimension 0 to accomodate vertex values.
         m_matrix = m_matrix.Remove(1, x); // Add dimension 1 to accomodate vertex values.
 
@@ -94,9 +108,12 @@
       return false;
     }
 
-    /// <summary>Returns the value associated with the vertex x.</summary>
+    /// <summary>Returns the value associated with the vertex x. A vertex can exists without a value.</summary>
     public bool TryGetVertexValue(int x, out object v)
       => m_vertexValues.TryGetValue(x, out v!);
+    /// <summary>Removes the value for the edge and whether the removal was successful.</summary>
+    public bool RemoveVertexValue(int x)
+      => m_vertexValues.Remove(x);
     /// <summary>Sets the value associated with the vertex x to v.</summary>
     public void SetVertexValue(int x, object v)
       => m_vertexValues[x] = v;
@@ -104,7 +121,7 @@
     /// <summary>Adds the edge from the vertex x to the vertex y, if it is not there.</summary>
     public bool AddEdge(int x, int y)
     {
-      if (ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] == 0)
+      if (VertexExists(x) && VertexExists(y) && m_matrix[x, y] == 0)
       {
         m_matrix[x, y] = x != y ? 1 : 2;
 
@@ -114,22 +131,27 @@
       return false;
     }
     /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
-    public bool AddEdge(int x, int y, object ev)
+    public bool AddEdge(int x, int y, object v)
     {
       if (AddEdge(x, y))
       {
-        SetEdgeValue(x, y, ev);
+        SetEdgeValue(x, y, v);
 
         return true;
       }
 
       return false;
     }
+    /// <summary>Tests whether there is an edge (x, y) available, either directed or a loop.</summary>
+    public bool EdgeExists(int x, int y)
+      => VertexExists(x) && VertexExists(y) && m_matrix[x, y] > 0;
     /// <summary>Removes the edge from the vertex x to the vertex y, if it is there.</summary>
     public bool RemoveEdge(int x, int y)
     {
-      if (ContainsVertex(x) && ContainsVertex(y) && m_matrix[x, y] > 0)
+      if (EdgeExists(x, y))
       {
+        RemoveEdgeValue(x, y);
+
         m_matrix[x, y] = 0;
 
         return true;
@@ -138,9 +160,12 @@
       return false;
     }
 
-    /// <summary>Returns the value associated with the edge (x, y).</summary>
+    /// <summary>Returns whether the edge value was found and outputs the value associated if found. An edge can exists without a value.</summary>
     public bool TryGetEdgeValue(int x, int y, out object v)
       => m_edgeValues.TryGetValue((x, y), out v!);
+    /// <summary>Removes the value for the edge and returns whether the removal was successful.</summary>
+    public bool RemoveEdgeValue(int x, int y)
+      => m_edgeValues.Remove((x, y));
     /// <summary>Sets the value associated with the edge (x, y) to v.</summary>
     public void SetEdgeValue(int x, int y, object v)
       => m_edgeValues[(x, y)] = v;
@@ -153,8 +178,8 @@
     /// <returns></returns>
     public (double totalFlow, double totalCost) GetBellmanFordMaxFlowMinCost(int x, int y, System.Func<object, double> capacitySelector, System.Func<object, double> costSelector)
     {
-      if (!ContainsVertex(x)) throw new System.ArgumentOutOfRangeException(nameof(x));
-      if (!ContainsVertex(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
+      if (!VertexExists(x)) throw new System.ArgumentOutOfRangeException(nameof(x));
+      if (!VertexExists(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
       if (capacitySelector is null) throw new System.ArgumentNullException(nameof(capacitySelector));
       if (costSelector is null) throw new System.ArgumentNullException(nameof(costSelector));
 
@@ -268,7 +293,7 @@
 
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
-      var edges = System.Linq.Enumerable.ToList(GetEdgesWithValue()); // Cache edges, because we need it while there are available distances.
+      var edges = System.Linq.Enumerable.ToList(GetEdges()); // Cache edges, because we need it while there are available distances.
 
       while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
       {
@@ -292,16 +317,7 @@
       }
     }
 
-    public System.Collections.Generic.IEnumerable<(int x, int y)> GetEdges()
-    {
-      var count = Count;
-
-      for (var x = 0; x < count; x++)
-        for (var y = 0; y < count; y++)
-          if (m_matrix[x, y] > 0)
-            yield return (x, y);
-    }
-    public System.Collections.Generic.IEnumerable<(int x, int y, object v)> GetEdgesWithValue()
+    public System.Collections.Generic.IEnumerable<(int x, int y, object v)> GetEdges()
     {
       var count = Count;
 
@@ -365,7 +381,7 @@
       sb.AppendLine();
 
       sb.AppendLine(@"Edges (x, y, value):");
-      sb.AppendJoin(System.Environment.NewLine, GetEdgesWithValue()).AppendLine();
+      sb.AppendJoin(System.Environment.NewLine, GetEdges()).AppendLine();
 
       return sb.ToString();
     }

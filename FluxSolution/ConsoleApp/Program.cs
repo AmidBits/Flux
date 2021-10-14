@@ -23,10 +23,9 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      foreach (var type in typeof(Flux.AssemblyInfo).Assembly.GetTypes().Where(t => t.IsEnum).OrderBy(t => t.FullName))
-        System.Console.WriteLine(type.FullName);
 
-      return;
+      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+
 
 
 
@@ -84,8 +83,12 @@ namespace ConsoleApp
 
       return;
 
-      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+      var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
+      gam.AddVertex(0);
+      gam.AddVertex(1);
+      gam.AddVertex(2);
+      gam.AddVertex(3);
       gam.AddVertex(4);
 
       // 6, 8
@@ -109,8 +112,8 @@ namespace ConsoleApp
 
       System.Console.WriteLine(gam.ToConsoleString());
 
-      var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
-      System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
+      //var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
+      //System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
       System.Console.WriteLine();
 
       var cap101 = new double[,] {
@@ -287,43 +290,43 @@ namespace ConsoleApp
       g.AddVertex(7, 'h');
       g.AddVertex(8, 'i');
 
-      g.AddSimpleDirectedEdge(0, 1, 4);
-      g.AddSimpleDirectedEdge(1, 0, 4);
+      g.AddEdge(0, 1, 4);
+      g.AddEdge(1, 0, 4);
 
-      g.AddSimpleDirectedEdge(0, 7, 8);
+      g.AddEdge(0, 7, 8);
 
-      g.AddSimpleDirectedEdge(1, 2, 8);
+      g.AddEdge(1, 2, 8);
 
-      g.AddSimpleDirectedEdge(2, 1, 8);
-      g.AddSimpleDirectedEdge(2, 3, 7);
-      g.AddSimpleDirectedEdge(2, 5, 4);
-      g.AddSimpleDirectedEdge(2, 8, 2);
+      g.AddEdge(2, 1, 8);
+      g.AddEdge(2, 3, 7);
+      g.AddEdge(2, 5, 4);
+      g.AddEdge(2, 8, 2);
 
-      g.AddSimpleDirectedEdge(3, 2, 7);
-      g.AddSimpleDirectedEdge(3, 5, 14);
-      g.AddSimpleDirectedEdge(3, 3, 13);
-      g.AddSimpleDirectedEdge(3, 4, 9);
+      g.AddEdge(3, 2, 7);
+      g.AddEdge(3, 5, 14);
+      g.AddEdge(3, 3, 13);
+      g.AddEdge(3, 4, 9);
 
-      g.AddSimpleDirectedEdge(4, 3, 9);
-      g.AddSimpleDirectedEdge(4, 5, 10);
+      g.AddEdge(4, 3, 9);
+      g.AddEdge(4, 5, 10);
 
-      g.AddSimpleDirectedEdge(5, 2, 4);
-      g.AddSimpleDirectedEdge(5, 3, 14);
-      g.AddSimpleDirectedEdge(5, 4, 10);
-      g.AddSimpleDirectedEdge(5, 6, 2);
+      g.AddEdge(5, 2, 4);
+      g.AddEdge(5, 3, 14);
+      g.AddEdge(5, 4, 10);
+      g.AddEdge(5, 6, 2);
 
-      g.AddSimpleDirectedEdge(6, 5, 2);
-      g.AddSimpleDirectedEdge(6, 7, 1);
-      g.AddSimpleDirectedEdge(6, 8, 6);
+      g.AddEdge(6, 5, 2);
+      g.AddEdge(6, 7, 1);
+      g.AddEdge(6, 8, 6);
 
-      g.AddSimpleDirectedEdge(7, 0, 8);
-      g.AddSimpleDirectedEdge(7, 1, 11);
-      g.AddSimpleDirectedEdge(7, 6, 1);
-      g.AddSimpleDirectedEdge(7, 8, 7);
+      g.AddEdge(7, 0, 8);
+      g.AddEdge(7, 1, 11);
+      g.AddEdge(7, 6, 1);
+      g.AddEdge(7, 8, 7);
 
-      g.AddSimpleDirectedEdge(8, 2, 2);
-      g.AddSimpleDirectedEdge(8, 6, 6);
-      g.AddSimpleDirectedEdge(8, 7, 7);
+      g.AddEdge(8, 2, 2);
+      g.AddEdge(8, 6, 6);
+      g.AddEdge(8, 7, 7);
 
       var vertices = g.GetVertices().ToList();
       var edges = g.GetDirectedEdges().ToList();
