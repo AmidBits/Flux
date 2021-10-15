@@ -70,177 +70,170 @@ namespace ConsoleApp
 
       //return;
 
-      var m = new int[,] {
-        { 1, 2, 3, 4 },
-        { 5, 6, 7, 8 },
-        { 9, 10, 11, 12 },
-      };
-      System.Console.WriteLine(nameof(m));
-      System.Console.WriteLine(m.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var m = new int[,] {
+      //  { 1, 2, 3, 4 },
+      //  { 5, 6, 7, 8 },
+      //  { 9, 10, 11, 12 },
+      //};
+      //System.Console.WriteLine(nameof(m));
+      //System.Console.WriteLine(m.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mrotatec = m.RotateClockwise();
-      System.Console.WriteLine(nameof(mrotatec));
-      System.Console.WriteLine(mrotatec.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mrotatec = m.RotateClockwise();
+      //System.Console.WriteLine(nameof(mrotatec));
+      //System.Console.WriteLine(mrotatec.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mrotatecc = m.RotateCounterClockwise();
-      System.Console.WriteLine(nameof(mrotatecc));
-      System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mrotatecc = m.RotateCounterClockwise();
+      //System.Console.WriteLine(nameof(mrotatecc));
+      //System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mtranspose = m.Transpose();
-      System.Console.WriteLine(nameof(mtranspose));
-      System.Console.WriteLine(mtranspose.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mtranspose = m.Transpose();
+      //System.Console.WriteLine(nameof(mtranspose));
+      //System.Console.WriteLine(mtranspose.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var minsert = m.Insert(1, 1, 4, 0);
-      System.Console.WriteLine(nameof(minsert));
-      System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
-      minsert.Fill(0, 1, 3, 4, 9);
-      System.Console.WriteLine(nameof(minsert.Fill));
-      System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var minsert = m.Insert(1, 1, 4, 0);
+      //System.Console.WriteLine(nameof(minsert));
+      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
+      //minsert.Fill(0, 1, 3, 4, 9);
+      //System.Console.WriteLine(nameof(minsert.Fill));
+      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mflip0 = m.Flip(0);
-      System.Console.WriteLine(nameof(mflip0));
-      System.Console.WriteLine(mflip0.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mflip0 = m.Flip(0);
+      //System.Console.WriteLine(nameof(mflip0));
+      //System.Console.WriteLine(mflip0.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mflip1 = m.Flip(1);
-      System.Console.WriteLine(nameof(mflip1));
-      System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mflip1 = m.Flip(1);
+      //System.Console.WriteLine(nameof(mflip1));
+      //System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
-      var mremove = m.Remove(1, 1);
-      System.Console.WriteLine(nameof(mremove));
-      System.Console.WriteLine(mremove.ToConsoleBlock(uniformWidth: true));
-      System.Console.WriteLine();
+      //var mremove = m.Remove(1, 1);
+      //System.Console.WriteLine(nameof(mremove));
+      //System.Console.WriteLine(mremove.ToConsoleBlock(uniformWidth: true));
+      //System.Console.WriteLine();
 
+      //return;
 
+      //var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
+      //gam.AddVertex(0);
+      //gam.AddVertex(1);
+      //gam.AddVertex(2);
+      //gam.AddVertex(3);
+      //gam.AddVertex(4);
 
-
-      return;
-
-      var gam = new Flux.DataStructures.Graphs.AdjacencyList();
-
-      gam.AddVertex(0);
-      gam.AddVertex(1);
-      gam.AddVertex(2);
-      gam.AddVertex(3);
-      gam.AddVertex(4);
-
-      // 6, 8
-      gam.AddEdge(0, 1, (3, 1));
-      gam.AddEdge(0, 2, (1, 0));
-      gam.AddEdge(0, 4, (3, 2));
-      gam.AddEdge(1, 2, (2, 0));
-      gam.AddEdge(1, 3, (0, 3));
-      gam.AddEdge(2, 3, (1, 0));
-      gam.AddEdge(2, 4, (6, 0));
-      gam.AddEdge(3, 4, (2, 1));
-
-      // 10, 1
+      //// 6, 8
       //gam.AddEdge(0, 1, (3, 1));
-      //gam.AddEdge(0, 2, (4, 0));
-      //gam.AddEdge(0, 3, (5, 0));
+      //gam.AddEdge(0, 2, (1, 0));
+      //gam.AddEdge(0, 4, (3, 2));
       //gam.AddEdge(1, 2, (2, 0));
-      //gam.AddEdge(2, 3, (4, 0));
-      //gam.AddEdge(2, 4, (1, 0));
-      //gam.AddEdge(3, 4, (10, 0));
+      //gam.AddEdge(1, 3, (0, 3));
+      //gam.AddEdge(2, 3, (1, 0));
+      //gam.AddEdge(2, 4, (6, 0));
+      //gam.AddEdge(3, 4, (2, 1));
 
-      System.Console.WriteLine(gam.ToConsoleString());
+      //// 10, 1
+      ////gam.AddEdge(0, 1, (3, 1));
+      ////gam.AddEdge(0, 2, (4, 0));
+      ////gam.AddEdge(0, 3, (5, 0));
+      ////gam.AddEdge(1, 2, (2, 0));
+      ////gam.AddEdge(2, 3, (4, 0));
+      ////gam.AddEdge(2, 4, (1, 0));
+      ////gam.AddEdge(3, 4, (10, 0));
 
-      //var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
-      //System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
-      System.Console.WriteLine();
+      //System.Console.WriteLine(gam.ToConsoleString());
 
-      var cap101 = new double[,] {
-        { 0, 3, 4, 5, 0 },
-        { 0, 0, 2, 0, 0 },
-        { 0, 0, 0, 4, 1 },
-        { 0, 0, 0, 0, 10 },
-        { 0, 0, 0, 0, 0 }
-      };
-      var cost101 = new double[,] {
-        { 0, 1, 0, 0, 0 },
-        { 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0 }
-      };
+      ////var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
+      ////System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
+      //System.Console.WriteLine();
 
+      //var cap101 = new double[,] {
+      //  { 0, 3, 4, 5, 0 },
+      //  { 0, 0, 2, 0, 0 },
+      //  { 0, 0, 0, 4, 1 },
+      //  { 0, 0, 0, 0, 10 },
+      //  { 0, 0, 0, 0, 0 }
+      //};
+      //var cost101 = new double[,] {
+      //  { 0, 1, 0, 0, 0 },
+      //  { 0, 0, 0, 0, 0 },
+      //  { 0, 0, 0, 0, 0 },
+      //  { 0, 0, 0, 0, 0 },
+      //  { 0, 0, 0, 0, 0 }
+      //};
 
+      //return;
 
-      return;
+      //var am = new Flux.DataStructures.Graphs.AdjacencyMatrix();
 
-      var am = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+      //am.AddVertex(0, 'a');
+      //am.AddVertex(1, 'b');
+      //am.AddVertex(2, 'c');
+      //am.AddVertex(3, 'd');
+      //am.AddVertex(4, 'e');
+      //am.AddVertex(5, 'f');
+      //am.AddVertex(6, 'g');
+      //am.AddVertex(7, 'h');
+      //am.AddVertex(8, 'i');
 
-      am.AddVertex(0, 'a');
-      am.AddVertex(1, 'b');
-      am.AddVertex(2, 'c');
-      am.AddVertex(3, 'd');
-      am.AddVertex(4, 'e');
-      am.AddVertex(5, 'f');
-      am.AddVertex(6, 'g');
-      am.AddVertex(7, 'h');
-      am.AddVertex(8, 'i');
+      //am.AddEdge(0, 1, 4);
+      //am.AddEdge(1, 0, 4);
 
-      am.AddEdge(0, 1, 4);
-      am.AddEdge(1, 0, 4);
+      //am.AddEdge(0, 7, 8);
 
-      am.AddEdge(0, 7, 8);
+      //am.AddEdge(1, 2, 8);
 
-      am.AddEdge(1, 2, 8);
+      //am.AddEdge(2, 1, 8);
+      //am.AddEdge(2, 3, 7);
+      //am.AddEdge(2, 5, 4);
+      //am.AddEdge(2, 8, 2);
 
-      am.AddEdge(2, 1, 8);
-      am.AddEdge(2, 3, 7);
-      am.AddEdge(2, 5, 4);
-      am.AddEdge(2, 8, 2);
+      //am.AddEdge(3, 2, 7);
+      //am.AddEdge(3, 5, 14);
+      //am.AddEdge(3, 3, 13);
+      //am.AddEdge(3, 4, 9);
 
-      am.AddEdge(3, 2, 7);
-      am.AddEdge(3, 5, 14);
-      am.AddEdge(3, 3, 13);
-      am.AddEdge(3, 4, 9);
+      //am.AddEdge(4, 3, 9);
+      //am.AddEdge(4, 5, 10);
 
-      am.AddEdge(4, 3, 9);
-      am.AddEdge(4, 5, 10);
+      //am.AddEdge(5, 2, 4);
+      //am.AddEdge(5, 3, 14);
+      //am.AddEdge(5, 4, 10);
+      //am.AddEdge(5, 6, 2);
 
-      am.AddEdge(5, 2, 4);
-      am.AddEdge(5, 3, 14);
-      am.AddEdge(5, 4, 10);
-      am.AddEdge(5, 6, 2);
+      //am.AddEdge(6, 5, 2);
+      //am.AddEdge(6, 7, 1);
+      //am.AddEdge(6, 8, 6);
 
-      am.AddEdge(6, 5, 2);
-      am.AddEdge(6, 7, 1);
-      am.AddEdge(6, 8, 6);
+      //am.AddEdge(7, 0, 8);
+      //am.AddEdge(7, 1, 11);
+      //am.AddEdge(7, 6, 1);
+      //am.AddEdge(7, 8, 7);
 
-      am.AddEdge(7, 0, 8);
-      am.AddEdge(7, 1, 11);
-      am.AddEdge(7, 6, 1);
-      am.AddEdge(7, 8, 7);
+      //am.AddEdge(8, 2, 2);
+      //am.AddEdge(8, 6, 6);
+      //am.AddEdge(8, 7, 7);
 
-      am.AddEdge(8, 2, 2);
-      am.AddEdge(8, 6, 6);
-      am.AddEdge(8, 7, 7);
+      //System.Console.WriteLine(am.ToConsoleString());
 
-      System.Console.WriteLine(am.ToConsoleString());
+      //System.Console.WriteLine(@"Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
+      //System.Console.WriteLine($"{string.Join(System.Environment.NewLine, am.GetDijkstraShortestPathTree(0, o => System.Convert.ToDouble(o)))}");
 
-      System.Console.WriteLine(@"Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
-      System.Console.WriteLine($"{string.Join(System.Environment.NewLine, am.GetDijkstraShortestPathTree(0, o => System.Convert.ToDouble(o)))}");
-
-      return;
+      //return;
 
       var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };
+      var os2 = new Flux.DataStructures.OrderedSet<int>() { 4, 5, 6, 7, 8, 9 };
 
       System.Console.WriteLine(nameof(os1));
       foreach (var item in os1)
         System.Console.WriteLine(item);
       System.Console.WriteLine();
-
-      var os2 = new Flux.DataStructures.OrderedSet<int>() { 4, 5, 6, 7, 8, 9 };
 
       System.Console.WriteLine(nameof(os2));
       foreach (var item in os2)
@@ -301,158 +294,12 @@ namespace ConsoleApp
       System.Console.WriteLine(Flux.SetOps.IsSetProperSupersetOf(os1, os2));
       System.Console.WriteLine();
 
-      //var am = new Flux.DataStructures.Graph.AdjacentMatrix<char, double>(i => i);
-
-      //am.AddVertex('a');
-      //am.AddVertex('b');
-      //am.AddVertex('c');
-      //am.AddVertex('d');
-      //am.AddVertex('e');
-      //am.AddVertex('f');
-
-      //am.AddDirectedEdge('a', 'b', 1.5);
-      //am.AddDirectedEdge('a', 'c', 2.5);
-      //am.AddDirectedEdge('b', 'd', 1.75);
-      //am.AddDirectedEdge('c', 'e', 1.25);
-      //am.AddDirectedEdge('d', 'f', 1.75);
-      //am.AddDirectedEdge('e', 'f', 2.25);
-
-      //am.DijkstraShortestPath('a', 'f');
-
-      //var g = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, char, double>();
-
-      //g.AddVertex(0, 'a');
-      //g.AddVertex(1, 'b');
-      //g.AddVertex(2, 'c');
-      //g.AddVertex(3, 'd');
-      //g.AddVertex(4, 'e');
-      //g.AddVertex(5, 'f');
-      //g.AddVertex(6, 'g');
-      //g.AddVertex(7, 'h');
-      //g.AddVertex(8, 'i');
-
-      //g.AddEdge(0, 1, 4);
-      //g.AddEdge(1, 0, 4);
-
-      //g.AddEdge(0, 7, 8);
-
-      //g.AddEdge(1, 2, 8);
-
-      //g.AddEdge(2, 1, 8);
-      //g.AddEdge(2, 3, 7);
-      //g.AddEdge(2, 5, 4);
-      //g.AddEdge(2, 8, 2);
-
-      //g.AddEdge(3, 2, 7);
-      //g.AddEdge(3, 5, 14);
-      //g.AddEdge(3, 3, 13);
-      //g.AddEdge(3, 4, 9);
-
-      //g.AddEdge(4, 3, 9);
-      //g.AddEdge(4, 5, 10);
-
-      //g.AddEdge(5, 2, 4);
-      //g.AddEdge(5, 3, 14);
-      //g.AddEdge(5, 4, 10);
-      //g.AddEdge(5, 6, 2);
-
-      //g.AddEdge(6, 5, 2);
-      //g.AddEdge(6, 7, 1);
-      //g.AddEdge(6, 8, 6);
-
-      //g.AddEdge(7, 0, 8);
-      //g.AddEdge(7, 1, 11);
-      //g.AddEdge(7, 6, 1);
-      //g.AddEdge(7, 8, 7);
-
-      //g.AddEdge(8, 2, 2);
-      //g.AddEdge(8, 6, 6);
-      //g.AddEdge(8, 7, 7);
-
-      //var vertices = g.GetVertices().ToList();
-      //var edges = g.GetDirectedEdges().ToList();
-
-      //var dspt = g.GetDijkstraShortestPathTree(0, i => i);
-      ////var lpmst = daligraph.PrimsMinimumSpanningTree(0, i => i);
-
-      //var verticesWithDegrees = g.GetVerticesWithDegree();
-      //var verticesWithValues = g.GetVerticesWithValue();
-
-      //System.Console.WriteLine(@"Graph Vertices (key, value, degree):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, vertices.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine(@"Graph Vertices (key, degree):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithDegrees.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine(@"Graph Vertices (key, value):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, verticesWithValues.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine(@"Graph Edges (source-key, target-key, value):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, edges.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      ////System.Console.WriteLine(@"Graph Edges Exploded (source-key, target-key, value):");
-      ////System.Console.WriteLine(string.Join(System.Environment.NewLine, edgesExploded.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine(@"Dijkstra's Shortest Path Tree (SPT) (destination-key, distance):");
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, dspt.Select((e, i) => $"{(i + 1):D2} = {e}")));
-      //System.Console.WriteLine();
-
-      //System.Console.WriteLine(g.ToConsoleString());
-      //System.Console.WriteLine();
-
       return;
 
-      var s1 = "and";
-      var s2 = @"Wishing to have an extensive list of Synonyms and Antonyms for another project, I settled on Fallows’ amazing publication. However, I could not find an OCR text which was clear of the many OCR-scan errors.I did my own OCR, which joined many of the line-end hyphenated words automatically, but which still resulted in a very large number of nearly identical(to other OCR scans) errors.This is probably not the fault of the OCR software, but rather of the quality of the 19th Century source type and ink, which tended to be far from crisp.The software was not entirely perfect though and it would often invert n and u, or render either of those letters as ii, and render i as l (lower case L). R and K were regularly mixed, so ROCK could be rendered as KOCR – if it managed to get the circular letters correct.Just one example of variation is to be found in the rendering of the coded abbreviation for SYNONYM, ‘SYN.’ It might be rendered with a period, comma, both or none; and some of these variations were recorded:  \ BTH \ 2vN. \ 8_vs. \ BYN, \ KYN. \ PYN. \ RYN. \ SIN, \ Srn. \ STIC. \ STK. \ STN. \ STN., \ STW. \ SVN_ \ SXN. \ SY.V. \ SY:. \ SYH. \ SYK. \ SYN, \ Syn, \ SYN. \ SYN. \ SYN._ \ SYS,. \ SYS. \ SYW. \ SYX\. and \ YX\. !I know! Grrr!";
-      var s3 = @"bbaaccaadd";
-
-      var bmh = new Flux.Text.BoothsAlgorithm<char>();
-
-      var r = bmh.MinimalRotation(s3);
-
-      //Flux.AmbOps.Amb.Example();
-      //System.Console.WriteLine();
-
-      //Flux.ConstraintPropagationSolver.SolveForKnownFacts();
-      //System.Console.WriteLine();
+      //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
+      //game.RunInConsole(200);
 
       //return;
-
-      //int[,] board = {
-      //  { 1, 0, 2 },
-      //  { 1, 0, 0 },
-      //  { 0, 0, 2 }
-      //};
-
-      //int[,] board4 = {
-      //  { 0, 2, 0, 0, 0 },
-      //  { 0, 0, 0, 0, 0 },
-      //  { 0, 0, 0, 0, 0 },
-      //  { 1, 0, 0, 1, 2 },
-      //  //{ 0, 0, 0, 0, 0 },
-      //  //{ 0, 0, 0, 0 },
-      //  //{ 0, 0, 0, 0, 0, 0 },
-      //};
-
-      //System.Console.WriteLine(board4.ToConsoleBlock());
-
-      //System.Console.WriteLine(Flux.Model.TicTacToe2.Game.GetCounts(board4, out var playerUp).ToConsoleString());
-      //System.Console.WriteLine(playerUp);
-      //System.Console.WriteLine();
-
-      //var moves = Flux.Model.TicTacToe2.Game.GetMoves4(board4, out var maxMove, out var minMove);
-
-      //System.Console.WriteLine($"Best for max: {maxMove} and best for min: {minMove}");
-      //System.Console.WriteLine();
-
-      //foreach (var move in moves)
-      //  System.Console.WriteLine(move);
-      //System.Console.WriteLine();
-
-      ////      var scores = new int[] { 3, 5, 6, 9, 1, 2, 0, -1 };
-
-      ////      var mm = new Flux.Model.MinMax();
-
-      ////System.Console.WriteLine(      mm.Minimax(true, scores));
-
-      var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
-      game.RunInConsole(200);
-      return;
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));
