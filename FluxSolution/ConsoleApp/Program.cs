@@ -24,7 +24,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
 
-      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+      var am0 = new Flux.DataStructures.Graphs.AdjacencyMatrix();
 
 
 
