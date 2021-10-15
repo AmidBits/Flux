@@ -8,14 +8,18 @@ namespace Flux
     /// <param name="includeNames">Whether to the column header names for each result set.</param>
     public static System.Collections.Generic.IEnumerable<object[]> ExecuteArray(this System.Data.IDbConnection source, string commandText, int commandTimeout, bool includeNames)
     {
-      var index = 0;
+      using var e = ExecuteRecords(source, commandText, commandTimeout).GetEnumerator();
 
-      foreach (var idr in ExecuteRecords(source, commandText, commandTimeout))
+      if (e.MoveNext())
       {
-        if (index == 0 && includeNames)
-          yield return GetNames(idr).ToArray();
+        if (includeNames)
+          yield return GetNames(e.Current).ToArray();
 
-        yield return GetValues(idr);
+        do
+        {
+          yield return GetValues(e.Current);
+        }
+        while (e.MoveNext());
       }
     }
   }

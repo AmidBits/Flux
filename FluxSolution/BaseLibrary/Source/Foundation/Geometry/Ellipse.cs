@@ -3,7 +3,7 @@ namespace Flux.Geometry
   public struct Ellipse
     : System.IEquatable<Ellipse>
   {
-    public static readonly Ellipse Zero;
+    public static readonly Ellipse Empty;
 
     /// <summary>The width (X axis) of the ellipse.</summary>
     public readonly double Width;

@@ -8,9 +8,11 @@ namespace Flux
     /// <example>new System.IO.StreamReader(new System.Uri(@"file://\Flux\Resources\Data\Ucd_UnicodeText.txt\").GetStream(), System.Text.Encoding.UTF8)</example>
     public static System.IO.Stream GetStream(this System.Uri uri)
     {
-      if ((uri ?? throw new System.ArgumentNullException(nameof(uri))).IsFile)
+      if (uri is null) throw new System.ArgumentNullException(nameof(uri));
+
+      if (uri.IsFile)
       {
-        return (new System.IO.FileStream(uri.LocalPath.StartsWith(@"/", System.StringComparison.Ordinal) ? uri.LocalPath.Substring(1) : uri.LocalPath, System.IO.FileMode.Open));
+        return new System.IO.FileStream(uri.LocalPath.StartsWith(@"/", System.StringComparison.Ordinal) ? uri.LocalPath.Substring(1) : uri.LocalPath, System.IO.FileMode.Open);
       }
       else
       {

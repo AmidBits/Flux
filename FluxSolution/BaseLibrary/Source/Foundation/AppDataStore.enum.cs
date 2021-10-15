@@ -1,5 +1,20 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
+    public static System.IO.DirectoryInfo? GetDirectoryInfo(this AppDataStore store)
+      => new System.IO.DirectoryInfo(GetMsAppDataPath(store));
+    public static string GetMsAppDataPath(this AppDataStore store)
+      => store switch
+      {
+        AppDataStore.Local => @"ms-appdata:///local/",
+        AppDataStore.Roaming => @"ms-appdata:///roaming/",
+        AppDataStore.Temp => @"ms-appdata:///temp/",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(store))
+      };
+  }
+
   /// <summary>Represents the types of stores available for application data.</summary>
   public enum AppDataStore
   {

@@ -17,10 +17,6 @@ namespace ConsoleApp
 {
   class Program
   {
-
-
-
-
     private static void TimedMain(string[] args)
     {
 

@@ -2,12 +2,6 @@ using System.Linq;
 
 namespace Flux.Geometry
 {
-  public enum HexagonOrientation
-  {
-    FlatTopped,
-    PointyTopped
-  }
-
   // https://en.wikipedia.org/wiki/Centered_hexagonal_number
   // https://hexnet.org/content/hex-numbers
   // https://www.redblobgames.com/grids/hexagons/

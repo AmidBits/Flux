@@ -21,31 +21,53 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
     public static string EnvironmentOsTitle
-      => System.Environment.OSVersion.ToString().Substring(0, System.Environment.OSVersion.ToString().Trim().LastIndexOf(' '));
+    {
+      get
+      {
+        var s = System.Environment.OSVersion.ToString();
+
+        return s.Substring(0, s.Trim().LastIndexOf(' '));
+      }
+    }
+
     /// <summary>Returns the version of the current platform identifier.</summary>
     public static System.Version EnvironmentOsVersion
-      => System.Version.TryParse(System.Environment.OSVersion.ToString().Substring(System.Environment.OSVersion.ToString().Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+    {
+      get
+      {
+        var s = System.Environment.OSVersion.ToString();
+
+        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+          return version;
+
+        throw new System.NotSupportedException();
+      }
+    }
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(0, System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim().LastIndexOf(' '));
+    {
+      get
+      {
+        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
+
+        return s.Substring(0, s.Trim().LastIndexOf(' '));
+      }
+    }
+
     /// <summary>Returns the version of the hosting framework.</summary>
     public static System.Version FrameworkVersion
-      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString().Substring(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
-
-    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
-    public static System.IO.DirectoryInfo? GetDirectoryInfo(AppDataStore store)
-      => store switch
+    {
+      get
       {
-        AppDataStore.Local => new System.IO.DirectoryInfo(@"ms-appdata:///local/"),
-        AppDataStore.Roaming => new System.IO.DirectoryInfo(@"ms-appdata:///roaming/"),
-        AppDataStore.Temp => new System.IO.DirectoryInfo(@"ms-appdata:///temp/"),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(store))
-      };
+        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
 
-    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="System.Environment.SpecialFolder"/>.</summary>
-    public static System.IO.DirectoryInfo? GetDirectoryInfo(System.Environment.SpecialFolder specialFolder)
-      => System.Environment.GetFolderPath(specialFolder) is var fp && string.IsNullOrEmpty(fp) ? default : new System.IO.DirectoryInfo(fp);
+        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+          return version;
+
+        throw new System.NotSupportedException();
+      }
+    }
 
     /// <summary>Returns the computer name from <see cref="System.Environment"/>.</summary>
     public static string MachineName
@@ -64,10 +86,28 @@ namespace Flux
       => System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString();
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string RuntimeOsTitle
-      => System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(0, System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' '));
+    {
+      get
+      {
+        var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+
+        return s.Substring(0, s.Trim().LastIndexOf(' '));
+      }
+    }
+
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version RuntimeOsVersion
-      => System.Version.TryParse(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Substring(System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim().LastIndexOf(' ')), out var version) ? version : throw new System.NotSupportedException();
+    {
+      get
+      {
+        var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+
+        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+          return version;
+
+        throw new System.NotSupportedException();
+      }
+    }
 
     /// <summary>Returns a dictionary of special folder names and they respective directory info paths.</summary>
     public static System.Collections.IDictionary SpecialFolders
