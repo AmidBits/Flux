@@ -1,5 +1,11 @@
 namespace Flux.Quantity
 {
+  public enum EnergyUnit
+  {
+    Joule,
+    ElectronVolt,
+  }
+
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy

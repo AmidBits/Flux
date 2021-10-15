@@ -36,6 +36,21 @@ namespace Flux
 
   namespace Quantity
   {
+    public enum LengthUnit
+    {
+      Millimeter,
+      Centimeter,
+      Inch,
+      Decimeter,
+      Foot,
+      Yard,
+      Meter,
+      NauticalMile,
+      Mile,
+      Kilometer,
+      AstronomicalUnit
+    }
+
     /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Length"/>
     public struct Length

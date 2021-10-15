@@ -17,13 +17,58 @@ namespace ConsoleApp
 {
   class Program
   {
+    #region Amb-testing
+    static System.Numerics.BigInteger[] a = Flux.Numerics.PrimeNumber.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+    static int[] b = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
+    static int[] c = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
+    static int[] d = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
+
+    private static void AmbTesting()
+    {
+      for (var i = 0; i < 3; i++)
+      {
+        AmbTestingImpl();
+
+        System.Console.WriteLine();
+      }
+
+      static void AmbTestingImpl()
+      {
+        var amb = new Flux.AmbOps.Amb();
+
+        #region Flow & Measurements
+        a.Shuffle();
+        b.Shuffle();
+        c.Shuffle();
+        d.Shuffle();
+
+        //var l = a.Length + b.Length + c.Length + d.Length;
+        //System.Console.WriteLine($"Length: {l}");
+        #endregion
+
+        var x = amb.Choose(a);
+        var y = amb.Choose(b);
+        var z = amb.Choose(c);
+        var w = amb.Choose(d);
+        var answer = 29;
+
+        amb.RequireFinal(() => x.Value + y.Value + z.Value + w.Value == answer);
+
+        //System.Console.WriteLine($"{nameof(amb.Disambiguate)}: {amb.Disambiguate()}");
+
+        System.Console.WriteLine($"{x} + {y} + {z} + {w} == {answer}");
+      }
+    }
+    #endregion
+
     private static void TimedMain(string[] args)
     {
+      //AmbTesting();
 
-      var am0 = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+      var golg = new Flux.Model.GameOfLife.Game(new Flux.Geometry.Size2(30, 30), true, 0.2);
+      golg.RunInConsole(100);
 
-
-
+      return;
 
       var m = new int[,] {
         { 1, 2, 3, 4 },
@@ -406,8 +451,7 @@ namespace ConsoleApp
       ////System.Console.WriteLine(      mm.Minimax(true, scores));
 
       var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
-      var cv = new Flux.Model.GameOfLife.Console(game);
-      cv.Run(200);
+      game.RunInConsole(200);
       return;
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));

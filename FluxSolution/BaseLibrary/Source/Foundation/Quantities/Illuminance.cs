@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum IlluminanceUnit
+  {
+    Lux,
+  }
+
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance

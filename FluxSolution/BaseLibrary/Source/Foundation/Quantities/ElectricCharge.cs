@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ElectricChargeUnit
+  {
+    Coulomb,
+  }
+
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge

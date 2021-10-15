@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ElectricResistanceUnit
+  {
+    Ohm,
+  }
+
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance

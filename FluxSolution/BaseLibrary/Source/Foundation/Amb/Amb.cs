@@ -25,7 +25,7 @@ namespace Flux.AmbOps
       }
 
       if (itemsTracked == m_choices.Count)
-        throw new System.Exception("Success");
+        throw new System.Exception(nameof(Disambiguate));
 
       for (var i = 0; i < m_choices[itemsTracked].Length; i++)
       {
@@ -42,7 +42,7 @@ namespace Flux.AmbOps
 
         return false;
       }
-      catch (System.Exception ex) when (ex.Message == "Success")
+      catch (System.Exception ex) when (ex.Message == nameof(Disambiguate))
       {
         return true;
       }

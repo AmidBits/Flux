@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum MagneticFluxUnit
+  {
+    Weber,
+  }
+
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux

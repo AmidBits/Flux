@@ -22,6 +22,14 @@ namespace Flux
 
   namespace Quantity
   {
+    public enum TemperatureUnit
+    {
+      Celsius,
+      Fahrenheit,
+      Kelvin,
+      Rankine,
+    }
+
     /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
     public struct Temperature

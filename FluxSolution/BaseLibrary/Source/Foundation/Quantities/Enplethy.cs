@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum EnplethyUnit
+  {
+    Mole,
+  }
+
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy

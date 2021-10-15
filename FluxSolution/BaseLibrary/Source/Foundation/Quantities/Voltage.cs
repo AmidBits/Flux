@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum VoltageUnit
+  {
+    Volt,
+  }
+
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage

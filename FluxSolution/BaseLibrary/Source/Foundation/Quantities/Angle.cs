@@ -26,6 +26,16 @@ namespace Flux
 
   namespace Quantity
   {
+    public enum AngleUnit
+    {
+      Arcminute,
+      Arcsecond,
+      Degree,
+      Gradian,
+      Radian,
+      Turn,
+    }
+
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
     public struct Angle

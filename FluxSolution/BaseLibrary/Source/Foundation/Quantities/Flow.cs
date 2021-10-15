@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum FlowUnit
+  {
+    CubicMetersPerSecond,
+  }
+
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow

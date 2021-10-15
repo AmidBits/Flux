@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum CatalyticActivityUnit
+  {
+    Katal,
+  }
+
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity

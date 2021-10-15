@@ -32,6 +32,19 @@ namespace Flux
 
   namespace Quantity
   {
+    public enum TimeUnit
+    {
+      Nanosecond,
+      Microsecond,
+      Millisecond,
+      Second,
+      Minute,
+      Hour,
+      Day,
+      Week,
+      Fortnight,
+    }
+
     /// <summary>Time. SI unit of second. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Time"/>
     public struct Time

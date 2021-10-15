@@ -24,6 +24,15 @@ namespace Flux
 
   namespace Quantity
   {
+    public enum SpeedUnit
+    {
+      FeetPerSecond,
+      KilometersPerHour,
+      Knots,
+      MetersPerSecond,
+      MilesPerHour,
+    }
+
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
     public struct Speed

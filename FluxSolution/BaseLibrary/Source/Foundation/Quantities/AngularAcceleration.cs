@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AngularAccelerationUnit
+  {
+    RadianPerSecondSquare,
+  }
+
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration

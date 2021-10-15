@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum LuminousIntensityUnit
+  {
+    Candela,
+  }
+
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity

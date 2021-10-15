@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum AbsoluteHumidityUnit
+  {
+    GramsPerCubicMeter,
+  }
+
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity

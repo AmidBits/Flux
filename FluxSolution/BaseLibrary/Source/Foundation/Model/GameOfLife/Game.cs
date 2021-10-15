@@ -108,5 +108,43 @@
     }
     public string ToConsoleBlock()
       => string.Join(System.Environment.NewLine, ToConsoleStrings());
+
+    public void RunInConsole(int millisecondsFrameFreeze = 100)
+    {
+      Setup();
+
+      while (!System.Console.KeyAvailable || System.Console.ReadKey(true).Key != System.ConsoleKey.Escape) // Run the game until the Escape key is pressed.
+      {
+        Draw();
+
+        System.Threading.Thread.Sleep(millisecondsFrameFreeze);
+
+        Update();
+      }
+
+      /// <summary>Setup the Console.</summary>
+      void Setup()
+      {
+        System.Console.CursorVisible = false;
+
+        // Pad +1 to prevent scrolling when drawing the board.
+
+        var width = 2 * System.Math.Max(CellGrid.Width, 8) + 1; // Multiply by 2 for a symmetrical double-width for each cell.
+        var height = System.Math.Max(CellGrid.Height, 8) + 1;
+
+        if (System.OperatingSystem.IsWindows())
+        {
+          System.Console.SetWindowSize(width, height);
+          System.Console.SetBufferSize(width, height);
+        }
+      }
+
+      void Draw()
+      {
+        System.Console.SetCursorPosition(0, 0);
+
+        System.Console.Write(ToConsoleBlock());
+      }
+    }
   }
 }
