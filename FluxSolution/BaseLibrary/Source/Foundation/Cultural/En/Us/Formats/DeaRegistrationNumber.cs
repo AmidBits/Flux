@@ -4,7 +4,6 @@ namespace Flux.Cultural.EnUs
     : System.IEquatable<DeaRegistrationNumber>
   {
     public static readonly DeaRegistrationNumber Empty;
-    public bool IsEmpty => Equals(Empty);
 
     /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>

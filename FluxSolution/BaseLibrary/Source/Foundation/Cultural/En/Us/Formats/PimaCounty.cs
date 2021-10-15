@@ -7,7 +7,6 @@ namespace Flux.Cultural.EnUs.PimaCounty
     : System.IEquatable<StreetAddress>
   {
     public static readonly StreetAddress Empty;
-    public bool IsEmpty => Equals(Empty);
 
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>

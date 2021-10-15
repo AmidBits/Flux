@@ -4,7 +4,6 @@ namespace Flux.Cultural.EnUs
     : System.IEquatable<SocialSecurityNumber>
   {
     public static readonly SocialSecurityNumber Empty;
-    public bool IsEmpty => Equals(Empty);
 
     /// <summary>A regular expression that complies with SSN regulations.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Social_Security_number#Structure"/>

@@ -5,7 +5,6 @@ namespace Flux.Cultural.EnUs
     : System.IEquatable<NorthAmericanNumberingPlan>
   {
     public static readonly NorthAmericanNumberingPlan Empty;
-    public bool IsEmpty => Equals(Empty);
 
     /// <see cref="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
     public const string Regex = @"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)";
