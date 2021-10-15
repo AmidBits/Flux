@@ -18,12 +18,9 @@ namespace Flux
       m_z = z;
     }
 
-    public double X
-      => m_x;
-    public double Y
-      => m_y;
-    public double Z
-      => m_z;
+    public double X { get => m_x; }
+    public double Y { get => m_y; }
+    public double Z { get => m_z; }
 
     /// <summary>Returns the angle to the 3D X-axis.</summary>
     public double AngleToAxisX()

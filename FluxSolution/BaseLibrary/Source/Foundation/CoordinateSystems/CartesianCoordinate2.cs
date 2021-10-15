@@ -16,10 +16,8 @@ namespace Flux
       m_y = y;
     }
 
-    public double X
-      => m_x;
-    public double Y
-      => m_y;
+    public double X { get => m_x; }
+    public double Y { get => m_y; }
 
     /// <summary>Returns the angle to the 2D X-axis.</summary>
     public double AngleToAxisX()
