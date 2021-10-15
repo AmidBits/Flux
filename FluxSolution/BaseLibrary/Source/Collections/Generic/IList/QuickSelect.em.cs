@@ -8,9 +8,8 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      comparer ??= System.Collections.Generic.Comparer<T>.Default;
-
-      if (leftIndex == rightIndex) return source[leftIndex];
+      if (leftIndex == rightIndex)
+        return source[leftIndex];
 
       while (true)
       {
@@ -39,5 +38,7 @@ namespace Flux
         return storeIndex;
       }
     }
+    public static T QuickSelect<T>(this System.Collections.Generic.IList<T> source, int leftIndex, int rightIndex, int kth)
+      => QuickSelect(source, leftIndex, rightIndex, kth, System.Collections.Generic.Comparer<T>.Default);
   }
 }

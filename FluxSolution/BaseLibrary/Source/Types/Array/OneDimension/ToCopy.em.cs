@@ -4,15 +4,15 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Creates a new two-dimensional array with data from the source array. Use pre and post arguments to add surrounding space in the array.</summary>
-    public static T[] ToCopy<T>(this T[] source, int sourceIndex, int count, int preCount, int postCount)
+    public static T[] ToCopy<T>(this T[] source, int offset, int count, int preCount, int postCount)
     {
       var target = new T[preCount + count + postCount];
       while (count-- > 0)
-        target[preCount++] = source[sourceIndex++];
+        target[preCount++] = source[offset++];
       return target;
     }
     /// <summary>Creates a new two-dimensional array with data from the source array.</summary>
-    public static T[] ToCopy<T>(this T[] source, int sourceIndex, int count)
-      => ToCopy(source, sourceIndex, count, 0, 0);
+    public static T[] ToCopy<T>(this T[] source, int offset, int count)
+      => ToCopy(source, offset, count, 0, 0);
   }
 }
