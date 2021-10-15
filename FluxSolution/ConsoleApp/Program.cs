@@ -65,10 +65,10 @@ namespace ConsoleApp
     {
       //AmbTesting();
 
-      var golg = new Flux.Model.GameOfLife.Game(new Flux.Geometry.Size2(30, 30), true, 0.2);
-      golg.RunInConsole(100);
+      //var golg = new Flux.Model.GameOfLife.Game(new Flux.Geometry.Size2(30, 30), true, 0.2);
+      //golg.RunInConsole(100);
 
-      return;
+      //return;
 
       var m = new int[,] {
         { 1, 2, 3, 4 },
