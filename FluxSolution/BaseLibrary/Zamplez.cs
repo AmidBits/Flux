@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
-    /// <summary>Run all zamples available.</summary>
+    /// <summary>Run all zamplez available.</summary>
     public static void Run()
     {
       RunAmb();

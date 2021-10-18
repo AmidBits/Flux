@@ -10,6 +10,7 @@ namespace Flux
     private readonly static int[] m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
     private readonly static int[] m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
 
+    /// <summary>Run the amb operator zample.</summary>
     public static void RunAmb()
     {
       for (var i = 0; i < 3; i++)

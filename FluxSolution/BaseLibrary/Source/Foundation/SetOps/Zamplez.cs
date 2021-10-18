@@ -3,6 +3,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the set ops zample.</summary>
     public static void RunSetOps()
     {
       var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };

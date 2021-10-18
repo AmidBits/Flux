@@ -3,6 +3,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
     {
       Draw(GeographicCoordinate.MadridSpain, nameof(GeographicCoordinate.MadridSpain));
