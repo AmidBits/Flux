@@ -1,5 +1,14 @@
 ﻿namespace Flux.Dsp.AudioProcessor
 {
+  public enum MonoPolarizerMode
+  {
+    Bypass,
+    BipolarToUnipolarNegative,
+    BipolarToUnipolarPositive,
+    UnipolarNegativeToBipolar,
+    UnipolarPositiveToBipolar,
+  }
+
   /// <summary>Enables inline conversion of the polarity range, e.g. bipolar to unipolar (or the other way around).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
   public class MonoPolarizer
