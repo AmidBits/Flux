@@ -17,106 +17,16 @@ namespace ConsoleApp
 {
   class Program
   {
-    #region Amb-testing
-    static System.Numerics.BigInteger[] a = Flux.Numerics.PrimeNumber.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
-    static int[] b = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
-    static int[] c = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
-    static int[] d = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
-
-    private static void AmbTesting()
-    {
-      for (var i = 0; i < 3; i++)
-      {
-        AmbTestingImpl();
-
-        System.Console.WriteLine();
-      }
-
-      static void AmbTestingImpl()
-      {
-        var amb = new Flux.AmbOps.Amb();
-
-        #region Flow & Measurements
-        a.Shuffle();
-        b.Shuffle();
-        c.Shuffle();
-        d.Shuffle();
-
-        //var l = a.Length + b.Length + c.Length + d.Length;
-        //System.Console.WriteLine($"Length: {l}");
-        #endregion
-
-        var x = amb.Choose(a);
-        var y = amb.Choose(b);
-        var z = amb.Choose(c);
-        var w = amb.Choose(d);
-        var answer = 29;
-
-        amb.RequireFinal(() => x.Value + y.Value + z.Value + w.Value == answer);
-
-        //System.Console.WriteLine($"{nameof(amb.Disambiguate)}: {amb.Disambiguate()}");
-
-        System.Console.WriteLine($"{x} + {y} + {z} + {w} == {answer}");
-      }
-    }
-    #endregion
-
     private static void TimedMain(string[] args)
     {
-      //AmbTesting();
+#if DEBUG
+      Flux.Zamplez.Run();
+
+      return;
+#endif
 
       //var golg = new Flux.Model.GameOfLife.Game(new Flux.Geometry.Size2(30, 30), true, 0.2);
       //golg.RunInConsole(100);
-
-      //return;
-
-      //var m = new int[,] {
-      //  { 1, 2, 3, 4 },
-      //  { 5, 6, 7, 8 },
-      //  { 9, 10, 11, 12 },
-      //};
-      //System.Console.WriteLine(nameof(m));
-      //System.Console.WriteLine(m.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mrotatec = m.RotateClockwise();
-      //System.Console.WriteLine(nameof(mrotatec));
-      //System.Console.WriteLine(mrotatec.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mrotatecc = m.RotateCounterClockwise();
-      //System.Console.WriteLine(nameof(mrotatecc));
-      //System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mtranspose = m.Transpose();
-      //System.Console.WriteLine(nameof(mtranspose));
-      //System.Console.WriteLine(mtranspose.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var minsert = m.Insert(1, 1, 4, 0);
-      //System.Console.WriteLine(nameof(minsert));
-      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-      //minsert.Fill(0, 1, 3, 4, 9);
-      //System.Console.WriteLine(nameof(minsert.Fill));
-      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mflip0 = m.Flip(0);
-      //System.Console.WriteLine(nameof(mflip0));
-      //System.Console.WriteLine(mflip0.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mflip1 = m.Flip(1);
-      //System.Console.WriteLine(nameof(mflip1));
-      //System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-
-      //var mremove = m.Remove(1, 1);
-      //System.Console.WriteLine(nameof(mremove));
-      //System.Console.WriteLine(mremove.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
 
       //return;
 
@@ -224,34 +134,6 @@ namespace ConsoleApp
 
       //System.Console.WriteLine(@"Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
       //System.Console.WriteLine($"{string.Join(System.Environment.NewLine, am.GetDijkstraShortestPathTree(0, o => System.Convert.ToDouble(o)))}");
-
-      //return;
-
-      var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };
-      var os2 = new Flux.DataStructures.OrderedSet<int>() { 4, 5, 6, 7, 8, 9 };
-
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(os1)}"); foreach (var item in os1) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(os2)}"); foreach (var item in os2) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetSourceDifference)}"); foreach (var item in Flux.SetOps.SetSourceDifference(os1, os2)) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetSymmetricDifference)}"); foreach (var item in Flux.SetOps.SetSymmetricDifference(os1, os2)) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetTargetDifference)}"); foreach (var item in Flux.SetOps.SetTargetDifference(os1, os2)) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetIntersection)}"); foreach (var item in Flux.SetOps.SetIntersection(os1, os2)) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetUnion)}"); foreach (var item in Flux.SetOps.SetUnion(os1, os2)) System.Console.WriteLine(item);
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetUnionAll)}"); foreach (var item in Flux.SetOps.SetUnionAll(os1, os2)) System.Console.WriteLine(item);
-
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.SetEquality)} = {Flux.SetOps.SetEquality(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSetOverlapping)} = {Flux.SetOps.IsSetOverlapping(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSetSubsetOf)} = {Flux.SetOps.IsSetSubsetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSetProperSubsetOf)} = {Flux.SetOps.IsSetProperSubsetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSetSupersetOf)} = {Flux.SetOps.IsSetSupersetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSetProperSupersetOf)} = {Flux.SetOps.IsSetProperSupersetOf(os1, os2)}");
-
-      System.Console.WriteLine();
-
-      return;
-
-      //var game = new Flux.Model.GameOfLife.Game(32, 32, true, 0.5);
-      //game.RunInConsole(200);
 
       //return;
 

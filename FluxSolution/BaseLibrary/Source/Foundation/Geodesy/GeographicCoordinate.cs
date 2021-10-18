@@ -520,31 +520,3 @@ namespace Flux
     #endregion Object overrides
   }
 }
-
-/*
-      System.Console.OutputEncoding = System.Text.Encoding.Unicode;
-
-      var lax = new Flux.Geoposition() { Latitude = Flux.Convert.Angle.RadiansToDegrees(0.592539), Longitude = Flux.Convert.Angle.RadiansToDegrees(2.066470) };
-      var jfk = new Flux.Geoposition() { Latitude = Flux.Convert.Angle.RadiansToDegrees(0.709186), Longitude = Flux.Convert.Angle.RadiansToDegrees(1.287762) };
-
-      if ("32°13′18″N 110°55′35″W" is string dmsTucson && Flux.Geoposition.TryParseDMS(dmsTucson, out var ddTucson))
-      {
-        System.Console.WriteLine("Tucson: {0}, {1}, {2}", dmsTucson, ddTucson, string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:D6NS} {1:D6EW}", ddTucson.Latitude, ddTucson.Longitude));
-      }
-
-      if ("33°27′N 112°04′W" is string dmsPhoenix && Flux.Geoposition.TryParseDMS(dmsPhoenix, out var ddPhoenix))
-      {
-        System.Console.WriteLine("Phoenix: {0}, {1}, {2}", dmsPhoenix, ddPhoenix, ddPhoenix.ToString());
-      }
-
-      if ("32°53′9″N 111°44′38″W" is string dmsCasaGrande && Flux.Geoposition.TryParseDMS(dmsCasaGrande, out var ddCasaGrande))
-      {
-        System.Console.WriteLine("CasaGrande: {0}, {1}, {2}", dmsCasaGrande, ddCasaGrande, ddCasaGrande.ToString());
-      }
-
-      System.Console.WriteLine();
-
-      System.Console.WriteLine(lax.DistanceTo(jfk, Flux.Geoposition.EarthRadii.MeanInMiles));
-
-      System.Console.ReadKey();
-*/

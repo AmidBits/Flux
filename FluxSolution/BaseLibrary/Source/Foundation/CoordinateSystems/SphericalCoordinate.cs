@@ -70,28 +70,3 @@ namespace Flux
     #endregion Object overrides
   }
 }
-
-/*
-  Draw(Flux.CoordinateSystems.GeographicCoordinate.TucsonAzUsa);
-  Draw(Flux.CoordinateSystems.GeographicCoordinate.MadridSpain);
-  Draw(Flux.CoordinateSystems.GeographicCoordinate.PhoenixAzUsa);
-  Draw(Flux.CoordinateSystems.GeographicCoordinate.TakapauNewZealand);
-
-  static void Draw(Flux.CoordinateSystems.GeographicCoordinate c0)
-  {
-    System.Console.WriteLine(c0);
-    var c1 = c0.ToSphericalCoordinate();
-    System.Console.WriteLine(c1);
-    var c2 = c1.ToCylindricalCoordinate();
-    System.Console.WriteLine(c2);
-    var c3 = c2.ToCartesianCoordinate3();
-    System.Console.WriteLine(c3);
-    var c4 = c3.ToCylindricalCoordinate();
-    System.Console.WriteLine(c4);
-    var c5 = c4.ToSphericalCoordinate();
-    System.Console.WriteLine(c5);
-    var c6 = c5.ToGeographicCoordinate();
-    System.Console.WriteLine(c6);
-    System.Console.WriteLine();
-  }
-*/

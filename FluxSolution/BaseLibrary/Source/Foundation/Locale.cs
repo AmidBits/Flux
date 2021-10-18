@@ -193,22 +193,34 @@ namespace Flux
   }
 }
 
-/* Example:
-  System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.CommonLanguageRuntimeVersion)} = \"{Flux.Locale.CommonLanguageRuntimeVersion}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDomainName)} = \"{Flux.Locale.ComputerDomainName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.ComputerHostName)} = \"{Flux.Locale.ComputerHostName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.ComputerPrimaryDnsName)} = \"{Flux.Locale.ComputerPrimaryDnsName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemTitle)} = \"{Flux.Locale.OperatingSystemTitle}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.OperatingSystemVersion)} = \"{Flux.Locale.OperatingSystemVersion}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.PlatformTitle)} = \"{Flux.Locale.PlatformTitle}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.PlatformVersion)} = \"{Flux.Locale.PlatformVersion}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
-  System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
-*/
+#if DEBUG
+namespace Flux
+{
+  public static partial class Zamplez
+  {
+    public static void RunLocale()
+    {
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ClrVersion)} = \"{Flux.Locale.ClrVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.ComputerDnsPrimaryHostName)} = \"{Flux.Locale.ComputerDnsPrimaryHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsTitle)} = \"{Flux.Locale.EnvironmentOsTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsVersion)} = \"{Flux.Locale.EnvironmentOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkTitle)} = \"{Flux.Locale.FrameworkTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.FrameworkVersion)} = \"{Flux.Locale.FrameworkVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.NetworkDomainName)} = \"{Flux.Locale.NetworkDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.NetworkHostName)} = \"{Flux.Locale.NetworkHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsArchitecture)} = \"{Flux.Locale.RuntimeOsArchitecture}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsTitle)} = \"{Flux.Locale.RuntimeOsTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsVersion)} = \"{Flux.Locale.RuntimeOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsTitle)} = \"{Flux.Locale.SystemOsTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsVersion)} = \"{Flux.Locale.SystemOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickCounter)} = \"{Flux.Locale.TimerTickCounter}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.TimerTickResolution)} = \"{Flux.Locale.TimerTickResolution}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+    }
+  }
+}
+#endif
