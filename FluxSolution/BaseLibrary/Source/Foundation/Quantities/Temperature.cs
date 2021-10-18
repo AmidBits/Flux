@@ -178,11 +178,11 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable
+      // IComparable<>
       public int CompareTo(Temperature other)
         => m_value.CompareTo(other.m_value);
 
-      // IEquatable<Angle>
+      // IEquatable<>
       public bool Equals(Temperature other)
         => m_value == other.m_value;
       #endregion Implemented interfaces

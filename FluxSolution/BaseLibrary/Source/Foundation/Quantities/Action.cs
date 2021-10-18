@@ -1,5 +1,10 @@
 namespace Flux.Quantity
 {
+  public enum ActionUnit
+  {
+    JouleSecond,
+  }
+
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Action
