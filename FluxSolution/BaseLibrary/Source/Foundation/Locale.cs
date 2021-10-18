@@ -49,7 +49,7 @@ namespace Flux
     {
       get
       {
-        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
+        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
         return s.Substring(0, s.Trim().LastIndexOf(' '));
       }
@@ -60,7 +60,7 @@ namespace Flux
     {
       get
       {
-        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.ToString();
+        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
         if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
           return version;
@@ -118,7 +118,7 @@ namespace Flux
 
         var ec = new System.ComponentModel.EnumConverter(typeof(System.Environment.SpecialFolder));
 
-        foreach (var name in System.Enum.GetNames(typeof(System.Environment.SpecialFolder)))
+        foreach (var name in System.Enum.GetNames(typeof(System.Environment.SpecialFolder)).OrderBy(n => n))
         {
           var ev = (System.Environment.SpecialFolder)ec.ConvertFromString(name);
 

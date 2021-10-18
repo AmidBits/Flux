@@ -45,8 +45,8 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 # "Locale-Properties:"
 # [Flux.Locale]::GetProperties()
-
-#return;
+# [Flux.Locale]::SpecialFolders
+# return;
 
 #$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
 #$fm = $md.GetFullMatrix("settings", "kitten")
