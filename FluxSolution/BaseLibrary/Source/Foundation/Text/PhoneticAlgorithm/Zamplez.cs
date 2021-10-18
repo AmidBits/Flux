@@ -5,6 +5,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the phonetic algorithm zample.</summary>
     public static void RunPhoneticAlgorithms()
     {
       var ipaes = Flux.Reflect.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder?)System.Activator.CreateInstance(t));

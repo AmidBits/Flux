@@ -3,6 +3,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the rules engine zample.</summary>
     public static void RunRulesEngine()
       => User.ShowCase();
 

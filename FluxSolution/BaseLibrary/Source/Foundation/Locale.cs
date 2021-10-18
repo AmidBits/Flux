@@ -198,6 +198,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the locale zample.</summary>
     public static void RunLocale()
     {
       System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");

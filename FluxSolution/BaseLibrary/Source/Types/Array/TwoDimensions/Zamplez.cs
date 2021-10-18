@@ -3,6 +3,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
+    /// <summary>Run the two-dimensional (rank equals 2) array zample.</summary>
     public static void RunArrayRank2()
     {
       var m = new int[,] {
