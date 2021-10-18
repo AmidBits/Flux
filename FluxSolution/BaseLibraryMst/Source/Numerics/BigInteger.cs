@@ -37,8 +37,8 @@ namespace Numerics
 		[TestMethod]
 		public void GetDivisors()
 		{
-			Assert.IsTrue(new int[] { 1, 54, 2, 27, 3, 18, 6, 9 }.SequenceEqual(Flux.Numerics.Divisors.GetDivisors(bi54).Select(bi => (int)bi)));
-			Assert.IsTrue(new int[] { 1, 24, 2, 12, 3, 8, 4, 6 }.SequenceEqual(Flux.Numerics.Divisors.GetDivisors(bi24).Select(bi => (int)bi)));
+			Assert.IsTrue(new int[] { 1, 54, 2, 27, 3, 18, 6, 9 }.SequenceEqual(Flux.Numerics.Factors.GetFactors(bi54).Select(bi => (int)bi)));
+			Assert.IsTrue(new int[] { 1, 24, 2, 12, 3, 8, 4, 6 }.SequenceEqual(Flux.Numerics.Factors.GetFactors(bi24).Select(bi => (int)bi)));
 		}
 
 		[TestMethod]

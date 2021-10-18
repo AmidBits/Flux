@@ -17,8 +17,44 @@ namespace ConsoleApp
 {
   class Program
   {
+    static IEnumerable<long> Wheel(long n)
+    {
+      var ws = new long[] { 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6 };
+      long f = 2; int w = 0;
+
+      while (f * f <= n)
+      {
+        if (n % f == 0)
+        {
+          yield return f;
+          n /= f;
+        }
+        else
+        {
+          f += ws[w];
+          w = (w == 10) ? 3 : (w + 1);
+        }
+      }
+      yield return n;
+
+      yield return 0;
+    }
+
+
     private static void TimedMain(string[] args)
     {
+      var n = 12;
+      System.Console.WriteLine(n);
+      System.Console.WriteLine();
+
+      System.Console.WriteLine(string.Join('|', Flux.Numerics.Factors.GetFactors(n).OrderBy(f => f)));
+      System.Console.WriteLine();
+
+      System.Console.WriteLine(string.Join('|', Flux.Numerics.PrimeFactors.GetPrimeFactors(n)));
+      System.Console.WriteLine();
+
+      return;
+
       //var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
       //gam.AddVertex(0);
