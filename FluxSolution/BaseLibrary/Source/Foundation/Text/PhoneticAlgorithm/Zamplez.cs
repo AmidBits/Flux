@@ -13,6 +13,8 @@ namespace Flux
       foreach (var ipae in ipaes)
         foreach (var name in names)
           System.Console.WriteLine($"{ipae?.GetType().Name ?? @"[untyped]"}.\"{name}\", \"{ipae?.EncodePhoneticAlgorithm(name) ?? @"[unnamed]"}\"");
+
+      System.Console.WriteLine();
     }
   }
 }
