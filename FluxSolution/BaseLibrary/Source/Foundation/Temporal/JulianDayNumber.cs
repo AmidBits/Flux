@@ -42,6 +42,7 @@ namespace Flux
     public void GetDateParts(ConversionCalendar calendar, out int year, out int month, out int day)
       => ConvertToDateParts(m_value, calendar, out year, out month, out day);
 
+    /// <summary>Creates a new string from this instance.</summary>
     public string ToDateString(ConversionCalendar calendar)
     {
       var sb = new System.Text.StringBuilder();
@@ -69,8 +70,10 @@ namespace Flux
 
       return sb.ToString();
     }
+    /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate()
       => new JulianDate(m_value);
+    /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ConvertToDateParts((int)(m_value + 0.5), calendar, out var year, out var month, out var day);

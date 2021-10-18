@@ -19,10 +19,6 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      Flux.Zamplez.Run();
-
-      return;
-
       //var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
       //gam.AddVertex(0);
