@@ -20,10 +20,14 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
     public ref struct PositionalNotation
     {
-      public static PositionalNotation Base2 => new PositionalNotation(Sequences.Base62.Slice(0, 2));
-      public static PositionalNotation Base8 => new PositionalNotation(Sequences.Base62.Slice(0, 8));
-      public static PositionalNotation Base10 => new PositionalNotation(Sequences.Base62.Slice(0, 10));
-      public static PositionalNotation Base16 => new PositionalNotation(Sequences.Base62.Slice(0, 16));
+      public static PositionalNotation Base2
+        => new PositionalNotation(Sequences.Base62.Slice(0, 2));
+      public static PositionalNotation Base8
+        => new PositionalNotation(Sequences.Base62.Slice(0, 8));
+      public static PositionalNotation Base10
+        => new PositionalNotation(Sequences.Base62.Slice(0, 10));
+      public static PositionalNotation Base16
+        => new PositionalNotation(Sequences.Base62.Slice(0, 16));
 
       public System.ReadOnlySpan<string> Symbols { get; }
 
