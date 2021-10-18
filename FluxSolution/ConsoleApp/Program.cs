@@ -19,16 +19,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-#if DEBUG
-      Flux.Zamplez.Run();
-
       return;
-#endif
-
-      //var golg = new Flux.Model.GameOfLife.Game(new Flux.Geometry.Size2(30, 30), true, 0.2);
-      //golg.RunInConsole(100);
-
-      //return;
 
       //var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
@@ -136,6 +127,12 @@ namespace ConsoleApp
       //System.Console.WriteLine($"{string.Join(System.Environment.NewLine, am.GetDijkstraShortestPathTree(0, o => System.Convert.ToDouble(o)))}");
 
       //return;
+
+#if ZAMPLEZ
+      Flux.Zamplez.Run();
+
+      return;
+#endif
 
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.1), 1));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.1), 1));

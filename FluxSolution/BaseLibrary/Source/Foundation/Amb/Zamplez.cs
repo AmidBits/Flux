@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if ZAMPLEZ
 using System.Linq;
 
 namespace Flux

@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if ZAMPLEZ
 namespace Flux
 {
   public static partial class Zamplez

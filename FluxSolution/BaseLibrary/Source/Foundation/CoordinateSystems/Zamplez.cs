@@ -1,6 +1,6 @@
-﻿namespace Flux
+﻿#if ZAMPLEZ
+namespace Flux
 {
-#if DEBUG
   public static partial class Zamplez
   {
     public static void RunCoordinateSystems()
@@ -50,5 +50,5 @@
       }
     }
   }
-#endif
 }
+#endif
