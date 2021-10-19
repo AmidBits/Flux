@@ -25,11 +25,11 @@ namespace Flux
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
     {
-      var radAzimuth = m_azimuth.Radian;
+      var radAzimuth = m_azimuth.Value;
       return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth), m_height);
     }
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth.Radian);
+      => new SphericalCoordinate(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth.Value);
 
     #region Overloaded operators
     public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b)

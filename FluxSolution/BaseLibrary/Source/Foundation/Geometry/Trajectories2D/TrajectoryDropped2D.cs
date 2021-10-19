@@ -65,7 +65,7 @@ namespace Flux.Model.Trajectories
     public override bool Equals(object? obj)
       => obj is TrajectoryDropped2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Radian, m_initialVelocity.Value, m_droppedHeight.Value);
+      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_droppedHeight.Value);
     public override string ToString()
       => $"<{GetType().Name}: H={MaxHeight:N1} m, R={MaxRange:N1} m, T={MaxTime:N1} s>";
     #endregion Object overrides

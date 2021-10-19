@@ -25,22 +25,22 @@ namespace Flux.Model.Trajectories
     public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
-      => System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Radian), 2) / (2 * m_gravitationalAcceleration.Value);
+      => System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Value), 2) / (2 * m_gravitationalAcceleration.Value);
     public double MaxRange
-      => m_initialVelocity.Value * MaxTime * System.Math.Cos(m_initialAngle.Radian);
+      => m_initialVelocity.Value * MaxTime * System.Math.Cos(m_initialAngle.Value);
     public double MaxTime
-      => 2 * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Radian) / m_gravitationalAcceleration.Value;
+      => 2 * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) / m_gravitationalAcceleration.Value;
 
     public double GetX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Radian) * time;
+      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * time;
     public double GetY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Radian) * time - m_gravitationalAcceleration.Value * time * time / 2;
+      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) * time - m_gravitationalAcceleration.Value * time * time / 2;
     public double GetVelocityX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Radian);
+      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value);
     public double GetVelocityY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Radian) - m_gravitationalAcceleration.Value * time;
+      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) - m_gravitationalAcceleration.Value * time;
     public double GetVelocity(double time)
-      => m_initialVelocity.Value * m_initialVelocity.Value - 2 * m_gravitationalAcceleration.Value * time * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Radian) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time;
+      => m_initialVelocity.Value * m_initialVelocity.Value - 2 * m_gravitationalAcceleration.Value * time * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time;
 
     #region Overloaded operators
     public static bool operator ==(TrajectoryFlat2D h1, TrajectoryFlat2D h2)
@@ -59,7 +59,7 @@ namespace Flux.Model.Trajectories
     public override bool Equals(object? obj)
       => obj is TrajectoryFlat2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Radian, m_initialVelocity.Value);
+      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value);
     public override string ToString()
       => $"<{GetType().Name}: H={MaxHeight:N1} m, R={MaxRange:N1} m, T={MaxTime:N1} s>";
     #endregion Object overrides

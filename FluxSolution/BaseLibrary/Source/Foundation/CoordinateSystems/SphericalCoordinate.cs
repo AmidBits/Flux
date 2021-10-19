@@ -25,18 +25,18 @@ namespace Flux
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
     {
-      var radInclination = m_inclination.Radian;
-      var radAzimuth = m_azimuth.Radian;
+      var radInclination = m_inclination.Value;
+      var radAzimuth = m_azimuth.Value;
       var sinInclination = System.Math.Sin(radInclination);
       return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth) * sinInclination, m_radius * System.Math.Sin(radAzimuth) * sinInclination, m_radius * System.Math.Cos(radInclination));
     }
     public CylindricalCoordinate ToCylindricalCoordinate()
     {
-      var radInclination = m_inclination.Radian;
-      return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.Radian, m_radius * System.Math.Cos(radInclination));
+      var radInclination = m_inclination.Value;
+      return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.Value, m_radius * System.Math.Cos(radInclination));
     }
     public GeographicCoordinate ToGeographicCoordinate()
-      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Radian - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.Radian - System.Math.PI), m_radius);
+      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Value - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.Value - System.Math.PI), m_radius);
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>

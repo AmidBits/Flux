@@ -15,8 +15,8 @@ namespace Flux
 
     private readonly double m_value;
 
-    public Latitude(double latitudeDeg)
-      => m_value = IsLatitude(latitudeDeg) ? latitudeDeg : throw new System.ArgumentOutOfRangeException(nameof(latitudeDeg));
+    public Latitude(double degLatitude)
+      => m_value = IsLatitude(degLatitude) ? degLatitude : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
     public Latitude(Quantity.Angle angle)
       : this(angle.Degree) // Call base to ensure value is between min/max.
     { }

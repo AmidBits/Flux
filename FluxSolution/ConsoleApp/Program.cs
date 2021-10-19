@@ -19,36 +19,35 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      
 
-      //var gam = new Flux.DataStructures.Graphs.AdjacencyList();
+      var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
-      //gam.AddVertex(0);
-      //gam.AddVertex(1);
-      //gam.AddVertex(2);
-      //gam.AddVertex(3);
-      //gam.AddVertex(4);
+      gam.AddVertex(0);
+      gam.AddVertex(1);
+      gam.AddVertex(2);
+      gam.AddVertex(3);
+      gam.AddVertex(4);
 
-      //// 6, 8
+      // 6, 8
+      gam.AddEdge(0, 1, (3, 1));
+      gam.AddEdge(0, 2, (1, 0));
+      gam.AddEdge(0, 4, (3, 2));
+      gam.AddEdge(1, 2, (2, 0));
+      gam.AddEdge(1, 3, (0, 3));
+      gam.AddEdge(2, 3, (1, 0));
+      gam.AddEdge(2, 4, (6, 0));
+      gam.AddEdge(3, 4, (2, 1));
+
+      // 10, 1
       //gam.AddEdge(0, 1, (3, 1));
-      //gam.AddEdge(0, 2, (1, 0));
-      //gam.AddEdge(0, 4, (3, 2));
+      //gam.AddEdge(0, 2, (4, 0));
+      //gam.AddEdge(0, 3, (5, 0));
       //gam.AddEdge(1, 2, (2, 0));
-      //gam.AddEdge(1, 3, (0, 3));
-      //gam.AddEdge(2, 3, (1, 0));
-      //gam.AddEdge(2, 4, (6, 0));
-      //gam.AddEdge(3, 4, (2, 1));
+      //gam.AddEdge(2, 3, (4, 0));
+      //gam.AddEdge(2, 4, (1, 0));
+      //gam.AddEdge(3, 4, (10, 0));
 
-      //// 10, 1
-      ////gam.AddEdge(0, 1, (3, 1));
-      ////gam.AddEdge(0, 2, (4, 0));
-      ////gam.AddEdge(0, 3, (5, 0));
-      ////gam.AddEdge(1, 2, (2, 0));
-      ////gam.AddEdge(2, 3, (4, 0));
-      ////gam.AddEdge(2, 4, (1, 0));
-      ////gam.AddEdge(3, 4, (10, 0));
-
-      //System.Console.WriteLine(gam.ToConsoleString());
+      System.Console.WriteLine(gam.ToConsoleString());
 
       ////var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
       ////System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
@@ -69,7 +68,7 @@ namespace ConsoleApp
       //  { 0, 0, 0, 0, 0 }
       //};
 
-      //return;
+      return;
 
       //var am = new Flux.DataStructures.Graphs.AdjacencyMatrix();
 

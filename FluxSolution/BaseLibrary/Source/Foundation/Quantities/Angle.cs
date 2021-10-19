@@ -95,10 +95,9 @@ namespace Flux
         }
       }
 
+      /// <summary>The quantity value in unit degree.</summary>
       public double Degree
         => ConvertRadianToDegree(m_value);
-      public double Radian
-        => m_value;
 
       /// <summary>The quantity value in unit radian.</summary>
       public double Value

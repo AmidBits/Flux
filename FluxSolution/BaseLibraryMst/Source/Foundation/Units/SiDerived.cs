@@ -32,7 +32,7 @@ namespace Foundation.Units
 
       Assert.AreEqual(57.29577951308232, u.Degree);
       Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Quantity.AngleUnit.Gradian));
-      Assert.AreEqual(1, u.Radian);
+      Assert.AreEqual(1, u.Value);
       Assert.AreEqual(0.15915494309189535, u.ToUnitValue(Flux.Quantity.AngleUnit.Turn));
     }
 
