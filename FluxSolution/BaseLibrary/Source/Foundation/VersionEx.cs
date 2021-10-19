@@ -12,6 +12,22 @@ namespace Flux
 
     private readonly int[] m_parts;
 
+    public VersionEx(int numberOfParts)
+    {
+      if (numberOfParts < 1 || numberOfParts > 4) throw new System.ArgumentOutOfRangeException(nameof(numberOfParts));
+
+      m_parts = new int[numberOfParts];
+    }
+    public VersionEx(params int[] parts)
+      : this((parts ?? throw new System.ArgumentNullException(nameof(parts))).Length)
+      => System.Array.Copy(parts, m_parts, parts.Length);
+    public VersionEx(string version)
+    {
+      if (!TryParse(version, out var vex)) throw new System.ArgumentException(@"Could not parse version string.", nameof(version));
+
+      m_parts = vex.m_parts;
+    }
+
     public int this[int index]
       => index >= 0 && index < m_parts.Length ? m_parts[index] : throw new System.ArgumentOutOfRangeException(nameof(index));
 
@@ -31,22 +47,6 @@ namespace Flux
         4 => new System.Version(m_parts[0], m_parts[1], m_parts[2], m_parts[3]),
         _ => throw new System.NotSupportedException()
       };
-
-    public VersionEx(int numberOfParts)
-    {
-      if (numberOfParts < 1 || numberOfParts > 4) throw new System.ArgumentOutOfRangeException(nameof(numberOfParts));
-
-      m_parts = new int[numberOfParts];
-    }
-    public VersionEx(params int[] parts)
-      : this((parts ?? throw new System.ArgumentNullException(nameof(parts))).Length)
-      => System.Array.Copy(parts, m_parts, parts.Length);
-    public VersionEx(string version)
-    {
-      if (!TryParse(version, out var vex)) throw new System.ArgumentException(@"Could not parse version string.", nameof(version));
-
-      m_parts = vex.m_parts;
-    }
 
     #region Static methods
     public static VersionEx FromVersion(System.Version version)
