@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Linq
 {
   public enum AlternatingRangeDirection
   {

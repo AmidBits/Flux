@@ -14,6 +14,10 @@ namespace Flux
           return Quantity.Angle.DegreeSymbol.ToString();
         case Quantity.AngleUnit.Gradian:
           return @" grad";
+        case Quantity.AngleUnit.NatoMil:
+          return @" mils";
+        case Quantity.AngleUnit.Milliradian:
+          return @" mrad";
         case Quantity.AngleUnit.Radian:
           return @" rad";
         case Quantity.AngleUnit.Turn:
@@ -32,6 +36,10 @@ namespace Flux
       Arcsecond,
       Degree,
       Gradian,
+      /// <summary>This is the NATO angle of mils.</summary>
+      NatoMil,
+      /// <summary>This is sometimes also refered to as a 'mil'.</summary>
+      Milliradian,
       Radian,
       Turn,
     }
@@ -69,6 +77,12 @@ namespace Flux
             break;
           case AngleUnit.Gradian:
             m_value = ConvertGradianToRadian(value);
+            break;
+          case AngleUnit.NatoMil:
+            m_value = ConvertNatoMilToRadian(value);
+            break;
+          case AngleUnit.Milliradian:
+            m_value = ConvertMilliradianToRadian(value);
             break;
           case AngleUnit.Radian:
             m_value = value;
@@ -113,6 +127,10 @@ namespace Flux
             return ConvertRadianToDegree(m_value);
           case AngleUnit.Gradian:
             return ConvertRadianToGradian(m_value);
+          case AngleUnit.NatoMil:
+            return ConvertRadianToNatoMil(m_value);
+          case AngleUnit.Milliradian:
+            return ConvertRadianToMilliradian(m_value);
           case AngleUnit.Radian:
             return m_value;
           case AngleUnit.Turn:
@@ -146,6 +164,10 @@ namespace Flux
         => gradian * Maths.PiOver200;
       public static double ConvertGradianToTurn(double gradian)
         => gradian / 400;
+      public static double ConvertMilliradianToRadian(double milliradian)
+        => milliradian * 1000;
+      public static double ConvertNatoMilToRadian(double mil)
+        => mil * System.Math.PI / 3200;
       /// <summary>Convert the angle specified in radians to arcminutes.</summary>
       public static double ConvertRadianToArcminute(double radian)
         => radian * 3437.746771;
@@ -158,6 +180,10 @@ namespace Flux
       /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
       public static double ConvertRadianToGradian(double radian)
         => radian * Maths.PiInto200;
+      public static double ConvertRadianToMilliradian(double radian)
+        => radian / 1000;
+      public static double ConvertRadianToNatoMil(double radian)
+        => radian * 3200 / System.Math.PI;
       public static double ConvertRadianToTurn(double radian)
         => radian / Maths.PiX2;
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>

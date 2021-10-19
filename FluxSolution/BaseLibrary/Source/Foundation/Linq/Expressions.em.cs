@@ -1,6 +1,6 @@
-namespace Flux
+namespace Flux.Linq
 {
-  public static partial class Linq
+  public static partial class Enumerable
   {
     public static System.Func<TArgL, TArgR, TResult> CreateExpressionBinary<TArgL, TArgR, TResult>(this System.Func<System.Linq.Expressions.Expression, System.Linq.Expressions.Expression, System.Linq.Expressions.BinaryExpression> body)
     {

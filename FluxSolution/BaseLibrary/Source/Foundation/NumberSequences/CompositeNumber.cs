@@ -8,7 +8,7 @@ namespace Flux.Numerics
 		{
 			var largestCountOfDivisors = System.Numerics.BigInteger.Zero;
 			for (var index = System.Numerics.BigInteger.One; ; index++)
-				if (Factors.GetCountOfFactors(index) is var countOfDivisors && countOfDivisors > largestCountOfDivisors)
+				if (Factors.GetCountOfDivisors(index) is var countOfDivisors && countOfDivisors > largestCountOfDivisors)
 				{
 					yield return new System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>(index, countOfDivisors);
 					largestCountOfDivisors = countOfDivisors;

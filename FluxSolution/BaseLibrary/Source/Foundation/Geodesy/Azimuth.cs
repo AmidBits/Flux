@@ -23,6 +23,10 @@ namespace Flux.Quantity
       => new Angle(m_value, AngleUnit.Degree);
 
     #region Static methods
+    /// <summary>Finding the angle between two bearings.</summary>
+    public static double DeltaBearing(double degBearing1, double degBearing2)
+      => Flux.Maths.Wrap(degBearing2 - degBearing1, MinValue, MaxValue);
+
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>
     public static bool IsAzimuth(double degBearing)
       => degBearing >= MinValue && degBearing < MaxValue;

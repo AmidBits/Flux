@@ -42,22 +42,33 @@ namespace Maths
     [TestMethod]
     public void GetCountOfDivisors()
     {
-      Assert.AreEqual(64, Flux.Numerics.Factors.GetCountOfFactors(670530));
+      Assert.AreEqual(64, Flux.Numerics.Factors.GetCountOfDivisors(670530));
+    }
+
+    [TestMethod]
+    public void GetCountOfProperDivisors()
+    {
+      Assert.AreEqual(63, Flux.Numerics.Factors.GetCountOfProperDivisors(670530));
     }
 
     [TestMethod]
     public void GetFactors()
     {
       var expected = new System.Numerics.BigInteger[] { 1, 60, 2, 30, 3, 20, 4, 15, 5, 12, 6, 10 };
-      var actual = Flux.Numerics.Factors.GetFactors(60).ToArray();
+      var actual = Flux.Numerics.Factors.GetDivisors(60).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
     [TestMethod]
     public void GetSumOfDivisors()
     {
-      Assert.AreEqual(1916928, Flux.Numerics.Factors.GetSumOfFactors(670530));
-      Assert.AreEqual(1246398, Flux.Numerics.Factors.GetSumOfFactors(670530) - 670530); // Proper divisors, does not include the number itself.
+      Assert.AreEqual(1916928, Flux.Numerics.Factors.GetSumOfDivisors(670530));
+    }
+
+    [TestMethod]
+    public void GetSumOfProperDivisors()
+    {
+      Assert.AreEqual(1246398, Flux.Numerics.Factors.GetSumOfProperDivisors(670530));
     }
 
     [TestMethod]

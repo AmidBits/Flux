@@ -58,7 +58,7 @@ namespace Flux.Numerics
     // INumberSequence
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
     {
-      foreach (var divisor in GetFactors(Number))
+      foreach (var divisor in GetDivisors(Number))
         yield return divisor;
     }
 
@@ -112,58 +112,56 @@ namespace Flux.Numerics
 
     /// <summary>Returns the count of divisors in the sequence for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Numerics.BigInteger GetCountOfFactors(System.Numerics.BigInteger number)
-    {
-      var count = System.Numerics.BigInteger.Zero;
-      var sqrt = Maths.ISqrt(number);
-      for (var counter = System.Numerics.BigInteger.One; counter <= sqrt; counter++)
-        if (number % counter == 0)
-          count += (number / counter == counter ? 1 : 2);
-      return count;
-    }
-    /// <summary>Results in a sequence of divisors for the specified number, with the option of only proper divisors (divisors including 1 but not itself).</summary>
+    public static System.Numerics.BigInteger GetCountOfDivisors(System.Numerics.BigInteger number)
+      => System.Linq.Enumerable.Count(GetDivisors(number));
+    /// <summary>Returns the count of proper divisors in the sequence for the specified number (divisors including 1 but not itself).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    public static System.Numerics.BigInteger GetCountOfProperDivisors(System.Numerics.BigInteger number)
+      => System.Linq.Enumerable.Count(GetProperDivisors(number));
+    /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetFactors(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDivisors(System.Numerics.BigInteger number)
     {
-      yield return 1;
-      yield return number;
+      if (number > 0)
+      {
+        var sqrt = Maths.ISqrt(number);
 
-      var sqrt = Maths.ISqrt(number);
-      for (var counter = 2; counter <= sqrt; counter++)
-        if (number % counter == 0)
-        {
-          yield return counter;
-          if (number / counter is var quotient && quotient != counter)
-            yield return quotient;
-        }
+        for (var counter = 1; counter <= sqrt; counter++)
+          if (number % counter == 0)
+          {
+            yield return counter;
+
+            if (number / counter is var quotient && quotient != counter)
+              yield return quotient;
+          }
+      }
     }
-    /// <summary>Results in a sequence of divisors for the specified number, with option of only proper divisors (divisors including 1 but not itself).</summary>
+    /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
+    /// <remarks>This implementaion does not order the result.</remarks>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetProperDivisors(System.Numerics.BigInteger number)
+      => System.Linq.Enumerable.Where(GetDivisors(number), bi => bi != number);
+    /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static System.Numerics.BigInteger GetSumOfFactors(System.Numerics.BigInteger number)
-    {
-      var sum = System.Numerics.BigInteger.Zero;
-      var sqrt = Maths.ISqrt(number);
-      for (var counter = System.Numerics.BigInteger.One; counter <= sqrt; counter++)
-        if (number % counter == 0)
-        {
-          sum += counter;
-          if (number / counter is var quotient && quotient != counter)
-            sum += quotient;
-        }
-      return sum;
-    }
+    public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number)
+      => Flux.Linq.Enumerable.Sum(GetDivisors(number));
+    /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
+    public static System.Numerics.BigInteger GetSumOfProperDivisors(System.Numerics.BigInteger number)
+      => Flux.Linq.Enumerable.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static bool IsDeficientNumber(System.Numerics.BigInteger number)
-      => GetSumOfFactors(number) - number < number;
+      => GetSumOfDivisors(number) - number < number;
     /// <summary>Determines whether the number is a perfect number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perfect_number"/>
     public static bool IsPerfectNumber(System.Numerics.BigInteger number)
-      => GetSumOfFactors(number) - number == number;
+      => GetSumOfDivisors(number) - number == number;
     #endregion Static methods
   }
 }
