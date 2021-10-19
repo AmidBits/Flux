@@ -19,7 +19,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-
+      
       var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
       gam.AddVertex(0);
