@@ -6,6 +6,7 @@ namespace Flux
     public static double AngleBetween(this CartesianCoordinate3 source, CartesianCoordinate3 before, CartesianCoordinate3 after)
       => CartesianCoordinate3.AngleBetween(before - source, after - source);
 
+    /// <summary>Compute the sum angle of all vectors.</summary>
     public static double AngleSum(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source, CartesianCoordinate3 vector)
       => AggregateTuple2(source, 0.0, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
 
