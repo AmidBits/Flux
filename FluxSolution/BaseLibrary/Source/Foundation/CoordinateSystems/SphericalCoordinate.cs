@@ -66,7 +66,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius} radius, {m_inclination.Degree:N1}{Quantity.Angle.DegreeSymbol} inclination ({Quantity.Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.Value)):N1}{Quantity.Angle.DegreeSymbol} elevation), {m_azimuth.Degree:N1}{Quantity.Angle.DegreeSymbol} azimuth>";
+      => $"<{GetType().Name}: {m_radius} radius, {m_inclination.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} inclination ({Quantity.Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.Value)):N1}{Quantity.Angle.DegreeSymbol} elevation), {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} azimuth>";
     #endregion Object overrides
   }
 }

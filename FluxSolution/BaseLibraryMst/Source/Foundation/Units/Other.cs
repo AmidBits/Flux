@@ -29,7 +29,7 @@ namespace Foundation.Units
 
       var u = new Flux.Quantity.Azimuth(a);
 
-      Assert.AreEqual(a.Degree, u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantity.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
@@ -48,7 +48,7 @@ namespace Foundation.Units
 
       var u = new Flux.Latitude(a);
 
-      Assert.AreEqual(a.Degree, u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantity.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
@@ -58,7 +58,7 @@ namespace Foundation.Units
 
       var u = new Flux.Longitude(a);
 
-      Assert.AreEqual(a.Degree, u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantity.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
@@ -66,7 +66,7 @@ namespace Foundation.Units
     {
       var u = new Flux.Midi.MidiNote(69);
 
-      Assert.AreEqual(69, u.Number);
+      Assert.AreEqual(69, u.Value);
       Assert.AreEqual(4, u.Octave);
       Assert.AreEqual(440.0, u.ToFrequency().Value);
     }

@@ -13,7 +13,7 @@ namespace Flux
     public Longitude(double degLongitude)
       => m_value = IsLongitude(degLongitude) ? degLongitude : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
     public Longitude(Quantity.Angle angle)
-      : this(angle.Degree) // Call base to ensure value is between min/max.
+      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>

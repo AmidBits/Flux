@@ -19,9 +19,6 @@ namespace Flux.Midi
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
-    public int Number
-      => m_number;
-
     public double Value
       => m_number;
 

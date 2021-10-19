@@ -18,7 +18,7 @@ namespace Flux
     public Latitude(double degLatitude)
       => m_value = IsLatitude(degLatitude) ? degLatitude : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
     public Latitude(Quantity.Angle angle)
-      : this(angle.Degree) // Call base to ensure value is between min/max.
+      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>

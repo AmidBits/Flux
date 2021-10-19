@@ -13,7 +13,7 @@ namespace Flux.Quantity
     public Azimuth(double degree)
       => m_value = IsAzimuth(degree) ? degree : Maths.Wrap(degree, MinValue, MaxValue) % MaxValue;
     public Azimuth(Angle angle)
-      : this(angle.Degree) // Call base to ensure value is between min/max.
+      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     public double Value
