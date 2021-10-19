@@ -16,8 +16,10 @@
       m_hi = high;
     }
 
-    public T Low => m_lo;
-    public T High => m_hi;
+    public T Low
+      => m_lo;
+    public T High
+      => m_hi;
 
     public bool IsValid
        => m_lo.CompareTo(m_hi) < 0;
