@@ -19,7 +19,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(793.9999999999259, Flux.JulianDate.GetTimeSinceNoon(m.Value));
+      Assert.AreEqual(793.9999999999259m, Flux.JulianDate.GetTimeSinceNoon(m.Value));
     }
 
     [TestMethod]

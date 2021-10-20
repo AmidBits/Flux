@@ -23,9 +23,26 @@ namespace ConsoleApp
   }
 
   class Program
-  {     
+  {
     private static void TimedMain(string[] args)
-    {   
+    {
+      var dt = new Flux.MomentUtc(1100, 04, 28, 13, 30, 30);
+      System.Console.WriteLine($"{dt}");
+
+      var jdn = dt.ToJulianDayNumber();
+      System.Console.WriteLine($"{jdn}");
+      var jd1 = jdn.ToJulianDate();
+      System.Console.WriteLine($"{jd1}, {jd1.GetConversionCalendar()}");
+      var dt1 = jdn.ToMomentUtc(ConversionCalendar.JulianCalendar);
+      System.Console.WriteLine($"{dt1} = {dt1.ToDateTime()}");
+
+      var jd = dt.ToJulianDate(ConversionCalendar.JulianCalendar);
+      System.Console.WriteLine($"{jd}, {jd.GetConversionCalendar()}");
+      var dt2 = jd.ToMomentUtc(ConversionCalendar.JulianCalendar);
+      System.Console.WriteLine($"{dt2} = {dt2.ToDateTime()}");
+
+      return;
+
       /*
       //  UTF8 (n * 1 byte)
       // UTF16 (n * 2 bytes)
@@ -36,9 +53,9 @@ namespace ConsoleApp
       //    ui (n * 1 byte)
       //  guid (8 bytes)
       */
-        
+
       if (1 == 0)
-      { 
+      {
         var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
         gam.AddVertex(0);

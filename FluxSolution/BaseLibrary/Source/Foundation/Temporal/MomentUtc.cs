@@ -59,15 +59,22 @@ namespace Flux
     //public double TotalTime
     //  => System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year);
 
+    public ConversionCalendar GetConversionCalendar()
+      => IsGregorianCalendar(m_year, m_month, m_day) ? ConversionCalendar.GregorianCalendar : IsJulianCalendar(m_year, m_month, m_day) ? ConversionCalendar.JulianCalendar : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
+
     /// <summary>Creates a new <see cref="System.DateTime"/> from this instance.</summary>
     public System.DateTime ToDateTime()
       => new System.DateTime(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
       => new JulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+    public JulianDate ToJulianDate()
+      => ToJulianDate(GetConversionCalendar());
     /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
     public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
       => new JulianDayNumber(m_year, m_month, m_day, calendar);
+    public JulianDayNumber ToJulianDayNumber()
+      => ToJulianDayNumber(GetConversionCalendar());
 
     #region Static methods
     /// <summary>Returns whether the date is considered to be in the modern Gregorian Calendar.</summary>
