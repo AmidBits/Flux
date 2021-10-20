@@ -15,13 +15,30 @@ using Flux;
 
 namespace ConsoleApp
 {
-  class Program
+  public static class Xtensions
   {
-    private static void TimedMain(string[] args)
+    public static void Xtension()
     {
+    }
+  }
 
+  class Program
+  {     
+    private static void TimedMain(string[] args)
+    {   
+      /*
+      //  UTF8 (n * 1 byte)
+      // UTF16 (n * 2 bytes)
+      // UTF32 (n * 4 bytes)
+      //  fp32 (4 byte)
+      //  fp64 (8 byte)
+      //    si (n * 1 byte)
+      //    ui (n * 1 byte)
+      //  guid (8 bytes)
+      */
+        
       if (1 == 0)
-      {
+      { 
         var gam = new Flux.DataStructures.Graphs.AdjacencyList();
 
         gam.AddVertex(0);

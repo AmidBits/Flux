@@ -28,6 +28,7 @@
       : this(collection, System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
+    #region Implemented interfaces
     // IOrderedSet<>
     public int GetIndex(T value)
       => m_dictionary[value];
@@ -162,5 +163,6 @@
       => m_values.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

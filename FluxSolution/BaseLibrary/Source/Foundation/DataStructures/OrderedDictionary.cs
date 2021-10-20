@@ -1,4 +1,4 @@
-using System.Linq;
+//using System.Linq;
 
 namespace Flux
 {
@@ -20,10 +20,23 @@ namespace Flux
       : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
     {
-      private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>();
-      private readonly System.Collections.Generic.List<TKey> m_listOfKeys = new System.Collections.Generic.List<TKey>();
-      private readonly System.Collections.Generic.List<TValue> m_listOfValues = new System.Collections.Generic.List<TValue>();
+      private readonly System.Collections.Generic.IEqualityComparer<TKey> m_equalityComparer;
+      private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary;
+      private readonly System.Collections.Generic.List<TKey> m_listOfKeys;
+      private readonly System.Collections.Generic.List<TValue> m_listOfValues;
 
+      public OrderedDictionary(System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
+      {
+        m_equalityComparer = equalityComparer;
+        m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>(equalityComparer);
+        m_listOfKeys = new System.Collections.Generic.List<TKey>();
+        m_listOfValues = new System.Collections.Generic.List<TValue>();
+      }
+      public OrderedDictionary()
+        : this(System.Collections.Generic.EqualityComparer<TKey>.Default)
+      { }
+
+      #region Implemented interfaces
       // IOrderedDictionary<>
       public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> CreateKeyValuePairs()
       {
@@ -49,6 +62,10 @@ namespace Flux
         m_listOfKeys.Insert(index, key);
         m_listOfValues.Insert(index, value);
       }
+
+      // ICollection<>
+      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
+        => m_dictionary.ContainsKey(item.Key) && System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(m_dictionary[item.Key], item.Value);
 
       // IDictionary<>
       public TValue this[int index]
@@ -85,9 +102,6 @@ namespace Flux
         m_listOfKeys.Clear();
         m_listOfValues.Clear();
       }
-
-      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
-        => m_dictionary.Contains(item);
 
       public bool ContainsKey(TKey key)
         => m_dictionary.ContainsKey(key);
@@ -132,9 +146,9 @@ namespace Flux
 
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         => CreateKeyValuePairs().GetEnumerator();
-
       System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator()
         => CreateKeyValuePairs().GetEnumerator();
+      #endregion Implemented interfaces
     }
   }
 }
