@@ -1,11 +1,11 @@
-﻿#if ZAMPLEZ
-namespace Flux
+﻿namespace Flux
 {
   public static partial class Zamplez
   {
     /// <summary>Run all zamplez available.</summary>
     public static void Run()
     {
+#if ZAMPLEZ
       RunAmb();
       RunArrayRank2();
       RunCoordinateSystems();
@@ -13,7 +13,10 @@ namespace Flux
       RunPhoneticAlgorithms();
       RunRulesEngine();
       RunSetOps();
+      RunTemporal();
+#else
+      throw new System.NotImplementedException(@"/define:ZAMPLEZ");
+#endif
     }
   }
 }
-#endif
