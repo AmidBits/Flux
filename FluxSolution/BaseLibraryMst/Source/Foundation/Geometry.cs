@@ -41,7 +41,7 @@ namespace Foundation
     [TestMethod]
     public void Line()
     {
-      var geometry = new Flux.Geometry.Line(5, 7, 11, 13);
+      var geometry = new Flux.Geometry.LineSegment(5, 7, 11, 13);
 
       Assert.AreEqual(5, geometry.X1);
       Assert.AreEqual(7, geometry.Y1);

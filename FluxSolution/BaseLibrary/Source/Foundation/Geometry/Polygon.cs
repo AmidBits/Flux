@@ -112,14 +112,14 @@ namespace Flux.Geometry
 
         if (a.Y <= point.Y)
         {
-          if (b.Y > point.Y && Line.SideTest(point, a, b) > 0)
+          if (b.Y > point.Y && LineSegment.SideTest(point, a, b) > 0)
           {
             wn++;
           }
         }
         else
         {
-          if (b.Y <= point.Y && Line.SideTest(point, a, b) < 0)
+          if (b.Y <= point.Y && LineSegment.SideTest(point, a, b) < 0)
           {
             wn--;
           }
