@@ -110,6 +110,13 @@ namespace Flux
     public static CartesianCoordinate3 FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
       => new CartesianCoordinate3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
 
+    /// <summary>Returns the direction cosines.</summary>
+    public static CartesianCoordinate3 GetDirectionCosines(CartesianCoordinate3 source, CartesianCoordinate3 target)
+      => (target - source).Normalized();
+    /// <summary>Returns the direction ratios.</summary>
+    public static CartesianCoordinate3 GetDirectionRatios(CartesianCoordinate3 source, CartesianCoordinate3 target)
+      => target - source;
+
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateCosine(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
       => new CartesianCoordinate3(Maths.InterpolateCosine(p1.m_x, p2.m_x, mu), Maths.InterpolateCosine(p1.m_y, p2.m_y, mu), Maths.InterpolateCosine(p1.Z, p2.Z, mu));
