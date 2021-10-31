@@ -5,6 +5,6 @@ namespace Flux
     /// <summary>Determines whether the source set is a superset of a specified target set.</summary>
     public static bool IsSetSupersetOf<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
       => (target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0) // If target is an empty set then source is a superset.
-      || SetOps.SetContainsAll(source, target);
+      || SetContainsAll(source, target);
   }
 }
