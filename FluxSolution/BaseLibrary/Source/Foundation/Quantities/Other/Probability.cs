@@ -8,17 +8,17 @@ namespace Flux.Quantity
     public const double MaxValue = 1;
     public const double MinValue = 0;
 
-    private readonly double m_value;
+    private readonly double m_probability;
 
     public Probability(double ratio)
-      => m_value = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
+      => m_probability = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
     public double Value
-      => m_value;
+      => m_probability;
 
     #region Overloaded operators
     public static explicit operator double(Probability v)
-      => v.m_value;
+      => v.m_probability;
     public static explicit operator Probability(double v)
       => new Probability(v);
 
@@ -37,46 +37,46 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Probability operator -(Probability v)
-      => new Probability(-v.m_value);
+      => new Probability(-v.m_probability);
     public static Probability operator +(Probability a, double b)
-      => new Probability(a.m_value + b);
+      => new Probability(a.m_probability + b);
     public static Probability operator +(Probability a, Probability b)
-      => a + b.m_value;
+      => a + b.m_probability;
     public static Probability operator /(Probability a, double b)
-      => new Probability(a.m_value / b);
+      => new Probability(a.m_probability / b);
     public static Probability operator /(Probability a, Probability b)
-      => a / b.m_value;
+      => a / b.m_probability;
     public static Probability operator *(Probability a, double b)
-      => new Probability(a.m_value * b);
+      => new Probability(a.m_probability * b);
     public static Probability operator *(Probability a, Probability b)
-      => a * b.m_value;
+      => a * b.m_probability;
     public static Probability operator %(Probability a, double b)
-      => new Probability(a.m_value % b);
+      => new Probability(a.m_probability % b);
     public static Probability operator %(Probability a, Probability b)
-      => a % b.m_value;
+      => a % b.m_probability;
     public static Probability operator -(Probability a, double b)
-      => new Probability(a.m_value - b);
+      => new Probability(a.m_probability - b);
     public static Probability operator -(Probability a, Probability b)
-      => a - b.m_value;
+      => a - b.m_probability;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Probability other)
-      => m_value.CompareTo(other.m_value);
+      => m_probability.CompareTo(other.m_probability);
 
     // IEquatable
     public bool Equals(Probability other)
-      => m_value == other.m_value;
+      => m_probability == other.m_probability;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Probability o && Equals(o);
     public override int GetHashCode()
-      => m_value.GetHashCode();
+      => m_probability.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}>";
+      => $"<{GetType().Name}: {m_probability}>";
     #endregion Object overrides
   }
 }

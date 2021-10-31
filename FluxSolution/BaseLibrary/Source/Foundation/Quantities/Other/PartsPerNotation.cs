@@ -59,36 +59,39 @@ namespace Flux
       public const char PermilleSymbol = '\u2030';
       public const char PermyriadSymbol = '\u2031';
 
-      private readonly double m_value;
+      private readonly double m_parts;
       private readonly PartsPerNotationUnit m_unit;
 
-      public PartsPerNotation(double value, PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
+      /// <summary>Creates a new instance of this type.</summary>
+      /// <param name="parts">The parts in parts per notation.</param>
+      /// <param name="unit">The notation in parts per notation.</param>
+      public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
       {
         switch (unit)
         {
           case PartsPerNotationUnit.Hundred:
-            m_value = value / 1e2;
+            m_parts = parts / 1e2;
             break;
           case PartsPerNotationUnit.Thousand:
-            m_value = value / 1e3;
+            m_parts = parts / 1e3;
             break;
           case PartsPerNotationUnit.TenThousand:
-            m_value = value / 1e4;
+            m_parts = parts / 1e4;
             break;
           case PartsPerNotationUnit.HundredThousand:
-            m_value = value / 1e5;
+            m_parts = parts / 1e5;
             break;
           case PartsPerNotationUnit.Million:
-            m_value = value / 1e6;
+            m_parts = parts / 1e6;
             break;
           case PartsPerNotationUnit.Billion:
-            m_value = value / 1e9;
+            m_parts = parts / 1e9;
             break;
           case PartsPerNotationUnit.Trillion:
-            m_value = value / 1e12;
+            m_parts = parts / 1e12;
             break;
           case PartsPerNotationUnit.Quadrillion:
-            m_value = value / 1e15;
+            m_parts = parts / 1e15;
             break;
           default:
             throw new System.ArgumentOutOfRangeException(nameof(unit));
@@ -98,28 +101,28 @@ namespace Flux
       }
 
       public double Value
-        => m_value;
+        => m_parts;
 
       public double ToUnitValue(PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
       {
         switch (unit)
         {
           case PartsPerNotationUnit.Hundred:
-            return m_value * 1e2;
+            return m_parts * 1e2;
           case PartsPerNotationUnit.Thousand:
-            return m_value * 1e3;
+            return m_parts * 1e3;
           case PartsPerNotationUnit.TenThousand:
-            return m_value * 1e4;
+            return m_parts * 1e4;
           case PartsPerNotationUnit.HundredThousand:
-            return m_value * 1e5;
+            return m_parts * 1e5;
           case PartsPerNotationUnit.Million:
-            return m_value * 1e6;
+            return m_parts * 1e6;
           case PartsPerNotationUnit.Billion:
-            return m_value * 1e9;
+            return m_parts * 1e9;
           case PartsPerNotationUnit.Trillion:
-            return m_value * 1e12;
+            return m_parts * 1e12;
           case PartsPerNotationUnit.Quadrillion:
-            return m_value * 1e15;
+            return m_parts * 1e15;
           default:
             throw new System.ArgumentOutOfRangeException(nameof(unit));
         }
@@ -147,44 +150,44 @@ namespace Flux
         => !a.Equals(b);
 
       public static PartsPerNotation operator -(PartsPerNotation v)
-        => new PartsPerNotation(-v.m_value);
+        => new PartsPerNotation(-v.m_parts);
       public static PartsPerNotation operator +(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_value + b);
+        => new PartsPerNotation(a.m_parts + b);
       public static PartsPerNotation operator +(PartsPerNotation a, PartsPerNotation b)
-        => a + b.m_value;
+        => a + b.m_parts;
       public static PartsPerNotation operator /(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_value / b);
+        => new PartsPerNotation(a.m_parts / b);
       public static PartsPerNotation operator /(PartsPerNotation a, PartsPerNotation b)
-        => a / b.m_value;
+        => a / b.m_parts;
       public static PartsPerNotation operator *(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_value * b);
+        => new PartsPerNotation(a.m_parts * b);
       public static PartsPerNotation operator *(PartsPerNotation a, PartsPerNotation b)
-        => a * b.m_value;
+        => a * b.m_parts;
       public static PartsPerNotation operator %(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_value % b);
+        => new PartsPerNotation(a.m_parts % b);
       public static PartsPerNotation operator %(PartsPerNotation a, PartsPerNotation b)
-        => a % b.m_value;
+        => a % b.m_parts;
       public static PartsPerNotation operator -(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_value - b);
+        => new PartsPerNotation(a.m_parts - b);
       public static PartsPerNotation operator -(PartsPerNotation a, PartsPerNotation b)
-        => a - b.m_value;
+        => a - b.m_parts;
       #endregion Overloaded operators
 
       #region Implemented interfaces
       // IComparable
       public int CompareTo(PartsPerNotation other)
-        => m_value.CompareTo(other.m_value);
+        => m_parts.CompareTo(other.m_parts);
 
       // IEquatable
       public bool Equals(PartsPerNotation other)
-        => m_value == other.m_value;
+        => m_parts == other.m_parts;
       #endregion Implemented interfaces
 
       #region Object overrides
       public override bool Equals(object? obj)
         => obj is PartsPerNotation o && Equals(o);
       public override int GetHashCode()
-        => System.HashCode.Combine(m_value);
+        => System.HashCode.Combine(m_parts);
       public override string ToString()
         => $"<{GetType().Name}: {ToUnitValue(m_unit)}{m_unit.GetUnitSymbol()}>";
       #endregion Object overrides

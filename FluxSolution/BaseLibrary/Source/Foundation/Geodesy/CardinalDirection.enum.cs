@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270], from a four value cardinal direction compass point [0, 1, 2, 3].</summary>
-    public static Quantity.Azimuth GetAzimuthAngle(this CardinalDirection cardinalDirection)
+    public static Azimuth GetAzimuthAngle(this CardinalDirection cardinalDirection)
       => GetAzimuthAngle((ThirtytwoWindCompassRose)(int)cardinalDirection);
   }
 

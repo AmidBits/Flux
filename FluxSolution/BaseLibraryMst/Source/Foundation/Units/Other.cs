@@ -27,7 +27,7 @@ namespace Foundation.Units
     {
       var a = new Flux.Quantity.Angle(1, Flux.Quantity.AngleUnit.Degree);
 
-      var u = new Flux.Quantity.Azimuth(a);
+      var u = new Flux.Azimuth(a);
 
       Assert.AreEqual(a.ToUnitValue(Flux.Quantity.AngleUnit.Degree), u.Value);
     }

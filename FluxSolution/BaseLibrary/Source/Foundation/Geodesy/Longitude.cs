@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention.</summary>
+  /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. The value is wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
     : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit
@@ -8,29 +8,29 @@ namespace Flux
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly double m_value;
+    private readonly double m_degree;
 
     public Longitude(double degLongitude)
-      => m_value = IsLongitude(degLongitude) ? degLongitude : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
+      => m_degree = IsLongitude(degLongitude) ? degLongitude : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
     public Longitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset
-      => GetTheoreticalTimezoneOffset(m_value);
+      => GetTheoreticalTimezoneOffset(m_degree);
+
+    public double Value
+      => m_degree;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedX()
-      => Radian;
+      => ToAngle().Value;
 
-    public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_value);
-
-    public double Value
-      => m_value;
+    public Quantity.Angle ToAngle()
+      => new Quantity.Angle(m_degree, Quantity.AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
@@ -41,11 +41,14 @@ namespace Flux
     /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
     public static bool IsLongitude(double degLongitude)
       => degLongitude >= MinValue && degLongitude <= MaxValue;
+
+    public static double Wrap(double degLongitude)
+      => Maths.Wrap(degLongitude, MinValue, MaxValue) % MaxValue;
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Longitude v)
-      => v.m_value;
+      => v.m_degree;
     public static explicit operator Longitude(double v)
       => new Longitude(v);
 
@@ -64,25 +67,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Longitude operator -(Longitude v)
-      => new Longitude(-v.m_value);
+      => new Longitude(-v.m_degree);
     public static Longitude operator +(Longitude a, double b)
-      => new Longitude(Maths.Wrap(a.m_value + b, MinValue, MaxValue));
+      => new Longitude(Wrap(a.m_degree + b));
     public static Longitude operator +(Longitude a, Longitude b)
       => a + b.Value;
     public static Longitude operator /(Longitude a, double b)
-      => new Longitude(Maths.Wrap(a.m_value / b, MinValue, MaxValue));
+      => new Longitude(Wrap(a.m_degree / b));
     public static Longitude operator /(Longitude a, Longitude b)
       => a / b.Value;
     public static Longitude operator *(Longitude a, double b)
-      => new Longitude(Maths.Wrap(a.m_value * b, MinValue, MaxValue));
+      => new Longitude(Wrap(a.m_degree * b));
     public static Longitude operator *(Longitude a, Longitude b)
       => a * b.Value;
     public static Longitude operator %(Longitude a, double b)
-      => new Longitude(Maths.Wrap(a.m_value % b, MinValue, MaxValue));
+      => new Longitude(Wrap(a.m_degree % b));
     public static Longitude operator %(Longitude a, Longitude b)
       => a % b.Value;
     public static Longitude operator -(Longitude a, double b)
-      => new Longitude(Maths.Wrap(a.m_value - b, MinValue, MaxValue));
+      => new Longitude(Wrap(a.m_degree - b));
     public static Longitude operator -(Longitude a, Longitude b)
       => a - b.Value;
     #endregion Overloaded operators
@@ -90,20 +93,20 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Longitude other)
-      => m_value.CompareTo(other.m_value);
+      => m_degree.CompareTo(other.m_degree);
 
     // IEquatable
     public bool Equals(Longitude other)
-      => m_value == other.m_value;
+      => m_degree == other.m_degree;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Longitude o && Equals(o);
     public override int GetHashCode()
-      => m_value.GetHashCode();
+      => m_degree.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_degree}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }
