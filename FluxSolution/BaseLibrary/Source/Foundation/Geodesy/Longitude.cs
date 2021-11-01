@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. The value is wrapped around the range.</summary>
+  /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
     : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit
@@ -10,8 +10,8 @@ namespace Flux
 
     private readonly double m_degree;
 
-    public Longitude(double degLongitude)
-      => m_degree = IsLongitude(degLongitude) ? degLongitude : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
+    public Longitude(double degree)
+      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
     public Longitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }

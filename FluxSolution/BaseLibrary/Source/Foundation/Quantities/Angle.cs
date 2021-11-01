@@ -60,8 +60,8 @@ namespace Flux
 
       private readonly double m_value;
 
-      private Angle(double value)
-        => m_value = value;
+      //private Angle(double value)
+      //  => m_value = value;
       public Angle(double value, AngleUnit unit = AngleUnit.Radian)
       {
         switch (unit)
@@ -95,9 +95,9 @@ namespace Flux
         }
       }
 
-      /// <summary>The quantity value in unit degree.</summary>
-      public double Degree
-        => ConvertRadianToDegree(m_value);
+      ///// <summary>The quantity value in unit degree.</summary>
+      //public double Degree
+      //  => ConvertRadianToDegree(m_value);
 
       /// <summary>The quantity value in unit radian.</summary>
       public double Value

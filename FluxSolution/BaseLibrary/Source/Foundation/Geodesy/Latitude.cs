@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. The value is clamped within the range.</summary>
+  /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit
@@ -15,8 +15,8 @@ namespace Flux
 
     private readonly double m_degree;
 
-    public Latitude(double degLatitude)
-      => m_degree = IsLatitude(degLatitude) ? degLatitude : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
+    public Latitude(double degree)
+      => m_degree = IsLatitude(degree) ? Clamp(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
     public Latitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
