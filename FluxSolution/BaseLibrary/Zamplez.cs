@@ -15,6 +15,7 @@
 #if ZAMPLEZ
       RunAmb();
       RunArrayRank2();
+      RunColors();
       RunCoordinateSystems();
       RunDataStructuresGraphs();
       RunLocale();
