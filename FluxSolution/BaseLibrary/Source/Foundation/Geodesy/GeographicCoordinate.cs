@@ -53,11 +53,14 @@ namespace Flux
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
+      var lat = Latitude.ToAngle().Value;
+      var lon = Longitude.ToAngle().Value;
+
       var M = System.Math.Sqrt(3) / 2;
-      var p = System.Math.Asin(M * System.Math.Sin(Latitude.Radian)); // parametric latitude
+      var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude
       var p2 = System.Math.Pow(p, 2);
       var p6 = System.Math.Pow(p, 6);
-      var x = Longitude.Radian * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
+      var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
       return new CartesianCoordinate3(x, y, Altitude.Value);
@@ -66,35 +69,36 @@ namespace Flux
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToNaturalEarthProjection()
     {
-      var radLatitude = Latitude.Radian;
+      var lat = Latitude.ToAngle().Value;
+      var lon = Longitude.ToAngle().Value;
 
-      var latP2 = System.Math.Pow(radLatitude, 2);
+      var latP2 = System.Math.Pow(lat, 2);
       var latP4 = latP2 * latP2;
-      var latP6 = System.Math.Pow(radLatitude, 6);
+      var latP6 = System.Math.Pow(lat, 6);
       var latP8 = latP4 * latP4;
-      var latP10 = System.Math.Pow(radLatitude, 10);
+      var latP10 = System.Math.Pow(lat, 10);
       var latP12 = latP6 * latP6;
 
-      var x = Longitude.Radian * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
-      var y = radLatitude * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
+      var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
+      var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
       return new CartesianCoordinate3(x, y, Altitude.Value);
     }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(Altitude.Value, System.Math.PI - (Latitude.Radian + Maths.PiOver2), Longitude.Radian + System.Math.PI);
+      => new SphericalCoordinate(Altitude.Value, System.Math.PI - (Latitude.ToAngle().Value + Maths.PiOver2), Longitude.ToAngle().Value + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {
-      var radLatitude = Latitude.Radian;
-      var radLongitude = Longitude.Radian;
+      var lat = Latitude.ToAngle().Value;
+      var lon = Longitude.ToAngle().Value;
 
-      var cosLatitude = System.Math.Cos(radLatitude);
+      var cosLatitude = System.Math.Cos(lat);
 
-      var sinc = Maths.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(radLongitude / 2)));
+      var sinc = Maths.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
-      var x = 0.5 * (radLongitude * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(radLongitude / 2)) / sinc));
-      var y = 0.5 * (radLatitude + (System.Math.Sin(radLatitude) / sinc));
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
+      var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
       return new CartesianCoordinate3(x, y, Altitude.Value);
     }

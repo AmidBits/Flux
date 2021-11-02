@@ -122,6 +122,10 @@ namespace Flux.Geometry
     public static Point2 FromUniqueIndex(long index, Size2 bounds)
       => new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
 
+    /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
+    public static LineSlope GetLineSlope(Point2 source, Point2 target)
+      => new LineSlope(source.X, source.Y, target.X, target.Y);
+
     ///// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
     //public static System.Collections.Generic.IEnumerable<Point2> GetQuadrantCenterVectors(Point2 source, Size2 subQuadrant)

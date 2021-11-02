@@ -3,8 +3,8 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 32 degrees from 0), from a thirty-two value compass point [0, 31].</summary>
-    public static Quantity.Azimuth GetAzimuthAngle(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
-      => new Quantity.Azimuth(thirtyTwoWindCompassRose switch
+    public static Azimuth GetAzimuthAngle(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
+      => new Azimuth(thirtyTwoWindCompassRose switch
       {
         ThirtytwoWindCompassRose.N => 0,
         ThirtytwoWindCompassRose.NbE => 11.25,

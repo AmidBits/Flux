@@ -146,6 +146,13 @@ namespace Flux
     public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
       => new CartesianCoordinate2(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
+    /// <summary>Returns the direction cosines.</summary>
+    public static CartesianCoordinate2 GetDirectionCosines(CartesianCoordinate2 source, CartesianCoordinate2 target)
+      => (target - source).Normalized();
+    /// <summary>Returns the direction ratios.</summary>
+    public static CartesianCoordinate2 GetDirectionRatios(CartesianCoordinate2 source, CartesianCoordinate2 target)
+      => target - source;
+
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
     public static Geometry.LineSlope GetLineSlope(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => new Geometry.LineSlope(source.X, source.Y, target.X, target.Y);

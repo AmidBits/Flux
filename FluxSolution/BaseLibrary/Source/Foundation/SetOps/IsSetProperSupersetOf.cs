@@ -6,6 +6,6 @@ namespace Flux
     public static bool IsSetProperSupersetOf<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
       => source.Count != 0 // An empty set is not a proper superset of any set.
       && ((target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0) // If target is an empty set then this is a superset.
-      || SetOps.SetCounts(source, target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < source.Count);
+      || SetCounts(source, target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < source.Count);
   }
 }

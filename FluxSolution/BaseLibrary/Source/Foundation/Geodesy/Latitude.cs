@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90].</summary>
+  /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit
@@ -13,39 +13,42 @@ namespace Flux
     public static Latitude TropicOfCapricorn
       => new Latitude(-23.43648);
 
-    private readonly double m_value;
+    private readonly double m_degree;
 
-    public Latitude(double degLatitude)
-      => m_value = IsLatitude(degLatitude) ? degLatitude : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
+    public Latitude(double degree)
+      => m_degree = IsLatitude(degree) ? Clamp(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
     public Latitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Quantity.Length ApproximateLatitudinalHeight
-      => new Quantity.Length(GetApproximateLatitudinalHeight(Radian));
+      => new Quantity.Length(GetApproximateLatitudinalHeight(ToAngle().Value));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Quantity.Length ApproximateLongitudinalWidth
-      => new Quantity.Length(GetApproximateLongitudinalWidth(Radian));
+      => new Quantity.Length(GetApproximateLongitudinalWidth(ToAngle().Value));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Quantity.Length ApproximateRadius
-      => new Quantity.Length(GetApproximateRadius(Radian));
-
-    public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_value);
+      => new Quantity.Length(GetApproximateRadius(ToAngle().Value));
 
     public double Value
-      => m_value;
+      => m_degree;
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + Radian / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().Value / 2))), -System.Math.PI, System.Math.PI);
+
+    public Quantity.Angle ToAngle()
+      => new Quantity.Angle(m_degree, Quantity.AngleUnit.Degree);
 
     #region Static methods
+    public static double Clamp(double degLatitude)
+      => System.Math.Clamp(degLatitude, MinValue, MaxValue);
+
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     public static double GetApproximateLatitudinalHeight(double radLatitude)
       => 111132.954 + -559.822 * System.Math.Cos(2 * radLatitude) + 1.175 * System.Math.Cos(4 * radLatitude) + -0.0023 * System.Math.Cos(6 * radLatitude);
@@ -77,7 +80,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator double(Latitude v)
-      => v.m_value;
+      => v.m_degree;
     public static explicit operator Latitude(double v)
       => new Latitude(v);
 
@@ -96,25 +99,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Latitude operator -(Latitude v)
-      => new Latitude(-v.m_value);
+      => new Latitude(-v.m_degree);
     public static Latitude operator +(Latitude a, double b)
-      => new Latitude(a.m_value + b);
+      => new Latitude(Clamp(a.m_degree + b));
     public static Latitude operator +(Latitude a, Latitude b)
       => a + b.Value;
     public static Latitude operator /(Latitude a, double b)
-      => new Latitude(a.m_value / b);
+      => new Latitude(Clamp(a.m_degree / b));
     public static Latitude operator /(Latitude a, Latitude b)
       => a / b.Value;
     public static Latitude operator *(Latitude a, double b)
-      => new Latitude(a.m_value * b);
+      => new Latitude(Clamp(a.m_degree * b));
     public static Latitude operator *(Latitude a, Latitude b)
       => a * b.Value;
     public static Latitude operator %(Latitude a, double b)
-      => new Latitude(a.m_value % b);
+      => new Latitude(Clamp(a.m_degree % b));
     public static Latitude operator %(Latitude a, Latitude b)
       => a % b.Value;
     public static Latitude operator -(Latitude a, double b)
-      => new Latitude(a.m_value - b);
+      => new Latitude(Clamp(a.m_degree - b));
     public static Latitude operator -(Latitude a, Latitude b)
       => a - b.Value;
     #endregion Overloaded operators
@@ -122,20 +125,20 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Latitude other)
-      => m_value.CompareTo(other.m_value);
+      => m_degree.CompareTo(other.m_degree);
 
     // IEquatable
     public bool Equals(Latitude other)
-      => m_value == other.m_value;
+      => m_degree == other.m_degree;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
-      => m_value.GetHashCode();
+      => m_degree.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}{Quantity.Angle.DegreeSymbol}>";
+      => $"<{GetType().Name}: {m_degree}{Quantity.Angle.DegreeSymbol}>";
     #endregion Object overrides
   }
 }

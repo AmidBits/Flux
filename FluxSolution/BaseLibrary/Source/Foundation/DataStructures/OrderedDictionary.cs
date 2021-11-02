@@ -4,14 +4,17 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector)
+    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
       where TKey : notnull
     {
-      var od = new DataStructures.OrderedDictionary<TKey, TValue>();
+      var od = new DataStructures.OrderedDictionary<TKey, TValue>(equalityComparer);
       foreach (var item in source)
         od.Add(keySelector(item), valueSelector(item));
       return od;
     }
+    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector)
+      where TKey : notnull
+      => ToOrderedDictionary(source, keySelector, valueSelector, System.Collections.Generic.EqualityComparer<TKey>.Default);
   }
 
   namespace DataStructures
