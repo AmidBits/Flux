@@ -5,7 +5,6 @@ namespace Flux.Colors
     : System.IEquatable<Acmyk>
   {
     public static readonly Acmyk Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private double m_alpha;
     private Cmyk m_cmyk;

@@ -6,6 +6,8 @@ namespace Flux.RulesEngine
   public struct Rule
     : System.IEquatable<Rule>
   {
+    public static readonly Rule Empty;
+
     public string Name { get; }
     public string Operator { get; }
     public object Value { get; }

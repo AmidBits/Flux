@@ -6,7 +6,6 @@ namespace Flux.Hashing
     : ISimpleHashGenerator32, System.IEquatable<Oat>
   {
     public static readonly Oat Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private uint m_hash;
 

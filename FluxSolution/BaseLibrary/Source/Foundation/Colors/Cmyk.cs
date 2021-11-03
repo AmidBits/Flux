@@ -6,7 +6,6 @@ namespace Flux.Colors
     : System.IEquatable<Cmyk>
   {
     public static readonly Cmyk Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private double m_cyan;
     private double m_magenta;

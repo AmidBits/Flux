@@ -5,7 +5,6 @@ namespace Flux.Colors
     : System.IEquatable<Argb>
   {
     public static readonly Argb Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private Rgb m_rgb;
     private byte m_alpha;

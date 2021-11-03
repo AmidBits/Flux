@@ -6,7 +6,6 @@ namespace Flux.Hashing
     : ISimpleHashGenerator32, System.IEquatable<Fnv1>
   {
     public static readonly Fnv1 Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private uint m_hash; // = 2166136261U;
 

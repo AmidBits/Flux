@@ -5,7 +5,6 @@ namespace Flux.Colors
     : System.IEquatable<Ahsl>
   {
     public static readonly Ahsl Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private double m_alpha;
     private Hsl m_hsl;

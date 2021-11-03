@@ -4,7 +4,6 @@ namespace Flux.Colors
     : System.IEquatable<Hsl>
   {
     public static readonly Hsl Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private double m_hue;
     private double m_saturation;

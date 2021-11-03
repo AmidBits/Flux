@@ -6,7 +6,6 @@ namespace Flux.Checksum
 		: IChecksumGenerator32, System.IEquatable<Adler32>
 	{
 		public static readonly Adler32 Empty;
-		public bool IsEmpty => Equals(Empty);
 
 		private uint m_hash;// = 1;
 

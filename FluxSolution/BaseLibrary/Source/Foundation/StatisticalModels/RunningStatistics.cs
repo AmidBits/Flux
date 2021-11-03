@@ -3,7 +3,7 @@
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable
   {
-    public static readonly RunningStatistics Empty = Create();
+    public static readonly RunningStatistics Empty;
 
     private long m_count;
 

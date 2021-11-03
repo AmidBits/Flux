@@ -4,7 +4,6 @@ namespace Flux.Colors
     : System.IEquatable<Ahwb>
   {
     public static readonly Ahwb Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private double m_alpha;
     private Hwb m_hwb;

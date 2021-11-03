@@ -8,7 +8,6 @@ namespace Flux.Checksum
     : IChecksumGenerator32, System.IEquatable<Crc32>
   {
     public static readonly Crc32 Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private readonly uint[] m_lookupTable;
 

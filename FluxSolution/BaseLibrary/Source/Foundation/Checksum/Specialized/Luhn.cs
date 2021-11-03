@@ -8,7 +8,6 @@ namespace Flux.Checksum
     : System.IEquatable<Luhn>
   {
     public static readonly Luhn Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private readonly int[] m_sequence;
 

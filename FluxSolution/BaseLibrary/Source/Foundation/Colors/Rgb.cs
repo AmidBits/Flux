@@ -4,7 +4,6 @@ namespace Flux.Colors
     : System.IEquatable<Rgb>
   {
     public static readonly Rgb Empty;
-    public bool IsEmpty => Equals(Empty);
 
     private byte m_blue;
     private byte m_green;
