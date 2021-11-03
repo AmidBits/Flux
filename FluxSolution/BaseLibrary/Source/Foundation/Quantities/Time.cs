@@ -101,6 +101,7 @@ namespace Flux
 
       public System.TimeSpan ToTimeSpan()
         => System.TimeSpan.FromSeconds(m_value);
+
       public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(TimeUnit unit = TimeUnit.Second)

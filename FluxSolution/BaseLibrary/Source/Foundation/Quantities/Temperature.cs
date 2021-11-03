@@ -77,6 +77,8 @@ namespace Flux
       public double Value
         => m_value;
 
+      public string ToUnitString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null)
+        => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(TemperatureUnit unit = TemperatureUnit.Kelvin)
       {
         switch (unit)
