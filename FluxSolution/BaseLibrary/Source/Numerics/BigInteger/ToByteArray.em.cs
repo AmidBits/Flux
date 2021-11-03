@@ -18,7 +18,6 @@ namespace Flux
     }
 
     /// <summary>This is essentially the same as the native ToByteArray (which is even called from this extension method) with the addition of the most significant byte index and its value as out parameters.</summary>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static byte[] ToByteArrayEx(this System.Numerics.BigInteger source, out int msbIndex, out byte msbValue)
     {
       var byteArray = source.ToByteArray();
