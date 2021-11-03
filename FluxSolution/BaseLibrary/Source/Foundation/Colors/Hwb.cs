@@ -50,7 +50,7 @@ namespace Flux.Colors
       if ((whole & 1) == 1)
         fraction = 1 - fraction;
 
-      var v = 1 - bl;
+      var v = 1 - bl; // Unit inverse.
 
       var n = wh + fraction * (v - wh);
 

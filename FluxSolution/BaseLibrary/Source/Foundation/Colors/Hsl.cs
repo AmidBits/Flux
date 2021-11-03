@@ -34,47 +34,48 @@ namespace Flux.Colors
     /// <summary>Creates an RGB color corresponding to the HSL instance.</summary>
     public Rgb ToRgb()
     {
-      double c = GetChroma();
-      double h1 = m_hue / 60;
-      double x = c * (1 - System.Math.Abs((h1 % 2) - 1));
+      var c = GetChroma();
+      var h = m_hue / 60;
+      var x = c * (1 - System.Math.Abs((h % 2) - 1));
 
-      double m = m_lightness - (0.5 * c);
-      double r1 = m, g1 = m, b1 = m;
+      var m = m_lightness - (0.5 * c);
 
-      switch (h1)
+      var r = m;
+      var g = m;
+      var b = m;
+
+      switch (h)
       {
-        case var h01 when h01 >= 0 && h01 <= 1:
-          r1 += c;
-          g1 += x;
+        case var v1 when v1 < 1:
+          r += c;
+          g += x;
           break;
-        case var h11 when h11 > 1 && h11 <= 2:
-          r1 += x;
-          g1 += c;
+        case var v2 when v2 < 2:
+          r += x;
+          g += c;
           break;
-        case var h23 when h23 > 2 && h23 <= 3:
-          g1 += c;
-          b1 += x;
+        case var v3 when v3 < 3:
+          g += c;
+          b += x;
           break;
-        case var h34 when h34 > 3 && h34 <= 4:
-          g1 += x;
-          b1 += c;
+        case var v4 when v4 < 4:
+          g += x;
+          b += c;
           break;
-        case var h45 when h45 > 4 && h45 <= 5:
-          r1 += x;
-          b1 += c;
+        case var v5 when v5 < 5:
+          r += x;
+          b += c;
           break;
-        case var h56 when h56 > 5 && h56 <= 6:
-          r1 += c;
-          b1 += x;
-          break;
-        default:
+        default: // h1 <= 6 //
+          r += c;
+          b += x;
           break;
       }
 
       return new Rgb(
-        System.Convert.ToByte(255 * r1),
-        System.Convert.ToByte(255 * g1),
-        System.Convert.ToByte(255 * b1)
+        System.Convert.ToByte(255 * r),
+        System.Convert.ToByte(255 * g),
+        System.Convert.ToByte(255 * b)
        );
     }
 

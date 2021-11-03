@@ -27,46 +27,48 @@ namespace Flux.Colors
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Rgb ToRgb()
     {
-      double hue1 = m_hue / 60;
-      double z = 1 - System.Math.Abs((hue1 % 2) - 1);
-      double chroma = (3 * m_intensity * m_saturation) / (1 + z);
-      double x = chroma * z;
+      var c = GetChroma();
+      var h = m_hue / 60;
+      var x = c * (1 - System.Math.Abs((h % 2) - 1));
 
-      double m = m_intensity * (1 - m_saturation);
-      double r1 = m, g1 = m, b1 = m;
+      var m = m_intensity * (1 - m_saturation);
 
-      switch (hue1)
+      var r = m;
+      var g = m;
+      var b = m;
+
+      switch (h)
       {
         case var v1 when v1 < 1:
-          r1 += chroma;
-          g1 += x;
+          r += c;
+          g += x;
           break;
         case var v2 when v2 < 2:
-          r1 += x;
-          g1 += chroma;
+          r += x;
+          g += c;
           break;
         case var v3 when v3 < 3:
-          g1 += chroma;
-          b1 += x;
+          g += c;
+          b += x;
           break;
         case var v4 when v4 < 4:
-          g1 += x;
-          b1 += chroma;
+          g += x;
+          b += c;
           break;
         case var v5 when v5 < 5:
-          r1 += x;
-          b1 += chroma;
+          r += x;
+          b += c;
           break;
         default: // h1 <= 6 //
-          r1 += chroma;
-          b1 += x;
+          r += c;
+          b += x;
           break;
       }
 
       return new Rgb(
-        System.Convert.ToByte(255 * r1),
-        System.Convert.ToByte(255 * g1),
-        System.Convert.ToByte(255 * b1)
+        System.Convert.ToByte(255 * r),
+        System.Convert.ToByte(255 * g),
+        System.Convert.ToByte(255 * b)
       );
     }
 
