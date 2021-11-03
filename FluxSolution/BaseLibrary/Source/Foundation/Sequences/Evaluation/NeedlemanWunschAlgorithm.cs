@@ -1,23 +1,24 @@
-﻿namespace Flux.Algorithms
+﻿namespace Flux.Metrical
 {
   /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm"/>
   /// <seealso cref="http://www.biorecipes.com/DynProgBasic/code.html"/>
   public class NeedlemanWunschAlgorithm<T>
+    : IMatrixDp<T>
   {
-    public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; init; }
-
     public int LinearGapPenalty { get; init; }
     public System.Func<T, T, int> SubstitutionMatrix { get; init; }
 
     public T GapPlaceholder { get; init; } = default!;
 
+    public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; init; }
+
     public NeedlemanWunschAlgorithm(int linearGapPenalty, System.Func<T, T, int> substitutionMatrix, System.Collections.Generic.EqualityComparer<T> equalityComparer)
     {
-      EqualityComparer = equalityComparer;
       LinearGapPenalty = linearGapPenalty;
       SubstitutionMatrix = substitutionMatrix;
+      EqualityComparer = equalityComparer;
     }
     public NeedlemanWunschAlgorithm(int linearGapPenalty, System.Func<T, T, int> substitutionMatrix)
       : this(linearGapPenalty, substitutionMatrix, System.Collections.Generic.EqualityComparer<T>.Default)
@@ -29,7 +30,7 @@
       LinearGapPenalty = -1;
     }
 
-    public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
 

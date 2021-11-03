@@ -3,13 +3,13 @@
   /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
   public class KnuthMorrisPratt<T>
-    : AMetrical<T>
   {
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public KnuthMorrisPratt(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public KnuthMorrisPratt()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     /// <summary>Creates the amount of safely skippable</summary>

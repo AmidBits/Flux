@@ -3,13 +3,14 @@ using System.Linq;
 namespace Flux.Metrical
 {
   public class SørensenDiceIndex<T>
-    : AMetrical<T>, ISimilarityCoefficient<T>
+    : ISimilarityCoefficient<T>
   {
-    public SørensenDiceIndex(System.Collections.Generic.IEqualityComparer<T> equalityComparer) 
-      : base(equalityComparer)
-    { }
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
+    public SørensenDiceIndex(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public SørensenDiceIndex()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     /// <summary>The Sørensen–Dice coefficient is a statistic used to gauge the similarity of two samples. The algorithm will potentially iterate multiple times over the sequences, so if that is an issue then opt to buffer.</summary>

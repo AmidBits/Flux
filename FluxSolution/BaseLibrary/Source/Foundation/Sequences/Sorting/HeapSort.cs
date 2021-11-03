@@ -3,13 +3,18 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
   public class HeapSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
     private readonly HeapSortType m_type;
 
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public HeapSort(HeapSortType type, System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-      => m_type = type;
+    {
+      m_type = type;
+
+      Comparer = comparer;
+    }
     public HeapSort()
       : this(HeapSortType.FloydDown, System.Collections.Generic.Comparer<T>.Default)
     { }

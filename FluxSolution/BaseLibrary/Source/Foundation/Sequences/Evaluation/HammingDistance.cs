@@ -4,13 +4,14 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>
   /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
   public class HammingDistance<T>
-    : AMetrical<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public HammingDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public HammingDistance()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

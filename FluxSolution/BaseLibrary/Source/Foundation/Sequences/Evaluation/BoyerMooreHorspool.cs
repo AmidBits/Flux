@@ -3,14 +3,14 @@
   /// <summary>Searches a text for the index of a substring. Returns -1 if not found.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
   public class BoyerMooreHorspool<T>
-    : AMetrical<T>
     where T : notnull
   {
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public BoyerMooreHorspool(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public BoyerMooreHorspool()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     /// <summary>Creates the amount of safely skippable items.</summary>

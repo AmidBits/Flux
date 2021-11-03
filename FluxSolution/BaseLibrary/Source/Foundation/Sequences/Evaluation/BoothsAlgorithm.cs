@@ -4,7 +4,7 @@
   /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
   public class BoothsAlgorithm<T>
   {
-    System.Collections.Generic.IComparer<T> Comparer { get; init; }
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
 
     public BoothsAlgorithm(System.Collections.Generic.IComparer<T> comparer)
       => Comparer = comparer;

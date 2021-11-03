@@ -3,13 +3,14 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using an optimized version.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
   public class BubbleSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public BubbleSort(System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-    { }
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     public BubbleSort()
-      : base()
+      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

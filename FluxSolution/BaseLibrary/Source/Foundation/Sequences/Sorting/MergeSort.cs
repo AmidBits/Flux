@@ -3,13 +3,14 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
   public class MergeSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public MergeSort(System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-    { }
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     public MergeSort()
-      : base()
+      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

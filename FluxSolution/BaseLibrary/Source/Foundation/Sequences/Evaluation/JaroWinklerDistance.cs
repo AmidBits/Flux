@@ -6,18 +6,19 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
   /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
   public class JaroWinklerDistance<T>
-    : AMetrical<T>, INormalizedDistance<T>
+    : INormalizedDistance<T>
   {
     /// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>
     public double BoostThreshold { get; set; } = 0.7;
     /// <summary>PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</summary>
     public int PrefixSize { get; set; } = 4;
 
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public JaroWinklerDistance()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     public double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

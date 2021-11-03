@@ -3,13 +3,14 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using quick sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
   public class QuickSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public QuickSort(System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-    { }
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     public QuickSort()
-      : base()
+      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

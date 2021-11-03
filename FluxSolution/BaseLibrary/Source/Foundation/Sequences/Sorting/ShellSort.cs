@@ -3,15 +3,16 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using Marcin Ciura's gap sequence, with an inner insertion sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
   public class ShellSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
     private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 
-    public ShellSort()
-      : base()
-    { }
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public ShellSort(System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
+    public ShellSort()
+      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

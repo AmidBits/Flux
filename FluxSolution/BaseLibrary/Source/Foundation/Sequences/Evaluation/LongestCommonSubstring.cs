@@ -4,13 +4,14 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public class LongestCommonSubstring<T>
-  : AMetrical<T>, IMatrixDp<T>, IMeasuredLength<T>
+  : IMatrixDp<T>, IMeasuredLength<T>
   {
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public LongestCommonSubstring(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public LongestCommonSubstring()
-      : base()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     private int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)

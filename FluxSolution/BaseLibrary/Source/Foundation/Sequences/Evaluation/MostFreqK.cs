@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <summary>The MostFreqKDistance is a string metric technique for quickly estimating how similar two ordered sets or strings are.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Most_frequent_k_characters#Most_frequent_K_hashing"/> 
   public class MostFreqK<T>
-    : AMetrical<T>, IMeasuredDistance<T>
+    : IMeasuredDistance<T>
   {
     public enum SimilarityScoringBehavior
     {
@@ -24,11 +24,13 @@ namespace Flux.Metrical
     /// <summary>Specifies the scoring behavior to employ when computing the measured distance.</summary>
     public SimilarityScoringBehavior ScoringBehavior { get; set; } = SimilarityScoringBehavior.OnlyOneFrequencyWhenEqual;
 
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public MostFreqK(int k, int maxDistance, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
     {
       K = k;
       MaxDistance = maxDistance;
+      EqualityComparer = equalityComparer;
     }
     public MostFreqK(int k, int maxDistance)
       : this(k, maxDistance, System.Collections.Generic.EqualityComparer<T>.Default)

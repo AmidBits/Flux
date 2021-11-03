@@ -3,13 +3,14 @@ using System.Linq;
 namespace Flux.Metrical
 {
   public class OverlapCoefficient<T>
-    : AMetrical<T>, ISimilarityCoefficient<T>
+    : ISimilarityCoefficient<T>
   {
-    public OverlapCoefficient()
-      : base()
-    { }
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+
     public OverlapCoefficient(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
+    public OverlapCoefficient()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
     /// <summary>The overlap coefficient is a similarity measure that measures the overlap between two finite sets. It is related to the Jaccard index and is defined as the size of the intersection divided by the smaller of the size of the two sets. The overlap coefficient will iterate each sequence multiple times, so if that is an issue opt to buffer.</summary>

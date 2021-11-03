@@ -3,13 +3,14 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using essentially an improved bubble sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Comb_sort"/>
   public class CombSort<T>
-    : ASortable<T>, ISortableInPlace<T>
+    : ISortableInPlace<T>
   {
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public CombSort(System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-    { }
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     public CombSort()
-      : base()
+      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

@@ -3,13 +3,18 @@ namespace Flux.Sorting
   /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
   public class MergeSortToCopy<T>
-    : ASortable<T>, ISortableToCopy<T>
+    : ISortableToCopy<T>
   {
     private readonly MergeSortType m_type;
 
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
+
     public MergeSortToCopy(MergeSortType type, System.Collections.Generic.IComparer<T> comparer)
-      : base(comparer)
-      => m_type = type;
+    {
+      m_type = type;
+
+      Comparer = comparer;
+    }
     public MergeSortToCopy()
       : this(MergeSortType.TopDown, System.Collections.Generic.Comparer<T>.Default)
     { }

@@ -1,15 +1,16 @@
-﻿namespace Flux.Algorithms
+﻿namespace Flux.Metrical
 {
   /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm"/>
   public class SmithWatermanAlgorithm<T>
+    : IMatrixDp<T>
   {
-    public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; init; }
-
     public int LinearGapPenalty { get; init; }
     public System.Func<T, T, int> SubstitutionMatrix { get; init; }
 
     public T GapPlaceholder { get; init; } = default!;
+
+    public System.Collections.Generic.EqualityComparer<T> EqualityComparer { get; }
 
     public SmithWatermanAlgorithm(int linearGapPenalty, System.Func<T, T, int> substitutionMatrix, System.Collections.Generic.EqualityComparer<T> equalityComparer)
     {
@@ -18,19 +19,16 @@
       SubstitutionMatrix = substitutionMatrix;
     }
     public SmithWatermanAlgorithm(int linearGapPenalty, System.Func<T, T, int> substitutionMatrix)
-    {
-      EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
-      LinearGapPenalty = linearGapPenalty;
-      SubstitutionMatrix = substitutionMatrix;
-    }
+      : this(linearGapPenalty, substitutionMatrix, System.Collections.Generic.EqualityComparer<T>.Default)
+    { }
     public SmithWatermanAlgorithm()
     {
       EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
-      LinearGapPenalty = -1;
       SubstitutionMatrix = (s, t) => EqualityComparer.Equals(s, t) ? 1 : -1;
+      LinearGapPenalty = -1;
     }
 
-    public int[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
 

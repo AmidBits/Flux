@@ -4,10 +4,10 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
   public class LongestIncreasingSubsequence<T>
   {
-    private readonly System.Collections.Generic.IComparer<T> m_comparer;
+    public System.Collections.Generic.IComparer<T> Comparer { get; }
 
     public LongestIncreasingSubsequence(System.Collections.Generic.IComparer<T> comparer)
-      => m_comparer = comparer;
+      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
     public LongestIncreasingSubsequence()
       : this(System.Collections.Generic.Comparer<T>.Default)
     { }
@@ -30,7 +30,7 @@ namespace Flux.Metrical
         {
           var mid = System.Convert.ToInt32(System.Math.Ceiling((lo + hi) / 2.0)); // Binary middle index.
 
-          if (m_comparer.Compare(source[v0[mid]], source[i]) < 0)
+          if (Comparer.Compare(source[v0[mid]], source[i]) < 0)
             lo = mid + 1;
           else
             hi = mid - 1;
