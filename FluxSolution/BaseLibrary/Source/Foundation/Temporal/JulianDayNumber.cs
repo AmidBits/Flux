@@ -31,10 +31,10 @@ namespace Flux
 
     /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
     public System.DayOfWeek DayOfWeek
-      => (System.DayOfWeek)(DayOfWeekIso % 7);
+      => (System.DayOfWeek)(GetDayOfWeekISO8601(m_value) % 7);
     /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, simply do "ComputeDayOfWeekIso(JDN) % 7".</summary>
-    public int DayOfWeekIso
-      => (m_value % 7 is var dow && dow <= 0 ? dow + 7 : dow) + 1;
+    public int DayOfWeekISO8601
+      => GetDayOfWeekISO8601(m_value);
 
     public double Value
       => m_value;
@@ -88,9 +88,11 @@ namespace Flux
       switch (calendar)
       {
         case ConversionCalendar.GregorianCalendar:
-          return ((1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075);
+          // The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
+          return (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075;
         case ConversionCalendar.JulianCalendar:
-          return (367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777);
+          // The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
+          return 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(calendar));
       }
@@ -98,7 +100,9 @@ namespace Flux
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
     public static void ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
     {
-      if (julianDayNumber < -1401) throw new System.ArgumentOutOfRangeException(nameof(julianDayNumber), @"The algorithm can only convert Julian Date values greater than or equal to -1401.");
+      // This is an algorithm by Edward Graham Richards to convert a Julian Day Number, J, to a date in the Gregorian calendar (proleptic, when applicable).
+      // Richards states the algorithm is valid for Julian day numbers greater than or equal to 0.
+      // All variables are integer values, and the notation "a div b" indicates integer division, and "mod(a,b)" denotes the modulus operator.
 
       var f = julianDayNumber + 1401;
 
@@ -112,6 +116,10 @@ namespace Flux
       month = ((hq + 2) % 12) + 1;
       year = eq - 4716 + (14 - month) / 12;
     }
+
+    /// <summary>Returns the ISO day of the week from the Julian Day Number. The US day of the week can be determined by: GetDayOfWeekISO(JDN) % 7.</summary>
+    public static int GetDayOfWeekISO8601(int julianDayNumber)
+      => (julianDayNumber % 7 is var dow && dow <= 0 ? dow + 7 : dow) + 1;
 
     /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
