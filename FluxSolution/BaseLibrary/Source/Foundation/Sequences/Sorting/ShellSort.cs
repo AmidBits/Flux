@@ -7,11 +7,11 @@ namespace Flux.Sorting
   {
     private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 
+    public ShellSort()
+      : base()
+    { }
     public ShellSort(System.Collections.Generic.IComparer<T> comparer)
       : base(comparer)
-    { }
-    public ShellSort()
-      : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
     public void SortInPlace(System.Span<T> source)

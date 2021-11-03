@@ -6,11 +6,11 @@ namespace Flux.Metrical
   public class HammingDistance<T>
     : AMetrical<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
-    public HammingDistance()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public HammingDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public HammingDistance()
+      : base()
     { }
 
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

@@ -9,11 +9,11 @@ namespace Flux.Metrical
   public class LongestCommonSubsequence<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
-    public LongestCommonSubsequence()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public LongestCommonSubsequence()
+      : base()
     { }
 
     /// <summary></summary>

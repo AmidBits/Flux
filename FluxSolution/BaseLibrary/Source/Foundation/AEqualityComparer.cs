@@ -6,5 +6,8 @@ namespace Flux
 
     public AEqualityComparer(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
+    public AEqualityComparer()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
+    { }
   }
 }

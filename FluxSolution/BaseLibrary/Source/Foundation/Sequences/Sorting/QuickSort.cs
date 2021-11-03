@@ -9,7 +9,7 @@ namespace Flux.Sorting
       : base(comparer)
     { }
     public QuickSort()
-      : this(System.Collections.Generic.Comparer<T>.Default)
+      : base()
     { }
 
     public void SortInPlace(System.Span<T> source)

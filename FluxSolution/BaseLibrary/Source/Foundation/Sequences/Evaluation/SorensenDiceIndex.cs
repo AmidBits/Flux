@@ -5,11 +5,11 @@ namespace Flux.Metrical
   public class SørensenDiceIndex<T>
     : AMetrical<T>, ISimilarityCoefficient<T>
   {
-    public SørensenDiceIndex()
-      : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
-    public SørensenDiceIndex(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public SørensenDiceIndex(System.Collections.Generic.IEqualityComparer<T> equalityComparer) 
       : base(equalityComparer)
+    { }
+    public SørensenDiceIndex()
+      : base()
     { }
 
     /// <summary>The Sørensen–Dice coefficient is a statistic used to gauge the similarity of two samples. The algorithm will potentially iterate multiple times over the sequences, so if that is an issue then opt to buffer.</summary>

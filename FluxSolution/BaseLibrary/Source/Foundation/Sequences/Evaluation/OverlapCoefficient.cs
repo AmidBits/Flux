@@ -6,7 +6,7 @@ namespace Flux.Metrical
     : AMetrical<T>, ISimilarityCoefficient<T>
   {
     public OverlapCoefficient()
-      : this(System.Collections.Generic.EqualityComparer<T>.Default)
+      : base()
     { }
     public OverlapCoefficient(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)

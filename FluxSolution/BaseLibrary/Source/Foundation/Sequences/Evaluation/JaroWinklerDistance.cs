@@ -13,11 +13,11 @@ namespace Flux.Metrical
     /// <summary>PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</summary>
     public int PrefixSize { get; set; } = 4;
 
-    public JaroWinklerDistance()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public JaroWinklerDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public JaroWinklerDistance()
+      : base()
     { }
 
     public double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

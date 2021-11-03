@@ -9,7 +9,7 @@ namespace Flux.Sorting
       : base(comparer)
     { }
     public InsertionSort()
-      : this(System.Collections.Generic.Comparer<T>.Default)
+      : base()
     { }
 
     public void SortInPlaceOld(System.Span<T> source)

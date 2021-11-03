@@ -12,14 +12,12 @@ namespace Flux.Metrical
     public double CostOfSubstitution { get; set; } = 1;
     public double CostOfTransposition { get; set; } = 1;
 
-    public OptimalStringAlignmentCustom()
-      : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
     public OptimalStringAlignmentCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
+    public OptimalStringAlignmentCustom()
+      : base()
+    { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public double[,] GetCustomDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

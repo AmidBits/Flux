@@ -6,11 +6,11 @@ namespace Flux.Metrical
   public class LongestCommonSubstring<T>
   : AMetrical<T>, IMatrixDp<T>, IMeasuredLength<T>
   {
-    public LongestCommonSubstring()
-      : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public LongestCommonSubstring(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public LongestCommonSubstring()
+      : base()
     { }
 
     private int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)

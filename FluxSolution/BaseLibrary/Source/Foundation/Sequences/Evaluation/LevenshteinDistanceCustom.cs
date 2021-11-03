@@ -10,14 +10,12 @@ namespace Flux.Metrical
     public double CostOfInsertion { get; set; } = 1;
     public double CostOfSubstitution { get; set; } = 1;
 
-    public LevenshteinDistanceCustom()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    {
-    }
     public LevenshteinDistanceCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
-    {
-    }
+    { }
+    public LevenshteinDistanceCustom()
+      : base()
+    { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public double[,] GetCustomDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

@@ -7,11 +7,11 @@ namespace Flux.Metrical
   public class OptimalStringAlignment<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
-    public OptimalStringAlignment()
-      : this(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public OptimalStringAlignment()
+      : base()
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>

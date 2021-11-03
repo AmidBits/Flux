@@ -6,6 +6,9 @@ namespace Flux.Metrical
 
     public AMetrical(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
+    public AMetrical()
+      : this(System.Collections.Generic.EqualityComparer<T>.Default)
+    { }
 
     /// <summary>This can be used to backtrack a dynamically programmed matrix.</summary>
     public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)

@@ -6,11 +6,11 @@ namespace Flux.Metrical
   public class LevenshteinDistance<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
-    public LevenshteinDistance()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public LevenshteinDistance()
+      : base()
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>

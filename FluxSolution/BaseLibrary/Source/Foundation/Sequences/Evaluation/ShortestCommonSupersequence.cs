@@ -9,11 +9,11 @@ namespace Flux.Metrical
   public class ShortestCommonSupersequence<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
-    public ShortestCommonSupersequence()
-      : base(System.Collections.Generic.EqualityComparer<T>.Default)
-    { }
     public ShortestCommonSupersequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
+    { }
+    public ShortestCommonSupersequence()
+      : base()
     { }
 
     /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
