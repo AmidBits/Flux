@@ -6,12 +6,12 @@ namespace Flux.DataStructures
 		: IHeap<T>, System.ICloneable
 		where T : System.IComparable<T>
 	{
-		private readonly System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
+		private readonly System.Collections.Generic.List<T> m_data = new();
 
 		public BinaryHeapMin() { }
 		public BinaryHeapMin(System.Collections.Generic.IEnumerable<T> collection)
 		{
-			if (collection is null) throw new System.ArgumentNullException(nameof(collection));
+			if (collection is null) throw new(nameof(collection));
 
 			foreach (var item in collection)
 				Insert(item);

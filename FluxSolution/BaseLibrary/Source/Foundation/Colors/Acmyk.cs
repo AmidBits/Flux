@@ -23,7 +23,7 @@ namespace Flux.Colors
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(m_alpha * 255), CMYK.ToRgb());
+      => new(System.Convert.ToByte(m_alpha * 255), CMYK.ToRgb());
 
     #region Static members
     public static Acmyk FromRandom(System.Random rng)

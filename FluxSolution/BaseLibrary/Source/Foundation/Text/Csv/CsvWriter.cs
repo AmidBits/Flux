@@ -26,7 +26,7 @@ namespace Flux.Text.Csv
 
 		public int LineIndex { get; private set; } = -1;
 
-		private readonly System.Text.StringBuilder m_fieldValue = new System.Text.StringBuilder();
+		private readonly System.Text.StringBuilder m_fieldValue = new();
 
 		private bool m_inField;
 		private bool m_inLine;

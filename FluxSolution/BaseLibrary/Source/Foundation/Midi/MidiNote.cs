@@ -17,7 +17,7 @@ namespace Flux.Midi
     private readonly byte m_number;
 
     public MidiNote(int midiNoteNumber)
-      => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new(nameof(midiNoteNumber));
 
     public double Value
       => m_number;
@@ -31,7 +31,7 @@ namespace Flux.Midi
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Quantity.Frequency ToFrequency()
-      => new Quantity.Frequency(ConvertToFrequency(m_number));
+      => new(ConvertToFrequency(m_number));
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -39,17 +39,17 @@ namespace Flux.Midi
       => (int)((System.Math.Log(frequency / referenceFrequency, 2.0) * 12.0) + referenceNoteNumber);
     /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
     public static int ConvertFromFrequency(double frequency)
-      => ConvertFromFrequency(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+      => ConvertFromFrequency(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new(nameof(frequency));
     /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
     public static double ConvertToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequency)
       => System.Math.Pow(2, (noteNumber - referenceNoteNumber) / 12.0) * referenceFrequency;
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static double ConvertToFrequency(int midiNoteNumber)
-      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new(nameof(midiNoteNumber));
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Quantity.Frequency frequency)
-      => new MidiNote(ConvertFromFrequency(frequency.Value));
+      => new(ConvertFromFrequency(frequency.Value));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
     public static bool TryFromFrequency(Quantity.Frequency frequency, out MidiNote result)
     {
@@ -82,7 +82,7 @@ namespace Flux.Midi
         if (octave < -1 && octave > 9 && offset == -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
 
-        return new MidiNote((byte)((octave + 1) * 12 + offset));
+        return new((byte)((octave + 1) * 12 + offset));
       }
 
       throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
@@ -107,7 +107,7 @@ namespace Flux.Midi
     public static explicit operator byte(MidiNote v)
       => v.m_number;
     public static explicit operator MidiNote(byte v)
-      => new MidiNote(v);
+      => new(v);
 
     public static bool operator <(MidiNote a, MidiNote b)
      => a.CompareTo(b) < 0;
@@ -124,25 +124,25 @@ namespace Flux.Midi
       => !a.Equals(b);
 
     public static MidiNote operator -(MidiNote v)
-      => new MidiNote(-v.m_number);
+      => new(-v.m_number);
     public static MidiNote operator +(MidiNote a, int b)
-      => new MidiNote(a.m_number + b);
+      => new(a.m_number + b);
     public static MidiNote operator +(MidiNote a, MidiNote b)
       => a + b.m_number;
     public static MidiNote operator /(MidiNote a, int b)
-      => new MidiNote(a.m_number / b);
+      => new(a.m_number / b);
     public static MidiNote operator /(MidiNote a, MidiNote b)
       => a / b.m_number;
     public static MidiNote operator *(MidiNote a, int b)
-      => new MidiNote(a.m_number * b);
+      => new(a.m_number * b);
     public static MidiNote operator *(MidiNote a, MidiNote b)
       => a * b.m_number;
     public static MidiNote operator %(MidiNote a, int b)
-      => new MidiNote(a.m_number % b);
+      => new(a.m_number % b);
     public static MidiNote operator %(MidiNote a, MidiNote b)
       => a % b.m_number;
     public static MidiNote operator -(MidiNote a, int b)
-      => new MidiNote(a.m_number - b);
+      => new(a.m_number - b);
     public static MidiNote operator -(MidiNote a, MidiNote b)
       => a - b.m_number;
     #endregion Overloaded operators

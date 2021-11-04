@@ -4,7 +4,7 @@ namespace Flux.Services.Nmea
 
   public class NmeaSentence
   {
-    private static readonly System.Text.RegularExpressions.Regex m_reSentence = new System.Text.RegularExpressions.Regex(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?", System.Text.RegularExpressions.RegexOptions.Compiled);
+    private static readonly System.Text.RegularExpressions.Regex m_reSentence = new(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?", System.Text.RegularExpressions.RegexOptions.Compiled);
 
     protected readonly string m_raw;
     protected readonly System.Collections.Generic.IDictionary<string, string> m_metaData;

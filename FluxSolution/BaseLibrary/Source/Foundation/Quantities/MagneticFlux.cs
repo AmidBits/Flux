@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(MagneticFlux v)
       => v.m_value;
     public static explicit operator MagneticFlux(double v)
-      => new MagneticFlux(v);
+      => new(v);
 
     public static bool operator <(MagneticFlux a, MagneticFlux b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static MagneticFlux operator -(MagneticFlux v)
-      => new MagneticFlux(-v.m_value);
+      => new(-v.m_value);
     public static MagneticFlux operator +(MagneticFlux a, double b)
-      => new MagneticFlux(a.m_value + b);
+      => new(a.m_value + b);
     public static MagneticFlux operator +(MagneticFlux a, MagneticFlux b)
       => a + b.m_value;
     public static MagneticFlux operator /(MagneticFlux a, double b)
-      => new MagneticFlux(a.m_value / b);
+      => new(a.m_value / b);
     public static MagneticFlux operator /(MagneticFlux a, MagneticFlux b)
       => a / b.m_value;
     public static MagneticFlux operator *(MagneticFlux a, double b)
-      => new MagneticFlux(a.m_value * b);
+      => new(a.m_value * b);
     public static MagneticFlux operator *(MagneticFlux a, MagneticFlux b)
       => a * b.m_value;
     public static MagneticFlux operator %(MagneticFlux a, double b)
-      => new MagneticFlux(a.m_value % b);
+      => new(a.m_value % b);
     public static MagneticFlux operator %(MagneticFlux a, MagneticFlux b)
       => a % b.m_value;
     public static MagneticFlux operator -(MagneticFlux a, double b)
-      => new MagneticFlux(a.m_value - b);
+      => new(a.m_value - b);
     public static MagneticFlux operator -(MagneticFlux a, MagneticFlux b)
       => a - b.m_value;
     #endregion Overloaded operators

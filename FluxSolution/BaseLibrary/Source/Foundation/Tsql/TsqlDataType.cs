@@ -96,7 +96,7 @@ namespace Flux.Data
     public static System.Collections.Generic.IEnumerable<string> ToArguments(string dataTypeArguments)
       => dataTypeArguments.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
 
-    private static readonly System.Text.RegularExpressions.Regex m_reParse = new System.Text.RegularExpressions.Regex(@"^\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?$");
+    private static readonly System.Text.RegularExpressions.Regex m_reParse = new(@"^\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?$");
     /// <summary></summary>
     public static TsqlDataType Parse(string expression)
     {

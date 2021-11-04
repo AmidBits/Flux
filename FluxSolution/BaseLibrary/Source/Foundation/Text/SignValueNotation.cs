@@ -6,7 +6,7 @@ namespace Flux.Text
   public sealed class SignValueNotation
   {
     /// <see cref="https://en.wikipedia.org/wiki/Egyptian_numerals"/>
-    public static readonly SignValueNotation AncientEgyptianNumeralSystemUnicode = new SignValueNotation(new System.Collections.Generic.Dictionary<string, int>()
+    public static readonly SignValueNotation AncientEgyptianNumeralSystemUnicode = new(new System.Collections.Generic.Dictionary<string, int>()
     {
       { "\U00013060", 1000000 },
       { "\U00013190", 100000 },
@@ -18,22 +18,7 @@ namespace Flux.Text
     });
 
     /// <see cref="https://en.wikipedia.org/wiki/Roman_numerals"/>
-    public static readonly SignValueNotation RomanNumeralSystem = new SignValueNotation(new System.Collections.Generic.Dictionary<string, int>()
-    {
-      { "M", 1000 },
-      { "CM", 900 },
-      { "D", 500 },
-      { "CD", 400 },
-      { "C", 100 },
-      { "XC", 90 },
-      { "L", 50 },
-      { "XL", 40 },
-      { "X", 10 },
-      { "IX", 9 },
-      { "V", 5 },
-      { "IV", 4 },
-      { "I", 1 }
-    });
+    public static readonly SignValueNotation RomanNumeralSystem = new(new System.Collections.Generic.Dictionary<string, int>() { { "M", 1000 }, { "CM", 900 }, { "D", 500 }, { "CD", 400 }, { "C", 100 }, { "XC", 90 }, { "L", 50 }, { "XL", 40 }, { "X", 10 }, { "IX", 9 }, { "V", 5 }, { "IV", 4 }, { "I", 1 } });
 
     public System.Collections.Generic.Dictionary<string, int> SignValueSystem { get; }
 
@@ -69,7 +54,7 @@ namespace Flux.Text
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     public System.Numerics.BigInteger StringToNumber(string number)
     {
-      if (number is null) throw new System.ArgumentNullException(nameof(number));
+      if (number is null) throw new(nameof(number));
 
       var bi = new System.Numerics.BigInteger();
 

@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo? GetDirectoryInfo(this AppDataStore store)
-      => new System.IO.DirectoryInfo(GetMsAppDataPath(store));
+      => new(GetMsAppDataPath(store));
     public static string GetMsAppDataPath(this AppDataStore store)
       => store switch
       {

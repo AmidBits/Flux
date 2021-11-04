@@ -4,41 +4,41 @@ namespace Flux
   {
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this byte source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this decimal source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this double source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this short source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this int source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this long source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     [System.CLSCompliant(false)]
     public static System.Numerics.BigInteger ToBigInteger(this sbyte source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this float source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     [System.CLSCompliant(false)]
     public static System.Numerics.BigInteger ToBigInteger(this ushort source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     [System.CLSCompliant(false)]
     public static System.Numerics.BigInteger ToBigInteger(this uint source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
     /// <summary>Convert the source to a BigInteger.</summary>
     [System.CLSCompliant(false)]
     public static System.Numerics.BigInteger ToBigInteger(this ulong source)
-      => new System.Numerics.BigInteger(source);
+      => new(source);
 
     /// <summary>Conversion from BigInteger to built-in type.</summary>
     /// <remarks>Does not generate any exceptions. If the source is lower than the lowest the the lowest possible is returned. IF the source is larger than the largest possible, then the largest is returned.</remarks>

@@ -26,23 +26,23 @@ namespace Flux.Colors
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Argb ToGrayscale(GrayscaleMethod method)
-      => new Argb(m_alpha, m_rgb.ToGrayscale(method));
+      => new(m_alpha, m_rgb.ToGrayscale(method));
 
     /// <summary>Creates a CMYKA color corresponding to the RGBA instance.</summary>
     public Acmyk ToAcmyk()
-      => new Acmyk(m_alpha / 255.0, RGB.ToCmyk());
+      => new(m_alpha / 255.0, RGB.ToCmyk());
     /// <summary>Creates an HSIA color corresponding to the RGBA instance.</summary>
     public Ahsi ToAhsi()
-      => new Ahsi(m_alpha / 255.0, RGB.ToHsi());
+      => new(m_alpha / 255.0, RGB.ToHsi());
     /// <summary>Creates an HSLA color corresponding to the RGBA instance.</summary>
     public Ahsl ToAhsl()
-      => new Ahsl(m_alpha / 255.0, RGB.ToHsl());
+      => new(m_alpha / 255.0, RGB.ToHsl());
     /// <summary>Creates an HSVA color corresponding to the RGBA instance.</summary>
     public Ahsv ToAhsv()
-      => new Ahsv(m_alpha / 255.0, RGB.ToHsv());
+      => new(m_alpha / 255.0, RGB.ToHsv());
     /// <summary>Creates an HWBA color corresponding to the RGBA instance.</summary>
     public Ahwb ToAhwb()
-      => new Ahwb(m_alpha / 255.0, RGB.ToHwb());
+      => new(m_alpha / 255.0, RGB.ToHwb());
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
     //public Hwb ToHwb()

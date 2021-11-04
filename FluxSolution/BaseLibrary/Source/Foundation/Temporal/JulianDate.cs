@@ -13,18 +13,18 @@ namespace Flux
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IValuedUnit
   {
     public static JulianDate EpochDublinJD
-      => new Flux.JulianDate(1899, 12, 31, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+      => new(1899, 12, 31, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
     public static JulianDate EpochModifiedJD
-      => new Flux.JulianDate(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+      => new(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
     public static JulianDate EpochReducedJD
-      => new Flux.JulianDate(1858, 11, 16, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+      => new(1858, 11, 16, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
     public static JulianDate EpochTruncatedJD
-      => new Flux.JulianDate(1968, 5, 24, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
+      => new(1968, 5, 24, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
 
     public static JulianDate FirstGregorianCalendarDate
        => new MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
     public static JulianDate FirstJulianCalendarDate
-      => new JulianDate(0);
+      => new(0);
     public static JulianDate LastJulianCalendarDate
       => new MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
 
@@ -66,13 +66,13 @@ namespace Flux
     }
 
     public JulianDayNumber ToJulianDayNumber()
-      => new JulianDayNumber((int)(m_value + 0.5));
+      => new((int)(m_value + 0.5));
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ToJulianDayNumber().GetDateParts(calendar, out var year, out var month, out var day);
       ConvertToTimeParts(m_value, out var hour, out var minute, out var second, out var millisecond);
 
-      return new MomentUtc(year, month, day, hour, minute, second, millisecond);
+      return new(year, month, day, hour, minute, second, millisecond);
     }
     public string ToTimeString()
       => System.TimeSpan.FromSeconds(43200 + GetTimeSinceNoon(m_value)).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
@@ -126,20 +126,20 @@ namespace Flux
       => !a.Equals(b);
 
     public static JulianDate operator -(JulianDate jd)
-      => new JulianDate(-jd.m_value);
+      => new(-jd.m_value);
     public static double operator -(JulianDate a, JulianDate b)
       => a.m_value - b.m_value;
 
     public static JulianDate operator +(JulianDate a, double b)
-      => new JulianDate(a.m_value + b);
+      => new(a.m_value + b);
     public static JulianDate operator /(JulianDate a, double b)
-      => new JulianDate(a.m_value / b);
+      => new(a.m_value / b);
     public static JulianDate operator *(JulianDate a, double b)
-      => new JulianDate(a.m_value * b);
+      => new(a.m_value * b);
     public static JulianDate operator %(JulianDate a, double b)
-      => new JulianDate(a.m_value % b);
+      => new(a.m_value % b);
     public static JulianDate operator -(JulianDate a, double b)
-      => new JulianDate(a.m_value - b);
+      => new(a.m_value - b);
 
     public static JulianDate operator +(JulianDate a, Quantity.Time b)
       => a + (b.Value / 86400);

@@ -30,7 +30,7 @@ namespace Flux.Quantity
       => m_value;
 
     public PowerRatio ToPowerRatio()
-      => new PowerRatio(System.Math.Pow(m_value, 2));
+      => new(System.Math.Pow(m_value, 2));
 
     public double ToUnitValue(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
     {
@@ -48,18 +48,18 @@ namespace Flux.Quantity
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public static AmplitudeRatio From(Voltage numerator, Voltage denominator)
-      => new AmplitudeRatio(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
+      => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
     /// <summary>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
     /// <param name="decibelChange"></param>
     public static AmplitudeRatio FromDecibelChange(double decibelChange)
-      => new AmplitudeRatio(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
+      => new(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(AmplitudeRatio v)
       => v.m_value;
     public static explicit operator AmplitudeRatio(double v)
-      => new AmplitudeRatio(v);
+      => new(v);
 
     public static bool operator <(AmplitudeRatio a, AmplitudeRatio b)
       => a.CompareTo(b) < 0;
@@ -76,21 +76,21 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static AmplitudeRatio operator -(AmplitudeRatio v)
-      => new AmplitudeRatio(-v.m_value);
+      => new(-v.m_value);
     public static AmplitudeRatio operator +(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
+      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
     public static AmplitudeRatio operator +(AmplitudeRatio a, AmplitudeRatio b)
       => a + b.m_value;
     public static AmplitudeRatio operator /(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(a.m_value - b);
+      => new(a.m_value - b);
     public static AmplitudeRatio operator /(AmplitudeRatio a, AmplitudeRatio b)
       => a / b.m_value;
     public static AmplitudeRatio operator *(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(a.m_value + b);
+      => new(a.m_value + b);
     public static AmplitudeRatio operator *(AmplitudeRatio a, AmplitudeRatio b)
       => a * b.m_value;
     public static AmplitudeRatio operator -(AmplitudeRatio a, double b)
-      => new AmplitudeRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
+      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
     public static AmplitudeRatio operator -(AmplitudeRatio a, AmplitudeRatio b)
       => a - b.m_value;
     #endregion Overloaded operators

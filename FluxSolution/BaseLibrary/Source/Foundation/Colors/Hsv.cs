@@ -32,7 +32,7 @@ namespace Flux.Colors
     }
     /// <summary>Converts to a Hwb color.</summary>
     public Hwb ToHwb()
-      => new Hwb(m_hue, (1 - m_saturation) * m_value, 1 - m_value);
+      => new(m_hue, (1 - m_saturation) * m_value, 1 - m_value);
     /// <summary>Creates an RGB color corresponding to the HSV instance.</summary>
     public Rgb ToRgb()
     {

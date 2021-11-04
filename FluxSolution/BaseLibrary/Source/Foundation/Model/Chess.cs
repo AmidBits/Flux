@@ -37,7 +37,7 @@ namespace Flux.Model
     public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
     public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
-    public static readonly Geometry.Size2 BoardSize = new Geometry.Size2(Files.Length, Ranks.Length);
+    public static readonly Geometry.Size2 BoardSize = new(Files.Length, Ranks.Length);
 
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 
@@ -66,7 +66,7 @@ namespace Flux.Model
     }
 
     public static Geometry.Point2 LabelToVector(string column, string row)
-      => new Geometry.Point2(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
+      => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Geometry.Point2 vector)
       => (int)Geometry.Point2.ToUniqueIndex(vector, BoardSize);

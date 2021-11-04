@@ -69,14 +69,14 @@ namespace Flux
       /// <param name="length"></param>
       /// <param name="width"></param>
       public static Area From(Length length, Length width)
-        => new Area(length.Value * width.Value);
+        => new(length.Value * width.Value);
       #endregion Static methods
 
       #region Overloaded operators
       public static explicit operator double(Area v)
         => v.m_value;
       public static explicit operator Area(double v)
-        => new Area(v);
+        => new(v);
 
       public static bool operator <(Area a, Area b)
         => a.CompareTo(b) < 0;
@@ -93,25 +93,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Area operator -(Area v)
-        => new Area(-v.m_value);
+        => new(-v.m_value);
       public static Area operator +(Area a, double b)
-        => new Area(a.m_value + b);
+        => new(a.m_value + b);
       public static Area operator +(Area a, Area b)
         => a + b.m_value;
       public static Area operator /(Area a, double b)
-        => new Area(a.m_value / b);
+        => new(a.m_value / b);
       public static Area operator /(Area a, Area b)
         => a / b.m_value;
       public static Area operator *(Area a, double b)
-        => new Area(a.m_value * b);
+        => new(a.m_value * b);
       public static Area operator *(Area a, Area b)
         => a * b.m_value;
       public static Area operator %(Area a, double b)
-        => new Area(a.m_value % b);
+        => new(a.m_value % b);
       public static Area operator %(Area a, Area b)
         => a % b.m_value;
       public static Area operator -(Area a, double b)
-        => new Area(a.m_value - b);
+        => new(a.m_value - b);
       public static Area operator -(Area a, Area b)
         => a - b.m_value;
       #endregion Overloaded operators

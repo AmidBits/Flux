@@ -7,19 +7,19 @@ namespace Flux.Quantity
   {
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne
-      => new SimpleFraction(-1, 1, false);
+      => new(-1, 1, false);
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusTwo
-      => new SimpleFraction(-2, 1, false);
+      => new(-2, 1, false);
     /// <summary>Represents a SimpleFraction value of 1.</summary>
     public static SimpleFraction One
-      => new SimpleFraction(1, 1, false);
+      => new(1, 1, false);
     /// <summary>Represents a SimpleFraction value of 2.</summary>
     public static SimpleFraction Two
-      => new SimpleFraction(2, 1, false);
+      => new(2, 1, false);
     /// <summary>Represents a SimpleFraction value of 0.</summary>
     public static SimpleFraction Zero
-      => new SimpleFraction(0, 1, false);
+      => new(0, 1, false);
 
     private readonly System.Numerics.BigInteger m_numerator;
     private readonly System.Numerics.BigInteger m_denominator;
@@ -115,7 +115,7 @@ namespace Flux.Quantity
         );
     /// <summary>Returns the mediant of two values.</summary>
     public static SimpleFraction Mediant(SimpleFraction a, SimpleFraction b)
-      => new SimpleFraction(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
+      => new(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
     /// <summary>Returns the reciprocal of a value.</summary>
     public static SimpleFraction Reciprocal(SimpleFraction value)
       => value == Zero
@@ -142,7 +142,7 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static SimpleFraction operator -(SimpleFraction v)
-      => new SimpleFraction(-v.m_numerator, -v.m_denominator, false);
+      => new(-v.m_numerator, -v.m_denominator, false);
     public static SimpleFraction operator +(SimpleFraction a, SimpleFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -153,11 +153,11 @@ namespace Flux.Quantity
       return new SimpleFraction(an + bn, lcm);
     }
     public static SimpleFraction operator /(SimpleFraction a, SimpleFraction b)
-      => new SimpleFraction(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
+      => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
     public static SimpleFraction operator *(SimpleFraction a, SimpleFraction b)
-      => new SimpleFraction(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
+      => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
     public static SimpleFraction operator %(SimpleFraction a, System.Numerics.BigInteger b)
-      => new SimpleFraction(a.m_numerator % (a.m_denominator * b), a.m_denominator);
+      => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
     public static SimpleFraction operator -(SimpleFraction a, SimpleFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);

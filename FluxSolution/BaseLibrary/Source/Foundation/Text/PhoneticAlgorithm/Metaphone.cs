@@ -8,7 +8,7 @@ namespace Flux.Text.PhoneticAlgorithm
 	{
 		public int MaxCodeLength { get; set; } = 6;
 
-		private System.Text.StringBuilder _output = new System.Text.StringBuilder();
+		private System.Text.StringBuilder _output = new();
 		public string Output { get { return _output.ToString(); } }
 
 		private const char NullChar = (char)0;

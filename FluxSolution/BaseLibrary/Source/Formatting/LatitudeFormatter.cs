@@ -17,7 +17,7 @@ namespace Flux.Formatting
     public System.Text.Rune SymbolMinutes { get; set; } = new System.Text.Rune('\u2032');
     public System.Text.Rune SymbolSeconds { get; set; } = new System.Text.Rune('\u2033');
 
-    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
+    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
 
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)

@@ -72,7 +72,7 @@ namespace Flux
     }
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate()
-      => new JulianDate(m_value);
+      => new(m_value);
     /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
@@ -149,20 +149,20 @@ namespace Flux
       => !a.Equals(b);
 
     public static JulianDayNumber operator -(JulianDayNumber jd)
-      => new JulianDayNumber(-jd.m_value);
+      => new(-jd.m_value);
     public static double operator -(JulianDayNumber a, JulianDayNumber b)
       => a.m_value - b.m_value;
 
     public static JulianDayNumber operator +(JulianDayNumber a, int b)
-      => new JulianDayNumber(a.m_value + b);
+      => new(a.m_value + b);
     public static JulianDayNumber operator /(JulianDayNumber a, int b)
-      => new JulianDayNumber(a.m_value / b);
+      => new(a.m_value / b);
     public static JulianDayNumber operator *(JulianDayNumber a, int b)
-      => new JulianDayNumber(a.m_value * b);
+      => new(a.m_value * b);
     public static JulianDayNumber operator %(JulianDayNumber a, int b)
-      => new JulianDayNumber(a.m_value % b);
+      => new(a.m_value % b);
     public static JulianDayNumber operator -(JulianDayNumber a, int b)
-      => new JulianDayNumber(a.m_value - b);
+      => new(a.m_value - b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

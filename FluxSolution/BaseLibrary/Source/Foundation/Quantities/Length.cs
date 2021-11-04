@@ -143,14 +143,14 @@ namespace Flux
       /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
       /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
       public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency)
-        => new Length(phaseVelocity.Value / frequency.Value);
+        => new(phaseVelocity.Value / frequency.Value);
       #endregion Static methods
 
       #region Overloaded operators
       public static explicit operator double(Length v)
         => v.m_value;
       public static explicit operator Length(double v)
-        => new Length(v);
+        => new(v);
 
       public static bool operator <(Length a, Length b)
         => a.CompareTo(b) < 0;
@@ -167,25 +167,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Length operator -(Length v)
-        => new Length(-v.m_value);
+        => new(-v.m_value);
       public static Length operator +(Length a, double b)
-        => new Length(a.m_value + b);
+        => new(a.m_value + b);
       public static Length operator +(Length a, Length b)
         => a + b.m_value;
       public static Length operator /(Length a, double b)
-        => new Length(a.m_value / b);
+        => new(a.m_value / b);
       public static Length operator /(Length a, Length b)
         => a / b.m_value;
       public static Length operator *(Length a, double b)
-        => new Length(a.m_value * b);
+        => new(a.m_value * b);
       public static Length operator *(Length a, Length b)
         => a * b.m_value;
       public static Length operator %(Length a, double b)
-        => new Length(a.m_value % b);
+        => new(a.m_value % b);
       public static Length operator %(Length a, Length b)
         => a % b.m_value;
       public static Length operator -(Length a, double b)
-        => new Length(a.m_value - b);
+        => new(a.m_value - b);
       public static Length operator -(Length a, Length b)
         => a - b.m_value;
       #endregion Overloaded operators

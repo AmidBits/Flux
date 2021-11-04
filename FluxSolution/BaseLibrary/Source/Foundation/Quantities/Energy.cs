@@ -51,7 +51,7 @@ namespace Flux.Quantity
     public static explicit operator double(Energy v)
       => v.m_value;
     public static explicit operator Energy(double v)
-      => new Energy(v);
+      => new(v);
 
     public static bool operator <(Energy a, Energy b)
       => a.CompareTo(b) < 0;
@@ -68,25 +68,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Energy operator -(Energy v)
-      => new Energy(-v.m_value);
+      => new(-v.m_value);
     public static Energy operator +(Energy a, double b)
-      => new Energy(a.m_value + b);
+      => new(a.m_value + b);
     public static Energy operator +(Energy a, Energy b)
       => a + b.m_value;
     public static Energy operator /(Energy a, double b)
-      => new Energy(a.m_value / b);
+      => new(a.m_value / b);
     public static Energy operator /(Energy a, Energy b)
       => a / b.m_value;
     public static Energy operator *(Energy a, double b)
-      => new Energy(a.m_value * b);
+      => new(a.m_value * b);
     public static Energy operator *(Energy a, Energy b)
       => a * b.m_value;
     public static Energy operator %(Energy a, double b)
-      => new Energy(a.m_value % b);
+      => new(a.m_value % b);
     public static Energy operator %(Energy a, Energy b)
       => a % b.m_value;
     public static Energy operator -(Energy a, double b)
-      => new Energy(a.m_value - b);
+      => new(a.m_value - b);
     public static Energy operator -(Energy a, Energy b)
       => a - b.m_value;
     #endregion Overloaded operators

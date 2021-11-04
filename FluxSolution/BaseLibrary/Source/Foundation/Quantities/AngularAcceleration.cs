@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(AngularAcceleration v)
       => v.m_value;
     public static explicit operator AngularAcceleration(double v)
-      => new AngularAcceleration(v);
+      => new(v);
 
     public static bool operator <(AngularAcceleration a, AngularAcceleration b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static AngularAcceleration operator -(AngularAcceleration v)
-      => new AngularAcceleration(-v.m_value);
+      => new(-v.m_value);
     public static AngularAcceleration operator +(AngularAcceleration a, double b)
-      => new AngularAcceleration(a.m_value + b);
+      => new(a.m_value + b);
     public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b)
       => a + b.m_value;
     public static AngularAcceleration operator /(AngularAcceleration a, double b)
-      => new AngularAcceleration(a.m_value / b);
+      => new(a.m_value / b);
     public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b)
       => a / b.m_value;
     public static AngularAcceleration operator *(AngularAcceleration a, double b)
-      => new AngularAcceleration(a.m_value * b);
+      => new(a.m_value * b);
     public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b)
       => a * b.m_value;
     public static AngularAcceleration operator %(AngularAcceleration a, double b)
-      => new AngularAcceleration(a.m_value % b);
+      => new(a.m_value % b);
     public static AngularAcceleration operator %(AngularAcceleration a, AngularAcceleration b)
       => a % b.m_value;
     public static AngularAcceleration operator -(AngularAcceleration a, double b)
-      => new AngularAcceleration(a.m_value - b);
+      => new(a.m_value - b);
     public static AngularAcceleration operator -(AngularAcceleration a, AngularAcceleration b)
       => a - b.m_value;
     #endregion Overloaded operators

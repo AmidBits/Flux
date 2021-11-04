@@ -51,10 +51,10 @@ namespace Flux.Geometry
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public Point2 PerpendicularCcw()
-      => new Point2(-m_y, m_x);
+      => new(-m_y, m_x);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     public Point2 PerpendicularCw()
-      => new Point2(m_y, -m_x);
+      => new(m_y, -m_x);
 
     /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. This is the more traditional quadrant.</summary>
     /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
@@ -68,12 +68,12 @@ namespace Flux.Geometry
       => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2);
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
-      => new CartesianCoordinate2(m_x, m_y);
+      => new(m_x, m_y);
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
     public Size2 ToSize2()
-      => new Size2(m_x, m_y);
+      => new(m_x, m_y);
     public System.Numerics.Vector2 ToVector2()
-      => new System.Numerics.Vector2(m_x, m_y);
+      => new(m_x, m_y);
 
     #region Static methods
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
@@ -83,7 +83,7 @@ namespace Flux.Geometry
 
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     public static Point2 ComputePoint(double angle, double distance)
-      => new Point2(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
+      => new(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
 
     /// <summary>Returns the cross product of the two vectors.</summary>
     /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
@@ -92,10 +92,10 @@ namespace Flux.Geometry
 
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point2 DivideCeiling(Point2 p, double value)
-      => new Point2(System.Convert.ToInt32(System.Math.Ceiling(p.m_x / value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y / value)));
+      => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x / value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y / value)));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
     public static Point2 DivideFloor(Point2 p, double value)
-      => new Point2(System.Convert.ToInt32(System.Math.Floor(p.m_x / value)), System.Convert.ToInt32(System.Math.Floor(p.m_y / value)));
+      => new(System.Convert.ToInt32(System.Math.Floor(p.m_x / value)), System.Convert.ToInt32(System.Math.Floor(p.m_y / value)));
 
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
@@ -113,18 +113,18 @@ namespace Flux.Geometry
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point2 FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
-      => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY));
+      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static Point2 FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
-      => new Point2(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
     /// <summary>Convert an index to a 2D point, based on the specified grid lengths of axes.</summary>
     public static Point2 FromUniqueIndex(long index, Size2 bounds)
-      => new Point2((int)(index % bounds.Width), (int)(index / bounds.Width));
+      => new((int)(index % bounds.Width), (int)(index / bounds.Width));
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
     public static LineSlope GetLineSlope(Point2 source, Point2 target)
-      => new LineSlope(source.X, source.Y, target.X, target.Y);
+      => new(source.X, source.Y, target.X, target.Y);
 
     ///// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
@@ -138,16 +138,16 @@ namespace Flux.Geometry
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCosine(Point2 p1, Point2 p2, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateCosine(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Y, p2.Y, mu)));
+      => new(System.Convert.ToInt32(Maths.InterpolateCosine(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Y, p2.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCubic(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateCubic(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
+      => new(System.Convert.ToInt32(Maths.InterpolateCubic(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateHermite2(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu, double tension, double bias)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateHermite(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
+      => new(System.Convert.ToInt32(Maths.InterpolateHermite(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateLinear(Point2 p1, Point2 p2, double mu)
-      => new Point2(System.Convert.ToInt32(Maths.InterpolateLinear(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Y, p2.Y, mu)));
+      => new(System.Convert.ToInt32(Maths.InterpolateLinear(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Y, p2.Y, mu)));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static Point2 Lerp(Point2 source, Point2 target, double mu)
@@ -164,15 +164,15 @@ namespace Flux.Geometry
 
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point2 MultiplyCeiling(Point2 p, double value)
-      => new Point2(System.Convert.ToInt32(System.Math.Ceiling(p.m_x * value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y * value)));
+      => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x * value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y * value)));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point2 MultiplyFloor(Point2 p, double value)
-      => new Point2(System.Convert.ToInt32(System.Math.Floor(p.m_x * value)), System.Convert.ToInt32(System.Math.Floor(p.m_y * value)));
+      => new(System.Convert.ToInt32(System.Math.Floor(p.m_x * value)), System.Convert.ToInt32(System.Math.Floor(p.m_y * value)));
 
     //public static Point2 Nlerp(Point2 source, Point2 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
 
-    private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
+    private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
     public static Point2 Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
       ? new Point2(x, y)
@@ -216,88 +216,88 @@ namespace Flux.Geometry
       => !p1.Equals(p2);
 
     public static Point2 operator -(Point2 v)
-      => new Point2(-v.m_x, -v.m_y);
+      => new(-v.m_x, -v.m_y);
 
     public static Point2 operator ~(Point2 v)
-      => new Point2(~v.m_x, ~v.m_y);
+      => new(~v.m_x, ~v.m_y);
 
     public static Point2 operator --(Point2 p)
-      => new Point2(p.m_x - 1, p.m_y - 1);
+      => new(p.m_x - 1, p.m_y - 1);
     public static Point2 operator ++(Point2 p)
-      => new Point2(p.m_x + 1, p.m_y + 1);
+      => new(p.m_x + 1, p.m_y + 1);
 
     public static Point2 operator +(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x + p2.m_x, p1.m_y + p2.m_y);
+      => new(p1.m_x + p2.m_x, p1.m_y + p2.m_y);
     public static Point2 operator +(Point2 p, int v)
-      => new Point2(p.m_x + v, p.m_y + v);
+      => new(p.m_x + v, p.m_y + v);
     public static Point2 operator +(int v, Point2 p)
-      => new Point2(v + p.m_x, v + p.m_y);
+      => new(v + p.m_x, v + p.m_y);
 
     public static Point2 operator -(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x - p2.m_x, p1.m_y - p2.m_y);
+      => new(p1.m_x - p2.m_x, p1.m_y - p2.m_y);
     public static Point2 operator -(Point2 p, int v)
-      => new Point2(p.m_x - v, p.m_y - v);
+      => new(p.m_x - v, p.m_y - v);
     public static Point2 operator -(int v, Point2 p)
-      => new Point2(v - p.m_x, v - p.m_y);
+      => new(v - p.m_x, v - p.m_y);
 
     public static Point2 operator *(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x * p2.m_x, p1.m_y * p2.m_y);
+      => new(p1.m_x * p2.m_x, p1.m_y * p2.m_y);
     public static Point2 operator *(Point2 p, int v)
-      => new Point2(p.m_x * v, p.m_y * v);
+      => new(p.m_x * v, p.m_y * v);
     public static Point2 operator *(Point2 p, double v)
-      => new Point2((int)(p.m_x * v), (int)(p.m_y * v));
+      => new((int)(p.m_x * v), (int)(p.m_y * v));
     public static Point2 operator *(int v, Point2 p)
-      => new Point2(v * p.m_x, v * p.m_y);
+      => new(v * p.m_x, v * p.m_y);
     public static Point2 operator *(double v, Point2 p)
-      => new Point2((int)(v * p.m_x), (int)(v * p.m_y));
+      => new((int)(v * p.m_x), (int)(v * p.m_y));
 
     public static Point2 operator /(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x / p2.m_x, p1.m_y / p2.m_y);
+      => new(p1.m_x / p2.m_x, p1.m_y / p2.m_y);
     public static Point2 operator /(Point2 p, int v)
-      => new Point2(p.m_x / v, p.m_y / v);
+      => new(p.m_x / v, p.m_y / v);
     public static Point2 operator /(Point2 p, double v)
-      => new Point2((int)(p.m_x / v), (int)(p.m_y / v));
+      => new((int)(p.m_x / v), (int)(p.m_y / v));
     public static Point2 operator /(int v, Point2 p)
-      => new Point2(v / p.m_x, v / p.m_y);
+      => new(v / p.m_x, v / p.m_y);
     public static Point2 operator /(double v, Point2 p)
-      => new Point2((int)(v / p.m_x), (int)(v / p.m_y));
+      => new((int)(v / p.m_x), (int)(v / p.m_y));
 
     public static Point2 operator %(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x % p2.m_x, p1.m_y % p2.m_y);
+      => new(p1.m_x % p2.m_x, p1.m_y % p2.m_y);
     public static Point2 operator %(Point2 p, int v)
-      => new Point2(p.m_x % v, p.m_y % v);
+      => new(p.m_x % v, p.m_y % v);
     public static Point2 operator %(Point2 p, double v)
-      => new Point2((int)(p.m_x % v), (int)(p.m_y % v));
+      => new((int)(p.m_x % v), (int)(p.m_y % v));
     public static Point2 operator %(int v, Point2 p)
-      => new Point2(v % p.m_x, v % p.m_y);
+      => new(v % p.m_x, v % p.m_y);
     public static Point2 operator %(double v, Point2 p)
-      => new Point2((int)(v % p.m_x), (int)(v % p.m_y));
+      => new((int)(v % p.m_x), (int)(v % p.m_y));
 
     public static Point2 operator &(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x & p2.m_x, p1.m_y & p2.m_y);
+      => new(p1.m_x & p2.m_x, p1.m_y & p2.m_y);
     public static Point2 operator &(Point2 p, int v)
-      => new Point2(p.m_x & v, p.m_y & v);
+      => new(p.m_x & v, p.m_y & v);
     public static Point2 operator &(int v, Point2 p)
-      => new Point2(v & p.m_x, v & p.m_y);
+      => new(v & p.m_x, v & p.m_y);
 
     public static Point2 operator |(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x | p2.m_x, p1.m_y | p2.m_y);
+      => new(p1.m_x | p2.m_x, p1.m_y | p2.m_y);
     public static Point2 operator |(Point2 p, int v)
-      => new Point2(p.m_x | v, p.m_y | v);
+      => new(p.m_x | v, p.m_y | v);
     public static Point2 operator |(int v, Point2 p)
-      => new Point2(v | p.m_x, v | p.m_y);
+      => new(v | p.m_x, v | p.m_y);
 
     public static Point2 operator ^(Point2 p1, Point2 p2)
-      => new Point2(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y);
+      => new(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y);
     public static Point2 operator ^(Point2 p, int v)
-      => new Point2(p.m_x ^ v, p.m_y ^ v);
+      => new(p.m_x ^ v, p.m_y ^ v);
     public static Point2 operator ^(int v, Point2 p)
-      => new Point2(v ^ p.m_x, v ^ p.m_y);
+      => new(v ^ p.m_x, v ^ p.m_y);
 
     public static Point2 operator <<(Point2 p, int v)
-      => new Point2(p.m_x << v, p.m_y << v);
+      => new(p.m_x << v, p.m_y << v);
     public static Point2 operator >>(Point2 p, int v)
-      => new Point2(p.m_x >> v, p.m_y >> v);
+      => new(p.m_x >> v, p.m_y >> v);
     #endregion Overloaded operators
 
     #region Implemented interfaces

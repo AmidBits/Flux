@@ -32,7 +32,7 @@ namespace Flux.Dsp.AudioProcessor
     }
 
     public SampleStereo ProcessAudio(SampleStereo stereo)
-      => new SampleStereo(stereo.FrontLeft * m_peakL, stereo.FrontRight * m_peakR);
+      => new(stereo.FrontLeft * m_peakL, stereo.FrontRight * m_peakR);
 
     /// <summary>Apply balance across the stereo field.</summary>
     /// <param name="position">Balance position in the range [-1, 1], where -1 = more left, 1 means more right and 0 means no change.</param>

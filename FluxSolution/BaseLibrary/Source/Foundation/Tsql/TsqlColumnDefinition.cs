@@ -41,7 +41,7 @@ namespace Flux.Data
     public static System.Collections.Generic.IEnumerable<string> ToDataTypeArguments(string dataTypeArgumentsAsString)
       => dataTypeArgumentsAsString.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
 
-    private static readonly System.Text.RegularExpressions.Regex m_reParse = new System.Text.RegularExpressions.Regex(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
+    private static readonly System.Text.RegularExpressions.Regex m_reParse = new(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
     public static TsqlColumnDefinition Parse(string tsqlColumnDefinition)
     {
       var match = m_reParse.Match(tsqlColumnDefinition);
@@ -51,7 +51,7 @@ namespace Flux.Data
       var dataTypeArguments = ToDataTypeArguments(match.Groups[nameof(DataTypeArguments)].Value);
       var isNullable = TsqlNullability.Parse(match.Groups[@"Nullability"].Value);
 
-      return new TsqlColumnDefinition(columnName, dataTypeName, dataTypeArguments, isNullable);
+      return new(columnName, dataTypeName, dataTypeArguments, isNullable);
     }
     //private static readonly System.Text.RegularExpressions.Regex m_regexParse = new System.Text.RegularExpressions.Regex(@"^\d*?(\""(?<ColumnName>[^\""]+)\""|\[(?<ColumnName>[^\]]+)\]|(?<ColumnName>\w+))\s*?(\""(?<DataTypeName>[^\""]+)\""|\[(?<DataTypeName>[^\]]+)\]|(?<DataTypeName>\w+))\s*?(\s*?\(\s*?(?<DataTypeArguments>[\w\s\,]+)?\s*?\)\s*?)?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
     //public static SqlColumnDefinition Parse(string tsqlColumnDefinition)

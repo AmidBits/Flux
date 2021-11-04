@@ -8,7 +8,7 @@ namespace Flux.DataStructures
   {
     private readonly int m_arity;
 
-    private System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
+    private System.Collections.Generic.List<T> m_data = new();
 
     public DarityHeapMax(int arity)
     {

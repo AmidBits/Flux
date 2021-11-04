@@ -12,7 +12,7 @@ namespace Flux.Quantity
   {
     // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
     public static Enplethy AvagadroConstant
-      => new Enplethy(6.02214076e23);
+      => new(6.02214076e23);
 
     private readonly double m_value;
 
@@ -49,7 +49,7 @@ namespace Flux.Quantity
     public static explicit operator double(Enplethy v)
       => v.m_value;
     public static explicit operator Enplethy(double v)
-      => new Enplethy(v);
+      => new(v);
 
     public static bool operator <(Enplethy a, Enplethy b)
       => a.CompareTo(b) < 0;
@@ -66,25 +66,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Enplethy operator -(Enplethy v)
-      => new Enplethy(-v.Value);
+      => new(-v.Value);
     public static Enplethy operator +(Enplethy a, double b)
-      => new Enplethy(a.m_value + b);
+      => new(a.m_value + b);
     public static Enplethy operator +(Enplethy a, Enplethy b)
       => a + b.m_value;
     public static Enplethy operator /(Enplethy a, double b)
-      => new Enplethy(a.m_value / b);
+      => new(a.m_value / b);
     public static Enplethy operator /(Enplethy a, Enplethy b)
       => a / b.m_value;
     public static Enplethy operator *(Enplethy a, double b)
-      => new Enplethy(a.m_value * b);
+      => new(a.m_value * b);
     public static Enplethy operator *(Enplethy a, Enplethy b)
       => a * b.m_value;
     public static Enplethy operator %(Enplethy a, double b)
-      => new Enplethy(a.m_value % b);
+      => new(a.m_value % b);
     public static Enplethy operator %(Enplethy a, Enplethy b)
       => a % b.m_value;
     public static Enplethy operator -(Enplethy a, double b)
-      => new Enplethy(a.m_value - b);
+      => new(a.m_value - b);
     public static Enplethy operator -(Enplethy a, Enplethy b)
       => a - b.m_value;
     #endregion Overloaded operators

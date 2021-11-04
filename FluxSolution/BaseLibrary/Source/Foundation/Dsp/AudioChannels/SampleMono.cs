@@ -4,8 +4,7 @@
     : System.IEquatable<SampleMono>
     , IAudioChannelFrontCenter
   {
-    public static SampleMono Zero
-      => new SampleMono();
+    public static SampleMono Zero;
 
     public double FrontCenter { get; }
 
@@ -15,7 +14,7 @@
     }
 
     public SampleStereo ToStereo()
-      => new SampleStereo(FrontCenter, FrontCenter);
+      => new(FrontCenter, FrontCenter);
 
     #region Overloaded operators
     public static bool operator ==(in SampleMono a, in SampleMono b)

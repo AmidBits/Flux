@@ -13,17 +13,17 @@ namespace Flux
 
     /// <summary>This is a reference coordinate for Madrid, in Spain on Europe, which is antipodal to Takapau, in New Zeeland.</summary>
     public static GeographicCoordinate MadridSpain
-      => new GeographicCoordinate(40.416667, -3.716667, 820);
+      => new(40.416667, -3.716667, 820);
     /// <summary>This is a reference coordinate for Takapau, in New Zeeland, which is antipodal to Madrid, in Spain on Europe.</summary>
     public static GeographicCoordinate TakapauNewZealand
-      => new GeographicCoordinate(-40.033333, 176.35, 221);
+      => new(-40.033333, 176.35, 221);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
     public static GeographicCoordinate PhoenixAzUsa
-      => new GeographicCoordinate(33.448333, -112.073889, 331);
+      => new(33.448333, -112.073889, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
     public static GeographicCoordinate TucsonAzUsa
-      => new GeographicCoordinate(32.221667, -110.926389, 728);
+      => new(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Quantity.Length Altitude { get; }
@@ -86,7 +86,7 @@ namespace Flux
     }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(Altitude.Value, System.Math.PI - (Latitude.ToAngle().Value + Maths.PiOver2), Longitude.ToAngle().Value + System.Math.PI);
+      => new(Altitude.Value, System.Math.PI - (Latitude.ToAngle().Value + Maths.PiOver2), Longitude.ToAngle().Value + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {

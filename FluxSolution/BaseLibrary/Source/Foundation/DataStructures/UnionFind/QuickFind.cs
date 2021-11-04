@@ -4,12 +4,12 @@
     : IUnionFind<T>
     where T : notnull
   {
-    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new System.Collections.Generic.Dictionary<T, int>();
+    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
     private readonly int[] m_sets;
     private readonly int[] m_sizes;
 
     public int FriendGroupCount { get; private set; }
-    public System.Collections.Generic.List<T> Values { get; } = new System.Collections.Generic.List<T>();
+    public System.Collections.Generic.List<T> Values { get; } = new();
 
     public QuickFind(System.Collections.Generic.IEnumerable<T> values)
     {

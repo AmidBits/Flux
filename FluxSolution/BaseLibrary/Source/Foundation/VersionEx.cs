@@ -52,7 +52,7 @@ namespace Flux
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
     public static VersionEx Parse(string version)
-      => new VersionEx((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
+      => new((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
     public static bool TryParse(string version, out VersionEx result)
     {
       try

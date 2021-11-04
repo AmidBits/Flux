@@ -9,7 +9,7 @@ namespace Flux.Geometry.Hexagon
     public static Hex[] Directions
       => new Hex[] {
         new Hex(1, 0, -1),
-        new Hex(1, -1, 0),
+        new(1, -1, 0),
         new Hex(0, -1, 1),
         new Hex(-1, 0, 1),
         new Hex(-1, 1, 0),
@@ -24,7 +24,7 @@ namespace Flux.Geometry.Hexagon
 
     public Hex(int q, int r, int s)
     {
-      if (!IsCubeCoordinate(q, r, s)) throw new System.InvalidOperationException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
+      if (!IsCubeCoordinate(q, r, s)) throw new($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
 
       Q = q;
       R = r;
@@ -37,7 +37,7 @@ namespace Flux.Geometry.Hexagon
     #region Static methods
     /// <summary>Returns a new hex representing the sum of the two specified hex vectors.</summary>
     public static Hex Add(Hex a, Hex b)
-      => new Hex(a.Q + b.Q, a.R + b.R, a.S + b.S);
+      => new(a.Q + b.Q, a.R + b.R, a.S + b.S);
     /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
       => Flux.Linq.Enumerable.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
@@ -50,7 +50,7 @@ namespace Flux.Geometry.Hexagon
       ? Directions[direction + 6]
       : (direction >= 0 && direction <= 5)
       ? Directions[direction]
-      : throw new System.ArgumentOutOfRangeException(nameof(direction));
+      : throw new(nameof(direction));
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
     public static int Distance(Hex a, Hex b)
       => Magnitude(Subtract(a, b));
@@ -77,8 +77,8 @@ namespace Flux.Geometry.Hexagon
     /// <param name="isCounterClockWise">Determines whether to enumerate counter-clockwise or not. The default is clockwise.</param>
     public static System.Collections.Generic.IEnumerable<Hex> GetRing(Hex center, int radius, int startDirection = 0, bool isCounterClockWise = false)
     {
-      if (radius < 0) throw new System.ArgumentOutOfRangeException(nameof(radius));
-      else if (startDirection < 0 || startDirection >= 6) throw new System.ArgumentOutOfRangeException(nameof(startDirection));
+      if (radius < 0) throw new(nameof(radius));
+      else if (startDirection < 0 || startDirection >= 6) throw new(nameof(startDirection));
       else if (radius > 0)
       {
         var deltaMultiplier = isCounterClockWise ? -1 : 1; // Determines the sign of the delta direction as a multiplier.
@@ -107,7 +107,7 @@ namespace Flux.Geometry.Hexagon
       => (System.Math.Abs(hex.Q) + System.Math.Abs(hex.R) + System.Math.Abs(hex.S)) / 2;
     /// <summary>Returns a new hex representing the product of the specified hex vector and the scalar value.</summary>
     public static Hex Multiply(Hex h, int scalar)
-      => new Hex(h.Q * scalar, h.R * scalar, h.S * scalar);
+      => new(h.Q * scalar, h.R * scalar, h.S * scalar);
     /// <summary>Returns the neighbor of the specified hex and direction.</summary>
     /// <param name="hex">The reference hex.</param>
     /// <param name="direction">The hexagon direction [0, 5].</param>
@@ -116,13 +116,13 @@ namespace Flux.Geometry.Hexagon
       => Add(hex, Direction(direction));
     /// <summary>Returns the next corner hex in a clockwise direction on the same ring as the specified 'corner' hex. This can also be use for other any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
     public static Hex NextCornerCw(Hex hex)
-      => new Hex(-hex.S, -hex.Q, -hex.R);
+      => new(-hex.S, -hex.Q, -hex.R);
     /// <summary>Returns the next corner hex in a counter-clockwise direction on the same ring as the specified 'corner' hex. This can also be use for any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
     public static Hex NextCornerCcw(Hex hex)
-      => new Hex(-hex.R, -hex.S, -hex.Q);
+      => new(-hex.R, -hex.S, -hex.Q);
     /// <summary>Returns a new hex representing the difference of the two specified hex vectors.</summary>
     public static Hex Subtract(Hex a, Hex b)
-      => new Hex(a.Q - b.Q, a.R - b.R, a.S - b.S);
+      => new(a.Q - b.Q, a.R - b.R, a.S - b.S);
     #endregion Static methods
 
     #region Overloaded operators

@@ -162,14 +162,14 @@ namespace Flux
       /// <param name="width"></param>
       /// <param name="height"></param>
       public static Volume From(Length length, Length width, Length height)
-        => new Volume(length.Value * width.Value * height.Value);
+        => new(length.Value * width.Value * height.Value);
       #endregion Static methods
 
       #region Overloaded operators
       public static explicit operator double(Volume v)
         => v.m_value;
       public static explicit operator Volume(double v)
-        => new Volume(v);
+        => new(v);
 
       public static bool operator <(Volume a, Volume b)
         => a.CompareTo(b) < 0;
@@ -186,25 +186,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Volume operator -(Volume v)
-        => new Volume(-v.m_value);
+        => new(-v.m_value);
       public static Volume operator +(Volume a, double b)
-        => new Volume(a.m_value + b);
+        => new(a.m_value + b);
       public static Volume operator +(Volume a, Volume b)
         => a + b.m_value;
       public static Volume operator /(Volume a, double b)
-        => new Volume(a.m_value / b);
+        => new(a.m_value / b);
       public static Volume operator /(Volume a, Volume b)
         => a / b.m_value;
       public static Volume operator *(Volume a, double b)
-        => new Volume(a.m_value * b);
+        => new(a.m_value * b);
       public static Volume operator *(Volume a, Volume b)
         => a * b.m_value;
       public static Volume operator %(Volume a, double b)
-        => new Volume(a.m_value % b);
+        => new(a.m_value % b);
       public static Volume operator %(Volume a, Volume b)
         => a % b.m_value;
       public static Volume operator -(Volume a, double b)
-        => new Volume(a.m_value - b);
+        => new(a.m_value - b);
       public static Volume operator -(Volume a, Volume b)
         => a - b.m_value;
       #endregion Overloaded operators

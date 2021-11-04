@@ -3,7 +3,7 @@
   public static class ProjectionComparer
   {
     public static ProjectionComparer<TSource, TKey> Create<TSource, TKey>(System.Func<TSource, TKey> projection)
-      => new ProjectionComparer<TSource, TKey>(projection);
+      => new(projection);
 
     //public static ProjectionComparer<TSource, TKey> Create<TSource, TKey>(TSource ignored, System.Func<TSource, TKey> projection)
     //  => new ProjectionComparer<TSource, TKey>(projection);
@@ -12,7 +12,7 @@
   public static class ProjectionComparer<TSource>
   {
     public static ProjectionComparer<TSource, TKey> Create<TKey>(System.Func<TSource, TKey> projection)
-      => new ProjectionComparer<TSource, TKey>(projection);
+      => new(projection);
   }
 
   public class ProjectionComparer<TSource, TKey>

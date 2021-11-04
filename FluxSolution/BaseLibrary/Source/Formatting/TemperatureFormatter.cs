@@ -12,7 +12,7 @@ namespace Flux.Formatting
   public class TemperatureFormatter
     : AFormatter
   {
-    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new System.Text.RegularExpressions.Regex(@"^(?<Unit>[A-Za-z]+)(?<DecimalPlaces>[0-9]+)?$", System.Text.RegularExpressions.RegexOptions.Compiled);
+    private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"^(?<Unit>[A-Za-z]+)(?<DecimalPlaces>[0-9]+)?$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)

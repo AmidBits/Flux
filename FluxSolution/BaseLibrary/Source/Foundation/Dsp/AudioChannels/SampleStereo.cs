@@ -4,8 +4,7 @@
     : System.IEquatable<SampleStereo>
     , IAudioChannelFrontLeft, IAudioChannelFrontRight
   {
-    public static SampleStereo Zero
-      => new SampleStereo();
+    public static SampleStereo Zero;
 
     public double FrontLeft { get; }
     public double FrontRight { get; }
@@ -20,7 +19,7 @@
     { }
 
     public SampleMono ToMono()
-      => new SampleMono(ConvertStereoToMono(FrontLeft, FrontRight));
+      => new(ConvertStereoToMono(FrontLeft, FrontRight));
 
     #region Static methods
     public static double ConvertStereoToMono(double frontLeft, double frontRight)

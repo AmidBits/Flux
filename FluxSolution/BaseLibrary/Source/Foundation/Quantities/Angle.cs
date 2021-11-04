@@ -204,7 +204,7 @@ namespace Flux
 
       #region Overloaded operators
       public static explicit operator Angle(double value)
-        => new Angle(value);
+        => new(value);
       public static explicit operator double(Angle value)
         => value.m_value;
 
@@ -223,25 +223,25 @@ namespace Flux
         => a.CompareTo(b) >= 0;
 
       public static Angle operator -(Angle v)
-        => new Angle(-v.m_value);
+        => new(-v.m_value);
       public static Angle operator +(Angle a, double b)
-        => new Angle(a.m_value + b);
+        => new(a.m_value + b);
       public static Angle operator +(Angle a, Angle b)
         => a + b.m_value;
       public static Angle operator /(Angle a, double b)
-        => new Angle(a.m_value / b);
+        => new(a.m_value / b);
       public static Angle operator /(Angle a, Angle b)
         => a / b.m_value;
       public static Angle operator *(Angle a, double b)
-        => new Angle(a.m_value * b);
+        => new(a.m_value * b);
       public static Angle operator *(Angle a, Angle b)
         => a * b.m_value;
       public static Angle operator %(Angle a, double b)
-        => new Angle(a.m_value % b);
+        => new(a.m_value % b);
       public static Angle operator %(Angle a, Angle b)
         => a % b.m_value;
       public static Angle operator -(Angle a, double b)
-        => new Angle(a.m_value - b);
+        => new(a.m_value - b);
       public static Angle operator -(Angle a, Angle b)
         => a - b.m_value;
       #endregion Overloaded operators

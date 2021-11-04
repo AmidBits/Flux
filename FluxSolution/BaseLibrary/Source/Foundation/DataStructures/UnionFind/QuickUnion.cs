@@ -4,10 +4,10 @@
     : IUnionFind<T>
     where T : notnull
   {
-    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new System.Collections.Generic.Dictionary<T, int>();
+    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
     private readonly int[] m_parents;
 
-    public System.Collections.Generic.List<T> Values { get; } = new System.Collections.Generic.List<T>();
+    public System.Collections.Generic.List<T> Values { get; } = new();
 
     public QuickUnion(System.Collections.Generic.IEnumerable<T> values)
     {

@@ -39,16 +39,16 @@ namespace Flux
       : System.IComparable<Speed>, System.IEquatable<Speed>, IValuedUnit
     {
       public static Speed SpeedOfLightInVacuum
-        => new Speed(299792458);
+        => new(299792458);
 
       public static Speed ApproximateSpeedOfSoundInAir
-        => new Speed(343);
+        => new(343);
       public static Speed ApproximateSpeedOfSoundInDiamond
-        => new Speed(12000);
+        => new(12000);
       public static Speed ApproximateSpeedOfSoundInIron
-        => new Speed(5120);
+        => new(5120);
       public static Speed ApproximateSpeedOfSoundInWater
-        => new Speed(1481);
+        => new(1481);
 
       private readonly double m_value;
 
@@ -106,21 +106,21 @@ namespace Flux
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
       public static Speed ComputePhaseVelocity(Frequency frequency, Length wavelength)
-        => new Speed(frequency.Value * wavelength.Value);
+        => new(frequency.Value * wavelength.Value);
 
       /// <summary>Creates a new Speed instance from the specified length and time.</summary>
       /// <param name="length"></param>
       /// <param name="time"></param>
       /// <returns></returns>
       public static Speed From(Length length, Time time)
-        => new Speed(length.Value / time.Value);
+        => new(length.Value / time.Value);
       #endregion Static methods
 
       #region Overloaded operators
       public static explicit operator double(Speed v)
         => v.m_value;
       public static explicit operator Speed(double v)
-        => new Speed(v);
+        => new(v);
 
       public static bool operator <(Speed a, Speed b)
         => a.CompareTo(b) < 0;
@@ -137,25 +137,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Speed operator -(Speed v)
-        => new Speed(-v.m_value);
+        => new(-v.m_value);
       public static Speed operator +(Speed a, double b)
-        => new Speed(a.m_value + b);
+        => new(a.m_value + b);
       public static Speed operator +(Speed a, Speed b)
         => a + b.m_value;
       public static Speed operator /(Speed a, double b)
-        => new Speed(a.m_value / b);
+        => new(a.m_value / b);
       public static Speed operator /(Speed a, Speed b)
         => a / b.m_value;
       public static Speed operator *(Speed a, double b)
-        => new Speed(a.m_value * b);
+        => new(a.m_value * b);
       public static Speed operator *(Speed a, Speed b)
         => a * b.m_value;
       public static Speed operator %(Speed a, double b)
-        => new Speed(a.m_value % b);
+        => new(a.m_value % b);
       public static Speed operator %(Speed a, Speed b)
         => a % b.m_value;
       public static Speed operator -(Speed a, double b)
-        => new Speed(a.m_value - b);
+        => new(a.m_value - b);
       public static Speed operator -(Speed a, Speed b)
         => a - b.m_value;
       #endregion Overloaded operators

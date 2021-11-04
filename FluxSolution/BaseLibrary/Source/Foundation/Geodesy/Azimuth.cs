@@ -20,7 +20,7 @@ namespace Flux
       => m_degree;
 
     public Quantity.Angle ToAngle()
-      => new Quantity.Angle(m_degree, Quantity.AngleUnit.Degree);
+      => new(m_degree, Quantity.AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Finding the angle between two bearings.</summary>
@@ -43,7 +43,7 @@ namespace Flux
     public static explicit operator double(Azimuth v)
      => v.m_degree;
     public static explicit operator Azimuth(double v)
-      => new Azimuth(v);
+      => new(v);
 
     public static bool operator <(Azimuth a, Azimuth b)
       => a.CompareTo(b) < 0;
@@ -60,25 +60,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Azimuth operator -(Azimuth v)
-      => new Azimuth(-v.m_degree);
+      => new(-v.m_degree);
     public static Azimuth operator +(Azimuth a, double b)
-      => new Azimuth(Wrap(a.m_degree + b));
+      => new(Wrap(a.m_degree + b));
     public static Azimuth operator +(Azimuth a, Azimuth b)
       => a + b.Value;
     public static Azimuth operator /(Azimuth a, double b)
-      => new Azimuth(Wrap(a.m_degree / b));
+      => new(Wrap(a.m_degree / b));
     public static Azimuth operator /(Azimuth a, Azimuth b)
       => a / b.Value;
     public static Azimuth operator *(Azimuth a, double b)
-      => new Azimuth(Wrap(a.m_degree * b));
+      => new(Wrap(a.m_degree * b));
     public static Azimuth operator *(Azimuth a, Azimuth b)
       => a * b.Value;
     public static Azimuth operator %(Azimuth a, double b)
-      => new Azimuth(Wrap(a.m_degree % b));
+      => new(Wrap(a.m_degree % b));
     public static Azimuth operator %(Azimuth a, Azimuth b)
       => a % b.Value;
     public static Azimuth operator -(Azimuth a, double b)
-      => new Azimuth(Wrap(a.m_degree - b));
+      => new(Wrap(a.m_degree - b));
     public static Azimuth operator -(Azimuth a, Azimuth b)
       => a - b.Value;
     #endregion Overloaded operators

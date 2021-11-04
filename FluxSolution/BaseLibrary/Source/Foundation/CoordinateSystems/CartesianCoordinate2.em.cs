@@ -249,14 +249,14 @@ namespace Flux
     }
 
     public static CartesianCoordinate2 ToCartesianCoordinate2(this Geometry.Point2 source)
-      => new CartesianCoordinate2(source.X, source.Y);
+      => new(source.X, source.Y);
     public static CartesianCoordinate2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
-      => new CartesianCoordinate2(source.X, source.Y);
+      => new(source.X, source.Y);
     public static Geometry.Point2 ToPoint2(this CartesianCoordinate2 source, FullRoundingBehavior behavior)
-      => new Geometry.Point2((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
+      => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
     public static Geometry.Point2 ToPoint2(this CartesianCoordinate2 source, HalfRoundingBehavior behavior)
-      => new Geometry.Point2((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
+      => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
     public static System.Numerics.Vector2 ToVector2(this CartesianCoordinate2 source)
-      => new System.Numerics.Vector2((float)source.X, (float)source.Y);
+      => new((float)source.X, (float)source.Y);
   }
 }

@@ -79,7 +79,7 @@ namespace Flux
     //  }
     //}
 
-    public static readonly System.Collections.Generic.Dictionary<char, string> English = new System.Collections.Generic.Dictionary<char, string>()
+    public static readonly System.Collections.Generic.Dictionary<char, string> English = new()
     {
       { 'a', "swqz" },
       { 'b', "nhgv " },

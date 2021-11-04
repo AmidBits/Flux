@@ -68,13 +68,13 @@ namespace Flux
 
     /// <summary>Returns a random System.TimeSpan in the range [System.DateTime.MinValue, System.DateTime.MaxValue].</summary>
     public static System.DateTime NextDateTime([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => new System.DateTime(NextInt64(source, System.DateTime.MaxValue.Ticks));
+      => new(NextInt64(source, System.DateTime.MaxValue.Ticks));
     /// <summary>Returns a random System.TimeSpan in the range [minValue, maxValue].</summary>
     public static System.DateTime NextDateTime([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, System.DateTime maxValue)
-      => new System.DateTime(NextInt64(source, System.DateTime.MinValue.Ticks, maxValue.Ticks));
+      => new(NextInt64(source, System.DateTime.MinValue.Ticks, maxValue.Ticks));
     /// <summary>Returns a random System.TimeSpan in the range [minValue, maxValue].</summary>
     public static System.DateTime NextDateTime([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, System.DateTime minValue, System.DateTime maxValue)
-      => new System.DateTime(NextInt64(source, minValue.Ticks, maxValue.Ticks));
+      => new(NextInt64(source, minValue.Ticks, maxValue.Ticks));
 
     /// <summary>Returns a non-negative random double that is within a specified range.</summary>
     public static double NextDouble([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, double maxValue)
@@ -137,7 +137,7 @@ namespace Flux
 
     /// <summary>Returns a new instance of a Guid structure by using an array of random bytes.</summary>
     public static System.Guid NextGuid([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => new System.Guid(GetRandomBytes(source, 16));
+      => new(GetRandomBytes(source, 16));
 
     ///// <summary>Returns a non-negative random Int32.</summary>
     //public static int NextInt32(this System.Random source)
@@ -161,11 +161,11 @@ namespace Flux
 
     /// <summary>Returns a random System.Net.IPAddress = IPv4.</summary>
     public static System.Net.IPAddress NextIPv4Address([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => new System.Net.IPAddress(GetRandomBytes(source, 4));
+      => new(GetRandomBytes(source, 4));
 
     /// <summary>Returns a random System.Net.IPAddress = IPv6.</summary>
     public static System.Net.IPAddress NextIPv6Address([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => new System.Net.IPAddress(GetRandomBytes(source, 16));
+      => new(GetRandomBytes(source, 16));
 
     /// <summary>The Laplace distribution is also known as the double exponential distribution.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Laplace_distribution"/>
@@ -194,11 +194,11 @@ namespace Flux
 
     /// <summary>Returns a random System.TimeSpan in the range [System.TimeSpan.MinValue, System.TimeSpan.MaxValue].</summary>
     public static System.TimeSpan NextTimeSpan([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => new System.TimeSpan(NextInt64(source));
+      => new(NextInt64(source));
     /// <summary>Returns a random System.TimeSpan in the range [minValue, maxValue].</summary>
 
     public static System.TimeSpan NextTimeSpan([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, System.TimeSpan minValue, System.TimeSpan maxValue)
-      => new System.TimeSpan(NextInt64(source, minValue.Ticks, maxValue.Ticks));
+      => new(NextInt64(source, minValue.Ticks, maxValue.Ticks));
 
     /// <summary>Returns a random System.UInt32 in the range [0, System.UInt32.MaxValue], but will never return uint.MaxValue.</summary>
     [System.CLSCompliant(false)]

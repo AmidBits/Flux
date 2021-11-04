@@ -139,7 +139,7 @@ namespace Flux
       public static explicit operator double(Temperature v)
         => v.m_value;
       public static explicit operator Temperature(double v)
-        => new Temperature(v);
+        => new(v);
 
       public static bool operator <(Temperature a, Temperature b)
         => a.CompareTo(b) < 0;
@@ -156,25 +156,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Temperature operator -(Temperature v)
-        => new Temperature(-v.m_value);
+        => new(-v.m_value);
       public static Temperature operator +(Temperature a, double b)
-        => new Temperature(a.m_value + b);
+        => new(a.m_value + b);
       public static Temperature operator +(Temperature a, Temperature b)
         => a + b.m_value;
       public static Temperature operator /(Temperature a, double b)
-        => new Temperature(a.m_value / b);
+        => new(a.m_value / b);
       public static Temperature operator /(Temperature a, Temperature b)
         => a / b.m_value;
       public static Temperature operator *(Temperature a, double b)
-        => new Temperature(a.m_value * b);
+        => new(a.m_value * b);
       public static Temperature operator *(Temperature a, Temperature b)
         => a * b.m_value;
       public static Temperature operator %(Temperature a, double b)
-        => new Temperature(a.m_value % b);
+        => new(a.m_value % b);
       public static Temperature operator %(Temperature a, Temperature b)
         => a % b.m_value;
       public static Temperature operator -(Temperature a, double b)
-        => new Temperature(a.m_value - b);
+        => new(a.m_value - b);
       public static Temperature operator -(Temperature a, Temperature b)
         => a - b.m_value;
       #endregion Overloaded operators

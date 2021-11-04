@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0);
+    public static readonly System.DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0);
 
     public static System.DateTime FromUnixTimestamp(this long unixTimestamp)
       => UnixEpoch.AddSeconds(unixTimestamp);

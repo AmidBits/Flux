@@ -23,14 +23,14 @@ namespace Flux.Colors
 
     /// <summary>Creates an HSL color corresponding to the HSV instance.</summary>
     public Ahsl ToAhsl()
-      => new Ahsl(m_alpha, HSV.ToHsl());
+      => new(m_alpha, HSV.ToHsl());
     /// <summary>Creates an RGB color corresponding to the HSV instance.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(m_alpha * 255), HSV.ToRgb());
+      => new(System.Convert.ToByte(m_alpha * 255), HSV.ToRgb());
 
     #region Static methods
     public static Ahsv FromRandom(System.Random rng)
-      => new Ahsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
+      => new(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     public static Ahsv FromRandom()
       => FromRandom(Randomization.NumberGenerator.Crypto);
     #endregion Static methods

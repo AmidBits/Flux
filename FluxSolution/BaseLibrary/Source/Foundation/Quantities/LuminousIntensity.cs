@@ -45,7 +45,7 @@ namespace Flux.Quantity
     public static explicit operator double(LuminousIntensity v)
       => v.m_value;
     public static explicit operator LuminousIntensity(double v)
-      => new LuminousIntensity(v);
+      => new(v);
 
     public static bool operator <(LuminousIntensity a, LuminousIntensity b)
       => a.CompareTo(b) < 0;
@@ -62,25 +62,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static LuminousIntensity operator -(LuminousIntensity v)
-      => new LuminousIntensity(-v.m_value);
+      => new(-v.m_value);
     public static LuminousIntensity operator +(LuminousIntensity a, double b)
-      => new LuminousIntensity(a.m_value + b);
+      => new(a.m_value + b);
     public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b)
       => a + b.m_value;
     public static LuminousIntensity operator /(LuminousIntensity a, double b)
-      => new LuminousIntensity(a.m_value / b);
+      => new(a.m_value / b);
     public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b)
       => a / b.m_value;
     public static LuminousIntensity operator *(LuminousIntensity a, double b)
-      => new LuminousIntensity(a.m_value * b);
+      => new(a.m_value * b);
     public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b)
       => a * b.m_value;
     public static LuminousIntensity operator %(LuminousIntensity a, double b)
-      => new LuminousIntensity(a.m_value % b);
+      => new(a.m_value % b);
     public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b)
       => a % b.m_value;
     public static LuminousIntensity operator -(LuminousIntensity a, double b)
-      => new LuminousIntensity(a.m_value - b);
+      => new(a.m_value - b);
     public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b)
       => a - b.m_value;
     #endregion Overloaded operators

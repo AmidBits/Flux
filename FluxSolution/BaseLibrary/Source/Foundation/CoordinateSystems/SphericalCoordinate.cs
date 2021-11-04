@@ -36,7 +36,7 @@ namespace Flux
       return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.Value, m_radius * System.Math.Cos(radInclination));
     }
     public GeographicCoordinate ToGeographicCoordinate()
-      => new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Value - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.Value - System.Math.PI), m_radius);
+      => new(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Value - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.Value - System.Math.PI), m_radius);
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>

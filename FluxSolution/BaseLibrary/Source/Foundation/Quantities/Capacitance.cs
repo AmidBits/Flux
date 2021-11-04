@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(Capacitance v)
       => v.m_value;
     public static explicit operator Capacitance(double v)
-      => new Capacitance(v);
+      => new(v);
 
     public static bool operator <(Capacitance a, Capacitance b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Capacitance operator -(Capacitance v)
-      => new Capacitance(-v.m_value);
+      => new(-v.m_value);
     public static Capacitance operator +(Capacitance a, double b)
-      => new Capacitance(a.m_value + b);
+      => new(a.m_value + b);
     public static Capacitance operator +(Capacitance a, Capacitance b)
       => a + b.m_value;
     public static Capacitance operator /(Capacitance a, double b)
-      => new Capacitance(a.m_value / b);
+      => new(a.m_value / b);
     public static Capacitance operator /(Capacitance a, Capacitance b)
       => a / b.m_value;
     public static Capacitance operator *(Capacitance a, double b)
-      => new Capacitance(a.m_value * b);
+      => new(a.m_value * b);
     public static Capacitance operator *(Capacitance a, Capacitance b)
       => a * b.m_value;
     public static Capacitance operator %(Capacitance a, double b)
-      => new Capacitance(a.m_value % b);
+      => new(a.m_value % b);
     public static Capacitance operator %(Capacitance a, Capacitance b)
       => a % b.m_value;
     public static Capacitance operator -(Capacitance a, double b)
-      => new Capacitance(a.m_value - b);
+      => new(a.m_value - b);
     public static Capacitance operator -(Capacitance a, Capacitance b)
       => a - b.m_value;
     #endregion Overloaded operators

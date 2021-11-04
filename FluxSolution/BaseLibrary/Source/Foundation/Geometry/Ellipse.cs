@@ -33,9 +33,9 @@ namespace Flux.Geometry
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static Ellipse FromCartesian(double x, double y)
-      => new Ellipse(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+      => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
     public static System.Numerics.Vector2 FromEllipse(Ellipse ellipse)
-      => new System.Numerics.Vector2((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
+      => new((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
     /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy

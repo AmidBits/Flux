@@ -15,11 +15,11 @@ namespace Flux.Geometry
     }
 
     public Point2 Center()
-      => new Point2(Width / 2, Height / 2);
+      => new(Width / 2, Height / 2);
 
     /// <summary>Convert a mapped index to a 2D point. This index is uniquely mapped using the size</summary>
     public Point2 UniqueIndexToPoint(long index)
-      => new Point2((int)(index % Width), (int)(index / Width));
+      => new((int)(index % Width), (int)(index / Width));
     /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
     public long PointToUniqueIndex(int x, int y)
       => x + (y * Width);
@@ -30,34 +30,34 @@ namespace Flux.Geometry
     #region Static methods
     /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
     public static Size2 Add(Size2 a, Size2 b)
-      => new Size2(unchecked(a.Width + b.Width), unchecked(a.Height + b.Height));
+      => new(unchecked(a.Width + b.Width), unchecked(a.Height + b.Height));
     /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
     public static Size2 Add(Size2 a, int b)
-      => new Size2(unchecked(a.Width + b), unchecked(a.Height + b));
+      => new(unchecked(a.Width + b), unchecked(a.Height + b));
     /// <summary>Divides the components of the <see cref="Size2"/> by the corresponding components of another <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
     public static Size2 Divide(Size2 dividend, Size2 divisor)
-      => new Size2(unchecked(dividend.Width / divisor.Width), unchecked(dividend.Height / divisor.Height));
+      => new(unchecked(dividend.Width / divisor.Width), unchecked(dividend.Height / divisor.Height));
     /// <summary>Divides the components of the <see cref="Size2"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size2"/>.</summary>
     public static Size2 Divide(Size2 dividend, int divisor)
-      => new Size2(unchecked(dividend.Width / divisor), unchecked(dividend.Height / divisor));
+      => new(unchecked(dividend.Width / divisor), unchecked(dividend.Height / divisor));
     /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
     public static Size2 Divide(int dividend, Size2 divisors)
-      => new Size2(unchecked(dividend / divisors.Width), unchecked(dividend / divisors.Height));
+      => new(unchecked(dividend / divisors.Width), unchecked(dividend / divisors.Height));
     /// <summary>Multiplies <see cref="Size2"/> by an <see cref="int"/> producing <see cref="Size2"/>.</summary>
     public static Size2 Multiply(Size2 size, int multiplier)
-      => new Size2(unchecked(size.Width * multiplier), unchecked(size.Height * multiplier));
+      => new(unchecked(size.Width * multiplier), unchecked(size.Height * multiplier));
     /// <summary>Subtracts a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
     public static Size2 Subtract(Size2 a, Size2 b)
-      => new Size2(unchecked(a.Width - b.Width), unchecked(a.Height - b.Height));
+      => new(unchecked(a.Width - b.Width), unchecked(a.Height - b.Height));
     /// <summary>Subtracts a <see cref='Size2'/> by a <see cref='in'/>.</summary>
     public static Size2 Subtract(Size2 a, int b)
-      => new Size2(unchecked(a.Width - b), unchecked(a.Height - b));
+      => new(unchecked(a.Width - b), unchecked(a.Height - b));
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size2'/>.</summary>
     public static Size2 Subtract(int a, Size2 b)
-      => new Size2(unchecked(a - b.Width), unchecked(a - b.Height));
+      => new(unchecked(a - b.Width), unchecked(a - b.Height));
     /// <summary>Creates a <see cref='Point2'/> from a <see cref='Size2'/>.</summary>
     public static Point2 ToPoint2(Size2 size)
-      => new Point2(size.Width, size.Height);
+      => new(size.Width, size.Height);
     #endregion Static methods
 
     #region Overloaded operators

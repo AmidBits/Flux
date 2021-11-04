@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Determines the last day of the month in the source.</summary>
     public static System.DateTime LastDayOfMonth(this System.DateTime source)
-      => new System.DateTime(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));
+      => new(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));
 
     /// <summary>Determines the last day of the quarter in the source.</summary>
     public static System.DateTime LastDayOfQuarter(this System.DateTime source, int quarter)
@@ -14,15 +14,15 @@ namespace Flux
       switch (quarter)
       {
         case 1:
-          return new System.DateTime(source.Year, 3, 31);
+          return new(source.Year, 3, 31);
         case 2:
-          return new System.DateTime(source.Year, 6, 30);
+          return new(source.Year, 6, 30);
         case 3:
-          return new System.DateTime(source.Year, 9, 30);
+          return new(source.Year, 9, 30);
         case 4:
-          return new System.DateTime(source.Year, 12, 31);
+          return new(source.Year, 12, 31);
         default:
-          throw new System.ArgumentOutOfRangeException(nameof(quarter));
+          throw new(nameof(quarter));
       }
     }
     /// <summary>Determines the last day of the specified quarter.</summary>
@@ -38,6 +38,6 @@ namespace Flux
 
     /// <summary>Determines the last day of the year in the source.</summary>
     public static System.DateTime LastDayOfYear(this System.DateTime source)
-      => new System.DateTime(source.Year, 12, 31);
+      => new(source.Year, 12, 31);
   }
 }

@@ -151,10 +151,10 @@ namespace Flux.Colors
     }
     /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
     public Hsv ToHsv()
-      => new Hsv(GetHue(out _, out var max, out _, out _, out _, out var chroma), max == 0 ? 0 : chroma / max, max);
+      => new(GetHue(out _, out var max, out _, out _, out _, out var chroma), max == 0 ? 0 : chroma / max, max);
     /// <summary>Creates an HWB color corresponding to the RGB instance.</summary>
     public Hwb ToHwb()
-      => new Hwb(GetHue(out var min, out var max, out _, out _, out _, out _), min, 1 - max);
+      => new(GetHue(out var min, out var max, out _, out _, out _, out _), min, 1 - max);
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
     //public Hwb ToHwb()

@@ -42,8 +42,8 @@
 
         var spt = gal.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2);
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
-        foreach (var vt in spt)
-          System.Console.WriteLine($"{vt.destination}={vt.distance}");
+        foreach (var (destination, distance) in spt)
+          System.Console.WriteLine($"{destination}={distance}");
         System.Console.WriteLine();
       }
 
@@ -84,8 +84,8 @@
 
         var spt = gam.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2);
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
-        foreach (var vt in spt)
-          System.Console.WriteLine($"{vt.destination}={vt.distance}");
+        foreach (var (destination, distance) in spt)
+          System.Console.WriteLine($"{destination}={distance}");
         System.Console.WriteLine();
       }
 
@@ -149,8 +149,8 @@
 
         var spt = gam.GetDijkstraShortestPathTree(0, o => (int)o);
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
-        foreach (var vt in spt)
-          System.Console.WriteLine($"{vt.destination}={vt.distance}");
+        foreach (var (destination, distance) in spt)
+          System.Console.WriteLine($"{destination}={distance}");
         System.Console.WriteLine();
       }
     }

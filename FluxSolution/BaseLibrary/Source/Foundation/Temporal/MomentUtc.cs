@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static MomentUtc ToMomentUtc(this System.DateTime source)
-      => new MomentUtc(source);
+      => new(source);
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
@@ -64,15 +64,15 @@ namespace Flux
 
     /// <summary>Creates a new <see cref="System.DateTime"/> from this instance.</summary>
     public System.DateTime ToDateTime()
-      => new System.DateTime(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
+      => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
-      => new JulianDate(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+      => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
     public JulianDate ToJulianDate()
       => ToJulianDate(GetConversionCalendar());
     /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
     public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
-      => new JulianDayNumber(m_year, m_month, m_day, calendar);
+      => new(m_year, m_month, m_day, calendar);
     public JulianDayNumber ToJulianDayNumber()
       => ToJulianDayNumber(GetConversionCalendar());
 

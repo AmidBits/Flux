@@ -30,7 +30,7 @@ namespace Flux.Quantity
       => m_value;
 
     public AmplitudeRatio ToAmplitudeRatio()
-      => new AmplitudeRatio(System.Math.Sqrt(m_value));
+      => new(System.Math.Sqrt(m_value));
 
     public double ToUnitValue(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
     {
@@ -48,18 +48,18 @@ namespace Flux.Quantity
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public static PowerRatio From(Power numerator, Power denominator)
-      => new PowerRatio(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
+      => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
     /// <summary>Creates a new PowerRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
     /// <param name="decibelChange"></param>
     public static PowerRatio FromDecibelChange(double decibelChange)
-      => new PowerRatio(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
+      => new(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(PowerRatio v)
       => v.m_value;
     public static explicit operator PowerRatio(double v)
-      => new PowerRatio(v);
+      => new(v);
 
     public static bool operator <(PowerRatio a, PowerRatio b)
       => a.CompareTo(b) < 0;
@@ -76,21 +76,21 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static PowerRatio operator -(PowerRatio v)
-      => new PowerRatio(-v.m_value);
+      => new(-v.m_value);
     public static PowerRatio operator +(PowerRatio a, double b)
-      => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
+      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
     public static PowerRatio operator +(PowerRatio a, PowerRatio b)
       => a + b.m_value;
     public static PowerRatio operator /(PowerRatio a, double b)
-      => new PowerRatio(a.m_value - b);
+      => new(a.m_value - b);
     public static PowerRatio operator /(PowerRatio a, PowerRatio b)
       => a / b.m_value;
     public static PowerRatio operator *(PowerRatio a, double b)
-      => new PowerRatio(a.m_value + b);
+      => new(a.m_value + b);
     public static PowerRatio operator *(PowerRatio a, PowerRatio b)
       => a * b.m_value;
     public static PowerRatio operator -(PowerRatio a, double b)
-      => new PowerRatio(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
+      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
     public static PowerRatio operator -(PowerRatio a, PowerRatio b)
       => a - b.m_value;
     #endregion Overloaded operators

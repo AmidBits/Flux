@@ -52,7 +52,7 @@ namespace Flux
     {
       /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
       public static Time Flick
-        => new Time(1.0 / 705600000.0);
+        => new(1.0 / 705600000.0);
 
       private readonly double m_value;
 
@@ -138,7 +138,7 @@ namespace Flux
       public static explicit operator double(Time v)
         => v.m_value;
       public static explicit operator Time(double v)
-        => new Time(v);
+        => new(v);
 
       public static bool operator <(Time a, Time b)
         => a.CompareTo(b) < 0;
@@ -155,25 +155,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Time operator -(Time v)
-        => new Time(-v.m_value);
+        => new(-v.m_value);
       public static Time operator +(Time a, double b)
-        => new Time(a.m_value + b);
+        => new(a.m_value + b);
       public static Time operator +(Time a, Time b)
         => a + b.m_value;
       public static Time operator /(Time a, double b)
-        => new Time(a.m_value / b);
+        => new(a.m_value / b);
       public static Time operator /(Time a, Time b)
         => a / b.m_value;
       public static Time operator *(Time a, double b)
-        => new Time(a.m_value * b);
+        => new(a.m_value * b);
       public static Time operator *(Time a, Time b)
         => a * b.m_value;
       public static Time operator %(Time a, double b)
-        => new Time(a.m_value % b);
+        => new(a.m_value % b);
       public static Time operator %(Time a, Time b)
         => a % b.m_value;
       public static Time operator -(Time a, double b)
-        => new Time(a.m_value - b);
+        => new(a.m_value - b);
       public static Time operator -(Time a, Time b)
         => a - b.m_value;
       #endregion Overloaded operators

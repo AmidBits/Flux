@@ -4,7 +4,7 @@
   {
     public static ProjectionEqualityComparer<TSource, TKey> Create<TSource, TKey>(System.Func<TSource, TKey> projection)
       where TKey : notnull
-      => new ProjectionEqualityComparer<TSource, TKey>(projection);
+      => new(projection);
 
     //public static ProjectionEqualityComparer<TSource, TKey> Create<TSource, TKey>(TSource ignored, System.Func<TSource, TKey> projection)
     //  where TKey : notnull
@@ -15,7 +15,7 @@
   {
     public static ProjectionEqualityComparer<TSource, TKey> Create<TKey>(System.Func<TSource, TKey> projection)
       where TKey : notnull
-      => new ProjectionEqualityComparer<TSource, TKey>(projection);
+      => new(projection);
   }
 
   public class ProjectionEqualityComparer<TSource, TKey>

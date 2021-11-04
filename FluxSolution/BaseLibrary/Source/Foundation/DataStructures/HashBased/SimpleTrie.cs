@@ -6,7 +6,7 @@ namespace Flux.DataStructures
   public sealed class SimpleTrie<TKey>
     where TKey : notnull
   {
-    private readonly Node m_root = new Node(false);
+    private readonly Node m_root = new(false);
 
     public int Count { get; private set; }
 

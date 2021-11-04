@@ -34,7 +34,7 @@ namespace Flux.Geometry
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public static System.Numerics.Vector2 TransformCameraToCanvas(System.Numerics.Vector3 source)
-      => new System.Numerics.Vector2(source.X / -source.Z, source.Y / -source.Z); // camera space vector on the canvas, using perspective projection
+      => new(source.X / -source.Z, source.Y / -source.Z); // camera space vector on the canvas, using perspective projection
 
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection, output whether the point is within the bounds of the canvas.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
@@ -48,12 +48,12 @@ namespace Flux.Geometry
     /// <summary>Convert from screen vector to a normalized device coordinate (NDC). The NDC will be in the range [0.0, 1.0].</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public System.Numerics.Vector2 TransformCanvasToNdc(System.Numerics.Vector2 source)
-      => new System.Numerics.Vector2((source.X + CanvasWidth / 2f) / CanvasWidth, (source.Y + CanvasHeight / 2f) / CanvasHeight); // normalize vector, will be in the range [0.0, 1.0]
+      => new((source.X + CanvasWidth / 2f) / CanvasWidth, (source.Y + CanvasHeight / 2f) / CanvasHeight); // normalize vector, will be in the range [0.0, 1.0]
 
     /// <summary>Convert from normalize device coordinate (NDC) to pixel coordinate, with the Y coordinate inverted. (Why is that?)</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public System.Numerics.Vector2 TransformNdcToRaster(System.Numerics.Vector2 ndc)
-      => new System.Numerics.Vector2(ndc.X * RasterWidth, (1f - ndc.Y) * RasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
+      => new(ndc.X * RasterWidth, (1f - ndc.Y) * RasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
 
     #region Overloaded operators
     public static bool operator ==(ViewPort a, ViewPort b)

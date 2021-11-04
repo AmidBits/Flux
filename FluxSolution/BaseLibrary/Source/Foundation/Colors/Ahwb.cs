@@ -22,10 +22,10 @@ namespace Flux.Colors
 
     /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
     public Ahsv ToAhsv()
-      => new Ahsv(m_alpha, HWB.ToHsv());
+      => new(m_alpha, HWB.ToHsv());
     /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(m_alpha * 255), HWB.ToRgb());
+      => new(System.Convert.ToByte(m_alpha * 255), HWB.ToRgb());
 
     #region Static methods
     public static Ahwb FromRandom(System.Random rng)

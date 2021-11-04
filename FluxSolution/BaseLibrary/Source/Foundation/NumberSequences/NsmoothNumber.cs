@@ -33,9 +33,9 @@ namespace Flux.Numerics
 
     /// <summary>Creates an 5-smooth number generator, a.k.a. regular numbers.</summary>
     public static NsmoothNumber RegularNumbers()
-      => new NsmoothNumber(5);
+      => new(5);
     /// <summary>Creates an 7-smooth number generator, a.k.a. humble numbers.</summary>
     public static NsmoothNumber HumbleNumbers()
-      => new NsmoothNumber(7);
+      => new(7);
   }
 }

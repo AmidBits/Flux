@@ -2,8 +2,8 @@
 {
   public record Amb
   {
-    private readonly System.Collections.Generic.List<IChoices> m_choices = new System.Collections.Generic.List<IChoices>();
-    private readonly System.Collections.Generic.List<IConstraint> m_constraints = new System.Collections.Generic.List<IConstraint>();
+    private readonly System.Collections.Generic.List<IChoices> m_choices = new();
+    private readonly System.Collections.Generic.List<IConstraint> m_constraints = new();
 
     public IValue<T> Choose<T>(params T[] choices)
     {

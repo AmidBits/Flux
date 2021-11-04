@@ -9,7 +9,7 @@ namespace Flux
       => System.AppDomain.CurrentDomain.FriendlyName;
     /// <summary>Returns the file path of the process executable.</summary>
     public static System.Uri AppDomainPath
-      => new System.Uri(System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName);
+      => new(System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName);
 
     /// <summary>Returns the version of the common language runtime.</summary>
     public static System.Version ClrVersion

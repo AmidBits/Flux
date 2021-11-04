@@ -29,7 +29,7 @@ namespace Flux
       return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth), m_height);
     }
     public SphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth.Value);
+      => new(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth.Value);
 
     #region Overloaded operators
     public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b)

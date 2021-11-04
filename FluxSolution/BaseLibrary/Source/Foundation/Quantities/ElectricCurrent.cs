@@ -49,19 +49,19 @@ namespace Flux.Quantity
     /// <param name="power"></param>
     /// <param name="voltage"></param>
     public static ElectricCurrent From(Power power, Voltage voltage)
-      => new ElectricCurrent(power.Value / voltage.Value);
+      => new(power.Value / voltage.Value);
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new ElectricCurrent(voltage.Value / resistance.Value);
+      => new(voltage.Value / resistance.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(ElectricCurrent v)
       => v.m_value;
     public static explicit operator ElectricCurrent(double v)
-      => new ElectricCurrent(v);
+      => new(v);
 
     public static bool operator <(ElectricCurrent a, ElectricCurrent b)
       => a.CompareTo(b) < 0;
@@ -78,25 +78,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static ElectricCurrent operator -(ElectricCurrent v)
-      => new ElectricCurrent(-v.m_value);
+      => new(-v.m_value);
     public static ElectricCurrent operator +(ElectricCurrent a, double b)
-      => new ElectricCurrent(a.m_value + b);
+      => new(a.m_value + b);
     public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
       => a + b.m_value;
     public static ElectricCurrent operator /(ElectricCurrent a, double b)
-      => new ElectricCurrent(a.m_value / b);
+      => new(a.m_value / b);
     public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
       => a / b.m_value;
     public static ElectricCurrent operator *(ElectricCurrent a, double b)
-      => new ElectricCurrent(a.m_value * b);
+      => new(a.m_value * b);
     public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
       => a * b.m_value;
     public static ElectricCurrent operator %(ElectricCurrent a, double b)
-      => new ElectricCurrent(a.m_value % b);
+      => new(a.m_value % b);
     public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
       => a % b.m_value;
     public static ElectricCurrent operator -(ElectricCurrent a, double b)
-      => new ElectricCurrent(a.m_value - b);
+      => new(a.m_value - b);
     public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
       => a - b.m_value;
     #endregion Overloaded operators

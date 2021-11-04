@@ -43,14 +43,14 @@ namespace Flux.Quantity
     /// <param name="current"></param>
     /// <param name="voltage"></param>
     public static Power From(ElectricCurrent current, Voltage voltage)
-      => new Power(current.Value * voltage.Value);
+      => new(current.Value * voltage.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Power v)
       => v.m_value;
     public static explicit operator Power(double v)
-      => new Power(v);
+      => new(v);
 
     public static bool operator <(Power a, Power b)
       => a.CompareTo(b) < 0;
@@ -67,25 +67,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Power operator -(Power v)
-      => new Power(-v.m_value);
+      => new(-v.m_value);
     public static Power operator +(Power a, double b)
-      => new Power(a.m_value + b);
+      => new(a.m_value + b);
     public static Power operator +(Power a, Power b)
       => a + b.m_value;
     public static Power operator /(Power a, double b)
-      => new Power(a.m_value / b);
+      => new(a.m_value / b);
     public static Power operator /(Power a, Power b)
       => a / b.m_value;
     public static Power operator *(Power a, double b)
-      => new Power(a.m_value * b);
+      => new(a.m_value * b);
     public static Power operator *(Power a, Power b)
       => a * b.m_value;
     public static Power operator %(Power a, double b)
-      => new Power(a.m_value % b);
+      => new(a.m_value % b);
     public static Power operator %(Power a, Power b)
       => a % b.m_value;
     public static Power operator -(Power a, double b)
-      => new Power(a.m_value - b);
+      => new(a.m_value - b);
     public static Power operator -(Power a, Power b)
       => a - b.m_value;
     #endregion Overloaded operators

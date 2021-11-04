@@ -42,7 +42,7 @@ namespace Flux
       : System.IComparable<Mass>, System.IEquatable<Mass>, IValuedUnit
     {
       public static Mass ElectronMass
-        => new Mass(9.1093837015e-31);
+        => new(9.1093837015e-31);
 
       private readonly double m_value;
 
@@ -106,7 +106,7 @@ namespace Flux
       public static explicit operator double(Mass v)
         => v.m_value;
       public static explicit operator Mass(double v)
-        => new Mass(v);
+        => new(v);
 
       public static bool operator <(Mass a, Mass b)
         => a.CompareTo(b) < 0;
@@ -123,25 +123,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static Mass operator -(Mass v)
-        => new Mass(-v.m_value);
+        => new(-v.m_value);
       public static Mass operator +(Mass a, double b)
-        => new Mass(a.m_value + b);
+        => new(a.m_value + b);
       public static Mass operator +(Mass a, Mass b)
         => a + b.m_value;
       public static Mass operator /(Mass a, double b)
-        => new Mass(a.m_value / b);
+        => new(a.m_value / b);
       public static Mass operator /(Mass a, Mass b)
         => a / b.m_value;
       public static Mass operator *(Mass a, double b)
-        => new Mass(a.m_value * b);
+        => new(a.m_value * b);
       public static Mass operator *(Mass a, Mass b)
         => a * b.m_value;
       public static Mass operator %(Mass a, double b)
-        => new Mass(a.m_value % b);
+        => new(a.m_value % b);
       public static Mass operator %(Mass a, Mass b)
         => a % b.m_value;
       public static Mass operator -(Mass a, double b)
-        => new Mass(a.m_value - b);
+        => new(a.m_value - b);
       public static Mass operator -(Mass a, Mass b)
         => a - b.m_value;
       #endregion Overloaded operators

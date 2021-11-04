@@ -11,7 +11,7 @@ namespace Flux
     private readonly double m_degree;
 
     public Longitude(double degree)
-      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
+      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new(nameof(degree));
     public Longitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
@@ -30,7 +30,7 @@ namespace Flux
       => ToAngle().Value;
 
     public Quantity.Angle ToAngle()
-      => new Quantity.Angle(m_degree, Quantity.AngleUnit.Degree);
+      => new(m_degree, Quantity.AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
@@ -50,7 +50,7 @@ namespace Flux
     public static explicit operator double(Longitude v)
       => v.m_degree;
     public static explicit operator Longitude(double v)
-      => new Longitude(v);
+      => new(v);
 
     public static bool operator <(Longitude a, Longitude b)
       => a.CompareTo(b) < 0;
@@ -67,25 +67,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Longitude operator -(Longitude v)
-      => new Longitude(-v.m_degree);
+      => new(-v.m_degree);
     public static Longitude operator +(Longitude a, double b)
-      => new Longitude(Wrap(a.m_degree + b));
+      => new(Wrap(a.m_degree + b));
     public static Longitude operator +(Longitude a, Longitude b)
       => a + b.Value;
     public static Longitude operator /(Longitude a, double b)
-      => new Longitude(Wrap(a.m_degree / b));
+      => new(Wrap(a.m_degree / b));
     public static Longitude operator /(Longitude a, Longitude b)
       => a / b.Value;
     public static Longitude operator *(Longitude a, double b)
-      => new Longitude(Wrap(a.m_degree * b));
+      => new(Wrap(a.m_degree * b));
     public static Longitude operator *(Longitude a, Longitude b)
       => a * b.Value;
     public static Longitude operator %(Longitude a, double b)
-      => new Longitude(Wrap(a.m_degree % b));
+      => new(Wrap(a.m_degree % b));
     public static Longitude operator %(Longitude a, Longitude b)
       => a % b.Value;
     public static Longitude operator -(Longitude a, double b)
-      => new Longitude(Wrap(a.m_degree - b));
+      => new(Wrap(a.m_degree - b));
     public static Longitude operator -(Longitude a, Longitude b)
       => a - b.Value;
     #endregion Overloaded operators

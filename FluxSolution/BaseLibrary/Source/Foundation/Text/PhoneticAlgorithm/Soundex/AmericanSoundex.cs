@@ -78,7 +78,7 @@ namespace Flux
         return result == 0 ? 1 : result;
       }
 
-      public static System.Collections.Generic.Dictionary<string, string> Samples => new System.Collections.Generic.Dictionary<string, string>()
+      public static System.Collections.Generic.Dictionary<string, string> Samples => new()
       {
         { "Robert", "R163" },
         { "Rupert", "R163" },

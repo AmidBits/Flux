@@ -3,14 +3,14 @@ namespace Flux
   public sealed class AssemblyInfo
   {
     public static AssemblyInfo Calling
-      => new AssemblyInfo(System.Reflection.Assembly.GetCallingAssembly());
+      => new(System.Reflection.Assembly.GetCallingAssembly());
     public static AssemblyInfo Entry
-      => new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
+      => new(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
     public static AssemblyInfo Executing
-      => new AssemblyInfo(System.Reflection.Assembly.GetExecutingAssembly());
+      => new(System.Reflection.Assembly.GetExecutingAssembly());
 
     public static AssemblyInfo Flux
-      => new AssemblyInfo(typeof(AssemblyInfo).Assembly);
+      => new(typeof(AssemblyInfo).Assembly);
 
     public string? Company
       => GetAssemblyAttribute<System.Reflection.AssemblyCompanyAttribute>(a => a.Company);

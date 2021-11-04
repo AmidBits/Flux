@@ -11,7 +11,7 @@ namespace Flux.Quantity
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValuedUnit
   {
     public static ElectricResistance VonKlitzing
-      => new ElectricResistance(25812.80745); // 25812.80745;
+      => new(25812.80745); // 25812.80745;
 
     private readonly double m_value;
 
@@ -46,7 +46,7 @@ namespace Flux.Quantity
     /// <param name="voltage"></param>
     /// <param name="current"></param>
     public static ElectricResistance From(Voltage voltage, ElectricCurrent current)
-      => new ElectricResistance(voltage.Value / current.Value);
+      => new(voltage.Value / current.Value);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
     {
@@ -69,7 +69,7 @@ namespace Flux.Quantity
     public static explicit operator double(ElectricResistance v)
       => v.m_value;
     public static explicit operator ElectricResistance(double v)
-      => new ElectricResistance(v);
+      => new(v);
 
     public static bool operator <(ElectricResistance a, ElectricResistance b)
       => a.CompareTo(b) < 0;
@@ -86,25 +86,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static ElectricResistance operator -(ElectricResistance v)
-      => new ElectricResistance(-v.m_value);
+      => new(-v.m_value);
     public static ElectricResistance operator +(ElectricResistance a, double b)
-      => new ElectricResistance(a.m_value + b);
+      => new(a.m_value + b);
     public static ElectricResistance operator +(ElectricResistance a, ElectricResistance b)
       => a + b.m_value;
     public static ElectricResistance operator /(ElectricResistance a, double b)
-      => new ElectricResistance(a.m_value / b);
+      => new(a.m_value / b);
     public static ElectricResistance operator /(ElectricResistance a, ElectricResistance b)
       => a / b.m_value;
     public static ElectricResistance operator *(ElectricResistance a, double b)
-      => new ElectricResistance(a.m_value * b);
+      => new(a.m_value * b);
     public static ElectricResistance operator *(ElectricResistance a, ElectricResistance b)
       => a * b.m_value;
     public static ElectricResistance operator %(ElectricResistance a, double b)
-      => new ElectricResistance(a.m_value % b);
+      => new(a.m_value % b);
     public static ElectricResistance operator %(ElectricResistance a, ElectricResistance b)
       => a % b.m_value;
     public static ElectricResistance operator -(ElectricResistance a, double b)
-      => new ElectricResistance(a.m_value - b);
+      => new(a.m_value - b);
     public static ElectricResistance operator -(ElectricResistance a, ElectricResistance b)
       => a - b.m_value;
     #endregion Overloaded operators

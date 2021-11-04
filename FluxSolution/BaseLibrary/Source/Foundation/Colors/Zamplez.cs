@@ -7,15 +7,15 @@ namespace Flux
     public static void RunColors()
     {
       var rgb = Flux.Colors.Rgb.FromRandom();
-      rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
-      rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
+      //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
+      //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
       //rgb = new Flux.Media.Colors.Rgb(0x0, 0x0, 0x0);
       //rgb = new Flux.Media.Colors.Rgb(0x1, 0x1, 0x1);
       //rgb = new Flux.Media.Colors.Rgb(0xFF, 0xFF, 0xFF);
       //rgb = new Flux.Media.Colors.Rgb(0xFE, 0xFE, 0xFE);
 
       System.Console.WriteLine($"{rgb}");
-      var hue = rgb.GetHue(out var min, out var max, out var r, out var g, out var b, out var chroma);
+      var hue = rgb.GetHue(out var _, out var _, out var r, out var g, out var b, out var chroma);
       rgb.GetSecondaryChromaAndHue(out var chroma2, out var hue2);
       var cmyk = rgb.ToCmyk();
       System.Console.WriteLine($"{cmyk} ({cmyk.ToRgb()})");

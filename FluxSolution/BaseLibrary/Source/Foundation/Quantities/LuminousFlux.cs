@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(LuminousFlux v)
       => v.m_value;
     public static explicit operator LuminousFlux(double v)
-      => new LuminousFlux(v);
+      => new(v);
 
     public static bool operator <(LuminousFlux a, LuminousFlux b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static LuminousFlux operator -(LuminousFlux v)
-      => new LuminousFlux(-v.m_value);
+      => new(-v.m_value);
     public static LuminousFlux operator +(LuminousFlux a, double b)
-      => new LuminousFlux(a.m_value + b);
+      => new(a.m_value + b);
     public static LuminousFlux operator +(LuminousFlux a, LuminousFlux b)
       => a + b.m_value;
     public static LuminousFlux operator /(LuminousFlux a, double b)
-      => new LuminousFlux(a.m_value / b);
+      => new(a.m_value / b);
     public static LuminousFlux operator /(LuminousFlux a, LuminousFlux b)
       => a / b.m_value;
     public static LuminousFlux operator *(LuminousFlux a, double b)
-      => new LuminousFlux(a.m_value * b);
+      => new(a.m_value * b);
     public static LuminousFlux operator *(LuminousFlux a, LuminousFlux b)
       => a * b.m_value;
     public static LuminousFlux operator %(LuminousFlux a, double b)
-      => new LuminousFlux(a.m_value % b);
+      => new(a.m_value % b);
     public static LuminousFlux operator %(LuminousFlux a, LuminousFlux b)
       => a % b.m_value;
     public static LuminousFlux operator -(LuminousFlux a, double b)
-      => new LuminousFlux(a.m_value - b);
+      => new(a.m_value - b);
     public static LuminousFlux operator -(LuminousFlux a, LuminousFlux b)
       => a - b.m_value;
     #endregion Overloaded operators

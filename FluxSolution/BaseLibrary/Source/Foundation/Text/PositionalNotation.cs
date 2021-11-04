@@ -21,13 +21,13 @@ namespace Flux
     public ref struct PositionalNotation
     {
       public static PositionalNotation Base2
-        => new PositionalNotation(Sequences.Base62.Slice(0, 2));
+        => new(Sequences.Base62.Slice(0, 2));
       public static PositionalNotation Base8
-        => new PositionalNotation(Sequences.Base62.Slice(0, 8));
+        => new(Sequences.Base62.Slice(0, 8));
       public static PositionalNotation Base10
-        => new PositionalNotation(Sequences.Base62.Slice(0, 10));
+        => new(Sequences.Base62.Slice(0, 10));
       public static PositionalNotation Base16
-        => new PositionalNotation(Sequences.Base62.Slice(0, 16));
+        => new(Sequences.Base62.Slice(0, 16));
 
       public System.ReadOnlySpan<string> Symbols { get; }
 

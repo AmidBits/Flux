@@ -34,7 +34,7 @@ namespace Flux.Text.Csv
     public CsvTokenType TokenType
       => m_tokenType;
 
-    private readonly System.Text.StringBuilder m_csvValue = new System.Text.StringBuilder(8192);
+    private readonly System.Text.StringBuilder m_csvValue = new(8192);
 
     /// <summary>Reads a field value ending with either a comma or a carriage return.</summary>
     public string ReadFieldValue()

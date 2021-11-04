@@ -43,19 +43,19 @@ namespace Flux.Quantity
     /// <param name="current"></param>
     /// <param name="resistance"></param>
     public static Voltage From(ElectricCurrent current, ElectricResistance resistance)
-      => new Voltage(current.Value * resistance.Value);
+      => new(current.Value * resistance.Value);
     /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
     /// <param name="power"></param>
     /// <param name="current"></param>
     public static Voltage From(Power power, ElectricCurrent current)
-      => new Voltage(power.Value / current.Value);
+      => new(power.Value / current.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Voltage v)
       => v.m_value;
     public static explicit operator Voltage(double v)
-      => new Voltage(v);
+      => new(v);
 
     public static bool operator <(Voltage a, Voltage b)
       => a.CompareTo(b) < 0;
@@ -72,25 +72,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Voltage operator -(Voltage v)
-      => new Voltage(-v.m_value);
+      => new(-v.m_value);
     public static Voltage operator +(Voltage a, double b)
-      => new Voltage(a.m_value + b);
+      => new(a.m_value + b);
     public static Voltage operator +(Voltage a, Voltage b)
       => a + b.m_value;
     public static Voltage operator /(Voltage a, double b)
-      => new Voltage(a.m_value / b);
+      => new(a.m_value / b);
     public static Voltage operator /(Voltage a, Voltage b)
       => a / b.m_value;
     public static Voltage operator *(Voltage a, double b)
-      => new Voltage(a.m_value * b);
+      => new(a.m_value * b);
     public static Voltage operator *(Voltage a, Voltage b)
       => a * b.m_value;
     public static Voltage operator %(Voltage a, double b)
-      => new Voltage(a.m_value % b);
+      => new(a.m_value % b);
     public static Voltage operator %(Voltage a, Voltage b)
       => a % b.m_value;
     public static Voltage operator -(Voltage a, double b)
-      => new Voltage(a.m_value - b);
+      => new(a.m_value - b);
     public static Voltage operator -(Voltage a, Voltage b)
       => a - b.m_value;
     #endregion Overloaded operators

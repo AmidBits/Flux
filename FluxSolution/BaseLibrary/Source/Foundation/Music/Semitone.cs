@@ -21,10 +21,10 @@ namespace Flux.Music
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
     public Quantity.Frequency ShiftPitch(Quantity.Frequency frequency)
-      => new Quantity.Frequency(PitchShift(frequency.Value, m_value));
+      => new(PitchShift(frequency.Value, m_value));
 
     public Cent ToCent()
-      => new Cent(ConvertSemitoneToCent(m_value));
+      => new(ConvertSemitoneToCent(m_value));
     public double ToFrequencyRatio()
       => ConvertSemitoneToFrequencyRatio(m_value);
 
@@ -42,7 +42,7 @@ namespace Flux.Music
     /// <summary>Creates a new Semitone instance from the specified frequency ratio.</summary>
     /// <param name="frequencyRatio"></param>
     public static Semitone FromFrequencyRatio(double frequencyRatio)
-      => new Semitone((int)ConvertFrequencyRatioToSemitone(frequencyRatio));
+      => new((int)ConvertFrequencyRatioToSemitone(frequencyRatio));
 
     /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
     public static double PitchShift(double frequency, int semitones)
@@ -53,7 +53,7 @@ namespace Flux.Music
     public static explicit operator int(Semitone v)
       => v.m_value;
     public static explicit operator Semitone(int v)
-      => new Semitone(v);
+      => new(v);
 
     public static bool operator <(Semitone a, Semitone b)
       => a.CompareTo(b) < 0;
@@ -70,25 +70,25 @@ namespace Flux.Music
       => !a.Equals(b);
 
     public static Semitone operator -(Semitone v)
-      => new Semitone(-v.m_value);
+      => new(-v.m_value);
     public static Semitone operator +(Semitone a, int b)
-      => new Semitone(a.m_value + b);
+      => new(a.m_value + b);
     public static Semitone operator +(Semitone a, Semitone b)
       => a + b.m_value;
     public static Semitone operator /(Semitone a, int b)
-      => new Semitone(a.m_value / b);
+      => new(a.m_value / b);
     public static Semitone operator /(Semitone a, Semitone b)
       => a / b.m_value;
     public static Semitone operator *(Semitone a, int b)
-      => new Semitone(a.m_value * b);
+      => new(a.m_value * b);
     public static Semitone operator *(Semitone a, Semitone b)
       => a * b.m_value;
     public static Semitone operator %(Semitone a, int b)
-      => new Semitone(a.m_value % b);
+      => new(a.m_value % b);
     public static Semitone operator %(Semitone a, Semitone b)
       => a % b.m_value;
     public static Semitone operator -(Semitone a, int b)
-      => new Semitone(a.m_value - b);
+      => new(a.m_value - b);
     public static Semitone operator -(Semitone a, Semitone b)
       => a - b.m_value;
     #endregion Overloaded operators

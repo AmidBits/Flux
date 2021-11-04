@@ -23,7 +23,7 @@ namespace Flux.Colors
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(m_alpha * 255), HSI.ToRgb());
+      => new(System.Convert.ToByte(m_alpha * 255), HSI.ToRgb());
 
     #region Static members
     public static Ahsi FromRandom(System.Random rng)

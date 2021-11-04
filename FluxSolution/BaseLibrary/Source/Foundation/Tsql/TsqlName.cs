@@ -57,7 +57,7 @@ namespace Flux.Data
 
     /// <summary></summary>
     public TsqlName DefaultMergeName
-      => new TsqlName() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
+      => new() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
 
     /// <summary>Returns the schema name.</summary>
     public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.TsqlUnenquote(); }
@@ -146,7 +146,7 @@ namespace Flux.Data
       => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.TsqlEnquote())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
 
     #region Static methods
-    private static readonly System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new System.Text.RegularExpressions.Regex(@"(?<!\[[^\]])\.(?![^\[]*\])");
+    private static readonly System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new(@"(?<!\[[^\]])\.(?![^\[]*\])");
 
     public static TsqlName Parse(string qualifiedName)
     {

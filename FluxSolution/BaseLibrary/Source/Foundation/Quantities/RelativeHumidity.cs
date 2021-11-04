@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(RelativeHumidity v)
       => v.m_value;
     public static explicit operator RelativeHumidity(double v)
-      => new RelativeHumidity(v);
+      => new(v);
 
     public static bool operator <(RelativeHumidity a, RelativeHumidity b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static RelativeHumidity operator -(RelativeHumidity v)
-      => new RelativeHumidity(-v.m_value);
+      => new(-v.m_value);
     public static RelativeHumidity operator +(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.m_value + b);
+      => new(a.m_value + b);
     public static RelativeHumidity operator +(RelativeHumidity a, RelativeHumidity b)
       => a + b.m_value;
     public static RelativeHumidity operator /(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.m_value / b);
+      => new(a.m_value / b);
     public static RelativeHumidity operator /(RelativeHumidity a, RelativeHumidity b)
       => a / b.m_value;
     public static RelativeHumidity operator *(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.m_value * b);
+      => new(a.m_value * b);
     public static RelativeHumidity operator *(RelativeHumidity a, RelativeHumidity b)
       => a * b.m_value;
     public static RelativeHumidity operator %(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.m_value % b);
+      => new(a.m_value % b);
     public static RelativeHumidity operator %(RelativeHumidity a, RelativeHumidity b)
       => a % b.m_value;
     public static RelativeHumidity operator -(RelativeHumidity a, double b)
-      => new RelativeHumidity(a.m_value - b);
+      => new(a.m_value - b);
     public static RelativeHumidity operator -(RelativeHumidity a, RelativeHumidity b)
       => a - b.m_value;
     #endregion Overloaded operators

@@ -5,7 +5,7 @@ namespace Flux.Text
   /// <summary>The functionality of this class relates to \uxxxx and \UXXXXXXXX style formatting.</summary>
   public static class UnicodeStringLiteral
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
     public static System.Collections.Generic.IEnumerable<char> Parse(string expression)
       => ParseRegex.Matches(expression).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));

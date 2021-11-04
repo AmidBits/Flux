@@ -5,8 +5,8 @@ namespace Flux.DataStructures
   public sealed class LazyListCollection<T>
     : Disposable, System.Collections.Generic.IList<T>
   {
-    private readonly System.Collections.Generic.List<T> m_cache = new System.Collections.Generic.List<T>();
-    private readonly System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>> m_enumerators = new System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>>();
+    private readonly System.Collections.Generic.List<T> m_cache = new();
+    private readonly System.Collections.Generic.Queue<System.Collections.Generic.IEnumerator<T>> m_enumerators = new();
     private int m_version;
 
     public bool AllEnumeratorsExhausted { get; private set; }
@@ -26,7 +26,7 @@ namespace Flux.DataStructures
 
       AllEnumeratorsExhausted = false;
 
-      m_enumerators.Enqueue((collection ?? throw new System.ArgumentNullException(nameof(collection))).GetEnumerator());
+      m_enumerators.Enqueue((collection ?? throw new(nameof(collection))).GetEnumerator());
     }
     public void Attach(params T[] collection)
       => Attach(collection.AsEnumerable());
@@ -97,7 +97,7 @@ namespace Flux.DataStructures
     {
       private T m_current;
       private int m_index;
-      private readonly object m_lock = new object();
+      private readonly object m_lock = new();
       private readonly LazyListCollection<T> m_source;
       private readonly int m_version;
 
@@ -164,7 +164,7 @@ namespace Flux.DataStructures
       private void ValidateVersion()
       {
         if (m_version != m_source.m_version)
-          throw new System.InvalidOperationException(@"The list has changed.");
+          throw new(@"The list has changed.");
       }
 
       public void Dispose() // This class does not yet allocate any resources on its own.

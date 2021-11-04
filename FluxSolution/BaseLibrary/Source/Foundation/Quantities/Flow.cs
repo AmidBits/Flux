@@ -40,14 +40,14 @@ namespace Flux.Quantity
 
     #region Static methods
     public static Flow From(Volume volume, Time time)
-      => new Flow(volume.Value / time.Value);
+      => new(volume.Value / time.Value);
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Flow v)
       => v.m_value;
     public static explicit operator Flow(double v)
-      => new Flow(v);
+      => new(v);
 
     public static bool operator <(Flow a, Flow b)
       => a.CompareTo(b) < 0;
@@ -64,25 +64,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Flow operator -(Flow v)
-      => new Flow(-v.m_value);
+      => new(-v.m_value);
     public static Flow operator +(Flow a, double b)
-      => new Flow(a.m_value + b);
+      => new(a.m_value + b);
     public static Flow operator +(Flow a, Flow b)
       => a + b.m_value;
     public static Flow operator /(Flow a, double b)
-      => new Flow(a.m_value / b);
+      => new(a.m_value / b);
     public static Flow operator /(Flow a, Flow b)
       => a / b.m_value;
     public static Flow operator *(Flow a, double b)
-      => new Flow(a.m_value * b);
+      => new(a.m_value * b);
     public static Flow operator *(Flow a, Flow b)
       => a * b.m_value;
     public static Flow operator %(Flow a, double b)
-      => new Flow(a.m_value % b);
+      => new(a.m_value % b);
     public static Flow operator %(Flow a, Flow b)
       => a % b.m_value;
     public static Flow operator -(Flow a, double b)
-      => new Flow(a.m_value - b);
+      => new(a.m_value - b);
     public static Flow operator -(Flow a, Flow b)
       => a - b.m_value;
     #endregion Overloaded operators

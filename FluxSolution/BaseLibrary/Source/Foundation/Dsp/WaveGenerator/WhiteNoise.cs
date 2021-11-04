@@ -4,7 +4,7 @@
   public sealed class WhiteNoise
     : IWaveGenerator
   {
-    private System.Random m_rng;
+    private readonly System.Random m_rng;
 
     public WhiteNoise(System.Random? rng)
       => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));

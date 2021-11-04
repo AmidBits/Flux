@@ -23,10 +23,10 @@ namespace Flux.Colors
 
     /// <summary>Creates an HSVA color corresponding to the HSL instance.</summary>
     public Ahsv ToAhsv()
-      => new Ahsv(m_alpha, HSL.ToHsv());
+      => new(m_alpha, HSL.ToHsv());
     /// <summary>Creates an RGBA color corresponding to the HSL instance.</summary>
     public Argb ToArgb()
-      => new Argb(System.Convert.ToByte(255 * m_alpha), HSL.ToRgb());
+      => new(System.Convert.ToByte(255 * m_alpha), HSL.ToRgb());
 
     public string ToStringHtmlHsla()
       => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {m_alpha})";

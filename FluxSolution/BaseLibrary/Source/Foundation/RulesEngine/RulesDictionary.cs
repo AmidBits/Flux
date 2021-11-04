@@ -58,10 +58,10 @@ namespace Flux.RulesEngine
 
 		/// <summary>Create a new dictionary with the specified rules compiled.</summary>
 		public RulesDictionary<T> CompileRules<T>(params string[] ruleName)
-			=> new RulesDictionary<T>(m_rules.Where(kvp => ruleName.Contains(kvp.Key)));
+			=> new(m_rules.Where(kvp => ruleName.Contains(kvp.Key)));
 		/// <summary>Create a new dictionary with all rules compiled.</summary>
 		public RulesDictionary<T> CompileRules<T>()
-			=> new RulesDictionary<T>(this);
+			=> new(this);
 	}
 
 	public sealed class RulesDictionary<T>

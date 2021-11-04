@@ -7,9 +7,9 @@ namespace Flux.Data
     public const string CsNull = @"NULL";
 
     public static TsqlNullability NotNull
-      => new TsqlNullability(false);
+      => new(false);
     public static TsqlNullability Null
-      => new TsqlNullability(true);
+      => new(true);
 
     public readonly bool IsNullable;
 
@@ -28,7 +28,7 @@ namespace Flux.Data
       else if (text.Equals(CsNull, System.StringComparison.InvariantCultureIgnoreCase))
         return Null;
       else
-        throw new System.ArgumentOutOfRangeException(nameof(expression));
+        throw new(nameof(expression));
     }
     public static bool TryParse(string expression, out TsqlNullability result)
     {

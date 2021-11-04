@@ -55,10 +55,10 @@ namespace Flux
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public CartesianCoordinate2 PerpendicularCcw()
-      => new CartesianCoordinate2(-Y, X);
+      => new(-Y, X);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     public CartesianCoordinate2 PerpendicularCw()
-      => new CartesianCoordinate2(Y, -X);
+      => new(Y, -X);
 
     /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
     public double PerpendicularDistanceTo(CartesianCoordinate2 a, CartesianCoordinate2 b)
@@ -97,11 +97,11 @@ namespace Flux
       => QuadrantNumber(Zero);
 
     public Quantity.Angle ToRotationAngle()
-      => new Quantity.Angle(ConvertToRotationAngle(m_x, m_y));
+      => new(ConvertToRotationAngle(m_x, m_y));
     public Quantity.Angle ToRotationAngleEx()
-      => new Quantity.Angle(ConvertToRotationAngleEx(m_x, m_y));
+      => new(ConvertToRotationAngleEx(m_x, m_y));
     public PolarCoordinate ToPolarCoordinate()
-      => new PolarCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
 
     #region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
@@ -141,10 +141,10 @@ namespace Flux
 
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
-      => new CartesianCoordinate2(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY));
+      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
-      => new CartesianCoordinate2(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate2 GetDirectionCosines(CartesianCoordinate2 source, CartesianCoordinate2 target)
@@ -155,20 +155,20 @@ namespace Flux
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
     public static Geometry.LineSlope GetLineSlope(CartesianCoordinate2 source, CartesianCoordinate2 target)
-      => new Geometry.LineSlope(source.X, source.Y, target.X, target.Y);
+      => new(source.X, source.Y, target.X, target.Y);
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateCosine(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
-      => new CartesianCoordinate2(Maths.InterpolateCosine(y1.m_x, y2.m_x, mu), Maths.InterpolateCosine(y1.m_y, y2.m_y, mu));
+      => new(Maths.InterpolateCosine(y1.m_x, y2.m_x, mu), Maths.InterpolateCosine(y1.m_y, y2.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateCubic(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu)
-      => new CartesianCoordinate2(Maths.InterpolateCubic(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), Maths.InterpolateCubic(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
+      => new(Maths.InterpolateCubic(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), Maths.InterpolateCubic(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateHermite2(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu, double tension, double bias)
-      => new CartesianCoordinate2(Maths.InterpolateHermite(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), Maths.InterpolateHermite(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
+      => new(Maths.InterpolateHermite(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), Maths.InterpolateHermite(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateLinear(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
-      => new CartesianCoordinate2(Maths.InterpolateLinear(y1.m_x, y2.m_x, mu), Maths.InterpolateLinear(y1.m_y, y2.m_y, mu));
+      => new(Maths.InterpolateLinear(y1.m_x, y2.m_x, mu), Maths.InterpolateLinear(y1.m_y, y2.m_y, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static CartesianCoordinate2 Lerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
@@ -200,7 +200,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
-      => new CartesianCoordinate2(xy.Item1, xy.Item2);
+      => new(xy.Item1, xy.Item2);
 
     public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.Equals(b);
@@ -208,7 +208,7 @@ namespace Flux
       => !a.Equals(b);
 
     public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(-cc.X, -cc.Y);
+      => new(-cc.X, -cc.Y);
 
     public static CartesianCoordinate2 operator --(CartesianCoordinate2 cc)
       => cc - 1;
@@ -216,39 +216,39 @@ namespace Flux
       => cc + 1;
 
     public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new CartesianCoordinate2(cc1.X + cc2.X, cc1.Y + cc2.Y);
+      => new(cc1.X + cc2.X, cc1.Y + cc2.Y);
     public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc, double scalar)
-      => new CartesianCoordinate2(cc.X + scalar, cc.Y + scalar);
+      => new(cc.X + scalar, cc.Y + scalar);
     public static CartesianCoordinate2 operator +(double scalar, CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(scalar + cc.X, scalar + cc.Y);
+      => new(scalar + cc.X, scalar + cc.Y);
 
     public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new CartesianCoordinate2(cc1.X - cc2.X, cc1.Y - cc2.Y);
+      => new(cc1.X - cc2.X, cc1.Y - cc2.Y);
     public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc, double scalar)
-      => new CartesianCoordinate2(cc.X - scalar, cc.Y - scalar);
+      => new(cc.X - scalar, cc.Y - scalar);
     public static CartesianCoordinate2 operator -(double scalar, CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(scalar - cc.X, scalar - cc.Y);
+      => new(scalar - cc.X, scalar - cc.Y);
 
     public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new CartesianCoordinate2(cc1.X * cc2.X, cc1.Y * cc2.Y);
+      => new(cc1.X * cc2.X, cc1.Y * cc2.Y);
     public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc, double scalar)
-      => new CartesianCoordinate2(cc.X * scalar, cc.Y * scalar);
+      => new(cc.X * scalar, cc.Y * scalar);
     public static CartesianCoordinate2 operator *(double scalar, CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(scalar * cc.X, scalar * cc.Y);
+      => new(scalar * cc.X, scalar * cc.Y);
 
     public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new CartesianCoordinate2(cc1.X / cc2.X, cc1.Y / cc2.Y);
+      => new(cc1.X / cc2.X, cc1.Y / cc2.Y);
     public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc, double scalar)
-      => new CartesianCoordinate2(cc.X / scalar, cc.Y / scalar);
+      => new(cc.X / scalar, cc.Y / scalar);
     public static CartesianCoordinate2 operator /(double scalar, CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(scalar / cc.X, scalar / cc.Y);
+      => new(scalar / cc.X, scalar / cc.Y);
 
     public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new CartesianCoordinate2(cc1.X % cc2.X, cc1.Y % cc2.Y);
+      => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
     public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc, double scalar)
-      => new CartesianCoordinate2(cc.X % scalar, cc.Y % scalar);
+      => new(cc.X % scalar, cc.Y % scalar);
     public static CartesianCoordinate2 operator %(double scalar, CartesianCoordinate2 cc)
-      => new CartesianCoordinate2(scalar % cc.X, scalar % cc.Y);
+      => new(scalar % cc.X, scalar % cc.Y);
     #endregion Overloaded operators
 
     #region Implemented interfaces

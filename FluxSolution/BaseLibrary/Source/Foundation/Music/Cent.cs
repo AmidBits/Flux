@@ -21,7 +21,7 @@ namespace Flux.Music
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
     public Quantity.Frequency ShiftPitch(Quantity.Frequency frequency)
-      => new Quantity.Frequency(PitchShift(frequency.Value, m_value));
+      => new(PitchShift(frequency.Value, m_value));
 
     public double ToFrequencyRatio()
       => ConvertCentToFrequencyRatio(m_value);
@@ -37,7 +37,7 @@ namespace Flux.Music
     /// <summary>Creates a new Cent instance from the specified frequency ratio.</summary>
     /// <param name="frequencyRatio"></param>
     public static Cent FromFrequencyRatio(double frequencyRatio)
-      => new Cent((int)ConvertFrequencyRatioToCent(frequencyRatio));
+      => new((int)ConvertFrequencyRatioToCent(frequencyRatio));
 
     /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
     public static double PitchShift(double frequency, int cents)
@@ -48,7 +48,7 @@ namespace Flux.Music
     public static explicit operator int(Cent v)
       => v.m_value;
     public static explicit operator Cent(int v)
-      => new Cent(v);
+      => new(v);
 
     public static bool operator <(Cent a, Cent b)
       => a.CompareTo(b) < 0;
@@ -65,25 +65,25 @@ namespace Flux.Music
       => !a.Equals(b);
 
     public static Cent operator -(Cent v)
-      => new Cent(-v.m_value);
+      => new(-v.m_value);
     public static Cent operator +(Cent a, int b)
-      => new Cent(a.m_value + b);
+      => new(a.m_value + b);
     public static Cent operator +(Cent a, Cent b)
       => a + b.m_value;
     public static Cent operator /(Cent a, int b)
-      => new Cent(a.m_value / b);
+      => new(a.m_value / b);
     public static Cent operator /(Cent a, Cent b)
       => a / b.m_value;
     public static Cent operator *(Cent a, int b)
-      => new Cent(a.m_value * b);
+      => new(a.m_value * b);
     public static Cent operator *(Cent a, Cent b)
       => a * b.m_value;
     public static Cent operator %(Cent a, int b)
-      => new Cent(a.m_value % b);
+      => new(a.m_value % b);
     public static Cent operator %(Cent a, Cent b)
       => a % b.m_value;
     public static Cent operator -(Cent a, int b)
-      => new Cent(a.m_value - b);
+      => new(a.m_value - b);
     public static Cent operator -(Cent a, Cent b)
       => a-b.m_value;
     #endregion Overloaded operators

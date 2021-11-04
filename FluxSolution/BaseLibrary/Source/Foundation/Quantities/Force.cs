@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(Force v)
       => v.m_value;
     public static explicit operator Force(double v)
-      => new Force(v);
+      => new(v);
 
     public static bool operator <(Force a, Force b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Force operator -(Force v)
-      => new Force(-v.m_value);
+      => new(-v.m_value);
     public static Force operator +(Force a, double b)
-      => new Force(a.m_value + b);
+      => new(a.m_value + b);
     public static Force operator +(Force a, Force b)
       => a + b.m_value;
     public static Force operator /(Force a, double b)
-      => new Force(a.m_value / b);
+      => new(a.m_value / b);
     public static Force operator /(Force a, Force b)
       => a / b.m_value;
     public static Force operator *(Force a, double b)
-      => new Force(a.m_value * b);
+      => new(a.m_value * b);
     public static Force operator *(Force a, Force b)
       => a * b.m_value;
     public static Force operator %(Force a, double b)
-      => new Force(a.m_value % b);
+      => new(a.m_value % b);
     public static Force operator %(Force a, Force b)
       => a % b.m_value;
     public static Force operator -(Force a, double b)
-      => new Force(a.m_value - b);
+      => new(a.m_value - b);
     public static Force operator -(Force a, Force b)
       => a - b.m_value;
     #endregion Overloaded operators

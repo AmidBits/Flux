@@ -23,14 +23,14 @@ namespace Flux
       : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
     {
-      private readonly System.Collections.Generic.IEqualityComparer<TKey> m_equalityComparer;
+      //private readonly System.Collections.Generic.IEqualityComparer<TKey> m_equalityComparer;
       private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary;
       private readonly System.Collections.Generic.List<TKey> m_listOfKeys;
       private readonly System.Collections.Generic.List<TValue> m_listOfValues;
 
       public OrderedDictionary(System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
       {
-        m_equalityComparer = equalityComparer;
+        //m_equalityComparer = equalityComparer;
         m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>(equalityComparer);
         m_listOfKeys = new System.Collections.Generic.List<TKey>();
         m_listOfValues = new System.Collections.Generic.List<TValue>();

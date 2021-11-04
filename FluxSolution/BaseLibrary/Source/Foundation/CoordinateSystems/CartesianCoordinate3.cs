@@ -68,9 +68,9 @@ namespace Flux
       => System.Math.Abs(m_x) > System.Math.Abs(m_z) ? new CartesianCoordinate3(-m_y, m_x, 0) : new CartesianCoordinate3(0, -m_x, m_y);
 
     public CylindricalCoordinate ToCylindricalCoordinate()
-      => new CylindricalCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
+      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
     public PolarCoordinate ToPolarCoordinate()
-      => new PolarCoordinate(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
     public SphericalCoordinate ToSphericalCoordinate()
     {
       var x2y2 = m_x * m_x + m_y * m_y;
@@ -88,7 +88,7 @@ namespace Flux
 
     /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
     public static CartesianCoordinate3 CrossProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)
-      => new CartesianCoordinate3(a.m_y * b.m_z - a.m_z * b.m_y, a.m_z * b.m_x - a.m_x * b.m_z, a.m_x * b.m_y - a.m_y * b.m_x);
+      => new(a.m_y * b.m_z - a.m_z * b.m_y, a.m_z * b.m_x - a.m_x * b.m_z, a.m_x * b.m_y - a.m_y * b.m_x);
 
     /// <summary>Returns the dot product of two 3D vectors.</summary>
     public static double DotProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)
@@ -105,10 +105,10 @@ namespace Flux
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate3 FromRandomAbsolute(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new CartesianCoordinate3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
+      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
     public static CartesianCoordinate3 FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new CartesianCoordinate3(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
+      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate3 GetDirectionCosines(CartesianCoordinate3 source, CartesianCoordinate3 target)
@@ -119,16 +119,16 @@ namespace Flux
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateCosine(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
-      => new CartesianCoordinate3(Maths.InterpolateCosine(p1.m_x, p2.m_x, mu), Maths.InterpolateCosine(p1.m_y, p2.m_y, mu), Maths.InterpolateCosine(p1.Z, p2.Z, mu));
+      => new(Maths.InterpolateCosine(p1.m_x, p2.m_x, mu), Maths.InterpolateCosine(p1.m_y, p2.m_y, mu), Maths.InterpolateCosine(p1.Z, p2.Z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateCubic(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu)
-      => new CartesianCoordinate3(Maths.InterpolateCubic(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), Maths.InterpolateCubic(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), Maths.InterpolateCubic(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
+      => new(Maths.InterpolateCubic(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), Maths.InterpolateCubic(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), Maths.InterpolateCubic(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateHermite2(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu, double tension, double bias)
-      => new CartesianCoordinate3(Maths.InterpolateHermite(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), Maths.InterpolateHermite(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), Maths.InterpolateHermite(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
+      => new(Maths.InterpolateHermite(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), Maths.InterpolateHermite(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), Maths.InterpolateHermite(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateLinear(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
-      => new CartesianCoordinate3(Maths.InterpolateLinear(p1.m_x, p2.m_x, mu), Maths.InterpolateLinear(p1.m_y, p2.m_y, mu), Maths.InterpolateLinear(p1.m_z, p2.m_z, mu));
+      => new(Maths.InterpolateLinear(p1.m_x, p2.m_x, mu), Maths.InterpolateLinear(p1.m_y, p2.m_y, mu), Maths.InterpolateLinear(p1.m_z, p2.m_z, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static CartesianCoordinate3 Lerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)
@@ -170,7 +170,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
-      => new CartesianCoordinate3(xyz.Item1, xyz.Item2, xyz.Item3);
+      => new(xyz.Item1, xyz.Item2, xyz.Item3);
 
     public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => a.Equals(b);
@@ -178,7 +178,7 @@ namespace Flux
       => !a.Equals(b);
 
     public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(-cc.X, -cc.Y, -cc.Z);
+      => new(-cc.X, -cc.Y, -cc.Z);
 
     public static CartesianCoordinate3 operator --(CartesianCoordinate3 cc)
       => cc - 1;
@@ -186,39 +186,39 @@ namespace Flux
       => cc + 1;
 
     public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new CartesianCoordinate3(cc1.X + cc2.X, cc1.Y + cc2.Y, cc1.Z + cc2.Z);
+      => new(cc1.X + cc2.X, cc1.Y + cc2.Y, cc1.Z + cc2.Z);
     public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc, double scalar)
-      => new CartesianCoordinate3(cc.X + scalar, cc.Y + scalar, cc.Z + scalar);
+      => new(cc.X + scalar, cc.Y + scalar, cc.Z + scalar);
     public static CartesianCoordinate3 operator +(double scalar, CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(scalar + cc.X, scalar + cc.Y, scalar + cc.Z);
+      => new(scalar + cc.X, scalar + cc.Y, scalar + cc.Z);
 
     public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new CartesianCoordinate3(cc1.X - cc2.X, cc1.Y - cc2.Y, cc1.Z - cc2.Z);
+      => new(cc1.X - cc2.X, cc1.Y - cc2.Y, cc1.Z - cc2.Z);
     public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc, double scalar)
-      => new CartesianCoordinate3(cc.X - scalar, cc.Y - scalar, cc.Z - scalar);
+      => new(cc.X - scalar, cc.Y - scalar, cc.Z - scalar);
     public static CartesianCoordinate3 operator -(double scalar, CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(scalar - cc.X, scalar - cc.Y, scalar - cc.Z);
+      => new(scalar - cc.X, scalar - cc.Y, scalar - cc.Z);
 
     public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new CartesianCoordinate3(cc1.X * cc2.X, cc1.Y * cc2.Y, cc1.Z * cc2.Z);
+      => new(cc1.X * cc2.X, cc1.Y * cc2.Y, cc1.Z * cc2.Z);
     public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc, double scalar)
-      => new CartesianCoordinate3(cc.X * scalar, cc.Y * scalar, cc.Z * scalar);
+      => new(cc.X * scalar, cc.Y * scalar, cc.Z * scalar);
     public static CartesianCoordinate3 operator *(double scalar, CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(scalar * cc.X, scalar * cc.Y, scalar * cc.Z);
+      => new(scalar * cc.X, scalar * cc.Y, scalar * cc.Z);
 
     public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new CartesianCoordinate3(cc1.X / cc2.X, cc1.Y / cc2.Y, cc1.Z / cc2.Z);
+      => new(cc1.X / cc2.X, cc1.Y / cc2.Y, cc1.Z / cc2.Z);
     public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc, double scalar)
-      => new CartesianCoordinate3(cc.X / scalar, cc.Y / scalar, cc.Z / scalar);
+      => new(cc.X / scalar, cc.Y / scalar, cc.Z / scalar);
     public static CartesianCoordinate3 operator /(double scalar, CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(scalar / cc.X, scalar / cc.Y, scalar / cc.Z);
+      => new(scalar / cc.X, scalar / cc.Y, scalar / cc.Z);
 
     public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new CartesianCoordinate3(cc1.X % cc2.X, cc1.Y % cc2.Y, cc1.Z % cc2.Z);
+      => new(cc1.X % cc2.X, cc1.Y % cc2.Y, cc1.Z % cc2.Z);
     public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc, double scalar)
-      => new CartesianCoordinate3(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
+      => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
     public static CartesianCoordinate3 operator %(double scalar, CartesianCoordinate3 cc)
-      => new CartesianCoordinate3(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
+      => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
     #endregion Overloaded operators
 
     #region Implemented interfaces

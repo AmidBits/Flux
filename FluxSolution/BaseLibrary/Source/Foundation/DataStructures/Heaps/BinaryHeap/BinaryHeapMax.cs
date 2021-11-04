@@ -6,7 +6,7 @@ namespace Flux.DataStructures
 		: IHeap<T>, System.ICloneable
 		where T : System.IComparable<T>
 	{
-		private readonly System.Collections.Generic.List<T> m_data = new System.Collections.Generic.List<T>();
+		private readonly System.Collections.Generic.List<T> m_data = new();
 
 		public BinaryHeapMax() { }
 		public BinaryHeapMax(System.Collections.Generic.IEnumerable<T> collection)

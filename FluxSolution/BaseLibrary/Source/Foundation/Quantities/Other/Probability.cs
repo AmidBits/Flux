@@ -20,7 +20,7 @@ namespace Flux.Quantity
     public static explicit operator double(Probability v)
       => v.m_probability;
     public static explicit operator Probability(double v)
-      => new Probability(v);
+      => new(v);
 
     public static bool operator <(Probability a, Probability b)
       => a.CompareTo(b) < 0;
@@ -37,25 +37,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Probability operator -(Probability v)
-      => new Probability(-v.m_probability);
+      => new(-v.m_probability);
     public static Probability operator +(Probability a, double b)
-      => new Probability(a.m_probability + b);
+      => new(a.m_probability + b);
     public static Probability operator +(Probability a, Probability b)
       => a + b.m_probability;
     public static Probability operator /(Probability a, double b)
-      => new Probability(a.m_probability / b);
+      => new(a.m_probability / b);
     public static Probability operator /(Probability a, Probability b)
       => a / b.m_probability;
     public static Probability operator *(Probability a, double b)
-      => new Probability(a.m_probability * b);
+      => new(a.m_probability * b);
     public static Probability operator *(Probability a, Probability b)
       => a * b.m_probability;
     public static Probability operator %(Probability a, double b)
-      => new Probability(a.m_probability % b);
+      => new(a.m_probability % b);
     public static Probability operator %(Probability a, Probability b)
       => a % b.m_probability;
     public static Probability operator -(Probability a, double b)
-      => new Probability(a.m_probability - b);
+      => new(a.m_probability - b);
     public static Probability operator -(Probability a, Probability b)
       => a - b.m_probability;
     #endregion Overloaded operators

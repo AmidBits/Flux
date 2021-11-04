@@ -42,7 +42,7 @@ namespace Flux.Quantity
     public static explicit operator double(Torque v)
       => v.m_value;
     public static explicit operator Torque(double v)
-      => new Torque(v);
+      => new(v);
 
     public static bool operator <(Torque a, Torque b)
       => a.CompareTo(b) < 0;
@@ -59,25 +59,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Torque operator -(Torque v)
-      => new Torque(-v.m_value);
+      => new(-v.m_value);
     public static Torque operator +(Torque a, double b)
-      => new Torque(a.m_value + b);
+      => new(a.m_value + b);
     public static Torque operator +(Torque a, Torque b)
       => a + b.m_value;
     public static Torque operator /(Torque a, double b)
-      => new Torque(a.m_value / b);
+      => new(a.m_value / b);
     public static Torque operator /(Torque a, Torque b)
       => a / b.m_value;
     public static Torque operator *(Torque a, double b)
-      => new Torque(a.m_value * b);
+      => new(a.m_value * b);
     public static Torque operator *(Torque a, Torque b)
       => a * b.m_value;
     public static Torque operator %(Torque a, double b)
-      => new Torque(a.m_value % b);
+      => new(a.m_value % b);
     public static Torque operator %(Torque a, Torque b)
       => a % b.m_value;
     public static Torque operator -(Torque a, double b)
-      => new Torque(a.m_value - b);
+      => new(a.m_value - b);
     public static Torque operator -(Torque a, Torque b)
       => a - b.m_value;
     #endregion Overloaded operators

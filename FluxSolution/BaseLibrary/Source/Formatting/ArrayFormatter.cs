@@ -6,10 +6,10 @@ namespace Flux.Formatting
   public class ArrayFormatter
     : AFormatter
   {
-    public static readonly ArrayFormatter Separated = new ArrayFormatter();
-    public static readonly ArrayFormatter SeparatedUniform = new ArrayFormatter() { UniformWidth = true };
-    public static readonly ArrayFormatter NoSeparators = new ArrayFormatter() { HorizontalSeparator = null, VerticalSeparator = null };
-    public static readonly ArrayFormatter NoSeparatorsUniform = new ArrayFormatter() { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true };
+    public static readonly ArrayFormatter Separated = new();
+    public static readonly ArrayFormatter SeparatedUniform = new() { UniformWidth = true };
+    public static readonly ArrayFormatter NoSeparators = new() { HorizontalSeparator = null, VerticalSeparator = null };
+    public static readonly ArrayFormatter NoSeparatorsUniform = new() { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true };
 
     public string? HorizontalSeparator { get; set; } = "\u007C";
     public string? VerticalSeparator { get; set; } = "\u002D";

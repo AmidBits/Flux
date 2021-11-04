@@ -17,14 +17,14 @@ namespace Flux.Net
   public class UdpCast
     : Disposable
   {
-    private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new System.Text.RegularExpressions.Regex(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
-    private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new System.Text.RegularExpressions.Regex(@"255.255.255.255");
+    private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
+    private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
 
     public static System.Net.IPEndPoint MulticastTest
-      => new System.Net.IPEndPoint(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
+      => new(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
 
     public static UdpCast CreateMulticastTest()
-      => new UdpCast(MulticastTest);
+      => new(MulticastTest);
 
     #region "Event Handling"
     private System.Threading.Thread m_thread;
@@ -34,7 +34,7 @@ namespace Flux.Net
 
     public UdpCast(System.Net.IPEndPoint remoteAddress)
     {
-      RemoteAddress = remoteAddress ?? throw new System.ArgumentNullException(nameof(remoteAddress));
+      RemoteAddress = remoteAddress ?? throw new(nameof(remoteAddress));
 
       Socket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, System.Net.Sockets.ProtocolType.Udp);
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.ExclusiveAddressUse, false);

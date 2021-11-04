@@ -3,9 +3,9 @@
   /// <summary>Provides static methods for creating value ranges.</summary>
   public struct ValueRange
   {
-    public ValueRange<T> Create<T>(T low, T high)
+    public static ValueRange<T> Create<T>(T low, T high)
       where T : System.IComparable<T>, System.IEquatable<T>
-      => new ValueRange<T>(low, high);
+      => new(low, high);
   }
 
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
@@ -70,7 +70,7 @@
     public static ValueRange<T> Union(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(MinLo(a, b), MaxHi(a, b)) : Empty;
     public static ValueRange<T> UnionAll(ValueRange<T> a, ValueRange<T> b)
-      => new ValueRange<T>(MinLo(a, b), MaxHi(a, b));
+      => new(MinLo(a, b), MaxHi(a, b));
 
     public static bool IsOverlapping(ValueRange<T> a, ValueRange<T> b)
       => a.m_lo.CompareTo(b.m_hi) < 0 && b.m_lo.CompareTo(a.m_hi) < 0;

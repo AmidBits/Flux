@@ -150,25 +150,25 @@ namespace Flux
         => !a.Equals(b);
 
       public static PartsPerNotation operator -(PartsPerNotation v)
-        => new PartsPerNotation(-v.m_parts);
+        => new(-v.m_parts);
       public static PartsPerNotation operator +(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_parts + b);
+        => new(a.m_parts + b);
       public static PartsPerNotation operator +(PartsPerNotation a, PartsPerNotation b)
         => a + b.m_parts;
       public static PartsPerNotation operator /(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_parts / b);
+        => new(a.m_parts / b);
       public static PartsPerNotation operator /(PartsPerNotation a, PartsPerNotation b)
         => a / b.m_parts;
       public static PartsPerNotation operator *(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_parts * b);
+        => new(a.m_parts * b);
       public static PartsPerNotation operator *(PartsPerNotation a, PartsPerNotation b)
         => a * b.m_parts;
       public static PartsPerNotation operator %(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_parts % b);
+        => new(a.m_parts % b);
       public static PartsPerNotation operator %(PartsPerNotation a, PartsPerNotation b)
         => a % b.m_parts;
       public static PartsPerNotation operator -(PartsPerNotation a, double b)
-        => new PartsPerNotation(a.m_parts - b);
+        => new(a.m_parts - b);
       public static PartsPerNotation operator -(PartsPerNotation a, PartsPerNotation b)
         => a - b.m_parts;
       #endregion Overloaded operators

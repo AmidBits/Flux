@@ -17,24 +17,24 @@ namespace Flux.Model.MineSweeper
     }
 
     public static GameState Create(Covers covers)
-      => new GameState(ImmutableStack.Create(covers), new Geometry.Point2(0, 0));
+      => new(ImmutableStack.Create(covers), new Geometry.Point2(0, 0));
 
     public GameState Do(Covers covers)
-      => new GameState(m_moves.Push(covers), CursorPosition);
+      => new(m_moves.Push(covers), CursorPosition);
 
     public GameState Do(Geometry.Point2 cursorPosition)
-      => new GameState(m_moves, cursorPosition);
+      => new(m_moves, cursorPosition);
 
     public GameState Undo()
       => m_moves.Pop() is var moves && moves.IsEmpty ? this : new GameState(moves, CursorPosition);
 
     public GameResult Evaluate(Mines mines)
     {
-      if (mines is null) throw new System.ArgumentNullException(nameof(mines));
+      if (mines is null) throw new(nameof(mines));
 
       var covers = Covers();
 
-      return new GameResult(mines.Any(mine => !covers.IsCovered(mine)), covers.Count - mines.Count);
+      return new(mines.Any(mine => !covers.IsCovered(mine)), covers.Count - mines.Count);
     }
 
     public Covers Covers()

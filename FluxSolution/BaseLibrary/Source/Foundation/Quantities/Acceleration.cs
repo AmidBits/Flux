@@ -11,7 +11,7 @@ namespace Flux.Quantity
     : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValuedUnit
   {
     public static Acceleration StandardAccelerationOfGravity
-      => new Acceleration(9.80665);
+      => new(9.80665);
 
     private readonly double m_value;
 
@@ -45,7 +45,7 @@ namespace Flux.Quantity
     public static explicit operator double(Acceleration v)
       => v.m_value;
     public static explicit operator Acceleration(double v)
-      => new Acceleration(v);
+      => new(v);
 
     public static bool operator <(Acceleration a, Acceleration b)
       => a.CompareTo(b) < 0;
@@ -62,25 +62,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static Acceleration operator -(Acceleration v)
-      => new Acceleration(-v.m_value);
+      => new(-v.m_value);
     public static Acceleration operator +(Acceleration a, double b)
-      => new Acceleration(a.m_value + b);
+      => new(a.m_value + b);
     public static Acceleration operator +(Acceleration a, Acceleration b)
       => a + b.m_value;
     public static Acceleration operator /(Acceleration a, double b)
-      => new Acceleration(a.m_value / b);
+      => new(a.m_value / b);
     public static Acceleration operator /(Acceleration a, Acceleration b)
       => a / b.m_value;
     public static Acceleration operator *(Acceleration a, double b)
-      => new Acceleration(a.m_value * b);
+      => new(a.m_value * b);
     public static Acceleration operator *(Acceleration a, Acceleration b)
       => a * b.m_value;
     public static Acceleration operator %(Acceleration a, double b)
-      => new Acceleration(a.m_value % b);
+      => new(a.m_value % b);
     public static Acceleration operator %(Acceleration a, Acceleration b)
       => a % b.m_value;
     public static Acceleration operator -(Acceleration a, double b)
-      => new Acceleration(a.m_value - b);
+      => new(a.m_value - b);
     public static Acceleration operator -(Acceleration a, Acceleration b)
       => a - b.m_value;
     #endregion Overloaded operators

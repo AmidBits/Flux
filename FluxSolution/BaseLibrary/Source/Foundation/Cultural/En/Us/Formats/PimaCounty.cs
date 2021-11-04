@@ -22,7 +22,7 @@ namespace Flux.Cultural.EnUs.PimaCounty
       }
     }
 
-    public static readonly System.Collections.Generic.Dictionary<string, string[]> DirectionAliases = new System.Collections.Generic.Dictionary<string, string[]>()
+    public static readonly System.Collections.Generic.Dictionary<string, string[]> DirectionAliases = new()
     {
       { @"E", new string[] { @"East" } },
       { @"N", new string[] { @"North" } },
@@ -30,7 +30,7 @@ namespace Flux.Cultural.EnUs.PimaCounty
       { @"W", new string[] { @"West" } }
     };
 
-    public static readonly System.Collections.Generic.Dictionary<string, string[]> TypeAliases = new System.Collections.Generic.Dictionary<string, string[]>()
+    public static readonly System.Collections.Generic.Dictionary<string, string[]> TypeAliases = new()
     {
       { @"AV", new string[] { @"Avenue", @"Ave" } },
       { @"BL", new string[] { @"Boulevard", @"Blvd" } },

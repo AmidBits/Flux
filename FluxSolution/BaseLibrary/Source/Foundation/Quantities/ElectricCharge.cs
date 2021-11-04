@@ -11,7 +11,7 @@ namespace Flux.Quantity
     : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedUnit
   {
     public static ElectricCharge ElementaryCharge
-      => new ElectricCharge(1.602176634e-19);
+      => new(1.602176634e-19);
 
     private readonly double m_value;
 
@@ -45,7 +45,7 @@ namespace Flux.Quantity
     public static explicit operator double(ElectricCharge v)
       => v.m_value;
     public static explicit operator ElectricCharge(double v)
-      => new ElectricCharge(v);
+      => new(v);
 
     public static bool operator <(ElectricCharge a, ElectricCharge b)
       => a.CompareTo(b) < 0;
@@ -62,25 +62,25 @@ namespace Flux.Quantity
       => !a.Equals(b);
 
     public static ElectricCharge operator -(ElectricCharge v)
-      => new ElectricCharge(-v.m_value);
+      => new(-v.m_value);
     public static ElectricCharge operator +(ElectricCharge a, double b)
-      => new ElectricCharge(a.m_value + b);
+      => new(a.m_value + b);
     public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b)
       => a + b.m_value;
     public static ElectricCharge operator /(ElectricCharge a, double b)
-      => new ElectricCharge(a.m_value / b);
+      => new(a.m_value / b);
     public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b)
       => a / b.m_value;
     public static ElectricCharge operator *(ElectricCharge a, double b)
-      => new ElectricCharge(a.m_value * b);
+      => new(a.m_value * b);
     public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b)
       => a * b.m_value;
     public static ElectricCharge operator %(ElectricCharge a, double b)
-      => new ElectricCharge(a.m_value % b);
+      => new(a.m_value % b);
     public static ElectricCharge operator %(ElectricCharge a, ElectricCharge b)
       => a % b.m_value;
     public static ElectricCharge operator -(ElectricCharge a, double b)
-      => new ElectricCharge(a.m_value - b);
+      => new(a.m_value - b);
     public static ElectricCharge operator -(ElectricCharge a, ElectricCharge b)
       => a - b.m_value;
     #endregion Overloaded operators
