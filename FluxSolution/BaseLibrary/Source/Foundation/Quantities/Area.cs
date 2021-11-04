@@ -6,10 +6,10 @@ namespace Flux
     {
       switch (unit)
       {
-        case Quantity.AreaUnit.Hectare:
-          return @" ha";
         case Quantity.AreaUnit.SquareMeter:
           return @" m²";
+        case Quantity.AreaUnit.Hectare:
+          return @" ha";
         default:
           throw new System.ArgumentOutOfRangeException(nameof(unit));
       }

@@ -14,10 +14,14 @@ namespace Flux
           return @" dl";
         case Quantity.VolumeUnit.Litre:
           return @" l";
-        case Quantity.VolumeUnit.UKGallon:
-          return @" imp gal";
+        case Quantity.VolumeUnit.ImperialGallon:
+          return @" gal (imp)";
+        case Quantity.VolumeUnit.ImperialQuart:
+          return @" qt (imp)";
         case Quantity.VolumeUnit.USGallon:
-          return @" US gal";
+          return @" gal (US)";
+        case Quantity.VolumeUnit.USQuart:
+          return @" qt (US)";
         case Quantity.VolumeUnit.CubicFeet:
           return " ft\u00B2";
         case Quantity.VolumeUnit.CubicYard:
@@ -42,8 +46,14 @@ namespace Flux
       Centilitre,
       Decilitre,
       Litre,
-      UKGallon,
+      /// <summary>British unit.</summary>
+      ImperialGallon,
+      /// <summary>British unit.</summary>
+      ImperialQuart,
+      /// <summary>US unit.</summary>
       USGallon,
+      /// <summary>US unit.</summary>
+      USQuart,
       CubicFeet,
       CubicYard,
       CubicMeter,
@@ -74,11 +84,17 @@ namespace Flux
           case VolumeUnit.Litre:
             m_value = value / 1000;
             break;
-          case VolumeUnit.UKGallon:
+          case VolumeUnit.ImperialGallon:
             m_value = value * 0.004546;
+            break;
+          case VolumeUnit.ImperialQuart:
+            m_value = value / 879.87699319635;
             break;
           case VolumeUnit.USGallon:
             m_value = value * 0.003785;
+            break;
+          case VolumeUnit.USQuart:
+            m_value = value / 1056.68821; // Approximate.
             break;
           case VolumeUnit.CubicFeet:
             m_value = value / (1953125000.0 / 55306341.0);
@@ -117,10 +133,14 @@ namespace Flux
             return m_value * 10000;
           case VolumeUnit.Litre:
             return m_value * 1000;
-          case VolumeUnit.UKGallon:
+          case VolumeUnit.ImperialGallon:
             return m_value / 0.004546;
+          case VolumeUnit.ImperialQuart:
+            return m_value * 879.87699319635;
           case VolumeUnit.USGallon:
             return m_value / 0.003785;
+          case VolumeUnit.USQuart:
+            return m_value * 1056.68821; // Approximate.
           case VolumeUnit.CubicFeet:
             return m_value * (1953125000.0 / 55306341.0);
           case VolumeUnit.CubicYard:
