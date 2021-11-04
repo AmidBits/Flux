@@ -2,7 +2,7 @@ namespace Flux.Numerics
 {
   /// <summary></summary>
   /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
-  public class MedianOnline
+  public sealed class MedianOnline
   {
     private readonly DataStructures.IHeap<double> m_maxHeap = new DataStructures.BinaryHeapMax<double>();
     private readonly DataStructures.IHeap<double> m_minHeap = new DataStructures.BinaryHeapMin<double>();

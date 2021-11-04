@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <param name="prefixSize">The size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
   /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
   /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
-  public class JaroWinklerDistance<T>
+  public sealed class JaroWinklerDistance<T>
     : INormalizedDistance<T>
   {
     /// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>

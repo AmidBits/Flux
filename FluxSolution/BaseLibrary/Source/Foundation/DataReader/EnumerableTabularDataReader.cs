@@ -1,7 +1,7 @@
 namespace Flux.Data
 {
   /// <summary>An implementation of a <see cref="TabularDataReader"/> over a System.Collection.Generic.IEnumerable<T>.</summary>
-  public class EnumerableTabularDataReader
+  public sealed class EnumerableTabularDataReader
     : TabularDataReader
   {
     internal readonly System.Collections.Generic.IEnumerator<System.Collections.Generic.IEnumerable<object>> m_enumerator;

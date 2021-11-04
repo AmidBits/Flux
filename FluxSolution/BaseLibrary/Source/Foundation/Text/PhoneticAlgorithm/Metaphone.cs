@@ -3,7 +3,7 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
 	/// <summary>Implements the Metaphone algorithm</summary>
-	public class Metaphone
+	public sealed class Metaphone
 		: IPhoneticAlgorithmEncoder
 	{
 		public int MaxCodeLength { get; set; } = 6;
@@ -229,13 +229,13 @@ namespace Flux.Text.PhoneticAlgorithm
 		}
 
 		/// <summary>Returns the character at the current position.</summary>
-		protected char Peek()
+		private char Peek()
 		{
 			return Peek(0);
 		}
 
 		/// <summary>Returns the character at the specified position.</summary>
-		protected char Peek(int ahead)
+		private char Peek(int ahead)
 		{
 			int pos = (__pos + ahead);
 			if (pos < 0 || pos >= __text.Length)
@@ -244,7 +244,7 @@ namespace Flux.Text.PhoneticAlgorithm
 		}
 
 		/// <summary>Indicates if the specified character occurs within the specified string.</summary>
-		protected static bool IsOneOf(char c, string characters)
+		private static bool IsOneOf(char c, string characters)
 			=> (characters ?? throw new System.ArgumentNullException(nameof(characters))).IndexOf(c, System.StringComparison.Ordinal) != -1;
 
 		//private static readonly System.Text.RegularExpressions.Regex m_notLetters = new System.Text.RegularExpressions.Regex(@"[^A-Z]+");

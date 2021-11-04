@@ -1,6 +1,6 @@
 namespace Flux.Text.Csv
 {
-  public class CsvOptions
+  public sealed class CsvOptions
   {
     public bool AlwaysEnquote { get; set; }
 

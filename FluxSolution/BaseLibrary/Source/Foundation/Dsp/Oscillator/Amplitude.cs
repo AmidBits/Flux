@@ -2,7 +2,7 @@ namespace Flux.Dsp.Synthesis
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amplitude"/>
-  public class Amplitude
+  public sealed class Amplitude
   {
     private double m_amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>

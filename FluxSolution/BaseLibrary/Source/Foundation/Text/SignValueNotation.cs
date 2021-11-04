@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
-  public class SignValueNotation
+  public sealed class SignValueNotation
   {
     /// <see cref="https://en.wikipedia.org/wiki/Egyptian_numerals"/>
     public static readonly SignValueNotation AncientEgyptianNumeralSystemUnicode = new SignValueNotation(new System.Collections.Generic.Dictionary<string, int>()

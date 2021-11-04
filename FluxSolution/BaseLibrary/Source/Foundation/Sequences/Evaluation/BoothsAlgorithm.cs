@@ -2,7 +2,7 @@
 {
   /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
-  public class BoothsAlgorithm<T>
+  public sealed class BoothsAlgorithm<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }
 

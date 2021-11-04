@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Riff
 {
-  public class CdifChunk
+  public sealed class CdifChunk
     : BaseChunk
   {
     public const string ID = @"CDif";

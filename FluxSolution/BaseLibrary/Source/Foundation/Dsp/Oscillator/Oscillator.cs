@@ -1,6 +1,6 @@
 namespace Flux.Dsp.Synthesis
 {
-  public class Oscillator
+  public sealed class Oscillator
     : IOscillator
   {
     private double m_amplitudeModulation;

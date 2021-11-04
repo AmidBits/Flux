@@ -8,7 +8,8 @@ namespace Flux.DataStructures
   }
 
   /// <summary></summary>
-  public class Octree<T> where T : IOctree
+  public sealed class Octree<T> 
+    where T : IOctree
   {
     public Geometry.Point3 BoundaryHigh { get; private set; }
     public Geometry.Point3 BoundaryLow { get; private set; }

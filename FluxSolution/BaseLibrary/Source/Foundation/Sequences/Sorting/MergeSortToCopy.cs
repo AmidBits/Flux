@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
-  public class MergeSortToCopy<T>
+  public sealed class MergeSortToCopy<T>
     : ISortableToCopy<T>
   {
     private readonly MergeSortType m_type;

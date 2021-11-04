@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.DataStructures
 {
-  public class LazyListCollection<T>
+  public sealed class LazyListCollection<T>
     : Disposable, System.Collections.Generic.IList<T>
   {
     private readonly System.Collections.Generic.List<T> m_cache = new System.Collections.Generic.List<T>();

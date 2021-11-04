@@ -3,7 +3,7 @@ namespace Flux.Metrical
   /// <summary>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>
   /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
-  public class HammingDistance<T>
+  public sealed class HammingDistance<T>
     : IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

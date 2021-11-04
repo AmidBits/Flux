@@ -14,7 +14,7 @@
 
   namespace DataStructures
   {
-    public class OrderedHashSet<T>
+    public sealed class OrderedHashSet<T>
       : System.Collections.ObjectModel.KeyedCollection<T, T>
       where T : notnull
     {

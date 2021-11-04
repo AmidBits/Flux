@@ -3,7 +3,7 @@ namespace Flux.Metrical
   /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
-  public class LongestCommonSubstring<T>
+  public sealed class LongestCommonSubstring<T>
   : IMatrixDp<T>, IMeasuredLength<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

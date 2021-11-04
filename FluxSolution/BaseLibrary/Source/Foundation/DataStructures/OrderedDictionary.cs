@@ -19,7 +19,7 @@ namespace Flux
 
   namespace DataStructures
   {
-    public class OrderedDictionary<TKey, TValue>
+    public sealed class OrderedDictionary<TKey, TValue>
       : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
     {

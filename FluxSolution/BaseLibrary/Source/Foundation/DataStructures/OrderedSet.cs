@@ -12,7 +12,7 @@
 
   namespace DataStructures
   {
-    public class OrderedSet<T>
+    public sealed class OrderedSet<T>
       : IOrderedSet<T>
       where T : notnull
     {
@@ -75,7 +75,7 @@
       public int Count
         => m_dictionary.Count;
 
-      public virtual bool IsReadOnly
+      public bool IsReadOnly
         => m_dictionary.IsReadOnly;
 
       public bool Add(T item)

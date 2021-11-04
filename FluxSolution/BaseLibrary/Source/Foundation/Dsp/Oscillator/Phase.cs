@@ -1,6 +1,6 @@
 namespace Flux.Dsp.Synthesis
 {
-  public class Phase
+  public sealed class Phase
   {
     private double m_frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>

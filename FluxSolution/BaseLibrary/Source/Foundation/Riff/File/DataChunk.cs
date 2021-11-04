@@ -1,6 +1,6 @@
 namespace Flux.Riff
 {
-  public class DataChunk
+  public sealed class DataChunk
     : BaseChunk
   {
     public const string ID = @"data";

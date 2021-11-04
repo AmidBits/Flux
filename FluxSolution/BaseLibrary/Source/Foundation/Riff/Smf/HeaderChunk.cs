@@ -4,7 +4,7 @@
 /// <seealso cref="https://acad.carleton.edu/courses/musc108-00-f14/pages/04/04StandardMIDIFiles.html"/>
 namespace Flux.Riff.Smf
 {
-  public class HeaderChunk
+  public sealed class HeaderChunk
     : BaseChunk
   {
     public const int FixedSize = 14;

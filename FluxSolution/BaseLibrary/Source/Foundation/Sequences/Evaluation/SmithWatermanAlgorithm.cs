@@ -2,7 +2,7 @@
 {
   /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm"/>
-  public class SmithWatermanAlgorithm<T>
+  public sealed class SmithWatermanAlgorithm<T>
     : IMatrixDp<T>
   {
     public int LinearGapPenalty { get; init; }

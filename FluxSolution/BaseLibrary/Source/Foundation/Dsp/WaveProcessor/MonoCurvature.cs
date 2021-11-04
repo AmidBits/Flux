@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public class MonoCurvature
+  public sealed class MonoCurvature
     : IWaveProcessorMono
   {
     private double m_contour, m_contourScaled;

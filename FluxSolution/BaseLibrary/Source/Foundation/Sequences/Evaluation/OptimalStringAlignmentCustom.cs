@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
-  public class OptimalStringAlignmentCustom<T>
+  public sealed class OptimalStringAlignmentCustom<T>
     : AMetrical<T>, IMatrixCustomDp<T>, IMetricDistanceCustom<T>
   {
     public double CostOfDeletion { get; set; } = 1;

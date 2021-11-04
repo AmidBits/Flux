@@ -11,7 +11,7 @@ namespace Flux
   namespace Numerics
   {
     /// <summary>Computes slope and trending data on a sequence.</summary>
-    public class TrendLine<T>
+    public sealed class TrendLine<T>
     {
       // http://dynamicnotions.blogspot.com/2009/05/linear-regression-in-c.html
 

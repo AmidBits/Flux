@@ -1,6 +1,6 @@
 namespace Flux.Riff
 {
-  public class FormatChunk
+  public sealed class FormatChunk
     : BaseChunk
   {
     public const string ID = @"fmt ";

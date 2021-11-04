@@ -23,7 +23,6 @@ namespace ConsoleApp
 
       // if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
     }
 
     private static void Main(string[] args)

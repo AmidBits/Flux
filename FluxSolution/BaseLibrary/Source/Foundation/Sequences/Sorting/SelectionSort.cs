@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using selection sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
-  public class SelectionSort<T>
+  public sealed class SelectionSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

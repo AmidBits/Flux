@@ -1,6 +1,6 @@
 namespace Flux.Text
 {
-  public class GraphemeEnumerator
+  public sealed class GraphemeEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<GraphemeCluster>
   {
     internal readonly System.IO.TextReader m_textReader;

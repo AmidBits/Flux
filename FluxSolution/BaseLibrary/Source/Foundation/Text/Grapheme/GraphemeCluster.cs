@@ -1,6 +1,6 @@
 ﻿namespace Flux.Text
 {
-  public class GraphemeCluster
+  public sealed class GraphemeCluster
   {
     public string Chars { get; }
     public System.Collections.Generic.IReadOnlyList<System.Text.Rune> Runes { get; }

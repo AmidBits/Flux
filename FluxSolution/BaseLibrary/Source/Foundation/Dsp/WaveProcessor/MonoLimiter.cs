@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor
 {
 	/// <summary>A basic limiter.</summary>
 	/// <see cref="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>
-	public class MonoLimiter
+	public sealed class MonoLimiter
 		: IWaveProcessorMono
 	{
 		private double m_threshold; // Defaults to zero.

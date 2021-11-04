@@ -3,7 +3,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <summary>A linear trapezoidal integrated state variable filter (SVF) collection</summary>
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
-  public class SingleSvf
+  public sealed class SingleSvf
     : IWaveFilterMono, IWaveProcessorMono
   {
     public SingleSvfFrequencyFunction Function { get; private set; }

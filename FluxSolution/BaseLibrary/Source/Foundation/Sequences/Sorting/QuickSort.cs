@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using quick sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Quick_sort"/>
-  public class QuickSort<T>
+  public sealed class QuickSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public class StereoWidth
+  public sealed class StereoWidth
     : IWaveProcessorStereo
   {
     private double m_stereoCoefficient; // The coefficient of the transformation matrix (used for processing speed).

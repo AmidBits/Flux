@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
-  public class PulseWave
+  public sealed class PulseWave
     : IWaveGenerator
   {
     private double m_dutyCycle;

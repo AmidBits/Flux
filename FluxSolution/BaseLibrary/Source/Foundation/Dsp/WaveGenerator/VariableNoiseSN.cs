@@ -7,25 +7,23 @@
   /// The value of alpha may be from 0 to 2, inclusive. The special case alpha=0 results in white noise (directly generated random numbers) and alpha = 2 results in brown noise (integrated white noise).
   /// </summary>
   /// <see cref="http://sampo.kapsi.fi/PinkNoise/"/>
-  public class VariableNoiseSN
-    : WhiteNoise
+  public sealed class VariableNoiseSN
+    : IWaveGenerator
   {
+    private readonly System.Random m_rng;
+
     private readonly double[] m_coefficients, m_values;
 
     /// <summary>Generate pink noise specifying alpha and the number of poles. The larger the number of poles, the lower are the lowest frequency components that are amplified.</summary>
     /// <param name="alpha">The exponent of the pink noise, 1/f^alpha. 0 = white noise, 1 = pink noise, 2 = brown noise (integrated white noise).</param>
     /// <param name="poles">The number of poles to use. 1-3 = noise concentrated near zero, more poles allow more low frequency components to be included, leading to more variation from zero. However, the sequence is stationary, that is, it will always return to zero even with a large number of poles.</param>
     /// <param name="rng">The random number generator to use.</param>
-    public VariableNoiseSN(double alpha, int poles, System.Random? rng) : base(rng)
+    public VariableNoiseSN(double alpha, int poles, System.Random rng)
     {
-      if (alpha < 0 || alpha > 2)
-      {
-        throw new System.ArgumentOutOfRangeException(nameof(alpha));
-      }
-      else if (poles < 0 || poles > 256)
-      {
-        throw new System.ArgumentOutOfRangeException(nameof(poles));
-      }
+      m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
+
+      if (alpha < 0 || alpha > 2) throw new System.ArgumentOutOfRangeException(nameof(alpha));
+      else if (poles < 0 || poles > 256) throw new System.ArgumentOutOfRangeException(nameof(poles));
 
       m_coefficients = new double[poles];
 
@@ -45,15 +43,17 @@
         GenerateWave(default);
       }
     }
+    public VariableNoiseSN(double alpha, int poles)
+      : this(alpha, poles, new System.Random())
+    { }
     public VariableNoiseSN()
-      : this(1, 5, null)
-    {
-    }
+      : this(1, 5)
+    { }
 
-    public override double GenerateWave(double phase)
+    public double GenerateWave(double phase)
     {
       // ??? how can this work when it makes -0.5 to 0.5
-      var value0 = Rng?.NextDouble() ?? (Rng = new System.Random()).NextDouble() - 0.5;
+      var value0 = m_rng.NextDouble() - 0.5;
       // ??? in comparison to this one making 0.0 to 1.0
       // var value0 = _random.NextGaussian(); 
 

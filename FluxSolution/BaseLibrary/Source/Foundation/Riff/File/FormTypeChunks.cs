@@ -29,7 +29,7 @@ namespace Flux.Riff
     }
   }
 
-  public class ListChunk
+  public sealed class ListChunk
     : FormTypeChunk
   {
     public const string ID = @"LIST";
@@ -42,7 +42,7 @@ namespace Flux.Riff
     { }
   }
 
-  public class RiffChunk
+  public sealed class RiffChunk
     : FormTypeChunk
   {
     public const string ID = @"RIFF";

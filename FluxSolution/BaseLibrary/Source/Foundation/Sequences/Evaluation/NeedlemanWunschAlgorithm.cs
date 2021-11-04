@@ -4,7 +4,7 @@
   /// <see cref="https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm"/>
   /// <seealso cref="http://www.biorecipes.com/DynProgBasic/code.html"/>
-  public class NeedlemanWunschAlgorithm<T>
+  public sealed class NeedlemanWunschAlgorithm<T>
     : IMatrixDp<T>
   {
     public int LinearGapPenalty { get; init; }

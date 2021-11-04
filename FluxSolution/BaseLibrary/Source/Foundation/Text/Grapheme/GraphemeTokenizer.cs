@@ -4,7 +4,7 @@ using System.Linq;
 namespace Flux.Text
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
-  public class GraphemeTokenizer
+  public sealed class GraphemeTokenizer
     : ITokenizer<IToken<GraphemeCluster>>
   {
     public System.Collections.Generic.IEnumerable<IToken<GraphemeCluster>> GetTokens(string expression)

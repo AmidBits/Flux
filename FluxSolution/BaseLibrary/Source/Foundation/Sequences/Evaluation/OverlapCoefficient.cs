@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Metrical
 {
-  public class OverlapCoefficient<T>
+  public sealed class OverlapCoefficient<T>
     : ISimilarityCoefficient<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

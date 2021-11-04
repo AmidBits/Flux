@@ -1,6 +1,6 @@
 namespace Flux.IO
 {
-  public class BitStreamReader
+  public sealed class BitStreamReader
     : System.IO.Stream
   {
     private readonly System.IO.Stream m_baseStream;

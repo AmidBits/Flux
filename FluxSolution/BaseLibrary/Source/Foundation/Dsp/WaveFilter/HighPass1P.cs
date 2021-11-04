@@ -1,7 +1,7 @@
 namespace Flux.Dsp.WaveFilter
 {
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
-  public class HighPass1P
+  public sealed class HighPass1P
     : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoffFrequency;

@@ -1,6 +1,6 @@
 namespace Flux.Text
 {
-  public class RuneEnumerator
+  public sealed class RuneEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
   {
     internal readonly System.IO.TextReader m_textReader;

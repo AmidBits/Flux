@@ -2,7 +2,7 @@
 {
   /// <summary>Searches a text for the index of a substring. Returns -1 if not found.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-  public class BoyerMooreHorspool<T>
+  public sealed class BoyerMooreHorspool<T>
     where T : notnull
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

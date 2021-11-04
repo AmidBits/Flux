@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using insertion sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Insertion_sort"/>
-  public class InsertionSort<T>
+  public sealed class InsertionSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

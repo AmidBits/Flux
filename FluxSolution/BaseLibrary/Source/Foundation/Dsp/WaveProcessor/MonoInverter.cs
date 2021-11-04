@@ -14,7 +14,7 @@
   }
 
   /// <summary>Inverts the wave signal.</summary>
-  public class MonoInverter
+  public sealed class MonoInverter
     : IWaveProcessorMono
   {
     public MonoInverterMode Mode { get; internal set; }

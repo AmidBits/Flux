@@ -6,7 +6,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/> 
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
-  public class ShortestCommonSupersequence<T>
+  public sealed class ShortestCommonSupersequence<T>
     : IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

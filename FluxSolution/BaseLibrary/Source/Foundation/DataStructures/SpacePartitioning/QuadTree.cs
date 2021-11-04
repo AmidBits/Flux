@@ -10,7 +10,8 @@ namespace Flux.DataStructures
   /// <summary></summary>
   /// <seealso cref="https://www.geeksforgeeks.org/quad-tree/"/> 
   /// <seealso cref="https://jimkang.com/quadtreevis/"/>
-  public class Quadtree<T> where T : IQuadtree
+  public sealed class Quadtree<T>
+    where T : IQuadtree
   {
     public Geometry.Point2 BoundaryHigh { get; private set; }
     public Geometry.Point2 BoundaryLow { get; private set; }

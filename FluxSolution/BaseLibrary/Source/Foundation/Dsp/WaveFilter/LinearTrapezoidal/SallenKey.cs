@@ -5,7 +5,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
-  public class SallenKey
+  public sealed class SallenKey
     : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_cutoff;

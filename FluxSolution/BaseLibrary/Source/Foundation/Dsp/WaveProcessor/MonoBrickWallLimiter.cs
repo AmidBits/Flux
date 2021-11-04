@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor
 {
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
-  public class MonoBrickWallLimiter
+  public sealed class MonoBrickWallLimiter
     : IWaveProcessorMono
   {
     private double m_release = 0.001;

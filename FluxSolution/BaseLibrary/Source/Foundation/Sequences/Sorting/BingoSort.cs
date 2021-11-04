@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Bingo_sort"/>
-  public class BingoSort<T>
+  public sealed class BingoSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

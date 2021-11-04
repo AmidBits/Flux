@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
-  public class DamerauLevenshteinDistance<T>
+  public sealed class DamerauLevenshteinDistance<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     where T : notnull
   {

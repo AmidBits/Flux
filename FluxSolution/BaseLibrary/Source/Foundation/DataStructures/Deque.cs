@@ -14,7 +14,7 @@ namespace Flux.DataStructures
   /// <summary>A queue, for which elements can be added to or removed from either the front (head) or back (tail).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Double-ended_queue"/>
   /// <seealso cref="https://referencesource.microsoft.com/#mscorlib/system/collections/queue.cs,f7cdfd0f848ca249"/>
-  public class Deque<T>
+  public sealed class Deque<T>
     : System.Collections.Generic.IEnumerable<T>, IDeque<T>
   {
     public static readonly IDeque<T> Empty = new EmptyDeque();
@@ -58,7 +58,7 @@ namespace Flux.DataStructures
     //public T PeekLeft() => m_array[m_head];
     //public T PeekRight() => m_array[m_tail - 1];
 
-    public virtual void Clear()
+    public void Clear()
     {
       if (m_head < m_tail) System.Array.Clear(m_array, m_head, m_size);
       else
@@ -73,7 +73,7 @@ namespace Flux.DataStructures
       m_version++;
     }
 
-    public virtual bool Contains(T item)
+    public bool Contains(T item)
     {
       for (int count = m_size, index = m_head; count-- > 0; index = (index + 1) % m_array.Length)
       {

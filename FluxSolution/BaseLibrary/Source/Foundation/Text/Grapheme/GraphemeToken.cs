@@ -4,7 +4,7 @@ using System.Linq;
 namespace Flux.Text
 {
   /// <summary>An implementation of a demarcated and classified section of a grapheme.</summary>
-  public class GraphemeToken
+  public sealed class GraphemeToken
     : IToken<GraphemeCluster>
   {
     public int Index { get; }

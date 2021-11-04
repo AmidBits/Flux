@@ -14,7 +14,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   /// <summary></summary>
-  public class MonoQuadratic
+  public sealed class MonoQuadratic
     : IWaveProcessorMono
   {
     public MonoQuadraticMode Mode { get; internal set; }

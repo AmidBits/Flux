@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using an optimized version.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Bubble_sort"/>
-  public class BubbleSort<T>
+  public sealed class BubbleSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

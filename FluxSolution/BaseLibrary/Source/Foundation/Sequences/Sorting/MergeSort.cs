@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using merge sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Merge_sort"/>
-  public class MergeSort<T>
+  public sealed class MergeSort<T>
     : ISortableInPlace<T>
   {
     public System.Collections.Generic.IComparer<T> Comparer { get; }

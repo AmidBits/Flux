@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Metrical
 {
-  public class SørensenDiceIndex<T>
+  public sealed class SørensenDiceIndex<T>
     : ISimilarityCoefficient<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }

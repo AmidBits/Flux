@@ -4,7 +4,7 @@
   /// Equivalent of System.IO.BinaryWriter, but with either endianness, depending on
   /// the EndianBitConverter it is constructed with.
   /// </summary>
-  public class BinaryWriter
+  public sealed class BinaryWriter
     : Disposable
   {
     /// <summary>

@@ -3,8 +3,8 @@ namespace Flux.DataStructures
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Trie"/>
   /// <seealso cref="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
-  public class SimpleTrie<TKey>
-    where TKey : System.IEquatable<TKey>
+  public sealed class SimpleTrie<TKey>
+    where TKey : notnull
   {
     private readonly Node m_root = new Node(false);
 

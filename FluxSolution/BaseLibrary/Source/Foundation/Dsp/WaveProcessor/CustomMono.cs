@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.AudioProcessor
 {
-  public class CustomMono
+  public sealed class CustomMono
     : IWaveProcessorMono
   {
     private readonly System.Func<double, double> m_function;

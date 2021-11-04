@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.RulesEngine
 {
-	public class RulesDictionary
+	public sealed class RulesDictionary
 		: System.Collections.Generic.IDictionary<string, Rule>
 	{
 		private readonly System.Collections.Generic.IDictionary<string, Rule> m_rules = new System.Collections.Generic.Dictionary<string, Rule>();
@@ -64,7 +64,7 @@ namespace Flux.RulesEngine
 			=> new RulesDictionary<T>(this);
 	}
 
-	public class RulesDictionary<T>
+	public sealed class RulesDictionary<T>
 		: System.Collections.Generic.IReadOnlyDictionary<string, System.Func<T, bool>>
 	{
 		private readonly System.Collections.Generic.IDictionary<string, System.Func<T, bool>> m_rules = new System.Collections.Generic.Dictionary<string, System.Func<T, bool>>();

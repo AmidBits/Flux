@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
-  public class OptimalStringAlignment<T>
+  public sealed class OptimalStringAlignment<T>
     : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)

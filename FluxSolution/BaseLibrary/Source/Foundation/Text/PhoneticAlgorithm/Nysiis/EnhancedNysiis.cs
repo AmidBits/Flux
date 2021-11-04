@@ -2,7 +2,7 @@
 
 namespace Flux.Text.PhoneticAlgorithm
 {
-  public class EnhancedNysiis
+  public sealed class EnhancedNysiis
     : IPhoneticAlgorithmEncoder
   {
     public int MaxCodeLength { get; set; } = 8;

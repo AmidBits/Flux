@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public class AssemblyInfo
+  public sealed class AssemblyInfo
   {
     public static AssemblyInfo Calling
       => new AssemblyInfo(System.Reflection.Assembly.GetCallingAssembly());

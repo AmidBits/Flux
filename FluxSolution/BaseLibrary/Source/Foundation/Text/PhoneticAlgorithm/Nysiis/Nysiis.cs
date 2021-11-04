@@ -3,7 +3,7 @@
 namespace Flux.Text.PhoneticAlgorithm
 {
   // https://rosettacode.org/wiki/NYSIIS?source=post_page-----50165e684526----------------------#Java
-  public class Nysiis
+  public sealed class Nysiis
     : IPhoneticAlgorithmEncoder
   {
     public int MaxCodeLength { get; set; } = 8;

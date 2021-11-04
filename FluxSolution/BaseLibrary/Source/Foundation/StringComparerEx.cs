@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>This is an extension type to the already built-in System.StringComparer, with the addition of being System.Char compatible, since char lack in implementation (for obvious reasons).</summary>
   /// <remarks>There is an obvious performance penalty in that the type char is compared using char.ToString() and so proxied as strings.</remarks>
-  public class StringComparerEx
+  public sealed class StringComparerEx
     : System.StringComparer
     , System.Collections.Generic.IComparer<char>
     , System.Collections.Generic.IEqualityComparer<char>

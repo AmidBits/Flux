@@ -1,6 +1,6 @@
 namespace Flux.IO
 {
-  public class BitStreamWriter
+  public sealed class BitStreamWriter
     : System.IO.Stream
   {
     private readonly System.IO.Stream m_baseStream;
@@ -34,13 +34,13 @@ namespace Flux.IO
       }
     }
 
-    public virtual void WriteBits(int bits, int count)
+    public void WriteBits(int bits, int count)
       => WriteBits(unchecked((uint)bits), count);
-    public virtual void WriteBits(long bits, int count)
+    public void WriteBits(long bits, int count)
       => WriteBits(unchecked((ulong)bits), count);
 
     [System.CLSCompliant(false)]
-    public virtual void WriteBits(uint bits, int count)
+    public void WriteBits(uint bits, int count)
     {
       if (count < 0 || count > 32) throw new System.ArgumentOutOfRangeException(nameof(count));
 
@@ -52,7 +52,7 @@ namespace Flux.IO
       m_bitCount += count;
     }
     [System.CLSCompliant(false)]
-    public virtual void WriteBits(ulong bits, int count)
+    public void WriteBits(ulong bits, int count)
     {
       if (count < 0 || count > 64) throw new System.ArgumentOutOfRangeException(nameof(count));
 

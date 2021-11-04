@@ -1,6 +1,6 @@
 namespace Flux.DataStructures
 {
-  public class BinaryTreeArray<TKey, TValue>
+  public sealed class BinaryTreeArray<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
     private static readonly IBinaryTreeArrayNode<TKey, TValue> Empty = new BinaryTreeArrayEmpty();

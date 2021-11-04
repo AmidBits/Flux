@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_sort"/>
-  public class HeapSort<T>
+  public sealed class HeapSort<T>
     : ISortableInPlace<T>
   {
     private readonly HeapSortType m_type;

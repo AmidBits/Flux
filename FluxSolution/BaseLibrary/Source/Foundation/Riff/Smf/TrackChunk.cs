@@ -1,6 +1,6 @@
 namespace Flux.Riff.Smf
 {
-  public class TrackChunk
+  public sealed class TrackChunk
     : BaseChunk
   {
     public const string ID = @"MTrk";

@@ -1,6 +1,6 @@
 ﻿namespace Flux.DataStructures.UnionFind
 {
-  public class QuickFind<T>
+  public sealed class QuickFind<T>
     : IUnionFind<T>
     where T : notnull
   {

@@ -2,25 +2,24 @@
 {
   /// <see cref="https://en.wikipedia.org/wiki/Brownian_noise"/>
   /// <seealso cref="http://vellocet.com/dsp/noise/VRand.html"/>
-  public class BrownNoise
-    : WhiteNoise
+  public sealed class BrownNoise
+     : IWaveGenerator
   {
+    private readonly System.Random m_rng;
+
     private double m_brown;
 
     public BrownNoise(System.Random rng)
-      : base(rng)
-    {
-    }
+      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
     public BrownNoise()
-      : base(null)
-    {
-    }
+      : this(new System.Random())
+    { }
 
-    public override double GenerateWave(double phase)
+    public double GenerateWave(double phase)
     {
       while (true)
       {
-        var r = Rng.NextDouble() - 0.5;
+        var r = m_rng.NextDouble() - 0.5;
 
         m_brown += r;
 

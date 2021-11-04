@@ -1,25 +1,24 @@
 namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
-  public class SampleAndHold
-    : WhiteNoise
+  public sealed class SampleAndHold
+    : IWaveGenerator
   {
+    private readonly System.Random m_rng;
+
     private double m_sample, m_hold = System.Math.PI;
 
     public SampleAndHold(System.Random rng)
-      : base(rng)
-    {
-    }
+      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
     public SampleAndHold()
-      : base(null)
-    {
-    }
+      : this(new System.Random())
+    { }
 
-    public override double GenerateWave(double phase)
+    public double GenerateWave(double phase)
     {
       if (phase < m_hold)
       {
-        m_sample = Rng.NextDouble() * 2.0 - 1.0;
+        m_sample = m_rng.NextDouble() * 2.0 - 1.0;
       }
 
       m_hold = phase;

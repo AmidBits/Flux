@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   /// <summary>A simple lag function, where the signal is lagged by interpolating the signal over time.</summary>
-  public class MonoLagger
+  public sealed class MonoLagger
     : IWaveProcessorMono
   {
     private double m_amount;

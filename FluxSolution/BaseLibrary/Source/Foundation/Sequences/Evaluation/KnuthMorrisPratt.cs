@@ -2,7 +2,7 @@
 {
   /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-  public class KnuthMorrisPratt<T>
+  public sealed class KnuthMorrisPratt<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 

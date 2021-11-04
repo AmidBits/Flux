@@ -2,7 +2,7 @@ namespace Flux.Sorting
 {
   /// <summary>Sorts the content of the sequence using Marcin Ciura's gap sequence, with an inner insertion sort.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Shellsort"/>
-  public class ShellSort<T>
+  public sealed class ShellSort<T>
     : ISortableInPlace<T>
   {
     private readonly int[] m_gaps = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.

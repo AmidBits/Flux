@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Refined soundex is a phonetic algorithm for indexing names by sound, as pronounced in English. It is an 'refined' version of the basic soundex.</summary>
     /// <returns>Returns a variable length refined soundex code.</returns>
     /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
-    public class RefinedSoundex
+    public sealed class RefinedSoundex
       : IPhoneticAlgorithmEncoder
     {
       public const string LetterCodeMap = @"01360240043788015936020505";

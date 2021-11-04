@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
-  public class MonoThruStereoProcessor
+  public sealed class MonoThruStereoProcessor
     : IWaveProcessorMono
   {
     public IWaveProcessorStereo Stereo { get; }
