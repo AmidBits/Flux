@@ -34,7 +34,7 @@ namespace Flux
       double scale = max < width ? 1.0 : ((double)width) / max;
       return sup.Select(s => $"{ToLabel(s)}|{Bar(s)}").NewlineSeparated();
       string ToLabel(TKey t) => t?.ToString()?.PadLeft(labelMax) ?? throw new System.NullReferenceException();
-      string Bar(TKey t) => new string('*', (int)((dict ?? throw new System.NullReferenceException())[t] * scale));
+      string Bar(TKey t) => new('*', (int)((dict ?? throw new System.NullReferenceException())[t] * scale));
     }
 
     public static string Separated<T>(this System.Collections.Generic.IEnumerable<T> items, string s)

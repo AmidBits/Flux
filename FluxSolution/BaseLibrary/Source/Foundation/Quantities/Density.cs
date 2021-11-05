@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Density(double value, DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case DensityUnit.KilogramsPerCubicMeter:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        DensityUnit.KilogramsPerCubicMeter => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
-    {
-      switch (unit)
+      => unit switch
       {
-        case DensityUnit.KilogramsPerCubicMeter:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        DensityUnit.KilogramsPerCubicMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     public static Density From(Mass mass, Volume volume)

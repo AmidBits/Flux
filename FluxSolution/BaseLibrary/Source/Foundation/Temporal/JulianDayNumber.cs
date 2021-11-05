@@ -84,19 +84,12 @@ namespace Flux
     #region Static methods
     /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
     public static int ConvertFromDateParts(int year, int month, int day, ConversionCalendar calendar)
-    {
-      switch (calendar)
+      => calendar switch
       {
-        case ConversionCalendar.GregorianCalendar:
-          // The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
-          return (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075;
-        case ConversionCalendar.JulianCalendar:
-          // The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
-          return 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(calendar));
-      }
-    }
+        ConversionCalendar.GregorianCalendar => (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075,// The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
+        ConversionCalendar.JulianCalendar => 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777,// The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
+        _ => throw new System.ArgumentOutOfRangeException(nameof(calendar)),
+      };
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
     public static void ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
     {

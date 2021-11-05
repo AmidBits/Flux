@@ -26,11 +26,11 @@ namespace Flux.Model.MineSweeper
       => IsCovered(point) ? new Covers(m_covers.Remove(point)) : this;
 
     public Covers UncoverRange(System.Collections.Generic.IEnumerable<Geometry.Point2> points)
-      => new Covers(m_covers.RemoveRange(points));
+      => new(m_covers.RemoveRange(points));
 
     // Statics
     public static Covers Create(Geometry.Size2 size)
-      => new Covers(size.AllPoints().ToImmutableDictionary(p => p, p => false));
+      => new(size.AllPoints().ToImmutableDictionary(p => p, p => false));
     // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Geometry.Point2, bool>> GetEnumerator()
       => m_covers.GetEnumerator();

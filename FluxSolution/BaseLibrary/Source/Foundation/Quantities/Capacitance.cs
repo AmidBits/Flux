@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case CapacitanceUnit.Farad:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        CapacitanceUnit.Farad => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(CapacitanceUnit unit = CapacitanceUnit.Farad)
-    {
-      switch (unit)
+      => unit switch
       {
-        case CapacitanceUnit.Farad:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        CapacitanceUnit.Farad => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Capacitance v)

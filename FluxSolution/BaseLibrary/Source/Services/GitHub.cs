@@ -28,7 +28,7 @@ namespace Flux.Services.GitHub
   public static class GitHubApi
   {
     public static System.Uri CreateUri(string repo, string branch = @"master")
-      => new System.Uri($"https://api.github.com/repos/{repo}/contents?ref={branch}");
+      => new($"https://api.github.com/repos/{repo}/contents?ref={branch}");
 
     public static System.Collections.Generic.IEnumerable<GitHubEntry> GetEntries(System.Uri uri)
     {

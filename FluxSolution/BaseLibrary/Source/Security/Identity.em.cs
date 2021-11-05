@@ -51,6 +51,6 @@ namespace Flux
       return xe;
     }
     public static System.Xml.Linq.XElement IdentitiesXml(this System.Collections.Generic.IEnumerable<System.Security.Claims.ClaimsIdentity> source)
-      => new System.Xml.Linq.XElement(@"Identities", (source ?? throw new System.ArgumentNullException(nameof(source))).Select(i => IdentityXml(i)));
+      => new(@"Identities", (source ?? throw new System.ArgumentNullException(nameof(source))).Select(i => IdentityXml(i)));
   }
 }

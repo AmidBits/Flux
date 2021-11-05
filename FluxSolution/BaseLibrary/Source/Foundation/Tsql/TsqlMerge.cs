@@ -39,22 +39,14 @@ namespace Flux.Data
       static string OnCompareGeo(string columnLeft, string columnRight, bool isNullable)
         => isNullable ? $"(({OnCompareGeo(columnLeft, columnRight, false)}) OR ({Tsql.And(Tsql.IsNull(columnLeft), Tsql.IsNull(columnRight))}))" : $"({columnLeft}.STEquals({columnRight}) = 1)";
 
-      switch (dataTypeName)
+      return dataTypeName switch
       {
-        case TsqlDataType.Geography:
-        case TsqlDataType.Geometry:
-          return OnCompareGeo(columnTarget, columnSource, allowDBNull);
-        case TsqlDataType.Ntext:
-        case TsqlDataType.Xml:
-          return OnCompareCast($"{TsqlDataType.Nvarchar}(MAX)", columnTarget, columnSource, allowDBNull);
-        case TsqlDataType.Image:
-        case TsqlDataType.Timestamp:
-          return OnCompareCast($"{TsqlDataType.Varbinary}(MAX)", columnTarget, columnSource, allowDBNull);
-        case TsqlDataType.Text:
-          return OnCompareCast($"{TsqlDataType.Varchar}(MAX)", columnTarget, columnSource, allowDBNull);
-        default:
-          return OnCompareGeneric(columnTarget, columnSource, allowDBNull);
-      }
+        TsqlDataType.Geography or TsqlDataType.Geometry => OnCompareGeo(columnTarget, columnSource, allowDBNull),
+        TsqlDataType.Ntext or TsqlDataType.Xml => OnCompareCast($"{TsqlDataType.Nvarchar}(MAX)", columnTarget, columnSource, allowDBNull),
+        TsqlDataType.Image or TsqlDataType.Timestamp => OnCompareCast($"{TsqlDataType.Varbinary}(MAX)", columnTarget, columnSource, allowDBNull),
+        TsqlDataType.Text => OnCompareCast($"{TsqlDataType.Varchar}(MAX)", columnTarget, columnSource, allowDBNull),
+        _ => OnCompareGeneric(columnTarget, columnSource, allowDBNull),
+      };
     }
   }
 }

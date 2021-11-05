@@ -3,29 +3,18 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.AngleUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.AngleUnit.Arcminute:
-          return Quantity.Angle.PrimeSymbol.ToString();
-        case Quantity.AngleUnit.Arcsecond:
-          return Quantity.Angle.DoublePrimeSymbol.ToString();
-        case Quantity.AngleUnit.Degree:
-          return Quantity.Angle.DegreeSymbol.ToString();
-        case Quantity.AngleUnit.Gradian:
-          return @" grad";
-        case Quantity.AngleUnit.NatoMil:
-          return @" mils";
-        case Quantity.AngleUnit.Milliradian:
-          return @" mrad";
-        case Quantity.AngleUnit.Radian:
-          return @" rad";
-        case Quantity.AngleUnit.Turn:
-          return @" turns";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.AngleUnit.Arcminute => Quantity.Angle.PrimeSymbol.ToString(),
+        Quantity.AngleUnit.Arcsecond => Quantity.Angle.DoublePrimeSymbol.ToString(),
+        Quantity.AngleUnit.Degree => Quantity.Angle.DegreeSymbol.ToString(),
+        Quantity.AngleUnit.Gradian => @" grad",
+        Quantity.AngleUnit.NatoMil => @" mils",
+        Quantity.AngleUnit.Milliradian => @" mrad",
+        Quantity.AngleUnit.Radian => @" rad",
+        Quantity.AngleUnit.Turn => @" turns",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -63,37 +52,18 @@ namespace Flux
       //private Angle(double value)
       //  => m_value = value;
       public Angle(double value, AngleUnit unit = AngleUnit.Radian)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case AngleUnit.Arcminute:
-            m_value = ConvertArcminuteToRadian(value);
-            break;
-          case AngleUnit.Arcsecond:
-            m_value = ConvertArcsecondToRadian(value);
-            break;
-          case AngleUnit.Degree:
-            m_value = ConvertDegreeToRadian(value);
-            break;
-          case AngleUnit.Gradian:
-            m_value = ConvertGradianToRadian(value);
-            break;
-          case AngleUnit.NatoMil:
-            m_value = ConvertNatoMilToRadian(value);
-            break;
-          case AngleUnit.Milliradian:
-            m_value = ConvertMilliradianToRadian(value);
-            break;
-          case AngleUnit.Radian:
-            m_value = value;
-            break;
-          case AngleUnit.Turn:
-            m_value = ConvertTurnToRadian(value);
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          AngleUnit.Arcminute => ConvertArcminuteToRadian(value),
+          AngleUnit.Arcsecond => ConvertArcsecondToRadian(value),
+          AngleUnit.Degree => ConvertDegreeToRadian(value),
+          AngleUnit.Gradian => ConvertGradianToRadian(value),
+          AngleUnit.NatoMil => ConvertNatoMilToRadian(value),
+          AngleUnit.Milliradian => ConvertMilliradianToRadian(value),
+          AngleUnit.Radian => value,
+          AngleUnit.Turn => ConvertTurnToRadian(value),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       ///// <summary>The quantity value in unit degree.</summary>
       //public double Degree
@@ -115,29 +85,18 @@ namespace Flux
       public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
-      {
-        switch (unit)
+        => unit switch
         {
-          case AngleUnit.Arcminute:
-            return ConvertRadianToArcminute(m_value);
-          case AngleUnit.Arcsecond:
-            return ConvertRadianToArcsecond(m_value);
-          case AngleUnit.Degree:
-            return ConvertRadianToDegree(m_value);
-          case AngleUnit.Gradian:
-            return ConvertRadianToGradian(m_value);
-          case AngleUnit.NatoMil:
-            return ConvertRadianToNatoMil(m_value);
-          case AngleUnit.Milliradian:
-            return ConvertRadianToMilliradian(m_value);
-          case AngleUnit.Radian:
-            return m_value;
-          case AngleUnit.Turn:
-            return ConvertRadianToTurn(m_value);
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          AngleUnit.Arcminute => ConvertRadianToArcminute(m_value),
+          AngleUnit.Arcsecond => ConvertRadianToArcsecond(m_value),
+          AngleUnit.Degree => ConvertRadianToDegree(m_value),
+          AngleUnit.Gradian => ConvertRadianToGradian(m_value),
+          AngleUnit.NatoMil => ConvertRadianToNatoMil(m_value),
+          AngleUnit.Milliradian => ConvertRadianToMilliradian(m_value),
+          AngleUnit.Radian => m_value,
+          AngleUnit.Turn => ConvertRadianToTurn(m_value),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Convert the angle specified in arcminutes to radians.</summary>

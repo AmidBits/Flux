@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Action(double value, ActionUnit unit = ActionUnit.JouleSecond)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case ActionUnit.JouleSecond:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ActionUnit.JouleSecond => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(ActionUnit unit = ActionUnit.JouleSecond)
-    {
-      switch (unit)
+      => unit switch
       {
-        case ActionUnit.JouleSecond:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ActionUnit.JouleSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Action v)

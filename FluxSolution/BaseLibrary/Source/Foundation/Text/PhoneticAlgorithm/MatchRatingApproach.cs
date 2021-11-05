@@ -62,19 +62,15 @@ namespace Flux
         if (System.Math.Abs(codeLength1 - codeLength2) >= 3)
           return 0;
 
-        switch (codeLength1 + codeLength2)
+        return (codeLength1 + codeLength2) switch
         {
-          case var le4 when le4 <= 4:
-            return 5;
-          case var le7 when le7 <= 7:
-            return 4;
-          case var le11 when le11 <= 11:
-            return 3;
-          case var e12 when e12 == 12:
-            return 2;
-          default:
-            return 0;
+          var le4 when le4 <= 4 => 5,
+          var le7 when le7 <= 7 => 4,
+          var le11 when le11 <= 11 => 3,
+          var e12 when e12 == 12 => 2,
+          _ => 0,
         };
+        ;
       }
       /// <summary>Returns the similarity rating for two encoded names.</summary>
       /// <param name="code1">The first encoded name.</param>

@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public AngularVelocity(double value, AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case AngularVelocityUnit.RadianPerSecond:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AngularVelocityUnit.RadianPerSecond => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
-    {
-      switch (unit)
+      => unit switch
       {
-        case AngularVelocityUnit.RadianPerSecond:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AngularVelocityUnit.RadianPerSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     public static AngularVelocity From(Angle angle, Time time)

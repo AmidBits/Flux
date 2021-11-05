@@ -4,8 +4,8 @@ namespace Flux.Probability
 	// Still not a great API. We can do better.
 	public static class BetterRandom
 	{
-		private static readonly System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator> crng = new System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator>(System.Security.Cryptography.RandomNumberGenerator.Create);
-		private static readonly System.Threading.ThreadLocal<byte[]> bytes = new System.Threading.ThreadLocal<byte[]>(() => new byte[sizeof(int)]);
+		private static readonly System.Threading.ThreadLocal<System.Security.Cryptography.RandomNumberGenerator> crng = new(System.Security.Cryptography.RandomNumberGenerator.Create);
+		private static readonly System.Threading.ThreadLocal<byte[]> bytes = new(() => new byte[sizeof(int)]);
 
 		public static int NextInt()
 		{

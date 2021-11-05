@@ -3,31 +3,19 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.TimeUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.TimeUnit.Nanosecond:
-          return @" ns";
-        case Quantity.TimeUnit.Microsecond:
-          return " \u00B5s";
-        case Quantity.TimeUnit.Millisecond:
-          return @" ms";
-        case Quantity.TimeUnit.Second:
-          return @" s";
-        case Quantity.TimeUnit.Minute:
-          return @" min";
-        case Quantity.TimeUnit.Hour:
-          return @" h";
-        case Quantity.TimeUnit.Day:
-          return @" d";
-        case Quantity.TimeUnit.Week:
-          return @" week(s)";
-        case Quantity.TimeUnit.Fortnight:
-          return @" fortnight(s)";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.TimeUnit.Nanosecond => @" ns",
+        Quantity.TimeUnit.Microsecond => " \u00B5s",
+        Quantity.TimeUnit.Millisecond => @" ms",
+        Quantity.TimeUnit.Second => @" s",
+        Quantity.TimeUnit.Minute => @" min",
+        Quantity.TimeUnit.Hour => @" h",
+        Quantity.TimeUnit.Day => @" d",
+        Quantity.TimeUnit.Week => @" week(s)",
+        Quantity.TimeUnit.Fortnight => @" fortnight(s)",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -57,40 +45,19 @@ namespace Flux
       private readonly double m_value;
 
       public Time(double value, TimeUnit unit = TimeUnit.Second)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case TimeUnit.Nanosecond:
-            m_value = value / 1000000000;
-            break;
-          case TimeUnit.Microsecond:
-            m_value = value / 1000000;
-            break;
-          case TimeUnit.Millisecond:
-            m_value = value / 1000;
-            break;
-          case TimeUnit.Second:
-            m_value = value;
-            break;
-          case TimeUnit.Minute:
-            m_value = value * 60;
-            break;
-          case TimeUnit.Hour:
-            m_value = value * 3600;
-            break;
-          case TimeUnit.Day:
-            m_value = value * 86400;
-            break;
-          case TimeUnit.Week:
-            m_value = value * 604800;
-            break;
-          case TimeUnit.Fortnight:
-            m_value = value * 1209600;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          TimeUnit.Nanosecond => value / 1000000000,
+          TimeUnit.Microsecond => value / 1000000,
+          TimeUnit.Millisecond => value / 1000,
+          TimeUnit.Second => value,
+          TimeUnit.Minute => value * 60,
+          TimeUnit.Hour => value * 3600,
+          TimeUnit.Day => value * 86400,
+          TimeUnit.Week => value * 604800,
+          TimeUnit.Fortnight => value * 1209600,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
       /// <summary>Creates a new Time instance from the specified <paramref name="timeSpan"/>.</summary>
       public Time(System.TimeSpan timeSpan)
         : this(timeSpan.TotalSeconds)
@@ -105,31 +72,19 @@ namespace Flux
       public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(TimeUnit unit = TimeUnit.Second)
-      {
-        switch (unit)
+        => unit switch
         {
-          case TimeUnit.Nanosecond:
-            return m_value * 1000000000;
-          case TimeUnit.Microsecond:
-            return m_value * 1000000;
-          case TimeUnit.Millisecond:
-            return m_value * 1000;
-          case TimeUnit.Second:
-            return m_value;
-          case TimeUnit.Minute:
-            return m_value / 60;
-          case TimeUnit.Hour:
-            return m_value / 3600;
-          case TimeUnit.Day:
-            return m_value / 86400;
-          case TimeUnit.Week:
-            return m_value / 604800;
-          case TimeUnit.Fortnight:
-            return m_value / 1209600;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          TimeUnit.Nanosecond => m_value * 1000000000,
+          TimeUnit.Microsecond => m_value * 1000000,
+          TimeUnit.Millisecond => m_value * 1000,
+          TimeUnit.Second => m_value,
+          TimeUnit.Minute => m_value / 60,
+          TimeUnit.Hour => m_value / 3600,
+          TimeUnit.Day => m_value / 86400,
+          TimeUnit.Week => m_value / 604800,
+          TimeUnit.Fortnight => m_value / 1209600,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       #endregion Static methods

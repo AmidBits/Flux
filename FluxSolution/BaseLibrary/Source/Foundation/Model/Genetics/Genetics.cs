@@ -69,7 +69,7 @@ namespace Flux.Genetics
     public override int GetHashCode()
       => System.HashCode.Combine(Nucleobase, FiveCarbonSugar);
     public override string ToString()
-      => $"<{Nucleobase.ToString()}, {FiveCarbonSugar.ToString()}>";
+      => $"<{Nucleobase}, {FiveCarbonSugar}>";
   }
 
   /// <summary></summary>
@@ -114,7 +114,7 @@ namespace Flux.Genetics
     public override int GetHashCode()
       => System.HashCode.Combine(Nucleobase, FiveCarbonSugar, Phosphate);
     public override string ToString()
-      => $"<{Nucleobase.ToString()}, {FiveCarbonSugar.ToString()}, {Phosphate.ToString()}>";
+      => $"<{Nucleobase}, {FiveCarbonSugar}, {Phosphate}>";
   }
 
   public static class Tools

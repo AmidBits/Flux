@@ -21,9 +21,9 @@ namespace Flux.Geometry
     { }
     public Point3(int[] array, int startIndex)
     {
-      if (array is null) throw new(nameof(array));
+      if (array is null) throw new System.ArgumentNullException(nameof(array));
 
-      if (array.Length - startIndex < 3) throw new(nameof(array));
+      if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
 
       m_x = array[startIndex++];
       m_y = array[startIndex++];
@@ -178,7 +178,7 @@ namespace Flux.Geometry
     public static Point3 Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y) && m.Groups["Z"] is var gZ && gZ.Success && int.TryParse(gZ.Value, out var z)
       ? new Point3(x, y, z)
-      : throw new(nameof(pointAsString));
+      : throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
     public static bool TryParse(string pointAsString, out Point3 point)
     {
       try

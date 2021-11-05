@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Force(double value, ForceUnit unit = ForceUnit.Newton)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case ForceUnit.Newton:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ForceUnit.Newton => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(ForceUnit unit = ForceUnit.Newton)
-    {
-      switch (unit)
+      => unit switch
       {
-        case ForceUnit.Newton:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ForceUnit.Newton => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Force v)

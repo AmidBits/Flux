@@ -28,7 +28,7 @@ namespace Flux.Data
       else if (text.Equals(CsNull, System.StringComparison.InvariantCultureIgnoreCase))
         return Null;
       else
-        throw new(nameof(expression));
+        throw new System.ArgumentOutOfRangeException(nameof(expression));
     }
     public static bool TryParse(string expression, out TsqlNullability result)
     {

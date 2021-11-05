@@ -2,7 +2,7 @@ namespace Flux.Net
 {
   public static partial class IP
   {
-    public static readonly System.Net.IPEndPoint RemoteTest = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(@"4.3.2.1"), 4321);
+    public static readonly System.Net.IPEndPoint RemoteTest = new(System.Net.IPAddress.Parse(@"4.3.2.1"), 4321);
 
     public static bool TryGetLocalIPAddressByUdp(out System.Net.IPAddress result)
     {

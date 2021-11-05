@@ -55,17 +55,13 @@ namespace Flux.Services.Nmea
     {
       var parsed = new NmeaSentence(sentence);
 
-      switch (parsed.Code)
+      return parsed.Code switch
       {
-        case @"GPGGA":
-          return new NmeaGpgga(sentence);
-        case @"GPGLL":
-          return new NmeaGpgll(sentence);
-        case @"GPRMC":
-          return new NmeaGprmc(sentence);
-        default:
-          return parsed;
-      }
+        @"GPGGA" => new NmeaGpgga(sentence),
+        @"GPGLL" => new NmeaGpgll(sentence),
+        @"GPRMC" => new NmeaGprmc(sentence),
+        _ => parsed,
+      };
     }
 
     public static NmeaDataStatus ParseDataStatus(string? data_status)
@@ -73,15 +69,12 @@ namespace Flux.Services.Nmea
       if (string.IsNullOrEmpty(data_status) || data_status.Length != 1)
         return NmeaDataStatus.Unknown;
 
-      switch (data_status[0])
+      return data_status[0] switch
       {
-        case 'A':
-          return NmeaDataStatus.Valid;
-        case 'V':
-          return NmeaDataStatus.Warning;
-        default:
-          return NmeaDataStatus.Unknown;
-      }
+        'A' => NmeaDataStatus.Valid,
+        'V' => NmeaDataStatus.Warning,
+        _ => NmeaDataStatus.Unknown,
+      };
     }
     public static double ParseDecimalLatitude(string latitude_DDMM_MMMM, string latitude_Indicator)
     {

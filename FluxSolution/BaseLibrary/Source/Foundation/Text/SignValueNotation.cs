@@ -54,7 +54,7 @@ namespace Flux.Text
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     public System.Numerics.BigInteger StringToNumber(string number)
     {
-      if (number is null) throw new(nameof(number));
+      if (number is null) throw new System.ArgumentNullException(nameof(number));
 
       var bi = new System.Numerics.BigInteger();
 

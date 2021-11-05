@@ -4,7 +4,7 @@
     : System.IEquatable<SampleMono>
     , IAudioChannelFrontCenter
   {
-    public static SampleMono Zero;
+    public readonly static SampleMono Zero;
 
     public double FrontCenter { get; }
 

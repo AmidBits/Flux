@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Voltage(double value, VoltageUnit unit = VoltageUnit.Volt)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case VoltageUnit.Volt:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        VoltageUnit.Volt => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(VoltageUnit unit = VoltageUnit.Volt)
-    {
-      switch (unit)
+      => unit switch
       {
-        case VoltageUnit.Volt:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        VoltageUnit.Volt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>

@@ -3,17 +3,12 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.AreaUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.AreaUnit.SquareMeter:
-          return @" m²";
-        case Quantity.AreaUnit.Hectare:
-          return @" ha";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.AreaUnit.SquareMeter => @" m²",
+        Quantity.AreaUnit.Hectare => @" ha",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -32,19 +27,12 @@ namespace Flux
       private readonly double m_value;
 
       public Area(double value, AreaUnit unit = AreaUnit.SquareMeter)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case AreaUnit.SquareMeter:
-            m_value = value;
-            break;
-          case AreaUnit.Hectare:
-            m_value = value * 10000;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          AreaUnit.SquareMeter => value,
+          AreaUnit.Hectare => value * 10000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -52,17 +40,12 @@ namespace Flux
       public string ToUnitString(AreaUnit unit = AreaUnit.SquareMeter, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(AreaUnit unit = AreaUnit.SquareMeter)
-      {
-        switch (unit)
+        => unit switch
         {
-          case AreaUnit.SquareMeter:
-            return m_value;
-          case AreaUnit.Hectare:
-            return m_value / 10000;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          AreaUnit.SquareMeter => m_value,
+          AreaUnit.Hectare => m_value / 10000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Creates a new Area instance from the specified rectangular length and width.</summary>

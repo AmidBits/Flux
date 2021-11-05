@@ -6,7 +6,7 @@ namespace Flux.Resources.Scrape
     public static string LocalFile
       => @"file://\Resources\Scrape\free-zipcode-database.csv";
     public static System.Uri UriSource
-      => new System.Uri(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
+      => new(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
 
     public System.Uri Uri { get; private set; }
 

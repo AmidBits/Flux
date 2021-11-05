@@ -75,20 +75,14 @@ namespace Flux.IO
 
     public static string ConvertToString(object value)
     {
-      switch (value)
+      return value switch
       {
-        case null:
-        case System.DBNull _:
-          return "\u2400"; // Convert null and System.DBNull to the Unicode NULL character (has to be escaped in C#) as a string.
-        case string s:
-          return s;
-        case System.DateTime dt:
-          return dt.ToString(@"yyyy-MM-ddTHH:mm:ss.fffffff", System.Globalization.CultureInfo.InvariantCulture); // Convert datetime objects to a ISO8601 format in order to retain detail.
-        case byte[] ba:
-          return System.Convert.ToBase64String(ba); // Convert binary data to base64 in order to store as text.
-        default:
-          return value?.ToString() ?? string.Empty; // Get the default string value for all other types.
-      }
+        null or System.DBNull _ => "\u2400",// Convert null and System.DBNull to the Unicode NULL character (has to be escaped in C#) as a string.
+        string s => s,
+        System.DateTime dt => dt.ToString(@"yyyy-MM-ddTHH:mm:ss.fffffff", System.Globalization.CultureInfo.InvariantCulture),// Convert datetime objects to a ISO8601 format in order to retain detail.
+        byte[] ba => System.Convert.ToBase64String(ba),// Convert binary data to base64 in order to store as text.
+        _ => value?.ToString() ?? string.Empty,// Get the default string value for all other types.
+      };
     }
   }
 }

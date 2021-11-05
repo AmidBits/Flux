@@ -6,7 +6,7 @@ namespace Flux.Probability
     private readonly T t;
 
     public static Singleton<T> Distribution(T t)
-      => new Singleton<T>(t);
+      => new(t);
 
     private Singleton(T t)
       => this.t = t;

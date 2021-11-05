@@ -8,7 +8,7 @@ namespace Flux.Resources.W3c
     public static string LocalFile
       => @"file://\Resources\W3c\NamedCharacterReferences.json";
     public static System.Uri UriSource
-      => new System.Uri(@"https://html.spec.whatwg.org/entities.json");
+      => new(@"https://html.spec.whatwg.org/entities.json");
     public System.Uri Uri { get; private set; }
 
     public NamedCharacterReferences(System.Uri uri)

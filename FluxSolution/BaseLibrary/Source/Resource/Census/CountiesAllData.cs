@@ -6,7 +6,7 @@ namespace Flux.Resources.Census
     public static string LocalFile
       => @"file://\Resources\Census\cc-est2019-alldata-04.csv";
     public static System.Uri UriSource
-      => new System.Uri(@"https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv");
+      => new(@"https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv");
 
     public System.Uri Uri { get; private set; }
 
@@ -30,15 +30,12 @@ namespace Flux.Resources.Census
 
           for (var i = objectArray.Length - 1; i >= 0; i--)
           {
-            switch(i)
+            objectArray[i] = i switch
             {
-              case var ic when ic >= 5:
-                objectArray[i] = System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null);
-                break;
-              default:
-                objectArray[i] = e.Current[i];
-                break;
+              var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
+              _ => e.Current[i],
             };
+            ;
           }
 
           yield return objectArray;

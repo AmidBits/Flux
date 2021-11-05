@@ -22,7 +22,7 @@ namespace Flux
         case 4:
           return new(source.Year, 10, 1);
         default:
-          throw new(nameof(quarter));
+          throw new System.ArgumentOutOfRangeException(nameof(quarter));
       }
     }
     /// <summary>Determines the first day of the current calendar quarter in the source.</summary>

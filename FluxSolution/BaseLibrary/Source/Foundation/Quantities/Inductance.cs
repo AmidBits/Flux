@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case InductanceUnit.Henry:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        InductanceUnit.Henry => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(InductanceUnit unit = InductanceUnit.Henry)
-    {
-      switch (unit)
+      => unit switch
       {
-        case InductanceUnit.Henry:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        InductanceUnit.Henry => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Inductance v)

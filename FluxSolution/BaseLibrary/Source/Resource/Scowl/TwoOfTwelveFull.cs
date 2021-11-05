@@ -8,7 +8,7 @@ namespace Flux.Resources.Scowl
 		public static string LocalFile
 			=> @"file://\Resources\Scowl\2of12full.txt";
 		public static System.Uri UriSource
-			=> new System.Uri(@"https://raw.githubusercontent.com/en-wl/wordlist/master/alt12dicts/2of12full.txt");
+			=> new(@"https://raw.githubusercontent.com/en-wl/wordlist/master/alt12dicts/2of12full.txt");
 
 		public System.Uri Uri { get; private set; }
 

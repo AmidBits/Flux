@@ -3,23 +3,15 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.SpeedUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.SpeedUnit.FeetPerSecond:
-          return @" ft/s";
-        case Quantity.SpeedUnit.KilometersPerHour:
-          return @" km/h";
-        case Quantity.SpeedUnit.Knots:
-          return @" knot";
-        case Quantity.SpeedUnit.MetersPerSecond:
-          return @" m/h";
-        case Quantity.SpeedUnit.MilesPerHour:
-          return @" mph";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.SpeedUnit.FeetPerSecond => @" ft/s",
+        Quantity.SpeedUnit.KilometersPerHour => @" km/h",
+        Quantity.SpeedUnit.Knots => @" knot",
+        Quantity.SpeedUnit.MetersPerSecond => @" m/h",
+        Quantity.SpeedUnit.MilesPerHour => @" mph",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -53,28 +45,15 @@ namespace Flux
       private readonly double m_value;
 
       public Speed(double value, SpeedUnit unit = SpeedUnit.MetersPerSecond)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case SpeedUnit.FeetPerSecond:
-            m_value = value * (381.0 / 1250.0);
-            break;
-          case SpeedUnit.KilometersPerHour:
-            m_value = value * (5.0 / 18.0);
-            break;
-          case SpeedUnit.Knots:
-            m_value = value * (1852.0 / 3600.0);
-            break;
-          case SpeedUnit.MetersPerSecond:
-            m_value = value;
-            break;
-          case SpeedUnit.MilesPerHour:
-            m_value = value * (1397.0 / 3125.0);
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          SpeedUnit.FeetPerSecond => value * (381.0 / 1250.0),
+          SpeedUnit.KilometersPerHour => value * (5.0 / 18.0),
+          SpeedUnit.Knots => value * (1852.0 / 3600.0),
+          SpeedUnit.MetersPerSecond => value,
+          SpeedUnit.MilesPerHour => value * (1397.0 / 3125.0),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -82,23 +61,15 @@ namespace Flux
       public string ToUnitString(SpeedUnit unit = SpeedUnit.MetersPerSecond, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(SpeedUnit unit = SpeedUnit.MetersPerSecond)
-      {
-        switch (unit)
+        => unit switch
         {
-          case SpeedUnit.FeetPerSecond:
-            return m_value * (1250.0 / 381.0);
-          case SpeedUnit.KilometersPerHour:
-            return m_value * (18.0 / 5.0);
-          case SpeedUnit.Knots:
-            return m_value * (3600.0 / 1852.0);
-          case SpeedUnit.MetersPerSecond:
-            return m_value;
-          case SpeedUnit.MilesPerHour:
-            return m_value * (3125.0 / 1397.0);
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          SpeedUnit.FeetPerSecond => m_value * (1250.0 / 381.0),
+          SpeedUnit.KilometersPerHour => m_value * (18.0 / 5.0),
+          SpeedUnit.Knots => m_value * (3600.0 / 1852.0),
+          SpeedUnit.MetersPerSecond => m_value,
+          SpeedUnit.MilesPerHour => m_value * (3125.0 / 1397.0),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>

@@ -21,19 +21,14 @@ namespace Flux
 
       var roundedTowardZero = number - remainder;
 
-      switch (mode)
+      return mode switch
       {
-        case FullRoundingBehavior.AwayFromZero:
-          return number < 0 ? roundedTowardZero - interval : roundedTowardZero + interval;
-        case FullRoundingBehavior.Ceiling:
-          return number < 0 ? roundedTowardZero : roundedTowardZero + interval;
-        case FullRoundingBehavior.Floor:
-          return number < 0 ? roundedTowardZero - interval : roundedTowardZero;
-        case FullRoundingBehavior.TowardZero:
-          return roundedTowardZero;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(mode));
-      }
+        FullRoundingBehavior.AwayFromZero => number < 0 ? roundedTowardZero - interval : roundedTowardZero + interval,
+        FullRoundingBehavior.Ceiling => number < 0 ? roundedTowardZero : roundedTowardZero + interval,
+        FullRoundingBehavior.Floor => number < 0 ? roundedTowardZero - interval : roundedTowardZero,
+        FullRoundingBehavior.TowardZero => roundedTowardZero,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
+      };
     }
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
     public static long RoundToMultipleOf(long number, long interval, FullRoundingBehavior mode)
@@ -43,19 +38,14 @@ namespace Flux
 
       var roundedTowardZero = number - remainder;
 
-      switch (mode)
+      return mode switch
       {
-        case FullRoundingBehavior.AwayFromZero:
-          return number < 0 ? roundedTowardZero - interval : roundedTowardZero + interval;
-        case FullRoundingBehavior.Ceiling:
-          return number < 0 ? roundedTowardZero : roundedTowardZero + interval;
-        case FullRoundingBehavior.Floor:
-          return number < 0 ? roundedTowardZero - interval : roundedTowardZero;
-        case FullRoundingBehavior.TowardZero:
-          return roundedTowardZero;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(mode));
-      }
+        FullRoundingBehavior.AwayFromZero => number < 0 ? roundedTowardZero - interval : roundedTowardZero + interval,
+        FullRoundingBehavior.Ceiling => number < 0 ? roundedTowardZero : roundedTowardZero + interval,
+        FullRoundingBehavior.Floor => number < 0 ? roundedTowardZero - interval : roundedTowardZero,
+        FullRoundingBehavior.TowardZero => roundedTowardZero,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
+      };
     }
   }
 

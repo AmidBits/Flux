@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case CatalyticActivityUnit.Katal:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        CatalyticActivityUnit.Katal => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
-    {
-      switch (unit)
+      => unit switch
       {
-        case CatalyticActivityUnit.Katal:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        CatalyticActivityUnit.Katal => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(CatalyticActivity v)

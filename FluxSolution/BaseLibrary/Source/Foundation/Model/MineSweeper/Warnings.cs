@@ -38,6 +38,6 @@ namespace Flux.Model.MineSweeper
     #endregion IReadOnlyDictionary implementation
 
     public static Warnings Create(Field field, Mines mines)
-      => new Warnings(mines.SelectMany(mine => field.GetNeighbours(mine)).GroupBy(neighbor => neighbor).ToDictionary(g => g.Key, g => g.Count()));
+      => new(mines.SelectMany(mine => field.GetNeighbours(mine)).GroupBy(neighbor => neighbor).ToDictionary(g => g.Key, g => g.Count()));
   }
 }

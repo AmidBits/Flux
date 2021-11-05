@@ -18,7 +18,7 @@ namespace Flux.Model.TicTacToe2
     }
 
     public override string ToString()
-      => $"<{GetType().Name}: [{Point.Y}, {Point.X}] = {MaxScore.ToString().PadLeft(4, ' ')} > {MinScore.ToString().PadLeft(4, ' ')}>";
+      => $"<{GetType().Name}: [{Point.Y}, {Point.X}] = {MaxScore,4} > {MinScore,4}>";
   }
 
   public class Game

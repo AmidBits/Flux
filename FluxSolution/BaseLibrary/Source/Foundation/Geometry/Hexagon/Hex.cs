@@ -24,7 +24,7 @@ namespace Flux.Geometry.Hexagon
 
     public Hex(int q, int r, int s)
     {
-      if (!IsCubeCoordinate(q, r, s)) throw new($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
+      if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
 
       Q = q;
       R = r;
@@ -50,7 +50,7 @@ namespace Flux.Geometry.Hexagon
       ? Directions[direction + 6]
       : (direction >= 0 && direction <= 5)
       ? Directions[direction]
-      : throw new(nameof(direction));
+      : throw new System.ArgumentOutOfRangeException(nameof(direction));
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
     public static int Distance(Hex a, Hex b)
       => Magnitude(Subtract(a, b));
@@ -77,8 +77,8 @@ namespace Flux.Geometry.Hexagon
     /// <param name="isCounterClockWise">Determines whether to enumerate counter-clockwise or not. The default is clockwise.</param>
     public static System.Collections.Generic.IEnumerable<Hex> GetRing(Hex center, int radius, int startDirection = 0, bool isCounterClockWise = false)
     {
-      if (radius < 0) throw new(nameof(radius));
-      else if (startDirection < 0 || startDirection >= 6) throw new(nameof(startDirection));
+      if (radius < 0) throw new System.ArgumentOutOfRangeException(nameof(radius));
+      else if (startDirection < 0 || startDirection >= 6) throw new System.ArgumentOutOfRangeException(nameof(startDirection));
       else if (radius > 0)
       {
         var deltaMultiplier = isCounterClockWise ? -1 : 1; // Determines the sign of the delta direction as a multiplier.

@@ -3,29 +3,18 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.PartsPerNotationUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.PartsPerNotationUnit.Hundred:
-          return Quantity.PartsPerNotation.PercentSymbol.ToString();
-        case Quantity.PartsPerNotationUnit.Thousand:
-          return Quantity.PartsPerNotation.PermilleSymbol.ToString();
-        case Quantity.PartsPerNotationUnit.TenThousand:
-          return Quantity.PartsPerNotation.PermyriadSymbol.ToString();
-        case Quantity.PartsPerNotationUnit.HundredThousand:
-          return @" pcm";
-        case Quantity.PartsPerNotationUnit.Million:
-          return @" ppm";
-        case Quantity.PartsPerNotationUnit.Billion:
-          return @" ppb";
-        case Quantity.PartsPerNotationUnit.Trillion:
-          return @" ppt";
-        case Quantity.PartsPerNotationUnit.Quadrillion:
-          return @" ppq";
-        default:
-          return string.Empty;
-      }
-    }
+        Quantity.PartsPerNotationUnit.Hundred => Quantity.PartsPerNotation.PercentSymbol.ToString(),
+        Quantity.PartsPerNotationUnit.Thousand => Quantity.PartsPerNotation.PermilleSymbol.ToString(),
+        Quantity.PartsPerNotationUnit.TenThousand => Quantity.PartsPerNotation.PermyriadSymbol.ToString(),
+        Quantity.PartsPerNotationUnit.HundredThousand => @" pcm",
+        Quantity.PartsPerNotationUnit.Million => @" ppm",
+        Quantity.PartsPerNotationUnit.Billion => @" ppb",
+        Quantity.PartsPerNotationUnit.Trillion => @" ppt",
+        Quantity.PartsPerNotationUnit.Quadrillion => @" ppq",
+        _ => string.Empty,
+      };
   }
 
   namespace Quantity
@@ -67,35 +56,18 @@ namespace Flux
       /// <param name="unit">The notation in parts per notation.</param>
       public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
       {
-        switch (unit)
+        m_parts = unit switch
         {
-          case PartsPerNotationUnit.Hundred:
-            m_parts = parts / 1e2;
-            break;
-          case PartsPerNotationUnit.Thousand:
-            m_parts = parts / 1e3;
-            break;
-          case PartsPerNotationUnit.TenThousand:
-            m_parts = parts / 1e4;
-            break;
-          case PartsPerNotationUnit.HundredThousand:
-            m_parts = parts / 1e5;
-            break;
-          case PartsPerNotationUnit.Million:
-            m_parts = parts / 1e6;
-            break;
-          case PartsPerNotationUnit.Billion:
-            m_parts = parts / 1e9;
-            break;
-          case PartsPerNotationUnit.Trillion:
-            m_parts = parts / 1e12;
-            break;
-          case PartsPerNotationUnit.Quadrillion:
-            m_parts = parts / 1e15;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
+          PartsPerNotationUnit.Hundred => parts / 1e2,
+          PartsPerNotationUnit.Thousand => parts / 1e3,
+          PartsPerNotationUnit.TenThousand => parts / 1e4,
+          PartsPerNotationUnit.HundredThousand => parts / 1e5,
+          PartsPerNotationUnit.Million => parts / 1e6,
+          PartsPerNotationUnit.Billion => parts / 1e9,
+          PartsPerNotationUnit.Trillion => parts / 1e12,
+          PartsPerNotationUnit.Quadrillion => parts / 1e15,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
         m_unit = unit;
       }
@@ -104,29 +76,18 @@ namespace Flux
         => m_parts;
 
       public double ToUnitValue(PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
-      {
-        switch (unit)
+        => unit switch
         {
-          case PartsPerNotationUnit.Hundred:
-            return m_parts * 1e2;
-          case PartsPerNotationUnit.Thousand:
-            return m_parts * 1e3;
-          case PartsPerNotationUnit.TenThousand:
-            return m_parts * 1e4;
-          case PartsPerNotationUnit.HundredThousand:
-            return m_parts * 1e5;
-          case PartsPerNotationUnit.Million:
-            return m_parts * 1e6;
-          case PartsPerNotationUnit.Billion:
-            return m_parts * 1e9;
-          case PartsPerNotationUnit.Trillion:
-            return m_parts * 1e12;
-          case PartsPerNotationUnit.Quadrillion:
-            return m_parts * 1e15;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          PartsPerNotationUnit.Hundred => m_parts * 1e2,
+          PartsPerNotationUnit.Thousand => m_parts * 1e3,
+          PartsPerNotationUnit.TenThousand => m_parts * 1e4,
+          PartsPerNotationUnit.HundredThousand => m_parts * 1e5,
+          PartsPerNotationUnit.Million => m_parts * 1e6,
+          PartsPerNotationUnit.Billion => m_parts * 1e9,
+          PartsPerNotationUnit.Trillion => m_parts * 1e12,
+          PartsPerNotationUnit.Quadrillion => m_parts * 1e15,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       #endregion Static methods

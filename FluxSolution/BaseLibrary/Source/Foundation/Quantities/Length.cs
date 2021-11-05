@@ -3,35 +3,21 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.LengthUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.LengthUnit.Millimeter:
-          return @" mm";
-        case Quantity.LengthUnit.Centimeter:
-          return @" cm";
-        case Quantity.LengthUnit.Inch:
-          return @" in";
-        case Quantity.LengthUnit.Decimeter:
-          return @" dm";
-        case Quantity.LengthUnit.Foot:
-          return @" ft";
-        case Quantity.LengthUnit.Yard:
-          return @" yd";
-        case Quantity.LengthUnit.Meter:
-          return @" m";
-        case Quantity.LengthUnit.NauticalMile:
-          return @" nm";
-        case Quantity.LengthUnit.Mile:
-          return @" mi";
-        case Quantity.LengthUnit.Kilometer:
-          return @" km";
-        case Quantity.LengthUnit.AstronomicalUnit:
-          return @" au";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.LengthUnit.Millimeter => @" mm",
+        Quantity.LengthUnit.Centimeter => @" cm",
+        Quantity.LengthUnit.Inch => @" in",
+        Quantity.LengthUnit.Decimeter => @" dm",
+        Quantity.LengthUnit.Foot => @" ft",
+        Quantity.LengthUnit.Yard => @" yd",
+        Quantity.LengthUnit.Meter => @" m",
+        Quantity.LengthUnit.NauticalMile => @" nm",
+        Quantity.LengthUnit.Mile => @" mi",
+        Quantity.LengthUnit.Kilometer => @" km",
+        Quantity.LengthUnit.AstronomicalUnit => @" au",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -59,46 +45,21 @@ namespace Flux
       private readonly double m_value;
 
       public Length(double value, LengthUnit unit = LengthUnit.Meter)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case LengthUnit.Millimeter:
-            m_value = value / 1000;
-            break;
-          case LengthUnit.Centimeter:
-            m_value = value / 100;
-            break;
-          case LengthUnit.Inch:
-            m_value = value * 0.0254;
-            break;
-          case LengthUnit.Decimeter:
-            m_value = value / 10;
-            break;
-          case LengthUnit.Foot:
-            m_value = value * 0.3048;
-            break;
-          case LengthUnit.Yard:
-            m_value = value * 0.9144;
-            break;
-          case LengthUnit.Meter:
-            m_value = value;
-            break;
-          case LengthUnit.NauticalMile:
-            m_value = value * 1852;
-            break;
-          case LengthUnit.Mile:
-            m_value = value * 1609.344;
-            break;
-          case LengthUnit.Kilometer:
-            m_value = value * 1000;
-            break;
-          case LengthUnit.AstronomicalUnit:
-            m_value = value * 149597870700;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          LengthUnit.Millimeter => value / 1000,
+          LengthUnit.Centimeter => value / 100,
+          LengthUnit.Inch => value * 0.0254,
+          LengthUnit.Decimeter => value / 10,
+          LengthUnit.Foot => value * 0.3048,
+          LengthUnit.Yard => value * 0.9144,
+          LengthUnit.Meter => value,
+          LengthUnit.NauticalMile => value * 1852,
+          LengthUnit.Mile => value * 1609.344,
+          LengthUnit.Kilometer => value * 1000,
+          LengthUnit.AstronomicalUnit => value * 149597870700,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -106,35 +67,21 @@ namespace Flux
       public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(LengthUnit unit = LengthUnit.Meter)
-      {
-        switch (unit)
+        => unit switch
         {
-          case LengthUnit.Millimeter:
-            return m_value * 1000;
-          case LengthUnit.Centimeter:
-            return m_value * 100;
-          case LengthUnit.Inch:
-            return m_value / 0.0254;
-          case LengthUnit.Decimeter:
-            return m_value * 10;
-          case LengthUnit.Foot:
-            return m_value / 0.3048;
-          case LengthUnit.Yard:
-            return m_value / 0.9144;
-          case LengthUnit.Meter:
-            return m_value;
-          case LengthUnit.NauticalMile:
-            return m_value / 1852;
-          case LengthUnit.Mile:
-            return m_value / 1609.344;
-          case LengthUnit.Kilometer:
-            return m_value / 1000;
-          case LengthUnit.AstronomicalUnit:
-            return m_value / 149597870700;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          LengthUnit.Millimeter => m_value * 1000,
+          LengthUnit.Centimeter => m_value * 100,
+          LengthUnit.Inch => m_value / 0.0254,
+          LengthUnit.Decimeter => m_value * 10,
+          LengthUnit.Foot => m_value / 0.3048,
+          LengthUnit.Yard => m_value / 0.9144,
+          LengthUnit.Meter => m_value,
+          LengthUnit.NauticalMile => m_value / 1852,
+          LengthUnit.Mile => m_value / 1609.344,
+          LengthUnit.Kilometer => m_value / 1000,
+          LengthUnit.AstronomicalUnit => m_value / 149597870700,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</summary>

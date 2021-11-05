@@ -13,10 +13,10 @@ namespace Flux.Midi
     public MidiTimeCode(MidiTimeCodeType rate, int hour, int minute, int second, int frame)
     {
       m_rate = rate;
-      m_hour = hour >= 0 && hour <= 23 ? (byte)hour : throw new(nameof(hour));
-      m_minute = minute >= 0 && minute <= 59 ? (byte)minute : throw new(nameof(minute));
-      m_second = second >= 0 && second <= 59 ? (byte)second : throw new(nameof(second));
-      m_frame = frame >= 0 && frame < (int)rate ? (byte)frame : throw new(nameof(frame));
+      m_hour = hour >= 0 && hour <= 23 ? (byte)hour : throw new System.ArgumentOutOfRangeException(nameof(hour));
+      m_minute = minute >= 0 && minute <= 59 ? (byte)minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
+      m_second = second >= 0 && second <= 59 ? (byte)second : throw new System.ArgumentOutOfRangeException(nameof(second));
+      m_frame = frame >= 0 && frame < (int)rate ? (byte)frame : throw new System.ArgumentOutOfRangeException(nameof(frame));
     }
 
     public MidiTimeCodeType Rate
@@ -32,7 +32,7 @@ namespace Flux.Midi
 
     public MidiTimeCode AddHours(int value)
       => System.Math.DivRem(m_hour + value, 24, out var reminder) is var quotient && quotient > 0
-      ? throw new($"The maximum value for the hour part is 23.")
+      ? throw new System.ArgumentOutOfRangeException(nameof(value), $"The maximum value for the hour part is 23.")
       : new MidiTimeCode(m_rate, reminder, m_minute, m_second, m_frame);
     public MidiTimeCode AddMinutes(int value)
       => new(m_rate, m_hour + System.Math.DivRem(m_minute + value, 60, out var reminder), reminder, m_second, m_frame);
@@ -54,7 +54,7 @@ namespace Flux.Midi
         5 => Protocol.CommonMessage.MtcQuarterFrame(0x5, m_minute >> 4),
         6 => Protocol.CommonMessage.MtcQuarterFrame(0x6, m_hour & 0xF),
         7 => Protocol.CommonMessage.MtcQuarterFrame(0x7, (int)m_rate | m_hour >> 4),
-        _ => throw new(nameof(index)),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(index)),
       };
   }
 }

@@ -8,7 +8,7 @@ namespace Flux.Resources.Ucd
     public static string LocalFile
       => @"file://\Resources\Ucd\Blocks.txt";
     public static System.Uri UriSource
-      => new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
+      => new(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
     public System.Uri Uri { get; private set; }
 

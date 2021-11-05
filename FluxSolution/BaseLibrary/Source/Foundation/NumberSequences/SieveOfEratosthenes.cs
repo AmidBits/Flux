@@ -7,7 +7,7 @@ namespace Flux.Numerics
   public class SieveOfEratosthenes
     : System.Collections.Generic.IEnumerable<int>
   {
-    private System.Collections.BitArray m_sieve = new System.Collections.BitArray(0);
+    private System.Collections.BitArray m_sieve = new(0);
     /// <summary>Holds the boolean values for each index. Each index represents a number (true means it is a prime number, and false that it is not).</summary>
     public System.Collections.BitArray Sieve => m_sieve;
 

@@ -30,7 +30,7 @@ namespace Flux.Model.MineSweeper
 
     public GameResult Evaluate(Mines mines)
     {
-      if (mines is null) throw new(nameof(mines));
+      if (mines is null) throw new System.ArgumentNullException(nameof(mines));
 
       var covers = Covers();
 

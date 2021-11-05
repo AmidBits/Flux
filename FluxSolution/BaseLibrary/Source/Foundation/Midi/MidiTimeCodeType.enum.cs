@@ -3,21 +3,14 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static double GetTimeCodeRate(this Midi.MidiTimeCodeType source)
-    {
-      switch (source)
+      => source switch
       {
-        case Midi.MidiTimeCodeType.TwentyFour:
-          return 24;
-        case Midi.MidiTimeCodeType.TwentyFive:
-          return 25;
-        case Midi.MidiTimeCodeType.TwentyNineNinetySeven:
-          return 29.97;
-        case Midi.MidiTimeCodeType.Thirty:
-          return 30;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(source));
-      }
-    }
+        Midi.MidiTimeCodeType.TwentyFour => 24,
+        Midi.MidiTimeCodeType.TwentyFive => 25,
+        Midi.MidiTimeCodeType.TwentyNineNinetySeven => 29.97,
+        Midi.MidiTimeCodeType.Thirty => 30,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(source)),
+      };
   }
 
   namespace Midi

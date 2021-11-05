@@ -54,10 +54,10 @@ namespace Flux.Text
 
     /// <summary></summary>
     public static System.Xml.Linq.XElement ToPropertyXmlAsName(string source, string propertyValue, string propertyElementName = @"Property")
-      => new System.Xml.Linq.XElement(propertyElementName, new System.Xml.Linq.XAttribute(@"Name", source), new System.Xml.Linq.XAttribute(@"Value", propertyValue));
+      => new(propertyElementName, new System.Xml.Linq.XAttribute(@"Name", source), new System.Xml.Linq.XAttribute(@"Value", propertyValue));
     /// <summary></summary>
     public static System.Xml.Linq.XElement ToPropertyXmlAsValue(string source, string propertyName, string propertyElementName = @"Property")
-      => new System.Xml.Linq.XElement(propertyElementName, new System.Xml.Linq.XAttribute(@"Name", propertyName), new System.Xml.Linq.XAttribute(@"Value", source));
+      => new(propertyElementName, new System.Xml.Linq.XAttribute(@"Name", propertyName), new System.Xml.Linq.XAttribute(@"Value", source));
 
     /// <summary>Returns an unescaped XML string (basically replacing all entities with their respective character.</summary>
     public static string Unescape(string source)

@@ -11,19 +11,14 @@ namespace Flux
     /// <summary>Determines the last day of the quarter in the source.</summary>
     public static System.DateTime LastDayOfQuarter(this System.DateTime source, int quarter)
     {
-      switch (quarter)
+      return quarter switch
       {
-        case 1:
-          return new(source.Year, 3, 31);
-        case 2:
-          return new(source.Year, 6, 30);
-        case 3:
-          return new(source.Year, 9, 30);
-        case 4:
-          return new(source.Year, 12, 31);
-        default:
-          throw new(nameof(quarter));
-      }
+        1 => new(source.Year, 3, 31),
+        2 => new(source.Year, 6, 30),
+        3 => new(source.Year, 9, 30),
+        4 => new(source.Year, 12, 31),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
+      };
     }
     /// <summary>Determines the last day of the specified quarter.</summary>
     public static System.DateTime LastDayOfQuarter(this System.DateTime source)

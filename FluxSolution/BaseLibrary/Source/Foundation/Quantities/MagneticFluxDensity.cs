@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case MagneticFluxDensityUnit.Tesla:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        MagneticFluxDensityUnit.Tesla => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
-    {
-      switch (unit)
+      => unit switch
       {
-        case MagneticFluxDensityUnit.Tesla:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        MagneticFluxDensityUnit.Tesla => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(MagneticFluxDensity v)

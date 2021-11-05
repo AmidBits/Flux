@@ -17,7 +17,7 @@ namespace Flux.Midi
     private readonly byte m_number;
 
     public MidiNote(int midiNoteNumber)
-      => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new(nameof(midiNoteNumber));
+      => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     public double Value
       => m_number;
@@ -39,13 +39,13 @@ namespace Flux.Midi
       => (int)((System.Math.Log(frequency / referenceFrequency, 2.0) * 12.0) + referenceNoteNumber);
     /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
     public static int ConvertFromFrequency(double frequency)
-      => ConvertFromFrequency(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new(nameof(frequency));
+      => ConvertFromFrequency(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
     /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
     public static double ConvertToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequency)
       => System.Math.Pow(2, (noteNumber - referenceNoteNumber) / 12.0) * referenceFrequency;
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public static double ConvertToFrequency(int midiNoteNumber)
-      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new(nameof(midiNoteNumber));
+      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Quantity.Frequency frequency)

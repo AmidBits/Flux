@@ -49,7 +49,7 @@ namespace Flux.IO
         throw new System.DataMisalignedException($"The number of field provider types ({FieldProviderTypes.Count}) does not match the number of field types ({FieldNames.Count}).");
     }
 
-    private readonly System.Text.StringBuilder m_fieldValue = new System.Text.StringBuilder();
+    private readonly System.Text.StringBuilder m_fieldValue = new();
 
     public System.Collections.Generic.IEnumerable<string> ReadCsvLine()
     {

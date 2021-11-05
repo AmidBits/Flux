@@ -5,7 +5,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static Numerics.TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
-      => new Numerics.TrendLine<double>(source, d => d);
+      => new(source, d => d);
   }
 
   namespace Numerics

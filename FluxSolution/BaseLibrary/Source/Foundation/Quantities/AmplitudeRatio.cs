@@ -15,16 +15,11 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case AmplitudeRatioUnit.DecibelVolt:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AmplitudeRatioUnit.DecibelVolt => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
@@ -33,15 +28,11 @@ namespace Flux.Quantity
       => new(System.Math.Pow(m_value, 2));
 
     public double ToUnitValue(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
-    {
-      switch (unit)
+      => unit switch
       {
-        case AmplitudeRatioUnit.DecibelVolt:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AmplitudeRatioUnit.DecibelVolt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>

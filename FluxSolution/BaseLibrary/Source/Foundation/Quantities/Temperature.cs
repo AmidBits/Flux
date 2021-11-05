@@ -3,21 +3,14 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.TemperatureUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.TemperatureUnit.Celsius:
-          return $" {Quantity.Angle.DegreeSymbol}C";
-        case Quantity.TemperatureUnit.Fahrenheit:
-          return $" {Quantity.Angle.DegreeSymbol}F";
-        case Quantity.TemperatureUnit.Kelvin:
-          return $" K";
-        case Quantity.TemperatureUnit.Rankine:
-          return $" {Quantity.Angle.DegreeSymbol}R";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.TemperatureUnit.Celsius => $" {Quantity.Angle.DegreeSymbol}C",
+        Quantity.TemperatureUnit.Fahrenheit => $" {Quantity.Angle.DegreeSymbol}F",
+        Quantity.TemperatureUnit.Kelvin => $" K",
+        Quantity.TemperatureUnit.Rankine => $" {Quantity.Angle.DegreeSymbol}R",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -54,25 +47,14 @@ namespace Flux
       private readonly double m_value;
 
       public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case TemperatureUnit.Celsius:
-            m_value = value - CelsiusAbsoluteZero;
-            break;
-          case TemperatureUnit.Fahrenheit:
-            m_value = (value - FahrenheitAbsoluteZero) / 1.8;
-            break;
-          case TemperatureUnit.Kelvin:
-            m_value = value;
-            break;
-          case TemperatureUnit.Rankine:
-            m_value = value / 1.8;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          TemperatureUnit.Celsius => value - CelsiusAbsoluteZero,
+          TemperatureUnit.Fahrenheit => (value - FahrenheitAbsoluteZero) / 1.8,
+          TemperatureUnit.Kelvin => value,
+          TemperatureUnit.Rankine => value / 1.8,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -80,21 +62,14 @@ namespace Flux
       public string ToUnitString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(TemperatureUnit unit = TemperatureUnit.Kelvin)
-      {
-        switch (unit)
+        => unit switch
         {
-          case TemperatureUnit.Celsius:
-            return m_value - KelvinIcePoint;
-          case TemperatureUnit.Fahrenheit:
-            return m_value * 1.8 + FahrenheitAbsoluteZero;
-          case TemperatureUnit.Kelvin:
-            return m_value;
-          case TemperatureUnit.Rankine:
-            return m_value * 1.8;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          TemperatureUnit.Celsius => m_value - KelvinIcePoint,
+          TemperatureUnit.Fahrenheit => m_value * 1.8 + FahrenheitAbsoluteZero,
+          TemperatureUnit.Kelvin => m_value,
+          TemperatureUnit.Rankine => m_value * 1.8,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>

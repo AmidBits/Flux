@@ -6,7 +6,7 @@ namespace Flux.Services
     public static readonly MeasuredResult Empty;
 
     public System.TimeSpan AverageTime
-      => new System.TimeSpan(TotalTime.Ticks / Iterations);
+      => new(TotalTime.Ticks / Iterations);
 
     public string Identifier { get; private set; }
     public int Iterations { get; private set; }

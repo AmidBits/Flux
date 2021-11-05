@@ -14,35 +14,23 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case ElectricCurrentUnit.Milliampere:
-          m_value = value / 1000;
-          break;
-        case ElectricCurrentUnit.Ampere:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricCurrentUnit.Milliampere => value / 1000,
+        ElectricCurrentUnit.Ampere => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
-    {
-      switch (unit)
+      => unit switch
       {
-        case ElectricCurrentUnit.Milliampere:
-          return m_value * 1000;
-        case ElectricCurrentUnit.Ampere:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricCurrentUnit.Milliampere => m_value * 1000,
+        ElectricCurrentUnit.Ampere => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>

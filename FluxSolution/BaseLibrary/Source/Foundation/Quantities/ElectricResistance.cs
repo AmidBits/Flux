@@ -16,30 +16,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public ElectricResistance(double value, ElectricResistanceUnit unit = ElectricResistanceUnit.Ohm)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case ElectricResistanceUnit.Ohm:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricResistanceUnit.Ohm => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(ElectricResistanceUnit unit = ElectricResistanceUnit.Ohm)
-    {
-      switch (unit)
+      => unit switch
       {
-        case ElectricResistanceUnit.Ohm:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricResistanceUnit.Ohm => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>

@@ -16,30 +16,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case ElectricChargeUnit.Coulomb:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricChargeUnit.Coulomb => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
-    {
-      switch (unit)
+      => unit switch
       {
-        case ElectricChargeUnit.Coulomb:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        ElectricChargeUnit.Coulomb => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(ElectricCharge v)

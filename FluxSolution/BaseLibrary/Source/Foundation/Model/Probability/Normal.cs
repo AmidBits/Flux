@@ -10,7 +10,7 @@
     public static readonly Normal Standard = Distribution(0, 1);
 
     public static Normal Distribution(double mean, double sigma)
-      => new Normal(mean, sigma);
+      => new(mean, sigma);
     private Normal(double mean, double sigma)
     {
       this.Mean = mean;

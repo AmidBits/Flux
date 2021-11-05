@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case TorqueUnit.NewtonMeter:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        TorqueUnit.NewtonMeter => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(TorqueUnit unit = TorqueUnit.NewtonMeter)
-    {
-      switch (unit)
+      => unit switch
       {
-        case TorqueUnit.NewtonMeter:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        TorqueUnit.NewtonMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Torque v)

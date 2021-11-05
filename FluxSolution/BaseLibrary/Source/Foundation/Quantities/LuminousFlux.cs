@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public LuminousFlux(double value, LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case LuminousFluxUnit.Lumen:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        LuminousFluxUnit.Lumen => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
-    {
-      switch (unit)
+      => unit switch
       {
-        case LuminousFluxUnit.Lumen:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        LuminousFluxUnit.Lumen => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(LuminousFlux v)

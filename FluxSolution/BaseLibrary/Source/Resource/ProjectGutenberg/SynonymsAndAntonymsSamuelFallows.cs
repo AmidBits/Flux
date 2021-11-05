@@ -8,7 +8,7 @@ namespace Flux.Resources.ProjectGutenberg
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\51155-0.txt";
     public static System.Uri UriSource
-      => new System.Uri(@"http://www.gutenberg.org/files/51155/51155-0.txt");
+      => new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
 
     public System.Uri Uri { get; private set; }
 

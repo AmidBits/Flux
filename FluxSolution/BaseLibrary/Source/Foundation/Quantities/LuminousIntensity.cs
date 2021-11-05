@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case LuminousIntensityUnit.Candela:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        LuminousIntensityUnit.Candela => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
-    {
-      switch (unit)
+      => unit switch
       {
-        case LuminousIntensityUnit.Candela:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        LuminousIntensityUnit.Candela => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     #endregion Static methods

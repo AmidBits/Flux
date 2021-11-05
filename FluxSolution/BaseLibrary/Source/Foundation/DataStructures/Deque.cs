@@ -221,7 +221,7 @@ namespace Flux.DataStructures
 
       private T m_current;
       private int m_index;
-      private readonly object m_lock = new object();
+      private readonly object m_lock = new();
       private readonly Deque<T> m_source;
       private readonly int m_version;
 

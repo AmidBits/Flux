@@ -16,30 +16,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Acceleration(double value, AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case AccelerationUnit.MetersPerSecondSquare:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AccelerationUnit.MetersPerSecondSquare => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
-    {
-      switch (unit)
+      => unit switch
       {
-        case AccelerationUnit.MetersPerSecondSquare:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AccelerationUnit.MetersPerSecondSquare => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Acceleration v)

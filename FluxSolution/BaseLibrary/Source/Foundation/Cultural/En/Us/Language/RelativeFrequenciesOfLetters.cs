@@ -102,7 +102,7 @@ namespace Flux.Cultural.EnUs
 		/// <summary></summary>
 		// https://en.wikipedia.org/wiki/Letter_frequency
 		public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.Text.Rune, double>> RelativeFrequencyOfLetters
-			=> new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.Text.Rune, double>>()
+			=> new()
 			{
 				new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'e', 0.12702),
 				new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'t', 0.09056),

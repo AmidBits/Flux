@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Radioactivity(double value, RadioactivityUnit unit = RadioactivityUnit.Becquerel)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case RadioactivityUnit.Becquerel:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        RadioactivityUnit.Becquerel => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(RadioactivityUnit unit = RadioactivityUnit.Becquerel)
-    {
-      switch (unit)
+      => unit switch
       {
-        case RadioactivityUnit.Becquerel:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        RadioactivityUnit.Becquerel => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(Radioactivity v)

@@ -29,7 +29,7 @@ namespace Flux
       var digitCount = System.Math.Max(System.Convert.ToInt32(System.Math.Log10(roundedLast)), 4); // Show 4 or 5 digits.
 
       if (includeTitle)
-        sb.AppendLine($"{source.ToString()} (Unicode block)");
+        sb.AppendLine($"{source} (Unicode block)");
 
       sb.Append(' ', 2 + digitCount);
       for (var columnHeading = 0; columnHeading < 0x10; columnHeading++)

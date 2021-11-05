@@ -11,7 +11,7 @@ namespace Flux.Geometry.Hexagon
 
     public HexF(double q, double r, double s)
     {
-      if (!IsCubeCoordinate(q, r, s)) throw new System.InvalidOperationException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {System.Math.Round(q + r + s)}).");
+      if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {System.Math.Round(q + r + s)}).");
 
       Q = q;
       R = r;
@@ -42,7 +42,7 @@ namespace Flux.Geometry.Hexagon
     public static bool IsCubeCoordinate(double q, double r, double s)
       => System.Math.Round(q + r + s) == 0;
     public static HexF Lerp(HexF source, HexF target, double mu)
-      => new HexF(source.Q * (1 - mu) + target.Q * mu, source.R * (1 - mu) + target.R * mu, source.S * (1 - mu) + target.S * mu);
+      => new(source.Q * (1 - mu) + target.Q * mu, source.R * (1 - mu) + target.R * mu, source.S * (1 - mu) + target.S * mu);
     public static Hex RoundToNearest(double q, double r, double s)
     {
       var rq = (int)System.Math.Round(q);
@@ -60,7 +60,7 @@ namespace Flux.Geometry.Hexagon
       else
         rs = -rq - rr;
 
-      return new Hex(rq, rr, rs);
+      return new(rq, rr, rs);
     }
     #endregion Static methods
 

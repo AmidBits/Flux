@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Flow(double value, FlowUnit unit = FlowUnit.CubicMetersPerSecond)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case FlowUnit.CubicMetersPerSecond:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        FlowUnit.CubicMetersPerSecond => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(FlowUnit unit = FlowUnit.CubicMetersPerSecond)
-    {
-      switch (unit)
+      => unit switch
       {
-        case FlowUnit.CubicMetersPerSecond:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        FlowUnit.CubicMetersPerSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     public static Flow From(Volume volume, Time time)

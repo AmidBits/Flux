@@ -8,7 +8,7 @@ namespace Flux.Resources.ProjectGutenberg
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\GUTINDEX.ALL";
     public static System.Uri UriSource
-      => new System.Uri(@"http://www.gutenberg.org/dirs/GUTINDEX.ALL");
+      => new(@"http://www.gutenberg.org/dirs/GUTINDEX.ALL");
 
     public System.Uri Uri { get; private set; }
 

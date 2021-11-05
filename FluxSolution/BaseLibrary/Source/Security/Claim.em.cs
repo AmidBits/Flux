@@ -28,6 +28,6 @@ namespace Flux
       return xe;
     }
     public static System.Xml.Linq.XElement ClaimsXml(this System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> source)
-      => new System.Xml.Linq.XElement(@"Claims", (source ?? throw new System.ArgumentNullException(nameof(source))).Select(c => ClaimXml(c)));
+      => new(@"Claims", (source ?? throw new System.ArgumentNullException(nameof(source))).Select(c => ClaimXml(c)));
   }
 }

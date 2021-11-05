@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case RelativeHumidityUnit.Percent:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        RelativeHumidityUnit.Percent => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
-    {
-      switch (unit)
+      => unit switch
       {
-        case RelativeHumidityUnit.Percent:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        RelativeHumidityUnit.Percent => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(RelativeHumidity v)

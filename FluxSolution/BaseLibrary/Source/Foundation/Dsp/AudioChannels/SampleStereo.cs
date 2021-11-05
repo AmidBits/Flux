@@ -4,7 +4,7 @@
     : System.IEquatable<SampleStereo>
     , IAudioChannelFrontLeft, IAudioChannelFrontRight
   {
-    public static SampleStereo Zero;
+    public readonly static SampleStereo Zero;
 
     public double FrontLeft { get; }
     public double FrontRight { get; }

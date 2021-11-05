@@ -60,7 +60,7 @@
     }
 
     public System.Uri Uri
-      => new System.Uri(ToString());
+      => new(ToString());
 
     public override string ToString()
       => m_uriBuilder.ToString();

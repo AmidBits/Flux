@@ -16,16 +16,11 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case FrequencyUnit.Hertz:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        FrequencyUnit.Hertz => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
@@ -35,15 +30,11 @@ namespace Flux.Quantity
       => new(1.0 / m_value);
 
     public double ToUnitValue(FrequencyUnit unit = FrequencyUnit.Hertz)
-    {
-      switch (unit)
+      => unit switch
       {
-        case FrequencyUnit.Hertz:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        FrequencyUnit.Hertz => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>

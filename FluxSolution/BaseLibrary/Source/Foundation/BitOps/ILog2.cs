@@ -16,37 +16,27 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static int ByByteTable(uint value)
     {
-      switch (value)
+      return value switch
       {
-        case var v when v > 0x00FFFFFF:
-          return 0x18 + ByteTable[value >> 0x18];
-        case var v when v > 0x0000FFFF:
-          return 0x10 + ByteTable[value >> 0x10];
-        case var v when v > 0x000000FF:
-          return 0x08 + ByteTable[value >> 0x08];
-        case var v when v > 0x00000000:
-          return 0x00 + ByteTable[value >> 0x00];
-        default:
-          return 0;
-      }
+        var v when v > 0x00FFFFFF => 0x18 + ByteTable[value >> 0x18],
+        var v when v > 0x0000FFFF => 0x10 + ByteTable[value >> 0x10],
+        var v when v > 0x000000FF => 0x08 + ByteTable[value >> 0x08],
+        var v when v > 0x00000000 => 0x00 + ByteTable[value >> 0x00],
+        _ => 0,
+      };
     }
 
     [System.CLSCompliant(false)]
     public static int ByByteTable(ulong value)
     {
-      switch (value)
+      return value switch
       {
-        case var v when v > 0x00FFFFFFFFFFFFFFUL:
-          return 0x38 + ByteTable[value >> 0x38];
-        case var v when v > 0x0000FFFFFFFFFFFFUL:
-          return 0x30 + ByteTable[value >> 0x30];
-        case var v when v > 0x000000FFFFFFFFFFUL:
-          return 0x28 + ByteTable[value >> 0x28];
-        case var v when v > 0x00000000FFFFFFFFUL:
-          return 0x20 + ByteTable[value >> 0x20];
-        default:
-          return ByByteTable((uint)(value & 0xFFFFFFFFUL));
-      }
+        var v when v > 0x00FFFFFFFFFFFFFFUL => 0x38 + ByteTable[value >> 0x38],
+        var v when v > 0x0000FFFFFFFFFFFFUL => 0x30 + ByteTable[value >> 0x30],
+        var v when v > 0x000000FFFFFFFFFFUL => 0x28 + ByteTable[value >> 0x28],
+        var v when v > 0x00000000FFFFFFFFUL => 0x20 + ByteTable[value >> 0x20],
+        _ => ByByteTable((uint)(value & 0xFFFFFFFFUL)),
+      };
     }
 
     /// <summary>Contains the bit positions.</summary>

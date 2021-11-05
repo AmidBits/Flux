@@ -3,6 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Folds runes representing characters above ASCII as a reasonable ASCII equivalence. Only characters from certain blocks are converted.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "Easier to read switch statement")]
     public static string FoldToAscii(this System.Text.Rune source)
     {
       switch (source.Value)

@@ -26,7 +26,7 @@ namespace Flux.DataStructures
 
       AllEnumeratorsExhausted = false;
 
-      m_enumerators.Enqueue((collection ?? throw new(nameof(collection))).GetEnumerator());
+      m_enumerators.Enqueue((collection ?? throw new System.ArgumentNullException(nameof(collection))).GetEnumerator());
     }
     public void Attach(params T[] collection)
       => Attach(collection.AsEnumerable());
@@ -164,7 +164,7 @@ namespace Flux.DataStructures
       private void ValidateVersion()
       {
         if (m_version != m_source.m_version)
-          throw new(@"The list has changed.");
+          throw new System.Exception(@"The list has changed.");
       }
 
       public void Dispose() // This class does not yet allocate any resources on its own.

@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public Power(double value, PowerUnit unit = PowerUnit.Watt)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case PowerUnit.Watt:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        PowerUnit.Watt => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(PowerUnit unit = PowerUnit.Watt)
-    {
-      switch (unit)
+      => unit switch
       {
-        case PowerUnit.Watt:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        PowerUnit.Watt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new Power instance from the specified current and voltage.</summary>

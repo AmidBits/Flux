@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 32 degrees from 0), from a thirty-two value compass point [0, 31].</summary>
     public static Azimuth GetAzimuthAngle(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
-      => new Azimuth(thirtyTwoWindCompassRose switch
+      => new(thirtyTwoWindCompassRose switch
       {
         ThirtytwoWindCompassRose.N => 0,
         ThirtytwoWindCompassRose.NbE => 11.25,

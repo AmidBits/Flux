@@ -5,7 +5,7 @@ namespace Flux.Text
   /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
   public static class HtmlEntityNumber
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new System.Text.RegularExpressions.Regex(@"(?<=&#)\d+(?=;)", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new(@"(?<=&#)\d+(?=;)", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string expression)
       => ParseRegex.Matches(expression).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));

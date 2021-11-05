@@ -15,16 +15,11 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case PowerRatioUnit.DecibelWatt:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        PowerRatioUnit.DecibelWatt => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
@@ -33,15 +28,11 @@ namespace Flux.Quantity
       => new(System.Math.Sqrt(m_value));
 
     public double ToUnitValue(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
-    {
-      switch (unit)
+      => unit switch
       {
-        case PowerRatioUnit.DecibelWatt:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        PowerRatioUnit.DecibelWatt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     /// <summary>Creates a new PowerRatio instance from the difference of the specified voltages (numerator and denominator).</summary>

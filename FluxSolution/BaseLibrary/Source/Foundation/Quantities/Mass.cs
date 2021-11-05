@@ -3,25 +3,16 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.MassUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.MassUnit.Milligram:
-          return @" mg";
-        case Quantity.MassUnit.Gram:
-          return @" g";
-        case Quantity.MassUnit.Ounce:
-          return @" oz";
-        case Quantity.MassUnit.Pound:
-          return @" lb";
-        case Quantity.MassUnit.Kilogram:
-          return @" kg";
-        case Quantity.MassUnit.MetricTon:
-          return @" t";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.MassUnit.Milligram => @" mg",
+        Quantity.MassUnit.Gram => @" g",
+        Quantity.MassUnit.Ounce => @" oz",
+        Quantity.MassUnit.Pound => @" lb",
+        Quantity.MassUnit.Kilogram => @" kg",
+        Quantity.MassUnit.MetricTon => @" t",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -47,31 +38,16 @@ namespace Flux
       private readonly double m_value;
 
       public Mass(double value, MassUnit unit = MassUnit.Kilogram)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case MassUnit.Milligram:
-            m_value = value / 1000000;
-            break;
-          case MassUnit.Gram:
-            m_value = value / 1000;
-            break;
-          case MassUnit.Ounce:
-            m_value = value / 35.27396195;
-            break;
-          case MassUnit.Pound:
-            m_value = value * 0.45359237;
-            break;
-          case MassUnit.Kilogram:
-            m_value = value;
-            break;
-          case MassUnit.MetricTon:
-            m_value = value * 1000;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          MassUnit.Milligram => value / 1000000,
+          MassUnit.Gram => value / 1000,
+          MassUnit.Ounce => value / 35.27396195,
+          MassUnit.Pound => value * 0.45359237,
+          MassUnit.Kilogram => value,
+          MassUnit.MetricTon => value * 1000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -79,25 +55,16 @@ namespace Flux
       public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(MassUnit unit = MassUnit.Kilogram)
-      {
-        switch (unit)
+        => unit switch
         {
-          case MassUnit.Milligram:
-            return m_value * 1000000;
-          case MassUnit.Gram:
-            return m_value * 1000;
-          case MassUnit.Ounce:
-            return m_value * 35.27396195;
-          case MassUnit.Pound:
-            return m_value / 0.45359237;
-          case MassUnit.Kilogram:
-            return m_value;
-          case MassUnit.MetricTon:
-            return m_value / 1000;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          MassUnit.Milligram => m_value * 1000000,
+          MassUnit.Gram => m_value * 1000,
+          MassUnit.Ounce => m_value * 35.27396195,
+          MassUnit.Pound => m_value / 0.45359237,
+          MassUnit.Kilogram => m_value,
+          MassUnit.MetricTon => m_value / 1000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       #endregion Static methods

@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case MagneticFluxUnit.Weber:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        MagneticFluxUnit.Weber => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(MagneticFluxUnit unit = MagneticFluxUnit.Weber)
-    {
-      switch (unit)
+      => unit switch
       {
-        case MagneticFluxUnit.Weber:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        MagneticFluxUnit.Weber => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(MagneticFlux v)

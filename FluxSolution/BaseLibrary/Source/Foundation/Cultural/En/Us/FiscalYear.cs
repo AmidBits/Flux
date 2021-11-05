@@ -3,6 +3,7 @@ namespace Flux.Cultural.EnUs
   public static partial class FiscalYear
   {
     /// <summary>Gets the fiscal year of the specified scope for the datetime.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "Easier to read switch statement")]
     public static int Get(System.DateTime source, FiscalYearScope scope)
     {
       switch (scope)

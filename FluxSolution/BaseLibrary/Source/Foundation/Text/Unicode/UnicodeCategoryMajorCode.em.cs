@@ -5,6 +5,7 @@ namespace Flux
   {
     /// <summary>Translates a System.Globalization.UnicodeCategory enum value into a MajorLabel enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "Easier to read switch statement")]
     public static Text.UnicodeCategoryMajorCode ToMajorCode(this System.Globalization.UnicodeCategory unicodeCategory)
     {
       switch (unicodeCategory)

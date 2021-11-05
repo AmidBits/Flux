@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case AngularAccelerationUnit.RadianPerSecondSquare:
-          m_value = value;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AngularAccelerationUnit.RadianPerSecondSquare => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
-    {
-      switch (unit)
+      => unit switch
       {
-        case AngularAccelerationUnit.RadianPerSecondSquare:
-          return m_value;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        AngularAccelerationUnit.RadianPerSecondSquare => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Overloaded operators
     public static explicit operator double(AngularAcceleration v)

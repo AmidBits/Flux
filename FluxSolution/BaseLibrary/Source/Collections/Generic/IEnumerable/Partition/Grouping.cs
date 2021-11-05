@@ -4,7 +4,7 @@ namespace Flux
   public class Grouping<TKey, TElement>
     : System.Linq.IGrouping<TKey, TElement>, System.Collections.Generic.IList<TElement>, System.Collections.Generic.IEnumerable<TElement>
   {
-    private readonly System.Collections.Generic.List<TElement> m_elements = new System.Collections.Generic.List<TElement>();
+    private readonly System.Collections.Generic.List<TElement> m_elements = new();
 
     public Grouping(TKey key)
       => Key = key;

@@ -6,7 +6,7 @@ namespace Flux.Resources.ProjectGutenberg
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\pg29765.txt";
     public static System.Uri UriSource
-      => new System.Uri(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
+      => new(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
 
     public System.Uri Uri { get; private set; }
 

@@ -34,7 +34,7 @@ namespace Flux.Net
 
     public UdpCast(System.Net.IPEndPoint remoteAddress)
     {
-      RemoteAddress = remoteAddress ?? throw new(nameof(remoteAddress));
+      RemoteAddress = remoteAddress ?? throw new System.ArgumentNullException(nameof(remoteAddress));
 
       Socket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, System.Net.Sockets.ProtocolType.Udp);
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.ExclusiveAddressUse, false);

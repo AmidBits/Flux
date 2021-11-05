@@ -6,7 +6,7 @@ namespace Flux.Resources.Ucd
 		public static string LocalFile
 			=> @"file://\Resources\Ucd\UnicodeData.txt";
 		public static System.Uri UriSource
-			=> new System.Uri(@"https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt");
+			=> new(@"https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt");
 
 		public System.Uri Uri { get; private set; }
 

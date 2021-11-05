@@ -11,7 +11,7 @@ namespace Flux
     private readonly double m_degree;
 
     public Longitude(double degree)
-      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new(nameof(degree));
+      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
     public Longitude(Quantity.Angle angle)
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }

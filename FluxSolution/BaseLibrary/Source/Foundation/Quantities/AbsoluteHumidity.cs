@@ -13,30 +13,21 @@ namespace Flux.Quantity
     private readonly double m_value;
 
     public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
-    {
-      switch (unit)
+      => m_value = unit switch
       {
-        case AbsoluteHumidityUnit.GramsPerCubicMeter:
-          m_value = value;
-          break;
-        default:
-          throw new(nameof(unit));
-      }
-    }
+        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     public double Value
       => m_value;
 
     public double ToUnitValue(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
-    {
-      switch (unit)
+      => unit switch
       {
-        case AbsoluteHumidityUnit.GramsPerCubicMeter:
-          return m_value;
-        default:
-          throw new(nameof(unit));
-      }
-    }
+        AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
     #region Static methods
     public static AbsoluteHumidity From(double grams, Volume volume)
