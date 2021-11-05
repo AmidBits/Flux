@@ -23,6 +23,16 @@ namespace ConsoleApp
 
       // if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+
+      var jdc = new Flux.JulianDayNumber();
+      var jcs = jdc.ToDateString(ConversionCalendar.JulianCalendar);
+      var gcs = jdc.ToDateString(ConversionCalendar.GregorianCalendar);
+
+      var gc = System.DateTime.Now.ToJulianDate(ConversionCalendar.GregorianCalendar);
+      var gcd = System.Math.Floor(gc.Value - 2299159.5);
+      var jc = System.DateTime.Now.ToJulianDate(ConversionCalendar.JulianCalendar);
+      var jde = new Flux.JulianDayNumber(1994, 08, 25, ConversionCalendar.GregorianCalendar);
     }
 
     private static void Main(string[] args)

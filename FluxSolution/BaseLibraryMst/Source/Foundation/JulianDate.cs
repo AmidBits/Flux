@@ -25,21 +25,21 @@ namespace Foundation
     [TestMethod]
     public void FirstGregorianCalendarDate()
     {
-      var fgd = Flux.JulianDate.FirstGregorianCalendarDate;
+      var fgd = new Flux.MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
 
       Assert.AreEqual(2299160.5, fgd.Value);
     }
     [TestMethod]
     public void FirstJulianCalendarDate()
     {
-      var fjd = Flux.JulianDate.FirstJulianCalendarDate;
+      var fjd = new Flux.JulianDate(0);
 
       Assert.AreEqual(0, fjd.Value);
     }
     [TestMethod]
     public void LastJulianCalendarDate()
     {
-      var ljd = Flux.JulianDate.LastJulianCalendarDate;
+      var ljd = new Flux.MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
 
       Assert.AreEqual(2299160.4999999884, ljd.Value);
     }

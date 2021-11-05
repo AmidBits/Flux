@@ -12,7 +12,7 @@ namespace Flux
   public struct JulianDayNumber
     : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit
   {
-    public static readonly JulianDayNumber Epoch;
+    public static readonly JulianDayNumber Zero;
 
     private readonly int m_value;
 
@@ -24,11 +24,6 @@ namespace Flux
       : this(ConvertFromDateParts(year, month, day, calendar))
     { }
 
-    public JulianDayNumber AddWeeks(int weeks)
-      => this + (weeks * 7);
-    public JulianDayNumber AddDays(int days)
-      => this + days;
-
     /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
     public System.DayOfWeek DayOfWeek
       => (System.DayOfWeek)(GetDayOfWeekISO8601(m_value) % 7);
@@ -38,6 +33,14 @@ namespace Flux
 
     public double Value
       => m_value;
+
+    public JulianDayNumber AddWeeks(int weeks)
+      => this + (weeks * 7);
+    public JulianDayNumber AddDays(int days)
+      => this + days;
+
+    public ConversionCalendar GetConversionCalendar()
+      => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
 
     public void GetDateParts(ConversionCalendar calendar, out int year, out int month, out int day)
       => ConvertToDateParts(m_value, calendar, out year, out month, out day);
@@ -63,9 +66,9 @@ namespace Flux
 
       if (year <= 0)
       {
-        sb.Append(@" (");
+        sb.Append(@" or ");
         sb.Append(System.Math.Abs(year) + 1);
-        sb.Append(@" BC)");
+        sb.Append(@" BC");
       }
 
       return sb.ToString();
@@ -112,7 +115,7 @@ namespace Flux
 
     /// <summary>Returns the ISO day of the week from the Julian Day Number. The US day of the week can be determined by: GetDayOfWeekISO(JDN) % 7.</summary>
     public static int GetDayOfWeekISO8601(int julianDayNumber)
-      => (julianDayNumber % 7 is var dow && dow <= 0 ? dow + 7 : dow) + 1;
+      => (julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow) + 1;
 
     /// <summary>Computes the Julian Period (JP) from the specified cyclic indices in the year.</summary>
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
@@ -174,7 +177,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string? ToString()
-      => $"<{GetType().Name}: {m_value} " + (IsGregorianCalendar(m_value) ? $"({ToDateString(ConversionCalendar.GregorianCalendar)})" : $"({ToDateString(ConversionCalendar.JulianCalendar)})*");
+      => $"<{GetType().Name}: {m_value} " + $"({ToDateString(GetConversionCalendar())})";
     #endregion Object overrides
   }
 }

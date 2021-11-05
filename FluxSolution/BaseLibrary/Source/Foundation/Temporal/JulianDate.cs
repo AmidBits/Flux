@@ -12,23 +12,7 @@ namespace Flux
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IValuedUnit
   {
-    public static JulianDate EpochDublinJD
-      => new(1899, 12, 31, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
-    public static JulianDate EpochModifiedJD
-      => new(1858, 11, 17, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
-    public static JulianDate EpochReducedJD
-      => new(1858, 11, 16, 12, 0, 0, 0, ConversionCalendar.GregorianCalendar);
-    public static JulianDate EpochTruncatedJD
-      => new(1968, 5, 24, 0, 0, 0, 0, ConversionCalendar.GregorianCalendar);
-
-    public static JulianDate FirstGregorianCalendarDate
-       => new MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
-    public static JulianDate FirstJulianCalendarDate
-      => new(0);
-    public static JulianDate LastJulianCalendarDate
-      => new MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
-
-    public static readonly JulianDate Epoch;
+    public readonly static JulianDate Zero;
 
     private readonly double m_value;
 
@@ -39,6 +23,9 @@ namespace Flux
     public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
+
+    public double Value
+      => m_value;
 
     public JulianDate AddWeeks(int weeks)
       => this + (weeks * 7);
@@ -52,9 +39,6 @@ namespace Flux
       => this + (seconds / 86400.0);
     public JulianDate AddMilliseconds(int milliseconds)
       => this + (milliseconds / 1000.0 / 86400);
-
-    public double Value
-      => m_value;
 
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
@@ -169,7 +153,7 @@ namespace Flux
       => m_value.GetHashCode();
     public override string? ToString()
     {
-      return $"<{GetType().Name}: {m_value} " + (IsGregorianCalendar(m_value) ? $"({ToJulianDayNumber().ToDateString(ConversionCalendar.GregorianCalendar)}, {ToTimeString()})" : $"({ToJulianDayNumber().ToDateString(ConversionCalendar.JulianCalendar)}, {ToTimeString()})*");
+      return $"<{GetType().Name}: {m_value} " + $"({ToJulianDayNumber().ToDateString(ConversionCalendar.GregorianCalendar)}, {ToTimeString()})";
     }
     #endregion Object overrides
   }
