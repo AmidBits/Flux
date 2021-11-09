@@ -1,8 +1,12 @@
 ﻿namespace Flux.Quantity
 {
-  public interface IValuedUnit
+  public interface IValuedUnit<T>
   {
     /// <summary>The unit Value.</summary>
-    double Value { get; }
+    T Value { get; }
   }
+
+  public interface IValuedUnit
+    : IValuedUnit<double>
+  { }
 }

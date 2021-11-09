@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDayNumber
-    : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit
+    : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit<int>
   {
     public static readonly JulianDayNumber Zero;
 
@@ -31,7 +31,7 @@ namespace Flux
     public int DayOfWeekISO8601
       => GetDayOfWeekISO8601(m_value);
 
-    public double Value
+    public int Value
       => m_value;
 
     public JulianDayNumber AddWeeks(int weeks)
