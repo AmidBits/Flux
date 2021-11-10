@@ -36,7 +36,7 @@ namespace Flux
       return list;
 
       string GetField(int left, int right)
-        => source[left] != '"' ? source.Substring(left, right - left) : source.Substring(left + 1, right - left - 2).Replace("\"\"", "\"", System.StringComparison.OrdinalIgnoreCase);
+        => source[left] != '"' ? source[left..right] : source.Substring(left + 1, right - left - 2).Replace("\"\"", "\"", System.StringComparison.OrdinalIgnoreCase);
     }
   }
 }

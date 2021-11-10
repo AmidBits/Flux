@@ -4,7 +4,7 @@ namespace Flux
 	{
 		/// <summary>Indicates whether the source is wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
 		public static bool IsWrapped(this System.Text.StringBuilder source, char left, char right)
-			=> !(source is null) && source.Length >= 2 && source[0] == left && source[source.Length - 1] == right;
+			=> !(source is null) && source.Length >= 2 && source[0] == left && source[^1] == right;
 
 		/// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. SQL brackets, or parenthesis.</summary>
 		public static System.Text.StringBuilder Unwrap(this System.Text.StringBuilder source, char left, char right)

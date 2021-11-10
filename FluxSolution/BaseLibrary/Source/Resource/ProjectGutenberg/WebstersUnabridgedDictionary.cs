@@ -49,7 +49,7 @@ namespace Flux.Resources.ProjectGutenberg
           }
 
           word.Append(match.Value.Trim());
-          if (line.Length > match.Value.Length) definition.Append(line.Substring(match.Value.Length));
+          if (line.Length > match.Value.Length) definition.Append(line[match.Value.Length..]);
         }
         else if (word.Length > 0)
         {

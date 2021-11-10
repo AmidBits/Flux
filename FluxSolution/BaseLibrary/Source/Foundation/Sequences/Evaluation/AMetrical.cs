@@ -36,8 +36,8 @@ namespace Flux.Metrical
 
       if (atStart > 0) // If equality exist in the beginning, adjust.
       {
-        sourceSlice = sourceSlice.Slice(atStart);
-        targetSlice = targetSlice.Slice(atStart);
+        sourceSlice = sourceSlice[atStart..];
+        targetSlice = targetSlice[atStart..];
       }
 
       atEnd = sourceSlice.CountEqualAtEnd(targetSlice, out var _);

@@ -84,7 +84,7 @@ namespace Flux.Text
 
 			do
 			{
-				bytesRead = m_stream.Read(newSegment.Buffer.Memory.Span.Slice(m_lastSegmentEndIndex));
+				bytesRead = m_stream.Read(newSegment.Buffer.Memory.Span[m_lastSegmentEndIndex..]);
 
 				m_lastSegmentEndIndex += bytesRead;
 			}

@@ -12,7 +12,7 @@ namespace Flux
 
       if (uri.IsFile)
       {
-        return new System.IO.FileStream(uri.LocalPath.StartsWith(@"/", System.StringComparison.Ordinal) ? uri.LocalPath.Substring(1) : uri.LocalPath, System.IO.FileMode.Open);
+        return new System.IO.FileStream(uri.LocalPath.StartsWith(@"/", System.StringComparison.Ordinal) ? uri.LocalPath[1..] : uri.LocalPath, System.IO.FileMode.Open);
       }
       else
       {

@@ -168,7 +168,7 @@ namespace Flux
 
       if (polygon1.Count > polygon2.Count)
       {
-        var midpoint = CartesianCoordinate3.Nlerp(polygon1[polygon1.Count - 1], polygon2[0], 0.5);
+        var midpoint = CartesianCoordinate3.Nlerp(polygon1[^1], polygon2[0], 0.5);
 
         polygon1.Add(midpoint);
         polygon2.Insert(0, midpoint);

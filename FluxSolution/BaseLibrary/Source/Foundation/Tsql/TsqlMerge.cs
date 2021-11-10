@@ -19,7 +19,7 @@ namespace Flux.Data
     public static string On(string[] symmetricColumnNames, params string[] targetColumnDefinitions)
       => On(symmetricColumnNames, symmetricColumnNames, targetColumnDefinitions);
     public static string On(string[] sourceColumnNames, string[] targetColumnNames, string[] targetColumnDefinitions)
-      => $"ON ({string.Join(" AND ", targetColumnNames.Select((name, index) => OnCompareEquality(sourceColumnNames[index], targetColumnNames[index], targetColumnDefinitions[index].Substring(0, targetColumnDefinitions[index].LastIndexOf(']')).Substring(targetColumnDefinitions[index].LastIndexOf('[') + 1), !targetColumnDefinitions[index].EndsWith("NOT NULL", System.StringComparison.OrdinalIgnoreCase))))}) ";
+      => $"ON ({string.Join(" AND ", targetColumnNames.Select((name, index) => OnCompareEquality(sourceColumnNames[index], targetColumnNames[index], targetColumnDefinitions[index].Substring(0, targetColumnDefinitions[index].LastIndexOf(']'))[(targetColumnDefinitions[index].LastIndexOf('[') + 1)..], !targetColumnDefinitions[index].EndsWith("NOT NULL", System.StringComparison.OrdinalIgnoreCase))))}) ";
     public static string WhenNotMatchedBySource()
       => $"WHEN NOT MATCHED BY SOURCE THEN UPDATE SET T.[EffectiveEndDate] = @PriorProcessDate ";
     public static string WhenNotMatchedByTarget(string[] sourceColumnNames, string[] targetColumnNames)

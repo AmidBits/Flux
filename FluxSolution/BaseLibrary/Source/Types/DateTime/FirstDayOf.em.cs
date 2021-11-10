@@ -10,21 +10,14 @@ namespace Flux
 
     /// <summary>Determines the first day of the specified quarter in the source.</summary>
     public static System.DateTime FirstDayOfQuarter(this System.DateTime source, int quarter)
-    {
-      switch (quarter)
+      => quarter switch
       {
-        case 1:
-          return new(source.Year, 1, 1);
-        case 2:
-          return new(source.Year, 4, 1);
-        case 3:
-          return new(source.Year, 7, 1);
-        case 4:
-          return new(source.Year, 10, 1);
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(quarter));
-      }
-    }
+        1 => new(source.Year, 1, 1),
+        2 => new(source.Year, 4, 1),
+        3 => new(source.Year, 7, 1),
+        4 => new(source.Year, 10, 1),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
+      };
     /// <summary>Determines the first day of the current calendar quarter in the source.</summary>
     public static System.DateTime FirstDayOfQuarter(this System.DateTime source)
       => FirstDayOfQuarter(source, source.QuarterOfYear());

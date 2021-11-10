@@ -111,11 +111,11 @@ namespace Flux.Colors
       {
         switch (colorString)
         {
-          case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
+          case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9[1..], 16) is var ci9:
             return new Argb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
-          case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
+          case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7[1..], 16) is var ci7:
             return new Argb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
-          case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
+          case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5[1..], 16) is var c:
             var a5 = (byte)(c >> 12);
             var r5 = (byte)((c >> 8) & 0xf);
             var g5 = (byte)((c >> 4) & 0xf);
@@ -125,7 +125,7 @@ namespace Flux.Colors
             g5 = (byte)(g5 << 4 | g5);
             b5 = (byte)(b5 << 4 | b5);
             return new Argb(r5, g5, b5, a5);
-          case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
+          case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4[1..], 16) is var ci4:
             var r4 = (byte)((ci4 >> 8) & 0xf);
             var g4 = (byte)((ci4 >> 4) & 0xf);
             var b4 = (byte)(ci4 & 0xf);
@@ -140,7 +140,7 @@ namespace Flux.Colors
 
       if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
       {
-        return (colorString.Substring(3).Split(',')) switch
+        return (colorString[3..].Split(',')) switch
         {
           var s4 when s4.Length == 4 => new Argb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
           var s3 when s3.Length == 3 => new Argb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),

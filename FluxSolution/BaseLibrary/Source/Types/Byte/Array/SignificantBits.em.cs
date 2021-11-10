@@ -29,7 +29,7 @@ namespace Flux
 		{
 			if ((source ?? throw new System.ArgumentNullException(nameof(source))).Length == 0) throw new System.ArgumentOutOfRangeException(nameof(source));
 
-			bit = (source[source.Length - 1] & 0x01);
+			bit = (source[^1] & 0x01);
 			var bits = bit != 0 ? 0xFF : 0x00;
 
 			for (var index = source.Length - 1; index >= 0; index--)

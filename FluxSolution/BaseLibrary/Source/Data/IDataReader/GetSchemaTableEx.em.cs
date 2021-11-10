@@ -69,7 +69,7 @@ namespace Flux
 								dataTypeArgument = $"({row[@"NumericScale"]})";
 								break;
 							case string s when s.LastIndexOf('.') is var index && index > -1:
-								dataTypeName = dataTypeName.Substring(index + 1);
+								dataTypeName = dataTypeName[(index + 1)..];
 								break;
 						}
 

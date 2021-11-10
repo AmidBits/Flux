@@ -12,7 +12,7 @@ namespace Flux.Formatting
 
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrEmpty(format) && format.StartsWith(FormatIdentifier, System.StringComparison.OrdinalIgnoreCase) && System.Numerics.BigInteger.TryParse(format.Substring(5), out var radix))
+      if (!string.IsNullOrEmpty(format) && format.StartsWith(FormatIdentifier, System.StringComparison.OrdinalIgnoreCase) && System.Numerics.BigInteger.TryParse(format[5..], out var radix))
       {
         if (System.Numerics.BigInteger.TryParse(arg?.ToString() ?? string.Empty, out var raw))
         {

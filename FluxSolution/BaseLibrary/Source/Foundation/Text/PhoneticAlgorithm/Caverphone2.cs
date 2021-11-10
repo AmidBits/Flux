@@ -13,7 +13,7 @@ namespace Flux.Text.PhoneticAlgorithm
 			var code = string.Concat(word.ToArray().Select(c => char.ToLowerInvariant(c)).Where(c => c >= 'a' && c <= 'z')); // 2 & 3
 
 			//code = System.Text.RegularExpressions.Regex.Replace(code, @"e$", string.Empty); // 4
-			if (code.EndsWith('e')) code = code.Substring(0, code.Length - 1);
+			if (code.EndsWith('e')) code = code[0..^1];
 
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"^(cou|rou|tou|enou|trou)gh", @"${1}2f"); // 5.[1/2/3/4/5]
 			code = System.Text.RegularExpressions.Regex.Replace(code, @"^gn", @"2n"); // 5.6

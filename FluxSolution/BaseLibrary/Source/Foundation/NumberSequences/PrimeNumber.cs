@@ -357,7 +357,7 @@ namespace Flux.Numerics
           return false;
         }
 
-        text = text.Substring(1);
+        text = text[1..];
       }
 
       return true;

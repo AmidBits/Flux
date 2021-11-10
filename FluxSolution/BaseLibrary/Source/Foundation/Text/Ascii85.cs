@@ -21,7 +21,7 @@ namespace Flux.Text
       foreach (var character in characters)
       {
         if (character == 'z' && count == 0) stream.Write(EncodeValue(value, 5), 0, 4);
-        else if (character < Characters[0] || character > Characters[Characters.Length - 1]) throw new System.FormatException($"Invalid character '{character}' in Ascii85 block.");
+        else if (character < Characters[0] || character > Characters[^1]) throw new System.FormatException($"Invalid character '{character}' in Ascii85 block.");
         else
         {
           try { checked { value += (uint)(m_powersOf85[count] * (character - Characters.First())); } }

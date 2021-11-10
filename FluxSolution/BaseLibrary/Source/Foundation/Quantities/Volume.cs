@@ -3,39 +3,23 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static string GetUnitSymbol(this Quantity.VolumeUnit unit)
-    {
-      switch (unit)
+      => unit switch
       {
-        case Quantity.VolumeUnit.Millilitre:
-          return @" ml";
-        case Quantity.VolumeUnit.Centilitre:
-          return @" cl";
-        case Quantity.VolumeUnit.Decilitre:
-          return @" dl";
-        case Quantity.VolumeUnit.Litre:
-          return @" l";
-        case Quantity.VolumeUnit.ImperialGallon:
-          return @" gal (imp)";
-        case Quantity.VolumeUnit.ImperialQuart:
-          return @" qt (imp)";
-        case Quantity.VolumeUnit.USGallon:
-          return @" gal (US)";
-        case Quantity.VolumeUnit.USQuart:
-          return @" qt (US)";
-        case Quantity.VolumeUnit.CubicFeet:
-          return " ft\u00B2";
-        case Quantity.VolumeUnit.CubicYard:
-          return " yd\u00B2";
-        case Quantity.VolumeUnit.CubicMeter:
-          return " m\u00B2";
-        case Quantity.VolumeUnit.CubicMile:
-          return " mi\u00B2";
-        case Quantity.VolumeUnit.CubicKilometer:
-          return " km\u00B2";
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(unit));
-      }
-    }
+        Quantity.VolumeUnit.Millilitre => @" ml",
+        Quantity.VolumeUnit.Centilitre => @" cl",
+        Quantity.VolumeUnit.Decilitre => @" dl",
+        Quantity.VolumeUnit.Litre => @" l",
+        Quantity.VolumeUnit.ImperialGallon => @" gal (imp)",
+        Quantity.VolumeUnit.ImperialQuart => @" qt (imp)",
+        Quantity.VolumeUnit.USGallon => @" gal (US)",
+        Quantity.VolumeUnit.USQuart => @" qt (US)",
+        Quantity.VolumeUnit.CubicFeet => " ft\u00B2",
+        Quantity.VolumeUnit.CubicYard => " yd\u00B2",
+        Quantity.VolumeUnit.CubicMeter => " m\u00B2",
+        Quantity.VolumeUnit.CubicMile => " mi\u00B2",
+        Quantity.VolumeUnit.CubicKilometer => " km\u00B2",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
   }
 
   namespace Quantity
@@ -69,52 +53,23 @@ namespace Flux
       private readonly double m_value;
 
       public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter)
-      {
-        switch (unit)
+        => m_value = unit switch
         {
-          case VolumeUnit.Millilitre:
-            m_value = value / 1000000;
-            break;
-          case VolumeUnit.Centilitre:
-            m_value = value / 100000;
-            break;
-          case VolumeUnit.Decilitre:
-            m_value = value / 10000;
-            break;
-          case VolumeUnit.Litre:
-            m_value = value / 1000;
-            break;
-          case VolumeUnit.ImperialGallon:
-            m_value = value * 0.004546;
-            break;
-          case VolumeUnit.ImperialQuart:
-            m_value = value / 879.87699319635;
-            break;
-          case VolumeUnit.USGallon:
-            m_value = value * 0.003785;
-            break;
-          case VolumeUnit.USQuart:
-            m_value = value / 1056.68821; // Approximate.
-            break;
-          case VolumeUnit.CubicFeet:
-            m_value = value / (1953125000.0 / 55306341.0);
-            break;
-          case VolumeUnit.CubicYard:
-            m_value = value / (1953125000.0 / 1493271207.0);
-            break;
-          case VolumeUnit.CubicMeter:
-            m_value = value;
-            break;
-          case VolumeUnit.CubicMile:
-            m_value = value * (8140980127813632.0 / 1953125.0); // 
-            break;
-          case VolumeUnit.CubicKilometer:
-            m_value = value * 1e9;
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          VolumeUnit.Millilitre => value / 1000000,
+          VolumeUnit.Centilitre => value / 100000,
+          VolumeUnit.Decilitre => value / 10000,
+          VolumeUnit.Litre => value / 1000,
+          VolumeUnit.ImperialGallon => value * 0.004546,
+          VolumeUnit.ImperialQuart => value / 879.87699319635,
+          VolumeUnit.USGallon => value * 0.003785,
+          VolumeUnit.USQuart => value / 1056.68821,// Approximate.
+          VolumeUnit.CubicFeet => value / (1953125000.0 / 55306341.0),
+          VolumeUnit.CubicYard => value / (1953125000.0 / 1493271207.0),
+          VolumeUnit.CubicMeter => value,
+          VolumeUnit.CubicMile => value * (8140980127813632.0 / 1953125.0),// 
+          VolumeUnit.CubicKilometer => value * 1e9,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double Value
         => m_value;
@@ -122,39 +77,23 @@ namespace Flux
       public string ToUnitString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null)
         => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
       public double ToUnitValue(VolumeUnit unit = VolumeUnit.CubicMeter)
-      {
-        switch (unit)
+        => unit switch
         {
-          case VolumeUnit.Millilitre:
-            return m_value * 1000000;
-          case VolumeUnit.Centilitre:
-            return m_value * 100000;
-          case VolumeUnit.Decilitre:
-            return m_value * 10000;
-          case VolumeUnit.Litre:
-            return m_value * 1000;
-          case VolumeUnit.ImperialGallon:
-            return m_value / 0.004546;
-          case VolumeUnit.ImperialQuart:
-            return m_value * 879.87699319635;
-          case VolumeUnit.USGallon:
-            return m_value / 0.003785;
-          case VolumeUnit.USQuart:
-            return m_value * 1056.68821; // Approximate.
-          case VolumeUnit.CubicFeet:
-            return m_value * (1953125000.0 / 55306341.0);
-          case VolumeUnit.CubicYard:
-            return m_value * (1953125000.0 / 1493271207.0);
-          case VolumeUnit.CubicMeter:
-            return m_value;
-          case VolumeUnit.CubicMile:
-            return m_value / (8140980127813632.0 / 1953125.0);
-          case VolumeUnit.CubicKilometer:
-            return m_value / 1e9;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(unit));
-        }
-      }
+          VolumeUnit.Millilitre => m_value * 1000000,
+          VolumeUnit.Centilitre => m_value * 100000,
+          VolumeUnit.Decilitre => m_value * 10000,
+          VolumeUnit.Litre => m_value * 1000,
+          VolumeUnit.ImperialGallon => m_value / 0.004546,
+          VolumeUnit.ImperialQuart => m_value * 879.87699319635,
+          VolumeUnit.USGallon => m_value / 0.003785,
+          VolumeUnit.USQuart => m_value * 1056.68821,// Approximate.
+          VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
+          VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
+          VolumeUnit.CubicMeter => m_value,
+          VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
+          VolumeUnit.CubicKilometer => m_value / 1e9,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       #region Static methods
       /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>

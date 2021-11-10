@@ -64,9 +64,9 @@ namespace Flux.Services.Nmea
       };
     }
 
-    public static NmeaDataStatus ParseDataStatus(string? data_status)
+    public static NmeaDataStatus ParseDataStatus(System.ReadOnlySpan<char> data_status)
     {
-      if (string.IsNullOrEmpty(data_status) || data_status.Length != 1)
+      if (data_status.Length != 1)
         return NmeaDataStatus.Unknown;
 
       return data_status[0] switch
@@ -76,46 +76,46 @@ namespace Flux.Services.Nmea
         _ => NmeaDataStatus.Unknown,
       };
     }
-    public static double ParseDecimalLatitude(string latitude_DDMM_MMMM, string latitude_Indicator)
+    public static double ParseDecimalLatitude(System.ReadOnlySpan<char> latitude_DDMM_MMMM, System.ReadOnlySpan<char> latitude_Indicator)
     {
-      var degrees = int.Parse(latitude_DDMM_MMMM.Substring(0, 2)); // First two (2) digits are degrees.
-      var minutes = double.Parse(latitude_DDMM_MMMM.Substring(2)); // Remaining digits (including decimal point) is minutes.
+      var degrees = int.Parse(latitude_DDMM_MMMM.Slice(0, 2)); // First two (2) digits are degrees.
+      var minutes = double.Parse(latitude_DDMM_MMMM[2..]); // Remaining digits (including decimal point) is minutes.
 
       var decimalValue = degrees + minutes / 60;
 
       return latitude_Indicator == @"S" ? -decimalValue : decimalValue; // If "S" (south) then negative, otherwise assume "N" (north).
     }
-    public static double ParseDecimalLongitude(string longitude_DDDMM_MMMM, string longitude_Indicator)
+    public static double ParseDecimalLongitude(System.ReadOnlySpan<char> longitude_DDDMM_MMMM, System.ReadOnlySpan<char> longitude_Indicator)
     {
-      var degrees = int.Parse(longitude_DDDMM_MMMM.Substring(0, 3)); // First three (3) digits are degrees.
-      var minutes = double.Parse(longitude_DDDMM_MMMM.Substring(3)); // Remaining digits (including decimal point) is minutes.
+      var degrees = int.Parse(longitude_DDDMM_MMMM.Slice(0, 3)); // First three (3) digits are degrees.
+      var minutes = double.Parse(longitude_DDDMM_MMMM[3..]); // Remaining digits (including decimal point) is minutes.
 
       var decimalValue = degrees + minutes / 60; // Compute the decimal representation.
 
       return longitude_Indicator == @"W" ? -decimalValue : decimalValue; // If "W" (west) then negative, otherwise assume "E" (east).
     }
-    public static System.DateTime ParseUtcDate(string? utc_DDMMYY)
+    public static System.DateTime ParseUtcDate(System.ReadOnlySpan<char> utc_DDMMYY)
     {
-      if (string.IsNullOrEmpty(utc_DDMMYY) || utc_DDMMYY.Length < 6)
+      if (utc_DDMMYY.Length < 6)
         return default;
 
-      var day = int.Parse(utc_DDMMYY.Substring(0, 2)); // First two digits are day.
-      var month = int.Parse(utc_DDMMYY.Substring(2, 2)); // Next two digits are month.
-      var year = int.Parse(utc_DDMMYY.Substring(4, 2)); // Next two digits are year.
+      var day = int.Parse(utc_DDMMYY.Slice(0, 2)); // First two digits are day.
+      var month = int.Parse(utc_DDMMYY.Slice(2, 2)); // Next two digits are month.
+      var year = int.Parse(utc_DDMMYY.Slice(4, 2)); // Next two digits are year.
 
       year += year > 50 ? 1900 : 2000; // Assume typical conversion to four digits.
 
       return new System.DateTime(year, month, day, 0, 0, 0, System.DateTimeKind.Utc); // Create as UTC date.
     }
-    public static System.DateTime ParseUtcTime(string? utc_HHMMSS_SSS)
+    public static System.DateTime ParseUtcTime(System.ReadOnlySpan<char> utc_HHMMSS_SSS)
     {
-      if (string.IsNullOrEmpty(utc_HHMMSS_SSS) || utc_HHMMSS_SSS.Length < 6)
+      if (utc_HHMMSS_SSS.Length < 6)
         return default;
 
-      var hours = int.Parse(utc_HHMMSS_SSS.Substring(0, 2)); // First two digits are hours.
-      var minutes = int.Parse(utc_HHMMSS_SSS.Substring(2, 2)); // Next two digits are minutes.
-      var seconds = int.Parse(utc_HHMMSS_SSS.Substring(4, 2)); // Next two digits are seconds.
-      var milliseconds = utc_HHMMSS_SSS.Length >= 8 ? int.Parse(utc_HHMMSS_SSS.Substring(7)) : 0; // Skipping the period, any remaining digits are milliseconds.
+      var hours = int.Parse(utc_HHMMSS_SSS.Slice(0, 2)); // First two digits are hours.
+      var minutes = int.Parse(utc_HHMMSS_SSS.Slice(2, 2)); // Next two digits are minutes.
+      var seconds = int.Parse(utc_HHMMSS_SSS.Slice(4, 2)); // Next two digits are seconds.
+      var milliseconds = utc_HHMMSS_SSS.Length >= 8 ? int.Parse(utc_HHMMSS_SSS[7..]) : 0; // Skipping the period, any remaining digits are milliseconds.
 
       return new System.DateTime(1, 1, 1, hours, minutes, seconds, milliseconds, System.DateTimeKind.Utc);
     }

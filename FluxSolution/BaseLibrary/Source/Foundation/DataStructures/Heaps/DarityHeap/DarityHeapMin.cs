@@ -28,7 +28,7 @@ namespace Flux.DataStructures
     {
       var min = m_data[0];
 
-      m_data[0] = m_data[m_data.Count - 1];
+      m_data[0] = m_data[^1];
       m_data.RemoveAt(m_data.Count - 1);
 
       HeapifyDown(0);

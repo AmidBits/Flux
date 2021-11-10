@@ -64,7 +64,7 @@ namespace Flux.Text
         {
           bi += item.Value;
 
-          number = number.Substring(item.Key.Length);
+          number = number[item.Key.Length..];
         }
       }
 

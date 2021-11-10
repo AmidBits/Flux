@@ -55,7 +55,7 @@
 
       while (textLength - skip >= wordLength)
       {
-        if (Same(text.Slice(skip), word, wordLength))
+        if (Same(text[skip..], word, wordLength))
           return skip;
 
         skip += skippable[text[skip + wordLength - 1]];

@@ -37,7 +37,7 @@ namespace Flux
       {
         var s = System.Environment.OSVersion.ToString();
 
-        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
           return version;
 
         throw new System.NotSupportedException();
@@ -62,7 +62,7 @@ namespace Flux
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
           return version;
 
         throw new System.NotSupportedException();
@@ -102,7 +102,7 @@ namespace Flux
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
 
-        if (System.Version.TryParse(s.Substring(s.Trim().LastIndexOf(' ')), out var version))
+        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
           return version;
 
         throw new System.NotSupportedException();

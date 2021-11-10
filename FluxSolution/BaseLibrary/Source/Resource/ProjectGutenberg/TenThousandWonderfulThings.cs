@@ -39,7 +39,7 @@ namespace Flux.Resources.ProjectGutenberg
           var text = entry.ToString().Trim();
           var index = text.IndexOf("\r\n\r\n", System.StringComparison.Ordinal);
 
-          yield return new string[] { text.Substring(0, index), text.Substring(index).Trim() };
+          yield return new string[] { text.Substring(0, index), text[index..].Trim() };
 
           entry.Clear();
         }

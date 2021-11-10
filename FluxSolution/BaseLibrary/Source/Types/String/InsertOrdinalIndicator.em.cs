@@ -14,7 +14,7 @@ namespace Flux
 
       return System.Text.RegularExpressions.Regex.Replace(source, @"(?<=^|[^\d])\d+(?=[^\d]|$)", (match) =>
       {
-        if (predicate((source.Substring(0, match.Index), match.Value, source.Substring(match.Index + match.Length), index++)))
+        if (predicate((source.Substring(0, match.Index), match.Value, source[(match.Index + match.Length)..], index++)))
         {
           var isTenth1 = match.Length > 1 && match.Value[match.Length - 2] == '1';
 

@@ -14,7 +14,7 @@ namespace Flux.Numerics
 
         var previous = current;
         current = new System.Numerics.BigInteger[previous.Length + 1];
-        current[0] = previous[previous.Length - 1];
+        current[0] = previous[^1];
         for (var i = 1; i <= previous.Length; i++)
           current[i] = previous[i - 1] + current[i - 1];
       }
