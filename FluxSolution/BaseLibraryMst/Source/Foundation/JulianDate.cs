@@ -19,7 +19,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(793.9999999999259, Flux.JulianDate.GetTimeSinceNoon(m.Value));
+      Assert.AreEqual(794.0000000000000000000000160m, Flux.JulianDate.GetTimeSinceNoon(m.Value));
     }
 
     [TestMethod]
@@ -27,7 +27,7 @@ namespace Foundation
     {
       var fgd = new Flux.MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
 
-      Assert.AreEqual(2299160.5, fgd.Value);
+      Assert.AreEqual(2299160.5m, fgd.Value);
     }
     [TestMethod]
     public void FirstJulianCalendarDate()
@@ -41,7 +41,7 @@ namespace Foundation
     {
       var ljd = new Flux.MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(2299160.4999999884, ljd.Value);
+      Assert.AreEqual(2299160.4999999884259259259259m, ljd.Value);
     }
 
     [TestMethod]
@@ -56,28 +56,28 @@ namespace Foundation
     {
       var jd = new Flux.JulianDate(0).AddHours(1);
 
-      Assert.AreEqual(0.041666666666666664, jd.Value);
+      Assert.AreEqual(0.0416666666666666666666666667m, jd.Value);
     }
     [TestMethod]
     public void AddMillieconds()
     {
       var jd = new Flux.JulianDate(0).AddMilliseconds(1);
 
-      Assert.AreEqual(1.1574074074074074E-08, jd.Value);
+      Assert.AreEqual(0.0000000115740740740740740741m, jd.Value);
     }
     [TestMethod]
     public void AddMinutes()
     {
       var jd = new Flux.JulianDate(0).AddMinutes(1);
 
-      Assert.AreEqual(0.0006944444444444445, jd.Value);
+      Assert.AreEqual(0.0006944444444444444444444444m, jd.Value);
     }
     [TestMethod]
     public void AddSeconds()
     {
       var jd = new Flux.JulianDate(0).AddSeconds(1);
 
-      Assert.AreEqual(1.1574074074074073E-05, jd.Value);
+      Assert.AreEqual(0.0000115740740740740740740741m, jd.Value);
     }
     [TestMethod]
     public void AddWeeks()
