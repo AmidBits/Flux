@@ -124,21 +124,21 @@ namespace Foundation
     [TestMethod]
     public void ToMomentUtcGC()
     {
-      var actual = new Flux.JulianDate(2400000.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
+      var actual = new Flux.JulianDate(2400000.5m).ToMomentUtc(ConversionCalendar.GregorianCalendar);
       var expected = new Flux.MomentUtc(1858, 11, 17, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcProlepticGC()
     {
-      var actual = new Flux.JulianDate(1566839.5).ToMomentUtc(ConversionCalendar.GregorianCalendar);
+      var actual = new Flux.JulianDate(1566839.5m).ToMomentUtc(ConversionCalendar.GregorianCalendar);
       var expected = new Flux.MomentUtc(-423, 10, 5, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcJC()
     {
-      var actual = new Flux.JulianDate(1442454.5).ToMomentUtc(ConversionCalendar.JulianCalendar);
+      var actual = new Flux.JulianDate(1442454.5m).ToMomentUtc(ConversionCalendar.JulianCalendar);
       var expected = new Flux.MomentUtc(-763, 3, 24, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
