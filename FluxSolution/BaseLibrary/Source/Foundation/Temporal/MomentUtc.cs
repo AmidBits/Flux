@@ -2,8 +2,12 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    /// <summary>Returns the approximate number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
+    public static double GetTotalApproximateSeconds(this MomentUtc source)
+      => System.Math.CopySign(System.Math.Abs(source.m_year) * 31536000L + source.m_month * 2628000L + source.m_day * 86400L + source.m_hour * 3600L + source.m_minute * 60L + source.m_second + source.m_millisecond / 1000.0, source.m_year);
+
     public static MomentUtc ToMomentUtc(this System.DateTime source)
-      => new(source);
+      => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond);
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
@@ -22,9 +26,9 @@ namespace Flux
 
     public MomentUtc(int year, int month, int day, int hour, int minute, int second, int millisecond)
     {
-      m_year = year;
-      m_month = month >= 1 ? month : throw new System.ArgumentOutOfRangeException(nameof(month));
-      m_day = day >= 1 ? day : throw new System.ArgumentOutOfRangeException(nameof(day));
+      m_year = year >= -4712 ? year : throw new System.ArgumentOutOfRangeException(nameof(year));
+      m_month = month >= 1 && month <= 12 ? month : throw new System.ArgumentOutOfRangeException(nameof(month));
+      m_day = day >= 1 && day <= 31 ? day : throw new System.ArgumentOutOfRangeException(nameof(day));
       m_hour = hour >= 0 && hour < 24 ? hour : throw new System.ArgumentOutOfRangeException(nameof(hour));
       m_minute = minute >= 0 && minute <= 59 ? minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
       m_second = second >= 0 && second <= 59 ? second : throw new System.ArgumentOutOfRangeException(nameof(second));
@@ -35,9 +39,6 @@ namespace Flux
     { }
     public MomentUtc(int year, int month, int day)
       : this(year, month, day, 0, 0, 0, 0)
-    { }
-    public MomentUtc(System.DateTime dateTime)
-      : this(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond)
     { }
 
     public int Year
@@ -55,24 +56,24 @@ namespace Flux
     public int Millisecond
       => m_millisecond;
 
-    ///// <summary>Returns a number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
-    //public double TotalTime
-    //  => System.Math.CopySign(System.Math.Abs(m_year) * 31536000L + m_month * 2628000L + m_day * 86400L + m_hour * 3600L + m_minute * 60L + m_second + m_millisecond / 1000.0, m_year);
-
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_year, m_month, m_day) ? ConversionCalendar.GregorianCalendar : IsJulianCalendar(m_year, m_month, m_day) ? ConversionCalendar.JulianCalendar : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
 
     /// <summary>Creates a new <see cref="System.DateTime"/> from this instance.</summary>
     public System.DateTime ToDateTime()
       => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
-    /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
+
+    /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
     public JulianDate ToJulianDate(ConversionCalendar calendar)
       => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+    /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the default conversion calendar.</summary>
     public JulianDate ToJulianDate()
       => ToJulianDate(GetConversionCalendar());
-    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance.</summary>
+
+    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance. Uses the specified conversion calendar.</summary>
     public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
       => new(m_year, m_month, m_day, calendar);
+    /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance. Uses the default conversion calendar.</summary>
     public JulianDayNumber ToJulianDayNumber()
       => ToJulianDayNumber(GetConversionCalendar());
 

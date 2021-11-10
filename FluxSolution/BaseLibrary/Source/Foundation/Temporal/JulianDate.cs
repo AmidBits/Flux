@@ -51,6 +51,7 @@ namespace Flux
 
     public JulianDayNumber ToJulianDayNumber()
       => new((int)(m_value + 0.5m));
+
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ToJulianDayNumber().GetDateParts(calendar, out var year, out var month, out var day);
@@ -58,6 +59,7 @@ namespace Flux
 
       return new(year, month, day, hour, minute, second, millisecond);
     }
+
     public string ToTimeString()
       => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200m + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 

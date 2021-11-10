@@ -73,9 +73,11 @@ namespace Flux
 
       return sb.ToString();
     }
+
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
     public JulianDate ToJulianDate()
       => new(m_value);
+
     /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
