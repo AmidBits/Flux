@@ -40,7 +40,7 @@ namespace ConsoleApp
       var jc = System.DateTime.Now.ToJulianDate(ConversionCalendar.JulianCalendar);
       var jde = new Flux.JulianDayNumber(1994, 08, 25, ConversionCalendar.GregorianCalendar);
 
-      var type = typeof(Flux.Quantity.IValuedUnit<int>);
+      var type = typeof(Flux.Quantity.IValuedUnit<>);
 
       var ints = Flux.Reflect.GetTypesImplementingInterface(type).ToArray();
     }
