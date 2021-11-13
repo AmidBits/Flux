@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Action
-    : System.IComparable<Action>, System.IEquatable<Action>, IValuedUnit
+    : System.IComparable<Action>, System.IEquatable<Action>, IValuedUnit<double>
   {
     private readonly double m_value;
 

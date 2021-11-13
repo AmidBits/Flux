@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedUnit
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedUnit<double>
   {
     public static Frequency HyperfineTransitionFrequencyOfCs133
       => new(9192631770);

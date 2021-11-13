@@ -39,6 +39,10 @@ namespace ConsoleApp
       var gcd = System.Math.Floor(gc.Value - 2299159.5m);
       var jc = System.DateTime.Now.ToJulianDate(ConversionCalendar.JulianCalendar);
       var jde = new Flux.JulianDayNumber(1994, 08, 25, ConversionCalendar.GregorianCalendar);
+
+      var type = typeof(Flux.Quantity.IValuedUnit<int>);
+
+      var ints = Flux.Reflect.GetTypesImplementingInterface(type).ToArray();
     }
 
     private static void Main(string[] args)

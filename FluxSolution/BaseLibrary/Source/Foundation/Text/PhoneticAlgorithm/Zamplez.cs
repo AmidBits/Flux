@@ -8,7 +8,7 @@ namespace Flux
     /// <summary>Run the phonetic algorithm zample.</summary>
     public static void RunPhoneticAlgorithms()
     {
-      var ipaes = Flux.Reflect.GetTypesImplementingInterface<Flux.Text.IPhoneticAlgorithmEncoder>().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder?)System.Activator.CreateInstance(t));
+      var ipaes = Flux.Reflect.GetTypesImplementingInterface(typeof(Flux.Text.IPhoneticAlgorithmEncoder)).Select(t => (Flux.Text.IPhoneticAlgorithmEncoder?)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
 
       foreach (var ipae in ipaes)

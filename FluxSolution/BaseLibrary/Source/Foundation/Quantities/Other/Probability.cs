@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
-    : System.IComparable<Probability>, System.IEquatable<Probability>, IValuedUnit
+    : System.IComparable<Probability>, System.IEquatable<Probability>, IValuedUnit<double>
   {
     public const double MaxValue = 1;
     public const double MinValue = 0;

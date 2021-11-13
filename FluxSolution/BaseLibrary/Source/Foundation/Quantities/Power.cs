@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IValuedUnit
+    : System.IComparable<Power>, System.IEquatable<Power>, IValuedUnit<double>
   {
     private readonly double m_value;
 

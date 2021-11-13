@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity
-    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValuedUnit
+    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValuedUnit<double>
   {
     private readonly double m_value;
 

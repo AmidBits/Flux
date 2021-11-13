@@ -5,8 +5,4 @@
     /// <summary>The unit Value.</summary>
     T Value { get; }
   }
-
-  public interface IValuedUnit
-    : IValuedUnit<double>
-  { }
 }

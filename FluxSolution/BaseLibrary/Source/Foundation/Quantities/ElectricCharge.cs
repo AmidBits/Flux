@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedUnit
+    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValuedUnit<double>
   {
     public static ElectricCharge ElementaryCharge
       => new(1.602176634e-19);

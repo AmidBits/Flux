@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedUnit
+    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedUnit<double>
   {
     // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
     public static Enplethy AvagadroConstant

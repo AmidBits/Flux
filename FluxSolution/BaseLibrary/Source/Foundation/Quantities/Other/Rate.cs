@@ -4,8 +4,8 @@ namespace Flux.Quantity
   /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
   public struct Rate<TNumerator, TDenominator>
     : System.IEquatable<Rate<TNumerator, TDenominator>>
-    where TNumerator : IValuedUnit
-    where TDenominator : IValuedUnit
+    where TNumerator : IValuedUnit<double>
+    where TDenominator : IValuedUnit<double>
   {
     private readonly TNumerator m_numerator;
     private readonly TDenominator m_denominator;

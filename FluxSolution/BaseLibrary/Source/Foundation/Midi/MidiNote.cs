@@ -4,7 +4,7 @@ namespace Flux.Midi
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IValuedUnit
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IValuedUnit<int>
   {
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
@@ -14,12 +14,12 @@ namespace Flux.Midi
 
     public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{SymbolSharp}/D{SymbolFlat}", @"D", $"D{SymbolSharp}/E{SymbolFlat}", @"E", @"F", $"F{SymbolSharp}/G{SymbolFlat}", @"G", $"G{SymbolSharp}/A{SymbolFlat}", @"A", $"A{SymbolSharp}/B{SymbolFlat}", @"B" };
 
-    private readonly byte m_number;
+    private readonly int m_number;
 
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
-    public double Value
+    public int Value
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
@@ -104,9 +104,9 @@ namespace Flux.Midi
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator byte(MidiNote v)
+    public static explicit operator int(MidiNote v)
       => v.m_number;
-    public static explicit operator MidiNote(byte v)
+    public static explicit operator MidiNote(int v)
       => new(v);
 
     public static bool operator <(MidiNote a, MidiNote b)

@@ -26,7 +26,7 @@ namespace Flux
     /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
     public struct Temperature
-      : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValuedUnit
+      : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValuedUnit<double>
     {
       public const double CelsiusAbsoluteZero = -273.15;
       public const double CelsiusBoilingPoint = 99.9839;

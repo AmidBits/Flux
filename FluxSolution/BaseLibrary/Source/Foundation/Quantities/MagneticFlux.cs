@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux
-    : System.IComparable<MagneticFlux>, System.IEquatable<MagneticFlux>, IValuedUnit
+    : System.IComparable<MagneticFlux>, System.IEquatable<MagneticFlux>, IValuedUnit<double>
   {
     private readonly double m_value;
 

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity
-    : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValuedUnit
+    : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValuedUnit<double>
   {
     private readonly double m_value;
 
