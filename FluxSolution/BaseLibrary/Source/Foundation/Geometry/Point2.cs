@@ -19,7 +19,10 @@ namespace Flux.Geometry
     { }
     public Point2(int[] array, int startIndex)
     {
-      if (array is null || array.Length - startIndex < 2) throw new System.ArgumentOutOfRangeException(nameof(array));
+      if (array is null) throw new System.ArgumentNullException(nameof(array));
+
+      if (array.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(array));
+      if (startIndex + 2 >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
 
       m_x = array[startIndex++];
       m_y = array[startIndex];
@@ -67,11 +70,18 @@ namespace Flux.Geometry
     public int OrthantNumber(Point2 center)
       => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2);
 
+    /// <summary>Creates a new <see cref="CartesianCoordinate2"/> from the <see cref="Point2"/>.</summary>
     public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_x, m_y);
+
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
     public Size2 ToSize2()
       => new(m_x, m_y);
+
+    /// <summary>Converts the <see cref="Point2"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
+    public long ToUniqueIndex(int gridWidth)
+      => ToUniqueIndex(m_x, m_y, gridWidth);
+
     public System.Numerics.Vector2 ToVector2()
       => new(m_x, m_y);
 
@@ -118,9 +128,9 @@ namespace Flux.Geometry
     public static Point2 FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
       => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
-    /// <summary>Convert an index to a 2D point, based on the specified grid lengths of axes.</summary>
-    public static Point2 FromUniqueIndex(long index, Size2 bounds)
-      => new((int)(index % bounds.Width), (int)(index / bounds.Width));
+    /// <summary>Convert a 'mapped' unique index to a <see cref="Point2"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
+    public static Point2 FromUniqueIndex(long index, int gridWidth)
+      => new((int)(index % gridWidth), (int)(index / gridWidth));
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
     public static LineSlope GetLineSlope(Point2 source, Point2 target)
@@ -202,11 +212,9 @@ namespace Flux.Geometry
       return new Point2(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
     }
 
-    /// <summary>Converts the 2D point to an index, based on the specified grid lengths of axes.</summary>
-    public static long ToUniqueIndex(int x, int y, Size2 bounds)
-      => x + (y * bounds.Width);
-    public static long ToUniqueIndex(Point2 point, Size2 bounds)
-      => ToUniqueIndex(point.m_x, point.m_y, bounds);
+    /// <summary>Converts the (x, y) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
+    public static long ToUniqueIndex(int x, int y, int gridWidth)
+      => x + (y * gridWidth);
     #endregion Static methods
 
     #region Overloaded operators

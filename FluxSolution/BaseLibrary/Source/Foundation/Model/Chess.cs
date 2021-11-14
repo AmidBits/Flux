@@ -50,26 +50,26 @@ namespace Flux.Model
 
     public static (string column, string row) IndexToLabel(int index)
     {
-      var p = Geometry.Point2.FromUniqueIndex(index, BoardSize);
+      var p = Geometry.Point2.FromUniqueIndex(index, BoardSize.Width);
 
       return (Files[p.X], Ranks[p.Y]);
     }
 
     public static Geometry.Point2 IndexToVector(int index)
-      => Geometry.Point2.FromUniqueIndex(index, BoardSize);
+      => Geometry.Point2.FromUniqueIndex(index, BoardSize.Width);
 
     public static int LabelToIndex(string column, string row)
     {
       var p = new Geometry.Point2(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
-      return (int)Geometry.Point2.ToUniqueIndex(p, BoardSize);
+      return (int)p.ToUniqueIndex(BoardSize.Width);
     }
 
     public static Geometry.Point2 LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Geometry.Point2 vector)
-      => (int)Geometry.Point2.ToUniqueIndex(vector, BoardSize);
+      => (int)vector.ToUniqueIndex(BoardSize.Width);
     public static (string column, string row) VectorToLabel(Geometry.Point2 vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

@@ -4,7 +4,6 @@ namespace Flux
 {
   public static partial class Convert
   {
-
     /// <summary>Complement the built-in System.IConvertible functionality.</summary>
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.convert.changetype"/>
     /// <remarks>This is the method used in the static property <see cref="m_changeTypeOfT"/>.</remarks>

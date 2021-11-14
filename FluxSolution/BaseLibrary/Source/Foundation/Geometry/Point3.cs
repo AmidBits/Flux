@@ -23,7 +23,8 @@ namespace Flux.Geometry
     {
       if (array is null) throw new System.ArgumentNullException(nameof(array));
 
-      if (array.Length - startIndex < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
+      if (array.Length < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
+      if (startIndex + 3 >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
 
       m_x = array[startIndex++];
       m_y = array[startIndex++];
@@ -67,11 +68,18 @@ namespace Flux.Geometry
     public int OrthantNumber(Point3 center)
       => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4);
 
+    /// <summary>Creates a new <see cref="CartesianCoordinate3"/> from the <see cref="Point3"/>.</summary>
     public CartesianCoordinate3 ToCartesianCoordinate3()
       => new(m_x, m_y, m_z);
+
     /// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
     public Size3 ToSize3()
       => new(m_x, m_y, m_z);
+
+    /// <summary>Converts the <see cref="Point3"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
+    public long ToUniqueIndex(int gridWidth, int gridHeight)
+      => ToUniqueIndex(m_x, m_y, m_z, gridWidth, gridHeight);
+
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
     public System.Numerics.Vector3 ToVector3()
       => new(m_x, m_y, m_z);
@@ -115,13 +123,13 @@ namespace Flux.Geometry
     public static Point3 FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
       => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
 
-    /// <summary>Convert a "mapped" index to a 3D point. This index is uniquely mapped using the specified size vector.</summary>
-    public static Point3 FromUniqueIndex(long index, in Size3 bounds)
+    /// <summary>Convert a 'mapped' unique index to a <see cref="Point3"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
+    public static Point3 FromUniqueIndex(long index, int gridWidth, int gridHeight)
     {
-      var xy = (long)bounds.Width * (long)bounds.Height;
+      var xy = gridWidth * gridHeight;
       var irxy = index % xy;
 
-      return new((int)(irxy % bounds.Width), (int)(irxy / bounds.Width), (int)(index / xy));
+      return new((int)(irxy % gridWidth), (int)(irxy / gridWidth), (int)(index / xy));
     }
 
     ///// <summary>Creates eight vectors, each of which represents the center axis for each of the octants for the vector and the specified sizes of X, Y and Z.</summary>
@@ -214,9 +222,9 @@ namespace Flux.Geometry
     public static Point3 VectorTripleProduct(Point3 p1, Point3 p2, Point3 p3)
       => CrossProduct(p1, CrossProduct(p2, p3));
 
-    /// <summary>Converts the point to a "mapped" index. This index is uniquely mapped using the specified size vector.</summary>
-    public static long ToUniqueIndex(in Point3 point, in Size3 bounds)
-      => point.m_x + (point.m_y * bounds.Width) + (point.m_z * bounds.Width * bounds.Height);
+    /// <summary>Converts the (x, y, z) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
+    public static long ToUniqueIndex(int x, int y, int z, int gridWidth, int gridHeight)
+      => x + (y * gridWidth) + (z * gridWidth * gridHeight);
     #endregion Static methods
 
     #region Overloaded operators
