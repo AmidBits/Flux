@@ -40,9 +40,12 @@ namespace ConsoleApp
       var jc = System.DateTime.Now.ToJulianDate(ConversionCalendar.JulianCalendar);
       var jde = new Flux.JulianDayNumber(1994, 08, 25, ConversionCalendar.GregorianCalendar);
 
-      var type = typeof(Flux.Quantity.IValuedUnit<>);
+      var type = typeof(Flux.Quantity.IValuedUnit<int>);//.GetGenericTypeDefinition();
 
-      var ints = Flux.Reflect.GetTypesImplementingInterface(type).ToArray();
+      var ints2 = typeof(Flux.Reflect).Assembly.GetTypes().Where(t => t.GetTypeChain().Any(tc=>(type.IsGenericTypeDefinition&&tc.IsGenericType?tc.GetGenericTypeDefinition(): tc) == type)).ToArray();
+      var ints = Flux.Reflect.GetTypesDerivedFrom(type).ToArray();
+
+      var ints3 = type.GetDerivedTypes().ToArray();
     }
 
     private static void Main(string[] args)
