@@ -13,15 +13,12 @@ namespace Flux.Wpf.IValueConverter
     }
 
     private static object UniversalConversion(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture, string caller)
-    {
-      if (value is System.Windows.Media.Color color && targetType == typeof(System.Windows.Media.SolidColorBrush))
-        return new System.Windows.Media.SolidColorBrush(color);
-
-      if (value is System.Windows.Media.SolidColorBrush && targetType == typeof(System.Windows.Media.Color))
-        return ((System.Windows.Media.SolidColorBrush)value).Color;
-
-      throw new System.NotSupportedException(string.Format("{0} from type '{1}' to type '{2}'.'.", caller, value.GetType().FullName, targetType.FullName));
-    }
+      => value switch
+      {
+        System.Windows.Media.Color color when targetType == typeof(System.Windows.Media.SolidColorBrush) => new System.Windows.Media.SolidColorBrush(color),
+        System.Windows.Media.SolidColorBrush when targetType == typeof(System.Windows.Media.Color) => ((System.Windows.Media.SolidColorBrush)value).Color,
+        _ => throw new System.NotSupportedException(string.Format("{0} from type '{1}' to type '{2}'.'.", caller, value.GetType().FullName, targetType.FullName))
+      };
   }
 
   /*

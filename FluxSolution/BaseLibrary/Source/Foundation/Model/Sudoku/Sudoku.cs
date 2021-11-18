@@ -211,7 +211,7 @@ namespace Flux.Model
         }
       }
 
-      return sb.ToString().Substring(0, sb.Length - 2);
+      return sb.ToString()[..(sb.Length - 2)];
     }
 
     public static int ToIndex(string label)

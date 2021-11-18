@@ -21,7 +21,7 @@ namespace Flux
           source[removedIndex++] = sourceValue;
       }
 
-      return source.Slice(0, removedIndex).ToArray();
+      return source[..removedIndex].ToArray();
     }
     /// <summary>Remove (in-place) the specified elements. Uses the specified comparer.</summary>
     public static System.Span<T> RemoveAll<T>(ref this System.Span<T> source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, params T[] remove)

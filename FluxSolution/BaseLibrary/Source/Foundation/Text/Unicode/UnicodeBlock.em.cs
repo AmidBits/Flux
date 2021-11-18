@@ -44,7 +44,7 @@ namespace Flux
 
       for (int row = 0, maxRows = (roundedLast - roundedFirst) / 0x10; row < maxRows; ++row)
       {
-        sb.Append(string.Format(format, roundedFirst + 0x10 * row).Substring(0, 2 + digitCount - 1) + 'x');
+        sb.Append(string.Format(format, roundedFirst + 0x10 * row)[..(2 + digitCount - 1)] + 'x');
 
         for (var column = 0; column < 0x10; ++column)
         {

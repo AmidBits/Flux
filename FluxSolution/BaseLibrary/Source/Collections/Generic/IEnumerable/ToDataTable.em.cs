@@ -46,7 +46,7 @@ namespace Flux
       var rowIndex = 0;
 
       foreach (var item in source)
-        if (arraySelector(item, rowIndex++) is var itemArray && !(itemArray is null))
+        if (arraySelector(item, rowIndex++) is var itemArray && itemArray is not null)
           dt.Rows.Add(arraySelector(item, rowIndex++));
 
       return dt;

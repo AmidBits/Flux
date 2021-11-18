@@ -45,7 +45,7 @@ namespace Flux.Hashing
     {
       if (password is null) throw new System.ArgumentNullException(nameof(password));
 
-      if (password.Length > 14) password = password.Substring(0, 14);
+      if (password.Length > 14) password = password[..14];
 
       var passwordBytes = System.Text.Encoding.ASCII.GetBytes(password?.ToUpper(System.Globalization.CultureInfo.CurrentCulture) ?? string.Empty);
 

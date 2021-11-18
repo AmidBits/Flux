@@ -590,8 +590,7 @@ namespace Flux.Midi
 
       for (var index = 0; index < mo.Length; index++)
       {
-        var moc = default(Win32.Winmm.MidiOutCapabilities);
-
+        Win32.Winmm.MidiOutCapabilities moc = new();
         ErrorHandled(Win32.Winmm.NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
 
         yield return new MidiOut(index, moc);

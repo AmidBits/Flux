@@ -60,7 +60,7 @@ namespace Flux.Data
     //  => $"{Tsql.Select(columnNames)} FROM {tableName3.DatabaseNameQuoted}.[INFORMATION_SCHEMA].[TABLES] (NOLOCK) WHERE TABLE_CATALOG = '{tableName3.DatabaseName}' AND TABLE_SCHEMA = '{tableName3.SchemaName}' AND TABLE_NAME = '{tableName3.ObjectName}'";
 
     public static string JoinColumnNames(System.Collections.Generic.IEnumerable<string> columnNames, bool quoted = true, string? alias = null)
-      => string.Join(@", ", columnNames.Any() ? columnNames.Select(cn => (!(alias is null) ? alias : string.Empty) + (quoted ? '[' + cn + ']' : cn)) : (!(alias is null) ? alias : string.Empty) + @"*");
+      => string.Join(@", ", columnNames.Any() ? columnNames.Select(cn => (alias is not null ? alias : string.Empty) + (quoted ? '[' + cn + ']' : cn)) : (alias is not null ? alias : string.Empty) + @"*");
     public static string JoinColumnNames(params string[] columnNames)
       => JoinColumnNames(columnNames, true, null);
 

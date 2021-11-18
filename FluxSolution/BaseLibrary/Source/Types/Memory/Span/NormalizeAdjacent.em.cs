@@ -22,7 +22,7 @@ namespace Flux
         }
       }
 
-      return source.Slice(0, index);
+      return source[..index];
     }
     /// <summary>Normalize (in-place) the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
     public static System.Span<T> NormalizeAdjacent<T>(this System.Span<T> source, params T[] values)

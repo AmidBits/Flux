@@ -53,6 +53,7 @@ namespace Flux
 
   namespace Directory
   {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum CombineOperator
     {
       And,
@@ -60,6 +61,7 @@ namespace Flux
       Not,
     }
 
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum CompareOperator
     {
       Equal,
@@ -67,6 +69,7 @@ namespace Flux
       LessThanOrEqual,
     }
 
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum MatchingRule
     {
       BitAnd,
@@ -75,6 +78,7 @@ namespace Flux
     }
 
     [System.Flags]
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum GroupTypeEnum
     {
       SYSTEM_GROUP = 0x00000001,
@@ -88,6 +92,7 @@ namespace Flux
       DISTRIBUTION_GROUP = 0x7FFFFFFF
     }
 
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum SamAccountTypeEnum
     {
       DOMAIN_OBJECT = 0x00000000,
@@ -243,7 +248,7 @@ namespace Flux
       public static System.Collections.Generic.IEnumerable<System.Collections.Generic.Dictionary<string, object[]>> GetAllEx(string filter, int pageSize, int sizeLimit, params string[] properties)
         => GetAll(filter, pageSize, sizeLimit, properties).Select(sr => GetProperties(sr));
 
-      public static System.DirectoryServices.SearchResult GetOne(string filter, params string[] properties)
+      public static System.DirectoryServices.SearchResult? GetOne(string filter, params string[] properties)
       {
         if (properties is null || properties.Length == 0) properties = new string[] { @"*" };
 
@@ -270,8 +275,10 @@ namespace Flux
         return (System.Collections.Generic.Dictionary<string, object[]>)m_getOneExCache[key];
       }
 
-      public static System.Collections.Generic.Dictionary<string, object[]> GetProperties(System.DirectoryServices.SearchResult searchResult)
+      public static System.Collections.Generic.Dictionary<string, object[]> GetProperties(System.DirectoryServices.SearchResult? searchResult)
       {
+        if (searchResult is null) throw new System.ArgumentNullException(nameof(searchResult));
+
         var dictionary = new System.Collections.Generic.Dictionary<string, object[]>(System.StringComparer.OrdinalIgnoreCase);
         foreach (var propertyName in searchResult.Properties.PropertyNames.Cast<string>().OrderBy(pn => pn))
           dictionary.Add(propertyName, GetPropertyValuesExpanded(searchResult, propertyName));

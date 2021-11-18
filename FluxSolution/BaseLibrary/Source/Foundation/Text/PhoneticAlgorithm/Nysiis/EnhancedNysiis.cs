@@ -76,7 +76,7 @@ namespace Flux.Text.PhoneticAlgorithm
           code = firstCharVowel + code;
 
         if (MaxCodeLength < code.Length)
-          code = code.Substring(0, MaxCodeLength);
+          code = code[..MaxCodeLength];
       }
 
       return code;

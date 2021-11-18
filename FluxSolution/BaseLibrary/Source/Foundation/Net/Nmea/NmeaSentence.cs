@@ -78,7 +78,7 @@ namespace Flux.Services.Nmea
     }
     public static double ParseDecimalLatitude(System.ReadOnlySpan<char> latitude_DDMM_MMMM, System.ReadOnlySpan<char> latitude_Indicator)
     {
-      var degrees = int.Parse(latitude_DDMM_MMMM.Slice(0, 2)); // First two (2) digits are degrees.
+      var degrees = int.Parse(latitude_DDMM_MMMM[..2]); // First two (2) digits are degrees.
       var minutes = double.Parse(latitude_DDMM_MMMM[2..]); // Remaining digits (including decimal point) is minutes.
 
       var decimalValue = degrees + minutes / 60;
@@ -87,7 +87,7 @@ namespace Flux.Services.Nmea
     }
     public static double ParseDecimalLongitude(System.ReadOnlySpan<char> longitude_DDDMM_MMMM, System.ReadOnlySpan<char> longitude_Indicator)
     {
-      var degrees = int.Parse(longitude_DDDMM_MMMM.Slice(0, 3)); // First three (3) digits are degrees.
+      var degrees = int.Parse(longitude_DDDMM_MMMM[..3]); // First three (3) digits are degrees.
       var minutes = double.Parse(longitude_DDDMM_MMMM[3..]); // Remaining digits (including decimal point) is minutes.
 
       var decimalValue = degrees + minutes / 60; // Compute the decimal representation.
@@ -99,7 +99,7 @@ namespace Flux.Services.Nmea
       if (utc_DDMMYY.Length < 6)
         return default;
 
-      var day = int.Parse(utc_DDMMYY.Slice(0, 2)); // First two digits are day.
+      var day = int.Parse(utc_DDMMYY[..2]); // First two digits are day.
       var month = int.Parse(utc_DDMMYY.Slice(2, 2)); // Next two digits are month.
       var year = int.Parse(utc_DDMMYY.Slice(4, 2)); // Next two digits are year.
 
@@ -112,7 +112,7 @@ namespace Flux.Services.Nmea
       if (utc_HHMMSS_SSS.Length < 6)
         return default;
 
-      var hours = int.Parse(utc_HHMMSS_SSS.Slice(0, 2)); // First two digits are hours.
+      var hours = int.Parse(utc_HHMMSS_SSS[..2]); // First two digits are hours.
       var minutes = int.Parse(utc_HHMMSS_SSS.Slice(2, 2)); // Next two digits are minutes.
       var seconds = int.Parse(utc_HHMMSS_SSS.Slice(4, 2)); // Next two digits are seconds.
       var milliseconds = utc_HHMMSS_SSS.Length >= 8 ? int.Parse(utc_HHMMSS_SSS[7..]) : 0; // Skipping the period, any remaining digits are milliseconds.

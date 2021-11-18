@@ -26,7 +26,7 @@ namespace Flux
       {
         var s = System.Environment.OSVersion.ToString();
 
-        return s.Substring(0, s.Trim().LastIndexOf(' '));
+        return s[..s.Trim().LastIndexOf(' ')];
       }
     }
 
@@ -51,7 +51,7 @@ namespace Flux
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-        return s.Substring(0, s.Trim().LastIndexOf(' '));
+        return s[..s.Trim().LastIndexOf(' ')];
       }
     }
 
@@ -91,7 +91,7 @@ namespace Flux
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
 
-        return s.Substring(0, s.Trim().LastIndexOf(' '));
+        return s[..s.Trim().LastIndexOf(' ')];
       }
     }
 

@@ -33,7 +33,7 @@ namespace Flux
       where T : System.IEquatable<T>
     {
       var array = source.ToNewArray(left.Length, right.Length);
-      left.CopyTo(new System.Span<T>(array).Slice(0, left.Length));
+      left.CopyTo(new System.Span<T>(array)[..left.Length]);
       right.CopyTo(new System.Span<T>(array).Slice(left.Length + source.Length, right.Length));
       return array;
     }

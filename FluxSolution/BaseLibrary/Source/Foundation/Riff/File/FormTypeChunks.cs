@@ -13,7 +13,7 @@ namespace Flux.Riff
   {
     public const string WaveID = @"WAVE";
 
-    public string FormType { get => System.Text.Encoding.ASCII.GetString(m_buffer, 8, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(m_buffer, 8); } }
+    public string FormType { get => System.Text.Encoding.ASCII.GetString(m_buffer, 8, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value)))[..4]).CopyTo(m_buffer, 8); } }
 
     public FormTypeChunk(string chunkID, string formType)
       : base(chunkID, 12)

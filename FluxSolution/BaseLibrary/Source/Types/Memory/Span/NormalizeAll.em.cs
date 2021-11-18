@@ -29,7 +29,7 @@ namespace Flux
 
       if (isPrevious) normalizedIndex--;
 
-      return source.Slice(0, normalizedIndex);
+      return source[..normalizedIndex];
     }
     /// <summary>Normalize (in-place, destructive) all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
     public static System.Span<T> NormalizeAll<T>(this System.Span<T> source, T normalizeWith, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] normalize)

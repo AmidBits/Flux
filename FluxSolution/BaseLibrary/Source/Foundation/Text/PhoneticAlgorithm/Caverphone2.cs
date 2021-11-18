@@ -75,7 +75,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
 			code += @"1111111111"; // 11
 
-			return code.Substring(0, 10); // 12
+			return code[..10]; // 12
 		}
 	}
 }

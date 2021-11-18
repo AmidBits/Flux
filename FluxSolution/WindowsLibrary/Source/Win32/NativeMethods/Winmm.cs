@@ -409,7 +409,7 @@
       var mica = new MidiInCapabilities[NativeMethods.midiInGetNumDevs()];
       for (var index = 0; index < mica.Length; index++)
       {
-        var mic = default(MidiInCapabilities);
+        MidiInCapabilities mic = new();
         NativeMethods.ErrorHandled(NativeMethods.midiInGetDevCaps(new System.IntPtr(index), out mic, (uint)System.Runtime.InteropServices.Marshal.SizeOf(mic)));
         mica[index] = mic;
       }
@@ -468,7 +468,7 @@
       var moca = new MidiOutCapabilities[NativeMethods.midiOutGetNumDevs()];
       for (var index = 0; index < moca.Length; index++)
       {
-        var moc = default(MidiOutCapabilities);
+        MidiOutCapabilities moc = new();
         NativeMethods.ErrorHandled(NativeMethods.midiOutGetDevCaps(new System.IntPtr(index), out moc, (uint)System.Runtime.InteropServices.Marshal.SizeOf(moc)));
         moca[index] = moc;
       }

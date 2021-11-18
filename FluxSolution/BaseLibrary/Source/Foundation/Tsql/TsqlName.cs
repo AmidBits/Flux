@@ -90,9 +90,9 @@ namespace Flux.Data
           { CsDatabase, DatabaseName },
           { CsTrustedConnection, @"Yes" }
         };
-        if (!(ApplicationName is null))
+        if (ApplicationName is not null)
           csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null))
+        if (WorkstationID is not null)
           csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }
@@ -110,9 +110,9 @@ namespace Flux.Data
           { CsInitialCatalog, DatabaseName },
           { CsTrustedConnection, @"Yes" }
         };
-        if (!(ApplicationName is null))
+        if (ApplicationName is not null)
           csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null))
+        if (WorkstationID is not null)
           csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }
@@ -129,9 +129,9 @@ namespace Flux.Data
           { CsInitialCatalog, DatabaseName },
           { CsIntegratedSecurity, @"True" }
         };
-        if (!(ApplicationName is null))
+        if (ApplicationName is not null)
           csb.Add(CsApplicationName, ApplicationName);
-        if (!(WorkstationID is null))
+        if (WorkstationID is not null)
           csb.Add(CsWorkstationID, WorkstationID);
         return csb.ToString();
       }

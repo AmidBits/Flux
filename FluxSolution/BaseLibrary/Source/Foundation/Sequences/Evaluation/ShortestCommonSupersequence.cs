@@ -40,9 +40,9 @@ namespace Flux.Metrical
     private System.Collections.Generic.List<T> GetDpList(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
     {
       if (si == 0) // If the end of the first string is reached, return the second string.
-        return target.Slice(0, ti).ToArray().ToList();
+        return target[..ti].ToArray().ToList();
       else if (ti == 0) // If the end of the second string is reached, return the first string.
-        return source.Slice(0, si).ToArray().ToList();
+        return source[..si].ToArray().ToList();
 
       if (EqualityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
       {

@@ -8,8 +8,8 @@ namespace Formatting
   [TestClass]
   public class Dms
   {
-    string _dms1 = @"40 11 15";
-    double _dms1tp = 40.1875;
+    readonly string _dms1 = @"40 11 15";
+    readonly double _dms1tp = 40.1875;
 
     [TestMethod]
     public void LatitudeFormatter()
@@ -43,8 +43,8 @@ namespace Formatting
   [TestClass]
   public class Radix
   {
-    System.Numerics.BigInteger _radix10 = 32;
-    string _radix16 = @"20";
+    readonly System.Numerics.BigInteger _radix10 = 32;
+    readonly string _radix16 = @"20";
 
     [TestMethod]
     public void Formatter()

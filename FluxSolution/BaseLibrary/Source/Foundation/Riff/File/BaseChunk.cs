@@ -11,7 +11,7 @@ namespace Flux.Riff
   public class BaseChunk
     : Chunk
   {
-    public override string ChunkID { get => System.Text.Encoding.ASCII.GetString(m_buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value))).Substring(0, 4)).CopyTo(m_buffer, 0); } }
+    public override string ChunkID { get => System.Text.Encoding.ASCII.GetString(m_buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value)))[..4]).CopyTo(m_buffer, 0); } }
     public override int ChunkSize { get => BitConverter.LittleEndian.ToInt32(m_buffer, 4); set { BitConverter.LittleEndian.GetBytes(value).CopyTo(m_buffer, 4); } }
 
     public BaseChunk(string chunkID, int chunkDataSize)
@@ -74,7 +74,7 @@ namespace Flux.Riff
     {
       if (stream is null) throw new System.ArgumentNullException(nameof(stream));
 
-      while (GetChunk(stream) is var chunk && !(chunk is null))
+      while (GetChunk(stream) is var chunk && chunk is not null)
         yield return chunk;
     }
   }

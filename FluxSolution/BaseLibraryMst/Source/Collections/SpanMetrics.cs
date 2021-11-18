@@ -21,7 +21,7 @@ namespace Collections.Generic
     readonly Flux.StringComparerEx m_comparisonOrdinal = Flux.StringComparerEx.Ordinal;
     readonly Flux.StringComparerEx m_comparisonOrdinalIgnoreCase = Flux.StringComparerEx.OrdinalIgnoreCase;
 
-    readonly Flux.StringComparerEx m_comparableIgnoreNonSpace = new Flux.StringComparerEx(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
+    readonly Flux.StringComparerEx m_comparableIgnoreNonSpace = new(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
 
     readonly Flux.StringComparerEx m_comparerDoNotIgnoreCase = Flux.StringComparerEx.CurrentCulture;
 
