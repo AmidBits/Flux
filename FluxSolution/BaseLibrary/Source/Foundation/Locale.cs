@@ -54,16 +54,16 @@ namespace Flux
     }
 
     /// <summary>Returns the version of the hosting framework.</summary>
-    public static System.Version FrameworkVersion
+    public static VersionEx FrameworkVersion
     {
       get
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
+        if (VersionEx.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
           return version;
 
-        throw new System.NotSupportedException();
+        return new();
       }
     }
 

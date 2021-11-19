@@ -144,10 +144,9 @@ namespace Flux.Colors
     public Hsl ToHsl()
     {
       var h = GetHue(out var min, out var max, out var _, out var _, out var _, out var chroma);
-
       var l = 0.5 * (max + min);
-
-      return new Hsl(h, l == 0 || l == 1 ? 0 : chroma / (1 - System.Math.Abs(2 * l - 1)), l);
+      var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
+      return new Hsl(h, s, l);
     }
     /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
     public Hsv ToHsv()

@@ -2,19 +2,17 @@
 
 namespace Flux
 {
-  /// <summary>Represents a general version implementation, similar to the built-in Version.</summary>
+  /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>
   public struct VersionEx
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>
   {
     public static readonly VersionEx Empty;
 
-    private static readonly char[] m_separatorsArray = new char[] { '.' };
-
     private readonly int[] m_parts;
 
     public VersionEx(int numberOfParts)
     {
-      if (numberOfParts < 1 || numberOfParts > 4) throw new System.ArgumentOutOfRangeException(nameof(numberOfParts));
+      if (numberOfParts < 1 || numberOfParts > 9) throw new System.ArgumentOutOfRangeException(nameof(numberOfParts));
 
       m_parts = new int[numberOfParts];
     }
@@ -29,15 +27,13 @@ namespace Flux
     }
 
     public int this[int index]
-      => index >= 0 && index < m_parts.Length ? m_parts[index] : throw new System.ArgumentOutOfRangeException(nameof(index));
+    {
+      get => index >= 0 && index < m_parts.Length ? m_parts[index] : throw new System.ArgumentOutOfRangeException(nameof(index));
+      set => m_parts[index] = index >= 0 && index < m_parts.Length ? value : throw new System.ArgumentOutOfRangeException(nameof(index));
+    }
 
     public int Count
       => m_parts.Length;
-
-    public int Major { get => m_parts.Length > 0 ? m_parts[0] : throw new System.NotSupportedException(); set => m_parts[0] = m_parts.Length > 0 ? value : throw new System.NotSupportedException(); }
-    public int Minor { get => m_parts.Length > 1 ? m_parts[1] : throw new System.NotSupportedException(); set => m_parts[1] = m_parts.Length > 1 ? value : throw new System.NotSupportedException(); }
-    public int Build { get => m_parts.Length > 2 ? m_parts[2] : throw new System.NotSupportedException(); set => m_parts[2] = m_parts.Length > 2 ? value : throw new System.NotSupportedException(); }
-    public int Revision { get => m_parts.Length > 3 ? m_parts[3] : throw new System.NotSupportedException(); set => m_parts[3] = m_parts.Length > 3 ? value : throw new System.NotSupportedException(); }
 
     public System.Version ToVersion()
       => Count switch
@@ -52,7 +48,14 @@ namespace Flux
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
     public static VersionEx Parse(string version)
-      => new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
+    {
+      if (version is null) throw new System.ArgumentNullException(nameof(version));
+
+      var array = System.Text.RegularExpressions.Regex.Split(version, "[^0-9]+");
+
+      return new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(array, e => !string.IsNullOrWhiteSpace(e)), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
+    }
+    //=> new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
     public static bool TryParse(string version, out VersionEx result)
     {
       try
@@ -117,7 +120,7 @@ namespace Flux
     public override int GetHashCode()
       => m_parts.CombineHashCore();
     public override string? ToString()
-      => $"{nameof(VersionEx)}: {string.Join(m_separatorsArray[0], m_parts)}";
+      => string.Join('.', m_parts);
     #endregion Object overrides
   }
 }
