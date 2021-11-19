@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static class Locale
@@ -118,11 +116,11 @@ namespace Flux
 
         var ec = new System.ComponentModel.EnumConverter(typeof(System.Environment.SpecialFolder));
 
-        foreach (var name in System.Enum.GetNames(typeof(System.Environment.SpecialFolder)).OrderBy(n => n))
+        foreach (var name in System.Linq.Enumerable.OrderBy(System.Enum.GetNames(typeof(System.Environment.SpecialFolder)), n => n))
         {
-          var ev = (System.Environment.SpecialFolder)ec.ConvertFromString(name);
+          var ev = (System.Environment.SpecialFolder?)ec.ConvertFromString(name);
 
-          var fp = System.Environment.GetFolderPath(ev);
+          var fp = System.Environment.GetFolderPath(ev ?? throw new System.NullReferenceException());
 
           if (!string.IsNullOrEmpty(fp))
             dictionary.Add(name, new System.IO.DirectoryInfo(fp));
@@ -189,7 +187,7 @@ namespace Flux
       => System.Environment.UserName;
 
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => Reflect.GetPropertyInfos(typeof(Locale)).ToDictionary(pi => pi.Name, pi => Reflect.GetValueEx(pi, typeof(Locale)));
+      => System.Linq.Enumerable.ToDictionary(Reflect.GetPropertyInfos(typeof(Locale)), pi => pi.Name, pi => Reflect.GetValueEx(pi, typeof(Locale)));
   }
 }
 

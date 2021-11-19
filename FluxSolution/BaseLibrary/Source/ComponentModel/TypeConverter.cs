@@ -8,7 +8,7 @@ namespace Flux
     /// <summary>Complement the built-in TypeConverter system.</summary>
     /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter"/>
     /// <remarks>This is the method used in the static property <see cref="m_typeConverterOfT"/>.</remarks>
-    public static T TypeConverter<T>(object value, System.Globalization.CultureInfo? culture = null)
+    public static T? TypeConverter<T>(object value, System.Globalization.CultureInfo? culture = null)
     {
       if (value is null) throw new System.ArgumentNullException(nameof(value));
 
@@ -17,14 +17,14 @@ namespace Flux
       try
       {
         if (System.ComponentModel.TypeDescriptor.GetConverter(value) is var valueConverter && valueConverter != null && valueConverter.CanConvertTo(typeof(T)))
-          return (T)valueConverter.ConvertTo(null, culture, value, typeof(T));
+          return (T?)valueConverter.ConvertTo(null, culture, value, typeof(T));
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
 
       try
       {
         if (System.ComponentModel.TypeDescriptor.GetConverter(typeof(T)) is var typeConverter && typeConverter != null && typeConverter.CanConvertFrom(value.GetType()))
-          return (T)typeConverter.ConvertFrom(null, culture, value);
+          return (T?)typeConverter.ConvertFrom(null, culture, value);
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
 
@@ -33,7 +33,7 @@ namespace Flux
       throw new System.NotSupportedException(@"No type converter found.");
     }
     /// <summary>Complement the built-in TypeConverter system using the Try paradigm.</summary>
-    public static bool TryTypeConverter<T>(object value, out T result, System.Globalization.CultureInfo? culture = null)
+    public static bool TryTypeConverter<T>(object value, out T? result, System.Globalization.CultureInfo? culture = null)
     {
       try
       {

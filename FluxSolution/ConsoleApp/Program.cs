@@ -42,7 +42,7 @@ namespace ConsoleApp
 
       var type = typeof(Flux.Quantity.IValuedUnit<int>);//.GetGenericTypeDefinition();
 
-      var ints2 = typeof(Flux.Reflect).Assembly.GetTypes().Where(t => t.GetTypeChain().Any(tc=>(type.IsGenericTypeDefinition&&tc.IsGenericType?tc.GetGenericTypeDefinition(): tc) == type)).ToArray();
+      var ints2 = typeof(Flux.Reflect).Assembly.GetTypes().Where(t => t.GetTypeChain().Any(tc => (type.IsGenericTypeDefinition && tc.IsGenericType ? tc.GetGenericTypeDefinition() : tc) == type)).ToArray();
       var ints = Flux.Reflect.GetTypesDerivedFrom(type).ToArray();
 
       var ints3 = type.GetDerivedTypes().ToArray();

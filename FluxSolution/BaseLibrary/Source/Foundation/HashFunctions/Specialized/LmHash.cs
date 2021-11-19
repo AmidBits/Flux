@@ -26,7 +26,7 @@ namespace Flux.Hashing
 
       for (int index = 0; index < 8; index++) desKey[index] = System.Convert.ToByte(sb.ToString(index * 8, 8), 2);
 
-      using var des = System.Security.Cryptography.DESCryptoServiceProvider.Create();
+      using var des = System.Security.Cryptography.TripleDES.Create();
 
       des.Key = desKey;
       des.IV = new byte[8];

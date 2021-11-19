@@ -15,11 +15,16 @@ namespace Flux.Services
       System.GC.WaitForPendingFinalizers();
       System.GC.Collect();
 
-      var processorAffinity = System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity;
+      System.IntPtr processorAffinity = default;
+      if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
+      {
+        processorAffinity = System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity;
+        System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = new System.IntPtr(processorAffinity.ToInt64() & 0x7FFFFFFFFFFFFFFE);
+      }
+
       var processPriorityClass = System.Diagnostics.Process.GetCurrentProcess().PriorityClass;
       var threadPriority = System.Threading.Thread.CurrentThread.Priority;
 
-      System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = new System.IntPtr(processorAffinity.ToInt64() & 0x7FFFFFFFFFFFFFFE);
       System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.High; // Prevent "Normal" processes from interrupting.
       System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest; // Prevent "Normal" threads from interrupting.
 
@@ -34,7 +39,9 @@ namespace Flux.Services
 
       System.Threading.Thread.CurrentThread.Priority = threadPriority;
       System.Diagnostics.Process.GetCurrentProcess().PriorityClass = processPriorityClass;
-      System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
+
+      if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
+        System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
 
       return new MeasuredResult(name ?? System.Text.RegularExpressions.Regex.Replace(expression.Body.ToString(), @"(^Convert\(|value\([^\)]+\)\.|, Object\)$)", string.Empty), iterations, lastResult, stopWatch.Elapsed);
     }
@@ -51,11 +58,16 @@ namespace Flux.Services
       System.GC.WaitForPendingFinalizers();
       System.GC.Collect();
 
-      var processorAffinity = System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity;
+      System.IntPtr processorAffinity = default;
+      if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
+      {
+        processorAffinity = System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity;
+        System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = new System.IntPtr(processorAffinity.ToInt64() & 0x7FFFFFFFFFFFFFFE);
+      }
+
       var processPriorityClass = System.Diagnostics.Process.GetCurrentProcess().PriorityClass;
       var threadPriority = System.Threading.Thread.CurrentThread.Priority;
 
-      System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = new System.IntPtr(processorAffinity.ToInt64() & 0x7FFFFFFFFFFFFFFE);
       System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.High; // Prevent "Normal" processes from interrupting.
       System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest; // Prevent "Normal" threads from interrupting.
 
@@ -68,7 +80,9 @@ namespace Flux.Services
 
       System.Threading.Thread.CurrentThread.Priority = threadPriority;
       System.Diagnostics.Process.GetCurrentProcess().PriorityClass = processPriorityClass;
-      System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
+
+      if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
+        System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
 
       return new MeasuredResult(name ?? System.Text.RegularExpressions.Regex.Replace(expression.Body.ToString(), @"(^Convert\(|value\([^\)]+\)\.|, Object\)$)", string.Empty), iterations, null, stopWatch.Elapsed);
     }

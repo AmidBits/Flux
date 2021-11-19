@@ -130,8 +130,10 @@ namespace LoggerApp
     public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => m_config is null || m_config.LogLevel is null || m_config.LogLevel.Count == 0 || m_config.LogLevel.Contains(logLevel);
 
     [System.CLSCompliant(false)]
-    public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception? exception, System.Func<TState, System.Exception, string> formatter)
     {
+      exception ??= new System.Exception(@"No exception available.");
+
       if (IsEnabled(logLevel))
       {
         m_logFile.Refresh();

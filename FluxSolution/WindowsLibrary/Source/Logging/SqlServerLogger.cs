@@ -59,8 +59,10 @@
      * Entry [nvarchar](MAX)
      */
     [System.CLSCompliant(false)]
-    public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception? exception, System.Func<TState, System.Exception, string> formatter)
     {
+      exception ??= new System.Exception(@"No exception available.");
+
       if (IsEnabled(logLevel))
       {
         if (_config.EventId == 0 || _config.EventId == eventId.Id)

@@ -1,4 +1,4 @@
-using System.Linq;
+//using System.Linq;
 
 namespace Flux
 {
@@ -52,7 +52,7 @@ namespace Flux
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
     public static VersionEx Parse(string version)
-      => new((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
+      => new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
     public static bool TryParse(string version, out VersionEx result)
     {
       try
