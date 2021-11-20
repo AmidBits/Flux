@@ -55,7 +55,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(CMYK, Alpha);
     public override string ToString()
-      => $"<{GetType().Name}: {(CMYK.Cyan * 360):N1}\u00B0, {(CMYK.Magenta * 360):N1}\u00B0, {(CMYK.Yellow * 360):N1}\u00B0, {(CMYK.Key * 360):N1}\u00B0, {(m_alpha * 100):N1}%>";
+      => $"{GetType().Name} {{ Alpha = {(m_alpha * 100):N1}%, Cyan = {CMYK.Cyan * 360:N1}\u00B0, Magenta = {CMYK.Magenta * 360:N1}\u00B0, Yellow = {CMYK.Yellow * 360:N1}\u00B0, Key = {CMYK.Key * 360:N1}\u00B0 }}";
     #endregion Object overrides
   }
 }

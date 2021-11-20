@@ -57,7 +57,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_alpha, HWB);
     public override string ToString()
-      => $"<{GetType().Name}: {HWB.Hue}, {HWB.White}, {HWB.Black}, {m_alpha}>";
+      => $"{GetType().Name} {{ Alpha = {(m_alpha * 100):N1}%, Hue = {HWB.Hue:N1}\u00B0, White = {HWB.White * 100:N1}%, Black = {HWB.Black * 100:N1}% }}";
     #endregion Object overrides
   }
 }

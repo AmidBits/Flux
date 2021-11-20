@@ -55,7 +55,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_alpha, HSI);
     public override string ToString()
-      => $"<{GetType().Name}: {HSI.Hue}, {HSI.Saturation}, {HSI.Intensity}, {m_alpha}>";
+      => $"{GetType().Name} {{ Alpha = {(m_alpha * 100):N1}%, Hue = {HSI.Hue:N1}\u00B0, Saturation = {HSI.Saturation * 100:N1}%, Intensity = {HSI.Intensity * 100:N1}% }}";
     #endregion Object overrides
   }
 }

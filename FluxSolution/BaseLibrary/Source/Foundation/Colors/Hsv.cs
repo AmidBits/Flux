@@ -109,7 +109,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_hue, m_saturation, m_value);
     public override string ToString()
-      => $"<{GetType().Name}: {m_hue:N1}\u00B0, {(m_saturation * 100):N1}%, {(m_value * 100):N1}%>";
+      => $"{GetType().Name} {{ Hue = {m_hue:N1}\u00B0, Saturation = {m_saturation * 100:N1}%, Value = {m_value * 100:N1}% }}";
     #endregion Object overrides
   }
 }
