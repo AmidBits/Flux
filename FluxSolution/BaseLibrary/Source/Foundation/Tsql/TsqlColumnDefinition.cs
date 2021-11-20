@@ -98,7 +98,7 @@ namespace Flux.Data
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
-      => ToString(false);
+      => $"{GetType().Name} {{ {ToString(false)} }}";
     #endregion Object overrides
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)

@@ -12,6 +12,11 @@ namespace Flux
     public static AssemblyInfo Flux
       => new(typeof(AssemblyInfo).Assembly);
 
+    public System.Reflection.Assembly Assembly { get; }
+
+    public AssemblyInfo(System.Reflection.Assembly assembly)
+      => Assembly = assembly;
+
     public string? Company
       => GetAssemblyAttribute<System.Reflection.AssemblyCompanyAttribute>(a => a.Company);
     public string? Configuration
@@ -51,14 +56,11 @@ namespace Flux
     public string VersionString
       => Version.ToString();
 
-    [System.Diagnostics.CodeAnalysis.DisallowNull]
-    public System.Reflection.Assembly Assembly { get; set; }
-
-    public AssemblyInfo(System.Reflection.Assembly assembly)
-      => Assembly = assembly;
-
     private string? GetAssemblyAttribute<T>(System.Func<T, string> selector)
       where T : System.Attribute
       => selector.Invoke((T)System.Attribute.GetCustomAttribute(Assembly, typeof(T))!) is var value && string.IsNullOrEmpty(value) ? null : value;
+
+    public override string ToString()
+      => $"{GetType().Name} {{ Assembly = {Assembly.FullName} }}";
   }
 }

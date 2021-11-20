@@ -192,7 +192,7 @@ namespace Flux.Data
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
-      => QualifiedNameQuoted(4);
+      => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
     #endregion Object overrides
   }
 }

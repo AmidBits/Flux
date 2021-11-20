@@ -339,7 +339,7 @@ namespace Flux.Data
     public override int GetHashCode()
       => Name.GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
-      => Name;
+      => $"{GetType().Name} {{ Name = {Name} }}";
     #endregion Object overrides
   }
 }

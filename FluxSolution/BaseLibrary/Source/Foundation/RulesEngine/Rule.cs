@@ -80,7 +80,7 @@ namespace Flux.RulesEngine
     public override int GetHashCode()
       => System.HashCode.Combine(Name, Operator, Value);
     public override string? ToString()
-      => $"<{nameof(Rule)}: \"{Name}\" {Operator} '{Value}'>";
+      => $"{nameof(Rule)} {{ \"{Name}\" {Operator} '{Value}' }}";
     #endregion Object overrides
   }
 }

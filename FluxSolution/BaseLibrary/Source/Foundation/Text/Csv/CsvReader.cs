@@ -178,5 +178,8 @@ namespace Flux.Text.Csv
 
       base.DisposeManaged();
     }
+
+    public override string ToString()
+      => $"{GetType().Name} {{ {m_options} }}";
   }
 }

@@ -97,10 +97,5 @@
     public static ValueRangeEx<T> MinRange(ValueRangeEx<T> a, ValueRangeEx<T> b)
       => new(MaxLo(a, b), MinHi(a, b));
     #endregion Static methods
-
-    //#region Object overrides
-    //public override string ToString()
-    //  => $"<{GetType().Name}: {m_lo}, {m_hi}>";
-    //#endregion Object overrides
   }
 }

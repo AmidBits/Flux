@@ -43,8 +43,12 @@ namespace Flux
     // IEqualityComparer<char>
     public bool Equals(char x, char y)
       => m_stringComparer.Equals(x.ToString(), y.ToString());
-    // Object overrides
+
     public int GetHashCode(char c)
       => m_stringComparer.GetHashCode(c.ToString());
+
+    // Object overrides
+    public override string ToString()
+      => $"{GetType().Name} {{ {m_stringComparer} }}";
   }
 }
