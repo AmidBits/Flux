@@ -46,7 +46,7 @@
       if (m_serviceType != serviceType)
         m_serviceType = serviceType;
 
-      m_uriBuilder.Path = $"{site}/rest/services{(!(folder is null) ? $"/{folder}" : string.Empty)}/{serviceName}/{serviceType}";
+      m_uriBuilder.Path = $"{site}/rest/services{(folder is not null ? $"/{folder}" : string.Empty)}/{serviceName}/{serviceType}";
     }
 
     public RestUriBuilder()

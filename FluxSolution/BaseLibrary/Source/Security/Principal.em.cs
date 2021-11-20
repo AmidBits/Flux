@@ -14,7 +14,7 @@ namespace Flux
       {
         xe.SetAttributeValue(nameof(System.Type), source.GetType().Name);
 
-        if (!(source.Identity is null))
+        if (source.Identity is not null)
         {
           xe.Add(IdentityXml(source.Identity));
         }

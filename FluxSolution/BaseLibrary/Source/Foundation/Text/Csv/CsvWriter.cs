@@ -89,7 +89,7 @@ namespace Flux.Text.Csv
 			if (m_options.AlwaysEnquote || value.IndexOfAny(m_escapeCharacters) > -1)
 			{
 				m_streamWriter.Write('"');
-				m_streamWriter.Write(value.Contains("\"", System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
+				m_streamWriter.Write(value.Contains('"', System.StringComparison.Ordinal) ? value.Replace("\"", "\"\"", System.StringComparison.Ordinal) : value);
 				m_streamWriter.Write('"');
 			}
 			else

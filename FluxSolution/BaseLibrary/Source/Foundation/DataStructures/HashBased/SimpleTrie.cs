@@ -49,7 +49,7 @@ namespace Flux.DataStructures
 
       for (int index = 0; index < entry.Length; index++)
       {
-        if (temp.SubNodes.Keys.Contains(entry[index]))
+        if (temp.SubNodes.ContainsKey(entry[index]))
         {
           temp = temp.SubNodes[entry[index]];
         }
@@ -74,7 +74,7 @@ namespace Flux.DataStructures
 
       for (int index = 0; index < entry.Length; index++)
       {
-        if (node.SubNodes.Keys.Contains(entry[index]))
+        if (node.SubNodes.ContainsKey(entry[index]))
         {
           node = node.SubNodes[entry[index]];
 
