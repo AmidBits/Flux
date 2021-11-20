@@ -53,6 +53,6 @@ namespace Flux.Hashing
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => $"<{nameof(Fnv1)}: {m_hash}>";
+      => $"{nameof(Fnv1)} {{ HashCode = {m_hash} }}";
   }
 }

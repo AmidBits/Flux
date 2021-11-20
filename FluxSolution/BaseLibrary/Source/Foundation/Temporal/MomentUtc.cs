@@ -135,7 +135,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
     public override string? ToString()
-      => $"<{GetType().Name}: {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3}>";
+      => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
     #endregion Object overrides
   }
 }

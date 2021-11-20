@@ -76,7 +76,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_probability.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_probability}>";
+      => $"{GetType().Name} {{ Value = {m_probability} }}";
     #endregion Object overrides
   }
 }

@@ -263,7 +263,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
-      => $"<{GetType().Name}: {m_x} x, {m_y} y, ({EuclideanLength()} length)>";
+      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides
   }
 }

@@ -493,34 +493,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(Altitude, Latitude, Longitude);
     public override string ToString()
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append('<');
-      sb.Append(GetType().Name);
-      sb.Append(':');
-      sb.Append(' ');
-      sb.AppendFormat(new Formatting.LatitudeFormatter(), $"{{0:DMS}}", Latitude.Value);
-      sb.Append(' ');
-      sb.Append('(');
-      sb.AppendFormat(null, @"{0:N6}", Latitude.Value);
-      sb.Append(Quantity.Angle.DegreeSymbol);
-      sb.Append(')');
-      sb.Append(',');
-      sb.Append(' ');
-      sb.AppendFormat(new Formatting.LongitudeFormatter(), $"{{0:DMS}}", Longitude.Value);
-      sb.Append(' ');
-      sb.Append('(');
-      sb.AppendFormat(null, @"{0:N6}", Longitude.Value);
-      sb.Append(Quantity.Angle.DegreeSymbol);
-      sb.Append(')');
-      sb.Append(',');
-      sb.Append(' ');
-      sb.AppendFormat(null, @"{0:N0}", Altitude.Value);
-      sb.Append(' ');
-      sb.Append('m');
-      sb.Append('>');
-      return sb.ToString();
-    }
+      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"0:N6", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", Altitude.Value)} m }}";
     #endregion Object overrides
   }
 }

@@ -112,7 +112,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(X1, Y1, X2, Y2);
     public override string? ToString()
-      => $"<{nameof(LineSegment)}: {X1}, {Y1}, {X2}, {Y2}>";
+      => $"{GetType().Name} {{ X1 = {X1}, Y1 = {Y1}, X2 = {X2}, Y2 = {Y2} }}";
     #endregion Object overrides
   }
 }

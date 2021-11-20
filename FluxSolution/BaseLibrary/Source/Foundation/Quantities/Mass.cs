@@ -129,7 +129,7 @@ namespace Flux
       public override int GetHashCode()
         => m_value.GetHashCode();
       public override string ToString()
-        => $"<{GetType().Name}: {ToUnitString()}>";
+        => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides
     }
   }

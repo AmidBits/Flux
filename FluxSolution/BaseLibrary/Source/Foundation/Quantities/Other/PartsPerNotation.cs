@@ -150,7 +150,7 @@ namespace Flux
       public override int GetHashCode()
         => System.HashCode.Combine(m_parts);
       public override string ToString()
-        => $"<{GetType().Name}: {ToUnitValue(m_unit)}{m_unit.GetUnitSymbol()}>";
+        => $"{GetType().Name} {{ Value = {ToUnitValue(m_unit)}{m_unit.GetUnitSymbol()} }}";
       #endregion Object overrides
     }
   }

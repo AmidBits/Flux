@@ -319,7 +319,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
-      => $"<{GetType().Name}: {m_x}, {m_y}>";
+      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y} }}";
     #endregion Object overrides
   }
 }

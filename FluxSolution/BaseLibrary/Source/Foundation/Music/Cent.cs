@@ -104,7 +104,7 @@ namespace Flux.Music
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value}>";
+      => $"{GetType().Name} {{ Value = {m_value} }}";
     #endregion Object overrides
   }
 }

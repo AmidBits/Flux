@@ -74,7 +74,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(CanvasHeight, CanvasWidth, RasterHeight, RasterWidth, WorldToCamera);
     public override string? ToString()
-      => $"<{GetType().Name}: Canvas=({CanvasWidth}, {CanvasHeight}), Raster=({RasterWidth}, {RasterHeight}), W2C=({WorldToCamera})>";
+      => $"{GetType().Name} {{ Canvas = ({CanvasWidth}, {CanvasHeight}), Raster = ({RasterWidth}, {RasterHeight}), W2C = {WorldToCamera} }}";
     #endregion Object overrides
   }
 }

@@ -65,6 +65,6 @@ namespace Flux.Checksum
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-       => $"<{nameof(Crc32)}: {m_hash}>";
+       => $"{nameof(Crc32)} {{ Checksum = {m_hash} }}";
   }
 }

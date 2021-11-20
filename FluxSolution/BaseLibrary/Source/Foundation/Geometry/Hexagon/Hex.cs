@@ -151,7 +151,7 @@ namespace Flux.Geometry.Hexagon
     public override int GetHashCode()
       => System.HashCode.Combine(Q, R, S);
     public override string ToString()
-      => $"<{GetType().Name}: {Q}, {R}, {S}>";
+      => $"{GetType().Name} {{ Q = {Q}, R = {R}, S = {S} }}";
     #endregion Object overrides
   }
 }

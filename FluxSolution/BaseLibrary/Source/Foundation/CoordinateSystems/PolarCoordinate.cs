@@ -44,7 +44,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_azimuth, m_radius);
     public override string ToString()
-      => $"<{GetType().Name}: {m_radius} radius, {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} azimuth>";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

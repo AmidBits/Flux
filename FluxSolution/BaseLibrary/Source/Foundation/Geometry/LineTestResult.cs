@@ -43,7 +43,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(Outcome, X, Y);
     public override string? ToString()
-      => $"<{GetType().Name}: {Outcome}{(X.HasValue ? $", {X.Value}" : string.Empty)}{(Y.HasValue ? $", {Y.Value}" : string.Empty)}>";
+      => $"{GetType().Name} {{ Outcome = {Outcome}, X = {(X.HasValue ? X.Value.ToString() : @"Null")}, Y = {(Y.HasValue ? Y.Value.ToString() : @"Null")} }}";
     #endregion Object overrides
   }
 }

@@ -107,7 +107,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Depth);
     public override string? ToString()
-      => $"<Size {Width}, {Height}, {Depth}>";
+      => $"{GetType().Name} {{ Width = {Width}, Height = {Height}, Depth = {Depth} }}";
     #endregion Object overrides
   }
 }

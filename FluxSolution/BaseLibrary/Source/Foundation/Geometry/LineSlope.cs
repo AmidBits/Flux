@@ -34,7 +34,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => m_slope.GetHashCode();
     public override string? ToString()
-      => $"<{GetType().Name}: {m_slope}>";
+      => $"{GetType().Name} {{ Slope = {m_slope} }}";
     #endregion Object overrides
   }
 }

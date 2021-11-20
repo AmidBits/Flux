@@ -94,7 +94,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} kg/m³>";
+      => $"{GetType().Name} {{ Value = {m_value} kg/m³ }}";
     #endregion Object overrides
   }
 }

@@ -170,7 +170,7 @@ namespace Flux
       public override int GetHashCode()
         => m_value.GetHashCode();
       public override string ToString()
-        => $"<{GetType().Name}: {m_value} K>";
+        => $"{GetType().Name} {{ {ToUnitString()} }}";
       #endregion Object overrides
     }
   }

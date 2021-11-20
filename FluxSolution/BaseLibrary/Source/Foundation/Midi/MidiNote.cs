@@ -165,7 +165,7 @@ namespace Flux.Midi
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString()
-      => $"{GetType().Name}: {ScientificPitchNotationLabel}{Octave} (#{m_number})";
+      => $"{GetType().Name} {{ Value = {ScientificPitchNotationLabel}{Octave} (#{m_number}) }}";
     #endregion Object overrides
   }
 }

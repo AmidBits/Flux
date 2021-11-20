@@ -77,7 +77,7 @@ namespace Flux.Geometry.Hexagon
     public override int GetHashCode()
       => System.HashCode.Combine(Orientation, Size, Origin);
     public override string? ToString()
-      => $"<{GetType().Name}: {Orientation}, {Size}, {Origin}>";
+      => $"{GetType().Name} {{ Orientation = {Orientation}, Size = {Size}, Origin = {Origin} }}";
     #endregion Object overrides
   }
 }

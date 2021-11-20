@@ -225,7 +225,7 @@ namespace Flux
       public override int GetHashCode()
         => m_value.GetHashCode();
       public override string ToString()
-        => $"<{GetType().Name}: {ToUnitString()} ({ToUnitString(AngleUnit.Degree, @"N2")})>";
+        => $"{GetType().Name} {{ Value = {ToUnitString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
       #endregion Object overrides
     }
   }

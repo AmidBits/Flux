@@ -60,7 +60,7 @@ namespace Flux.Geometry.Hexagon
       return hc.ToHashCode();
     }
     public override string? ToString()
-      => $"<{GetType().Name}: [{F0}, {F1}, {F2}, {F3}], [{B0}, {B1}, {B2}, {B3}], {StartAngle}°>";
+      => $"{GetType().Name} {{ F = [{F0}, {F1}, {F2}, {F3}], B = [{B0}, {B1}, {B2}, {B3}], StartAngle = {StartAngle}° }}";
     #endregion Object overrides
   }
 }

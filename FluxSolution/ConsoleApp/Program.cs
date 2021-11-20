@@ -15,6 +15,11 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public record struct Test
+  {
+    public int Trial { get; init; }
+  }
+
   public class Program
   {
     private static void TimedMain(string[] args)
@@ -23,22 +28,7 @@ namespace ConsoleApp
 
       if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var mutc = new Flux.MomentUtc(1967, 05, 30);
-      System.Console.WriteLine($"{mutc}");
-      var jdn = mutc.ToJulianDayNumber();
-      System.Console.WriteLine($"{jdn}");
-      var jd = jdn.ToJulianDate().AddHours(18).AddMinutes(12);
-      System.Console.WriteLine($"{jd}");
-
-      //var jcs = jdc.ToDateString(ConversionCalendar.JulianCalendar);
-      //System.Console.WriteLine($"{jcs}");
-      //var gcs = jdc.ToDateString(ConversionCalendar.GregorianCalendar);
-      //System.Console.WriteLine($"{gcs}");
-
-      var gc = System.DateTime.Now.ToJulianDate(ConversionCalendar.GregorianCalendar);
-      var gcd = System.Math.Floor(gc.Value - 2299159.5m);
-      var jc = System.DateTime.Now.ToJulianDate(ConversionCalendar.JulianCalendar);
-      var jde = new Flux.JulianDayNumber(1994, 08, 25, ConversionCalendar.GregorianCalendar);
+      var tt = new Test() { Trial = 7 };
 
       var type = typeof(Flux.Quantity.IValuedUnit<int>);//.GetGenericTypeDefinition();
 

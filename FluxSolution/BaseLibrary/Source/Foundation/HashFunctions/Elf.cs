@@ -50,6 +50,6 @@ namespace Flux.Hashing
     public override int GetHashCode()
       => m_hash.GetHashCode();
     public override string ToString()
-      => $"<{nameof(Elf)}: {m_hash}>";
+      => $"{nameof(Elf)} {{ HashCode = {m_hash} }}";
   }
 }

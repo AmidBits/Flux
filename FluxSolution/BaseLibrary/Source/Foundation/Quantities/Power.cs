@@ -97,7 +97,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"<{GetType().Name}: {m_value} W>";
+      => $"{GetType().Name}  {{ Value = {m_value} W }}";
     #endregion Object overrides
   }
 }

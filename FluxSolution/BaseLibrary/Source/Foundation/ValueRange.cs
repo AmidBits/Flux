@@ -103,7 +103,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(m_lo, m_hi);
     public override string ToString()
-      => $"<{GetType().Name}: {m_lo}, {m_hi}>";
+      => $"{GetType().Name} {{ Low = {m_lo}, High = {m_hi} }}";
     #endregion Object overrides
   }
 }

@@ -44,7 +44,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"<{GetType().Name}: {m_numerator}:{m_denominator} ({Value})>";
+      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({Value}) }}";
     #endregion Object overrides
   }
 }

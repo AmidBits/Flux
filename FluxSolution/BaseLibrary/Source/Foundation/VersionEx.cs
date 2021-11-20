@@ -120,7 +120,7 @@ namespace Flux
     public override int GetHashCode()
       => m_parts.CombineHashCore();
     public override string? ToString()
-      => string.Join('.', m_parts);
+      => $"{GetType().Name} {{ {string.Join('.', m_parts)} }}";
     #endregion Object overrides
   }
 }

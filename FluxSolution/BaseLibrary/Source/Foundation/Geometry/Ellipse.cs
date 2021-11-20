@@ -107,7 +107,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Angle);
     public override string? ToString()
-      => $"<{GetType().Name}: {Width}, {Height}, {new Quantity.Angle(Angle)}>";
+      => $"{GetType().Name} {{ Width = {Width}, Height = {Height}, Angle = {new Quantity.Angle(Angle).ToUnitString()}>";
     #endregion Object overrides
   }
 }
