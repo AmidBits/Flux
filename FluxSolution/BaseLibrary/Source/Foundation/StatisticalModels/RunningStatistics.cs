@@ -195,7 +195,7 @@
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{GetType().Name}: count={m_count}, m=[{m_m1}, {m_m2}, {m_m3}, {m_m4}], min/max=[{m_min}, {m_max}], product={m_product}, sum={m_sum}>";
+      => $"{GetType().Name} {{ Count = {m_count}, M = [{m_m1}, {m_m2}, {m_m3}, {m_m4}], Min/Max = [{m_min}, {m_max}], Product = {m_product}, Sum = {m_sum} }}";
     #endregion Implemented interfaces
 
     #region Object overrides

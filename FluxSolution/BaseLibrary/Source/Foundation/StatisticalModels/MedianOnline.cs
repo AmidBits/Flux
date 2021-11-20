@@ -65,6 +65,6 @@ namespace Flux.Numerics
     }
 
     public override string ToString()
-      => $"<{EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}]>";
+      => $"{GetType().Name} {{ {EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}] }}";
   }
 }
