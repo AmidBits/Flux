@@ -51,6 +51,6 @@
     public override int GetHashCode()
       => m_int32.GetHashCode();
     public override string? ToString()
-      => $"<[{m_byte0:X2} {m_byte1:X2} {m_byte2:X2} {m_byte3:X2}], {m_int32}, {m_single}";
+      => $"{GetType().Name} {{ [{m_byte0:X2} {m_byte1:X2} {m_byte2:X2} {m_byte3:X2}], {m_int32}, {m_single} }}";
   }
 }

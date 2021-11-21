@@ -92,6 +92,9 @@ namespace Flux.DataStructures
     }
     #endregion Implementation of IList<T>
 
+    public override string ToString()
+      => $"{GetType().Name} {{ Count = {Count} }}";
+
     private class LazyListEnumerator
       : System.Collections.Generic.IEnumerator<T>
     {

@@ -53,6 +53,9 @@
     System.Collections.Generic.IEnumerator<bool> System.Collections.Generic.IEnumerable<bool>.GetEnumerator()
       => new BitArrayEnumerator(this);
 
+    public override string ToString()
+      => $"{GetType().Name} {{ Length = {Length} }}";
+
     private class BitArrayEnumerator
       : Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
     {

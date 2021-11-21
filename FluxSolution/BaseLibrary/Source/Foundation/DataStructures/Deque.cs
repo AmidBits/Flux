@@ -201,6 +201,9 @@ namespace Flux.DataStructures
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
+    public override string ToString()
+      => $"{GetType().Name} {{ Length = {Length} }}";
+
     private class EmptyDeque
       : IDeque<T>
     {
@@ -212,6 +215,9 @@ namespace Flux.DataStructures
       public System.Collections.Generic.IEnumerable<T> PeekStack() { yield break; }
       public T Pop() => throw new System.NotImplementedException(nameof(EmptyDeque));
       public void Push(T value) => throw new System.NotImplementedException(nameof(EmptyDeque));
+
+      public override string ToString()
+        => $"{GetType().Name}";
     }
 
     private class Enumerator

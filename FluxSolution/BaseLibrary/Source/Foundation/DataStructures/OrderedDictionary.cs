@@ -152,6 +152,9 @@ namespace Flux
       System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator()
         => CreateKeyValuePairs().GetEnumerator();
       #endregion Implemented interfaces
+
+      public override string ToString()
+        => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }

@@ -35,6 +35,6 @@ namespace Flux.Text
     }
 
     public override string ToString()
-      => $"<\"{Value}\" @{Index}{(string.Concat(GetNormalizationForms(Value.Chars, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : string.Empty)}>";
+      => $"{GetType().Name} {{ \"{Value}\" @{Index}{(string.Concat(GetNormalizationForms(Value.Chars, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $" {s}" : string.Empty)} }}";
   }
 }

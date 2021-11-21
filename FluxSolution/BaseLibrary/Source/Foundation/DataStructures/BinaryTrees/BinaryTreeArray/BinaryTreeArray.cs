@@ -251,6 +251,9 @@ namespace Flux.DataStructures
     //  foreach (var itemR in TraverseDepthFirstSearchPreOrder(ChildIndexRight(index))) yield return itemR;
     //}
 
+    public override string ToString()
+      => $"{GetType().Name} {{ Count = {Count} }}";
+
     private class BinaryTreeArrayValue
       : IBinaryTreeArrayNode<TKey, TValue>
     {
@@ -267,7 +270,8 @@ namespace Flux.DataStructures
         m_value = value;
       }
 
-      public override string ToString() => $"<{nameof(BinaryTreeArrayValue)} : \"{m_key}\" = \"{m_value}\">";
+      public override string ToString() 
+        => $"{nameof(BinaryTreeArrayValue)} {{ Key = \"{m_key}\", Value = \"{m_value}\" }}";
     }
 
     private class BinaryTreeArrayEmpty
@@ -277,7 +281,8 @@ namespace Flux.DataStructures
       public TKey Key => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
       public TValue Value => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
 
-      public override string ToString() => $"<{nameof(BinaryTreeArrayEmpty)}>";
+      public override string ToString()
+        => $"{nameof(BinaryTreeArrayEmpty)}";
     }
   }
 }

@@ -20,6 +20,9 @@
     {
       protected override T GetKeyForItem(T item)
         => item;
+
+      public override string ToString()
+        => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }

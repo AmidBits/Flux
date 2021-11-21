@@ -53,6 +53,6 @@ namespace Flux.Hashing
     }
 
     public override string ToString()
-      => $"<{nameof(ZobristTable)}: {m_table.GetLength(0)}, {m_table.GetLength(1)}, {m_table.GetLength(2)}>";
+      => $"{GetType().Name} {{ D0 = {m_table.GetLength(0)}, D1 = {m_table.GetLength(1)}, D2 = {m_table.GetLength(2)} }}";
   }
 }

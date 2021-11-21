@@ -45,7 +45,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(FrontLeft, FrontRight);
     public override string ToString()
-      => $"<Fl:{FrontLeft}, Fr:{FrontRight}>";
+      => $"{GetType().Name} {{ FL = {FrontLeft}, FR = {FrontRight} }}";
     #endregion Object overrides
   }
 }

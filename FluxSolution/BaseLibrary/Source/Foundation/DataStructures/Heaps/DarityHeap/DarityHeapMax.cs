@@ -143,5 +143,8 @@ namespace Flux.DataStructures
         index = parentIndex;
       }
     }
+
+    public override string ToString()
+      => $"{GetType().Name} {{ Arity = {m_arity}, Count = {m_data.Count} }}";
   }
 }

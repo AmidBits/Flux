@@ -44,5 +44,8 @@
 
       return true;
     }
+
+    public override string ToString()
+      => $"{GetType().Name}";
   }
 }

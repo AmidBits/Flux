@@ -27,6 +27,6 @@
     }
 
     public override string ToString()
-      => $"<{GetType().Name}: @{SourceIndex} \"{new string(Chars)}\" ({Chars.Length} char{(Chars.Length > 1 ? @"s" : string.Empty)}, {Runes.Count} rune{(Runes.Count > 1 ? @"s" : string.Empty)})>";
+      => $"{GetType().Name} {{ @{SourceIndex} \"{new string(Chars)}\" ({Chars.Length} char{(Chars.Length > 1 ? @"s" : string.Empty)}, {Runes.Count} rune{(Runes.Count > 1 ? @"s" : string.Empty)}) }}";
   }
 }

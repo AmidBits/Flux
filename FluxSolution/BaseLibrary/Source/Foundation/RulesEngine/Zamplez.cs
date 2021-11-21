@@ -21,7 +21,7 @@ namespace Flux
       }
 
       public override string ToString()
-        => $"<{nameof(User)}: {Name}, {Age} ({BirthCountry})>";
+        => $"{GetType().Name} {{ {Name}, {Age} ({BirthCountry}) }}";
 
       public static void ShowCase()
       {

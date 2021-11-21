@@ -85,6 +85,6 @@ namespace Flux.Riff
     }
 
     public override string ToString()
-      => $"<{GetType().Name}: \"{ChunkID}\", 8+{ChunkSize} bytes>";
+      => $"{GetType().Name} {{ \"{ChunkID}\", 8+{ChunkSize} bytes }}";
   }
 }

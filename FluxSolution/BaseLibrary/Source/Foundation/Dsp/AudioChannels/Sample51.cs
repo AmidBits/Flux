@@ -40,7 +40,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(FrontLeft, FrontRight, FrontCenter, LowFrequency, BackLeft, BackRight);
     public override string ToString()
-      => $"<Fl:{FrontLeft}, Fr:{FrontRight}, Fc:{FrontCenter}, Lfe:{LowFrequency}, Rl:{BackLeft}, Rr:{BackRight}>";
+      => $"{GetType().Name} {{ FL = {FrontLeft}, FR = {FrontRight}, FC = {FrontCenter}, LFE = {LowFrequency}, BL = {BackLeft}, BR = {BackRight} }}";
     #endregion Object overrides
   }
 }

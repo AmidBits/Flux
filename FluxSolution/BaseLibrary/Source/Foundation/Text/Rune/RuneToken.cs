@@ -15,6 +15,6 @@ namespace Flux.Text
     }
 
     public override string ToString()
-      => $"<{System.Text.Rune.GetUnicodeCategory(Value)}=\"{Value}\"@{Index}+{Value.Utf16SequenceLength}>";
+      => $"{GetType().Name} {{ {System.Text.Rune.GetUnicodeCategory(Value)}=\"{Value}\"@{Index}+{Value.Utf16SequenceLength} }}";
   }
 }

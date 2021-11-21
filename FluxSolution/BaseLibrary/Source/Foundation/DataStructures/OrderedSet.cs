@@ -185,6 +185,9 @@
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         => GetEnumerator();
       #endregion Implemented interfaces
+
+      public override string ToString()
+        => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }

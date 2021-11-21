@@ -89,6 +89,9 @@ namespace Flux.DataStructures
       return acceptStartsWith;
     }
 
+    public override string ToString()
+      => $"{GetType().Name} {{ Count = {Count} }}";
+
     private class Node
     {
       public bool EndOfEntry;
@@ -101,6 +104,9 @@ namespace Flux.DataStructures
 
         SubNodes = new System.Collections.Generic.Dictionary<TKey, Node>();
       }
+
+      public override string ToString()
+        => $"{GetType().Name} {{ EndOfEntry = {EndOfEntry}, SubNodes = {SubNodes.Count} }}";
     }
   }
 }

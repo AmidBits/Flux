@@ -37,7 +37,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(FrontLeft, FrontRight, LowFrequency);
     public override string ToString()
-      => $"<Fl:{FrontLeft}, Fr:{FrontRight}, Lfe:{LowFrequency}>";
+      => $"{GetType().Name} {{ Fl:{FrontLeft}, Fr:{FrontRight}, Lfe:{LowFrequency} }}";
     #endregion Object overrides
   }
 }

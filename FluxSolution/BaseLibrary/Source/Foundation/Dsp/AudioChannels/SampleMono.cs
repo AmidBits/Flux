@@ -35,7 +35,7 @@
     public override int GetHashCode()
       => System.HashCode.Combine(FrontCenter);
     public override string ToString()
-      => $"<Fc:{FrontCenter}>";
+      => $"{GetType().Name} {{ FC = {FrontCenter} }}";
     #endregion Object overrides
   }
 }
