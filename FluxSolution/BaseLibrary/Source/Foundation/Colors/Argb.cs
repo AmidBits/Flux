@@ -176,7 +176,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_alpha, RGB);
     public override string ToString()
-      => $"{GetType().Name} {{ Alpha = 0x{m_alpha:X2}, Red = 0x{RGB.Red:X2}, Green = 0x{RGB.Green:X2}, Blue = 0x{RGB.Blue:X2} }}";
+      => $"{GetType().Name} {{ {m_alpha}, {RGB.Red}, {RGB.Green}, {RGB.Blue} }}";
     #endregion Object overrides
   }
 

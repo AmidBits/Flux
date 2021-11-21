@@ -302,7 +302,7 @@ namespace Foundation
     {
       var rgb = new Flux.Colors.Rgb(67, 137, 207);
       var s = rgb.ToString();
-      Assert.AreEqual(@"<Rgb: 67, 137, 207>", s);
+      Assert.AreEqual(@"Rgb { R = 0x43, G = 0x89, B = 0xCF }", s);
     }
 
     [TestMethod]

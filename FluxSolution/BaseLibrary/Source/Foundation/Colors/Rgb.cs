@@ -342,8 +342,7 @@ namespace Flux.Colors
     public override int GetHashCode()
       => System.HashCode.Combine(m_red, m_green, m_blue);
     public override string ToString()
-      => $"{GetType().Name} {{ Red = 0x{m_red:X2}, Green = 0x{m_green:X2}, Blue = 0x{m_blue:X2} }}";
-      //=> $"{GetType().Name} {{ Red = {m_red} (0x{m_red:X2}), Green = {m_green} (0x{m_green:X2}), Blue = {m_blue} (0x{m_blue:X2}) }}";
+      => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";
     #endregion Object overrides
   }
 }
