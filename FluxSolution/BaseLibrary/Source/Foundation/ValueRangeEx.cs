@@ -9,7 +9,7 @@
   }
 
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
-  public record struct ValueRangeEx<T>
+  public struct ValueRangeEx<T>
     where T : System.IComparable<T>, System.IEquatable<T>
   {
     public readonly static ValueRangeEx<T> Empty;

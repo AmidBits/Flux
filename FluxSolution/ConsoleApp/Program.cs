@@ -15,7 +15,7 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public record struct Test
+  public struct Test
   {
     public int Trial { get; init; }
   }
