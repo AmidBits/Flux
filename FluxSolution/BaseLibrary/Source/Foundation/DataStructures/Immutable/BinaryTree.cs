@@ -27,7 +27,7 @@ namespace Flux.DataStructures.Immutable
 			=> m_value;
 
 		public override string ToString()
-			=> $"<{GetType().Name}({(Left.IsEmpty ? '-' : 'L')}|{(Right.IsEmpty ? '-' : 'R')}): {m_value}>";
+			=> $"{GetType().Name} {{ Left = {(Left.IsEmpty ? '-' : 'L')}, Right = {(Right.IsEmpty ? '-' : 'R')}, Value = {m_value} }}";
 
 		private sealed class EmptyBinaryTree
 			: IBinaryTree<TValue>
@@ -43,7 +43,7 @@ namespace Flux.DataStructures.Immutable
 				=> throw new System.Exception(nameof(EmptyBinaryTree));
 
 			public override string ToString()
-				=> $"<{GetType().Name}>";
+				=> $"{GetType().Name}";
 		}
 	}
 }

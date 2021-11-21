@@ -80,7 +80,7 @@ namespace Flux.DataStructures.Immutable
 			=> Remove(key);
 
 		public override string ToString()
-			=> $"<{GetType().Name}({(Left.IsEmpty ? '-' : 'L')}|{(Right.IsEmpty ? '-' : 'R')}): {m_key}, {m_value}>";
+			=> $"{GetType().Name} {{ Left = {(Left.IsEmpty ? '-' : 'L')}, Right = {(Right.IsEmpty ? '-' : 'R')}, Key = {m_key}, Value = {m_value} }}";
 
     private sealed class EmptyBinarySearchTree
 			: IBinarySearchTree<TKey, TValue>
@@ -126,7 +126,7 @@ namespace Flux.DataStructures.Immutable
 				=> Remove(key);
 
 			public override string ToString()
-				=> $"<{GetType().Name}>";
+				=> $"{GetType().Name}";
 		}
 	}
 }

@@ -53,7 +53,7 @@ namespace Flux.DataStructures.Immutable
     }
 
     public override string ToString()
-      => $"<{GetType().Name}>";
+      => $"{GetType().Name}";
 
     private sealed class EmptyDeque
       : IDeque<TValue>
@@ -67,17 +67,19 @@ namespace Flux.DataStructures.Immutable
       public TValue PeekRight() => throw new System.Exception(nameof(EmptyDeque));
 
       public override string ToString()
-        => $"<{GetType().Name}>";
+        => $"{GetType().Name}";
     }
 
     private sealed class SingleDeque
       : IDeque<TValue>
     {
+      private readonly TValue item;
+
       public SingleDeque(TValue t)
       {
         item = t;
       }
-      private readonly TValue item;
+
       public bool IsEmpty => false;
       public IDeque<TValue> EnqueueLeft(TValue value) => new Deque<TValue>(new Dequelette1(value), Deque<Dequelette>.Empty, new Dequelette1(item));
       public IDeque<TValue> EnqueueRight(TValue value) => new Deque<TValue>(new Dequelette1(item), Deque<Dequelette>.Empty, new Dequelette1(value));
@@ -87,7 +89,7 @@ namespace Flux.DataStructures.Immutable
       public TValue PeekRight() => item;
 
       public override string ToString()
-        => $"<{GetType().Name}>";
+        => $"{GetType().Name} {{ IsEmpty = {IsEmpty} }}";
     }
 
     private abstract class Dequelette
@@ -102,16 +104,19 @@ namespace Flux.DataStructures.Immutable
       public abstract Dequelette DequeueRight();
 
       public override string ToString()
-        => $"<{GetType().Name}>";
+        => $"{GetType().Name} {{ Size = {Size}, Full = {Full} }}";
     }
 
-    private class Dequelette1
+    private sealed class Dequelette1
       : Dequelette
     {
+      private readonly TValue v1;
+
       public Dequelette1(TValue t1)
       {
         v1 = t1;
       }
+
       public override int Size => 1;
       public override TValue PeekLeft() => v1;
       public override TValue PeekRight() => v1;
@@ -119,17 +124,20 @@ namespace Flux.DataStructures.Immutable
       public override Dequelette EnqueueRight(TValue t) => new Dequelette2(v1, t);
       public override Dequelette DequeueLeft() => throw new System.Exception("Impossible");
       public override Dequelette DequeueRight() => throw new System.Exception("Impossible");
-      private readonly TValue v1;
     }
 
-    private class Dequelette2
+    private sealed class Dequelette2
       : Dequelette
     {
+      private readonly TValue v1;
+      private readonly TValue v2;
+
       public Dequelette2(TValue t1, TValue t2)
       {
         v1 = t1;
         v2 = t2;
       }
+
       public override int Size => 2;
       public override TValue PeekLeft() => v1;
       public override TValue PeekRight() => v2;
@@ -137,19 +145,22 @@ namespace Flux.DataStructures.Immutable
       public override Dequelette EnqueueRight(TValue t) => new Dequelette3(v1, v2, t);
       public override Dequelette DequeueLeft() => new Dequelette1(v2);
       public override Dequelette DequeueRight() => new Dequelette1(v1);
-      private readonly TValue v1;
-      private readonly TValue v2;
     }
 
-    private class Dequelette3
+    private sealed class Dequelette3
       : Dequelette
     {
+      private readonly TValue v1;
+      private readonly TValue v2;
+      private readonly TValue v3;
+
       public Dequelette3(TValue t1, TValue t2, TValue t3)
       {
         v1 = t1;
         v2 = t2;
         v3 = t3;
       }
+
       public override int Size => 3;
       public override TValue PeekLeft() => v1;
       public override TValue PeekRight() => v3;
@@ -157,14 +168,16 @@ namespace Flux.DataStructures.Immutable
       public override Dequelette EnqueueRight(TValue t) => new Dequelette4(v1, v2, v3, t);
       public override Dequelette DequeueLeft() => new Dequelette2(v2, v3);
       public override Dequelette DequeueRight() => new Dequelette2(v1, v2);
+    }
+
+    private sealed class Dequelette4
+      : Dequelette
+    {
       private readonly TValue v1;
       private readonly TValue v2;
       private readonly TValue v3;
-    }
+      private readonly TValue v4;
 
-    private class Dequelette4
-      : Dequelette
-    {
       public Dequelette4(TValue t1, TValue t2, TValue t3, TValue t4)
       {
         v1 = t1;
@@ -181,10 +194,6 @@ namespace Flux.DataStructures.Immutable
       public override Dequelette EnqueueRight(TValue t) => throw new System.Exception("Impossible");
       public override Dequelette DequeueLeft() => new Dequelette3(v2, v3, v4);
       public override Dequelette DequeueRight() => new Dequelette3(v1, v2, v3);
-      private readonly TValue v1;
-      private readonly TValue v2;
-      private readonly TValue v3;
-      private readonly TValue v4;
     }
   }
 }
