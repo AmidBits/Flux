@@ -216,7 +216,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"<{nameof(Angle)}: {{0:D3}}>", this);
+        => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"{GetType().Name} {{{{ {{0:D3}} }}}}", this);
       #endregion Implemented interfaces
 
       #region Object overrides

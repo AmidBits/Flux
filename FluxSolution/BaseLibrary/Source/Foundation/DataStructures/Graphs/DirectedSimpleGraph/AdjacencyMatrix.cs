@@ -388,7 +388,7 @@
 
     #region Object overrides.
     public override string ToString()
-      => $"<{GetType().Name}: ({Count} vertices, {System.Linq.Enumerable.Count(GetEdges())} edges)>{System.Environment.NewLine}";
+      => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
     #endregion Object overrides.
   }
 }

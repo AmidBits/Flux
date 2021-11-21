@@ -108,7 +108,7 @@
 //      => Flux.HashCode.Combine(m_values);
 //    public override string? ToString()
 //    {
-//      return $"<{this.GetType().Name}, X={LengthX}, Y={LengthY}, Z={LengthZ}>";
+//      return $"{this.GetType().Name} {{ X = {LengthX}, Y = {LengthY}, Z = {LengthZ} }}";
 //    }
 //  }
 //}

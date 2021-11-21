@@ -22,7 +22,7 @@ namespace Flux.Model.TicTacToe
     }
 
     public override string ToString()
-      => $"<({Row}, {Column}) {Score}>";
+      => $"{GetType().Name} {{ Row = {Row}, Column = {Column}, Score = {Score} }}";
   }
 
   public enum State

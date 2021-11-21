@@ -193,7 +193,7 @@ namespace Flux
       public override int GetHashCode()
         => System.HashCode.Combine(m_positions.CombineHashCore(), Orientation);
       public override string? ToString()
-        => $"<{nameof(Vessel)} {m_positions.Count}, {Orientation}>";
+        => $"{GetType().Name} {{ Size = {m_positions.Count}, Orientation = {Orientation} }}";
       #endregion Object overrides
     }
   }

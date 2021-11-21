@@ -163,7 +163,7 @@
 //      => System.HashCode.Combine(Normal, D);
 //    /// <summary>Returns a String representing this Plane instance.</summary>
 //    public override readonly string ToString()
-//      => $"<{GetType().Name}: X={Normal.X} Y={Normal.Y} Z={Normal.Z} W={Normal.W}, D={D}>";
+//      => $"{GetType().Name} {{ X = {Normal.X} Y = {Normal.Y} Z = {Normal.Z} W = {Normal.W}, D = {D} }}";
 //    #endregion Object overrides
 //  }
 //}

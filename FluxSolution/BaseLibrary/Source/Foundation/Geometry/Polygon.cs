@@ -690,7 +690,7 @@ namespace Flux.Geometry
     public override int GetHashCode()
       => Vertices.CombineHashCore();
     public override string? ToString()
-      => $"<{nameof(Polygon)}: {string.Join(@", ", Vertices)}>";
+      => $"{GetType().Name} {{ {string.Join(@", ", Vertices)} }}";
     #endregion Object overrides
   }
 }

@@ -142,7 +142,7 @@
 //      => m_v256.GetHashCode();
 //    /// <summary>Returns a String representing this Quaternion instance.</summary>
 //    public override string ToString()
-//      => $"<{GetType().Name}: X={X} Y={Y} Z={Z}>";
+//      => $"{GetType().Name} {{ X = {X} Y = {Y} Z = {Z} }}";
 //    #endregion Object overrides
 //  }
 //}

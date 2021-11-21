@@ -291,7 +291,7 @@
 //      => System.HashCode.Combine(X, Y, Z, W);
 //    /// <summary>Returns a String representing this Quaternion instance.</summary>
 //    public override string ToString()
-//      => $"<{GetType().Name}: X={X} Y={Y} Z={Z} W={W}>";
+//      => $"{GetType().Name} {{ X = {X} Y = {Y} Z = {Z} W = {W} }}";
 //    #endregion Object overrides
 //  }
 //}

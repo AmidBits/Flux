@@ -468,7 +468,7 @@
 //    public override int GetHashCode()
 //      => System.HashCode.Combine(Numerator, Denominator);
 //    public override string ToString()
-//      => $"<{Numerator}/{Denominator} ({Numerator / Denominator})>";
+//      => $"{GetType().Name} {{ Numerator = {Numerator}, Denominator = {Denominator}, ({Numerator / Denominator}) }}";
 //  }
 //}
 //#endif

@@ -270,7 +270,7 @@
 //    public override int GetHashCode()
 //      => System.HashCode.Combine(X, Y, Z, W);
 //    public override string ToString()
-//      => $"<{GetType().Name}: X={X}, Y={Y}, Z={Z}, W={W}>";
+//      => $"{GetType().Name} {{ X = {X}, Y = {Y}, Z = {Z}, W = {W} }}";
 //    #endregion Object overrides
 //  }
 //}

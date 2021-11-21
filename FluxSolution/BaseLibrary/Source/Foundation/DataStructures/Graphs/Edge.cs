@@ -29,6 +29,6 @@
 //    public override int GetHashCode()
 //      => System.HashCode.Combine(Source, Target, Value);
 //    public override string ToString()
-//      => $"<{GetType().Name}: {Source}, {Target} = {Value}>";
+//      => $"{GetType().Name} {{ {Source}, {Target} = {Value} }}";
 //  }
 //}
