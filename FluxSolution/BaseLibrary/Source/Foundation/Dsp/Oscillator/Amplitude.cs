@@ -75,5 +75,10 @@ namespace Flux.Dsp.Synthesis
 
       return sample;
     }
+
+    #region Object overrides.
+    public override string ToString()
+      => $"{GetType().Name}";
+    #endregion Object overrides.
   }
 }

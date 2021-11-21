@@ -159,5 +159,10 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
     }
 
     public double ProcessAudio(double sample) => (FilterAudioMono(sample));
+
+    #region Object overrides.
+    public override string ToString()
+      => $"{GetType().Name}";
+    #endregion Object overrides.
   }
 }

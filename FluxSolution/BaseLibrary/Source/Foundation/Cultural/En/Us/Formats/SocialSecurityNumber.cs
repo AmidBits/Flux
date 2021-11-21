@@ -63,6 +63,9 @@ namespace Flux.Cultural.EnUs
     public override int GetHashCode()
       => System.HashCode.Combine(AAA, GG, SSSS);
     public override string? ToString()
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
+
+    public string ToUnitString()
       => $"{AAA}-{GG}-{SSSS}";
   }
 }

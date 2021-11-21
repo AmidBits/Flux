@@ -78,5 +78,10 @@ namespace Flux.Dsp.Synthesis
 
       m_position = Maths.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
     }
+
+    #region Object overrides.
+    public override string ToString()
+      => $"{GetType().Name}";
+    #endregion Object overrides.
   }
 }

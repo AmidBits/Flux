@@ -90,6 +90,9 @@ namespace Flux.Cultural.EnUs
     public override int GetHashCode()
       => System.HashCode.Combine(CC, NPA, NXX, XXXX);
     public override string? ToString()
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
+
+    public string ToUnitString()
       => $"{CC}-{NPA}-{NXX}-{XXXX}";
   }
 }

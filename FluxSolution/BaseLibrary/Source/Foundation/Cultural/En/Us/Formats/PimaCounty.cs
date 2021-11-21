@@ -117,6 +117,9 @@ namespace Flux.Cultural.EnUs.PimaCounty
     public override int GetHashCode()
       => System.HashCode.Combine(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
+
+    public string ToUnitString()
       => new System.Span<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToCharArray()).NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }
 }

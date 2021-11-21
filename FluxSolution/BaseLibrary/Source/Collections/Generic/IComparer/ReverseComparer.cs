@@ -20,6 +20,9 @@ namespace Flux
 
       public override int Compare([System.Diagnostics.CodeAnalysis.AllowNull] T x, [System.Diagnostics.CodeAnalysis.AllowNull] T y)
         => -m_comparer.Compare(x, y);
+
+      public override string ToString()
+        => $"{GetType().Name} {{ {m_comparer} }}";
     }
   }
 }

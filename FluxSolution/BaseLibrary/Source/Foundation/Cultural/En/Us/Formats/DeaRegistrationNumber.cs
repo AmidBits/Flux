@@ -67,6 +67,9 @@ namespace Flux.Cultural.EnUs
     public override int GetHashCode()
       => System.HashCode.Combine(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID);
     public override string? ToString()
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
+
+    public string ToUnitString()
       => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }
 }
