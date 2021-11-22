@@ -2,7 +2,7 @@ namespace Flux.Randomization
 {
   /// <summary>SimpleRng is a simple random number generator based on George Marsaglia's MWC (multiply with carry) generator.</summary>
   /// <remarks>Although it is very simple, it passes Marsaglia's DIEHARD series of random number generator tests.</remarks>
-  public class SimpleRng
+  public sealed class SimpleRng
     : ARandomUInt32
   {
     public static System.Random Default
