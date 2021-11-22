@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class BellNumber
+  public sealed class BellNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

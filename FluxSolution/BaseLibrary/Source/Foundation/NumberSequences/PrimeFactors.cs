@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class PrimeFactors
+  public sealed class PrimeFactors
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }

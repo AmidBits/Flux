@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class LeonardoNumber
+  public sealed class LeonardoNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     /// <summary>This is the first number in the sequence (L0).</summary>

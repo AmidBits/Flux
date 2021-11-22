@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public class SieveOfEratosthenesSegmented
+  public sealed class SieveOfEratosthenesSegmented
     : System.Collections.Generic.IEnumerable<long>
   {
     private const int m_segmentSize = int.MaxValue - 1;

@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Numerics
 {
   // https://www.rosettacode.org/wiki/De_Bruijn_sequences
-  public class DeBruijnSequence
+  public sealed class DeBruijnSequence
     : ASequencedNumbers<int>
   {
     public int OrderN { get; set; }
@@ -69,7 +69,7 @@ namespace Flux.Numerics
     #endregion Static methods
   }
 
-  public class DeBruijnSequence<T>
+  public sealed class DeBruijnSequence<T>
     : ISequencedNumbers<T>
   {
     public int OrderN { get; }

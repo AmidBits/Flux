@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class NsmoothNumber
+  public sealed class NsmoothNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     private readonly System.Collections.Generic.List<System.Numerics.BigInteger> m_primeNumbers;

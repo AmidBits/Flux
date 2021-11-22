@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Numerics
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Atkin"/>
-  public class SieveOfAtkin
+  public sealed class SieveOfAtkin
     : System.Collections.Generic.IEnumerable<int>
   {
     private System.Collections.BitArray m_sieve;

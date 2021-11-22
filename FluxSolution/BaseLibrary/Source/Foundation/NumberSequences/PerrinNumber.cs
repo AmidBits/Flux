@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public class PerrinNumber
+  public sealed class PerrinNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

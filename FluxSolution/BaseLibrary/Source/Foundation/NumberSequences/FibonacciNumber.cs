@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class FibonacciNumber
+  public sealed class FibonacciNumber
     : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

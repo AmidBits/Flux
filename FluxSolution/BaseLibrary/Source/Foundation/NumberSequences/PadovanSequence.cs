@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class PadovanSequence
+  public sealed class PadovanSequence
   : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

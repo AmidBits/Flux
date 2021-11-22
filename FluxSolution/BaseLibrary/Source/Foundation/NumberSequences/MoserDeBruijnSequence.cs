@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class MoserDeBruijnSequence
+  public sealed class MoserDeBruijnSequence
   : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public int MaxNumber { get; set; }

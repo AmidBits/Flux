@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class CatalanNumber
+  public sealed class CatalanNumber
   : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

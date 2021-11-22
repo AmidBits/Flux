@@ -4,7 +4,7 @@ namespace Flux.Numerics
 {
   /// <summary>The Sieve of Eratosthenes is a simple, ancient algorithm for finding all prime numbers up to any given limit.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"/>
-  public class SieveOfEratosthenes
+  public sealed class SieveOfEratosthenes
     : System.Collections.Generic.IEnumerable<int>
   {
     private System.Collections.BitArray m_sieve = new(0);

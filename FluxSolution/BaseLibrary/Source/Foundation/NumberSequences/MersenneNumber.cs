@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public class MersenneNumber
+  public sealed class MersenneNumber
   : ASequencedNumbers<System.Numerics.BigInteger>
   {
     // INumberSequence

@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class BellTriangle
+  public sealed class BellTriangle
     : ASequencedNumbers<System.Numerics.BigInteger[]>
   {
     // INumberSequence

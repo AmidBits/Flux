@@ -1,6 +1,6 @@
 namespace Flux.Numerics
 {
-  public class CenteredPolygonalNumber
+  public sealed class CenteredPolygonalNumber
     : ASequencedNumbers<int>
   {
     public int NumberOfSides { get; set; }
