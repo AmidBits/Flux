@@ -218,8 +218,11 @@ namespace Flux.Geometry
     #endregion Static methods
 
     #region Overloaded operators
+    public static explicit operator Point2(System.ValueTuple<int, int> xy)
+      => new(xy.Item1, xy.Item2);
+
     public static bool operator ==(Point2 p1, Point2 p2)
-      => p1.Equals(p2);
+  => p1.Equals(p2);
     public static bool operator !=(Point2 p1, Point2 p2)
       => !p1.Equals(p2);
 

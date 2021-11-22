@@ -15,27 +15,17 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public struct Test
-  {
-    public int Trial { get; init; }
-  }
-
   public class Program
   {
     private static void TimedMain(string[] args)
     {
-      if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
+      //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
 
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var tt = new Test() { Trial = 7 };
+      var type = typeof(Flux.Quantity.IValuedUnit<>);
 
-      var type = typeof(Flux.Quantity.IValuedUnit<int>);//.GetGenericTypeDefinition();
-
-      var ints2 = typeof(Flux.Reflect).Assembly.GetTypes().Where(t => t.GetTypeChain().Any(tc => (type.IsGenericTypeDefinition && tc.IsGenericType ? tc.GetGenericTypeDefinition() : tc) == type)).ToArray();
-      var ints = Flux.Reflect.GetTypesDerivedFrom(type).ToArray();
-
-      var ints3 = type.GetDerivedTypes().ToArray();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
     }
 
     private static void Main(string[] args)

@@ -65,10 +65,6 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      ///// <summary>The quantity value in unit degree.</summary>
-      //public double Degree
-      //  => ConvertRadianToDegree(m_value);
-
       /// <summary>The quantity value in unit radian.</summary>
       public double Value
         => m_value;

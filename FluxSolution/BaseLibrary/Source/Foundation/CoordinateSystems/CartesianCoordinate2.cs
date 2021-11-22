@@ -96,12 +96,16 @@ namespace Flux
     public int QuadrantNumber()
       => QuadrantNumber(Zero);
 
-    public Quantity.Angle ToRotationAngle()
-      => new(ConvertToRotationAngle(m_x, m_y));
-    public Quantity.Angle ToRotationAngleEx()
-      => new(ConvertToRotationAngleEx(m_x, m_y));
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+    /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public Quantity.Angle ToRotationAngle()
+      => (Quantity.Angle)ConvertCartesian2ToRotationAngle(m_x, m_y);
+    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public Quantity.Angle ToRotationAngleEx()
+      => (Quantity.Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
 
     #region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
@@ -114,12 +118,12 @@ namespace Flux
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertToRotationAngle(double x, double y)
+    public static double ConvertCartesian2ToRotationAngle(double x, double y)
       => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? Maths.PiX2 + atan2 : atan2;
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static double ConvertToRotationAngleEx(double x, double y)
-      => Maths.PiX2 - ConvertToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
+    public static double ConvertCartesian2ToRotationAngleEx(double x, double y)
+      => Maths.PiX2 - ConvertCartesian2ToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
 
     /// <summary>Returns the cross product of two 2D vectors.</summary>
     /// <remarks>For 2D vectors, this is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>

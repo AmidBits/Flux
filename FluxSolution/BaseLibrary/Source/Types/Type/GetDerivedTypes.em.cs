@@ -7,9 +7,6 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      //if (source.IsGenericType)
-      //  source = source.GetGenericTypeDefinition();
-
       foreach (var type in types)
         if (IsSubtypeOf(type,source))
           yield return type;
