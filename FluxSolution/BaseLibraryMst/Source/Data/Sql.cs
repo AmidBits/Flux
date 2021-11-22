@@ -18,7 +18,7 @@ namespace Data
 
       var columnDefinition = new Flux.Data.TsqlColumnDefinition(columnName, dataTypeName, arguments, nullability);
 
-      var parsedColumnDefinition = Flux.Data.TsqlColumnDefinition.Parse(columnDefinition.ToUnitString());
+      var parsedColumnDefinition = Flux.Data.TsqlColumnDefinition.Parse(columnDefinition.ToString());
 
       Assert.AreEqual(columnName, parsedColumnDefinition.ColumnName);
       Assert.AreEqual(dataTypeName, parsedColumnDefinition.DataTypeName);

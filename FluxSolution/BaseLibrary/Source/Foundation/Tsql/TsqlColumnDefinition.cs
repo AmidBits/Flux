@@ -31,7 +31,7 @@ namespace Flux.Data
     }
 
     public string ToString(bool ansi)
-      => $"{ColumnName.TsqlEnquote(ansi)} {DataTypeName.TsqlEnquote(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability.ToUnitString()}";
+      => $"{ColumnName.TsqlEnquote(ansi)} {DataTypeName.TsqlEnquote(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability}";
 
     #region Static methods
     /// <summary>Convert a sequence of data type arguments into its T-SQL string representation,</summary>
@@ -98,11 +98,8 @@ namespace Flux.Data
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
     public override string ToString()
-      => $"{GetType().Name} {{ {ToString(true)} }}";
+      => ToString(false);
     #endregion Object overrides
-
-    public string ToUnitString()
-      => $"{ToString(false)}";
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)
     //{

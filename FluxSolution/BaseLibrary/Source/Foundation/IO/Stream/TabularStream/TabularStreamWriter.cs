@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux.IO
@@ -53,7 +54,7 @@ namespace Flux.IO
           _streamWriter.Write(_fieldSeparator);
         }
 
-        if (value.IndexOfAny($"{_fieldSeparator}\"\r\n") > -1)
+        if (value.AsSpan().IndexOfAny($"{_fieldSeparator}\"\r\n".ToCharArray()) > -1)
         {
           _streamWriter.Write('"');
           _streamWriter.Write(value.Replace("\"", "\"\"", System.StringComparison.Ordinal));

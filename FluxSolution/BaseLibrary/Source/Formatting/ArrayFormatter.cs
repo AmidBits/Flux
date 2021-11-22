@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Flux.Formatting
@@ -37,7 +38,7 @@ namespace Flux.Formatting
 
       var format = string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
-      var verticalSeparatorRow = string.IsNullOrEmpty(VerticalSeparator) ? null : string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => string.Concat(VerticalSeparator.Repeat(width / VerticalSeparator.Length + 1)).LeftMost(width)));
+      var verticalSeparatorRow = string.IsNullOrEmpty(VerticalSeparator) ? null : string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => string.Concat(VerticalSeparator.Repeat(width / VerticalSeparator.Length + 1)).AsSpan().LeftMost(width).ToString()));
 
       for (int index0 = 0, length0 = source.Length; index0 < length0; index0++)
       {
@@ -67,7 +68,7 @@ namespace Flux.Formatting
 
       var format = string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
-      var verticalSeparatorRow = string.IsNullOrEmpty(VerticalSeparator) ? null : string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => string.Concat(VerticalSeparator.Repeat(width / VerticalSeparator.Length + 1)).LeftMost(width)));
+      var verticalSeparatorRow = string.IsNullOrEmpty(VerticalSeparator) ? null : string.Join(HorizontalSeparator, columnMaxWidths.Select((width, index) => string.Concat(VerticalSeparator.Repeat(width / VerticalSeparator.Length + 1)).AsSpan().LeftMost(width).ToString()));
 
       for (int index0 = 0, length0 = source.GetLength(0); index0 < length0; index0++)
       {

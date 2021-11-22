@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
@@ -27,21 +28,21 @@ namespace Types
     [TestMethod]
     public void EqualsAnyAt()
     {
-      Assert.AreEqual(true, s1.EqualsAnyAt(4, "ph", "thi", "s"));
+      Assert.AreEqual(true, s1.AsSpan().EqualsAnyAt(4, "ph", "thi", "s"));
     }
 
-    //[TestMethod]
-    //public void LeftMost()
-    //{
-    //  Assert.AreEqual(s1, s1.AsReadOnlySpan().LeftMost(100).ToString());
-    //  Assert.AreEqual(s1.Substring(0, 4), s1.AsReadOnlySpan().LeftMost(4).ToString());
-    //}
+    [TestMethod]
+    public void LeftMost()
+    {
+      Assert.AreEqual(s1, s1.AsSpan().LeftMost(100).ToString());
+      Assert.AreEqual(s1.Substring(0, 4), s1.AsSpan().LeftMost(4).ToString());
+    }
 
-    //[TestMethod]
-    //public void RightMost()
-    //{
-    //  Assert.AreEqual(s1, s1.AsReadOnlySpan().RightMost(100).ToString());
-    //  Assert.AreEqual(s1.Substring(s1.Length - 4), s1.AsReadOnlySpan().RightMost(4).ToString());
-    //}
+    [TestMethod]
+    public void RightMost()
+    {
+      Assert.AreEqual(s1, s1.AsSpan().RightMost(100).ToString());
+      Assert.AreEqual(s1.Substring(s1.Length - 4), s1.AsSpan().RightMost(4).ToString());
+    }
   }
 }

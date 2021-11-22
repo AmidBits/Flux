@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Specifies one or more days of the week, using a <see cref="System.FlagsAttribute"/> bitmask.</summary>
   [System.Flags]
-  public enum DaysOfWeek
+  public enum WeekDays
   {
     None = 0,
     Monday = 1,
