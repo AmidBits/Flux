@@ -63,7 +63,10 @@ namespace Flux.Data
     public override int GetHashCode()
       => IsNullable.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ IsNullable = {IsNullable} (\"{(IsNullable ? CsNull : CsNotNull)}\") }}";
+      => $"{GetType().Name} {{ IsNullable = {IsNullable} ({ToUnitString()}) }}";
     #endregion Object overrides
+
+    public string ToUnitString()
+      => IsNullable ? CsNull : CsNotNull;
   }
 }
