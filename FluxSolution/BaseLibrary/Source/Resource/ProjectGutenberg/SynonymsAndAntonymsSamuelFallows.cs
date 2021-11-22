@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.ProjectGutenberg
 {
-  public class SynonymsAndAntonymsSamuelFallows
+  public sealed class SynonymsAndAntonymsSamuelFallows
     : ATabularDataAcquirer
   {
     public static string LocalFile

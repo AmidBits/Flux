@@ -3,7 +3,7 @@
   /// <summary></summary>
   // https://developers.arcgis.com/rest/services-reference/get-started-with-the-services-directory.htm
   // https://developers.arcgis.com/rest/services-reference/project.htm
-  public class RestUriBuilder
+  public sealed class RestUriBuilder
   {
     private readonly System.UriBuilder m_uriBuilder;
 

@@ -1,6 +1,6 @@
 ﻿namespace Flux.AmbOps
 {
-  public record Constraint
+  public sealed record Constraint
      : IConstraint
   {
     private readonly int m_appliesForItems;

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.ProjectGutenberg
 {
-  public class TableOfContents
+  public sealed class TableOfContents
     : ATabularDataAcquirer
   {
     public static string LocalFile

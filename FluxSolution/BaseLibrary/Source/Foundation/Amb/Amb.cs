@@ -1,6 +1,6 @@
 ﻿namespace Flux.AmbOps
 {
-  public record Amb
+  public sealed record Amb
   {
     private readonly System.Collections.Generic.List<IChoices> m_choices = new();
     private readonly System.Collections.Generic.List<IConstraint> m_constraints = new();

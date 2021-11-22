@@ -1,6 +1,6 @@
 ﻿namespace Flux.AmbOps
 {
-  public record Choices<T>
+  public sealed record Choices<T>
      : IChoices, IValue<T>
   {
     private readonly T[] Values;

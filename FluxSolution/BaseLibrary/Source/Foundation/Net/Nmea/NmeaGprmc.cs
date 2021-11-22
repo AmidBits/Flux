@@ -1,6 +1,6 @@
 namespace Flux.Services.Nmea
 {
-  public class NmeaGprmc
+  public sealed class NmeaGprmc
     : NmeaSentence
   {
     public NmeaGprmc(string sentence)

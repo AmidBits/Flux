@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
 	/// <summary>Base Implementation of System.Windows.Input.ICommand. This implementation is sometimes named DelegateCommand or RelayCommand.</summary>
-	public class Command<T>
+	public sealed class Command<T>
 		: System.Windows.Input.ICommand
 	{
 		public event System.EventHandler? CanExecuteChanged = delegate { };

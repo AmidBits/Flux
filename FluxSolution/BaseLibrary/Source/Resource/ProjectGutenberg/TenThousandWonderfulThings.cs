@@ -1,6 +1,6 @@
 namespace Flux.Resources.ProjectGutenberg
 {
-  public class TenThousandWonderfulThings
+  public sealed class TenThousandWonderfulThings
     : ATabularDataAcquirer
   {
     public static string LocalFile

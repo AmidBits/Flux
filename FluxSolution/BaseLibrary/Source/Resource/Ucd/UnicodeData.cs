@@ -1,6 +1,6 @@
 namespace Flux.Resources.Ucd
 {
-	public class UnicodeData
+	public sealed class UnicodeData
 		: ATabularDataAcquirer
 	{
 		public static string LocalFile

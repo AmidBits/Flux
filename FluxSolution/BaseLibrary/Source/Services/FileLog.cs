@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Services
 {
-	public class FileLog
+	public sealed class FileLog
 	{
 		private readonly string _logFileName;
 

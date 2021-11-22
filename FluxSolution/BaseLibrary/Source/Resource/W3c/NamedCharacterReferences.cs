@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.W3c
 {
-  public class NamedCharacterReferences
+  public sealed class NamedCharacterReferences
     : ATabularDataAcquirer
   {
     public static string LocalFile

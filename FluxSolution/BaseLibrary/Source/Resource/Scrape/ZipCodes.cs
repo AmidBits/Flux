@@ -1,6 +1,6 @@
 namespace Flux.Resources.Scrape
 {
-  public class ZipCodes
+  public sealed class ZipCodes
     : ATabularDataAcquirer
   {
     public static string LocalFile

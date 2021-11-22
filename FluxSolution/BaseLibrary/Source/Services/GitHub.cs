@@ -7,7 +7,7 @@ namespace Flux.Services.GitHub
     File
   }
 
-  public class GitHubEntry
+  public sealed class GitHubEntry
   {
     public int Size { get; set; }
     public GitHubType Type { get; set; }

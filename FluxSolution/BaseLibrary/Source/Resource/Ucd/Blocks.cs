@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.Ucd
 {
-  public class Blocks
+  public sealed class Blocks
     : ATabularDataAcquirer
   {
     public static string LocalFile

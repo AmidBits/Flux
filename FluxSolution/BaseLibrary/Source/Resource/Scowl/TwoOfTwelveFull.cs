@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Resources.Scowl
 {
-	public class TwoOfTwelveFull
+	public sealed class TwoOfTwelveFull
 		: ATabularDataAcquirer
 	{
 		public static string LocalFile

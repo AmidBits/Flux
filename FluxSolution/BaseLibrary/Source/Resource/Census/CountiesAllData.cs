@@ -1,6 +1,6 @@
 namespace Flux.Resources.Census
 {
-  public class CountiesAllData
+  public sealed class CountiesAllData
     : ATabularDataAcquirer
   {
     public static string LocalFile

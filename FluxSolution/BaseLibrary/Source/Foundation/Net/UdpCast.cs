@@ -1,7 +1,7 @@
 namespace Flux.Net
 {
   /// <summary>Event arguments for when data is received.</summary>
-  public class UdpCastDataReceivedEventArgs
+  public sealed class UdpCastDataReceivedEventArgs
     : System.EventArgs
   {
     public UdpCastDataReceivedEventArgs(byte[] bytes, System.Net.EndPoint remote)

@@ -16,9 +16,12 @@ namespace ConsoleApp
 
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var type = typeof(Flux.Quantity.IValuedUnit<>);
+      //var type = typeof(Flux.Quantity.IValuedUnit<>);
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
+      foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
+        if (type.IsClass && !type.IsSealed && !type.IsAbstract)
+          System.Console.WriteLine(type.FullName);
     }
 
     private static void Main(string[] args)

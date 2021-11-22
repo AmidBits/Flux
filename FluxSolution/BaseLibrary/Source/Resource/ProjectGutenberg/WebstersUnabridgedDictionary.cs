@@ -1,6 +1,6 @@
 namespace Flux.Resources.ProjectGutenberg
 {
-  public class WebstersUnabridgedDictionary
+  public sealed class WebstersUnabridgedDictionary
     : ATabularDataAcquirer
   {
     public static string LocalFile
