@@ -8,7 +8,7 @@
 /// <seealso cref="https://johnloomis.org/cpe102/asgn/asgn1/riff.html"/>
 namespace Flux.Riff
 {
-  public class FormTypeChunk
+  public abstract class FormTypeChunk
     : BaseChunk
   {
     public const string WaveID = @"WAVE";

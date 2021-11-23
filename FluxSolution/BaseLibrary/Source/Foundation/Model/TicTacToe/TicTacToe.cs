@@ -32,7 +32,7 @@ namespace Flux.Model.TicTacToe
     Player2
   }
 
-  public class Board
+  public sealed class Board
     : System.Collections.Generic.IEnumerable<State>
   {
     private readonly State[] m_state = new State[9];

@@ -5,7 +5,7 @@ namespace Flux.Geometry
   // https://en.wikipedia.org/wiki/Centered_hexagonal_number
   // https://hexnet.org/content/hex-numbers
   // https://www.redblobgames.com/grids/hexagons/
-  public class HexagonShape
+  public sealed class HexagonShape
   {
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>

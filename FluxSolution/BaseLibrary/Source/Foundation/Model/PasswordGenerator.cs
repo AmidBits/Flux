@@ -18,7 +18,7 @@ namespace Flux.Model
   //    => throw new System.NotImplementedException();
   //}
 
-  public class PasswordGenerator
+  public sealed class PasswordGenerator
   {
     public const string AlphaLower = "abcdefghijklmnopqrstuvwxyz";
     public const string AlphaUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

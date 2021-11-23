@@ -56,7 +56,7 @@
     public override string ToString()
       => $"{GetType().Name} {{ Length = {Length} }}";
 
-    private class BitArrayEnumerator
+    private sealed class BitArrayEnumerator
       : Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
     {
       private readonly BitArray m_bitArray;
@@ -80,9 +80,9 @@
         => MemberwiseClone();
 
       // IEnumerator
-      public virtual object Current
+      public object Current
         => Current;
-      public virtual bool MoveNext()
+      public bool MoveNext()
       {
         if (m_index < (m_bitArray.m_bitLength - 1))
         {

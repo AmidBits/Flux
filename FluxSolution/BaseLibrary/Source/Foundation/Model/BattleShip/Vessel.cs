@@ -45,7 +45,7 @@ namespace Flux
 
   namespace Model.BattleShip
   {
-    public class Vessel
+    public sealed class Vessel
       : System.IEquatable<Vessel>
     {
       private readonly System.Collections.Generic.List<Geometry.Point2> m_positions;

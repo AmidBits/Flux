@@ -2,7 +2,7 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public class MathTokenNumber
+  public sealed class MathTokenNumber
     : MathToken
   {
     public const string Regex = @"^(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?";

@@ -26,7 +26,7 @@ namespace Flux.Text
     protected override void DisposeManaged()
       => m_textReader.Dispose();
 
-    private class RuneIterator
+    private sealed class RuneIterator
       : System.Collections.Generic.IEnumerator<System.Text.Rune>
     {
       private readonly RuneEnumerator m_enumerator;

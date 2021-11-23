@@ -1,6 +1,6 @@
 namespace Flux.DataStructures.Generic
 {
-  public class SequenceComparer<T>
+  public sealed class SequenceComparer<T>
     : System.Collections.Generic.IComparer<System.Collections.Generic.IEnumerable<T>>
     where T : System.IComparable<T>
   {

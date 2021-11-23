@@ -9,7 +9,7 @@ namespace Flux.Formatting
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class AngleFormatter
+  public sealed class AngleFormatter
     : AFormatter
   {
     private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"^(?<Unit>[A-Za-z]+)(?<DecimalPlaces>[0-9]+)?$", System.Text.RegularExpressions.RegexOptions.Compiled);

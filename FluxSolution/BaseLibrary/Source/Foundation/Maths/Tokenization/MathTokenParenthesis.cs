@@ -2,7 +2,7 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public class MathTokenParenthesis
+  public sealed class MathTokenParenthesis
     : MathToken
   {
     public const string RegexWithComma = @"^[\(\,\)]";

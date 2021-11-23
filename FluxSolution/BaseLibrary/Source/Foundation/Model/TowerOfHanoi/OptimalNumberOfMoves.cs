@@ -1,6 +1,6 @@
 namespace Flux.Model
 {
-  public partial class TowerOfHanoi
+  public sealed partial class TowerOfHanoi
   {
     /// <summary>The Frame-Stewart algorithm computes the optimal number of moves.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi#With_four_pegs_and_beyond"/>

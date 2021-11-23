@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-  public class Grid
+  public sealed class Grid
     : AGrid<Cell>, System.ICloneable
   {
     public Grid(Geometry.Size2 size)

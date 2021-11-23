@@ -4,7 +4,7 @@ namespace Flux.Model
   /// 
   /// </summary>
   /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
-  public class Knapsack
+  public sealed class Knapsack
   {
     public int NumberOfDistinctItems { get; init; }
     public int WeightCapacity { get; init; }

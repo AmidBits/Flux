@@ -9,7 +9,7 @@ namespace Flux.Formatting
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
   /// </example>
-  public class LongitudeFormatter
+  public sealed class LongitudeFormatter
     : AFormatter
   {
     public bool InsertSpaces { get; set; }

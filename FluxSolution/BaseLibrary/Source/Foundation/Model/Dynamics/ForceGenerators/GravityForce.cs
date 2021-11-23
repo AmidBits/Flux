@@ -2,7 +2,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
 {
   /// <summary></summary>
   /// <seealso cref="https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.vector3.dot.aspx"/>
-  public class GravityForce
+  public sealed class GravityForce
     : IForceGenerator
   {
     public const float GravityOnEarth = 9.780F;

@@ -6,7 +6,7 @@ namespace Flux.Formatting
   /// <example>
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.TsFormatter() { Abbreviated = true }, "{0:TS}", timeValue));
   /// </example>
-  public class TimeSpanFormatter 
+  public sealed class TimeSpanFormatter 
     : AFormatter
   {
     private const string csD = "d";

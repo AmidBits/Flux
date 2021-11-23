@@ -2,7 +2,7 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public class MathTokenOperator
+  public sealed class MathTokenOperator
     : MathToken
   {
     public const string AssociativityLeft = @"Left";

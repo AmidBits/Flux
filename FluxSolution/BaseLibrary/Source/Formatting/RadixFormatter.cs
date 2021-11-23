@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Formatting
 {
   /// <summary>Enables formatting of any number base (radix) with any characters desired.</summary>
-  public class RadixFormatter
+  public sealed class RadixFormatter
     : AFormatter
   {
     public const string FormatIdentifier = @"RADIX";

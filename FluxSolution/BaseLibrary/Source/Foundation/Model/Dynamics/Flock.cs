@@ -142,7 +142,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
   //}
 
   /// <summary>Align direction and speed with local mates.</summary>
-  public class BoidAlignment
+  public sealed class BoidAlignment
   : IForceGenerator
   {
     public bool Disabled { get; set; }
@@ -160,7 +160,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
   }
 
   /// <summary>Strive for cohesion of centroid with local mates.</summary>
-  public class BoidCohesion
+  public sealed class BoidCohesion
     : IForceGenerator
   {
     public bool Disabled { get; set; }
@@ -178,7 +178,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
   }
 
   /// <summary>Maintain separation with local mates.</summary>
-  public class BoidSeparation
+  public sealed class BoidSeparation
     : IForceGenerator
   {
     public bool Disabled { get; set; }
@@ -195,7 +195,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
     }
   }
 
-  public class PointOfInterest
+  public sealed class PointOfInterest
     : IForceGenerator
   {
     public bool Disabled { get; set; }
@@ -212,7 +212,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
     }
   }
 
-  public class RandomWandering
+  public sealed class RandomWandering
    : IForceGenerator
   {
     public bool Disabled { get; set; }

@@ -1,7 +1,7 @@
 ﻿// https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class MineField
+  public sealed class MineField
   {
     public Field Field { get; }
     public Mines Mines { get; }

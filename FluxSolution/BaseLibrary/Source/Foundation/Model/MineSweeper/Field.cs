@@ -1,7 +1,7 @@
 ﻿// https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class Field
+  public sealed class Field
   {
     public Geometry.Size2 Size { get; }
 

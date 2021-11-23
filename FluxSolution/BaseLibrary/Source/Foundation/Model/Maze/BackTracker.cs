@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-  public class BackTrackerMaze
+  public sealed class BackTrackerMaze
     : AMaze
   {
     public override void CarveMaze(Grid grid)

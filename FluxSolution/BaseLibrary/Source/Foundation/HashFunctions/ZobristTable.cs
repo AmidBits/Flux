@@ -1,7 +1,7 @@
 namespace Flux.Hashing
 {
   // https://en.wikipedia.org/wiki/Zobrist_hashing
-  public class ZobristTable
+  public sealed class ZobristTable
   {
     private readonly ulong[,,] m_table;
 

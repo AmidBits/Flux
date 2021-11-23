@@ -2,7 +2,7 @@ namespace Flux.Midi
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
-  public class MidiTimeCode
+  public sealed class MidiTimeCode
   {
     private readonly MidiTimeCodeType m_rate;
     private readonly byte m_hour;

@@ -1,6 +1,6 @@
 namespace Flux.Midi.Sequencer
 {
-  public class MeterEvent
+  public sealed class MeterEvent
   {
     private byte m_beatsPerBar;
     /// <summary>Indicates how many beats constitute a bar. E.g. 3 for three note values per beats.</summary>
@@ -22,7 +22,7 @@ namespace Flux.Midi.Sequencer
   }
 
   // http://www.petesqbsite.com/sections/express/issue20/midifilespart3.html
-  public class TempoEvent
+  public sealed class TempoEvent
   {
     public const double MicrosecondsPerMinute = 60000000.0;
     public const double MillisecondsPerMinute = 60000.0;

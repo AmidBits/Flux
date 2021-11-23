@@ -1,13 +1,13 @@
-﻿namespace Flux.Model.GameOfLife
+﻿namespace Flux.Model
 {
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
-  public class Game
+  public sealed class GameOfLife
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
     private readonly Geometry.Size2 m_cellGrid;
 
-    public Game(Geometry.Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Geometry.Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -25,7 +25,7 @@
         }
       }
     }
-    public Game(int height, int width, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(int height, int width, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
       : this(new Geometry.Size2(height, width), canLifeLogicWrapAroundEdges, probabilityOfBeingInitiallyAlive)
     { }
 

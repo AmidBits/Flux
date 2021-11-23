@@ -1,7 +1,7 @@
 ﻿// https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class GameResult
+  public sealed class GameResult
   {
     public GameResult(bool hasFailed, int coveredCount)
     {

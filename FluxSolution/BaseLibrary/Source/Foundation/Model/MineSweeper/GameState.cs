@@ -4,7 +4,7 @@ using System.Linq;
 // https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class GameState
+  public sealed class GameState
   {
     private readonly IImmutableStack<Covers> m_moves;
 

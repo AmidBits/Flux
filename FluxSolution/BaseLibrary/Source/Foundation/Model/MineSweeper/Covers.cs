@@ -3,7 +3,7 @@
 // https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class Covers
+  public sealed class Covers
     : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<Geometry.Point2, bool>>
   {
     private readonly System.Collections.Immutable.IImmutableDictionary<Geometry.Point2, bool> m_covers;

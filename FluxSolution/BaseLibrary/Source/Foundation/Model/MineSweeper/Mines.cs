@@ -4,7 +4,7 @@ using System.Linq;
 // https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class Mines
+  public sealed class Mines
     : System.Collections.Generic.IReadOnlySet<Geometry.Point2>
   {
     private readonly System.Collections.Generic.IReadOnlySet<Geometry.Point2> m_mines;

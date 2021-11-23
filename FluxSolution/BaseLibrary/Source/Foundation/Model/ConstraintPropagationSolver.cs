@@ -55,7 +55,7 @@ namespace Flux
     }
 
     // This is a class that holds some fact (by one or more houses).
-    public class Fact
+    public sealed class Fact
     {
       public System.Collections.Generic.List<int> House = new() { 1, 2, 3, 4, 5 };
       public EnumColor Color;

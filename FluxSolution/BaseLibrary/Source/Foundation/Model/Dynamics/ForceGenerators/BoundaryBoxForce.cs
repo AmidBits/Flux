@@ -1,6 +1,6 @@
 namespace Flux.Model.Dynamics.ForceGenerators
 {
-  public class BoundaryBoxForce
+  public sealed class BoundaryBoxForce
     : IForceGenerator
   {
     public enum OutOfBoundsActionEnum

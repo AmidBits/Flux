@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-  public class BinaryTreeMaze
+  public sealed class BinaryTreeMaze
     : AMaze
   {
     public InterCardinalDirection Diagonal { get; set; } = InterCardinalDirection.NE;

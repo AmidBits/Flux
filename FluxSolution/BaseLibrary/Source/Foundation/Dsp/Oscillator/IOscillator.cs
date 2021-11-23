@@ -9,7 +9,7 @@
 
     double NextSample();
 
-    private class EmptyOscillator
+    private sealed class EmptyOscillator
       : IOscillator
     {
       public static IOscillator Instance = new EmptyOscillator();

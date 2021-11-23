@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-  public class GrowingTreeMaze
+  public sealed class GrowingTreeMaze
     : AMaze
   {
     public System.Func<System.Collections.Generic.IEnumerable<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>

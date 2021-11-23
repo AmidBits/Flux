@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-  public class SidewinderMaze
+  public sealed class SidewinderMaze
     : AMaze
   {
     public InterCardinalDirection Diagonal { get; set; } = InterCardinalDirection.NE;

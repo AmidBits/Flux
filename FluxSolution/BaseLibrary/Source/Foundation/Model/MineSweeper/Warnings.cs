@@ -3,7 +3,7 @@
 // https://github.com/gmamaladze/minesweeper
 namespace Flux.Model.MineSweeper
 {
-  public class Warnings
+  public sealed class Warnings
     : System.Collections.Generic.IReadOnlyDictionary<Geometry.Point2, int>
   {
     private readonly System.Collections.Generic.IDictionary<Geometry.Point2, int> m_warnings;

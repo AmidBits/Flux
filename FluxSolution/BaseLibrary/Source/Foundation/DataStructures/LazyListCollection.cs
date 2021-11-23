@@ -95,7 +95,7 @@ namespace Flux.DataStructures
     public override string ToString()
       => $"{GetType().Name} {{ Count = {Count} }}";
 
-    private class LazyListEnumerator
+    private sealed class LazyListEnumerator
       : System.Collections.Generic.IEnumerator<T>
     {
       private T m_current;

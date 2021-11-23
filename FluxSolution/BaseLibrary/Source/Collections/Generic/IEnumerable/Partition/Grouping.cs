@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Class used to group adjacent elements in a sequence. Derives from System.Linq.IGrouping<TKey, TSource>.</summary>
-  public class Grouping<TKey, TElement>
+  public sealed class Grouping<TKey, TElement>
     : System.Linq.IGrouping<TKey, TElement>, System.Collections.Generic.IList<TElement>, System.Collections.Generic.IEnumerable<TElement>
   {
     private readonly System.Collections.Generic.List<TElement> m_elements = new();

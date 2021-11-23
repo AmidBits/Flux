@@ -204,7 +204,7 @@ namespace Flux.DataStructures
     public override string ToString()
       => $"{GetType().Name} {{ Length = {Length} }}";
 
-    private class EmptyDeque
+    private sealed class EmptyDeque
       : IDeque<T>
     {
       public bool IsEmpty => true;
@@ -220,7 +220,7 @@ namespace Flux.DataStructures
         => $"{GetType().Name}";
     }
 
-    private class Enumerator
+    private sealed class Enumerator
       : System.Collections.Generic.IEnumerator<T>
     {
       private const string DequeHasChanged = @"The deque has changed.";

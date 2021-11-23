@@ -18,7 +18,7 @@
       => new(projection);
   }
 
-  public class ProjectionEqualityComparer<TSource, TKey>
+  public sealed class ProjectionEqualityComparer<TSource, TKey>
     : System.Collections.Generic.IEqualityComparer<TSource>
     where TKey : notnull
   {

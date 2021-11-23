@@ -1,6 +1,6 @@
 namespace Flux.Model.Maze
 {
-  public class RecursiveDivisionMaze
+  public sealed class RecursiveDivisionMaze
     : AMaze
   {
     public override void CarveMaze(Grid grid)

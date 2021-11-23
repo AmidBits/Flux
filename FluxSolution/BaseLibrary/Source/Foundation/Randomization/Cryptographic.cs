@@ -1,6 +1,6 @@
 namespace Flux.Randomization
 {
-  public class Cryptographic
+  public sealed class Cryptographic
     : System.Random
   {
     /// <summary>Returns a non-negative random integer.</summary>

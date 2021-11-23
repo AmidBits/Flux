@@ -26,7 +26,7 @@ namespace Flux.Text
     protected override void DisposeManaged()
       => m_textReader.Dispose();
 
-    private class GraphemeIterator
+    private sealed class GraphemeIterator
       : System.Collections.Generic.IEnumerator<GraphemeCluster>
     {
       private readonly GraphemeEnumerator m_enumerator;

@@ -15,7 +15,7 @@
       => new(projection);
   }
 
-  public class ProjectionComparer<TSource, TKey>
+  public sealed class ProjectionComparer<TSource, TKey>
     : System.Collections.Generic.IComparer<TSource>
   {
     private readonly System.Collections.Generic.IComparer<TKey> m_comparer;

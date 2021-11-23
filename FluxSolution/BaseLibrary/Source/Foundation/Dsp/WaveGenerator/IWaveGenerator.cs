@@ -12,7 +12,7 @@ namespace Flux.Dsp
     /// <returns>A wave sample in the [-1, 1] range.</returns>
     double GenerateWave(double phase);
 
-    private class EmptyWaveGenerator
+    private sealed class EmptyWaveGenerator
       : IWaveGenerator
     {
       public static IWaveGenerator Instance = new EmptyWaveGenerator();

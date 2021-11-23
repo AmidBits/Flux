@@ -1,6 +1,6 @@
 namespace Flux.Data
 {
-  public class DataReaderEnumerator
+  public sealed class DataReaderEnumerator
     : Disposable, System.Collections.Generic.IEnumerator<System.Data.IDataRecord>
   {
     private readonly System.Data.IDataReader m_dataReader;

@@ -14,7 +14,7 @@ namespace Flux.Net
     public System.Net.EndPoint Remote { get; }
   }
 
-  public class UdpCast
+  public sealed class UdpCast
     : Disposable
   {
     private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");

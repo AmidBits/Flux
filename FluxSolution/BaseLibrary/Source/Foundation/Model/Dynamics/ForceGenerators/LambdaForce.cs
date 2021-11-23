@@ -1,6 +1,6 @@
 namespace Flux.Model.Dynamics.ForceGenerators
 {
-  public class LambdaForce
+  public sealed class LambdaForce
     : IForceGenerator
   {
     public System.Func<RigidBody, System.Numerics.Vector3>? ForcePosition { get; set; }

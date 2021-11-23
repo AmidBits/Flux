@@ -1,6 +1,6 @@
 ﻿namespace Flux.DataStructures.Generic
 {
-  public class LinkedComparer<TSource>
+  public sealed class LinkedComparer<TSource>
     : System.Collections.Generic.IComparer<TSource>
   {
     private readonly System.Collections.Generic.IComparer<TSource>[] m_comparers;

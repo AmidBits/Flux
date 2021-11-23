@@ -9,7 +9,7 @@
     //double ProcessAudioMono(double sample);
     double ProcessAudio(double sample);
 
-    private class EmptyAudioProcessorMono
+    private sealed class EmptyAudioProcessorMono
       : IWaveProcessorMono
     {
       public static IWaveProcessorMono Instance = new EmptyAudioProcessorMono();
@@ -26,7 +26,7 @@
     //(double left, double right) ProcessAudioStereo(double left, double right);
     SampleStereo ProcessAudio(SampleStereo sample);
 
-    private class EmptyAudioProcessorStereo
+    private sealed class EmptyAudioProcessorStereo
       : IWaveProcessorStereo
     {
       public static IWaveProcessorStereo Instance = new EmptyAudioProcessorStereo();

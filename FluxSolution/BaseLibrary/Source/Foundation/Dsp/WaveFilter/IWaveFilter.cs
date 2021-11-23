@@ -10,7 +10,7 @@ namespace Flux.Dsp
     /// <returns>The filtered audio sample in the [-1, 1] range.</returns>
     double FilterAudioMono(double sample);
 
-    private class EmptyAudioFilterMono
+    private sealed class EmptyAudioFilterMono
       : IWaveFilterMono
     {
       public double FilterAudioMono(double sample)

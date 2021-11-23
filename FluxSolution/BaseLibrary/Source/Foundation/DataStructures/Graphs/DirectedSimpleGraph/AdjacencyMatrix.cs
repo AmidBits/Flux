@@ -5,7 +5,7 @@
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public class AdjacencyMatrix
+  public sealed class AdjacencyMatrix
   {
     private int[,] m_matrix;
 

@@ -1,6 +1,6 @@
 namespace Flux.Model
 {
-  public partial class TowerOfHanoi
+  public sealed partial class TowerOfHanoi
   {
     /// <summary>Tower of Hanoi puzzle solver for three rods.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tower_of_Hanoi"/>

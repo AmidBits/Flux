@@ -4,7 +4,7 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public class MathTokenizer
+  public sealed class MathTokenizer
     : ITokenizer<MathToken>
   {
     //public const string Unrecognized = nameof(Unrecognized);

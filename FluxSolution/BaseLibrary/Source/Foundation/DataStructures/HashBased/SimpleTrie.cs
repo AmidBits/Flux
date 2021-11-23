@@ -92,7 +92,7 @@ namespace Flux.DataStructures
     public override string ToString()
       => $"{GetType().Name} {{ Count = {Count} }}";
 
-    private class Node
+    private sealed class Node
     {
       public bool EndOfEntry;
 

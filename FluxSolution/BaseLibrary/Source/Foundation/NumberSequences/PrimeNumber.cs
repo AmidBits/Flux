@@ -461,7 +461,7 @@ namespace Flux.Numerics
     #endregion Statics
   }
 
-  public class PrimeNumberReverse
+  public sealed class PrimeNumberReverse
     : ISequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartAt { get; }

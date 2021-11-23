@@ -254,7 +254,7 @@ namespace Flux.DataStructures
     public override string ToString()
       => $"{GetType().Name} {{ Count = {Count} }}";
 
-    private class BinaryTreeArrayValue
+    private sealed class BinaryTreeArrayValue
       : IBinaryTreeArrayNode<TKey, TValue>
     {
       private readonly TKey m_key;
@@ -270,11 +270,11 @@ namespace Flux.DataStructures
         m_value = value;
       }
 
-      public override string ToString() 
+      public override string ToString()
         => $"{nameof(BinaryTreeArrayValue)} {{ Key = \"{m_key}\", Value = \"{m_value}\" }}";
     }
 
-    private class BinaryTreeArrayEmpty
+    private sealed class BinaryTreeArrayEmpty
       : IBinaryTreeArrayNode<TKey, TValue>
     {
       public bool IsEmpty => true;
