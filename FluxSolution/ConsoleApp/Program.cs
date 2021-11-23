@@ -22,6 +22,9 @@ namespace ConsoleApp
       foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
         if (type.IsClass && !type.IsSealed && !type.IsAbstract)
           System.Console.WriteLine(type.FullName);
+
+      System.Console.WriteLine();
+      System.Console.WriteLine(Flux.Locale.GetProperties().ToConsoleString());
     }
 
     private static void Main(string[] args)
