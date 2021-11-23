@@ -1,6 +1,6 @@
 namespace Flux.Midi.Protocol
 {
-  public class Helper
+  public sealed class Helper
   {
     public static byte Ensure14BitValueHigh(int value)
       => value < 0 || value > 0x3FFF ? throw new System.ArgumentOutOfRangeException(nameof(value)) : (byte)((value >> 7) & 0x7F);

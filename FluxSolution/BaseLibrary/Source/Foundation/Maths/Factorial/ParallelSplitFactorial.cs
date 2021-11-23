@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public class ParallelSplitFactorial
+	public sealed class ParallelSplitFactorial
 		: IFactorialFunction
 	{
 		public static readonly IFactorialFunction Default = new ParallelSplitFactorial();

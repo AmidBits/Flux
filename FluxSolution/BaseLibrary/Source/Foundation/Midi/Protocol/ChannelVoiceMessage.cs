@@ -1,6 +1,6 @@
 namespace Flux.Midi.Protocol
 {
-  public class ChannelVoiceMessage
+  public sealed class ChannelVoiceMessage
   {
     public static byte CreateStatusByte(ChannelVoiceStatus status, int channel)
       => (byte)((int)status | (channel >= 0 && channel <= 0xF ? channel : throw new System.ArgumentOutOfRangeException(nameof(channel))));

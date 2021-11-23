@@ -7,7 +7,7 @@ namespace Flux
     public static void RunRulesEngine()
       => User.ShowCase();
 
-    private class User
+    private sealed class User
     {
       public int Age { get; set; }
       public string Name { get; set; }

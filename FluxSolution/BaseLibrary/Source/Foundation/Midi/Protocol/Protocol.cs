@@ -1,6 +1,6 @@
 namespace Flux.Midi
 {
-  public class NoteOffMidiMessage
+  public sealed class NoteOffMidiMessage
   {
     private int m_channel;
     public int Channel { get => m_channel; set => m_channel = value >= 0 && value <= 15 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }

@@ -1,6 +1,6 @@
 namespace Flux.Midi.Protocol
 {
-  public class RealtimeMessage
+  public sealed class RealtimeMessage
   {
     public static byte[] TimingClock()
       => new byte[] { (byte)RealtimeStatus.TimingClock };

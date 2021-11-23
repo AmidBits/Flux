@@ -19,7 +19,7 @@ namespace Flux.Model
     BlackPawn = '\u265F',
   }
 
-  public class ChessPiece
+  public sealed class ChessPiece
   {
     public ChessPieceType Type { get; }
     public System.Collections.Generic.List<Geometry.Point2> Position { get; } = new System.Collections.Generic.List<Geometry.Point2>();

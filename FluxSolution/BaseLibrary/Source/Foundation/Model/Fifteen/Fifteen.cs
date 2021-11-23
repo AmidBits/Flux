@@ -1,6 +1,6 @@
 ﻿namespace Flux.Model
 {
-  public class Fifteen
+  public sealed class Fifteen
   {
     private readonly int[] Nr = new[] { 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
     private readonly int[] Nc = new[] { 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2 };

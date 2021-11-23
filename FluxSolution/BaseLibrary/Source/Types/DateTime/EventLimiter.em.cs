@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public class EventLimiter
+  public sealed class EventLimiter
   {
     private readonly System.Collections.Generic.Queue<System.DateTime> m_history;
     private readonly int m_limit;

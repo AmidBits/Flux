@@ -1,6 +1,6 @@
 namespace Flux.Midi.Protocol
 {
-  public class ChannelModeMessage
+  public sealed class ChannelModeMessage
   {
     public static byte[] AllSoundOff(int channel)
       => ChannelVoiceMessage.ControlChange(channel, ControllerChangeNumber.AllNotesOff, 0);

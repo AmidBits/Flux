@@ -1,6 +1,6 @@
 ﻿namespace Flux.Model
 {
-  public class GameTimer
+  public sealed class GameTimer
   {
     #region Fields and Properties
     private long _deltaCounter;

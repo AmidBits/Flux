@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public class HistogramUniform
+  public sealed class HistogramUniform
   {
     public int BucketCount { get; }
 

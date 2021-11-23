@@ -21,9 +21,9 @@ namespace Flux.Model.TicTacToe2
       => $"{GetType().Name} {{ {Point} = {MaxScore,4} > {MinScore,4} }}";
   }
 
-  public class Game
+  public sealed class Game
   {
-    public virtual int GetGrundy(int n, int k)
+    public int GetGrundy(int n, int k)
       => n % (k + 1);
 
     public static int GetMex(System.Collections.Generic.HashSet<int> set)

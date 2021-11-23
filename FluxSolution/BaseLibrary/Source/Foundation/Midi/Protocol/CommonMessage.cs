@@ -1,6 +1,6 @@
 namespace Flux.Midi.Protocol
 {
-  public class CommonMessage
+  public sealed class CommonMessage
   {
     public static byte[] MtcFullFrame(int rate, int hour, int minute, int second, int frame)
       => new byte[] { (int)CommonStatus.StartOfExclusive, 0x7F, 0x7F, 0x01, 0x01, (byte)((rate >= 0 && rate <= 3 ? rate << 5 : throw new System.ArgumentOutOfRangeException(nameof(rate))) | (hour >= 0 && hour <= 23 ? hour : throw new System.ArgumentOutOfRangeException(nameof(hour)))), (byte)(minute >= 0 && minute <= 59 ? minute : throw new System.ArgumentOutOfRangeException(nameof(minute))), (byte)(second >= 0 && second <= 59 ? second : throw new System.ArgumentOutOfRangeException(nameof(second))), (byte)(frame >= 0 && frame <= 29 ? frame : throw new System.ArgumentOutOfRangeException(nameof(frame))), (byte)CommonStatus.EndOfExclusive };
