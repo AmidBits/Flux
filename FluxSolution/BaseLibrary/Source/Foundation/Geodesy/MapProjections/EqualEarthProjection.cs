@@ -1,9 +1,9 @@
 ﻿namespace Flux.MapProjections
 {
   public record class EqualEarthProjection
-    : IMapProjection, IMapReversableProjection
+    : IMapForwardProjectable, IMapReverseProjectable
   {
-    public CartesianCoordinate3 Forward(GeographicCoordinate location)
+    public CartesianCoordinate3 ProjectForward(GeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -25,7 +25,7 @@
 
       return new CartesianCoordinate3(x, y, location.Altitude.Value);
     }
-    public GeographicCoordinate Reverse(CartesianCoordinate3 location)
+    public GeographicCoordinate ProjectReverse(CartesianCoordinate3 location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;

@@ -1,9 +1,9 @@
 ﻿namespace Flux.MapProjections
 {
   public record class NaturalEarthProjection
-    : IMapProjection
+    : IMapForwardProjectable
   {
-    public CartesianCoordinate3 Forward(GeographicCoordinate project)
+    public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.Radian;
       var lon = project.Longitude.Radian;
