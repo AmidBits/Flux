@@ -16,6 +16,16 @@ namespace Flux
       : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
+    public double MathCos
+      => System.Math.Cos(Radian);
+    public double MathSin
+      => System.Math.Sin(Radian);
+    public double MathTan
+      => System.Math.Tan(Radian);
+
+    public double Radian
+      => Quantity.Angle.ConvertDegreeToRadian(m_degree);
+
     public double Value
       => m_degree;
 

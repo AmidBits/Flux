@@ -33,6 +33,16 @@ namespace Flux
     public Quantity.Length ApproximateRadius
       => new(GetApproximateRadius(ToAngle().Value));
 
+    public double MathCos
+      => System.Math.Cos(Radian);
+    public double MathSin
+      => System.Math.Sin(Radian);
+    public double MathTan
+      => System.Math.Tan(Radian);
+
+    public double Radian
+      => Quantity.Angle.ConvertDegreeToRadian(m_degree);
+
     public double Value
       => m_degree;
 

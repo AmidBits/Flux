@@ -53,8 +53,8 @@ namespace Flux
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = Latitude.ToAngle().Value;
-      var lon = Longitude.ToAngle().Value;
+      var lat = Latitude.Radian;
+      var lon = Longitude.Radian;
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude

@@ -234,6 +234,27 @@ namespace Flux
       m_z = z;
     }
 
+    public double MathCosX
+      => System.Math.Cos(X);
+    public double MathSinX
+      => System.Math.Sin(X);
+    public double MathTanX
+      => System.Math.Tan(X);
+
+    public double MathCosY
+      => System.Math.Cos(Y);
+    public double MathSinY
+      => System.Math.Sin(Y);
+    public double MathTanY
+      => System.Math.Tan(Y);
+
+    public double MathCosZ
+      => System.Math.Cos(Z);
+    public double MathSinZ
+      => System.Math.Sin(Z);
+    public double MathTanZ
+      => System.Math.Tan(Z);
+
     public double X { get => m_x; }
     public double Y { get => m_y; }
     public double Z { get => m_z; }
