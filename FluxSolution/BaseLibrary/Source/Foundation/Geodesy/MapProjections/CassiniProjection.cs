@@ -1,5 +1,6 @@
 ﻿namespace Flux.MapProjections
 {
+  // https://en.wikipedia.org/wiki/Cassini_projection
   public record class CassiniProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {

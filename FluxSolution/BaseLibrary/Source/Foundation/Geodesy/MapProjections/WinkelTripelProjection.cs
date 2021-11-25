@@ -1,6 +1,7 @@
 ﻿namespace Flux.MapProjections
-{
-  public record class WinkelTripelProjection
+
+  // https://en.wikipedia.org/wiki/Winkel_tripel_projection
+public record class WinkelTripelProjection
     : IMapForwardProjectable
   {
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)

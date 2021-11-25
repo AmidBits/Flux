@@ -1,5 +1,6 @@
 ﻿namespace Flux.MapProjections
 {
+  // https://en.wikipedia.org/wiki/Equirectangular_projection
   public record class EquirectangularProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {
