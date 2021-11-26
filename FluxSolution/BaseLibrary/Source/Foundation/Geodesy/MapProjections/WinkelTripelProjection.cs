@@ -1,9 +1,11 @@
 ﻿namespace Flux.MapProjections
-
+{
   // https://en.wikipedia.org/wiki/Winkel_tripel_projection
-public record class WinkelTripelProjection
-    : IMapForwardProjectable
+  public record struct WinkelTripelProjection
+      : IMapForwardProjectable
   {
+    public static readonly WinkelTripelProjection Default;
+
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.Radian;

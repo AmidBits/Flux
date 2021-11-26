@@ -1,9 +1,11 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Natural_Earth_projection
-  public record class NaturalEarthProjection
+  public record struct NaturalEarthProjection
     : IMapForwardProjectable
   {
+    public static readonly NaturalEarthProjection Default;
+
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.Radian;

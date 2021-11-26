@@ -1,9 +1,11 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equirectangular_projection
-  public record class EquirectangularProjection
+  public record struct EquirectangularProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {
+    public static readonly EquirectangularProjection Default;
+
     public GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 

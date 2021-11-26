@@ -1,9 +1,11 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Cassini_projection
-  public record class CassiniProjection
+  public record struct CassiniProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {
+    public static readonly CassiniProjection Default;
+
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
       => new(System.Math.Asin(project.Latitude.MathCos * project.Longitude.MathSin), System.Math.Atan(project.Latitude.MathTan / project.Longitude.MathCos), project.Altitude.Value);
     public GeographicCoordinate ProjectReverse(CartesianCoordinate3 project)

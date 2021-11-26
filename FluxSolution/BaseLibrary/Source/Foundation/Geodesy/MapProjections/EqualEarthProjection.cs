@@ -1,9 +1,11 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
-  public record class EqualEarthProjection
+  public record struct EqualEarthProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {
+    public static readonly EqualEarthProjection Default;
+
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate location)
     {
       const double A1 = 1.340264;
