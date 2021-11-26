@@ -36,7 +36,7 @@ namespace Flux.Colors
 
       return System.Math.Clamp(max - min, 0, 1);
     }
-    /// <summary>Returns the hue for the RGB value.</summary>
+    /// <summary>Returns the hue [0, 360] for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hue"/>
     public double GetHue(out double min, out double max, out double r, out double g, out double b, out double chroma)
     {
@@ -96,6 +96,7 @@ namespace Flux.Colors
 
       return max - min;
     }
+    /// <summary>Returns the chroma and hue [0.0, 360.0] for the RGB value.</summary>
     public void GetSecondaryChromaAndHue(out double chroma2, out double hue2)
     {
       var r = m_red / 255d;

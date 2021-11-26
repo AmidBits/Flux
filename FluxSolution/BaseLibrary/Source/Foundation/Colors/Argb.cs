@@ -6,8 +6,8 @@ namespace Flux.Colors
   {
     public static readonly Argb Empty;
 
-    private Rgb m_rgb;
     private byte m_alpha;
+    private Rgb m_rgb;
 
     public Argb(int alpha, Rgb rgb)
     {
@@ -21,8 +21,8 @@ namespace Flux.Colors
       : this((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb)
     { }
 
-    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
     public int Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public Rgb RGB { get => m_rgb; set => m_rgb = value; }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Argb ToGrayscale(GrayscaleMethod method)
