@@ -1,7 +1,7 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Cassini_projection
-  public record struct CassiniProjection
+  public struct CassiniProjection
     : IMapForwardProjectable, IMapReverseProjectable
   {
     public static readonly CassiniProjection Default;
