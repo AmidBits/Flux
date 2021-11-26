@@ -1,4 +1,5 @@
-﻿
+﻿using System.Linq;
+
 using Flux;
 
 // C# Interactive commands:

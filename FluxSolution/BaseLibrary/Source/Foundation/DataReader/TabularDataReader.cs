@@ -21,6 +21,7 @@ namespace Flux.Data
     /// <summary>Gets the data type information for the specified field. Return the name of the System.Type exposed by GetFieldType(index) by default. Override to change this behavior.</summary>
     /// <remarks>The data type information can differ from the type information returned by GetFieldType, especially where the underlying data types do not map one for one to the runtime types supported by the language. 
     /// (For example, DataTypeName may be "integer", while Type.Name may be "Int32".)</remarks>
+    public override int FieldCount => m_fieldNames.Count;
     public override System.Type GetFieldType(int index)
     {
       if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
