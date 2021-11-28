@@ -8,6 +8,9 @@ namespace Foundation
   [TestClass]
   public class Colors
   {
+    private static readonly Flux.Colors.Argb m_argb = new(0xF7, 0x43, 0x89, 0xCF);
+    private static readonly Flux.Colors.Rgb m_rgb = m_argb.RGB;
+
     [TestMethod]
     public void Acmyk()
     {
@@ -67,12 +70,10 @@ namespace Foundation
     [TestMethod]
     public void Argb()
     {
-      var argb = new Flux.Colors.Argb(247, 67, 137, 207);
-
-      Assert.AreEqual(247, argb.Alpha);
-      Assert.AreEqual(67, argb.RGB.Red);
-      Assert.AreEqual(137, argb.RGB.Green);
-      Assert.AreEqual(207, argb.RGB.Blue);
+      Assert.AreEqual(0xF7, m_argb.Alpha);
+      Assert.AreEqual(0x43, m_argb.RGB.Red);
+      Assert.AreEqual(0x89, m_argb.RGB.Green);
+      Assert.AreEqual(0xCF, m_argb.RGB.Blue);
     }
 
     [TestMethod]
@@ -210,11 +211,9 @@ namespace Foundation
     [TestMethod]
     public void Rgb()
     {
-      var rgb = new Flux.Colors.Rgb(67, 137, 207);
-
-      Assert.AreEqual(67, rgb.Red);
-      Assert.AreEqual(137, rgb.Green);
-      Assert.AreEqual(207, rgb.Blue);
+      Assert.AreEqual(0x43, m_rgb.Red);
+      Assert.AreEqual(0x89, m_rgb.Green);
+      Assert.AreEqual(0xCF, m_rgb.Blue);
     }
 
     [TestMethod]
@@ -292,9 +291,9 @@ namespace Foundation
     [TestMethod]
     public void RgbToInt()
     {
-      var rgb = new Flux.Colors.Rgb(67, 137, 207);
+      var rgb = new Flux.Colors.Rgb(0x43, 0x89, 0xCF);
       var i = rgb.ToInt();
-      Assert.AreEqual(4391119, i);
+      Assert.AreEqual(0x004389CF, i);
     }
 
     [TestMethod]
