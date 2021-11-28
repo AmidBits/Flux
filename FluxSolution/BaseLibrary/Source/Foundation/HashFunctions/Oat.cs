@@ -2,8 +2,13 @@ namespace Flux.Hashing
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>
+#if NET5_0
   public struct Oat
     : ISimpleHashGenerator32, System.IEquatable<Oat>
+#elif NET6_0_OR_GREATER
+  public struct Oat
+    : ISimpleHashGenerator32
+#endif
   {
     public static readonly Oat Empty;
 
@@ -35,20 +40,26 @@ namespace Flux.Hashing
     }
 
     // Operators
+#if NET5_0
     public static bool operator ==(Oat a, Oat b)
       => a.Equals(b);
     public static bool operator !=(Oat a, Oat b)
       => !a.Equals(b);
+#endif
 
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Oat other)
       => m_hash == other.m_hash;
+#endif
 
     // Object (overrides)
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Oat o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
+#endif
     public override string ToString()
       => $"{nameof(Oat)} {{ HashCode = {m_hash} }}";
   }

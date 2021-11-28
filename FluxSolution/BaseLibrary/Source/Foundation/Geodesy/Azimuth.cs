@@ -2,8 +2,13 @@ namespace Flux
 {
   /// <summary>Azimuth unit of degree. The unit here is defined in the range [0, +360]. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
+#if NET5_0
   public struct Azimuth
     : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, Quantity.IValuedUnit<double>
+#elif NET6_0_OR_GREATER
+  public record struct Azimuth
+    : System.IComparable<Azimuth>, Quantity.IValuedUnit<double>
+#endif
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -64,10 +69,12 @@ namespace Flux
     public static bool operator >=(Azimuth a, Azimuth b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Azimuth a, Azimuth b)
       => a.Equals(b);
     public static bool operator !=(Azimuth a, Azimuth b)
       => !a.Equals(b);
+#endif
 
     public static Azimuth operator -(Azimuth v)
       => new(-v.m_degree);
@@ -98,16 +105,20 @@ namespace Flux
     public int CompareTo(Azimuth other)
       => m_degree.CompareTo(other.m_degree);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Azimuth other)
       => m_degree == other.m_degree;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Azimuth o && Equals(o);
     public override int GetHashCode()
       => m_degree.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

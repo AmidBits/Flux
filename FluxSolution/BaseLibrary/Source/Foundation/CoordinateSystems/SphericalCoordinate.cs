@@ -2,8 +2,12 @@ namespace Flux
 {
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
+#if NET5_0
   public struct SphericalCoordinate
     : System.IEquatable<SphericalCoordinate>
+#elif NET6_0_OR_GREATER
+  public record struct SphericalCoordinate
+#endif
   {
     private readonly double m_radius;
     private readonly Quantity.Angle m_inclination;
@@ -48,23 +52,29 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(SphericalCoordinate a, SphericalCoordinate b)
       => a.Equals(b);
     public static bool operator !=(SphericalCoordinate a, SphericalCoordinate b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(SphericalCoordinate other)
       => m_radius == other.m_radius && m_inclination == other.m_inclination && m_azimuth == other.m_azimuth;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is SphericalCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {m_inclination.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} (Elevation = {Quantity.Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.Value)):N1}{Quantity.Angle.DegreeSymbol}), Azimuth = {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

@@ -2,8 +2,13 @@ namespace Flux
 {
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
+#if NET5_0
   public struct Longitude
     : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit<double>
+#elif NET6_0_OR_GREATER
+  public record struct Longitude
+    : System.IComparable<Longitude>, Quantity.IValuedUnit<double>
+#endif
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -71,10 +76,12 @@ namespace Flux
     public static bool operator >=(Longitude a, Longitude b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Longitude a, Longitude b)
       => a.Equals(b);
     public static bool operator !=(Longitude a, Longitude b)
       => !a.Equals(b);
+#endif
 
     public static Longitude operator -(Longitude v)
       => new(-v.m_degree);
@@ -105,16 +112,20 @@ namespace Flux
     public int CompareTo(Longitude other)
       => m_degree.CompareTo(other.m_degree);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Longitude other)
       => m_degree == other.m_degree;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Longitude o && Equals(o);
     public override int GetHashCode()
       => m_degree.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value =  = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

@@ -218,8 +218,12 @@ namespace Flux
 
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
+#if NET5_0
   public struct CartesianCoordinate3
     : System.IEquatable<CartesianCoordinate3>
+#elif NET6_0
+  public record struct CartesianCoordinate3
+#endif
   {
     public static readonly CartesianCoordinate3 Zero;
 
@@ -409,10 +413,12 @@ namespace Flux
     public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
       => new(xyz.Item1, xyz.Item2, xyz.Item3);
 
+#if NET5_0
     public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => a.Equals(b);
     public static bool operator !=(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => !a.Equals(b);
+#endif
 
     public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc)
       => new(-cc.X, -cc.Y, -cc.Z);
@@ -459,16 +465,20 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(CartesianCoordinate3 other)
       => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is CartesianCoordinate3 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides

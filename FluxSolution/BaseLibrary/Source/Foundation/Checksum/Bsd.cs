@@ -2,8 +2,13 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/BSD_checksum"/>
+#if NET5_0
   public struct Bsd
     : IChecksumGenerator32, System.IEquatable<Bsd>
+#elif NET6_0_OR_GREATER
+  public struct Bsd
+    : IChecksumGenerator32
+#endif
   {
     public static readonly Bsd Empty;
 
@@ -29,20 +34,26 @@ namespace Flux.Checksum
     }
 
     // Operators
+#if NET5_0
     public static bool operator ==(Bsd a, Bsd b)
       => a.Equals(b);
     public static bool operator !=(Bsd a, Bsd b)
       => !a.Equals(b);
+#endif
 
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Bsd other)
       => m_hash == other.m_hash;
+#endif
 
     // Object (overrides)
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Bsd o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
+#endif
     public override string ToString()
       => $"{nameof(Bsd)} {{ CheckSum = {m_hash} }}";
   }

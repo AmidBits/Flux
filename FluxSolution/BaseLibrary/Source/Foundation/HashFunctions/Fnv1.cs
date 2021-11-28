@@ -2,8 +2,13 @@ namespace Flux.Hashing
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function"/>
+#if NET5_0
   public struct Fnv1
     : ISimpleHashGenerator32, System.IEquatable<Fnv1>
+#elif NET6_0_OR_GREATER
+  public struct Fnv1
+    : ISimpleHashGenerator32
+#endif
   {
     public static readonly Fnv1 Empty;
 
@@ -38,20 +43,26 @@ namespace Flux.Hashing
     }
 
     // Operators
+#if NET5_0
     public static bool operator ==(Fnv1 a, Fnv1 b)
       => a.Equals(b);
     public static bool operator !=(Fnv1 a, Fnv1 b)
       => !a.Equals(b);
+#endif
 
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fnv1 other)
       => m_hash == other.m_hash && m_primeMultiplier == other.m_primeMultiplier;
+#endif
 
     // Object (overrides)
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Fnv1 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
+#endif
     public override string ToString()
       => $"{nameof(Fnv1)} {{ HashCode = {m_hash} }}";
   }

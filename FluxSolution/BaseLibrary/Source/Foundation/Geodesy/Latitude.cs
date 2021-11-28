@@ -2,8 +2,13 @@ namespace Flux
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
+#if NET5_0
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit<double>
+#elif NET6_0_OR_GREATER
+  public struct Latitude
+    : System.IComparable<Latitude>, Quantity.IValuedUnit<double>
+#endif
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -103,10 +108,12 @@ namespace Flux
     public static bool operator >=(Latitude a, Latitude b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Latitude a, Latitude b)
       => a.Equals(b);
     public static bool operator !=(Latitude a, Latitude b)
       => !a.Equals(b);
+#endif
 
     public static Latitude operator -(Latitude v)
       => new(-v.m_degree);
@@ -137,16 +144,20 @@ namespace Flux
     public int CompareTo(Latitude other)
       => m_degree.CompareTo(other.m_degree);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Latitude other)
       => m_degree == other.m_degree;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
       => m_degree.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

@@ -3,8 +3,12 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
+#if NET5_0
   public struct GeographicCoordinate
     : System.IEquatable<GeographicCoordinate>
+#elif NET6_0_OR_GREATER
+  public record struct GeographicCoordinate
+#endif
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -475,23 +479,29 @@ namespace Flux
     #endregion Static members
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
       => a.Equals(b);
     public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(GeographicCoordinate other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is GeographicCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Altitude, Latitude, Longitude);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", Altitude.Value)} m }}";
     #endregion Object overrides

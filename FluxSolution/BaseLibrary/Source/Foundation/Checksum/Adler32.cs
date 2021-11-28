@@ -1,61 +1,72 @@
 namespace Flux.Checksum
 {
-	/// <summary></summary>
-	/// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
-	public struct Adler32
-		: IChecksumGenerator32, System.IEquatable<Adler32>
-	{
-		public static readonly Adler32 Empty;
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
+#if NET5_0
+  public struct Adler32
+    : IChecksumGenerator32, System.IEquatable<Adler32>
+#elif NET6_0_OR_GREATER
+  public struct Adler32
+    : IChecksumGenerator32
+#endif
+  {
+    public static readonly Adler32 Empty;
 
-		private uint m_hash;// = 1;
+    private uint m_hash;// = 1;
 
-		public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
-		public Adler32(int hash = 1) => m_hash = unchecked((uint)hash);
+    public Adler32(int hash = 1) => m_hash = unchecked((uint)hash);
 
-		public int GenerateChecksum32(byte[] bytes, int startAt, int count)
-		{
-			if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
+    {
+      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
-			unchecked
-			{
-				var a = m_hash & 0xffff;
-				var b = (m_hash >> 16) & 0xffff;
+      unchecked
+      {
+        var a = m_hash & 0xffff;
+        var b = (m_hash >> 16) & 0xffff;
 
-				for (var maxCount = (count < 5552) ? count : 5552; count > 0; count -= maxCount, maxCount = count < 5552 ? count : 5552)
-				{
-					for (int counter = 0; counter < maxCount; counter++)
-					{
-						a += bytes[startAt++];
-						b += a;
-					}
+        for (var maxCount = (count < 5552) ? count : 5552; count > 0; count -= maxCount, maxCount = count < 5552 ? count : 5552)
+        {
+          for (int counter = 0; counter < maxCount; counter++)
+          {
+            a += bytes[startAt++];
+            b += a;
+          }
 
-					a %= 65521;
-					b %= 65521;
-				}
+          a %= 65521;
+          b %= 65521;
+        }
 
-				m_hash = (b << 16) | a;
-			}
+        m_hash = (b << 16) | a;
+      }
 
-			return Checksum32;
-		}
+      return Checksum32;
+    }
 
-		// Operators
-		public static bool operator ==(Adler32 a, Adler32 b)
-			=> a.Equals(b);
-		public static bool operator !=(Adler32 a, Adler32 b)
-			=> !a.Equals(b);
+#if NET5_0
+    // Operators
+    public static bool operator ==(Adler32 a, Adler32 b)
+      => a.Equals(b);
+    public static bool operator !=(Adler32 a, Adler32 b)
+      => !a.Equals(b);
+#endif
 
-		// IEquatable
-		public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
-			=> m_hash == other.m_hash;
+#if NET5_0
+    // IEquatable
+    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
+      => m_hash == other.m_hash;
+#endif
 
-		// Object (overrides)
-		public override bool Equals(object? obj)
-			=> obj is Adler32 o && Equals(o);
-		public override int GetHashCode()
-			=> m_hash.GetHashCode();
-		public override string ToString()
-			=> $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
-	}
+    // Object (overrides)
+#if NET5_0
+    public override bool Equals(object? obj)
+      => obj is Adler32 o && Equals(o);
+    public override int GetHashCode()
+      => m_hash.GetHashCode();
+#endif
+    public override string ToString()
+      => $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
+  }
 }
