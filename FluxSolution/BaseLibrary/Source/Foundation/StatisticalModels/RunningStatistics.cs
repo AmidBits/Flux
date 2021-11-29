@@ -1,7 +1,12 @@
 ﻿namespace Flux.Numerics
 {
+#if NET5_0
   public struct RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable
+#else
+  public struct RunningStatistics
+    : System.IFormattable
+#endif
   {
     public static readonly RunningStatistics Empty;
 
@@ -180,18 +185,22 @@
     #endregion Static members
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(in RunningStatistics a, in RunningStatistics b)
       => a.Equals(b);
     public static bool operator !=(in RunningStatistics a, in RunningStatistics b)
       => !a.Equals(b);
+#endif
     public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b)
       => Combine(a, b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable<RunningStatistics>
     public bool Equals(RunningStatistics other)
       => m_count == other.m_count && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_min == other.m_min && m_product == other.m_product && m_reciprocalSum == other.m_reciprocalSum && m_sum == other.m_sum;
+#endif
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
@@ -199,10 +208,12 @@
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4);
+#endif
     public override string? ToString()
       => ToString(null, null);
     #endregion Object overrides

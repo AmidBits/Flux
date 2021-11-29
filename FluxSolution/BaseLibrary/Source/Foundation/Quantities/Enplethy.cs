@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
+#if NET5_0
   public struct Enplethy
     : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValuedUnit<double>
+#else
+  public record struct Enplethy
+    : System.IComparable<Enplethy>, IValuedUnit<double>
+#endif
   {
     // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
     public static Enplethy AvagadroConstant
@@ -51,10 +56,12 @@ namespace Flux.Quantity
     public static bool operator >=(Enplethy a, Enplethy b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Enplethy a, Enplethy b)
       => a.Equals(b);
     public static bool operator !=(Enplethy a, Enplethy b)
       => !a.Equals(b);
+#endif
 
     public static Enplethy operator -(Enplethy v)
       => new(-v.Value);
@@ -85,16 +92,20 @@ namespace Flux.Quantity
     public int CompareTo(Enplethy other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Enplethy other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Enplethy o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} mol }}";
     #endregion Object overrides

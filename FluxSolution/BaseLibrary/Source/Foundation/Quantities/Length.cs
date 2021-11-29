@@ -39,8 +39,13 @@ namespace Flux
 
     /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Length"/>
+#if NET5_0
     public struct Length
       : System.IComparable<Length>, System.IEquatable<Length>, IValuedUnit<double>
+#else
+    public record struct Length
+      : System.IComparable<Length>, IValuedUnit<double>
+#endif
     {
       private readonly double m_value;
 
@@ -108,10 +113,12 @@ namespace Flux
       public static bool operator >=(Length a, Length b)
         => a.CompareTo(b) >= 0;
 
+#if NET5_0
       public static bool operator ==(Length a, Length b)
         => a.Equals(b);
       public static bool operator !=(Length a, Length b)
         => !a.Equals(b);
+#endif
 
       public static Length operator -(Length v)
         => new(-v.m_value);
@@ -142,16 +149,20 @@ namespace Flux
       public int CompareTo(Length other)
         => m_value.CompareTo(other.m_value);
 
+#if NET5_0
       // IEquatable
       public bool Equals(Length other)
         => m_value == other.m_value;
+#endif
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj)
+#if NET5_0
+     public override bool Equals(object? obj)
         => obj is Length o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
+#endif
       public override string ToString()
         => $"{nameof(Length)} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

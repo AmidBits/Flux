@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
+#if NET5_0
   public struct Illuminance
     : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValuedUnit<double>
+#else
+  public record struct Illuminance
+    : System.IComparable<Illuminance>, IValuedUnit<double>
+#endif
   {
     private readonly double m_value;
 
@@ -44,10 +49,12 @@ namespace Flux.Quantity
     public static bool operator >=(Illuminance a, Illuminance b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Illuminance a, Illuminance b)
       => a.Equals(b);
     public static bool operator !=(Illuminance a, Illuminance b)
       => !a.Equals(b);
+#endif
 
     public static Illuminance operator -(Illuminance v)
       => new(-v.m_value);
@@ -78,16 +85,20 @@ namespace Flux.Quantity
     public int CompareTo(Illuminance other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Illuminance other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Illuminance o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} lx }}";
     #endregion Object overrides

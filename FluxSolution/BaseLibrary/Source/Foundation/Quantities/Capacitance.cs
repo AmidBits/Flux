@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
+#if NET5_0
   public struct Capacitance
     : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IValuedUnit<double>
+#else
+  public record struct Capacitance
+    : System.IComparable<Capacitance>, IValuedUnit<double>
+#endif
   {
     private readonly double m_value;
 
@@ -44,10 +49,12 @@ namespace Flux.Quantity
     public static bool operator >=(Capacitance a, Capacitance b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Capacitance a, Capacitance b)
       => a.Equals(b);
     public static bool operator !=(Capacitance a, Capacitance b)
       => !a.Equals(b);
+#endif
 
     public static Capacitance operator -(Capacitance v)
       => new(-v.m_value);
@@ -78,16 +85,20 @@ namespace Flux.Quantity
     public int CompareTo(Capacitance other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Capacitance other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Capacitance o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} F }}";
     #endregion Object overrides

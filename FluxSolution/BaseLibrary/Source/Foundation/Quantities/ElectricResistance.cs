@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
+#if NET5_0
   public struct ElectricResistance
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValuedUnit<double>
+#else
+  public record struct ElectricResistance
+    : System.IComparable<ElectricResistance>, IValuedUnit<double>
+#endif
   {
     public static ElectricResistance VonKlitzing
       => new(25812.80745); // 25812.80745;
@@ -71,10 +76,12 @@ namespace Flux.Quantity
     public static bool operator >=(ElectricResistance a, ElectricResistance b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(ElectricResistance a, ElectricResistance b)
       => a.Equals(b);
     public static bool operator !=(ElectricResistance a, ElectricResistance b)
       => !a.Equals(b);
+#endif
 
     public static ElectricResistance operator -(ElectricResistance v)
       => new(-v.m_value);
@@ -105,16 +112,20 @@ namespace Flux.Quantity
     public int CompareTo(ElectricResistance other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(ElectricResistance other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is ElectricResistance o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} \u2126 }}";
     #endregion Object overrides

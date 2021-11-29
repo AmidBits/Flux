@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
+#if NET5_0
   public struct MagneticFluxDensity
     : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValuedUnit<double>
+#else
+  public record struct MagneticFluxDensity
+    : System.IComparable<MagneticFluxDensity>, IValuedUnit<double>
+#endif
   {
     private readonly double m_value;
 
@@ -44,10 +49,12 @@ namespace Flux.Quantity
     public static bool operator >=(MagneticFluxDensity a, MagneticFluxDensity b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(MagneticFluxDensity a, MagneticFluxDensity b)
       => a.Equals(b);
     public static bool operator !=(MagneticFluxDensity a, MagneticFluxDensity b)
       => !a.Equals(b);
+#endif
 
     public static MagneticFluxDensity operator -(MagneticFluxDensity v)
       => new(-v.m_value);
@@ -78,16 +85,20 @@ namespace Flux.Quantity
     public int CompareTo(MagneticFluxDensity other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(MagneticFluxDensity other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is MagneticFluxDensity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} lm }}";
     #endregion Object overrides

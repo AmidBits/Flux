@@ -27,8 +27,13 @@ namespace Flux
 
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
+#if NET5_0
     public struct Speed
       : System.IComparable<Speed>, System.IEquatable<Speed>, IValuedUnit<double>
+#else
+    public record struct Speed
+      : System.IComparable<Speed>, IValuedUnit<double>
+#endif
     {
       public static Speed SpeedOfLightInVacuum
         => new(299792458);
@@ -102,10 +107,12 @@ namespace Flux
       public static bool operator >=(Speed a, Speed b)
         => a.CompareTo(b) >= 0;
 
+#if NET5_0
       public static bool operator ==(Speed a, Speed b)
         => a.Equals(b);
       public static bool operator !=(Speed a, Speed b)
         => !a.Equals(b);
+#endif
 
       public static Speed operator -(Speed v)
         => new(-v.m_value);
@@ -136,16 +143,20 @@ namespace Flux
       public int CompareTo(Speed other)
         => m_value.CompareTo(other.m_value);
 
+#if NET5_0
       // IEquatable
       public bool Equals(Speed other)
         => m_value == other.m_value;
+#endif
       #endregion Implemented interfaces
 
       #region Object overrides
+#if NET5_0
       public override bool Equals(object? obj)
         => obj is Speed o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
+#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

@@ -21,8 +21,13 @@ namespace Flux
 
     /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Area"/>
+#if NET5_0
     public struct Area
       : System.IComparable<Area>, System.IEquatable<Area>, IValuedUnit<double>
+#else
+    public record struct Area
+      : System.IComparable<Area>, IValuedUnit<double>
+#endif
     {
       private readonly double m_value;
 
@@ -70,10 +75,12 @@ namespace Flux
       public static bool operator >=(Area a, Area b)
         => a.CompareTo(b) >= 0;
 
+#if NET5_0
       public static bool operator ==(Area a, Area b)
         => a.Equals(b);
       public static bool operator !=(Area a, Area b)
         => !a.Equals(b);
+#endif
 
       public static Area operator -(Area v)
         => new(-v.m_value);
@@ -104,16 +111,20 @@ namespace Flux
       public int CompareTo(Area other)
         => m_value.CompareTo(other.m_value);
 
+#if NET5_0
       // IEquatable
       public bool Equals(Area other)
         => m_value == other.m_value;
+#endif
       #endregion Implemented interfaces
 
       #region Object overrides
+#if NET5_0
       public override bool Equals(object? obj)
         => obj is Area o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
+#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

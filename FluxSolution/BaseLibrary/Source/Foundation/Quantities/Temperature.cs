@@ -25,8 +25,13 @@ namespace Flux
 
     /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
+#if NET5_0
     public struct Temperature
       : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValuedUnit<double>
+#else
+    public record struct Temperature
+      : System.IComparable<Temperature>, IValuedUnit<double>
+#endif
     {
       public const double CelsiusAbsoluteZero = -273.15;
       public const double CelsiusBoilingPoint = 99.9839;
@@ -125,10 +130,12 @@ namespace Flux
       public static bool operator >=(Temperature a, Temperature b)
         => a.CompareTo(b) >= 0;
 
+#if NET5_0
       public static bool operator ==(Temperature a, Temperature b)
         => a.Equals(b);
       public static bool operator !=(Temperature a, Temperature b)
         => !a.Equals(b);
+#endif
 
       public static Temperature operator -(Temperature v)
         => new(-v.m_value);
@@ -159,16 +166,20 @@ namespace Flux
       public int CompareTo(Temperature other)
         => m_value.CompareTo(other.m_value);
 
+#if NET5_0
       // IEquatable<>
       public bool Equals(Temperature other)
         => m_value == other.m_value;
+#endif
       #endregion Implemented interfaces
 
       #region Object overrides
+#if NET5_0
       public override bool Equals(object? obj)
         => obj is Temperature o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
+#endif
       public override string ToString()
         => $"{GetType().Name} {{ {ToUnitString()} }}";
       #endregion Object overrides

@@ -7,8 +7,13 @@ namespace Flux.Quantity
 
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
+#if NET5_0
   public struct Action
     : System.IComparable<Action>, System.IEquatable<Action>, IValuedUnit<double>
+#else
+  public record struct Action
+    : System.IComparable<Action>, IValuedUnit<double>
+#endif
   {
     private readonly double m_value;
 
@@ -44,10 +49,12 @@ namespace Flux.Quantity
     public static bool operator >=(Action a, Action b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Action a, Action b)
       => a.Equals(b);
     public static bool operator !=(Action a, Action b)
       => !a.Equals(b);
+#endif
 
     public static Action operator -(Action v)
       => new(-v.m_value);
@@ -78,16 +85,20 @@ namespace Flux.Quantity
     public int CompareTo(Action other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Action other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Action o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} J s }}";
     #endregion Object overrides
