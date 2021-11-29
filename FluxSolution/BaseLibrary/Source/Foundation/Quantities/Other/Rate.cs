@@ -7,7 +7,7 @@ namespace Flux.Quantity
     : System.IEquatable<Rate<TNumerator, TDenominator>>
     where TNumerator : IValuedUnit<double>
     where TDenominator : IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Rate<TNumerator, TDenominator>
     where TNumerator : IValuedUnit<double>
     where TDenominator : IValuedUnit<double>

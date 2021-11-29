@@ -5,7 +5,7 @@ namespace Flux
 #if NET5_0
   public struct Azimuth
     : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, Quantity.IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Azimuth
     : System.IComparable<Azimuth>, Quantity.IValuedUnit<double>
 #endif

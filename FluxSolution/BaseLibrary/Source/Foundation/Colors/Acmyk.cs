@@ -4,7 +4,7 @@ namespace Flux.Colors
 #if NET5_0
   public struct Acmyk
     : System.IEquatable<Acmyk>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Acmyk
 #endif
   {

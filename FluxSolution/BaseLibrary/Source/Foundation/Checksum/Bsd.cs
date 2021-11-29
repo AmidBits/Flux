@@ -5,7 +5,7 @@ namespace Flux.Checksum
 #if NET5_0
   public struct Bsd
     : IChecksumGenerator32, System.IEquatable<Bsd>
-#elif NET6_0_OR_GREATER
+#else
   public struct Bsd
     : IChecksumGenerator32
 #endif

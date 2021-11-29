@@ -5,7 +5,7 @@ namespace Flux
 #if NET5_0
   public struct Latitude
     : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public struct Latitude
     : System.IComparable<Latitude>, Quantity.IValuedUnit<double>
 #endif

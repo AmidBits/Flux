@@ -3,7 +3,7 @@ namespace Flux.Geometry
 #if NET5_0
   public struct LineSlope
     : System.IEquatable<LineSlope>
-#elif NET6_0_OR_GREATER
+#else
   public record struct LineSlope
 #endif
   {

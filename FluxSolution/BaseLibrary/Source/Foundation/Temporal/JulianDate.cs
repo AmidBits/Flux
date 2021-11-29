@@ -12,7 +12,7 @@ namespace Flux
 #if NET5_0
   public struct JulianDate
     : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IValuedUnit<decimal>
-#elif NET6_0_OR_GREATER
+#else
   public record struct JulianDate
     : System.IComparable<JulianDate>, Quantity.IValuedUnit<decimal>
 #endif

@@ -14,7 +14,7 @@ namespace Flux
 #if NET5_0
   public struct MomentUtc
     : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
-#elif NET6_0_OR_GREATER
+#else
   public record struct MomentUtc
     : System.IComparable<MomentUtc>
 #endif

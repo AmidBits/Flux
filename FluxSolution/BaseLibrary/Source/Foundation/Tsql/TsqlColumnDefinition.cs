@@ -2,8 +2,12 @@ using System.Linq;
 
 namespace Flux.Data
 {
+#if NET5_0
   public struct TsqlColumnDefinition
     : System.IEquatable<TsqlColumnDefinition>
+#else
+  public record struct TsqlColumnDefinition
+#endif
   {
     public static readonly TsqlColumnDefinition Empty;
 
@@ -80,23 +84,29 @@ namespace Flux.Data
     #endregion Static methods
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => left.Equals(right);
     public static bool operator !=(TsqlColumnDefinition left, TsqlColumnDefinition right)
       => !left.Equals(right);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(TsqlColumnDefinition other)
       => ColumnName == other.ColumnName && DataTypeName == other.DataTypeName && DataTypeArguments == other.DataTypeArguments && Nullability == other.Nullability;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is TsqlColumnDefinition o && Equals(o);
     public override int GetHashCode()
       => ToString().GetHashCode(System.StringComparison.Ordinal);
+#endif
     public override string ToString()
       => ToString(false);
     #endregion Object overrides

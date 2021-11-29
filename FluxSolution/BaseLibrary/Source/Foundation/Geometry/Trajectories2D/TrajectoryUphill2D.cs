@@ -3,7 +3,7 @@ namespace Flux.Model.Trajectories
 #if NET5_0
   public struct TrajectoryUphill2D
     : System.IEquatable<TrajectoryUphill2D>, ITrajectory2D
-#elif NET6_0_OR_GREATER
+#else
   public struct TrajectoryUphill2D
     : ITrajectory2D
 #endif

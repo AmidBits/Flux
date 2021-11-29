@@ -3,8 +3,12 @@ using System.Linq;
 namespace Flux.Data
 {
   /// <summary>SQL data type name functionality</summary>
+#if NET5_0
   public struct TsqlDataType
     : System.IEquatable<TsqlDataType>
+#else
+  public record struct TsqlDataType
+#endif
   {
     #region DataType Name Constants
     public const string Bigint = @"bigint";
@@ -321,23 +325,29 @@ namespace Flux.Data
     #endregion Static members
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(TsqlDataType left, TsqlDataType right)
       => left.Equals(right);
     public static bool operator !=(TsqlDataType left, TsqlDataType right)
       => !left.Equals(right);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(TsqlDataType other)
       => Name == other.Name && Arguments.SequenceEqual(other.Arguments);
+#endif
     #endregion IEquatable
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is TsqlDataType o && Equals(o);
     public override int GetHashCode()
       => Name.GetHashCode(System.StringComparison.Ordinal);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Name = {Name} }}";
     #endregion Object overrides

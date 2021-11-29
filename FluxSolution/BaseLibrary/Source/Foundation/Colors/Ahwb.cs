@@ -3,7 +3,7 @@ namespace Flux.Colors
 #if NET5_0
   public struct Ahwb
     : System.IEquatable<Ahwb>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Ahwb
 #endif
   {

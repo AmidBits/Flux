@@ -3,7 +3,7 @@ namespace Flux.Geometry
 #if NET5_0
   public struct Point3
     : System.IEquatable<Point3>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Point3
 #endif
   {

@@ -44,7 +44,7 @@ namespace Flux
 #if NET5_0
     public struct PartsPerNotation
       : System.IComparable<PartsPerNotation>, System.IEquatable<PartsPerNotation>, IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
     public record struct PartsPerNotation
       : System.IComparable<PartsPerNotation>, IValuedUnit<double>
 #endif

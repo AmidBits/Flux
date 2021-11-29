@@ -3,7 +3,7 @@ namespace Flux.Geometry.Hexagon
 #if NET5_0
   public struct HexOrientation
     : System.IEquatable<HexOrientation>
-#elif NET6_0_OR_GREATER
+#else
   public struct HexOrientation
 #endif
   {

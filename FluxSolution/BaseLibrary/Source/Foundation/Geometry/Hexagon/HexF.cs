@@ -3,7 +3,7 @@ namespace Flux.Geometry.Hexagon
 #if NET5_0
   public struct HexF
     : System.IEquatable<HexF>
-#elif NET6_0_OR_GREATER
+#else
   public record struct HexF
 #endif
   {

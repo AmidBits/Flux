@@ -6,7 +6,7 @@ namespace Flux.Music
 #if NET5_0
   public struct Cent
     : System.IComparable<Cent>, System.IEquatable<Cent>, Quantity.IValuedUnit<int>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Cent
     : System.IComparable<Cent>, Quantity.IValuedUnit<int>
 #endif

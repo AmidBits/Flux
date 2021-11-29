@@ -1,6 +1,10 @@
 namespace Flux
 {
+#if NET5_0
   public sealed class AssemblyInfo
+#else
+  public record class AssemblyInfo
+#endif
   {
     public static AssemblyInfo Calling
       => new(System.Reflection.Assembly.GetCallingAssembly());

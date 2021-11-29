@@ -4,7 +4,7 @@
 #if NET5_0
   public struct EqualEarthProjection
     : IMapForwardProjectable, IMapReverseProjectable
-#elif NET6_0_OR_GREATER
+#else
   public record struct EqualEarthProjection
 #endif
   {

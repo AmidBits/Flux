@@ -6,7 +6,7 @@ namespace Flux.Midi
 #if NET5_0
   public struct MidiNote
     : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IValuedUnit<int>
-#elif NET6_0_OR_GREATER
+#else
   public struct MidiNote
     : System.IComparable<MidiNote>, Quantity.IValuedUnit<int>
 #endif

@@ -9,9 +9,14 @@
   }
 
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
+#if NET5_0
   public struct ValueRange<T>
     : System.IEquatable<ValueRange<T>>
     where T : System.IComparable<T>, System.IEquatable<T>
+#else
+  public struct ValueRange<T>
+    where T : System.IComparable<T>, System.IEquatable<T>
+#endif
   {
     public readonly static ValueRange<T> Empty;
 
@@ -86,22 +91,28 @@
     #endregion Static methods
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(ValueRange<T> a, ValueRange<T> b)
       => a.Equals(b);
     public static bool operator !=(ValueRange<T> a, ValueRange<T> b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     public bool Equals(ValueRange<T> other)
       => m_lo.Equals(other.m_lo) && m_hi.Equals(other.m_hi);
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is ValueRange<T> o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_lo, m_hi);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Low = {m_lo}, High = {m_hi} }}";
     #endregion Object overrides

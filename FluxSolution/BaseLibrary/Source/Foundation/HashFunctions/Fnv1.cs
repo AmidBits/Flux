@@ -5,7 +5,7 @@ namespace Flux.Hashing
 #if NET5_0
   public struct Fnv1
     : ISimpleHashGenerator32, System.IEquatable<Fnv1>
-#elif NET6_0_OR_GREATER
+#else
   public struct Fnv1
     : ISimpleHashGenerator32
 #endif

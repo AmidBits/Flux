@@ -5,7 +5,7 @@ namespace Flux.Quantity
 #if NET5_0
   public struct SimpleFraction
     : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public record struct SimpleFraction
     : System.IComparable<SimpleFraction>, IValuedUnit<double>
 #endif

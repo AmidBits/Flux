@@ -5,7 +5,7 @@ namespace Flux.Checksum
 #if NET5_0
   public struct Fletcher32
     : IChecksumGenerator32, System.IEquatable<Fletcher32>
-#elif NET6_0_OR_GREATER
+#else
   public struct Fletcher32
     : IChecksumGenerator32
 #endif

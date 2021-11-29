@@ -4,7 +4,7 @@ namespace Flux.Colors
 #if NET5_0
   public struct Ahsi
     : System.IEquatable<Ahsi>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Ahsi
 #endif
   {

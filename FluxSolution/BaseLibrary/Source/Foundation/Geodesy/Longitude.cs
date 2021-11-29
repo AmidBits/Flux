@@ -5,7 +5,7 @@ namespace Flux
 #if NET5_0
   public struct Longitude
     : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Longitude
     : System.IComparable<Longitude>, Quantity.IValuedUnit<double>
 #endif

@@ -3,7 +3,7 @@ namespace Flux.Geometry.Hexagon
 #if NET5_0
   public struct HexLayout
     : System.IEquatable<HexLayout>
-#elif NET6_0_OR_GREATER
+#else
   public record struct HexLayout
 #endif
   {

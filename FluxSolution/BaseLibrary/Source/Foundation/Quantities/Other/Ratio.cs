@@ -5,7 +5,7 @@ namespace Flux.Quantity
 #if NET5_0
   public struct Ratio
     : System.IEquatable<Ratio>, IValuedUnit<double>
-#elif NET6_0_OR_GREATER
+#else
   public struct Ratio
     : IValuedUnit<double>
 #endif

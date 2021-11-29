@@ -1,7 +1,11 @@
 namespace Flux.Services
 {
+#if NET5_0
   public struct MeasuredResult
     : System.IEquatable<MeasuredResult>
+#else
+  public record struct MeasuredResult
+#endif
   {
     public static readonly MeasuredResult Empty;
 
@@ -56,23 +60,29 @@ namespace Flux.Services
     }
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(MeasuredResult a, MeasuredResult b)
       => a.Equals(b);
     public static bool operator !=(MeasuredResult a, MeasuredResult b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // System.IEquatable
     public bool Equals(MeasuredResult other)
       => Identifier == other.Identifier && Iterations == other.Iterations && LastResult == other.LastResult && TotalTime == other.TotalTime;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is MeasuredResult o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Identifier, Iterations, LastResult, TotalTime);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ {Identifier}, x {Iterations.ToGroupString()}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
     #endregion Object overrides

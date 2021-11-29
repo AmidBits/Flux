@@ -4,7 +4,7 @@
 #if NET5_0
   public struct WinkelTripelProjection
     : IMapForwardProjectable
-#elif NET6_0_OR_GREATER
+#else
   public record struct WinkelTripelProjection
 #endif
   {

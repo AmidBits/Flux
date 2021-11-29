@@ -3,7 +3,7 @@ namespace Flux.Model.Trajectories
 #if NET5_0
   public struct TrajectoryDropped2D // Projectile dropped from a moving system.
     : System.IEquatable<TrajectoryDropped2D>, ITrajectory2D
-#elif NET6_0_OR_GREATER
+#else
   public struct TrajectoryDropped2D // Projectile dropped from a moving system.
     : ITrajectory2D
 #endif

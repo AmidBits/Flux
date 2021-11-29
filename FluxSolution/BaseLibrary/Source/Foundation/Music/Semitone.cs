@@ -6,7 +6,7 @@ namespace Flux.Music
 #if NET5_0
   public struct Semitone
     : System.IComparable<Semitone>, System.IEquatable<Semitone>, Quantity.IValuedUnit<int>
-#elif NET6_0_OR_GREATER
+#else
   public record struct Semitone
     : System.IComparable<Semitone>, Quantity.IValuedUnit<int>
 #endif

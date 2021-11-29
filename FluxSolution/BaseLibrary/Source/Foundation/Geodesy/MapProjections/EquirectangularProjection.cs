@@ -4,7 +4,7 @@
 #if NET5_0
   public struct EquirectangularProjection
     : System.IEquatable<EquirectangularProjection>, IMapForwardProjectable, IMapReverseProjectable
-#elif NET6_0_OR_GREATER
+#else
   public record struct EquirectangularProjection
     : IMapForwardProjectable, IMapReverseProjectable
 #endif
