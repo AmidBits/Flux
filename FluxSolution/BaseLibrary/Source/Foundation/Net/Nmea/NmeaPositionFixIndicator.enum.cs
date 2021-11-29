@@ -1,4 +1,4 @@
-namespace Flux.Services.Nmea
+namespace Flux.Net.Nmea
 {
   public enum NmeaPositionFixIndicator
   {
