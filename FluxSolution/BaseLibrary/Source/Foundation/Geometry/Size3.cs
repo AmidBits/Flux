@@ -1,7 +1,11 @@
 namespace Flux.Geometry
 {
+#if NET5_0
   public struct Size3
     : System.IEquatable<Size3>
+#elif NET6_0_OR_GREATER
+  public record struct Size3
+#endif
   {
     public static readonly Size3 Zero;
 
@@ -68,10 +72,12 @@ namespace Flux.Geometry
     #endregion Static methods
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(in Size3 a, in Size3 b)
       => a.Equals(b);
     public static bool operator !=(in Size3 a, in Size3 b)
       => !a.Equals(b);
+#endif
 
     public static Size3 operator +(in Size3 a, in Size3 b)
       => Add(a, b);
@@ -96,16 +102,20 @@ namespace Flux.Geometry
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(Size3 other)
       => Width == other.Width && Height == other.Height && Depth == other.Depth;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Size3 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Width, Height, Depth);
+#endif
     public override string? ToString()
       => $"{GetType().Name} {{ Width = {Width}, Height = {Height}, Depth = {Depth} }}";
     #endregion Object overrides

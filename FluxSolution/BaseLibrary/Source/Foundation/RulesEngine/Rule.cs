@@ -3,8 +3,12 @@ using System.Reflection;
 
 namespace Flux.RulesEngine
 {
+#if NET5_0
   public struct Rule
     : System.IEquatable<Rule>
+#elif NET6_0_OR_GREATER
+  public record struct Rule
+#endif
   {
     public static readonly Rule Empty;
 
@@ -62,23 +66,29 @@ namespace Flux.RulesEngine
     #endregion Static methods
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(Rule a, Rule b)
       => a.Equals(b);
     public static bool operator !=(Rule a, Rule b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // System.IEquatable<Rule>
     public bool Equals(Rule other)
       => Name == other.Name && Operator == other.Operator && Value == other.Value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Rule o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Name, Operator, Value);
+#endif
     public override string? ToString()
       => $"{nameof(Rule)} {{ \"{Name}\" {Operator} '{Value}' }}";
     #endregion Object overrides

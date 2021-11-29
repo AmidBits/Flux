@@ -3,8 +3,13 @@ namespace Flux.Music
   /// <summary>Semitone unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
+#if NET5_0
   public struct Semitone
     : System.IComparable<Semitone>, System.IEquatable<Semitone>, Quantity.IValuedUnit<int>
+#elif NET6_0_OR_GREATER
+  public record struct Semitone
+    : System.IComparable<Semitone>, Quantity.IValuedUnit<int>
+#endif
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
@@ -64,10 +69,12 @@ namespace Flux.Music
     public static bool operator >=(Semitone a, Semitone b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(Semitone a, Semitone b)
       => a.Equals(b);
     public static bool operator !=(Semitone a, Semitone b)
       => !a.Equals(b);
+#endif
 
     public static Semitone operator -(Semitone v)
       => new(-v.m_value);
@@ -98,16 +105,20 @@ namespace Flux.Music
     public int CompareTo(Semitone other)
       => m_value.CompareTo(other.m_value);
 
+#if NET5_0
     // IEquatable
     public bool Equals(Semitone other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Semitone o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} }}";
     #endregion Object overrides

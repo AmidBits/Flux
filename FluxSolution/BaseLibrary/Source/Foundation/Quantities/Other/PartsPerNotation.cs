@@ -41,8 +41,13 @@ namespace Flux
 
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
+#if NET5_0
     public struct PartsPerNotation
       : System.IComparable<PartsPerNotation>, System.IEquatable<PartsPerNotation>, IValuedUnit<double>
+#elif NET6_0_OR_GREATER
+    public record struct PartsPerNotation
+      : System.IComparable<PartsPerNotation>, IValuedUnit<double>
+#endif
     {
       public const char PercentSymbol = '\u0025';
       public const char PermilleSymbol = '\u2030';
@@ -105,10 +110,12 @@ namespace Flux
       public static bool operator >=(PartsPerNotation a, PartsPerNotation b)
         => a.CompareTo(b) >= 0;
 
+#if NET5_0
       public static bool operator ==(PartsPerNotation a, PartsPerNotation b)
         => a.Equals(b);
       public static bool operator !=(PartsPerNotation a, PartsPerNotation b)
         => !a.Equals(b);
+#endif
 
       public static PartsPerNotation operator -(PartsPerNotation v)
         => new(-v.m_parts);
@@ -139,16 +146,20 @@ namespace Flux
       public int CompareTo(PartsPerNotation other)
         => m_parts.CompareTo(other.m_parts);
 
+#if NET5_0
       // IEquatable
       public bool Equals(PartsPerNotation other)
         => m_parts == other.m_parts;
+#endif
       #endregion Implemented interfaces
 
       #region Object overrides
+#if NET5_0
       public override bool Equals(object? obj)
         => obj is PartsPerNotation o && Equals(o);
       public override int GetHashCode()
         => System.HashCode.Combine(m_parts);
+#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitValue(m_unit)}{m_unit.GetUnitSymbol()} }}";
       #endregion Object overrides

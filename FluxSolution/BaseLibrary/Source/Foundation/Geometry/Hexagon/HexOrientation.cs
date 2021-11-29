@@ -1,7 +1,11 @@
 namespace Flux.Geometry.Hexagon
 {
+#if NET5_0
   public struct HexOrientation
     : System.IEquatable<HexOrientation>
+#elif NET6_0_OR_GREATER
+  public struct HexOrientation
+#endif
   {
     public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
     public static readonly HexOrientation PointyTopped = new(System.Math.Sqrt(3.0), System.Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, System.Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
@@ -30,19 +34,24 @@ namespace Flux.Geometry.Hexagon
     }
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(HexOrientation a, HexOrientation b)
       => a.Equals(b);
     public static bool operator !=(HexOrientation a, HexOrientation b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(HexOrientation other)
       => F0 == other.F0 && F1 == other.F1 && F2 == other.F2 && F3 == other.F3 && B0 == other.B0 && B1 == other.B1 && B2 == other.B2 && B3 == other.B3 && StartAngle == other.StartAngle;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is HexOrientation o && Equals(o);
     public override int GetHashCode()
@@ -59,6 +68,7 @@ namespace Flux.Geometry.Hexagon
       hc.Add(StartAngle);
       return hc.ToHashCode();
     }
+#endif
     public override string? ToString()
       => $"{GetType().Name} {{ F = [{F0}, {F1}, {F2}, {F3}], B = [{B0}, {B1}, {B2}, {B3}], StartAngle = {StartAngle}° }}";
     #endregion Object overrides

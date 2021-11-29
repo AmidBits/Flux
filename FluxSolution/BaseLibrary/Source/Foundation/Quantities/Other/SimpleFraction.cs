@@ -2,8 +2,13 @@ namespace Flux.Quantity
 {
   /// <summary>Simple fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
+#if NET5_0
   public struct SimpleFraction
     : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IValuedUnit<double>
+#elif NET6_0_OR_GREATER
+  public record struct SimpleFraction
+    : System.IComparable<SimpleFraction>, IValuedUnit<double>
+#endif
   {
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne
@@ -136,10 +141,12 @@ namespace Flux.Quantity
     public static bool operator >=(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(SimpleFraction a, SimpleFraction b)
       => a.Equals(b);
     public static bool operator !=(SimpleFraction a, SimpleFraction b)
       => !a.Equals(b);
+#endif
 
     public static SimpleFraction operator -(SimpleFraction v)
       => new(-v.m_numerator, -v.m_denominator, false);
@@ -182,16 +189,20 @@ namespace Flux.Quantity
       return (m_numerator * other.m_denominator).CompareTo(m_denominator * other.m_numerator);
     }
 
+#if NET5_0
     // IEquatable
     public bool Equals(SimpleFraction other)
       => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is SimpleFraction o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({Value}) }}";
     #endregion Object overrides

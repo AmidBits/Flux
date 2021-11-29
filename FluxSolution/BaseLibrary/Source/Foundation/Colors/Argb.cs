@@ -1,8 +1,12 @@
 namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
+#if NET5_0
   public struct Argb
     : System.IEquatable<Argb>
+#elif NET6_0_OR_GREATER
+  public record struct Argb
+#endif
   {
     public static readonly Argb Empty;
 
@@ -158,23 +162,29 @@ namespace Flux.Colors
     public static explicit operator Argb(int v)
       => unchecked(new Argb((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
 
+#if NET5_0
     public static bool operator ==(Argb a, Argb b)
       => a.Equals(b);
     public static bool operator !=(Argb a, Argb b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Argb other)
       => m_alpha == other.m_alpha && RGB.Equals(other.RGB);
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Argb o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_alpha, RGB);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ {m_alpha}, {RGB.Red}, {RGB.Green}, {RGB.Blue} }}";
     #endregion Object overrides

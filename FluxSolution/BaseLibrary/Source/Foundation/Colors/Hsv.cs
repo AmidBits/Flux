@@ -1,7 +1,11 @@
 namespace Flux.Colors
 {
+#if NET5_0
   public struct Hsv
     : System.IEquatable<Hsv>
+#elif NET6_0_OR_GREATER
+  public record struct Hsv
+#endif
   {
     public static readonly Hsv Empty;
 
@@ -81,35 +85,41 @@ namespace Flux.Colors
        );
     }
 
-    #region Static methods
+#region Static methods
     public static Hsv Random(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       return new Hsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
     }
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
+#if NET5_0
     public static bool operator ==(Hsv a, Hsv b)
       => a.Equals(b);
     public static bool operator !=(Hsv a, Hsv b)
       => !a.Equals(b);
-    #endregion Overloaded operators
+#endif
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
       => m_hue == other.m_hue && m_saturation == other.m_saturation && m_value == other.m_value;
-    #endregion Implemented interfaces
+#endif
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Hsv o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_hue, m_saturation, m_value);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_value * 100:N1}% }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }

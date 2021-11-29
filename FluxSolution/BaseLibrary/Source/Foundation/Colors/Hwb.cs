@@ -1,7 +1,11 @@
 namespace Flux.Colors
 {
+#if NET5_0
   public struct Hwb
     : System.IEquatable<Hwb>
+#elif NET6_0_OR_GREATER
+  public record struct Hwb
+#endif
   {
     public static readonly Hwb Empty;
 
@@ -86,23 +90,29 @@ namespace Flux.Colors
     #endregion Static member
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(Hwb a, Hwb b)
       => a.Equals(b);
     public static bool operator !=(Hwb a, Hwb b)
       => !a.Equals(b);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hwb other)
       => Hue == other.Hue && White == other.White && Black == other.Black;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is Hwb o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Hue, White, Black);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_white * 100:N1}%, {m_black * 100:N1}% }}";
     #endregion Object overrides

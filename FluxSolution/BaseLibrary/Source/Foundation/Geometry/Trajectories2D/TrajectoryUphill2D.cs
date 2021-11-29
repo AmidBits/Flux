@@ -1,7 +1,12 @@
 namespace Flux.Model.Trajectories
 {
+#if NET5_0
   public struct TrajectoryUphill2D
     : System.IEquatable<TrajectoryUphill2D>, ITrajectory2D
+#elif NET6_0_OR_GREATER
+  public struct TrajectoryUphill2D
+    : ITrajectory2D
+#endif
   {
     private Quantity.Acceleration m_gravitationalAcceleration;
     private Quantity.Angle m_initialAngle;
@@ -47,23 +52,29 @@ namespace Flux.Model.Trajectories
       => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) * time - m_gravitationalAcceleration.Value * time * time / 2;
 
     #region Overloaded operators
+#if NET5_0
     public static bool operator ==(TrajectoryUphill2D h1, TrajectoryUphill2D h2)
       => h1.Equals(h2);
     public static bool operator !=(TrajectoryUphill2D h1, TrajectoryUphill2D h2)
       => !h1.Equals(h2);
+#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
+#if NET5_0
     // IEquatable
     public bool Equals(TrajectoryUphill2D other)
       => m_gravitationalAcceleration == other.m_gravitationalAcceleration && m_initialAngle == other.m_initialAngle && m_initialVelocity == other.m_initialVelocity && m_verticalDifference == other.m_verticalDifference;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is TrajectoryUphill2D o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_verticalDifference.Value);
+#endif
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

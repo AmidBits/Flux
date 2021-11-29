@@ -9,8 +9,13 @@ namespace Flux
   /// <summary>Julian Day Number unit of days.</summary>
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+#if NET5_0
   public struct JulianDayNumber
     : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit<int>
+#elif NET6_0_OR_GREATER
+  public record struct JulianDayNumber
+    : System.IComparable<JulianDayNumber>, Quantity.IValuedUnit<int>
+#endif
   {
     public static readonly JulianDayNumber Zero;
 
@@ -141,10 +146,12 @@ namespace Flux
     public static bool operator >=(JulianDayNumber a, JulianDayNumber b)
       => a.CompareTo(b) >= 0;
 
+#if NET5_0
     public static bool operator ==(JulianDayNumber a, JulianDayNumber b)
       => a.Equals(b);
     public static bool operator !=(JulianDayNumber a, JulianDayNumber b)
       => !a.Equals(b);
+#endif
 
     public static JulianDayNumber operator -(JulianDayNumber jd)
       => new(-jd.m_value);
@@ -168,16 +175,20 @@ namespace Flux
     public int CompareTo(JulianDayNumber other)
       => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
 
+#if NET5_0
     // IEquatable
     public bool Equals(JulianDayNumber other)
       => m_value == other.m_value;
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides
+#if NET5_0
     public override bool Equals(object? obj)
       => obj is JulianDayNumber o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
+#endif
     public override string? ToString()
       => $"{GetType().Name} {{ {m_value} " + $"({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides
