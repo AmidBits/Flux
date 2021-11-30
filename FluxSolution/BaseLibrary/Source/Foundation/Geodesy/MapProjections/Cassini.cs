@@ -5,10 +5,10 @@
   public struct CassiniProjection
     : IMapForwardProjectable, IMapReverseProjectable
 #else
-  public record struct CassiniProjection
+  public record struct Cassini
 #endif
   {
-    public static readonly CassiniProjection Default;
+    public static readonly Cassini Default;
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
       => new(System.Math.Asin(project.Latitude.MathCos * project.Longitude.MathSin), System.Math.Atan(project.Latitude.MathTan / project.Longitude.MathCos), project.Altitude.Value);

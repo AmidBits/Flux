@@ -5,10 +5,10 @@
   public struct EqualEarthProjection
     : IMapForwardProjectable, IMapReverseProjectable
 #else
-  public record struct EqualEarthProjection
+  public record struct EqualEarth
 #endif
   {
-    public static readonly EqualEarthProjection Default;
+    public static readonly EqualEarth Default;
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate location)
     {

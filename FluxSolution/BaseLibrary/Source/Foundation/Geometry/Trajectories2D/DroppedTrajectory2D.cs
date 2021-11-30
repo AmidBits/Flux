@@ -1,10 +1,10 @@
-namespace Flux.Model.Trajectories
+namespace Flux.Mechanics
 {
 #if NET5_0
-  public struct TrajectoryDropped2D // Projectile dropped from a moving system.
-    : System.IEquatable<TrajectoryDropped2D>, ITrajectory2D
+  public struct DroppedTrajectory2D // Projectile dropped from a moving system.
+    : System.IEquatable<DroppedTrajectory2D>, ITrajectory2D
 #else
-  public struct TrajectoryDropped2D // Projectile dropped from a moving system.
+  public struct DroppedTrajectory2D // Projectile dropped from a moving system.
     : ITrajectory2D
 #endif
   {
@@ -13,14 +13,14 @@ namespace Flux.Model.Trajectories
     private Quantity.Angle m_initialAngle;
     private Quantity.Speed m_initialVelocity;
 
-    public TrajectoryDropped2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
+    public DroppedTrajectory2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
     {
       m_droppedHeight = droppedHeight;
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public TrajectoryDropped2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
+    public DroppedTrajectory2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
       : this(droppedHeight, initialAngle, initialVelocity, Quantity.Acceleration.StandardAccelerationOfGravity)
     { }
 

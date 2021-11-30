@@ -5,11 +5,11 @@
   public struct EquirectangularProjection
     : System.IEquatable<EquirectangularProjection>, IMapForwardProjectable, IMapReverseProjectable
 #else
-  public record struct EquirectangularProjection
+  public record struct Equirectangular
     : IMapForwardProjectable, IMapReverseProjectable
 #endif
   {
-    public static readonly EquirectangularProjection Default;
+    public static readonly Equirectangular Default;
 
     public GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }

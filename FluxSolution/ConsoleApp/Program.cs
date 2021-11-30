@@ -20,9 +20,10 @@ namespace ConsoleApp
       //var type = typeof(Flux.Quantity.IValuedUnit<>);
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
 
-      foreach (var type in typeof(Flux.Locale).Assembly.GetTypes())
-        if (type.IsClass && !type.IsSealed && !type.IsAbstract)
-          System.Console.WriteLine(type.FullName);
+      var index = 0;
+      foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t=>t.FullName))
+        if (type.IsValueType && !type.IsAbstract && type.IsSealed && !type.IsEnum && !type.IsNested)
+          System.Console.WriteLine($"{++index:D3} : {type.FullName}");
     }
 
     private static void Main(string[] args)

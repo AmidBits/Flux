@@ -5,10 +5,10 @@
   public struct WinkelTripelProjection
     : IMapForwardProjectable
 #else
-  public record struct WinkelTripelProjection
+  public record struct WinkelTripel
 #endif
   {
-    public static readonly WinkelTripelProjection Default;
+    public static readonly WinkelTripel Default;
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {

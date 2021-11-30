@@ -5,10 +5,10 @@
   public struct NaturalEarthProjection
     : IMapForwardProjectable
 #else
-  public record struct NaturalEarthProjection
+  public record struct NaturalEarth
 #endif
   {
-    public static readonly NaturalEarthProjection Default;
+    public static readonly NaturalEarth Default;
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {

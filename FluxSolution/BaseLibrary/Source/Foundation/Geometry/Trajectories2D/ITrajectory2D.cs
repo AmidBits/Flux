@@ -1,4 +1,4 @@
-namespace Flux.Model.Trajectories
+namespace Flux.Mechanics
 {
   public interface ITrajectory2D
   {

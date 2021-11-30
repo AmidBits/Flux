@@ -1,10 +1,10 @@
-namespace Flux.Model.Trajectories
+namespace Flux.Mechanics
 {
 #if NET5_0
-  public struct TrajectoryFlat2D
-    : System.IEquatable<TrajectoryFlat2D>, ITrajectory2D
+  public struct FlatTrajectory2D
+    : System.IEquatable<FlatTrajectory2D>, ITrajectory2D
 #else
-  public struct TrajectoryFlat2D
+  public struct FlatTrajectory2D
     : ITrajectory2D
 #endif
   {
@@ -12,13 +12,13 @@ namespace Flux.Model.Trajectories
     private Quantity.Angle m_initialAngle;
     private Quantity.Speed m_initialVelocity;
 
-    public TrajectoryFlat2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
+    public FlatTrajectory2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
     {
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public TrajectoryFlat2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
+    public FlatTrajectory2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
       : this(initialAngle, initialVelocity, Quantity.Acceleration.StandardAccelerationOfGravity)
     { }
 
