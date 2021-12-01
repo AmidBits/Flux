@@ -3,7 +3,11 @@ namespace Flux.Dsp.AudioProcessor
   // https://creatingsound.com/2013/06/dsp-audio-programming-series-part-1/
   // https://stackoverflow.com/questions/11793310/how-to-add-echo-effect-on-audio-file-using-objective-c
   /// <summary>Applies a delay with available feedback, gain and dry/wet mix.</summary>
+#if NET5_0
   public sealed class MonoDelay
+#else
+  public record class MonoDelay
+#endif
     : IWaveProcessorMono
   {
     private readonly double[] m_buffer;

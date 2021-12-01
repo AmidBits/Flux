@@ -14,7 +14,11 @@
   }
 
   /// <summary>Inverts the wave signal.</summary>
+#if NET5_0
   public sealed class MonoInverter
+#else
+  public record struct MonoInverter
+#endif
     : IWaveProcessorMono
   {
     public MonoInverterMode Mode { get; internal set; }

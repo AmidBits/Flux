@@ -1,7 +1,11 @@
 namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sine_wave"/>
+#if NET5_0
   public sealed class CosineWave
+#else
+  public record struct CosineWave
+#endif
     : IWaveGenerator
   {
     public double GenerateWave(double phase)

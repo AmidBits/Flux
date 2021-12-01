@@ -1,7 +1,11 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
+#if NET5_0
   public sealed class AutoSpreader
+#else
+  public record struct AutoSpreader
+#endif
     : IWaveProcessorStereo
   {
     private double _mix, m_dryMix, m_wetMix;

@@ -4,7 +4,11 @@ namespace Flux.Dsp.WaveFilter
   // http://musicdsp.org/files/Audio-EQ-Cookbook.txt
 
   // http://musicdsp.org/showArchiveComment.php?ArchiveID=240 // Karlsen 24 dB Ladder
+#if NET5_0
   public sealed class FastLadder4P
+#else
+  public record class FastLadder4P
+#endif
     : IWaveFilterMono, IWaveProcessorMono
   {
     private double m_resonance;

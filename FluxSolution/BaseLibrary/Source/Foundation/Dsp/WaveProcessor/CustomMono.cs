@@ -1,6 +1,10 @@
 ﻿namespace Flux.Dsp.AudioProcessor
 {
+#if NET5_0
   public sealed class CustomMono
+#else
+  public record struct CustomMono
+#endif
     : IWaveProcessorMono
   {
     private readonly System.Func<double, double> m_function;

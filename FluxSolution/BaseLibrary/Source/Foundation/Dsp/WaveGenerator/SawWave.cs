@@ -1,7 +1,11 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sawtooth_wave"/>
+#if NET5_0
   public sealed class SawWave
+#else
+  public record struct SawWave
+#endif
     : IWaveGenerator
   {
     public double GenerateWave(double phase)

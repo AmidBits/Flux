@@ -1,6 +1,10 @@
 namespace Flux.Dsp.WaveFilter
 {
+#if NET5_0
   public sealed class TripleEq
+#else
+  public record struct TripleEq
+#endif
     : IWaveFilterMono, IWaveProcessorMono
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
@@ -23,17 +27,35 @@ namespace Flux.Dsp.WaveFilter
     private double m_history3; // 3
 
     private double m_highGain;
-    public double GainHPF { get => m_highGain; set => m_highGain = value; }
     private double m_lowGain;
-    public double GainLPF { get => m_lowGain; set => m_lowGain = value; }
     private double m_midGain;
-    public double GainMPF { get => m_midGain; set => m_midGain = value; }
 
     public TripleEq(double lpfCutoff = 880.0, double hpfCutoff = 5000.0, double sampleRate = 44100.0)
     {
       m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * (lpfCutoff / sampleRate));
+      m_lpfPole1 = 0;
+      m_lpfPole2 = 0;
+      m_lpfPole3 = 0;
+      m_lpfPole4 = 0;
+
       m_hpfCutoff = 2 * System.Math.Sin(System.Math.PI * (hpfCutoff / sampleRate));
+      m_hpfPole1 = 0;
+      m_hpfPole2 = 0;
+      m_hpfPole3 = 0;
+      m_hpfPole4 = 0;
+
+      m_history1 = 0;
+      m_history2 = 0;
+      m_history3 = 0;
+
+      m_highGain = 0;
+      m_midGain = 0;
+      m_lowGain = 0;
     }
+
+    public double GainHPF { get => m_highGain; set => m_highGain = value; }
+    public double GainLPF { get => m_lowGain; set => m_lowGain = value; }
+    public double GainMPF { get => m_midGain; set => m_midGain = value; }
 
     public double FilterAudioMono(double value)
     {
