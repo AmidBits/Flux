@@ -10,6 +10,7 @@
   {
     public static readonly EqualEarth Default;
 
+#pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate location)
     {
       const double A1 = 1.340264;
@@ -65,5 +66,6 @@
 
       return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), location.Z);
     }
+#pragma warning restore CA1822 // Mark members as static
   }
 }
