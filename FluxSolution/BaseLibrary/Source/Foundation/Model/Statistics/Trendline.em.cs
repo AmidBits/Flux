@@ -4,11 +4,11 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Numerics.TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
+    public static Model.TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
       => new(source, d => d);
   }
 
-  namespace Numerics
+  namespace Model
   {
     /// <summary>Computes slope and trending data on a sequence.</summary>
     public sealed class TrendLine<T>

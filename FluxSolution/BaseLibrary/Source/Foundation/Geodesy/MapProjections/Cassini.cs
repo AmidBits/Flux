@@ -5,10 +5,10 @@
   public struct CassiniProjection
     : IMapForwardProjectable, IMapReverseProjectable
 #else
-  public record struct Cassini
+  public record struct CassiniProjection
 #endif
   {
-    public static readonly Cassini Default;
+    public static readonly CassiniProjection Default;
 
 #pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)

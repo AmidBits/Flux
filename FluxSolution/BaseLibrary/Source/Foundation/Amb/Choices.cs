@@ -1,6 +1,10 @@
 ﻿namespace Flux.AmbOps
 {
+#if NET5_0
   public sealed class Choices<T>
+#else
+  public record class Choices<T>
+#endif
      : IChoices, IValue<T>
   {
     private readonly T[] Values;

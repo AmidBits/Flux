@@ -3,12 +3,12 @@
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
 #if NET5_0
   public struct EqualEarthProjection
-    : IMapForwardProjectable, IMapReverseProjectable
 #else
-  public record struct EqualEarth
+  public record struct EqualEarthProjection
 #endif
+    : IMapForwardProjectable, IMapReverseProjectable
   {
-    public static readonly EqualEarth Default;
+    public static readonly EqualEarthProjection Default;
 
 #pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate location)

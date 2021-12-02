@@ -6,7 +6,11 @@ namespace Flux
     LittleEndian
   }
 
+#if NET5_0
+  public sealed class BitConverter
+#else
   public record class BitConverter
+#endif
   {
     public static BitConverter BigEndian
       => new(Endianess.BigEndian);

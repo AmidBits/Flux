@@ -1,4 +1,4 @@
-﻿namespace Flux.Numerics
+﻿namespace Flux.Model
 {
 #if NET5_0
   public struct RunningStatistics

@@ -3,12 +3,12 @@
   // https://en.wikipedia.org/wiki/Natural_Earth_projection
 #if NET5_0
   public struct NaturalEarthProjection
-    : IMapForwardProjectable
 #else
-  public record struct NaturalEarth
+  public record struct NaturalEarthProjection
 #endif
+    : IMapForwardProjectable
   {
-    public static readonly NaturalEarth Default;
+    public static readonly NaturalEarthProjection Default;
 
 #pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)

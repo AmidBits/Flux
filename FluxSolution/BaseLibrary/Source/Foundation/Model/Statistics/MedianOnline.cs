@@ -1,4 +1,4 @@
-namespace Flux.Numerics
+namespace Flux.Model
 {
   /// <summary></summary>
   /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>

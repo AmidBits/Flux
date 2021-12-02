@@ -55,9 +55,9 @@ namespace Flux.Mechanics
 
     #region Overloaded operators
 #if NET5_0
-    public static bool operator ==(TrajectoryDropped2D h1, TrajectoryDropped2D h2)
+    public static bool operator ==(DroppedTrajectory2D h1, DroppedTrajectory2D h2)
       => h1.Equals(h2);
-    public static bool operator !=(TrajectoryDropped2D h1, TrajectoryDropped2D h2)
+    public static bool operator !=(DroppedTrajectory2D h1, DroppedTrajectory2D h2)
       => !h1.Equals(h2);
 #endif
     #endregion Overloaded operators
@@ -65,7 +65,7 @@ namespace Flux.Mechanics
     #region Implemented interfaces
 #if NET5_0
     // IEquatable
-    public bool Equals(TrajectoryDropped2D other)
+    public bool Equals(DroppedTrajectory2D other)
       => m_gravitationalAcceleration == other.m_gravitationalAcceleration && m_initialAngle == other.m_initialAngle && m_initialVelocity == other.m_initialVelocity && m_droppedHeight == other.m_droppedHeight;
 #endif
     #endregion Implemented interfaces
@@ -73,7 +73,7 @@ namespace Flux.Mechanics
     #region Object overrides
 #if NET5_0
     public override bool Equals(object? obj)
-      => obj is TrajectoryDropped2D o && Equals(o);
+      => obj is DroppedTrajectory2D o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_droppedHeight.Value);
 #endif
