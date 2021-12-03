@@ -1,6 +1,10 @@
 namespace Flux.Net.Nmea
 {
+#if NET5_0
   public sealed class NmeaGpgga
+#else
+  public record class NmeaGpgga
+#endif
     : NmeaSentence
   {
     public NmeaGpgga(string sentence)
