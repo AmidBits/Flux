@@ -23,7 +23,8 @@ namespace ConsoleApp
       var index = 0;
       foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
         //if (type.IsValueType && !type.IsEnum)
-        if (type.IsClass && !type.IsAbstract && !type.IsNested)
+        //if (type.IsClass && !type.IsAbstract && !type.IsNested)
+        if (!type.IsAbstract && !type.IsEnum && !type.IsNested && !type.IsNotPublic)
           System.Console.WriteLine($"{++index:D3} : {type.FullName}");
     }
 
