@@ -24,7 +24,7 @@ namespace Flux.Net
       => new(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
 
     #region "Event Handling"
-    private System.Threading.Thread m_thread;
+    private System.Threading.Thread? m_thread;
 
     public event System.EventHandler<UdpCastDataReceivedEventArgs>? DataReceived;
     #endregion
@@ -49,8 +49,8 @@ namespace Flux.Net
       m_thread.Start();
     }
 
-    public System.Net.IPEndPoint RemoteAddress { get; }
-    public System.Net.Sockets.Socket Socket { get; }
+    public System.Net.IPEndPoint RemoteAddress { get; init; }
+    public System.Net.Sockets.Socket? Socket { get; init; }
 
     private void Thread_SocketReceiver()
     {
@@ -58,11 +58,17 @@ namespace Flux.Net
 
       while (true)
       {
+        if (m_thread is null) return;
+        if (Socket is null) return;
+
         if (Socket.Available > 0)
         {
           byte[] buffer = new byte[Socket.Available];
 
           Socket.ReceiveFrom(buffer, ref remoteEP);
+
+          if (buffer.Length == 1 && buffer[0] == 0)
+            return;
 
           DataReceived?.Invoke(this, new UdpCastDataReceivedEventArgs(buffer, remoteEP));
         }
@@ -70,14 +76,12 @@ namespace Flux.Net
     }
 
     public void SendData(byte[] bytes)
-    {
-      Socket.SendTo(bytes, RemoteAddress);
-    }
+      => _ = Socket?.SendTo(bytes, RemoteAddress) ?? throw new System.NullReferenceException(nameof(Socket));
 
     protected override void DisposeManaged()
     {
       if (m_thread is not null)
-        m_thread = null!;
+        m_thread = null;
 
       if (Socket is not null)
         Socket.Dispose();
@@ -99,6 +103,8 @@ namespace Flux.Net
         }
 
         uc.DataReceived -= Uc_DataReceived;
+
+        uc.SendData(new byte[] { 0 });
       }
 
       static void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
