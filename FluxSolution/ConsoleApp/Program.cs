@@ -20,6 +20,8 @@ namespace ConsoleApp
       //var type = typeof(Flux.Quantity.IValuedUnit<>);
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
 
+      Flux.Net.UdpCast.Chat(Flux.Net.UdpCast.MulticastTestEndPoint);
+
       var index = 0;
       foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
         //if (type.IsValueType && !type.IsEnum)

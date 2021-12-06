@@ -10,7 +10,7 @@ namespace Flux.Net
       Remote = remote;
     }
 
-    public System.Collections.Generic.IList<byte> Bytes { get; }
+    public byte[] Bytes { get; }
     public System.Net.EndPoint Remote { get; }
   }
 
@@ -20,11 +20,8 @@ namespace Flux.Net
     private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
     private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
 
-    public static System.Net.IPEndPoint MulticastTest
+    public static System.Net.IPEndPoint MulticastTestEndPoint
       => new(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
-
-    public static UdpCast CreateMulticastTest()
-      => new(MulticastTest);
 
     #region "Event Handling"
     private System.Threading.Thread m_thread;
@@ -85,19 +82,14 @@ namespace Flux.Net
       if (Socket is not null)
         Socket.Dispose();
     }
-  }
-}
 
-/*
-  class Program
-  {
-    static void Main(string[] args)
+    public static void Chat(System.Net.IPEndPoint multicastAddress)
     {
       System.Console.OutputEncoding = System.Text.Encoding.Unicode;
 
       System.Console.WriteLine("Enter line to send (empty line will terminate program):");
 
-      using (var uc = Flux.Net.UdpCast.CreateTestMulticast())
+      using (var uc = new Flux.Net.UdpCast(multicastAddress))
       {
         uc.DataReceived += Uc_DataReceived;
 
@@ -108,14 +100,14 @@ namespace Flux.Net
 
         uc.DataReceived -= Uc_DataReceived;
       }
-    }
 
-    private static void Uc_DataReceived(object sender, Flux.Net.UdpCast.DataReceivedEventArgs e)
-    {
-      System.Console.WriteLine(System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes));
+      static void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
+      {
+        System.Console.WriteLine(System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes));
+      }
     }
   }
-*/
+}
 
 /*
  * IP v6 sample:
