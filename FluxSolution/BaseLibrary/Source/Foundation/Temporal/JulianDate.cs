@@ -187,7 +187,7 @@ namespace Flux
       => m_value.GetHashCode();
 #endif
     public override string? ToString()
-      => $"{GetType().Name} {{ {m_value} " + $"({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}) }}";
+      => $"{GetType().Name} {{ {m_value} ({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}) }}";
     #endregion Object overrides
   }
 }

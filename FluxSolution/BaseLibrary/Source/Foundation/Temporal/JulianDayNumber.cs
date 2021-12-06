@@ -55,6 +55,19 @@ namespace Flux
     {
       var sb = new System.Text.StringBuilder();
 
+      if (calendar != GetConversionCalendar())
+        switch (calendar)
+        {
+          case ConversionCalendar.GregorianCalendar:
+            sb.Append(@"GC: ");
+            break;
+          case ConversionCalendar.JulianCalendar:
+            sb.Append(@"JC: ");
+            break;
+          default:
+            throw new System.ArgumentOutOfRangeException(nameof(calendar));
+        }
+
       // if (calendar == ConversionCalendar.JulianCalendar)
       {
         sb.Append(DayOfWeek);
@@ -190,7 +203,7 @@ namespace Flux
       => m_value.GetHashCode();
 #endif
     public override string? ToString()
-      => $"{GetType().Name} {{ {m_value} " + $"({ToDateString(GetConversionCalendar())}) }}";
+      => $"{GetType().Name} {{ {m_value} ({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides
   }
 }
