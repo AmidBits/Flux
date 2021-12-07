@@ -268,7 +268,7 @@
 
         // find out whether left or right is associated 
         // with the parent and null as appropriate
-        if (parent.Left == nodeToDelete)
+        if (parent.Left.Key.CompareTo(nodeToDelete.Key) == 0)
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, new BinarySearchTreeEmptyNode<TKey, TValue>(), parent.Right);
         else
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, parent.Left, new BinarySearchTreeEmptyNode<TKey, TValue>());
@@ -288,7 +288,7 @@
         }
 
         // Identify the child and point the parent at the child
-        if (parent.Left == nodeToDelete)
+        if (parent.Left.Key.CompareTo(nodeToDelete.Key) == 0)
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, parent.Left, nodeToDelete.Right);
         else
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, nodeToDelete.Right, parent.Right);
@@ -308,7 +308,7 @@
         }
 
         // Identify the child and point the parent at the child
-        if (parent.Left == nodeToDelete)
+        if (parent.Left.Key.CompareTo(nodeToDelete.Key) == 0)
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, nodeToDelete.Left, parent.Right);
         else
           parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, parent.Left, nodeToDelete.Left);
@@ -323,7 +323,7 @@
       // Make a copy of the successor node.
       IBinarySearchTreeNode<TKey, TValue> tmp = new BinarySearchTreeNode<TKey, TValue>(successor.Key, successor.Value);
       // Find out which side the successor parent is pointing to the successor and remove the successor.
-      if (parent.Left == successor)
+      if (parent.Left.Key.CompareTo(successor.Key) == 0)
         parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, new BinarySearchTreeEmptyNode<TKey, TValue>(), parent.Right);
       else
         parent = new BinarySearchTreeNode<TKey, TValue>(parent.Key, parent.Value, parent.Left, new BinarySearchTreeEmptyNode<TKey, TValue>());
