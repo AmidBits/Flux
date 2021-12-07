@@ -12,7 +12,11 @@
     public IBinarySearchTreeNode<TKey, TValue> Right { get; }
   }
 
+#if NET5_0
+  public sealed class BinarySearchTreeNode<TKey, TValue>
+#else
   public record class BinarySearchTreeNode<TKey, TValue>
+#endif
     : IBinarySearchTreeNode<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
@@ -36,7 +40,11 @@
       : this(name, value, new BinarySearchTreeEmptyNode<TKey, TValue>(), new BinarySearchTreeEmptyNode<TKey, TValue>())
     { }
   }
+#if NET5_0
+  public sealed class BinarySearchTreeEmptyNode<TKey, TValue>
+#else
   public record class BinarySearchTreeEmptyNode<TKey, TValue>
+#endif
     : IBinarySearchTreeNode<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
