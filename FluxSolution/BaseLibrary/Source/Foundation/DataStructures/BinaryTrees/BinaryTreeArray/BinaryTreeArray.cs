@@ -153,7 +153,6 @@ namespace Flux.DataStructures
       {
         var newIndices = m_data.Length;
         System.Array.Resize(ref m_data, index + 1);
-        //while (newIndices < m_data.Length) m_data[newIndices++] = Empty;
         System.Array.Fill(m_data, Empty, newIndices, m_data.Length - newIndices);
       }
 

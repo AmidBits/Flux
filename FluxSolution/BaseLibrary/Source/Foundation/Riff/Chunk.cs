@@ -8,7 +8,16 @@
 /// <seealso cref="https://johnloomis.org/cpe102/asgn/asgn1/riff.html"/>
 namespace Flux.Riff
 {
+  public interface IChunk // Not sure about an IChunk interface yet.
+  {
+    System.Collections.Generic.IReadOnlyList<byte> Buffer { get; }
+
+    string ChunkID { get; }
+    int ChunkSize { get; }
+  }
+
   public abstract class Chunk
+    : IChunk
   {
     internal byte[] m_buffer = System.Array.Empty<byte>();
     public System.Collections.Generic.IReadOnlyList<byte> Buffer => m_buffer;
