@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
-#if NET5_0
   public struct AngularVelocity
-    : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IValuedUnit<double>
-#else
-  public record struct AngularVelocity
-    : System.IComparable<AngularVelocity>, IValuedUnit<double>
-#endif
+    : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
@@ -36,7 +31,7 @@ namespace Flux.Quantity
 
     #region Static methods
     public static AngularVelocity From(Angle angle, Time time)
-      => new(angle.Value / time.Value);
+      => new(angle.DefaultUnitValue / time.DefaultUnitValue);
     #endregion Static methods
 
     #region Overloaded operators
@@ -54,12 +49,10 @@ namespace Flux.Quantity
     public static bool operator >=(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(AngularVelocity a, AngularVelocity b)
       => a.Equals(b);
     public static bool operator !=(AngularVelocity a, AngularVelocity b)
       => !a.Equals(b);
-#endif
 
     public static AngularVelocity operator -(AngularVelocity v)
       => new(-v.m_value);
@@ -91,20 +84,16 @@ namespace Flux.Quantity
     public int CompareTo(AngularVelocity other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(AngularVelocity other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is AngularVelocity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} rad/s }}";
     #endregion Object overrides

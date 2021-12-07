@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
-#if NET5_0
   public struct LuminousFlux
-    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValuedUnit<double>
-#else
-  public record struct LuminousFlux
-    : System.IComparable<LuminousFlux>, IValuedUnit<double>
-#endif
+    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
@@ -49,12 +44,10 @@ namespace Flux.Quantity
     public static bool operator >=(LuminousFlux a, LuminousFlux b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(LuminousFlux a, LuminousFlux b)
       => a.Equals(b);
     public static bool operator !=(LuminousFlux a, LuminousFlux b)
       => !a.Equals(b);
-#endif
 
     public static LuminousFlux operator -(LuminousFlux v)
       => new(-v.m_value);
@@ -85,20 +78,16 @@ namespace Flux.Quantity
     public int CompareTo(LuminousFlux other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(LuminousFlux other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is LuminousFlux o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} lm }}";
     #endregion Object overrides

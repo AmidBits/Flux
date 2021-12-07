@@ -1,11 +1,7 @@
 namespace Flux.Geometry
 {
-#if NET5_0
   public struct Point3
     : System.IEquatable<Point3>
-#else
-  public record struct Point3
-#endif
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point3 Zero;
@@ -232,12 +228,10 @@ namespace Flux.Geometry
     #endregion Static methods
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(Point3 p1, Point3 p2)
       => p1.Equals(p2);
     public static bool operator !=(Point3 p1, Point3 p2)
       => !p1.Equals(p2);
-#endif
 
     public static Point3 operator -(Point3 p)
       => new(-p.m_x, -p.m_y, -p.m_z);
@@ -325,19 +319,15 @@ namespace Flux.Geometry
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     public bool Equals(Point3 other)
       => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Point3 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z} }}";
     #endregion Object overrides

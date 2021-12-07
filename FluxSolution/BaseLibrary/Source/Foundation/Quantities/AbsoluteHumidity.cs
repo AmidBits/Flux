@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
-#if NET5_0
   public struct AbsoluteHumidity
-    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IValuedUnit<double>
-#else
-  public record struct AbsoluteHumidity
-    : System.IComparable<AbsoluteHumidity>, IValuedUnit<double>
-#endif
+    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
@@ -36,9 +31,9 @@ namespace Flux.Quantity
 
     #region Static methods
     public static AbsoluteHumidity From(double grams, Volume volume)
-      => new(grams / volume.Value);
+      => new(grams / volume.DefaultUnitValue);
     public static AbsoluteHumidity From(Mass mass, Volume volume)
-      => From(mass.Value * 1000, volume);
+      => From(mass.DefaultUnitValue * 1000, volume);
     #endregion Static methods
 
     #region Overloaded operators
@@ -56,12 +51,10 @@ namespace Flux.Quantity
     public static bool operator >=(AbsoluteHumidity a, AbsoluteHumidity b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(AbsoluteHumidity a, AbsoluteHumidity b)
       => a.Equals(b);
     public static bool operator !=(AbsoluteHumidity a, AbsoluteHumidity b)
       => !a.Equals(b);
-#endif
 
     public static AbsoluteHumidity operator -(AbsoluteHumidity v)
       => new(-v.m_value);
@@ -92,20 +85,16 @@ namespace Flux.Quantity
     public int CompareTo(AbsoluteHumidity other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(AbsoluteHumidity other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is AbsoluteHumidity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} g/m³ }}";
     #endregion Object overrides

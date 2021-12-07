@@ -47,13 +47,8 @@ namespace Flux
 
     /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
-#if NET5_0
     public struct Volume
-      : System.IComparable<Volume>, System.IEquatable<Volume>, IValuedUnit<double>
-#else
-    public record struct Volume
-      : System.IComparable<Volume>, IValuedUnit<double>
-#endif
+      : System.IComparable<Volume>, System.IEquatable<Volume>, IUnitValueDefaultable<double>
     {
       private readonly double m_value;
 
@@ -76,7 +71,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public double Value
+      public double DefaultUnitValue
         => m_value;
 
       public string ToUnitString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null)
@@ -106,7 +101,7 @@ namespace Flux
       /// <param name="width"></param>
       /// <param name="height"></param>
       public static Volume From(Length length, Length width, Length height)
-        => new(length.Value * width.Value * height.Value);
+        => new(length.DefaultUnitValue * width.DefaultUnitValue * height.DefaultUnitValue);
       #endregion Static methods
 
       #region Overloaded operators
@@ -124,12 +119,10 @@ namespace Flux
       public static bool operator >=(Volume a, Volume b)
         => a.CompareTo(b) >= 0;
 
-#if NET5_0
       public static bool operator ==(Volume a, Volume b)
         => a.Equals(b);
       public static bool operator !=(Volume a, Volume b)
         => !a.Equals(b);
-#endif
 
       public static Volume operator -(Volume v)
         => new(-v.m_value);
@@ -160,20 +153,16 @@ namespace Flux
       public int CompareTo(Volume other)
         => m_value.CompareTo(other.m_value);
 
-#if NET5_0
       // IEquatable
       public bool Equals(Volume other)
         => m_value == other.m_value;
-#endif
       #endregion Implemented interfaces
 
       #region Object overrides
-#if NET5_0
       public override bool Equals(object? obj)
         => obj is Volume o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
-#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

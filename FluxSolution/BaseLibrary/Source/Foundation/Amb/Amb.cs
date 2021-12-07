@@ -1,10 +1,6 @@
 ﻿namespace Flux.AmbOps
 {
-#if NET5_0
   public sealed class Amb
-#else
-  public record class Amb
-#endif
   {
     private readonly System.Collections.Generic.List<IChoices> m_choices = new();
     private readonly System.Collections.Generic.List<IConstraint> m_constraints = new();

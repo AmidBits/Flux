@@ -35,13 +35,8 @@ namespace Flux
 
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
-#if NET5_0
     public struct Angle
-      : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValuedUnit<double>
-#else
-    public record struct Angle
-      : System.IComparable<Angle>, System.IFormattable, IValuedUnit<double>
-#endif
+      : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IUnitValueDefaultable<double>
     {
       public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
       public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
@@ -71,7 +66,7 @@ namespace Flux
         };
 
       /// <summary>The quantity value in unit radian.</summary>
-      public double Value
+      public double DefaultUnitValue
         => m_value;
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
@@ -168,12 +163,10 @@ namespace Flux
       public static explicit operator double(Angle value)
         => value.m_value;
 
-#if NET5_0
       public static bool operator ==(Angle a, Angle b)
         => a.Equals(b);
       public static bool operator !=(Angle a, Angle b)
         => !a.Equals(b);
-#endif
 
       public static bool operator <(Angle a, Angle b)
         => a.CompareTo(b) < 0;
@@ -213,11 +206,9 @@ namespace Flux
       public int CompareTo(Angle other)
         => m_value.CompareTo(other.m_value);
 
-#if NET5_0
       // IEquatable<Angle>
       public bool Equals(Angle other)
         => m_value == other.m_value;
-#endif
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
@@ -225,12 +216,10 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-#if NET5_0
       public override bool Equals(object? obj)
         => obj is Angle o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
-#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
       #endregion Object overrides

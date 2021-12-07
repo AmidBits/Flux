@@ -3,12 +3,8 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
-#if NET5_0
   public struct GeographicCoordinate
     : System.IEquatable<GeographicCoordinate>
-#else
-  public record struct GeographicCoordinate
-#endif
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -38,7 +34,7 @@ namespace Flux
 
     public GeographicCoordinate(Latitude latitude, Longitude longitude, Quantity.Length altitude)
     {
-      Altitude = ValidAltitude(altitude.Value) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
+      Altitude = ValidAltitude(altitude.DefaultUnitValue) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
       Latitude = latitude;
       Longitude = longitude;
     }
@@ -67,14 +63,14 @@ namespace Flux
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, Altitude.DefaultUnitValue);
     }
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToNaturalEarthProjection()
     {
-      var lat = Latitude.ToAngle().Value;
-      var lon = Longitude.ToAngle().Value;
+      var lat = Latitude.ToAngle().DefaultUnitValue;
+      var lon = Longitude.ToAngle().DefaultUnitValue;
 
       var latP2 = System.Math.Pow(lat, 2);
       var latP4 = latP2 * latP2;
@@ -86,16 +82,16 @@ namespace Flux
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, Altitude.DefaultUnitValue);
     }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => new(Altitude.Value, System.Math.PI - (Latitude.ToAngle().Value + Maths.PiOver2), Longitude.ToAngle().Value + System.Math.PI);
+      => new(Altitude.DefaultUnitValue, System.Math.PI - (Latitude.ToAngle().DefaultUnitValue + Maths.PiOver2), Longitude.ToAngle().DefaultUnitValue + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {
-      var lat = Latitude.ToAngle().Value;
-      var lon = Longitude.ToAngle().Value;
+      var lat = Latitude.ToAngle().DefaultUnitValue;
+      var lon = Longitude.ToAngle().DefaultUnitValue;
 
       var cosLatitude = System.Math.Cos(lat);
 
@@ -104,7 +100,7 @@ namespace Flux
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, Altitude.DefaultUnitValue);
     }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
@@ -203,7 +199,7 @@ namespace Flux
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.Value);
+      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.DefaultUnitValue);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
@@ -220,7 +216,7 @@ namespace Flux
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
-      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.Value;
+      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.DefaultUnitValue;
 
       var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(radLatitude));
 
@@ -479,31 +475,25 @@ namespace Flux
     #endregion Static members
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
       => a.Equals(b);
     public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(GeographicCoordinate other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is GeographicCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Altitude, Latitude, Longitude);
-#endif
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", Altitude.Value)} m }}";
+      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.DefaultUnitValue)} ({string.Format(@"{0:N6}", Latitude.DefaultUnitValue)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.DefaultUnitValue)} ({string.Format(@"{0:N6}", Longitude.DefaultUnitValue)}), Altitude = {string.Format(@"{0:N0}", Altitude.DefaultUnitValue)} m }}";
     #endregion Object overrides
   }
 }

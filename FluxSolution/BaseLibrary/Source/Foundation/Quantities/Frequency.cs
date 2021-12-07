@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
-#if NET5_0
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValuedUnit<double>
-#else
-  public record struct Frequency
-    : System.IComparable<Frequency>, IValuedUnit<double>
-#endif
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IUnitValueDefaultable<double>
   {
     public static Frequency HyperfineTransitionFrequencyOfCs133
       => new(9192631770);
@@ -27,7 +22,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
@@ -46,7 +41,7 @@ namespace Flux.Quantity
     /// <param name="soundVelocity"></param>
     /// <param name="wavelength"></param>
     public static Frequency ComputeFrequency(Speed soundVelocity, Length wavelength)
-      => new(soundVelocity.Value / wavelength.Value);
+      => new(soundVelocity.DefaultUnitValue / wavelength.DefaultUnitValue);
     /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
     public static double ComputeNormalizedFrequency(double frequency, double sampleRate)
@@ -55,12 +50,12 @@ namespace Flux.Quantity
     /// <param name="frequency"></param>
     /// <param name="cents"></param>
     public static Frequency ComputePitchShift(Frequency frequency, Music.Cent cents)
-      => new(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cents.Cents));
+      => new(frequency.DefaultUnitValue * Music.Cent.ConvertCentToFrequencyRatio(cents.Cents));
     /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
     /// <param name="frequency"></param>
     /// <param name="semitones"></param>
     public static Frequency ComputePitchShift(Frequency frequency, Music.Semitone semitones)
-      => new(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitones.Semitones));
+      => new(frequency.DefaultUnitValue * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitones.Semitones));
     /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
     public static double ComputeSamplesPerCycle(double frequency, double sampleRate)
       => sampleRate / frequency;
@@ -81,12 +76,10 @@ namespace Flux.Quantity
     public static bool operator >=(Frequency a, Frequency b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Frequency a, Frequency b)
       => a.Equals(b);
     public static bool operator !=(Frequency a, Frequency b)
       => !a.Equals(b);
-#endif
 
     public static Frequency operator -(Frequency v)
       => new(-v.m_value);
@@ -117,20 +110,16 @@ namespace Flux.Quantity
     public int CompareTo(Frequency other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Frequency other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Frequency o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} Hz }}";
     #endregion Object overrides

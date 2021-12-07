@@ -1,12 +1,8 @@
 namespace Flux.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
-#if NET5_0
   public struct Acmyk
     : System.IEquatable<Acmyk>
-#else
-  public record struct Acmyk
-#endif
   {
     public static readonly Acmyk Empty;
 
@@ -41,29 +37,23 @@ namespace Flux.Colors
     #endregion Static members
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(Acmyk a, Acmyk b)
       => a.Equals(b);
     public static bool operator !=(Acmyk a, Acmyk b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Acmyk other)
       => m_alpha == other.m_alpha && CMYK.Equals(other.CMYK);
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Acmyk o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(CMYK, Alpha);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {CMYK.Cyan * 360:N1}\u00B0, {CMYK.Magenta * 360:N1}\u00B0, {CMYK.Yellow * 360:N1}\u00B0, {CMYK.Key * 360:N1}\u00B0 }}";
     #endregion Object overrides

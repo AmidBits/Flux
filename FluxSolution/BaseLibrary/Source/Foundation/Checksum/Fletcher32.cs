@@ -2,13 +2,8 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
-#if NET5_0
   public struct Fletcher32
     : IChecksumGenerator32, System.IEquatable<Fletcher32>
-#else
-  public struct Fletcher32
-    : IChecksumGenerator32
-#endif
   {
     public static readonly Fletcher32 Empty;
 
@@ -39,26 +34,20 @@ namespace Flux.Checksum
     }
 
     // Operators
-#if NET5_0
     public static bool operator ==(Fletcher32 a, Fletcher32 b)
       => a.Equals(b);
     public static bool operator !=(Fletcher32 a, Fletcher32 b)
       => !a.Equals(b);
-#endif
 
-#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fletcher32 other)
       => m_hash == other.m_hash;
-#endif
 
     // Object (overrides)
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Fletcher32 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
-#endif
     public override string ToString()
        => $"{nameof(Fletcher32)} {{ CheckSum = {m_hash} }}";
   }

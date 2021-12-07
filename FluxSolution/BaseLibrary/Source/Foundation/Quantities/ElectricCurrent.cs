@@ -8,13 +8,8 @@ namespace Flux.Quantity
 
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-#if NET5_0
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValuedUnit<double>
-#else
-  public record struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, IValuedUnit<double>
-#endif
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -26,7 +21,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
@@ -42,12 +37,12 @@ namespace Flux.Quantity
     /// <param name="power"></param>
     /// <param name="voltage"></param>
     public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.Value / voltage.Value);
+      => new(power.DefaultUnitValue / voltage.DefaultUnitValue);
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new(voltage.Value / resistance.Value);
+      => new(voltage.DefaultUnitValue / resistance.DefaultUnitValue);
     #endregion Static methods
 
     #region Overloaded operators
@@ -65,12 +60,10 @@ namespace Flux.Quantity
     public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
       => a.Equals(b);
     public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
       => !a.Equals(b);
-#endif
 
     public static ElectricCurrent operator -(ElectricCurrent v)
       => new(-v.m_value);
@@ -101,20 +94,16 @@ namespace Flux.Quantity
     public int CompareTo(ElectricCurrent other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(ElectricCurrent other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is ElectricCurrent o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} A }}";
     #endregion Object overrides

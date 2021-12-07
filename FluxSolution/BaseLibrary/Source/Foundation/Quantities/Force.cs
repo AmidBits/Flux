@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
-#if NET5_0
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IValuedUnit<double>
-#else
-  public record struct Force
-    : System.IComparable<Force>, IValuedUnit<double>
-#endif
+    : System.IComparable<Force>, System.IEquatable<Force>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(ForceUnit unit = ForceUnit.Newton)
@@ -49,12 +44,10 @@ namespace Flux.Quantity
     public static bool operator >=(Force a, Force b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Force a, Force b)
       => a.Equals(b);
     public static bool operator !=(Force a, Force b)
       => !a.Equals(b);
-#endif
 
     public static Force operator -(Force v)
       => new(-v.m_value);
@@ -85,20 +78,16 @@ namespace Flux.Quantity
     public int CompareTo(Force other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Force other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Force o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} N }}";
     #endregion Object overrides

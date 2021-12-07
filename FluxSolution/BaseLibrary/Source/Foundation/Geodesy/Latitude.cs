@@ -2,13 +2,8 @@ namespace Flux
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
-#if NET5_0
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IValuedUnit<double>
-#else
-  public struct Latitude
-    : System.IComparable<Latitude>, Quantity.IValuedUnit<double>
-#endif
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IUnitValueDefaultable<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -28,15 +23,15 @@ namespace Flux
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Quantity.Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(ToAngle().Value));
+      => new(GetApproximateLatitudinalHeight(ToAngle().DefaultUnitValue));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Quantity.Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(ToAngle().Value));
+      => new(GetApproximateLongitudinalWidth(ToAngle().DefaultUnitValue));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Quantity.Length ApproximateRadius
-      => new(GetApproximateRadius(ToAngle().Value));
+      => new(GetApproximateRadius(ToAngle().DefaultUnitValue));
 
     public double MathCos
       => System.Math.Cos(Radian);
@@ -48,14 +43,14 @@ namespace Flux
     public double Radian
       => Quantity.Angle.ConvertDegreeToRadian(m_degree);
 
-    public double Value
+    public double DefaultUnitValue
       => m_degree;
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().Value / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().DefaultUnitValue / 2))), -System.Math.PI, System.Math.PI);
 
     public Quantity.Angle ToAngle()
       => new(m_degree, Quantity.AngleUnit.Degree);
@@ -78,8 +73,8 @@ namespace Flux
       var cos = System.Math.Cos(radLatitude);
       var sin = System.Math.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.Value, 2) * sin, 2);
-      var denominator = System.Math.Pow(Earth.EquatorialRadius.Value * cos, 2) + System.Math.Pow(Earth.PolarRadius.Value * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.DefaultUnitValue, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.DefaultUnitValue, 2) * sin, 2);
+      var denominator = System.Math.Pow(Earth.EquatorialRadius.DefaultUnitValue * cos, 2) + System.Math.Pow(Earth.PolarRadius.DefaultUnitValue * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }
@@ -108,35 +103,33 @@ namespace Flux
     public static bool operator >=(Latitude a, Latitude b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Latitude a, Latitude b)
       => a.Equals(b);
     public static bool operator !=(Latitude a, Latitude b)
       => !a.Equals(b);
-#endif
 
     public static Latitude operator -(Latitude v)
       => new(-v.m_degree);
     public static Latitude operator +(Latitude a, double b)
       => new(Clamp(a.m_degree + b));
     public static Latitude operator +(Latitude a, Latitude b)
-      => a + b.Value;
+      => a + b.DefaultUnitValue;
     public static Latitude operator /(Latitude a, double b)
       => new(Clamp(a.m_degree / b));
     public static Latitude operator /(Latitude a, Latitude b)
-      => a / b.Value;
+      => a / b.DefaultUnitValue;
     public static Latitude operator *(Latitude a, double b)
       => new(Clamp(a.m_degree * b));
     public static Latitude operator *(Latitude a, Latitude b)
-      => a * b.Value;
+      => a * b.DefaultUnitValue;
     public static Latitude operator %(Latitude a, double b)
       => new(Clamp(a.m_degree % b));
     public static Latitude operator %(Latitude a, Latitude b)
-      => a % b.Value;
+      => a % b.DefaultUnitValue;
     public static Latitude operator -(Latitude a, double b)
       => new(Clamp(a.m_degree - b));
     public static Latitude operator -(Latitude a, Latitude b)
-      => a - b.Value;
+      => a - b.DefaultUnitValue;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -144,20 +137,16 @@ namespace Flux
     public int CompareTo(Latitude other)
       => m_degree.CompareTo(other.m_degree);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Latitude other)
       => m_degree == other.m_degree;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
       => m_degree.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

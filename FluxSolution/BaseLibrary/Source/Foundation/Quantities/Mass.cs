@@ -29,13 +29,8 @@ namespace Flux
 
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
-#if NET5_0
     public struct Mass
-      : System.IComparable<Mass>, System.IEquatable<Mass>, IValuedUnit<double>
-#else
-    public record struct Mass
-      : System.IComparable<Mass>, IValuedUnit<double>
-#endif
+      : System.IComparable<Mass>, System.IEquatable<Mass>, IUnitValueDefaultable<double>
     {
       public static Mass ElectronMass
         => new(9.1093837015e-31);
@@ -54,7 +49,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public double Value
+      public double DefaultUnitValue
         => m_value;
 
       public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null)
@@ -89,12 +84,10 @@ namespace Flux
       public static bool operator >=(Mass a, Mass b)
         => a.CompareTo(b) >= 0;
 
-#if NET5_0
       public static bool operator ==(Mass a, Mass b)
         => a.Equals(b);
       public static bool operator !=(Mass a, Mass b)
         => !a.Equals(b);
-#endif
 
       public static Mass operator -(Mass v)
         => new(-v.m_value);
@@ -125,20 +118,16 @@ namespace Flux
       public int CompareTo(Mass other)
         => m_value.CompareTo(other.m_value);
 
-#if NET5_0
       // IEquatable
       public bool Equals(Mass other)
         => m_value == other.m_value;
-#endif
       #endregion Implemented interfaces
 
       #region Object overrides
-#if NET5_0
       public override bool Equals(object? obj)
         => obj is Mass o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
-#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

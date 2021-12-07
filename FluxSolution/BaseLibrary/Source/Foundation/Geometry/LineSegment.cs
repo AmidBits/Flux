@@ -1,11 +1,7 @@
 namespace Flux.Geometry
 {
-#if NET5_0
   public struct LineSegment
     : System.IEquatable<LineSegment>
-#else
-  public record struct LineSegment
-#endif
   {
     public static readonly LineSegment Empty;
 
@@ -98,29 +94,23 @@ namespace Flux.Geometry
     // https://keisan.casio.com/exec/system/1223508685
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(LineSegment a, LineSegment b)
       => a.Equals(b);
     public static bool operator !=(LineSegment a, LineSegment b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(LineSegment other)
       => X1 == other.X1 && Y1 == other.Y1 && X2 == other.X2 && Y2 == other.Y2;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is LineSegment o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(X1, Y1, X2, Y2);
-#endif
     public override string? ToString()
       => $"{GetType().Name} {{ X1 = {X1}, Y1 = {Y1}, X2 = {X2}, Y2 = {Y2} }}";
     #endregion Object overrides

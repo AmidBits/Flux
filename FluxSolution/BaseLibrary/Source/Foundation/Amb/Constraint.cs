@@ -1,10 +1,6 @@
 ﻿namespace Flux.AmbOps
 {
-#if NET5_0
   public sealed class Constraint
-#else
-  public record class Constraint
-#endif
      : IConstraint
   {
     private readonly int m_appliesForItems;

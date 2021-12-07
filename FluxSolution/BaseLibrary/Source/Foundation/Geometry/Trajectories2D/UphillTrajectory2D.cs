@@ -1,12 +1,7 @@
 namespace Flux.Mechanics
 {
-#if NET5_0
   public struct UphillTrajectory2D
     : System.IEquatable<UphillTrajectory2D>, ITrajectory2D
-#else
-  public struct UphillTrajectory2D
-    : ITrajectory2D
-#endif
   {
     private Quantity.Acceleration m_gravitationalAcceleration;
     private Quantity.Angle m_initialAngle;
@@ -34,47 +29,41 @@ namespace Flux.Mechanics
     public Quantity.Length VerticalDifference { get => m_verticalDifference; set => m_verticalDifference = value; }
 
     public double MaxHeight
-      => System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Value), 2) / (2 * m_gravitationalAcceleration.Value);
+      => System.Math.Pow(m_initialVelocity.DefaultUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.DefaultUnitValue), 2) / (2 * m_gravitationalAcceleration.DefaultUnitValue);
     public double MaxRange
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * MaxTime;
+      => m_initialVelocity.DefaultUnitValue * System.Math.Cos(m_initialAngle.DefaultUnitValue) * MaxTime;
     public double MaxTime
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) / m_gravitationalAcceleration.Value + System.Math.Sqrt(2 * (MaxHeight - m_verticalDifference.Value) / m_gravitationalAcceleration.Value);
+      => m_initialVelocity.DefaultUnitValue * System.Math.Sin(m_initialAngle.DefaultUnitValue) / m_gravitationalAcceleration.DefaultUnitValue + System.Math.Sqrt(2 * (MaxHeight - m_verticalDifference.DefaultUnitValue) / m_gravitationalAcceleration.DefaultUnitValue);
 
     public double GetVelocity(double time)
-      => m_initialVelocity.Value * m_initialVelocity.Value - 2 * m_gravitationalAcceleration.Value * time * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time;
+      => m_initialVelocity.DefaultUnitValue * m_initialVelocity.DefaultUnitValue - 2 * m_gravitationalAcceleration.DefaultUnitValue * time * m_initialVelocity.DefaultUnitValue * System.Math.Sin(m_initialAngle.DefaultUnitValue) + System.Math.Pow(m_gravitationalAcceleration.DefaultUnitValue, 2) * time * time;
     public double GetVelocityX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value);
+      => m_initialVelocity.DefaultUnitValue * System.Math.Cos(m_initialAngle.DefaultUnitValue);
     public double GetVelocityY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) - m_gravitationalAcceleration.Value * time;
+      => m_initialVelocity.DefaultUnitValue * System.Math.Sin(m_initialAngle.DefaultUnitValue) - m_gravitationalAcceleration.DefaultUnitValue * time;
     public double GetX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * time;
+      => m_initialVelocity.DefaultUnitValue * System.Math.Cos(m_initialAngle.DefaultUnitValue) * time;
     public double GetY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) * time - m_gravitationalAcceleration.Value * time * time / 2;
+      => m_initialVelocity.DefaultUnitValue * System.Math.Sin(m_initialAngle.DefaultUnitValue) * time - m_gravitationalAcceleration.DefaultUnitValue * time * time / 2;
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(UphillTrajectory2D h1, UphillTrajectory2D h2)
       => h1.Equals(h2);
     public static bool operator !=(UphillTrajectory2D h1, UphillTrajectory2D h2)
       => !h1.Equals(h2);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(UphillTrajectory2D other)
       => m_gravitationalAcceleration == other.m_gravitationalAcceleration && m_initialAngle == other.m_initialAngle && m_initialVelocity == other.m_initialVelocity && m_verticalDifference == other.m_verticalDifference;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is UphillTrajectory2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_verticalDifference.Value);
-#endif
+      => System.HashCode.Combine(m_gravitationalAcceleration.DefaultUnitValue, m_initialAngle.DefaultUnitValue, m_initialVelocity.DefaultUnitValue, m_verticalDifference.DefaultUnitValue);
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

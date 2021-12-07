@@ -1,12 +1,7 @@
 namespace Flux.Mechanics
 {
-#if NET5_0
   public struct DroppedTrajectory2D // Projectile dropped from a moving system.
     : System.IEquatable<DroppedTrajectory2D>, ITrajectory2D
-#else
-  public struct DroppedTrajectory2D // Projectile dropped from a moving system.
-    : ITrajectory2D
-#endif
   {
     private Quantity.Length m_droppedHeight;
     private Quantity.Acceleration m_gravitationalAcceleration;
@@ -34,49 +29,43 @@ namespace Flux.Mechanics
     public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
-      => m_droppedHeight.Value;
+      => m_droppedHeight.DefaultUnitValue;
     public double MaxRange
-      => m_initialVelocity.Value * MaxTime;
+      => m_initialVelocity.DefaultUnitValue * MaxTime;
     public double MaxTime
-      => System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.Value);
+      => System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.DefaultUnitValue);
 
     public double GetHeight(double time)
-      => m_gravitationalAcceleration.Value * System.Math.Pow(time, 2) / 2;
+      => m_gravitationalAcceleration.DefaultUnitValue * System.Math.Pow(time, 2) / 2;
     public double GetVelocity(double time)
-      => System.Math.Sqrt(System.Math.Pow(m_initialVelocity.Value, 2) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time);
+      => System.Math.Sqrt(System.Math.Pow(m_initialVelocity.DefaultUnitValue, 2) + System.Math.Pow(m_gravitationalAcceleration.DefaultUnitValue, 2) * time * time);
     public double GetVelocityX(double time)
-      => m_initialVelocity.Value;
+      => m_initialVelocity.DefaultUnitValue;
     public double GetVelocityY(double time)
-      => -m_gravitationalAcceleration.Value * time;
+      => -m_gravitationalAcceleration.DefaultUnitValue * time;
     public double GetX(double time)
-      => m_initialVelocity.Value * time;
+      => m_initialVelocity.DefaultUnitValue * time;
     public double GetY(double time)
-      => GetHeight(time) - m_gravitationalAcceleration.Value * time * time / 2;
+      => GetHeight(time) - m_gravitationalAcceleration.DefaultUnitValue * time * time / 2;
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(DroppedTrajectory2D h1, DroppedTrajectory2D h2)
       => h1.Equals(h2);
     public static bool operator !=(DroppedTrajectory2D h1, DroppedTrajectory2D h2)
       => !h1.Equals(h2);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(DroppedTrajectory2D other)
       => m_gravitationalAcceleration == other.m_gravitationalAcceleration && m_initialAngle == other.m_initialAngle && m_initialVelocity == other.m_initialVelocity && m_droppedHeight == other.m_droppedHeight;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is DroppedTrajectory2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_droppedHeight.Value);
-#endif
+      => System.HashCode.Combine(m_gravitationalAcceleration.DefaultUnitValue, m_initialAngle.DefaultUnitValue, m_initialVelocity.DefaultUnitValue, m_droppedHeight.DefaultUnitValue);
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

@@ -15,9 +15,9 @@
     public double StandardParallels { get; init; }
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
-      => new(project.Altitude.Value * (project.Longitude.Radian - CenterOfMap.Longitude.Radian) * System.Math.Cos(StandardParallels), project.Altitude.Value * (project.Latitude.Radian - CenterOfMap.Latitude.Radian), project.Altitude.Value);
+      => new(project.Altitude.DefaultUnitValue * (project.Longitude.Radian - CenterOfMap.Longitude.Radian) * System.Math.Cos(StandardParallels), project.Altitude.DefaultUnitValue * (project.Latitude.Radian - CenterOfMap.Latitude.Radian), project.Altitude.DefaultUnitValue);
     public GeographicCoordinate ProjectReverse(CartesianCoordinate3 project)
-      => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value, project.Y / project.Z + CenterOfMap.Latitude.Value, project.Z);
+      => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.DefaultUnitValue, project.Y / project.Z + CenterOfMap.Latitude.DefaultUnitValue, project.Z);
 
     #region Overloaded operators
 #if NET5_0

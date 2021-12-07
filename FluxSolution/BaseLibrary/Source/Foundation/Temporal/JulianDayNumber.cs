@@ -9,17 +9,12 @@ namespace Flux
   /// <summary>Julian Day Number unit of days.</summary>
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
-#if NET5_0
   public struct JulianDayNumber
-    : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IValuedUnit<int>
-#else
-  public record struct JulianDayNumber
-    : System.IComparable<JulianDayNumber>, Quantity.IValuedUnit<int>
-#endif
+    : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, Quantity.IUnitValueDefaultable<int>
   {
     public static readonly JulianDayNumber Zero;
 
-    private readonly int m_value;
+    public int m_value;
 
     /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>
     public JulianDayNumber(int value)
@@ -36,7 +31,7 @@ namespace Flux
     public int DayOfWeekISO8601
       => GetDayOfWeekISO8601(m_value);
 
-    public int Value
+    public int DefaultUnitValue
       => m_value;
 
     public JulianDayNumber AddWeeks(int weeks)
@@ -59,10 +54,10 @@ namespace Flux
         switch (calendar)
         {
           case ConversionCalendar.GregorianCalendar:
-            sb.Append(@"GC: ");
+            sb.Append(@"Gregorian Proleptic Calendar, ");
             break;
           case ConversionCalendar.JulianCalendar:
-            sb.Append(@"JC: ");
+            sb.Append(@"Julian Proleptic Calendar, ");
             break;
           default:
             throw new System.ArgumentOutOfRangeException(nameof(calendar));
@@ -159,12 +154,10 @@ namespace Flux
     public static bool operator >=(JulianDayNumber a, JulianDayNumber b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(JulianDayNumber a, JulianDayNumber b)
       => a.Equals(b);
     public static bool operator !=(JulianDayNumber a, JulianDayNumber b)
       => !a.Equals(b);
-#endif
 
     public static JulianDayNumber operator -(JulianDayNumber jd)
       => new(-jd.m_value);
@@ -188,20 +181,16 @@ namespace Flux
     public int CompareTo(JulianDayNumber other)
       => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
 
-#if NET5_0
     // IEquatable
     public bool Equals(JulianDayNumber other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is JulianDayNumber o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string? ToString()
       => $"{GetType().Name} {{ {m_value} ({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides

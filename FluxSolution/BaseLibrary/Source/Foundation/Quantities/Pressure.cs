@@ -8,13 +8,8 @@ namespace Flux.Quantity
 
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
-#if NET5_0
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValuedUnit<double>
-#else
-  public record struct Pressure
-    : System.IComparable<Pressure>, IValuedUnit<double>
-#endif
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IUnitValueDefaultable<double>
   {
     public static Pressure StandardAtmosphere
       => new(101325);
@@ -31,7 +26,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(PressureUnit unit = PressureUnit.Pascal)
@@ -60,12 +55,10 @@ namespace Flux.Quantity
     public static bool operator >=(Pressure a, Pressure b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Pressure a, Pressure b)
       => a.Equals(b);
     public static bool operator !=(Pressure a, Pressure b)
       => !a.Equals(b);
-#endif
 
     public static Pressure operator -(Pressure v)
       => new(-v.m_value);
@@ -96,20 +89,16 @@ namespace Flux.Quantity
     public int CompareTo(Pressure other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Pressure other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Pressure o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} Pa }}";
     #endregion Object overrides

@@ -8,7 +8,7 @@ namespace Flux.Midi
     : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IValuedUnit<int>
 #else
   public struct MidiNote
-    : System.IComparable<MidiNote>, Quantity.IValuedUnit<int>
+    : System.IComparable<MidiNote>, Quantity.IUnitValueDefaultable<int>
 #endif
   {
     public const byte ReferenceNoteNumberA4 = 69;
@@ -24,7 +24,7 @@ namespace Flux.Midi
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
-    public int Value
+    public int DefaultUnitValue
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
@@ -54,7 +54,7 @@ namespace Flux.Midi
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Quantity.Frequency frequency)
-      => new(ConvertFromFrequency(frequency.Value));
+      => new(ConvertFromFrequency(frequency.DefaultUnitValue));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
     public static bool TryFromFrequency(Quantity.Frequency frequency, out MidiNote result)
     {

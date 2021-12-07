@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
-#if NET5_0
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>, IValuedUnit<double>
-#else
-  public record struct Torque
-    : System.IComparable<Torque>, IValuedUnit<double>
-#endif
+    : System.IComparable<Torque>, System.IEquatable<Torque>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(TorqueUnit unit = TorqueUnit.NewtonMeter)
@@ -49,12 +44,10 @@ namespace Flux.Quantity
     public static bool operator >=(Torque a, Torque b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Torque a, Torque b)
       => a.Equals(b);
     public static bool operator !=(Torque a, Torque b)
       => !a.Equals(b);
-#endif
 
     public static Torque operator -(Torque v)
       => new(-v.m_value);
@@ -85,20 +78,16 @@ namespace Flux.Quantity
     public int CompareTo(Torque other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Torque other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Torque o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} N m }}";
     #endregion Object overrides

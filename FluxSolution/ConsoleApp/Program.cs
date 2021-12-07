@@ -15,7 +15,16 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
 
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+      var x = (10, 12);
+      x.Item1 = 1;
+      x.Item2 = 3;
+
+      System.Console.Write(x);
+
+      var ah = new Flux.Quantity.AbsoluteHumidity(10);
+      //var ah1 = ah with { Value = ah.Value + 10 };
+
+      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
       //var type = typeof(Flux.Quantity.IValuedUnit<>);
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));

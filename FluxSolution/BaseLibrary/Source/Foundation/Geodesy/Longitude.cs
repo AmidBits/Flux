@@ -2,13 +2,8 @@ namespace Flux
 {
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
-#if NET5_0
   public struct Longitude
-    : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IValuedUnit<double>
-#else
-  public record struct Longitude
-    : System.IComparable<Longitude>, Quantity.IValuedUnit<double>
-#endif
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IUnitValueDefaultable<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -35,14 +30,14 @@ namespace Flux
     public int TheoreticalTimezoneOffset
       => GetTheoreticalTimezoneOffset(m_degree);
 
-    public double Value
+    public double DefaultUnitValue
       => m_degree;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedX()
-      => ToAngle().Value;
+      => ToAngle().DefaultUnitValue;
 
     public Quantity.Angle ToAngle()
       => new(m_degree, Quantity.AngleUnit.Degree);
@@ -76,35 +71,33 @@ namespace Flux
     public static bool operator >=(Longitude a, Longitude b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Longitude a, Longitude b)
       => a.Equals(b);
     public static bool operator !=(Longitude a, Longitude b)
       => !a.Equals(b);
-#endif
 
     public static Longitude operator -(Longitude v)
       => new(-v.m_degree);
     public static Longitude operator +(Longitude a, double b)
       => new(Wrap(a.m_degree + b));
     public static Longitude operator +(Longitude a, Longitude b)
-      => a + b.Value;
+      => a + b.DefaultUnitValue;
     public static Longitude operator /(Longitude a, double b)
       => new(Wrap(a.m_degree / b));
     public static Longitude operator /(Longitude a, Longitude b)
-      => a / b.Value;
+      => a / b.DefaultUnitValue;
     public static Longitude operator *(Longitude a, double b)
       => new(Wrap(a.m_degree * b));
     public static Longitude operator *(Longitude a, Longitude b)
-      => a * b.Value;
+      => a * b.DefaultUnitValue;
     public static Longitude operator %(Longitude a, double b)
       => new(Wrap(a.m_degree % b));
     public static Longitude operator %(Longitude a, Longitude b)
-      => a % b.Value;
+      => a % b.DefaultUnitValue;
     public static Longitude operator -(Longitude a, double b)
       => new(Wrap(a.m_degree - b));
     public static Longitude operator -(Longitude a, Longitude b)
-      => a - b.Value;
+      => a - b.DefaultUnitValue;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -112,20 +105,16 @@ namespace Flux
     public int CompareTo(Longitude other)
       => m_degree.CompareTo(other.m_degree);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Longitude other)
       => m_degree == other.m_degree;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Longitude o && Equals(o);
     public override int GetHashCode()
       => m_degree.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value =  = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
     #endregion Object overrides

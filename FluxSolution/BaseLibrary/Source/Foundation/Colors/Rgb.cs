@@ -1,11 +1,7 @@
 namespace Flux.Colors
 {
-#if NET5_0
   public struct Rgb
     : System.IEquatable<Rgb>
-#else
-  public record struct Rgb
-#endif
   {
     public static readonly Rgb Empty;
 
@@ -205,7 +201,7 @@ namespace Flux.Colors
     public string ToStringHtmlRgb()
       => $"rgb({Red}, {Green}, {Blue})";
 
-#region Static methods
+    #region Static methods
     public static Rgb FromRandom(System.Random rng)
     {
       if (rng is null) throw new System.ArgumentNullException(nameof(rng));
@@ -223,154 +219,148 @@ namespace Flux.Colors
     //  g = System.Math.Clamp(green / 255d, 0, 1);
     //  b = System.Math.Clamp(blue / 255d, 0, 1);
 
-//  max = System.Math.Max(System.Math.Max(r, g), b);
-//  min = System.Math.Min(System.Math.Min(r, g), b);
+    //  max = System.Math.Max(System.Math.Max(r, g), b);
+    //  min = System.Math.Min(System.Math.Min(r, g), b);
 
-//  return System.Math.Clamp(max - min, 0, 1);
-//}
-//public static double GetHue(byte red, byte green, byte blue, byte min, byte max)
-//{
-//  if (min == max) // No range, hue = 0.
-//    return 0;
+    //  return System.Math.Clamp(max - min, 0, 1);
+    //}
+    //public static double GetHue(byte red, byte green, byte blue, byte min, byte max)
+    //{
+    //  if (min == max) // No range, hue = 0.
+    //    return 0;
 
-//  double hue;
+    //  double hue;
 
-//  var chroma = (double)(max - min);
+    //  var chroma = (double)(max - min);
 
-//  if (chroma == 0) // No color range.
-//    return 0;
-//  else if (max == red)
-//    hue = ((green - blue) / chroma + 6) % 6;
-//  else if (max == green)
-//    hue = 2 + (blue - red) / chroma;
-//  else // if (max == blue) // No need for comparison, blue must be max.
-//    hue = 4 + (red - green) / chroma;
+    //  if (chroma == 0) // No color range.
+    //    return 0;
+    //  else if (max == red)
+    //    hue = ((green - blue) / chroma + 6) % 6;
+    //  else if (max == green)
+    //    hue = 2 + (blue - red) / chroma;
+    //  else // if (max == blue) // No need for comparison, blue must be max.
+    //    hue = 4 + (red - green) / chroma;
 
-//  hue *= 60;
+    //  hue *= 60;
 
-//  if (hue < 0)
-//    hue += 360;
+    //  if (hue < 0)
+    //    hue += 360;
 
-//  return hue;
-//}
-//public static double GetNormalizedChroma(byte red, byte green, byte blue, out double min, out double max, out double r, out double g, out double b)
-//{
-//  r = red / 255d;
-//  g = green / 255d;
-//  b = blue / 255d;
+    //  return hue;
+    //}
+    //public static double GetNormalizedChroma(byte red, byte green, byte blue, out double min, out double max, out double r, out double g, out double b)
+    //{
+    //  r = red / 255d;
+    //  g = green / 255d;
+    //  b = blue / 255d;
 
-//  max = System.Math.Max(System.Math.Max(r, g), b);
-//  min = System.Math.Min(System.Math.Min(r, g), b);
+    //  max = System.Math.Max(System.Math.Max(r, g), b);
+    //  min = System.Math.Min(System.Math.Min(r, g), b);
 
-//  return max - min;
-//}
-//public static double GetNormalizedHue(double nred, double ngreen, double nblue, double min, double max)
-//{
-//  if (min == max) // No range, hue = 0.
-//    return 0;
+    //  return max - min;
+    //}
+    //public static double GetNormalizedHue(double nred, double ngreen, double nblue, double min, double max)
+    //{
+    //  if (min == max) // No range, hue = 0.
+    //    return 0;
 
-//  double hue;
+    //  double hue;
 
-//  var chroma = max - min;
+    //  var chroma = max - min;
 
-//  if (chroma == 0) // No range, hue = 0.
-//    return 0;
-//  else if (max == nred)
-//    hue = ((ngreen - nblue) / chroma + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
-//  else if (max == ngreen)
-//    hue = 2 + (nblue - nred) / chroma;
-//  else // if (max == blue) // No need for comparison, at this point blue must be max.
-//    hue = 4 + (nred - ngreen) / chroma;
+    //  if (chroma == 0) // No range, hue = 0.
+    //    return 0;
+    //  else if (max == nred)
+    //    hue = ((ngreen - nblue) / chroma + 6) % 6; // The % operator doesn't do proper modulo on negative numbers, so we'll add 6 before using it.
+    //  else if (max == ngreen)
+    //    hue = 2 + (nblue - nred) / chroma;
+    //  else // if (max == blue) // No need for comparison, at this point blue must be max.
+    //    hue = 4 + (nred - ngreen) / chroma;
 
-//  hue *= 60; // Convert to [0, 360] range.
+    //  hue *= 60; // Convert to [0, 360] range.
 
-//  if (hue < 0)
-//    hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
+    //  if (hue < 0)
+    //    hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
 
-//  return hue;
-//}
-#endregion Static methods
+    //  return hue;
+    //}
+    #endregion Static methods
 
-#region Overloaded operators
-/// <summary>
-/// Returns a color based on XAML color string.
-/// </summary>
-/// <param name="colorString">The color string. Any format used in XAML should work.</param>
-/// <returns>Parsed color</returns>
-//public static Rgb Parse(string colorString)
-//{
-//  if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
+    #region Overloaded operators
+    /// <summary>
+    /// Returns a color based on XAML color string.
+    /// </summary>
+    /// <param name="colorString">The color string. Any format used in XAML should work.</param>
+    /// <returns>Parsed color</returns>
+    //public static Rgb Parse(string colorString)
+    //{
+    //  if (string.IsNullOrEmpty(colorString)) throw new System.ArgumentNullException(nameof(colorString));
 
-//  if (colorString[0] == '#')
-//  {
-//    switch (colorString)
-//    {
-//      case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
-//        return new Rgb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
-//      case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
-//        return new Rgb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
-//      case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
-//        var a5 = (byte)(c >> 12);
-//        var r5 = (byte)((c >> 8) & 0xf);
-//        var g5 = (byte)((c >> 4) & 0xf);
-//        var b5 = (byte)(c & 0xf);
-//        a5 = (byte)(a5 << 4 | a5);
-//        r5 = (byte)(r5 << 4 | r5);
-//        g5 = (byte)(g5 << 4 | g5);
-//        b5 = (byte)(b5 << 4 | b5);
-//        return new Rgb(r5, g5, b5, a5);
-//      case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
-//        var r4 = (byte)((ci4 >> 8) & 0xf);
-//        var g4 = (byte)((ci4 >> 4) & 0xf);
-//        var b4 = (byte)(ci4 & 0xf);
-//        r4 = (byte)(r4 << 4 | r4);
-//        g4 = (byte)(g4 << 4 | g4);
-//        b4 = (byte)(b4 << 4 | b4);
-//        return new Rgb(r4, g4, b4, 255);
-//      default:
-//        throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
-//    }
-//  }
+    //  if (colorString[0] == '#')
+    //  {
+    //    switch (colorString)
+    //    {
+    //      case var cs9 when cs9.Length == 9 && System.Convert.ToUInt32(cs9.Substring(1), 16) is var ci9:
+    //        return new Rgb((byte)((ci9 >> 16) & 0xff), (byte)((ci9 >> 8) & 0xff), (byte)(ci9 & 0xff), (byte)(ci9 >> 24));
+    //      case var cs7 when cs7.Length == 7 && System.Convert.ToUInt32(cs7.Substring(1), 16) is var ci7:
+    //        return new Rgb((byte)((ci7 >> 16) & 0xff), (byte)((ci7 >> 8) & 0xff), (byte)(ci7 & 0xff), 255);
+    //      case var cs5 when cs5.Length == 5 && System.Convert.ToUInt16(cs5.Substring(1), 16) is var c:
+    //        var a5 = (byte)(c >> 12);
+    //        var r5 = (byte)((c >> 8) & 0xf);
+    //        var g5 = (byte)((c >> 4) & 0xf);
+    //        var b5 = (byte)(c & 0xf);
+    //        a5 = (byte)(a5 << 4 | a5);
+    //        r5 = (byte)(r5 << 4 | r5);
+    //        g5 = (byte)(g5 << 4 | g5);
+    //        b5 = (byte)(b5 << 4 | b5);
+    //        return new Rgb(r5, g5, b5, a5);
+    //      case var cs4 when cs4.Length == 4 && System.Convert.ToUInt16(cs4.Substring(1), 16) is var ci4:
+    //        var r4 = (byte)((ci4 >> 8) & 0xf);
+    //        var g4 = (byte)((ci4 >> 4) & 0xf);
+    //        var b4 = (byte)(ci4 & 0xf);
+    //        r4 = (byte)(r4 << 4 | r4);
+    //        g4 = (byte)(g4 << 4 | g4);
+    //        b4 = (byte)(b4 << 4 | b4);
+    //        return new Rgb(r4, g4, b4, 255);
+    //      default:
+    //        throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format.");
+    //    }
+    //  }
 
-//  if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
-//  {
-//    return (colorString.Substring(3).Split(',')) switch
-//    {
-//      var s4 when s4.Length == 4 => new Rgb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
-//      var s3 when s3.Length == 3 => new Rgb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
-//      _ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
-//    };
-//  }
+    //  if (colorString.Length > 3 && colorString.StartsWith(@"sc#", System.StringComparison.OrdinalIgnoreCase))
+    //  {
+    //    return (colorString.Substring(3).Split(',')) switch
+    //    {
+    //      var s4 when s4.Length == 4 => new Rgb((byte)(double.Parse(s4[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[2], System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[3], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s4[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255)),
+    //      var s3 when s3.Length == 3 => new Rgb((byte)(double.Parse(s3[0], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[1], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), (byte)(double.Parse(s3[2], System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture) * 255), 255),
+    //      _ => throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color format (sc#[scA,]scR,scG,scB)."),
+    //    };
+    //  }
 
-//  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
-//}
+    //  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
+    //}
 
-// Operators
-#if NET5_0
+    // Operators
     public static bool operator ==(Rgb a, Rgb b)
       => a.Equals(b);
     public static bool operator !=(Rgb a, Rgb b)
       => !a.Equals(b);
-#endif
-#endregion Overloaded operators
+    #endregion Overloaded operators
 
-#region Implemented interfaces
-#if NET5_0
+    #region Implemented interfaces
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
       => m_red == other.m_red && m_green == other.m_green && m_blue == other.m_blue;
-#endif
-#endregion Implemented interfaces
+    #endregion Implemented interfaces
 
-#region Object overrides
-#if NET5_0
+    #region Object overrides
     public override bool Equals(object? obj)
       => obj is Rgb o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_red, m_green, m_blue);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";
-#endregion Object overrides
+    #endregion Object overrides
   }
 }

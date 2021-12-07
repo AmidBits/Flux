@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
-#if NET5_0
   public struct LuminousIntensity
-    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValuedUnit<double>
-#else
-  public record struct LuminousIntensity
-    : System.IComparable<LuminousIntensity>, IValuedUnit<double>
-#endif
+    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
@@ -52,12 +47,10 @@ namespace Flux.Quantity
     public static bool operator >=(LuminousIntensity a, LuminousIntensity b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(LuminousIntensity a, LuminousIntensity b)
       => a.Equals(b);
     public static bool operator !=(LuminousIntensity a, LuminousIntensity b)
       => !a.Equals(b);
-#endif
 
     public static LuminousIntensity operator -(LuminousIntensity v)
       => new(-v.m_value);
@@ -88,20 +81,16 @@ namespace Flux.Quantity
     public int CompareTo(LuminousIntensity other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(LuminousIntensity other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is LuminousIntensity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} cd }}";
     #endregion Object overrides

@@ -2,13 +2,8 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
-#if NET5_0
   public struct Adler32
     : IChecksumGenerator32, System.IEquatable<Adler32>
-#else
-  public struct Adler32
-    : IChecksumGenerator32
-#endif
   {
     public static readonly Adler32 Empty;
 
@@ -45,27 +40,21 @@ namespace Flux.Checksum
       return Checksum32;
     }
 
-#if NET5_0
     // Operators
     public static bool operator ==(Adler32 a, Adler32 b)
       => a.Equals(b);
     public static bool operator !=(Adler32 a, Adler32 b)
       => !a.Equals(b);
-#endif
 
-#if NET5_0
     // IEquatable
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
       => m_hash == other.m_hash;
-#endif
 
     // Object (overrides)
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Adler32 o && Equals(o);
     public override int GetHashCode()
       => m_hash.GetHashCode();
-#endif
     public override string ToString()
       => $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
   }

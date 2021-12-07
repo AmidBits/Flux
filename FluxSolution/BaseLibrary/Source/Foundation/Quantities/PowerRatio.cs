@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
-#if NET5_0
   public struct PowerRatio
-    : System.IComparable<PowerRatio>, System.IEquatable<PowerRatio>, IValuedUnit<double>
-#else
-  public record struct PowerRatio
-    : System.IComparable<PowerRatio>, IValuedUnit<double>
-#endif
+    : System.IComparable<PowerRatio>, System.IEquatable<PowerRatio>, IUnitValueDefaultable<double>
   {
     public const double ScalingFactor = 10;
 
@@ -26,7 +21,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public AmplitudeRatio ToAmplitudeRatio()
@@ -44,7 +39,7 @@ namespace Flux.Quantity
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public static PowerRatio From(Power numerator, Power denominator)
-      => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
+      => new(ScalingFactor * System.Math.Log10(numerator.DefaultUnitValue / denominator.DefaultUnitValue));
     /// <summary>Creates a new PowerRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
     /// <param name="decibelChange"></param>
     public static PowerRatio FromDecibelChange(double decibelChange)
@@ -66,12 +61,10 @@ namespace Flux.Quantity
     public static bool operator >=(PowerRatio a, PowerRatio b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(PowerRatio a, PowerRatio b)
       => a.Equals(b);
     public static bool operator !=(PowerRatio a, PowerRatio b)
       => !a.Equals(b);
-#endif
 
     public static PowerRatio operator -(PowerRatio v)
       => new(-v.m_value);
@@ -98,20 +91,16 @@ namespace Flux.Quantity
     public int CompareTo(PowerRatio other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(PowerRatio other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is PowerRatio o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} dBW }}";
     #endregion Object overrides

@@ -264,12 +264,8 @@ namespace Flux
 
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
-#if NET5_0
   public struct CartesianCoordinate2
     : System.IEquatable<CartesianCoordinate2>
-#elif NET6_0
-  public record struct CartesianCoordinate2
-#endif
   {
     public readonly static CartesianCoordinate2 Zero;
 
@@ -486,12 +482,10 @@ namespace Flux
     public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
       => new(xy.Item1, xy.Item2);
 
-#if NET5_0
     public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.Equals(b);
     public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => !a.Equals(b);
-#endif
 
     public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc)
       => new(-cc.X, -cc.Y);
@@ -538,21 +532,16 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(CartesianCoordinate2 other)
       => m_x == other.m_x && m_y == other.m_y;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
-
     public override bool Equals(object? obj)
       => obj is CartesianCoordinate2 o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides

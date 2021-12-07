@@ -35,13 +35,8 @@ namespace Flux
 
     /// <summary>Time. SI unit of second. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Time"/>
-#if NET5_0
     public struct Time
-      : System.IComparable<Time>, System.IEquatable<Time>, IValuedUnit<double>
-#else
-    public record struct Time
-      : System.IComparable<Time>, IValuedUnit<double>
-#endif
+      : System.IComparable<Time>, System.IEquatable<Time>, IUnitValueDefaultable<double>
     {
       /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
       public static Time Flick
@@ -68,7 +63,7 @@ namespace Flux
         : this(timeSpan.TotalSeconds)
       { }
 
-      public double Value
+      public double DefaultUnitValue
         => m_value;
 
       public System.TimeSpan ToTimeSpan()
@@ -109,12 +104,10 @@ namespace Flux
       public static bool operator >=(Time a, Time b)
         => a.CompareTo(b) >= 0;
 
-#if NET5_0
       public static bool operator ==(Time a, Time b)
         => a.Equals(b);
       public static bool operator !=(Time a, Time b)
         => !a.Equals(b);
-#endif
 
       public static Time operator -(Time v)
         => new(-v.m_value);
@@ -145,20 +138,16 @@ namespace Flux
       public int CompareTo(Time other)
         => m_value.CompareTo(other.m_value);
 
-#if NET5_0
       // IEquatable
       public bool Equals(Time other)
         => m_value == other.m_value;
-#endif
       #endregion Implemented interfaces
 
       #region Object overrides
-#if NET5_0
       public override bool Equals(object? obj)
         => obj is Time o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
-#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides

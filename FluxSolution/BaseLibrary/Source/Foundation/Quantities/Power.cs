@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
-#if NET5_0
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IValuedUnit<double>
-#else
-  public record struct Power
-    : System.IComparable<Power>, IValuedUnit<double>
-#endif
+    : System.IComparable<Power>, System.IEquatable<Power>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(PowerUnit unit = PowerUnit.Watt)
@@ -39,7 +34,7 @@ namespace Flux.Quantity
     /// <param name="current"></param>
     /// <param name="voltage"></param>
     public static Power From(ElectricCurrent current, Voltage voltage)
-      => new(current.Value * voltage.Value);
+      => new(current.DefaultUnitValue * voltage.DefaultUnitValue);
     #endregion Static methods
 
     #region Overloaded operators
@@ -57,12 +52,10 @@ namespace Flux.Quantity
     public static bool operator >=(Power a, Power b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Power a, Power b)
       => a.Equals(b);
     public static bool operator !=(Power a, Power b)
       => !a.Equals(b);
-#endif
 
     public static Power operator -(Power v)
       => new(-v.m_value);
@@ -93,20 +86,16 @@ namespace Flux.Quantity
     public int CompareTo(Power other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Power other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Power o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name}  {{ Value = {m_value} W }}";
     #endregion Object overrides

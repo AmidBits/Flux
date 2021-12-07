@@ -7,13 +7,8 @@ namespace Flux.Quantity
 
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
-#if NET5_0
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>, IValuedUnit<double>
-#else
-  public struct Density
-    : System.IComparable<Density>, IValuedUnit<double>
-#endif
+    : System.IComparable<Density>, System.IEquatable<Density>, IUnitValueDefaultable<double>
   {
     private readonly double m_value;
 
@@ -24,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double Value
+    public double DefaultUnitValue
       => m_value;
 
     public double ToUnitValue(DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
@@ -36,7 +31,7 @@ namespace Flux.Quantity
 
     #region Static methods
     public static Density From(Mass mass, Volume volume)
-      => new(mass.Value / volume.Value);
+      => new(mass.DefaultUnitValue / volume.DefaultUnitValue);
     #endregion Static methods
 
     #region Overloaded operators
@@ -54,12 +49,10 @@ namespace Flux.Quantity
     public static bool operator >=(Density a, Density b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Density a, Density b)
       => a.Equals(b);
     public static bool operator !=(Density a, Density b)
       => !a.Equals(b);
-#endif
 
     public static Density operator -(Density v)
       => new(-v.m_value);
@@ -90,20 +83,16 @@ namespace Flux.Quantity
     public int CompareTo(Density other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Density other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Density o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} kg/m³ }}";
     #endregion Object overrides

@@ -27,13 +27,8 @@ namespace Flux
 
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
-#if NET5_0
     public struct Speed
-      : System.IComparable<Speed>, System.IEquatable<Speed>, IValuedUnit<double>
-#else
-    public record struct Speed
-      : System.IComparable<Speed>, IValuedUnit<double>
-#endif
+      : System.IComparable<Speed>, System.IEquatable<Speed>, IUnitValueDefaultable<double>
     {
       public static Speed SpeedOfLightInVacuum
         => new(299792458);
@@ -60,7 +55,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public double Value
+      public double DefaultUnitValue
         => m_value;
 
       public string ToUnitString(SpeedUnit unit = SpeedUnit.MetersPerSecond, string? format = null)
@@ -82,14 +77,14 @@ namespace Flux
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
       public static Speed ComputePhaseVelocity(Frequency frequency, Length wavelength)
-        => new(frequency.Value * wavelength.Value);
+        => new(frequency.DefaultUnitValue * wavelength.DefaultUnitValue);
 
       /// <summary>Creates a new Speed instance from the specified length and time.</summary>
       /// <param name="length"></param>
       /// <param name="time"></param>
       /// <returns></returns>
       public static Speed From(Length length, Time time)
-        => new(length.Value / time.Value);
+        => new(length.DefaultUnitValue / time.DefaultUnitValue);
       #endregion Static methods
 
       #region Overloaded operators
@@ -107,12 +102,10 @@ namespace Flux
       public static bool operator >=(Speed a, Speed b)
         => a.CompareTo(b) >= 0;
 
-#if NET5_0
       public static bool operator ==(Speed a, Speed b)
         => a.Equals(b);
       public static bool operator !=(Speed a, Speed b)
         => !a.Equals(b);
-#endif
 
       public static Speed operator -(Speed v)
         => new(-v.m_value);
@@ -143,20 +136,16 @@ namespace Flux
       public int CompareTo(Speed other)
         => m_value.CompareTo(other.m_value);
 
-#if NET5_0
       // IEquatable
       public bool Equals(Speed other)
         => m_value == other.m_value;
-#endif
       #endregion Implemented interfaces
 
       #region Object overrides
-#if NET5_0
       public override bool Equals(object? obj)
         => obj is Speed o && Equals(o);
       public override int GetHashCode()
         => m_value.GetHashCode();
-#endif
       public override string ToString()
         => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
       #endregion Object overrides
