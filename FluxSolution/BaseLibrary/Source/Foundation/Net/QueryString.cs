@@ -1,11 +1,11 @@
 using System.Linq;
 
-namespace Flux
+namespace Flux.Net
 {
-  public static partial class ExtensionMethods
+  public static class QueryString
   {
     /// <summary>Change any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
-    public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ChangeInQueryStringDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> change, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
+    public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> ChangeInDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> change, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (change is null) throw new System.ArgumentNullException(nameof(change));
@@ -28,7 +28,7 @@ namespace Flux
     }
 
     /// <summary>Remove any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
-    public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> RemoveInQueryStringDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> remove, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
+    public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> RemoveInDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> remove, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (remove is null) throw new System.ArgumentNullException(nameof(remove));
@@ -55,7 +55,7 @@ namespace Flux
     }
 
     /// <summary>Generate a 'query string dictionary' from the specified query string.</summary>
-    public static System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> ToQueryStringDictionary(this string source)
+    public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> Parse(this string source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -63,7 +63,7 @@ namespace Flux
     }
 
     /// <summary>Generate a 'simplified query string dictionary' from the 'query string dictionary'.</summary>
-    public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedQueryDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
+    public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
