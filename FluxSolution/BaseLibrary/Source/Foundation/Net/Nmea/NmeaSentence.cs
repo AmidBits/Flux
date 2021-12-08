@@ -2,11 +2,7 @@ namespace Flux.Net.Nmea
 {
   // http://aprs.gids.nl/nmea/
 
-#if NET5_0
   public class NmeaSentence
-#else
-  public record class NmeaSentence
-#endif
   {
     private static readonly System.Text.RegularExpressions.Regex m_reSentence = new(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?", System.Text.RegularExpressions.RegexOptions.Compiled);
 

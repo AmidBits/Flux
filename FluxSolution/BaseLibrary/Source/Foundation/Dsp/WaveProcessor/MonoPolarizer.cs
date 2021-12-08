@@ -11,11 +11,7 @@
 
   /// <summary>Enables inline conversion of the polarity range, e.g. bipolar to unipolar (or the other way around).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
-#if NET5_0
   public sealed class MonoPolarizer
-#else
-  public record struct MonoPolarizer
-#endif
     : IWaveProcessorMono
   {
     public MonoPolarizerMode Mode { get; }

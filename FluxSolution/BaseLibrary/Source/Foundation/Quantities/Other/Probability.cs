@@ -31,12 +31,10 @@ namespace Flux.Quantity
     public static bool operator >=(Probability a, Probability b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Probability a, Probability b)
       => a.Equals(b);
     public static bool operator !=(Probability a, Probability b)
       => !a.Equals(b);
-#endif
 
     public static Probability operator -(Probability v)
       => new(-v.m_probability);

@@ -1,10 +1,6 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
-#if NET5_0
   public sealed class MonoThruStereoProcessor
-#else
-  public record struct MonoThruStereoProcessor
-#endif
     : IWaveProcessorMono
   {
     public IWaveProcessorStereo Stereo { get; }

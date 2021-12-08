@@ -3,13 +3,8 @@
 namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>
-#if NET5_0
   public struct VersionEx
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>
-#else
-  public record struct VersionEx
-    : System.IComparable<VersionEx>
-#endif
   {
     public static readonly VersionEx Empty;
 
@@ -85,12 +80,10 @@ namespace Flux
     public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(VersionEx a, VersionEx b)
       => a.Equals(b);
     public static bool operator !=(VersionEx a, VersionEx b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -107,7 +100,6 @@ namespace Flux
       return 0;
     }
 
-#if NET5_0
     // IEquatable
     public bool Equals(VersionEx other)
     {
@@ -120,16 +112,13 @@ namespace Flux
 
       return true;
     }
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
     public override int GetHashCode()
       => m_parts.CombineHashCore();
-#endif
     public override string? ToString()
       => string.Join('.', m_parts);
     #endregion Object overrides

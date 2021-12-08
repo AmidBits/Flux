@@ -1,11 +1,7 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Winkel_tripel_projection
-#if NET5_0
   public struct WinkelTripelProjection
-#else
-  public record struct WinkelTripelProjection
-#endif
     : IMapForwardProjectable
   {
     public static readonly WinkelTripelProjection Default;

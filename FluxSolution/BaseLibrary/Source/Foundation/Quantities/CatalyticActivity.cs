@@ -44,12 +44,10 @@ namespace Flux.Quantity
     public static bool operator >=(CatalyticActivity a, CatalyticActivity b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(CatalyticActivity a, CatalyticActivity b)
       => a.Equals(b);
     public static bool operator !=(CatalyticActivity a, CatalyticActivity b)
       => !a.Equals(b);
-#endif
 
     public static CatalyticActivity operator -(CatalyticActivity v)
       => new(-v.m_value);

@@ -1,11 +1,7 @@
 namespace Flux.Model
 {
   /// <summary>A classic discrete-time population model which gives the expected number Nt+1 (or density) of individuals in generation t+1 as a function of the number of individuals in the previous generation.</summary>
-#if NET5_0
   public struct BevertonHoltModel
-#else
-  public record struct BevertonHoltModel
-#endif
     : IPopulationModel
   {
     public BevertonHoltModel(double population, double growthRate, double carryingCapacity)
@@ -24,11 +20,7 @@ namespace Flux.Model
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModel NextGeneration()
-#if NET5_0
       => new BevertonHoltModel(Model(Population, GrowthRate, CarryingCapacity), GrowthRate, CarryingCapacity);
-#else
-      => this with { Population = Model(Population, GrowthRate, CarryingCapacity) };
-#endif
 
     /// <summary>A classic discrete-time population model which gives the expected number Nt+1 (or density) of individuals in generation t+1 as a function of the number of individuals in the previous generation.</summary>
     /// <param name="population">The number of individuals at time t (Nt).</param>

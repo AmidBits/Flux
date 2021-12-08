@@ -1,11 +1,7 @@
 namespace Flux.Geometry.Hexagon
 {
-#if NET5_0
   public struct HexLayout
     : System.IEquatable<HexLayout>
-#else
-  public record struct HexLayout
-#endif
   {
     public readonly Geometry.Size2 Size;
     public readonly Geometry.Point2 Origin;
@@ -63,29 +59,23 @@ namespace Flux.Geometry.Hexagon
     }
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(HexLayout a, HexLayout b)
       => a.Equals(b);
     public static bool operator !=(HexLayout a, HexLayout b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(HexLayout other)
       => Orientation == other.Orientation && Size == other.Size && Origin == other.Origin;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is HexLayout o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Orientation, Size, Origin);
-#endif
     public override string? ToString()
       => $"{GetType().Name} {{ Orientation = {Orientation}, Size = {Size}, Origin = {Origin} }}";
     #endregion Object overrides

@@ -1,11 +1,7 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
-#if NET5_0
   public struct EqualEarthProjection
-#else
-  public record struct EqualEarthProjection
-#endif
     : IMapForwardProjectable, IMapReverseProjectable
   {
     public static readonly EqualEarthProjection Default;

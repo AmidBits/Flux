@@ -14,11 +14,7 @@ namespace Flux.Dsp.AudioProcessor
   }
 
   /// <summary></summary>
-#if NET5_0
   public sealed class MonoQuadratic
-#else
-  public record class MonoQuadratic
-#endif
     : IWaveProcessorMono
   {
     public MonoQuadraticMode Mode { get; internal set; }

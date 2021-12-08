@@ -1,11 +1,7 @@
 namespace Flux.Data
 {
-#if NET5_0
   public struct TsqlNullability
     : System.IEquatable<TsqlNullability>
-#else
-  public record struct TsqlNullability
-#endif
   {
     public const string CsNotNull = @"NOT NULL";
     public const string CsNull = @"NULL";
@@ -49,29 +45,23 @@ namespace Flux.Data
     #endregion Static methods
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(TsqlNullability left, TsqlNullability right)
       => left.Equals(right);
     public static bool operator !=(TsqlNullability left, TsqlNullability right)
       => !left.Equals(right);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(TsqlNullability other)
       => IsNullable == other.IsNullable;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
    public override bool Equals(object? obj)
       => obj is TsqlNullability o && Equals(o);
     public override int GetHashCode()
       => IsNullable.GetHashCode();
-#endif
     public override string ToString()
       => IsNullable ? CsNull : CsNotNull;
     #endregion Object overrides

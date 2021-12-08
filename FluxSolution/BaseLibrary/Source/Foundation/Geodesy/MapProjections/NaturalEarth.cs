@@ -1,11 +1,7 @@
 ﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Natural_Earth_projection
-#if NET5_0
   public struct NaturalEarthProjection
-#else
-  public record struct NaturalEarthProjection
-#endif
     : IMapForwardProjectable
   {
     public static readonly NaturalEarthProjection Default;

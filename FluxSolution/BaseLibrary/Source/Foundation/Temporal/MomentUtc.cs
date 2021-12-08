@@ -11,13 +11,8 @@ namespace Flux
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
-#if NET5_0
   public struct MomentUtc
     : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
-#else
-  public record struct MomentUtc
-    : System.IComparable<MomentUtc>
-#endif
   {
     public static readonly MomentUtc Empty;
 
@@ -121,12 +116,10 @@ namespace Flux
     public static bool operator >=(MomentUtc a, MomentUtc b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(MomentUtc a, MomentUtc b)
       => a.Equals(b);
     public static bool operator !=(MomentUtc a, MomentUtc b)
       => !a.Equals(b);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -141,7 +134,6 @@ namespace Flux
       : m_millisecond < other.m_millisecond ? -1 : m_millisecond > other.m_millisecond ? 1
       : 0; // This means this instance is equal to the other.
 
-#if NET5_0
     // IEquatable<>
     public bool Equals(MomentUtc other)
       => m_year == other.m_year
@@ -151,16 +143,13 @@ namespace Flux
       && m_minute == other.m_minute
       && m_second == other.m_second
       && m_millisecond == other.m_millisecond;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is MomentUtc o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
-#endif
     public override string? ToString()
       => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
     #endregion Object overrides

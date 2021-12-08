@@ -3,11 +3,7 @@ namespace Flux.Dsp.WaveFilter
   /// <comment>A biquad is a second order (two poles and two zeros) IIR filter. It is high enough order to be useful on its own, and—because of coefficient sensitivities in higher order filters—the biquad is often used as the basic building block for more complex filters. This implementation use the transposed direct form II architecture (which has good floating point characteristics, and requires only two unit delays).</comment>
   /// <see cref="http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/"/>
   /// <seealso cref="http://www.earlevel.com/main/2003/02/28/biquads/"/>
-#if NET5_0
   public sealed class BiQuad
-#else
-  public record class BiQuad
-#endif
     : IWaveFilterMono, IWaveProcessorMono
   {
     public BiQuadFrequencyFunction Function { get; private set; }

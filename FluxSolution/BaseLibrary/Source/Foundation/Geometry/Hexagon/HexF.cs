@@ -1,11 +1,7 @@
 namespace Flux.Geometry.Hexagon
 {
-#if NET5_0
   public struct HexF
     : System.IEquatable<HexF>
-#else
-  public record struct HexF
-#endif
   {
     public static readonly HexF Zero;
 
@@ -69,29 +65,23 @@ namespace Flux.Geometry.Hexagon
     #endregion Static methods
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(HexF p1, HexF p2)
      => p1.Equals(p2);
     public static bool operator !=(HexF p1, HexF p2)
       => !p1.Equals(p2);
-#endif
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(HexF other)
       => Q == other.Q && R == other.R && S == other.S;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is HexF o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Q, R, S);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Q = {Q}, R = {R}, S = {S} }}";
     #endregion Object overrides

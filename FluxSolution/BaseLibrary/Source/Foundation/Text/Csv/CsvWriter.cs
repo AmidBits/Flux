@@ -156,6 +156,6 @@ namespace Flux.Text.Csv
       => Flush();
 
     public override string ToString()
-      => $"{GetType().Name} {{ EscapeCharacters = {string.Join(@", ", System.Linq.Enumerable.Select(m_escapeCharacters, c => UnicodeNotation.ToString((System.Text.Rune)c)))}, {m_options} }}";
+      => $"{GetType().Name} {{ EscapeCharacters = {string.Join(@", ", System.Linq.Enumerable.Select(m_escapeCharacters, c => Unicode.NotationToString((System.Text.Rune)c)))}, {m_options} }}";
   }
 }

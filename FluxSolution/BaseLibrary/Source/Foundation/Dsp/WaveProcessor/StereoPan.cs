@@ -1,10 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-#if NET5_0
   public sealed class StereoPan
-#else
-  public record struct StereoPan
-#endif
     : IWaveProcessorStereo
   {
     private double m_position, m_positionInvAbs, m_scaledAbs, m_scaledAbsInv;

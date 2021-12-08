@@ -3,13 +3,8 @@ namespace Flux.Music
   /// <summary>Cent unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
-#if NET5_0
   public struct Cent
-    : System.IComparable<Cent>, System.IEquatable<Cent>, Quantity.IValuedUnit<int>
-#else
-  public record struct Cent
-    : System.IComparable<Cent>, Quantity.IUnitValueDefaultable<int>
-#endif
+    : System.IComparable<Cent>, System.IEquatable<Cent>, Quantity.IUnitValueDefaultable<int>
   {
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
@@ -64,12 +59,10 @@ namespace Flux.Music
     public static bool operator >=(Cent a, Cent b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(Cent a, Cent b)
       => a.Equals(b);
     public static bool operator !=(Cent a, Cent b)
       => !a.Equals(b);
-#endif
 
     public static Cent operator -(Cent v)
       => new(-v.m_value);
@@ -100,20 +93,16 @@ namespace Flux.Music
     public int CompareTo(Cent other)
       => m_value.CompareTo(other.m_value);
 
-#if NET5_0
     // IEquatable
     public bool Equals(Cent other)
       => m_value == other.m_value;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Cent o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Value = {m_value} }}";
     #endregion Object overrides

@@ -1,10 +1,6 @@
 namespace Flux.Dsp.WaveFilter
 {
-#if NET5_0
   public sealed class TripleEq
-#else
-  public record struct TripleEq
-#endif
     : IWaveFilterMono, IWaveProcessorMono
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)

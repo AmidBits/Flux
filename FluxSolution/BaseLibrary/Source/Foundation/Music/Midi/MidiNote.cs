@@ -3,13 +3,8 @@ namespace Flux.Midi
   /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-#if NET5_0
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IValuedUnit<int>
-#else
-  public struct MidiNote
-    : System.IComparable<MidiNote>, Quantity.IUnitValueDefaultable<int>
-#endif
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IUnitValueDefaultable<int>
   {
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
@@ -123,12 +118,10 @@ namespace Flux.Midi
     public static bool operator >=(MidiNote a, MidiNote b)
       => a.CompareTo(b) >= 0;
 
-#if NET5_0
     public static bool operator ==(MidiNote a, MidiNote b)
       => a.Equals(b);
     public static bool operator !=(MidiNote a, MidiNote b)
       => !a.Equals(b);
-#endif
 
     public static MidiNote operator -(MidiNote v)
       => new(-v.m_number);
@@ -159,20 +152,16 @@ namespace Flux.Midi
     public int CompareTo(MidiNote other)
       => m_number.CompareTo(other.m_number);
 
-#if NET5_0
     // IEquatable
     public bool Equals(MidiNote other)
       => m_number == other.m_number;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is MidiNote o && Equals(o);
     public override int GetHashCode()
       => m_number.GetHashCode();
-#endif
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString()

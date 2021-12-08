@@ -1,11 +1,7 @@
 namespace Flux.Model
 {
   /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
-#if NET5_0
   public struct BideModel
-#else
-  public record struct BideModel
-#endif
     : IPopulationModel
   {
     public BideModel(double population, double births, double immigrated, double deaths, double emigrated)
@@ -30,11 +26,7 @@ namespace Flux.Model
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModel NextGeneration()
-#if NET5_0
       => new BideModel(Model(Population, Births, Immigrated, Deaths, Emigrated), Births, Immigrated, Deaths, Emigrated);
-#else
-      => this with { Population = Model(Population, Births, Immigrated, Deaths, Emigrated) };
-#endif
 
     /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
     /// <param name="population">The number of individuals at time t (Nt).</param>

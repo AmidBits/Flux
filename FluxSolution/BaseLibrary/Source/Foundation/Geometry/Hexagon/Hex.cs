@@ -3,12 +3,8 @@ using System.Linq;
 namespace Flux.Geometry.Hexagon
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
-#if NET5_0
   public struct Hex
     : System.IEquatable<Hex>
-#else
-  public record struct Hex
-#endif
   {
     public static Hex[] Directions
       => new Hex[] {
@@ -130,12 +126,10 @@ namespace Flux.Geometry.Hexagon
     #endregion Static methods
 
     #region Overloaded operators
-#if NET5_0
     public static bool operator ==(Hex h1, Hex h2)
       => h1.Equals(h2);
     public static bool operator !=(Hex h1, Hex h2)
       => !h1.Equals(h2);
-#endif
 
     public static Hex operator +(Hex h1, Hex h2)
       => Add(h1, h2);
@@ -146,20 +140,16 @@ namespace Flux.Geometry.Hexagon
     #endregion Overloaded operators
 
     #region Implemented interfaces
-#if NET5_0
     // IEquatable
     public bool Equals(Hex other)
       => Q == other.Q && R == other.R && S == other.S;
-#endif
     #endregion Implemented interfaces
 
     #region Object overrides
-#if NET5_0
     public override bool Equals(object? obj)
       => obj is Hex o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Q, R, S);
-#endif
     public override string ToString()
       => $"{GetType().Name} {{ Q = {Q}, R = {R}, S = {S} }}";
     #endregion Object overrides
