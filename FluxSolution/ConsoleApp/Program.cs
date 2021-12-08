@@ -15,26 +15,32 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
 
-      var x = (10, 12);
-      x.Item1 = 1;
-      x.Item2 = 3;
-
-      System.Console.Write(x);
-
-      var ah = new Flux.Quantity.AbsoluteHumidity(10);
-      //var ah1 = ah with { Value = ah.Value + 10 };
-
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
+      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
       //var type = typeof(Flux.Quantity.IValuedUnit<>);
       //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
 
-      var index = 0;
-      foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
-        //if (type.IsValueType && !type.IsEnum)
-        //if (type.IsClass && !type.IsAbstract && !type.IsNested)
-        if (!type.IsAbstract && !type.IsEnum && !type.IsNested && !type.IsNotPublic && type.GetInterfaces().Count() == 0)
-          System.Console.WriteLine($"{++index:D3} : {type.FullName}");
+      //var index = 0;
+      //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
+      //  //if (type.IsValueType && !type.IsEnum)
+      //  //if (type.IsClass && !type.IsAbstract && !type.IsNested)
+      //  if (!type.IsAbstract && !type.IsEnum && !type.IsNested && !type.IsNotPublic && type.GetInterfaces().Count() == 0)
+      //    System.Console.WriteLine($"{++index:D3} : {type.FullName}");
+
+      var bst = new Flux.Collections.Generic.BinarySearchTree<int, string>();
+
+      bst.Add(1, "One");
+      bst.Add(2, "Two");
+      bst.Add(2, "Second");
+      bst.Add(3, "Three");
+
+      var c = bst.Search(2, out var a);
+      var d = bst.Search(4, out var b);
+
+      bst.Remove(1);
+      bst.Remove(2);
+      bst.Remove(3);
+      bst.Remove(4);
     }
 
     private static void Main(string[] args)

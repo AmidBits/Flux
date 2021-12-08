@@ -59,7 +59,7 @@ namespace Flux.DataStructures.Immutable
     public bool Contains(TKey key)
       => !Search(key).IsEmpty;
     public TValue Lookup(TKey key)
-      => Search(key) is var tree && tree.IsEmpty ? throw new System.Exception("not found") : tree.Value;
+      => Search(key) is var tree && tree.IsEmpty ? throw new System.Exception("Not found.") : tree.Value;
     IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key)
       => Remove(key);
 
