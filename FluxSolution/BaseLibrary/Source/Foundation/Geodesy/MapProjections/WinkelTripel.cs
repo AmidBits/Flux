@@ -6,7 +6,7 @@
   {
     public static readonly WinkelTripelProjection Default;
 
-#pragma warning disable CA1822 // Mark members as static
+//#pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.Radian;
@@ -21,7 +21,7 @@
 
       return new CartesianCoordinate3(x, y, project.Altitude.DefaultUnitValue);
     }
-#pragma warning restore CA1822 // Mark members as static
+//#pragma warning restore CA1822 // Mark members as static
   }
 
 }
