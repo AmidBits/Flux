@@ -11,8 +11,11 @@ namespace ConsoleApp
 {
   public class Program
   {
+
     private static void TimedMain(string[] args)
     {
+      System.Console.WriteLine("\"" + Flux.Convert.ToWords(100).ToLowerCaseCurrent() + "\"");
+
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
 
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
@@ -43,6 +46,7 @@ namespace ConsoleApp
       bst = bst.Add(12, "Twelve");
       bst = bst.Add(13, "Thirteen");
       bst = bst.Add(14, "Fourteen");
+      bst = bst.Add(15, "Fifteen");
 
       System.Console.WriteLine(bst.ToConsoleBlock());
 
