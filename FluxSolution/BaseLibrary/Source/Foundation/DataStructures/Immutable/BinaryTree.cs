@@ -43,7 +43,7 @@ namespace Flux.DataStructures.Immutable
 				=> throw new System.Exception(nameof(EmptyBinaryTree));
 
 			public override string ToString()
-				=> $"{GetType().Name}";
+				=> $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock()}";
 		}
 	}
 }

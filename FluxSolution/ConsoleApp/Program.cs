@@ -27,20 +27,35 @@ namespace ConsoleApp
       //  if (!type.IsAbstract && !type.IsEnum && !type.IsNested && !type.IsNotPublic && type.GetInterfaces().Count() == 0)
       //    System.Console.WriteLine($"{++index:D3} : {type.FullName}");
 
-      var bst = new Flux.Collections.Generic.BinarySearchTree<int, string>();
+      var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
-      bst.Add(1, "One");
-      bst.Add(2, "Two");
-      bst.Add(2, "Second");
-      bst.Add(3, "Three");
+      bst = bst.Add(1, "One");
+      bst = bst.Add(2, "Two");
+      bst = bst.Add(3, "Three");
+      bst = bst.Add(4, "Four");
+      bst = bst.Add(5, "Five");
+      bst = bst.Add(6, "Six");
+      bst = bst.Add(7, "Seven");
+      bst = bst.Add(8, "Eight");
+      bst = bst.Add(9, "Nine");
+      bst = bst.Add(10, "Ten");
+      bst = bst.Add(11, "Eleven");
+      bst = bst.Add(12, "Twelve");
+      bst = bst.Add(13, "Thirteen");
+      bst = bst.Add(14, "Fourteen");
 
-      var c = bst.Search(2, out var a);
-      var d = bst.Search(4, out var b);
+      System.Console.WriteLine(bst.ToConsoleBlock());
 
-      bst.Remove(1);
-      bst.Remove(2);
-      bst.Remove(3);
-      bst.Remove(4);
+      var a = bst.Search(2);
+      var b = bst.Search(4);
+
+      //foreach (var item in bst.GetNodesPostOrder())
+      //  System.Console.WriteLine(item.Value);
+
+      bst = bst.Remove(1);
+      bst = bst.Remove(2);
+      bst = bst.Remove(3);
+      bst = bst.Remove(4);
     }
 
     private static void Main(string[] args)

@@ -150,7 +150,7 @@ namespace Flux.DataStructures.Immutable
         => Remove(key);
 
       public override string ToString()
-        => $"{GetType().Name}";
+        => $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock()}";
     }
   }
 }
