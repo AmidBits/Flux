@@ -14,7 +14,9 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      System.Console.WriteLine("\"" + Flux.Convert.ToWords(100).ToLowerCaseCurrent() + "\"");
+      var value = -17L;
+      System.Console.WriteLine($"{value}  = \"{Flux.Convert.ToWords(value)}\"");
+      return;
 
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
 
