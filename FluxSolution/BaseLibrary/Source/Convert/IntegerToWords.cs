@@ -51,10 +51,10 @@ namespace Flux
     };
 
     /// <summary>Convert the specified integer to words.</summary>
-    public static System.Text.StringBuilder ToWords(long value)
+    public static System.Text.StringBuilder IntegerToWords(long value)
     {
       if (value < 0)
-        return ToWords(-value).Insert(0, @"Negative ");
+        return IntegerToWords(-value).Insert(0, @"Negative ");
 
       var sb = new System.Text.StringBuilder();
       Ge100(value);
