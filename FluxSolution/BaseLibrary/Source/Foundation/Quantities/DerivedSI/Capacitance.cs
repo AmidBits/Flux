@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(CapacitanceUnit unit = CapacitanceUnit.Farad)

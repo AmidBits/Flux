@@ -42,7 +42,7 @@ namespace Flux
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
     public struct PartsPerNotation
-      : System.IComparable<PartsPerNotation>, System.IEquatable<PartsPerNotation>, IUnitValueDefaultable<double>
+      : System.IComparable<PartsPerNotation>, System.IEquatable<PartsPerNotation>, IUnitValueStandardized<double>
     {
       public const char PercentSymbol = '\u0025';
       public const char PermilleSymbol = '\u2030';
@@ -72,7 +72,7 @@ namespace Flux
         m_unit = unit;
       }
 
-      public double DefaultUnitValue
+      public double StandardUnitValue
         => m_parts;
 
       public double ToUnitValue(PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
@@ -94,7 +94,7 @@ namespace Flux
 
       #region Overloaded operators
       public static explicit operator double(PartsPerNotation v)
-        => v.DefaultUnitValue;
+        => v.StandardUnitValue;
 
       public static bool operator <(PartsPerNotation a, PartsPerNotation b)
         => a.CompareTo(b) < 0;

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(IlluminanceUnit unit = IlluminanceUnit.Lux)

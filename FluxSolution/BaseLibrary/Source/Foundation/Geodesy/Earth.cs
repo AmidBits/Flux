@@ -4,9 +4,9 @@ namespace Flux
   {
     /// <summary>The amount of deviation from concentricity.</summary>
     public static double Eccentricity
-      => System.Math.Pow(1 - System.Math.Pow(PolarRadius.DefaultUnitValue, 2) / System.Math.Pow(EquatorialRadius.DefaultUnitValue, 2), 0.5);
+      => System.Math.Pow(1 - System.Math.Pow(PolarRadius.StandardUnitValue, 2) / System.Math.Pow(EquatorialRadius.StandardUnitValue, 2), 0.5);
     public static double EccentricityOfCrossSection
-      => PolarDiameter.DefaultUnitValue / EquatorialDiameter.DefaultUnitValue;
+      => PolarDiameter.StandardUnitValue / EquatorialDiameter.StandardUnitValue;
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public static Quantity.Length EquatorialCircumference
@@ -22,7 +22,7 @@ namespace Flux
       => new(6371008.7714); // WGS-84
 
     public static double Oblateness
-      => (EquatorialRadius.DefaultUnitValue - PolarRadius.DefaultUnitValue) / EquatorialRadius.DefaultUnitValue;
+      => (EquatorialRadius.StandardUnitValue - PolarRadius.StandardUnitValue) / EquatorialRadius.StandardUnitValue;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
     public static Quantity.Length PolarCircumference
@@ -38,6 +38,6 @@ namespace Flux
       => new(10001965.729); // WGS-84
 
     public static Quantity.Volume Volume
-      => new(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.DefaultUnitValue, 2) * PolarRadius.DefaultUnitValue);
+      => new(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.StandardUnitValue, 2) * PolarRadius.StandardUnitValue);
   }
 }

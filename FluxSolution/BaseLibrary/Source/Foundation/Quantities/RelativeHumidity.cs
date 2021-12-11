@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IUnitValueDefaultable<double>
+    : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IUnitValueStandardized<double>
   {
     private readonly double m_value;
 
@@ -19,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     public static ElectricCharge ElementaryCharge
       => new(1.602176634e-19);
@@ -25,7 +25,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)

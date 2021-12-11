@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>, IUnitValueDefaultable<double>
+    : System.IComparable<Torque>, System.IEquatable<Torque>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -19,7 +19,10 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DefaultUnitValue
+    public double DerivedUnitValue
+      => m_value;
+
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(TorqueUnit unit = TorqueUnit.NewtonMeter)

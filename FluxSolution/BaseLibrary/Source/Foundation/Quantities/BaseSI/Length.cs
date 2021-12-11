@@ -40,7 +40,7 @@ namespace Flux
     /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Length"/>
     public struct Length
-      : System.IComparable<Length>, System.IEquatable<Length>, IUnitValueDefaultable<double>, IValueBaseUnitSI<double>
+      : System.IComparable<Length>, System.IEquatable<Length>, IUnitValueStandardized<double>, IValueBaseUnitSI<double>
     {
       private readonly double m_value;
 
@@ -64,7 +64,7 @@ namespace Flux
       public double BaseUnitValue
         => m_value;
 
-      public double DefaultUnitValue
+      public double StandardUnitValue
         => m_value;
 
       public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null)
@@ -93,7 +93,7 @@ namespace Flux
       /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
       /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
       public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency)
-        => new(phaseVelocity.DefaultUnitValue / frequency.DefaultUnitValue);
+        => new(phaseVelocity.StandardUnitValue / frequency.StandardUnitValue);
       #endregion Static methods
 
       #region Overloaded operators

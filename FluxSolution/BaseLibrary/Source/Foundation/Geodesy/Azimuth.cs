@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Azimuth unit of degree. The unit here is defined in the range [0, +360]. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
-    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, Quantity.IUnitValueDefaultable<double>
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, Quantity.IUnitValueStandardized<double>
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -26,7 +26,7 @@ namespace Flux
     public double Radian
       => Quantity.Angle.ConvertDegreeToRadian(m_degree);
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_degree;
 
     public Quantity.Angle ToAngle()
@@ -74,23 +74,23 @@ namespace Flux
     public static Azimuth operator +(Azimuth a, double b)
       => new(Wrap(a.m_degree + b));
     public static Azimuth operator +(Azimuth a, Azimuth b)
-      => a + b.DefaultUnitValue;
+      => a + b.StandardUnitValue;
     public static Azimuth operator /(Azimuth a, double b)
       => new(Wrap(a.m_degree / b));
     public static Azimuth operator /(Azimuth a, Azimuth b)
-      => a / b.DefaultUnitValue;
+      => a / b.StandardUnitValue;
     public static Azimuth operator *(Azimuth a, double b)
       => new(Wrap(a.m_degree * b));
     public static Azimuth operator *(Azimuth a, Azimuth b)
-      => a * b.DefaultUnitValue;
+      => a * b.StandardUnitValue;
     public static Azimuth operator %(Azimuth a, double b)
       => new(Wrap(a.m_degree % b));
     public static Azimuth operator %(Azimuth a, Azimuth b)
-      => a % b.DefaultUnitValue;
+      => a % b.StandardUnitValue;
     public static Azimuth operator -(Azimuth a, double b)
       => new(Wrap(a.m_degree - b));
     public static Azimuth operator -(Azimuth a, Azimuth b)
-      => a - b.DefaultUnitValue;
+      => a - b.StandardUnitValue;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Force>, System.IEquatable<Force>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(ForceUnit unit = ForceUnit.Newton)

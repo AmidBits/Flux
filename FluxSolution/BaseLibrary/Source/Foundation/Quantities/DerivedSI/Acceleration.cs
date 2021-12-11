@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     public static Acceleration StandardAccelerationOfGravity
       => new(9.80665);
@@ -25,7 +25,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)

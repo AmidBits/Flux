@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double DefaultUnitValue
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)

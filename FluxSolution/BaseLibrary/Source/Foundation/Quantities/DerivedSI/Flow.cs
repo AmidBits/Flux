@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IEquatable<Flow>, IUnitValueDefaultable<double>
+    : System.IComparable<Flow>, System.IEquatable<Flow>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -19,7 +19,10 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DefaultUnitValue
+    public double DerivedUnitValue
+      => m_value;
+
+    public double StandardUnitValue
       => m_value;
 
     public double ToUnitValue(FlowUnit unit = FlowUnit.CubicMetersPerSecond)
@@ -31,7 +34,7 @@ namespace Flux.Quantity
 
     #region Static methods
     public static Flow From(Volume volume, Time time)
-      => new(volume.DefaultUnitValue / time.DefaultUnitValue);
+      => new(volume.StandardUnitValue / time.StandardUnitValue);
     #endregion Static methods
 
     #region Overloaded operators
