@@ -10,9 +10,9 @@
     public double StandardParallels { get; init; }
 
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
-      => new(project.Altitude.StandardUnitValue * (project.Longitude.Radian - CenterOfMap.Longitude.Radian) * System.Math.Cos(StandardParallels), project.Altitude.StandardUnitValue * (project.Latitude.Radian - CenterOfMap.Latitude.Radian), project.Altitude.StandardUnitValue);
+      => new(project.Altitude.GeneralUnitValue * (project.Longitude.Radian - CenterOfMap.Longitude.Radian) * System.Math.Cos(StandardParallels), project.Altitude.GeneralUnitValue * (project.Latitude.Radian - CenterOfMap.Latitude.Radian), project.Altitude.GeneralUnitValue);
     public GeographicCoordinate ProjectReverse(CartesianCoordinate3 project)
-      => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.StandardUnitValue, project.Y / project.Z + CenterOfMap.Latitude.StandardUnitValue, project.Z);
+      => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.GeneralUnitValue, project.Y / project.Z + CenterOfMap.Latitude.GeneralUnitValue, project.Z);
 
     #region Overloaded operators
     public static bool operator ==(EquirectangularProjection a, EquirectangularProjection b)

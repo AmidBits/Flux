@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
-    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IUnitValueStandardized<decimal>
+    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, Quantity.IUnitValueGeneralized<decimal>
   {
     public readonly static JulianDate Zero;
 
@@ -24,7 +24,7 @@ namespace Flux
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
-    public decimal StandardUnitValue
+    public decimal GeneralUnitValue
       => m_value;
 
     public JulianDate AddWeeks(int weeks)
@@ -150,9 +150,9 @@ namespace Flux
       => new(a.m_value - System.Convert.ToDecimal(b));
 
     public static JulianDate operator +(JulianDate a, Quantity.Time b)
-      => a + (System.Convert.ToDecimal(b.StandardUnitValue) / 86400m);
+      => a + (System.Convert.ToDecimal(b.GeneralUnitValue) / 86400m);
     public static JulianDate operator -(JulianDate a, Quantity.Time b)
-      => a - (System.Convert.ToDecimal(b.StandardUnitValue) / 86400m);
+      => a - (System.Convert.ToDecimal(b.GeneralUnitValue) / 86400m);
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
       => a + (System.Convert.ToDecimal(b.TotalSeconds) / 86400m);

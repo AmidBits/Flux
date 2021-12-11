@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct PowerRatio
-    : System.IComparable<PowerRatio>, System.IEquatable<PowerRatio>, IUnitValueStandardized<double>
+    : System.IComparable<PowerRatio>, System.IEquatable<PowerRatio>, IUnitValueGeneralized<double>
   {
     public const double ScalingFactor = 10;
 
@@ -21,7 +21,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public AmplitudeRatio ToAmplitudeRatio()
@@ -39,7 +39,7 @@ namespace Flux.Quantity
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public static PowerRatio From(Power numerator, Power denominator)
-      => new(ScalingFactor * System.Math.Log10(numerator.StandardUnitValue / denominator.StandardUnitValue));
+      => new(ScalingFactor * System.Math.Log10(numerator.GeneralUnitValue / denominator.GeneralUnitValue));
     /// <summary>Creates a new PowerRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
     /// <param name="decibelChange"></param>
     public static PowerRatio FromDecibelChange(double decibelChange)

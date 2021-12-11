@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     public static ElectricResistance VonKlitzing
       => new(25812.80745); // 25812.80745;
@@ -25,7 +25,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(ElectricResistanceUnit unit = ElectricResistanceUnit.Ohm)
@@ -40,7 +40,7 @@ namespace Flux.Quantity
     /// <param name="voltage"></param>
     /// <param name="current"></param>
     public static ElectricResistance From(Voltage voltage, ElectricCurrent current)
-      => new(voltage.StandardUnitValue / current.StandardUnitValue);
+      => new(voltage.GeneralUnitValue / current.GeneralUnitValue);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
     {

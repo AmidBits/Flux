@@ -30,7 +30,7 @@ namespace Flux
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
     public struct Mass
-      : System.IComparable<Mass>, System.IEquatable<Mass>, IUnitValueStandardized<double>, IValueBaseUnitSI<double>
+      : System.IComparable<Mass>, System.IEquatable<Mass>, IUnitValueGeneralized<double>, IValueBaseUnitSI<double>
     {
       public static Mass ElectronMass
         => new(9.1093837015e-31);
@@ -52,7 +52,7 @@ namespace Flux
       public double BaseUnitValue
         => m_value;
 
-      public double StandardUnitValue
+      public double GeneralUnitValue
         => m_value;
 
       public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null)

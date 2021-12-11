@@ -9,7 +9,7 @@ namespace Flux.Quantity
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IUnitValueStandardized<double>, IValueBaseUnitSI<double>
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IUnitValueGeneralized<double>, IValueBaseUnitSI<double>
   {
     private readonly double m_value;
 
@@ -24,7 +24,7 @@ namespace Flux.Quantity
     public double BaseUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
@@ -40,12 +40,12 @@ namespace Flux.Quantity
     /// <param name="power"></param>
     /// <param name="voltage"></param>
     public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.StandardUnitValue / voltage.StandardUnitValue);
+      => new(power.GeneralUnitValue / voltage.GeneralUnitValue);
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new(voltage.StandardUnitValue / resistance.StandardUnitValue);
+      => new(voltage.GeneralUnitValue / resistance.GeneralUnitValue);
     #endregion Static methods
 
     #region Overloaded operators

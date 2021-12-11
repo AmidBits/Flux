@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electrical conductance unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct ElectricalConductance
-    : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens)

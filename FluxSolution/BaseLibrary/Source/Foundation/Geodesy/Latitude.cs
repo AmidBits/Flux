@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IUnitValueStandardized<double>
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IUnitValueGeneralized<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -23,15 +23,15 @@ namespace Flux
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Quantity.Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(ToAngle().StandardUnitValue));
+      => new(GetApproximateLatitudinalHeight(ToAngle().GeneralUnitValue));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Quantity.Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(ToAngle().StandardUnitValue));
+      => new(GetApproximateLongitudinalWidth(ToAngle().GeneralUnitValue));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Quantity.Length ApproximateRadius
-      => new(GetApproximateRadius(ToAngle().StandardUnitValue));
+      => new(GetApproximateRadius(ToAngle().GeneralUnitValue));
 
     public double MathCos
       => System.Math.Cos(Radian);
@@ -43,14 +43,14 @@ namespace Flux
     public double Radian
       => Quantity.Angle.ConvertDegreeToRadian(m_degree);
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_degree;
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().StandardUnitValue / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().GeneralUnitValue / 2))), -System.Math.PI, System.Math.PI);
 
     public Quantity.Angle ToAngle()
       => new(m_degree, Quantity.AngleUnit.Degree);
@@ -73,8 +73,8 @@ namespace Flux
       var cos = System.Math.Cos(radLatitude);
       var sin = System.Math.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.StandardUnitValue, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.StandardUnitValue, 2) * sin, 2);
-      var denominator = System.Math.Pow(Earth.EquatorialRadius.StandardUnitValue * cos, 2) + System.Math.Pow(Earth.PolarRadius.StandardUnitValue * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.GeneralUnitValue, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.GeneralUnitValue, 2) * sin, 2);
+      var denominator = System.Math.Pow(Earth.EquatorialRadius.GeneralUnitValue * cos, 2) + System.Math.Pow(Earth.PolarRadius.GeneralUnitValue * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }
@@ -113,23 +113,23 @@ namespace Flux
     public static Latitude operator +(Latitude a, double b)
       => new(Clamp(a.m_degree + b));
     public static Latitude operator +(Latitude a, Latitude b)
-      => a + b.StandardUnitValue;
+      => a + b.GeneralUnitValue;
     public static Latitude operator /(Latitude a, double b)
       => new(Clamp(a.m_degree / b));
     public static Latitude operator /(Latitude a, Latitude b)
-      => a / b.StandardUnitValue;
+      => a / b.GeneralUnitValue;
     public static Latitude operator *(Latitude a, double b)
       => new(Clamp(a.m_degree * b));
     public static Latitude operator *(Latitude a, Latitude b)
-      => a * b.StandardUnitValue;
+      => a * b.GeneralUnitValue;
     public static Latitude operator %(Latitude a, double b)
       => new(Clamp(a.m_degree % b));
     public static Latitude operator %(Latitude a, Latitude b)
-      => a % b.StandardUnitValue;
+      => a % b.GeneralUnitValue;
     public static Latitude operator -(Latitude a, double b)
       => new(Clamp(a.m_degree - b));
     public static Latitude operator -(Latitude a, Latitude b)
-      => a - b.StandardUnitValue;
+      => a - b.GeneralUnitValue;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -3,7 +3,7 @@ namespace Flux.Quantity
   /// <summary>Simple fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public struct SimpleFraction
-    : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IUnitValueStandardized<double>
+    : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IUnitValueGeneralized<double>
   {
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne
@@ -68,7 +68,7 @@ namespace Flux.Quantity
       : 1;
 
     /// <summary>Returns the decimal representation (as a double, floating point value) of the fraction.</summary>
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => (double)m_numerator / (double)m_denominator;
 
     #region Static methods
@@ -125,7 +125,7 @@ namespace Flux.Quantity
 
     #region Overloaded operators
     public static explicit operator double(SimpleFraction v)
-      => v.StandardUnitValue;
+      => v.GeneralUnitValue;
 
     public static bool operator <(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) < 0;
@@ -193,7 +193,7 @@ namespace Flux.Quantity
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({StandardUnitValue}) }}";
+      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({GeneralUnitValue}) }}";
     #endregion Object overrides
   }
 }

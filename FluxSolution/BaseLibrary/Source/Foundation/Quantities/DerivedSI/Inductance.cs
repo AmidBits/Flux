@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(InductanceUnit unit = InductanceUnit.Henry)

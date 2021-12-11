@@ -4,8 +4,8 @@ namespace Flux.Quantity
   /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
   public struct Rate<TNumerator, TDenominator>
     : System.IEquatable<Rate<TNumerator, TDenominator>>
-    where TNumerator : IUnitValueStandardized<double>
-    where TDenominator : IUnitValueStandardized<double>
+    where TNumerator : IUnitValueGeneralized<double>
+    where TDenominator : IUnitValueGeneralized<double>
   {
     private readonly TNumerator m_numerator;
     private readonly TDenominator m_denominator;
@@ -22,9 +22,9 @@ namespace Flux.Quantity
       => m_denominator;
 
     public double Ratio
-      => m_numerator.StandardUnitValue / m_denominator.StandardUnitValue;
+      => m_numerator.GeneralUnitValue / m_denominator.GeneralUnitValue;
     public double InverseRatio
-      => m_denominator.StandardUnitValue / m_numerator.StandardUnitValue;
+      => m_denominator.GeneralUnitValue / m_numerator.GeneralUnitValue;
 
     #region Overloaded operators
     public static bool operator ==(Rate<TNumerator, TDenominator> a, Rate<TNumerator, TDenominator> b)
@@ -43,7 +43,7 @@ namespace Flux.Quantity
     public override bool Equals(object? obj)
       => obj is Rate<TNumerator, TDenominator> o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_numerator.StandardUnitValue, m_denominator.StandardUnitValue);
+      => System.HashCode.Combine(m_numerator.GeneralUnitValue, m_denominator.GeneralUnitValue);
     public override string ToString()
       => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} (Ratio = {Ratio}, Inverse = {InverseRatio}) }}";
     #endregion Object overrides

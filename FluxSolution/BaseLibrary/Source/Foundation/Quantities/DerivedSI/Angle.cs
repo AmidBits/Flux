@@ -36,7 +36,7 @@ namespace Flux
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
     public struct Angle
-      : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+      : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
     {
       public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
       public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
@@ -69,7 +69,7 @@ namespace Flux
         => m_value;
 
       /// <summary>The quantity value in unit radian.</summary>
-      public double StandardUnitValue
+      public double GeneralUnitValue
         => m_value;
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>

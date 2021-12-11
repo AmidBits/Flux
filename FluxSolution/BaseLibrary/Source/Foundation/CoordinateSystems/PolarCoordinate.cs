@@ -21,7 +21,7 @@ namespace Flux
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
     {
-      var radAzimuth = m_azimuth.StandardUnitValue;
+      var radAzimuth = m_azimuth.GeneralUnitValue;
       return new CartesianCoordinate2(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth));
     }
 

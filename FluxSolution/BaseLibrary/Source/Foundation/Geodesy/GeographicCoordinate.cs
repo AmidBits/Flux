@@ -34,7 +34,7 @@ namespace Flux
 
     public GeographicCoordinate(Latitude latitude, Longitude longitude, Quantity.Length altitude)
     {
-      Altitude = ValidAltitude(altitude.StandardUnitValue) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
+      Altitude = ValidAltitude(altitude.GeneralUnitValue) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
       Latitude = latitude;
       Longitude = longitude;
     }
@@ -63,14 +63,14 @@ namespace Flux
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3(x, y, Altitude.StandardUnitValue);
+      return new CartesianCoordinate3(x, y, Altitude.GeneralUnitValue);
     }
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToNaturalEarthProjection()
     {
-      var lat = Latitude.ToAngle().StandardUnitValue;
-      var lon = Longitude.ToAngle().StandardUnitValue;
+      var lat = Latitude.ToAngle().GeneralUnitValue;
+      var lon = Longitude.ToAngle().GeneralUnitValue;
 
       var latP2 = System.Math.Pow(lat, 2);
       var latP4 = latP2 * latP2;
@@ -82,16 +82,16 @@ namespace Flux
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3(x, y, Altitude.StandardUnitValue);
+      return new CartesianCoordinate3(x, y, Altitude.GeneralUnitValue);
     }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => new(Altitude.StandardUnitValue, System.Math.PI - (Latitude.ToAngle().StandardUnitValue + Maths.PiOver2), Longitude.ToAngle().StandardUnitValue + System.Math.PI);
+      => new(Altitude.GeneralUnitValue, System.Math.PI - (Latitude.ToAngle().GeneralUnitValue + Maths.PiOver2), Longitude.ToAngle().GeneralUnitValue + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {
-      var lat = Latitude.ToAngle().StandardUnitValue;
-      var lon = Longitude.ToAngle().StandardUnitValue;
+      var lat = Latitude.ToAngle().GeneralUnitValue;
+      var lon = Longitude.ToAngle().GeneralUnitValue;
 
       var cosLatitude = System.Math.Cos(lat);
 
@@ -100,7 +100,7 @@ namespace Flux
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new CartesianCoordinate3(x, y, Altitude.StandardUnitValue);
+      return new CartesianCoordinate3(x, y, Altitude.GeneralUnitValue);
     }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
@@ -199,7 +199,7 @@ namespace Flux
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.StandardUnitValue);
+      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.GeneralUnitValue);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
@@ -216,7 +216,7 @@ namespace Flux
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
-      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.StandardUnitValue;
+      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.GeneralUnitValue;
 
       var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(radLatitude));
 
@@ -493,7 +493,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(Altitude, Latitude, Longitude);
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.StandardUnitValue)} ({string.Format(@"{0:N6}", Latitude.StandardUnitValue)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.StandardUnitValue)} ({string.Format(@"{0:N6}", Longitude.StandardUnitValue)}), Altitude = {string.Format(@"{0:N0}", Altitude.StandardUnitValue)} m }}";
+      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.GeneralUnitValue)} ({string.Format(@"{0:N6}", Latitude.GeneralUnitValue)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.GeneralUnitValue)} ({string.Format(@"{0:N6}", Longitude.GeneralUnitValue)}), Altitude = {string.Format(@"{0:N0}", Altitude.GeneralUnitValue)} m }}";
     #endregion Object overrides
   }
 }

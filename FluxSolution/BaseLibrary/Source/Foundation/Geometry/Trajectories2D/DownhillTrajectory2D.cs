@@ -29,22 +29,22 @@ namespace Flux.Mechanics
     public Quantity.Length VerticalDifference { get => m_verticalDifference; set => m_verticalDifference = value; }
 
     public double MaxHeight
-      => m_verticalDifference.StandardUnitValue + System.Math.Pow(m_initialVelocity.StandardUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.StandardUnitValue), 2) / (2 * m_gravitationalAcceleration.StandardUnitValue);
+      => m_verticalDifference.GeneralUnitValue + System.Math.Pow(m_initialVelocity.GeneralUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.GeneralUnitValue), 2) / (2 * m_gravitationalAcceleration.GeneralUnitValue);
     public double MaxRange
-      => m_initialVelocity.StandardUnitValue * System.Math.Cos(m_initialAngle.StandardUnitValue) * MaxTime;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Cos(m_initialAngle.GeneralUnitValue) * MaxTime;
     public double MaxTime
-      => m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) / m_gravitationalAcceleration.StandardUnitValue + System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.StandardUnitValue);
+      => m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) / m_gravitationalAcceleration.GeneralUnitValue + System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.GeneralUnitValue);
 
     public double GetVelocity(double time)
-      => m_initialVelocity.StandardUnitValue * m_initialVelocity.StandardUnitValue - 2 * m_gravitationalAcceleration.StandardUnitValue * time * m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) + System.Math.Pow(m_gravitationalAcceleration.StandardUnitValue, 2) * time * time;
+      => m_initialVelocity.GeneralUnitValue * m_initialVelocity.GeneralUnitValue - 2 * m_gravitationalAcceleration.GeneralUnitValue * time * m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) + System.Math.Pow(m_gravitationalAcceleration.GeneralUnitValue, 2) * time * time;
     public double GetVelocityX(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Cos(m_initialAngle.StandardUnitValue);
+      => m_initialVelocity.GeneralUnitValue * System.Math.Cos(m_initialAngle.GeneralUnitValue);
     public double GetVelocityY(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) - m_gravitationalAcceleration.StandardUnitValue * time;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) - m_gravitationalAcceleration.GeneralUnitValue * time;
     public double GetX(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Cos(m_initialAngle.StandardUnitValue) * time;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Cos(m_initialAngle.GeneralUnitValue) * time;
     public double GetY(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) * time - m_gravitationalAcceleration.StandardUnitValue * time * time / 2;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) * time - m_gravitationalAcceleration.GeneralUnitValue * time * time / 2;
 
     #region Overloaded operators
     public static bool operator ==(DownhillTrajectory2D h1, DownhillTrajectory2D h2)
@@ -63,7 +63,7 @@ namespace Flux.Mechanics
     public override bool Equals(object? obj)
       => obj is DownhillTrajectory2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.StandardUnitValue, m_initialAngle.StandardUnitValue, m_initialVelocity.StandardUnitValue, m_verticalDifference.StandardUnitValue);
+      => System.HashCode.Combine(m_gravitationalAcceleration.GeneralUnitValue, m_initialAngle.GeneralUnitValue, m_initialVelocity.GeneralUnitValue, m_verticalDifference.GeneralUnitValue);
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

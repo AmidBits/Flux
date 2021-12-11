@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousFlux
-    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(LuminousFluxUnit unit = LuminousFluxUnit.Lumen)

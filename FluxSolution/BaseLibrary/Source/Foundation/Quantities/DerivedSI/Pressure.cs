@@ -9,7 +9,7 @@ namespace Flux.Quantity
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     public static Pressure StandardAtmosphere
       => new(101325);
@@ -29,7 +29,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(PressureUnit unit = PressureUnit.Pascal)

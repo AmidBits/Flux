@@ -25,22 +25,22 @@ namespace Flux.Mechanics
     public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
-      => System.Math.Pow(m_initialVelocity.StandardUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.StandardUnitValue), 2) / (2 * m_gravitationalAcceleration.StandardUnitValue);
+      => System.Math.Pow(m_initialVelocity.GeneralUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.GeneralUnitValue), 2) / (2 * m_gravitationalAcceleration.GeneralUnitValue);
     public double MaxRange
-      => m_initialVelocity.StandardUnitValue * MaxTime * System.Math.Cos(m_initialAngle.StandardUnitValue);
+      => m_initialVelocity.GeneralUnitValue * MaxTime * System.Math.Cos(m_initialAngle.GeneralUnitValue);
     public double MaxTime
-      => 2 * m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) / m_gravitationalAcceleration.StandardUnitValue;
+      => 2 * m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) / m_gravitationalAcceleration.GeneralUnitValue;
 
     public double GetX(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Cos(m_initialAngle.StandardUnitValue) * time;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Cos(m_initialAngle.GeneralUnitValue) * time;
     public double GetY(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) * time - m_gravitationalAcceleration.StandardUnitValue * time * time / 2;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) * time - m_gravitationalAcceleration.GeneralUnitValue * time * time / 2;
     public double GetVelocityX(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Cos(m_initialAngle.StandardUnitValue);
+      => m_initialVelocity.GeneralUnitValue * System.Math.Cos(m_initialAngle.GeneralUnitValue);
     public double GetVelocityY(double time)
-      => m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) - m_gravitationalAcceleration.StandardUnitValue * time;
+      => m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) - m_gravitationalAcceleration.GeneralUnitValue * time;
     public double GetVelocity(double time)
-      => m_initialVelocity.StandardUnitValue * m_initialVelocity.StandardUnitValue - 2 * m_gravitationalAcceleration.StandardUnitValue * time * m_initialVelocity.StandardUnitValue * System.Math.Sin(m_initialAngle.StandardUnitValue) + System.Math.Pow(m_gravitationalAcceleration.StandardUnitValue, 2) * time * time;
+      => m_initialVelocity.GeneralUnitValue * m_initialVelocity.GeneralUnitValue - 2 * m_gravitationalAcceleration.GeneralUnitValue * time * m_initialVelocity.GeneralUnitValue * System.Math.Sin(m_initialAngle.GeneralUnitValue) + System.Math.Pow(m_gravitationalAcceleration.GeneralUnitValue, 2) * time * time;
 
     #region Overloaded operators
     public static bool operator ==(FlatTrajectory2D h1, FlatTrajectory2D h2)
@@ -59,7 +59,7 @@ namespace Flux.Mechanics
     public override bool Equals(object? obj)
       => obj is FlatTrajectory2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.StandardUnitValue, m_initialAngle.StandardUnitValue, m_initialVelocity.StandardUnitValue);
+      => System.HashCode.Combine(m_gravitationalAcceleration.GeneralUnitValue, m_initialAngle.GeneralUnitValue, m_initialVelocity.GeneralUnitValue);
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

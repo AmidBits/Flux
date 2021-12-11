@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
-    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IUnitValueStandardized<double>
+    : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IUnitValueGeneralized<double>
   {
     private readonly double m_value;
 
@@ -19,7 +19,7 @@ namespace Flux.Quantity
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
@@ -31,9 +31,9 @@ namespace Flux.Quantity
 
     #region Static methods
     public static AbsoluteHumidity From(double grams, Volume volume)
-      => new(grams / volume.StandardUnitValue);
+      => new(grams / volume.GeneralUnitValue);
     public static AbsoluteHumidity From(Mass mass, Volume volume)
-      => From(mass.StandardUnitValue * 1000, volume);
+      => From(mass.GeneralUnitValue * 1000, volume);
     #endregion Static methods
 
     #region Overloaded operators

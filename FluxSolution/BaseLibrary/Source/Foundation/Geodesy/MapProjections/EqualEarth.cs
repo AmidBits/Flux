@@ -27,7 +27,7 @@
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3(x, y, location.Altitude.StandardUnitValue);
+      return new CartesianCoordinate3(x, y, location.Altitude.GeneralUnitValue);
     }
     public GeographicCoordinate ProjectReverse(CartesianCoordinate3 location)
     {

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
-    : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
@@ -34,7 +34,7 @@ namespace Flux.Quantity
 
     #region Static methods
     public static AngularVelocity From(Angle angle, Time time)
-      => new(angle.StandardUnitValue / time.StandardUnitValue);
+      => new(angle.GeneralUnitValue / time.GeneralUnitValue);
     #endregion Static methods
 
     #region Overloaded operators

@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Power>, System.IEquatable<Power>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -22,7 +22,7 @@ namespace Flux.Quantity
     public double DerivedUnitValue
       => m_value;
 
-    public double StandardUnitValue
+    public double GeneralUnitValue
       => m_value;
 
     public double ToUnitValue(PowerUnit unit = PowerUnit.Watt)
@@ -37,7 +37,7 @@ namespace Flux.Quantity
     /// <param name="current"></param>
     /// <param name="voltage"></param>
     public static Power From(ElectricCurrent current, Voltage voltage)
-      => new(current.StandardUnitValue * voltage.StandardUnitValue);
+      => new(current.GeneralUnitValue * voltage.GeneralUnitValue);
     #endregion Static methods
 
     #region Overloaded operators

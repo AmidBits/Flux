@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
     public struct Speed
-      : System.IComparable<Speed>, System.IEquatable<Speed>, IUnitValueStandardized<double>, IValueDerivedUnitSI<double>
+      : System.IComparable<Speed>, System.IEquatable<Speed>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
     {
       public static Speed SpeedOfLightInVacuum
         => new(299792458);
@@ -58,7 +58,7 @@ namespace Flux
       public double DerivedUnitValue
         => m_value;
 
-      public double StandardUnitValue
+      public double GeneralUnitValue
         => m_value;
 
       public string ToUnitString(SpeedUnit unit = SpeedUnit.MetersPerSecond, string? format = null)
@@ -80,14 +80,14 @@ namespace Flux
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
       public static Speed ComputePhaseVelocity(Frequency frequency, Length wavelength)
-        => new(frequency.StandardUnitValue * wavelength.StandardUnitValue);
+        => new(frequency.GeneralUnitValue * wavelength.GeneralUnitValue);
 
       /// <summary>Creates a new Speed instance from the specified length and time.</summary>
       /// <param name="length"></param>
       /// <param name="time"></param>
       /// <returns></returns>
       public static Speed From(Length length, Time time)
-        => new(length.StandardUnitValue / time.StandardUnitValue);
+        => new(length.GeneralUnitValue / time.GeneralUnitValue);
       #endregion Static methods
 
       #region Overloaded operators
