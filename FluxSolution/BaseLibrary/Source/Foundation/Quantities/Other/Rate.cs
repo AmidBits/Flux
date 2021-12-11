@@ -1,4 +1,4 @@
-namespace Flux.Quantity
+namespace Flux
 {
   /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>

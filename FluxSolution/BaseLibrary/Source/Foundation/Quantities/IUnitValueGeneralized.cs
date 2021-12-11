@@ -1,4 +1,4 @@
-﻿namespace Flux.Quantity
+﻿namespace Flux
 {
   public interface IUnitValueGeneralized<T>
   {

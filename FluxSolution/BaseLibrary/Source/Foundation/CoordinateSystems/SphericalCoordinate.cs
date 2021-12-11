@@ -6,22 +6,22 @@ namespace Flux
     : System.IEquatable<SphericalCoordinate>
   {
     private readonly double m_radius;
-    private readonly Quantity.Angle m_inclination;
-    private readonly Quantity.Angle m_azimuth;
+    private readonly Angle m_inclination;
+    private readonly Angle m_azimuth;
 
     public SphericalCoordinate(double radius, double inclinationRad, double azimuthRad)
     {
       m_radius = radius;
-      m_inclination = new Quantity.Angle(inclinationRad);
-      m_azimuth = new Quantity.Angle(azimuthRad);
+      m_inclination = new Angle(inclinationRad);
+      m_azimuth = new Angle(azimuthRad);
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius { get => m_radius; }
     /// <summary>Polar angle or angular coordinate.</summary>
-    public Quantity.Angle Inclination { get => m_inclination; }
+    public Angle Inclination { get => m_inclination; }
     /// <summary>Azimuthal angle.</summary>
-    public Quantity.Angle Azimuth { get => m_azimuth; }
+    public Angle Azimuth { get => m_azimuth; }
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
     {
@@ -36,7 +36,7 @@ namespace Flux
       return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.GeneralUnitValue, m_radius * System.Math.Cos(radInclination));
     }
     public GeographicCoordinate ToGeographicCoordinate()
-      => new(Quantity.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.GeneralUnitValue - Maths.PiOver2), Quantity.Angle.ConvertRadianToDegree(m_azimuth.GeneralUnitValue - System.Math.PI), m_radius);
+      => new(Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.GeneralUnitValue - Maths.PiOver2), Angle.ConvertRadianToDegree(m_azimuth.GeneralUnitValue - System.Math.PI), m_radius);
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
@@ -66,7 +66,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
     public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {m_inclination.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} (Elevation = {Quantity.Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.GeneralUnitValue)):N1}{Quantity.Angle.DegreeSymbol}), Azimuth = {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {m_inclination.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.GeneralUnitValue)):N1}{Angle.DegreeSymbol}), Azimuth = {m_azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

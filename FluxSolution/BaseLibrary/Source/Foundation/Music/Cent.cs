@@ -1,10 +1,10 @@
-namespace Flux.Music
+namespace Flux
 {
   /// <summary>Cent unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Cent
-    : System.IComparable<Cent>, System.IEquatable<Cent>, Quantity.IUnitValueGeneralized<int>
+    : System.IComparable<Cent>, System.IEquatable<Cent>, IUnitValueGeneralized<int>
   {
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
@@ -20,7 +20,7 @@ namespace Flux.Music
       => m_value;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public Quantity.Frequency ShiftPitch(Quantity.Frequency frequency)
+    public Frequency ShiftPitch(Frequency frequency)
       => new(PitchShift(frequency.GeneralUnitValue, m_value));
 
     public double ToFrequencyRatio()

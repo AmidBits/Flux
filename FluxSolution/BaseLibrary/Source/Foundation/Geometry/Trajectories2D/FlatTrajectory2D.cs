@@ -3,26 +3,26 @@ namespace Flux.Mechanics
   public struct FlatTrajectory2D
     : System.IEquatable<FlatTrajectory2D>, ITrajectory2D
   {
-    private Quantity.Acceleration m_gravitationalAcceleration;
-    private Quantity.Angle m_initialAngle;
-    private Quantity.Speed m_initialVelocity;
+    private Acceleration m_gravitationalAcceleration;
+    private Angle m_initialAngle;
+    private Speed m_initialVelocity;
 
-    public FlatTrajectory2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
+    public FlatTrajectory2D(Angle initialAngle, Speed initialVelocity, Acceleration gravitationalAcceleration)
     {
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public FlatTrajectory2D(Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
-      : this(initialAngle, initialVelocity, Quantity.Acceleration.StandardAccelerationOfGravity)
+    public FlatTrajectory2D(Angle initialAngle, Speed initialVelocity)
+      : this(initialAngle, initialVelocity, Acceleration.StandardAccelerationOfGravity)
     { }
 
     /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>
-    public Quantity.Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
+    public Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
     /// <summary>Initial angle in radians (RAD).</summary>
-    public Quantity.Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
+    public Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
       => System.Math.Pow(m_initialVelocity.GeneralUnitValue, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.GeneralUnitValue), 2) / (2 * m_gravitationalAcceleration.GeneralUnitValue);

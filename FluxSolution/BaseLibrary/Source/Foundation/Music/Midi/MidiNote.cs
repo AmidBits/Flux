@@ -1,10 +1,10 @@
-namespace Flux.Midi
+namespace Flux
 {
   /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, Quantity.IUnitValueGeneralized<int>
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, IUnitValueGeneralized<int>
   {
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
@@ -30,7 +30,7 @@ namespace Flux.Midi
       => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public Quantity.Frequency ToFrequency()
+    public Frequency ToFrequency()
       => new(ConvertToFrequency(m_number));
 
     #region Static methods
@@ -48,10 +48,10 @@ namespace Flux.Midi
       => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
-    public static MidiNote FromFrequency(Quantity.Frequency frequency)
+    public static MidiNote FromFrequency(Frequency frequency)
       => new(ConvertFromFrequency(frequency.GeneralUnitValue));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
-    public static bool TryFromFrequency(Quantity.Frequency frequency, out MidiNote result)
+    public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
     {
       try
       {

@@ -3,30 +3,30 @@ namespace Flux.Mechanics
   public struct DroppedTrajectory2D // Projectile dropped from a moving system.
     : System.IEquatable<DroppedTrajectory2D>, ITrajectory2D
   {
-    private Quantity.Length m_droppedHeight;
-    private Quantity.Acceleration m_gravitationalAcceleration;
-    private Quantity.Angle m_initialAngle;
-    private Quantity.Speed m_initialVelocity;
+    private Length m_droppedHeight;
+    private Acceleration m_gravitationalAcceleration;
+    private Angle m_initialAngle;
+    private Speed m_initialVelocity;
 
-    public DroppedTrajectory2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity, Quantity.Acceleration gravitationalAcceleration)
+    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, Speed initialVelocity, Acceleration gravitationalAcceleration)
     {
       m_droppedHeight = droppedHeight;
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public DroppedTrajectory2D(Quantity.Length droppedHeight, Quantity.Angle initialAngle, Quantity.Speed initialVelocity)
-      : this(droppedHeight, initialAngle, initialVelocity, Quantity.Acceleration.StandardAccelerationOfGravity)
+    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, Speed initialVelocity)
+      : this(droppedHeight, initialAngle, initialVelocity, Acceleration.StandardAccelerationOfGravity)
     { }
 
     // The height when dropped.
-    public Quantity.Length DroppedHeight { get => m_droppedHeight; set => m_droppedHeight = value; }
+    public Length DroppedHeight { get => m_droppedHeight; set => m_droppedHeight = value; }
     /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>
-    public Quantity.Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
+    public Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
     /// <summary>Initial angle in radians (RAD).</summary>
-    public Quantity.Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
+    public Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public Quantity.Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
       => m_droppedHeight.GeneralUnitValue;

@@ -1,4 +1,4 @@
-namespace Flux.Quantity
+namespace Flux
 {
   /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>

@@ -1,4 +1,4 @@
-namespace Flux.Quantity
+namespace Flux
 {
   public enum EnergyUnit
   {

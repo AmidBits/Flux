@@ -13,8 +13,8 @@ namespace Flux.Net.Nmea
       => new(NmeaSentence.ParseDecimalLatitude(m_values[3], m_values[4]));
     public Longitude Longitude
       => new(NmeaSentence.ParseDecimalLongitude(m_values[5], m_values[6]));
-    public Quantity.Speed SpeedOverGround
-      => new(m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0, Quantity.SpeedUnit.Knots);
+    public Speed SpeedOverGround
+      => new(m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0, SpeedUnit.Knots);
     public Azimuth CourseOverGround
       => new(m_values.Length > 8 && double.TryParse(m_values[8], out var result) ? result : 0);
     public System.DateTime UtcDateTime

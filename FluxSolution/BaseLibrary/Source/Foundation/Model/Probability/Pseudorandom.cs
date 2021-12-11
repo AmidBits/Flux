@@ -1,4 +1,4 @@
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   // A threadsafe, all-static, crypto-randomized wrapper around Random.
   // Still not great, but a slight improvement.

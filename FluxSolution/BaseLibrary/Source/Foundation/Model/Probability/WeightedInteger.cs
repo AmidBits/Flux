@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   // Weighted integer distribution using alias method.
   public sealed class WeightedInteger

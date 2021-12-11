@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   // Extension methods on distributions
   public static class Distribution

@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>, Quantity.IUnitValueGeneralized<double>
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, IUnitValueGeneralized<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -17,20 +17,20 @@ namespace Flux
 
     public Latitude(double degree)
       => m_degree = IsLatitude(degree) ? Clamp(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Latitude(Quantity.Angle angle)
-      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Latitude(Angle angle)
+      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
-    public Quantity.Length ApproximateLatitudinalHeight
+    public Length ApproximateLatitudinalHeight
       => new(GetApproximateLatitudinalHeight(ToAngle().GeneralUnitValue));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
-    public Quantity.Length ApproximateLongitudinalWidth
+    public Length ApproximateLongitudinalWidth
       => new(GetApproximateLongitudinalWidth(ToAngle().GeneralUnitValue));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-    public Quantity.Length ApproximateRadius
+    public Length ApproximateRadius
       => new(GetApproximateRadius(ToAngle().GeneralUnitValue));
 
     public double MathCos
@@ -41,7 +41,7 @@ namespace Flux
       => System.Math.Tan(Radian);
 
     public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degree);
 
     public double GeneralUnitValue
       => m_degree;
@@ -52,8 +52,8 @@ namespace Flux
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().GeneralUnitValue / 2))), -System.Math.PI, System.Math.PI);
 
-    public Quantity.Angle ToAngle()
-      => new(m_degree, Quantity.AngleUnit.Degree);
+    public Angle ToAngle()
+      => new(m_degree, AngleUnit.Degree);
 
     #region Static methods
     public static double Clamp(double degLatitude)
@@ -148,7 +148,7 @@ namespace Flux
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Value = {m_degree}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

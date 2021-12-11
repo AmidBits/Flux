@@ -1,4 +1,4 @@
-namespace Flux.Quantity
+namespace Flux
 {
   /// <summary>Simple fraction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>

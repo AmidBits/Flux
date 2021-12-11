@@ -17,7 +17,7 @@ namespace Flux.Formatting
     /// <summary>Implementation of System.ICustomFormatter.Format()</summary>
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
-      if (!string.IsNullOrWhiteSpace(format) && arg is Quantity.Angle angle)
+      if (!string.IsNullOrWhiteSpace(format) && arg is Angle angle)
       {
         if (m_regexFormat.Match(format) is System.Text.RegularExpressions.Match m && m.Success)
         {
@@ -26,7 +26,7 @@ namespace Flux.Formatting
             if (!(m.Groups[@"DecimalPlaces"] is var g1 && g1.Success && g1.Value is var decimalPlacesString && int.TryParse(decimalPlacesString, out var decimalPlaces) && decimalPlaces >= 0 && decimalPlaces < 15))
               decimalPlaces = 4;
 
-            foreach (var unit in (Quantity.AngleUnit[])System.Enum.GetValues(typeof(Quantity.AngleUnit)))
+            foreach (var unit in (AngleUnit[])System.Enum.GetValues(typeof(AngleUnit)))
               if (unit.ToString().StartsWith(unitString, System.StringComparison.InvariantCultureIgnoreCase))
                 return string.Format(null, $"{{0:N{decimalPlaces}}}", angle.ToUnitValue(unit)) + unit.GetUnitSymbol();
           }

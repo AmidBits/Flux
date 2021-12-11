@@ -1,4 +1,4 @@
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
 	// A crypto-strength, threadsafe, all-static RNG.
 	// Still not a great API. We can do better.

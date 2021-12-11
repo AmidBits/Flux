@@ -14,16 +14,15 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var value = -17L;
-      System.Console.WriteLine($"{value}  = \"{Flux.Convert.IntegerToWords(value)}\"");
-      System.Console.WriteLine();
-
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
-      //var type = typeof(Flux.Quantity.IValuedUnit<>);
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
+      //var value = -17L;
+      //System.Console.WriteLine($"{value}  = \"{Flux.Convert.IntegerToWords(value)}\"");
+      //System.Console.WriteLine();
+
+      var type = typeof(Flux.IUnitValueGeneralized<>);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
 
       //var index = 0;
       //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))

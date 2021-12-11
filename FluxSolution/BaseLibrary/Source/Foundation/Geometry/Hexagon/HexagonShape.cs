@@ -37,7 +37,7 @@ namespace Flux.Geometry
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2> Points { get => m_points; }
 
     public HexagonShape(HexagonOrientation orientation, double outerDiameter = 1.0)
-      => m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Quantity.Angle.ConvertDegreeToRadian(90)).ToArray() : Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
+      => m_points = (orientation == HexagonOrientation.FlatTopped) ? Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Angle.ConvertDegreeToRadian(90)).ToArray() : Ellipse.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
 
     /// <summary>Creates an array with the vertices for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>

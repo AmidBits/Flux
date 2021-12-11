@@ -6,18 +6,18 @@ namespace Flux
     : System.IEquatable<PolarCoordinate>
   {
     private readonly double m_radius;
-    private readonly Quantity.Angle m_azimuth;
+    private readonly Angle m_azimuth;
 
     public PolarCoordinate(double radius, double azimuthRad)
     {
       m_radius = radius;
-      m_azimuth = new Quantity.Angle(azimuthRad);
+      m_azimuth = new Angle(azimuthRad);
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius { get => m_radius; }
     /// <summary>Polar angle or angular coordinate.</summary>
-    public Quantity.Angle Azimuth { get => m_azimuth; }
+    public Angle Azimuth { get => m_azimuth; }
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
     {
@@ -44,7 +44,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_azimuth, m_radius);
     public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {m_azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

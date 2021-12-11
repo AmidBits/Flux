@@ -9,35 +9,35 @@ namespace Flux
       => PolarDiameter.GeneralUnitValue / EquatorialDiameter.GeneralUnitValue;
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
-    public static Quantity.Length EquatorialCircumference
+    public static Length EquatorialCircumference
       => EquatorialRadius * Maths.PiX2;
     /// <summary>Diameter of Earth's semi-major axis.</summary>
-    public static Quantity.Length EquatorialDiameter
+    public static Length EquatorialDiameter
       => EquatorialRadius * 2;
     /// <summary>Radius Earth's semi-major axis.</summary>
-    public static Quantity.Length EquatorialRadius
+    public static Length EquatorialRadius
       => new(6378137.0); // WGS-84
 
-    public static Quantity.Length MeanRadius
+    public static Length MeanRadius
       => new(6371008.7714); // WGS-84
 
     public static double Oblateness
       => (EquatorialRadius.GeneralUnitValue - PolarRadius.GeneralUnitValue) / EquatorialRadius.GeneralUnitValue;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
-    public static Quantity.Length PolarCircumference
+    public static Length PolarCircumference
       => QuarterMeridian * 4;
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
-    public static Quantity.Length PolarDiameter
+    public static Length PolarDiameter
       => PolarRadius * 2;
     /// <summary>Radius of Earth's semi-minor axis.</summary>
-    public static Quantity.Length PolarRadius
+    public static Length PolarRadius
       => new(6356752.3142); // WGS-84
 
-    public static Quantity.Length QuarterMeridian
+    public static Length QuarterMeridian
       => new(10001965.729); // WGS-84
 
-    public static Quantity.Volume Volume
+    public static Volume Volume
       => new(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.GeneralUnitValue, 2) * PolarRadius.GeneralUnitValue);
   }
 }

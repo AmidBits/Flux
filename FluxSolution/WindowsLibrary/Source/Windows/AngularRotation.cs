@@ -7,13 +7,13 @@ namespace Flux.Wpf
     {
       var angle = Flux.CartesianCoordinate2.ConvertCartesian2ToRotationAngleEx(point.X, point.Y);
 
-      return inDegrees ? Quantity.Angle.ConvertRadianToDegree(angle) : angle;
+      return inDegrees ? Angle.ConvertRadianToDegree(angle) : angle;
     }
 
     /// <summary>Returns a unit point of the specified angle, in radians. Zero is to the top.</summary>
     public static System.Windows.Point AngularRotationToPoint(this double angularRotation, bool inDegrees = false)
     {
-      var (x, y) = Quantity.Angle.ConvertRotationAngleToCartesian2Ex(inDegrees ? Quantity.Angle.ConvertDegreeToRadian(angularRotation) : angularRotation);
+      var (x, y) = Angle.ConvertRotationAngleToCartesian2Ex(inDegrees ? Angle.ConvertDegreeToRadian(angularRotation) : angularRotation);
 
       return new System.Windows.Point(x, y);
     }

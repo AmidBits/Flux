@@ -1,4 +1,4 @@
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   public sealed class Singleton<T>
     : IDiscreteProbabilityDistribution<T>

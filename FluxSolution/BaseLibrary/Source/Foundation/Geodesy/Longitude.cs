@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
-    : System.IComparable<Longitude>, System.IEquatable<Longitude>, Quantity.IUnitValueGeneralized<double>
+    : System.IComparable<Longitude>, System.IEquatable<Longitude>, IUnitValueGeneralized<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -12,8 +12,8 @@ namespace Flux
 
     public Longitude(double degree)
       => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Longitude(Quantity.Angle angle)
-      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Longitude(Angle angle)
+      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     public double MathCos
@@ -24,7 +24,7 @@ namespace Flux
       => System.Math.Tan(Radian);
 
     public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degree);
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset
@@ -39,8 +39,8 @@ namespace Flux
     public double GetMercatorProjectedX()
       => ToAngle().GeneralUnitValue;
 
-    public Quantity.Angle ToAngle()
-      => new(m_degree, Quantity.AngleUnit.Degree);
+    public Angle ToAngle()
+      => new(m_degree, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
@@ -116,7 +116,7 @@ namespace Flux
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value =  = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Value =  = {m_degree}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

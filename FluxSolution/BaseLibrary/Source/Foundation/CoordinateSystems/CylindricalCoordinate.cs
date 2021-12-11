@@ -6,20 +6,20 @@ namespace Flux
     : System.IEquatable<CylindricalCoordinate>
   {
     private readonly double m_radius;
-    private readonly Quantity.Angle m_azimuth;
+    private readonly Angle m_azimuth;
     private readonly double m_height;
 
     public CylindricalCoordinate(double radius, double azimuthRad, double height)
     {
       m_radius = radius;
-      m_azimuth = new Quantity.Angle(azimuthRad);
+      m_azimuth = new Angle(azimuthRad);
       m_height = height;
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
     public double Radius { get => m_radius; }
     /// <summary>Angular position or angular coordinate.</summary>
-    public Quantity.Angle Azimuth { get => m_azimuth; }
+    public Angle Azimuth { get => m_azimuth; }
     /// <summary>Also known as altitude.</summary>
     public double Height { get => m_height; }
 
@@ -50,7 +50,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_azimuth, m_height);
     public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {m_azimuth.ToUnitValue(Quantity.AngleUnit.Degree):N1}{Quantity.Angle.DegreeSymbol}, Height = {m_height} }}";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {m_azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol}, Height = {m_height} }}";
     #endregion Object overrides
   }
 }

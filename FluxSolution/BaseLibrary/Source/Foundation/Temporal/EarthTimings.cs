@@ -4,10 +4,10 @@ namespace Flux
   {
     public const double AverageDaysInYear = 365.2425;
 
-    public static readonly Quantity.Time AverageTimeInYear = new(AverageDaysInYear * 86400);
-    public static readonly Quantity.Time AverageTimeInMonth = new(AverageTimeInYear.GeneralUnitValue / 12);
+    public static readonly Time AverageTimeInYear = new(AverageDaysInYear * 86400);
+    public static readonly Time AverageTimeInMonth = new(AverageTimeInYear.GeneralUnitValue / 12);
 
-    public static readonly Quantity.Time TimeInDay = new(86400);
+    public static readonly Time TimeInDay = new(86400);
 
     private const decimal Lg = 6.969290134e-10m;
     public static decimal GetGeocentricCoordinateTimeDifference(System.DateTime dateTime)

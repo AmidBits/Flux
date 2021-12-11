@@ -60,7 +60,7 @@
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), location.Z);
+      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), location.Z);
     }
 //#pragma warning restore CA1822 // Mark members as static
   }

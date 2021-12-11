@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   public sealed class Projected<TA, TR> 
     : IDiscreteProbabilityDistribution<TR>

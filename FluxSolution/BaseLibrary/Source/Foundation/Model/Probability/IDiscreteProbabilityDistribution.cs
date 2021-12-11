@@ -1,4 +1,4 @@
-namespace Flux.Probability
+namespace Flux.Probabilities
 {
   public interface IDiscreteProbabilityDistribution<T>
     : IDistribution<T>

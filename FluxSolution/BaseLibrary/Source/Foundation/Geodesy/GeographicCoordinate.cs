@@ -26,20 +26,20 @@ namespace Flux
       => new(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Quantity.Length Altitude { get; }
+    public Length Altitude { get; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     public Latitude Latitude { get; }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Longitude Longitude { get; }
 
-    public GeographicCoordinate(Latitude latitude, Longitude longitude, Quantity.Length altitude)
+    public GeographicCoordinate(Latitude latitude, Longitude longitude, Length altitude)
     {
       Altitude = ValidAltitude(altitude.GeneralUnitValue) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
       Latitude = latitude;
       Longitude = longitude;
     }
     public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeMeters = 1.0)
-      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Quantity.Length(altitudeMeters))
+      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Length(altitudeMeters))
     { }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
@@ -199,7 +199,7 @@ namespace Flux
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.GeneralUnitValue);
+      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.GeneralUnitValue);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>

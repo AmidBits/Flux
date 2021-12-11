@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Azimuth unit of degree. The unit here is defined in the range [0, +360]. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public struct Azimuth
-    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, Quantity.IUnitValueGeneralized<double>
+    : System.IComparable<Azimuth>, System.IEquatable<Azimuth>, IUnitValueGeneralized<double>
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -12,8 +12,8 @@ namespace Flux
 
     public Azimuth(double degree)
       => m_degree = IsAzimuth(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Azimuth(Quantity.Angle angle)
-      : this(angle.ToUnitValue(Quantity.AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Azimuth(Angle angle)
+      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     public double MathCos
@@ -24,13 +24,13 @@ namespace Flux
       => System.Math.Tan(Radian);
 
     public double Radian
-      => Quantity.Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degree);
 
     public double GeneralUnitValue
       => m_degree;
 
-    public Quantity.Angle ToAngle()
-      => new(m_degree, Quantity.AngleUnit.Degree);
+    public Angle ToAngle()
+      => new(m_degree, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Finding the angle between two bearings.</summary>
@@ -109,7 +109,7 @@ namespace Flux
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_degree}{Quantity.Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Value = {m_degree}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

@@ -3,11 +3,11 @@ namespace Flux.Mechanics
   public interface ITrajectory2D
   {
     /// <summary>Gravitational acceleration.</summary>
-    Quantity.Acceleration GravitationalAcceleration { get; set; }
+    Acceleration GravitationalAcceleration { get; set; }
     /// <summary>Initial angle.</summary>
-    Quantity.Angle InitialAngle { get; set; }
+    Angle InitialAngle { get; set; }
     /// <summary>Initial velocity.</summary>
-    Quantity.Speed InitialVelocity { get; set; }
+    Speed InitialVelocity { get; set; }
 
     /// <summary>Yields the greatest parabolic height an object reaches within the trajectory</summary>
     double MaxHeight { get; }
