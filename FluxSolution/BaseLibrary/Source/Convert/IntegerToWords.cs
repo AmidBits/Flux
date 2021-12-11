@@ -2,6 +2,11 @@ namespace Flux
 {
   public static partial class Convert
   {
+    public static string ToWords(int value)
+      => IntegerToWords(value).ToString();
+    public static string ToWords(long value)
+      => IntegerToWords(value).ToString();
+
     private static System.Collections.Generic.List<string> ZeroThroughNineteen = new System.Collections.Generic.List<string>()
     {
       @"Zero",

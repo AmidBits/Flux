@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Radioactivity
-    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IUnitValueDefaultable<double>
+    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -18,6 +18,9 @@ namespace Flux.Quantity
         RadioactivityUnit.Becquerel => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double DerivedUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;

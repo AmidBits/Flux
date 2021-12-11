@@ -9,7 +9,7 @@ namespace Flux.Quantity
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable<Energy>, System.IEquatable<Energy>, IUnitValueDefaultable<double>
+    : System.IComparable<Energy>, System.IEquatable<Energy>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -20,6 +20,9 @@ namespace Flux.Quantity
         EnergyUnit.ElectronVolt => value / 1.602176634e-19,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double DerivedUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;

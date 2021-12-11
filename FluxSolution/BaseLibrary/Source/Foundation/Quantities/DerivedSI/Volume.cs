@@ -48,7 +48,7 @@ namespace Flux
     /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
     public struct Volume
-      : System.IComparable<Volume>, System.IEquatable<Volume>, IUnitValueDefaultable<double>
+      : System.IComparable<Volume>, System.IEquatable<Volume>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
     {
       private readonly double m_value;
 
@@ -70,6 +70,9 @@ namespace Flux
           VolumeUnit.CubicKilometer => value * 1e9,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
+      public double DerivedUnitValue
+        => m_value;
 
       public double DefaultUnitValue
         => m_value;

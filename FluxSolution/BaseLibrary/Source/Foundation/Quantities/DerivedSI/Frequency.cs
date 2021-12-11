@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IUnitValueDefaultable<double>
+    : System.IComparable<Frequency>, System.IEquatable<Frequency>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
   {
     public static Frequency HyperfineTransitionFrequencyOfCs133
       => new(9192631770);
@@ -21,6 +21,9 @@ namespace Flux.Quantity
         FrequencyUnit.Hertz => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double DerivedUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;

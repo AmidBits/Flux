@@ -34,9 +34,9 @@ namespace ConsoleApp
 
       var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
-      for(var i = 0; i < 20; i++)
+      for(var i = 0; i < 8; i++)
       {
-        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 10000);
+        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 100);
 
         bst = bst.Add(r, Flux.Convert.IntegerToWords(r).ToString());
       }

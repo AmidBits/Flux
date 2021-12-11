@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IUnitValueDefaultable<double>
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
@@ -18,6 +18,9 @@ namespace Flux.Quantity
         VoltageUnit.Volt => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double DerivedUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;

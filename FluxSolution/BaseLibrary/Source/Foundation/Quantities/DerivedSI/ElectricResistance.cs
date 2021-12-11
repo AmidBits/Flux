@@ -8,7 +8,7 @@ namespace Flux.Quantity
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IUnitValueDefaultable<double>
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IUnitValueDefaultable<double>, IValueDerivedUnitSI<double>
   {
     public static ElectricResistance VonKlitzing
       => new(25812.80745); // 25812.80745;
@@ -21,6 +21,9 @@ namespace Flux.Quantity
         ElectricResistanceUnit.Ohm => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double DerivedUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;

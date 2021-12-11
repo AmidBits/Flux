@@ -9,7 +9,7 @@ namespace Flux.Quantity
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IUnitValueDefaultable<double>
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IUnitValueDefaultable<double>, IValueBaseUnitSI<double>
   {
     private readonly double m_value;
 
@@ -20,6 +20,9 @@ namespace Flux.Quantity
         ElectricCurrentUnit.Ampere => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public double BaseUnitValue
+      => m_value;
 
     public double DefaultUnitValue
       => m_value;
