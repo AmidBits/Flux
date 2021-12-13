@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
     public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.

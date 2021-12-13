@@ -4,7 +4,7 @@ namespace Flux
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, IUnitValueGeneralized<int>
+    : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, IValueGeneralizedUnit<int>
   {
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;

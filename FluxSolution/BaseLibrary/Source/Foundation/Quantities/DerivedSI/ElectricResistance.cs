@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     public static ElectricResistance VonKlitzing
       => new(25812.80745); // 25812.80745;

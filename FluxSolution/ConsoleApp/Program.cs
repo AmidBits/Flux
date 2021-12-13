@@ -17,12 +17,23 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
-      //var value = -17L;
-      //System.Console.WriteLine($"{value}  = \"{Flux.Convert.IntegerToWords(value)}\"");
-      //System.Console.WriteLine();
+      var value = System.Numerics.BigInteger.Parse("-17000000000000000000000000");
+      System.Console.WriteLine($"{value}  = \"{Flux.Convert.ToNamedGrouping(value)}\"");
+      System.Console.WriteLine();
 
-      var type = typeof(Flux.IUnitValueGeneralized<>);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes()));
+      var type = typeof(Flux.IValueGeneralizedUnit<>);
+      //      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes().OrderBy(t => t.FullName)));
+      Write(typeof(Flux.IValueBaseUnitSI<>));
+      Write(typeof(Flux.IValueDerivedUnitSI<>));
+      Write(typeof(Flux.IValueGeneralizedUnit<>));
+      int a = 1;
+
+      static void Write(System.Type type)
+      {
+        var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).ToList();
+        System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
+        System.Console.WriteLine();
+      }
 
       //var index = 0;
       //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
@@ -33,11 +44,11 @@ namespace ConsoleApp
 
       var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
-      for(var i = 0; i < 8; i++)
+      for (var i = 0; i < 8; i++)
       {
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 100);
 
-        bst = bst.Add(r, Flux.Convert.IntegerToWords(r).ToString());
+        bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
       }
 
       //bst = bst.Add(1, "One");

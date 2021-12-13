@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
-    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, IUnitValueGeneralized<decimal>
+    : System.IComparable<JulianDate>, System.IEquatable<JulianDate>, IValueGeneralizedUnit<decimal>
   {
     public readonly static JulianDate Zero;
 

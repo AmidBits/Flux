@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public struct Latitude
-    : System.IComparable<Latitude>, System.IEquatable<Latitude>, IUnitValueGeneralized<double>
+    : System.IComparable<Latitude>, System.IEquatable<Latitude>, IValueGeneralizedUnit<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;

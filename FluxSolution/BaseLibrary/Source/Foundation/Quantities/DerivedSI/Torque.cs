@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable<Torque>, System.IEquatable<Torque>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Torque>, System.IEquatable<Torque>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

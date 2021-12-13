@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

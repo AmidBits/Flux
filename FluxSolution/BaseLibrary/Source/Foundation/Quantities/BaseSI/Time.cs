@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IEquatable<Time>, IUnitValueGeneralized<double>, IValueBaseUnitSI<double>
+    : System.IComparable<Time>, System.IEquatable<Time>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
     /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
     public static Time Flick

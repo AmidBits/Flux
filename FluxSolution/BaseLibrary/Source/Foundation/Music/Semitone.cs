@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Semitone
-    : System.IComparable<Semitone>, System.IEquatable<Semitone>, IUnitValueGeneralized<int>
+    : System.IComparable<Semitone>, System.IEquatable<Semitone>, IValueGeneralizedUnit<int>
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 

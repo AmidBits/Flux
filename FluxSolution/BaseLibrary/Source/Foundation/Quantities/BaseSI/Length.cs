@@ -38,7 +38,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IEquatable<Length>, IUnitValueGeneralized<double>, IValueBaseUnitSI<double>
+    : System.IComparable<Length>, System.IEquatable<Length>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
     private readonly double m_value;
 

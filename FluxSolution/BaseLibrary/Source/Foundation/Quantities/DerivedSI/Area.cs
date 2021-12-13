@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IEquatable<Area>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Area>, System.IEquatable<Area>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

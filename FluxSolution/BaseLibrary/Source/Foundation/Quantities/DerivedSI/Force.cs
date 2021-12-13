@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Force>, System.IEquatable<Force>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

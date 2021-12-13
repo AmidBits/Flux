@@ -9,7 +9,7 @@ namespace Flux
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable<Energy>, System.IEquatable<Energy>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Energy>, System.IEquatable<Energy>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

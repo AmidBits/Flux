@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct AmplitudeRatio
-    : System.IComparable<AmplitudeRatio>, System.IEquatable<AmplitudeRatio>, IUnitValueGeneralized<double>
+    : System.IComparable<AmplitudeRatio>, System.IEquatable<AmplitudeRatio>, IValueGeneralizedUnit<double>
   {
     public const double ScalingFactor = 20;
 

@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     public static Acceleration StandardAccelerationOfGravity
       => new(9.80665);

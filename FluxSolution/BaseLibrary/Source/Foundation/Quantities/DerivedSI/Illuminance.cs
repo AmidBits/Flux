@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

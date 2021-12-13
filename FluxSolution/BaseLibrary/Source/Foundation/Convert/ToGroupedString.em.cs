@@ -1,16 +1,16 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Convert
   {
     /// <summary></summary>
-    public static string ToGroupString(this System.Numerics.BigInteger source)
+    public static string ToGroupedString(this System.Numerics.BigInteger source)
       => source.ToString("#,###0", System.Globalization.CultureInfo.InvariantCulture);
 
     /// <summary></summary>
-    public static string ToGroupString(this int source)
+    public static string ToGroupedString(this int source)
       => source.ToString("#,###0", System.Globalization.CultureInfo.InvariantCulture);
     /// <summary></summary>
-    public static string ToGroupString(this long source)
+    public static string ToGroupedString(this long source)
       => source.ToString("#,###0", System.Globalization.CultureInfo.InvariantCulture);
   }
 }

@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Radioactivity
-    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable<Speed>, System.IEquatable<Speed>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Speed>, System.IEquatable<Speed>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     public static Speed SpeedOfLightInVacuum
       => new(299792458);

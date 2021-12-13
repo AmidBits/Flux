@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Density>, System.IEquatable<Density>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 

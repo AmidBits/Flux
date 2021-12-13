@@ -8,7 +8,7 @@ namespace Flux
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IEquatable<Flow>, IUnitValueGeneralized<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Flow>, System.IEquatable<Flow>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
     private readonly double m_value;
 
