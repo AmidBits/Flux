@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Geometry.Hexagon
+namespace Flux.Geometry
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
   public struct Hex

@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Hexagon
+namespace Flux.Geometry
 {
   public struct HexF
     : System.IEquatable<HexF>

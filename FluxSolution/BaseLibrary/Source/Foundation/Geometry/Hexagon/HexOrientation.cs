@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Hexagon
+namespace Flux.Geometry
 {
   public struct HexOrientation
     : System.IEquatable<HexOrientation>
