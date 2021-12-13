@@ -35,6 +35,8 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
+      //      foreach(var type in typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t=>t.Name))
+
       //var index = 0;
       //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
       //  //if (type.IsValueType && !type.IsEnum)
@@ -44,11 +46,12 @@ namespace ConsoleApp
 
       var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
-      for (var i = 0; i < 8; i++)
+      for (var i = 0; bst.GetNodeCount() < 128; i++)
       {
-        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 100);
+        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 256);
 
-        bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
+        if (!bst.Contains(r))
+          bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
       }
 
       //bst = bst.Add(1, "One");

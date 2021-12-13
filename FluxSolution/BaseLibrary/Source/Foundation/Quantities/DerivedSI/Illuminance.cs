@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Illuminance Create(this IlluminanceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this IlluminanceUnit unit)
+      => unit switch
+      {
+        IlluminanceUnit.Lux => @" lx",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum IlluminanceUnit
   {
     Lux,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Illuminance
     : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
+
     private readonly double m_value;
 
-    public Illuminance(double value, IlluminanceUnit unit = IlluminanceUnit.Lux)
+    public Illuminance(double value, IlluminanceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         IlluminanceUnit.Lux => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(IlluminanceUnit unit = IlluminanceUnit.Lux)
+    public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(IlluminanceUnit unit = DefaultUnit)
       => unit switch
       {
         IlluminanceUnit.Lux => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} lx }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

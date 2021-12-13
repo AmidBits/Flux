@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static ElectricResistance Create(this ElectricResistanceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ElectricResistanceUnit unit)
+      => unit switch
+      {
+        ElectricResistanceUnit.Ohm => " \u2126",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ElectricResistanceUnit
   {
     Ohm,
@@ -10,12 +22,14 @@ namespace Flux
   public struct ElectricResistance
     : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const ElectricResistanceUnit DefaultUnit = ElectricResistanceUnit.Ohm;
+
     public static ElectricResistance VonKlitzing
       => new(25812.80745); // 25812.80745;
 
     private readonly double m_value;
 
-    public ElectricResistance(double value, ElectricResistanceUnit unit = ElectricResistanceUnit.Ohm)
+    public ElectricResistance(double value, ElectricResistanceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ElectricResistanceUnit.Ohm => value,
@@ -28,7 +42,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ElectricResistanceUnit unit = ElectricResistanceUnit.Ohm)
+    public string ToUnitString(ElectricResistanceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ElectricResistanceUnit unit = DefaultUnit)
       => unit switch
       {
         ElectricResistanceUnit.Ohm => m_value,
@@ -119,7 +135,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} \u2126 }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

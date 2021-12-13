@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static MagneticFlux Create(this MagneticFluxUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this MagneticFluxUnit unit)
+      => unit switch
+      {
+        MagneticFluxUnit.Weber => @" Wb",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum MagneticFluxUnit
   {
     Weber,
@@ -10,6 +22,8 @@ namespace Flux
   public struct MagneticFlux
     : System.IComparable<MagneticFlux>, System.IEquatable<MagneticFlux>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
+
     private readonly double m_value;
 
     public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber)
@@ -25,6 +39,8 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
+    public string ToUnitString(MagneticFluxUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
     public double ToUnitValue(MagneticFluxUnit unit = MagneticFluxUnit.Weber)
       => unit switch
       {
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} lm }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

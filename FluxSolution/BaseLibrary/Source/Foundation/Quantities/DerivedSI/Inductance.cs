@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Inductance Create(this InductanceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this InductanceUnit unit)
+      => unit switch
+      {
+        InductanceUnit.Henry => @" H",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum InductanceUnit
   {
     Henry,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Inductance
     : System.IComparable<Inductance>, System.IEquatable<Inductance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
+
     private readonly double m_value;
 
-    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry)
+    public Inductance(double value, InductanceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         InductanceUnit.Henry => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(InductanceUnit unit = InductanceUnit.Henry)
+    public string ToUnitString(InductanceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(InductanceUnit unit = DefaultUnit)
       => unit switch
       {
         InductanceUnit.Henry => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} H }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

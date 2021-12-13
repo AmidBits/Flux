@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Mass Create(this MassUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this MassUnit unit)
       => unit switch
       {
@@ -30,12 +32,14 @@ namespace Flux
   public struct Mass
     : System.IComparable<Mass>, System.IEquatable<Mass>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const MassUnit DefaultUnit = MassUnit.Kilogram;
+
     public static Mass ElectronMass
       => new(9.1093837015e-31);
 
     private readonly double m_value;
 
-    public Mass(double value, MassUnit unit = MassUnit.Kilogram)
+    public Mass(double value, MassUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         MassUnit.Milligram => value / 1000000,
@@ -53,9 +57,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null)
+    public string ToUnitString(MassUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(MassUnit unit = MassUnit.Kilogram)
+    public double ToUnitValue(MassUnit unit = DefaultUnit)
       => unit switch
       {
         MassUnit.Milligram => m_value * 1000000,

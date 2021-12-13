@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static AbsoluteHumidity Create(this AbsoluteHumidityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this AbsoluteHumidityUnit unit)
+      => unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => @" g/m³",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum AbsoluteHumidityUnit
   {
     GramsPerCubicMeter,
@@ -10,9 +22,11 @@ namespace Flux
   public struct AbsoluteHumidity
     : System.IComparable<AbsoluteHumidity>, System.IEquatable<AbsoluteHumidity>, IValueGeneralizedUnit<double>
   {
+    public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
+
     private readonly double m_value;
 
-    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
+    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => value,
@@ -22,7 +36,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
+    public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(AbsoluteHumidityUnit unit = DefaultUnit)
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
@@ -96,7 +112,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} g/m³ }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

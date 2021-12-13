@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static LuminousFlux Create(this LuminousFluxUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this LuminousFluxUnit unit)
+      => unit switch
+      {
+        LuminousFluxUnit.Lumen => @" lm",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum LuminousFluxUnit
   {
     Lumen,
@@ -10,9 +22,11 @@ namespace Flux
   public struct LuminousFlux
     : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
+
     private readonly double m_value;
 
-    public LuminousFlux(double value, LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
+    public LuminousFlux(double value, LuminousFluxUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         LuminousFluxUnit.Lumen => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
+    public string ToUnitString(LuminousFluxUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(LuminousFluxUnit unit = DefaultUnit)
       => unit switch
       {
         LuminousFluxUnit.Lumen => m_value,

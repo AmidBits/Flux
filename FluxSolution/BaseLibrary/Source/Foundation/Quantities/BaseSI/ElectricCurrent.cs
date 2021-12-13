@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
+      => unit switch
+      {
+        ElectricCurrentUnit.Ampere => @" A",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ElectricCurrentUnit
   {
     Milliampere,
@@ -11,9 +23,11 @@ namespace Flux
   public struct ElectricCurrent
     : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
+
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
+    public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ElectricCurrentUnit.Milliampere => value / 1000,
@@ -27,7 +41,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
+    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
       => unit switch
       {
         ElectricCurrentUnit.Milliampere => m_value * 1000,
@@ -108,7 +124,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} A }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Angle Create(this AngleUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this AngleUnit unit)
       => unit switch
       {
@@ -36,6 +38,8 @@ namespace Flux
   public struct Angle
     : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const AngleUnit DefaultUnit = AngleUnit.Radian;
+
     public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
     public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
     public const char PrimeSymbol = '\u2032'; // Designates arc minute.
@@ -49,7 +53,7 @@ namespace Flux
 
     //private Angle(double value)
     //  => m_value = value;
-    public Angle(double value, AngleUnit unit = AngleUnit.Radian)
+    public Angle(double value, AngleUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AngleUnit.Arcminute => ConvertArcminuteToRadian(value),
@@ -79,9 +83,9 @@ namespace Flux
     public CartesianCoordinate2 ToCartesian2Ex()
       => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
-    public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null)
+    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(AngleUnit unit = AngleUnit.Radian)
+    public double ToUnitValue(AngleUnit unit = DefaultUnit)
       => unit switch
       {
         AngleUnit.Arcminute => ConvertRadianToArcminute(m_value),

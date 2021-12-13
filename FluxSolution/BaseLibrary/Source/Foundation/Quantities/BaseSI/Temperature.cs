@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Temperature Create(this TemperatureUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this TemperatureUnit unit)
       => unit switch
       {
@@ -26,6 +28,8 @@ namespace Flux
   public struct Temperature
     : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
+
     public const double CelsiusAbsoluteZero = -273.15;
     public const double CelsiusBoilingPoint = 99.9839;
     public const double CelsiusIcePoint = 0;
@@ -44,7 +48,7 @@ namespace Flux
 
     private readonly double m_value;
 
-    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin)
+    public Temperature(double value, TemperatureUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         TemperatureUnit.Celsius => value - CelsiusAbsoluteZero,
@@ -60,9 +64,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null)
+    public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(TemperatureUnit unit = TemperatureUnit.Kelvin)
+    public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {
         TemperatureUnit.Celsius => m_value - KelvinIcePoint,

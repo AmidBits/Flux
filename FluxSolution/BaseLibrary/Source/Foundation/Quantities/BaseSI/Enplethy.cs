@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Enplethy Create(this EnplethyUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this EnplethyUnit unit)
+      => unit switch
+      {
+        EnplethyUnit.Mole => @" mol",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum EnplethyUnit
   {
     Mole,
@@ -10,13 +22,15 @@ namespace Flux
   public struct Enplethy
     : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
+
     // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
     public static Enplethy AvagadroConstant
       => new(6.02214076e23);
 
     private readonly double m_value;
 
-    public Enplethy(double value, EnplethyUnit unit = EnplethyUnit.Mole)
+    public Enplethy(double value, EnplethyUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         EnplethyUnit.Mole => value,
@@ -29,7 +43,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(EnplethyUnit unit = EnplethyUnit.Mole)
+    public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(EnplethyUnit unit = DefaultUnit)
       => unit switch
       {
         EnplethyUnit.Mole => m_value,
@@ -99,7 +115,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} mol }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Capacitance Create(this CapacitanceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this CapacitanceUnit unit)
+      => unit switch
+      {
+        CapacitanceUnit.Farad => @" F",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum CapacitanceUnit
   {
     Farad,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Capacitance
     : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
+
     private readonly double m_value;
 
-    public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad)
+    public Capacitance(double value, CapacitanceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         CapacitanceUnit.Farad => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(CapacitanceUnit unit = CapacitanceUnit.Farad)
+    public string ToUnitString(CapacitanceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(CapacitanceUnit unit = DefaultUnit)
       => unit switch
       {
         CapacitanceUnit.Farad => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} F }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static MagneticFluxDensity Create(this MagneticFluxDensityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this MagneticFluxDensityUnit unit)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => @" T",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum MagneticFluxDensityUnit
   {
     Tesla,
@@ -10,9 +22,11 @@ namespace Flux
   public struct MagneticFluxDensity
     : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
+
     private readonly double m_value;
 
-    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
+    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         MagneticFluxDensityUnit.Tesla => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
+    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} lm }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

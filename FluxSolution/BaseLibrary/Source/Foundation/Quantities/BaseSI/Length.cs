@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Length Create(this LengthUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this LengthUnit unit)
       => unit switch
       {
@@ -40,9 +42,11 @@ namespace Flux
   public struct Length
     : System.IComparable<Length>, System.IEquatable<Length>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const LengthUnit DefaultUnit = LengthUnit.Meter;
+
     private readonly double m_value;
 
-    public Length(double value, LengthUnit unit = LengthUnit.Meter)
+    public Length(double value, LengthUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         LengthUnit.Millimeter => value / 1000,
@@ -65,9 +69,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null)
+    public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(LengthUnit unit = LengthUnit.Meter)
+    public double ToUnitValue(LengthUnit unit = DefaultUnit)
       => unit switch
       {
         LengthUnit.Millimeter => m_value * 1000,

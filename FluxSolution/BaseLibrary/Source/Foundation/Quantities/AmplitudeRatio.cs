@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static AmplitudeRatio Create(this AmplitudeRatioUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this AmplitudeRatioUnit unit)
+      => unit switch
+      {
+        AmplitudeRatioUnit.DecibelVolt => @" dBV",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum AmplitudeRatioUnit
   {
     DecibelVolt,
@@ -10,11 +22,13 @@ namespace Flux
   public struct AmplitudeRatio
     : System.IComparable<AmplitudeRatio>, System.IEquatable<AmplitudeRatio>, IValueGeneralizedUnit<double>
   {
+    public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
+
     public const double ScalingFactor = 20;
 
     private readonly double m_value;
 
-    public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
+    public AmplitudeRatio(double value, AmplitudeRatioUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => value,
@@ -27,7 +41,9 @@ namespace Flux
     public PowerRatio ToPowerRatio()
       => new(System.Math.Pow(m_value, 2));
 
-    public double ToUnitValue(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
+    public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
       => unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => m_value,
@@ -102,7 +118,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} dBV }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

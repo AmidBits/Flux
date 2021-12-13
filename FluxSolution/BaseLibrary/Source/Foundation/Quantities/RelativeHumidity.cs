@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static RelativeHumidity Create(this RelativeHumidityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this RelativeHumidityUnit unit)
+      => unit switch
+      {
+        RelativeHumidityUnit.Percent => "\u0025",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum RelativeHumidityUnit
   {
     Percent,
@@ -10,9 +22,11 @@ namespace Flux
   public struct RelativeHumidity
     : System.IComparable<RelativeHumidity>, System.IEquatable<RelativeHumidity>, IValueGeneralizedUnit<double>
   {
+    public const RelativeHumidityUnit DefaultUnit = RelativeHumidityUnit.Percent;
+
     private readonly double m_value;
 
-    public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
+    public RelativeHumidity(double value, RelativeHumidityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         RelativeHumidityUnit.Percent => value,
@@ -22,7 +36,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
+    public string ToUnitString(RelativeHumidityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(RelativeHumidityUnit unit = DefaultUnit)
       => unit switch
       {
         RelativeHumidityUnit.Percent => m_value,
@@ -89,7 +105,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value}\u0025 }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static LuminousIntensity Create(this LuminousIntensityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this LuminousIntensityUnit unit)
+      => unit switch
+      {
+        LuminousIntensityUnit.Candela => @" cd",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum LuminousIntensityUnit
   {
     Candela,
@@ -10,9 +22,11 @@ namespace Flux
   public struct LuminousIntensity
     : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
+
     private readonly double m_value;
 
-    public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
+    public LuminousIntensity(double value, LuminousIntensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         LuminousIntensityUnit.Candela => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
+    public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
       => unit switch
       {
         LuminousIntensityUnit.Candela => m_value,
@@ -95,7 +111,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} cd }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

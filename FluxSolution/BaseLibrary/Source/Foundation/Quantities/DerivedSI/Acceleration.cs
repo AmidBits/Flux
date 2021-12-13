@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Acceleration Create(this AccelerationUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this AccelerationUnit unit)
+      => unit switch
+      {
+        AccelerationUnit.MetersPerSecondSquare => @" m/s²",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum AccelerationUnit
   {
     MetersPerSecondSquare,
@@ -10,12 +22,14 @@ namespace Flux
   public struct Acceleration
     : System.IComparable<Acceleration>, System.IEquatable<Acceleration>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const AccelerationUnit DefaultUnit = AccelerationUnit.MetersPerSecondSquare;
+
     public static Acceleration StandardAccelerationOfGravity
       => new(9.80665);
 
     private readonly double m_value;
 
-    public Acceleration(double value, AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
+    public Acceleration(double value, AccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AccelerationUnit.MetersPerSecondSquare => value,
@@ -28,7 +42,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(AccelerationUnit unit = AccelerationUnit.MetersPerSecondSquare)
+    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch
       {
         AccelerationUnit.MetersPerSecondSquare => m_value,
@@ -95,7 +111,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} m/s² }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

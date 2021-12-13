@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Radioactivity Create(this RadioactivityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this RadioactivityUnit unit)
+      => unit switch
+      {
+        RadioactivityUnit.Becquerel => @" Bq",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum RadioactivityUnit
   {
     Becquerel,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Radioactivity
     : System.IComparable<Radioactivity>, System.IEquatable<Radioactivity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
+
     private readonly double m_value;
 
-    public Radioactivity(double value, RadioactivityUnit unit = RadioactivityUnit.Becquerel)
+    public Radioactivity(double value, RadioactivityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         RadioactivityUnit.Becquerel => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(RadioactivityUnit unit = RadioactivityUnit.Becquerel)
+    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
       => unit switch
       {
         RadioactivityUnit.Becquerel => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} Bq }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

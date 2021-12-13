@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Voltage Create(this VoltageUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this VoltageUnit unit)
+      => unit switch
+      {
+        VoltageUnit.Volt => @" V",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum VoltageUnit
   {
     Volt,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Voltage
     : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
+
     private readonly double m_value;
 
-    public Voltage(double value, VoltageUnit unit = VoltageUnit.Volt)
+    public Voltage(double value, VoltageUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         VoltageUnit.Volt => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(VoltageUnit unit = VoltageUnit.Volt)
+    public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(VoltageUnit unit = DefaultUnit)
       => unit switch
       {
         VoltageUnit.Volt => m_value,
@@ -105,7 +121,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ {m_value} V }}";
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

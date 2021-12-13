@@ -1,5 +1,18 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static AngularVelocity Create(this AngularVelocityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this AngularVelocityUnit unit)
+      => unit switch
+      {
+        AngularVelocityUnit.RadianPerSecond => @" rad/s",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
+
   public enum AngularVelocityUnit
   {
     RadianPerSecond,
@@ -10,9 +23,11 @@ namespace Flux
   public struct AngularVelocity
     : System.IComparable<AngularVelocity>, System.IEquatable<AngularVelocity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
+
     private readonly double m_value;
 
-    public AngularVelocity(double value, AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
+    public AngularVelocity(double value, AngularVelocityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AngularVelocityUnit.RadianPerSecond => value,
@@ -25,7 +40,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(AngularVelocityUnit unit = AngularVelocityUnit.RadianPerSecond)
+    public string ToUnitString(AngularVelocityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(AngularVelocityUnit unit = DefaultUnit)
       => unit switch
       {
         AngularVelocityUnit.RadianPerSecond => m_value,
@@ -98,7 +115,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} rad/s }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

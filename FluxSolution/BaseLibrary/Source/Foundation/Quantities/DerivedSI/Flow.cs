@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Flow Create(this FlowUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this FlowUnit unit)
+      => unit switch
+      {
+        FlowUnit.CubicMetersPerSecond => @" m³/s",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum FlowUnit
   {
     CubicMetersPerSecond,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Flow
     : System.IComparable<Flow>, System.IEquatable<Flow>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const FlowUnit DefaultUnit = FlowUnit.CubicMetersPerSecond;
+
     private readonly double m_value;
 
-    public Flow(double value, FlowUnit unit = FlowUnit.CubicMetersPerSecond)
+    public Flow(double value, FlowUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         FlowUnit.CubicMetersPerSecond => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(FlowUnit unit = FlowUnit.CubicMetersPerSecond)
+    public string ToUnitString(FlowUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(FlowUnit unit = DefaultUnit)
       => unit switch
       {
         FlowUnit.CubicMetersPerSecond => m_value,
@@ -97,7 +113,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ {m_value} m³/s }}";
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

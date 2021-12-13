@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static ElectricCharge Create(this ElectricChargeUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ElectricChargeUnit unit)
+      => unit switch
+      {
+        ElectricChargeUnit.Coulomb => @" C",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ElectricChargeUnit
   {
     Coulomb,
@@ -10,12 +22,14 @@ namespace Flux
   public struct ElectricCharge
     : System.IComparable<ElectricCharge>, System.IEquatable<ElectricCharge>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
+
     public static ElectricCharge ElementaryCharge
       => new(1.602176634e-19);
 
     private readonly double m_value;
 
-    public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
+    public ElectricCharge(double value, ElectricChargeUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ElectricChargeUnit.Coulomb => value,
@@ -28,7 +42,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
+    public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ElectricChargeUnit unit = DefaultUnit)
       => unit switch
       {
         ElectricChargeUnit.Coulomb => m_value,
@@ -95,7 +111,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} C }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

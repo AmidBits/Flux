@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static AngularAcceleration Create(this AngularAccelerationUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this AngularAccelerationUnit unit)
+      => unit switch
+      {
+        AngularAccelerationUnit.RadianPerSecondSquare => @" rad/s²",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum AngularAccelerationUnit
   {
     RadianPerSecondSquare,
@@ -10,9 +22,11 @@ namespace Flux
   public struct AngularAcceleration
     : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
+
     private readonly double m_value;
 
-    public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
+    public AngularAcceleration(double value, AngularAccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquare => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquare)
+    public string ToUnitString(AngularAccelerationUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquare => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} rad/s² }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

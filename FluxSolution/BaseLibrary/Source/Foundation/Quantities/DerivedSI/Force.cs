@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Force Create(this ForceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ForceUnit unit)
+      => unit switch
+      {
+        ForceUnit.Newton => @" N",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ForceUnit
   {
     Newton,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Force
     : System.IComparable<Force>, System.IEquatable<Force>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const ForceUnit DefaultUnit = ForceUnit.Newton;
+
     private readonly double m_value;
 
-    public Force(double value, ForceUnit unit = ForceUnit.Newton)
+    public Force(double value, ForceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ForceUnit.Newton => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ForceUnit unit = ForceUnit.Newton)
+    public string ToUnitString(ForceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ForceUnit unit = DefaultUnit)
       => unit switch
       {
         ForceUnit.Newton => m_value,

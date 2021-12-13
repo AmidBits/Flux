@@ -1,5 +1,18 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Pressure Create(this PressureUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this PressureUnit unit)
+      => unit switch
+      {
+        PressureUnit.Pascal => @" Pa",
+        PressureUnit.Psi => @" psi",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum PressureUnit
   {
     Pascal,
@@ -11,6 +24,8 @@ namespace Flux
   public struct Pressure
     : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const PressureUnit DefaultUnit = PressureUnit.Pascal;
+
     public static Pressure StandardAtmosphere
       => new(101325);
     public static Pressure StandardStatePressure
@@ -18,7 +33,7 @@ namespace Flux
 
     private readonly double m_value;
 
-    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal)
+    public Pressure(double value, PressureUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         PressureUnit.Pascal => value,
@@ -32,7 +47,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(PressureUnit unit = PressureUnit.Pascal)
+    public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(PressureUnit unit = DefaultUnit)
       => unit switch
       {
         PressureUnit.Pascal => m_value,
@@ -103,7 +120,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} Pa }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

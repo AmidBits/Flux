@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Action Create(this ActionUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ActionUnit unit)
+      => unit switch
+      {
+        ActionUnit.JouleSecond => @" J s",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ActionUnit
   {
     JouleSecond,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Action
     : System.IComparable<Action>, System.IEquatable<Action>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
+
     private readonly double m_value;
 
-    public Action(double value, ActionUnit unit = ActionUnit.JouleSecond)
+    public Action(double value, ActionUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ActionUnit.JouleSecond => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ActionUnit unit = ActionUnit.JouleSecond)
+    public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ActionUnit unit = DefaultUnit)
       => unit switch
       {
         ActionUnit.JouleSecond => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} J s }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

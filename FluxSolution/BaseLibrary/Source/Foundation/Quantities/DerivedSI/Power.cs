@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Power Create(this PowerUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this PowerUnit unit)
+      => unit switch
+      {
+        PowerUnit.Watt => @" W",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum PowerUnit
   {
     Watt,
@@ -10,9 +22,11 @@ namespace Flux
   public struct Power
     : System.IComparable<Power>, System.IEquatable<Power>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const PowerUnit DefaultUnit = PowerUnit.Watt;
+
     private readonly double m_value;
 
-    public Power(double value, PowerUnit unit = PowerUnit.Watt)
+    public Power(double value, PowerUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         PowerUnit.Watt => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(PowerUnit unit = PowerUnit.Watt)
+    public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(PowerUnit unit = DefaultUnit)
       => unit switch
       {
         PowerUnit.Watt => m_value,
@@ -100,7 +116,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name}  {{ Value = {m_value} W }}";
+      => $"{GetType().Name}  {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

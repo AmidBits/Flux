@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static ElectricalConductance Create(this ElectricalConductanceUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this ElectricalConductanceUnit unit)
+      => unit switch
+      {
+        ElectricalConductanceUnit.Siemens => @" S",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum ElectricalConductanceUnit
   {
     Siemens,
@@ -10,9 +22,11 @@ namespace Flux
   public struct ElectricalConductance
     : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
+
     private readonly double m_value;
 
-    public ElectricalConductance(double value, ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens)
+    public ElectricalConductance(double value, ElectricalConductanceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         ElectricalConductanceUnit.Siemens => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens)
+    public string ToUnitString(ElectricalConductanceUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(ElectricalConductanceUnit unit = DefaultUnit)
       => unit switch
       {
         ElectricalConductanceUnit.Siemens => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} S }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

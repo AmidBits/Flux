@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Volume Create(this VolumeUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this VolumeUnit unit)
       => unit switch
       {
@@ -48,9 +50,11 @@ namespace Flux
   public struct Volume
     : System.IComparable<Volume>, System.IEquatable<Volume>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
+
     private readonly double m_value;
 
-    public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter)
+    public Volume(double value, VolumeUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         VolumeUnit.Millilitre => value / 1000000,
@@ -75,9 +79,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null)
+    public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(VolumeUnit unit = VolumeUnit.CubicMeter)
+    public double ToUnitValue(VolumeUnit unit = DefaultUnit)
       => unit switch
       {
         VolumeUnit.Millilitre => m_value * 1000000,

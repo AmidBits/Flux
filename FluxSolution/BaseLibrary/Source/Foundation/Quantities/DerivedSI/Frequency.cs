@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Frequency Create(this FrequencyUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this FrequencyUnit unit)
+      => unit switch
+      {
+        FrequencyUnit.Hertz => @" Hz",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum FrequencyUnit
   {
     Hertz,
@@ -10,12 +22,14 @@ namespace Flux
   public struct Frequency
     : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
+
     public static Frequency HyperfineTransitionFrequencyOfCs133
       => new(9192631770);
 
     private readonly double m_value;
 
-    public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz)
+    public Frequency(double value, FrequencyUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         FrequencyUnit.Hertz => value,
@@ -32,7 +46,9 @@ namespace Flux
     public Time ToPeriod()
       => new(1.0 / m_value);
 
-    public double ToUnitValue(FrequencyUnit unit = FrequencyUnit.Hertz)
+    public string ToUnitString(FrequencyUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(FrequencyUnit unit = DefaultUnit)
       => unit switch
       {
         FrequencyUnit.Hertz => m_value,
@@ -124,7 +140,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} Hz }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

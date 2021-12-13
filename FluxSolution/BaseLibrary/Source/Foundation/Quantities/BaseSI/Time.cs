@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Time Create(this TimeUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this TimeUnit unit)
       => unit switch
       {
@@ -36,13 +38,15 @@ namespace Flux
   public struct Time
     : System.IComparable<Time>, System.IEquatable<Time>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
   {
+    public const TimeUnit DefaultUnit = TimeUnit.Second;
+
     /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
     public static Time Flick
       => new(1.0 / 705600000.0);
 
     private readonly double m_value;
 
-    public Time(double value, TimeUnit unit = TimeUnit.Second)
+    public Time(double value, TimeUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         TimeUnit.Nanosecond => value / 1000000000,
@@ -70,9 +74,9 @@ namespace Flux
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_value);
 
-    public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null)
+    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(TimeUnit unit = TimeUnit.Second)
+    public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {
         TimeUnit.Nanosecond => m_value * 1000000000,

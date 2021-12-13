@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static PowerRatio Create(this PowerRatioUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this PowerRatioUnit unit)
+      => unit switch
+      {
+        PowerRatioUnit.DecibelWatt => @" dBW",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum PowerRatioUnit
   {
     DecibelWatt,
@@ -10,11 +22,13 @@ namespace Flux
   public struct PowerRatio
     : System.IComparable<PowerRatio>, System.IEquatable<PowerRatio>, IValueGeneralizedUnit<double>
   {
+    public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
+
     public const double ScalingFactor = 10;
 
     private readonly double m_value;
 
-    public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
+    public PowerRatio(double value, PowerRatioUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         PowerRatioUnit.DecibelWatt => value,
@@ -27,7 +41,9 @@ namespace Flux
     public AmplitudeRatio ToAmplitudeRatio()
       => new(System.Math.Sqrt(m_value));
 
-    public double ToUnitValue(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
+    public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
       => unit switch
       {
         PowerRatioUnit.DecibelWatt => m_value,
@@ -102,7 +118,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} dBW }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

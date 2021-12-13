@@ -1,5 +1,18 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Density Create(this DensityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this DensityUnit unit)
+      => unit switch
+      {
+        DensityUnit.KilogramsPerCubicMeter => @" kg/m³",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
+
   public enum DensityUnit
   {
     KilogramsPerCubicMeter,
@@ -10,9 +23,11 @@ namespace Flux
   public struct Density
     : System.IComparable<Density>, System.IEquatable<Density>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const DensityUnit DefaultUnit = DensityUnit.KilogramsPerCubicMeter;
+
     private readonly double m_value;
 
-    public Density(double value, DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
+    public Density(double value, DensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         DensityUnit.KilogramsPerCubicMeter => value,
@@ -25,7 +40,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(DensityUnit unit = DensityUnit.KilogramsPerCubicMeter)
+    public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(DensityUnit unit = DefaultUnit)
       => unit switch
       {
         DensityUnit.KilogramsPerCubicMeter => m_value,
@@ -97,7 +114,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} kg/m³ }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static CatalyticActivity Create(this CatalyticActivityUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this CatalyticActivityUnit unit)
+      => unit switch
+      {
+        CatalyticActivityUnit.Katal => @" kat",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum CatalyticActivityUnit
   {
     Katal,
@@ -10,9 +22,11 @@ namespace Flux
   public struct CatalyticActivity
     : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
+
     private readonly double m_value;
 
-    public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
+    public CatalyticActivity(double value, CatalyticActivityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         CatalyticActivityUnit.Katal => value,
@@ -25,7 +39,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
+    public string ToUnitString(CatalyticActivityUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(CatalyticActivityUnit unit = DefaultUnit)
       => unit switch
       {
         CatalyticActivityUnit.Katal => m_value,
@@ -92,7 +108,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} kat }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

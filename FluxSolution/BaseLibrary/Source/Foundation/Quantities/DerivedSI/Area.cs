@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Area Create(this AreaUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this AreaUnit unit)
       => unit switch
       {
@@ -22,9 +24,11 @@ namespace Flux
   public struct Area
     : System.IComparable<Area>, System.IEquatable<Area>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
+
     private readonly double m_value;
 
-    public Area(double value, AreaUnit unit = AreaUnit.SquareMeter)
+    public Area(double value, AreaUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AreaUnit.SquareMeter => value,
@@ -38,9 +42,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(AreaUnit unit = AreaUnit.SquareMeter, string? format = null)
+    public string ToUnitString(AreaUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(AreaUnit unit = AreaUnit.SquareMeter)
+    public double ToUnitValue(AreaUnit unit = DefaultUnit)
       => unit switch
       {
         AreaUnit.SquareMeter => m_value,

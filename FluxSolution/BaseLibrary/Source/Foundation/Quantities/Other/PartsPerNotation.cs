@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static PartsPerNotation Create(this PartsPerNotationUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this PartsPerNotationUnit unit)
       => unit switch
       {
@@ -42,6 +44,8 @@ namespace Flux
   public struct PartsPerNotation
     : System.IComparable<PartsPerNotation>, System.IEquatable<PartsPerNotation>, IValueGeneralizedUnit<double>
   {
+    public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Hundred;
+
     public const char PercentSymbol = '\u0025';
     public const char PermilleSymbol = '\u2030';
     public const char PermyriadSymbol = '\u2031';
@@ -52,7 +56,7 @@ namespace Flux
     /// <summary>Creates a new instance of this type.</summary>
     /// <param name="parts">The parts in parts per notation.</param>
     /// <param name="unit">The notation in parts per notation.</param>
-    public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
+    public PartsPerNotation(double parts, PartsPerNotationUnit unit = DefaultUnit)
     {
       m_parts = unit switch
       {
@@ -73,7 +77,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_parts;
 
-    public double ToUnitValue(PartsPerNotationUnit unit = PartsPerNotationUnit.Hundred)
+    public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch
       {
         PartsPerNotationUnit.Hundred => m_parts * 1e2,
@@ -148,7 +154,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_parts);
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitValue(m_unit)}{m_unit.GetUnitSymbol()} }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

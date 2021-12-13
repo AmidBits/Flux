@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static Speed Create(this SpeedUnit unit, double value)
+      => new(value, unit);
     public static string GetUnitSymbol(this SpeedUnit unit)
       => unit switch
       {
@@ -28,6 +30,8 @@ namespace Flux
   public struct Speed
     : System.IComparable<Speed>, System.IEquatable<Speed>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const SpeedUnit DefaultUnit = SpeedUnit.MetersPerSecond;
+
     public static Speed SpeedOfLightInVacuum
       => new(299792458);
 
@@ -42,7 +46,7 @@ namespace Flux
 
     private readonly double m_value;
 
-    public Speed(double value, SpeedUnit unit = SpeedUnit.MetersPerSecond)
+    public Speed(double value, SpeedUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         SpeedUnit.FeetPerSecond => value * (381.0 / 1250.0),
@@ -59,9 +63,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public string ToUnitString(SpeedUnit unit = SpeedUnit.MetersPerSecond, string? format = null)
+    public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(SpeedUnit unit = SpeedUnit.MetersPerSecond)
+    public double ToUnitValue(SpeedUnit unit = DefaultUnit)
       => unit switch
       {
         SpeedUnit.FeetPerSecond => m_value * (1250.0 / 381.0),

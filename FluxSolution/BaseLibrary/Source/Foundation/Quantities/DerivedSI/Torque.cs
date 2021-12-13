@@ -1,5 +1,18 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Torque Create(this TorqueUnit unit, double value)
+      => new(value, unit);
+    public static string GetUnitSymbol(this TorqueUnit unit)
+      => unit switch
+      {
+        TorqueUnit.NewtonMeter => @" N m",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
+
   public enum TorqueUnit
   {
     NewtonMeter,
@@ -10,9 +23,11 @@ namespace Flux
   public struct Torque
     : System.IComparable<Torque>, System.IEquatable<Torque>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
   {
+    public const TorqueUnit DefaultUnit = TorqueUnit.NewtonMeter;
+
     private readonly double m_value;
 
-    public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter)
+    public Torque(double value, TorqueUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         TorqueUnit.NewtonMeter => value,
@@ -25,7 +40,9 @@ namespace Flux
     public double GeneralUnitValue
       => m_value;
 
-    public double ToUnitValue(TorqueUnit unit = TorqueUnit.NewtonMeter)
+    public string ToUnitString(TorqueUnit unit = DefaultUnit, string? format = null)
+      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+    public double ToUnitValue(TorqueUnit unit = DefaultUnit)
       => unit switch
       {
         TorqueUnit.NewtonMeter => m_value,
@@ -92,7 +109,7 @@ namespace Flux
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} N m }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }
