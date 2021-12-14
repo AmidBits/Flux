@@ -116,7 +116,7 @@ namespace Flux
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value =  = {AngleUnit.Degree.Create(m_degree).ToUnitString(AngleUnit.Degree)} }}";
+      => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides
   }
 }

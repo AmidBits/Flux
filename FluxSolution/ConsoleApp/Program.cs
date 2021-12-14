@@ -35,7 +35,7 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      //      foreach(var type in typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t=>t.Name))
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => t.GetMethods().Count(mi => mi.Name.Equals("ToUnitString")) == 0)));
 
       //var index = 0;
       //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
@@ -46,7 +46,7 @@ namespace ConsoleApp
 
       var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
-      for (var i = 0; bst.GetNodeCount() < 128; i++)
+      for (var i = 0; bst.GetNodeCount() < 16; i++)
       {
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 256);
 

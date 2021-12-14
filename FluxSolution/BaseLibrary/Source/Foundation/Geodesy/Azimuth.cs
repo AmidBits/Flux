@@ -8,6 +8,8 @@ namespace Flux
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
+    public const AngleUnit DefaultUnit = AngleUnit.Degree;
+
     private readonly double m_degree;
 
     public Azimuth(double degree)
@@ -109,7 +111,7 @@ namespace Flux
     public override int GetHashCode()
       => m_degree.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {AngleUnit.Degree.Create(m_degree).ToUnitString(AngleUnit.Degree)} }}";
+      => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides
   }
 }
