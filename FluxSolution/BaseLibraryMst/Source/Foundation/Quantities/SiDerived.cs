@@ -16,6 +16,14 @@ namespace Foundation.Units
     }
 
     [TestMethod]
+    public void Action()
+    {
+      var u = new Flux.Action(1);
+
+      Assert.AreEqual(1, u.GeneralUnitValue);
+    }
+
+    [TestMethod]
     public void Angle()
     {
       var u = new Flux.Angle(1);
@@ -165,6 +173,22 @@ namespace Foundation.Units
     }
 
     [TestMethod]
+    public void MagneticFlux()
+    {
+      var u = new Flux.MagneticFlux(1);
+
+      Assert.AreEqual(1, u.GeneralUnitValue);
+    }
+
+    [TestMethod]
+    public void MagneticFluxDensity()
+    {
+      var u = new Flux.MagneticFluxDensity(1);
+
+      Assert.AreEqual(1, u.GeneralUnitValue);
+    }
+
+    [TestMethod]
     public void Power()
     {
       var u = new Flux.Power(1);
@@ -185,6 +209,14 @@ namespace Foundation.Units
     public void Radioactivity()
     {
       var u = new Flux.Radioactivity(1);
+
+      Assert.AreEqual(1, u.GeneralUnitValue);
+    }
+
+    [TestMethod]
+    public void SolidAngle()
+    {
+      var u = new Flux.SolidAngle(1);
 
       Assert.AreEqual(1, u.GeneralUnitValue);
     }

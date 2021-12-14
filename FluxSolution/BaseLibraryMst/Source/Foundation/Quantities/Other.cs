@@ -23,7 +23,7 @@ namespace Foundation.Units
     }
 
     [TestMethod]
-    public void Bearing()
+    public void Azimuth()
     {
       var a = new Flux.Angle(1, Flux.AngleUnit.Degree);
 
