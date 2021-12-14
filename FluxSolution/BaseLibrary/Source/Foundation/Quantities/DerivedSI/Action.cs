@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Action
-    : System.IComparable<Action>, System.IEquatable<Action>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Action>, System.IEquatable<Action>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null)

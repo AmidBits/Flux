@@ -30,7 +30,7 @@ namespace Flux
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable<Mass>, System.IEquatable<Mass>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
+    : System.IComparable<Mass>, System.IEquatable<Mass>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -51,10 +51,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double BaseUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(MassUnit unit = DefaultUnit, string? format = null)

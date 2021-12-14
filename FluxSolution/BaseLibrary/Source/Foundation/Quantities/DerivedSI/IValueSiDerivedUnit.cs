@@ -1,8 +1,8 @@
 ﻿namespace Flux
 {
-  public interface IValueDerivedUnitSI<T>
+  public interface IValueSiDerivedUnit<T>
   {
     /// <summary>The SI derived unit value of the quantity.</summary>
-    T DerivedUnitValue { get; }
+    T Value { get; }
   }
 }

@@ -5,6 +5,8 @@ namespace Flux
   public struct SimpleFraction
     : System.IComparable<SimpleFraction>, System.IEquatable<SimpleFraction>, IValueGeneralizedUnit<double>
   {
+    public const char FractionSlash = '\u2044';
+
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne
       => new(-1, 1, false);
@@ -43,17 +45,41 @@ namespace Flux
 
       if (m_denominator == 0) throw new System.ArithmeticException(@"The denominator cannot be zero.");
     }
+    public SimpleFraction(System.Numerics.BigInteger whole, System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
+      : this(whole * denominator + numerator, denominator, true)
+    { }
     /// <summary>Creates a new simple fraction from the specified numerator and denominator. If the fraction can be reduced, it will be.</summary>
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public SimpleFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
       : this(numerator, denominator, true)
     { }
+    public SimpleFraction(System.Numerics.BigInteger value)
+      : this(value, 1, false)
+    { }
 
     public System.Numerics.BigInteger Numerator
       => m_numerator;
     public System.Numerics.BigInteger Denominator
       => m_denominator;
+
+    public System.Numerics.BigInteger Remainder
+      => Numerator % Denominator;
+    public System.Numerics.BigInteger Whole
+      => Numerator / Denominator;
+
+    public bool IsImproper
+      => Numerator >= Denominator;
+    public bool IsProper
+      => Numerator < Denominator;
+
+    /// <summary>Tries to get a whole number, a numerator and a denominator. If no whole number exists, the function returns false, otherwise true. A numerator and denominator is always present.</summary>
+    /// <param name="whole"></param>
+    /// <param name="numerator"></param>
+    /// <param name="denominator"></param>
+    /// <returns></returns>
+    public bool TryGetMixedFraction(out System.Numerics.BigInteger whole, out System.Numerics.BigInteger numerator, out System.Numerics.BigInteger denominator)
+      => (whole = System.Numerics.BigInteger.DivRem(Numerator, denominator = Denominator, out numerator)) > 0;
 
     /// <summary>Is this a unit fraction, e.g. a probability.</summary>
     public bool IsUnitFraction
@@ -68,8 +94,11 @@ namespace Flux
       : 1;
 
     /// <summary>Returns the decimal representation (as a double, floating point value) of the fraction.</summary>
-    public double GeneralUnitValue
+    public double Value
       => (double)m_numerator / (double)m_denominator;
+
+    public string ToFractionString()
+      => IsImproper && TryGetMixedFraction(out var w, out var n, out var d) && w > 0 ? (n > 0 ? $"{w} {n}{FractionSlash}{d}" : $"{w}") : $"{m_numerator}{FractionSlash}{m_denominator}";
 
     #region Static methods
     /// <summary>Returns the absolute value a value.</summary>
@@ -125,7 +154,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator double(SimpleFraction v)
-      => v.GeneralUnitValue;
+      => v.Value;
 
     public static bool operator <(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) < 0;
@@ -152,10 +181,16 @@ namespace Flux
 
       return new SimpleFraction(an + bn, lcm);
     }
+    public static SimpleFraction operator +(SimpleFraction a, System.Numerics.BigInteger b)
+      => a + new SimpleFraction(b);
     public static SimpleFraction operator /(SimpleFraction a, SimpleFraction b)
       => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
+    public static SimpleFraction operator /(SimpleFraction a, System.Numerics.BigInteger b)
+      => a / new SimpleFraction(b);
     public static SimpleFraction operator *(SimpleFraction a, SimpleFraction b)
       => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
+    public static SimpleFraction operator *(SimpleFraction a, System.Numerics.BigInteger b)
+      => a * new SimpleFraction(b);
     public static SimpleFraction operator %(SimpleFraction a, System.Numerics.BigInteger b)
       => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
     public static SimpleFraction operator -(SimpleFraction a, SimpleFraction b)
@@ -167,6 +202,8 @@ namespace Flux
 
       return new SimpleFraction(an - bn, lcm);
     }
+    public static SimpleFraction operator -(SimpleFraction a, System.Numerics.BigInteger b)
+      => a - new SimpleFraction(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -193,7 +230,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({GeneralUnitValue}) }}";
+      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator}, Fraction = {ToFractionString()}, Decimal = {Value}) }}";
     #endregion Object overrides
   }
 }

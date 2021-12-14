@@ -48,7 +48,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable<Volume>, System.IEquatable<Volume>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Volume>, System.IEquatable<Volume>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -73,10 +73,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null)
@@ -106,7 +103,7 @@ namespace Flux
     /// <param name="width"></param>
     /// <param name="height"></param>
     public static Volume From(Length length, Length width, Length height)
-      => new(length.GeneralUnitValue * width.GeneralUnitValue * height.GeneralUnitValue);
+      => new(length.Value * width.Value * height.Value);
     #endregion Static methods
 
     #region Overloaded operators

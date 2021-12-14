@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Inductance>, System.IEquatable<Inductance>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(InductanceUnit unit = DefaultUnit, string? format = null)

@@ -36,7 +36,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IEquatable<Time>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
+    : System.IComparable<Time>, System.IEquatable<Time>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -65,10 +65,7 @@ namespace Flux
       : this(timeSpan.TotalSeconds)
     { }
 
-    public double BaseUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public System.TimeSpan ToTimeSpan()

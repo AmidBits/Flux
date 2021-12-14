@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousIntensity
-    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
+    : System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double BaseUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null)

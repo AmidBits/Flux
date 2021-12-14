@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
+    : System.IComparable<Enplethy>, System.IEquatable<Enplethy>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
@@ -37,10 +37,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double BaseUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null)
@@ -76,7 +73,7 @@ namespace Flux
       => !a.Equals(b);
 
     public static Enplethy operator -(Enplethy v)
-      => new(-v.GeneralUnitValue);
+      => new(-v.Value);
     public static Enplethy operator +(Enplethy a, double b)
       => new(a.m_value + b);
     public static Enplethy operator +(Enplethy a, Enplethy b)

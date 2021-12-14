@@ -35,7 +35,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public AmplitudeRatio ToAmplitudeRatio()
@@ -55,7 +55,7 @@ namespace Flux
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     public static PowerRatio From(Power numerator, Power denominator)
-      => new(ScalingFactor * System.Math.Log10(numerator.GeneralUnitValue / denominator.GeneralUnitValue));
+      => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
     /// <summary>Creates a new PowerRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
     /// <param name="decibelChange"></param>
     public static PowerRatio FromDecibelChange(double decibelChange)

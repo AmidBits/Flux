@@ -22,7 +22,7 @@ namespace Flux
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Pressure>, System.IEquatable<Pressure>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 
@@ -41,10 +41,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null)

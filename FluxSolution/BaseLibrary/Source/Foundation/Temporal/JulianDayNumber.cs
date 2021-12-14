@@ -31,7 +31,7 @@ namespace Flux
     public int DayOfWeekISO8601
       => GetDayOfWeekISO8601(m_value);
 
-    public int GeneralUnitValue
+    public int Value
       => m_value;
 
     public JulianDayNumber AddWeeks(int weeks)

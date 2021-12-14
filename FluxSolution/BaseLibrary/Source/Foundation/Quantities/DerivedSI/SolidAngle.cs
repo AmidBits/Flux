@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable<SolidAngle>, System.IEquatable<SolidAngle>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<SolidAngle>, System.IEquatable<SolidAngle>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null)

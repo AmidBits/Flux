@@ -19,7 +19,7 @@ namespace Flux
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
-    public int GeneralUnitValue
+    public int Value
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
@@ -49,7 +49,7 @@ namespace Flux
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     public static MidiNote FromFrequency(Frequency frequency)
-      => new(ConvertFromFrequency(frequency.GeneralUnitValue));
+      => new(ConvertFromFrequency(frequency.Value));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
     public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
     {

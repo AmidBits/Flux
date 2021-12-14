@@ -33,7 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(RelativeHumidityUnit unit = DefaultUnit, string? format = null)

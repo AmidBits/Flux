@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Voltage>, System.IEquatable<Voltage>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null)
@@ -53,12 +50,12 @@ namespace Flux
     /// <param name="current"></param>
     /// <param name="resistance"></param>
     public static Voltage From(ElectricCurrent current, ElectricResistance resistance)
-      => new(current.GeneralUnitValue * resistance.GeneralUnitValue);
+      => new(current.Value * resistance.Value);
     /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
     /// <param name="power"></param>
     /// <param name="current"></param>
     public static Voltage From(Power power, ElectricCurrent current)
-      => new(power.GeneralUnitValue / current.GeneralUnitValue);
+      => new(power.Value / current.Value);
     #endregion Static methods
 
     #region Overloaded operators

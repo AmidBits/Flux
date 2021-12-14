@@ -22,9 +22,9 @@ namespace Flux
       => m_denominator;
 
     public double Ratio
-      => m_numerator.GeneralUnitValue / m_denominator.GeneralUnitValue;
+      => m_numerator.Value / m_denominator.Value;
     public double InverseRatio
-      => m_denominator.GeneralUnitValue / m_numerator.GeneralUnitValue;
+      => m_denominator.Value / m_numerator.Value;
 
     #region Overloaded operators
     public static bool operator ==(Rate<TNumerator, TDenominator> a, Rate<TNumerator, TDenominator> b)
@@ -43,7 +43,7 @@ namespace Flux
     public override bool Equals(object? obj)
       => obj is Rate<TNumerator, TDenominator> o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_numerator.GeneralUnitValue, m_denominator.GeneralUnitValue);
+      => System.HashCode.Combine(m_numerator.Value, m_denominator.Value);
     public override string ToString()
       => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} (Ratio = {Ratio}, Inverse = {InverseRatio}) }}";
     #endregion Object overrides

@@ -36,7 +36,7 @@ namespace Flux
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Angle>, System.IEquatable<Angle>, System.IFormattable, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -67,11 +67,8 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
     /// <summary>The quantity value in unit radian.</summary>
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>

@@ -23,15 +23,15 @@ namespace Flux
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(ToAngle().GeneralUnitValue));
+      => new(GetApproximateLatitudinalHeight(ToAngle().Value));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(ToAngle().GeneralUnitValue));
+      => new(GetApproximateLongitudinalWidth(ToAngle().Value));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Length ApproximateRadius
-      => new(GetApproximateRadius(ToAngle().GeneralUnitValue));
+      => new(GetApproximateRadius(ToAngle().Value));
 
     public double MathCos
       => System.Math.Cos(Radian);
@@ -43,14 +43,14 @@ namespace Flux
     public double Radian
       => Angle.ConvertDegreeToRadian(m_degree);
 
-    public double GeneralUnitValue
+    public double Value
       => m_degree;
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().GeneralUnitValue / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().Value / 2))), -System.Math.PI, System.Math.PI);
 
     public Angle ToAngle()
       => new(m_degree, AngleUnit.Degree);
@@ -73,8 +73,8 @@ namespace Flux
       var cos = System.Math.Cos(radLatitude);
       var sin = System.Math.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.GeneralUnitValue, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.GeneralUnitValue, 2) * sin, 2);
-      var denominator = System.Math.Pow(Earth.EquatorialRadius.GeneralUnitValue * cos, 2) + System.Math.Pow(Earth.PolarRadius.GeneralUnitValue * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.Value, 2) * sin, 2);
+      var denominator = System.Math.Pow(Earth.EquatorialRadius.Value * cos, 2) + System.Math.Pow(Earth.PolarRadius.Value * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }
@@ -113,23 +113,23 @@ namespace Flux
     public static Latitude operator +(Latitude a, double b)
       => new(Clamp(a.m_degree + b));
     public static Latitude operator +(Latitude a, Latitude b)
-      => a + b.GeneralUnitValue;
+      => a + b.Value;
     public static Latitude operator /(Latitude a, double b)
       => new(Clamp(a.m_degree / b));
     public static Latitude operator /(Latitude a, Latitude b)
-      => a / b.GeneralUnitValue;
+      => a / b.Value;
     public static Latitude operator *(Latitude a, double b)
       => new(Clamp(a.m_degree * b));
     public static Latitude operator *(Latitude a, Latitude b)
-      => a * b.GeneralUnitValue;
+      => a * b.Value;
     public static Latitude operator %(Latitude a, double b)
       => new(Clamp(a.m_degree % b));
     public static Latitude operator %(Latitude a, Latitude b)
-      => a % b.GeneralUnitValue;
+      => a % b.Value;
     public static Latitude operator -(Latitude a, double b)
       => new(Clamp(a.m_degree - b));
     public static Latitude operator -(Latitude a, Latitude b)
-      => a - b.GeneralUnitValue;
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

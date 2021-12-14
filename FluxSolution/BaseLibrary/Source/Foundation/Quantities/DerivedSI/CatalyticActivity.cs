@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<CatalyticActivity>, System.IEquatable<CatalyticActivity>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(CatalyticActivityUnit unit = DefaultUnit, string? format = null)

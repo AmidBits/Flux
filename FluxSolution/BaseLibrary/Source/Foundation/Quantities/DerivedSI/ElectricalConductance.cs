@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electrical conductance unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct ElectricalConductance
-    : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricalConductance>, System.IEquatable<ElectricalConductance>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(ElectricalConductanceUnit unit = DefaultUnit, string? format = null)

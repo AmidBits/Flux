@@ -24,7 +24,7 @@ namespace Flux
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
-    public decimal GeneralUnitValue
+    public decimal Value
       => m_value;
 
     public JulianDate AddWeeks(int weeks)
@@ -150,9 +150,9 @@ namespace Flux
       => new(a.m_value - System.Convert.ToDecimal(b));
 
     public static JulianDate operator +(JulianDate a, Time b)
-      => a + (System.Convert.ToDecimal(b.GeneralUnitValue) / 86400m);
+      => a + (System.Convert.ToDecimal(b.Value) / 86400m);
     public static JulianDate operator -(JulianDate a, Time b)
-      => a - (System.Convert.ToDecimal(b.GeneralUnitValue) / 86400m);
+      => a - (System.Convert.ToDecimal(b.Value) / 86400m);
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
       => a + (System.Convert.ToDecimal(b.TotalSeconds) / 86400m);

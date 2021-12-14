@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Capacitance>, System.IEquatable<Capacitance>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(CapacitanceUnit unit = DefaultUnit, string? format = null)

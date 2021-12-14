@@ -25,18 +25,18 @@ namespace Flux
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
     {
-      var radInclination = m_inclination.GeneralUnitValue;
-      var radAzimuth = m_azimuth.GeneralUnitValue;
+      var radInclination = m_inclination.Value;
+      var radAzimuth = m_azimuth.Value;
       var sinInclination = System.Math.Sin(radInclination);
       return new CartesianCoordinate3(m_radius * System.Math.Cos(radAzimuth) * sinInclination, m_radius * System.Math.Sin(radAzimuth) * sinInclination, m_radius * System.Math.Cos(radInclination));
     }
     public CylindricalCoordinate ToCylindricalCoordinate()
     {
-      var radInclination = m_inclination.GeneralUnitValue;
-      return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.GeneralUnitValue, m_radius * System.Math.Cos(radInclination));
+      var radInclination = m_inclination.Value;
+      return new CylindricalCoordinate(m_radius * System.Math.Sin(radInclination), m_azimuth.Value, m_radius * System.Math.Cos(radInclination));
     }
     public GeographicCoordinate ToGeographicCoordinate()
-      => new(Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.GeneralUnitValue - Maths.PiOver2), Angle.ConvertRadianToDegree(m_azimuth.GeneralUnitValue - System.Math.PI), m_radius);
+      => new(Angle.ConvertRadianToDegree(System.Math.PI - m_inclination.Value - Maths.PiOver2), Angle.ConvertRadianToDegree(m_azimuth.Value - System.Math.PI), m_radius);
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
@@ -66,7 +66,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
     public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {m_inclination.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.GeneralUnitValue)):N1}{Angle.DegreeSymbol}), Azimuth = {m_azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} }}";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {m_inclination.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_inclination.Value)):N1}{Angle.DegreeSymbol}), Azimuth = {m_azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol} }}";
     #endregion Object overrides
   }
 }

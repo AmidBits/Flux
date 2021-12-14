@@ -22,7 +22,7 @@ namespace Flux
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IEquatable<Area>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Area>, System.IEquatable<Area>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
 
@@ -36,10 +36,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(AreaUnit unit = DefaultUnit, string? format = null)
@@ -57,7 +54,7 @@ namespace Flux
     /// <param name="length"></param>
     /// <param name="width"></param>
     public static Area From(Length length, Length width)
-      => new(length.GeneralUnitValue * width.GeneralUnitValue);
+      => new(length.Value * width.Value);
     #endregion Static methods
 
     #region Overloaded operators

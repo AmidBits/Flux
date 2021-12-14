@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable<Force>, System.IEquatable<Force>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Force>, System.IEquatable<Force>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const ForceUnit DefaultUnit = ForceUnit.Newton;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(ForceUnit unit = DefaultUnit, string? format = null)

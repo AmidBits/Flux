@@ -21,7 +21,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IEquatable<Density>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Density>, System.IEquatable<Density>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramsPerCubicMeter;
 
@@ -34,10 +34,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null)
@@ -51,7 +48,7 @@ namespace Flux
 
     #region Static methods
     public static Density From(Mass mass, Volume volume)
-      => new(mass.GeneralUnitValue / volume.GeneralUnitValue);
+      => new(mass.Value / volume.Value);
     #endregion Static methods
 
     #region Overloaded operators

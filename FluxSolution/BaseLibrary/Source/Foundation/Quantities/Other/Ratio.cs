@@ -19,12 +19,12 @@ namespace Flux
     public double Denominator
       => m_denominator;
 
-    public double GeneralUnitValue
+    public double Value
       => m_numerator / m_denominator;
 
     #region Overloaded operators
     public static explicit operator double(Ratio v)
-      => v.GeneralUnitValue;
+      => v.Value;
 
     public static bool operator ==(Ratio a, Ratio b)
       => a.Equals(b);
@@ -44,7 +44,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({GeneralUnitValue}) }}";
+      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({Value}) }}";
     #endregion Object overrides
   }
 }

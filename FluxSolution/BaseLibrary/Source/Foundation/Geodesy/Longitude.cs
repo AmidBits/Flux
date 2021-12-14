@@ -30,14 +30,14 @@ namespace Flux
     public int TheoreticalTimezoneOffset
       => GetTheoreticalTimezoneOffset(m_degree);
 
-    public double GeneralUnitValue
+    public double Value
       => m_degree;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedX()
-      => ToAngle().GeneralUnitValue;
+      => ToAngle().Value;
 
     public Angle ToAngle()
       => new(m_degree, AngleUnit.Degree);
@@ -81,23 +81,23 @@ namespace Flux
     public static Longitude operator +(Longitude a, double b)
       => new(Wrap(a.m_degree + b));
     public static Longitude operator +(Longitude a, Longitude b)
-      => a + b.GeneralUnitValue;
+      => a + b.Value;
     public static Longitude operator /(Longitude a, double b)
       => new(Wrap(a.m_degree / b));
     public static Longitude operator /(Longitude a, Longitude b)
-      => a / b.GeneralUnitValue;
+      => a / b.Value;
     public static Longitude operator *(Longitude a, double b)
       => new(Wrap(a.m_degree * b));
     public static Longitude operator *(Longitude a, Longitude b)
-      => a * b.GeneralUnitValue;
+      => a * b.Value;
     public static Longitude operator %(Longitude a, double b)
       => new(Wrap(a.m_degree % b));
     public static Longitude operator %(Longitude a, Longitude b)
-      => a % b.GeneralUnitValue;
+      => a % b.Value;
     public static Longitude operator -(Longitude a, double b)
       => new(Wrap(a.m_degree - b));
     public static Longitude operator -(Longitude a, Longitude b)
-      => a - b.GeneralUnitValue;
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

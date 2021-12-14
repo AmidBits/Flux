@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration
-    : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<AngularAcceleration>, System.IEquatable<AngularAcceleration>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(AngularAccelerationUnit unit = DefaultUnit, string? format = null)

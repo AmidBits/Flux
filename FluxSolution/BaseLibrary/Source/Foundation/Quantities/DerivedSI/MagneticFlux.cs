@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux
-    : System.IComparable<MagneticFlux>, System.IEquatable<MagneticFlux>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<MagneticFlux>, System.IEquatable<MagneticFlux>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(MagneticFluxUnit unit = DefaultUnit, string? format = null)

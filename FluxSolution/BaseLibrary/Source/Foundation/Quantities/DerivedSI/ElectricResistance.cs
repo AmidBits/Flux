@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electric resistance unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_resistance"/>
   public struct ElectricResistance
-    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<ElectricResistance>, System.IEquatable<ElectricResistance>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const ElectricResistanceUnit DefaultUnit = ElectricResistanceUnit.Ohm;
 
@@ -36,10 +36,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(ElectricResistanceUnit unit = DefaultUnit, string? format = null)
@@ -56,7 +53,7 @@ namespace Flux
     /// <param name="voltage"></param>
     /// <param name="current"></param>
     public static ElectricResistance From(Voltage voltage, ElectricCurrent current)
-      => new(voltage.GeneralUnitValue / current.GeneralUnitValue);
+      => new(voltage.Value / current.Value);
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricResistance FromParallelResistors(params double[] resistors)
     {

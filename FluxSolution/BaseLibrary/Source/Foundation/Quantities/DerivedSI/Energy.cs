@@ -21,7 +21,7 @@ namespace Flux
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable<Energy>, System.IEquatable<Energy>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Energy>, System.IEquatable<Energy>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const EnergyUnit DefaultUnit = EnergyUnit.Joule;
 
@@ -35,10 +35,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(EnergyUnit unit = DefaultUnit, string? format = null)

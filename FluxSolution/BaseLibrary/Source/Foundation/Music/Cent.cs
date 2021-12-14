@@ -16,12 +16,12 @@ namespace Flux
     public int Cents
       => m_value;
 
-    public int GeneralUnitValue
+    public int Value
       => m_value;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
     public Frequency ShiftPitch(Frequency frequency)
-      => new(PitchShift(frequency.GeneralUnitValue, m_value));
+      => new(PitchShift(frequency.Value, m_value));
 
     public double ToFrequencyRatio()
       => ConvertCentToFrequencyRatio(m_value);

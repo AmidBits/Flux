@@ -28,7 +28,7 @@ namespace Flux
     public double Radian
       => Angle.ConvertDegreeToRadian(m_degree);
 
-    public double GeneralUnitValue
+    public double Value
       => m_degree;
 
     public Angle ToAngle()
@@ -76,23 +76,23 @@ namespace Flux
     public static Azimuth operator +(Azimuth a, double b)
       => new(Wrap(a.m_degree + b));
     public static Azimuth operator +(Azimuth a, Azimuth b)
-      => a + b.GeneralUnitValue;
+      => a + b.Value;
     public static Azimuth operator /(Azimuth a, double b)
       => new(Wrap(a.m_degree / b));
     public static Azimuth operator /(Azimuth a, Azimuth b)
-      => a / b.GeneralUnitValue;
+      => a / b.Value;
     public static Azimuth operator *(Azimuth a, double b)
       => new(Wrap(a.m_degree * b));
     public static Azimuth operator *(Azimuth a, Azimuth b)
-      => a * b.GeneralUnitValue;
+      => a * b.Value;
     public static Azimuth operator %(Azimuth a, double b)
       => new(Wrap(a.m_degree % b));
     public static Azimuth operator %(Azimuth a, Azimuth b)
-      => a % b.GeneralUnitValue;
+      => a % b.Value;
     public static Azimuth operator -(Azimuth a, double b)
       => new(Wrap(a.m_degree - b));
     public static Azimuth operator -(Azimuth a, Azimuth b)
-      => a - b.GeneralUnitValue;
+      => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

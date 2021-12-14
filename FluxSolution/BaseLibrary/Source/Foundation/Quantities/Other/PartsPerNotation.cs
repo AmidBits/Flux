@@ -7,26 +7,26 @@ namespace Flux
     public static string GetUnitSymbol(this PartsPerNotationUnit unit)
       => unit switch
       {
-        PartsPerNotationUnit.Hundred => PartsPerNotation.PercentSymbol.ToString(),
-        PartsPerNotationUnit.Thousand => PartsPerNotation.PermilleSymbol.ToString(),
-        PartsPerNotationUnit.TenThousand => PartsPerNotation.PermyriadSymbol.ToString(),
-        PartsPerNotationUnit.HundredThousand => @" pcm",
-        PartsPerNotationUnit.Million => @" ppm",
-        PartsPerNotationUnit.Billion => @" ppb",
-        PartsPerNotationUnit.Trillion => @" ppt",
         PartsPerNotationUnit.Quadrillion => @" ppq",
+        PartsPerNotationUnit.Trillion => @" ppt",
+        PartsPerNotationUnit.Billion => @" ppb",
+        PartsPerNotationUnit.Million => @" ppm",
+        PartsPerNotationUnit.HundredThousand => @" pcm",
+        PartsPerNotationUnit.TenThousand => ((char)unit).ToString(),
+        PartsPerNotationUnit.Thousand => ((char)unit).ToString(),
+        PartsPerNotationUnit.Hundred => ((char)unit).ToString(),
         _ => string.Empty,
       };
   }
 
   public enum PartsPerNotationUnit
   {
-    /// <summary>Percent.</summary>
-    Hundred,
-    /// <summary>Permille.</summary>
-    Thousand,
-    /// <summary>Permyriad.</summary>
-    TenThousand,
+    /// <summary>Percent. This is also the actual Unicode char value of the notation unit.</summary>
+    Hundred = '\u0025',
+    /// <summary>Per mille. This is also the actual Unicode char value of the notation unit.</summary>
+    Thousand = '\u2030',
+    /// <summary>Permyriad. This is also the actual Unicode char value of the notation unit.</summary>
+    TenThousand = '\u2031',
     /// <summary>Per cent mille, abbreviated "pcm".</summary>
     HundredThousand,
     /// <summary>Abbreviated "ppm".</summary>
@@ -46,12 +46,8 @@ namespace Flux
   {
     public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Hundred;
 
-    public const char PercentSymbol = '\u0025';
-    public const char PermilleSymbol = '\u2030';
-    public const char PermyriadSymbol = '\u2031';
-
     private readonly double m_parts;
-    private readonly PartsPerNotationUnit m_unit;
+    //private readonly PartsPerNotationUnit m_unit;
 
     /// <summary>Creates a new instance of this type.</summary>
     /// <param name="parts">The parts in parts per notation.</param>
@@ -71,10 +67,10 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-      m_unit = unit;
+      //m_unit = unit;
     }
 
-    public double GeneralUnitValue
+    public double Value
       => m_parts;
 
     public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
@@ -98,7 +94,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator double(PartsPerNotation v)
-      => v.GeneralUnitValue;
+      => v.Value;
 
     public static bool operator <(PartsPerNotation a, PartsPerNotation b)
       => a.CompareTo(b) < 0;

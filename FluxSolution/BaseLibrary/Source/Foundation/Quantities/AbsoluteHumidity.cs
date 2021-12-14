@@ -33,7 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null)
@@ -47,9 +47,9 @@ namespace Flux
 
     #region Static methods
     public static AbsoluteHumidity From(double grams, Volume volume)
-      => new(grams / volume.GeneralUnitValue);
+      => new(grams / volume.Value);
     public static AbsoluteHumidity From(Mass mass, Volume volume)
-      => From(mass.GeneralUnitValue * 1000, volume);
+      => From(mass.Value * 1000, volume);
     #endregion Static methods
 
     #region Overloaded operators

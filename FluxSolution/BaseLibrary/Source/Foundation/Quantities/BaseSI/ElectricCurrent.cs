@@ -21,7 +21,7 @@ namespace Flux
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValueGeneralizedUnit<double>, IValueBaseUnitSI<double>
+    : System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -35,10 +35,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double BaseUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
@@ -56,12 +53,12 @@ namespace Flux
     /// <param name="power"></param>
     /// <param name="voltage"></param>
     public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.GeneralUnitValue / voltage.GeneralUnitValue);
+      => new(power.Value / voltage.Value);
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
-      => new(voltage.GeneralUnitValue / resistance.GeneralUnitValue);
+      => new(voltage.Value / resistance.Value);
     #endregion Static methods
 
     #region Overloaded operators

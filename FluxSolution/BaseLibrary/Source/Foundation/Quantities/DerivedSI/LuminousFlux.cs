@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct LuminousFlux
-    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<LuminousFlux>, System.IEquatable<LuminousFlux>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(LuminousFluxUnit unit = DefaultUnit, string? format = null)

@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Illuminance>, System.IEquatable<Illuminance>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null)

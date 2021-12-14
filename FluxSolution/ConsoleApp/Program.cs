@@ -14,6 +14,28 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
+      var u = new Flux.SimpleFraction(355, 113);
+      var v = new Flux.SimpleFraction(3, 20);
+      var x = new Flux.SimpleFraction(20, 3);
+      var y = new Flux.SimpleFraction(2);
+      var z = x * y;
+      var w = z % 4;
+
+      System.Console.WriteLine($"{u.ToFractionString()}, {v.ToFractionString()}, {w.ToFractionString()}, {x.ToFractionString()}, {y.ToFractionString()}, {z.ToFractionString()}");
+
+      var mp = new Flux.MetricPrefix(1, MetricPrefixUnit.Kilo);
+      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.Kilo));
+      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.None));
+      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.Milli));
+
+      var ppn = new Flux.PartsPerNotation(3, PartsPerNotationUnit.Hundred);
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Hundred));
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Thousand));
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.TenThousand));
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.HundredThousand));
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Million));
+      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Billion));
+
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
@@ -23,8 +45,8 @@ namespace ConsoleApp
 
       var type = typeof(Flux.IValueGeneralizedUnit<>);
       //      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes().OrderBy(t => t.FullName)));
-      Write(typeof(Flux.IValueBaseUnitSI<>));
-      Write(typeof(Flux.IValueDerivedUnitSI<>));
+      Write(typeof(Flux.IValueSiBaseUnit<>));
+      Write(typeof(Flux.IValueSiDerivedUnit<>));
       Write(typeof(Flux.IValueGeneralizedUnit<>));
       int a = 1;
 

@@ -29,24 +29,24 @@ namespace Flux.Mechanics
     public Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
-      => m_droppedHeight.GeneralUnitValue;
+      => m_droppedHeight.Value;
     public double MaxRange
-      => m_initialVelocity.GeneralUnitValue * MaxTime;
+      => m_initialVelocity.Value * MaxTime;
     public double MaxTime
-      => System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.GeneralUnitValue);
+      => System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration.Value);
 
     public double GetHeight(double time)
-      => m_gravitationalAcceleration.GeneralUnitValue * System.Math.Pow(time, 2) / 2;
+      => m_gravitationalAcceleration.Value * System.Math.Pow(time, 2) / 2;
     public double GetVelocity(double time)
-      => System.Math.Sqrt(System.Math.Pow(m_initialVelocity.GeneralUnitValue, 2) + System.Math.Pow(m_gravitationalAcceleration.GeneralUnitValue, 2) * time * time);
+      => System.Math.Sqrt(System.Math.Pow(m_initialVelocity.Value, 2) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time);
     public double GetVelocityX(double time)
-      => m_initialVelocity.GeneralUnitValue;
+      => m_initialVelocity.Value;
     public double GetVelocityY(double time)
-      => -m_gravitationalAcceleration.GeneralUnitValue * time;
+      => -m_gravitationalAcceleration.Value * time;
     public double GetX(double time)
-      => m_initialVelocity.GeneralUnitValue * time;
+      => m_initialVelocity.Value * time;
     public double GetY(double time)
-      => GetHeight(time) - m_gravitationalAcceleration.GeneralUnitValue * time * time / 2;
+      => GetHeight(time) - m_gravitationalAcceleration.Value * time * time / 2;
 
     #region Overloaded operators
     public static bool operator ==(DroppedTrajectory2D h1, DroppedTrajectory2D h2)
@@ -65,7 +65,7 @@ namespace Flux.Mechanics
     public override bool Equals(object? obj)
       => obj is DroppedTrajectory2D o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.GeneralUnitValue, m_initialAngle.GeneralUnitValue, m_initialVelocity.GeneralUnitValue, m_droppedHeight.GeneralUnitValue);
+      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value, m_droppedHeight.Value);
     public override string ToString()
       => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
     #endregion Object overrides

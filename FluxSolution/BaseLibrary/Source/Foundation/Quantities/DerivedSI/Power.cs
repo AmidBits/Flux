@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IEquatable<Power>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<Power>, System.IEquatable<Power>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null)
@@ -53,7 +50,7 @@ namespace Flux
     /// <param name="current"></param>
     /// <param name="voltage"></param>
     public static Power From(ElectricCurrent current, Voltage voltage)
-      => new(current.GeneralUnitValue * voltage.GeneralUnitValue);
+      => new(current.Value * voltage.Value);
     #endregion Static methods
 
     #region Overloaded operators

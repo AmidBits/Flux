@@ -13,7 +13,7 @@ namespace Flux
     public Probability(double ratio)
       => m_probability = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
-    public double GeneralUnitValue
+    public double Value
       => m_probability;
 
     #region Overloaded operators

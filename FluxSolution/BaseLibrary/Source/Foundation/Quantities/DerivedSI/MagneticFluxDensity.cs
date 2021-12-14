@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity
-    : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValueGeneralizedUnit<double>, IValueDerivedUnitSI<double>
+    : System.IComparable<MagneticFluxDensity>, System.IEquatable<MagneticFluxDensity>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -33,10 +33,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double DerivedUnitValue
-      => m_value;
-
-    public double GeneralUnitValue
+    public double Value
       => m_value;
 
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null)
