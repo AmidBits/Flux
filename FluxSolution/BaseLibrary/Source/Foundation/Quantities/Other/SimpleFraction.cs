@@ -63,6 +63,8 @@ namespace Flux
     public System.Numerics.BigInteger Denominator
       => m_denominator;
 
+    public double Quotient
+      => (double)m_numerator / (double)m_denominator;
     public System.Numerics.BigInteger Remainder
       => Numerator % Denominator;
     public System.Numerics.BigInteger Whole
@@ -72,14 +74,6 @@ namespace Flux
       => Numerator >= Denominator;
     public bool IsProper
       => Numerator < Denominator;
-
-    /// <summary>Tries to get a whole number, a numerator and a denominator. If no whole number exists, the function returns false, otherwise true. A numerator and denominator is always present.</summary>
-    /// <param name="whole"></param>
-    /// <param name="numerator"></param>
-    /// <param name="denominator"></param>
-    /// <returns></returns>
-    public bool TryGetMixedFraction(out System.Numerics.BigInteger whole, out System.Numerics.BigInteger numerator, out System.Numerics.BigInteger denominator)
-      => (whole = System.Numerics.BigInteger.DivRem(Numerator, denominator = Denominator, out numerator)) > 0;
 
     /// <summary>Is this a unit fraction, e.g. a probability.</summary>
     public bool IsUnitFraction
@@ -93,12 +87,36 @@ namespace Flux
       ? -1
       : 1;
 
-    /// <summary>Returns the decimal representation (as a double, floating point value) of the fraction.</summary>
+    /// <summary>Returns the decimal representation (as a double) of the fraction after performing division.</summary>
     public double Value
-      => (double)m_numerator / (double)m_denominator;
+      => Quotient;
 
+    /// <summary>Yields a string with the fraction in fraction notation.</summary>
     public string ToFractionString()
-      => IsImproper && TryGetMixedFraction(out var w, out var n, out var d) && w > 0 ? (n > 0 ? $"{w} {n}{FractionSlash}{d}" : $"{w}") : $"{m_numerator}{FractionSlash}{m_denominator}";
+    {
+      var sb = new System.Text.StringBuilder();
+
+      if (IsImproper)
+      {
+        sb.Append(System.Numerics.BigInteger.DivRem(Numerator, Denominator, out var remainder));
+
+        if (remainder > 0)
+        {
+          sb.Append(' ');
+          sb.Append(remainder);
+          sb.Append(FractionSlash);
+          sb.Append(m_denominator);
+        }
+      }
+      else
+      {
+        sb.Append(m_numerator);
+        sb.Append(FractionSlash);
+        sb.Append(m_denominator);
+      }
+
+      return sb.ToString();
+    }
 
     #region Static methods
     /// <summary>Returns the absolute value a value.</summary>
