@@ -63,19 +63,18 @@ namespace Flux
     public System.Numerics.BigInteger Denominator
       => m_denominator;
 
-    public double Quotient
-      => (double)m_numerator / (double)m_denominator;
-    public System.Numerics.BigInteger Remainder
-      => Numerator % Denominator;
-    public System.Numerics.BigInteger Whole
-      => Numerator / Denominator;
+    public bool HasInvisibleDenominator
+      => m_denominator == 1;
+    public bool HasReciprocal
+      => m_numerator != 0;
 
+    /// <summary>A fraction is improper if its absolute value is greater than or equal to 1.</summary>
     public bool IsImproper
       => Numerator >= Denominator;
+    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
     public bool IsProper
       => Numerator < Denominator;
-
-    /// <summary>Is this a unit fraction, e.g. a probability.</summary>
+    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
     public bool IsUnitFraction
       => m_numerator == 1;
 
@@ -89,16 +88,18 @@ namespace Flux
 
     /// <summary>Returns the decimal representation (as a double) of the fraction after performing division.</summary>
     public double Value
-      => Quotient;
+      => ToQuotient();
 
+    public System.Numerics.BigInteger ToIntegerQuotient(out System.Numerics.BigInteger remainder)
+      => System.Numerics.BigInteger.DivRem(m_numerator, m_denominator, out remainder);
     /// <summary>Yields a string with the fraction in fraction notation.</summary>
-    public string ToFractionString()
+    public string ToImproperString()
     {
       var sb = new System.Text.StringBuilder();
 
       if (IsImproper)
       {
-        sb.Append(System.Numerics.BigInteger.DivRem(Numerator, Denominator, out var remainder));
+        sb.Append(ToIntegerQuotient(out var remainder));
 
         if (remainder > 0)
         {
@@ -108,15 +109,16 @@ namespace Flux
           sb.Append(m_denominator);
         }
       }
-      else
-      {
-        sb.Append(m_numerator);
-        sb.Append(FractionSlash);
-        sb.Append(m_denominator);
-      }
+      else return ToProperString();
 
       return sb.ToString();
     }
+    public string ToProperString()
+      => $"{m_numerator}{FractionSlash}{m_denominator}";
+    public double ToQuotient()
+      => (double)m_numerator / (double)m_denominator;
+    public SimpleFraction ToReciprocal()
+      => new SimpleFraction(m_denominator, m_numerator);
 
     #region Static methods
     /// <summary>Returns the absolute value a value.</summary>
@@ -188,8 +190,8 @@ namespace Flux
     public static bool operator !=(SimpleFraction a, SimpleFraction b)
       => !a.Equals(b);
 
-    public static SimpleFraction operator -(SimpleFraction v)
-      => new(-v.m_numerator, -v.m_denominator, false);
+    public static SimpleFraction operator -(SimpleFraction f)
+      => new(-f.m_numerator, -f.m_denominator, false);
     public static SimpleFraction operator +(SimpleFraction a, SimpleFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -248,7 +250,27 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
     public override string ToString()
-      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator}, Fraction = {ToFractionString()}, Decimal = {Value}) }}";
+    {
+      var sb = new System.Text.StringBuilder();
+
+      sb.Append(GetType().Name);
+      sb.Append(" { ");
+
+      sb.Append(ToProperString());
+
+      var mixedString = ToImproperString();
+      if (!sb.EndsWith(mixedString))
+      {
+        sb.Append(" = ");
+        sb.Append(mixedString);
+      }
+
+      sb.Append(" = ");
+      sb.Append(ToQuotient());
+      sb.Append(" } ");
+
+      return sb.ToString();
+    }
     #endregion Object overrides
   }
 }

@@ -14,14 +14,13 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var u = new Flux.SimpleFraction(355, 113);
-      var v = new Flux.SimpleFraction(3, 20);
-      var x = new Flux.SimpleFraction(20, 3);
-      var y = new Flux.SimpleFraction(2);
-      var z = x * y;
-      var w = z % 4;
-
-      System.Console.WriteLine($"{u.ToFractionString()}, {v.ToFractionString()}, {w.ToFractionString()}, {x.ToFractionString()}, {y.ToFractionString()}, {z.ToFractionString()}");
+      var x = new Flux.SimpleFraction(10, 3, false);
+      System.Console.WriteLine(x);
+      var y = new Flux.SimpleFraction(5, 1, false);
+      System.Console.WriteLine(y);
+      var z = x / y;
+      System.Console.WriteLine(z);
+      return;
 
       var mp = new Flux.MetricPrefix(1, MetricPrefixUnit.Kilo);
       System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.Kilo));
