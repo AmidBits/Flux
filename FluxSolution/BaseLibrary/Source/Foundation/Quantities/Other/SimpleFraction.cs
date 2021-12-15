@@ -117,8 +117,6 @@ namespace Flux
       => $"{m_numerator}{FractionSlash}{m_denominator}";
     public double ToQuotient()
       => (double)m_numerator / (double)m_denominator;
-    public SimpleFraction ToReciprocal()
-      => new SimpleFraction(m_denominator, m_numerator);
 
     #region Static methods
     /// <summary>Returns the absolute value a value.</summary>
@@ -129,7 +127,7 @@ namespace Flux
       => (sign.Sign == 0 || value == Zero)
       ? Zero
       : (value.m_numerator.Sign < 0 && sign.Sign > 0) || (value.m_numerator.Sign > 0 && sign.Sign < 0)
-      ? new SimpleFraction(-value.m_numerator, value.m_denominator, true)
+      ? new(-value.m_numerator, value.m_denominator, true)
       : value;
     /// <summary>Returns the greatest common divisor (GCD) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: (gcd(a,c) * gcd(b,d)) / (|b*d|), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
@@ -139,7 +137,7 @@ namespace Flux
       ? Abs(b)
       : (b == Zero)
       ? Abs(a)
-      : new SimpleFraction(
+      : new(
           System.Numerics.BigInteger.GreatestCommonDivisor(a.m_numerator, b.m_numerator),
           System.Numerics.BigInteger.Abs(a.m_denominator * b.m_denominator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.m_denominator, b.m_denominator),
           true
@@ -157,7 +155,7 @@ namespace Flux
     public static SimpleFraction LeastCommonMultiple(SimpleFraction a, SimpleFraction b)
       => (a == Zero || b == Zero)
       ? Zero
-      : new SimpleFraction(
+      : new(
           System.Numerics.BigInteger.Abs(a.m_numerator * b.m_numerator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.m_numerator, b.m_numerator),
           System.Numerics.BigInteger.GreatestCommonDivisor(a.m_denominator, b.m_denominator),
           true
@@ -169,7 +167,7 @@ namespace Flux
     public static SimpleFraction Reciprocal(SimpleFraction value)
       => value == Zero
       ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
-      : new SimpleFraction(value.m_denominator, value.m_numerator, true);
+      : new(value.m_denominator, value.m_numerator, true);
     #endregion Static methods
 
     #region Overloaded operators
