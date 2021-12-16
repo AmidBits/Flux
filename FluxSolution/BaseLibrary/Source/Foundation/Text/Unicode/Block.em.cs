@@ -2,26 +2,32 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Returns the first UTF32 code point in the specified Unicode block.</summary>
-    public static int GetUtf32First(this Text.UnicodeBlock source)
-      => (int)((long)source >> 32 & 0x7FFFFFFF);
-    /// <summary>Returns the last UTF32 code point in the specified Unicode block.</summary>
-    public static int GetUtf32Last(this Text.UnicodeBlock source)
-      => (int)((long)source & 0x7FFFFFFF);
-
-    /// <summary>One or more (even many) code points may be unassigned.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetCodePoints(this Text.UnicodeBlock source)
+    /// <summary>Creates a new sequence of all runes in the specified Unicode block.</summary>
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetAllRunes(this Text.UnicodeBlock source)
     {
-      for (int utf32Current = GetUtf32First(source), utf32Last = GetUtf32Last(source); utf32Current <= utf32Last; utf32Current++)
-        yield return (System.Text.Rune)utf32Current;
+      for (int first = GetMinRune(source).Value, last = GetMaxRune(source).Value; first <= last; first++)
+        yield return (System.Text.Rune)first;
     }
+    /// <summary>Returns the last rune (code point) in the specified Unicode block.</summary>
+    public static System.Text.Rune GetMaxRune(this Text.UnicodeBlock source)
+      => (System.Text.Rune)GetMaxValue(source);
+    /// <summary>Returns the first rune (code point) in the specified Unicode block.</summary>
+    public static System.Text.Rune GetMinRune(this Text.UnicodeBlock source)
+      => (System.Text.Rune)GetMinValue(source);
+
+    /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
+    public static int GetMaxValue(this Text.UnicodeBlock source)
+      => (int)source & 0x7FFFFFFF;
+    /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
+    public static int GetMinValue(this Text.UnicodeBlock source)
+      => (int)((long)source >> 32 & 0x7FFFFFFF);
 
     public static string ToConsoleTable(this Text.UnicodeBlock source, int skipFirst, int skipLast, bool includeTitle = true)
     {
       var sb = new System.Text.StringBuilder();
 
-      var actualFirst = GetUtf32First(source) + skipFirst;
-      var actualLast = GetUtf32Last(source) - skipLast;
+      var actualFirst = GetMinRune(source).Value + skipFirst;
+      var actualLast = GetMaxRune(source).Value - skipLast;
 
       var roundedFirst = Maths.RoundToMultipleOf(actualFirst, 0x10, FullRoundingBehavior.Floor);
       var roundedLast = Maths.RoundToMultipleOf(actualLast, 0x10, FullRoundingBehavior.Ceiling);

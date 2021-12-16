@@ -14,12 +14,27 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      var x = new Flux.SimpleFraction(10, 3, false);
-      System.Console.WriteLine(x);
+      foreach (Flux.Net.IP.MulticastV4Block range in typeof(Flux.Net.IP.MulticastV4Block).GetEnumValues())
+      {
+        var minBytes = range.GetMinIPAddress().GetAddressBytes();
+        var minValue = range.GetMinValue();
+        var maxBytes = range.GetMaxIPAddress().GetAddressBytes();
+        var maxValue = range.GetMaxValue();
+        System.Console.WriteLine($"{range.ToString().PadLeft(30, ' ')} = {string.Join('|', range.GetMinIPAddress().GetRange(range.GetMaxIPAddress()).RandomElement())}");
+      }
+      return;
+
+      var x = new Flux.SimpleFraction(27, 1, false);
+      var xn = 4;
+      System.Console.WriteLine($"{x}, nthrt(x, {xn}) = {Flux.SimpleFraction.NthRoot(x, xn)}");
+
       var y = new Flux.SimpleFraction(5, 1, false);
-      System.Console.WriteLine(y);
+      var yn = 4;
+      System.Console.WriteLine($"{y}, nthrt(y, {yn}) = {Flux.SimpleFraction.NthRoot(y, yn)}");
+
       var z = x / y;
-      System.Console.WriteLine(z);
+      var zn = 4;
+      System.Console.WriteLine($"{z}, nthrt(y, {zn}) = {Flux.SimpleFraction.NthRoot(z, zn)}");
       return;
 
       var mp = new Flux.MetricPrefix(1, MetricPrefixUnit.Kilo);

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -31,13 +29,6 @@ namespace Flux
         broadcastAddress[i] = (byte)(sourceBytes[i] | (subnetMaskBytes[i] ^ 255));
       return new System.Net.IPAddress(broadcastAddress);
     }
-
-    public static System.Numerics.BigInteger GetMaxValueIPv4()
-      => System.Numerics.BigInteger.Parse(@"4294967296", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
-    public static System.Numerics.BigInteger GetMaxValueIPv6()
-      => System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
-    public static System.Numerics.BigInteger GetMinValue()
-      => System.Numerics.BigInteger.Zero;
 
     /// <summary></summary>
     /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
@@ -80,20 +71,6 @@ namespace Flux
     public static bool IsBetweenIPv4(this System.Net.IPAddress source, System.Net.IPAddress min, System.Net.IPAddress max)
       => source.ToBigInteger() is var bi && bi >= min.ToBigInteger() && bi <= max.ToBigInteger();
 
-    /// <summary>Determintes whether the address is a multicast address. Works on both IPv4 and IPv6.</summary>
-    public static bool IsMulticast(this System.Net.IPAddress source)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      if (source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-        return (source.GetAddressBytes()[0] & 0xF0) == 0xE0;
-
-      if (source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
-        return source.GetAddressBytes()[0] == 0xFF;
-
-      return false;
-    }
-
     /// <summary>Determines whether two addresses are in the same subnet.</summary>
     /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static bool InSameSubnet(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
@@ -114,7 +91,7 @@ namespace Flux
     /// <summary>Convert the BigInteger to an IP address.</summary>
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {
-      if (source < 0 || source > GetMaxValueIPv6()) throw new System.ArgumentOutOfRangeException(nameof(source));
+      if (source < 0 || source > Flux.Net.IP.MaxValueIPv6) throw new System.ArgumentOutOfRangeException(nameof(source));
 
       var byteArray = source.ToByteArrayEx(out var _);
       if (byteArray.Length < 4)

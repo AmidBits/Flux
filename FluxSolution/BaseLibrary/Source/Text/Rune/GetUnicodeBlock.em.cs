@@ -6,7 +6,7 @@ namespace Flux
     public static Text.UnicodeBlock GetUnicodeBlock(this System.Text.Rune source)
     {
       foreach (var block in System.Enum.GetValues<Text.UnicodeBlock>())
-        if (source.Value >= GetUtf32First(block) && source.Value <= GetUtf32Last(block))
+        if (source.Value >= GetMinRune(block).Value && source.Value <= GetMaxRune(block).Value)
           return block;
 
       throw new System.ArgumentOutOfRangeException(nameof(source));

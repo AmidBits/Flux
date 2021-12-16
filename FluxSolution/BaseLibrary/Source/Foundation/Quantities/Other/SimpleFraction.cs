@@ -7,6 +7,14 @@ namespace Flux
   {
     public const char FractionSlash = '\u2044';
 
+    public static readonly SimpleFraction EpsilonLikeSingle = new SimpleFraction(1, 1000000);
+    public static readonly SimpleFraction EpsilonLikeDouble = new SimpleFraction(1, 1000000000000000);
+
+    /// <summary>Represents a BigFraction value of the Golden Ratio.</summary>
+    public static readonly SimpleFraction GoldenRatio = new(7540113804746346429L, 4660046610375530309L, true);
+    /// <summary>Represents a BigFraction value of PI.</summary>
+    public static readonly SimpleFraction PI = new(2646693125139304345L, 842468587426513207L, true);
+
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static SimpleFraction MinusOne
       => new(-1, 1, false);
@@ -58,25 +66,19 @@ namespace Flux
       : this(value, 1, false)
     { }
 
+    public bool IsImproper
+      => m_numerator >= m_denominator;
+    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
+    public bool IsProper
+      => m_numerator < m_denominator;
+    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
+    public bool IsUnitFraction
+      => m_numerator == 1;
+
     public System.Numerics.BigInteger Numerator
       => m_numerator;
     public System.Numerics.BigInteger Denominator
       => m_denominator;
-
-    public bool HasInvisibleDenominator
-      => m_denominator == 1;
-    public bool HasReciprocal
-      => m_numerator != 0;
-
-    /// <summary>A fraction is improper if its absolute value is greater than or equal to 1.</summary>
-    public bool IsImproper
-      => Numerator >= Denominator;
-    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
-    public bool IsProper
-      => Numerator < Denominator;
-    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
-    public bool IsUnitFraction
-      => m_numerator == 1;
 
     /// <summary>Indicates the sign of the number, i.e. 1, 0 or -1.</summary>
     public int Sign
@@ -92,7 +94,7 @@ namespace Flux
 
     public System.Numerics.BigInteger ToIntegerQuotient(out System.Numerics.BigInteger remainder)
       => System.Numerics.BigInteger.DivRem(m_numerator, m_denominator, out remainder);
-    /// <summary>Yields a string with the fraction in fraction notation.</summary>
+    /// <summary>Yields a string with the fraction in improper (if applicable) fractional notation.</summary>
     public string ToImproperString()
     {
       var sb = new System.Text.StringBuilder();
@@ -113,6 +115,7 @@ namespace Flux
 
       return sb.ToString();
     }
+    /// <summary>Yields a string with the fraction in proper fractional notation.</summary>
     public string ToProperString()
       => $"{m_numerator}{FractionSlash}{m_denominator}";
     public double ToQuotient()
@@ -143,10 +146,6 @@ namespace Flux
           true
         );
     /// <summary>Returns whether the specified numerator and denominator (fraction) is reducible.</summary>
-    /// <param name="numerator"></param>
-    /// <param name="denominator"></param>
-    /// <param name="gcd"></param>
-    /// <returns></returns>
     public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger gcd)
       => (gcd = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator)) > 1;
     /// <summary>Returns the least common multiple (LCM) of two values.</summary>
@@ -160,14 +159,155 @@ namespace Flux
           System.Numerics.BigInteger.GreatestCommonDivisor(a.m_denominator, b.m_denominator),
           true
         );
+    /// <summary>Returns the greater of two values.</summary>
+    public static SimpleFraction Max(SimpleFraction a, SimpleFraction b)
+      => a.CompareTo(b) >= 0 ? a : b;
     /// <summary>Returns the mediant of two values.</summary>
     public static SimpleFraction Mediant(SimpleFraction a, SimpleFraction b)
       => new(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
+    /// <summary>Returns the lesser of two values.</summary>
+    public static SimpleFraction Min(SimpleFraction a, SimpleFraction b)
+      => a.CompareTo(b) <= 0 ? a : b;
+    /// <summary>Returns the nth root of the value.</summary>
+    public static SimpleFraction NthRoot(SimpleFraction value, int n)
+      => NthRoot(value, n, EpsilonLikeDouble);
+    /// <summary>Returns the nth root of the value.</summary>
+    public static SimpleFraction NthRoot(SimpleFraction value, int n, SimpleFraction maxError)
+    {
+      if (n < 0)
+        return NthRoot(Reciprocal(value), -n, maxError);
+
+      if (n == 0) throw new System.DivideByZeroException("Zeroth root is not defined.");
+      if (n == int.MinValue) throw new System.OverflowException("Value cannot be negated.");
+
+
+      if (value.Sign < 0)
+      {
+        if ((n & 1) == 0) throw new System.ArithmeticException("Cannot compute even root of a negative number.");
+
+        return -NthRoot(-value, n, maxError);
+      }
+
+      if (maxError.Sign <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxError), "Epsilon must be positive");
+
+      if (value == Zero)
+        return Zero;
+      if (n == 1)
+        return value;
+      if (value == One)
+        return value;
+
+      // First, get the closest integer to the root of the numerator and the denominator as an initial guess.
+
+      var guessNumerator = IntegerNthRoot(value.Numerator, n);
+      var guessDenominator = IntegerNthRoot(value.Denominator, n);
+
+      var initialGuess = new SimpleFraction(guessNumerator.value, guessDenominator.value);
+
+      // If we got exact roots for numerator and denominator, then we know the guess is exact.
+
+      if (guessNumerator.isExact && guessDenominator.isExact)
+        return initialGuess;
+
+      // Otherwise we use the implementation of nth-root algorithm: https://en.wikipedia.org/wiki/Nth_root_algorithm
+
+      var x = initialGuess;
+
+      while (true)
+      {
+        var diff = (value / Pow(x, n - 1) - x) / n;
+
+        x += diff;
+
+        if (Abs(diff).CompareTo(maxError) < 0)
+          break;
+      }
+
+      return x;
+
+      static (System.Numerics.BigInteger value, bool isExact) IntegerNthRoot(System.Numerics.BigInteger a, int n)
+      {
+        if (a.IsZero)
+          return (System.Numerics.BigInteger.Zero, true);
+
+        if (n == 1 || a.IsOne)
+          return (a, true);
+
+        // Solve for x:  x^n = a
+        // Start by computing a lower/upper bound on x.
+
+        var lowerX = System.Numerics.BigInteger.One;
+        var lowerPow = System.Numerics.BigInteger.One;
+
+        var upperX = (System.Numerics.BigInteger)2;
+        var upperPow = System.Numerics.BigInteger.Pow(upperX, n);
+
+        while (upperPow.CompareTo(a) < 0)
+        {
+          lowerX = upperX;
+          lowerPow = upperPow;
+          upperX = lowerX * 2;
+          upperPow = System.Numerics.BigInteger.Pow(upperX, n);
+        }
+
+        if (upperPow.Equals(a))
+          return (upperX, true); // If it's the exact answer, return it.
+
+        // Now we know lowerX < x < upperX.
+        // Next do binary search between lowerX and upperX.
+
+        while (true)
+        {
+          var testX = (lowerX + upperX) / 2;
+
+          if (testX.Equals(lowerX) || testX.Equals(upperX))
+            break;
+
+          var testPow = System.Numerics.BigInteger.Pow(testX, n);
+
+          if (testPow.Equals(a))
+            return (testX, true); // We found an exact answer.
+          else if (testPow.CompareTo(a) > 0) // Still too high so set upper to the test value.
+          {
+            upperX = testX;
+            upperPow = testPow;
+          }
+          else // Still too low.
+          {
+            lowerX = testX;
+            lowerPow = testPow;
+          }
+        }
+
+        //we didn't get an exact answer, but we know the two integers closest to the exact value.
+        //now we just need to figure out which is closer and return that
+
+        return (a - lowerPow).CompareTo(upperPow - a) < 0 ? (lowerX, false) : (upperX, false);
+      }
+    }
+    /// <summary>Returns this^exponent. Note: 0^0 will return 1/1.</summary>
+    public static SimpleFraction Pow(SimpleFraction value, int exponent)
+    {
+      if (exponent < 0)
+      {
+        if (value == Zero) throw new System.DivideByZeroException(@"Raising zero to negative exponent.");
+        else if (exponent == int.MinValue) throw new System.OverflowException(@"Exponent cannot be negated."); // edge case: because we negate the exponent if it's negative, we would get into an infinite loop because -MIN_VALUE == MIN_VALUE
+        else return new(System.Numerics.BigInteger.Pow(value.Denominator, -exponent), System.Numerics.BigInteger.Pow(value.Numerator, -exponent), true);
+      }
+
+      if (exponent == 0) return One;
+      else if (value == Zero) return Zero;
+      else if (exponent == 1) return value;
+      else return new(System.Numerics.BigInteger.Pow(value.Numerator, exponent), System.Numerics.BigInteger.Pow(value.Denominator, exponent), true);
+    }
     /// <summary>Returns the reciprocal of a value.</summary>
     public static SimpleFraction Reciprocal(SimpleFraction value)
       => value == Zero
       ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
       : new(value.m_denominator, value.m_numerator, true);
+    /// <summary>Compute the square root of the specified value.</summary>
+    public static SimpleFraction Sqrt(SimpleFraction value)
+      => NthRoot(value, 2);
     #endregion Static methods
 
     #region Overloaded operators
@@ -189,7 +329,7 @@ namespace Flux
       => !a.Equals(b);
 
     public static SimpleFraction operator -(SimpleFraction f)
-      => new(-f.m_numerator, -f.m_denominator, false);
+      => new(f.m_numerator, -f.m_denominator, false);
     public static SimpleFraction operator +(SimpleFraction a, SimpleFraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);

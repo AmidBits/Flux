@@ -17,6 +17,7 @@ namespace Flux.Net
   public sealed class UdpCast
     : Disposable
   {
+    private static System.Threading.Mutex mutex = new();
     private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
     private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
 
@@ -56,7 +57,7 @@ namespace Flux.Net
     {
       System.Net.EndPoint remoteEP = (System.Net.EndPoint)new System.Net.IPEndPoint(System.Net.IPAddress.None, RemoteAddress.Port);
 
-      while (true)
+      while (mutex.WaitOne(100))
       {
         if (m_thread is null) return;
         if (Socket is null) return;
@@ -67,11 +68,10 @@ namespace Flux.Net
 
           Socket.ReceiveFrom(buffer, ref remoteEP);
 
-          if (buffer.Length == 1 && buffer[0] == 0)
-            return;
-
           DataReceived?.Invoke(this, new UdpCastDataReceivedEventArgs(buffer, remoteEP));
         }
+
+        mutex.ReleaseMutex();
       }
     }
 
@@ -98,19 +98,13 @@ namespace Flux.Net
         uc.DataReceived += Uc_DataReceived;
 
         while (System.Console.ReadLine() is string line && line.Length > 0)
-        {
           uc.SendData(System.Text.UnicodeEncoding.UTF32.GetBytes(line));
-        }
 
         uc.DataReceived -= Uc_DataReceived;
-
-        uc.SendData(new byte[] { 0 });
       }
 
       static void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
-      {
-        System.Console.WriteLine(System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes));
-      }
+        => System.Console.WriteLine(System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes));
     }
   }
 }
