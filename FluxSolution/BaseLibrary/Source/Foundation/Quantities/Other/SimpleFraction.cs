@@ -169,10 +169,7 @@ namespace Flux
     public static SimpleFraction Min(SimpleFraction a, SimpleFraction b)
       => a.CompareTo(b) <= 0 ? a : b;
     /// <summary>Returns the nth root of the value.</summary>
-    public static SimpleFraction NthRoot(SimpleFraction value, int n)
-      => NthRoot(value, n, EpsilonLikeDouble);
-    /// <summary>Returns the nth root of the value.</summary>
-    public static SimpleFraction NthRoot(SimpleFraction value, int n, SimpleFraction maxError)
+    private static SimpleFraction NthRoot(SimpleFraction value, int n, SimpleFraction maxError)
     {
       if (n < 0)
         return NthRoot(Reciprocal(value), -n, maxError);
@@ -307,7 +304,7 @@ namespace Flux
       : new(value.m_denominator, value.m_numerator, true);
     /// <summary>Compute the square root of the specified value.</summary>
     public static SimpleFraction Sqrt(SimpleFraction value)
-      => NthRoot(value, 2);
+      => NthRoot(value, 2, EpsilonLikeDouble);
     #endregion Static methods
 
     #region Overloaded operators

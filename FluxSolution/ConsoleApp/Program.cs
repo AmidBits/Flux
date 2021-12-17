@@ -14,48 +14,8 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] args)
     {
-      foreach (Flux.Net.IP.MulticastV4Block range in typeof(Flux.Net.IP.MulticastV4Block).GetEnumValues())
-      {
-        var minBytes = range.GetMinIPAddress().GetAddressBytes();
-        var minValue = range.GetMinValue();
-        var maxBytes = range.GetMaxIPAddress().GetAddressBytes();
-        var maxValue = range.GetMaxValue();
-        System.Console.WriteLine($"{range.ToString().PadLeft(30, ' ')} = {string.Join('|', range.GetMinIPAddress().GetRange(range.GetMaxIPAddress()).RandomElement())}");
-      }
-      return;
-
-      var x = new Flux.SimpleFraction(27, 1, false);
-      var xn = 4;
-      System.Console.WriteLine($"{x}, nthrt(x, {xn}) = {Flux.SimpleFraction.NthRoot(x, xn)}");
-
-      var y = new Flux.SimpleFraction(5, 1, false);
-      var yn = 4;
-      System.Console.WriteLine($"{y}, nthrt(y, {yn}) = {Flux.SimpleFraction.NthRoot(y, yn)}");
-
-      var z = x / y;
-      var zn = 4;
-      System.Console.WriteLine($"{z}, nthrt(y, {zn}) = {Flux.SimpleFraction.NthRoot(z, zn)}");
-      return;
-
-      var mp = new Flux.MetricPrefix(1, MetricPrefixUnit.Kilo);
-      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.Kilo));
-      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.None));
-      System.Console.WriteLine(mp.ToUnitString(MetricPrefixUnit.Milli));
-
-      var ppn = new Flux.PartsPerNotation(3, PartsPerNotationUnit.Hundred);
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Hundred));
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Thousand));
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.TenThousand));
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.HundredThousand));
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Million));
-      System.Console.WriteLine(ppn.ToUnitString(PartsPerNotationUnit.Billion));
-
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
-
-      var value = System.Numerics.BigInteger.Parse("-17000000000000000000000000");
-      System.Console.WriteLine($"{value}  = \"{Flux.Convert.ToNamedGrouping(value)}\"");
-      System.Console.WriteLine();
 
       var type = typeof(Flux.IValueGeneralizedUnit<>);
       //      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes().OrderBy(t => t.FullName)));

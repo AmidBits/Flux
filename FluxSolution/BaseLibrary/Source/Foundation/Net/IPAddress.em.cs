@@ -8,31 +8,33 @@ namespace Flux
 
     /// <summary>Returns the maximum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMaxIPAddress(this Net.IP.MulticastV4Block source)
-      => new System.Net.IPAddress(Flux.BitOps.ReverseBytes(GetMaxValue(source)) & 0xFFFFFFFFL);
+      => new System.Net.IPAddress(BitOps.ReverseBytes((uint)GetMaxValue(source)));
+
+    /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
+    public static long GetMaxValue(this Net.IP.MulticastV4Block source)
+      => (uint)unchecked((ulong)source & 0xFFFFFFFFU);
 
     /// <summary>Returns the minimum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMinIPAddress(this Net.IP.MulticastV4Block source)
-      => new System.Net.IPAddress(Flux.BitOps.ReverseBytes(GetMinValue(source)) & 0xFFFFFFFFL);
+      => new System.Net.IPAddress(BitOps.ReverseBytes((uint)GetMinValue(source)));
 
-    /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
-    public static int GetMaxValue(this Net.IP.MulticastV4Block source)
-      => (int)unchecked((uint)source & 0xFFFFFFFFU);
     /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
-    public static int GetMinValue(this Net.IP.MulticastV4Block source)
-      => (int)unchecked(((ulong)source >> 32) & 0xFFFFFFFFUL);
+    public static long GetMinValue(this Net.IP.MulticastV4Block source)
+      => (uint)unchecked((ulong)source >> 32);
   }
 
   namespace Net
   {
     public static partial class IP
     {
+      // https://en.wikipedia.org/wiki/Multicast_address
       public enum MulticastV4Block
         : long
       {
         LocalSubnetwork = unchecked((long)0xE0000000E00000FF),
         InternetworkControl = unchecked((long)0xE0000100E00001FF),
         AdHocBlock1 = unchecked((long)0xE0000200E000FFFF),
-        Reserved1 = unchecked((long)0xE0010000FFFF01E0),
+        Reserved1 = unchecked((long)0xE0010000E001FFFF),
         AdHocBlock2 = unchecked((long)0xE0030000E004FFFF),
         Reserved2 = unchecked((long)0xE1000000E7FFFFFF),
         SourceSpecificMulticast = unchecked((long)0xE8000000E8FFFFFF),
