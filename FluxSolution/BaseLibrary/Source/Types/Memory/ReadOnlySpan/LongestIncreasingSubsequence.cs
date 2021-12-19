@@ -1,18 +1,10 @@
-namespace Flux.Metrical
+namespace Flux
 {
-  /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-  public sealed class LongestIncreasingSubsequence<T>
+  public static partial class ExtensionMethods
   {
-    public System.Collections.Generic.IComparer<T> Comparer { get; }
-
-    public LongestIncreasingSubsequence(System.Collections.Generic.IComparer<T> comparer)
-      => Comparer = comparer ?? throw new System.ArgumentNullException(nameof(comparer));
-    public LongestIncreasingSubsequence()
-      : this(System.Collections.Generic.Comparer<T>.Default)
-    { }
-
-    public T[] GetLongestIncreasingSubsequence(System.ReadOnlySpan<T> source)
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
+    public static T[] LongestIncreasingSubsequence<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer)
     {
       var sourceLength = source.Length;
 
@@ -30,7 +22,7 @@ namespace Flux.Metrical
         {
           var mid = System.Convert.ToInt32(System.Math.Ceiling((lo + hi) / 2.0)); // Binary middle index.
 
-          if (Comparer.Compare(source[v0[mid]], source[i]) < 0)
+          if (comparer.Compare(source[v0[mid]], source[i]) < 0)
             lo = mid + 1;
           else
             hi = mid - 1;

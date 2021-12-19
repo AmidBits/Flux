@@ -31,7 +31,7 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => t.GetMethods().Count(mi => mi.Name.Equals("ToUnitString")) == 0)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => t.GetMethods().Any(mi => mi.Name.Equals("ToUnitString")))));
 
       //var index = 0;
       //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))

@@ -7,8 +7,8 @@ namespace Flux
   {
     public const char FractionSlash = '\u2044';
 
-    public static readonly SimpleFraction EpsilonLikeSingle = new SimpleFraction(1, 1000000);
-    public static readonly SimpleFraction EpsilonLikeDouble = new SimpleFraction(1, 1000000000000000);
+    public static readonly SimpleFraction EpsilonLikeSingle = new(1, 1000000);
+    public static readonly SimpleFraction EpsilonLikeDouble = new(1, 1000000000000000);
 
     /// <summary>Represents a BigFraction value of the Golden Ratio.</summary>
     public static readonly SimpleFraction GoldenRatio = new(7540113804746346429L, 4660046610375530309L, true);

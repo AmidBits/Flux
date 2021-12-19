@@ -11,19 +11,19 @@ namespace Flux.Metrical
     { }
 
     /// <summary>This can be used to backtrack a dynamically programmed matrix.</summary>
-    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
+    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int sourceIndex, int targetIndex)
     {
-      if (si == 0 | ti == 0)
+      if (sourceIndex == 0 | targetIndex == 0)
         return new System.Collections.Generic.List<T>();
-      if (EqualityComparer.Equals(source[si - 1], target[ti - 1]))
+      if (EqualityComparer.Equals(source[sourceIndex - 1], target[targetIndex - 1]))
       {
-        var list = Backtrack(matrix, source, target, si - 1, ti - 1);
-        list.Add(source[si - 1]);
+        var list = Backtrack(matrix, source, target, sourceIndex - 1, targetIndex - 1);
+        list.Add(source[sourceIndex - 1]);
         return list;
       }
-      if (matrix[si, ti - 1] > matrix[si - 1, ti])
-        return Backtrack(matrix, source, target, si, ti - 1);
-      return Backtrack(matrix, source, target, si - 1, ti);
+      if (matrix[sourceIndex, targetIndex - 1] > matrix[sourceIndex - 1, targetIndex])
+        return Backtrack(matrix, source, target, sourceIndex, targetIndex - 1);
+      return Backtrack(matrix, source, target, sourceIndex - 1, targetIndex);
     }
 
     /// <summary>This can be used to trim the start and end of a sequence.</summary>
