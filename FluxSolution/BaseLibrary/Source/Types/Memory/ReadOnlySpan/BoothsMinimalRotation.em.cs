@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
     public static int BoothsMinimalRotation<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer)
     {
       var sourceLength = source.Length;
@@ -44,5 +46,9 @@ namespace Flux
 
       return k;
     }
+    /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the default comparer.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
+    public static int BoothsMinimalRotation<T>(this System.ReadOnlySpan<T> source)
+      => BoothsMinimalRotation(source, System.Collections.Generic.Comparer<T>.Default);
   }
 }

@@ -24,6 +24,12 @@ namespace ConsoleApp
       Write(typeof(Flux.IValueGeneralizedUnit<>));
       int a = 1;
 
+      var l = new System.ReadOnlySpan<int>(new int[] { 10, 30, 50, 70, 90, 100, 80, 60, 40, 20 });
+      var las = l.LongestAlternatingSubsequence();
+
+      var ect = l.ExtremaClosestTo(60, n => n);
+      var e = l.Extrema(n => n);
+
       static void Write(System.Type type)
       {
         var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).ToList();

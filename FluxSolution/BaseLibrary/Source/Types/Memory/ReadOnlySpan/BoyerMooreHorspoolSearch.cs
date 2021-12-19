@@ -2,24 +2,24 @@
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Searches a text for the index of a substring. Returns -1 if not found.</summary>
+    /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int BoyerMooreHorspoolSearch<T>(System.ReadOnlySpan<T> word, System.ReadOnlySpan<T> text, System.Collections.Generic.IEqualityComparer<T> EqualityComparer)
+    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find, System.Collections.Generic.IEqualityComparer<T> EqualityComparer)
       where T : notnull
     {
-      var skippable = CreateTable(word, text);
+      var skippable = CreateTable(find, source);
 
       var skip = 0;
 
-      var wordLength = word.Length;
-      var textLength = text.Length;
+      var wordLength = find.Length;
+      var textLength = source.Length;
 
       while (textLength - skip >= wordLength)
       {
-        if (Same(text[skip..], word, wordLength))
+        if (Same(source[skip..], find, wordLength))
           return skip;
 
-        skip += skippable[text[skip + wordLength - 1]];
+        skip += skippable[source[skip + wordLength - 1]];
       }
 
       return -1;
@@ -56,5 +56,10 @@
       }
 
     }
+    /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
+    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find)
+      where T : notnull
+      => BoyerMooreHorspoolSearch(source, find, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

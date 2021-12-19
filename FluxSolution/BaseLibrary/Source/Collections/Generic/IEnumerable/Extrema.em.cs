@@ -14,7 +14,6 @@ namespace Flux
       if (e.MoveNext())
       {
         var index = 0;
-
         var keyCurrent = keySelector(e.Current);
 
         var elementMin = e.Current;
@@ -28,7 +27,6 @@ namespace Flux
         while (e.MoveNext())
         {
           index++;
-
           keyCurrent = keySelector(e.Current);
 
           if (comparer.Compare(keyCurrent, keyMin) < 0)
@@ -37,7 +35,6 @@ namespace Flux
             indexMin = index;
             keyMin = keyCurrent;
           }
-
           if (comparer.Compare(keyCurrent, keyMax) > 0)
           {
             elementMax = e.Current;
@@ -50,7 +47,7 @@ namespace Flux
       }
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
-    /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the specified comparer.</summary>
+    /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the default comparer.</summary>
     public static (TSource elementMin, int indexMin, TSource elementMax, int indexMax) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
       => Extrema(source, valueSelector, System.Collections.Generic.Comparer<TValue>.Default);
   }

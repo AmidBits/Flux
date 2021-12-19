@@ -2,25 +2,25 @@
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found.</summary>
+    /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> text, System.ReadOnlySpan<T> word, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var table = CreateTable(word);
+      var table = CreateTable(find);
 
       var indices = new System.Collections.Generic.List<int>();
 
       var ti = 0;
       var wi = 0;
 
-      while (ti < text.Length)
+      while (ti < source.Length)
       {
-        if (equalityComparer.Equals(word[wi], text[ti]))
+        if (equalityComparer.Equals(find[wi], source[ti]))
         {
           ti++;
           wi++;
 
-          if (wi == word.Length)
+          if (wi == find.Length)
           {
             indices.Add(ti - wi);
 
@@ -75,5 +75,9 @@
         return table;
       }
     }
+    /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the default equality comparer.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find)
+      => KnuthMorrisPrattSearch(source, find, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
