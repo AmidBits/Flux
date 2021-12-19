@@ -34,6 +34,18 @@ namespace Flux
         las = System.Math.Max(las, System.Math.Max(matrix[i, 0], matrix[i, 1]));
       }
 
+      //var list = new System.Collections.Generic.List<int>();
+      //var mark = 0;
+      //for (var i = 0; i < source.Length; i++)
+      //{
+      //  var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
+      //  if (max > mark)
+      //  {
+      //    list.Add( i );
+      //    mark++;
+      //  }
+      //}
+
       return las;
     }
     /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the default comparer.</summary>

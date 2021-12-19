@@ -24,11 +24,13 @@ namespace ConsoleApp
       Write(typeof(Flux.IValueGeneralizedUnit<>));
       int a = 1;
 
-      var l = new System.ReadOnlySpan<int>(new int[] { 10, 30, 50, 70, 90, 100, 80, 60, 40, 20 });
+      var l = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
+      var kmps = l.KnuthMorrisPrattSearch(new int[] { 10, 20, 30 });
+      var bmhs = l.BoyerMooreHorspoolSearch(new int[] { 10, 20, 30 });
       var las = l.LongestAlternatingSubsequence();
 
-      var ect = l.ExtremaClosestTo(60, n => n);
-      var e = l.Extrema(n => n);
+      var (indexLessThan, indexGreaterThan) = l.ExtremaClosestTo(60, n => n);
+      var (indexMinimum, indexMaximum) = l.Extrema(n => n);
 
       static void Write(System.Type type)
       {
