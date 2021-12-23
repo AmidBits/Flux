@@ -36,13 +36,13 @@ namespace Flux
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-      for (var index = 0; index < source.Length; index++)
-      {
-        if (EqualsAt(source, index, target, 0, target.Length, comparer))
+      var targetLength = target.Length;
+      
+      var maxLength = source.Length - targetLength;
+
+      for (var index = 0; index < maxLength; index++)
+        if (EqualsAt(source, index, target, 0, targetLength, comparer))
           return index;
-        else if (source.Length - index < target.Length)
-          break;
-      }
 
       return -1;
     }
