@@ -25,7 +25,7 @@ namespace Flux
 
       for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
         for (var valueIndex = values.Length - 1; valueIndex >= 0; valueIndex--)
-          if (Equals(source, sourceIndex, values[valueIndex], comparer))
+          if (EqualsAt(source, sourceIndex, values[valueIndex], comparer))
             return sourceIndex;
 
       return -1;

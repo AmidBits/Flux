@@ -2,64 +2,63 @@
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the specified equality comparer.</summary>
+    /// <summary>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find, System.Collections.Generic.IEqualityComparer<T> EqualityComparer)
+    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
     {
-      var skippable = CreateTable(find, source);
+      var skippable = CreateTable(source, target);
 
       var skip = 0;
 
-      var wordLength = find.Length;
-      var textLength = source.Length;
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-      while (textLength - skip >= wordLength)
+      while (sourceLength - skip >= targetLength)
       {
-        if (Same(source[skip..], find, wordLength))
+        if (Same(source[skip..], target, targetLength, equalityComparer))
           return skip;
 
-        skip += skippable[source[skip + wordLength - 1]];
+        skip += skippable[source[skip + targetLength - 1]];
       }
 
       return -1;
 
-      /// <summary>Creates the amount of safely skippable items.</summary>
-      System.Collections.Generic.Dictionary<T, int> CreateTable(System.ReadOnlySpan<T> word, System.ReadOnlySpan<T> text)
+      /// <summary>Creates a map of the amount of safely skippable elements.</summary>
+      static System.Collections.Generic.Dictionary<T, int> CreateTable(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       {
         var table = new System.Collections.Generic.Dictionary<T, int>(); // The alphabet.
 
-        var wordLength = word.Length;
-        var textLength = text.Length;
+        var sourceLength = source.Length;
+        var targetLength = target.Length;
 
-        for (var index = System.Math.Max(wordLength, textLength) - 1; index >= 0; index--)
+        for (var index = System.Math.Max(targetLength, sourceLength) - 1; index >= 0; index--)
         {
-          if (index < wordLength && word[index] is var wc && !table.ContainsKey(wc)) // Add to alphabet from word (needle) characters, if it is not already in the table.
-            table.Add(wc, wordLength);
-          if (index < textLength && text[index] is var tc && !table.ContainsKey(tc)) // Add to alphabet from text (haystack) characters, if it is not already in the table.
-            table.Add(tc, wordLength);
+          if (index < targetLength && target[index] is var wc && !table.ContainsKey(wc)) // Add to alphabet from word (needle) characters, if it is not already in the table.
+            table.Add(wc, targetLength);
+          if (index < sourceLength && source[index] is var tc && !table.ContainsKey(tc)) // Add to alphabet from text (haystack) characters, if it is not already in the table.
+            table.Add(tc, targetLength);
         }
 
-        for (var i = 0; i < wordLength; i++)
-          table[word[i]] = wordLength - 1 - i;
+        for (var i = 0; i < targetLength; i++)
+          table[target[i]] = targetLength - 1 - i;
 
         return table;
       }
 
-      bool Same(System.ReadOnlySpan<T> word1, System.ReadOnlySpan<T> word2, int length)
+      static bool Same(System.ReadOnlySpan<T> word1, System.ReadOnlySpan<T> word2, int length, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       {
         for (var i = length - 1; i >= 0; i--)
-          if (!EqualityComparer.Equals(word1[i], word2[i]))
+          if (!equalityComparer.Equals(word1[i], word2[i]))
             return false;
 
         return true;
       }
-
     }
     /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find)
+    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => BoyerMooreHorspoolSearch(source, find, System.Collections.Generic.EqualityComparer<T>.Default);
+      => BoyerMooreHorspoolSearch(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

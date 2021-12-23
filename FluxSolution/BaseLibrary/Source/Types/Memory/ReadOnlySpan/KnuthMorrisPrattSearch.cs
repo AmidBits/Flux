@@ -4,80 +4,83 @@
   {
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var table = CreateTable(find);
+      var table = CreateTable(target, equalityComparer);
 
       var indices = new System.Collections.Generic.List<int>();
 
-      var ti = 0;
-      var wi = 0;
+      var sourceIndex = 0;
+      var targetIndex = 0;
 
-      while (ti < source.Length)
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
+
+      while (sourceIndex < sourceLength)
       {
-        if (equalityComparer.Equals(find[wi], source[ti]))
+        if (equalityComparer.Equals(target[targetIndex], source[sourceIndex]))
         {
-          ti++;
-          wi++;
+          sourceIndex++;
+          targetIndex++;
 
-          if (wi == find.Length)
+          if (targetIndex == targetLength)
           {
-            indices.Add(ti - wi);
+            indices.Add(sourceIndex - targetIndex);
 
-            wi = table[wi];
+            targetIndex = table[targetIndex];
           }
         }
         else
         {
-          wi = table[wi];
+          targetIndex = table[targetIndex];
 
-          if (wi < 0)
+          if (targetIndex < 0)
           {
-            ti++;
-            wi++;
+            sourceIndex++;
+            targetIndex++;
           }
         }
       }
 
       return indices;
 
-      /// <summary>Creates the amount of safely skippable</summary>
-      System.Collections.Generic.Dictionary<int, int> CreateTable(System.ReadOnlySpan<T> word)
+      /// <summary>Creates a map of the amount of safely skippable elements in target (word).</summary>
+      static System.Collections.Generic.Dictionary<int, int> CreateTable(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       {
         var table = new System.Collections.Generic.Dictionary<int, int>
         {
           [0] = -1
         };
 
-        var pi = 1; // Position index.
-        var ci = 0; // Current candidate index.
+        var positionIndex = 1; // Position index.
+        var candidateIndex = 0; // Current candidate index.
 
-        while (pi < word.Length)
+        while (positionIndex < target.Length)
         {
-          if (equalityComparer.Equals(word[pi], word[ci]))
+          if (equalityComparer.Equals(target[positionIndex], target[candidateIndex]))
           {
-            table[pi] = table[ci];
+            table[positionIndex] = table[candidateIndex];
           }
           else
           {
-            table[pi] = ci;
+            table[positionIndex] = candidateIndex;
 
-            while (ci >= 0 && !equalityComparer.Equals(word[pi], word[ci]))
-              ci = table[ci];
+            while (candidateIndex >= 0 && !equalityComparer.Equals(target[positionIndex], target[candidateIndex]))
+              candidateIndex = table[candidateIndex];
           }
 
-          pi++;
-          ci++;
+          positionIndex++;
+          candidateIndex++;
         }
 
-        table[pi] = ci;
+        table[positionIndex] = candidateIndex;
 
         return table;
       }
     }
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> find)
-      => KnuthMorrisPrattSearch(source, find, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      => KnuthMorrisPrattSearch(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

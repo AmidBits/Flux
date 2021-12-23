@@ -38,7 +38,7 @@ namespace Flux
 
       for (var index = 0; index < source.Length; index++)
       {
-        if (Equals(source, index, target, 0, target.Length, comparer))
+        if (EqualsAt(source, index, target, 0, target.Length, comparer))
           return index;
         else if (source.Length - index < target.Length)
           break;
