@@ -3,6 +3,10 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>If possible use non-allocating code, which currently works for arrays and lists.</summary>
+    public static System.ReadOnlySpan<T> ToReadOnlySpan<T>(this System.Collections.Generic.IList<T> source)
+      => ToSpan(source);
+
+    /// <summary>If possible use non-allocating code, which currently works for arrays and lists.</summary>
     public static System.Span<T> ToSpan<T>(this System.Collections.Generic.IList<T> source)
     {
       return source switch

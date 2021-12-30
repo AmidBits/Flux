@@ -11,26 +11,14 @@ namespace ConsoleApp
 {
   public class Program
   {
-
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
 
-      var type = typeof(Flux.IValueGeneralizedUnit<>);
-      //      System.Console.WriteLine(string.Join(System.Environment.NewLine, type.GetDerivedTypes().OrderBy(t => t.FullName)));
       Write(typeof(Flux.IValueSiBaseUnit<>));
       Write(typeof(Flux.IValueSiDerivedUnit<>));
       Write(typeof(Flux.IValueGeneralizedUnit<>));
-      int a = 1;
-
-      var l = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
-      var kmps = l.KnuthMorrisPrattSearch(new int[] { 10, 20, 30 });
-      var bmhs = l.BoyerMooreHorspoolSearch(new int[] { 10, 20, 30 });
-      var las = l.LongestAlternatingSubsequence();
-
-      var (indexLessThan, indexGreaterThan) = l.ExtremaClosestTo(60, n => n);
-      var (indexMinimum, indexMaximum) = l.Extrema(n => n);
 
       static void Write(System.Type type)
       {
@@ -39,20 +27,13 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.IValueGeneralizedUnit<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => t.GetMethods().Any(mi => mi.Name.Equals("ToUnitString")))));
-
-      //var index = 0;
-      //foreach (var type in typeof(Flux.Locale).Assembly.GetTypes().OrderBy(t => t.FullName))
-      //  //if (type.IsValueType && !type.IsEnum)
-      //  //if (type.IsClass && !type.IsAbstract && !type.IsNested)
-      //  if (!type.IsAbstract && !type.IsEnum && !type.IsNested && !type.IsNotPublic && type.GetInterfaces().Count() == 0)
-      //    System.Console.WriteLine($"{++index:D3} : {type.FullName}");
+      return;
 
       var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
 
       for (var i = 0; bst.GetNodeCount() < 16; i++)
       {
-        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 256);
+        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
           bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
