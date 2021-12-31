@@ -6,7 +6,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
   public sealed class SallenKey
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 and 20,000 Hz, but no restrictions are enforced.</value>
@@ -59,7 +59,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 
     private double v1, v2;
 
-    public double FilterAudioMono(double v0)
+    public double FilterMonoWave(double v0)
     {
       v1 = a1 * ic2eq + a2 * ic1eq + a3 * v0;
       v2 = a2 * ic2eq + a4 * ic1eq + a5 * v0;
@@ -69,8 +69,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       return v2;
     }
 
-    public double ProcessAudio(double sample)
-      => (FilterAudioMono(sample));
+    public double ProcessMonoWave(double sample)
+      => (FilterMonoWave(sample));
 
     #region Object overrides.
     public override string ToString()

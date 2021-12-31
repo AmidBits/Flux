@@ -3,7 +3,7 @@ namespace Flux.Dsp.AudioProcessor
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
   public sealed class MonoBrickWallLimiter
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
@@ -33,7 +33,7 @@ namespace Flux.Dsp.AudioProcessor
 
     public static double Limit(double sample) => System.Math.Clamp(sample, -1.0, 1.0);
 
-    public double ProcessAudio(double sample)
+    public double ProcessMonoWave(double sample)
     {
       if (m_autoAttenuation < 1.0)
       {

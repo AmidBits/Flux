@@ -28,7 +28,7 @@ namespace Flux.Dsp.Synthesis
     public IOscillator? FrequencyModulator { get; set; }
 
     /// <summary>The wave generator used to produce the waveform of the oscillator.</summary>
-    public IWaveGenerator? Generator { get; set; }
+    public IMonoWaveGeneratable? Generator { get; set; }
 
     /// <summary>Indicates whether the sample polarity should be inverted.</summary>
     public bool InvertPolarity { get; set; }
@@ -56,10 +56,10 @@ namespace Flux.Dsp.Synthesis
     public Oscillator? PhaseModulator { get; set; }
 
     /// <summary>Audio processors applied before AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<IWaveProcessorMono> PreProcessors { get; }
+    public System.Collections.Generic.List<IMonoWaveProcessable> PreProcessors { get; }
 
     /// <summary>Audio processors applied after AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<IWaveProcessorMono> PostProcessors { get; }
+    public System.Collections.Generic.List<IMonoWaveProcessable> PostProcessors { get; }
 
     /// <summary>Indicates whether the direction of the phase should be reversed.</summary>
     public bool ReversePhase { get; set; }
@@ -87,13 +87,13 @@ namespace Flux.Dsp.Synthesis
     /// <summary>The period of the signal, in seconds. Can be used to set the frequency.</summary>
     public double SignalPeriod { get; private set; }
 
-    public Oscillator(IWaveGenerator generator, double frequency, double sampleRate = 44100)
+    public Oscillator(IMonoWaveGeneratable generator, double frequency, double sampleRate = 44100)
     {
       Generator = generator;
 
-      PreProcessors = new System.Collections.Generic.List<IWaveProcessorMono>();
+      PreProcessors = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
-      PostProcessors = new System.Collections.Generic.List<IWaveProcessorMono>();
+      PostProcessors = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
       Reset(false);
 
@@ -104,13 +104,13 @@ namespace Flux.Dsp.Synthesis
     /// <summary>Generates the next sample for the oscillator (all operational components are integrated in ths process).</summary>
     public double Next(double? normalizedFrequency)
     {
-      Current = Generator?.GenerateWave(m_phase) ?? 0;
+      Current = Generator?.GenerateMonoWave(m_phase) ?? 0;
 
       if (InvertPolarity)
         Current = -Current;
 
       foreach (var processor in PreProcessors)
-        Current = processor.ProcessAudio(Current);
+        Current = processor.ProcessMonoWave(Current);
 
       if (AmplitudeModulator != null && m_amplitudeModulation > Maths.EpsilonCpp32)
       {
@@ -123,7 +123,7 @@ namespace Flux.Dsp.Synthesis
         Current *= RingModulator.NextSample() * m_ringModulation;
 
       foreach (var processor in PostProcessors)
-        Current = processor.ProcessAudio(Current);
+        Current = processor.ProcessMonoWave(Current);
 
       if (!normalizedFrequency.HasValue)
         normalizedFrequency = NormalizedFrequency;

@@ -3,7 +3,7 @@ namespace Flux.Dsp.AudioProcessor
 	/// <summary>A basic limiter.</summary>
 	/// <see cref="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>
   public sealed class MonoLimiter
-		: IWaveProcessorMono
+		: IMonoWaveProcessable
 	{
 		private double m_threshold; // Defaults to zero.
 		/// <summary>Threshold in the range [-30, 0]. Default is 0.</summary>
@@ -88,7 +88,7 @@ namespace Flux.Dsp.AudioProcessor
 			m_computedSoftClipMult = System.Math.Abs((m_computedCeilingDecibel - m_computedSoftClip) / (m_computedPeakDecibel - m_computedSoftClip));
 		}
 
-		public double ProcessAudio(double sample)
+		public double ProcessMonoWave(double sample)
 		{
 			// var peak = System.Math.Abs(sample);
 

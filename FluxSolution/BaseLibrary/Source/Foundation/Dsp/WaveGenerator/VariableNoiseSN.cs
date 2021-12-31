@@ -8,7 +8,7 @@
   /// </summary>
   /// <see cref="http://sampo.kapsi.fi/PinkNoise/"/>
   public sealed class VariableNoiseSN
-    : IWaveGenerator
+    : IMonoWaveGeneratable
   {
     private readonly System.Random m_rng;
 
@@ -40,7 +40,7 @@
 
       for (var i = 0; i < (5 * m_values.Length); i++)
       {
-        GenerateWave(default);
+        GenerateMonoWave(default);
       }
     }
     public VariableNoiseSN(double alpha, int poles)
@@ -50,7 +50,7 @@
       : this(1, 5)
     { }
 
-    public double GenerateWave(double phase)
+    public double GenerateMonoWave(double phase)
     {
       // ??? how can this work when it makes -0.5 to 0.5
       var value0 = m_rng.NextDouble() - 0.5;

@@ -2,7 +2,7 @@
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
   public sealed class PulseWave
-    : IWaveGenerator
+    : IMonoWaveGeneratable
   {
     private double m_dutyCycle;
     /// <summary>The duty cycle (pulse width) in the range [0, 2PI].</summary>
@@ -14,7 +14,7 @@
       : this(0.5)
     { }
 
-    public double GenerateWave(double phase)
+    public double GenerateMonoWave(double phase)
       => phase < 0.5 ? 1 : -1;
 
     /// <summary>Generates a pulse wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>

@@ -1,20 +1,20 @@
 namespace Flux.Dsp
 {
-  public interface IWaveFilterMono
+  public interface IMonoWaveFilterable
   {
-    static IWaveFilterMono Empty
-      => new EmptyAudioFilterMono();
+    static IMonoWaveFilterable Empty
+      => new EmptyMonoWaveFilter();
 
     /// <summary>Apply some audio filter on the specified wave sample.</summary>
-    /// <param name="sample">A sample in the [-1, 1] range.</param>
-    /// <returns>The filtered audio sample in the [-1, 1] range.</returns>
-    double FilterAudioMono(double sample);
+    /// <param name="sample">A sample in the [-1.0, 1.0] range.</param>
+    /// <returns>The filtered audio sample in the [-1.0, 1.0] range.</returns>
+    double FilterMonoWave(double sample);
 
-    private sealed class EmptyAudioFilterMono
-      : IWaveFilterMono
+    private sealed class EmptyMonoWaveFilter
+      : IMonoWaveFilterable
     {
-      public double FilterAudioMono(double sample)
-        => throw new System.NotImplementedException(nameof(EmptyAudioFilterMono));
+      public double FilterMonoWave(double sample)
+        => throw new System.NotImplementedException(nameof(EmptyMonoWaveFilter));
     }
   }
 }

@@ -2,7 +2,7 @@
 {
   /// <summary>Calculates all filter frequency functions all at once.</summary>
   public sealed class MultiSvf
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
@@ -59,7 +59,7 @@
 
     private double v1, v2, v3;
 
-    public double FilterAudioMono(double v0)
+    public double FilterMonoWave(double v0)
     {
       v3 = v0 - ic2eq;
       v1 = a1 * ic1eq + a2 * v3;
@@ -77,8 +77,8 @@
       return LowPass;
     }
 
-    public double ProcessAudio(double sample)
-      => (FilterAudioMono(sample));
+    public double ProcessMonoWave(double sample)
+      => (FilterMonoWave(sample));
 
     #region Object overrides.
     public override string ToString()

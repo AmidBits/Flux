@@ -16,7 +16,7 @@ namespace Flux.Dsp.AudioProcessor
   /// <summary>Rectifies (cuts or mirrors) the wave signal above or below a threshold.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
   public sealed class MonoRectifier
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     public MonoRectifierMode Mode { get; }
 
@@ -37,7 +37,7 @@ namespace Flux.Dsp.AudioProcessor
       : this(MonoRectifierMode.FullWave, 0.0)
     { }
 
-    public double ProcessAudio(double sample)
+    public double ProcessMonoWave(double sample)
       => (Mode switch
       {
         MonoRectifierMode.NegativeFullWave when sample > m_threshold => System.Math.Max(m_threshold - (sample - m_threshold), -1),

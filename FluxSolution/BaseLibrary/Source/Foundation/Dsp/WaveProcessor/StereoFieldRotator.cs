@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public sealed class StereoFieldRotator
-    : IWaveProcessorStereo
+    : IStereoWaveProcessable
   {
     private double m_cosC = 1, m_sinC; // The coefficients of the transformation matrix (used for processing speed).
 
@@ -29,7 +29,7 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public SampleStereo ProcessAudio(SampleStereo stereo)
+    public SampleStereo ProcessStereoWave(SampleStereo stereo)
       => new(stereo.FrontLeft * m_cosC - stereo.FrontRight * m_sinC, stereo.FrontLeft * m_sinC + stereo.FrontRight * m_cosC);
 
     /// <summary>Apply rotatation of the stereo sample across the stereo field.</summary>

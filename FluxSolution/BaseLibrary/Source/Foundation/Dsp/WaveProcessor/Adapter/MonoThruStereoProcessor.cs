@@ -1,16 +1,16 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   public sealed class MonoThruStereoProcessor
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
-    public IWaveProcessorStereo Stereo { get; }
+    public IStereoWaveProcessable Stereo { get; }
 
-    public MonoThruStereoProcessor(IWaveProcessorStereo stereo)
+    public MonoThruStereoProcessor(IStereoWaveProcessable stereo)
     {
       Stereo = stereo;
     }
 
-    public double ProcessAudio(double sample)
-      => Stereo.ProcessAudio(new SampleStereo(sample)).ToMono().FrontCenter;
+    public double ProcessMonoWave(double sample)
+      => Stereo.ProcessStereoWave(new SampleStereo(sample)).ToMono().FrontCenter;
   }
 }

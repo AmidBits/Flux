@@ -12,7 +12,7 @@
   /// <summary>Enables inline conversion of the polarity range, e.g. bipolar to unipolar (or the other way around).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
   public sealed class MonoPolarizer
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     public MonoPolarizerMode Mode { get; }
 
@@ -24,7 +24,7 @@
       : this(MonoPolarizerMode.BipolarToUnipolarPositive)
     { }
 
-    public double ProcessAudio(double sample) => (Mode switch
+    public double ProcessMonoWave(double sample) => (Mode switch
     {
       MonoPolarizerMode.BipolarToUnipolarNegative => sample / 2.0 - 0.5,
       MonoPolarizerMode.BipolarToUnipolarPositive => sample / 2.0 + 0.5,

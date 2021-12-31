@@ -1,14 +1,14 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   public sealed class MonoStack
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
-    public System.Collections.Generic.IReadOnlyList<IWaveProcessorMono> Processors { get; } = new System.Collections.Generic.List<IWaveProcessorMono>();
+    public System.Collections.Generic.IReadOnlyList<IMonoWaveProcessable> Processors { get; } = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
-    public double ProcessAudio(double sample)
+    public double ProcessMonoWave(double sample)
     {
       foreach (var processor in Processors)
-        sample = processor.ProcessAudio(sample);
+        sample = processor.ProcessMonoWave(sample);
 
       return sample;
     }

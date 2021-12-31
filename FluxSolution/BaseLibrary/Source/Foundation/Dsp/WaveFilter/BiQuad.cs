@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveFilter
   /// <see cref="http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/"/>
   /// <seealso cref="http://www.earlevel.com/main/2003/02/28/biquads/"/>
   public sealed class BiQuad
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     public BiQuadFrequencyFunction Function { get; private set; }
 
@@ -302,7 +302,7 @@ namespace Flux.Dsp.WaveFilter
       // }
     }
 
-    public double FilterAudioMono(double value)
+    public double FilterMonoWave(double value)
     {
       double o = value * a0 + z1;
 
@@ -312,8 +312,8 @@ namespace Flux.Dsp.WaveFilter
       return o;
     }
 
-    public double ProcessAudio(double sample)
-      => (FilterAudioMono(sample));
+    public double ProcessMonoWave(double sample)
+      => (FilterMonoWave(sample));
 
     #region Object overrides.
     public override string ToString()

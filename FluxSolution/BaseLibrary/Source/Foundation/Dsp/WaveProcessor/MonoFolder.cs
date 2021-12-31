@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor
 {
   /// <summary>Folds the wave by overscaling the wave range [-1, 1] and folding the remainder like an accordion.</summary>
   public sealed class MonoFolder
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     private double m_polarBias;
     /// <summary>The (polar) bias can be set within the range of [-1, 1].</summary>
@@ -35,7 +35,7 @@ namespace Flux.Dsp.AudioProcessor
     }
     public MonoFolder() : this(0, 0) { }
 
-    public double ProcessAudio(double sample)
+    public double ProcessMonoWave(double sample)
       => Maths.Fold(m_multiplier * (sample + m_polarBias), -1, 1);
 
     public static double ApplyFolder(double sample, double polarBias, double multiplier)

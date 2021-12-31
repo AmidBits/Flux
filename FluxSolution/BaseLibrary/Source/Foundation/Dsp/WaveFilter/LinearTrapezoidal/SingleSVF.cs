@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
   public sealed class SingleSvf
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     public SingleSvfFrequencyFunction Function { get; private set; }
 
@@ -147,7 +147,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 
     private double v1, v2, v3;
 
-    public double FilterAudioMono(double v0)
+    public double FilterMonoWave(double v0)
     {
       v3 = v0 - ic2eq;
       v1 = a1 * ic1eq + a2 * v3;
@@ -158,7 +158,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       return m0 * v0 + m1 * v1 + m2 * v2;
     }
 
-    public double ProcessAudio(double sample) => (FilterAudioMono(sample));
+    public double ProcessMonoWave(double sample) => (FilterMonoWave(sample));
 
     #region Object overrides.
     public override string ToString()

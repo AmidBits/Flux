@@ -15,7 +15,7 @@ namespace Flux.Dsp.AudioProcessor
 
   /// <summary></summary>
   public sealed class MonoQuadratic
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     public MonoQuadraticMode Mode { get; internal set; }
 
@@ -46,7 +46,7 @@ namespace Flux.Dsp.AudioProcessor
       : this(MonoQuadraticMode.Asymmetric, 0)
     { }
 
-    public double ProcessAudio(double sample)
+    public double ProcessMonoWave(double sample)
       => (Mode switch
       {
         MonoQuadraticMode.Asymmetric => System.Math.Pow(sample / 2 + 0.5, m_exponentExpanded) * 2 - 1,

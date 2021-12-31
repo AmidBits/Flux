@@ -27,38 +27,38 @@ namespace Foundation.Dsp
     [TestMethod]
     public void FullWaveRectifier()
     {
-      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessAudio(_hiSample));
-      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessAudio(_hiSample));
-      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessAudio(_loSample));
-      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessAudio(_loSample));
+      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessMonoWave(_loSample));
+      Assert.AreEqual(0.75, _fullWaveRectifier.ProcessMonoWave(_loSample));
     }
 
     [TestMethod]
     public void HalfWaveRectifier()
     {
 
-      Assert.AreEqual(0.75, _halfWaveRectifier.ProcessAudio(_hiSample));
-      Assert.AreEqual(0.75, _halfWaveRectifier.ProcessAudio(_hiSample));
-      Assert.AreEqual(0, _halfWaveRectifier.ProcessAudio(_loSample));
-      Assert.AreEqual(0, _halfWaveRectifier.ProcessAudio(_loSample));
+      Assert.AreEqual(0.75, _halfWaveRectifier.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0.75, _halfWaveRectifier.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0, _halfWaveRectifier.ProcessMonoWave(_loSample));
+      Assert.AreEqual(0, _halfWaveRectifier.ProcessMonoWave(_loSample));
     }
 
     [TestMethod]
     public void Inverter()
     {
-      Assert.AreEqual(-0.75, _inverter.ProcessAudio(_hiSample));
-      Assert.AreEqual(-0.75, _inverter.ProcessAudio(_hiSample));
-      Assert.AreEqual(0.75, _inverter.ProcessAudio(_loSample));
-      Assert.AreEqual(0.75, _inverter.ProcessAudio(_loSample));
+      Assert.AreEqual(-0.75, _inverter.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(-0.75, _inverter.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0.75, _inverter.ProcessMonoWave(_loSample));
+      Assert.AreEqual(0.75, _inverter.ProcessMonoWave(_loSample));
     }
 
     [TestMethod]
     public void Folder()
     {
-      Assert.AreEqual(-0.5, _folder.ProcessAudio(_hiSample));
-      Assert.AreEqual(-0.5, _folder.ProcessAudio(_hiSample));
-      Assert.AreEqual(0.5, _folder.ProcessAudio(_loSample));
-      Assert.AreEqual(0.5, _folder.ProcessAudio(_loSample));
+      Assert.AreEqual(-0.5, _folder.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(-0.5, _folder.ProcessMonoWave(_hiSample));
+      Assert.AreEqual(0.5, _folder.ProcessMonoWave(_loSample));
+      Assert.AreEqual(0.5, _folder.ProcessMonoWave(_loSample));
     }
   }
 }

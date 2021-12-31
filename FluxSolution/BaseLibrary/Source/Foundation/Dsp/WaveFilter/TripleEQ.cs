@@ -1,7 +1,7 @@
 namespace Flux.Dsp.WaveFilter
 {
   public sealed class TripleEq
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
 
@@ -53,7 +53,7 @@ namespace Flux.Dsp.WaveFilter
     public double GainLPF { get => m_lowGain; set => m_lowGain = value; }
     public double GainMPF { get => m_midGain; set => m_midGain = value; }
 
-    public double FilterAudioMono(double value)
+    public double FilterMonoWave(double value)
     {
       m_lpfPole1 += (m_lpfCutoff * (value - m_lpfPole1)) + vsa;
       m_lpfPole2 += (m_lpfCutoff * (m_lpfPole1 - m_lpfPole2));
@@ -84,8 +84,8 @@ namespace Flux.Dsp.WaveFilter
       return (low + mid + high);
     }
 
-    public double ProcessAudio(double sample)
-      => (FilterAudioMono(sample));
+    public double ProcessMonoWave(double sample)
+      => (FilterMonoWave(sample));
 
     #region Object overrides.
     public override string ToString()

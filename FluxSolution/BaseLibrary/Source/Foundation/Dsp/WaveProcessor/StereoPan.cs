@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public sealed class StereoPan
-    : IWaveProcessorStereo
+    : IStereoWaveProcessable
   {
     private double m_position, m_positionInvAbs, m_scaledAbs, m_scaledAbsInv;
     /// <summary>The position of the pan across the stereo field in the range [-1, 1], where -1 means more stereo signal to the left, 1 means more stereo signal to the right, and 0 means no change.</summary>
@@ -32,7 +32,7 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public SampleStereo ProcessAudio(SampleStereo stereo)
+    public SampleStereo ProcessStereoWave(SampleStereo stereo)
       => (m_position > Maths.EpsilonCpp32)
       ? new SampleStereo(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
       : (m_position < -Maths.EpsilonCpp32)

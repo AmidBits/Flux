@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor
 {
   public sealed class StereoBalance
-    : IWaveProcessorStereo
+    : IStereoWaveProcessable
   {
     private double m_peakL = 1, m_peakR = 1; // The max peaks of the each channel, represented in the range [0, 1], where 0 is silent and 1 is full volume (no mix), i.e. 100%.
 
@@ -31,7 +31,7 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public SampleStereo ProcessAudio(SampleStereo stereo)
+    public SampleStereo ProcessStereoWave(SampleStereo stereo)
       => new(stereo.FrontLeft * m_peakL, stereo.FrontRight * m_peakR);
 
     /// <summary>Apply balance across the stereo field.</summary>

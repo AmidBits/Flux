@@ -2,9 +2,9 @@
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sawtooth_wave"/>
   public sealed class SawWave
-    : IWaveGenerator
+    : IMonoWaveGeneratable
   {
-    public double GenerateWave(double phase)
+    public double GenerateMonoWave(double phase)
       => 1 - phase * 2;
 
     public static double SampleMu(double phaseMu)

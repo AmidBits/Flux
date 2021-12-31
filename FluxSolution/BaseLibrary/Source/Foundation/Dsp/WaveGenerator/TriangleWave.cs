@@ -2,9 +2,9 @@
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Triangle_wave"/>
   public sealed class TriangleWave
-    : IWaveGenerator
+    : IMonoWaveGeneratable
   {
-    public double GenerateWave(double phase)
+    public double GenerateMonoWave(double phase)
       => phase < 0.5 ? -1 + phase * 4 : 3 - phase * 4;
 
     /// <summary>Generates a triangle wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>

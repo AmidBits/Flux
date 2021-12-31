@@ -2,7 +2,7 @@ namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
   public sealed class SampleAndHold
-    : IWaveGenerator
+    : IMonoWaveGeneratable
   {
     private readonly System.Random m_rng;
 
@@ -14,7 +14,7 @@ namespace Flux.Dsp.WaveGenerator
       : this(new System.Random())
     { }
 
-    public double GenerateWave(double phase)
+    public double GenerateMonoWave(double phase)
     {
       if (phase < m_hold)
       {

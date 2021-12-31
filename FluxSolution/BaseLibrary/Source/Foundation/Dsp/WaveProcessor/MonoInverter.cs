@@ -15,7 +15,7 @@
 
   /// <summary>Inverts the wave signal.</summary>
   public sealed class MonoInverter
-    : IWaveProcessorMono
+    : IMonoWaveProcessable
   {
     public MonoInverterMode Mode { get; internal set; }
 
@@ -25,7 +25,7 @@
       : this(MonoInverterMode.PeekToPeek)
     { }
 
-    public double ProcessAudio(double sample) => (Mode switch
+    public double ProcessMonoWave(double sample) => (Mode switch
     {
       MonoInverterMode.PeekToPeek => -sample,
       MonoInverterMode.PeeksIndependently when sample < 0 => -sample - 1,

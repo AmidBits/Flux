@@ -2,7 +2,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
   public sealed class AutoSpreader
-    : IWaveProcessorStereo
+    : IStereoWaveProcessable
   {
     private double _mix, m_dryMix, m_wetMix;
     /// <summary>The balance of dry (source audio) and wet (delay/feedback line) mix.</summary>
@@ -31,9 +31,9 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       }
     }
 
-    public System.Collections.Generic.List<IWaveProcessorMono> WaveProcessors { get; } = new System.Collections.Generic.List<IWaveProcessorMono>();
+    public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
-    public SampleStereo ProcessAudio(SampleStereo stereo)
+    public SampleStereo ProcessStereoWave(SampleStereo stereo)
     {
       var left = 0d;
       var right = 0d;
@@ -46,9 +46,9 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 
       for (var i = 0; i < processorCount; i++)
       {
-        if (WaveProcessors[i] as IWaveProcessorMono is var waveProcessor && waveProcessor != null)
+        if (WaveProcessors[i] as IMonoWaveProcessable is var waveProcessor && waveProcessor != null)
         {
-          var sampleM = waveProcessor.ProcessAudio(mono);
+          var sampleM = waveProcessor.ProcessMonoWave(mono);
 
           var (frontLeft, frontRight) = StereoPan.Apply(-1.0 + gapSize * i, sampleM, sampleM);
 

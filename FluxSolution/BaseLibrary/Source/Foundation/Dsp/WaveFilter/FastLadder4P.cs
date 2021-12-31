@@ -5,7 +5,7 @@ namespace Flux.Dsp.WaveFilter
 
   // http://musicdsp.org/showArchiveComment.php?ArchiveID=240 // Karlsen 24 dB Ladder
   public sealed class FastLadder4P
-    : IWaveFilterMono, IWaveProcessorMono
+    : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_resonance;
     /// <value>Typical audio range settings are between 0.1 to 10, but no restrictions are enforced.</value>
@@ -46,7 +46,7 @@ namespace Flux.Dsp.WaveFilter
       m_normalizedCutoffFrequency = Maths.PiOver2 * (m_cutoffFrequency / m_sampleRate);
     }
 
-    public double FilterAudioMono(double value)
+    public double FilterMonoWave(double value)
     {
       var rclp = buf4 > 1 ? 1 : buf4; // Clip resonance buffer, if needed.
 
@@ -61,8 +61,8 @@ namespace Flux.Dsp.WaveFilter
       return buf4;
     }
 
-    public double ProcessAudio(double sample)
-      => FilterAudioMono(sample);
+    public double ProcessMonoWave(double sample)
+      => FilterMonoWave(sample);
 
     #region Object overrides.
     public override string ToString()
