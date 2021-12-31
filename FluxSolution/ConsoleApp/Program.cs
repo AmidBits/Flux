@@ -14,7 +14,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunTemporal(); return; }
+      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       Write(typeof(Flux.IValueSiBaseUnit<>));
       Write(typeof(Flux.IValueSiDerivedUnit<>));
@@ -26,47 +26,6 @@ namespace ConsoleApp
         System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
         System.Console.WriteLine();
       }
-
-      return;
-
-      var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
-
-      for (var i = 0; bst.GetNodeCount() < 16; i++)
-      {
-        var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
-
-        if (!bst.Contains(r))
-          bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
-      }
-
-      //bst = bst.Add(1, "One");
-      //bst = bst.Add(2, "Two");
-      //bst = bst.Add(3, "Three");
-      //bst = bst.Add(4, "Four");
-      //bst = bst.Add(5, "Five");
-      //bst = bst.Add(6, "Six");
-      //bst = bst.Add(7, "Seven");
-      //bst = bst.Add(8, "Eight");
-      //bst = bst.Add(9, "Nine");
-      //bst = bst.Add(10, "Ten");
-      //bst = bst.Add(11, "Eleven");
-      //bst = bst.Add(12, "Twelve");
-      //bst = bst.Add(13, "Thirteen");
-      //bst = bst.Add(14, "Fourteen");
-      //bst = bst.Add(15, "Fifteen");
-
-      System.Console.WriteLine(bst.ToConsoleBlock());
-
-      //var a = bst.Search(2);
-      //var b = bst.Search(4);
-
-      //foreach (var item in bst.GetNodesPostOrder())
-      //  System.Console.WriteLine(item.Value);
-
-      //bst = bst.Remove(1);
-      //bst = bst.Remove(2);
-      //bst = bst.Remove(3);
-      //bst = bst.Remove(4);
     }
 
     private static void Main(string[] args)

@@ -40,21 +40,24 @@ namespace Flux.Dsp
         return count > 1 ? sum / System.Math.Sqrt(count) : sum;
       }
       else throw new System.ArgumentException(@"The sequence is empty.");
+
     }
     /// <summary>Mix one or more stereo signals. One stereo signal will be returned as is.</summary>
     public static (double left, double right) MixStereo(System.Collections.Generic.IEnumerable<(double left, double right)> stereo)
     {
       using var e = stereo.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is var first)
+      if (e.MoveNext())
       {
         var count = 1;
-        var sumL = first.left;
-        var sumR = first.right;
+        var current = e.Current;
+        var sumL = current.left;
+        var sumR = current.right;
 
-        while (e.MoveNext() && e.Current is var current)
+        while (e.MoveNext())
         {
           count++;
+          current = e.Current;
           sumL += current.left;
           sumR += current.right;
         }

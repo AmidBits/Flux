@@ -18,6 +18,7 @@
       RunColors();
       RunCoordinateSystems();
       RunDataStructuresGraphs();
+      RunImmutableDataStructures();
       RunLocale();
       ParallelVsSerial.Run();
       RunPhoneticAlgorithms();
