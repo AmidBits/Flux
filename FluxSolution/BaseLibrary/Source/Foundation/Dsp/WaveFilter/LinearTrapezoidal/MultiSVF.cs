@@ -6,15 +6,15 @@
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
-    public double Cutoff { get => m_cutoff; set => SetCoefficients(value, m_Q, m_sampleRate); }
+    public double Cutoff { get => m_cutoff; set => DialFilter(value, m_Q, m_sampleRate); }
 
     private double m_Q;
     /// <value>Typical audio range settings are between 0.1 to 10, but no restrictions are enforced.</value>
-    public double Q { get => m_Q; set => SetCoefficients(m_cutoff, value, m_sampleRate); }
+    public double Q { get => m_Q; set => DialFilter(m_cutoff, value, m_sampleRate); }
 
     private double m_sampleRate;
     /// <summary>Sets the sample rate used for filter calculations.</summary>
-    public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_Q, value); }
+    public double SampleRate { get => m_sampleRate; set => DialFilter(m_cutoff, m_Q, value); }
 
     public double AllPass { get; private set; }
     public double BandPass { get; private set; }
@@ -23,11 +23,11 @@
     public double Notch { get; private set; }
     public double Peak { get; private set; }
 
-    public MultiSvf(double cutoffFrequency, double Q = 0.5, double sampleRate = 44100.0)
+    public MultiSvf(double cutoffFrequency, double Q = 0.5, double sampleRate = 44100)
     {
       ClearState();
 
-      SetCoefficients(cutoffFrequency, Q, sampleRate);
+      DialFilter(cutoffFrequency, Q, sampleRate);
     }
 
     private double ic1eq, ic2eq;
@@ -44,7 +44,7 @@
     /// <param name="cutoff">The filter cutoff frequency, in Hz.</param>
     /// <param name="Q">The filter Q [0.0, 1.0].</param>
     /// <param name="sampleRate">The sample rate in Hz, defaults to 44.1 kHz.</param>
-    public void SetCoefficients(double cutoff, double Q, double sampleRate)
+    public void DialFilter(double cutoff, double Q, double sampleRate = 44100)
     {
       m_cutoff = cutoff;
       m_Q = Q;

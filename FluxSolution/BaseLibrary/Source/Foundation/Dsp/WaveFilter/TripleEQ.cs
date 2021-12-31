@@ -26,7 +26,7 @@ namespace Flux.Dsp.WaveFilter
     private double m_lowGain;
     private double m_midGain;
 
-    public TripleEq(double lpfCutoff = 880.0, double hpfCutoff = 5000.0, double sampleRate = 44100.0)
+    public TripleEq(double lpfCutoff = 880, double hpfCutoff = 5000, double sampleRate = 44100)
     {
       m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * (lpfCutoff / sampleRate));
       m_lpfPole1 = 0;

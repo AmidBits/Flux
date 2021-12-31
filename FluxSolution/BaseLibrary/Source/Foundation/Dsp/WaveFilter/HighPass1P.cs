@@ -6,14 +6,14 @@ namespace Flux.Dsp.WaveFilter
   {
     private double m_cutoffFrequency;
     /// <summary>The cutoff frequency is a boundary at which point the frequencies begins to be reduced (attenuated or reflected) rather than passing through.</summary>
-    public double CutoffFrequency { get => m_cutoffFrequency; set => SetCoefficient(value, m_sampleRate); }
+    public double CutoffFrequency { get => m_cutoffFrequency; set => DialFilter(value, m_sampleRate); }
 
     private double m_sampleRate;
     /// <summary>Sets the sample rate used for filter calculations.</summary>
-    public double SampleRate { get => m_sampleRate; set => SetCoefficient(m_cutoffFrequency, value); }
+    public double SampleRate { get => m_sampleRate; set => DialFilter(m_cutoffFrequency, value); }
 
     public HighPass1P(double cutoff = 5000.0, double sampleRate = 44100.0)
-      => SetCoefficient(cutoff, sampleRate);
+      => DialFilter(cutoff, sampleRate);
 
     private double m_z1;
 
@@ -22,7 +22,7 @@ namespace Flux.Dsp.WaveFilter
 
     private double m_a0, m_b1;
 
-    public void SetCoefficient(double cutoffFrequency, double sampleRate)
+    public void DialFilter(double cutoffFrequency, double sampleRate = 44100)
     {
       m_cutoffFrequency = cutoffFrequency;
       m_sampleRate = sampleRate;

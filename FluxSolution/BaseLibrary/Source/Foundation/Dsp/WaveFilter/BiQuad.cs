@@ -8,30 +8,30 @@ namespace Flux.Dsp.WaveFilter
   {
     public BiQuadFrequencyFunction Function { get; private set; }
 
-    private double m_cutoff;
+    private double m_cutoffFrequency;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
-    public double Cutoff { get => m_cutoff; set => SetCoefficients(value, m_Q, m_gain, m_sampleRate); }
+    public double Cutoff { get => m_cutoffFrequency; set => DialFilter(value, m_Q, m_gain, m_sampleRate); }
 
     private double m_gain;
     /// <value>Typical audio range settings are between -30 to 30 dB, but no restrictions are enforced.</value>
-    public double Gain { get => m_gain; set => SetCoefficients(m_cutoff, m_Q, value, m_sampleRate); }
+    public double Gain { get => m_gain; set => DialFilter(m_cutoffFrequency, m_Q, value, m_sampleRate); }
 
     private double m_Q;
     /// <value>Typical audio range settings are between 0.1 to 10, but no restrictions are enforced.</value>
     /// <seealso cref="http://www.earlevel.com/main/2016/09/29/cascading-filters/"/>
-    public double Q { get => m_Q; set => SetCoefficients(m_cutoff, value, m_gain, m_sampleRate); }
+    public double Q { get => m_Q; set => DialFilter(m_cutoffFrequency, value, m_gain, m_sampleRate); }
 
     private double m_sampleRate;
     /// <summary>Sets the sample rate used for filter calculations.</summary>
-    public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_Q, m_gain, value); }
+    public double SampleRate { get => m_sampleRate; set => DialFilter(m_cutoffFrequency, m_Q, m_gain, value); }
 
-    public BiQuad(BiQuadFrequencyFunction frequencyFunction, double cutoff, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
+    public BiQuad(BiQuadFrequencyFunction frequencyFunction, double cutoffFrequency, double Q = 0.5, double gain = 0, double sampleRate = 44100)
     {
       ClearState();
 
       Function = frequencyFunction;
 
-      SetCoefficients(cutoff, Q, gain, sampleRate);
+      DialFilter(cutoffFrequency, Q, gain, sampleRate);
     }
 
     private double z1, z2;
@@ -46,7 +46,7 @@ namespace Flux.Dsp.WaveFilter
 
     private void SetCoefficientsBandPass()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
 
       a0 = kQ * norm;
       a1 = 0;
@@ -56,7 +56,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsHighPass()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
 
       a0 = 1.0 * norm;
       a1 = -2.0 * a0;
@@ -66,7 +66,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsHighShelf()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
 
       if (m_gain >= 0) // boost
       {
@@ -89,7 +89,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsLowPass()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
 
       a0 = kk * norm;
       a1 = 2.0 * a0;
@@ -99,7 +99,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsLowShelf()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
 
       if (m_gain >= 0) // boost
       {
@@ -122,7 +122,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsNotch()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, kQ = k / m_Q, norm = 1.0 / (1.0 + kQ + kk);
 
       a0 = (1.0 + kk) * norm;
       a1 = 2.0 * (kk - 1.0) * norm;
@@ -132,7 +132,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsPeak()
     {
-      double k = System.Math.Tan(System.Math.PI * (m_cutoff / m_sampleRate)), kk = k * k, invQk = 1.0 / m_Q * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vQk = v / m_Q * k;
+      double k = System.Math.Tan(System.Math.PI * (m_cutoffFrequency / m_sampleRate)), kk = k * k, invQk = 1.0 / m_Q * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vQk = v / m_Q * k;
 
       if (m_gain >= 0.0) // boost
       {
@@ -158,9 +158,9 @@ namespace Flux.Dsp.WaveFilter
     /// <param name="Fc">Uses normalized (to sample rate) frequency, where 1.0 is the sample rate, i.e. divide the frequency you want to set (in Hz) by your sample rate to get normalized frequency (2438.0/44100 for 2438 Hz at a sample rate of 44100 Hz).</param>
     /// <param name="Q"></param>
     /// <param name="peakGain">Peak gain in dB, where negative numbers are for cut, and positive numbers for boost.</param>
-    public void SetCoefficients(double cutoff, double q, double gain, double sampleRate)
+    public void DialFilter(double cutoffFrequency, double q, double gain, double sampleRate = 44100)
     {
-      m_cutoff = cutoff;
+      m_cutoffFrequency = cutoffFrequency;
       m_Q = q;
       m_gain = gain;
       m_sampleRate = sampleRate;

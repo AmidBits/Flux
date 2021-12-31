@@ -10,21 +10,21 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   {
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 and 20,000 Hz, but no restrictions are enforced.</value>
-    public double Cutoff { get => m_cutoff; set => SetCoefficients(value, m_resonance, m_sampleRate); }
+    public double Cutoff { get => m_cutoff; set => DialFilter(value, m_resonance, m_sampleRate); }
 
     private double m_resonance;
     /// <value>Typical audio range settings are between 0.1 to 10, but no restrictions are enforced.</value>
-    public double Resonance { get => m_resonance; set => SetCoefficients(m_cutoff, value, m_sampleRate); }
+    public double Resonance { get => m_resonance; set => DialFilter(m_cutoff, value, m_sampleRate); }
 
     private double m_sampleRate;
     /// <summary>Sets the sample rate in Hz, used for filter calculations.</summary>
-    public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_resonance, value); }
+    public double SampleRate { get => m_sampleRate; set => DialFilter(m_cutoff, m_resonance, value); }
 
-    public SallenKey(double cutoff = 200.0, double resonance = 0.5, double sampleRate = 44100.0)
+    public SallenKey(double cutoff = 200, double resonance = 0.5, double sampleRate = 44100)
     {
       ClearState();
 
-      SetCoefficients(cutoff, resonance, sampleRate);
+      DialFilter(cutoff, resonance, sampleRate);
     }
 
     private double ic1eq, ic2eq;
@@ -41,7 +41,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
     /// <param name="cutoff">The filter cutoff frequency, in Hz.</param>
     /// <param name="resonance">The filter resonance [0.0, 1.0].</param>
     /// <param name="sampleRate">The sample rate in Hz, defaults to 44.1 kHz.</param>
-    public void SetCoefficients(double cutoff, double resonance, double sampleRate)
+    public void DialFilter(double cutoff, double resonance, double sampleRate = 44100)
     {
       m_cutoff = cutoff;
       m_resonance = resonance;

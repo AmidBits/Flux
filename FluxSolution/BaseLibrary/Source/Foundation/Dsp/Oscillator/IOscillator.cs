@@ -5,15 +5,14 @@
   /// <seealso cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables"/>
   public interface IOscillator
   {
-    static IOscillator Empty => EmptyOscillator.Instance;
+    static IOscillator Empty
+      => new EmptyOscillator();
 
     double NextSample();
 
     private sealed class EmptyOscillator
       : IOscillator
     {
-      public static IOscillator Instance = new EmptyOscillator();
-
       public double NextSample()
         => throw new System.NotImplementedException(nameof(EmptyOscillator));
     }

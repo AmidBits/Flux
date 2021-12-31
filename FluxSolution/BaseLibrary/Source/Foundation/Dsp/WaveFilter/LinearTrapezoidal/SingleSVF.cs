@@ -10,27 +10,27 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 
     private double m_cutoff;
     /// <value>Typical audio range settings are between 20 to 20,000 Hz, but no restrictions are enforced.</value>
-    public double Cutoff { get => m_cutoff; set => SetCoefficients(value, m_Q, m_gain, m_sampleRate); }
+    public double Cutoff { get => m_cutoff; set => DialFilter(value, m_Q, m_gain, m_sampleRate); }
 
     private double m_gain;
     /// <value>Typical audio range settings are between -30 to 30 dB, but no restrictions are enforced.</value>
-    public double Gain { get => m_gain; set => SetCoefficients(m_cutoff, m_Q, value, m_sampleRate); }
+    public double Gain { get => m_gain; set => DialFilter(m_cutoff, m_Q, value, m_sampleRate); }
 
     private double m_Q;
     /// <value>Typical audio range settings are between 0.1 to 10, but no restrictions are enforced.</value>
-    public double Q { get => m_Q; set => SetCoefficients(m_cutoff, value, m_gain, m_sampleRate); }
+    public double Q { get => m_Q; set => DialFilter(m_cutoff, value, m_gain, m_sampleRate); }
 
     private double m_sampleRate;
     /// <summary>Sets the sample rate used for filter calculations.</summary>
-    public double SampleRate { get => m_sampleRate; set => SetCoefficients(m_cutoff, m_Q, m_gain, value); }
+    public double SampleRate { get => m_sampleRate; set => DialFilter(m_cutoff, m_Q, m_gain, value); }
 
-    public SingleSvf(SingleSvfFrequencyFunction frequencyFunction, double cutoffFrequency, double Q = 0.5, double gain = 0.0, double sampleRate = 44100.0)
+    public SingleSvf(SingleSvfFrequencyFunction frequencyFunction, double cutoffFrequency, double Q = 0.5, double gain = 0, double sampleRate = 44100)
     {
       ClearState();
 
       Function = frequencyFunction;
 
-      SetCoefficients(cutoffFrequency, Q, gain, sampleRate);
+      DialFilter(cutoffFrequency, Q, gain, sampleRate);
     }
 
     private double ic1eq, ic2eq;
@@ -48,7 +48,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
     /// <param name="Q">The filter Q [0.0, 1.0].</param>
     /// <param name="gain">Gain in dB, where negative numbers are for cut, and positive numbers for boost.</param>
     /// <param name="sampleRate">The sample rate in Hz, defaults to 44.1 kHz.</param>
-    private void SetCoefficients(double cutoff, double Q, double gain, double sampleRate)
+    private void DialFilter(double cutoff, double Q, double gain, double sampleRate = 44100)
     {
       m_cutoff = cutoff;
       m_Q = Q;

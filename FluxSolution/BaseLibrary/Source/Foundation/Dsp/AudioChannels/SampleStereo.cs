@@ -9,12 +9,12 @@
     public double FrontLeft { get; }
     public double FrontRight { get; }
 
-    public SampleStereo(in double frontLeft, in double frontRight)
+    public SampleStereo(double frontLeft, double frontRight)
     {
       FrontLeft = frontLeft;
       FrontRight = frontRight;
     }
-    public SampleStereo(in double frontCenter)
+    public SampleStereo(double frontCenter)
       : this(frontCenter, frontCenter)
     { }
 
