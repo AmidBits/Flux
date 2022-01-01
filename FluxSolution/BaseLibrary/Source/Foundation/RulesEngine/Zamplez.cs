@@ -5,7 +5,14 @@ namespace Flux
   {
     /// <summary>Run the rules engine zample.</summary>
     public static void RunRulesEngine()
-      => User.ShowCase();
+    {
+      System.Console.WriteLine(nameof(RunRulesEngine));
+      System.Console.WriteLine();
+
+      User.ShowCase();
+
+      System.Console.WriteLine();
+    }
 
     private sealed class User
     {

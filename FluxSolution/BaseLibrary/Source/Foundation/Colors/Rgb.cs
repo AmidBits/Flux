@@ -130,9 +130,9 @@ namespace Flux.Colors
       GetNormalizedChroma(out var _, out var max, out var r, out var g, out var b);
       var k = 1 - max;
       var ki = 1 - k;
-      var c = (ki - r) / ki;
-      var m = (ki - g) / ki;
-      var y = (ki - b) / ki;
+      var c = System.Math.Clamp(ki - r, 0, 1) / ki;
+      var m = System.Math.Clamp(ki - g, 0, 1) / ki;
+      var y = System.Math.Clamp(ki - b, 0, 1) / ki;
       return new(c, m, y, k);
     }
     /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>

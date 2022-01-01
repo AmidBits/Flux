@@ -199,6 +199,9 @@ namespace Flux
     /// <summary>Run the locale zample.</summary>
     public static void RunLocale()
     {
+      System.Console.WriteLine(nameof(RunLocale));
+      System.Console.WriteLine();
+
       System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.ClrVersion)} = \"{Flux.Locale.ClrVersion}\"");

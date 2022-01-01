@@ -11,8 +11,11 @@ namespace Flux
     private readonly static int[] m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
 
     /// <summary>Run the amb operator zample.</summary>
-    public static void RunAmb()
+    public static void RunAmbOperator()
     {
+      System.Console.WriteLine(nameof(RunAmbOperator));
+      System.Console.WriteLine();
+
       for (var i = 0; i < 3; i++)
       {
         AmbTestingImpl();

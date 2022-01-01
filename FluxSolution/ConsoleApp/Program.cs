@@ -16,16 +16,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Write(typeof(Flux.IValueSiBaseUnit<>));
-      Write(typeof(Flux.IValueSiDerivedUnit<>));
-      Write(typeof(Flux.IValueGeneralizedUnit<>));
 
-      static void Write(System.Type type)
-      {
-        var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).ToList();
-        System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
-        System.Console.WriteLine();
-      }
     }
 
     private static void Main(string[] args)

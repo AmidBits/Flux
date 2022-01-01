@@ -5,6 +5,9 @@ namespace Flux
   {
     public static void RunImmutableDataStructures()
     {
+      System.Console.WriteLine(nameof(RunImmutableDataStructures));
+      System.Console.WriteLine();
+
       RunAvlTree();
     }
 

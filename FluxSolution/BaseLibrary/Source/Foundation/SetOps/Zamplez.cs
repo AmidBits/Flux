@@ -6,6 +6,9 @@ namespace Flux
     /// <summary>Run the set ops zample.</summary>
     public static void RunSetOps()
     {
+      System.Console.WriteLine(nameof(RunSetOps));
+      System.Console.WriteLine();
+
       var os1 = new Flux.DataStructures.OrderedSet<int>() { 1, 2, 3, 4, 5, 6 };
       var os2 = new Flux.DataStructures.OrderedSet<int>() { 4, 5, 6, 7, 8, 9 };
 

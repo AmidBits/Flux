@@ -13,7 +13,7 @@
     public static void Run()
     {
 #if ZAMPLEZ
-      RunAmb();
+      RunAmbOperator();
       RunArrayRank2();
       RunColors();
       RunCoordinateSystems();
@@ -22,6 +22,7 @@
       RunLocale();
       ParallelVsSerial.Run();
       RunPhoneticAlgorithms();
+      RunReflection();
       RunRulesEngine();
       RunSetOps();
       RunTemporal();

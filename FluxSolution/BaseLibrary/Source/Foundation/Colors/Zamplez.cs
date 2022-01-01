@@ -6,6 +6,9 @@ namespace Flux
     /// <summary>Run the colors zample.</summary>
     public static void RunColors()
     {
+      System.Console.WriteLine(nameof(RunColors));
+      System.Console.WriteLine();
+
       var argb = Flux.Colors.Argb.FromRandom();
       //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
       //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);

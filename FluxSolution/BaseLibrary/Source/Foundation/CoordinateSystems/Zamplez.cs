@@ -6,6 +6,9 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
     {
+      System.Console.WriteLine(nameof(RunCoordinateSystems));
+      System.Console.WriteLine();
+
       Draw(GeographicCoordinate.MadridSpain, nameof(GeographicCoordinate.MadridSpain));
       Draw(GeographicCoordinate.PhoenixAzUsa, nameof(GeographicCoordinate.PhoenixAzUsa));
       Draw(GeographicCoordinate.TakapauNewZealand, nameof(GeographicCoordinate.TakapauNewZealand));

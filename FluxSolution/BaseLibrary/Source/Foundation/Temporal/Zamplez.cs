@@ -6,6 +6,9 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunTemporal()
     {
+      System.Console.WriteLine(nameof(RunTemporal));
+      System.Console.WriteLine();
+
       var dt = new Flux.MomentUtc(1100, 04, 28, 13, 30, 31);
       System.Console.WriteLine($"{dt}");
 

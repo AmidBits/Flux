@@ -4,6 +4,9 @@
   {
     public static void RunDataStructuresGraphs()
     {
+      System.Console.WriteLine(nameof(RunDataStructuresGraphs));
+      System.Console.WriteLine();
+
       AdjacencyList();
 
       AdjacencyMatrix1();
