@@ -1,13 +1,13 @@
 ﻿namespace Flux
 {
-  public interface ITabularDataAcquirer
+  public interface ITabularDataAcquirable
   {
     /// <summary>Acquire tabular data from the URI. The first array should be field names.</summary>
     System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
   }
 
   public abstract class ATabularDataAcquirer
-    : ITabularDataAcquirer
+    : ITabularDataAcquirable
   {
     public abstract System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
 
