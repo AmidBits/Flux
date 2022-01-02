@@ -9,20 +9,20 @@ namespace Flux
     {
       var scores = new System.Collections.Generic.Dictionary<string, double>();
 
-      var s = source.ToArray();
-      var t = target.ToArray();
+      var sarray = source.ToArray();
+      var tarray = target.ToArray();
 
-      typeof(Flux.Metrical.ISimpleMatchingCoefficient<>).GetDerivedTypes().Select(type => (type, s, t)).AsParallel().ForAll(vt =>
+      typeof(Flux.Metrical.ISimpleMatchingCoefficient<>).GetDerivedTypes().AsParallel().ForAll(type =>
       {
-        try
-        {
-          var instance = (Flux.Metrical.ISimpleMatchingCoefficient<T>?)System.Activator.CreateInstance(vt.type.MakeGenericType(typeof(T)));
+        //try
+        //{
+        Flux.Metrical.ISimpleMatchingCoefficient<T>? instance = (Flux.Metrical.ISimpleMatchingCoefficient<T>?)type.CreateGenericInstance(typeof(char));
 
-          var smc = instance?.GetSimpleMatchingCoefficient(vt.s, vt.t) ?? 0;
+        var smc = instance?.GetSimpleMatchingCoefficient(sarray, tarray) ?? 0;
 
-          scores.Add(vt.type.Name.Replace("`1", string.Empty), smc);
-        }
-        catch { }
+        scores.Add(type.Name.Replace("`1", string.Empty), smc);
+        //}
+        //catch { }
       });
 
       return scores;
