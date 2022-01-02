@@ -15,8 +15,5 @@ namespace Flux
 
       return false;
     }
-
-    public static int Exists(this string source, System.Func<char, int, bool> predicate)
-      => Exists(source, predicate);
   }
 }
