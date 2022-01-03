@@ -30,10 +30,8 @@ namespace Flux
       => LastIndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Reports the last index of the occurence of the target within the source. Or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf(this System.Span<char> source, string value, System.Collections.Generic.IEqualityComparer<char> comparer)
+    public static int LastIndexOf(this System.Span<char> source, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char> comparer)
     {
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
-
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       for (int index = source.Length - value.Length; index >= 0; index--)
@@ -43,7 +41,7 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the last index of the occurence of the target within the source. Or -1 if not found. Uses the default comparer</summary>
-    public static int LastIndexOf(this System.Span<char> source, string value)
+    public static int LastIndexOf(this System.Span<char> source, System.ReadOnlySpan<char> value)
       => LastIndexOf(source, value, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

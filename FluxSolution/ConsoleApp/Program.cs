@@ -17,6 +17,13 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var str = "Nickname: meziantou\r\nName: Gérald Barré";
+
+      foreach (var entry in str.EnumerateSplits(": "))
+      {
+        System.Console.WriteLine($"Line = \"{entry.SubSpan.ToString()}\"");
+      }
+
       var s = "Robert Hugo";
       var t = "Rupert Hugo";
 

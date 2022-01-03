@@ -17,14 +17,5 @@ namespace Flux
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
     public static int CountEqualAtStart<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int minLength)
       => CountEqualAtStart(source, target, System.Collections.Generic.EqualityComparer<T>.Default, out minLength);
-
-    /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the specified comparer.</summary>
-    /// <param name="minLength">The smaller length of the two spans.</param>
-    public static int CountEqualAtStart(this string source, string target, System.Collections.Generic.IEqualityComparer<char> equalityComparer, out int minLength)
-      => CountEqualAtStart(source, target, equalityComparer, out minLength);
-    /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
-    /// <param name="minLength">The smaller length of the two spans.</param>
-    public static int CountEqualAtStart(this string source, string target, out int minLength)
-      => CountEqualAtStart(source, target, System.Collections.Generic.EqualityComparer<char>.Default, out minLength);
   }
 }

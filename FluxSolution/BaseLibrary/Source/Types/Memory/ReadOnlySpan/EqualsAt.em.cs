@@ -7,7 +7,8 @@ namespace Flux
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-      if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length) return false;
+      if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
+        return false;
 
       while (length-- > 0)
         if (!comparer.Equals(source[sourceIndex++], target[targetIndex++]))

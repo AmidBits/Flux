@@ -4,7 +4,7 @@
   {
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       var table = CreateTable(target, equalityComparer);
 
@@ -45,7 +45,7 @@
       return indices;
 
       /// <summary>Creates a map of the amount of safely skippable elements in target (word).</summary>
-      static System.Collections.Generic.Dictionary<int, int> CreateTable(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      static System.Collections.Generic.Dictionary<int, int> CreateTable(System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       {
         var table = new System.Collections.Generic.Dictionary<int, int>
         {
@@ -55,9 +55,9 @@
         var positionIndex = 1; // Position index.
         var candidateIndex = 0; // Current candidate index.
 
-        while (positionIndex < target.Length)
+        while (positionIndex < source.Length)
         {
-          if (equalityComparer.Equals(target[positionIndex], target[candidateIndex]))
+          if (equalityComparer.Equals(source[positionIndex], source[candidateIndex]))
           {
             table[positionIndex] = table[candidateIndex];
           }
@@ -65,7 +65,7 @@
           {
             table[positionIndex] = candidateIndex;
 
-            while (candidateIndex >= 0 && !equalityComparer.Equals(target[positionIndex], target[candidateIndex]))
+            while (candidateIndex >= 0 && !equalityComparer.Equals(source[positionIndex], source[candidateIndex]))
               candidateIndex = table[candidateIndex];
           }
 
@@ -81,6 +81,6 @@
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => KnuthMorrisPrattSearch(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+      => FindIndicesKMP(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

@@ -32,7 +32,7 @@ namespace Flux
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.Span<T> source, System.Span<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int IndexOf<T>(this System.Span<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
     {
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
@@ -45,7 +45,7 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.Span<T> source, System.Span<T> value)
+    public static int IndexOf<T>(this System.Span<T> source, System.ReadOnlySpan<T> value)
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

@@ -4,7 +4,7 @@
   {
     /// <summary>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int FindIndexBMH<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
     {
       var skippable = CreateTable(source, target);
@@ -59,6 +59,6 @@
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     public static int BoyerMooreHorspoolSearch<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => BoyerMooreHorspoolSearch(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+      => FindIndexBMH(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
