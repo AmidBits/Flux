@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using Flux;
 
@@ -16,10 +17,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var s = "Robert Hugos";
-      var t = "Rupert Hugot";
+      var s = "Robert Hugo";
+      var t = "Rupert Hugo";
 
-      var b = Flux.ExtensionMethods.FuzzyEquals<char>(s, t, 0.7);
+      var b = Flux.ExtensionMethods.FuzzyEquals<char>(s, t, 0.89);
 
       System.Console.WriteLine(b);
     }
