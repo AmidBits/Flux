@@ -4,6 +4,12 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    //public static System.Collections.Generic.IEnumerable<T?> GetGenericInstances<T>(params System.Type[] genericTypeArguments)
+    //{
+    //  foreach(var derivedType in typeof(T).GetDerivedTypes())
+    //}
+      //=> typeof(Flux.Metrical.ISimpleMatchingCoefficient<>).GetDerivedTypes().Select(t => (T?)t.CreateGenericInstance(genericTypeArguments));
+
     public static System.Collections.Generic.IDictionary<string, double> GetSimpleMatchingCoefficients<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var scores = new System.Collections.Generic.Dictionary<string, double>();
