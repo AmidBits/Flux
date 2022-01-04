@@ -42,14 +42,5 @@ namespace Flux
     public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
       => AreIsomorphic(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
-
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b. Uses the specified equality comparer.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool AreIsomorphic(this string source, string target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
-      => AreIsomorphic((System.ReadOnlySpan<char>)source, (System.ReadOnlySpan<char>)target, equalityComparer);
-    /// <summary>Indicates whether the given two sequences, a and b, are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b. Uses the default equality comparer.</summary>
-    /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
-    public static bool AreIsomorphic(this string source, string target)
-      => AreIsomorphic((System.ReadOnlySpan<char>)source, (System.ReadOnlySpan<char>)target, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

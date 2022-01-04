@@ -1,12 +1,12 @@
 namespace Flux.Metrical
 {
-	/// <summary>Represents some arbitrary measure of distance between two sequences using a custom dynamic programming matrix.</summary>
-	public interface IMatrixCustomDp<T>
-	{
+  /// <summary>Represents some arbitrary measure of distance between two sequences.</summary>
+	public interface IMeasuredDistanceEquatable<T>
+  {
     /// <summary>Compute a measured distance for the two sequences.</summary>
     /// <param name="source">The source sequence.</param>
     /// <param name="target">The target sequence.</param>
     /// <returns>A measure that represents an arbitrary distance between the two sequences.</returns>
-    double[,] GetCustomDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
+		int GetMeasuredDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
   }
 }

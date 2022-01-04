@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public sealed class LongestCommonSubstring<T>
-  : IMatrixDp<T>, IMeasuredLength<T>
+  : IDpMatrixEquatable<T>, IMeasuredLengthEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 

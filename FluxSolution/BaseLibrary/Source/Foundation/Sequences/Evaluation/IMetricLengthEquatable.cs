@@ -1,7 +1,7 @@
 namespace Flux.Metrical
 {
   /// <summary>Represents a metric of length.</summary>
-	public interface IMetricLength<T>
+	public interface IMetricLengthEquatable<T>
   {
     /// <summary>Compute a length metric for the two sequences.</summary>
     /// <param name="source">The source sequence.</param>

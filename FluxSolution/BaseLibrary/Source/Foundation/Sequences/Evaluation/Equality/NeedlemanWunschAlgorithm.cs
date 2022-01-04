@@ -5,7 +5,7 @@
   /// <seealso cref="https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm"/>
   /// <seealso cref="http://www.biorecipes.com/DynProgBasic/code.html"/>
   public sealed class NeedlemanWunschAlgorithm<T>
-    : IMatrixDp<T>
+    : IDpMatrixEquatable<T>
   {
     public int LinearGapPenalty { get; init; }
     public System.Func<T, T, int> SubstitutionMatrix { get; init; }

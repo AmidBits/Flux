@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
   public sealed class ShortestCommonSupersequence<T>
-    : IMatrixDp<T>, IMetricDistance<T>, IMetricLength<T>//, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T> // two strings each 15 chars, can match 18
+    : IDpMatrixEquatable<T>, IMetricDistanceEquatable<T>, IMetricLengthEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -52,13 +52,13 @@ namespace Flux.Metrical
       }
       else
       {
-        if (matrix[si - 1, ti] < matrix[si, ti - 1]) // If the top cell of has less value than the left cell, then include the current source element and find SCS of substring less the one added.
+        if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
         {
           var list = GetDpList(matrix, source, target, si - 1, ti);
           list.Add(source[si - 1]);
           return list;
         }
-        else // If the left cell has less value than the top cell, then include the current target element find SCS of substring less the one added.
+        else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
         {
           var list = GetDpList(matrix, source, target, si, ti - 1);
           list.Add(target[ti - 1]);
@@ -73,45 +73,12 @@ namespace Flux.Metrical
       return GetDpList(matrix, source, target, source.Length, target.Length);
     }
 
-    ///// <summary>Returns the items comprising the shortest common super-sequence by means of longest common subsequence (LCS).</summary>
-    //public System.Collections.Generic.List<T> GetList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-    //{
-    //  var lcsl = Backtrack(new LongestCommonSubsequence<T>(EqualityComparer).GetFullMatrix(source, target), source, target, source.Length, target.Length);
-
-    //  var si = 0;
-    //  var ti = 0;
-    //  var li = 0;
-
-    //  while (li < lcsl.Count)
-    //  {
-    //    if (si < source.Length && !EqualityComparer.Equals(source[si], lcsl[li]))
-    //    {
-    //      lcsl.Insert(li++, source[si++]);
-    //      continue;
-    //    }
-    //    else if (ti < target.Length && !EqualityComparer.Equals(target[ti], lcsl[li]))
-    //    {
-    //      lcsl.Insert(li++, target[ti++]);
-    //      continue;
-    //    }
-    //    else
-    //    {
-    //      si++;
-    //      ti++;
-    //      li++;
-    //    }
-    //  }
-
-    //  while (si < source.Length)
-    //    lcsl.Insert(li++, source[si++]);
-    //  while (ti < target.Length)
-    //    lcsl.Insert(li++, target[ti++]);
-
-    //  return lcsl;
-    //}
-
     public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => source.Length + target.Length - 2 * GetMetricLength(source, target);
+    {
+      var length = source.Length + target.Length;
+
+      return length - 2 * (length - GetMetricLength(source, target));
+    }
 
     public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetDpMatrix(source, target)[source.Length, target.Length];
@@ -131,5 +98,5 @@ namespace Flux.Metrical
   var b = @"bdcaba";
 
   var fm = scs.GetFullMatrix(a, b);
-  var l = scs.GetList(a, b);
+  var l = scs.GetList(a, b); // Now contains: "abdcabdab"
 */

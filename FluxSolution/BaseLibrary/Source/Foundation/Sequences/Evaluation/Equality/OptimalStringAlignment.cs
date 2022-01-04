@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class OptimalStringAlignment<T>
-    : AMetrical<T>, IMatrixDp<T>, IMetricDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IDpMatrixEquatable<T>, IMetricDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
   {
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)

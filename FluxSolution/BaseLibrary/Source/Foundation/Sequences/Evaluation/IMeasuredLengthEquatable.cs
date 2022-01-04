@@ -1,7 +1,7 @@
 namespace Flux.Metrical
 {
   /// <summary>Represents some arbitrary measure of length between two sequences. Some cannot be used to derive direct metrics. E.g. the longest common substring, since there can be many between two strings.</summary>
-	public interface IMeasuredLength<T>
+	public interface IMeasuredLengthEquatable<T>
   {
     /// <summary>Compute a length measure for the two specified sequences.</summary>
     /// <param name="source">The source sequence.</param>

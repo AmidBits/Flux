@@ -1,7 +1,7 @@
 namespace Flux.Metrical
 {
 	/// <summary>Represents some arbitrary values with two sequences using a dynamic programming matrix.</summary>
-	public interface IMatrixDp<T>
+	public interface IDpMatrixEquatable<T>
 	{
     /// <summary>Compute a value matrix with the two sequences.</summary>
     /// <param name="source">The source (or a) sequence.</param>
