@@ -148,16 +148,16 @@ namespace Flux.Geometry
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point3 InterpolateCosine(Point3 p1, Point3 p2, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateCosine(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Y, p2.Y, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Z, p2.Z, mu)));
+      => new(System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.Y, p2.Y, mu)), System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.Z, p2.Z, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point3 InterpolateCubic(Point3 p0, Point3 p1, Point3 p2, Point3 p3, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateCubic(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Y, p1.Y, p2.Y, p3.Y, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Z, p1.Z, p2.Z, p3.Z, mu)));
+      => new(System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu)), System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.Z, p1.Z, p2.Z, p3.Z, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point3 InterpolateHermite2(Point3 p0, Point3 p1, Point3 p2, Point3 p3, double mu, double tension, double bias)
-      => new(System.Convert.ToInt32(Maths.InterpolateHermite(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Z, p1.Z, p2.Z, p3.Z, mu, tension, bias)));
+      => new(System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)), System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.Z, p1.Z, p2.Z, p3.Z, mu, tension, bias)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point3 InterpolateLinear(Point3 p1, Point3 p2, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateLinear(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Y, p2.Y, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Z, p2.Z, mu)));
+      => new(System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.Y, p2.Y, mu)), System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.Z, p2.Z, mu)));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static Point3 Lerp(Point3 source, Point3 target, double mu)

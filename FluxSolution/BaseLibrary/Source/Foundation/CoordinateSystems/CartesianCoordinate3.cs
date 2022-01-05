@@ -356,16 +356,16 @@ namespace Flux
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateCosine(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
-      => new(Maths.InterpolateCosine(p1.m_x, p2.m_x, mu), Maths.InterpolateCosine(p1.m_y, p2.m_y, mu), Maths.InterpolateCosine(p1.Z, p2.Z, mu));
+      => new(CosineInterpolation.Interpolate(p1.m_x, p2.m_x, mu), CosineInterpolation.Interpolate(p1.m_y, p2.m_y, mu), CosineInterpolation.Interpolate(p1.Z, p2.Z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateCubic(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu)
-      => new(Maths.InterpolateCubic(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), Maths.InterpolateCubic(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), Maths.InterpolateCubic(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
+      => new(CubicInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), CubicInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), CubicInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateHermite2(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu, double tension, double bias)
-      => new(Maths.InterpolateHermite(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), Maths.InterpolateHermite(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), Maths.InterpolateHermite(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
+      => new(HermiteInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate3 InterpolateLinear(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
-      => new(Maths.InterpolateLinear(p1.m_x, p2.m_x, mu), Maths.InterpolateLinear(p1.m_y, p2.m_y, mu), Maths.InterpolateLinear(p1.m_z, p2.m_z, mu));
+      => new(LinearInterpolation.Interpolate(p1.m_x, p2.m_x, mu), LinearInterpolation.Interpolate(p1.m_y, p2.m_y, mu), LinearInterpolation.Interpolate(p1.m_z, p2.m_z, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static CartesianCoordinate3 Lerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)

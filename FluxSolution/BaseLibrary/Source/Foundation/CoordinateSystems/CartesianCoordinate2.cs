@@ -439,16 +439,16 @@ namespace Flux
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateCosine(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
-      => new(Maths.InterpolateCosine(y1.m_x, y2.m_x, mu), Maths.InterpolateCosine(y1.m_y, y2.m_y, mu));
+      => new(CosineInterpolation.Interpolate(y1.m_x, y2.m_x, mu), CosineInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateCubic(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu)
-      => new(Maths.InterpolateCubic(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), Maths.InterpolateCubic(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
+      => new(CubicInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), CubicInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateHermite2(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu, double tension, double bias)
-      => new(Maths.InterpolateHermite(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), Maths.InterpolateHermite(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
+      => new(HermiteInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static CartesianCoordinate2 InterpolateLinear(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
-      => new(Maths.InterpolateLinear(y1.m_x, y2.m_x, mu), Maths.InterpolateLinear(y1.m_y, y2.m_y, mu));
+      => new(LinearInterpolation.Interpolate(y1.m_x, y2.m_x, mu), LinearInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static CartesianCoordinate2 Lerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)

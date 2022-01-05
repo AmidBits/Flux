@@ -148,16 +148,16 @@ namespace Flux.Geometry
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCosine(Point2 p1, Point2 p2, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateCosine(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateCosine(p1.Y, p2.Y, mu)));
+      => new(System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.Y, p2.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateCubic(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateCubic(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(Maths.InterpolateCubic(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
+      => new(System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateHermite2(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu, double tension, double bias)
-      => new(System.Convert.ToInt32(Maths.InterpolateHermite(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(Maths.InterpolateHermite(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
+      => new(System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     public static Point2 InterpolateLinear(Point2 p1, Point2 p2, double mu)
-      => new(System.Convert.ToInt32(Maths.InterpolateLinear(p1.X, p2.X, mu)), System.Convert.ToInt32(Maths.InterpolateLinear(p1.Y, p2.Y, mu)));
+      => new(System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.Y, p2.Y, mu)));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static Point2 Lerp(Point2 source, Point2 target, double mu)
