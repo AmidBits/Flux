@@ -6,7 +6,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class DamerauLevenshteinDistanceCustom<T>
-    : AMetrical<T>, IDpMatrixCustomEquatable<T>, IMetricDistanceCustomEquatable<T>
+    : AMetrical<T>, IDpMatrixCustomEquatable<T>, IEditDistanceCustomizedEquatable<T>
     where T : notnull
   {
     public double CostOfDeletion { get; set; } = 1;
@@ -83,7 +83,7 @@ namespace Flux.Metrical
       return ldg;
     }
 
-    public double GetMetricDistanceCustom(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double GetEditDistanceCustomized(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 

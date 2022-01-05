@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
   /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
   public sealed class LongestCommonSubsequence<T>
-    : AMetrical<T>, IDpMatrixEquatable<T>, IMetricDistanceEquatable<T>, IMetricLengthEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
+    : AMetrical<T>, IDpMatrixEquatable<T>, IEditDistanceEquatable<T>, IMetricLengthEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
   {
     public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
@@ -61,7 +61,7 @@ namespace Flux.Metrical
       return lcs;
     }
 
-    public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => source.Length + target.Length - 2 * GetMetricLength(source, target);
 
     public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

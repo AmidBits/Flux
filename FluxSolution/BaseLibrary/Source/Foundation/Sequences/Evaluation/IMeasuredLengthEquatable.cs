@@ -1,12 +1,12 @@
 namespace Flux.Metrical
 {
-  /// <summary>Represents some arbitrary measure of length between two sequences. Some cannot be used to derive direct metrics. E.g. the longest common substring, since there can be many between two strings.</summary>
+  /// <summary>Represents an arbitrary length measure of equality between two sets. Some cannot be used to derive direct metrics. E.g. the longest common substring, since there can be many between two strings.</summary>
 	public interface IMeasuredLengthEquatable<T>
   {
-    /// <summary>Compute a length measure for the two specified sequences.</summary>
-    /// <param name="source">The source sequence.</param>
-    /// <param name="target">The target sequence.</param>
-    /// <returns>A measure that represents a length of some relation between the two sequences.</returns>
+    /// <summary>Measure a length of two sets.</summary>
+    /// <param name="source">The source set.</param>
+    /// <param name="target">The target set.</param>
+    /// <returns>A measure that represents a length of equality between two sets.</returns>
 		int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
   }
 }

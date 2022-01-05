@@ -28,27 +28,27 @@ namespace Collections.Generic
     [TestMethod]
     public void DamerauLevenshteinDistance()
     {
-      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text1a, m_text1b));
-      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text1a, m_text1b));
+      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
 
-      Assert.AreEqual(0, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetMetricDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(60, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
 
-      Assert.AreEqual(5, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
-      Assert.AreEqual(3, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+      Assert.AreEqual(5, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(3, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
 
-      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
     }
 
     [TestMethod]
     public void HammingDistance()
     {
-      Assert.AreEqual(0, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.HammingDistance<char>(m_comparerDoNotIgnoreCase).GetMetricDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(60, new Flux.Metrical.HammingDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
 
-      Assert.AreEqual(6, new Flux.Metrical.HammingDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+      Assert.AreEqual(6, new Flux.Metrical.HammingDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(4, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
     }
 
     [TestMethod]
@@ -67,17 +67,17 @@ namespace Collections.Generic
     [TestMethod]
     public void LevenshteinDistance()
     {
-      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text1a, m_text1b));
-      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
 
-      Assert.AreEqual(0, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.LevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetMetricDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(60, new Flux.Metrical.LevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
 
-      Assert.AreEqual(6, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+      Assert.AreEqual(6, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(4, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
 
-      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
     }
 
     [TestMethod]
@@ -115,17 +115,17 @@ namespace Collections.Generic
     [TestMethod]
     public void OptimalStringAlignment()
     {
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetMetricDistance(m_text1a, m_text1b));
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
 
-      Assert.AreEqual(0, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.OptimalStringAlignment<char>(m_comparerDoNotIgnoreCase).GetMetricDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(60, new Flux.Metrical.OptimalStringAlignment<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
 
-      Assert.AreEqual(5, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetMetricDistance(m_text3a, m_text3b));
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetMetricDistance(m_text3a, m_text3b));
+      Assert.AreEqual(5, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
 
-      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetMetricDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetMetricDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
     }
   }
 }

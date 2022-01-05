@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class OptimalStringAlignment<T>
-    : AMetrical<T>, IDpMatrixEquatable<T>, IMetricDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
+    : AMetrical<T>, IDpMatrixEquatable<T>, IEditDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
   {
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
@@ -77,7 +77,7 @@ namespace Flux.Metrical
     //  return ldg;
     //}
 
-    public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
@@ -118,6 +118,6 @@ namespace Flux.Metrical
       => 1.0 - GetSimpleMatchingDistance(source, target);
 
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => (double)GetMetricDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }
 }

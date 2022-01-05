@@ -6,7 +6,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Jaro–Winkler_distance"/>
   /// <seealso cref="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/>
   public sealed class JaroWinklerDistance<T>
-    : INormalizedDistanceEquatable<T>
+    : IEditDistanceNormalizedEquatable<T>
   {
     /// <summary>BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</summary>
     public double BoostThreshold { get; set; } = 0.7;
@@ -21,7 +21,7 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    public double GetNormalizedDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double GetEditDistanceNormalized(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1 - GetNormalizedSimilarity(source, target);
 
     public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

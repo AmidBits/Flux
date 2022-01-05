@@ -17,7 +17,7 @@ namespace Text
     public void DamerauLevenstein_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>().GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>().GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -25,7 +25,7 @@ namespace Text
     public void DamerauLevenstein_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreCase).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -33,7 +33,7 @@ namespace Text
     public void DamerauLevenstein_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreNonSpace).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -41,7 +41,7 @@ namespace Text
     public void DamerauLevenstein_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerNone).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerNone).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -49,7 +49,7 @@ namespace Text
     public void HammingDistance_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -57,7 +57,7 @@ namespace Text
     public void HammingDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreCase).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -65,7 +65,7 @@ namespace Text
     public void HammingDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreNonSpace).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -73,7 +73,7 @@ namespace Text
     public void HammingDistance_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -113,7 +113,7 @@ namespace Text
     public void LevenshteinDistance_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>().GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.LevenshteinDistance<char>().GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -121,7 +121,7 @@ namespace Text
     public void LevenshteinDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreCase).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -129,7 +129,7 @@ namespace Text
     public void LevenshteinDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreNonSpace).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -137,7 +137,7 @@ namespace Text
     public void LevenshteinDistance_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerNone).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerNone).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -241,7 +241,7 @@ namespace Text
     public void OptimalStringAlignment_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>().GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.OptimalStringAlignment<char>().GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -249,7 +249,7 @@ namespace Text
     public void OptimalStringAlignment_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreCase).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreCase).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -257,7 +257,7 @@ namespace Text
     public void OptimalStringAlignment_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreNonSpace).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -265,7 +265,7 @@ namespace Text
     public void OptimalStringAlignment_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerNone).GetMetricDistance(source, target);
+      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerNone).GetEditDistance(source, target);
       Assert.AreEqual(expected, actual);
     }
   }

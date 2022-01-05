@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Hamming_distance"/>
   /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
   public sealed class HammingDistance<T>
-    : IMetricDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
+    : IEditDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -14,7 +14,7 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    public int GetMetricDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       if (source.Length != target.Length) throw new System.ArgumentException($"The source length ({source.Length}) and the target length ({target.Length}) must be equal.");
 
@@ -31,6 +31,6 @@ namespace Flux.Metrical
       => 1.0 - GetSimpleMatchingDistance(source, target);
 
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => (double)GetMetricDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }
 }

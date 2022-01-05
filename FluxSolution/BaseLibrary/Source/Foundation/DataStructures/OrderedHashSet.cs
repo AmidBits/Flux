@@ -14,11 +14,11 @@
 
   namespace DataStructures
   {
-    public sealed class OrderedHashSet<T>
-      : System.Collections.ObjectModel.KeyedCollection<T, T>
-      where T : notnull
+    public sealed class OrderedHashSet<TItemAndKeyInOne>
+      : System.Collections.ObjectModel.KeyedCollection<TItemAndKeyInOne, TItemAndKeyInOne>
+      where TItemAndKeyInOne : notnull
     {
-      protected override T GetKeyForItem(T item)
+      protected override TItemAndKeyInOne GetKeyForItem(TItemAndKeyInOne item)
         => item;
 
       public override string ToString()
