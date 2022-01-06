@@ -17,6 +17,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      {
+        var array = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
+        var matrix = Flux.Metrical.LongestIncreasingSubsequence.GetMatrix<int>(array, out var length);
+        var list = Flux.Metrical.LongestIncreasingSubsequence.GetSubsequence<int>(array);
+      }
+
+      {
+        var array = new int[] { 1, 5, 3, 2, 4 };
+        var matrix = Flux.Metrical.LongestAlternatingSubsequence.GetMatrix<int>(array, out var length);
+        var list = Flux.Metrical.LongestAlternatingSubsequence.GetSubsequence<int>(array);
+      }
     }
 
     private static void Main(string[] args)

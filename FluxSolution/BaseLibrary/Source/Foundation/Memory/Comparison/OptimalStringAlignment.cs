@@ -5,7 +5,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class OptimalStringAlignment<T>
-    : AMetrical<T>, IDpMatrixEquatable<T>, IEditDistanceEquatable<T>, ISimpleMatchingCoefficientEquatable<T>, ISimpleMatchingDistanceEquatable<T>
+    : AMetrical<T>, IEditDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public OptimalStringAlignment(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)
@@ -15,7 +15,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;

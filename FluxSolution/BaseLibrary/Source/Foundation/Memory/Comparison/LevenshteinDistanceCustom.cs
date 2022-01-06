@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistanceCustom<T>
-    : AMetrical<T>, IDpMatrixCustomEquatable<T>, IEditDistanceCustomizedEquatable<T>
+    : AMetrical<T>, IEditDistanceCustomizable<T>
   {
     public double CostOfDeletion { get; set; } = 1;
     public double CostOfInsertion { get; set; } = 1;
@@ -18,7 +18,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public double[,] GetDpMatrixCustom(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;
@@ -41,7 +41,7 @@ namespace Flux.Metrical
       return ldg;
     }
 
-    public double GetEditDistanceCustomized(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 

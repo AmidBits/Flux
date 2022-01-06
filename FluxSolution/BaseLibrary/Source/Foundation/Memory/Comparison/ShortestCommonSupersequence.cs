@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
   public sealed class ShortestCommonSupersequence<T>
-    : IDpMatrixEquatable<T>, IEditDistanceEquatable<T>, IMetricLengthEquatable<T>
+    : IEditDistance<T>, IMetricLengthEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -18,7 +18,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
-    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;
@@ -37,40 +37,41 @@ namespace Flux.Metrical
       return scsg;
     }
 
-    private System.Collections.Generic.List<T> GetDpList(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
+    public System.Collections.Generic.IList<T> GetSupersequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      if (si == 0) // If the end of the first string is reached, return the second string.
-        return target[..ti].ToArray().ToList();
-      else if (ti == 0) // If the end of the second string is reached, return the first string.
-        return source[..si].ToArray().ToList();
+      var matrix = GetMatrix(source, target);
 
-      if (EqualityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
+      return GetSequence(matrix, source, target, source.Length, target.Length);
+
+      System.Collections.Generic.IList<T> GetSequence(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
       {
-        var list = GetDpList(matrix, source, target, si - 1, ti - 1);
-        list.Add(source[si - 1]);
-        return list;
-      }
-      else
-      {
-        if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
+        if (si == 0) // If the end of the first string is reached, return the second string.
+          return target[..ti].ToArray().ToList();
+        else if (ti == 0) // If the end of the second string is reached, return the first string.
+          return source[..si].ToArray().ToList();
+
+        if (EqualityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
         {
-          var list = GetDpList(matrix, source, target, si - 1, ti);
+          var list = GetSequence(matrix, source, target, si - 1, ti - 1);
           list.Add(source[si - 1]);
           return list;
         }
-        else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
+        else
         {
-          var list = GetDpList(matrix, source, target, si, ti - 1);
-          list.Add(target[ti - 1]);
-          return list;
+          if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
+          {
+            var list = GetSequence(matrix, source, target, si - 1, ti);
+            list.Add(source[si - 1]);
+            return list;
+          }
+          else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
+          {
+            var list = GetSequence(matrix, source, target, si, ti - 1);
+            list.Add(target[ti - 1]);
+            return list;
+          }
         }
       }
-    }
-    public System.Collections.Generic.List<T> GetDpList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
-    {
-      matrix = GetDpMatrix(source, target);
-
-      return GetDpList(matrix, source, target, source.Length, target.Length);
     }
 
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
@@ -81,7 +82,7 @@ namespace Flux.Metrical
     }
 
     public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetDpMatrix(source, target)[source.Length, target.Length];
+      => GetMatrix(source, target)[source.Length, target.Length];
 
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetMetricLength(source, target) / (double)System.Math.Max(source.Length, target.Length);

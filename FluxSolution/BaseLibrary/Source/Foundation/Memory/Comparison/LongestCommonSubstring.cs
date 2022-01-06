@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public sealed class LongestCommonSubstring<T>
-  : IDpMatrixEquatable<T>, IMeasuredLengthEquatable<T>
+  : IMeasuredLengthEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -14,18 +14,21 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    private int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
+    private int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
     {
-      var lcsg = new int[source.Length + 1, target.Length + 1];
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
+
+      var lcsg = new int[sourceLength + 1, targetLength + 1];
 
       length = 0;
 
       sourceMaxIndex = 0;
       targetMaxIndex = 0;
 
-      for (var si = 0; si <= source.Length; si++)
+      for (var si = 0; si <= sourceLength; si++)
       {
-        for (var ti = 0; ti <= target.Length; ti++)
+        for (var ti = 0; ti <= targetLength; ti++)
         {
           if (si > 0 && ti > 0 && EqualityComparer.Equals(source[si - 1], target[ti - 1]))
           {
@@ -46,14 +49,14 @@ namespace Flux.Metrical
 
       return lcsg;
     }
-    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetDpMatrix(source, target, out var _, out var _, out var _);
+    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+      => GetMatrix(source, target, out var _, out var _, out var _);
 
-    public System.Collections.Generic.List<T> GetDpList(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
+    public T[] GetSubstring(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var lcs = new System.Collections.Generic.List<T>();
+      var matrix = GetMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
 
-      matrix = GetDpMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
+      var lcs = new T[length];
 
       if (length > 0)
       {

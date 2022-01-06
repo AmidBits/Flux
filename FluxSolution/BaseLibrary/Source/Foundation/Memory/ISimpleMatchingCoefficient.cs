@@ -2,7 +2,7 @@ namespace Flux.Metrical
 {
   /// <summary>Represents the simple matching coefficient (SMC) used for comparing the similarity and diversity of sample sets. The simple matching distance (SMD) can also be derived from this (SMD = 1 - SMC).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>
-  public interface ISimpleMatchingCoefficientEquatable<T>
+  public interface ISimpleMatchingCoefficient<T>
   {
     /// <summary>Compute a simple matching coefficient for the two specified sequences.</summary>
     /// <param name="source">The source sequence.</param>

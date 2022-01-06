@@ -3,7 +3,6 @@
   /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm"/>
   public sealed class SmithWatermanAlgorithm<T>
-    : IDpMatrixEquatable<T>
   {
     public int LinearGapPenalty { get; init; }
     public System.Func<T, T, int> SubstitutionMatrix { get; init; }
@@ -28,7 +27,7 @@
       LinearGapPenalty = -1;
     }
 
-    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
 
