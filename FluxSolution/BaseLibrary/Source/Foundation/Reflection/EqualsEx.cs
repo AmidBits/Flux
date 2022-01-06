@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflect
+  public static partial class Reflection
   {
     /// <summary>Same as equals but handles null.</summary>
     public static bool EqualsEx<TClass>(this TClass source, TClass target)

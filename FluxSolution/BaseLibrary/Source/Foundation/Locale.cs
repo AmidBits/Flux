@@ -187,7 +187,7 @@ namespace Flux
       => System.Environment.UserName;
 
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => System.Linq.Enumerable.ToDictionary(Reflect.GetPropertyInfos(typeof(Locale)), pi => pi.Name, pi => Reflect.GetValueEx(pi, typeof(Locale)));
+      => System.Linq.Enumerable.ToDictionary(Reflection.GetPropertyInfos(typeof(Locale)), pi => pi.Name, pi => Reflection.GetValueEx(pi, typeof(Locale)));
   }
 }
 

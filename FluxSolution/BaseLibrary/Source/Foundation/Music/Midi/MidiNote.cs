@@ -6,6 +6,9 @@ namespace Flux
   public struct MidiNote
     : System.IComparable<MidiNote>, System.IEquatable<MidiNote>, IValueGeneralizedUnit<int>
   {
+    public const byte MaxValue = 127;
+    public const byte MinValue = 0;
+
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflect
+  public static partial class Reflection
   {
     /// <summary>Get the current method name without using reflection.</summary>
     /// <remarks>Using reflection System.Reflection.MethodInfo.GetCurrentMethod() also works.</remarks>

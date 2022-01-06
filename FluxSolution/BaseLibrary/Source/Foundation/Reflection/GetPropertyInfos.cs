@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflect
+  public static partial class Reflection
   {
     /// <summary>Enumerates all PropertyInfo matching the specified binding flags and predicate. If the source is a System.Type, the values are enumerated from the type, otherwise the instance is used.</summary>
     /// <param name="source">An object or a System.Type to enumerate properties on.</param>
