@@ -4,7 +4,7 @@
   /// <see cref="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
   public sealed class LongestAlternatingSubsequence
   {
-    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer, out int length)
+    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T> comparer)
     {
       var sourceLength = source.Length;
 
@@ -37,15 +37,11 @@
       return matrix;
     }
     public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, out int length)
-      => GetMatrix(source, System.Collections.Generic.Comparer<T>.Default, out length);
-    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer)
-      => GetMatrix(source, comparer, out var _);
-    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source)
-      => GetMatrix(source, out var _);
+      => GetMatrix(source, out length, System.Collections.Generic.Comparer<T>.Default);
 
-    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T> comparer)
     {
-      var matrix = GetMatrix(source, comparer, out var length);
+      matrix = GetMatrix(source, out var length, comparer);
 
       var subsequence = new T[length];
 
@@ -63,7 +59,7 @@
 
       return subsequence;
     }
-    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source)
-      => GetSubsequence(source, System.Collections.Generic.Comparer<T>.Default);
+    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source, out int[,] matrix)
+      => GetSubsequence(source, out matrix, System.Collections.Generic.Comparer<T>.Default);
   }
 }
