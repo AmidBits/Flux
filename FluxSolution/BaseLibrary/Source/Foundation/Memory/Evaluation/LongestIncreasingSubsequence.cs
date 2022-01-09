@@ -2,9 +2,12 @@
 {
   /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-  public sealed class LongestIncreasingSubsequence
+  public sealed class LongestIncreasingSubsequence<T>
   {
-    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T> comparer)
+    public System.Collections.Generic.IComparer<T> Comparer
+      => System.Collections.Generic.Comparer<T>.Default;
+
+    public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
     {
       length = 0; // Length is returned in the matrix[0, 0].
 
@@ -21,7 +24,7 @@
         {
           var mid = lo + ((hi - lo) / 2);
 
-          if (comparer.Compare(source[matrix[0, mid]], source[i]) < 0)
+          if (Comparer.Compare(source[matrix[0, mid]], source[i]) < 0)
             lo = mid + 1;
           else
             hi = mid;
@@ -38,19 +41,15 @@
 
       return matrix;
     }
-    public static int[,] GetMatrix<T>(System.ReadOnlySpan<T> source, out int length)
-      => GetMatrix(source, out length, System.Collections.Generic.Comparer<T>.Default);
 
-    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T> comparer)
+    public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
     {
-      matrix = GetMatrix(source, out var length, comparer);
+      matrix = GetMatrix(source, out var length);
 
       var result = new T[length];
       for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])
         result[i] = source[k];
       return result;
     }
-    public static T[] GetSubsequence<T>(System.ReadOnlySpan<T> source, out int[,] matrix)
-      => GetSubsequence(source, out matrix, System.Collections.Generic.Comparer<T>.Default);
   }
 }

@@ -36,11 +36,11 @@ namespace Flux.Metrical
     }
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
-    public System.Collections.Generic.IList<T> GetSubsequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.IList<T> GetSubsequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      var lcs = new System.Collections.Generic.List<T>();
+      matrix = GetMatrix(source, target);
 
-      var matrix = GetMatrix(source, target);
+      var lcs = new System.Collections.Generic.List<T>();
 
       var si = source.Length;
       var ti = target.Length;

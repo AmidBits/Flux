@@ -37,13 +37,13 @@ namespace Flux.Metrical
       return scsg;
     }
 
-    public System.Collections.Generic.IList<T> GetSupersequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.IList<T> GetSupersequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      var matrix = GetMatrix(source, target);
+      matrix = GetMatrix(source, target);
 
-      return GetSequence(matrix, source, target, source.Length, target.Length);
+      return GetSupersequence(matrix, source, target, source.Length, target.Length);
 
-      System.Collections.Generic.IList<T> GetSequence(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
+      System.Collections.Generic.IList<T> GetSupersequence(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti)
       {
         if (si == 0) // If the end of the first string is reached, return the second string.
           return target[..ti].ToArray().ToList();
@@ -52,7 +52,7 @@ namespace Flux.Metrical
 
         if (EqualityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
         {
-          var list = GetSequence(matrix, source, target, si - 1, ti - 1);
+          var list = GetSupersequence(matrix, source, target, si - 1, ti - 1);
           list.Add(source[si - 1]);
           return list;
         }
@@ -60,13 +60,13 @@ namespace Flux.Metrical
         {
           if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
           {
-            var list = GetSequence(matrix, source, target, si - 1, ti);
+            var list = GetSupersequence(matrix, source, target, si - 1, ti);
             list.Add(source[si - 1]);
             return list;
           }
           else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
           {
-            var list = GetSequence(matrix, source, target, si, ti - 1);
+            var list = GetSupersequence(matrix, source, target, si, ti - 1);
             list.Add(target[ti - 1]);
             return list;
           }

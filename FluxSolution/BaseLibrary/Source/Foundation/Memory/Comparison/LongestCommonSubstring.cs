@@ -52,9 +52,9 @@ namespace Flux.Metrical
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetMatrix(source, target, out var _, out var _, out var _);
 
-    public T[] GetSubstring(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public T[] GetSubstring(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      var matrix = GetMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
+      matrix = GetMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
 
       var lcs = new T[length];
 
