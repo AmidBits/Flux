@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
   public sealed class ShortestCommonSupersequence<T>
-    : IEditDistance<T>, IMetricLengthEquatable<T>
+    : IEditDistance<T>, ILengthMetricEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -78,14 +78,14 @@ namespace Flux.Metrical
     {
       var length = source.Length + target.Length;
 
-      return length - 2 * (length - GetMetricLength(source, target));
+      return length - 2 * (length - GetLengthMetric(source, target));
     }
 
-    public int GetMetricLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int GetLengthMetric(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetMatrix(source, target)[source.Length, target.Length];
 
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => (double)GetMetricLength(source, target) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)GetLengthMetric(source, target) / (double)System.Math.Max(source.Length, target.Length);
 
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingCoefficient(source, target);

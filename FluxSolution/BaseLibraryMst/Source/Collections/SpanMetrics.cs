@@ -83,33 +83,33 @@ namespace Collections.Generic
     [TestMethod]
     public void LongestCommonSubsequence()
     {
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetMetricLength(m_text1a, m_text1b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetMetricLength(m_text1a, m_text1b));
+      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text1a, m_text1b));
+      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetLengthMetric(m_text1a, m_text1b));
 
-      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetMetricLength(m_text2a, m_text2b));
-      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparerDoNotIgnoreCase).GetMetricLength(m_text2a, m_text2b));
+      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetLengthMetric(m_text2a, m_text2b));
+      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparerDoNotIgnoreCase).GetLengthMetric(m_text2a, m_text2b));
 
-      Assert.AreEqual(5, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetMetricLength(m_text3a, m_text3b));
-      Assert.AreEqual(7, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetMetricLength(m_text3a, m_text3b));
+      Assert.AreEqual(5, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text3a, m_text3b));
+      Assert.AreEqual(7, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetLengthMetric(m_text3a, m_text3b));
 
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetMetricLength(m_text4a, m_text4b));
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetMetricLength(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetLengthMetric(m_text4a, m_text4b));
     }
 
     [TestMethod]
     public void LongestCommonSubstring()
     {
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetMeasuredLength(m_text1a, m_text1b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetMeasuredLength(m_text1a, m_text1b));
+      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text1a, m_text1b));
+      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetLengthMeasure(m_text1a, m_text1b));
 
-      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetMeasuredLength(m_text2a, m_text2b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparerDoNotIgnoreCase).GetMeasuredLength(m_text2a, m_text2b));
+      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetLengthMeasure(m_text2a, m_text2b));
+      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparerDoNotIgnoreCase).GetLengthMeasure(m_text2a, m_text2b));
 
-      Assert.AreEqual(3, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetMeasuredLength(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetMeasuredLength(m_text3a, m_text3b));
+      Assert.AreEqual(3, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text3a, m_text3b));
+      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetLengthMeasure(m_text3a, m_text3b));
 
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetMeasuredLength(m_text4a, m_text4b));
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetMeasuredLength(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text4a, m_text4b));
+      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetLengthMeasure(m_text4a, m_text4b));
     }
 
     [TestMethod]

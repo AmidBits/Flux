@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
   /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
   public sealed class LongestCommonSubstring<T>
-  : IMeasuredLengthEquatable<T>
+  : ILengthMeasureEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -72,7 +72,7 @@ namespace Flux.Metrical
       return lcs;
     }
 
-    public int GetMeasuredLength(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int GetLengthMeasure(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var maxLength = 0;
 

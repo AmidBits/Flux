@@ -18,13 +18,15 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       {
+        var lis = new Flux.Metrical.LongestIncreasingSubsequence<int>();
         var array = new int[] { 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 };
-        var list = Flux.Metrical.LongestIncreasingSubsequence.GetSubsequence<int>(array, out var matrix);
+        var list = lis.GetSubsequence(array, out var matrix);
       }
 
       {
+        var las = new Flux.Metrical.LongestAlternatingSubsequence<int>();
         var array = new int[] { 1, 5, 3, 2, 4 };
-        var list = Flux.Metrical.LongestAlternatingSubsequence.GetSubsequence<int>(array, out var matrix);
+        var list = las.GetSubsequence(array, out var matrix);
       }
     }
 

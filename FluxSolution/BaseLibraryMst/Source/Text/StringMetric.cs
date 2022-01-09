@@ -145,7 +145,7 @@ namespace Text
     public void LongestCommonSubsequence_Default()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>().GetMetricLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubsequence<char>().GetLengthMetric(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -153,7 +153,7 @@ namespace Text
     public void LongestCommonSubsequence_IgnoreCase()
     {
       var expected = 9;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreCase).GetMetricLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreCase).GetLengthMetric(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -161,7 +161,7 @@ namespace Text
     public void LongestCommonSubsequence_IgnoreNonSpace()
     {
       var expected = 8;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreNonSpace).GetMetricLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreNonSpace).GetLengthMetric(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -169,7 +169,7 @@ namespace Text
     public void LongestCommonSubsequence_None()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerNone).GetMetricLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerNone).GetLengthMetric(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -177,7 +177,7 @@ namespace Text
     public void LongestCommonSubstring_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>().GetMeasuredLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubstring<char>().GetLengthMeasure(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -185,7 +185,7 @@ namespace Text
     public void LongestCommonSubstring_IgnoreCase()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreCase).GetMeasuredLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreCase).GetLengthMeasure(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -193,7 +193,7 @@ namespace Text
     public void LongestCommonSubstring_IgnoreNonSpace()
     {
       var expected = 5;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreNonSpace).GetMeasuredLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreNonSpace).GetLengthMeasure(source, target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -201,7 +201,7 @@ namespace Text
     public void LongestCommonSubstring_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerNone).GetMeasuredLength(source, target);
+      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerNone).GetLengthMeasure(source, target);
       Assert.AreEqual(expected, actual);
     }
 

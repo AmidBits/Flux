@@ -3,9 +3,16 @@
   /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
   public sealed class LongestIncreasingSubsequence<T>
+    : ILengthMeasureEvaluable<T>
   {
-    public System.Collections.Generic.IComparer<T> Comparer
-      => System.Collections.Generic.Comparer<T>.Default;
+    public LongestIncreasingSubsequence(System.Collections.Generic.IComparer<T> comparer)
+      => Comparer = comparer;
+    public LongestIncreasingSubsequence()
+      : this(System.Collections.Generic.Comparer<T>.Default)
+    {
+    }
+
+    public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
     {
@@ -50,6 +57,13 @@
       for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])
         result[i] = source[k];
       return result;
+    }
+
+    public int GetLengthMeasure(System.ReadOnlySpan<T> source)
+    {
+      GetMatrix(source, out var length);
+
+      return length;
     }
   }
 }
