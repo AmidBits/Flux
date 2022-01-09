@@ -268,6 +268,7 @@ namespace Flux
     : System.IEquatable<CartesianCoordinate2>
   {
     public readonly static CartesianCoordinate2 Zero;
+    public readonly static CartesianCoordinate2[] Axes = new CartesianCoordinate2[] { new(1, 1), new(-1, 1), new(-1, -1), new(1, -1) };
 
     private readonly double m_x;
     private readonly double m_y;
@@ -329,6 +330,25 @@ namespace Flux
     public CartesianCoordinate2 Normalized()
       => EuclideanLength() is var m && m != 0 ? this / m : this;
 
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public int OrthantNumber(CartesianCoordinate2 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the zero axes and specified orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public int OrthantNumber(OrthantNumbering numbering)
+      => OrthantNumber(Zero, numbering);
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the zero axes and traditional orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public int OrthantNumber()
+      => OrthantNumber(Zero, OrthantNumbering.Traditional);
+
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public CartesianCoordinate2 PerpendicularCcw()
       => new(-Y, X);
@@ -360,17 +380,6 @@ namespace Flux
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public int SideTest(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => System.Math.Sign((m_x - b.m_x) * (a.m_y - b.m_y) - (m_y - b.m_y) * (a.m_x - b.m_x));
-
-    /// <summary>Convert the 2D vector to a quadrant based on some specified center vector.</summary>
-    /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public int QuadrantNumber(CartesianCoordinate2 center)
-      => X >= center.X ? (Y >= center.Y ? 0 : 3) : (Y >= center.Y ? 1 : 2);
-    /// <summary>Convert the 2D vector to a quadrant.</summary>
-    /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public int QuadrantNumber()
-      => QuadrantNumber(Zero);
 
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
@@ -424,7 +433,8 @@ namespace Flux
       => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
-      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      //=> new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      => new(Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveX, toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveY, toExclusiveY));
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate2 GetDirectionCosines(CartesianCoordinate2 source, CartesianCoordinate2 target)

@@ -222,6 +222,7 @@ namespace Flux
     : System.IEquatable<CartesianCoordinate3>
   {
     public static readonly CartesianCoordinate3 Zero;
+    public readonly static CartesianCoordinate3[] Axes = new CartesianCoordinate3[] { new(1, 1, 1), new(-1, 1, 1), new(-1, -1, 1), new(1, -1, 1), new(1, -1, -1), new(-1, -1, -1), new(-1, 1, -1), new(1, 1, -1) };
 
     private readonly double m_x;
     private readonly double m_y;
@@ -289,15 +290,24 @@ namespace Flux
     public CartesianCoordinate3 Normalized()
       => EuclideanLength() is var m && m != 0 ? this / m : this;
 
-    /// <summary>Returns the octant of the 3D vector based on the specified axis vector. This is the more traditional octant.</summary>
-    /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public int OctantNumber(CartesianCoordinate3 center)
-      => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5));
-    /// <summary>Returns the orthant (octant) of the 3D vector using binary numbering: X = 1, Y = 2 and Z = 4, which are then added up, based on the sign of the respective component.</summary>
+    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(CartesianCoordinate3 center)
-      => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4);
+    public int OrthantNumber(CartesianCoordinate3 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5)),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2) + (m_z < center.m_z ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+    /// <summary>Returns the orthant (octant) of the 3D vector using the zero axes and specified orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public int OrthantNumber(OrthantNumbering numbering)
+      => OrthantNumber(Zero, numbering);
+    /// <summary>Returns the orthant (octant) of the 3D vector using the zero axes and traditional orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public int OrthantNumber()
+      => OrthantNumber(Zero, OrthantNumbering.Traditional);
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
@@ -341,11 +351,11 @@ namespace Flux
       => (target - source).EuclideanLength();
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static CartesianCoordinate3 FromRandomAbsolute(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
+    public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
+      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
-    public static CartesianCoordinate3 FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
+    public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
+      => new(Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveX, toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveY, toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveZ, toExclusiveZ));
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate3 GetDirectionCosines(CartesianCoordinate3 source, CartesianCoordinate3 target)
