@@ -2,7 +2,7 @@ namespace Flux.Colors
 {
   /// <summary>Hsla is the same as Hsl with the addition of an alpha channel.</summary>
   public struct Ahsl
-    : System.IEquatable<Ahsl>
+    : System.IEquatable<Ahsl>, IHtmlColorStringable
   {
     public static readonly Ahsl Empty;
 
@@ -28,7 +28,7 @@ namespace Flux.Colors
     public Argb ToArgb()
       => new(System.Convert.ToByte(255 * m_alpha), HSL.ToRgb());
 
-    public string ToStringHtmlHsla()
+    public string ToHtmlColorString()
       => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {m_alpha})";
 
     #region Static methods

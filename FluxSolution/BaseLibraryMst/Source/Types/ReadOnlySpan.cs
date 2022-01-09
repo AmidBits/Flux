@@ -51,12 +51,11 @@ namespace Types
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
-      var expected = new System.ReadOnlySpan<int>(new int[] { 3, 11 });
+      var expected = new int[] { 3, 11 };
       var actual = span.KnuthMorrisPrattSearch(new int[] { 10, 20, 30 });
 
       Assert.AreEqual(expected.Length, actual.Count, "Element count is different.");
-      for (var i = 0; i < expected.Length; i++)
-        Assert.AreEqual(expected[i], actual[i]);
+      CollectionAssert.AreEqual(expected, actual, "Values are different.");
     }
 
     [TestMethod]
@@ -64,10 +63,23 @@ namespace Types
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
-      var expected = 8;
+      var expected = new int[] { 45, 60, 10, 20, 70, 80, 40, 20 };
       var actual = span.LongestAlternatingSubsequence();
 
-      Assert.AreEqual(expected, actual);
+      Assert.AreEqual(expected.Length, actual.Length, "Element count is different.");
+      CollectionAssert.AreEqual(expected, actual, "Values are different.");
+    }
+
+    [TestMethod]
+    public void LongestIncreasingSubsequence()
+    {
+      var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
+
+      var expected = new int[] { 10, 20, 30, 50, 70, 80 };
+      var actual = span.LongestIncreasingSubsequence();
+
+      Assert.AreEqual(expected.Length, actual.Length, "Element count is different.");
+      CollectionAssert.AreEqual(expected, actual, "Values are different.");
     }
   }
 }

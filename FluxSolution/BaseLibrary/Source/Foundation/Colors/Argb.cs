@@ -2,7 +2,7 @@ namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
   public struct Argb
-    : System.IEquatable<Argb>
+    : System.IEquatable<Argb>, IHtmlColorStringable
   {
     public static readonly Argb Empty;
 
@@ -78,15 +78,15 @@ namespace Flux.Colors
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
-    public string ToStringHtmlHex()
+    public string ToHtmlHexString()
       => $"#{m_alpha:X2}{RGB.Red:X2}{RGB.Green:X2}{RGB.Blue:X2}";
-    public string ToStringHtmlRgba()
+    public string ToHtmlColorString()
       => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha / 255.0})";
     /// <summary>Converts a Color value to a scRGB string representation of the value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/ScRGB"/>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
-    public string ToStringHtmlSc()
+    public string ToHtmlScString()
       => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
 
     #region Static methods

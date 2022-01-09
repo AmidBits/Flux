@@ -308,9 +308,9 @@ namespace Foundation
     public void RgbToStringHtml()
     {
       var rgb = new Flux.Colors.Rgb(67, 137, 207);
-      var shh = rgb.ToStringHtmlHex();
+      var shh = rgb.ToHtmlHexString();
       Assert.AreEqual(@"#4389CF", shh);
-      var shr = rgb.ToStringHtmlRgb();
+      var shr = rgb.ToHtmlColorString();
       Assert.AreEqual(@"rgb(67, 137, 207)", shr);
     }
   }

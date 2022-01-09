@@ -1,7 +1,7 @@
 namespace Flux.Colors
 {
   public struct Hsl
-    : System.IEquatable<Hsl>
+    : System.IEquatable<Hsl>, IHtmlColorStringable
   {
     public static readonly Hsl Empty;
 
@@ -78,7 +78,7 @@ namespace Flux.Colors
        );
     }
 
-    public string ToStringHtmlHsl()
+    public string ToHtmlColorString()
       => $"hsl({Hue}, {Saturation}%, {Lightness}%)";
 
     #region Static methods

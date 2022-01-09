@@ -31,7 +31,7 @@ namespace Flux
       var ahwb = argb.ToAhwb();
       System.Console.WriteLine($"{ahwb} ({ahwb.ToArgb()}) ({ahwb.ToAhsv()})");
 
-      System.Console.WriteLine($"{argb.ToStringHtmlHex()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.HSV.Value * 100):N1}%, {(ahsl.HSL.Lightness * 100):N1}%, {(ahsi.HSI.Intensity * 100):N1}% | Y={argb.RGB.GetLuma601()} | {(ahsv.HSV.Saturation * 100):N1}%, {(ahsl.HSL.Saturation * 100):N1}%, {(ahsi.HSI.Saturation * 100):N1}%");
+      System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.HSV.Value * 100):N1}%, {(ahsl.HSL.Lightness * 100):N1}%, {(ahsi.HSI.Intensity * 100):N1}% | Y={argb.RGB.GetLuma601()} | {(ahsv.HSV.Saturation * 100):N1}%, {(ahsl.HSL.Saturation * 100):N1}%, {(ahsi.HSI.Saturation * 100):N1}%");
       System.Console.WriteLine();
     }
   }

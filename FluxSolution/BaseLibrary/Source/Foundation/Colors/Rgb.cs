@@ -1,7 +1,7 @@
 namespace Flux.Colors
 {
   public struct Rgb
-    : System.IEquatable<Rgb>
+    : System.IEquatable<Rgb>, IHtmlColorStringable
   {
     public static readonly Rgb Empty;
 
@@ -193,13 +193,13 @@ namespace Flux.Colors
     public int ToInt()
       => ((Red << 16) & 0x00FF0000) | ((Green << 8) & 0x0000FF00) | (Blue & 0x000000FF);
 
+    public string ToHtmlColorString()
+      => $"rgb({Red}, {Green}, {Blue})";
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
-    public string ToStringHtmlHex()
+    public string ToHtmlHexString()
       => $"#{Red:X2}{Green:X2}{Blue:X2}";
-    public string ToStringHtmlRgb()
-      => $"rgb({Red}, {Green}, {Blue})";
 
     #region Static methods
     public static Rgb FromRandom(System.Random rng)
