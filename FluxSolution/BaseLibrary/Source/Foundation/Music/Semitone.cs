@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Semitone unit of itself.</summary>
+  /// <summary>Semitone, unit of itself. A musical interval equal to one hundred cents.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Semitone
@@ -12,9 +12,6 @@ namespace Flux
 
     public Semitone(int semitones)
       => m_value = semitones;
-
-    public int Semitones
-      => m_value;
 
     public int Value
       => m_value;

@@ -5,18 +5,30 @@ namespace Flux.Geometry
   {
     public static readonly LineSegment Empty;
 
-    public double X1;
-    public double Y1;
-    public double X2;
-    public double Y2;
+    public double m_x1;
+    public double m_y1;
+    public double m_x2;
+    public double m_y2;
 
     public LineSegment(double x1, double y1, double x2, double y2)
     {
-      X1 = x1;
-      Y1 = y1;
-      X2 = x2;
-      Y2 = y2;
+      m_x1 = x1;
+      m_y1 = y1;
+      m_x2 = x2;
+      m_y2 = y2;
     }
+
+    public double X1
+      => m_x1;
+    public double Y1
+      => m_y1;
+    public double X2
+      => m_x2;
+    public double Y2
+      => m_y2;
+
+    public LineSlope ToLineSlope()
+      => new(m_x1, m_y1, m_x2, m_y2);
 
     #region Static methods
     public static (double a, double b, double c) GetLineEquationCoefficients(double aX, double aY, double bX, double bY)

@@ -17,7 +17,7 @@ namespace Flux
     Hertz,
   }
 
-  /// <summary>Temporal frequency unit of Hertz. This is an SI derived quantity.</summary>
+  /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
     : System.IComparable<Frequency>, System.IEquatable<Frequency>, IValueGeneralizedUnit<double>, IValueSiDerivedUnit<double>
@@ -64,14 +64,14 @@ namespace Flux
       => frequency / sampleRate;
     /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
     /// <param name="frequency"></param>
-    /// <param name="cents"></param>
-    public static Frequency ComputePitchShift(Frequency frequency, Cent cents)
-      => new(frequency.Value * Cent.ConvertCentToFrequencyRatio(cents.Cents));
+    /// <param name="cent"></param>
+    public static Frequency ComputePitchShift(Frequency frequency, Cent cent)
+      => new(frequency.Value * Cent.ConvertCentToFrequencyRatio(cent.Value));
     /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
     /// <param name="frequency"></param>
-    /// <param name="semitones"></param>
-    public static Frequency ComputePitchShift(Frequency frequency, Semitone semitones)
-      => new(frequency.Value * Semitone.ConvertSemitoneToFrequencyRatio(semitones.Semitones));
+    /// <param name="semitone"></param>
+    public static Frequency ComputePitchShift(Frequency frequency, Semitone semitone)
+      => new(frequency.Value * Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
     /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
     public static double ComputeSamplesPerCycle(double frequency, double sampleRate)
       => sampleRate / frequency;

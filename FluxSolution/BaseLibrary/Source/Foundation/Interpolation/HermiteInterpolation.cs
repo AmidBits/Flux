@@ -1,7 +1,7 @@
 namespace Flux
 {
   public class HermiteInterpolation
-    : ITuple4Interpolatable
+    : IFourfoldInterpolatable
   {
     public double Bias { get; private set; }
     public double Tension { get; private set; }

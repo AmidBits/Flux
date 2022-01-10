@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Cent unit of itself.</summary>
+  /// <summary>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
   public struct Cent
@@ -12,9 +12,6 @@ namespace Flux
 
     public Cent(int cents)
       => m_value = cents;
-
-    public int Cents
-      => m_value;
 
     public int Value
       => m_value;

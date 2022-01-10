@@ -17,7 +17,7 @@ namespace Flux
 
     public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{SymbolSharp}/D{SymbolFlat}", @"D", $"D{SymbolSharp}/E{SymbolFlat}", @"E", @"F", $"F{SymbolSharp}/G{SymbolFlat}", @"G", $"G{SymbolSharp}/A{SymbolFlat}", @"A", $"A{SymbolSharp}/B{SymbolFlat}", @"B" };
 
-    private readonly int m_number;
+    private readonly byte m_number;
 
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));

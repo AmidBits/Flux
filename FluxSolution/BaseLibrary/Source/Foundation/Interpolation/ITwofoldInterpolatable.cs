@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public interface ITuple2Interpolatable
+  public interface ITwofoldInterpolatable
   {
     double GetInterpolation(double v1, double v2, double mu);
   }
