@@ -38,48 +38,15 @@ namespace Flux.Geometry
     public int Z
       => m_z;
 
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength()
-      => Maths.Max(System.Math.Abs(m_x), System.Math.Abs(m_y), System.Math.Abs(m_z));
-
-    /// <summary>Compute the length (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
-    /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
-
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public int ManhattanLength()
-      => System.Math.Abs(m_x) + System.Math.Abs(m_y) + System.Math.Abs(m_z);
-
-    /// <summary>Returns the octant of the 3D vector based on the specified axis vector. This is the more traditional octant.</summary>
-    /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
-    public int OctantNumber(Point3 center)
-      => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5));
-
-    /// <summary>Returns the orthant (octant) of the 3D vector using binary numbering: X = 1, Y = 2 and Z = 4, which are then added up, based on the sign of the respective component.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(Point3 center)
-      => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4);
-
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> from the <see cref="Point3"/>.</summary>
     public CartesianCoordinate3 ToCartesianCoordinate3()
       => new(m_x, m_y, m_z);
-
     /// <summary>Creates a <see cref='Size3'/> from a <see cref='Point3'/>.</summary>
     public Size3 ToSize3()
       => new(m_x, m_y, m_z);
-
     /// <summary>Converts the <see cref="Point3"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     public long ToUniqueIndex(int gridWidth, int gridHeight)
       => ToUniqueIndex(m_x, m_y, m_z, gridWidth, gridHeight);
-
     /// <summary>Convert the vector to a unique index using the length of the X and the Y axes.</summary>
     public System.Numerics.Vector3 ToVector3()
       => new(m_x, m_y, m_z);
@@ -88,7 +55,11 @@ namespace Flux.Geometry
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(Point3 p1, Point3 p2)
-      => (p2 - p1).ChebyshevLength();
+      => ChebyshevLength(p2 - p1);
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(Point3 p)
+      => Maths.Max(System.Math.Abs(p.m_x), System.Math.Abs(p.m_y), System.Math.Abs(p.m_z));
 
     /// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
@@ -110,11 +81,19 @@ namespace Flux.Geometry
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(Point3 p1, Point3 p2)
-      => (p2 - p1).EuclideanLength();
+      => EuclideanLength(p2 - p1);
     /// <summary>Compute the euclidean distance squared of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistanceSquare(Point3 p1, Point3 p2)
-      => (p2 - p1).EuclideanLengthSquared();
+      => EuclideanLengthSquared(p2 - p1);
+    /// <summary>Compute the length (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanLength(Point3 p)
+      => System.Math.Sqrt(EuclideanLengthSquared(p));
+    /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanLengthSquared(Point3 p)
+      => System.Math.Pow(p.m_x, 2) + System.Math.Pow(p.m_y, 2) + System.Math.Pow(p.m_z, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point3 FromRandomAbsolute(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
@@ -170,7 +149,11 @@ namespace Flux.Geometry
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(Point3 p1, Point3 p2)
-      => (p2 - p1).ManhattanLength();
+      => ManhattanLength(p2 - p1);
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static int ManhattanLength(Point3 p)
+      => System.Math.Abs(p.m_x) + System.Math.Abs(p.m_y) + System.Math.Abs(p.m_z);
 
     /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
     public static Point3 MultiplyCeiling(Point3 p, double value)
@@ -181,6 +164,17 @@ namespace Flux.Geometry
 
     //public static Point3 Nlerp(Point3 source, Point3 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
+
+    /// <summary>Returns the octant of the 3D vector based on the specified axis vector. This is the more traditional octant.</summary>
+    /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
+    public static int OctantNumber(Point3 p, Point3 center)
+      => p.m_z >= center.m_z ? (p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2)) : (p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 7 : 6) : (p.m_x >= center.m_x ? 4 : 5));
+
+    /// <summary>Returns the orthant (octant) of the 3D vector using binary numbering: X = 1, Y = 2 and Z = 4, which are then added up, based on the sign of the respective component.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(Point3 p, Point3 center)
+      => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2) + (p.m_z >= center.m_z ? 0 : 4);
 
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
     public static Point3 Parse(string pointAsString)

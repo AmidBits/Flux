@@ -33,55 +33,15 @@ namespace Flux.Geometry
     public int Y
       => m_y;
 
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength()
-      => System.Math.Max(System.Math.Abs(m_x), System.Math.Abs(m_y));
-
-    /// <summary>Compute the length (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
-    /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2);
-
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public int ManhattanLength()
-      => System.Math.Abs(m_x) + System.Math.Abs(m_y);
-
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public Point2 PerpendicularCcw()
-      => new(-m_y, m_x);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public Point2 PerpendicularCw()
-      => new(m_y, -m_x);
-
-    /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. This is the more traditional quadrant.</summary>
-    /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public int QuadrantNumber(Point2 center)
-      => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2);
-
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using binary numbering: X = 1 and Y = 2, which are then added up, based on the sign of the respective component.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(Point2 center)
-      => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2);
-
     /// <summary>Creates a new <see cref="CartesianCoordinate2"/> from the <see cref="Point2"/>.</summary>
     public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_x, m_y);
-
     /// <summary>Creates a <see cref='Size2'/> from a <see cref='Point2'/>.</summary>
     public Size2 ToSize2()
       => new(m_x, m_y);
-
     /// <summary>Converts the <see cref="Point2"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     public long ToUniqueIndex(int gridWidth)
       => ToUniqueIndex(m_x, m_y, gridWidth);
-
     public System.Numerics.Vector2 ToVector2()
       => new(m_x, m_y);
 
@@ -89,7 +49,11 @@ namespace Flux.Geometry
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(Point2 p1, Point2 p2)
-      => (p2 - p1).ChebyshevLength();
+      => ChebyshevLength(p2 - p1);
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(Point2 source)
+      => System.Math.Max(System.Math.Abs(source.m_x), System.Math.Abs(source.m_y));
 
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     public static Point2 ComputePoint(double angle, double distance)
@@ -115,11 +79,19 @@ namespace Flux.Geometry
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistance(Point2 p1, Point2 p2)
-      => (p2 - p1).EuclideanLength();
+      => EuclideanLength(p2 - p1);
     /// <summary>Compute the euclidean distance squared of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     public static double EuclideanDistanceSquare(Point2 p1, Point2 p2)
-      => (p2 - p1).EuclideanLengthSquared();
+      => EuclideanLengthSquared(p2 - p1);
+    /// <summary>Compute the length (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanLength(Point2 p)
+      => System.Math.Sqrt(EuclideanLengthSquared(p));
+    /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public static double EuclideanLengthSquared(Point2 p)
+      => System.Math.Pow(p.m_x, 2) + System.Math.Pow(p.m_y, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point2 FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
@@ -170,7 +142,11 @@ namespace Flux.Geometry
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static int ManhattanDistance(Point2 p1, Point2 p2)
-      => (p2 - p1).ManhattanLength();
+      => ManhattanLength(p2 - p1);
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static int ManhattanLength(Point2 p)
+      => System.Math.Abs(p.m_x) + System.Math.Abs(p.m_y);
 
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
     public static Point2 MultiplyCeiling(Point2 p, double value)
@@ -181,6 +157,17 @@ namespace Flux.Geometry
 
     //public static Point2 Nlerp(Point2 source, Point2 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
+
+    /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. This is the more traditional quadrant.</summary>
+    /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
+    public static int QuadrantNumber(Point2 p, Point2 center)
+      => p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2);
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using binary numbering: X = 1 and Y = 2, which are then added up, based on the sign of the respective component.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(Point2 p, Point2 center)
+      => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2);
 
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
     public static Point2 Parse(string pointAsString)
@@ -200,6 +187,13 @@ namespace Flux.Geometry
         return false;
       }
     }
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    public static Point2 PerpendicularCcw(Point2 p)
+      => new(-p.m_y, p.m_x);
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    public static Point2 PerpendicularCw(Point2 p)
+      => new(p.m_y, -p.m_x);
 
     /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static Point2 Slerp(Point2 source, Point2 target, double mu)

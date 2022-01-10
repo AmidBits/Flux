@@ -24,7 +24,7 @@ namespace Flux
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).EuclideanLength(), (a, c) => a);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinate2.EuclideanDistance(e1, e2), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
@@ -73,12 +73,12 @@ namespace Flux
       {
         if (a.Y <= vector.Y)
         {
-          if (b.Y > vector.Y && vector.SideTest(a, b) > 0)
+          if (b.Y > vector.Y && CartesianCoordinate2.SideTest(vector, a, b) > 0)
             wn++;
         }
         else
         {
-          if (b.Y <= vector.Y && vector.SideTest(a, b) < 0)
+          if (b.Y <= vector.Y && CartesianCoordinate2.SideTest(vector, a, b) < 0)
             wn--;
         }
       }
@@ -127,7 +127,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
+      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate2.EuclideanDistance(v1, v2)).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -293,94 +293,29 @@ namespace Flux
     public double MathTanY
       => System.Math.Tan(Y);
 
-    public double X { get => m_x; }
-    public double Y { get => m_y; }
+    public double X
+      => m_x;
+    public double Y
+      => m_y;
 
     /// <summary>Returns the angle to the 2D X-axis.</summary>
-    public double AngleToAxisX()
+    public double AngleToAxisX
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x);
     /// <summary>Returns the angle to the 2D Y-axis.</summary>
-    public double AngleToAxisY()
+    public double AngleToAxisY
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y);
 
-    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength(double edgeLength = 1)
-      => System.Math.Max(System.Math.Abs(X / edgeLength), System.Math.Abs(Y / edgeLength));
-
-    /// <summary>Compute the Euclidean length of the vector.</summary>
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
-    /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    public double EuclideanLengthSquared()
-      => X * X + Y * Y;
-
     /// <summary>Returns the X-slope of the line to the point (x, y).</summary>
-    public double LineSlopeX()
-      => System.Math.CopySign(X / Y, X);
+    public double LineSlopeX
+      => System.Math.CopySign(m_x / m_y, m_x);
     /// <summary>Returns the Y-slope of the line to the point (x, y).</summary>
-    public double LineSlopeY()
-      => System.Math.CopySign(Y / X, Y);
+    public double LineSlopeY
+      => System.Math.CopySign(m_y / m_x, m_y);
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public double ManhattanLength(double edgeLength = 1)
-      => System.Math.Abs(X / edgeLength) + System.Math.Abs(Y / edgeLength);
-
-    public CartesianCoordinate2 Normalized()
-      => EuclideanLength() is var m && m != 0 ? this / m : this;
-
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(CartesianCoordinate2 center, OrthantNumbering numbering)
-      => numbering switch
-      {
-        OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
-        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
-        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the zero axes and specified orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(OrthantNumbering numbering)
-      => OrthantNumber(Zero, numbering);
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the zero axes and traditional orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber()
-      => OrthantNumber(Zero, OrthantNumbering.Traditional);
-
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public CartesianCoordinate2 PerpendicularCcw()
-      => new(-Y, X);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public CartesianCoordinate2 PerpendicularCw()
-      => new(Y, -X);
-
-    /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
-    public double PerpendicularDistanceTo(CartesianCoordinate2 a, CartesianCoordinate2 b)
-    {
-      var cc21 = b - a;
-
-      return (cc21 * (this - a)).EuclideanLength() / cc21.EuclideanLength();
-    }
-
-    /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
-    /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
-    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
-    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
-    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
-    /// <param name="source">A given point.</param>
-    public CartesianCoordinate2 PerpendicularFoot(double a, double b, double c)
-    {
-      var m = -1 * (a * m_x + b * m_y + c) / (a * a + b * b);
-
-      return new CartesianCoordinate2(m * (a + m_x), m * (b + m_y));
-    }
-
-    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public int SideTest(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => System.Math.Sign((m_x - b.m_x) * (a.m_y - b.m_y) - (m_y - b.m_y) * (a.m_x - b.m_x));
-
+    public Geometry.Point2 ToPoint2(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+      => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)));
+    public Geometry.Point2 ToPoint2()
+      => ToPoint2(System.MidpointRounding.ToEven);
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
@@ -399,7 +334,7 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static double AngleBetween(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1, 1));
+      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate2.EuclideanLength(a) * CartesianCoordinate2.EuclideanLength(b)), -1, 1));
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -422,11 +357,21 @@ namespace Flux
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(CartesianCoordinate2 source, CartesianCoordinate2 target, double edgeLength = 1)
-      => (target - source).ChebyshevLength(edgeLength);
+      => ChebyshevLength(target - source, edgeLength);
+    /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(CartesianCoordinate2 source, double edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
     public static double EuclideanDistance(CartesianCoordinate2 source, CartesianCoordinate2 target)
-      => (target - source).EuclideanLength();
+      => EuclideanLength(target - source);
+    /// <summary>Compute the Euclidean length of the vector.</summary>
+    public static double EuclideanLength(CartesianCoordinate2 source)
+      => System.Math.Sqrt(EuclideanLengthSquared(source));
+    /// <summary>Compute the Euclidean length squared of the vector.</summary>
+    public static double EuclideanLengthSquared(CartesianCoordinate2 source)
+      => source.m_x * source.m_x + source.m_y * source.m_y;
 
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
@@ -438,7 +383,7 @@ namespace Flux
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate2 GetDirectionCosines(CartesianCoordinate2 source, CartesianCoordinate2 target)
-      => (target - source).Normalized();
+      => Normalize(target - source);
     /// <summary>Returns the direction ratios.</summary>
     public static CartesianCoordinate2 GetDirectionRatios(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => target - source;
@@ -471,10 +416,60 @@ namespace Flux
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistance(CartesianCoordinate2 source, CartesianCoordinate2 target, double edgeLength = 1)
-      => (target - source).ManhattanLength(edgeLength);
+      => ManhattanLength(target - source, edgeLength);
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanLength(CartesianCoordinate2 source, double edgeLength = 1)
+      => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength);
 
     public static CartesianCoordinate2 Nlerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
-      => Lerp(source, target, mu).Normalized();
+      => Normalize(Lerp(source, target, mu));
+
+    public static CartesianCoordinate2 Normalize(CartesianCoordinate2 source)
+      => EuclideanLength(source) is var m && m != 0 ? source / m : source;
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(CartesianCoordinate2 source, CartesianCoordinate2 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 0 : 1) : (source.m_x >= center.m_x ? 3 : 2),
+        OrthantNumbering.BinaryNegativeAs1 => (source.m_x >= center.m_x ? 0 : 1) + (source.m_y >= center.m_y ? 0 : 2),
+        OrthantNumbering.BinaryPositiveAs1 => (source.m_x < center.m_x ? 0 : 1) + (source.m_y < center.m_y ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    public static CartesianCoordinate2 PerpendicularCcw(CartesianCoordinate2 source)
+      => new(-source.m_y, source.m_x);
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    public static CartesianCoordinate2 PerpendicularCw(CartesianCoordinate2 source)
+      => new(source.m_y, -source.m_x);
+
+    /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
+    public static double PerpendicularDistanceTo(CartesianCoordinate2 source, CartesianCoordinate2 a, CartesianCoordinate2 b)
+    {
+      var cc21 = b - a;
+
+      return EuclideanLength(cc21 * (source - a)) / EuclideanLength(cc21);
+    }
+
+    /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
+    /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
+    /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
+    /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
+    /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
+    /// <param name="source">A given point.</param>
+    public static CartesianCoordinate2 PerpendicularFoot(CartesianCoordinate2 source, double a, double b, double c)
+    {
+      var m = -1 * (a * source.m_x + b * source.m_y + c) / (a * a + b * b);
+
+      return new CartesianCoordinate2(m * (a + source.m_x), m * (b + source.m_y));
+    }
+
+    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    public static int SideTest(CartesianCoordinate2 source, CartesianCoordinate2 a, CartesianCoordinate2 b)
+      => System.Math.Sign((source.m_x - b.m_x) * (a.m_y - b.m_y) - (source.m_y - b.m_y) * (a.m_x - b.m_x));
 
     /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static CartesianCoordinate2 Slerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
@@ -553,7 +548,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
+      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
     #endregion Object overrides
   }
 }

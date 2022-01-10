@@ -17,11 +17,14 @@ namespace Flux
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    public double Radius { get => m_radius; }
+    public double Radius
+      => m_radius;
     /// <summary>Polar angle or angular coordinate.</summary>
-    public Angle Inclination { get => m_inclination; }
+    public Angle Inclination
+      => m_inclination;
     /// <summary>Azimuthal angle.</summary>
-    public Angle Azimuth { get => m_azimuth; }
+    public Angle Azimuth
+      => m_azimuth;
 
     public CartesianCoordinate3 ToCartesianCoordinate3()
     {

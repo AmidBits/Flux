@@ -24,7 +24,7 @@ namespace Flux
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => AggregateTuple2(source, 0.0, true, (a, e1, e2, i) => a + (e2 - e1).EuclideanLength(), (a, c) => a);
+      => AggregateTuple2(source, 0.0, true, (a, e1, e2, i) => a + CartesianCoordinate3.EuclideanLength(e2 - e1), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
@@ -81,7 +81,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
+      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate3.EuclideanLength(v2 - v1)).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -256,68 +256,29 @@ namespace Flux
     public double MathTanZ
       => System.Math.Tan(Z);
 
-    public double X { get => m_x; }
-    public double Y { get => m_y; }
-    public double Z { get => m_z; }
+    public double X
+      => m_x;
+    public double Y
+      => m_y;
+    public double Z
+      => m_z;
 
     /// <summary>Returns the angle to the 3D X-axis.</summary>
-    public double AngleToAxisX()
+    public double AngleToAxisX
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2)), m_x);
     /// <summary>Returns the angle to the 3D Y-axis.</summary>
-    public double AngleToAxisY()
+    public double AngleToAxisY
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2) + System.Math.Pow(m_x, 2)), m_y);
     /// <summary>Returns the angle to the 3D Z-axis.</summary>
-    public double AngleToAxisZ()
+    public double AngleToAxisZ
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), m_z);
-
-    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength(double edgeLength = 1)
-      => Maths.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength), System.Math.Abs(m_z / edgeLength));
-
-    /// <summary>Compute the Euclidean length of the vector.</summary>
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
-    /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
-
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public double ManhattanLength(double edgeLength = 1)
-      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength) + System.Math.Abs(m_z / edgeLength);
-
-    public CartesianCoordinate3 Normalized()
-      => EuclideanLength() is var m && m != 0 ? this / m : this;
-
-    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(CartesianCoordinate3 center, OrthantNumbering numbering)
-      => numbering switch
-      {
-        OrthantNumbering.Traditional => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5)),
-        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4),
-        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2) + (m_z < center.m_z ? 0 : 4),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
-    /// <summary>Returns the orthant (octant) of the 3D vector using the zero axes and specified orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber(OrthantNumbering numbering)
-      => OrthantNumber(Zero, numbering);
-    /// <summary>Returns the orthant (octant) of the 3D vector using the zero axes and traditional orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public int OrthantNumber()
-      => OrthantNumber(Zero, OrthantNumbering.Traditional);
-
-    /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
-    /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
-    public CartesianCoordinate3 Orthogonal()
-      => System.Math.Abs(m_x) > System.Math.Abs(m_z) ? new CartesianCoordinate3(-m_y, m_x, 0) : new CartesianCoordinate3(0, -m_x, m_y);
 
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    public PolarCoordinate ToPolarCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+    public Geometry.Point3 ToPoint3(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+      => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
+    public Geometry.Point3 ToPoint3()
+      => ToPoint3(System.MidpointRounding.ToEven);
     public SphericalCoordinate ToSphericalCoordinate()
     {
       var x2y2 = m_x * m_x + m_y * m_y;
@@ -331,7 +292,7 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static double AngleBetween(CartesianCoordinate3 a, CartesianCoordinate3 b)
-      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1, 1));
+      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate3.EuclideanLength(a) * CartesianCoordinate3.EuclideanLength(b)), -1, 1));
 
     /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
     public static CartesianCoordinate3 CrossProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)
@@ -344,11 +305,21 @@ namespace Flux
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(CartesianCoordinate3 source, CartesianCoordinate3 target, double edgeLength = 1)
-      => (target - source).ChebyshevLength(edgeLength);
+      => ChebyshevLength(target - source, edgeLength);
+    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(CartesianCoordinate3 source, double edgeLength = 1)
+      => Maths.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength), System.Math.Abs(source.m_z / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
     public static double EuclideanDistance(CartesianCoordinate3 source, CartesianCoordinate3 target)
-      => (target - source).EuclideanLength();
+      => CartesianCoordinate3.EuclideanLength(target - source);
+    /// <summary>Compute the Euclidean length of the vector.</summary>
+    public static double EuclideanLength(CartesianCoordinate3 source)
+      => System.Math.Sqrt(EuclideanLengthSquared(source));
+    /// <summary>Compute the Euclidean length squared of the vector.</summary>
+    public static double EuclideanLengthSquared(CartesianCoordinate3 source)
+      => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2) + System.Math.Pow(source.m_z, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
@@ -359,7 +330,7 @@ namespace Flux
 
     /// <summary>Returns the direction cosines.</summary>
     public static CartesianCoordinate3 GetDirectionCosines(CartesianCoordinate3 source, CartesianCoordinate3 target)
-      => (target - source).Normalized();
+      => Normalize(target - source);
     /// <summary>Returns the direction ratios.</summary>
     public static CartesianCoordinate3 GetDirectionRatios(CartesianCoordinate3 source, CartesianCoordinate3 target)
       => target - source;
@@ -388,10 +359,34 @@ namespace Flux
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistance(CartesianCoordinate3 source, CartesianCoordinate3 target, double edgeLength = 1)
-      => (target - source).ManhattanLength(edgeLength);
+      => ManhattanLength(target - source, edgeLength);
 
     public static CartesianCoordinate3 Nlerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)
-      => Lerp(source, target, mu).Normalized();
+      => Normalize(Lerp(source, target, mu));
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanLength(CartesianCoordinate3 source, double edgeLength = 1)
+      => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength) + System.Math.Abs(source.m_z / edgeLength);
+
+    public static CartesianCoordinate3 Normalize(CartesianCoordinate3 source)
+      => EuclideanLength(source) is var m && m != 0 ? source / m : source;
+
+    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(CartesianCoordinate3 source, CartesianCoordinate3 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => source.m_z >= center.m_z ? (source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 0 : 1) : (source.m_x >= center.m_x ? 3 : 2)) : (source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 7 : 6) : (source.m_x >= center.m_x ? 4 : 5)),
+        OrthantNumbering.BinaryNegativeAs1 => (source.m_x >= center.m_x ? 0 : 1) + (source.m_y >= center.m_y ? 0 : 2) + (source.m_z >= center.m_z ? 0 : 4),
+        OrthantNumbering.BinaryPositiveAs1 => (source.m_x < center.m_x ? 0 : 1) + (source.m_y < center.m_y ? 0 : 2) + (source.m_z < center.m_z ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
+    /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
+    public static CartesianCoordinate3 Orthogonal(CartesianCoordinate3 source)
+      => System.Math.Abs(source.m_x) > System.Math.Abs(source.m_z) ? new CartesianCoordinate3(-source.m_y, source.m_x, 0) : new CartesianCoordinate3(0, -source.m_x, source.m_y);
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
@@ -480,7 +475,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z);
     public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
+      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength(this)}) }}";
     #endregion Object overrides
   }
 }

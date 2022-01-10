@@ -1,7 +1,7 @@
 namespace Flux
 {
   public class CubicPbInterpolation
-    : IFourInterpolatable
+    : ITuple4Interpolatable
   {
     public double GetInterpolation(double v0, double v1, double v2, double v3, double mu)
       => Interpolate(v0, v1, v2, v3, mu);

@@ -15,9 +15,11 @@ namespace Flux
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    public double Radius { get => m_radius; }
+    public double Radius
+      => m_radius;
     /// <summary>Polar angle or angular coordinate.</summary>
-    public Angle Azimuth { get => m_azimuth; }
+    public Angle Azimuth
+      => m_azimuth;
 
     public CartesianCoordinate2 ToCartesianCoordinate2()
     {

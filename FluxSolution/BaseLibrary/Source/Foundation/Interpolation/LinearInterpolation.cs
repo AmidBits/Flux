@@ -1,7 +1,7 @@
 namespace Flux
 {
   public class LinearInterpolation
-    : ITwoInterpolatable
+    : ITuple2Interpolatable
   {
     public double GetInterpolation(double v1, double v2, double mu)
       => Interpolate(v1, v2, mu);
