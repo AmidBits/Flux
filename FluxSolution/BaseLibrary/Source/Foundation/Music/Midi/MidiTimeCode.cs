@@ -3,7 +3,7 @@ namespace Flux.Midi
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
   public struct MidiTimeCode
-    : /*System.IComparable<MidiTimeCode>,*/ System.IEquatable<MidiTimeCode>
+    : System.IComparable<MidiTimeCode>, System.IEquatable<MidiTimeCode>
   {
     private readonly MidiTimeCodeType m_rateType;
     private readonly byte m_hour;
@@ -60,9 +60,18 @@ namespace Flux.Midi
 
     #region Implemented interfaces
     // IComparable
-    [System.Obsolete("NOT OBSOLETE, but needs evaluation of m_frame AND m_rateType, then remove this message.")]
     public int CompareTo(MidiTimeCode other)
-      => throw new System.Exception("Needs evaluation of m_frame AND m_rateType"); // m_hour > other.m_hour ? 1 : m_hour < other.m_hour ? -1 : m_minute > other.m_minute ? 1 : m_minute < other.m_minute ? -1 : m_second > other.m_second ? 1 : m_second < other.m_second ? -1 : m_second > other.m_second ? 1 : m_second < other.m_second ? -1 : 0;
+      => m_hour > other.m_hour ? 1
+      : m_hour < other.m_hour ? -1
+      : m_minute > other.m_minute ? 1
+      : m_minute < other.m_minute ? -1
+      : m_second > other.m_second ? 1
+      : m_second < other.m_second ? -1
+      : m_frame > other.m_frame ? 1
+      : m_frame < other.m_frame ? -1
+      : m_rateType > other.m_rateType ? -1 // Higher frame rate, means each value is worth less.
+      : m_rateType < other.m_rateType ? 1 // Lower frame rate, means each value is worth more.
+      : 0;
 
     // IEquatable
     public bool Equals(MidiTimeCode other)
