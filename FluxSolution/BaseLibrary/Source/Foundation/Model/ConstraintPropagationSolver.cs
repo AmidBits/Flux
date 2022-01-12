@@ -106,77 +106,77 @@ namespace Flux
       System.Console.WriteLine(matrix.ToConsoleBlock(uniformWidth: true, centerContent: true));
     }
 
-    //public static void Example()
-    //{
-    //  System.Console.Clear();
-    //  RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
+    public static void Example()
+    {
+      System.Console.Clear();
+      RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
 
-    //  while (KnownFacts.Any(kf => kf.House.Count > 1))
-    //  {
-    //    System.Console.ReadKey();
+      while (KnownFacts.Any(kf => kf.House.Count > 1))
+      {
+        System.Console.ReadKey();
 
-    //    // This part performs what is known as constraint propagation.
-    //    foreach (var kf in KnownFacts)
-    //    {
-    //      if (kf.House.Count == 1)
-    //      {
-    //        var houseNumber = kf.House.First();
+        // This part performs what is known as constraint propagation.
+        foreach (var kf in KnownFacts)
+        {
+          if (kf.House.Count == 1)
+          {
+            var houseNumber = kf.House.First();
 
-    //        if (kf.Color != EnumColor.Unkown)
-    //          foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Color != EnumColor.Unkown))
-    //            kfp.House.Remove(houseNumber);
+            if (kf.Color != EnumColor.Unkown)
+              foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Color != EnumColor.Unkown))
+                kfp.House.Remove(houseNumber);
 
-    //        if (kf.Nationality != EnumNationality.Unkown)
-    //          foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Nationality != EnumNationality.Unkown))
-    //            kfp.House.Remove(houseNumber);
+            if (kf.Nationality != EnumNationality.Unkown)
+              foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Nationality != EnumNationality.Unkown))
+                kfp.House.Remove(houseNumber);
 
-    //        if (kf.Drink != EnumDrink.Unkown)
-    //          foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Drink != EnumDrink.Unkown))
-    //            kfp.House.Remove(houseNumber);
+            if (kf.Drink != EnumDrink.Unkown)
+              foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Drink != EnumDrink.Unkown))
+                kfp.House.Remove(houseNumber);
 
-    //        if (kf.Smoke != EnumSmoke.Unkown)
-    //          foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Smoke != EnumSmoke.Unkown))
-    //            kfp.House.Remove(houseNumber);
+            if (kf.Smoke != EnumSmoke.Unkown)
+              foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Smoke != EnumSmoke.Unkown))
+                kfp.House.Remove(houseNumber);
 
-    //        if (kf.Animal != EnumAnimal.Unkown)
-    //          foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Animal != EnumAnimal.Unkown))
-    //            kfp.House.Remove(houseNumber);
-    //      }
-    //    }
+            if (kf.Animal != EnumAnimal.Unkown)
+              foreach (var kfp in KnownFacts.Where(kfs => kfs.House.Count > 1 && kfs.Animal != EnumAnimal.Unkown))
+                kfp.House.Remove(houseNumber);
+          }
+        }
 
-    //    // So this part just simply combines definite facts, by house number.
-    //    for (var hn = 1; hn <= 5; hn++) // Combine by house number.
-    //    {
-    //      if (KnownFacts.Any(kf => kf.House.Count == 1 && kf.House.First() == hn))
-    //      {
-    //        var h = new Fact() { House = new System.Collections.Generic.List<int>() { hn } };
+        // So this part just simply combines definite facts, by house number.
+        for (var hn = 1; hn <= 5; hn++) // Combine by house number.
+        {
+          if (KnownFacts.Any(kf => kf.House.Count == 1 && kf.House.First() == hn))
+          {
+            var h = new Fact() { House = new System.Collections.Generic.List<int>() { hn } };
 
-    //        foreach (var kf in KnownFacts.Where(kf => kf.House.Count == 1 && kf.House.First() == hn))
-    //        {
-    //          if (kf.Color != EnumColor.Unkown)
-    //            h.Color = kf.Color;
-    //          if (kf.Nationality != EnumNationality.Unkown)
-    //            h.Nationality = kf.Nationality;
-    //          if (kf.Drink != EnumDrink.Unkown)
-    //            h.Drink = kf.Drink;
-    //          if (kf.Smoke != EnumSmoke.Unkown)
-    //            h.Smoke = kf.Smoke;
-    //          if (kf.Animal != EnumAnimal.Unkown)
-    //            h.Animal = kf.Animal;
-    //        }
+            foreach (var kf in KnownFacts.Where(kf => kf.House.Count == 1 && kf.House.First() == hn))
+            {
+              if (kf.Color != EnumColor.Unkown)
+                h.Color = kf.Color;
+              if (kf.Nationality != EnumNationality.Unkown)
+                h.Nationality = kf.Nationality;
+              if (kf.Drink != EnumDrink.Unkown)
+                h.Drink = kf.Drink;
+              if (kf.Smoke != EnumSmoke.Unkown)
+                h.Smoke = kf.Smoke;
+              if (kf.Animal != EnumAnimal.Unkown)
+                h.Animal = kf.Animal;
+            }
 
-    //        var indices = KnownFacts.IndicesOf(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
+            var indices = KnownFacts.IndicesOf(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
 
-    //        foreach (var index in indices)
-    //          KnownFacts.RemoveAt(index);
+            foreach (var index in indices)
+              KnownFacts.RemoveAt(index);
 
-    //        KnownFacts.Add(h);
-    //      }
-    //    }
+            KnownFacts.Add(h);
+          }
+        }
 
-    //    System.Console.Clear();
-    //    RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
-    //  }
-    //}
+        System.Console.Clear();
+        RenderKnownFacts(); // Display all that has been deduced so far, either by fact or constraint propagation.
+      }
+    }
   }
 }
