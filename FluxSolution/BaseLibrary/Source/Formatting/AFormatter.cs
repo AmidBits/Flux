@@ -9,7 +9,7 @@ namespace Flux.Formatting
 
     // IFormatProvider
     public virtual object? GetFormat(System.Type? formatType)
-      => formatType == typeof(System.ICustomFormatter) ? this : null!;
+      => formatType == typeof(System.ICustomFormatter) ? this : null;
 
     /// <summary></summary>
     protected static string HandleOtherFormats(string? format, object? arg)
