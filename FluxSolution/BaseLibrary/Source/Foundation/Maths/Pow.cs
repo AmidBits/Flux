@@ -19,7 +19,6 @@ namespace Flux
       {
         var result = 1U;
         while (exponent > 0)
-        {
           checked
           {
             if ((exponent & 1) == 1)
@@ -27,7 +26,6 @@ namespace Flux
             value *= value;
             exponent >>= 1;
           }
-        }
         return result;
       }
       else if (exponent == 0) return 1;
@@ -41,7 +39,6 @@ namespace Flux
       {
         var result = 1UL;
         while (exponent > 0)
-        {
           checked
           {
             if ((exponent & 1) == 1)
@@ -49,7 +46,6 @@ namespace Flux
             value *= value;
             exponent >>= 1;
           }
-        }
         return result;
       }
       else if (exponent == 0) return 1;
