@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistanceCustom<T>
-    : AMetrical<T>, IEditDistanceCustomizable<T>
+    : AMetrical<T>, IEditDistanceCustomEquatable<T>
   {
     public double CostOfDeletion { get; set; } = 1;
     public double CostOfInsertion { get; set; } = 1;

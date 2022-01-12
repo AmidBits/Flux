@@ -6,7 +6,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class DamerauLevenshteinDistanceCustom<T>
-    : AMetrical<T>, IEditDistanceCustomizable<T>
+    : AMetrical<T>, IEditDistanceCustomEquatable<T>
     where T : notnull
   {
     public double CostOfDeletion { get; set; } = 1;

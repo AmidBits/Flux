@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistance<T>
-    : AMetrical<T>, IEditDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IEditDistanceEquatable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       : base(equalityComparer)

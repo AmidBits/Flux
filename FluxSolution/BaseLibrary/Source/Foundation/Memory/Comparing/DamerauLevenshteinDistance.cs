@@ -6,7 +6,7 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class DamerauLevenshteinDistance<T>
-    : AMetrical<T>, IEditDistance<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : AMetrical<T>, IEditDistanceEquatable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     where T : notnull
   {
     public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
