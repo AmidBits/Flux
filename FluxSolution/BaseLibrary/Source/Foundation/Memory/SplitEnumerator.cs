@@ -5,15 +5,15 @@ namespace Flux
   public static partial class ExtensionsMethods
   {
     public static SplitEnumerator<char> EnumerateSplits(this string source, string separator)
-      => new SplitEnumerator<char>(source.AsSpan(), separator.AsSpan());
+      => new(source.AsSpan(), separator.AsSpan());
     public static SplitEnumerator<char> EnumerateSplits(this string source, params char[] separators)
-      => new SplitEnumerator<char>(source.AsSpan(), separators);
+      => new(source.AsSpan(), separators);
   }
 
   // Must be a ref struct as it contains a ReadOnlySpan<char>
   public ref struct SplitEnumerator<T>
   {
-    private System.ReadOnlySpan<T> m_separator;
+    private readonly System.ReadOnlySpan<T> m_separator;
     private System.ReadOnlySpan<T> m_span;
 
     public SplitEnumerator(System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> separator)
@@ -40,8 +40,8 @@ namespace Flux
 
       if (m_span.IndexOf(m_separator) is var index && index > -1) // Separator found.
       {
-        Current = new SplitEntry<T>(m_span.Slice(0, index), m_span.Slice(index, m_separator.Length));
-        m_span = m_span.Slice(index + m_separator.Length);
+        Current = new SplitEntry<T>(m_span[..index], m_span.Slice(index, m_separator.Length));
+        m_span = m_span[(index + m_separator.Length)..];
       }
       else // Separator not found, so this is the last sub-span.
       {

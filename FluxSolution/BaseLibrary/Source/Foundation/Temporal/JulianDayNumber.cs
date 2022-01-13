@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDayNumber
-    : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, IValueGeneralizedUnit<int>
+    : System.IComparable<JulianDayNumber>, System.IConvertible, System.IEquatable<JulianDayNumber>, IValueGeneralizedUnit<int>
   {
     public static readonly JulianDayNumber Zero;
 
@@ -180,6 +180,26 @@ namespace Flux
     // IComparable
     public int CompareTo(JulianDayNumber other)
       => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
+
+    #region IConvertible
+    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+    public double ToDouble(System.IFormatProvider? provider) => Value;
+    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
+    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
+    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
+    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    #endregion IConvertible
 
     // IEquatable
     public bool Equals(JulianDayNumber other)

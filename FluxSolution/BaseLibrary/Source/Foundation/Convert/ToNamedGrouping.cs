@@ -13,7 +13,7 @@ namespace Flux
     public static string ToNamedGrouping(this long value)
       => ConvertToNamedGrouping(value).ToString();
 
-    private static System.Collections.Generic.List<string> ZeroThroughNineteen = new System.Collections.Generic.List<string>()
+    private static readonly System.Collections.Generic.List<string> ZeroThroughNineteen = new()
     {
       @"Zero",
       @"One",
@@ -37,7 +37,7 @@ namespace Flux
       @"Nineteen"
     };
 
-    private static System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> TensDictionaryNumbers = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string>()
+    private static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> TensDictionaryNumbers = new()
     {
       { 20, @"Twenty" },
       { 30, @"Thirty" },
@@ -50,7 +50,7 @@ namespace Flux
       { 100, @"Hundred" }
     };
 
-    private static System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> StandardDictionaryNumbers = new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string>()
+    private static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> StandardDictionaryNumbers = new()
     {
       { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000000000000"), @"Septendecillion" },
       { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000000000"), @"Sexdecillion" },

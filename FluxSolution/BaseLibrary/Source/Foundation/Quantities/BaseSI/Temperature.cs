@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IEquatable<Temperature>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -160,6 +160,26 @@ namespace Flux
     // IComparable<>
     public int CompareTo(Temperature other)
       => m_value.CompareTo(other.m_value);
+
+    #region IConvertible
+    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
+    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
+    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
+    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    #endregion IConvertible
 
     // IEquatable<>
     public bool Equals(Temperature other)
