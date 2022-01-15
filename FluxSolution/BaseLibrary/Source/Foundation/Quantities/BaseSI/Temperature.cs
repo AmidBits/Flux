@@ -4,12 +4,12 @@ namespace Flux
   {
     public static Temperature Create(this TemperatureUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this TemperatureUnit unit)
+    public static string GetUnitSymbol(this TemperatureUnit unit, bool useUnicodeIfAvailable = false)
       => unit switch
       {
-        TemperatureUnit.Celsius => $" {Angle.DegreeSymbol}C",
-        TemperatureUnit.Fahrenheit => $" {Angle.DegreeSymbol}F",
-        TemperatureUnit.Kelvin => $" K",
+        TemperatureUnit.Celsius => useUnicodeIfAvailable ? " \u2103" : $" {Angle.DegreeSymbol}C",
+        TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? " \u2109" : $" {Angle.DegreeSymbol}F",
+        TemperatureUnit.Kelvin => useUnicodeIfAvailable ? " \u212A" : $" K",
         TemperatureUnit.Rankine => $" {Angle.DegreeSymbol}R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

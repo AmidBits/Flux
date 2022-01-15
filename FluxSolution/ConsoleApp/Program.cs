@@ -88,6 +88,7 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
+      //System.Console.WriteLine($"\u2103 \u2109 \u212A ");
       return;
 
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
