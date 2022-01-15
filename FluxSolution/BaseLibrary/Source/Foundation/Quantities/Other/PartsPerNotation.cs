@@ -7,20 +7,22 @@ namespace Flux
     public static string GetUnitSymbol(this PartsPerNotationUnit unit)
       => unit switch
       {
-        PartsPerNotationUnit.Quadrillion => @" ppq",
-        PartsPerNotationUnit.Trillion => @" ppt",
-        PartsPerNotationUnit.Billion => @" ppb",
-        PartsPerNotationUnit.Million => @" ppm",
-        PartsPerNotationUnit.HundredThousand => @" pcm",
+        PartsPerNotationUnit.Quadrillion => " ppq",
+        PartsPerNotationUnit.Trillion => " ppt",
+        PartsPerNotationUnit.Billion => " ppb",
+        PartsPerNotationUnit.Million => " ppm",
+        PartsPerNotationUnit.HundredThousand => " pcm",
         PartsPerNotationUnit.TenThousand => ((char)unit).ToString(),
         PartsPerNotationUnit.Thousand => ((char)unit).ToString(),
         PartsPerNotationUnit.Hundred => ((char)unit).ToString(),
+        PartsPerNotationUnit.One => " pp1",
         _ => string.Empty,
       };
   }
 
   public enum PartsPerNotationUnit
   {
+    One,
     /// <summary>Percent. This is also the actual Unicode char value of the notation unit.</summary>
     Hundred = '\u0025',
     /// <summary>Per mille. This is also the actual Unicode char value of the notation unit.</summary>
@@ -56,6 +58,7 @@ namespace Flux
     {
       m_parts = unit switch
       {
+        PartsPerNotationUnit.One => parts,
         PartsPerNotationUnit.Hundred => parts / 1e2,
         PartsPerNotationUnit.Thousand => parts / 1e3,
         PartsPerNotationUnit.TenThousand => parts / 1e4,
@@ -78,6 +81,7 @@ namespace Flux
     public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch
       {
+        PartsPerNotationUnit.One => m_parts,
         PartsPerNotationUnit.Hundred => m_parts * 1e2,
         PartsPerNotationUnit.Thousand => m_parts * 1e3,
         PartsPerNotationUnit.TenThousand => m_parts * 1e4,

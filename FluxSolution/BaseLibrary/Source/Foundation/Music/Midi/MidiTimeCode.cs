@@ -58,6 +58,17 @@ namespace Flux.Midi
         _ => throw new System.ArgumentOutOfRangeException(nameof(index)),
       };
 
+    /// <summary>Converts the MTC to a <see cref="System.TimeSpan"/> where the milliseconds represents the frame. The frame rate type is unknown in the new TimeSpan.</summary>
+    public System.TimeSpan ToTimeSpan()
+      => new System.TimeSpan(0, m_hour, m_minute, m_second, m_frame);
+
+    #region Overloaded operators
+    public static bool operator ==(MidiTimeCode a, MidiTimeCode b)
+      => a.Equals(b);
+    public static bool operator !=(MidiTimeCode a, MidiTimeCode b)
+      => !a.Equals(b);
+    #endregion Overloaded operators
+
     #region Implemented interfaces
     // IComparable
     public int CompareTo(MidiTimeCode other)

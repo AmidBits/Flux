@@ -17,7 +17,7 @@ namespace Flux.Net
   public sealed class UdpCast
     : Disposable
   {
-    private static System.Threading.Mutex mutex = new();
+    private static readonly System.Threading.Mutex mutex = new();
     private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
     private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
 

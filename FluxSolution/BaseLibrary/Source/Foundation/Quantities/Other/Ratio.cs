@@ -1,10 +1,18 @@
 namespace Flux
 {
+  public enum RatioFormat
+  {
+    AtoB,
+    AcolonB,
+  }
+
   /// <summary>A ratio indicates how many times one number contains another. It is two related quantities measured with the same unit (here System.Double), and is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
   public struct Ratio
     : System.IConvertible, System.IEquatable<Ratio>, IValueGeneralizedUnit<double>
   {
+    public const string RatioSymbol = "\u2236";
+
     private readonly double m_numerator;
     private readonly double m_denominator;
 
@@ -21,6 +29,14 @@ namespace Flux
 
     public double Value
       => m_numerator / m_denominator;
+
+    public string ToRatioString(RatioFormat format)
+      => format switch
+      {
+        RatioFormat.AcolonB => $"{m_numerator}{RatioSymbol}{m_denominator}",
+        RatioFormat.AtoB => $"{m_numerator} to {m_denominator}",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(format))
+      };
 
     #region Overloaded operators
     public static explicit operator double(Ratio v)
@@ -53,7 +69,7 @@ namespace Flux
     [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
- 
+
     // IEquatable
     public bool Equals(Ratio other)
       => m_numerator == other.m_numerator && m_denominator == other.m_denominator;

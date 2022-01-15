@@ -23,7 +23,7 @@ namespace Flux.Model.TicTacToe2
 
   public sealed class Game
   {
-    public int GetGrundy(int n, int k)
+    public static int GetGrundy(int n, int k)
       => n % (k + 1);
 
     public static int GetMex(System.Collections.Generic.HashSet<int> set)

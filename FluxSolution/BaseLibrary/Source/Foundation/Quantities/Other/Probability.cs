@@ -17,6 +17,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
     public Ratio ToOdds()
       => new(m_probability, 1 - m_probability);
+    public PartsPerNotation ToPartsPerNotation()
+      => new(m_probability, PartsPerNotationUnit.One);
 
     public double Value
       => m_probability;
@@ -61,7 +63,7 @@ namespace Flux
     public static double OddsRatio(double probability)
       => probability / (1 - probability);
 
-    /// <summary>Returns the probability that specified event count in a group of total event count are all different (or unique). It's complementary (1 - ProbabilityOfNoDuplicates) yields the probability that at least 2 events are the equal.</summary>
+    /// <summary>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
     /// <returns>The probability, which is in the range [0, 1].</returns>
@@ -72,7 +74,7 @@ namespace Flux
         accumulation *= (double)index / (double)ofTotalCount;
       return new(accumulation);
     }
-    /// <summary>Returns the probability that at least 2 events are equal.</summary>
+    /// <summary>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
     /// <returns>The probability, which is in the range [0, 1].</returns>
