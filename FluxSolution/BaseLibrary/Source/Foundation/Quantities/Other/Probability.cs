@@ -17,8 +17,6 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
     public Ratio ToOdds()
       => new(m_probability, 1 - m_probability);
-    public PartsPerNotation ToPartsPerNotation()
-      => new(m_probability, PartsPerNotationUnit.One);
 
     public double Value
       => m_probability;
