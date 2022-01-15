@@ -28,11 +28,11 @@ namespace Flux.Model.Dynamics
       foreach (var forceGenerator in ForceGenerators)
         forceGenerator.ApplyForce(this);
 
-      var linearAcceleration = Force / Mass; // F=ma means a=F/a.
+      var linearAcceleration = Force / Mass; // F=ma = m=F/a = a=F/m.
       LinearVelocity += linearAcceleration * deltaTime;
       Force = System.Numerics.Vector3.Zero;
 
-      var angularAcceleration = Torque / Mass; // F=ma means a=F/a.
+      var angularAcceleration = Torque / Mass; // F=ma = m=F/a = a=F/m.
       AngularVelocity += angularAcceleration * deltaTime;
       Torque = System.Numerics.Vector3.Zero;
 
