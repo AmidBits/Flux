@@ -12,39 +12,43 @@
       return array;
     }
 
-    private void Disambiguate(int itemsTracked, int constraintIndex)
+    private bool Disambiguate(int itemsTracked, int constraintIndex)
     {
       while (constraintIndex < m_constraints.Count && m_constraints[constraintIndex].AppliesForItems <= itemsTracked)
       {
         if (!m_constraints[constraintIndex].Invoke())
-          return;
+          return false;
 
         constraintIndex++;
       }
 
       if (itemsTracked == m_choices.Count)
-        throw new System.Exception(nameof(Disambiguate));
+        return true;
 
       for (var i = 0; i < m_choices[itemsTracked].Length; i++)
       {
         m_choices[itemsTracked].Index = i;
 
-        Disambiguate(itemsTracked + 1, constraintIndex);
+        if (Disambiguate(itemsTracked + 1, constraintIndex))
+          return true;
       }
+
+      return false;
     }
     public bool Disambiguate()
-    {
-      try
-      {
-        Disambiguate(0, 0);
+      => Disambiguate(0, 0);
+    //{
+    //  try
+    //  {
+    //    Disambiguate(0, 0);
 
-        return false;
-      }
-      catch (System.Exception ex) when (ex.Message == nameof(Disambiguate))
-      {
-        return true;
-      }
-    }
+    //    return false;
+    //  }
+    //  catch (System.Exception ex) when (ex.Message == nameof(Disambiguate))
+    //  {
+    //    return true;
+    //  }
+    //}
 
     public void Require(System.Func<bool> predicate)
       => m_constraints.Add(new Constraint(predicate, m_choices.Count));

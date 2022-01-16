@@ -13,6 +13,12 @@ namespace Flux
     /// <summary>Run the amb operator zample.</summary>
     public static void RunAmbOperator()
     {
+      RunAmbOpTesting();
+      RunAmbOpZebraPuzzle();
+    }
+
+    public static void RunAmbOpTesting()
+    {
       System.Console.WriteLine(nameof(RunAmbOperator));
       System.Console.WriteLine();
 
@@ -48,6 +54,102 @@ namespace Flux
         //System.Console.WriteLine($"{nameof(amb.Disambiguate)}: {amb.Disambiguate()}");
 
         System.Console.WriteLine($"{x} + {y} + {z} + {w} == {answer}");
+      }
+    }
+
+    public static void RunAmbOpZebraPuzzle()
+    {
+      // One version of the zebra puzzle:
+      //  1. There are five houses.
+      //  2. The English man lives in the red house.
+      //  3. The Swede has a dog.
+      //  4. The Dane drinks tea.
+      //  5. The green house is immediately to the left of the white house.
+      //  6. They drink coffee in the green house.
+      //  7. The man who smokes Pall Mall has birds.
+      //  8. In the yellow house they smoke Dunhill.
+      //  9. In the middle house they drink milk.
+      // 10. The Norwegian lives in the first house.
+      // 11. The man who smokes Blend lives in the house next to the house with cats.
+      // 12. In a house next to the house where they have a horse, they smoke Dunhill.
+      // 13. The man who smokes Blue Master drinks beer.
+      // 14. The German smokes Prince.
+      // 15. The Norwegian lives next to the blue house.
+      // 16. They drink water in a house next to the house where they smoke Blend.
+
+      var amb = new Flux.AmbOps.Amb();
+
+      var domain = new[] { 1, 2, 3, 4, 5 };
+      var terms = new System.Collections.Generic.Dictionary<Flux.AmbOps.IValue<int>, string>();
+
+      Flux.AmbOps.IValue<int> Term(string name)
+      {
+        var x = amb.Choose(domain);
+        terms.Add(x, name);
+        return x;
+      };
+
+      void IsUnequal(params Flux.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
+      void IsSame(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
+      void IsLeftOf(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
+      void IsIn(Flux.AmbOps.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
+      void IsNextTo(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
+
+      Flux.AmbOps.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
+      IsIn(norwegian, 1); // 10
+      IsUnequal(english, swede, german, dane, norwegian);
+
+      Flux.AmbOps.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
+      IsUnequal(red, green, white, blue, yellow);
+      IsNextTo(norwegian, blue); // 15
+      IsLeftOf(green, white); // 5
+      IsSame(english, red); // 2
+
+      Flux.AmbOps.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
+      IsIn(milk, 3); // 9
+      IsUnequal(tea, coffee, milk, beer, water);
+      IsSame(dane, tea); // 4
+      IsSame(green, coffee); // 6
+
+      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cats = Term(nameof(cats)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
+      IsUnequal(dog, cats, birds, horse, zebra);
+      IsSame(swede, dog); // 3
+
+      Flux.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
+      IsUnequal(pallmall, dunhill, bluemaster, prince, blend);
+      IsSame(pallmall, birds); // 7
+      IsSame(dunhill, yellow); // 8
+      IsNextTo(blend, cats); // 11
+      IsNextTo(horse, dunhill); // 12
+      IsSame(bluemaster, beer); // 13
+      IsSame(german, prince); // 14
+      IsNextTo(water, blend); // 16
+
+      if (!amb.Disambiguate())
+      {
+        System.Console.WriteLine("No solution found.");
+        return;
+      }
+
+      var a = new System.Collections.Generic.List<string>[5];
+      for (int i = 0; i < 5; i++)
+        a[i] = new System.Collections.Generic.List<string>();
+
+      foreach (var (key, value) in terms.Select(kvp => (kvp.Key, kvp.Value)))
+        a[key.Value - 1].Add(value);
+
+      var nationality = string.Concat(a.Where(l => l.Contains(nameof(zebra))).Select(l => l[0]));
+      var drink = string.Concat(a.Where(l => l.Contains(nameof(water))).Select(l => l[0]));
+
+      System.Console.WriteLine($"The {nationality} owns the zebra.");
+      System.Console.WriteLine($"The {drink} drinks water.");
+
+      foreach (var house in a)
+      {
+        System.Console.Write("|");
+        foreach (var attrib in house)
+          System.Console.Write($"{attrib,-10}|");
+        System.Console.Write("\n");
       }
     }
   }

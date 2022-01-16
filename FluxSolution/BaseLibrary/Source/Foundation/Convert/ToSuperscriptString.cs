@@ -6,13 +6,37 @@ namespace Flux
 	{
 		/// <summary>Returns a string with the numeric superscript.</summary>
 		public static string ToSuperscriptString(System.Numerics.BigInteger number, int radix)
-			=> radix >= 2 && radix <= 10 ? string.Concat(Maths.GetDigitsReversed(number, radix).Select(d => Text.Sequences.Superscript0Through9[(int)d][0]).Reverse()) : throw new System.ArgumentOutOfRangeException(nameof(number));
+		{
+			if (radix < 2 || radix > 10) throw new System.ArgumentOutOfRangeException(nameof(radix));
+
+			var span = Maths.GetDigits(number, radix);
+			var chars = new char[span.Length];
+			for (var index = span.Length - 1; index >= 0; index--)
+				chars[index] = Text.Sequences.Superscript0Through9[index][0];
+			return new string(chars);
+		}
 
 		/// <summary>Returns a string with the numeric superscript.</summary>
 		public static string ToSuperscriptString(int number, int radix)
-			=> radix >= 2 && radix <= 10 ? string.Concat(Maths.GetDigitsReversed(number, radix).Select(d => Text.Sequences.Superscript0Through9[d][0]).Reverse()) : throw new System.ArgumentOutOfRangeException(nameof(number));
+		{
+			if (radix < 2 || radix > 10) throw new System.ArgumentOutOfRangeException(nameof(radix));
+
+			var span = Maths.GetDigits(number, radix);
+			var chars = new char[span.Length];
+			for (var index = span.Length - 1; index >= 0; index--)
+				chars[index] = Text.Sequences.Superscript0Through9[index][0];
+			return new string(chars);
+		}
 		/// <summary>Returns a string with the numeric superscript.</summary>
 		public static string ToSuperscriptString(long number, int radix)
-			=> radix >= 2 && radix <= 10 ? string.Concat(Maths.GetDigitsReversed(number, radix).Select(d => Text.Sequences.Superscript0Through9[(int)d][0]).Reverse()) : throw new System.ArgumentOutOfRangeException(nameof(number));
+		{
+			if (radix < 2 || radix > 10) throw new System.ArgumentOutOfRangeException(nameof(radix));
+
+			var span = Maths.GetDigits(number, radix);
+			var chars = new char[span.Length];
+			for (var index = span.Length - 1; index >= 0; index--)
+				chars[index] = Text.Sequences.Superscript0Through9[index][0];
+			return new string(chars);
+		}
 	}
 }

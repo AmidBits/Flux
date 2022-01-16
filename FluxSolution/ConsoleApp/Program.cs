@@ -88,11 +88,17 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      //System.Console.WriteLine($"\u2103 \u2109 \u212A ");
-      return;
-
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
+      var i = -123456789;
+      var r = 10;
+
+      var dr = Maths.GetDigitsReversed(i, r);
+      var d = Maths.GetDigits(i, r);
+      var pv = Maths.GetPlaceValues(i, r);
+
+      return;
 
       //Flux.ConstraintPropagationSolver.Example();
 
