@@ -18,6 +18,20 @@ namespace Flux
         PartsPerNotationUnit.One => " pp1",
         _ => string.Empty,
       };
+
+    public static MetricPrefixUnit ToMetricPrefixUnit(this PartsPerNotationUnit unit)
+    {
+      return unit switch
+      {
+        PartsPerNotationUnit.Hundred => MetricPrefixUnit.Hecto,
+        PartsPerNotationUnit.Thousand => MetricPrefixUnit.Kilo,
+        PartsPerNotationUnit.Million => MetricPrefixUnit.Mega,
+        PartsPerNotationUnit.Billion => MetricPrefixUnit.Giga,
+        PartsPerNotationUnit.Trillion => MetricPrefixUnit.Tera,
+        PartsPerNotationUnit.Quadrillion => MetricPrefixUnit.Peta,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+    }
   }
 
   public enum PartsPerNotationUnit

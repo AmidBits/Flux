@@ -2,120 +2,102 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Pressure Create(this PressureUnit unit, double value)
+    public static Irradiance Create(this IrradianceUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this PressureUnit unit)
+    public static string GetUnitSymbol(this IrradianceUnit unit)
       => unit switch
       {
-        PressureUnit.Millibar => @" mbar",
-        PressureUnit.Bar => @" bar",
-        PressureUnit.HectoPascal => @" hPa",
-        PressureUnit.Pascal => @" Pa",
-        PressureUnit.Psi => @" psi",
+        IrradianceUnit.WattPerSquareMeter => @" W/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum PressureUnit
+
+  public enum IrradianceUnit
   {
-    Millibar,
-    Bar,
-    HectoPascal,
-    Pascal,
-    Psi,
+    WattPerSquareMeter,
   }
 
-  /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
-  public struct Pressure
-    : System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, IValueSiDerivedUnit<double>
+  /// <summary>Surface density unit of kilograms per square meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  public struct Irradiance
+    : System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, IValueSiDerivedUnit<double>
   {
-    public const PressureUnit DefaultUnit = PressureUnit.Pascal;
-
-    public static Pressure StandardAtmosphere
-      => new(101325);
-    public static Pressure StandardStatePressure
-      => new(100000);
+    public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 
     private readonly double m_value;
 
-    public Pressure(double value, PressureUnit unit = DefaultUnit)
+    public Irradiance(double value, IrradianceUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        PressureUnit.Millibar => value * 100,
-        PressureUnit.Bar => value / 100000,
-        PressureUnit.HectoPascal => value * 100,
-        PressureUnit.Pascal => value,
-        PressureUnit.Psi => value * (8896443230521.0 / 1290320000.0),
+        IrradianceUnit.WattPerSquareMeter => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(PressureUnit unit = DefaultUnit)
+    public double ToUnitValue(IrradianceUnit unit = DefaultUnit)
       => unit switch
       {
-        PressureUnit.Millibar => m_value / 100,
-        PressureUnit.Bar => m_value / 100000,
-        PressureUnit.HectoPascal => m_value / 100,
-        PressureUnit.Pascal => m_value,
-        PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
+        IrradianceUnit.WattPerSquareMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
+    //public static Irradiance From(Mass mass, Area volume)
+    //  => new(mass.Value / volume.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Pressure v)
+    public static explicit operator double(Irradiance v)
       => v.m_value;
-    public static explicit operator Pressure(double v)
+    public static explicit operator Irradiance(double v)
       => new(v);
 
-    public static bool operator <(Pressure a, Pressure b)
+    public static bool operator <(Irradiance a, Irradiance b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(Pressure a, Pressure b)
+    public static bool operator <=(Irradiance a, Irradiance b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(Pressure a, Pressure b)
+    public static bool operator >(Irradiance a, Irradiance b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(Pressure a, Pressure b)
+    public static bool operator >=(Irradiance a, Irradiance b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Pressure a, Pressure b)
+    public static bool operator ==(Irradiance a, Irradiance b)
       => a.Equals(b);
-    public static bool operator !=(Pressure a, Pressure b)
+    public static bool operator !=(Irradiance a, Irradiance b)
       => !a.Equals(b);
 
-    public static Pressure operator -(Pressure v)
+    public static Irradiance operator -(Irradiance v)
       => new(-v.m_value);
-    public static Pressure operator +(Pressure a, double b)
+    public static Irradiance operator +(Irradiance a, double b)
       => new(a.m_value + b);
-    public static Pressure operator +(Pressure a, Pressure b)
+    public static Irradiance operator +(Irradiance a, Irradiance b)
       => a + b.m_value;
-    public static Pressure operator /(Pressure a, double b)
+    public static Irradiance operator /(Irradiance a, double b)
       => new(a.m_value / b);
-    public static Pressure operator /(Pressure a, Pressure b)
+    public static Irradiance operator /(Irradiance a, Irradiance b)
       => a / b.m_value;
-    public static Pressure operator *(Pressure a, double b)
+    public static Irradiance operator *(Irradiance a, double b)
       => new(a.m_value * b);
-    public static Pressure operator *(Pressure a, Pressure b)
+    public static Irradiance operator *(Irradiance a, Irradiance b)
       => a * b.m_value;
-    public static Pressure operator %(Pressure a, double b)
+    public static Irradiance operator %(Irradiance a, double b)
       => new(a.m_value % b);
-    public static Pressure operator %(Pressure a, Pressure b)
+    public static Irradiance operator %(Irradiance a, Irradiance b)
       => a % b.m_value;
-    public static Pressure operator -(Pressure a, double b)
+    public static Irradiance operator -(Irradiance a, double b)
       => new(a.m_value - b);
-    public static Pressure operator -(Pressure a, Pressure b)
+    public static Irradiance operator -(Irradiance a, Irradiance b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Pressure other)
+    public int CompareTo(Irradiance other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -139,13 +121,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(Pressure other)
+    public bool Equals(Irradiance other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Pressure o && Equals(o);
+      => obj is Irradiance o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

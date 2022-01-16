@@ -32,35 +32,70 @@ namespace Flux
         MetricPrefixUnit.Yocto => "y",
         _ => string.Empty,
       };
+
+    public static PartsPerNotationUnit ToPartsPerNotationUnit(this MetricPrefixUnit unit)
+    {
+      return unit switch
+      {
+        MetricPrefixUnit.Hecto => PartsPerNotationUnit.Hundred,
+        MetricPrefixUnit.Kilo => PartsPerNotationUnit.Thousand,
+        MetricPrefixUnit.Mega => PartsPerNotationUnit.Million,
+        MetricPrefixUnit.Giga => PartsPerNotationUnit.Billion,
+        MetricPrefixUnit.Tera => PartsPerNotationUnit.Trillion,
+        MetricPrefixUnit.Peta => PartsPerNotationUnit.Quadrillion,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+    }
   }
 
   public enum MetricPrefixUnit
   {
+    /// <summary>A.k.a. septillion/quadrillion.</summary>
     Yotta = 24,
+    /// <summary>A.k.a. sextillion/trilliard.</summary>
     Zetta = 21,
+    /// <summary>A.k.a. quintillion/trillion.</summary>
     Exa = 18,
+    /// <summary>A.k.a. quadrillion/billiard.</summary>
     Peta = 15,
+    /// <summary>A.k.a. trillion/billion.</summary>
     Tera = 12,
+    /// <summary>A.k.a. billion/milliard.</summary>
     Giga = 9,
+    /// <summary>A.k.a. million.</summary>
     Mega = 6,
+    /// <summary>A.k.a. thousand.</summary>
     Kilo = 3,
+    /// <summary>A.k.a. hundred.</summary>
     Hecto = 2,
+    /// <summary>A.k.a. ten.</summary>
     Deca = 1,
+    /// <summary>A.k.a. one.</summary>
     None = 0,
+    /// <summary>A.k.a. tenth.</summary>
     Deci = -1,
+    /// <summary>A.k.a. hundredth.</summary>
     Centi = -2,
+    /// <summary>A.k.a. thousandth.</summary>
     Milli = -3,
+    /// <summary>A.k.a. millionth.</summary>
     Micro = -6,
+    /// <summary>A.k.a. billionth/milliardth.</summary>
     Nano = -9,
+    /// <summary>A.k.a. trillionth/billionth.</summary>
     Pico = -12,
+    /// <summary>A.k.a. quadrillionth/billiardth.</summary>
     Femto = -15,
+    /// <summary>A.k.a. quintillionth/trillionth.</summary>
     Atto = -18,
+    /// <summary>A.k.a. sextillionth/trilliardth.</summary>
     Zepto = -21,
+    /// <summary>A.k.a. septillionth/quadrillionth.</summary>
     Yocto = -24,
   }
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
   public struct MetricPrefix
     : System.IComparable<MetricPrefix>, System.IConvertible, System.IEquatable<MetricPrefix>, IValueGeneralizedUnit<double>
   {

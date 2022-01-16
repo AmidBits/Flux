@@ -2,120 +2,102 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Pressure Create(this PressureUnit unit, double value)
+    public static SurfaceDensity Create(this SurfaceDensityUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this PressureUnit unit)
+    public static string GetUnitSymbol(this SurfaceDensityUnit unit)
       => unit switch
       {
-        PressureUnit.Millibar => @" mbar",
-        PressureUnit.Bar => @" bar",
-        PressureUnit.HectoPascal => @" hPa",
-        PressureUnit.Pascal => @" Pa",
-        PressureUnit.Psi => @" psi",
+        SurfaceDensityUnit.KilogramsPerSquareMeter => @" kg/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum PressureUnit
+
+  public enum SurfaceDensityUnit
   {
-    Millibar,
-    Bar,
-    HectoPascal,
-    Pascal,
-    Psi,
+    KilogramsPerSquareMeter,
   }
 
-  /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
-  public struct Pressure
-    : System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, IValueSiDerivedUnit<double>
+  /// <summary>Surface density unit of kilograms per square meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  public struct SurfaceDensity
+    : System.IComparable<SurfaceDensity>, System.IConvertible, System.IEquatable<SurfaceDensity>, IValueSiDerivedUnit<double>
   {
-    public const PressureUnit DefaultUnit = PressureUnit.Pascal;
-
-    public static Pressure StandardAtmosphere
-      => new(101325);
-    public static Pressure StandardStatePressure
-      => new(100000);
+    public const SurfaceDensityUnit DefaultUnit = SurfaceDensityUnit.KilogramsPerSquareMeter;
 
     private readonly double m_value;
 
-    public Pressure(double value, PressureUnit unit = DefaultUnit)
+    public SurfaceDensity(double value, SurfaceDensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        PressureUnit.Millibar => value * 100,
-        PressureUnit.Bar => value / 100000,
-        PressureUnit.HectoPascal => value * 100,
-        PressureUnit.Pascal => value,
-        PressureUnit.Psi => value * (8896443230521.0 / 1290320000.0),
+        SurfaceDensityUnit.KilogramsPerSquareMeter => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(SurfaceDensityUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(PressureUnit unit = DefaultUnit)
+    public double ToUnitValue(SurfaceDensityUnit unit = DefaultUnit)
       => unit switch
       {
-        PressureUnit.Millibar => m_value / 100,
-        PressureUnit.Bar => m_value / 100000,
-        PressureUnit.HectoPascal => m_value / 100,
-        PressureUnit.Pascal => m_value,
-        PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
+        SurfaceDensityUnit.KilogramsPerSquareMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
+    public static SurfaceDensity From(Mass mass, Area volume)
+      => new(mass.Value / volume.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Pressure v)
+    public static explicit operator double(SurfaceDensity v)
       => v.m_value;
-    public static explicit operator Pressure(double v)
+    public static explicit operator SurfaceDensity(double v)
       => new(v);
 
-    public static bool operator <(Pressure a, Pressure b)
+    public static bool operator <(SurfaceDensity a, SurfaceDensity b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(Pressure a, Pressure b)
+    public static bool operator <=(SurfaceDensity a, SurfaceDensity b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(Pressure a, Pressure b)
+    public static bool operator >(SurfaceDensity a, SurfaceDensity b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(Pressure a, Pressure b)
+    public static bool operator >=(SurfaceDensity a, SurfaceDensity b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Pressure a, Pressure b)
+    public static bool operator ==(SurfaceDensity a, SurfaceDensity b)
       => a.Equals(b);
-    public static bool operator !=(Pressure a, Pressure b)
+    public static bool operator !=(SurfaceDensity a, SurfaceDensity b)
       => !a.Equals(b);
 
-    public static Pressure operator -(Pressure v)
+    public static SurfaceDensity operator -(SurfaceDensity v)
       => new(-v.m_value);
-    public static Pressure operator +(Pressure a, double b)
+    public static SurfaceDensity operator +(SurfaceDensity a, double b)
       => new(a.m_value + b);
-    public static Pressure operator +(Pressure a, Pressure b)
+    public static SurfaceDensity operator +(SurfaceDensity a, SurfaceDensity b)
       => a + b.m_value;
-    public static Pressure operator /(Pressure a, double b)
+    public static SurfaceDensity operator /(SurfaceDensity a, double b)
       => new(a.m_value / b);
-    public static Pressure operator /(Pressure a, Pressure b)
+    public static SurfaceDensity operator /(SurfaceDensity a, SurfaceDensity b)
       => a / b.m_value;
-    public static Pressure operator *(Pressure a, double b)
+    public static SurfaceDensity operator *(SurfaceDensity a, double b)
       => new(a.m_value * b);
-    public static Pressure operator *(Pressure a, Pressure b)
+    public static SurfaceDensity operator *(SurfaceDensity a, SurfaceDensity b)
       => a * b.m_value;
-    public static Pressure operator %(Pressure a, double b)
+    public static SurfaceDensity operator %(SurfaceDensity a, double b)
       => new(a.m_value % b);
-    public static Pressure operator %(Pressure a, Pressure b)
+    public static SurfaceDensity operator %(SurfaceDensity a, SurfaceDensity b)
       => a % b.m_value;
-    public static Pressure operator -(Pressure a, double b)
+    public static SurfaceDensity operator -(SurfaceDensity a, double b)
       => new(a.m_value - b);
-    public static Pressure operator -(Pressure a, Pressure b)
+    public static SurfaceDensity operator -(SurfaceDensity a, SurfaceDensity b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Pressure other)
+    public int CompareTo(SurfaceDensity other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -139,13 +121,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(Pressure other)
+    public bool Equals(SurfaceDensity other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Pressure o && Equals(o);
+      => obj is SurfaceDensity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
