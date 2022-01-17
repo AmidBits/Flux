@@ -2,101 +2,104 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricalConductance Create(this ElectricalConductanceUnit unit, double value)
+    public static SurfaceTension Create(this SurfaceTensionUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this ElectricalConductanceUnit unit)
+    public static string GetUnitSymbol(this SurfaceTensionUnit unit)
       => unit switch
       {
-        ElectricalConductanceUnit.Siemens => @" S",
+        SurfaceTensionUnit.NewtonPerMeter => @" N/m",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum ElectricalConductanceUnit
+
+  public enum SurfaceTensionUnit
   {
-    Siemens,
+    NewtonPerMeter,
   }
 
-  /// <summary>Electrical conductance unit of Siemens.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Force"/>
-  public struct ElectricalConductance
-    : System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, IValueSiDerivedUnit<double>
+  /// <summary>Surface density unit of kilograms per square meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  public struct SurfaceTension
+    : System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, IValueSiDerivedUnit<double>
   {
-    public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
+    public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
 
     private readonly double m_value;
 
-    public ElectricalConductance(double value, ElectricalConductanceUnit unit = DefaultUnit)
+    public SurfaceTension(double value, SurfaceTensionUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricalConductanceUnit.Siemens => value,
+        SurfaceTensionUnit.NewtonPerMeter => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricalConductanceUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(ElectricalConductanceUnit unit = DefaultUnit)
+    public double ToUnitValue(SurfaceTensionUnit unit = DefaultUnit)
       => unit switch
       {
-        ElectricalConductanceUnit.Siemens => m_value,
+        SurfaceTensionUnit.NewtonPerMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
-    public ElectricalResistance ToElectricResistance()
-      => new(1 / m_value);
 
     #region Static methods
+    public static SurfaceTension From(Force force, Length length)
+      => new(force.Value / length.Value);
+    public static SurfaceTension From(Energy energy, Area area)
+      => new(energy.Value / area.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricalConductance v)
+    public static explicit operator double(SurfaceTension v)
       => v.m_value;
-    public static explicit operator ElectricalConductance(double v)
+    public static explicit operator SurfaceTension(double v)
       => new(v);
 
-    public static bool operator <(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator <(SurfaceTension a, SurfaceTension b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator <=(SurfaceTension a, SurfaceTension b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator >(SurfaceTension a, SurfaceTension b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator >=(SurfaceTension a, SurfaceTension b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator ==(SurfaceTension a, SurfaceTension b)
       => a.Equals(b);
-    public static bool operator !=(ElectricalConductance a, ElectricalConductance b)
+    public static bool operator !=(SurfaceTension a, SurfaceTension b)
       => !a.Equals(b);
 
-    public static ElectricalConductance operator -(ElectricalConductance v)
+    public static SurfaceTension operator -(SurfaceTension v)
       => new(-v.m_value);
-    public static ElectricalConductance operator +(ElectricalConductance a, double b)
+    public static SurfaceTension operator +(SurfaceTension a, double b)
       => new(a.m_value + b);
-    public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b)
+    public static SurfaceTension operator +(SurfaceTension a, SurfaceTension b)
       => a + b.m_value;
-    public static ElectricalConductance operator /(ElectricalConductance a, double b)
+    public static SurfaceTension operator /(SurfaceTension a, double b)
       => new(a.m_value / b);
-    public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b)
+    public static SurfaceTension operator /(SurfaceTension a, SurfaceTension b)
       => a / b.m_value;
-    public static ElectricalConductance operator *(ElectricalConductance a, double b)
+    public static SurfaceTension operator *(SurfaceTension a, double b)
       => new(a.m_value * b);
-    public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b)
+    public static SurfaceTension operator *(SurfaceTension a, SurfaceTension b)
       => a * b.m_value;
-    public static ElectricalConductance operator %(ElectricalConductance a, double b)
+    public static SurfaceTension operator %(SurfaceTension a, double b)
       => new(a.m_value % b);
-    public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b)
+    public static SurfaceTension operator %(SurfaceTension a, SurfaceTension b)
       => a % b.m_value;
-    public static ElectricalConductance operator -(ElectricalConductance a, double b)
+    public static SurfaceTension operator -(SurfaceTension a, double b)
       => new(a.m_value - b);
-    public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b)
+    public static SurfaceTension operator -(SurfaceTension a, SurfaceTension b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(ElectricalConductance other)
+    public int CompareTo(SurfaceTension other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -120,13 +123,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(ElectricalConductance other)
+    public bool Equals(SurfaceTension other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is ElectricalConductance o && Equals(o);
+      => obj is SurfaceTension o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

@@ -7,22 +7,22 @@ namespace Flux
     public static string GetUnitSymbol(this SpeedUnit unit)
       => unit switch
       {
-        SpeedUnit.FeetPerSecond => @" ft/s",
-        SpeedUnit.KilometersPerHour => @" km/h",
-        SpeedUnit.Knots => @" knot",
-        SpeedUnit.MetersPerSecond => @" m/h",
-        SpeedUnit.MilesPerHour => @" mph",
+        SpeedUnit.FootPerSecond => @" ft/s",
+        SpeedUnit.KilometerPerHour => @" km/h",
+        SpeedUnit.Knot => @" knot",
+        SpeedUnit.MeterPerSecond => @" m/h",
+        SpeedUnit.MilePerHour => @" mph",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum SpeedUnit
   {
-    FeetPerSecond,
-    KilometersPerHour,
-    Knots,
-    MetersPerSecond,
-    MilesPerHour,
+    FootPerSecond,
+    KilometerPerHour,
+    Knot,
+    MeterPerSecond,
+    MilePerHour,
   }
 
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
@@ -30,7 +30,7 @@ namespace Flux
   public struct Speed
     : System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, IValueSiDerivedUnit<double>
   {
-    public const SpeedUnit DefaultUnit = SpeedUnit.MetersPerSecond;
+    public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 
     public static Speed SpeedOfLightInVacuum
       => new(299792458);
@@ -49,11 +49,11 @@ namespace Flux
     public Speed(double value, SpeedUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        SpeedUnit.FeetPerSecond => value * (381.0 / 1250.0),
-        SpeedUnit.KilometersPerHour => value * (5.0 / 18.0),
-        SpeedUnit.Knots => value * (1852.0 / 3600.0),
-        SpeedUnit.MetersPerSecond => value,
-        SpeedUnit.MilesPerHour => value * (1397.0 / 3125.0),
+        SpeedUnit.FootPerSecond => value * (381.0 / 1250.0),
+        SpeedUnit.KilometerPerHour => value * (5.0 / 18.0),
+        SpeedUnit.Knot => value * (1852.0 / 3600.0),
+        SpeedUnit.MeterPerSecond => value,
+        SpeedUnit.MilePerHour => value * (1397.0 / 3125.0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -65,11 +65,11 @@ namespace Flux
     public double ToUnitValue(SpeedUnit unit = DefaultUnit)
       => unit switch
       {
-        SpeedUnit.FeetPerSecond => m_value * (1250.0 / 381.0),
-        SpeedUnit.KilometersPerHour => m_value * (18.0 / 5.0),
-        SpeedUnit.Knots => m_value * (3600.0 / 1852.0),
-        SpeedUnit.MetersPerSecond => m_value,
-        SpeedUnit.MilesPerHour => m_value * (3125.0 / 1397.0),
+        SpeedUnit.FootPerSecond => m_value * (1250.0 / 381.0),
+        SpeedUnit.KilometerPerHour => m_value * (18.0 / 5.0),
+        SpeedUnit.Knot => m_value * (3600.0 / 1852.0),
+        SpeedUnit.MeterPerSecond => m_value,
+        SpeedUnit.MilePerHour => m_value * (3125.0 / 1397.0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

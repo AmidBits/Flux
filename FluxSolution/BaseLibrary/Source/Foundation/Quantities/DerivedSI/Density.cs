@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this DensityUnit unit)
       => unit switch
       {
-        DensityUnit.KilogramsPerCubicMeter => @" kg/m³",
+        DensityUnit.KilogramPerCubicMeter => @" kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -15,7 +15,7 @@ namespace Flux
 
   public enum DensityUnit
   {
-    KilogramsPerCubicMeter,
+    KilogramPerCubicMeter,
   }
 
   /// <summary>Density unit of kilograms per cubic meter.</summary>
@@ -23,14 +23,14 @@ namespace Flux
   public struct Density
     : System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, IValueSiDerivedUnit<double>
   {
-    public const DensityUnit DefaultUnit = DensityUnit.KilogramsPerCubicMeter;
+    public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
     private readonly double m_value;
 
     public Density(double value, DensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        DensityUnit.KilogramsPerCubicMeter => value,
+        DensityUnit.KilogramPerCubicMeter => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -42,7 +42,7 @@ namespace Flux
     public double ToUnitValue(DensityUnit unit = DefaultUnit)
       => unit switch
       {
-        DensityUnit.KilogramsPerCubicMeter => m_value,
+        DensityUnit.KilogramPerCubicMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

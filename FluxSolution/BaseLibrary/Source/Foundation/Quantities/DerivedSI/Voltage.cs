@@ -49,7 +49,7 @@ namespace Flux
     /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>
     /// <param name="current"></param>
     /// <param name="resistance"></param>
-    public static Voltage From(ElectricCurrent current, ElectricResistance resistance)
+    public static Voltage From(ElectricCurrent current, ElectricalResistance resistance)
       => new(current.Value * resistance.Value);
     /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
     /// <param name="power"></param>

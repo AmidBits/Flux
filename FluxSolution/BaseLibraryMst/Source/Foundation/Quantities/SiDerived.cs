@@ -111,7 +111,7 @@ namespace Foundation.Units
     [TestMethod]
     public void ElectricResistance()
     {
-      var u = new Flux.ElectricResistance(1);
+      var u = new Flux.ElectricalResistance(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -226,11 +226,11 @@ namespace Foundation.Units
     {
       var u = new Flux.Speed(1);
 
-      Assert.AreEqual(3.2808398950131235, u.ToUnitValue(Flux.SpeedUnit.FeetPerSecond));
-      Assert.AreEqual(3.6, u.ToUnitValue(Flux.SpeedUnit.KilometersPerHour));
-      Assert.AreEqual(1.9438444924406046, u.ToUnitValue(Flux.SpeedUnit.Knots));
+      Assert.AreEqual(3.2808398950131235, u.ToUnitValue(Flux.SpeedUnit.FootPerSecond));
+      Assert.AreEqual(3.6, u.ToUnitValue(Flux.SpeedUnit.KilometerPerHour));
+      Assert.AreEqual(1.9438444924406046, u.ToUnitValue(Flux.SpeedUnit.Knot));
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(2.2369362920544025, u.ToUnitValue(Flux.SpeedUnit.MilesPerHour));
+      Assert.AreEqual(2.2369362920544025, u.ToUnitValue(Flux.SpeedUnit.MilePerHour));
     }
 
     [TestMethod]

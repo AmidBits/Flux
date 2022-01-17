@@ -7,14 +7,14 @@ namespace Flux
     public static string GetUnitSymbol(this AccelerationUnit unit)
       => unit switch
       {
-        AccelerationUnit.MetersPerSecondSquare => @" m/s²",
+        AccelerationUnit.MeterPerSecondSquare => @" m/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum AccelerationUnit
   {
-    MetersPerSecondSquare,
+    MeterPerSecondSquare,
   }
 
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
@@ -22,7 +22,7 @@ namespace Flux
   public struct Acceleration
     : System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, IValueSiDerivedUnit<double>
   {
-    public const AccelerationUnit DefaultUnit = AccelerationUnit.MetersPerSecondSquare;
+    public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
 
     public static Acceleration StandardAccelerationOfGravity
       => new(9.80665);
@@ -32,7 +32,7 @@ namespace Flux
     public Acceleration(double value, AccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        AccelerationUnit.MetersPerSecondSquare => value,
+        AccelerationUnit.MeterPerSecondSquare => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -44,7 +44,7 @@ namespace Flux
     public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch
       {
-        AccelerationUnit.MetersPerSecondSquare => m_value,
+        AccelerationUnit.MeterPerSecondSquare => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

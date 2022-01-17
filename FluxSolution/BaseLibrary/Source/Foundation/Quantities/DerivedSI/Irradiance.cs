@@ -12,7 +12,6 @@ namespace Flux
       };
   }
 
-
   public enum IrradianceUnit
   {
     WattPerSquareMeter,
@@ -47,8 +46,8 @@ namespace Flux
       };
 
     #region Static methods
-    //public static Irradiance From(Mass mass, Area volume)
-    //  => new(mass.Value / volume.Value);
+    public static Irradiance From(Power power, Area area)
+      => new(power.Value / area.Value);
     #endregion Static methods
 
     #region Overloaded operators

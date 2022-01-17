@@ -7,14 +7,14 @@ namespace Flux
     public static string GetUnitSymbol(this FlowUnit unit)
       => unit switch
       {
-        FlowUnit.CubicMetersPerSecond => @" m³/s",
+        FlowUnit.CubicMeterPerSecond => @" m³/s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum FlowUnit
   {
-    CubicMetersPerSecond,
+    CubicMeterPerSecond,
   }
 
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
@@ -22,14 +22,14 @@ namespace Flux
   public struct Flow
     : System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, IValueSiDerivedUnit<double>
   {
-    public const FlowUnit DefaultUnit = FlowUnit.CubicMetersPerSecond;
+    public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
     private readonly double m_value;
 
     public Flow(double value, FlowUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        FlowUnit.CubicMetersPerSecond => value,
+        FlowUnit.CubicMeterPerSecond => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -41,7 +41,7 @@ namespace Flux
     public double ToUnitValue(FlowUnit unit = DefaultUnit)
       => unit switch
       {
-        FlowUnit.CubicMetersPerSecond => m_value,
+        FlowUnit.CubicMeterPerSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

@@ -14,7 +14,7 @@ namespace Flux.Net.Nmea
     public Longitude Longitude
       => new(NmeaSentence.ParseDecimalLongitude(m_values[5], m_values[6]));
     public Speed SpeedOverGround
-      => new(m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0, SpeedUnit.Knots);
+      => new(m_values.Length > 7 && double.TryParse(m_values[7], out var result) ? result : 0, SpeedUnit.Knot);
     public Azimuth CourseOverGround
       => new(m_values.Length > 8 && double.TryParse(m_values[8], out var result) ? result : 0);
     public System.DateTime UtcDateTime

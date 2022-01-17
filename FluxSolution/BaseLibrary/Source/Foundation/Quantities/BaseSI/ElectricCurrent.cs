@@ -57,7 +57,7 @@ namespace Flux
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricResistance resistance)
+    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance)
       => new(voltage.Value / resistance.Value);
     #endregion Static methods
 

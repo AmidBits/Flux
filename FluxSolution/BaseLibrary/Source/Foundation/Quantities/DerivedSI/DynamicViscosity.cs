@@ -2,102 +2,102 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static SurfaceDensity Create(this SurfaceDensityUnit unit, double value)
+    public static DynamicViscosity Create(this DynamicViscosityUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this SurfaceDensityUnit unit)
+    public static string GetUnitSymbol(this DynamicViscosityUnit unit)
       => unit switch
       {
-        SurfaceDensityUnit.KilogramsPerSquareMeter => @" kg/m²",
+        DynamicViscosityUnit.PascalSecond => @" kg/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
 
-  public enum SurfaceDensityUnit
+  public enum DynamicViscosityUnit
   {
-    KilogramsPerSquareMeter,
+    PascalSecond,
   }
 
   /// <summary>Surface density unit of kilograms per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
-  public struct SurfaceDensity
-    : System.IComparable<SurfaceDensity>, System.IConvertible, System.IEquatable<SurfaceDensity>, IValueSiDerivedUnit<double>
+  public struct DynamicViscosity
+    : System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, IValueSiDerivedUnit<double>
   {
-    public const SurfaceDensityUnit DefaultUnit = SurfaceDensityUnit.KilogramsPerSquareMeter;
+    public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
 
     private readonly double m_value;
 
-    public SurfaceDensity(double value, SurfaceDensityUnit unit = DefaultUnit)
+    public DynamicViscosity(double value, DynamicViscosityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        SurfaceDensityUnit.KilogramsPerSquareMeter => value,
+        DynamicViscosityUnit.PascalSecond => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(SurfaceDensityUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(DynamicViscosityUnit unit = DefaultUnit, string? format = null)
       => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
-    public double ToUnitValue(SurfaceDensityUnit unit = DefaultUnit)
+    public double ToUnitValue(DynamicViscosityUnit unit = DefaultUnit)
       => unit switch
       {
-        SurfaceDensityUnit.KilogramsPerSquareMeter => m_value,
+        DynamicViscosityUnit.PascalSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
-    public static SurfaceDensity From(Mass mass, Area volume)
-      => new(mass.Value / volume.Value);
+    public static DynamicViscosity From(Pressure pressure, Time time)
+      => new(pressure.Value * time.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(SurfaceDensity v)
+    public static explicit operator double(DynamicViscosity v)
       => v.m_value;
-    public static explicit operator SurfaceDensity(double v)
+    public static explicit operator DynamicViscosity(double v)
       => new(v);
 
-    public static bool operator <(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator <(DynamicViscosity a, DynamicViscosity b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator <=(DynamicViscosity a, DynamicViscosity b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator >(DynamicViscosity a, DynamicViscosity b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator >=(DynamicViscosity a, DynamicViscosity b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator ==(DynamicViscosity a, DynamicViscosity b)
       => a.Equals(b);
-    public static bool operator !=(SurfaceDensity a, SurfaceDensity b)
+    public static bool operator !=(DynamicViscosity a, DynamicViscosity b)
       => !a.Equals(b);
 
-    public static SurfaceDensity operator -(SurfaceDensity v)
+    public static DynamicViscosity operator -(DynamicViscosity v)
       => new(-v.m_value);
-    public static SurfaceDensity operator +(SurfaceDensity a, double b)
+    public static DynamicViscosity operator +(DynamicViscosity a, double b)
       => new(a.m_value + b);
-    public static SurfaceDensity operator +(SurfaceDensity a, SurfaceDensity b)
+    public static DynamicViscosity operator +(DynamicViscosity a, DynamicViscosity b)
       => a + b.m_value;
-    public static SurfaceDensity operator /(SurfaceDensity a, double b)
+    public static DynamicViscosity operator /(DynamicViscosity a, double b)
       => new(a.m_value / b);
-    public static SurfaceDensity operator /(SurfaceDensity a, SurfaceDensity b)
+    public static DynamicViscosity operator /(DynamicViscosity a, DynamicViscosity b)
       => a / b.m_value;
-    public static SurfaceDensity operator *(SurfaceDensity a, double b)
+    public static DynamicViscosity operator *(DynamicViscosity a, double b)
       => new(a.m_value * b);
-    public static SurfaceDensity operator *(SurfaceDensity a, SurfaceDensity b)
+    public static DynamicViscosity operator *(DynamicViscosity a, DynamicViscosity b)
       => a * b.m_value;
-    public static SurfaceDensity operator %(SurfaceDensity a, double b)
+    public static DynamicViscosity operator %(DynamicViscosity a, double b)
       => new(a.m_value % b);
-    public static SurfaceDensity operator %(SurfaceDensity a, SurfaceDensity b)
+    public static DynamicViscosity operator %(DynamicViscosity a, DynamicViscosity b)
       => a % b.m_value;
-    public static SurfaceDensity operator -(SurfaceDensity a, double b)
+    public static DynamicViscosity operator -(DynamicViscosity a, double b)
       => new(a.m_value - b);
-    public static SurfaceDensity operator -(SurfaceDensity a, SurfaceDensity b)
+    public static DynamicViscosity operator -(DynamicViscosity a, DynamicViscosity b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(SurfaceDensity other)
+    public int CompareTo(DynamicViscosity other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -121,13 +121,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(SurfaceDensity other)
+    public bool Equals(DynamicViscosity other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is SurfaceDensity o && Equals(o);
+      => obj is DynamicViscosity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
