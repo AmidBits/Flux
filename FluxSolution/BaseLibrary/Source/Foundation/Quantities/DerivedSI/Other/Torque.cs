@@ -2,112 +2,102 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
+    public static Torque Create(this TorqueUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
+    public static string GetUnitSymbol(this TorqueUnit unit)
       => unit switch
       {
-        ElectricCurrentUnit.Ampere => "A",
+        TorqueUnit.NewtonMeter => "N\u22C5m",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum ElectricCurrentUnit
+
+  public enum TorqueUnit
   {
-    Milliampere,
-    Ampere,
+    NewtonMeter,
   }
 
-  /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-  public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>
+  /// <summary>Torque unit of newton meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
+  public struct Torque
+    : System.IComparable<Torque>, System.IConvertible, System.IEquatable<Torque>, IValueSiDerivedUnit<double>
   {
-    public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
+    public const TorqueUnit DefaultUnit = TorqueUnit.NewtonMeter;
 
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
+    public Torque(double value, TorqueUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricCurrentUnit.Milliampere => value / 1000,
-        ElectricCurrentUnit.Ampere => value,
+        TorqueUnit.NewtonMeter => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(TorqueUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
+    public double ToUnitValue(TorqueUnit unit = DefaultUnit)
       => unit switch
       {
-        ElectricCurrentUnit.Milliampere => m_value * 1000,
-        ElectricCurrentUnit.Ampere => m_value,
+        TorqueUnit.NewtonMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
-    /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
-    /// <param name="power"></param>
-    /// <param name="voltage"></param>
-    public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.Value / voltage.Value);
-    /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
-    /// <param name="voltage"></param>
-    /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance)
-      => new(voltage.Value / resistance.Value);
+    public static Torque From(Energy energy, Angle angle)
+      => new(energy.Value / angle.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricCurrent v)
+    public static explicit operator double(Torque v)
       => v.m_value;
-    public static explicit operator ElectricCurrent(double v)
+    public static explicit operator Torque(double v)
       => new(v);
 
-    public static bool operator <(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <(Torque a, Torque b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <=(Torque a, Torque b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >(Torque a, Torque b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >=(Torque a, Torque b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator ==(Torque a, Torque b)
       => a.Equals(b);
-    public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator !=(Torque a, Torque b)
       => !a.Equals(b);
 
-    public static ElectricCurrent operator -(ElectricCurrent v)
+    public static Torque operator -(Torque v)
       => new(-v.m_value);
-    public static ElectricCurrent operator +(ElectricCurrent a, double b)
+    public static Torque operator +(Torque a, double b)
       => new(a.m_value + b);
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
+    public static Torque operator +(Torque a, Torque b)
       => a + b.m_value;
-    public static ElectricCurrent operator /(ElectricCurrent a, double b)
+    public static Torque operator /(Torque a, double b)
       => new(a.m_value / b);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
+    public static Torque operator /(Torque a, Torque b)
       => a / b.m_value;
-    public static ElectricCurrent operator *(ElectricCurrent a, double b)
+    public static Torque operator *(Torque a, double b)
       => new(a.m_value * b);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
+    public static Torque operator *(Torque a, Torque b)
       => a * b.m_value;
-    public static ElectricCurrent operator %(ElectricCurrent a, double b)
+    public static Torque operator %(Torque a, double b)
       => new(a.m_value % b);
-    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
+    public static Torque operator %(Torque a, Torque b)
       => a % b.m_value;
-    public static ElectricCurrent operator -(ElectricCurrent a, double b)
+    public static Torque operator -(Torque a, double b)
       => new(a.m_value - b);
-    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
+    public static Torque operator -(Torque a, Torque b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(ElectricCurrent other)
+    public int CompareTo(Torque other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -131,13 +121,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(ElectricCurrent other)
+    public bool Equals(Torque other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is ElectricCurrent o && Equals(o);
+      => obj is Torque o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

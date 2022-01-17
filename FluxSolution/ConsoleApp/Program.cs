@@ -98,6 +98,11 @@ namespace ConsoleApp
       var d = Maths.GetDigits(i, r);
       var pv = Maths.GetPlaceValues(i, r);
 
+
+
+      var q = new Flux.Impulse(1);
+      System.Console.WriteLine($"{"Lower2CASE".ToStringBuilder().SplitCamelCase().ToLowerFirstCharacters()}");
+
       return;
 
       //Flux.ConstraintPropagationSolver.Example();

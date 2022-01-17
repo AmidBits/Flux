@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this EnplethyUnit unit)
       => unit switch
       {
-        EnplethyUnit.Mole => @" mol",
+        EnplethyUnit.Mole => "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -41,7 +41,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(EnplethyUnit unit = DefaultUnit)
       => unit switch
       {

@@ -7,15 +7,15 @@ namespace Flux
     public static string GetUnitSymbol(this PartsPerNotationUnit unit)
       => unit switch
       {
-        PartsPerNotationUnit.Quadrillion => " ppq",
-        PartsPerNotationUnit.Trillion => " ppt",
-        PartsPerNotationUnit.Billion => " ppb",
-        PartsPerNotationUnit.Million => " ppm",
-        PartsPerNotationUnit.HundredThousand => " pcm",
+        PartsPerNotationUnit.Quadrillion => "ppq",
+        PartsPerNotationUnit.Trillion => "ppt",
+        PartsPerNotationUnit.Billion => "ppb",
+        PartsPerNotationUnit.Million => "ppm",
+        PartsPerNotationUnit.HundredThousand => "pcm",
         PartsPerNotationUnit.TenThousand => ((char)unit).ToString(),
         PartsPerNotationUnit.Thousand => ((char)unit).ToString(),
         PartsPerNotationUnit.Hundred => ((char)unit).ToString(),
-        PartsPerNotationUnit.One => " pp1",
+        PartsPerNotationUnit.One => "pp1",
         _ => string.Empty,
       };
 
@@ -91,7 +91,7 @@ namespace Flux
       => m_parts;
 
     public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch
       {

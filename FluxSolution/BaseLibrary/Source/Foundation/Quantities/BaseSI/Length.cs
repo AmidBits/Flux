@@ -7,17 +7,17 @@ namespace Flux
     public static string GetUnitSymbol(this LengthUnit unit)
       => unit switch
       {
-        LengthUnit.Millimeter => @" mm",
-        LengthUnit.Centimeter => @" cm",
-        LengthUnit.Inch => @" in",
-        LengthUnit.Decimeter => @" dm",
-        LengthUnit.Foot => @" ft",
-        LengthUnit.Yard => @" yd",
-        LengthUnit.Meter => @" m",
-        LengthUnit.NauticalMile => @" nm",
-        LengthUnit.Mile => @" mi",
-        LengthUnit.Kilometer => @" km",
-        LengthUnit.AstronomicalUnit => @" au",
+        LengthUnit.Millimeter => "mm",
+        LengthUnit.Centimeter => "cm",
+        LengthUnit.Inch => "in",
+        LengthUnit.Decimeter => "dm",
+        LengthUnit.Foot => "ft",
+        LengthUnit.Yard => "yd",
+        LengthUnit.Meter => "m",
+        LengthUnit.NauticalMile => "nm",
+        LengthUnit.Mile => "mi",
+        LengthUnit.Kilometer => "km",
+        LengthUnit.AstronomicalUnit => "au",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -67,7 +67,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(LengthUnit unit = DefaultUnit)
       => unit switch
       {

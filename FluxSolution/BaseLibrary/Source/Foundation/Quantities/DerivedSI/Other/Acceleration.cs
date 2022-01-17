@@ -2,112 +2,99 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
+    public static Acceleration Create(this AccelerationUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
+    public static string GetUnitSymbol(this AccelerationUnit unit)
       => unit switch
       {
-        ElectricCurrentUnit.Ampere => "A",
+        AccelerationUnit.MeterPerSecondSquare => "m/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum ElectricCurrentUnit
+  public enum AccelerationUnit
   {
-    Milliampere,
-    Ampere,
+    MeterPerSecondSquare,
   }
 
-  /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-  public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>
+  /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
+  public struct Acceleration
+    : System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, IValueSiDerivedUnit<double>
   {
-    public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
+    public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
+
+    public static Acceleration StandardAccelerationOfGravity
+      => new(9.80665);
 
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
+    public Acceleration(double value, AccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricCurrentUnit.Milliampere => value / 1000,
-        ElectricCurrentUnit.Ampere => value,
+        AccelerationUnit.MeterPerSecondSquare => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
+    public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch
       {
-        ElectricCurrentUnit.Milliampere => m_value * 1000,
-        ElectricCurrentUnit.Ampere => m_value,
+        AccelerationUnit.MeterPerSecondSquare => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    #region Static methods
-    /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
-    /// <param name="power"></param>
-    /// <param name="voltage"></param>
-    public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.Value / voltage.Value);
-    /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
-    /// <param name="voltage"></param>
-    /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance)
-      => new(voltage.Value / resistance.Value);
-    #endregion Static methods
-
     #region Overloaded operators
-    public static explicit operator double(ElectricCurrent v)
+    public static explicit operator double(Acceleration v)
       => v.m_value;
-    public static explicit operator ElectricCurrent(double v)
+    public static explicit operator Acceleration(double v)
       => new(v);
 
-    public static bool operator <(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <(Acceleration a, Acceleration b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <=(Acceleration a, Acceleration b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >(Acceleration a, Acceleration b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >=(Acceleration a, Acceleration b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator ==(Acceleration a, Acceleration b)
       => a.Equals(b);
-    public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator !=(Acceleration a, Acceleration b)
       => !a.Equals(b);
 
-    public static ElectricCurrent operator -(ElectricCurrent v)
+    public static Acceleration operator -(Acceleration v)
       => new(-v.m_value);
-    public static ElectricCurrent operator +(ElectricCurrent a, double b)
+    public static Acceleration operator +(Acceleration a, double b)
       => new(a.m_value + b);
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
+    public static Acceleration operator +(Acceleration a, Acceleration b)
       => a + b.m_value;
-    public static ElectricCurrent operator /(ElectricCurrent a, double b)
+    public static Acceleration operator /(Acceleration a, double b)
       => new(a.m_value / b);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
+    public static Acceleration operator /(Acceleration a, Acceleration b)
       => a / b.m_value;
-    public static ElectricCurrent operator *(ElectricCurrent a, double b)
+    public static Acceleration operator *(Acceleration a, double b)
       => new(a.m_value * b);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
+    public static Acceleration operator *(Acceleration a, Acceleration b)
       => a * b.m_value;
-    public static ElectricCurrent operator %(ElectricCurrent a, double b)
+    public static Acceleration operator %(Acceleration a, double b)
       => new(a.m_value % b);
-    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
+    public static Acceleration operator %(Acceleration a, Acceleration b)
       => a % b.m_value;
-    public static ElectricCurrent operator -(ElectricCurrent a, double b)
+    public static Acceleration operator -(Acceleration a, double b)
       => new(a.m_value - b);
-    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
+    public static Acceleration operator -(Acceleration a, Acceleration b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(ElectricCurrent other)
+    public int CompareTo(Acceleration other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -131,13 +118,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(ElectricCurrent other)
+    public bool Equals(Acceleration other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is ElectricCurrent o && Equals(o);
+      => obj is Acceleration o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

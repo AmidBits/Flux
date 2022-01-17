@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this LuminousIntensityUnit unit)
       => unit switch
       {
-        LuminousIntensityUnit.Candela => @" cd",
+        LuminousIntensityUnit.Candela => "cd",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -37,7 +37,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
       => unit switch
       {

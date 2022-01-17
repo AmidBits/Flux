@@ -7,10 +7,10 @@ namespace Flux
     public static string GetUnitSymbol(this TemperatureUnit unit, bool useUnicodeIfAvailable = false)
       => unit switch
       {
-        TemperatureUnit.Celsius => useUnicodeIfAvailable ? " \u2103" : $" {Angle.DegreeSymbol}C",
-        TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? " \u2109" : $" {Angle.DegreeSymbol}F",
-        TemperatureUnit.Kelvin => useUnicodeIfAvailable ? " \u212A" : $" K",
-        TemperatureUnit.Rankine => $" {Angle.DegreeSymbol}R",
+        TemperatureUnit.Celsius => useUnicodeIfAvailable ? "\u2103" : $"{Angle.DegreeSymbol}C",
+        TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? "\u2109" : $"{Angle.DegreeSymbol}F",
+        TemperatureUnit.Kelvin => useUnicodeIfAvailable ? "\u212A" : $"K",
+        TemperatureUnit.Rankine => $"{Angle.DegreeSymbol}R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -62,7 +62,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {

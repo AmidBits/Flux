@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this PowerRatioUnit unit)
       => unit switch
       {
-        PowerRatioUnit.DecibelWatt => @" dBW",
+        PowerRatioUnit.DecibelWatt => "dBW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -42,7 +42,7 @@ namespace Flux
       => new(System.Math.Sqrt(m_value));
 
     public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
       => unit switch
       {

@@ -2,112 +2,101 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
+    public static Flow Create(this FlowUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
+    public static string GetUnitSymbol(this FlowUnit unit)
       => unit switch
       {
-        ElectricCurrentUnit.Ampere => "A",
+        FlowUnit.CubicMeterPerSecond => "m³/s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum ElectricCurrentUnit
+  public enum FlowUnit
   {
-    Milliampere,
-    Ampere,
+    CubicMeterPerSecond,
   }
 
-  /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-  public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>
+  /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
+  public struct Flow
+    : System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, IValueSiDerivedUnit<double>
   {
-    public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
+    public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
+    public Flow(double value, FlowUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricCurrentUnit.Milliampere => value / 1000,
-        ElectricCurrentUnit.Ampere => value,
+        FlowUnit.CubicMeterPerSecond => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(FlowUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
+    public double ToUnitValue(FlowUnit unit = DefaultUnit)
       => unit switch
       {
-        ElectricCurrentUnit.Milliampere => m_value * 1000,
-        ElectricCurrentUnit.Ampere => m_value,
+        FlowUnit.CubicMeterPerSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
-    /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
-    /// <param name="power"></param>
-    /// <param name="voltage"></param>
-    public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.Value / voltage.Value);
-    /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
-    /// <param name="voltage"></param>
-    /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance)
-      => new(voltage.Value / resistance.Value);
+    public static Flow From(Volume volume, Time time)
+      => new(volume.Value / time.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricCurrent v)
+    public static explicit operator double(Flow v)
       => v.m_value;
-    public static explicit operator ElectricCurrent(double v)
+    public static explicit operator Flow(double v)
       => new(v);
 
-    public static bool operator <(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <(Flow a, Flow b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <=(Flow a, Flow b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >(Flow a, Flow b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >=(Flow a, Flow b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator ==(Flow a, Flow b)
       => a.Equals(b);
-    public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator !=(Flow a, Flow b)
       => !a.Equals(b);
 
-    public static ElectricCurrent operator -(ElectricCurrent v)
+    public static Flow operator -(Flow v)
       => new(-v.m_value);
-    public static ElectricCurrent operator +(ElectricCurrent a, double b)
+    public static Flow operator +(Flow a, double b)
       => new(a.m_value + b);
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
+    public static Flow operator +(Flow a, Flow b)
       => a + b.m_value;
-    public static ElectricCurrent operator /(ElectricCurrent a, double b)
+    public static Flow operator /(Flow a, double b)
       => new(a.m_value / b);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
+    public static Flow operator /(Flow a, Flow b)
       => a / b.m_value;
-    public static ElectricCurrent operator *(ElectricCurrent a, double b)
+    public static Flow operator *(Flow a, double b)
       => new(a.m_value * b);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
+    public static Flow operator *(Flow a, Flow b)
       => a * b.m_value;
-    public static ElectricCurrent operator %(ElectricCurrent a, double b)
+    public static Flow operator %(Flow a, double b)
       => new(a.m_value % b);
-    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
+    public static Flow operator %(Flow a, Flow b)
       => a % b.m_value;
-    public static ElectricCurrent operator -(ElectricCurrent a, double b)
+    public static Flow operator -(Flow a, double b)
       => new(a.m_value - b);
-    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
+    public static Flow operator -(Flow a, Flow b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(ElectricCurrent other)
+    public int CompareTo(Flow other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -131,17 +120,17 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(ElectricCurrent other)
+    public bool Equals(Flow other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is ElectricCurrent o && Equals(o);
+      => obj is Flow o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+      => $"{GetType().Name} {{ {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

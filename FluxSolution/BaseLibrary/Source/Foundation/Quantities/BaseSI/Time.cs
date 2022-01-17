@@ -7,15 +7,15 @@ namespace Flux
     public static string GetUnitSymbol(this TimeUnit unit)
       => unit switch
       {
-        TimeUnit.Nanosecond => @" ns",
-        TimeUnit.Microsecond => " \u00B5s",
-        TimeUnit.Millisecond => @" ms",
-        TimeUnit.Second => @" s",
-        TimeUnit.Minute => @" min",
-        TimeUnit.Hour => @" h",
-        TimeUnit.Day => @" d",
-        TimeUnit.Week => @" week(s)",
-        TimeUnit.Fortnight => @" fortnight(s)",
+        TimeUnit.Nanosecond => "ns",
+        TimeUnit.Microsecond => "\u00B5s",
+        TimeUnit.Millisecond => "ms",
+        TimeUnit.Second => "s",
+        TimeUnit.Minute => "min",
+        TimeUnit.Hour => "h",
+        TimeUnit.Day => "d",
+        TimeUnit.Week => "week(s)",
+        TimeUnit.Fortnight => "fortnight(s)",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -72,7 +72,7 @@ namespace Flux
       => System.TimeSpan.FromSeconds(m_value);
 
     public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {

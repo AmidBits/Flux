@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this AmplitudeRatioUnit unit)
       => unit switch
       {
-        AmplitudeRatioUnit.DecibelVolt => @" dBV",
+        AmplitudeRatioUnit.DecibelVolt => "dBV",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -42,7 +42,7 @@ namespace Flux
       => new(System.Math.Pow(m_value, 2));
 
     public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
       => unit switch
       {

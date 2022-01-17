@@ -37,7 +37,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(RelativeHumidityUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(RelativeHumidityUnit unit = DefaultUnit)
       => unit switch
       {

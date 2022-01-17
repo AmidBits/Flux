@@ -7,12 +7,12 @@ namespace Flux
     public static string GetUnitSymbol(this MassUnit unit)
       => unit switch
       {
-        MassUnit.Milligram => @" mg",
-        MassUnit.Gram => @" g",
-        MassUnit.Ounce => @" oz",
-        MassUnit.Pound => @" lb",
-        MassUnit.Kilogram => @" kg",
-        MassUnit.MetricTon => @" t",
+        MassUnit.Milligram => "mg",
+        MassUnit.Gram => "g",
+        MassUnit.Ounce => "oz",
+        MassUnit.Pound => "lb",
+        MassUnit.Kilogram => "kg",
+        MassUnit.MetricTon => "t",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -55,7 +55,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(MassUnit unit = DefaultUnit, string? format = null)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))}{unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(MassUnit unit = DefaultUnit)
       => unit switch
       {

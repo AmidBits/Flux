@@ -2,112 +2,103 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
+    public static AngularVelocity Create(this AngularVelocityUnit unit, double value)
       => new(value, unit);
-    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
+    public static string GetUnitSymbol(this AngularVelocityUnit unit)
       => unit switch
       {
-        ElectricCurrentUnit.Ampere => "A",
+        AngularVelocityUnit.RadianPerSecond => "rad/s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum ElectricCurrentUnit
+
+  public enum AngularVelocityUnit
   {
-    Milliampere,
-    Ampere,
+    RadianPerSecond,
   }
 
-  /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-  public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>
+  /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
+  public struct AngularVelocity
+    : System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, IValueSiDerivedUnit<double>
   {
-    public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
+    public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
+    public AngularVelocity(double value, AngularVelocityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricCurrentUnit.Milliampere => value / 1000,
-        ElectricCurrentUnit.Ampere => value,
+        AngularVelocityUnit.RadianPerSecond => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(AngularVelocityUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
+    public double ToUnitValue(AngularVelocityUnit unit = DefaultUnit)
       => unit switch
       {
-        ElectricCurrentUnit.Milliampere => m_value * 1000,
-        ElectricCurrentUnit.Ampere => m_value,
+        AngularVelocityUnit.RadianPerSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
-    /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
-    /// <param name="power"></param>
-    /// <param name="voltage"></param>
-    public static ElectricCurrent From(Power power, Voltage voltage)
-      => new(power.Value / voltage.Value);
-    /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
-    /// <param name="voltage"></param>
-    /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance)
-      => new(voltage.Value / resistance.Value);
+    public static AngularVelocity From(Angle angle, Time time)
+      => new(angle.Value / time.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(ElectricCurrent v)
+    public static explicit operator double(AngularVelocity v)
       => v.m_value;
-    public static explicit operator ElectricCurrent(double v)
+    public static explicit operator AngularVelocity(double v)
       => new(v);
 
-    public static bool operator <(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator <=(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator >=(AngularVelocity a, AngularVelocity b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator ==(AngularVelocity a, AngularVelocity b)
       => a.Equals(b);
-    public static bool operator !=(ElectricCurrent a, ElectricCurrent b)
+    public static bool operator !=(AngularVelocity a, AngularVelocity b)
       => !a.Equals(b);
 
-    public static ElectricCurrent operator -(ElectricCurrent v)
+    public static AngularVelocity operator -(AngularVelocity v)
       => new(-v.m_value);
-    public static ElectricCurrent operator +(ElectricCurrent a, double b)
+    public static AngularVelocity operator +(AngularVelocity a, AngularVelocity b)
+      => new(a.m_value + b.m_value);
+    public static AngularVelocity operator /(AngularVelocity a, AngularVelocity b)
+      => new(a.m_value / b.m_value);
+    public static AngularVelocity operator *(AngularVelocity a, AngularVelocity b)
+      => new(a.m_value * b.m_value);
+    public static AngularVelocity operator %(AngularVelocity a, AngularVelocity b)
+      => new(a.m_value % b.m_value);
+    public static AngularVelocity operator -(AngularVelocity a, AngularVelocity b)
+      => new(a.m_value - b.m_value);
+
+    public static AngularVelocity operator +(AngularVelocity a, double b)
       => new(a.m_value + b);
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b)
-      => a + b.m_value;
-    public static ElectricCurrent operator /(ElectricCurrent a, double b)
+    public static AngularVelocity operator /(AngularVelocity a, double b)
       => new(a.m_value / b);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b)
-      => a / b.m_value;
-    public static ElectricCurrent operator *(ElectricCurrent a, double b)
+    public static AngularVelocity operator *(AngularVelocity a, double b)
       => new(a.m_value * b);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b)
-      => a * b.m_value;
-    public static ElectricCurrent operator %(ElectricCurrent a, double b)
+    public static AngularVelocity operator %(AngularVelocity a, double b)
       => new(a.m_value % b);
-    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b)
-      => a % b.m_value;
-    public static ElectricCurrent operator -(ElectricCurrent a, double b)
+    public static AngularVelocity operator -(AngularVelocity a, double b)
       => new(a.m_value - b);
-    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b)
-      => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(ElectricCurrent other)
+    public int CompareTo(AngularVelocity other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -131,13 +122,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(ElectricCurrent other)
+    public bool Equals(AngularVelocity other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is ElectricCurrent o && Equals(o);
+      => obj is AngularVelocity o && Equals(o);
     public override int GetHashCode()
       => m_value.GetHashCode();
     public override string ToString()

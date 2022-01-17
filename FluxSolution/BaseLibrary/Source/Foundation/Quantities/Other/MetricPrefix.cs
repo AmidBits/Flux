@@ -113,7 +113,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(MetricPrefixUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = true)
-      => $"{(format is null ? ToUnitValue(unit) : string.Format($"{{0:{format}}}", ToUnitValue(unit)))} {(useNameInsteadOfSymbol ? unit.GetUnitName() : unit.GetUnitSymbol())}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToUnitValue(unit))} {(useNameInsteadOfSymbol ? unit.GetUnitName() : unit.GetUnitSymbol())}";
     public double ToUnitValue(MetricPrefixUnit unit = DefaultUnit)
       => m_value / System.Math.Pow(10, (double)unit);
 
