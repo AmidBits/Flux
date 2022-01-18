@@ -91,6 +91,30 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var rb = new Flux.DataStructures.RuneBuilder();
+      //rb.Append('*');
+      //rb.Prepend(Angle.PrimeSymbol);
+      rb.Append("'Snobben' ");
+      rb.Prepend((System.Text.Rune)' ');
+      rb.Append((System.Text.Rune)'H');
+      rb.Append((System.Text.Rune)'u');
+      rb.Append((System.Text.Rune)'g');
+      rb.Append((System.Text.Rune)'o');
+      rb.Prepend((System.Text.Rune)'t');
+      rb.Prepend((System.Text.Rune)'r');
+      rb.Prepend((System.Text.Rune)'e');
+      rb.Prepend((System.Text.Rune)'b');
+      rb.Prepend((System.Text.Rune)'o');
+      rb.Prepend((System.Text.Rune)'R');
+      rb.Prepend((System.Text.Rune)' ');
+      rb.Prepend((System.Text.Rune)'o');
+      rb.Prepend((System.Text.Rune)'T');
+      rb.Prepend("Congratulations ");
+      rb.Append(", to retirement.");
+
+      System.Console.WriteLine($"\"{rb.ToString(0, rb.Count)}\"");
+      return;
+
       var i = -123456789;
       var r = 10;
 
@@ -100,8 +124,12 @@ namespace ConsoleApp
 
 
 
-      var q = new Flux.Impulse(1);
-      System.Console.WriteLine($"{"Lower2CASE".ToStringBuilder().SplitCamelCase().ToLowerFirstCharacters()}");
+      var s1 = "lowerCase2UpperSLOWCase";
+      System.Console.WriteLine(s1);
+      var s2 = s1.ToStringBuilder().SplitCamelCase().ToLowerFirstCharacters().ToString();
+      System.Console.WriteLine(s2);
+      var s3 = s2.ToStringBuilder().MakeCamelCase(char.IsWhiteSpace).ToString();
+      System.Console.WriteLine(s3);
 
       return;
 

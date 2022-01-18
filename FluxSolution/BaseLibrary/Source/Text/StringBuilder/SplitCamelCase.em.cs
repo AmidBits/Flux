@@ -8,9 +8,9 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       for (var index = source.Length - 1; index > 0; index--)
-        if (char.IsUpper(source[index]) && !char.IsUpper(source[index - 1]))
+        if (char.IsUpper(source[index]) && (!char.IsUpper(source[index - 1]) || char.IsLower(source[index + 1])))
           source.Insert(index, ' ');
-      
+
       return source;
     }
   }
