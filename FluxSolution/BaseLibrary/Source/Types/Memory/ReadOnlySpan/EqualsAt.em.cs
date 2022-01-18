@@ -3,15 +3,15 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether the specified part of the target is found at the specified index in the source, using the specified comparer.</summary>
-    public static bool EqualsAt<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static bool EqualsAt<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
         return false;
 
       while (length-- > 0)
-        if (!comparer.Equals(source[sourceIndex++], target[targetIndex++]))
+        if (!equalityComparer.Equals(source[sourceIndex++], target[targetIndex++]))
           return false;
 
       return true;

@@ -3,9 +3,9 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] LastIndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int[] LastIndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var lastIndices = new int[values.Length];
 
@@ -17,7 +17,7 @@ namespace Flux
 
         for (var valueIndex = values.Length - 1; valueIndex >= 0; valueIndex--)
         {
-          if (lastIndices[valueIndex] == -1 && comparer.Equals(sourceChar, values[valueIndex]))
+          if (lastIndices[valueIndex] == -1 && equalityComparer.Equals(sourceChar, values[valueIndex]))
           {
             lastIndices[valueIndex] = sourceIndex;
 

@@ -17,12 +17,12 @@ namespace Flux
     }
 
     /// <summary>Returns the last index of the occurence of the target within the source. Or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       for (var index = source.Length - 1; index >= 0; index--)
-        if (comparer.Equals(source[index], value))
+        if (equalityComparer.Equals(source[index], value))
           return index;
 
       return -1;
@@ -32,12 +32,12 @@ namespace Flux
       => LastIndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Reports the last index of the occurence of the target within the source. Or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       for (int index = source.Length - value.Length; index >= 0; index--)
-        if (EqualsAt(source, index, value, 0, value.Length, comparer))
+        if (EqualsAt(source, index, value, 0, value.Length, equalityComparer))
           return index;
 
       return -1;

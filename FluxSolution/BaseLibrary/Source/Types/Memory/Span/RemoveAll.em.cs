@@ -24,8 +24,8 @@ namespace Flux
       return source[..removedIndex].ToArray();
     }
     /// <summary>Remove (in-place) the specified elements. Uses the specified comparer.</summary>
-    public static System.Span<T> RemoveAll<T>(ref this System.Span<T> source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> comparer, params T[] remove)
-      => RemoveAll(source, t => remove.Contains(t, comparer));
+    public static System.Span<T> RemoveAll<T>(ref this System.Span<T> source, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] remove)
+      => RemoveAll(source, t => remove.Contains(t, equalityComparer));
     /// <summary>Remove (in-place) the specified elements. Uses the default comparer.</summary>
     public static System.Span<T> RemoveAll<T>(ref this System.Span<T> source, params T[] remove)
       => RemoveAll(source, remove.Contains);

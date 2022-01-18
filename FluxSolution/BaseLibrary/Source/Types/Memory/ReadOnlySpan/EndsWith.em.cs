@@ -3,9 +3,9 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
-    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
@@ -14,7 +14,7 @@ namespace Flux
         return false;
 
       while (--sourceIndex >= 0 && --targetIndex >= 0)
-        if (!comparer.Equals(source[sourceIndex], target[targetIndex]))
+        if (!equalityComparer.Equals(source[sourceIndex], target[targetIndex]))
           return false;
 
       return true;

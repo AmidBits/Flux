@@ -91,6 +91,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var span = "robertHugo".EnumerateRunes().ToArray().ToReadOnlySpan();
+
       var rb = new Flux.DataStructures.RuneBuilder();
       //rb.Append('*');
       //rb.Prepend(Angle.PrimeSymbol);

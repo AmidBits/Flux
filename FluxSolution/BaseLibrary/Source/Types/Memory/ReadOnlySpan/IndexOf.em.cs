@@ -17,12 +17,12 @@ namespace Flux
     }
 
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       for (var index = 0; index < source.Length; index++)
-        if (comparer.Equals(source[index], value))
+        if (equalityComparer.Equals(source[index], value))
           return index;
 
       return -1;
@@ -32,16 +32,16 @@ namespace Flux
       => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> comparer)
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var targetLength = target.Length;
       
       var maxLength = source.Length - targetLength;
 
       for (var index = 0; index < maxLength; index++)
-        if (EqualsAt(source, index, target, 0, targetLength, comparer))
+        if (EqualsAt(source, index, target, 0, targetLength, equalityComparer))
           return index;
 
       return -1;

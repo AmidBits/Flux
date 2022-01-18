@@ -3,9 +3,9 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Reports all first indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] IndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> comparer, params T[] values)
+    public static int[] IndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
     {
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var indices = new int[values.Length];
 
@@ -17,7 +17,7 @@ namespace Flux
 
         for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
         {
-          if (indices[valueIndex] == -1 && comparer.Equals(sourceChar, values[valueIndex]))
+          if (indices[valueIndex] == -1 && equalityComparer.Equals(sourceChar, values[valueIndex]))
           {
             indices[valueIndex] = sourceIndex;
 

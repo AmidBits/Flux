@@ -97,8 +97,8 @@ namespace Numerics
 		[TestMethod]
 		public void ToStringOrdinal()
 		{
-			Assert.AreEqual("54th", bi54.ToString().InsertOrdinalIndicator());
-			Assert.AreEqual("24th", bi24.ToString().InsertOrdinalIndicator());
+			Assert.AreEqual("54th", bi54.ToString().ToStringBuilder().InsertOrdinalIndicatorSuffix().ToString());
+			Assert.AreEqual("24th", bi24.ToString().ToStringBuilder().InsertOrdinalIndicatorSuffix().ToString());
 		}
 
 		//[TestMethod]
