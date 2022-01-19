@@ -1,40 +1,40 @@
 namespace Flux.Text
 {
-	public ref struct Sequences
-	{
-		/// <summary>ASCII</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/ASCII"/>
-		public static System.ReadOnlySpan<char> Ascii
-			=> new char[] { '\u0000', '\u0001', '\u0002', '\u0003', '\u0004', '\u0005', '\u0006', '\u0007', '\u0008', '\u0009', '\u000A', '\u000B', '\u000C', '\u000D', '\u000E', '\u000F', '\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', '\u001A', '\u001B', '\u001C', '\u001D', '\u001E', '\u001F', '\u0020', '\u0021', '\u0022', '\u0023', '\u0024', '\u0025', '\u0026', '\u0027', '\u0028', '\u0029', '\u002A', '\u002B', '\u002C', '\u002D', '\u002E', '\u002F', '\u0030', '\u0031', '\u0032', '\u0033', '\u0034', '\u0035', '\u0036', '\u0037', '\u0038', '\u0039', '\u003A', '\u003B', '\u003C', '\u003D', '\u003E', '\u003F', '\u0040', '\u0041', '\u0042', '\u0043', '\u0044', '\u0045', '\u0046', '\u0047', '\u0048', '\u0049', '\u004A', '\u004B', '\u004C', '\u004D', '\u004E', '\u004F', '\u0050', '\u0051', '\u0052', '\u0053', '\u0054', '\u0055', '\u0056', '\u0057', '\u0058', '\u0059', '\u005A', '\u005B', '\u005C', '\u005D', '\u005E', '\u005F', '\u0060', '\u0061', '\u0062', '\u0063', '\u0064', '\u0065', '\u0066', '\u0067', '\u0068', '\u0069', '\u006A', '\u006B', '\u006C', '\u006D', '\u006E', '\u006F', '\u0070', '\u0071', '\u0072', '\u0073', '\u0074', '\u0075', '\u0076', '\u0077', '\u0078', '\u0079', '\u007A', '\u007B', '\u007C', '\u007D', '\u007E', '\u007F' };
+  public ref struct Sequences
+  {
+    /// <summary>ASCII</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/ASCII"/>
+    public static System.ReadOnlySpan<System.Text.Rune> Ascii
+      => new System.Text.Rune[] { (System.Text.Rune)0x00, (System.Text.Rune)0x01, (System.Text.Rune)0x02, (System.Text.Rune)0x03, (System.Text.Rune)0x04, (System.Text.Rune)0x05, (System.Text.Rune)0x06, (System.Text.Rune)0x07, (System.Text.Rune)0x08, (System.Text.Rune)0x09, (System.Text.Rune)0x0A, (System.Text.Rune)0x0B, (System.Text.Rune)0x0C, (System.Text.Rune)0x0D, (System.Text.Rune)0x0E, (System.Text.Rune)0x0F, (System.Text.Rune)0x10, (System.Text.Rune)0x11, (System.Text.Rune)0x12, (System.Text.Rune)0x13, (System.Text.Rune)0x14, (System.Text.Rune)0x15, (System.Text.Rune)0x16, (System.Text.Rune)0x17, (System.Text.Rune)0x18, (System.Text.Rune)0x19, (System.Text.Rune)0x1A, (System.Text.Rune)0x1B, (System.Text.Rune)0x1C, (System.Text.Rune)0x1D, (System.Text.Rune)0x1E, (System.Text.Rune)0x1F, (System.Text.Rune)0x20, (System.Text.Rune)0x21, (System.Text.Rune)0x22, (System.Text.Rune)0x23, (System.Text.Rune)0x24, (System.Text.Rune)0x25, (System.Text.Rune)0x26, (System.Text.Rune)0x27, (System.Text.Rune)0x28, (System.Text.Rune)0x29, (System.Text.Rune)0x2A, (System.Text.Rune)0x2B, (System.Text.Rune)0x2C, (System.Text.Rune)0x2D, (System.Text.Rune)0x2E, (System.Text.Rune)0x2F, (System.Text.Rune)0x30, (System.Text.Rune)0x31, (System.Text.Rune)0x32, (System.Text.Rune)0x33, (System.Text.Rune)0x34, (System.Text.Rune)0x35, (System.Text.Rune)0x36, (System.Text.Rune)0x37, (System.Text.Rune)0x38, (System.Text.Rune)0x39, (System.Text.Rune)0x3A, (System.Text.Rune)0x3B, (System.Text.Rune)0x3C, (System.Text.Rune)0x3D, (System.Text.Rune)0x3E, (System.Text.Rune)0x3F, (System.Text.Rune)0x40, (System.Text.Rune)0x41, (System.Text.Rune)0x42, (System.Text.Rune)0x43, (System.Text.Rune)0x44, (System.Text.Rune)0x45, (System.Text.Rune)0x46, (System.Text.Rune)0x47, (System.Text.Rune)0x48, (System.Text.Rune)0x49, (System.Text.Rune)0x4A, (System.Text.Rune)0x4B, (System.Text.Rune)0x4C, (System.Text.Rune)0x4D, (System.Text.Rune)0x4E, (System.Text.Rune)0x4F, (System.Text.Rune)0x50, (System.Text.Rune)0x51, (System.Text.Rune)0x52, (System.Text.Rune)0x53, (System.Text.Rune)0x54, (System.Text.Rune)0x55, (System.Text.Rune)0x56, (System.Text.Rune)0x57, (System.Text.Rune)0x58, (System.Text.Rune)0x59, (System.Text.Rune)0x5A, (System.Text.Rune)0x5B, (System.Text.Rune)0x5C, (System.Text.Rune)0x5D, (System.Text.Rune)0x5E, (System.Text.Rune)0x5F, (System.Text.Rune)0x60, (System.Text.Rune)0x61, (System.Text.Rune)0x62, (System.Text.Rune)0x63, (System.Text.Rune)0x64, (System.Text.Rune)0x65, (System.Text.Rune)0x66, (System.Text.Rune)0x67, (System.Text.Rune)0x68, (System.Text.Rune)0x69, (System.Text.Rune)0x6A, (System.Text.Rune)0x6B, (System.Text.Rune)0x6C, (System.Text.Rune)0x6D, (System.Text.Rune)0x6E, (System.Text.Rune)0x6F, (System.Text.Rune)0x70, (System.Text.Rune)0x71, (System.Text.Rune)0x72, (System.Text.Rune)0x73, (System.Text.Rune)0x74, (System.Text.Rune)0x75, (System.Text.Rune)0x76, (System.Text.Rune)0x77, (System.Text.Rune)0x78, (System.Text.Rune)0x79, (System.Text.Rune)0x7A, (System.Text.Rune)0x7B, (System.Text.Rune)0x7C, (System.Text.Rune)0x7D, (System.Text.Rune)0x7E, (System.Text.Rune)0x7F };
 
-		/// <summary>The base62 encoding scheme uses 62 characters. The characters consist of the capital letters A-Z, the lower case letters a-z and the numbers 0–9.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Base62"/>
-		public static System.ReadOnlySpan<string> Base62
-			=> new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+    /// <summary>The base62 encoding scheme uses 62 characters. The characters consist of the capital letters A-Z, the lower case letters a-z and the numbers 0–9.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Base62"/>
+    public static System.ReadOnlySpan<System.Text.Rune> Base62
+        => new System.Text.Rune[] { (System.Text.Rune)'0', (System.Text.Rune)'1', (System.Text.Rune)'2', (System.Text.Rune)'3', (System.Text.Rune)'4', (System.Text.Rune)'5', (System.Text.Rune)'6', (System.Text.Rune)'7', (System.Text.Rune)'8', (System.Text.Rune)'9', (System.Text.Rune)'A', (System.Text.Rune)'B', (System.Text.Rune)'C', (System.Text.Rune)'D', (System.Text.Rune)'E', (System.Text.Rune)'F', (System.Text.Rune)'G', (System.Text.Rune)'H', (System.Text.Rune)'I', (System.Text.Rune)'J', (System.Text.Rune)'K', (System.Text.Rune)'L', (System.Text.Rune)'M', (System.Text.Rune)'N', (System.Text.Rune)'O', (System.Text.Rune)'P', (System.Text.Rune)'Q', (System.Text.Rune)'R', (System.Text.Rune)'S', (System.Text.Rune)'T', (System.Text.Rune)'U', (System.Text.Rune)'V', (System.Text.Rune)'W', (System.Text.Rune)'X', (System.Text.Rune)'Y', (System.Text.Rune)'Z', (System.Text.Rune)'a', (System.Text.Rune)'b', (System.Text.Rune)'c', (System.Text.Rune)'d', (System.Text.Rune)'e', (System.Text.Rune)'f', (System.Text.Rune)'g', (System.Text.Rune)'h', (System.Text.Rune)'i', (System.Text.Rune)'j', (System.Text.Rune)'k', (System.Text.Rune)'l', (System.Text.Rune)'m', (System.Text.Rune)'n', (System.Text.Rune)'o', (System.Text.Rune)'p', (System.Text.Rune)'q', (System.Text.Rune)'r', (System.Text.Rune)'s', (System.Text.Rune)'t', (System.Text.Rune)'u', (System.Text.Rune)'v', (System.Text.Rune)'w', (System.Text.Rune)'x', (System.Text.Rune)'y', (System.Text.Rune)'z' };
 
-		/// <summary>https://en.wikipedia.org/wiki/Base64</summary>
-		public static System.ReadOnlySpan<string> Base64
-			=> new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/" };
+    /// <summary>https://en.wikipedia.org/wiki/Base64</summary>
+    public static System.ReadOnlySpan<System.Text.Rune> Base64
+      => new System.Text.Rune[] { (System.Text.Rune)'A', (System.Text.Rune)'B', (System.Text.Rune)'C', (System.Text.Rune)'D', (System.Text.Rune)'E', (System.Text.Rune)'F', (System.Text.Rune)'G', (System.Text.Rune)'H', (System.Text.Rune)'I', (System.Text.Rune)'J', (System.Text.Rune)'K', (System.Text.Rune)'L', (System.Text.Rune)'M', (System.Text.Rune)'N', (System.Text.Rune)'O', (System.Text.Rune)'P', (System.Text.Rune)'Q', (System.Text.Rune)'R', (System.Text.Rune)'S', (System.Text.Rune)'T', (System.Text.Rune)'U', (System.Text.Rune)'V', (System.Text.Rune)'W', (System.Text.Rune)'X', (System.Text.Rune)'Y', (System.Text.Rune)'Z', (System.Text.Rune)'a', (System.Text.Rune)'b', (System.Text.Rune)'c', (System.Text.Rune)'d', (System.Text.Rune)'e', (System.Text.Rune)'f', (System.Text.Rune)'g', (System.Text.Rune)'h', (System.Text.Rune)'i', (System.Text.Rune)'j', (System.Text.Rune)'k', (System.Text.Rune)'l', (System.Text.Rune)'m', (System.Text.Rune)'n', (System.Text.Rune)'o', (System.Text.Rune)'p', (System.Text.Rune)'q', (System.Text.Rune)'r', (System.Text.Rune)'s', (System.Text.Rune)'t', (System.Text.Rune)'u', (System.Text.Rune)'v', (System.Text.Rune)'w', (System.Text.Rune)'x', (System.Text.Rune)'y', (System.Text.Rune)'z', (System.Text.Rune)'0', (System.Text.Rune)'1', (System.Text.Rune)'2', (System.Text.Rune)'3', (System.Text.Rune)'4', (System.Text.Rune)'5', (System.Text.Rune)'6', (System.Text.Rune)'7', (System.Text.Rune)'8', (System.Text.Rune)'9', (System.Text.Rune)'+', (System.Text.Rune)'/' };
 
-		/// <summary>The Mayan numeral system was the system to represent numbers and calendar dates in the Maya civilization. It was a vigesimal (base-20) positional numeral system.</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Maya_numerals"/>
-		/// <seealso cref="https://en.wikipedia.org/wiki/Vigesimal"/>
-		public static System.ReadOnlySpan<string> MayanNumerals
-			=> new string[] { "\U0001D2E0", "\U0001D2E1", "\U0001D2E2", "\U0001D2E3", "\U0001D2E4", "\U0001D2E5", "\U0001D2E6", "\U0001D2E7", "\U0001D2E8", "\U0001D2E9", "\U0001D2EA", "\U0001D2EB", "\U0001D2EC", "\U0001D2ED", "\U0001D2EE", "\U0001D2EF", "\U0001D2F0", "\U0001D2F1", "\U0001D2F2", "\U0001D2F3" };
+    /// <summary>The Mayan numeral system was the system to represent numbers and calendar dates in the Maya civilization. It was a vigesimal (base-20) positional numeral system.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Maya_numerals"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Vigesimal"/>
+    public static System.ReadOnlySpan<System.Text.Rune> MayanNumerals
+      => new System.Text.Rune[] { (System.Text.Rune)0x1D2E0, (System.Text.Rune)0x1D2E1, (System.Text.Rune)0x1D2E2, (System.Text.Rune)0x1D2E3, (System.Text.Rune)0x1D2E4, (System.Text.Rune)0x1D2E5, (System.Text.Rune)0x1D2E6, (System.Text.Rune)0x1D2E7, (System.Text.Rune)0x1D2E8, (System.Text.Rune)0x1D2E9, (System.Text.Rune)0x1D2EA, (System.Text.Rune)0x1D2EB, (System.Text.Rune)0x1D2EC, (System.Text.Rune)0x1D2ED, (System.Text.Rune)0x1D2EE, (System.Text.Rune)0x1D2EF, (System.Text.Rune)0x1D2F0, (System.Text.Rune)0x1D2F1, (System.Text.Rune)0x1D2F2, (System.Text.Rune)0x1D2F3 };
 
-		/// <summary>Base 95 (https://en.wikipedia.org/wiki/ASCII)</summary>
-		public static System.ReadOnlySpan<char> PrintableAscii
-			=> Ascii.Slice(32, 95);
+    /// <summary>Base 95 (https://en.wikipedia.org/wiki/ASCII)</summary>
+    public static System.ReadOnlySpan<System.Text.Rune> PrintableAscii
+      => Ascii.Slice(32, 95);
 
-		/// <summary>Decimal unicode subscript</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Subscript_and_superscript"/>
-		/// <seealso cref="https://en.wikipedia.org/wiki/Decimal"/>
-		public static System.ReadOnlySpan<string> Subscript0Through9
-			=> new string[] { "\u2080", "\u2081", "\u2082", "\u2083", "\u2084", "\u2085", "\u2086", "\u2087", "\u2088", "\u2089" };
-		/// <summary>Decimal unicode superscript</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Subscript_and_superscript"/>
-		/// <seealso cref="https://en.wikipedia.org/wiki/Decimal"/>
-		public static System.ReadOnlySpan<string> Superscript0Through9
-			=> new string[] { "\u2070", "\u00B9", "\u00B2", "\u00B3", "\u2074", "\u2075", "\u2076", "\u2077", "\u2078", "\u2079" };
-	}
+    /// <summary>Decimal unicode subscript</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Subscript_and_superscript"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Decimal"/>
+    public static System.ReadOnlySpan<System.Text.Rune> Subscript0Through9
+      => new System.Text.Rune[] { (System.Text.Rune)0x2080, (System.Text.Rune)0x2081, (System.Text.Rune)0x2082, (System.Text.Rune)0x2083, (System.Text.Rune)0x2084, (System.Text.Rune)0x2085, (System.Text.Rune)0x2086, (System.Text.Rune)0x2087, (System.Text.Rune)0x2088, (System.Text.Rune)0x2089 };
+    /// <summary>Decimal unicode superscript</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Subscript_and_superscript"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/Decimal"/>
+    public static System.ReadOnlySpan<System.Text.Rune> Superscript0Through9
+      => new System.Text.Rune[] { (System.Text.Rune)0x2070, (System.Text.Rune)0x00B9, (System.Text.Rune)0x00B2, (System.Text.Rune)0x00B3, (System.Text.Rune)0x2074, (System.Text.Rune)0x2075, (System.Text.Rune)0x2076, (System.Text.Rune)0x2077, (System.Text.Rune)0x2078, (System.Text.Rune)0x2079 };
+  }
 }

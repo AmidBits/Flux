@@ -8,7 +8,7 @@ namespace Flux.Formatting
   {
     public const string FormatIdentifier = @"RADIX";
 
-    public static readonly string[] RadixNumerals = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".Select(c => c.ToString()).ToArray();
+    public static readonly System.Text.Rune[] RadixNumerals = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".Select(c => (System.Text.Rune)c).ToArray();
 
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
@@ -26,7 +26,7 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    public static bool TryFormat(System.Numerics.BigInteger number, string[] radixNumerals, out string result)
+    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out string result)
     {
       try
       {

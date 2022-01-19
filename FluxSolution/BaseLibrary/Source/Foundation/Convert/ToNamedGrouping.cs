@@ -50,20 +50,20 @@ namespace Flux
       { 100, @"Hundred" }
     };
 
-    private static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> StandardDictionaryNumbers = new()
+    public static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> StandardDictionaryNumbers = new()
     {
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000000000000"), @"Septendecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000000000"), @"Sexdecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000000"), @"Quindecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000000"), @"Quattuordecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000000"), @"Tredecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000000"), @"Duodecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000000"), @"Undecillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000000"), @"Decillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000000"), @"Nonillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000000"), @"Octillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000000"), @"Septillion" },
-      { System.Numerics.BigInteger.Parse("1000000000000000000000"), @"Sextillion" },
+      { System.Numerics.BigInteger.Parse("1e54", System.Globalization.NumberStyles.AllowExponent), @"Septendecillion" },
+      { System.Numerics.BigInteger.Parse("1e51", System.Globalization.NumberStyles.AllowExponent), @"Sexdecillion" },
+      { System.Numerics.BigInteger.Parse("1e48", System.Globalization.NumberStyles.AllowExponent), @"Quindecillion" },
+      { System.Numerics.BigInteger.Parse("1e45", System.Globalization.NumberStyles.AllowExponent), @"Quattuordecillion" },
+      { System.Numerics.BigInteger.Parse("1e42", System.Globalization.NumberStyles.AllowExponent), @"Tredecillion" },
+      { System.Numerics.BigInteger.Parse("1e39", System.Globalization.NumberStyles.AllowExponent), @"Duodecillion" },
+      { System.Numerics.BigInteger.Parse("1e36", System.Globalization.NumberStyles.AllowExponent), @"Undecillion" },
+      { System.Numerics.BigInteger.Parse("1e33", System.Globalization.NumberStyles.AllowExponent), @"Decillion" },
+      { System.Numerics.BigInteger.Parse("1e30", System.Globalization.NumberStyles.AllowExponent), @"Nonillion" },
+      { System.Numerics.BigInteger.Parse("1e27", System.Globalization.NumberStyles.AllowExponent), @"Octillion" },
+      { System.Numerics.BigInteger.Parse("1e24", System.Globalization.NumberStyles.AllowExponent), @"Septillion" },
+      { System.Numerics.BigInteger.Parse("1e21", System.Globalization.NumberStyles.AllowExponent), @"Sextillion" },
       { 1000000000000000000L, @"Quintillion" },
       { 1000000000000000L, @"Quadrillion" },
       { 1000000000000L, @"Trillion" },
