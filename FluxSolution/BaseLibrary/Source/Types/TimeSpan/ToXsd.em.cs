@@ -1,58 +1,46 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
-	{
-		public static string ToStringXsd(this System.TimeSpan source)
-		{
-			var sb = new System.Text.StringBuilder(24);
+  public static partial class ExtensionMethods
+  {
+    public static System.Text.StringBuilder ToStringXsd(this System.TimeSpan source)
+    {
+      var sb = new System.Text.StringBuilder(24);
 
-			if (source.Ticks < 0)
-				sb.Append('-');
+      if (source.Ticks < 0)
+        sb.Append('-');
 
-			sb.Append('P');
+      sb.Append('P');
 
-			if (System.Math.Abs(source.Days) is var days && days > 0)
-			{
-				sb.Append(days);
-				sb.Append('D');
-			}
+      if (System.Math.Abs(source.Days) is var days && days > 0)
+        sb.Append(days).Append('D');
 
-			if (System.Math.Abs(source.Hours) is var h && System.Math.Abs(source.Minutes) is var m && System.Math.Abs(source.Seconds) is var s && System.Math.Abs(source.Milliseconds) is var ms && (h > 0 || m > 0 || s > 0 || ms > 0))
-			{
-				sb.Append('T');
+      if (System.Math.Abs(source.Hours) is var h && System.Math.Abs(source.Minutes) is var m && System.Math.Abs(source.Seconds) is var s && System.Math.Abs(source.Milliseconds) is var ms && (h > 0 || m > 0 || s > 0 || ms > 0))
+      {
+        sb.Append('T');
 
-				if (h > 0)
-				{
-					sb.Append(h);
-					sb.Append('H');
-				}
+        if (h > 0)
+          sb.Append(h).Append('H');
 
-				if (m > 0)
-				{
-					sb.Append(m);
-					sb.Append('M');
-				}
+        if (m > 0)
+          sb.Append(m).Append('M');
 
-				if (s > 0 || ms > 0)
-				{
-					sb.Append(s);
+        if (s > 0 || ms > 0)
+        {
+          sb.Append(s);
 
-					if (ms > 0)
-					{
-						sb.Append('.');
-						sb.Append(ms);
-					}
+          if (ms > 0)
+            sb.Append('.').Append(ms);
 
-					sb.Append('S');
-				}
-			}
+          sb.Append('S');
+        }
+      }
 
-			return sb.ToString();
-		}
+      return sb;
+    }
 
-		public static string ToStringXsdBasic(this System.TimeSpan source)
-			=> $"{(source.Ticks < 0 ? @"-" : string.Empty)}P000000{System.Math.Abs(source.Days):D2}T{System.Math.Abs(source.Hours):D2}{System.Math.Abs(source.Minutes):D2}{System.Math.Abs(source.Seconds):D2}";
-		public static string ToStringXsdBasicExtended(this System.TimeSpan source)
-			=> $"{(source.Ticks < 0 ? @"-" : string.Empty)}P0000-00-{System.Math.Abs(source.Days):D2}T{System.Math.Abs(source.Hours):D2}:{System.Math.Abs(source.Minutes):D2}:{System.Math.Abs(source.Seconds):D2}";
-	}
+    public static System.Text.StringBuilder ToStringXsdBasic(this System.TimeSpan source)
+      => new System.Text.StringBuilder(source.Ticks < 0 ? "-" : string.Empty).Append("P000000").AppendFormat("{0:D2}", System.Math.Abs(source.Days)).Append('T').AppendFormat("{0:D2}", System.Math.Abs(source.Hours)).AppendFormat("{0:D2}", System.Math.Abs(source.Minutes)).AppendFormat("{0:D2}", System.Math.Abs(source.Seconds));
+    public static System.Text.StringBuilder ToStringXsdBasicExtended(this System.TimeSpan source)
+      => new System.Text.StringBuilder(source.Ticks < 0 ? "-" : string.Empty).Append("P0000-00-").AppendFormat("{0:D2}", System.Math.Abs(source.Days)).Append('T').AppendFormat("{0:D2}", System.Math.Abs(source.Hours)).AppendFormat("{0:D2}", System.Math.Abs(source.Minutes)).AppendFormat("{0:D2}", System.Math.Abs(source.Seconds));
+  }
 }

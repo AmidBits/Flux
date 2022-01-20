@@ -117,15 +117,6 @@ namespace ConsoleApp
       System.Console.WriteLine($"\"{rb.ToString(0, rb.Count)}\"");
       return;
 
-      var i = -123456789;
-      var r = 10;
-
-      var dr = Maths.GetDigitsReversed(i, r);
-      var d = Maths.GetDigits(i, r);
-      var pv = Maths.GetPlaceValues(i, r);
-
-
-
       var s1 = "lowerCase2UpperSLOWCase";
       System.Console.WriteLine(s1);
       var s2 = s1.ToStringBuilder().SplitCamelCase().ToLowerFirstCharacters().ToString();

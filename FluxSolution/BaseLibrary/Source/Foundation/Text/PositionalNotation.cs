@@ -13,9 +13,9 @@ namespace Flux.Text
     public static PositionalNotation Base16
       => new(Sequences.Base62[..16]);
 
-    public System.ReadOnlySpan<string> Symbols { get; }
+    public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
-    public PositionalNotation(System.ReadOnlySpan<string> symbols)
+    public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols)
       => Symbols = symbols;
 
     /// <summary>Convert a number into a positional notation text string.</summary>
@@ -62,7 +62,7 @@ namespace Flux.Text
     {
       var bi = System.Numerics.BigInteger.Zero;
 
-      foreach (var textElement in number.GetTextElements())
+      foreach (var textElement in number.EnumerateRunes())
       {
         bi *= Symbols.Length;
 
