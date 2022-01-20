@@ -6,7 +6,7 @@ namespace Flux.DataStructures
   public sealed class RuneBuilder
     : System.Collections.Generic.IList<System.Text.Rune>
   {
-    private const int DefaultBufferSize = 128;
+    private const int DefaultBufferSize = 16;
 
     private System.Text.Rune[] m_array;
 
@@ -25,9 +25,13 @@ namespace Flux.DataStructures
     {
     }
 
-    public int Count
-      => m_tail - m_head;
-
+    public int GetUtf8SequenceLength()
+    {
+      var length = 0;
+      for (var index = m_head; index < m_tail; index++)
+        length += m_array[index].Utf8SequenceLength;
+      return length;
+    }
     public int GetUtf16SequenceLength()
     {
       var length = 0;
@@ -188,6 +192,44 @@ namespace Flux.DataStructures
     public RuneBuilder PrependLine(System.ReadOnlySpan<char> chars)
       => PrependLine().Prepend(chars.EnumerateRunes());
 
+    //public RuneBuilder Insert(int startIndex, int count)
+    //{
+    //  m_version++;
+    //  startIndex += m_head;
+    //  EnsureBuffer(count);
+    //  if (m_head >= m_array.Length - m_tail) // Grow from start.
+    //  {
+    //    System.Array.Copy(m_array, m_head, m_array, m_head - count, startIndex - m_head);
+    //    System.Array.Fill(m_array, (System.Text.Rune)0, startIndex, count);
+    //    m_head -= count;
+    //  }
+    //  else // Otherwise grow from end.
+    //  {
+    //    System.Array.Copy(m_array, startIndex, m_array, startIndex+count, startIndex - m_head);
+    //    System.Array.Fill(m_array, (System.Text.Rune)0, startIndex, count);
+    //    m_tail += count;
+    //  }
+    //}
+
+    public RuneBuilder Remove(int startIndex, int count)
+    {
+      m_version++;
+      startIndex += m_head;
+      if (m_head <= m_array.Length - m_tail) // Shrink from start.
+      {
+        System.Array.Copy(m_array, m_head, m_array, m_head + count, startIndex - m_head);
+        System.Array.Fill(m_array, (System.Text.Rune)0, m_head, count);
+        m_head += count;
+      }
+      else // Otherwise shrink from end.
+      {
+        System.Array.Copy(m_array, startIndex + count, m_array, startIndex, m_tail - startIndex - count);
+        System.Array.Fill(m_array, (System.Text.Rune)0, m_head, startIndex + count);
+        m_tail -= count;
+      }
+      return this;
+    }
+
     public string ToString(int startIndex, int count)
     {
       var sb = new System.Text.StringBuilder();
@@ -210,6 +252,8 @@ namespace Flux.DataStructures
         m_array[index] = value;
       }
     }
+    public int Count
+      => m_tail - m_head;
 
     public bool IsReadOnly
       => false;
@@ -250,7 +294,7 @@ namespace Flux.DataStructures
     public void Insert(int index, System.Text.Rune item)
     {
       m_version++;
-      m_array.Insert(index, item);
+      m_array = m_array.Insert(index, item);
     }
 
     public bool Remove(System.Text.Rune item)
@@ -264,19 +308,7 @@ namespace Flux.DataStructures
     }
 
     public void RemoveAt(int index)
-    {
-      m_version++;
-      if (m_head <= m_array.Length - m_tail)
-      {
-        System.Array.Copy(m_array, m_head, m_array, m_head + 1, index - m_head);
-        m_array[m_head - 1] = (System.Text.Rune)0;
-      }
-      else
-      {
-        System.Array.Copy(m_array, index + 1, m_array, index, m_tail - index - 1);
-        m_array[m_tail] = (System.Text.Rune)0;
-      }
-    }
+      => Remove(index, 1);
     #endregion Implementation of IList<T>
   }
 }

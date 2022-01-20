@@ -91,7 +91,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var span = "robertHugo".EnumerateRunes().ToArray().ToReadOnlySpan();
+      var x = new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+      System.Console.WriteLine(x.ToConsoleBlock());
+      System.Console.WriteLine();
+      var y = x.RotateClockwise();
+      System.Console.WriteLine(y.ToConsoleBlock());
+      System.Console.WriteLine();
+
+      var a = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+      var b = a.Insert(10, 11, 12, 12);
+
+      //Flux.ArrayRank1.Remove(ref a, 6, 3);
+      //var b = a.Remove(7, 3);
+
+      var span = "robertHugo".EnumerateRunes().ToList().ToReadOnlySpan();
 
       var rb = new Flux.DataStructures.RuneBuilder();
       //rb.Append('*');
@@ -102,6 +116,7 @@ namespace ConsoleApp
       rb.Append((System.Text.Rune)'u');
       rb.Append((System.Text.Rune)'g');
       rb.Append((System.Text.Rune)'o');
+      rb.Append((System.Text.Rune)0x1D2E1);
       rb.Prepend((System.Text.Rune)'t');
       rb.Prepend((System.Text.Rune)'r');
       rb.Prepend((System.Text.Rune)'e');
@@ -114,7 +129,7 @@ namespace ConsoleApp
       rb.Prepend("Congratulations ");
       rb.Append(", to retirement.");
 
-      System.Console.WriteLine($"\"{rb.ToString(0, rb.Count)}\"");
+      System.Console.WriteLine($"\"{rb.ToString(0, rb.Count)}\", {rb.Count}/{rb.GetUtf16SequenceLength()}/{rb.GetUtf8SequenceLength()}");
       return;
 
       var s1 = "lowerCase2UpperSLOWCase";
