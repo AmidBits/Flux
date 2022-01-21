@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static System.Text.StringBuilder ToStringXsd(this System.TimeSpan source)
+    public static System.Text.StringBuilder ToXsdString(this System.TimeSpan source)
     {
       var sb = new System.Text.StringBuilder(24);
 
@@ -38,9 +38,9 @@ namespace Flux
       return sb;
     }
 
-    public static System.Text.StringBuilder ToStringXsdBasic(this System.TimeSpan source)
+    public static System.Text.StringBuilder ToXsdBasicString(this System.TimeSpan source)
       => new System.Text.StringBuilder(source.Ticks < 0 ? "-" : string.Empty).Append("P000000").AppendFormat("{0:D2}", System.Math.Abs(source.Days)).Append('T').AppendFormat("{0:D2}", System.Math.Abs(source.Hours)).AppendFormat("{0:D2}", System.Math.Abs(source.Minutes)).AppendFormat("{0:D2}", System.Math.Abs(source.Seconds));
-    public static System.Text.StringBuilder ToStringXsdBasicExtended(this System.TimeSpan source)
+    public static System.Text.StringBuilder ToXsdBasicExtendedString(this System.TimeSpan source)
       => new System.Text.StringBuilder(source.Ticks < 0 ? "-" : string.Empty).Append("P0000-00-").AppendFormat("{0:D2}", System.Math.Abs(source.Days)).Append('T').AppendFormat("{0:D2}", System.Math.Abs(source.Hours)).AppendFormat("{0:D2}", System.Math.Abs(source.Minutes)).AppendFormat("{0:D2}", System.Math.Abs(source.Seconds));
   }
 }
