@@ -17,7 +17,7 @@ namespace Flux
       var sl1m1 = sourceLength1 - 1;
 
       for (var s0 = 0; s0 < sourceLength0; s0++)
-        for (var s1 = 0; s1 <= sl1m1; s1++)
+        for (var s1 = 0; s1 < sourceLength1; s1++)
           target[sl1m1 - s1, s0] = source[s0, s1];
 
       return target;

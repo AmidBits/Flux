@@ -4,7 +4,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Swap two values in the two-dimensional array.</summary>
-    public static void Swap<T>(ref T[,] source, int a0, int a1, int b0, int b1)
+    public static void Swap<T>(T[,] source, int a0, int a1, int b0, int b1)
     {
       var tmp = source[a0, a1];
       source[a0, a1] = source[b0, b1];

@@ -9,9 +9,11 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       var sourceLength = source.Length;
-      var endIndex = index + count;
 
       if (index < 0 || index >= sourceLength) throw new System.ArgumentOutOfRangeException(nameof(source));
+
+      var endIndex = index + count;
+
       if (count < 0 || endIndex > sourceLength) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       if (endIndex < sourceLength) // Copy right-side, if needed.

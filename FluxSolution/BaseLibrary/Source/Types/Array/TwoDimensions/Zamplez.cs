@@ -29,7 +29,7 @@ namespace Flux
       System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
 
-      var mtranspose = matrix.Transpose();
+      var mtranspose = matrix.TransposeToCopy();
       System.Console.WriteLine(nameof(ExtensionMethods.Transpose));
       System.Console.WriteLine(mtranspose.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
@@ -43,13 +43,13 @@ namespace Flux
       System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
 
-      var mflip0 = matrix.Flip(0);
-      System.Console.WriteLine(nameof(ArrayRank2.Flip));
+      var mflip0 = matrix.FlipToCopy(0);
+      System.Console.WriteLine(nameof(ArrayRank2.FlipToCopy));
       System.Console.WriteLine(mflip0.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
 
-      var mflip1 = matrix.Flip(1);
-      System.Console.WriteLine(nameof(ArrayRank2.Flip));
+      var mflip1 = matrix.FlipToCopy(1);
+      System.Console.WriteLine(nameof(ArrayRank2.FlipToCopy));
       System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
       System.Console.WriteLine();
 

@@ -7,6 +7,7 @@ namespace Flux
     public static T[,] ToCopy<T>(this T[,] source, int sourceIndex0, int sourceIndex1, int count0, int count1, int preCount0, int preCount1, int postCount0, int postCount1)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var target = new T[preCount0 + count0 + postCount0, preCount1 + count1 + postCount1];
       CopyTo(source, target, sourceIndex0, sourceIndex1, preCount0, preCount1, count0, count1);
@@ -17,6 +18,7 @@ namespace Flux
     public static T[,] ToCopy<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var target = new T[source.GetLength(0), source.GetLength(1)];
       System.Array.Copy(source, target, source.Length);

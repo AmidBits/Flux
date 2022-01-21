@@ -5,8 +5,8 @@ namespace Flux
     private static T[] InsertImpl<T>(this T[] source, int index, int count)
     {
       var sourceLength = source.Length;
+      var targetLength = sourceLength + count; // Pre-compute for multi-use.
 
-      var targetLength = sourceLength + count;
       var target = new T[targetLength];
 
       if (index > 0) // Copy left-side, if needed.

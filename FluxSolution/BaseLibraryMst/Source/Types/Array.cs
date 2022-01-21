@@ -49,7 +49,7 @@ namespace Types
     [TestMethod]
     public void EmFlipDim0()
     {
-      var flip0 = (int[,])original.Flip(0);
+      var flip0 = (int[,])original.FlipToCopy(0);
 
       var expected = new int[3, 3] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } };
 
@@ -59,7 +59,7 @@ namespace Types
     [TestMethod]
     public void EmFlipDim1()
     {
-      var flip1 = (int[,])original.Flip(1);
+      var flip1 = (int[,])original.FlipToCopy(1);
 
       var expected = new int[3, 3] { { 3, 2, 1 }, { 6, 5, 4 }, { 9, 8, 7 } };
 
@@ -71,7 +71,7 @@ namespace Types
     {
       var copyThenFlip0 = (int[,])original.Clone();
 
-      Flux.ArrayRank2.Flip(ref copyThenFlip0, 0);
+      Flux.ArrayRank2.FlipInPlace(copyThenFlip0, 0);
 
       var expected = new int[3, 3] { { 7, 8, 9 }, { 4, 5, 6 }, { 1, 2, 3 } };
 
@@ -83,7 +83,7 @@ namespace Types
     {
       var copyThenFlip1 = (int[,])original.Clone();
 
-      Flux.ArrayRank2.Flip(ref copyThenFlip1, 1);
+      Flux.ArrayRank2.FlipInPlace(copyThenFlip1, 1);
 
       var expected = new int[3, 3] { { 3, 2, 1 }, { 6, 5, 4 }, { 9, 8, 7 } };
 
@@ -153,7 +153,7 @@ namespace Types
     [TestMethod]
     public void EmTranspose()
     {
-      var transpose = original.Transpose();
+      var transpose = original.TransposeToCopy();
 
       var expected = new int[3, 3] { { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } };
 
@@ -161,11 +161,11 @@ namespace Types
     }
 
     [TestMethod]
-    public void EmTransposeInPlace()
+    public void EmTransposeRef()
     {
       var copyThenTranspose = (int[,])original.Clone();
 
-      Flux.ArrayRank2.TransposeInPlace(ref copyThenTranspose);
+      Flux.ArrayRank2.TransposeInPlace(copyThenTranspose);
 
       var expected = new int[3, 3] { { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } };
 
