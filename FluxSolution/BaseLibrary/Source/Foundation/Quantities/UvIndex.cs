@@ -8,7 +8,7 @@ namespace Flux
     private readonly double m_value;
 
     public UvIndex(double value)
-      => m_value = value;
+      => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
 
     public double Value
       => m_value;
