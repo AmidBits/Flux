@@ -8,17 +8,17 @@
 
     void NewMatch(string opponent);
 
-    void NewGame(Geometry.Size2 size, System.TimeSpan timeSpan, int[] shipSizes);
+    void NewGame(Size2 size, System.TimeSpan timeSpan, int[] shipSizes);
 
     System.Collections.Generic.List<Vessel> PlaceShips();
 
-    Geometry.Point2 GetShot();
+    Point2 GetShot();
 
-    void OpponentShot(Geometry.Point2 shot);
+    void OpponentShot(Point2 shot);
 
-    void ShotHit(Geometry.Point2 shot, bool sunk);
+    void ShotHit(Point2 shot, bool sunk);
 
-    void ShotMiss(Geometry.Point2 shot);
+    void ShotMiss(Point2 shot);
 
     void GameWon();
 

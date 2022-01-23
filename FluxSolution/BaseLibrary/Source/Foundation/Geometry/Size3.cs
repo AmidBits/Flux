@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux
 {
   public struct Size3
     : System.IEquatable<Size3>

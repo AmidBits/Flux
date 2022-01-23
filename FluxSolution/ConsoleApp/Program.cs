@@ -19,6 +19,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var a = 900000.0;
+      var b = 1000000.0;
+      var r1 = Maths.EqualWithinRelativeTolerance(a, b, 0.1);
+      var n = System.Math.Pow(10, 1);
+      var m = 1E-4;
       for (var index = 0; index < 100; index++)
       {
         var s1 = new System.Span<char>("robert hugo".ToCharArray());

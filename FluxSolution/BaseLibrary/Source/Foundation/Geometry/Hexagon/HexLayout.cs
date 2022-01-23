@@ -3,11 +3,11 @@ namespace Flux.Geometry
   public struct HexLayout
     : System.IEquatable<HexLayout>
   {
-    public readonly Geometry.Size2 Size;
-    public readonly Geometry.Point2 Origin;
+    public readonly Size2 Size;
+    public readonly Point2 Origin;
     public readonly HexOrientation Orientation;
 
-    public HexLayout(HexOrientation orientation, Geometry.Size2 size, Geometry.Point2 origin)
+    public HexLayout(HexOrientation orientation, Size2 size, Point2 origin)
     {
       Orientation = orientation;
       Size = size;

@@ -70,7 +70,7 @@ namespace Flux
         var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsAlmostEqual(initialAngle, e.Current, Maths.Epsilon1E7))
+          if (!Maths.EqualWithinAbsoluteTolerance(initialAngle, e.Current, Maths.Epsilon1E7))
             return false;
       }
 
@@ -88,7 +88,7 @@ namespace Flux
         var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsPracticallyEqual(initialLength, e.Current, 1e-6f, 1e-6f))
+          if (!Maths.EqualWithinRelativeTolerance(initialLength, e.Current, 1e-15))
             return false;
       }
 
@@ -203,13 +203,13 @@ namespace Flux
       }
     }
 
-    public static CartesianCoordinate3 ToCartesianCoordinate3(this Geometry.Point3 source)
+    public static CartesianCoordinate3 ToCartesianCoordinate3(this Point3 source)
       => new(source.X, source.Y, source.Z);
     public static CartesianCoordinate3 ToCartesianCoordinate3(this System.Numerics.Vector3 source)
       => new(source.X, source.Y, source.Z);
-    public static Geometry.Point3 ToPoint3(this CartesianCoordinate3 source, FullRoundingBehavior behavior)
+    public static Point3 ToPoint3(this CartesianCoordinate3 source, FullRoundingBehavior behavior)
       => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior), (int)Maths.RoundTo(source.Z, behavior));
-    public static Geometry.Point3 ToPoint3(this CartesianCoordinate3 source, HalfRoundingBehavior behavior)
+    public static Point3 ToPoint3(this CartesianCoordinate3 source, HalfRoundingBehavior behavior)
       => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior), (int)Maths.RoundTo(source.Z, behavior));
     public static System.Numerics.Vector3 ToVector3(this CartesianCoordinate3 source)
       => new((float)source.X, (float)source.Y, (float)source.Z);
@@ -275,9 +275,9 @@ namespace Flux
 
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    public Geometry.Point3 ToPoint3(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+    public Point3 ToPoint3(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
-    public Geometry.Point3 ToPoint3()
+    public Point3 ToPoint3()
       => ToPoint3(System.MidpointRounding.ToEven);
     public SphericalCoordinate ToSphericalCoordinate()
     {

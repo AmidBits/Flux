@@ -17,7 +17,7 @@ namespace Flux.Model.MineSweeper
       {
         for (var j = 0; j < mineField.Field.Size.Width; j++)
         {
-          var p = new Geometry.Point2(i, j);
+          var p = new Point2(i, j);
 
           var isUncovered = !covers.IsCovered(p);
 
@@ -44,7 +44,7 @@ namespace Flux.Model.MineSweeper
 
     public static void PlayInConsole()
     {
-      var mineField = new Model.MineSweeper.MineField(new Geometry.Size2(10, 10), 10);
+      var mineField = new Model.MineSweeper.MineField(new Size2(10, 10), 10);
       var gameState = Model.MineSweeper.Game.Start(mineField);
       //var gameResult = gameState.Evaluate(mineField.Mines);
 
@@ -52,7 +52,7 @@ namespace Flux.Model.MineSweeper
 
       while (System.Console.ReadLine() is var line && !string.IsNullOrEmpty(line))
       {
-        if (Geometry.Point2.TryParse(line, out var point))
+        if (Point2.TryParse(line, out var point))
         {
           gameState.CursorPosition = point;
 
@@ -80,7 +80,7 @@ namespace Flux.Model.MineSweeper
     public static GameState SwitchFlag(GameState current)
       => (current ?? throw new System.ArgumentNullException(nameof(current))).Do(current.Covers().SwitchFlag(current.CursorPosition));
 
-    private static Covers UncoverDeep(this Covers covers, MineField mineField, Geometry.Point2 point)
+    private static Covers UncoverDeep(this Covers covers, MineField mineField, Point2 point)
     {
       if (!covers.IsCovered(point))
         return covers;

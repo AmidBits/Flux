@@ -31,11 +31,10 @@ namespace Foundation
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.Geometry.Ellipse(5, 7, 11);
+      var geometry = new Flux.EllipseGeometry(5, 7);
 
-      Assert.AreEqual(11, geometry.Angle);
-      Assert.AreEqual(7, geometry.Height);
-      Assert.AreEqual(5, geometry.Width);
+      Assert.AreEqual(5, geometry.SemiMinorAxis);
+      Assert.AreEqual(7, geometry.SemiMajorAxis);
     }
 
     [TestMethod]
@@ -52,7 +51,7 @@ namespace Foundation
     [TestMethod]
     public void Point2()
     {
-      var geometry = new Flux.Geometry.Point2(5, 7);
+      var geometry = new Flux.Point2(5, 7);
 
       Assert.AreEqual(5, geometry.X);
       Assert.AreEqual(7, geometry.Y);
@@ -61,7 +60,7 @@ namespace Foundation
     [TestMethod]
     public void Point3()
     {
-      var geometry = new Flux.Geometry.Point3(5, 7, 11);
+      var geometry = new Flux.Point3(5, 7, 11);
 
       Assert.AreEqual(5, geometry.X);
       Assert.AreEqual(7, geometry.Y);
@@ -71,7 +70,7 @@ namespace Foundation
     [TestMethod]
     public void Size2()
     {
-      var geometry = new Flux.Geometry.Size2(5, 7);
+      var geometry = new Flux.Size2(5, 7);
 
       Assert.AreEqual(5, geometry.Width);
       Assert.AreEqual(7, geometry.Height);
@@ -80,7 +79,7 @@ namespace Foundation
     [TestMethod]
     public void Size3()
     {
-      var geometry = new Flux.Geometry.Size3(5, 7, 11);
+      var geometry = new Flux.Size3(5, 7, 11);
 
       Assert.AreEqual(5, geometry.Width);
       Assert.AreEqual(7, geometry.Height);
