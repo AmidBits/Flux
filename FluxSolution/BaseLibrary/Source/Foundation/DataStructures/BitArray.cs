@@ -1,5 +1,22 @@
 ﻿namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static byte[] ToByteArray(this BitArray source)
+    {
+      var bytes = new byte[System.Math.DivRem(source.Length, 8, out var remainder) is var whole && remainder == 0 ? whole : whole + 1];
+
+      for (var index = bytes.Length - 1; index >= 0; index--)
+        if (source[index] && System.Math.DivRem(index, 8, out var bitIndex) is var byteIndex)
+          bytes[byteIndex] = (byte)(bytes[byteIndex] | (1 << bitIndex));
+
+      return bytes;
+    }
+
+    public static System.Numerics.BigInteger ToBigInteger(this BitArray source)
+      => new System.Numerics.BigInteger(ToByteArray(source));
+  }
+
   public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {

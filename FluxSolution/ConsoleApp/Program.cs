@@ -19,6 +19,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var ba = new Flux.BitArray(65);
+      ba[0] = true;
+      ba[5] = true;
+      var tba = ba.ToByteArray();
+      var i = ba.ToBigInteger();
+      System.Console.WriteLine(string.Join(string.Empty, System.Linq.Enumerable.Select(ba, b => b ? '1' : '0')));
+      System.Console.WriteLine(i.ToString());
+      return;
+
       var a = 900000.0;
       var b = 1000000.0;
       var r1 = Maths.EqualWithinRelativeTolerance(a, b, 0.1);
