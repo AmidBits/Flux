@@ -25,7 +25,7 @@ namespace WpfApp
     {
       InitializeComponent();
 
-      var size = new Flux.Geometry.Size2(60, 60);
+      var size = new Flux.Size2(60, 60);
 
       m_grid = new Flux.Model.Maze.Grid(size);
     }
