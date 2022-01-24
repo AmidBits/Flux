@@ -24,6 +24,9 @@
       : this(length, false)
     { }
 
+    public long Length
+      => m_bitLength;
+
     public bool Get(long index)
       => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
@@ -45,8 +48,23 @@
         m_bitArray[i] = fillValue;
     }
 
-    public long Length
-      => m_bitLength;
+    public System.Numerics.BigInteger ToBigInteger()
+      => new System.Numerics.BigInteger(ToByteArray());
+    public byte[] ToByteArray()
+    {
+      var bytes = new byte[System.Math.DivRem(m_bitLength, 8, out var remainder) + (remainder == 0 ? 0 : 1)];
+
+      var bytesLength = bytes.Length;
+      var arrayLength = m_bitArray.Length;
+
+      var byteIndex = 0;
+
+      for (var index = 0; index < arrayLength; index++)
+        for (var longIndex = 0; longIndex < 64 && byteIndex < bytesLength; longIndex += 8)
+          bytes[byteIndex++] = (byte)(m_bitArray[index] >> longIndex);
+
+      return bytes;
+    }
 
     public System.Collections.IEnumerator GetEnumerator()
       => new BitArrayEnumerator(this);

@@ -8,7 +8,7 @@ namespace Flux.Model
   {
     public int Count { get; }
 
-    public Geometry.Size2 Size { get; }
+    public Size2 Size { get; }
 
     private readonly TValue[] Values;// { get; protected set; }
 
@@ -21,13 +21,13 @@ namespace Flux.Model
     {
       Count = rows * columns;
 
-      Size = new Geometry.Size2(columns, rows);
+      Size = new Size2(columns, rows);
 
       Values = new TValue[Count];
 
       Reset();
     }
-    public AGrid(Geometry.Size2 size)
+    public AGrid(Size2 size)
       : this(size.Height, size.Width)
     { }
 

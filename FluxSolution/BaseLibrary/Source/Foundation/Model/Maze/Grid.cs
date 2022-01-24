@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   public sealed class Grid
     : AGrid<Cell>, System.ICloneable
   {
-    public Grid(Geometry.Size2 size)
+    public Grid(Size2 size)
       : base(size.Height, size.Width)
     {
       for (var h = size.Height - 1; h >= 0; h--)

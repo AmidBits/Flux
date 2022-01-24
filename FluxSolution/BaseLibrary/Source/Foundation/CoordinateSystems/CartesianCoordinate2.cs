@@ -116,7 +116,7 @@ namespace Flux
         var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsAlmostEqual(initialAngle, e.Current, Maths.Epsilon1E7))
+          if (!Maths.EqualWithinAbsoluteTolerance(initialAngle, e.Current, Maths.Epsilon1E7))
             return false;
       }
 
@@ -134,7 +134,7 @@ namespace Flux
         var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.IsPracticallyEqual(initialLength, e.Current, 1e-6f, 1e-6f))
+          if (!Maths.EqualWithinRelativeTolerance(initialLength, e.Current, 1e-15))
             return false;
       }
 
@@ -249,13 +249,13 @@ namespace Flux
       }
     }
 
-    public static CartesianCoordinate2 ToCartesianCoordinate2(this Geometry.Point2 source)
+    public static CartesianCoordinate2 ToCartesianCoordinate2(this Point2 source)
       => new(source.X, source.Y);
     public static CartesianCoordinate2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
       => new(source.X, source.Y);
-    public static Geometry.Point2 ToPoint2(this CartesianCoordinate2 source, FullRoundingBehavior behavior)
+    public static Point2 ToPoint2(this CartesianCoordinate2 source, FullRoundingBehavior behavior)
       => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
-    public static Geometry.Point2 ToPoint2(this CartesianCoordinate2 source, HalfRoundingBehavior behavior)
+    public static Point2 ToPoint2(this CartesianCoordinate2 source, HalfRoundingBehavior behavior)
       => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior));
     public static System.Numerics.Vector2 ToVector2(this CartesianCoordinate2 source)
       => new((float)source.X, (float)source.Y);
@@ -312,9 +312,11 @@ namespace Flux
     public double LineSlopeY
       => System.Math.CopySign(m_y / m_x, m_y);
 
-    public Geometry.Point2 ToPoint2(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+    public EllipseGeometry ToEllipse()
+      => new(m_x, m_y);
+    public Point2 ToPoint2(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)));
-    public Geometry.Point2 ToPoint2()
+    public Point2 ToPoint2()
       => ToPoint2(System.MidpointRounding.ToEven);
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
@@ -371,7 +373,7 @@ namespace Flux
       => System.Math.Sqrt(EuclideanLengthSquared(source));
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     public static double EuclideanLengthSquared(CartesianCoordinate2 source)
-      => source.m_x * source.m_x + source.m_y * source.m_y;
+      => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2);
 
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)

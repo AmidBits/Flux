@@ -1,42 +1,30 @@
-namespace Flux.Geometry
+namespace Flux
 {
-  public struct Ellipse
-    : System.IEquatable<Ellipse>
+  public struct EllipseGeometry
+    : System.IComparable<EllipseGeometry>, System.IEquatable<EllipseGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
   {
-    public static readonly Ellipse Empty;
+    public static readonly EllipseGeometry Empty;
 
-    /// <summary>The width (X axis) of the ellipse.</summary>
-    public readonly double Width;
     /// <summary>The height (Y axis) of the ellipse.</summary>
-    public readonly double Height;
-    /// <summary>The angle (in radians) of rotational tilt.</summary>
-    public readonly double Angle;
+    public readonly double SemiMinorAxis;
+    /// <summary>The width (X axis) of the ellipse.</summary>
+    public readonly double SemiMajorAxis;
 
-    public Ellipse(double width, double height, double angle)
+    public EllipseGeometry(double semiMinorAxis, double semiMajorAxis)
     {
-      Width = width;
-      Height = height;
-      Angle = angle;
+      SemiMinorAxis = System.Math.Min(semiMinorAxis, semiMajorAxis);
+      SemiMajorAxis = System.Math.Max(semiMinorAxis, semiMajorAxis);
     }
-    public Ellipse(Size2 size, double angle)
-      : this(size.Width, size.Height, angle)
-    { }
-    /// <summary>As a circle.</summary>
-    public Ellipse(double radius, double angle)
-      : this(radius * 2, radius * 2, angle)
-    { }
+
+    public double GetSurfaceArea()
+      => SurfaceArea(SemiMajorAxis, SemiMinorAxis);
+    public bool GetSurfaceContains(CartesianCoordinate2 point)
+      => SurfaceContains(point.X, point.Y, SemiMajorAxis, SemiMinorAxis, 0);
+    /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    public double GetSurfacePerimeter()
+      => SurfacePerimeter(SemiMajorAxis, SemiMinorAxis);
 
     #region Static methods
-    /// <summary>Returns the eccentricity of the ellipse. The order of radii does not matter.</summary>
-    public static double Eccentricity(double a, double b)
-      => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b), 2) / System.Math.Pow(System.Math.Max(a, b), 2));
-
-    /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static Ellipse FromCartesian(double x, double y)
-      => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    public static System.Numerics.Vector2 FromEllipse(Ellipse ellipse)
-      => new((float)(System.Math.Cos(ellipse.Angle) * ellipse.Width), (float)(System.Math.Sin(ellipse.Angle) * ellipse.Height));
-
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
     /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy
     /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, Flux.Math.Pi.DivBy6); // triangle, vertically pointy
@@ -66,6 +54,16 @@ namespace Flux.Geometry
       }
     }
 
+    /// <summary>Returns the eccentricity of the ellipse. The order of radii does not matter.</summary>
+    public static double Eccentricity(double a, double b)
+      => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b), 2) / System.Math.Pow(System.Math.Max(a, b), 2));
+
+    /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
+    public static EllipseGeometry FromCartesian(double x, double y)
+      => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+    public static CartesianCoordinate2 ToCartesianCoordinate2(double semiMajorAxis, double semiMinorAxis, double angle)
+      => new(System.Math.Cos(angle) * semiMajorAxis, System.Math.Sin(angle) * semiMinorAxis);
+
     /// <summary>This seem to be a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses.</summary>
     public static double H(double a, double b)
       => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
@@ -79,35 +77,41 @@ namespace Flux.Geometry
     /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public static double SurfacePerimeter(double a, double b)
     {
+      var circle = System.Math.PI * (a + b);
+
       if (a == b) // For a circle, use (PI * diameter);
-        return System.Math.PI * (a + b);
+        return circle;
 
       var h3 = H(a, b) * 3;
 
-      return System.Math.PI * (a + b) * (1.0 + h3 / (10.0 + System.Math.Sqrt(4.0 - h3)));
+      return circle * (1.0 + h3 / (10.0 + System.Math.Sqrt(4.0 - h3)));
     }
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Ellipse a, Ellipse b)
+    public static bool operator ==(EllipseGeometry a, EllipseGeometry b)
       => a.Equals(b);
-    public static bool operator !=(Ellipse a, Ellipse b)
+    public static bool operator !=(EllipseGeometry a, EllipseGeometry b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IEquatable
-    public bool Equals(Ellipse other)
-      => Width == other.Width && Height == other.Height && Angle == other.Angle;
+    // EComparable<T>
+    public int CompareTo(EllipseGeometry other)
+      => (SemiMajorAxis + SemiMinorAxis).CompareTo(other.SemiMajorAxis + other.SemiMinorAxis);
+
+    // IEquatable<T>
+    public bool Equals(EllipseGeometry other)
+      => SemiMajorAxis == other.SemiMajorAxis && SemiMinorAxis == other.SemiMinorAxis;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Ellipse o && Equals(o);
+      => obj is EllipseGeometry o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Width, Height, Angle);
+      => System.HashCode.Combine(SemiMajorAxis, SemiMinorAxis);
     public override string? ToString()
-      => $"{GetType().Name} {{ Width = {Width}, Height = {Height}, Angle = {new Angle(Angle).ToUnitString()}>";
+      => $"{GetType().Name} {{ {nameof(SemiMajorAxis)} = {SemiMajorAxis}, {nameof(SemiMinorAxis)} = {SemiMinorAxis}>";
     #endregion Object overrides
   }
 }

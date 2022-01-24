@@ -5,9 +5,9 @@
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Geometry.Size2 m_cellGrid;
+    private readonly Size2 m_cellGrid;
 
-    public GameOfLife(Geometry.Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -19,17 +19,17 @@
       {
         for (var c = m_cellGrid.Width - 1; c >= 0; c--)
         {
-          var index = (int)Geometry.Point2.ToUniqueIndex(c, r, m_cellGrid.Width);
+          var index = (int)Point2.ToUniqueIndex(c, r, m_cellGrid.Width);
 
           m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
     public GameOfLife(int height, int width, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
-      : this(new Geometry.Size2(height, width), canLifeLogicWrapAroundEdges, probabilityOfBeingInitiallyAlive)
+      : this(new Size2(height, width), canLifeLogicWrapAroundEdges, probabilityOfBeingInitiallyAlive)
     { }
 
-    public Geometry.Size2 CellGrid
+    public Size2 CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>
@@ -74,7 +74,7 @@
 
           var x1 = (x + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)Geometry.Point2.ToUniqueIndex(x1, y1, m_cellGrid.Width);
+          var pointIndex = (int)Point2.ToUniqueIndex(x1, y1, m_cellGrid.Width);
 
           cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
@@ -95,7 +95,7 @@
 
         for (var x = 0; x < m_cellGrid.Width; x++)
         {
-          var index = (int)Geometry.Point2.ToUniqueIndex(x, y, m_cellGrid.Width);
+          var index = (int)Point2.ToUniqueIndex(x, y, m_cellGrid.Width);
 
           var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 

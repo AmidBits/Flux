@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux
 {
   public struct Point2
     : System.IEquatable<Point2>
@@ -105,7 +105,7 @@ namespace Flux.Geometry
       => new((int)(index % gridWidth), (int)(index / gridWidth));
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
-    public static LineSlope GetLineSlope(Point2 source, Point2 target)
+    public static Geometry.LineSlope GetLineSlope(Point2 source, Point2 target)
       => new(source.X, source.Y, target.X, target.Y);
 
     ///// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
