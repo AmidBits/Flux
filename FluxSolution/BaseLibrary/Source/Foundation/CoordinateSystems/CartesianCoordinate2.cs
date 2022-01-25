@@ -116,7 +116,7 @@ namespace Flux
         var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.EqualWithinAbsoluteTolerance(initialAngle, e.Current, Maths.Epsilon1E7))
+          if (!EqualityByAbsoluteTolerance.IsApproximatelyEqual(initialAngle, e.Current, Maths.Epsilon1E7))
             return false;
       }
 
@@ -134,7 +134,7 @@ namespace Flux
         var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!Maths.EqualWithinRelativeTolerance(initialLength, e.Current, 1e-15))
+          if (!EqualityByRelativeTolerance.IsApproximatelyEqual(initialLength, e.Current, 1e-15))
             return false;
       }
 
