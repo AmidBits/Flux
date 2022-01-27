@@ -29,8 +29,8 @@ namespace Flux
       var actualFirst = GetMinRune(source).Value + skipFirst;
       var actualLast = GetMaxRune(source).Value - skipLast;
 
-      var roundedFirst = Maths.RoundToMultipleOf(actualFirst, 0x10, FullRoundingBehavior.Floor);
-      var roundedLast = Maths.RoundToMultipleOf(actualLast, 0x10, FullRoundingBehavior.Ceiling);
+      var roundedFirst = Maths.RoundToMultipleOf(actualFirst, 0x10, FullRounding.Floor);
+      var roundedLast = Maths.RoundToMultipleOf(actualLast, 0x10, FullRounding.Ceiling);
 
       var digitCount = System.Math.Max(System.Convert.ToInt32(System.Math.Log10(roundedLast)), 4); // Show 4 or 5 digits.
 

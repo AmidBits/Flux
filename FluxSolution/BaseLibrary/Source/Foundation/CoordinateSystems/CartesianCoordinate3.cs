@@ -207,10 +207,10 @@ namespace Flux
       => new(source.X, source.Y, source.Z);
     public static CartesianCoordinate3 ToCartesianCoordinate3(this System.Numerics.Vector3 source)
       => new(source.X, source.Y, source.Z);
-    public static Point3 ToPoint3(this CartesianCoordinate3 source, FullRoundingBehavior behavior)
-      => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior), (int)Maths.RoundTo(source.Z, behavior));
-    public static Point3 ToPoint3(this CartesianCoordinate3 source, HalfRoundingBehavior behavior)
-      => new((int)Maths.RoundTo(source.X, behavior), (int)Maths.RoundTo(source.Y, behavior), (int)Maths.RoundTo(source.Z, behavior));
+    public static Point3 ToPoint3(this CartesianCoordinate3 source, System.Func<double, double> transformSelector)
+      => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)), System.Convert.ToInt32(transformSelector(source.Z)));
+    public static Point3 ToPoint3(this CartesianCoordinate3 source, HalfRounding behavior)
+      => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)), System.Convert.ToInt32(Maths.Round(source.Z, behavior)));
     public static System.Numerics.Vector3 ToVector3(this CartesianCoordinate3 source)
       => new((float)source.X, (float)source.Y, (float)source.Z);
   }

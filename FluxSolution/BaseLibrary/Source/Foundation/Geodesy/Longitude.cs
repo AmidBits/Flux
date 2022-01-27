@@ -46,7 +46,7 @@ namespace Flux
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="degLongitude"></param>
     public static int GetTheoreticalTimezoneOffset(double degLongitude)
-      => (int)Maths.RoundTo((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15, FullRoundingBehavior.TowardZero);
+      => System.Convert.ToInt32(System.Math.Truncate((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15));
 
     /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
     public static bool IsLongitude(double degLongitude)

@@ -1,9 +1,10 @@
 namespace Flux
 {
+  /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
   public sealed class EqualityByRelativeTolerance
-   : IApproximateEquatable
+   : IEqualityApproximatable
   {
-    private double m_relativeTolerance;
+    private readonly double m_relativeTolerance;
 
     public EqualityByRelativeTolerance(double relativeTolerance)
       => m_relativeTolerance = relativeTolerance;

@@ -1,9 +1,10 @@
 namespace Flux
 {
+  /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
   public sealed class EqualityByAbsoluteTolerance
-    : IApproximateEquatable
+    : IEqualityApproximatable
   {
-    private double m_absoluteTolerance;
+    private readonly double m_absoluteTolerance;
 
     public EqualityByAbsoluteTolerance(double absoluteTolerance)
       => m_absoluteTolerance = absoluteTolerance;
