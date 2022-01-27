@@ -60,7 +60,7 @@ namespace Flux.Midi
 
     /// <summary>Converts the MTC to a <see cref="System.TimeSpan"/> where the milliseconds represents the frame. The frame rate type is unknown in the new TimeSpan.</summary>
     public System.TimeSpan ToTimeSpan()
-      => new System.TimeSpan(0, m_hour, m_minute, m_second, m_frame);
+      => new(0, m_hour, m_minute, m_second, m_frame);
 
     #region Overloaded operators
     public static bool operator ==(MidiTimeCode a, MidiTimeCode b)

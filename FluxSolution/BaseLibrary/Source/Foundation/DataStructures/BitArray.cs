@@ -49,7 +49,7 @@
     }
 
     public System.Numerics.BigInteger ToBigInteger()
-      => new System.Numerics.BigInteger(ToByteArray());
+      => new(ToByteArray());
     public byte[] ToByteArray()
     {
       var bytes = new byte[System.Math.DivRem(m_bitLength, 8, out var remainder) + (remainder == 0 ? 0 : 1)];
