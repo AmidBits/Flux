@@ -8,6 +8,7 @@ namespace Flux
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => "T",
+        MagneticFluxDensityUnit.KilogramPerSquareSecond => "kg/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -15,10 +16,12 @@ namespace Flux
   public enum MagneticFluxDensityUnit
   {
     Tesla,
+    KilogramPerSquareSecond
   }
 
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
   public struct MagneticFluxDensity
     : System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, IValueSiDerivedUnit<double>
   {
