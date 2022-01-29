@@ -19,16 +19,16 @@ namespace Flux
         _ => string.Empty,
       };
 
-    public static MetricPrefixUnit ToMetricPrefixUnit(this PartsPerNotationUnit unit)
+    public static MetricMultiplicativeUnit ToMetricPrefixUnit(this PartsPerNotationUnit unit)
     {
       return unit switch
       {
-        PartsPerNotationUnit.Hundred => MetricPrefixUnit.Hecto,
-        PartsPerNotationUnit.Thousand => MetricPrefixUnit.Kilo,
-        PartsPerNotationUnit.Million => MetricPrefixUnit.Mega,
-        PartsPerNotationUnit.Billion => MetricPrefixUnit.Giga,
-        PartsPerNotationUnit.Trillion => MetricPrefixUnit.Tera,
-        PartsPerNotationUnit.Quadrillion => MetricPrefixUnit.Peta,
+        PartsPerNotationUnit.Hundred => MetricMultiplicativeUnit.Hecto,
+        PartsPerNotationUnit.Thousand => MetricMultiplicativeUnit.Kilo,
+        PartsPerNotationUnit.Million => MetricMultiplicativeUnit.Mega,
+        PartsPerNotationUnit.Billion => MetricMultiplicativeUnit.Giga,
+        PartsPerNotationUnit.Trillion => MetricMultiplicativeUnit.Tera,
+        PartsPerNotationUnit.Quadrillion => MetricMultiplicativeUnit.Peta,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     }

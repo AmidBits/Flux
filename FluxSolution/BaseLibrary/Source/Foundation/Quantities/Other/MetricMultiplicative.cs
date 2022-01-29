@@ -2,53 +2,53 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static MetricPrefix Create(this MetricPrefixUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitName(this MetricPrefixUnit unit)
-      => unit == MetricPrefixUnit.None ? string.Empty : unit.ToString().ToLower();
-    public static string GetUnitSymbol(this MetricPrefixUnit unit)
+    public static string GetUnitName(this MetricMultiplicativeUnit unit)
+      => unit == MetricMultiplicativeUnit.None ? string.Empty : unit.ToString();
+    public static string GetUnitSymbol(this MetricMultiplicativeUnit unit)
       => unit switch
       {
-        MetricPrefixUnit.Yotta => "Y",
-        MetricPrefixUnit.Zetta => "Z",
-        MetricPrefixUnit.Exa => "E",
-        MetricPrefixUnit.Peta => "P",
-        MetricPrefixUnit.Tera => "T",
-        MetricPrefixUnit.Giga => "G",
-        MetricPrefixUnit.Mega => "M",
-        MetricPrefixUnit.Kilo => "k",
-        MetricPrefixUnit.Hecto => "h",
-        MetricPrefixUnit.Deca => "da",
-        MetricPrefixUnit.None => string.Empty,
-        MetricPrefixUnit.Deci => "d",
-        MetricPrefixUnit.Centi => "c",
-        MetricPrefixUnit.Milli => "m",
-        MetricPrefixUnit.Micro => "\u03bc",
-        MetricPrefixUnit.Nano => "n",
-        MetricPrefixUnit.Pico => "p",
-        MetricPrefixUnit.Femto => "f",
-        MetricPrefixUnit.Atto => "a",
-        MetricPrefixUnit.Zepto => "z",
-        MetricPrefixUnit.Yocto => "y",
+        MetricMultiplicativeUnit.Yotta => "Y",
+        MetricMultiplicativeUnit.Zetta => "Z",
+        MetricMultiplicativeUnit.Exa => "E",
+        MetricMultiplicativeUnit.Peta => "P",
+        MetricMultiplicativeUnit.Tera => "T",
+        MetricMultiplicativeUnit.Giga => "G",
+        MetricMultiplicativeUnit.Mega => "M",
+        MetricMultiplicativeUnit.Kilo => "k",
+        MetricMultiplicativeUnit.Hecto => "h",
+        MetricMultiplicativeUnit.Deca => "da",
+        MetricMultiplicativeUnit.None => string.Empty,
+        MetricMultiplicativeUnit.Deci => "d",
+        MetricMultiplicativeUnit.Centi => "c",
+        MetricMultiplicativeUnit.Milli => "m",
+        MetricMultiplicativeUnit.Micro => "\u03bc",
+        MetricMultiplicativeUnit.Nano => "n",
+        MetricMultiplicativeUnit.Pico => "p",
+        MetricMultiplicativeUnit.Femto => "f",
+        MetricMultiplicativeUnit.Atto => "a",
+        MetricMultiplicativeUnit.Zepto => "z",
+        MetricMultiplicativeUnit.Yocto => "y",
         _ => string.Empty,
       };
 
-    public static PartsPerNotationUnit ToPartsPerNotationUnit(this MetricPrefixUnit unit)
+    public static PartsPerNotationUnit ToPartsPerNotationUnit(this MetricMultiplicativeUnit unit)
     {
       return unit switch
       {
-        MetricPrefixUnit.Hecto => PartsPerNotationUnit.Hundred,
-        MetricPrefixUnit.Kilo => PartsPerNotationUnit.Thousand,
-        MetricPrefixUnit.Mega => PartsPerNotationUnit.Million,
-        MetricPrefixUnit.Giga => PartsPerNotationUnit.Billion,
-        MetricPrefixUnit.Tera => PartsPerNotationUnit.Trillion,
-        MetricPrefixUnit.Peta => PartsPerNotationUnit.Quadrillion,
+        MetricMultiplicativeUnit.Hecto => PartsPerNotationUnit.Hundred,
+        MetricMultiplicativeUnit.Kilo => PartsPerNotationUnit.Thousand,
+        MetricMultiplicativeUnit.Mega => PartsPerNotationUnit.Million,
+        MetricMultiplicativeUnit.Giga => PartsPerNotationUnit.Billion,
+        MetricMultiplicativeUnit.Tera => PartsPerNotationUnit.Trillion,
+        MetricMultiplicativeUnit.Peta => PartsPerNotationUnit.Quadrillion,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     }
+    public static string ToString<TValue>(this MetricMultiplicativeUnit unitPrefix, string unitString, TValue value)
+     => $"{value} {unitPrefix}{unitString}";
   }
 
-  public enum MetricPrefixUnit
+  public enum MetricMultiplicativeUnit
   {
     /// <summary>A.k.a. septillion/quadrillion.</summary>
     Yotta = 24,
@@ -96,75 +96,75 @@ namespace Flux
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
-  public struct MetricPrefix
-    : System.IComparable<MetricPrefix>, System.IConvertible, System.IEquatable<MetricPrefix>, IValueGeneralizedUnit<double>
+  public struct MetricMultiplicative
+    : System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, IValueGeneralizedUnit<double>
   {
-    public const MetricPrefixUnit DefaultUnit = MetricPrefixUnit.None;
+    public const MetricMultiplicativeUnit DefaultUnit = MetricMultiplicativeUnit.None;
 
     private readonly double m_value;
 
     /// <summary>Creates a new instance of this type.</summary>
     /// <param name="value">The parts in parts per notation.</param>
     /// <param name="unit">The notation in parts per notation.</param>
-    public MetricPrefix(double value, MetricPrefixUnit unit = DefaultUnit)
+    public MetricMultiplicative(double value, MetricMultiplicativeUnit unit = DefaultUnit)
       => m_value = value * System.Math.Pow(10, (double)unit);
 
     public double Value
       => m_value;
 
-    public string ToUnitString(MetricPrefixUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = true)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToUnitValue(unit))} {(useNameInsteadOfSymbol ? unit.GetUnitName() : unit.GetUnitSymbol())}";
-    public double ToUnitValue(MetricPrefixUnit unit = DefaultUnit)
+    public string ToUnitString(MetricMultiplicativeUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = true)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToUnitValue(unit))} {(useNameInsteadOfSymbol ? unit.GetUnitName().ToLower() : unit.GetUnitSymbol())}";
+    public double ToUnitValue(MetricMultiplicativeUnit unit = DefaultUnit)
       => m_value / System.Math.Pow(10, (double)unit);
 
     #region Static methods
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(MetricPrefix v)
+    public static explicit operator double(MetricMultiplicative v)
       => v.Value;
 
-    public static bool operator <(MetricPrefix a, MetricPrefix b)
+    public static bool operator <(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) < 0;
-    public static bool operator <=(MetricPrefix a, MetricPrefix b)
+    public static bool operator <=(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) <= 0;
-    public static bool operator >(MetricPrefix a, MetricPrefix b)
+    public static bool operator >(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) > 0;
-    public static bool operator >=(MetricPrefix a, MetricPrefix b)
+    public static bool operator >=(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(MetricPrefix a, MetricPrefix b)
+    public static bool operator ==(MetricMultiplicative a, MetricMultiplicative b)
       => a.Equals(b);
-    public static bool operator !=(MetricPrefix a, MetricPrefix b)
+    public static bool operator !=(MetricMultiplicative a, MetricMultiplicative b)
       => !a.Equals(b);
 
-    public static MetricPrefix operator -(MetricPrefix v)
+    public static MetricMultiplicative operator -(MetricMultiplicative v)
       => new(-v.m_value);
-    public static MetricPrefix operator +(MetricPrefix a, double b)
+    public static MetricMultiplicative operator +(MetricMultiplicative a, double b)
       => new(a.m_value + b);
-    public static MetricPrefix operator +(MetricPrefix a, MetricPrefix b)
+    public static MetricMultiplicative operator +(MetricMultiplicative a, MetricMultiplicative b)
       => a + b.m_value;
-    public static MetricPrefix operator /(MetricPrefix a, double b)
+    public static MetricMultiplicative operator /(MetricMultiplicative a, double b)
       => new(a.m_value / b);
-    public static MetricPrefix operator /(MetricPrefix a, MetricPrefix b)
+    public static MetricMultiplicative operator /(MetricMultiplicative a, MetricMultiplicative b)
       => a / b.m_value;
-    public static MetricPrefix operator *(MetricPrefix a, double b)
+    public static MetricMultiplicative operator *(MetricMultiplicative a, double b)
       => new(a.m_value * b);
-    public static MetricPrefix operator *(MetricPrefix a, MetricPrefix b)
+    public static MetricMultiplicative operator *(MetricMultiplicative a, MetricMultiplicative b)
       => a * b.m_value;
-    public static MetricPrefix operator %(MetricPrefix a, double b)
+    public static MetricMultiplicative operator %(MetricMultiplicative a, double b)
       => new(a.m_value % b);
-    public static MetricPrefix operator %(MetricPrefix a, MetricPrefix b)
+    public static MetricMultiplicative operator %(MetricMultiplicative a, MetricMultiplicative b)
       => a % b.m_value;
-    public static MetricPrefix operator -(MetricPrefix a, double b)
+    public static MetricMultiplicative operator -(MetricMultiplicative a, double b)
       => new(a.m_value - b);
-    public static MetricPrefix operator -(MetricPrefix a, MetricPrefix b)
+    public static MetricMultiplicative operator -(MetricMultiplicative a, MetricMultiplicative b)
       => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(MetricPrefix other)
+    public int CompareTo(MetricMultiplicative other)
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
@@ -188,13 +188,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(MetricPrefix other)
+    public bool Equals(MetricMultiplicative other)
       => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is MetricPrefix o && Equals(o);
+      => obj is MetricMultiplicative o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
