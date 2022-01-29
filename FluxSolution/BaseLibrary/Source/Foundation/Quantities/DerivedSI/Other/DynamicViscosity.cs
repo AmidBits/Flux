@@ -7,7 +7,7 @@ namespace Flux
     public static string GetUnitSymbol(this DynamicViscosityUnit unit)
       => unit switch
       {
-        DynamicViscosityUnit.PascalSecond => "kg/m²",
+        DynamicViscosityUnit.PascalSecond => "Pa·s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -18,8 +18,8 @@ namespace Flux
     PascalSecond,
   }
 
-  /// <summary>Surface density unit of kilograms per square meter.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
   public struct DynamicViscosity
     : System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, IValueSiDerivedUnit<double>
   {

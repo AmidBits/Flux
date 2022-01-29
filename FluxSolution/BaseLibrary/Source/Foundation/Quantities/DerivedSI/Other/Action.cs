@@ -18,7 +18,7 @@ namespace Flux
   }
 
   /// <summary>Action. Unit of Joule second.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public struct Action
     : System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, IValueSiDerivedUnit<double>
   {

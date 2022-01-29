@@ -17,8 +17,8 @@ namespace Flux
     WattPerSquareMeter,
   }
 
-  /// <summary>Surface density unit of kilograms per square meter.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  /// <summary>irradiance, unit of watt per square meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Irradiance"/>
   public struct Irradiance
     : System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, IValueSiDerivedUnit<double>
   {

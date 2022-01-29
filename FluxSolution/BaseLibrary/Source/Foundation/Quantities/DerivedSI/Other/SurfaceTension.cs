@@ -18,8 +18,8 @@ namespace Flux
     NewtonPerMeter,
   }
 
-  /// <summary>Surface density unit of kilograms per square meter.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+  /// <summary>Surface tension, unit of Newton per meter.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
   public struct SurfaceTension
     : System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, IValueSiDerivedUnit<double>
   {

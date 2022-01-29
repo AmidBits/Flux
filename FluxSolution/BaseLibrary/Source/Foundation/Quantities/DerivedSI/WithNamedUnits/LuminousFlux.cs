@@ -18,7 +18,7 @@ namespace Flux
   }
 
   /// <summary>Luminous flux unit of lumen.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
   public struct LuminousFlux
     : System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, IValueSiDerivedUnit<double>
   {

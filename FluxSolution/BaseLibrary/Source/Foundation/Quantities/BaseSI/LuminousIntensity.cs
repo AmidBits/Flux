@@ -18,7 +18,7 @@ namespace Flux
   }
 
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Luminous_intensity"/>
   public struct LuminousIntensity
     : System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
   {

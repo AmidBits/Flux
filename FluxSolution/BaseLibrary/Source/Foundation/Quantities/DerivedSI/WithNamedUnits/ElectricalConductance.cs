@@ -17,8 +17,8 @@ namespace Flux
     Siemens,
   }
 
-  /// <summary>Electrical conductance unit of Siemens.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Force"/>
+  /// <summary>Electrical conductance, unit of Siemens.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalConductance
     : System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, IValueSiDerivedUnit<double>
   {

@@ -18,7 +18,7 @@ namespace Flux
   }
 
   /// <summary>Radioactivity unit of becquerel.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Power"/>
+  /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
     : System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, IValueSiDerivedUnit<double>
   {
