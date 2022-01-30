@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this MagneticFluxUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
       => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        MagneticFluxUnit.Weber => "Wb",
+        MagneticFluxUnit.Weber => useUnicodeIfAvailable ? "\u33dd" : "Wb",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

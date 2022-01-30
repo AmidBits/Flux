@@ -7,7 +7,7 @@
       {
         AngleUnit.Arcminute => useUnicodeIfAvailable ? "\u2032" : "\u0027",
         AngleUnit.Arcsecond => useUnicodeIfAvailable ? "\u2033" : "\u0022",
-        AngleUnit.Degree => "\u00B0",
+        AngleUnit.Degree => useUnicodeIfAvailable ? "\u00B0" : "deg",
         AngleUnit.Gradian => "grad",
         AngleUnit.NatoMil => "mils",
         AngleUnit.Milliradian => "mrad",

@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this ElectricalResistanceUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
       => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        ElectricalResistanceUnit.Ohm => "\u2126",
+        ElectricalResistanceUnit.Ohm => useUnicodeIfAvailable ? "\u2126" : "ohm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
