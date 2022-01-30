@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this EnergyUnit unit)
-      => unit switch
+    public static string GetUnitString(this EnergyUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         EnergyUnit.Joule => "J",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -37,7 +37,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(EnergyUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(EnergyUnit unit = DefaultUnit)
       => unit switch
       {

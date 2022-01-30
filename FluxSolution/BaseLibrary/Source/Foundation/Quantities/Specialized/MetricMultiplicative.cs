@@ -16,7 +16,7 @@ namespace Flux
         MetricMultiplicativePrefix.Mega => "M",
         MetricMultiplicativePrefix.Kilo => "k",
         MetricMultiplicativePrefix.Hecto => "h",
-        MetricMultiplicativePrefix.Deca => "da",
+        MetricMultiplicativePrefix.Deca => useUnicodeIfAvailable ? "\u3372" : "da",
         MetricMultiplicativePrefix.None => string.Empty,
         MetricMultiplicativePrefix.Deci => "d",
         MetricMultiplicativePrefix.Centi => "c",

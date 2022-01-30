@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this LuminousFluxUnit unit)
-      => unit switch
+    public static string GetUnitString(this LuminousFluxUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         LuminousFluxUnit.Lumen => "lm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(LuminousFluxUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(LuminousFluxUnit unit = DefaultUnit)
       => unit switch
       {

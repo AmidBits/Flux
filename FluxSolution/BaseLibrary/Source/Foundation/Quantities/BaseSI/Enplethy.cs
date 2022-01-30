@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this EnplethyUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
       => useNameInstead ? unit.ToString() : unit switch
       {
-        EnplethyUnit.Mole => "mol",
+        EnplethyUnit.Mole => useUnicodeIfAvailable ? "\u33d6" : "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

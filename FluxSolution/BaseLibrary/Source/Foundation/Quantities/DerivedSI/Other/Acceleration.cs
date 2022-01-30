@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this AccelerationUnit unit)
-      => unit switch
+    public static string GetUnitString(this AccelerationUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         AccelerationUnit.MeterPerSecondSquare => "m/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -38,7 +38,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch
       {

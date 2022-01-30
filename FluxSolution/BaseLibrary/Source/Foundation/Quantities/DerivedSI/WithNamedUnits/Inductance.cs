@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this InductanceUnit unit)
-      => unit switch
+    public static string GetUnitString(this InductanceUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         InductanceUnit.Henry => "H",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(InductanceUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(InductanceUnit unit = DefaultUnit)
       => unit switch
       {

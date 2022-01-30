@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this RadioactivityUnit unit)
-      => unit switch
+    public static string GetUnitString(this RadioactivityUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         RadioactivityUnit.Becquerel => "Bq",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
       => unit switch
       {

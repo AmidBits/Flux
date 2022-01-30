@@ -2,19 +2,40 @@
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this AngleUnit unit)
-      => unit switch
+    public static string GetUnitString(this AngleUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        AngleUnit.Arcminute => Angle.PrimeSymbol.ToString(),
-        AngleUnit.Arcsecond => Angle.DoublePrimeSymbol.ToString(),
-        AngleUnit.Degree => Angle.DegreeSymbol.ToString(),
+        AngleUnit.Arcminute => useUnicodeIfAvailable ? "\u2032" : "\u0027",
+        AngleUnit.Arcsecond => useUnicodeIfAvailable ? "\u2033" : "\u0022",
+        AngleUnit.Degree => "\u00B0",
         AngleUnit.Gradian => "grad",
         AngleUnit.NatoMil => "mils",
         AngleUnit.Milliradian => "mrad",
-        AngleUnit.Radian => "rad",
+        AngleUnit.Radian => useUnicodeIfAvailable ? "\u33ad" : "rad",
         AngleUnit.Turn => "turns",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+  }
+
+  [System.Flags]
+  public enum AngleNames
+  {
+    /// <summary>An angle equal to 0° or not turned is called a zero angle.</summary>
+    ZeroAngle = 1,
+    /// <summary>An angle smaller than a right angle (less than 90°) is called an acute angle ("acute" meaning "sharp").</summary>
+    AcuteAngle = 2,
+    /// <summary>An angle equal to 1/4 turn (90° or π/2 radians) is called a right angle. Two lines that form a right angle are said to be normal, orthogonal, or perpendicular.</summary>
+    RightAngle = 4,
+    /// <summary>An angle larger than a right angle and smaller than a straight angle (between 90° and 180°) is called an obtuse angle ("obtuse" meaning "blunt").</summary>
+    ObtuseAngle = 8,
+    /// <summary>An angle equal to 1/2 turn (180° or π radians) is called a straight angle.</summary>
+    StraightAngle = 16,
+    /// <summary>An angle larger than a straight angle but less than 1 turn (between 180° and 360°) is called a reflex angle.</summary>
+    ReflexAngle = 32,
+    /// <summary>An angle equal to 1 turn (360° or 2π radians) is called a full angle, complete angle, round angle or a perigon.</summary>
+    PerigonAngle = 64,
+    /// <summary>An angle that is not a multiple of a right angle is called an oblique angle.</summary>
+    ObliqueAngle = 128
   }
 
   public enum AngleUnit
@@ -78,8 +99,8 @@
     public CartesianCoordinate2 ToCartesian2Ex()
       => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
-    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
     public double ToUnitValue(AngleUnit unit = DefaultUnit)
       => unit switch
       {

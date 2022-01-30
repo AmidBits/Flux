@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this AreaDensityUnit unit)
-      => unit switch
+    public static string GetUnitString(this AreaDensityUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         AreaDensityUnit.KilogramPerSquareMeter => "kg/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -36,7 +36,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(AreaDensityUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AreaDensityUnit unit = DefaultUnit)
       => unit switch
       {

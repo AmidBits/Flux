@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this SolidAngleUnit unit)
-      => unit switch
+    public static string GetUnitString(this SolidAngleUnit unit, bool useNameInsteadOfSymbol, bool useUnicodeIfAvailable)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        SolidAngleUnit.Steradian => "sr",
+        SolidAngleUnit.Steradian => useUnicodeIfAvailable ? "\u33db" : "sr",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -34,8 +34,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
     public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
       => unit switch
       {

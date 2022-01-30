@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this AreaUnit unit)
-      => unit switch
+    public static string GetUnitString(this AreaUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         AreaUnit.SquareMeter => "m²",
         AreaUnit.Hectare => "ha",
@@ -38,7 +38,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(AreaUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AreaUnit unit = DefaultUnit)
       => unit switch
       {

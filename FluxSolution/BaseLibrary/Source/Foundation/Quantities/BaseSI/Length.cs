@@ -15,7 +15,8 @@ namespace Flux
         LengthUnit.NauticalMile => "nm",
         LengthUnit.Mile => "mi",
         LengthUnit.Kilometer => "km",
-        LengthUnit.AstronomicalUnit => "au",
+        LengthUnit.AstronomicalUnit => useUnicodeIfAvailable ? "\u3373" : "au",
+        LengthUnit.Parsec => "pc",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -32,7 +33,8 @@ namespace Flux
     NauticalMile,
     Mile,
     Kilometer,
-    AstronomicalUnit
+    AstronomicalUnit,
+    Parsec,
   }
 
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
@@ -40,6 +42,9 @@ namespace Flux
   public struct Length
     : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
   {
+    public const double PiParsecsInMeters = 96939420213600000;
+    public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
+
     public const LengthUnit DefaultUnit = LengthUnit.Meter;
 
     private readonly double m_value;
@@ -58,6 +63,7 @@ namespace Flux
         LengthUnit.Mile => value * 1609.344,
         LengthUnit.Kilometer => value * 1000,
         LengthUnit.AstronomicalUnit => value * 149597870700,
+        LengthUnit.Parsec => value * OneParsecInMeters,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -83,6 +89,7 @@ namespace Flux
         LengthUnit.Mile => m_value / 1609.344,
         LengthUnit.Kilometer => m_value / 1000,
         LengthUnit.AstronomicalUnit => m_value / 149597870700,
+        LengthUnit.Parsec => m_value / OneParsecInMeters,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

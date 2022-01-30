@@ -21,7 +21,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public CartesianCoordinate3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch
       {

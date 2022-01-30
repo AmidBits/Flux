@@ -2,33 +2,31 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static PartsPerNotation Create(this PartsPerNotationUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this PartsPerNotationUnit unit)
-      => unit switch
+    public static string GetUnitString(this PartsPerNotationUnit source, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? source.ToString() : source switch
       {
-        PartsPerNotationUnit.Quadrillion => "ppq",
-        PartsPerNotationUnit.Trillion => "ppt",
-        PartsPerNotationUnit.Billion => "ppb",
-        PartsPerNotationUnit.Million => "ppm",
-        PartsPerNotationUnit.HundredThousand => "pcm",
-        PartsPerNotationUnit.TenThousand => ((char)unit).ToString(),
-        PartsPerNotationUnit.Thousand => ((char)unit).ToString(),
-        PartsPerNotationUnit.Hundred => ((char)unit).ToString(),
+        PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
+        PartsPerNotationUnit.PartsPerTrillion => "ppt",
+        PartsPerNotationUnit.PartsPerBillion => "ppb",
+        PartsPerNotationUnit.PartsPerMillion => useUnicodeIfAvailable ? "\u33d9" : "ppm",
+        PartsPerNotationUnit.PerCentMille => "pcm",
+        PartsPerNotationUnit.PerMyriad => "\u2030",
+        PartsPerNotationUnit.PerMille => "\u2030",
+        PartsPerNotationUnit.Percent => useUnicodeIfAvailable ? "\u0025" : "pct",
         PartsPerNotationUnit.One => "pp1",
         _ => string.Empty,
       };
 
-    public static MetricMultiplicativePrefix ToMetricPrefixUnit(this PartsPerNotationUnit unit)
+    public static MetricMultiplicativePrefix ToMetricMultiplicativePrefix(this PartsPerNotationUnit unit)
     {
       return unit switch
       {
-        PartsPerNotationUnit.Hundred => MetricMultiplicativePrefix.Hecto,
-        PartsPerNotationUnit.Thousand => MetricMultiplicativePrefix.Kilo,
-        PartsPerNotationUnit.Million => MetricMultiplicativePrefix.Mega,
-        PartsPerNotationUnit.Billion => MetricMultiplicativePrefix.Giga,
-        PartsPerNotationUnit.Trillion => MetricMultiplicativePrefix.Tera,
-        PartsPerNotationUnit.Quadrillion => MetricMultiplicativePrefix.Peta,
+        PartsPerNotationUnit.Percent => MetricMultiplicativePrefix.Hecto,
+        PartsPerNotationUnit.PerMille => MetricMultiplicativePrefix.Kilo,
+        PartsPerNotationUnit.PartsPerMillion => MetricMultiplicativePrefix.Mega,
+        PartsPerNotationUnit.PartsPerBillion => MetricMultiplicativePrefix.Giga,
+        PartsPerNotationUnit.PartsPerTrillion => MetricMultiplicativePrefix.Tera,
+        PartsPerNotationUnit.PartsPerQuadrillion => MetricMultiplicativePrefix.Peta,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     }
@@ -38,21 +36,21 @@ namespace Flux
   {
     One,
     /// <summary>Percent. This is also the actual Unicode char value of the notation unit.</summary>
-    Hundred = '\u0025',
+    Percent,
     /// <summary>Per mille. This is also the actual Unicode char value of the notation unit.</summary>
-    Thousand = '\u2030',
+    PerMille,
     /// <summary>Permyriad. This is also the actual Unicode char value of the notation unit.</summary>
-    TenThousand = '\u2031',
+    PerMyriad,
     /// <summary>Per cent mille, abbreviated "pcm".</summary>
-    HundredThousand,
+    PerCentMille,
     /// <summary>Abbreviated "ppm".</summary>
-    Million,
+    PartsPerMillion,
     /// <summary>Abbreviated "ppb".</summary>
-    Billion,
+    PartsPerBillion,
     /// <summary>Abbreviated "ppt".</summary>
-    Trillion,
+    PartsPerTrillion,
     /// <summary>Abbreviated "ppq".</summary>
-    Quadrillion,
+    PartsPerQuadrillion,
   }
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
@@ -60,7 +58,7 @@ namespace Flux
   public struct PartsPerNotation
     : System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IValueGeneralizedUnit<double>
   {
-    public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Hundred;
+    public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
     private readonly double m_parts;
     //private readonly PartsPerNotationUnit m_unit;
@@ -73,14 +71,14 @@ namespace Flux
       m_parts = unit switch
       {
         PartsPerNotationUnit.One => parts,
-        PartsPerNotationUnit.Hundred => parts / 1e2,
-        PartsPerNotationUnit.Thousand => parts / 1e3,
-        PartsPerNotationUnit.TenThousand => parts / 1e4,
-        PartsPerNotationUnit.HundredThousand => parts / 1e5,
-        PartsPerNotationUnit.Million => parts / 1e6,
-        PartsPerNotationUnit.Billion => parts / 1e9,
-        PartsPerNotationUnit.Trillion => parts / 1e12,
-        PartsPerNotationUnit.Quadrillion => parts / 1e15,
+        PartsPerNotationUnit.Percent => parts / 1e2,
+        PartsPerNotationUnit.PerMille => parts / 1e3,
+        PartsPerNotationUnit.PerMyriad => parts / 1e4,
+        PartsPerNotationUnit.PerCentMille => parts / 1e5,
+        PartsPerNotationUnit.PartsPerMillion => parts / 1e6,
+        PartsPerNotationUnit.PartsPerBillion => parts / 1e9,
+        PartsPerNotationUnit.PartsPerTrillion => parts / 1e12,
+        PartsPerNotationUnit.PartsPerQuadrillion => parts / 1e15,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -91,19 +89,19 @@ namespace Flux
       => m_parts;
 
     public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch
       {
         PartsPerNotationUnit.One => m_parts,
-        PartsPerNotationUnit.Hundred => m_parts * 1e2,
-        PartsPerNotationUnit.Thousand => m_parts * 1e3,
-        PartsPerNotationUnit.TenThousand => m_parts * 1e4,
-        PartsPerNotationUnit.HundredThousand => m_parts * 1e5,
-        PartsPerNotationUnit.Million => m_parts * 1e6,
-        PartsPerNotationUnit.Billion => m_parts * 1e9,
-        PartsPerNotationUnit.Trillion => m_parts * 1e12,
-        PartsPerNotationUnit.Quadrillion => m_parts * 1e15,
+        PartsPerNotationUnit.Percent => m_parts * 1e2,
+        PartsPerNotationUnit.PerMille => m_parts * 1e3,
+        PartsPerNotationUnit.PerMyriad => m_parts * 1e4,
+        PartsPerNotationUnit.PerCentMille => m_parts * 1e5,
+        PartsPerNotationUnit.PartsPerMillion => m_parts * 1e6,
+        PartsPerNotationUnit.PartsPerBillion => m_parts * 1e9,
+        PartsPerNotationUnit.PartsPerTrillion => m_parts * 1e12,
+        PartsPerNotationUnit.PartsPerQuadrillion => m_parts * 1e15,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

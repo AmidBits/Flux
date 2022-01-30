@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this TorqueUnit unit)
-      => unit switch
+    public static string GetUnitString(this TorqueUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        TorqueUnit.NewtonMeter => "N\u22C5m",
+        TorqueUnit.NewtonMeter => "N·m",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -36,7 +36,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(TorqueUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(TorqueUnit unit = DefaultUnit)
       => unit switch
       {

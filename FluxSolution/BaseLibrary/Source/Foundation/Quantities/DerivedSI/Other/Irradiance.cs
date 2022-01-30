@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this IrradianceUnit unit)
-      => unit switch
+    public static string GetUnitString(this IrradianceUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         IrradianceUnit.WattPerSquareMeter => "W/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(IrradianceUnit unit = DefaultUnit)
       => unit switch
       {

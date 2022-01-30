@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this VolumeUnit unit)
-      => unit switch
+    public static string GetUnitString(this VolumeUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         VolumeUnit.Millilitre => "ml",
         VolumeUnit.Centilitre => "cl",
@@ -13,11 +13,11 @@ namespace Flux
         VolumeUnit.ImperialQuart => "qt (imp)",
         VolumeUnit.USGallon => "gal (US)",
         VolumeUnit.USQuart => "qt (US)",
-        VolumeUnit.CubicFeet => "ft\u00B2",
-        VolumeUnit.CubicYard => "yd\u00B2",
-        VolumeUnit.CubicMeter => "m\u00B2",
-        VolumeUnit.CubicMile => "mi\u00B2",
-        VolumeUnit.CubicKilometer => "km\u00B2",
+        VolumeUnit.CubicFeet => "ft³",
+        VolumeUnit.CubicYard => "yd³",
+        VolumeUnit.CubicMeter => "m³",
+        VolumeUnit.CubicMile => "mi³",
+        VolumeUnit.CubicKilometer => "km³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -75,7 +75,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(VolumeUnit unit = DefaultUnit)
       => unit switch
       {

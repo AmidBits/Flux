@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this ActionUnit unit)
-      => unit switch
+    public static string GetUnitString(this ActionUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        ActionUnit.JouleSecond => " J\u22C5s",
+        ActionUnit.JouleSecond => " J·s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ActionUnit unit = DefaultUnit)
       => unit switch
       {

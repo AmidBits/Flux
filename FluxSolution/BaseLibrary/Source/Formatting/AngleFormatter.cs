@@ -28,7 +28,7 @@ namespace Flux.Formatting
 
             foreach (var unit in (AngleUnit[])System.Enum.GetValues(typeof(AngleUnit)))
               if (unit.ToString().StartsWith(unitString, System.StringComparison.InvariantCultureIgnoreCase))
-                return string.Format(null, $"{{0:N{decimalPlaces}}}", angle.ToUnitValue(unit)) + unit.GetUnitSymbol();
+                return string.Format(null, $"{{0:N{decimalPlaces}}}", angle.ToUnitValue(unit)) + unit.GetUnitString();
           }
         }
       }

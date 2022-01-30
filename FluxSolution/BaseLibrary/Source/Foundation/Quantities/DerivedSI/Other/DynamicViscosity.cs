@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this DynamicViscosityUnit unit)
-      => unit switch
+    public static string GetUnitString(this DynamicViscosityUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         DynamicViscosityUnit.PascalSecond => "Pa·s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -36,7 +36,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(DynamicViscosityUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(DynamicViscosityUnit unit = DefaultUnit)
       => unit switch
       {

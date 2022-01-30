@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this SpeedUnit unit)
-      => unit switch
+    public static string GetUnitString(this SpeedUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         SpeedUnit.FootPerSecond => "ft/s",
         SpeedUnit.KilometerPerHour => "km/h",
@@ -59,7 +59,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(SpeedUnit unit = DefaultUnit)
       => unit switch
       {

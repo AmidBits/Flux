@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitSymbol(this PressureUnit unit)
-      => unit switch
+    public static string GetUnitString(this PressureUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         PressureUnit.Millibar => "mbar",
         PressureUnit.Bar => "bar",
@@ -52,7 +52,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(PressureUnit unit = DefaultUnit)
       => unit switch
       {
