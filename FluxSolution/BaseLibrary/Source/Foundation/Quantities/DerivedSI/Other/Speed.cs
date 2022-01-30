@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Speed Create(this SpeedUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this SpeedUnit unit)
       => unit switch
       {

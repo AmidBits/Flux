@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this TemperatureUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this TemperatureUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         TemperatureUnit.Celsius => useUnicodeIfAvailable ? "\u2103" : $"{Angle.DegreeSymbol}C",
         TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? "\u2109" : $"{Angle.DegreeSymbol}F",
@@ -24,7 +24,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IValueSiBaseUnit<double>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -59,8 +59,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {

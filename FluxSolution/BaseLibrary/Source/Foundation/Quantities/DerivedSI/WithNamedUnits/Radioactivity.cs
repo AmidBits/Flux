@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Radioactivity Create(this RadioactivityUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this RadioactivityUnit unit)
       => unit switch
       {

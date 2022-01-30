@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static AreaDensity Create(this AreaDensityUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this AreaDensityUnit unit)
       => unit switch
       {

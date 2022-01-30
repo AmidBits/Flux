@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static LuminousFlux Create(this LuminousFluxUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this LuminousFluxUnit unit)
       => unit switch
       {

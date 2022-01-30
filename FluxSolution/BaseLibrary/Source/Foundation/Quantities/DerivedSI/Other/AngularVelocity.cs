@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static AngularVelocity Create(this AngularVelocityUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this AngularVelocityUnit unit)
       => unit switch
       {

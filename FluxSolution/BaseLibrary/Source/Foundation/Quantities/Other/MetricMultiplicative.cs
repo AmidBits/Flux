@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static double GetPrefixFactor(this MetricMultiplicativePrefix source)
+      => System.Math.Pow(10, (int)source);
     public static string GetPrefixString(this MetricMultiplicativePrefix source, bool useNameInsteadOfSymbol, bool useUnicodeIfAvailable)
       => useNameInsteadOfSymbol ? source.ToString() : source switch
       {
@@ -19,7 +21,7 @@ namespace Flux
         MetricMultiplicativePrefix.Deci => "d",
         MetricMultiplicativePrefix.Centi => "c",
         MetricMultiplicativePrefix.Milli => "m",
-        MetricMultiplicativePrefix.Micro => "\u03bc",
+        MetricMultiplicativePrefix.Micro => useUnicodeIfAvailable ? "\u03bc" : "\u00b5",
         MetricMultiplicativePrefix.Nano => "n",
         MetricMultiplicativePrefix.Pico => "p",
         MetricMultiplicativePrefix.Femto => "f",
@@ -81,39 +83,27 @@ namespace Flux
   public struct MetricMultiplicative
     : System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, IValueGeneralizedUnit<double>
   {
-    public const MetricMultiplicativePrefix DefaultPrefix = MetricMultiplicativePrefix.None;
-
     private readonly double m_value;
 
     /// <summary>Creates a new instance of this type.</summary>
     /// <param name="value">The value to represent.</param>
-    /// <param name="prefix">The metric multiplicative prefix of the specified value.</param>
-    public MetricMultiplicative(double value, MetricMultiplicativePrefix prefix = DefaultPrefix)
-      => m_value = value * System.Math.Pow(10, (double)prefix);
+    /// <param name="multiplicativePrefix">The metric multiplicative prefix of the specified value.</param>
+    public MetricMultiplicative(double value, MetricMultiplicativePrefix multiplicativePrefix)
+      => m_value = value * multiplicativePrefix.GetPrefixFactor();
 
     public double Value
       => m_value;
 
-    public string ToPrefixString(MetricMultiplicativePrefix prefix = DefaultPrefix, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToPrefixValue(prefix))} {prefix.GetPrefixString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
-    public double ToPrefixValue(MetricMultiplicativePrefix prefix = DefaultPrefix)
-      => m_value / System.Math.Pow(10, (double)prefix);
-
-    #region Static methods
-    public static string ToMetricPrefixedString<T>(IMetricPrefixFormattable<T> value, MetricMultiplicativePrefix prefix, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-    {
-      var mus = value.GetMetricUnprefixedString(useNameInsteadOfSymbol, useUnicodeIfAvailable);
-      var mm = value.ToMetricMultiplicative();
-
-      return $"{mm.ToPrefixString(prefix, null, useNameInsteadOfSymbol, useUnicodeIfAvailable)}{mus}";
-    }
-    #endregion Static methods
+    public string ToPrefixString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToPrefixValue(multiplicativePrefix))} {multiplicativePrefix.GetPrefixString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public double ToPrefixValue(MetricMultiplicativePrefix multiplicativePrefix)
+      => m_value / multiplicativePrefix.GetPrefixFactor();
 
     #region Overloaded operators
     public static explicit operator double(MetricMultiplicative v)
       => v.Value;
     public static explicit operator MetricMultiplicative(double v)
-      => new(v);
+      => new(v, MetricMultiplicativePrefix.None);
 
     public static bool operator <(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) < 0;
@@ -130,25 +120,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static MetricMultiplicative operator -(MetricMultiplicative v)
-      => new(-v.m_value);
+      => new(-v.m_value, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator +(MetricMultiplicative a, double b)
-      => new(a.m_value + b);
+      => new(a.m_value + b, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator +(MetricMultiplicative a, MetricMultiplicative b)
       => a + b.m_value;
     public static MetricMultiplicative operator /(MetricMultiplicative a, double b)
-      => new(a.m_value / b);
+      => new(a.m_value / b, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator /(MetricMultiplicative a, MetricMultiplicative b)
       => a / b.m_value;
     public static MetricMultiplicative operator *(MetricMultiplicative a, double b)
-      => new(a.m_value * b);
+      => new(a.m_value * b, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator *(MetricMultiplicative a, MetricMultiplicative b)
       => a * b.m_value;
     public static MetricMultiplicative operator %(MetricMultiplicative a, double b)
-      => new(a.m_value % b);
+      => new(a.m_value % b, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator %(MetricMultiplicative a, MetricMultiplicative b)
       => a % b.m_value;
     public static MetricMultiplicative operator -(MetricMultiplicative a, double b)
-      => new(a.m_value - b);
+      => new(a.m_value - b, MetricMultiplicativePrefix.None);
     public static MetricMultiplicative operator -(MetricMultiplicative a, MetricMultiplicative b)
       => a - b.m_value;
     #endregion Overloaded operators
@@ -210,7 +200,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToPrefixString()} }}";
+      => $"{GetType().Name} {{ Value = {ToPrefixString(MetricMultiplicativePrefix.None, null, false, false)} }}";
     #endregion Object overrides
   }
 }

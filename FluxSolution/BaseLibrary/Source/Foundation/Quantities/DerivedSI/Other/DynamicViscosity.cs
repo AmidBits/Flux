@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static DynamicViscosity Create(this DynamicViscosityUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this DynamicViscosityUnit unit)
       => unit switch
       {

@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricalConductance Create(this ElectricalConductanceUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this ElectricalConductanceUnit unit)
       => unit switch
       {

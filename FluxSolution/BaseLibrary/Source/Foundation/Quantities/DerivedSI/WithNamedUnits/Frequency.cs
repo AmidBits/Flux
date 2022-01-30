@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Frequency Create(this FrequencyUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this FrequencyUnit unit, bool useUnicodeIfAvailable = false)
       => unit switch
       {

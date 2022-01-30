@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Torque Create(this TorqueUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this TorqueUnit unit)
       => unit switch
       {

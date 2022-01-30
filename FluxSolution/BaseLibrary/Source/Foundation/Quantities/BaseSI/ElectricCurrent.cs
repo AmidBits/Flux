@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IValueSiBaseUnit<double>
+    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -36,6 +36,9 @@ namespace Flux
 
     public double Value
       => m_value;
+
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
 
     public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this TimeUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this TimeUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
         TimeUnit.Nanosecond => "ns",
         TimeUnit.Microsecond => "\u00B5s",
@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -69,8 +69,11 @@ namespace Flux
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_value);
 
-    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
+
+    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
     public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {

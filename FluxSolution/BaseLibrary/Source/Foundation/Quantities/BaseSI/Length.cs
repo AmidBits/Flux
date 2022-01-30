@@ -38,7 +38,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IValueSiBaseUnit<double>
+    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
   {
     public const LengthUnit DefaultUnit = LengthUnit.Meter;
 
@@ -64,7 +64,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public const LengthUnit UnprefixedUnit = LengthUnit.Meter;
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
 
     public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

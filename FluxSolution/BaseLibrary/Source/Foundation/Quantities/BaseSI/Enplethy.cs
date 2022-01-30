@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IValueSiBaseUnit<double>
   {
     public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 

@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static CatalyticActivity Create(this CatalyticActivityUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this CatalyticActivityUnit unit)
       => unit switch
       {

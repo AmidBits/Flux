@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static SolidAngle Create(this SolidAngleUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this SolidAngleUnit unit)
       => unit switch
       {

@@ -2,8 +2,6 @@
 {
   public static partial class ExtensionMethods
   {
-    public static Angle Create(this AngleUnit unit, double value)
-      => new(value, unit);
     public static string GetUnitSymbol(this AngleUnit unit)
       => unit switch
       {
