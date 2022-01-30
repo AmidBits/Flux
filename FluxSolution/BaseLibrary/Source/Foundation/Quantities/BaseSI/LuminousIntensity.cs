@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static LuminousIntensity Create(this LuminousIntensityUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this LuminousIntensityUnit unit)
-      => unit switch
+    public static string GetUnitString(this LuminousIntensityUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         LuminousIntensityUnit.Candela => "cd",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -37,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
       => unit switch
       {

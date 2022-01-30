@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Temperature Create(this TemperatureUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this TemperatureUnit unit, bool useUnicodeIfAvailable = false)
-      => unit switch
+    public static string GetUnitString(this TemperatureUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         TemperatureUnit.Celsius => useUnicodeIfAvailable ? "\u2103" : $"{Angle.DegreeSymbol}C",
         TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? "\u2109" : $"{Angle.DegreeSymbol}F",
@@ -62,7 +60,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {

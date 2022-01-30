@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Time Create(this TimeUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this TimeUnit unit)
-      => unit switch
+    public static string GetUnitString(this TimeUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         TimeUnit.Nanosecond => "ns",
         TimeUnit.Microsecond => "\u00B5s",
@@ -72,7 +70,7 @@ namespace Flux
       => System.TimeSpan.FromSeconds(m_value);
 
     public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {

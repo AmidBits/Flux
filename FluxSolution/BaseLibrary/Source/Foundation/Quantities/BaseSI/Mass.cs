@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Mass Create(this MassUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this MassUnit unit)
-      => unit switch
+    public static string GetUnitString(this MassUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         MassUnit.Milligram => "mg",
         MassUnit.Gram => "g",
@@ -30,7 +28,7 @@ namespace Flux
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, IValueSiBaseUnit<double>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -54,8 +52,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(MassUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+    public string ToUnitString(MassUnit unit = DefaultUnit, string? valueFormat = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
     public double ToUnitValue(MassUnit unit = DefaultUnit)
       => unit switch
       {

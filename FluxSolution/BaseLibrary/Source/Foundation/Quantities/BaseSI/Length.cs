@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Length Create(this LengthUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this LengthUnit unit)
-      => unit switch
+    public static string GetUnitString(this LengthUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         LengthUnit.Millimeter => "mm",
         LengthUnit.Centimeter => "cm",
@@ -40,7 +38,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IValueSiBaseUnit<double>, IValueGeneralizedUnit<double>
+    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IValueSiBaseUnit<double>
   {
     public const LengthUnit DefaultUnit = LengthUnit.Meter;
 
@@ -66,8 +64,10 @@ namespace Flux
     public double Value
       => m_value;
 
+    public const LengthUnit UnprefixedUnit = LengthUnit.Meter;
+
     public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(LengthUnit unit = DefaultUnit)
       => unit switch
       {

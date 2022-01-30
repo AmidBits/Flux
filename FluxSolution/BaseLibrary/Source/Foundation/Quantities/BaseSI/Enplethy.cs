@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Enplethy Create(this EnplethyUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this EnplethyUnit unit)
-      => unit switch
+    public static string GetUnitString(this EnplethyUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         EnplethyUnit.Mole => "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -41,7 +39,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(EnplethyUnit unit = DefaultUnit)
       => unit switch
       {

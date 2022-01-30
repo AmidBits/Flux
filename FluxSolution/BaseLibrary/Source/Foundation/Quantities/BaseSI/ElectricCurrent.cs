@@ -2,20 +2,19 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static ElectricCurrent Create(this ElectricCurrentUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this ElectricCurrentUnit unit)
-      => unit switch
+    public static string GetUnitString(this ElectricCurrentUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
+      => useNameInstead ? unit.ToString() : unit switch
       {
         ElectricCurrentUnit.Ampere => "A",
+        ElectricCurrentUnit.Milliampere => "mA",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum ElectricCurrentUnit
   {
-    Milliampere,
     Ampere,
+    Milliampere,
   }
 
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
@@ -30,8 +29,8 @@ namespace Flux
     public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        ElectricCurrentUnit.Milliampere => value / 1000,
         ElectricCurrentUnit.Ampere => value,
+        ElectricCurrentUnit.Milliampere => value / 1000,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -39,7 +38,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
       => unit switch
       {

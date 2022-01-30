@@ -2,53 +2,35 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitName(this MetricMultiplicativeUnit unit)
-      => unit == MetricMultiplicativeUnit.None ? string.Empty : unit.ToString();
-    public static string GetUnitSymbol(this MetricMultiplicativeUnit unit)
-      => unit switch
+    public static string GetPrefixString(this MetricMultiplicativePrefix source, bool useNameInsteadOfSymbol, bool useUnicodeIfAvailable)
+      => useNameInsteadOfSymbol ? source.ToString() : source switch
       {
-        MetricMultiplicativeUnit.Yotta => "Y",
-        MetricMultiplicativeUnit.Zetta => "Z",
-        MetricMultiplicativeUnit.Exa => "E",
-        MetricMultiplicativeUnit.Peta => "P",
-        MetricMultiplicativeUnit.Tera => "T",
-        MetricMultiplicativeUnit.Giga => "G",
-        MetricMultiplicativeUnit.Mega => "M",
-        MetricMultiplicativeUnit.Kilo => "k",
-        MetricMultiplicativeUnit.Hecto => "h",
-        MetricMultiplicativeUnit.Deca => "da",
-        MetricMultiplicativeUnit.None => string.Empty,
-        MetricMultiplicativeUnit.Deci => "d",
-        MetricMultiplicativeUnit.Centi => "c",
-        MetricMultiplicativeUnit.Milli => "m",
-        MetricMultiplicativeUnit.Micro => "\u03bc",
-        MetricMultiplicativeUnit.Nano => "n",
-        MetricMultiplicativeUnit.Pico => "p",
-        MetricMultiplicativeUnit.Femto => "f",
-        MetricMultiplicativeUnit.Atto => "a",
-        MetricMultiplicativeUnit.Zepto => "z",
-        MetricMultiplicativeUnit.Yocto => "y",
+        MetricMultiplicativePrefix.Yotta => "Y",
+        MetricMultiplicativePrefix.Zetta => "Z",
+        MetricMultiplicativePrefix.Exa => "E",
+        MetricMultiplicativePrefix.Peta => "P",
+        MetricMultiplicativePrefix.Tera => "T",
+        MetricMultiplicativePrefix.Giga => "G",
+        MetricMultiplicativePrefix.Mega => "M",
+        MetricMultiplicativePrefix.Kilo => "k",
+        MetricMultiplicativePrefix.Hecto => "h",
+        MetricMultiplicativePrefix.Deca => "da",
+        MetricMultiplicativePrefix.None => string.Empty,
+        MetricMultiplicativePrefix.Deci => "d",
+        MetricMultiplicativePrefix.Centi => "c",
+        MetricMultiplicativePrefix.Milli => "m",
+        MetricMultiplicativePrefix.Micro => "\u03bc",
+        MetricMultiplicativePrefix.Nano => "n",
+        MetricMultiplicativePrefix.Pico => "p",
+        MetricMultiplicativePrefix.Femto => "f",
+        MetricMultiplicativePrefix.Atto => "a",
+        MetricMultiplicativePrefix.Zepto => "z",
+        MetricMultiplicativePrefix.Yocto => "y",
         _ => string.Empty,
       };
-
-    public static PartsPerNotationUnit ToPartsPerNotationUnit(this MetricMultiplicativeUnit unit)
-    {
-      return unit switch
-      {
-        MetricMultiplicativeUnit.Hecto => PartsPerNotationUnit.Hundred,
-        MetricMultiplicativeUnit.Kilo => PartsPerNotationUnit.Thousand,
-        MetricMultiplicativeUnit.Mega => PartsPerNotationUnit.Million,
-        MetricMultiplicativeUnit.Giga => PartsPerNotationUnit.Billion,
-        MetricMultiplicativeUnit.Tera => PartsPerNotationUnit.Trillion,
-        MetricMultiplicativeUnit.Peta => PartsPerNotationUnit.Quadrillion,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-    }
-    public static string ToString<TValue>(this MetricMultiplicativeUnit unitPrefix, string unitString, TValue value)
-     => $"{value} {unitPrefix}{unitString}";
   }
 
-  public enum MetricMultiplicativeUnit
+  public enum MetricMultiplicativePrefix
   {
     /// <summary>A.k.a. septillion/quadrillion.</summary>
     Yotta = 24,
@@ -99,30 +81,39 @@ namespace Flux
   public struct MetricMultiplicative
     : System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, IValueGeneralizedUnit<double>
   {
-    public const MetricMultiplicativeUnit DefaultUnit = MetricMultiplicativeUnit.None;
+    public const MetricMultiplicativePrefix DefaultPrefix = MetricMultiplicativePrefix.None;
 
     private readonly double m_value;
 
     /// <summary>Creates a new instance of this type.</summary>
-    /// <param name="value">The parts in parts per notation.</param>
-    /// <param name="unit">The notation in parts per notation.</param>
-    public MetricMultiplicative(double value, MetricMultiplicativeUnit unit = DefaultUnit)
-      => m_value = value * System.Math.Pow(10, (double)unit);
+    /// <param name="value">The value to represent.</param>
+    /// <param name="prefix">The metric multiplicative prefix of the specified value.</param>
+    public MetricMultiplicative(double value, MetricMultiplicativePrefix prefix = DefaultPrefix)
+      => m_value = value * System.Math.Pow(10, (double)prefix);
 
     public double Value
       => m_value;
 
-    public string ToUnitString(MetricMultiplicativeUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = true)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToUnitValue(unit))} {(useNameInsteadOfSymbol ? unit.GetUnitName().ToLower() : unit.GetUnitSymbol())}";
-    public double ToUnitValue(MetricMultiplicativeUnit unit = DefaultUnit)
-      => m_value / System.Math.Pow(10, (double)unit);
+    public string ToPrefixString(MetricMultiplicativePrefix prefix = DefaultPrefix, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToPrefixValue(prefix))} {prefix.GetPrefixString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public double ToPrefixValue(MetricMultiplicativePrefix prefix = DefaultPrefix)
+      => m_value / System.Math.Pow(10, (double)prefix);
 
     #region Static methods
+    public static string ToMetricPrefixedString<T>(IMetricPrefixFormattable<T> value, MetricMultiplicativePrefix prefix, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+    {
+      var mus = value.GetMetricUnprefixedString(useNameInsteadOfSymbol, useUnicodeIfAvailable);
+      var mm = value.ToMetricMultiplicative();
+
+      return $"{mm.ToPrefixString(prefix, null, useNameInsteadOfSymbol, useUnicodeIfAvailable)}{mus}";
+    }
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(MetricMultiplicative v)
       => v.Value;
+    public static explicit operator MetricMultiplicative(double v)
+      => new(v);
 
     public static bool operator <(MetricMultiplicative a, MetricMultiplicative b)
       => a.CompareTo(b) < 0;
@@ -168,23 +159,44 @@ namespace Flux
       => m_value.CompareTo(other.m_value);
 
     #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    public System.TypeCode GetTypeCode()
+      => System.TypeCode.Object;
+    public bool ToBoolean(System.IFormatProvider? provider)
+      => Value != 0;
+    public byte ToByte(System.IFormatProvider? provider)
+      => System.Convert.ToByte(Value);
+    public char ToChar(System.IFormatProvider? provider)
+      => System.Convert.ToChar(Value);
+    public System.DateTime ToDateTime(System.IFormatProvider? provider)
+      => System.Convert.ToDateTime(Value);
+    public decimal ToDecimal(System.IFormatProvider? provider)
+      => System.Convert.ToDecimal(Value);
+    public double ToDouble(System.IFormatProvider? provider)
+      => System.Convert.ToDouble(Value);
+    public short ToInt16(System.IFormatProvider? provider)
+      => System.Convert.ToInt16(Value);
+    public int ToInt32(System.IFormatProvider? provider)
+      => System.Convert.ToInt32(Value);
+    public long ToInt64(System.IFormatProvider? provider)
+      => System.Convert.ToInt64(Value);
+    [System.CLSCompliant(false)]
+    public sbyte ToSByte(System.IFormatProvider? provider)
+      => System.Convert.ToSByte(Value);
+    public float ToSingle(System.IFormatProvider? provider)
+      => System.Convert.ToSingle(Value);
+    public string ToString(System.IFormatProvider? provider)
+      => string.Format(provider, "{0}", Value);
+    public object ToType(System.Type conversionType, System.IFormatProvider? provider)
+      => System.Convert.ChangeType(Value, conversionType, provider);
+    [System.CLSCompliant(false)]
+    public ushort ToUInt16(System.IFormatProvider? provider)
+      => System.Convert.ToUInt16(Value);
+    [System.CLSCompliant(false)]
+    public uint ToUInt32(System.IFormatProvider? provider)
+      => System.Convert.ToUInt32(Value);
+    [System.CLSCompliant(false)]
+    public ulong ToUInt64(System.IFormatProvider? provider)
+      => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
     // IEquatable
@@ -198,7 +210,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+      => $"{GetType().Name} {{ Value = {ToPrefixString()} }}";
     #endregion Object overrides
   }
 }
