@@ -2,7 +2,7 @@ namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
   public struct Argb
-    : System.IEquatable<Argb>, IHtmlColorStringable
+    : System.IEquatable<Argb>, IHtmlColorFormattable
   {
     public static readonly Argb Empty;
 

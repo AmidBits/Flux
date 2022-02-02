@@ -2,7 +2,7 @@ namespace Flux.Colors
 {
   /// <summary>Hsla is the same as Hsl with the addition of an alpha channel.</summary>
   public struct Ahsl
-    : System.IEquatable<Ahsl>, IHtmlColorStringable
+    : System.IEquatable<Ahsl>, IHtmlColorFormattable
   {
     public static readonly Ahsl Empty;
 

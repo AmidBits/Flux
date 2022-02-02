@@ -1,7 +1,7 @@
 namespace Flux.Colors
 {
   public struct Rgb
-    : System.IEquatable<Rgb>, IHtmlColorStringable
+    : System.IEquatable<Rgb>, IHtmlColorFormattable
   {
     public static readonly Rgb Empty;
 

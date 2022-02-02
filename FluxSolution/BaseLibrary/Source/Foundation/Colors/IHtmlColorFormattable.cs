@@ -1,6 +1,6 @@
 ﻿namespace Flux.Colors
 {
-  internal interface IHtmlColorStringable
+  internal interface IHtmlColorFormattable
   {
     string ToHtmlColorString();
   }

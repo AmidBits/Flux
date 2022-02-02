@@ -11,7 +11,7 @@ namespace Flux
     public static System.Collections.Generic.IReadOnlyList<int> ByteBitLength
       => m_byteBitLength ??= System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), n => BitLength(n)));
 
-    /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
+    /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     public static int BitLength(System.Numerics.BigInteger value)
       => value < 0
