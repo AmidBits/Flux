@@ -328,6 +328,15 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public Angle ToRotationAngleEx()
       => (Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector128"/> with the cartesian values as vector elements [X, Y].</summary>
+    public System.Runtime.Intrinsics.Vector128<double> ToVector128()
+      => System.Runtime.Intrinsics.Vector128.Create(m_x, m_y);
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, <paramref name="z"/>, <paramref name="w"/>].</summary>
+    public System.Runtime.Intrinsics.Vector256<double> ToVector256(double z, double w)
+      => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, z, w);
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, X, Y], i.e. the values are duplicated.</summary>
+    public System.Runtime.Intrinsics.Vector256<double> ToVector256()
+      => ToVector256(m_x, m_y);
 
     #region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.

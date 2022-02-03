@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Intrinsics;
 
 using Flux;
 
@@ -19,6 +20,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var cc2 = new Flux.CartesianCoordinate2(2, 3).ToVector256(5,7);
+      var cc2ha = cc2.AddHorizontal3D().GetElement(0);
+      System.Console.WriteLine($"{cc2ha:N5}");
     }
 
     private static void Main(string[] args)
