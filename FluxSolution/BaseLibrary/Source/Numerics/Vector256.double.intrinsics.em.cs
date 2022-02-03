@@ -15,12 +15,12 @@ namespace Flux
     internal static Vector256<double> MaskNotSignXYZW
       => Vector256.Create(~long.MaxValue, ~long.MaxValue, ~long.MaxValue, ~long.MaxValue).AsDouble();
     internal static Vector256<double> MaskW
-      => Vector256.Create(-1d, -1d, -1d, +0d);
+      => Vector256.Create(-1, -1, -1, +0).AsDouble();
     internal static Vector256<double> MaskZW
-      => Vector256.Create(-1d, -1d, +0d, +0d);
+      => Vector256.Create(-1, -1, +0, +0).AsDouble();
 
     public static Vector256<double> One
-      => Vector256.Create(1d);
+      => Vector256.Create(1).AsDouble();
 
     internal static Vector256<double> OneOverPI2
       => Vector256.Create(1 / Maths.PiOver2);
@@ -43,18 +43,18 @@ namespace Flux
     public static Vector256<double> AddHorizontal2D(this in Vector256<double> source)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
-        return AddHorizontal4D(Mask2D(source));
+        return AddHorizontal(Mask2D(source));
 
       return Vector256.Create(source.GetElement(0) + source.GetElement(1));
     }
     public static Vector256<double> AddHorizontal3D(this in Vector256<double> source)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
-        return AddHorizontal4D(Mask3D(source));
+        return AddHorizontal(Mask3D(source));
 
       return Vector256.Create(source.GetElement(0) + source.GetElement(1) + source.GetElement(2));
     }
-    public static Vector256<double> AddHorizontal4D(this in Vector256<double> source)
+    public static Vector256<double> AddHorizontal(this in Vector256<double> source)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
       {
@@ -207,11 +207,11 @@ namespace Flux
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector256<double> ManhattanLength2D(this in Vector256<double> source, double edgeLength = 1)
-      => AddHorizontal2D(Divide(Abs(source), edgeLength));
+      => AddHorizontal(Divide(Abs(source), edgeLength));
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector256<double> ManhattanLength3D(this in Vector256<double> source, double edgeLength = 1)
-      => AddHorizontal3D(Divide(Abs(source), edgeLength));
+      => AddHorizontal(Divide(Abs(source), edgeLength));
     //=> v2.m_v256.Subtract(v1.m_v256).Abs().Divide(stepSize).AddHorizontal3D().GetElement(0);
     /// <summary>Returns a new vector with the first two components of the vector and the last two components set to zero: Z = 0 and W = 0.</summary>
     public static Vector256<double> Mask2D(this in Vector256<double> source)

@@ -284,6 +284,12 @@ namespace Flux
       var x2y2 = m_x * m_x + m_y * m_y;
       return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
     }
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>
+    public System.Runtime.Intrinsics.Vector256<double> ToVector256(double w)
+      => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, m_z, w);
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, 0].</summary>
+    public System.Runtime.Intrinsics.Vector256<double> ToVector256()
+      => ToVector256(0);
 
     #region Static methods
     /// <summary>(3D) Calculate the angle between the source vector and the specified target vector.
