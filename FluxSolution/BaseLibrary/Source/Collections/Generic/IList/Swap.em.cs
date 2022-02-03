@@ -2,6 +2,13 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    private static void SwapImpl<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
+    {
+      var tmp = source[indexA];
+      source[indexA] = source[indexB];
+      source[indexB] = tmp;
+    }
+
     /// <summary>Swap two elements by the specified indices.</summary>
     public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
     {
@@ -14,12 +21,9 @@ namespace Flux
       else if (indexB < 0 || indexB >= source.Count)
         throw new System.ArgumentOutOfRangeException(nameof(indexB));
       else if (indexA != indexB)
-      {
-        var tmp = source[indexA];
-        source[indexA] = source[indexB];
-        source[indexB] = tmp;
-      }
+        SwapImpl(source, indexA, indexB);
     }
+
     public static void SwapFirstWith<T>(this System.Collections.Generic.IList<T> source, int index)
       => Swap(source, 0, index);
 

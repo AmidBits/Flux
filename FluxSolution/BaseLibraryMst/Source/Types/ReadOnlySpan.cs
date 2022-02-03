@@ -27,7 +27,7 @@ namespace Types
 
       var expectedIndexMinimum = 11;
       var expectedIndexMaximum = 7;
-      var (actualIndexMinimum, actualIndexMaximum) = span.Extrema(n => n);
+      var (actualIndexMinimum, actualIndexMaximum) = span.GetExtremum(n => n);
 
       Assert.AreEqual(expectedIndexMinimum, actualIndexMinimum);
       Assert.AreEqual(expectedIndexMaximum, actualIndexMaximum);
@@ -40,7 +40,7 @@ namespace Types
 
       var expectedIndexMinimum = 6;
       var expectedIndexMaximum = 8;
-      var (actualIndexMinimum, actualIndexMaximum) = span.ExtremaClosestTo(60, n => n);
+      var (actualIndexMinimum, actualIndexMaximum) = span.GetInfimumAndSupremum(60, n => n);
 
       Assert.AreEqual(expectedIndexMinimum, actualIndexMinimum);
       Assert.AreEqual(expectedIndexMaximum, actualIndexMaximum);
