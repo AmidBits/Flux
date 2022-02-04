@@ -100,7 +100,7 @@
       => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
     public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
     public double ToUnitValue(AngleUnit unit = DefaultUnit)
       => unit switch
       {
