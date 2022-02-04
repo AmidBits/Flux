@@ -27,29 +27,6 @@ namespace ConsoleApp
       System.Console.WriteLine($"{cp1}");
       System.Console.WriteLine($"{cp2}");
 
-      var x = 0.7854;
-      var y = 0.1;
-      var z = 0;
-
-
-      var aa = new Flux.AxisAngle(1, 0, 0, Angle.ConvertDegreeToRadian(90));
-      var aaq = aa.ToQuaternion();
-      var aaqn = aaq.Normalized();
-      var aaea = aa.ToEulerAngles();
-      
-      var ea = aaq.ToEulerAngles();
-      var eaq = ea.ToQuaternion();
-      var eaaa = ea.ToAxisAngle();
-
-      var acos = System.Math.Acos(1);
-
-      var q1 = new Flux.Numerics.Quaternion(-4, 4, 4, 1);
-      var l1 = q1.Length();
-      var q2 = Flux.Numerics.Quaternion.Normalize(q1);
-
-      var dbl = 25d / double.Epsilon;
-
-      var q3 = q1 * q1.Inverse();
     }
 
     private static void Main(string[] args)

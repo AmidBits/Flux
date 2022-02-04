@@ -78,7 +78,7 @@ namespace Flux
 
       return new(x, y, z, angle);
     }
-    public Numerics.Quaternion ToQuaternion()
+    public Quaternion ToQuaternion()
     {
       var c1 = System.Math.Cos(m_h / 2);
       var s1 = System.Math.Sin(m_h / 2);

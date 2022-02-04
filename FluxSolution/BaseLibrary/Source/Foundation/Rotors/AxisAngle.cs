@@ -55,7 +55,7 @@ namespace Flux
 
       return new(heading, attitude, bank);
     }
-    public Numerics.Quaternion ToQuaternion()
+    public Quaternion ToQuaternion()
     {
       var h = m_angle / 2;
       var s = System.Math.Sin(h);

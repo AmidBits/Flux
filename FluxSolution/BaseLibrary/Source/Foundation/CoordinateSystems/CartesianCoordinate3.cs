@@ -279,6 +279,10 @@ namespace Flux
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
     public Point3 ToPoint3()
       => ToPoint3(System.MidpointRounding.ToEven);
+    /// <summary>Returns a quaternion from two vectors.</summary>
+    /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
+    public Quaternion ToQuaternion(CartesianCoordinate3 rotatingTo)
+      => Quaternion.FromTwoVectors(this, rotatingTo);
     public SphericalCoordinate ToSphericalCoordinate()
     {
       var x2y2 = m_x * m_x + m_y * m_y;
