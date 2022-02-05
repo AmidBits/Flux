@@ -30,7 +30,7 @@ namespace Flux
       => m_y;
     public double Z
       => m_z;
-    public double A
+    public double Angle
       => m_angle;
 
     public Angle ToAngle()

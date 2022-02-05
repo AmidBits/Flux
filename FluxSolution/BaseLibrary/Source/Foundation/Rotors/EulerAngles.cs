@@ -65,16 +65,16 @@ namespace Flux
 
       var angle = 2 * System.Math.Acos(w);
 
-      var norm = x * x + y * y + z * z;
+      var square = x * x + y * y + z * z;
 
-      if (norm < 0.001) // When all euler angles are zero angle = 0, so we can set axis to anything to avoid divide by zero.
+      if (square < 0.001) // If all euler angles are zero angles, i.e. = 0, so we can set the axis to anything to avoid divide by zero.
         return new(1, 0, 0, angle);
 
-      norm = System.Math.Sqrt(norm);
+      square = System.Math.Sqrt(square);
 
-      x /= norm;
-      y /= norm;
-      z /= norm;
+      x /= square;
+      y /= square;
+      z /= square;
 
       return new(x, y, z, angle);
     }
@@ -86,12 +86,15 @@ namespace Flux
       var s2 = System.Math.Sin(m_a / 2);
       var c3 = System.Math.Cos(m_b / 2);
       var s3 = System.Math.Sin(m_b / 2);
+
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
+
       var x = c1c2 * s3 + s1s2 * c3;
       var y = s1 * c2 * c3 + c1 * s2 * s3;
       var z = c1 * s2 * c3 - s1 * c2 * s3;
       var w = c1c2 * c3 - s1s2 * s3;
+
       return new(x, y, z, w);
     }
 

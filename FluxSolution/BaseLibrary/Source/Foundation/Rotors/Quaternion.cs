@@ -63,14 +63,14 @@ namespace Flux
     {
       var n = Normalized(); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
 
-      var a = 2 * System.Math.Acos(n.m_w);
+      var angle = 2 * System.Math.Acos(n.m_w);
 
       var s = System.Math.Sqrt(1 - n.m_w * n.m_w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
       if (s < 0.001) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
-        return new(1, 0, 0, a); // If it is important that axis is normalised then replace with x=1; y=z=0;
+        return new(1, 0, 0, angle); // If it is important that axis is normalised then replace with x=1; y=z=0;
 
-      return new(n.m_x / s, n.m_y / s, n.m_z / s, a);
+      return new(n.m_x / s, n.m_y / s, n.m_z / s, angle);
     }
     public EulerAngles ToEulerAngles() // yaw (Z), pitch (Y), roll (X)
     {
