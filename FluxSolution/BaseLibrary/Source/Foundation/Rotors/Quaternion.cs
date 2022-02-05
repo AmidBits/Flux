@@ -7,7 +7,7 @@ namespace Flux
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion Identity
-      => new Quaternion(0, 0, 0, 1);
+      => new(0, 0, 0, 1);
 
     public double m_x;
     public double m_y;
@@ -97,12 +97,8 @@ namespace Flux
 
     #region Static methods
     public static Quaternion CreateNormalized(double x, double y, double z, double w)
-      => Multiply(x, y, z, w, 1 / LengthSquared(x, y, z, w));
+     => Multiply(x, y, z, w, 1 / LengthSquared(x, y, z, w));
 
-    /// <summary>Concatenates two Quaternions; the result represents the value1 rotation followed by the value2 rotation.</summary>
-    /// <remarks>Concatenate rotation is actually q2 * q1 instead of q1 * q2.</remarks>
-    public static Quaternion Concatenate(Quaternion q1, Quaternion q2)
-      => Multiply(q2, q1);
     /// <summary>Creates a new Quaternion from the given yaw, pitch, and roll, in radians.</summary>
     /// <param name="yaw">The yaw angle, in radians, around the Y-axis.</param>
     /// <param name="pitch">The pitch angle, in radians, around the X-axis.</param>
@@ -175,15 +171,6 @@ namespace Flux
 
     //  return q;
     //}
-    /// <summary>Divides a Quaternion by another Quaternion.</summary>
-    public static Quaternion Divide(Quaternion q1, Quaternion q2)
-      => q1 * q2.Inverse();
-    //public static Quaternion Divide(Quaternion value1, Quaternion value2)
-    //{
-    //  var invNorm = 1 / value2.LengthSquared();
-
-    //  return Multiply(value1.X, value1.Y, value1.Z, value1.W, -value2.X * invNorm, -value2.Y * invNorm, -value2.Z * invNorm, value2.W * invNorm);
-    //}
     /// <summary>Calculates the dot product of two Quaternions.</summary>
     public static double DotProduct(Quaternion q1, Quaternion q2)
       => q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z + q1.m_w * q2.m_w;
@@ -211,53 +198,32 @@ namespace Flux
 
       return CreateNormalized(w.X, w.Y, w.Z, real_part);
     }
-    /// <summary>Calculates the length of the Quaternion.</summary>
-    public static double Length(double x, double y, double z, double w)
-      => System.Math.Sqrt(LengthSquared(x, y, z, w));
     /// <summary>Calculates the length squared of the Quaternion. This operation is cheaper than Length().</summary>
-    public static double LengthSquared(double x, double y, double z, double w)
+    private static double LengthSquared(double x, double y, double z, double w)
       => x * x + y * y + z * z + w * w;
     /// <summary>Linearly interpolates between two quaternions.</summary>
-    /// <param name="amount">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Quaternion Lerp(Quaternion q1, Quaternion q2, double amount)
+    /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
+    public static Quaternion Lerp(Quaternion q1, Quaternion q2, double mu)
     {
-      double t = amount;
-      double t1 = 1 - t;
+      var um = 1 - mu;
 
-      Quaternion r = new Quaternion();
-
-      double dot = q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z + q1.m_w * q2.m_w;
-
-      if (dot >= 0)
-      {
-        r.m_x = t1 * q1.m_x + t * q2.m_x;
-        r.m_y = t1 * q1.m_y + t * q2.m_y;
-        r.m_z = t1 * q1.m_z + t * q2.m_z;
-        r.m_w = t1 * q1.m_w + t * q2.m_w;
-      }
+      if (DotProduct(q1, q2) >= 0)
+        return new Quaternion(
+          um * q1.m_x + mu * q2.m_x,
+          um * q1.m_y + mu * q2.m_y,
+          um * q1.m_z + mu * q2.m_z,
+          um * q1.m_w + mu * q2.m_w
+        ).Normalized();
       else
-      {
-        r.m_x = t1 * q1.m_x - t * q2.m_x;
-        r.m_y = t1 * q1.m_y - t * q2.m_y;
-        r.m_z = t1 * q1.m_z - t * q2.m_z;
-        r.m_w = t1 * q1.m_w - t * q2.m_w;
-      }
-
-      return Normalize(r);
+        return new Quaternion(
+          um * q1.m_x - mu * q2.m_x,
+          um * q1.m_y - mu * q2.m_y,
+          um * q1.m_z - mu * q2.m_z,
+          um * q1.m_w - mu * q2.m_w
+        ).Normalized();
     }
-    /// <summary>Multiplies two sets of Quaternion components as if they were two Quaternions.</summary>
-    private static Quaternion Multiply(double q1x, double q1y, double q1z, double q1w, double q2x, double q2y, double q2z, double q2w)
-      => new(
-        q1x * q2w + q2x * q1w + (q1y * q2z - q1z * q2y),
-        q1y * q2w + q2y * q1w + (q1z * q2x - q1x * q2z),
-        q1z * q2w + q2z * q1w + (q1x * q2y - q1y * q2x),
-        q1w * q2w - (q1x * q2x + q1y * q2y + q1z * q2z)
-      );
-    /// <summary>Multiplies two Quaternions.</summary>
-    public static Quaternion Multiply(Quaternion q1, Quaternion q2)
-      => Multiply(q1.m_x, q1.m_y, q1.m_z, q1.m_w, q2.m_x, q2.m_y, q2.m_z, q2.m_w);
     /// <summary>Multiplies a set of Quaternion components by a scalar value.</summary>
-    public static Quaternion Multiply(double qx, double qy, double qz, double qw, double scalar)
+    private static Quaternion Multiply(double qx, double qy, double qz, double qw, double scalar)
       => new(qx * scalar, qy * scalar, qz * scalar, qw * scalar);
     /// <summary>Flips the sign of each component of the quaternion.</summary>
     public static Quaternion Negate(Quaternion q)
@@ -265,52 +231,46 @@ namespace Flux
     /// <summary>Divides each component of the Quaternion by the length of the Quaternion.</summary>
     public static Quaternion Normalize(Quaternion q)
       => Multiply(q.m_x, q.m_y, q.m_z, q.m_w, 1 / q.LengthSquared());
-    /// <summary>Adds two Quaternions element-by-element.</summary>
-    public static Quaternion Add(Quaternion q1, Quaternion q2)
-      => new Quaternion(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
     /// <summary>Interpolates between two quaternions, using spherical linear interpolation.</summary>
-    /// <param name="amount">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Quaternion Slerp(Quaternion q1, Quaternion q2, double amount)
+    /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
+    public static Quaternion Slerp(Quaternion q1, Quaternion q2, double mu)
     {
-      const double epsilon = 1e-6f;
-
-      var t = amount;
-
-      var cosOmega = q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z + q1.m_w * q2.m_w;
+      var dot = q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z + q1.m_w * q2.m_w;
 
       var flip = false;
 
-      if (cosOmega < 0)
+      if (dot < 0)
       {
         flip = true;
-        cosOmega = -cosOmega;
+        dot = -dot;
       }
 
       double s1, s2;
 
-      if (cosOmega > (1 - epsilon))
+      if (dot > (1 - 1E-6))
       {
         // Too close, do straight linear interpolation.
-        s1 = 1 - t;
-        s2 = flip ? -t : t;
+
+        s1 = 1 - mu;
+        s2 = flip ? -mu : mu;
       }
       else
       {
-        var omega = System.Math.Acos(cosOmega);
-        var invSinOmega = 1 / System.Math.Sin(omega);
+        var angle = System.Math.Acos(dot);
+        var invSinAngle = 1 / System.Math.Sin(angle);
 
-        s1 = System.Math.Sin((1 - t) * omega) * invSinOmega;
-        s2 = flip ? -System.Math.Sin(t * omega) * invSinOmega : System.Math.Sin(t * omega) * invSinOmega;
+        s1 = System.Math.Sin((1 - mu) * angle) * invSinAngle;
+        s2 = flip ? -System.Math.Sin(mu * angle) * invSinAngle : System.Math.Sin(mu * angle) * invSinAngle;
       }
 
-      return new Quaternion(s1 * q1.m_x + s2 * q2.m_x, s1 * q1.m_y + s2 * q2.m_y, s1 * q1.m_z + s2 * q2.m_z, s1 * q1.m_w + s2 * q2.m_w);
+      return new(s1 * q1.m_x + s2 * q2.m_x, s1 * q1.m_y + s2 * q2.m_y, s1 * q1.m_z + s2 * q2.m_z, s1 * q1.m_w + s2 * q2.m_w);
     }
-    /// <summary>Subtracts one Quaternion from another.</summary>
-    public static Quaternion Subtract(Quaternion q1, Quaternion q2)
-      => new Quaternion(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
     #endregion Static methods
 
     #region Operator overloads
+    public static implicit operator Quaternion(double value)
+      => new(0, 0, 0, value);
+
     public static explicit operator Quaternion(System.ValueTuple<double, double, double, double> xyzw)
       => new(xyzw.Item1, xyzw.Item2, xyzw.Item3, xyzw.Item4);
 
@@ -332,12 +292,17 @@ namespace Flux
       => new(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
     /// <summary>Multiplies two Quaternions together.</summary>
     public static Quaternion operator *(Quaternion q1, Quaternion q2)
-      => Multiply(q1.m_x, q1.m_y, q1.m_z, q1.m_w, q2.m_x, q2.m_y, q2.m_z, q2.m_w);
+      => new(
+        q1.m_x * q2.m_w + q2.m_x * q1.m_w + (q1.m_y * q2.m_z - q1.m_z * q2.m_y),
+        q1.m_y * q2.m_w + q2.m_y * q1.m_w + (q1.m_z * q2.m_x - q1.m_x * q2.m_z),
+        q1.m_z * q2.m_w + q2.m_z * q1.m_w + (q1.m_x * q2.m_y - q1.m_y * q2.m_x),
+        q1.m_w * q2.m_w - (q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z)
+      );
     public static Quaternion operator *(Quaternion q, double scalar)
-      => Multiply(q.m_x, q.m_y, q.m_z, q.m_w, scalar);
+      => new(q.m_x * scalar, q.m_y * scalar, q.m_z * scalar, q.m_w * scalar);
     /// <summary>Divides a Quaternion by another Quaternion.</summary>
     public static Quaternion operator /(Quaternion q1, Quaternion q2)
-      => Divide(q1, q2);
+      => q1 * q2.Inverse();
     #endregion Operator overloads
 
     #region Implemented interfaces
