@@ -3,13 +3,13 @@ namespace Flux.Midi
   public sealed class NoteOffMidiMessage
   {
     private int m_channel;
-    public int Channel { get => m_channel; set => m_channel = value >= 0 && value <= 15 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Channel { get => m_channel; set => m_channel = Protocol.Utility.Ensure4BitByte(value); }
 
     private int m_note;
-    public int Note { get => m_note; set => m_note = value >= 0 && value <= 127 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Note { get => m_note; set => m_note = Protocol.Utility.Ensure7BitByte(value); }
 
     private int m_velocity;
-    public int Velocity { get => m_velocity; set => m_velocity = value >= 0 && value <= 127 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Velocity { get => m_velocity; set => m_velocity = Protocol.Utility.Ensure7BitByte(value); }
 
     public NoteOffMidiMessage(int channel, int note, int velocity)
     {

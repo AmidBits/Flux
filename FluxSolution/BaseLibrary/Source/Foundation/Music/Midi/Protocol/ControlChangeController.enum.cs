@@ -1,7 +1,8 @@
 namespace Flux.Midi.Protocol
 {
-  public enum ControllerChangeNumber
+  public enum ControlChangeController
   {
+    #region ControllerNumbers
     BankSelectMsb = 0,
     ModulationWheelMsb = 1,
     BreathControllerMsb = 2,
@@ -58,14 +59,25 @@ namespace Flux.Midi.Protocol
     NrpnMsb = 99,
     RpnLsb = 100,
     RpnMsb = 101,
+    #endregion ControllerNumbers
 
+    #region ModeControl
+    /// <summary>Mode control: all sound off.</summary>
     AllSoundOff = 120,
+    /// <summary>Mode control: reset all controllers.</summary>
     ResetAllControllers = 121,
+    /// <summary>Mode control: local control.</summary>
     LocalControl = 122,
+    /// <summary>Mode control: all notes off.</summary>
     AllNotesOff = 123,
+    /// <summary>Mode control: omni mode off.</summary>
     OmniModeOff = 124,
+    /// <summary>Mode control: omni mode on.</summary>
     OmniModeOn = 125,
+    /// <summary>Mode control: mono mode on.</summary>
     MonoModeOn = 126,
+    /// <summary>Mode control: poly mode on.</summary>
     PolyModeOn = 127
+    #endregion ModeControl
   }
 }

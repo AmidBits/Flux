@@ -43,18 +43,18 @@ namespace Flux.Midi
       => new(m_rateType, m_hour, m_minute, m_second + System.Math.DivRem(m_frame + value, (int)m_rateType, out var reminder), reminder);
 
     public byte[] ToFullFrameBytes()
-      => Protocol.CommonMessage.MtcFullFrame((int)m_rateType, m_hour, m_minute, m_second, m_frame);
+      => Protocol.SystemCommon.MtcFullFrame((int)m_rateType, m_hour, m_minute, m_second, m_frame);
     public byte[] ToQuarterFrameBytes(int index)
       => index switch
       {
-        0 => Protocol.CommonMessage.MtcQuarterFrame(0x0, m_frame & 0xF),
-        1 => Protocol.CommonMessage.MtcQuarterFrame(0x1, m_frame >> 4),
-        2 => Protocol.CommonMessage.MtcQuarterFrame(0x2, m_second & 0xF),
-        3 => Protocol.CommonMessage.MtcQuarterFrame(0x3, m_second >> 4),
-        4 => Protocol.CommonMessage.MtcQuarterFrame(0x4, m_minute & 0xF),
-        5 => Protocol.CommonMessage.MtcQuarterFrame(0x5, m_minute >> 4),
-        6 => Protocol.CommonMessage.MtcQuarterFrame(0x6, m_hour & 0xF),
-        7 => Protocol.CommonMessage.MtcQuarterFrame(0x7, (int)m_rateType | m_hour >> 4),
+        0 => Protocol.SystemCommon.MtcQuarterFrame(0x0, m_frame & 0xF),
+        1 => Protocol.SystemCommon.MtcQuarterFrame(0x1, m_frame >> 4),
+        2 => Protocol.SystemCommon.MtcQuarterFrame(0x2, m_second & 0xF),
+        3 => Protocol.SystemCommon.MtcQuarterFrame(0x3, m_second >> 4),
+        4 => Protocol.SystemCommon.MtcQuarterFrame(0x4, m_minute & 0xF),
+        5 => Protocol.SystemCommon.MtcQuarterFrame(0x5, m_minute >> 4),
+        6 => Protocol.SystemCommon.MtcQuarterFrame(0x6, m_hour & 0xF),
+        7 => Protocol.SystemCommon.MtcQuarterFrame(0x7, (int)m_rateType | m_hour >> 4),
         _ => throw new System.ArgumentOutOfRangeException(nameof(index)),
       };
 
