@@ -12,6 +12,7 @@ namespace Flux
 
   public enum FrequencyUnit
   {
+    /// <summary>Hertz.</summary>
     Hertz,
   }
 

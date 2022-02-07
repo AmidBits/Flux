@@ -13,6 +13,7 @@ namespace Flux
 
   public enum MagneticFluxDensityUnit
   {
+    /// <summary>Tesla.</summary>
     Tesla,
     KilogramPerSquareSecond
   }

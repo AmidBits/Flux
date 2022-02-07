@@ -12,6 +12,7 @@ namespace Flux
 
   public enum EnergyUnit
   {
+    /// <summary>Joule.</summary>
     Joule,
     ElectronVolt,
   }

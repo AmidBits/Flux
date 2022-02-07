@@ -12,6 +12,7 @@ namespace Flux
 
   public enum CatalyticActivityUnit
   {
+    /// <summary>Katal = (mol/s).</summary>
     Katal,
   }
 

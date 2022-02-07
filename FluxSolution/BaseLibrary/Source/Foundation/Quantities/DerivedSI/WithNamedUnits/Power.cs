@@ -12,6 +12,7 @@ namespace Flux
 
   public enum PowerUnit
   {
+    /// <summary>Watt.</summary>
     Watt,
   }
 

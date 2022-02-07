@@ -12,6 +12,7 @@ namespace Flux
 
   public enum ElectricalConductanceUnit
   {
+    /// <summary>Siemens = (1/ohm).</summary>
     Siemens,
   }
 

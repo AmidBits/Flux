@@ -12,6 +12,7 @@ namespace Flux
 
   public enum InductanceUnit
   {
+    /// <summary>Henry.</summary>
     Henry,
   }
 

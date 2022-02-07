@@ -12,6 +12,7 @@ namespace Flux
 
   public enum CapacitanceUnit
   {
+    /// <summary>Farad.</summary>
     Farad,
   }
 

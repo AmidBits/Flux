@@ -12,6 +12,7 @@ namespace Flux
 
   public enum MagneticFluxUnit
   {
+    /// <summary>Weber.</summary>
     Weber,
   }
 

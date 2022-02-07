@@ -12,6 +12,7 @@ namespace Flux
 
   public enum SolidAngleUnit
   {
+    /// <summary>Steradian.</summary>
     Steradian,
   }
 

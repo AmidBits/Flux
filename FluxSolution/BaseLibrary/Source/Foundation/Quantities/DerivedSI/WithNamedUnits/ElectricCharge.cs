@@ -12,6 +12,7 @@ namespace Flux
 
   public enum ElectricChargeUnit
   {
+    /// <summary>Coulomb.</summary>
     Coulomb,
   }
 

@@ -19,6 +19,7 @@ namespace Flux
     Millibar,
     Bar,
     HectoPascal,
+    /// <summary>Pascal.</summary>
     Pascal,
     Psi,
   }

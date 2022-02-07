@@ -12,6 +12,7 @@ namespace Flux
 
   public enum ForceUnit
   {
+    /// <summary>Newton.</summary>
     Newton,
   }
 

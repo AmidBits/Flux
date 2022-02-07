@@ -12,6 +12,7 @@ namespace Flux
 
   public enum VoltageUnit
   {
+    /// <summary>Volt.</summary>
     Volt,
   }
 

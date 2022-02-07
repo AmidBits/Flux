@@ -12,6 +12,7 @@ namespace Flux
 
   public enum IlluminanceUnit
   {
+    /// <summary>Lux.</summary>
     Lux,
   }
 

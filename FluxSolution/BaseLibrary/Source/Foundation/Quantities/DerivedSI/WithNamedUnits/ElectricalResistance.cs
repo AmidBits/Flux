@@ -12,6 +12,7 @@ namespace Flux
 
   public enum ElectricalResistanceUnit
   {
+    /// <summary>Ohm.</summary>
     Ohm,
   }
 

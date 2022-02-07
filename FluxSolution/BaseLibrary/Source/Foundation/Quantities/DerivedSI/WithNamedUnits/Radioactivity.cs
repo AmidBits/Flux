@@ -12,6 +12,7 @@ namespace Flux
 
   public enum RadioactivityUnit
   {
+    /// <summary>Becquerel.</summary>
     Becquerel,
   }
 
