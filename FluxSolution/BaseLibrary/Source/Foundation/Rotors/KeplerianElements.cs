@@ -1,7 +1,30 @@
 namespace Flux
 {
-  /// <summary>Axis-angle 3D rotation.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
+  //public static partial class ExtensionMethods
+  //{
+
+  //  public System.Numerics.Matrix4x4 ToMatrix(this KeplerianElements source)
+  //  {
+  //    source.ToRotationMatrix(source.LongitudeOfAscendingNode, source.Inclination, source., out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+
+  //    return new(
+  //      (float)x1, (float)x2, (float)x3, 0f,
+  //      (float)y1, (float)y2, (float)y3, 0f,
+  //      (float)z1, (float)z2, (float)z3, 0f,
+  //      0f, 0f, 0f, 1f
+  //    );
+  //  }
+  //  public void RotationMatrixToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double longitudeOfAscendingNode, out double inclination, out double argumentOfPeriapsis)
+  //  {
+  //    longitudeOfAscendingNode = System.Math.Atan2(-x2, z1);
+  //    inclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
+  //    argumentOfPeriapsis = System.Math.Atan2(y3, x3);
+  //  }
+
+  //}
+
+  /// <summary>Kepler elements for computing orbits.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
   public struct KeplerianElements
     : System.IEquatable<KeplerianElements>
   {
@@ -40,6 +63,46 @@ namespace Flux
       => m_argumentOfPeriapsis;
     public double TrueAnomaly
       => m_trueAnomaly;
+
+    public System.Numerics.Matrix4x4 ToMatrix4x4()
+    {
+      ToRotationMatrix(m_longitudeOfAscendingNode, m_inclination, m_argumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+
+      return new System.Numerics.Matrix4x4(
+        (float)x1, (float)x2, (float)x3, 0f,
+        (float)y1, (float)y2, (float)y3, 0f,
+        (float)z1, (float)z2, (float)z3, 0f,
+        0f, 0f, 0f, 1f
+      );
+    }
+
+    public static void ToRotationMatrix(double longitudeOfAscendingNode, double inclination, double argumentOfPeriapsis, out double x1, out double x2, out double x3, out double y1, out double y2, out double y3, out double z1, out double z2, out double z3)
+    {
+      var co = System.Math.Cos(longitudeOfAscendingNode);
+      var so = System.Math.Sin(longitudeOfAscendingNode);
+      var ci = System.Math.Cos(inclination);
+      var si = System.Math.Sin(inclination);
+      var cw = System.Math.Cos(argumentOfPeriapsis);
+      var sw = System.Math.Sin(argumentOfPeriapsis);
+
+      x1 = co * cw - so * ci * sw;
+      x2 = so * cw + co * ci * sw;
+      x3 = si * sw;
+
+      y1 = -co * sw - so * ci * cw;
+      y2 = -so * sw + co * ci * cw;
+      y3 = si * cw;
+
+      z1 = si * so;
+      z2 = -si * co;
+      z3 = ci;
+    }
+    public static void ToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double longitudeOfAscendingNode, out double inclination, out double argumentOfPeriapsis)
+    {
+      longitudeOfAscendingNode = System.Math.Atan2(-x2, z1);
+      inclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
+      argumentOfPeriapsis = System.Math.Atan2(y3, x3);
+    }
 
     #region Overloaded operators
     public static bool operator ==(KeplerianElements a, KeplerianElements b)
