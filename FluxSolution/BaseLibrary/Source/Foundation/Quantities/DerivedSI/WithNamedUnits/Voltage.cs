@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, IValueSiDerivedUnit<double>
+    : System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, ISiDerivedUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(VoltageUnit unit = DefaultUnit)
       => unit switch

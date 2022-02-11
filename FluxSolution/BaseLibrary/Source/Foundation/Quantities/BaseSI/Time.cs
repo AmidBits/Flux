@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
+    : System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricPrefixFormattable, ISiBaseUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -69,11 +69,11 @@ namespace Flux
     public System.TimeSpan ToTimeSpan()
       => System.TimeSpan.FromSeconds(m_value);
 
-    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToUnitString(prefix, format, useFullName, preferUnicode)}{MassUnit.Gram.GetUnitString(useFullName, preferUnicode)}";
 
-    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {

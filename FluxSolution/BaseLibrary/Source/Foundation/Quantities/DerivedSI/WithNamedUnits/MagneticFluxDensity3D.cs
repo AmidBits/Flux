@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
   public struct MagneticFluxDensity3D
-    : System.IEquatable<MagneticFluxDensity3D>, IValueSiDerivedUnit<CartesianCoordinate3>
+    : System.IEquatable<MagneticFluxDensity3D>, ISiDerivedUnitQuantifiable<CartesianCoordinate3, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -20,7 +20,7 @@ namespace Flux
     public CartesianCoordinate3 Value
       => m_value;
 
-    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public CartesianCoordinate3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch

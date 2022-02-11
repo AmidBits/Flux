@@ -4,7 +4,7 @@ namespace Flux
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public struct MidiNote
-    : System.IComparable<MidiNote>, System.IConvertible, System.IEquatable<MidiNote>, IValueGeneralizedUnit<int>
+    : System.IComparable<MidiNote>, System.IConvertible, System.IEquatable<MidiNote>, IQuantifiable<int>
   {
     public const byte MaxValue = 127;
     public const byte MinValue = 0;

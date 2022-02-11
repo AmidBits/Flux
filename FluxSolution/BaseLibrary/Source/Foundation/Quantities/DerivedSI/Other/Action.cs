@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public struct Action
-    : System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, IValueSiDerivedUnit<double>
+    : System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, ISiDerivedUnitQuantifiable<double, ActionUnit>
   {
     public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
@@ -34,7 +34,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ActionUnit unit = DefaultUnit)
       => unit switch

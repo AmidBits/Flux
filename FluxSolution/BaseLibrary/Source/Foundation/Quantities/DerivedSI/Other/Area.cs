@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, IValueSiDerivedUnit<double>
+    : System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, ISiDerivedUnitQuantifiable<double, AreaUnit>
   {
     public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
 
@@ -37,7 +37,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(AreaUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(AreaUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AreaUnit unit = DefaultUnit)
       => unit switch

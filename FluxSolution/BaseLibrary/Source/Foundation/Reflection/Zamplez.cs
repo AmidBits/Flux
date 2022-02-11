@@ -11,9 +11,10 @@ namespace Flux
       System.Console.WriteLine(nameof(RunReflection));
       System.Console.WriteLine();
 
-      Write(typeof(Flux.IValueSiBaseUnit<>));
-      Write(typeof(Flux.IValueSiDerivedUnit<>));
-      Write(typeof(Flux.IValueGeneralizedUnit<>));
+      Write(typeof(Flux.ISiBaseUnitQuantifiable<,>));
+      Write(typeof(Flux.ISiDerivedUnitQuantifiable<,>));
+      Write(typeof(Flux.IUnitQuantifiable<,>));
+      Write(typeof(Flux.IQuantifiable<>));
 
       static void Write(System.Type type)
       {

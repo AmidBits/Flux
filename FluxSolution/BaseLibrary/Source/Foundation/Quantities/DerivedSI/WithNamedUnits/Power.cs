@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, IValueSiDerivedUnit<double>
+    : System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, ISiDerivedUnitQuantifiable<double, PowerUnit>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(PowerUnit unit = DefaultUnit)
       => unit switch

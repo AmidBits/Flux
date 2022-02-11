@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, IValueSiDerivedUnit<double>
+    : System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, ISiDerivedUnitQuantifiable<double, FlowUnit>
   {
     public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
@@ -34,7 +34,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(FlowUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(FlowUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(FlowUnit unit = DefaultUnit)
       => unit switch

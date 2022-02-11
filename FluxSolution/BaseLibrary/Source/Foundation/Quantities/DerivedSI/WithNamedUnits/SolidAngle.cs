@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, IValueSiDerivedUnit<double>
+    : System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
@@ -35,8 +35,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
       => unit switch
       {

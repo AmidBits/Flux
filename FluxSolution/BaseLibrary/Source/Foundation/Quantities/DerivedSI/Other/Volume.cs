@@ -46,7 +46,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, IValueSiDerivedUnit<double>
+    : System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, ISiDerivedUnitQuantifiable<double, VolumeUnit>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -74,7 +74,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(VolumeUnit unit = DefaultUnit)
       => unit switch

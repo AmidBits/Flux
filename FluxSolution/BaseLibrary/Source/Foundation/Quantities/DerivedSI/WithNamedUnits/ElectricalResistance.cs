@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric resistance, unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalResistance
-    : System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, IValueSiDerivedUnit<double>
+    : System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
   {
     public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
@@ -41,7 +41,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ElectricalResistanceUnit unit = DefaultUnit)
       => unit switch

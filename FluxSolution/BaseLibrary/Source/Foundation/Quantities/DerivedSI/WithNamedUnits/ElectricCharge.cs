@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, IValueSiDerivedUnit<double>
+    : System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
   {
     public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -38,7 +38,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ElectricChargeUnit unit = DefaultUnit)
       => unit switch

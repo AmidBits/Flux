@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Impulse, unit of Newton second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Impulse"/>
   public struct Impulse
-    : System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, IValueSiDerivedUnit<double>
+    : System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, ISiDerivedUnitQuantifiable<double, ImpulseUnit>
   {
     public const ImpulseUnit DefaultUnit = ImpulseUnit.NewtonSecond;
 
@@ -34,7 +34,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(ImpulseUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(ImpulseUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ImpulseUnit unit = DefaultUnit)
       => unit switch

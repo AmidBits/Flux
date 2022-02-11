@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IValueSiBaseUnit<double>
+    : System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, ISiBaseUnitQuantifiable<double, EnplethyUnit>
   {
     public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
@@ -38,7 +38,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(EnplethyUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(EnplethyUnit unit = DefaultUnit)
       => unit switch

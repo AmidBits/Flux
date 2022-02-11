@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct PowerRatio
-    : System.IComparable<PowerRatio>, System.IConvertible, System.IEquatable<PowerRatio>, IValueGeneralizedUnit<double>
+    : System.IComparable<PowerRatio>, System.IConvertible, System.IEquatable<PowerRatio>, IUnitQuantifiable<double, PowerRatioUnit>
   {
     public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
 
@@ -41,7 +41,7 @@ namespace Flux
     public AmplitudeRatio ToAmplitudeRatio()
       => new(System.Math.Sqrt(m_value));
 
-    public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
       => unit switch

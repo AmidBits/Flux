@@ -55,7 +55,7 @@
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, IValueSiDerivedUnit<double>
+    : System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 

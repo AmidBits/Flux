@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, IValueSiDerivedUnit<double>
+    : System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
   {
     public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(IlluminanceUnit unit = DefaultUnit)
       => unit switch

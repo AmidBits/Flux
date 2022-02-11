@@ -76,6 +76,10 @@ namespace Flux
       );
     }
 
+    #region Static methods
+    public static double ComputeProportionalityConstant(double gravitionalConstant, double massOfSun, double massOfPlanet)
+      => System.Math.Pow(4 * System.Math.PI, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
+
     public static void ToRotationMatrix(double longitudeOfAscendingNode, double inclination, double argumentOfPeriapsis, out double x1, out double x2, out double x3, out double y1, out double y2, out double y3, out double z1, out double z2, out double z3)
     {
       var co = System.Math.Cos(longitudeOfAscendingNode);
@@ -103,6 +107,7 @@ namespace Flux
       inclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
       argumentOfPeriapsis = System.Math.Atan2(y3, x3);
     }
+    #endregion Static methods
 
     #region Overloaded operators
     public static bool operator ==(KeplerianElements a, KeplerianElements b)

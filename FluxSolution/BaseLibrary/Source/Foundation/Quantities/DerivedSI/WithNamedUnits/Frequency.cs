@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, IValueSiDerivedUnit<double>
+    : System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
   {
     public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
@@ -42,7 +42,7 @@ namespace Flux
     public Time ToPeriod()
       => new(1.0 / m_value);
 
-    public string ToUnitString(FrequencyUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(FrequencyUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(FrequencyUnit unit = DefaultUnit)
       => unit switch

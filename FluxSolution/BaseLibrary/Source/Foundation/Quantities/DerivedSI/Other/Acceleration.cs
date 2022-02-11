@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, IValueSiDerivedUnit<double>
+    : System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, ISiDerivedUnitQuantifiable<double, AccelerationUnit>
   {
     public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
 
@@ -37,7 +37,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch

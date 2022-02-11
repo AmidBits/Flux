@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, IValueSiDerivedUnit<double>
+    : System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
   {
     public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(CatalyticActivityUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(CatalyticActivityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(CatalyticActivityUnit unit = DefaultUnit)
       => unit switch

@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>UV index, unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
   public struct UvIndex
-    : System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, IValueGeneralizedUnit<double>
+    : System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, IQuantifiable<double>
   {
     private readonly double m_value;
 

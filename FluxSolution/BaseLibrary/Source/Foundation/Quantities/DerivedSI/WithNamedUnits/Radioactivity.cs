@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
-    : System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, IValueSiDerivedUnit<double>
+    : System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
   {
     public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
       => unit switch

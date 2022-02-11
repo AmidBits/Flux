@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, IValueSiDerivedUnit<double>
+    : System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, ISiDerivedUnitQuantifiable<double, SpeedUnit>
   {
     public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 
@@ -58,7 +58,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(SpeedUnit unit = DefaultUnit)
       => unit switch

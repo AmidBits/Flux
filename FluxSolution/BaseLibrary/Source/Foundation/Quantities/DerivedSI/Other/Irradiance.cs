@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>irradiance, unit of watt per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Irradiance"/>
   public struct Irradiance
-    : System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, IValueSiDerivedUnit<double>
+    : System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
   {
     public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 
@@ -34,7 +34,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(IrradianceUnit unit = DefaultUnit)
       => unit switch

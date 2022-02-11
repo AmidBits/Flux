@@ -24,7 +24,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IValueSiBaseUnit<double>
+    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, ISiBaseUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -59,8 +59,8 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {

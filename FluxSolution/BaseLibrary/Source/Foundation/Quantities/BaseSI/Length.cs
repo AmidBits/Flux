@@ -40,7 +40,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
+    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricPrefixFormattable, ISiBaseUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
     public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
@@ -70,10 +70,10 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToUnitString(prefix, format, useFullName, preferUnicode)}{MassUnit.Gram.GetUnitString(useFullName, preferUnicode)}";
 
-    public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(LengthUnit unit = DefaultUnit)
       => unit switch

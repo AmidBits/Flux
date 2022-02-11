@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IMetricPrefixFormattable, IValueSiBaseUnit<double>
+    : System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IMetricPrefixFormattable, ISiBaseUnitQuantifiable<double, ElectricCurrentUnit>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -37,10 +37,10 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToPrefixString(prefix, format, useNameInstead, useUnicodeIfAvailable)}{MassUnit.Gram.GetUnitString(useNameInstead, useUnicodeIfAvailable)}";
+    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.None).ToUnitString(prefix, format, useFullName, preferUnicode)}{MassUnit.Gram.GetUnitString(useFullName, preferUnicode)}";
 
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
       => unit switch

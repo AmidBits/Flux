@@ -81,7 +81,7 @@ namespace Flux
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
   public struct MetricMultiplicative
-    : System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, IValueGeneralizedUnit<double>
+    : System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, IUnitQuantifiable<double, MetricMultiplicativePrefix>
   {
     private readonly double m_value;
 
@@ -94,9 +94,9 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToPrefixString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToPrefixValue(multiplicativePrefix))} {multiplicativePrefix.GetPrefixString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
-    public double ToPrefixValue(MetricMultiplicativePrefix multiplicativePrefix)
+    public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))} {multiplicativePrefix.GetPrefixString(useFullName, preferUnicode)}";
+    public double ToUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
       => m_value / multiplicativePrefix.GetPrefixFactor();
 
     #region Overloaded operators
@@ -200,7 +200,7 @@ namespace Flux
     public override int GetHashCode()
       => System.HashCode.Combine(m_value);
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToPrefixString(MetricMultiplicativePrefix.None, null, false, false)} }}";
+      => $"{GetType().Name} {{ Value = {ToUnitString(MetricMultiplicativePrefix.None, null, false, false)} }}";
     #endregion Object overrides
   }
 }

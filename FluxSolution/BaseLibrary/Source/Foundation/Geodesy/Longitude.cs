@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public struct Longitude
-    : System.IComparable<Longitude>, System.IConvertible, System.IEquatable<Longitude>, IValueGeneralizedUnit<double>
+    : System.IComparable<Longitude>, System.IConvertible, System.IEquatable<Longitude>, IQuantifiable<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;

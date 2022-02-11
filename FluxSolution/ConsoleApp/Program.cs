@@ -20,13 +20,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var cc235 = new Flux.CartesianCoordinate3(2, 3.5, 5);
-      var cc357 = new Flux.CartesianCoordinate3(3.5, 5, 7);
-      var cp1 = Flux.CartesianCoordinate3.CrossProduct(cc235, cc357);
-      var cp2 = cc235.ToVector256().CrossProduct3D(cc357.ToVector256());
-      System.Console.WriteLine($"{cp1}");
-      System.Console.WriteLine($"{cp2}");
-
+      System.Console.WriteLine(Flux.KeplerianElements.ComputeProportionalityConstant(6.674e-11, 1.98847e30, 5.9722e24));
+      System.Console.WriteLine(Flux.EllipseGeometry.Eccentricity(2, 1.89881));
     }
 
     private static void Main(string[] args)

@@ -56,7 +56,7 @@ namespace Flux
 
     /// <summary>Returns the eccentricity of the ellipse. The order of radii does not matter.</summary>
     public static double Eccentricity(double a, double b)
-      => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b), 2) / System.Math.Pow(System.Math.Max(a, b), 2));
+      => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b) / System.Math.Max(a, b), 2));
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static EllipseGeometry FromCartesian(double x, double y)

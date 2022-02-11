@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Surface tension, unit of Newton per meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
   public struct SurfaceTension
-    : System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, IValueSiDerivedUnit<double>
+    : System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, ISiDerivedUnitQuantifiable<double, SurfaceTensionUnit>
   {
     public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(SurfaceTensionUnit unit = DefaultUnit)
       => unit switch

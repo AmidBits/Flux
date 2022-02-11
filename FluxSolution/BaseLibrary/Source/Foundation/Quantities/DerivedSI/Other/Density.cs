@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, IValueSiDerivedUnit<double>
+    : System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, ISiDerivedUnitQuantifiable<double, DensityUnit>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
@@ -35,7 +35,7 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null)
+    public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(DensityUnit unit = DefaultUnit)
       => unit switch
