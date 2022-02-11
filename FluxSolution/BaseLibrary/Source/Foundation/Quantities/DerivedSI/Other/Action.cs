@@ -35,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(ActionUnit unit = DefaultUnit)
       => unit switch
       {

@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this PowerUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this PowerUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         PowerUnit.Watt => "W",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, ISiDerivedUnitQuantifiable<double, PowerUnit>
+    : System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PowerUnit>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -35,8 +35,12 @@ namespace Flux
     public double Value
       => m_value;
 
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(PowerUnit unit = DefaultUnit)
       => unit switch
       {

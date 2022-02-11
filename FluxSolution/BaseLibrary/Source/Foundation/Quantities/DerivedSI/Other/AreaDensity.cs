@@ -36,7 +36,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(AreaDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(AreaDensityUnit unit = DefaultUnit)
       => unit switch
       {

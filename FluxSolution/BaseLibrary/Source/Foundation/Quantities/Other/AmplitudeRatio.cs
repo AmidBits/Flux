@@ -2,9 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static AmplitudeRatio Create(this AmplitudeRatioUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this AmplitudeRatioUnit unit)
+    public static string GetUnitSymbol(this AmplitudeRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => "dBV",
@@ -42,7 +40,7 @@ namespace Flux
       => new(System.Math.Pow(m_value, 2));
 
     public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
       => unit switch
       {

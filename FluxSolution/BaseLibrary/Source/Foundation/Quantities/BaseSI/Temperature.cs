@@ -24,7 +24,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, ISiBaseUnitQuantifiable<double, TemperatureUnit>
+    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -59,8 +59,12 @@ namespace Flux
     public double Value
       => m_value;
 
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One);
     public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {

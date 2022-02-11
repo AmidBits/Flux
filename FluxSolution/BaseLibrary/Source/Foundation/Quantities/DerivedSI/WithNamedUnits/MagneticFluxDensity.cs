@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this MagneticFluxDensityUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this MagneticFluxDensityUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         MagneticFluxDensityUnit.Tesla => "T",
         MagneticFluxDensityUnit.KilogramPerSquareSecond => "kg/s²",
@@ -37,8 +37,13 @@ namespace Flux
     public double Value
       => m_value;
 
+
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)},{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch
       {

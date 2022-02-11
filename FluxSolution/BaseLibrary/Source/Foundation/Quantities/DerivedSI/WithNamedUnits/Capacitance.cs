@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this CapacitanceUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this CapacitanceUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         CapacitanceUnit.Farad => "F",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
+    : System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -35,8 +35,12 @@ namespace Flux
     public double Value
       => m_value;
 
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(CapacitanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(CapacitanceUnit unit = DefaultUnit)
       => unit switch
       {

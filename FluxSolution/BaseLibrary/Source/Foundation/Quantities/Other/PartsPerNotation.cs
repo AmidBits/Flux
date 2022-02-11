@@ -2,17 +2,17 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this PartsPerNotationUnit source, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? source.ToString() : source switch
+    public static string GetUnitString(this PartsPerNotationUnit source, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? source.ToString() : source switch
       {
         PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
         PartsPerNotationUnit.PartsPerTrillion => "ppt",
         PartsPerNotationUnit.PartsPerBillion => "ppb",
-        PartsPerNotationUnit.PartsPerMillion => useUnicodeIfAvailable ? "\u33d9" : "ppm",
+        PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33d9" : "ppm",
         PartsPerNotationUnit.PerCentMille => "pcm",
         PartsPerNotationUnit.PerMyriad => "\u2030",
         PartsPerNotationUnit.PerMille => "\u2030",
-        PartsPerNotationUnit.Percent => useUnicodeIfAvailable ? "\u0025" : "pct",
+        PartsPerNotationUnit.Percent => preferUnicode ? "\u0025" : "pct",
         PartsPerNotationUnit.One => "pp1",
         _ => string.Empty,
       };
@@ -89,7 +89,7 @@ namespace Flux
       => m_parts;
 
     public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch
       {

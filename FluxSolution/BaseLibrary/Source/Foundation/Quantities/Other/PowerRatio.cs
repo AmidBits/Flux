@@ -2,9 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static PowerRatio Create(this PowerRatioUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this PowerRatioUnit unit)
+    public static string GetUnitSymbol(this PowerRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         PowerRatioUnit.DecibelWatt => "dBW",
@@ -42,7 +40,7 @@ namespace Flux
       => new(System.Math.Sqrt(m_value));
 
     public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
       => unit switch
       {

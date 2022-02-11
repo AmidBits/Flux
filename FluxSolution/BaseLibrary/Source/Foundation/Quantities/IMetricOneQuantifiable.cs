@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public interface IMetricOneQuantifiable<TType>
+  public interface IMetricOneQuantifiable
   {
     string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format, bool useFullName, bool preferUnicode);
   }

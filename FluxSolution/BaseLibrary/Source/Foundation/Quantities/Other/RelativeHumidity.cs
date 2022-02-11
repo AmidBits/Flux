@@ -2,9 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static RelativeHumidity Create(this RelativeHumidityUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this RelativeHumidityUnit unit)
+    public static string GetUnitString(this RelativeHumidityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         RelativeHumidityUnit.Percent => "\u0025",
@@ -37,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(RelativeHumidityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(RelativeHumidityUnit unit = DefaultUnit)
       => unit switch
       {

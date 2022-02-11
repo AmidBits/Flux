@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this EnergyUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this EnergyUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         EnergyUnit.Joule => "J",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, ISiDerivedUnitQuantifiable<double, EnergyUnit>
+    : System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, EnergyUnit>
   {
     public const EnergyUnit DefaultUnit = EnergyUnit.Joule;
 
@@ -37,8 +37,12 @@ namespace Flux
     public double Value
       => m_value;
 
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(EnergyUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(EnergyUnit unit = DefaultUnit)
       => unit switch
       {

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, ISiDerivedUnitQuantifiable<double, VoltageUnit>
+    : System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -35,8 +35,12 @@ namespace Flux
     public double Value
       => m_value;
 
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     public double ToUnitValue(VoltageUnit unit = DefaultUnit)
       => unit switch
       {

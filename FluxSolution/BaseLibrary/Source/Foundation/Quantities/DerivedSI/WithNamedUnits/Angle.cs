@@ -2,16 +2,16 @@
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this AngleUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        AngleUnit.Arcminute => useUnicodeIfAvailable ? "\u2032" : "\u0027",
-        AngleUnit.Arcsecond => useUnicodeIfAvailable ? "\u2033" : "\u0022",
-        AngleUnit.Degree => useUnicodeIfAvailable ? "\u00B0" : "deg",
+        AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
+        AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
+        AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
         AngleUnit.Gradian => "grad",
         AngleUnit.NatoMil => "mils",
         AngleUnit.Milliradian => "mrad",
-        AngleUnit.Radian => useUnicodeIfAvailable ? "\u33ad" : "rad",
+        AngleUnit.Radian => preferUnicode ? "\u33ad" : "rad",
         AngleUnit.Turn => "turns",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -99,8 +99,8 @@
     public CartesianCoordinate2 ToCartesian2Ex()
       => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_value);
 
-    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useNameInsteadOfSymbol, useUnicodeIfAvailable)}";
+    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(AngleUnit unit = DefaultUnit)
       => unit switch
       {

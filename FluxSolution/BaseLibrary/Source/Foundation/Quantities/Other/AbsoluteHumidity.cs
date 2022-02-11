@@ -2,9 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static AbsoluteHumidity Create(this AbsoluteHumidityUnit unit, double value)
-      => new(value, unit);
-    public static string GetUnitSymbol(this AbsoluteHumidityUnit unit)
+    public static string GetUnitSymbol(this AbsoluteHumidityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
@@ -37,7 +35,7 @@ namespace Flux
       => m_value;
 
     public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
     public double ToUnitValue(AbsoluteHumidityUnit unit = DefaultUnit)
       => unit switch
       {

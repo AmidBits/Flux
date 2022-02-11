@@ -28,9 +28,10 @@ namespace Flux
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, IMetricPrefixFormattable, ISiBaseUnitQuantifiable<double, MassUnit>
+    : System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, MassUnit>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
+    public const MassUnit OneUnit = MassUnit.Gram;
 
     public static Mass ElectronMass
       => new(9.1093837015e-31);
@@ -52,11 +53,12 @@ namespace Flux
     public double Value
       => m_value;
 
-    public string GetMetricPrefixString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.Kilo).ToUnitString(prefix, format, useFullName, preferUnicode)}{MassUnit.Gram.GetUnitString(useFullName, preferUnicode)}";
-
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{OneUnit.GetUnitString(useFullName, preferUnicode)}";
+    public MetricMultiplicative ToMetricMultiplicative()
+      => new MetricMultiplicative(ToUnitValue(OneUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(MassUnit unit = DefaultUnit, string? valueFormat = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0:{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+      => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(MassUnit unit = DefaultUnit)
       => unit switch
       {
