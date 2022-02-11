@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this TimeUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this TimeUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         TimeUnit.Nanosecond => "ns",
         TimeUnit.Microsecond => "\u00B5s",
@@ -72,7 +72,7 @@ namespace Flux
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
     public MetricMultiplicative ToMetricMultiplicative()
-      => new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One);
+      => new(m_value, MetricMultiplicativePrefix.One);
     public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(TimeUnit unit = DefaultUnit)

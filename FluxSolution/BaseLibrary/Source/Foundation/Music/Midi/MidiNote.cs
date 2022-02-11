@@ -12,10 +12,10 @@ namespace Flux
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
 
-    public const char SymbolFlat = '\u266D';
-    public const char SymbolSharp = '\u266F';
+    //public const char SymbolFlat = '\u266D';
+    //public const char SymbolSharp = '\u266F';
 
-    public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{SymbolSharp}/D{SymbolFlat}", @"D", $"D{SymbolSharp}/E{SymbolFlat}", @"E", @"F", $"F{SymbolSharp}/G{SymbolFlat}", @"G", $"G{SymbolSharp}/A{SymbolFlat}", @"A", $"A{SymbolSharp}/B{SymbolFlat}", @"B" };
+    //public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{GetSharpSymbolString()}/D{GetFlatSymbolString()}", @"D", $"D{GetSharpSymbolString()}/E{GetFlatSymbolString()}", @"E", @"F", $"F{GetSharpSymbolString()}/G{GetFlatSymbolString()}", @"G", $"G{GetSharpSymbolString()}/A{GetFlatSymbolString()}", @"A", $"A{GetSharpSymbolString()}/B{GetFlatSymbolString()}", @"B" };
 
     private readonly byte m_number;
 
@@ -26,15 +26,19 @@ namespace Flux
       => m_number;
 
     /// <summary>Determines the name of the specified MIDI note.</summary>
-    public string ScientificPitchNotationLabel
-      => ScientificPitchNotationLabels[m_number % 12];
-    /// <summary>Determines the octave of the specified MIDI note.</summary>
-    public int Octave
+    public string GetScientificPitchNotationLabel(bool preferUnicode = false)
+      => GetScientificPitchNotationLabels(preferUnicode)[m_number % 12];
+    /// <summary>Determines the octave of the MIDI note.</summary>
+    public int GetOctave()
       => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Frequency ToFrequency()
       => new(ConvertToFrequency(m_number));
+    public string ToString(string? format, bool useFullName = false, bool preferUnicode = false)
+      => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
+    public int ToValue()
+      => m_number;
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -67,6 +71,14 @@ namespace Flux
       return false;
     }
 
+    public static string GetFlatSymbolString(bool preferUnicode = false)
+      => preferUnicode ? "\u266D" : "b";
+    public static string GetSharpSymbolString(bool preferUnicode = false)
+      => preferUnicode ? "\u266F" : "#";
+    /// <summary>Determines the scientific pitch notation labels.</summary>
+    public static string[] GetScientificPitchNotationLabels(bool preferUnicode = false)
+      => new string[] { @"C", $"C{GetSharpSymbolString(preferUnicode)}/D{GetFlatSymbolString(preferUnicode)}", @"D", $"D{GetSharpSymbolString(preferUnicode)}/E{GetFlatSymbolString(preferUnicode)}", @"E", @"F", $"F{GetSharpSymbolString(preferUnicode)}/G{GetFlatSymbolString(preferUnicode)}", @"G", $"G{GetSharpSymbolString(preferUnicode)}/A{GetFlatSymbolString(preferUnicode)}", @"A", $"A{GetSharpSymbolString(preferUnicode)}/B{GetFlatSymbolString(preferUnicode)}", @"B" };
+
     /// <summary>Determines whether the note number is a valid MIDI note. The MIDI note number has the closed interval of [0, 127].</summary>
     public static bool IsMidiNote(int midiNoteNumber)
       => midiNoteNumber >= 0 && midiNoteNumber <= 127;
@@ -80,7 +92,7 @@ namespace Flux
       if (m.Success && m.Groups is var gc && gc.Count >= 3 && gc[1].Success && gc[2].Success)
       {
         var octave = int.Parse(gc[2].Value, System.Globalization.CultureInfo.CurrentCulture);
-        var offset = System.Array.FindIndex(ScientificPitchNotationLabels, 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
+        var offset = System.Array.FindIndex(GetScientificPitchNotationLabels(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
 
         if (octave < -1 && octave > 9 && offset == -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
@@ -188,7 +200,7 @@ namespace Flux
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {ScientificPitchNotationLabel}{Octave} (#{m_number}) }}";
+      => $"{GetType().Name} {{ Value = {ToString(null, false, false)} (#{m_number}) }}";
     #endregion Object overrides
   }
 }

@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this MassUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this MassUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         MassUnit.Milligram => "mg",
         MassUnit.Gram => "g",
@@ -56,7 +56,7 @@ namespace Flux
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{OneUnit.GetUnitString(useFullName, preferUnicode)}";
     public MetricMultiplicative ToMetricMultiplicative()
-      => new MetricMultiplicative(ToUnitValue(OneUnit), MetricMultiplicativePrefix.One);
+      => new(ToUnitValue(OneUnit), MetricMultiplicativePrefix.One);
     public string ToUnitString(MassUnit unit = DefaultUnit, string? valueFormat = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
     public double ToUnitValue(MassUnit unit = DefaultUnit)

@@ -67,7 +67,7 @@ namespace Foundation.Units
       var u = new Flux.MidiNote(69);
 
       Assert.AreEqual(69, u.Value);
-      Assert.AreEqual(4, u.Octave);
+      Assert.AreEqual(4, u.GetOctave());
       Assert.AreEqual(440.0, u.ToFrequency().Value);
     }
 
