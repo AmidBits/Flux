@@ -1,4 +1,4 @@
-namespace Flux
+  namespace Flux
 {
   public static class TypeBuilder
   {

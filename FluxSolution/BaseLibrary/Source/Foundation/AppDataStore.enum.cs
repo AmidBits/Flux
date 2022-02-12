@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
-    public static System.IO.DirectoryInfo? GetDirectoryInfo(this AppDataStore store)
+    public static System.IO.DirectoryInfo GetDirectoryInfo(this AppDataStore store)
       => new(GetMsAppDataPath(store));
     public static string GetMsAppDataPath(this AppDataStore store)
       => store switch
