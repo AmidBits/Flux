@@ -18,7 +18,7 @@ namespace Flux.Formatting
         {
           if (TryFormat(raw, RadixNumerals.Take((int)radix).ToArray(), out var newBase))
           {
-            return newBase;
+            return newBase.ToString();
           }
         }
       }
@@ -26,7 +26,7 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out string result)
+    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out System.Text.StringBuilder? result)
     {
       try
       {
@@ -36,7 +36,7 @@ namespace Flux.Formatting
       }
       catch { }
 
-      result = string.Empty;
+      result = default;
       return false;
     }
   }

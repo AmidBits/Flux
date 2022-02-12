@@ -23,7 +23,7 @@ namespace Flux.Text
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     /// System.Collections.Generic.IList<string>
-    public string NumberToText(System.Numerics.BigInteger number)
+    public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
     {
       var sb = new System.Text.StringBuilder(128);
 
@@ -38,9 +38,9 @@ namespace Flux.Text
           sb.Insert(0, Symbols[(int)System.Numerics.BigInteger.Abs(remainder)]);
         }
 
-      return sb.ToString();
+      return sb;
     }
-    public bool TryNumberToText(System.Numerics.BigInteger number, out string? result)
+    public bool TryNumberToText(System.Numerics.BigInteger number, out System.Text.StringBuilder? result)
     {
       try
       {
@@ -58,7 +58,7 @@ namespace Flux.Text
     /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public System.Numerics.BigInteger TextToNumber(string number)
+    public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
     {
       var bi = System.Numerics.BigInteger.Zero;
 
@@ -74,7 +74,7 @@ namespace Flux.Text
       return bi;
     }
     /// <summary>Convert a positional notation text string into a number.</summary>
-    public bool TryTextToNumber(string number, out System.Numerics.BigInteger result)
+    public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
     {
       try
       {
@@ -99,9 +99,9 @@ namespace Flux.Text
         _ => throw new System.ArgumentOutOfRangeException(nameof(radix))
       };
 
-    public static System.Collections.Generic.Dictionary<int, string> ToStringRadices(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.Dictionary<int, System.Text.StringBuilder> ToStringRadices(System.Numerics.BigInteger number)
     {
-      var dictionary = new System.Collections.Generic.Dictionary<int, string>();
+      var dictionary = new System.Collections.Generic.Dictionary<int, System.Text.StringBuilder>();
       for (var radix = 2; radix <= 62; radix++)
         dictionary.Add(radix, ForRadix(radix).NumberToText(number));
       return dictionary;
