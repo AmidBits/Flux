@@ -18,7 +18,7 @@ namespace Flux.Formatting
         {
           if (TryFormat(raw, RadixNumerals.Take((int)radix).ToArray(), out var newBase))
           {
-            return newBase.ToString();
+            return newBase?.ToString() ?? string.Empty;
           }
         }
       }

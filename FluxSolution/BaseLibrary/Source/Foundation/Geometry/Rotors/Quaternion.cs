@@ -227,7 +227,7 @@ namespace Flux
       => new(qx * scalar, qy * scalar, qz * scalar, qw * scalar);
     /// <summary>Flips the sign of each component of the quaternion.</summary>
     public static Quaternion Negate(Quaternion q)
-      => new Quaternion(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
+      => new(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
     /// <summary>Divides each component of the Quaternion by the length of the Quaternion.</summary>
     public static Quaternion Normalize(Quaternion q)
       => Multiply(q.m_x, q.m_y, q.m_z, q.m_w, 1 / q.LengthSquared());
@@ -283,7 +283,7 @@ namespace Flux
 
     /// <summary>Flips the sign of each component of the quaternion.</summary>
     public static Quaternion operator -(Quaternion q)
-      => new Quaternion(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
+      => new(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
     /// <summary>Adds two Quaternions element-by-element.</summary>
     public static Quaternion operator +(Quaternion q1, Quaternion q2)
       => new(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
