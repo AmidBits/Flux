@@ -10,21 +10,21 @@ namespace Flux
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public struct JulianDate
-    : System.IComparable<JulianDate>, System.IConvertible, System.IEquatable<JulianDate>, IQuantifiable<decimal>
+    : System.IComparable<JulianDate>, System.IConvertible, System.IEquatable<JulianDate>, IQuantifiable<double>
   {
     public readonly static JulianDate Zero;
 
-    private readonly decimal m_value;
+    private readonly double m_value;
 
     /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>
-    public JulianDate(decimal value)
+    public JulianDate(double value)
       => m_value = value;
     /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
     public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
-    public decimal Value
+    public double Value
       => m_value;
 
     public JulianDate AddWeeks(int weeks)
@@ -32,13 +32,13 @@ namespace Flux
     public JulianDate AddDays(int days)
       => this + days;
     public JulianDate AddHours(int hours)
-      => this + (hours / 24.0m);
+      => this + (hours / 24d);
     public JulianDate AddMinutes(int minutes)
-      => this + (minutes / 1440.0m);
+      => this + (minutes / 1440d);
     public JulianDate AddSeconds(int seconds)
-      => this + (seconds / 86400.0m);
+      => this + (seconds / 86400d);
     public JulianDate AddMilliseconds(int milliseconds)
-      => this + (milliseconds / 1000.0m / 86400m);
+      => this + (milliseconds / 1000d / 86400d);
 
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
@@ -50,7 +50,7 @@ namespace Flux
     }
 
     public JulianDayNumber ToJulianDayNumber()
-      => new((int)(m_value + 0.5m));
+      => new((int)(m_value + 0.5));
 
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
@@ -61,25 +61,25 @@ namespace Flux
     }
 
     public string ToTimeString()
-      => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200m + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
+      => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200 + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 
     #region Static methods
     /// <summary>Converts the time components to a Julian Date (JD) "time-of-day" fraction value. This is not the same as the number of seconds.</summary>
-    public static decimal ConvertFromTimeParts(int hour, int minute, int second, int millisecond)
-      => (hour - 12) / 24.0m + minute / 1440.0m + (second + millisecond / 1000.0m) / 86400m;
+    public static double ConvertFromTimeParts(int hour, int minute, int second, int millisecond)
+      => (hour - 12) / 24d + minute / 1440d + (second + millisecond / 1000d) / 86400d;
     /// <summary>Converts the Julian Date (JD) to discrete time components. This method is only concerned with the time portion of the Julian Date.</summary>
-    public static void ConvertToTimeParts(decimal julianDate, out int hour, out int minute, out int second, out int millisecond)
+    public static void ConvertToTimeParts(double julianDate, out int hour, out int minute, out int second, out int millisecond)
     {
       var totalSeconds = GetTimeSinceNoon(julianDate);
 
       if (totalSeconds <= 43200)
-        totalSeconds = (totalSeconds + 43200) % 86400;
+        totalSeconds = (totalSeconds + 43200d) % 86400d;
 
-      hour = (int)(totalSeconds / 3600);
-      totalSeconds -= hour * 3600;
+      hour = (int)(totalSeconds / 3600d);
+      totalSeconds -= hour * 3600d;
 
-      minute = (int)(totalSeconds / 60);
-      totalSeconds -= minute * 60;
+      minute = (int)(totalSeconds / 60d);
+      totalSeconds -= minute * 60d;
 
       second = (int)totalSeconds;
       totalSeconds -= second;
@@ -88,12 +88,12 @@ namespace Flux
     }
 
     /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>
-    public static decimal GetTimeSinceNoon(decimal julianDate)
-      => julianDate.GetFraction() * 86400m;
+    public static double GetTimeSinceNoon(double julianDate)
+      => julianDate.GetFraction() * 86400d;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-    public static bool IsGregorianCalendar(decimal julianDate)
-      => julianDate >= 2299160.5m;
+    public static bool IsGregorianCalendar(double julianDate)
+      => julianDate >= 2299160.5;
     #endregion Static methods
 
     #region Overloaded operators
@@ -113,51 +113,40 @@ namespace Flux
 
     public static JulianDate operator -(JulianDate jd)
       => new(-jd.m_value);
-    public static decimal operator -(JulianDate a, JulianDate b)
+    public static double operator -(JulianDate a, JulianDate b)
       => a.m_value - b.m_value;
 
-    public static JulianDate operator +(JulianDate a, decimal b)
+    public static JulianDate operator +(JulianDate a, double b)
       => new(a.m_value + b);
-    public static JulianDate operator /(JulianDate a, decimal b)
+    public static JulianDate operator /(JulianDate a, double b)
       => new(a.m_value / b);
-    public static JulianDate operator *(JulianDate a, decimal b)
+    public static JulianDate operator *(JulianDate a, double b)
       => new(a.m_value * b);
-    public static JulianDate operator %(JulianDate a, decimal b)
+    public static JulianDate operator %(JulianDate a, double b)
       => new(a.m_value % b);
-    public static JulianDate operator -(JulianDate a, decimal b)
+    public static JulianDate operator -(JulianDate a, double b)
       => new(a.m_value - b);
 
-    public static JulianDate operator +(JulianDate a, double b)
-      => new(a.m_value + System.Convert.ToDecimal(b));
-    public static JulianDate operator /(JulianDate a, double b)
-      => new(a.m_value / System.Convert.ToDecimal(b));
-    public static JulianDate operator *(JulianDate a, double b)
-      => new(a.m_value * System.Convert.ToDecimal(b));
-    public static JulianDate operator %(JulianDate a, double b)
-      => new(a.m_value % System.Convert.ToDecimal(b));
-    public static JulianDate operator -(JulianDate a, double b)
-      => new(a.m_value - System.Convert.ToDecimal(b));
-
     public static JulianDate operator +(JulianDate a, int b)
-      => new(a.m_value + System.Convert.ToDecimal(b));
+      => new(a.m_value + b);
     public static JulianDate operator /(JulianDate a, int b)
-      => new(a.m_value / System.Convert.ToDecimal(b));
+      => new(a.m_value / b);
     public static JulianDate operator *(JulianDate a, int b)
-      => new(a.m_value * System.Convert.ToDecimal(b));
+      => new(a.m_value * b);
     public static JulianDate operator %(JulianDate a, int b)
-      => new(a.m_value % System.Convert.ToDecimal(b));
+      => new(a.m_value % b);
     public static JulianDate operator -(JulianDate a, int b)
-      => new(a.m_value - System.Convert.ToDecimal(b));
+      => new(a.m_value - b);
 
     public static JulianDate operator +(JulianDate a, Time b)
-      => a + (System.Convert.ToDecimal(b.Value) / 86400m);
+      => a + (b.Value / 86400);
     public static JulianDate operator -(JulianDate a, Time b)
-      => a - (System.Convert.ToDecimal(b.Value) / 86400m);
+      => a - (b.Value / 86400);
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b)
-      => a + (System.Convert.ToDecimal(b.TotalSeconds) / 86400m);
+      => a + (b.TotalSeconds / 86400);
     public static JulianDate operator -(JulianDate a, System.TimeSpan b)
-      => a - (System.Convert.ToDecimal(b.TotalSeconds) / 86400m);
+      => a - (b.TotalSeconds / 86400);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -12,11 +12,6 @@ namespace Flux
     public const byte ReferenceNoteNumberA4 = 69;
     public const double ReferenceFrequencyHertz440 = 440;
 
-    //public const char SymbolFlat = '\u266D';
-    //public const char SymbolSharp = '\u266F';
-
-    //public static readonly string[] ScientificPitchNotationLabels = new string[] { @"C", $"C{GetSharpSymbolString()}/D{GetFlatSymbolString()}", @"D", $"D{GetSharpSymbolString()}/E{GetFlatSymbolString()}", @"E", @"F", $"F{GetSharpSymbolString()}/G{GetFlatSymbolString()}", @"G", $"G{GetSharpSymbolString()}/A{GetFlatSymbolString()}", @"A", $"A{GetSharpSymbolString()}/B{GetFlatSymbolString()}", @"B" };
-
     private readonly byte m_number;
 
     public MidiNote(int midiNoteNumber)
