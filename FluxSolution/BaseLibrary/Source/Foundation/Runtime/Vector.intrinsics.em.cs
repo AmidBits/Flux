@@ -335,6 +335,16 @@ namespace Flux
     public static Vector256<double> MinHorizontal(this Vector256<double> source)
       => Vector256.Create(Maths.Min(source.GetElement(0), source.GetElement(1), source.GetElement(2), source.GetElement(3)));
 
+    public static Vector128<double> MinkowskiDistance(this Vector128<double> source, Vector128<double> target, int order)
+      => MinkowskiLength(source.Subtract(target), order);
+    public static Vector256<double> MinkowskiDistance(this Vector256<double> source, Vector256<double> target, int order)
+      => MinkowskiLength(source.Subtract(target), order);
+
+    public static Vector128<double> MinkowskiLength(this Vector128<double> source, int order)
+      => Vector128.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
+    public static Vector256<double> MinkowskiLength(this Vector256<double> source, int order)
+      => Vector256.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
+
     /// <summary>Returns a new vector with the remainder of each component modulo PI*2.</summary>
     public static Vector256<double> ModPi2(this Vector256<double> source)
       => Subtract(source, Multiply(RoundToEven(Multiply(source, OneOverPI2)), PI2));
@@ -418,6 +428,21 @@ namespace Flux
     /// <summary>Scales the Vector3D/4D to unit length.</summary>
     public static Vector256<double> Normalize(this Vector256<double> source)
       => Divide(source, EuclideanLength(source));
+
+    public static Vector128<double> Pow(this Vector128<double> source, int exponent)
+    {
+      var pow = source;
+      for (var i = exponent - 1; i > 0; i--)
+        pow = pow.Multiply(source);
+      return pow;
+    }
+    public static Vector256<double> Pow(this Vector256<double> source, int exponent)
+    {
+      var pow = source;
+      for (var i = exponent - 1; i > 0; i--)
+        pow = pow.Multiply(source);
+      return pow;
+    }
 
     /// <summary>Returns a new vector with the reciprocal (1.0 / x) of each component.</summary>
     public static Vector128<double> Reciprocal(this Vector128<double> source)

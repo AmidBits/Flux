@@ -39,7 +39,7 @@ namespace Flux
     }
     /// <summary>Constructs a vector with the specified x, y and z values, while W will be assigned a value of 1.</summary>
     public Vector4(double x, double y, double z)
-      : this(x, y, z, 1)
+      : this(x, y, z, 0)
     {
     }
 
@@ -103,7 +103,11 @@ namespace Flux
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Vector4 v1, in Vector4 v2, double edgeLength = 1)
-      => v2.m_v256d.Subtract(v1.m_v256d).ChebyshevLength(edgeLength).GetElement(0);
+      => v1.m_v256d.ChebyshevDistance(v1.m_v256d, edgeLength).GetElement(0);
+    /// <summary>Compute the Chebyshev length of vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static double ChebyshevLength(in Vector4 v, double edgeLength = 1)
+      => v.m_v256d.ChebyshevLength(edgeLength).GetElement(0);
     /// <summary>Restricts a vector between a min and max value.</summary>
     public static Vector4 Clamp(in Vector4 v, in Vector4 min, in Vector4 max)
       => (Vector4)v.m_v256d.Clamp(min.m_v256d, max.m_v256d);
@@ -123,7 +127,7 @@ namespace Flux
     /// <param name="v2">The second point.</param>
     /// <returns>The distance.</returns>
     public static double EuclideanDistance(in Vector4 v1, in Vector4 v2)
-      => v1.m_v256d.Subtract(v2.m_v256d).EuclideanLength().GetElement(0);
+      => v1.m_v256d.EuclideanDistance(v2.m_v256d).GetElement(0);
     /// <summary>
     /// Returns the Euclidean distance squared between the two given points.
     /// </summary>
@@ -145,13 +149,23 @@ namespace Flux
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistance(in Vector4 v1, in Vector4 v2, double edgeLength = 1)
-      => v2.m_v256d.Subtract(v1.m_v256d).ManhattanLength(edgeLength).GetElement(0);
+      => v2.m_v256d.ManhattanDistance(v1.m_v256d, edgeLength).GetElement(0);
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static double ManhattanLength(in Vector4 v, double edgeLength = 1)
+      => v.m_v256d.ManhattanLength(edgeLength).GetElement(0);
     /// <summary>Returns a vector whose elements are the maximum of each of the pairs of elements in the two source vectors.</summary>
     public static Vector4 Max(in Vector4 v1, in Vector4 v2)
       => (Vector4)v1.m_v256d.Max(v2.m_v256d);
     /// <summary>Returns a vector whose elements are the minimum of each of the pairs of elements in the two source vectors.</summary>
     public static Vector4 Min(in Vector4 v1, in Vector4 v2)
       => (Vector4)v1.m_v256d.Min(v2.m_v256d);
+
+    public static double MinkowsiDistance(Vector4 v1, Vector4 v2, int order)
+      => v1.m_v256d.MinkowskiDistance(v2.m_v256d, order).GetElement(0);
+    public static double MinkowsiLength(Vector4 v, int order)
+      => v.m_v256d.MinkowskiLength(order).GetElement(0);
+
     /// <summary>Returns a vector with the same direction as the given vector, but with a length of 1.</summary>
     public static Vector4 Normalize(in Vector4 vector)
       => (Vector4)vector.m_v256d.Normalize();

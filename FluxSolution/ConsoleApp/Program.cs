@@ -22,6 +22,14 @@ namespace ConsoleApp
 
       System.Console.WriteLine(Flux.KeplerianElements.ComputeProportionalityConstant(6.674e-11, 1.98847e30, 5.9722e24));
       System.Console.WriteLine(Flux.EllipseGeometry.Eccentricity(2, 1.89881));
+
+      var a = new Flux.Vector4(0, 2, 3, 4);
+      var b = new Flux.Vector4(2, 4, 3, 7);
+      var cd = Flux.Vector4.ChebyshevDistance(a, b);
+      var ed = Flux.Vector4.EuclideanDistance(a, b);
+      var md = Flux.Vector4.ManhattanDistance(a, b);
+      var kd = Flux.Vector4.MinkowsiDistance(a, b, 3);
+
     }
 
     private static void Main(string[] args)

@@ -43,25 +43,29 @@ namespace Flux
     /// <summary>Creates a Plane that contains the three given points.</summary>
     public static Plane CreateFromVertices(Vector4 point1, Vector4 point2, Vector4 point3)
     {
-      double ax = point2.X - point1.X;
-      double ay = point2.Y - point1.Y;
-      double az = point2.Z - point1.Z;
-
-      double bx = point3.X - point1.X;
-      double by = point3.Y - point1.Y;
-      double bz = point3.Z - point1.Z;
-
-      // N=Cross(a,b)
-      double nx = ay * bz - az * by;
-      double ny = az * bx - ax * bz;
-      double nz = ax * by - ay * bx;
-
-      // Normalize(N)
-      var invNorm = 1 / System.Math.Sqrt(nx * nx + ny * ny + nz * nz);
-
-      Vector4 normal = new(nx * invNorm, ny * invNorm, nz * invNorm);
+      var normal = Vector4.Normalize(Vector4.Cross(point2 - point1, point3 - point1));
 
       return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
+
+      //double ax = point2.X - point1.X;
+      //double ay = point2.Y - point1.Y;
+      //double az = point2.Z - point1.Z;
+
+      //double bx = point3.X - point1.X;
+      //double by = point3.Y - point1.Y;
+      //double bz = point3.Z - point1.Z;
+
+      //// N=Cross(a,b)
+      //double nx = ay * bz - az * by;
+      //double ny = az * bx - ax * bz;
+      //double nz = ax * by - ay * bx;
+
+      //// Normalize(N)
+      //var invNorm = 1 / System.Math.Sqrt(nx * nx + ny * ny + nz * nz);
+
+      //Vector4 normal = new(nx * invNorm, ny * invNorm, nz * invNorm);
+
+      //return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
     }
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
     public static double Dot(Plane plane, Vector4 value)
