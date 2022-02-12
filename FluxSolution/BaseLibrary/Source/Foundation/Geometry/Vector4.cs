@@ -74,20 +74,11 @@ namespace Flux
       array[index + 2] = Z;
       array[index + 3] = W;
     }
-    /// <summary>Returns the length of the vector. This operation is cheaper than Length().</summary>
-    public double Length()
-      => System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
-    /// <summary>Returns the length of the vector squared.</summary>
-    public double LengthSquared()
-      => X * X + Y * Y + Z * Z + W * W;
 
     #region Static methods
     /// <summary>Returns a vector whose elements are the absolute values of each of the source vector's elements.</summary>
     public static Vector4 Abs(in Vector4 v)
       => (Vector4)v.m_v256d.Abs(); // new(System.Math.Abs(v.X), System.Math.Abs(v.Y), System.Math.Abs(v.Z), System.Math.Abs(v.W));
-    /// <summary>Adds two vectors together.</summary>
-    public static Vector4 Add(in Vector4 v1, in Vector4 v2)
-      => (Vector4)v1.m_v256d.Add(v2.m_v256d);
     /// <summary>Calculate the angle between the source vector and the specified target vector. (2D/3D)
     /// when dot eq 0 then the vectors are perpendicular
     /// when dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction)
@@ -95,9 +86,13 @@ namespace Flux
     /// </summary>
     public static double Angle(in Vector4 v1, in Vector4 v2)
     {
-      var cross = Cross(v1, v2);
+      var cross = v1.m_v256d.Cross(v2.m_v256d);
 
-      return System.Math.Atan2(Dot(Normalize(cross), cross), Dot(v1, v2));
+      return System.Math.Atan2(cross.Normalize().Dot(cross).GetElement(0), v1.m_v256d.Dot(v2.m_v256d).GetElement(0));
+
+      //var cross = Cross(v1, v2);
+
+      //return System.Math.Atan2(Dot(Normalize(cross), cross), Dot(v1, v2));
     }
     public static double AngleToXaxis(in Vector4 v)
       => System.Math.Atan2(System.Math.Sqrt(v.Y * v.Y + v.Z * v.Z), v.X);
@@ -111,70 +106,38 @@ namespace Flux
       => v2.m_v256d.Subtract(v1.m_v256d).ChebyshevLength(edgeLength).GetElement(0);
     /// <summary>Restricts a vector between a min and max value.</summary>
     public static Vector4 Clamp(in Vector4 v, in Vector4 min, in Vector4 max)
-    {
-      // This compare order is very important!!!
-      // We must follow HLSL behavior in the case user specified min value is bigger than max value.
-
-      var x = v.X;
-      x = (x > max.X) ? max.X : x;
-      x = (x < min.X) ? min.X : x;
-
-      var y = v.Y;
-      y = (y > max.Y) ? max.Y : y;
-      y = (y < min.Y) ? min.Y : y;
-
-      var z = v.Z;
-      z = (z > max.Z) ? max.Z : z;
-      z = (z < min.Z) ? min.Z : z;
-
-      var w = v.W;
-      w = (w > max.W) ? max.W : w;
-      w = (w < min.W) ? min.W : w;
-
-      return new(x, y, z, w);
-    }
+      => (Vector4)v.m_v256d.Clamp(min.m_v256d, max.m_v256d);
+    /// <summary>Restricts a vector between a min and max value.</summary>
+    public static Vector4 Clamp(in Vector4 v, double min, double max)
+      => (Vector4)v.m_v256d.Clamp(min, max);
     /// <summary>Computes the cross product of two vectors.</summary>
     public static Vector4 Cross(in Vector4 v1, in Vector4 v2)
-      => (Vector4)v1.m_v256d.CrossProduct3D(v2.m_v256d);
+      => (Vector4)v1.m_v256d.Cross(v2.m_v256d);
+    /// <summary>Returns the dot product of two vectors.</summary>
+    public static double Dot(in Vector4 v1, in Vector4 v2)
+      => v1.m_v256d.Dot(v2.m_v256d).GetElement(0);
     /// <summary>
     /// Returns the Euclidean distance between the two given points.
     /// </summary>
     /// <param name="v1">The first point.</param>
     /// <param name="v2">The second point.</param>
     /// <returns>The distance.</returns>
-    public static double Distance(in Vector4 v1, in Vector4 v2)
-    {
-      var x = v1.X - v2.X;
-      var y = v1.Y - v2.Y;
-      var z = v1.Z - v2.Z;
-      var w = v1.W - v2.W;
-
-      return System.Math.Sqrt(x * x + y * y + z * z + w * w);
-    }
+    public static double EuclideanDistance(in Vector4 v1, in Vector4 v2)
+      => v1.m_v256d.Subtract(v2.m_v256d).EuclideanLength().GetElement(0);
     /// <summary>
     /// Returns the Euclidean distance squared between the two given points.
     /// </summary>
     /// <param name="v1">The first point.</param>
     /// <param name="v2">The second point.</param>
     /// <returns>The distance squared.</returns>
-    public static double DistanceSquared(in Vector4 v1, in Vector4 v2)
-    {
-      var dx = v1.X - v2.X;
-      var dy = v1.Y - v2.Y;
-      var dz = v1.Z - v2.Z;
-      var dw = v1.W - v2.W;
-
-      return dx * dx + dy * dy + dz * dz + dw * dw;
-    }
-    /// <summary>Divides the first vector by the second.</summary>
-    public static Vector4 Divide(in Vector4 v1, in Vector4 v2)
-      => new(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
-    /// <summary>Divides the vector by the given scalar.</summary>
-    public static Vector4 Divide(in Vector4 v, double divisor)
-      => new(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
-    /// <summary>Returns the dot product of two vectors.</summary>
-    public static double Dot(in Vector4 v1, in Vector4 v2)
-      => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
+    public static double EuclideanDistanceSquared(in Vector4 v1, in Vector4 v2)
+      => v1.m_v256d.Subtract(v2.m_v256d).EuclideanLengthSquared().GetElement(0);
+    /// <summary>Returns the length of the vector. This operation is cheaper than Length().</summary>
+    public static double EuclideanLength(in Vector4 v)
+      => v.m_v256d.EuclideanLength().GetElement(0);
+    /// <summary>Returns the length of the vector squared.</summary>
+    public static double EuclideanLengthSquared(in Vector4 v)
+      => v.m_v256d.EuclideanLengthSquared().GetElement(0);
     /// <summary>Linearly interpolates between two vectors based on the given weighting.</summary>
     /// <param name="amount">Value between 0 and 1 indicating the weight of the second source vector.</param>
     public static Vector4 Lerp(in Vector4 v1, in Vector4 v2, double amount)
@@ -189,30 +152,19 @@ namespace Flux
     /// <summary>Returns a vector whose elements are the minimum of each of the pairs of elements in the two source vectors.</summary>
     public static Vector4 Min(in Vector4 v1, in Vector4 v2)
       => (Vector4)v1.m_v256d.Min(v2.m_v256d);
-    /// <summary>Multiplies two vectors together.</summary>
-    public static Vector4 Multiply(in Vector4 v1, in Vector4 v2)
-      => (Vector4)v1.m_v256d.Multiply(v2.m_v256d);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 Multiply(in Vector4 v1, double v2)
-      => (Vector4)v1.m_v256d.Multiply(v2);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 Multiply(double v1, Vector4 v2)
-      => (Vector4)v2.m_v256d.Multiply(v1);
     /// <summary>Returns a vector with the same direction as the given vector, but with a length of 1.</summary>
     public static Vector4 Normalize(in Vector4 vector)
-      => Multiply(vector, 1 / vector.LengthSquared());
+      => (Vector4)vector.m_v256d.Normalize();
     /// <summary>Negates a given vector.</summary>
     public static Vector4 Negate(in Vector4 v)
-      => new(-v.X, -v.Y, -v.Z, -v.W);
+      => (Vector4)v.m_v256d.Negate();
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static double ScalarTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c) => Dot(a, Cross(b, c));
+    public static double ScalarTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c)
+      => a.m_v256d.Dot(b.m_v256d.Cross(c.m_v256d)).GetElement(0);
     /// <summary>Returns a vector whose elements are the square root of each of the source vector's elements.</summary>
     public static Vector4 Sqrt(in Vector4 v)
-      => new(System.Math.Sqrt(v.X), System.Math.Sqrt(v.Y), System.Math.Sqrt(v.Z), System.Math.Sqrt(v.W));
-    /// <summary>Subtracts the second vector from the first.</summary>
-    public static Vector4 Subtract(in Vector4 v1, in Vector4 v2)
-      => new(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
+      => (Vector4)v.m_v256d.Sqrt();
     /// <summary>Transforms a vector by the given matrix.</summary>
     public static Vector4 Transform(in Vector4 v, in Matrix4x4 m)
       => new(
@@ -247,7 +199,8 @@ namespace Flux
     }
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Vector4 VectorTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c) => Cross(a, Cross(b, c));
+    public static Vector4 VectorTripleProduct(in Vector4 a, in Vector4 b, in Vector4 c)
+      => (Vector4)a.m_v256d.Cross(b.m_v256d.Cross(c.m_v256d));
     #endregion Static methods
 
     #region Operator overloads
@@ -263,30 +216,30 @@ namespace Flux
     public static bool operator !=(in Vector4 v1, in Vector4 v2)
       => !v1.Equals(v2);
 
-    /// <summary>Adds two vectors together.</summary>
-    public static Vector4 operator +(in Vector4 v1, in Vector4 v2)
-      => new(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
-    /// <summary>Subtracts the second vector from the first.</summary>
-    public static Vector4 operator -(in Vector4 v1, in Vector4 v2)
-      => new(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
-    /// <summary>Multiplies two vectors together.</summary>
-    public static Vector4 operator *(in Vector4 v1, in Vector4 v2)
-      => new(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(in Vector4 v, double scalar)
-      => new(v.X * scalar, v.Y * scalar, v.Z * scalar, v.W * scalar);
-    /// <summary>Multiplies a vector by the given scalar.</summary>
-    public static Vector4 operator *(double scalar, in Vector4 v)
-      => new(scalar * v.X, scalar * v.Y, scalar * v.Z, scalar * v.W);
-    /// <summary>Divides the first vector by the second.</summary>
-    public static Vector4 operator /(in Vector4 v1, in Vector4 v2)
-      => new(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
-    /// <summary>Divides the vector by the given scalar.</summary>
-    public static Vector4 operator /(in Vector4 v, double divisor)
-      => new(v.X / divisor, v.Y / divisor, v.Z / divisor, v.W / divisor);
     /// <summary>Negates a given vector.</summary>
     public static Vector4 operator -(in Vector4 v)
-      => new(-v.X, -v.Y, -v.Z, -v.W);
+      => (Vector4)v.m_v256d.Negate();
+    /// <summary>Adds two vectors together.</summary>
+    public static Vector4 operator +(in Vector4 v1, in Vector4 v2)
+      => (Vector4)v1.m_v256d.Add(v2.m_v256d);
+    /// <summary>Subtracts the second vector from the first.</summary>
+    public static Vector4 operator -(in Vector4 v1, in Vector4 v2)
+      => (Vector4)v1.m_v256d.Subtract(v2.m_v256d);
+    /// <summary>Multiplies two vectors together.</summary>
+    public static Vector4 operator *(in Vector4 v1, in Vector4 v2)
+      => (Vector4)v1.m_v256d.Multiply(v2.m_v256d);
+    /// <summary>Multiplies a vector by the given scalar.</summary>
+    public static Vector4 operator *(in Vector4 v, double scalar)
+      => (Vector4)v.m_v256d.Add(scalar);
+    /// <summary>Multiplies a vector by the given scalar.</summary>
+    public static Vector4 operator *(double scalar, in Vector4 v)
+      => (Vector4)v.m_v256d.Add(scalar);
+    /// <summary>Divides the first vector by the second.</summary>
+    public static Vector4 operator /(in Vector4 v1, in Vector4 v2)
+      => (Vector4)v1.m_v256d.Divide(v2.m_v256d);
+    /// <summary>Divides the vector by the given scalar.</summary>
+    public static Vector4 operator /(in Vector4 v, double divisor)
+      => (Vector4)v.m_v256d.Add(divisor);
     #endregion Operator overloads
 
     #region Implemented interfaces

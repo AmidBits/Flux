@@ -41,20 +41,20 @@ namespace Flux
       => Vector256.Create(Maths.PiOver2);
 
     /// <summary>Returns the vector with absolute values.</summary>
-    public static Vector128<double> Abs2D(this Vector128<double> source)
-      => Max2D(Subtract2D(Vector128<double>.Zero, source), source);
+    public static Vector128<double> Abs(this Vector128<double> source)
+      => Max(Subtract(Vector128<double>.Zero, source), source);
     /// <summary>Returns the vector with absolute values.</summary>
     public static Vector256<double> Abs(this Vector256<double> source)
       => Max(Subtract(Vector256<double>.Zero, source), source);
 
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
-    public static Vector128<double> Add2D(this Vector128<double> source, Vector128<double> target)
+    public static Vector128<double> Add(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Add(source, target)
       : Vector128.Create(source.GetElement(0) + target.GetElement(0), source.GetElement(1) + target.GetElement(1));
     /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
-    public static Vector128<double> Add2D(this Vector128<double> source, double scalar)
-      => Add2D(source, Vector128.Create(scalar));
+    public static Vector128<double> Add(this Vector128<double> source, double scalar)
+      => Add(source, Vector128.Create(scalar));
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector256<double> Add(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -64,7 +64,7 @@ namespace Flux
     public static Vector256<double> Add(this Vector256<double> source, double scalar)
       => Add(source, Vector256.Create(scalar));
 
-    public static Vector128<double> AddHorizontal2D(this Vector128<double> source)
+    public static Vector128<double> AddHorizontal(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.HorizontalAdd(source, source) // Add component pairs = (X + Y, X + Y).
       : Vector128.Create(source.GetElement(0) + source.GetElement(1));
@@ -81,7 +81,7 @@ namespace Flux
     }
 
     /// <summary>Returns a new vector with the smallest integral value that is greater than or equal to the source, for each component.</summary>
-    public static Vector128<double> Ceiling2D(this Vector128<double> source)
+    public static Vector128<double> Ceiling(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.Ceiling(source)
       : Vector128.Create(System.Math.Ceiling(source.GetElement(0)), System.Math.Ceiling(source.GetElement(1)));
@@ -93,29 +93,42 @@ namespace Flux
 
     /// <summary>Returns a new vector with the Chebyshev distance (using the specified edgeLength) between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static Vector128<double> ChebyshevLength2D(this Vector128<double> source, double edgeLength = 1)
-      => MaxHorizontal2D(Divide2D(Abs2D(source), Vector128.Create(edgeLength)));
+    public static Vector128<double> ChebyshevDistance(this Vector128<double> source, Vector128<double> target, double edgeLength = 1)
+      => ChebyshevLength(target.Subtract(source), edgeLength);
     /// <summary>Returns a new vector with the Chebyshev distance (using the specified edgeLength) between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static Vector256<double> ChebyshevDistance(this Vector256<double> source, Vector256<double> target, double edgeLength = 1)
+      => ChebyshevLength(target.Subtract(source), edgeLength);
+    //=> target.m_v256.Subtract(source.m_v256).Abs().Divide(stepSize).Max3D().GetElement(0) / stepSize;
+
+    /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public static Vector128<double> ChebyshevLength(this Vector128<double> source, double edgeLength = 1)
+      => MaxHorizontal(Divide(Abs(source), Vector128.Create(edgeLength)));
+    /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static Vector256<double> ChebyshevLength(this Vector256<double> source, double edgeLength = 1)
       => MaxHorizontal(Divide(Abs(source), Vector256.Create(edgeLength)));
     //=> target.m_v256.Subtract(source.m_v256).Abs().Divide(stepSize).Max3D().GetElement(0) / stepSize;
 
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
-    public static Vector128<double> Clamp2D(this Vector128<double> source, Vector128<double> min, Vector128<double> max)
+    public static Vector128<double> Clamp(this Vector128<double> source, Vector128<double> min, Vector128<double> max)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported // If no support, we can optimize this somewhat by using clamp ourselves.
-      ? Max2D(Min2D(source, max), min)
+      ? Max(Min(source, max), min)
       : Vector128.Create(System.Math.Clamp(source.GetElement(0), min.GetElement(0), max.GetElement(0)), System.Math.Clamp(source.GetElement(1), min.GetElement(1), max.GetElement(1)));
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
     public static Vector256<double> Clamp(this Vector256<double> source, Vector256<double> min, Vector256<double> max)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported // If no support, we can optimize this somewhat by using clamp ourselves.
-      ? Max(Min(source, max), min)
+      ? Min(Max(source, max), min) // ???We must follow HLSL behavior in the case user specified min value is bigger than max value.
       : Vector256.Create(System.Math.Clamp(source.GetElement(0), min.GetElement(0), max.GetElement(0)), System.Math.Clamp(source.GetElement(1), min.GetElement(1), max.GetElement(1)), System.Math.Clamp(source.GetElement(2), min.GetElement(2), max.GetElement(2)), System.Math.Clamp(source.GetElement(3), min.GetElement(3), max.GetElement(3)));
+    /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
+    public static Vector256<double> Clamp(this Vector256<double> source, double min, double max)
+      => Clamp(source, Vector256.Create(min), Vector256.Create(max));
 
     /// <summary>Returns the vector with the values from clamped between min and max.</summary>
     /// <remarks>No fallback available.</remarks>
     public static Vector128<double> CopySign2D(this Vector128<double> source, Vector128<double> sign)
-      => System.Runtime.Intrinsics.X86.Avx.Or(SignMasked2D(sign), Abs2D(source));
+      => System.Runtime.Intrinsics.X86.Avx.Or(SignMasked2D(sign), Abs(source));
     public static Vector256<double> CopySign2D(this Vector256<double> source, Vector256<double> sign)
       => System.Runtime.Intrinsics.X86.Avx.Or(SignMaskedXY(sign), Abs(source));
     public static Vector256<double> CopySign3D(this Vector256<double> source, Vector256<double> sign)
@@ -143,19 +156,21 @@ namespace Flux
     /// to be in *reversed* (no clue why), so here (3, 0, 2, 1) means you have the 2nd elem (1, 0 indexed) in the first slot,
     /// the 3rd elem (2) in the next one, the 1st elem (0) in the next one, and the 4th (3, W/_, unused here) in the last reg
     /// </remarks>
-    public static Vector256<double> CrossProduct3D(this Vector256<double> source, Vector256<double> target)
+    public static Vector256<double> Cross(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx2.IsSupported
-      ? Mask3D(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW))))
+      //? Mask3D(System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW))))
+      // Trying this (below) for 4 dimensional computation, rather than just 3D (above).
+      ? System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW)))
       : Vector256.Create(source.GetElement(1) * target.GetElement(2) - source.GetElement(2) * target.GetElement(1), source.GetElement(2) * target.GetElement(0) - source.GetElement(0) * target.GetElement(2), source.GetElement(0) * target.GetElement(1) - source.GetElement(1) * target.GetElement(0), 0);
 
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
-    public static Vector128<double> Divide2D(this Vector128<double> source, Vector128<double> denominator)
+    public static Vector128<double> Divide(this Vector128<double> source, Vector128<double> denominator)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, denominator)
       : Vector128.Create(source.GetElement(0) / denominator.GetElement(0), source.GetElement(1) / denominator.GetElement(1));
     /// <summary>Returns a new vector with the quotient of the vector components and the scalar value.</summary>
-    public static Vector128<double> Divide2D(this Vector128<double> source, double denominator)
-      => Divide2D(source, Vector128.Create(denominator));
+    public static Vector128<double> Divide(this Vector128<double> source, double denominator)
+      => Divide(source, Vector128.Create(denominator));
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
     public static Vector256<double> Divide(this Vector256<double> source, Vector256<double> denominator)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -165,10 +180,10 @@ namespace Flux
     public static Vector256<double> Divide(this Vector256<double> source, double denominator)
       => Divide(source, Vector256.Create(denominator));
 
-    public static Vector128<double> DivRem2D(this Vector128<double> source, Vector128<double> denominator, out Vector128<double> remainder)
+    public static Vector128<double> DivRem(this Vector128<double> source, Vector128<double> denominator, out Vector128<double> remainder)
     {
-      var quotient = Divide2D(source, denominator);
-      remainder = Subtract2D(source, Multiply2D(Truncate2D(quotient), denominator));
+      var quotient = Divide(source, denominator);
+      remainder = Subtract(source, Multiply(Truncate(quotient), denominator));
       return quotient;
     }
     public static Vector256<double> DivRem(this Vector256<double> source, Vector256<double> denominator, out Vector256<double> remainder)
@@ -179,7 +194,7 @@ namespace Flux
     }
 
     /// <summary>Returns the dot product of the two given vectors.</summary>
-    public static Vector128<double> DotProduct2D(this Vector128<double> source, Vector128<double> target)
+    public static Vector128<double> Dot(this Vector128<double> source, Vector128<double> target)
     {
       if (System.Runtime.Intrinsics.X86.Sse41.IsSupported) // SSE4.1 has a native dot product instruction, dppd
         return System.Runtime.Intrinsics.X86.Sse41.DotProduct(source, target, 0b_0011_1111); // Multiply the first 2 elements of each and broadcasts it into each element of the returning vector.
@@ -197,7 +212,7 @@ namespace Flux
         return Vector128.Create(source.GetElement(0) * target.GetElement(0) + source.GetElement(1) * target.GetElement(1));
     }
     /// <summary>Returns the dot product of the vector.</summary>
-    public static Vector256<double> DotProduct(this Vector256<double> source, Vector256<double> target)
+    public static Vector256<double> Dot(this Vector256<double> source, Vector256<double> target)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
       {
@@ -214,22 +229,29 @@ namespace Flux
     public static Vector256<double> DuplicateV128IntoV256(this Vector128<double> source)
       => Vector256.Create(source, source);
 
+    /// <summary>Returns a new vector with the Euclidean distance between the vectors.</summary>
+    public static Vector128<double> EuclideanDistance(this Vector128<double> source, Vector128<double> target)
+      => EuclideanLength(target.Subtract(source));
+    /// <summary>Returns a new vector with the Euclidean distance between the vectors.</summary>
+    public static Vector256<double> EuclideanDistance(this Vector256<double> source, Vector256<double> target)
+      => EuclideanLength(target.Subtract(source));
+
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
-    public static Vector128<double> EuclideanLength2D(this Vector128<double> source)
-      => Sqrt2D(DotProduct2D(source, source));
+    public static Vector128<double> EuclideanLength(this Vector128<double> source)
+      => Sqrt(Dot(source, source));
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> EuclideanLength(this Vector256<double> source)
-      => Sqrt(DotProduct(source, source));
+      => Sqrt(Dot(source, source));
 
     /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
-    public static Vector128<double> EuclideanLengthSquared2D(this Vector128<double> source)
-      => DotProduct2D(source, source);
+    public static Vector128<double> EuclideanLengthSquared(this Vector128<double> source)
+      => Dot(source, source);
     /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
     public static Vector256<double> EuclideanLengthSquared(this Vector256<double> source)
-      => DotProduct(source, source);
+      => Dot(source, source);
 
     /// <summary>Returns a new vector with the largest integral value that is less than or equal to the source, for each component.</summary>
-    public static Vector128<double> Floor2D(this Vector128<double> source)
+    public static Vector128<double> Floor(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.Floor(source)
       : Vector128.Create(System.Math.Floor(source.GetElement(0)), System.Math.Floor(source.GetElement(1)));
@@ -241,8 +263,8 @@ namespace Flux
 
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
-    public static Vector128<double> Lerp2D(this Vector128<double> source, Vector128<double> target, double mu)
-      => Add2D(source, Multiply2D(Subtract2D(target, source), Vector128.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
+    public static Vector128<double> Lerp(this Vector128<double> source, Vector128<double> target, double mu)
+      => Add(source, Multiply(Subtract(target, source), Vector128.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
     public static Vector256<double> Lerp(this Vector256<double> source, Vector256<double> target, double mu)
@@ -250,9 +272,18 @@ namespace Flux
 
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static Vector128<double> ManhattanLength2D(this Vector128<double> source, double edgeLength = 1)
-      => AddHorizontal2D(Divide2D(Abs2D(source), Vector128.Create(edgeLength)));
+    public static Vector128<double> ManhattanDistance(this Vector128<double> source, Vector128<double> target, double edgeLength = 1)
+      => ManhattanLength(target.Subtract(source), edgeLength);
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static Vector256<double> ManhattanDistance(this Vector256<double> source, Vector256<double> target, double edgeLength = 1)
+      => ManhattanLength(target.Subtract(source), edgeLength);
+
+    /// <summary>Compute the Manhattan length of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public static Vector128<double> ManhattanLength(this Vector128<double> source, double edgeLength = 1)
+      => AddHorizontal(Divide(Abs(source), Vector128.Create(edgeLength)));
+    /// <summary>Compute the Manhattan length of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector256<double> ManhattanLength(this Vector256<double> source, double edgeLength = 1)
       => AddHorizontal(Divide(Abs(source), Vector256.Create(edgeLength)));
@@ -269,7 +300,7 @@ namespace Flux
       : Vector256.Create(source.GetElement(0), source.GetElement(1), source.GetElement(2), 0);
 
     /// <summary>Returns a new vector with the maximum value for each component of the two specified vectors.</summary>
-    public static Vector128<double> Max2D(this Vector128<double> source, Vector128<double> target)
+    public static Vector128<double> Max(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Max(source, target)
       : Vector128.Create(System.Math.Max(source.GetElement(0), target.GetElement(0)), System.Math.Max(source.GetElement(1), target.GetElement(1)));
@@ -280,14 +311,14 @@ namespace Flux
       : Vector256.Create(System.Math.Max(source.GetElement(0), target.GetElement(0)), System.Math.Max(source.GetElement(1), target.GetElement(1)), System.Math.Max(source.GetElement(2), target.GetElement(2)), System.Math.Max(source.GetElement(3), target.GetElement(3)));
 
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
-    public static Vector128<double> MaxHorizontal2D(this Vector128<double> source)
+    public static Vector128<double> MaxHorizontal(this Vector128<double> source)
       => Vector128.Create(System.Math.Max(source.GetElement(0), source.GetElement(1)));
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
     public static Vector256<double> MaxHorizontal(this Vector256<double> source)
       => Vector256.Create(Maths.Max(source.GetElement(0), source.GetElement(1), source.GetElement(2), source.GetElement(3)));
 
     /// <summary>Returns a new vector with the minimum value for each component of the two specified vectors.</summary>
-    public static Vector128<double> Min2D(this Vector128<double> source, in Vector128<double> target)
+    public static Vector128<double> Min(this Vector128<double> source, in Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Min(source, target)
       : Vector128.Create(System.Math.Min(source.GetElement(0), target.GetElement(0)), System.Math.Min(source.GetElement(1), target.GetElement(1)));
@@ -298,7 +329,7 @@ namespace Flux
       : Vector256.Create(System.Math.Min(source.GetElement(0), target.GetElement(0)), System.Math.Min(source.GetElement(1), target.GetElement(1)), System.Math.Min(source.GetElement(2), target.GetElement(2)), System.Math.Min(source.GetElement(3), target.GetElement(3)));
 
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
-    public static Vector128<double> MinHorizontal2D(this Vector128<double> source)
+    public static Vector128<double> MinHorizontal(this Vector128<double> source)
       => Vector128.Create(System.Math.Min(source.GetElement(0), source.GetElement(1)));
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
     public static Vector256<double> MinHorizontal(this Vector256<double> source)
@@ -309,13 +340,13 @@ namespace Flux
       => Subtract(source, Multiply(RoundToEven(Multiply(source, OneOverPI2)), PI2));
 
     /// <summary>Returns a new vector with the product of the vector components.</summary>
-    public static Vector128<double> Multiply2D(this Vector128<double> source, Vector128<double> target)
+    public static Vector128<double> Multiply(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Multiply(source, target)
       : Vector128.Create(source.GetElement(0) * target.GetElement(0), source.GetElement(1) * target.GetElement(1));
     /// <summary>Returns a new vector with the product of the vector components and the scalar value.</summary>
-    public static Vector128<double> Multiply2D(this Vector128<double> source, double scalar)
-      => Multiply2D(source, Vector128.Create(scalar));
+    public static Vector128<double> Multiply(this Vector128<double> source, double scalar)
+      => Multiply(source, Vector128.Create(scalar));
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -330,7 +361,7 @@ namespace Flux
     /// <param name="multiply">The vector to be multiplied with <paramref name="source"/></param>
     /// <param name="add">The vector to be added to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="multiply"/></param>
     /// <returns>(x * y) + z on each element, rounded as one ternary operation</returns>
-    public static Vector128<double> MultiplyAdd2D(this Vector128<double> source, Vector128<double> multiply, Vector128<double> add)
+    public static Vector128<double> MultiplyAdd(this Vector128<double> source, Vector128<double> multiply, Vector128<double> add)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(source, multiply, add)
       : Vector128.Create(source.GetElement(0) * multiply.GetElement(0) + add.GetElement(0), source.GetElement(1) * multiply.GetElement(1) + add.GetElement(1));
@@ -349,7 +380,7 @@ namespace Flux
     /// <param name="multiply">The vector to be multiplied with <paramref name="source"/></param>
     /// <param name="add">The vector to be subtracted to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="multiply"/></param>
     /// <returns>(x * y) - z on each element, rounded as one ternary operation</returns>
-    public static Vector128<double> MultiplySubtract2D(this Vector128<double> source, Vector128<double> multiply, Vector128<double> subtract)
+    public static Vector128<double> MultiplySubtract(this Vector128<double> source, Vector128<double> multiply, Vector128<double> subtract)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplySubtract(source, multiply, subtract)
       : Vector128.Create(source.GetElement(0) * multiply.GetElement(0) - subtract.GetElement(0), source.GetElement(1) * multiply.GetElement(1) - subtract.GetElement(1));
@@ -364,7 +395,7 @@ namespace Flux
       : Vector256.Create(source.GetElement(0) * multiply.GetElement(0) - subtract.GetElement(0), source.GetElement(1) * multiply.GetElement(1) - subtract.GetElement(1), source.GetElement(2) * multiply.GetElement(2) + subtract.GetElement(2), source.GetElement(3) * multiply.GetElement(3) + subtract.GetElement(3));
 
     /// <summary>Returns a new vector with the components negated.</summary>
-    public static Vector128<double> Negate2D(this Vector128<double> source)
+    public static Vector128<double> Negate(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Xor(MaskNotSignXY_128, source)
       : Vector128.Create(-source.GetElement(0), -source.GetElement(1));
@@ -375,29 +406,29 @@ namespace Flux
       : Vector256.Create(-source.GetElement(0), -source.GetElement(1), -source.GetElement(2), -source.GetElement(3));
 
     /// <summary>Returns a new vector that is a normalized linear interpolation of the two specified vectors. This is the 3D version because nlerp use normalize which is 2D or 3D dependent.</summary>
-    public static Vector128<double> Nlerp2D(this Vector128<double> source, Vector128<double> target, double mu)
-      => Normalize2D(Lerp2D(source, target, mu));
+    public static Vector128<double> Nlerp(this Vector128<double> source, Vector128<double> target, double mu)
+      => Normalize(Lerp(source, target, mu));
     /// <summary>Returns a new vector that is a normalized linear interpolation of the two specified vectors. This is the 3D version because nlerp use normalize which is 2D or 3D dependent.</summary>
     public static Vector256<double> Nlerp(this Vector256<double> source, Vector256<double> target, double mu)
       => Normalize(Lerp(source, target, mu));
 
     /// <summary>Scales the Vector2D to unit length.</summary>
-    public static Vector128<double> Normalize2D(this Vector128<double> source)
-      => Divide2D(source, EuclideanLength2D(source));
+    public static Vector128<double> Normalize(this Vector128<double> source)
+      => Divide(source, EuclideanLength(source));
     /// <summary>Scales the Vector3D/4D to unit length.</summary>
     public static Vector256<double> Normalize(this Vector256<double> source)
       => Divide(source, EuclideanLength(source));
 
     /// <summary>Returns a new vector with the reciprocal (1.0 / x) of each component.</summary>
-    public static Vector128<double> Reciprocal2D(this Vector128<double> source)
-      => Divide2D(One_128, source);
+    public static Vector128<double> Reciprocal(this Vector128<double> source)
+      => Divide(One_128, source);
     /// <summary>Returns a new vector with the reciprocal (1.0 / x) of each component.</summary>
     public static Vector256<double> Reciprocal(this Vector256<double> source)
       => Divide(One, source);
 
     /// <summary>Returns a new vector with the reciprocal of the square root (1.0 / sqrt(x)) of each component.</summary>
-    public static Vector128<double> ReciprocalSqrt2D(this Vector128<double> source)
-      => Reciprocal2D(Sqrt2D(source));
+    public static Vector128<double> ReciprocalSqrt(this Vector128<double> source)
+      => Reciprocal(Sqrt(source));
     /// <summary>Returns a new vector with the reciprocal of the square root (1.0 / sqrt(x)) of each component.</summary>
     public static Vector256<double> ReciprocalSqrt(this Vector256<double> source)
       => Reciprocal(Sqrt(source));
@@ -406,21 +437,21 @@ namespace Flux
     /// <param name="source">The incident ray's vector.</param>
     /// <param name="normal">The normal of the mirror upon which the ray is reflecting.</param>
     /// <returns>The vector of the reflected ray.</returns>
-    public static Vector128<double> Reflect2D(this Vector128<double> source, Vector128<double> normal)
-      => Subtract2D(source, Multiply2D(Multiply2D(DotProduct2D(source, normal), Vector128.Create(2d)), normal));
+    public static Vector128<double> Reflect(this Vector128<double> source, Vector128<double> normal)
+      => Subtract(source, Multiply(Multiply(Dot(source, normal), Vector128.Create(2d)), normal));
     /// <summary>Calculates the reflection of an incident ray.</summary>
     /// <param name="source">The incident ray's vector.</param>
     /// <param name="normal">The normal of the mirror upon which the ray is reflecting.</param>
     /// <returns>The vector of the reflected ray.</returns>
     public static Vector256<double> Reflect(this Vector256<double> source, Vector256<double> normal)
-      => Subtract(source, Multiply(Multiply(DotProduct(source, normal), Vector256.Create(2d)), normal)); // reflection = incident - (2 * DotProduct(incident, normal)) * normal
+      => Subtract(source, Multiply(Multiply(Dot(source, normal), Vector256.Create(2d)), normal)); // reflection = incident - (2 * DotProduct(incident, normal)) * normal
 
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
-    public static Vector128<double> Remainder2D(this Vector128<double> source, Vector128<double> denominator)
-      => Subtract2D(source, Multiply2D(Truncate2D(Divide2D(source, denominator)), denominator));
+    public static Vector128<double> Remainder(this Vector128<double> source, Vector128<double> denominator)
+      => Subtract(source, Multiply(Truncate(Divide(source, denominator)), denominator));
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector128<double> Remainder2D(this Vector128<double> source, double denominator)
-      => Remainder2D(source, Vector128.Create(denominator));
+    public static Vector128<double> Remainder(this Vector128<double> source, double denominator)
+      => Remainder(source, Vector128.Create(denominator));
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
     public static Vector256<double> Remainder(this Vector256<double> source, Vector256<double> denominator)
       => Subtract(source, Multiply(Truncate(Divide(source, denominator)), denominator));
@@ -429,7 +460,7 @@ namespace Flux
       => Remainder(source, Vector256.Create(denominator));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values.</summary>
-    public static Vector128<double> RoundToEven2D(this Vector128<double> source)
+    public static Vector128<double> RoundToEven(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source)
       : Vector128.Create(System.Math.Round(source.GetElement(0), MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), MidpointRounding.ToEven));
@@ -442,7 +473,7 @@ namespace Flux
       : Vector256.Create(System.Math.Round(source.GetElement(0), MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), MidpointRounding.ToEven), System.Math.Round(source.GetElement(2), MidpointRounding.ToEven), System.Math.Round(source.GetElement(3), MidpointRounding.ToEven));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards negative infinity.</summary>
-    public static Vector128<double> RoundToNegativeInfinity2D(this Vector128<double> source)
+    public static Vector128<double> RoundToNegativeInfinity(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNegativeInfinity(source)
       : Vector128.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToNegativeInfinity));
@@ -453,7 +484,7 @@ namespace Flux
       : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToNegativeInfinity));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards positive infinity.</summary>
-    public static Vector128<double> RoundToPositiveInfinity2D(this Vector128<double> source)
+    public static Vector128<double> RoundToPositiveInfinity(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToPositiveInfinity(source)
       : Vector128.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToPositiveInfinity));
@@ -464,7 +495,7 @@ namespace Flux
       : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToPositiveInfinity));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards zero.</summary>
-    public static Vector128<double> RoundToZero2D(this Vector128<double> source)
+    public static Vector128<double> RoundToZero(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(source)
       : Vector128.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToZero));
@@ -476,8 +507,8 @@ namespace Flux
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static Vector256<double> ScalarTripleProduct3D(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
-      => DotProduct(source, CrossProduct3D(second, third));
+    public static Vector256<double> ScalarTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
+      => Dot(source, Cross(second, third));
 
     /// <summary>Returns a new vector with the sign of the components.</summary>
     /// <remarks>This is unlike System.Math.Sign(), which is why it's currently marked internal.</remarks>
@@ -496,13 +527,13 @@ namespace Flux
     internal static Vector256<double> SignMasked(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.And(source, MaskNotSignXYZW);
 
-    public static Vector128<double> Sign2D(this Vector128<double> source)
+    public static Vector128<double> Sign(this Vector128<double> source)
       => Vector128.Create((double)System.Math.Sign(source.GetElement(0)), (double)System.Math.Sign(source.GetElement(1)));
     public static Vector256<double> Sign(this Vector256<double> source)
       => Vector256.Create((double)System.Math.Sign(source.GetElement(0)), (double)System.Math.Sign(source.GetElement(1)), (double)System.Math.Sign(source.GetElement(2)), (double)System.Math.Sign(source.GetElement(3)));
 
     /// <summary>Returns a new vector with the square root of each component.</summary>
-    public static Vector128<double> Sqrt2D(this Vector128<double> source)
+    public static Vector128<double> Sqrt(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.Sqrt(source)
       : Vector128.Create(System.Math.Sqrt(source.GetElement(0)), System.Math.Sqrt(source.GetElement(1)));
@@ -513,18 +544,18 @@ namespace Flux
       : Vector256.Create(System.Math.Sqrt(source.GetElement(0)), System.Math.Sqrt(source.GetElement(1)), System.Math.Sqrt(source.GetElement(2)), System.Math.Sqrt(source.GetElement(3)));
 
     /// <summary>Returns a new vector with the square of each component.</summary>
-    public static Vector128<double> Square2D(this Vector128<double> source)
-      => Multiply2D(source, source);
+    public static Vector128<double> Square(this Vector128<double> source)
+      => Multiply(source, source);
     /// <summary>Returns a new vector with the square of each component.</summary>
     public static Vector256<double> Square(this Vector256<double> source)
       => Multiply(source, source);
 
     /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified vectors. This is the 2D version because slerp use other functionality that is 2D dependent.</summary>
-    public static Vector128<double> Slerp2D(this Vector128<double> source, Vector128<double> target, double mu)
+    public static Vector128<double> Slerp(this Vector128<double> source, Vector128<double> target, double mu)
     {
       double scale0, scale1;
 
-      if (DotProduct2D(source, target) is var dot && dot.GetElement(0) is var cosTheta && cosTheta != 0)
+      if (Dot(source, target) is var dot && dot.GetElement(0) is var cosTheta && cosTheta != 0)
       {
         var theta = System.Math.Acos(System.Math.Clamp(cosTheta, -1, 1));
         var sinTheta = System.Math.Sin(theta);
@@ -537,14 +568,14 @@ namespace Flux
         scale1 = mu;
       }
 
-      return Add2D(Multiply2D(source, Vector128.Create(scale0)), Multiply2D(target, Vector128.Create(scale1)));
+      return Add(Multiply(source, Vector128.Create(scale0)), Multiply(target, Vector128.Create(scale1)));
     }
     /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified NORMALIZED vectors. This is a 3D version because slerp use other functionality that is 3D dependent.</summary>
     public static Vector256<double> Slerp(this Vector256<double> source, Vector256<double> target, double mu)
     {
       double scale0, scale1;
 
-      if (DotProduct(source, target) is var dot && dot.GetElement(0) is var cosTheta && cosTheta != 0)
+      if (Dot(source, target) is var dot && dot.GetElement(0) is var cosTheta && cosTheta != 0)
       {
         var theta = System.Math.Acos(System.Math.Clamp(cosTheta, -1, 1));
         var sinTheta = System.Math.Sin(theta);
@@ -561,13 +592,13 @@ namespace Flux
     }
 
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
-    public static Vector128<double> Subtract2D(this Vector128<double> source, Vector128<double> target)
+    public static Vector128<double> Subtract(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, target)
       : Vector128.Create(source.GetElement(0) - target.GetElement(0), source.GetElement(1) - target.GetElement(1));
     /// <summary>Returns a new vector with the difference of the vector components and the scalar value.</summary>
-    public static Vector128<double> Subtract2D(this Vector128<double> source, double scalar)
-      => Subtract2D(source, Vector128.Create(scalar));
+    public static Vector128<double> Subtract(this Vector128<double> source, double scalar)
+      => Subtract(source, Vector128.Create(scalar));
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector256<double> Subtract(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -577,7 +608,7 @@ namespace Flux
     public static Vector256<double> Subtract(this Vector256<double> source, double scalar)
       => Subtract(source, Vector256.Create(scalar));
 
-    public static Vector128<double> SubtractHorizontal2D(this Vector128<double> source)
+    public static Vector128<double> SubtractHorizontal(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.HorizontalSubtract(source, source) // Add component pairs = (X - Y, X - Y).
       : Vector128.Create(source.GetElement(0) - source.GetElement(1));
@@ -594,7 +625,7 @@ namespace Flux
     }
 
     /// <summary>Returns a new vector with the vector components truncated.</summary>
-    public static Vector128<double> Truncate2D(this Vector128<double> source)
+    public static Vector128<double> Truncate(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(source)
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported
@@ -610,12 +641,12 @@ namespace Flux
 
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Vector256<double> VectorTripleProduct3D(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
-      => CrossProduct3D(source, CrossProduct3D(second, third));
+    public static Vector256<double> VectorTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
+      => Cross(source, Cross(second, third));
 
     /// <summary>Returns a new vector with...</summary>
-    public static Vector128<double> WithinBounds2D(this Vector128<double> source, Vector128<double> bound)
-      => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(source, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(source, Negate2D(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
+    public static Vector128<double> WithinBounds(this Vector128<double> source, Vector128<double> bound)
+      => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(source, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(source, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
     /// <summary>Returns a new vector with...</summary>
     public static Vector256<double> WithinBounds(this Vector256<double> source, Vector256<double> bound)
       => System.Runtime.Intrinsics.X86.Avx.And(System.Runtime.Intrinsics.X86.Avx.Compare(source, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx.Compare(source, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));

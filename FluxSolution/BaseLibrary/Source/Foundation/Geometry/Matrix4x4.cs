@@ -157,7 +157,7 @@ namespace Flux
 
       var zaxis = new Vector4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
 
-      zaxis = zaxis.LengthSquared() is var znorm && znorm < epsilon ? -cameraForwardVector : Vector4.Multiply(zaxis, 1 / System.Math.Sqrt(znorm));
+      zaxis = Vector4.EuclideanLengthSquared(zaxis) is var znorm && znorm < epsilon ? -cameraForwardVector : zaxis * (1 / System.Math.Sqrt(znorm));
 
       var xaxis = Vector4.Normalize(Vector4.Cross(cameraUpVector, zaxis));
       var yaxis = Vector4.Cross(zaxis, xaxis);
@@ -181,7 +181,7 @@ namespace Flux
       // Treat the case when object and camera positions are too close.
       var faceDir = new Vector4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
 
-      faceDir = faceDir.LengthSquared() is var norm && norm < epsilon ? -cameraForwardVector : Vector4.Multiply(faceDir, 1 / System.Math.Sqrt(norm));
+      faceDir = Vector4.EuclideanLengthSquared(faceDir) is var norm && norm < epsilon ? -cameraForwardVector : faceDir * (1 / System.Math.Sqrt(norm));
 
       Vector4 yaxis = rotateAxis;
       Vector4 xaxis;
