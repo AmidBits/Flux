@@ -15,27 +15,27 @@ namespace Foundation
 
       var m = new Flux.MomentUtc(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, now.Millisecond);
 
-      var expected = 2455876.9660996643518518518519m;
+      var expected = 2455876.9660996643518518518519;
       var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, ConversionCalendar.GregorianCalendar);
 
-      Assert.AreEqual(expected, actual.Value);
+      Assert.AreEqual(expected, actual.Value, 1E-6);
     }
     [TestMethod]
     public void ComputeJulianDateJC()
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
 
-      var expected = 12.009189814814814814814814815m;
+      var expected = 12.009189814814814814814814815;
       var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(expected, actual.Value);
+      Assert.AreEqual(expected, actual.Value, 1E-6);
     }
     [TestMethod]
     public void ComputeJulianDateTimeOfDay()
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
 
-      Assert.AreEqual(0.0091898148148148148148148148m, Flux.JulianDate.ConvertFromTimeParts(m.Hour, m.Minute, m.Second, m.Millisecond));
+      Assert.AreEqual(0.0091898148148148148148148148, Flux.JulianDate.ConvertFromTimeParts(m.Hour, m.Minute, m.Second, m.Millisecond), 1E-6);
     }
     [TestMethod]
     public void ComputeJulianDayNumberGC()

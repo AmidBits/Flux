@@ -19,7 +19,7 @@ namespace Foundation
     {
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(794.0000000000000000000000160m, Flux.JulianDate.GetTimeSinceNoon(m.Value));
+      Assert.AreEqual(794.0000000000000000000000160, Flux.JulianDate.GetTimeSinceNoon(m.Value), 1E-6);
     }
 
     [TestMethod]
@@ -27,7 +27,7 @@ namespace Foundation
     {
       var fgd = new Flux.MomentUtc(1582, 10, 15, 0, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
 
-      Assert.AreEqual(2299160.5m, fgd.Value);
+      Assert.AreEqual(2299160.5, fgd.Value, 1E-6);
     }
     [TestMethod]
     public void FirstJulianCalendarDate()
@@ -41,7 +41,7 @@ namespace Foundation
     {
       var ljd = new Flux.MomentUtc(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(ConversionCalendar.JulianCalendar);
 
-      Assert.AreEqual(2299160.4999910995370370370370m, ljd.Value);
+      Assert.AreEqual(2299160.4999910995370370370370, ljd.Value, 1E-6);
     }
 
     [TestMethod]
@@ -56,28 +56,28 @@ namespace Foundation
     {
       var jd = new Flux.JulianDate(0).AddHours(1);
 
-      Assert.AreEqual(0.0416666666666666666666666667m, jd.Value);
+      Assert.AreEqual(0.0416666666666666666666666667, jd.Value,1E-6);
     }
     [TestMethod]
     public void AddMillieconds()
     {
       var jd = new Flux.JulianDate(0).AddMilliseconds(1);
 
-      Assert.AreEqual(0.0000000115740740740740740741m, jd.Value);
+      Assert.AreEqual(0.0000000115740740740740740741, jd.Value, 1E-6);
     }
     [TestMethod]
     public void AddMinutes()
     {
       var jd = new Flux.JulianDate(0).AddMinutes(1);
 
-      Assert.AreEqual(0.0006944444444444444444444444m, jd.Value);
+      Assert.AreEqual(0.0006944444444444444444444444, jd.Value, 1E-6);
     }
     [TestMethod]
     public void AddSeconds()
     {
       var jd = new Flux.JulianDate(0).AddSeconds(1);
 
-      Assert.AreEqual(0.0000115740740740740740740741m, jd.Value);
+      Assert.AreEqual(0.0000115740740740740740740741, jd.Value, 1E-6);
     }
     [TestMethod]
     public void AddWeeks()

@@ -30,7 +30,7 @@ namespace Static
 
       var pnr2 = Flux.Text.PositionalNotation.ForRadix(2);
 
-      Assert.AreEqual(binS102, pnr2.NumberToText(binI102));
+      Assert.AreEqual(binS102, pnr2.NumberToText(binI102).ToString());
       Assert.AreEqual(binI102, pnr2.TextToNumber(binS102));
     }
 
@@ -42,7 +42,7 @@ namespace Static
 
       var pnr10 = Flux.Text.PositionalNotation.ForRadix(10);
 
-      Assert.AreEqual(decS102, pnr10.NumberToText(decI102));
+      Assert.AreEqual(decS102, pnr10.NumberToText(decI102).ToString());
       Assert.AreEqual(decI102, pnr10.TextToNumber(decS102));
     }
 
@@ -54,7 +54,7 @@ namespace Static
 
       var pnr16 = Flux.Text.PositionalNotation.ForRadix(16);
 
-      Assert.AreEqual(hexS102, pnr16.NumberToText(hexI102));
+      Assert.AreEqual(hexS102, pnr16.NumberToText(hexI102).ToString());
       Assert.AreEqual(hexI102, pnr16.TextToNumber(hexS102));
     }
   }
