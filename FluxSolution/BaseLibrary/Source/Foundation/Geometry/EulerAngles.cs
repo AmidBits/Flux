@@ -85,6 +85,70 @@ namespace Flux
 
       return new(x, y, z, angle);
     }
+    public Matrix4x4 ToMatrixTaitBryanXYZ()
+    {
+      var c1 = System.Math.Cos(m_y);
+      var s1 = System.Math.Sin(m_y);
+      var c2 = System.Math.Cos(m_p);
+      var s2 = System.Math.Sin(m_p);
+      var c3 = System.Math.Cos(m_r);
+      var s3 = System.Math.Sin(m_r);
+
+      return new Matrix4x4(
+        c2 * c3, -s2, c2 * s3, 0,
+        s1 * s3 + c1 * c3 * s2, c1 * s2, c1 * s2 * s3 - c3 * s1, 0,
+        c3 * s1 * s2 - c1 * s3, c2 * s1, c1 * c3 + s1 * s2 * s3, 0,
+        0, 0, 0, 1
+      );
+    }
+    public Matrix4x4 ToMatrixTaitBryanYXZ()
+    {
+      var c1 = System.Math.Cos(m_y);
+      var s1 = System.Math.Sin(m_y);
+      var c2 = System.Math.Cos(m_p);
+      var s2 = System.Math.Sin(m_p);
+      var c3 = System.Math.Cos(m_r);
+      var s3 = System.Math.Sin(m_r);
+
+      return new Matrix4x4(
+        c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, 0,
+        c2 * s3, c2 * c3, -s2, 0,
+        c1 * s2 * s3 - c3 * s1, c1 * c3 * s2 + s1 * s3, c1 * c2, 0,
+        0, 0, 0, 1
+      );
+    }
+    public Matrix4x4 ToMatrixTaitBryanZYX()
+    {
+      var c1 = System.Math.Cos(m_y);
+      var s1 = System.Math.Sin(m_y);
+      var c2 = System.Math.Cos(m_p);
+      var s2 = System.Math.Sin(m_p);
+      var c3 = System.Math.Cos(m_r);
+      var s3 = System.Math.Sin(m_r);
+
+      return new Matrix4x4(
+        c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, 0,
+        c2 * s1, c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, 0,
+        -s2, c2 * s3, c2 * c3, 0,
+        0, 0, 0, 1
+      );
+    }
+    public Matrix4x4 ToMatrixProperEulerZXZ()
+    {
+      var c1 = System.Math.Cos(m_y);
+      var s1 = System.Math.Sin(m_y);
+      var c2 = System.Math.Cos(m_p);
+      var s2 = System.Math.Sin(m_p);
+      var c3 = System.Math.Cos(m_r);
+      var s3 = System.Math.Sin(m_r);
+
+      return new Matrix4x4(
+        c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, 0,
+        c3 * s1 + c1 * c2 * s3, c1 * c2 * c3 - s1 * s3, -c1 * s2, 0,
+        s2 * s3, c3 * s2, c2, 0,
+        0, 0, 0, 1
+      );
+    }
     public Quaternion ToQuaternion()
     {
       var cy = System.Math.Cos(m_y * 0.5);

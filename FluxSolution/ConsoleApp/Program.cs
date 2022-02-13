@@ -20,16 +20,22 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      System.Console.WriteLine(Flux.KeplerianElements.ComputeProportionalityConstant(6.674e-11, 1.98847e30, 5.9722e24));
-      System.Console.WriteLine(Flux.EllipseGeometry.Eccentricity(2, 1.89881));
 
-      var a = new Flux.Vector4(0, 2, 3, 0);
-      var b = new Flux.Vector4(2, 4, 5, 0);
-      var cd = Flux.Vector4.ChebyshevDistance(a, b);
-      var ed = Flux.Vector4.EuclideanDistance(a, b);
-      var md = Flux.Vector4.ManhattanDistance(a, b);
-      var kd = Flux.Vector4.MinkowskiDistance(a, b, 3);
+      var ea = new Flux.EulerAngles(0, 0, Angle.ConvertDegreeToRadian(45));
 
+      var mtb = ea.ToMatrixTaitBryanZYX();
+      var mtbYXZ = ea.ToMatrixTaitBryanYXZ();
+      var mpe = ea.ToMatrixProperEulerZXZ();
+
+      var eatb = mtb.ToEulerAnglesTaitBryanZYX();
+      var eape = mpe.ToEulerAnglesProperEulerZXZ();
+
+      var v = new Flux.Vector4(0, 0, 1, 0);
+
+      var m = System.Numerics.Matrix4x4.CreateFromYawPitchRoll(0, 0, (float)Angle.ConvertDegreeToRadian(45));
+
+      var vtb = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mtb));
+      var vpe = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mpe));
     }
 
     private static void Main(string[] args)
