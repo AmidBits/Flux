@@ -79,13 +79,13 @@ namespace Flux
       var sqy = m_y * m_y;
       var sqz = m_z * m_z;
 
-      var unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor.
+      var unit = sqx + sqy + sqz + sqw; // If unit = 1 then normalised, otherwise unit is correction factor.
       var test = m_x * m_y + m_z * m_w;
 
-      if (test > 0.499 * unit) // Singularity at north pole.
+      if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
         return new(2 * System.Math.Atan2(m_x, m_w), Math.PI / 2, 0);
 
-      if (test < -0.499 * unit) // Singularity at south pole.
+      if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
         return new(-2 * System.Math.Atan2(m_x, m_w), -Math.PI / 2, 0);
 
       var h = System.Math.Atan2(2 * m_y * m_w - 2 * m_x * m_z, sqx - sqy - sqz + sqw);

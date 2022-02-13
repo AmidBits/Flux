@@ -2,58 +2,65 @@ namespace Flux
 {
   /// <summary>Euler-angles 3D rotation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Euler_angles"/>
+  /// <remarks>The Tait-Bryan sequence z-y'-x" (intrinsic rotations) or x-y-z (extrinsic rotations) represents the intrinsic rotations are known as: yaw, pitch and roll.</remarks>
   public struct EulerAngles
     : System.IEquatable<EulerAngles>
   {
-    private readonly double m_h;
-    private readonly double m_a;
-    private readonly double m_b;
+    private readonly double m_y; // Yaw.
+    private readonly double m_p; // Pitch.
+    private readonly double m_r; // Roll.
 
-    public EulerAngles(double heading, double attitude, double bank)
+    public EulerAngles(double yaw, double pitch, double roll)
     {
-      m_h = heading;
-      m_a = attitude;
-      m_b = bank;
+      m_y = yaw;
+      m_p = pitch;
+      m_r = roll;
     }
 
-    /// <summary></summary>
-    public double Heading
-      => m_h;
-    /// <summary></summary>
-    public double Attitude
-      => m_a;
-    /// <summary></summary>
-    public double Bank
-      => m_b;
-
-    /// <summary></summary>
-    public double Azimuth
-      => m_h;
-    /// <summary></summary>
-    public double Elevation
-      => m_a;
-    /// <summary></summary>
-    public double Tilt
-      => m_b;
-
-    /// <summary>Angular Velocity: Yaw</summary>
+    ///// <summary>The horizontal directional (left/right) angle.</summary>
+    //public double Azimuth
+    //  => m_h;
+    ///// <summary>The horizontal directional (left/right) angle.</summary>
+    //public double Bearing
+    //  => m_h;
+    ///// <summary>The horizontal directional (left/right) angle.</summary>
+    //public double Heading
+    //  => m_h;
+    /// <summary>The horizontal directional (left/right) angle.</summary>
     public double Yaw
-      => m_h;
-    /// <summary>Angular Velocity: Pitch</summary>
+      => m_y;
+
+    ///// <summary>The vertical directional (up/down) angle.</summary>
+    //public double Attitude
+    //  => m_a;
+    ///// <summary>The vertical directional (up/down) angle.</summary>
+    //public double Elevation
+    //  => m_a;
+    ///// <summary>The vertical directional (up/down) angle.</summary>
+    //public double Inclination
+    //  => m_a;
+    /// <summary>The vertical directional (up/down) angle.</summary>
     public double Pitch
-      => m_a;
-    /// <summary>Angular Velocity: Roll</summary>
+      => m_p;
+
+    ///// <summary>The horizontal lean (left/right) angle.</summary>
+    //public double Bank
+    //  => m_b;
+    /// <summary>The horizontal lean (left/right) angle.</summary>
     public double Roll
-      => m_b;
+      => m_r;
+    ///// <summary>The horizontal lean (left/right) angle.</summary>
+    //public double Tilt
+    //  => m_b;
 
     public AxisAngle ToAxisAngle()
     {
-      var c1 = System.Math.Cos(m_h / 2);
-      var s1 = System.Math.Sin(m_h / 2);
-      var c2 = System.Math.Cos(m_a / 2);
-      var s2 = System.Math.Sin(m_a / 2);
-      var c3 = System.Math.Cos(m_b / 2);
-      var s3 = System.Math.Sin(m_b / 2);
+      var c1 = System.Math.Cos(m_y / 2);
+      var s1 = System.Math.Sin(m_y / 2);
+      var c2 = System.Math.Cos(m_p / 2);
+      var s2 = System.Math.Sin(m_p / 2);
+      var c3 = System.Math.Cos(m_r / 2);
+      var s3 = System.Math.Sin(m_r / 2);
 
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
@@ -80,20 +87,17 @@ namespace Flux
     }
     public Quaternion ToQuaternion()
     {
-      var c1 = System.Math.Cos(m_h / 2);
-      var s1 = System.Math.Sin(m_h / 2);
-      var c2 = System.Math.Cos(m_a / 2);
-      var s2 = System.Math.Sin(m_a / 2);
-      var c3 = System.Math.Cos(m_b / 2);
-      var s3 = System.Math.Sin(m_b / 2);
+      var cy = System.Math.Cos(m_y * 0.5);
+      var sy = System.Math.Sin(m_y * 0.5);
+      var cp = System.Math.Cos(m_p * 0.5);
+      var sp = System.Math.Sin(m_p * 0.5);
+      var cr = System.Math.Cos(m_r * 0.5);
+      var sr = System.Math.Sin(m_r * 0.5);
 
-      var c1c2 = c1 * c2;
-      var s1s2 = s1 * s2;
-
-      var x = c1c2 * s3 + s1s2 * c3;
-      var y = s1 * c2 * c3 + c1 * s2 * s3;
-      var z = c1 * s2 * c3 - s1 * c2 * s3;
-      var w = c1c2 * c3 - s1s2 * s3;
+      var w = cr * cp * cy + sr * sp * sy;
+      var x = sr * cp * cy - cr * sp * sy;
+      var y = cr * sp * cy + sr * cp * sy;
+      var z = cr * cp * sy - sr * sp * cy;
 
       return new(x, y, z, w);
     }
@@ -101,12 +105,12 @@ namespace Flux
     #region Static methods
     public (double x, double y, double z, double w) ConvertToQuaternion()
     {
-      var c1 = System.Math.Cos(m_h / 2);
-      var s1 = System.Math.Sin(m_h / 2);
-      var c2 = System.Math.Cos(m_a / 2);
-      var s2 = System.Math.Sin(m_a / 2);
-      var c3 = System.Math.Cos(m_b / 2);
-      var s3 = System.Math.Sin(m_b / 2);
+      var c1 = System.Math.Cos(m_y / 2);
+      var s1 = System.Math.Sin(m_y / 2);
+      var c2 = System.Math.Cos(m_p / 2);
+      var s2 = System.Math.Sin(m_p / 2);
+      var c3 = System.Math.Cos(m_r / 2);
+      var s3 = System.Math.Sin(m_r / 2);
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
       var x = c1c2 * s3 + s1s2 * c3;
@@ -150,16 +154,16 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     public bool Equals(EulerAngles other)
-      => m_h == other.m_h && m_a == other.m_a && m_b == other.m_b;
+      => m_y == other.m_y && m_p == other.m_p && m_r == other.m_r;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is EulerAngles o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_h, m_a, m_b);
+      => System.HashCode.Combine(m_y, m_p, m_r);
     public override string ToString()
-      => $"{GetType().Name} {{ Heading = {m_h}, Attitude = {m_a}, Bank = {m_b} }}";
+      => $"{GetType().Name} {{ Heading = {m_y}, Attitude = {m_p}, Bank = {m_r} }}";
     #endregion Object overrides
   }
 }
