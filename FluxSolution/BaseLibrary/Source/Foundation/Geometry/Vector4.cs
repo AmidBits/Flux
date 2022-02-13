@@ -103,7 +103,7 @@ namespace Flux
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevDistance(in Vector4 v1, in Vector4 v2, double edgeLength = 1)
-      => v1.m_v256d.ChebyshevDistance(v1.m_v256d, edgeLength).GetElement(0);
+      => v1.m_v256d.ChebyshevDistance(v2.m_v256d, edgeLength).GetElement(0);
     /// <summary>Compute the Chebyshev length of vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static double ChebyshevLength(in Vector4 v, double edgeLength = 1)
@@ -146,6 +146,7 @@ namespace Flux
     /// <param name="amount">Value between 0 and 1 indicating the weight of the second source vector.</param>
     public static Vector4 Lerp(in Vector4 v1, in Vector4 v2, double amount)
       => (Vector4)v1.m_v256d.Lerp(v2.m_v256d, amount);
+
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanDistance(in Vector4 v1, in Vector4 v2, double edgeLength = 1)
@@ -154,6 +155,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static double ManhattanLength(in Vector4 v, double edgeLength = 1)
       => v.m_v256d.ManhattanLength(edgeLength).GetElement(0);
+
     /// <summary>Returns a vector whose elements are the maximum of each of the pairs of elements in the two source vectors.</summary>
     public static Vector4 Max(in Vector4 v1, in Vector4 v2)
       => (Vector4)v1.m_v256d.Max(v2.m_v256d);
@@ -161,9 +163,9 @@ namespace Flux
     public static Vector4 Min(in Vector4 v1, in Vector4 v2)
       => (Vector4)v1.m_v256d.Min(v2.m_v256d);
 
-    public static double MinkowsiDistance(Vector4 v1, Vector4 v2, int order)
+    public static double MinkowskiDistance(Vector4 v1, Vector4 v2, int order)
       => v1.m_v256d.MinkowskiDistance(v2.m_v256d, order).GetElement(0);
-    public static double MinkowsiLength(Vector4 v, int order)
+    public static double MinkowskiLength(Vector4 v, int order)
       => v.m_v256d.MinkowskiLength(order).GetElement(0);
 
     /// <summary>Returns a vector with the same direction as the given vector, but with a length of 1.</summary>

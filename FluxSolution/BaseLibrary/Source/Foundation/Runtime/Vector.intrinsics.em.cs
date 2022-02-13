@@ -55,6 +55,7 @@ namespace Flux
     /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
     public static Vector128<double> Add(this Vector128<double> source, double scalar)
       => Add(source, Vector128.Create(scalar));
+
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector256<double> Add(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -64,10 +65,12 @@ namespace Flux
     public static Vector256<double> Add(this Vector256<double> source, double scalar)
       => Add(source, Vector256.Create(scalar));
 
+    /// <summary>Creates a new vector with all components added together.</summary>
     public static Vector128<double> AddHorizontal(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.HorizontalAdd(source, source) // Add component pairs = (X + Y, X + Y).
       : Vector128.Create(source.GetElement(0) + source.GetElement(1));
+    /// <summary>Creates a new vector with all components added together.</summary>
     public static Vector256<double> AddHorizontal(this Vector256<double> source)
     {
       if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
@@ -180,12 +183,14 @@ namespace Flux
     public static Vector256<double> Divide(this Vector256<double> source, double denominator)
       => Divide(source, Vector256.Create(denominator));
 
+    /// <summary>Returns the quotient and remainder.</summary>
     public static Vector128<double> DivRem(this Vector128<double> source, Vector128<double> denominator, out Vector128<double> remainder)
     {
       var quotient = Divide(source, denominator);
       remainder = Subtract(source, Multiply(Truncate(quotient), denominator));
       return quotient;
     }
+    /// <summary>Returns the quotient and remainder.</summary>
     public static Vector256<double> DivRem(this Vector256<double> source, Vector256<double> denominator, out Vector256<double> remainder)
     {
       var quotient = Divide(source, denominator);
@@ -335,13 +340,25 @@ namespace Flux
     public static Vector256<double> MinHorizontal(this Vector256<double> source)
       => Vector256.Create(Maths.Min(source.GetElement(0), source.GetElement(1), source.GetElement(2), source.GetElement(3)));
 
+    /// <summary></summary>
+    /// <param name="order"></param>
+    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector128<double> MinkowskiDistance(this Vector128<double> source, Vector128<double> target, int order)
       => MinkowskiLength(source.Subtract(target), order);
+    /// <summary></summary>
+    /// <param name="order"></param>
+    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector256<double> MinkowskiDistance(this Vector256<double> source, Vector256<double> target, int order)
       => MinkowskiLength(source.Subtract(target), order);
 
+    /// <summary></summary>
+    /// <param name="order"></param>
+    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector128<double> MinkowskiLength(this Vector128<double> source, int order)
       => Vector128.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
+    /// <summary></summary>
+    /// <param name="order"></param>
+    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector256<double> MinkowskiLength(this Vector256<double> source, int order)
       => Vector256.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
 
@@ -357,6 +374,7 @@ namespace Flux
     /// <summary>Returns a new vector with the product of the vector components and the scalar value.</summary>
     public static Vector128<double> Multiply(this Vector128<double> source, double scalar)
       => Multiply(source, Vector128.Create(scalar));
+
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
@@ -429,19 +447,43 @@ namespace Flux
     public static Vector256<double> Normalize(this Vector256<double> source)
       => Divide(source, EuclideanLength(source));
 
+    /// <summary>Calculates the power of the value and specified exponent, using exponentiation by repeated squaring. Essentially, we repeatedly double source, and if the exponent has a 1 bit at that position, we multiply/accumulate that into the result.</summary>
     public static Vector128<double> Pow(this Vector128<double> source, int exponent)
     {
-      var pow = source;
-      for (var i = exponent - 1; i > 0; i--)
-        pow = pow.Multiply(source);
-      return pow;
+      var result = Vector128.Create(1d, 1d);
+
+      if (exponent >= 1)
+      {
+        while (exponent > 0)
+        {
+          if ((exponent & 1) == 1)
+            result = result.Multiply(source);
+          source = source.Multiply(source);
+          exponent >>= 1;
+        }
+      }
+      else if (exponent < 0) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+
+      return result;
     }
+    /// <summary>Calculates the power of the value and specified exponent, using exponentiation by repeated squaring. Essentially, we repeatedly double source, and if the exponent has a 1 bit at that position, we multiply/accumulate that into the result.</summary>
     public static Vector256<double> Pow(this Vector256<double> source, int exponent)
     {
-      var pow = source;
-      for (var i = exponent - 1; i > 0; i--)
-        pow = pow.Multiply(source);
-      return pow;
+      var result = Vector256.Create(1d, 1d, 1d, 1d);
+
+      if (exponent >= 1)
+      {
+        while (exponent > 0)
+        {
+          if ((exponent & 1) == 1)
+            result = result.Multiply(source);
+          source = source.Multiply(source);
+          exponent >>= 1;
+        }
+      }
+      else if (exponent < 0) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+
+      return result;
     }
 
     /// <summary>Returns a new vector with the reciprocal (1.0 / x) of each component.</summary>
@@ -477,6 +519,7 @@ namespace Flux
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
     public static Vector128<double> Remainder(this Vector128<double> source, double denominator)
       => Remainder(source, Vector128.Create(denominator));
+
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
     public static Vector256<double> Remainder(this Vector256<double> source, Vector256<double> denominator)
       => Subtract(source, Multiply(Truncate(Divide(source, denominator)), denominator));
@@ -624,6 +667,7 @@ namespace Flux
     /// <summary>Returns a new vector with the difference of the vector components and the scalar value.</summary>
     public static Vector128<double> Subtract(this Vector128<double> source, double scalar)
       => Subtract(source, Vector128.Create(scalar));
+
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector256<double> Subtract(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
