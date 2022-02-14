@@ -13,6 +13,8 @@ namespace Flux
     /// <summary>Returns the multiplicative identity matrix.</summary>
     public static Matrix4x4 Identity
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    public static Matrix4x4 ChangeOfBasisMatrix
+      => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
 
     /// <summary>Value at row 1, column 1 of the matrix.</summary>
     public double M11;
@@ -85,7 +87,7 @@ namespace Flux
       => Equals(Identity);
 
     /// <summary>Calculates the determinant of the matrix.</summary>
-    public double GetDeterminant()
+    public double Determinant()
     {
       // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
       // | e f g h | = a | j k l | - b | i k l | + c | i j l | - d | i j k |
@@ -132,6 +134,43 @@ namespace Flux
              d * (e * jo_kn - f * io_km + g * in_jm);
     }
 
+    public double GetGeneralDeterminant()
+      => M14 * M23 * M32 * M41 - M13 * M24 * M32 * M41 - M14 * M22 * M33 * M41 + M12 * M24 * M33 * M41 + M13 * M22 * M34 * M41 - M12 * M23 * M34 * M41 - M14 * M23 * M31 * M42 + M13 * M24 * M31 * M42 + M14 * M21 * M33 * M42 - M11 * M24 * M33 * M42 - M13 * M21 * M34 * M42 + M11 * M23 * M34 * M42 + M14 * M22 * M31 * M43 - M12 * M24 * M31 * M43 - M14 * M21 * M32 * M43 + M11 * M24 * M32 * M43 + M12 * M21 * M34 * M43 - M11 * M22 * M34 * M43 - M13 * M22 * M31 * M44 + M12 * M23 * M31 * M44 + M13 * M21 * M32 * M44 - M11 * M23 * M32 * M44 - M12 * M21 * M33 * M44 + M11 * M22 * M33 * M44;
+    public Matrix4x4 GetGeneralInverse()
+    {
+      var det = 1 / GetGeneralDeterminant();
+
+      return new Matrix4x4
+      (
+        (M23 * M34 * M42 - M24 * M33 * M42 + M24 * M32 * M43 - M22 * M34 * M43 - M23 * M32 * M44 + M22 * M33 * M44) * det,
+        (M14 * M33 * M42 - M13 * M34 * M42 - M14 * M32 * M43 + M12 * M34 * M43 + M13 * M32 * M44 - M12 * M33 * M44) * det,
+        (M13 * M24 * M42 - M14 * M23 * M42 + M14 * M22 * M43 - M12 * M24 * M43 - M13 * M22 * M44 + M12 * M23 * M44) * det,
+        (M14 * M23 * M32 - M13 * M24 * M32 - M14 * M22 * M33 + M12 * M24 * M33 + M13 * M22 * M34 - M12 * M23 * M34) * det,
+        (M24 * M33 * M41 - M23 * M34 * M41 - M24 * M31 * M43 + M21 * M34 * M43 + M23 * M31 * M44 - M21 * M33 * M44) * det,
+        (M13 * M34 * M41 - M14 * M33 * M41 + M14 * M31 * M43 - M11 * M34 * M43 - M13 * M31 * M44 + M11 * M33 * M44) * det,
+        (M14 * M23 * M41 - M13 * M24 * M41 - M14 * M21 * M43 + M11 * M24 * M43 + M13 * M21 * M44 - M11 * M23 * M44) * det,
+        (M13 * M24 * M31 - M14 * M23 * M31 + M14 * M21 * M33 - M11 * M24 * M33 - M13 * M21 * M34 + M11 * M23 * M34) * det,
+        (M22 * M34 * M41 - M24 * M32 * M41 + M24 * M31 * M42 - M21 * M34 * M42 - M22 * M31 * M44 + M21 * M32 * M44) * det,
+        (M14 * M32 * M41 - M12 * M34 * M41 - M14 * M31 * M42 + M11 * M34 * M42 + M12 * M31 * M44 - M11 * M32 * M44) * det,
+        (M12 * M24 * M41 - M14 * M22 * M41 + M14 * M21 * M42 - M11 * M24 * M42 - M12 * M21 * M44 + M11 * M22 * M44) * det,
+        (M14 * M22 * M31 - M12 * M24 * M31 - M14 * M21 * M32 + M11 * M24 * M32 + M12 * M21 * M34 - M11 * M22 * M34) * det,
+        (M23 * M32 * M41 - M22 * M33 * M41 - M23 * M31 * M42 + M21 * M33 * M42 + M22 * M31 * M43 - M21 * M32 * M43) * det,
+        (M12 * M33 * M41 - M13 * M32 * M41 + M13 * M31 * M42 - M11 * M33 * M42 - M12 * M31 * M43 + M11 * M32 * M43) * det,
+        (M13 * M22 * M41 - M12 * M23 * M41 - M13 * M21 * M42 + M11 * M23 * M42 + M12 * M21 * M43 - M11 * M22 * M43) * det,
+        (M12 * M23 * M31 - M13 * M22 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 + M11 * M22 * M33) * det
+      );
+    }
+
+    public double[,] ToArray()
+    {
+      return new double[,]
+      {
+        { M11, M12, M13, M14 },
+        { M21, M22, M23, M24 },
+        { M31, M32, M33, M34 },
+        { M41, M42, M43, M44 }
+      };
+    }
     public EulerAngles ToEulerAnglesTaitBryanZYX()
       => new EulerAngles(
         System.Math.Atan2(M11, M21),
@@ -880,13 +919,61 @@ namespace Flux
 
     //  return result;
     //}
+
+    /// <summary>Calculates the determinant of the matrix.</summary>
+    public static double OptimizedDeterminant(Matrix4x4 matrix)
+    {
+      // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
+      // | e f g h | = a | j k l | - b | i k l | + c | i j l | - d | i j k |
+      // | i j k l |     | n o p |     | m o p |     | m n p |     | m n o |
+      // | m n o p |
+      //
+      //   | f g h |
+      // a | j k l | = a ( f ( kp - lo ) - g ( jp - ln ) + h ( jo - kn ) )
+      //   | n o p |
+      //
+      //   | e g h |     
+      // b | i k l | = b ( e ( kp - lo ) - g ( ip - lm ) + h ( io - km ) )
+      //   | m o p |     
+      //
+      //   | e f h |
+      // c | i j l | = c ( e ( jp - ln ) - f ( ip - lm ) + h ( in - jm ) )
+      //   | m n p |
+      //
+      //   | e f g |
+      // d | i j k | = d ( e ( jo - kn ) - f ( io - km ) + g ( in - jm ) )
+      //   | m n o |
+      //
+      // Cost of operation
+      // 17 adds and 28 muls.
+      //
+      // add: 6 + 8 + 3 = 17
+      // mul: 12 + 16 = 28
+
+      double a = matrix.M11, b = matrix.M12, c = matrix.M13, d = matrix.M14;
+      double e = matrix.M21, f = matrix.M22, g = matrix.M23, h = matrix.M24;
+      double i = matrix.M31, j = matrix.M32, k = matrix.M33, l = matrix.M34;
+      double m = matrix.M41, n = matrix.M42, o = matrix.M43, p = matrix.M44;
+
+      double kp_lo = k * p - l * o;
+      double jp_ln = j * p - l * n;
+      double jo_kn = j * o - k * n;
+      double ip_lm = i * p - l * m;
+      double io_km = i * o - k * m;
+      double in_jm = i * n - j * m;
+
+      return a * (f * kp_lo - g * jp_ln + h * jo_kn) -
+             b * (e * kp_lo - g * ip_lm + h * io_km) +
+             c * (e * jp_ln - f * ip_lm + h * in_jm) -
+             d * (e * jo_kn - f * io_km + g * in_jm);
+    }
     /// <summary>
     /// Attempts to calculate the inverse of the given matrix. If successful, result will contain the inverted matrix.
     /// </summary>
     /// <param name="matrix">The source matrix to invert.</param>
     /// <param name="result">If successful, contains the inverted matrix.</param>
     /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
-    public static bool Invert(Matrix4x4 matrix, out Matrix4x4 result)
+    public static bool OptimizedInverse(Matrix4x4 matrix, out Matrix4x4 result)
     {
       //                                       -1
       // If you have matrix M, inverse Matrix M   can compute
@@ -1046,6 +1133,7 @@ namespace Flux
 
       return true;
     }
+
     /// <summary>Linearly interpolates between the corresponding values of two matrices.</summary>
     /// <param name="amount">The relative weight of the second source matrix.</param>
     public static Matrix4x4 Lerp(Matrix4x4 m1, Matrix4x4 m2, double amount) => new(

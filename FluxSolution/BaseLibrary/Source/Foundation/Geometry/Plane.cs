@@ -95,7 +95,7 @@ namespace Flux
     /// <param name="matrix">The transformation matrix to apply to the Plane.</param>
     public static Plane Transform(Plane plane, Matrix4x4 matrix)
     {
-      Matrix4x4.Invert(matrix, out var m);
+      Matrix4x4.OptimizedInverse(matrix, out var m);
 
       double x = plane.X, y = plane.Y, z = plane.Z, w = plane.Distance;
 

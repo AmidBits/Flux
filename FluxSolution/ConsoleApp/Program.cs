@@ -21,21 +21,39 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
-      var ea = new Flux.EulerAngles(0, 0, Angle.ConvertDegreeToRadian(45));
+      var ea = new Flux.EulerAngles(Angle.ConvertDegreeToRadian(45), 0, 0);
 
-      var mtb = ea.ToMatrixTaitBryanZYX();
-      var mtbYXZ = ea.ToMatrixTaitBryanYXZ();
-      var mpe = ea.ToMatrixProperEulerZXZ();
+      //var mtbZYX = ea.ToMatrixTaitBryanZYX();
+      //System.Console.WriteLine(mtbZYX.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      //System.Console.WriteLine();
+      //var b = Flux.Matrix4x4.Invert(mtbZYX, out var mtbZYXi);
+      //System.Console.WriteLine(mtbZYXi.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      //System.Console.WriteLine();
+      ////return;
+      //var mtbYXZ = ea.ToMatrixTaitBryanYXZ();
+      //System.Console.WriteLine(mtbYXZ.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      //System.Console.WriteLine();
+      var mpeZXZ = ea.ToMatrixProperEulerZXZ();
+      var b = Flux.Matrix4x4.OptimizedInverse(mpeZXZ, out var mpeZXZi);
+      System.Console.WriteLine(mpeZXZi.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      System.Console.WriteLine();
+      var mpeZXZi2 = mpeZXZ.GetGeneralInverse();
+      System.Console.WriteLine(mpeZXZi2.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      System.Console.WriteLine();
 
-      var eatb = mtb.ToEulerAnglesTaitBryanZYX();
-      var eape = mpe.ToEulerAnglesProperEulerZXZ();
+      //var eatbZYX = mtbZYX.ToEulerAnglesTaitBryanZYX();
+      ////var eatbYXZ = mtbZYX.ToEulerAnglesTaitBryanYXZ();
+      //var eapeZXZ = mpeZXZ.ToEulerAnglesProperEulerZXZ();
 
-      var v = new Flux.Vector4(0, 0, 1, 0);
+      //var v = new Flux.Vector4(0, 0, 1, 0);
 
-      var m = System.Numerics.Matrix4x4.CreateFromYawPitchRoll(0, 0, (float)Angle.ConvertDegreeToRadian(45));
+      //var m = System.Numerics.Matrix4x4.CreateFromYawPitchRoll(0, 0, (float)Angle.ConvertDegreeToRadian(45));
+      //System.Console.WriteLine(m.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
+      //System.Console.WriteLine();
 
-      var vtb = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mtb));
-      var vpe = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mpe));
+      //var vtbZYX = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mtbZYX));
+      //var vtbYXZ = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mtbYXZ));
+      //var vpeZXZ = Flux.Vector4.Normalize(Flux.Vector4.Transform(v, mpeZXZ));
     }
 
     private static void Main(string[] args)
