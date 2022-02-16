@@ -21,6 +21,17 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
+      var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+
+      System.Console.WriteLine(ints.GetMaximumSumSubarray(out var startIndex, out var count));
+      return;
+
+      for (var n = 0; n <= 31; n++)
+        System.Console.WriteLine($"{n}{Flux.ExtensionMethods.GetOrdinalIndicator(n)}");
+
+      return;
+
+
       var ea = new Flux.EulerAngles(0, 0, Angle.ConvertDegreeToRadian(45));
 
       //var mtbZYX = ea.ToMatrixTaitBryanZYX();
