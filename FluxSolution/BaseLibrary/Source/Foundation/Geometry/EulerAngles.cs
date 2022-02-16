@@ -101,7 +101,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
-    public Matrix4x4 ToMatrixTaitBryanYXZ()
+    public Matrix4x4 ToMatrixLhTaitBryanYXZ()
     {
       var c1 = System.Math.Cos(m_y);
       var s1 = System.Math.Sin(m_y);
@@ -117,14 +117,14 @@ namespace Flux
         0, 0, 0, 1
       );
     }
-    public Matrix4x4 ToMatrixTaitBryanZYX()
+    public Matrix4x4 ToMatrixLhTaitBryanZYX()
     {
-      var c1 = System.Math.Cos(m_y);
-      var s1 = System.Math.Sin(m_y);
+      var c3 = System.Math.Cos(m_y);
+      var s3 = System.Math.Sin(m_y);
       var c2 = System.Math.Cos(m_p);
       var s2 = System.Math.Sin(m_p);
-      var c3 = System.Math.Cos(m_r);
-      var s3 = System.Math.Sin(m_r);
+      var c1 = System.Math.Cos(m_r);
+      var s1 = System.Math.Sin(m_r);
 
       return new Matrix4x4(
         c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, 0,
@@ -133,7 +133,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
-    public Matrix4x4 ToMatrixProperEulerZXZ()
+    public Matrix4x4 ToMatrixLhProperEulerZXZ()
     {
       var c1 = System.Math.Cos(m_y);
       var s1 = System.Math.Sin(m_y);

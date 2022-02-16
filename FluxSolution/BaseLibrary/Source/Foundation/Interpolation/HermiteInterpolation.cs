@@ -1,19 +1,41 @@
 namespace Flux
 {
   public class HermiteInterpolation
-    : IFourfoldInterpolatable
+    : IInterpolatable
   {
-    public double Bias { get; private set; }
-    public double Tension { get; private set; }
+    private readonly double m_v0, m_v1, m_v2, m_v3;
 
-    public HermiteInterpolation(double bias, double tension)
+    private double m_bias, m_tension;
+
+    public HermiteInterpolation(double v0, double v1, double v2, double v3, double bias, double tension)
     {
-      Bias = bias;
-      Tension = tension;
+      m_v0 = v0;
+      m_v1 = v1;
+      m_v2 = v2;
+      m_v3 = v3;
+
+      m_bias = bias;
+      m_tension = tension;
+    }
+    public HermiteInterpolation(double v0, double v1, double v2, double v3)
+      : this(v0, v1, v2, v3, 0, 0)
+    {
     }
 
-    public double GetInterpolation(double v0, double v1, double v2, double v3, double mu)
-      => Interpolate(v0, v1, v2, v3, mu, Tension, Bias);
+    public double V0
+       => m_v0;
+    public double V1
+      => m_v1;
+    public double V2
+      => m_v2;
+    public double V3
+      => m_v3;
+
+    public double Bias { get => m_bias; set => m_bias = value; }
+    public double Tension { get => m_tension; set => m_tension = value; }
+
+    public double GetInterpolation(double mu)
+      => Interpolate(m_v0, m_v1, m_v2, m_v3, mu, m_tension, m_bias);
 
     /// <summary>Hermite interpolation like cubic requires 4 points so that it can achieve a higher degree of continuity. In addition it has nice tension and biasing controls. Tension can be used to tighten up the curvature at the known points. The bias is used to twist the curve about the known points. The examples shown here have the default tension and bias values of 0, it will be left as an exercise for the reader to explore different tension and bias values.</summary>
     /// <param name="v0">Pre-source point.</param>

@@ -4,19 +4,36 @@
   public struct BitStructure32
     : System.IEquatable<BitStructure32>
   {
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly byte m_byte0;
-    [System.Runtime.InteropServices.FieldOffset(1)] private readonly byte m_byte1;
-    [System.Runtime.InteropServices.FieldOffset(2)] private readonly byte m_byte2;
-    [System.Runtime.InteropServices.FieldOffset(3)] private readonly byte m_byte3;
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly int m_int32;
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly float m_single;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private readonly byte m_byte0;
+    [System.Runtime.InteropServices.FieldOffset(1)]
+    private readonly byte m_byte1;
+    [System.Runtime.InteropServices.FieldOffset(2)]
+    private readonly byte m_byte2;
+    [System.Runtime.InteropServices.FieldOffset(3)]
+    private readonly byte m_byte3;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private int m_int32;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private uint m_uint32;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private float m_single;
 
-    public byte Byte0 => m_byte0;
-    public byte Byte1 => m_byte1;
-    public byte Byte2 => m_byte2;
-    public byte Byte3 => m_byte3;
-    public float FloatingPoint32 => m_single;
-    public int Integer32 => m_int32;
+    public byte Byte0
+    { get => m_byte0; }
+    public byte Byte1
+    { get => m_byte1; }
+    public byte Byte2
+    { get => m_byte2; }
+    public byte Byte3
+    { get => m_byte3; }
+    public int Int32
+    { get => m_int32; set => m_int32 = value; }
+    [System.CLSCompliant(false)]
+    public uint UInt32
+    { get => m_uint32; set => m_uint32 = value; }
+    public float Single
+    { get => m_single; set => m_single = value; }
 
     public BitStructure32(byte[] bytes, int offset = 0)
       : this()
@@ -31,6 +48,10 @@
     public BitStructure32(int value)
       : this()
       => m_int32 = value;
+    [System.CLSCompliant(false)]
+    public BitStructure32(uint value)
+      : this()
+      => m_uint32 = value;
     public BitStructure32(float value)
       : this()
       => m_single = value;

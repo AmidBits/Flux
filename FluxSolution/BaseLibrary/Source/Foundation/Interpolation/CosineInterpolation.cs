@@ -1,10 +1,23 @@
 namespace Flux
 {
   public class CosineInterpolation
-    : ITwofoldInterpolatable
+    : IInterpolatable
   {
-    public double GetInterpolation(double v1, double v2, double mu)
-      => Interpolate(v1, v2, mu);
+    private double m_v1, m_v2;
+
+    public CosineInterpolation(double v1, double v2)
+    {
+      m_v1 = v1;
+      m_v2 = v2;
+    }
+
+    public double V1
+      => m_v1;
+    public double V2
+      => m_v2;
+
+    public double GetInterpolation(double mu)
+      => Interpolate(m_v1, m_v2, mu);
 
     /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
     /// <param name="v1">Source point.</param>

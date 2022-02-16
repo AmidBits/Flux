@@ -21,7 +21,7 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
-      var ea = new Flux.EulerAngles(Angle.ConvertDegreeToRadian(45), 0, 0);
+      var ea = new Flux.EulerAngles(0, 0, Angle.ConvertDegreeToRadian(45));
 
       //var mtbZYX = ea.ToMatrixTaitBryanZYX();
       //System.Console.WriteLine(mtbZYX.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
@@ -33,11 +33,17 @@ namespace ConsoleApp
       //var mtbYXZ = ea.ToMatrixTaitBryanYXZ();
       //System.Console.WriteLine(mtbYXZ.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
       //System.Console.WriteLine();
-      var mpeZXZ = ea.ToMatrixProperEulerZXZ();
-      var b = Flux.Matrix4x4.OptimizedInverse(mpeZXZ, out var mpeZXZi);
+      var mpeZXZ = ea.ToMatrixLhProperEulerZXZ();
+      var mtbZYX = ea.ToMatrixLhTaitBryanZYX();
+      var mtbYXZ = ea.ToMatrixLhTaitBryanYXZ();
+      var mpeZXZi = mpeZXZ.GetInverseGeneral();
+      var mtbZYXi = mtbZYX.GetInverseGeneral();
+      var mtbYXZi = mtbYXZ.GetInverseGeneral();
       System.Console.WriteLine(mpeZXZi.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
       System.Console.WriteLine();
-      var mpeZXZi2 = mpeZXZ.GetGeneralInverse();
+      mpeZXZ.GetInverseOptimized(out var mpeZXZi2);
+      mtbZYX.GetInverseOptimized(out var mtbZYXi2);
+      mtbYXZ.GetInverseOptimized(out var mtbYXZi2);
       System.Console.WriteLine(mpeZXZi2.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
       System.Console.WriteLine();
 
@@ -47,7 +53,7 @@ namespace ConsoleApp
 
       //var v = new Flux.Vector4(0, 0, 1, 0);
 
-      //var m = System.Numerics.Matrix4x4.CreateFromYawPitchRoll(0, 0, (float)Angle.ConvertDegreeToRadian(45));
+      var m = System.Numerics.Matrix4x4.CreateFromYawPitchRoll(0, 0, (float)Angle.ConvertDegreeToRadian(45));
       //System.Console.WriteLine(m.ToArray().ToConsoleBlock(uniformWidth: true, centerContent: true));
       //System.Console.WriteLine();
 

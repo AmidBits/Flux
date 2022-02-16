@@ -4,27 +4,52 @@
   public struct BitStructure64
     : System.IEquatable<BitStructure64>
   {
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly byte m_byte0;
-    [System.Runtime.InteropServices.FieldOffset(1)] private readonly byte m_byte1;
-    [System.Runtime.InteropServices.FieldOffset(2)] private readonly byte m_byte2;
-    [System.Runtime.InteropServices.FieldOffset(3)] private readonly byte m_byte3;
-    [System.Runtime.InteropServices.FieldOffset(4)] private readonly byte m_byte4;
-    [System.Runtime.InteropServices.FieldOffset(5)] private readonly byte m_byte5;
-    [System.Runtime.InteropServices.FieldOffset(6)] private readonly byte m_byte6;
-    [System.Runtime.InteropServices.FieldOffset(7)] private readonly byte m_byte7;
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly double m_double;
-    [System.Runtime.InteropServices.FieldOffset(0)] private readonly long m_int64;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private readonly byte m_byte0;
+    [System.Runtime.InteropServices.FieldOffset(1)]
+    private readonly byte m_byte1;
+    [System.Runtime.InteropServices.FieldOffset(2)]
+    private readonly byte m_byte2;
+    [System.Runtime.InteropServices.FieldOffset(3)]
+    private readonly byte m_byte3;
+    [System.Runtime.InteropServices.FieldOffset(4)]
+    private readonly byte m_byte4;
+    [System.Runtime.InteropServices.FieldOffset(5)]
+    private readonly byte m_byte5;
+    [System.Runtime.InteropServices.FieldOffset(6)]
+    private readonly byte m_byte6;
+    [System.Runtime.InteropServices.FieldOffset(7)]
+    private readonly byte m_byte7;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private double m_double;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private long m_int64;
+    [System.Runtime.InteropServices.FieldOffset(0)]
+    private ulong m_uint64;
 
-    public byte Byte0 => m_byte0;
-    public byte Byte1 => m_byte1;
-    public byte Byte2 => m_byte2;
-    public byte Byte3 => m_byte3;
-    public byte Byte4 => m_byte4;
-    public byte Byte5 => m_byte5;
-    public byte Byte6 => m_byte6;
-    public byte Byte7 => m_byte7;
-    public double FloatingPoint64 => m_double;
-    public long Integer64 => m_int64;
+    public byte Byte0
+    { get => m_byte0; }
+    public byte Byte1
+    { get => m_byte1; }
+    public byte Byte2
+    { get => m_byte2; }
+    public byte Byte3
+    { get => m_byte3; }
+    public byte Byte4
+    { get => m_byte4; }
+    public byte Byte5
+    { get => m_byte5; }
+    public byte Byte6
+    { get => m_byte6; }
+    public byte Byte7
+    { get => m_byte7; }
+    public double Double
+    { get => m_double; set => m_double = value; }
+    public long Int64
+    { get => m_int64; set => m_int64 = value; }
+    [System.CLSCompliant(false)]
+    public ulong UInt64
+    { get => m_uint64; set => m_uint64 = value; }
 
     public BitStructure64(byte[] bytes, int offset = 0)
       : this()
@@ -40,12 +65,16 @@
       m_byte6 = bytes[offset + 6];
       m_byte7 = bytes[offset + 7];
     }
-    public BitStructure64(long value)
-      : this()
-      => m_int64 = value;
     public BitStructure64(double value)
       : this()
       => m_double = value;
+    public BitStructure64(long value)
+      : this()
+      => m_int64 = value;
+    [System.CLSCompliant(false)]
+    public BitStructure64(ulong value)
+      : this()
+      => m_uint64 = value;
 
     // Operators
     public static bool operator ==(BitStructure64 a, BitStructure64 b)

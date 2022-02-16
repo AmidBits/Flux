@@ -1,10 +1,29 @@
 namespace Flux
 {
   public class CubicPbInterpolation
-    : IFourfoldInterpolatable
+    : IInterpolatable
   {
-    public double GetInterpolation(double v0, double v1, double v2, double v3, double mu)
-      => Interpolate(v0, v1, v2, v3, mu);
+    private double m_v0, m_v1, m_v2, m_v3;
+
+    public CubicPbInterpolation(double v0, double v1, double v2, double v3)
+    {
+      m_v0 = v0;
+      m_v1 = v1;
+      m_v2 = v2;
+      m_v3 = v3;
+    }
+
+    public double V0
+      => m_v0;
+    public double V1
+      => m_v1;
+    public double V2
+      => m_v2;
+    public double V3
+      => m_v3;
+
+    public double GetInterpolation(double mu)
+      => Interpolate(m_v0, m_v1, m_v2, m_v3, mu);
 
     /// <summary>Cubic interpolation is the simplest method that offers true continuity between the segments. As such it requires more than just the two endpoints of the segment but also the two points on either side of them.</summary>
     /// <remarks>Paul Breeuwsma proposes the following coefficients for a smoother interpolated curve, which uses the slope between the previous point and the next as the derivative at the current point. The results is what are generally referred to as Catmull-Rom splines.</remarks>

@@ -86,8 +86,11 @@ namespace Flux
     public bool IsIdentity
       => Equals(Identity);
 
-    /// <summary>Calculates the determinant of the matrix.</summary>
-    public double Determinant()
+    /// <summary>Computes the determinant (generally) of the matrix.</summary>
+    public double GetDeterminantGeneral()
+      => M14 * M23 * M32 * M41 - M13 * M24 * M32 * M41 - M14 * M22 * M33 * M41 + M12 * M24 * M33 * M41 + M13 * M22 * M34 * M41 - M12 * M23 * M34 * M41 - M14 * M23 * M31 * M42 + M13 * M24 * M31 * M42 + M14 * M21 * M33 * M42 - M11 * M24 * M33 * M42 - M13 * M21 * M34 * M42 + M11 * M23 * M34 * M42 + M14 * M22 * M31 * M43 - M12 * M24 * M31 * M43 - M14 * M21 * M32 * M43 + M11 * M24 * M32 * M43 + M12 * M21 * M34 * M43 - M11 * M22 * M34 * M43 - M13 * M22 * M31 * M44 + M12 * M23 * M31 * M44 + M13 * M21 * M32 * M44 - M11 * M23 * M32 * M44 - M12 * M21 * M33 * M44 + M11 * M22 * M33 * M44;
+    /// <summary>Computes the determinant (optimized) of the matrix.</summary>
+    public double GetDeterminantOptimized()
     {
       // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
       // | e f g h | = a | j k l | - b | i k l | + c | i j l | - d | i j k |
@@ -134,11 +137,10 @@ namespace Flux
              d * (e * jo_kn - f * io_km + g * in_jm);
     }
 
-    public double GetGeneralDeterminant()
-      => M14 * M23 * M32 * M41 - M13 * M24 * M32 * M41 - M14 * M22 * M33 * M41 + M12 * M24 * M33 * M41 + M13 * M22 * M34 * M41 - M12 * M23 * M34 * M41 - M14 * M23 * M31 * M42 + M13 * M24 * M31 * M42 + M14 * M21 * M33 * M42 - M11 * M24 * M33 * M42 - M13 * M21 * M34 * M42 + M11 * M23 * M34 * M42 + M14 * M22 * M31 * M43 - M12 * M24 * M31 * M43 - M14 * M21 * M32 * M43 + M11 * M24 * M32 * M43 + M12 * M21 * M34 * M43 - M11 * M22 * M34 * M43 - M13 * M22 * M31 * M44 + M12 * M23 * M31 * M44 + M13 * M21 * M32 * M44 - M11 * M23 * M32 * M44 - M12 * M21 * M33 * M44 + M11 * M22 * M33 * M44;
-    public Matrix4x4 GetGeneralInverse()
+    /// <summary>Computes the general inverse of the matrix.</summary>
+    public Matrix4x4 GetInverseGeneral()
     {
-      var det = 1 / GetGeneralDeterminant();
+      var det = 1 / GetDeterminantGeneral();
 
       return new Matrix4x4
       (
@@ -160,7 +162,180 @@ namespace Flux
         (M12 * M23 * M31 - M13 * M22 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 + M11 * M22 * M33) * det
       );
     }
+    /// <summary>Attempts to calculate the inverse of the given matrix. If successful, result will contain the inverted matrix.</summary>
+    /// <param name="matrix">The source matrix to invert.</param>
+    /// <param name="result">If successful, contains the inverted matrix.</param>
+    /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
+    public bool GetInverseOptimized(out Matrix4x4 result)
+    {
+      //                                       -1
+      // If you have matrix M, inverse Matrix M   can compute
+      //
+      //     -1       1      
+      //    M   = --------- A
+      //            det(M)
+      //
+      // A is adjugate (adjoint) of M, where,
+      //
+      //      T
+      // A = C
+      //
+      // C is Cofactor matrix of M, where,
+      //           i + j
+      // C   = (-1)      * det(M  )
+      //  ij                    ij
+      //
+      //     [ a b c d ]
+      // M = [ e f g h ]
+      //     [ i j k l ]
+      //     [ m n o p ]
+      //
+      // First Row
+      //           2 | f g h |
+      // C   = (-1)  | j k l | = + ( f ( kp - lo ) - g ( jp - ln ) + h ( jo - kn ) )
+      //  11         | n o p |
+      //
+      //           3 | e g h |
+      // C   = (-1)  | i k l | = - ( e ( kp - lo ) - g ( ip - lm ) + h ( io - km ) )
+      //  12         | m o p |
+      //
+      //           4 | e f h |
+      // C   = (-1)  | i j l | = + ( e ( jp - ln ) - f ( ip - lm ) + h ( in - jm ) )
+      //  13         | m n p |
+      //
+      //           5 | e f g |
+      // C   = (-1)  | i j k | = - ( e ( jo - kn ) - f ( io - km ) + g ( in - jm ) )
+      //  14         | m n o |
+      //
+      // Second Row
+      //           3 | b c d |
+      // C   = (-1)  | j k l | = - ( b ( kp - lo ) - c ( jp - ln ) + d ( jo - kn ) )
+      //  21         | n o p |
+      //
+      //           4 | a c d |
+      // C   = (-1)  | i k l | = + ( a ( kp - lo ) - c ( ip - lm ) + d ( io - km ) )
+      //  22         | m o p |
+      //
+      //           5 | a b d |
+      // C   = (-1)  | i j l | = - ( a ( jp - ln ) - b ( ip - lm ) + d ( in - jm ) )
+      //  23         | m n p |
+      //
+      //           6 | a b c |
+      // C   = (-1)  | i j k | = + ( a ( jo - kn ) - b ( io - km ) + c ( in - jm ) )
+      //  24         | m n o |
+      //
+      // Third Row
+      //           4 | b c d |
+      // C   = (-1)  | f g h | = + ( b ( gp - ho ) - c ( fp - hn ) + d ( fo - gn ) )
+      //  31         | n o p |
+      //
+      //           5 | a c d |
+      // C   = (-1)  | e g h | = - ( a ( gp - ho ) - c ( ep - hm ) + d ( eo - gm ) )
+      //  32         | m o p |
+      //
+      //           6 | a b d |
+      // C   = (-1)  | e f h | = + ( a ( fp - hn ) - b ( ep - hm ) + d ( en - fm ) )
+      //  33         | m n p |
+      //
+      //           7 | a b c |
+      // C   = (-1)  | e f g | = - ( a ( fo - gn ) - b ( eo - gm ) + c ( en - fm ) )
+      //  34         | m n o |
+      //
+      // Fourth Row
+      //           5 | b c d |
+      // C   = (-1)  | f g h | = - ( b ( gl - hk ) - c ( fl - hj ) + d ( fk - gj ) )
+      //  41         | j k l |
+      //
+      //           6 | a c d |
+      // C   = (-1)  | e g h | = + ( a ( gl - hk ) - c ( el - hi ) + d ( ek - gi ) )
+      //  42         | i k l |
+      //
+      //           7 | a b d |
+      // C   = (-1)  | e f h | = - ( a ( fl - hj ) - b ( el - hi ) + d ( ej - fi ) )
+      //  43         | i j l |
+      //
+      //           8 | a b c |
+      // C   = (-1)  | e f g | = + ( a ( fk - gj ) - b ( ek - gi ) + c ( ej - fi ) )
+      //  44         | i j k |
+      //
+      // Cost of operation
+      // 53 adds, 104 muls, and 1 div.
+      double a = M11, b = M12, c = M13, d = M14;
+      double e = M21, f = M22, g = M23, h = M24;
+      double i = M31, j = M32, k = M33, l = M34;
+      double m = M41, n = M42, o = M43, p = M44;
 
+      var kp_lo = k * p - l * o;
+      var jp_ln = j * p - l * n;
+      var jo_kn = j * o - k * n;
+      var ip_lm = i * p - l * m;
+      var io_km = i * o - k * m;
+      var in_jm = i * n - j * m;
+
+      var a11 = +(f * kp_lo - g * jp_ln + h * jo_kn);
+      var a12 = -(e * kp_lo - g * ip_lm + h * io_km);
+      var a13 = +(e * jp_ln - f * ip_lm + h * in_jm);
+      var a14 = -(e * jo_kn - f * io_km + g * in_jm);
+
+      var det = a * a11 + b * a12 + c * a13 + d * a14;
+
+      if (System.Math.Abs(det) < double.Epsilon)
+      {
+        result = new Matrix4x4(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+
+        return false;
+      }
+
+      result = new Matrix4x4();
+
+      double invDet = 1 / det;
+
+      result.M11 = a11 * invDet;
+      result.M21 = a12 * invDet;
+      result.M31 = a13 * invDet;
+      result.M41 = a14 * invDet;
+
+      result.M12 = -(b * kp_lo - c * jp_ln + d * jo_kn) * invDet;
+      result.M22 = +(a * kp_lo - c * ip_lm + d * io_km) * invDet;
+      result.M32 = -(a * jp_ln - b * ip_lm + d * in_jm) * invDet;
+      result.M42 = +(a * jo_kn - b * io_km + c * in_jm) * invDet;
+
+      var gp_ho = g * p - h * o;
+      var fp_hn = f * p - h * n;
+      var fo_gn = f * o - g * n;
+      var ep_hm = e * p - h * m;
+      var eo_gm = e * o - g * m;
+      var en_fm = e * n - f * m;
+
+      result.M13 = +(b * gp_ho - c * fp_hn + d * fo_gn) * invDet;
+      result.M23 = -(a * gp_ho - c * ep_hm + d * eo_gm) * invDet;
+      result.M33 = +(a * fp_hn - b * ep_hm + d * en_fm) * invDet;
+      result.M43 = -(a * fo_gn - b * eo_gm + c * en_fm) * invDet;
+
+      var gl_hk = g * l - h * k;
+      var fl_hj = f * l - h * j;
+      var fk_gj = f * k - g * j;
+      var el_hi = e * l - h * i;
+      var ek_gi = e * k - g * i;
+      var ej_fi = e * j - f * i;
+
+      result.M14 = -(b * gl_hk - c * fl_hj + d * fk_gj) * invDet;
+      result.M24 = +(a * gl_hk - c * el_hi + d * ek_gi) * invDet;
+      result.M34 = -(a * fl_hj - b * el_hi + d * ej_fi) * invDet;
+      result.M44 = +(a * fk_gj - b * ek_gi + c * ej_fi) * invDet;
+
+      return true;
+    }
+
+    /// <summary>Creates a new matrix with the elements negated.</summary>
+    public Matrix4x4 GetNegated()
+      => new(-M11, -M12, -M13, -M14, -M21, -M22, -M23, -M24, -M31, -M32, -M33, -M34, -M41, -M42, -M43, -M44);
+
+    /// <summary>Creates a new matrix with the rows and columns transposed.</summary>
+    public Matrix4x4 GetTransposed()
+      => new(M11, M21, M31, M41, M12, M22, M32, M42, M13, M23, M33, M43, M14, M24, M34, M44);
+
+    /// <summary>Creates a new 4x4 two-dimensional array from the matrix.</summary>
     public double[,] ToArray()
     {
       return new double[,]
@@ -183,18 +358,6 @@ namespace Flux
         System.Math.Atan2(M33, System.Math.Sqrt(1 - M33 * M33)),
         System.Math.Atan2(M32, M31)
       );
-
-    /// <summary>Gets or sets the translation component of this matrix.</summary>
-    public Vector4 Translation
-    {
-      get => new(M41, M42, M43, 1);
-      set
-      {
-        M41 = value.X;
-        M42 = value.Y;
-        M43 = value.Z;
-      }
-    }
 
     #region Static methods
     /// <summary>Creates a spherical billboard that rotates around a specified object position.</summary>
@@ -695,29 +858,6 @@ namespace Flux
       return new Matrix4x4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, position.X, position.Y, position.Z, 1);
     }
 
-    //struct CanonicalBasis
-    //{
-    //  public Vector4 Row0;
-    //  public Vector4 Row1;
-    //  public Vector4 Row2;
-    //};
-
-    //[System.Security.SecuritySafeCritical]
-    //struct VectorBasis
-    //{
-    //  public unsafe Vector4* Element0;
-    //  public unsafe Vector4* Element1;
-    //  public unsafe Vector4* Element2;
-    //}
-
-    /// <summary>
-    /// Adds two matrices together.
-    /// </summary>
-    /// <param name="m1">The first source matrix.</param>
-    /// <param name="m2">The second source matrix.</param>
-    /// <returns>The resulting matrix.</returns>
-    public static Matrix4x4 Add(Matrix4x4 m1, Matrix4x4 m2)
-      => new(m1.M11 + m2.M11, m1.M12 + m2.M12, m1.M13 + m2.M13, m1.M14 + m2.M14, m1.M21 + m2.M21, m1.M22 + m2.M22, m1.M23 + m2.M23, m1.M24 + m2.M24, m1.M31 + m2.M31, m1.M32 + m2.M32, m1.M33 + m2.M33, m1.M34 + m2.M34, m1.M41 + m2.M41, m1.M42 + m2.M42, m1.M43 + m2.M43, m1.M44 + m2.M44);
     /// <summary>
     /// Attempts to extract the scale, translation, and rotation components from the given scale/rotation/translation matrix.
     /// If successful, the out parameters will contained the extracted values.
@@ -1158,44 +1298,6 @@ namespace Flux
       m1.M43 + (m2.M43 - m1.M43) * amount,
       m1.M44 + (m2.M44 - m1.M44) * amount
     );
-    /// <summary>
-    /// Multiplies a matrix by another matrix.
-    /// </summary>
-    /// <param name="m1">The first source matrix.</param>
-    /// <param name="m2">The second source matrix.</param>
-    /// <returns>The result of the multiplication.</returns>
-    public static Matrix4x4 Multiply(Matrix4x4 m1, Matrix4x4 m2)
-      => new(
-        // First row
-        m1.M11 * m2.M11 + m1.M12 * m2.M21 + m1.M13 * m2.M31 + m1.M14 * m2.M41,
-        m1.M11 * m2.M12 + m1.M12 * m2.M22 + m1.M13 * m2.M32 + m1.M14 * m2.M42,
-        m1.M11 * m2.M13 + m1.M12 * m2.M23 + m1.M13 * m2.M33 + m1.M14 * m2.M43,
-        m1.M11 * m2.M14 + m1.M12 * m2.M24 + m1.M13 * m2.M34 + m1.M14 * m2.M44,
-        // Second row
-        m1.M21 * m2.M11 + m1.M22 * m2.M21 + m1.M23 * m2.M31 + m1.M24 * m2.M41,
-        m1.M21 * m2.M12 + m1.M22 * m2.M22 + m1.M23 * m2.M32 + m1.M24 * m2.M42,
-        m1.M21 * m2.M13 + m1.M22 * m2.M23 + m1.M23 * m2.M33 + m1.M24 * m2.M43,
-        m1.M21 * m2.M14 + m1.M22 * m2.M24 + m1.M23 * m2.M34 + m1.M24 * m2.M44,
-        // Third row
-        m1.M31 * m2.M11 + m1.M32 * m2.M21 + m1.M33 * m2.M31 + m1.M34 * m2.M41,
-        m1.M31 * m2.M12 + m1.M32 * m2.M22 + m1.M33 * m2.M32 + m1.M34 * m2.M42,
-        m1.M31 * m2.M13 + m1.M32 * m2.M23 + m1.M33 * m2.M33 + m1.M34 * m2.M43,
-        m1.M31 * m2.M14 + m1.M32 * m2.M24 + m1.M33 * m2.M34 + m1.M34 * m2.M44,
-        // Fourth row
-        m1.M41 * m2.M11 + m1.M42 * m2.M21 + m1.M43 * m2.M31 + m1.M44 * m2.M41,
-        m1.M41 * m2.M12 + m1.M42 * m2.M22 + m1.M43 * m2.M32 + m1.M44 * m2.M42,
-        m1.M41 * m2.M13 + m1.M42 * m2.M23 + m1.M43 * m2.M33 + m1.M44 * m2.M43,
-        m1.M41 * m2.M14 + m1.M42 * m2.M24 + m1.M43 * m2.M34 + m1.M44 * m2.M44
-      );
-    /// <summary>Multiplies a matrix by a scalar value.</summary>
-    public static Matrix4x4 Multiply(Matrix4x4 m, double scalar)
-      => new(m.M11 * scalar, m.M12 * scalar, m.M13 * scalar, m.M14 * scalar, m.M21 * scalar, m.M22 * scalar, m.M23 * scalar, m.M24 * scalar, m.M31 * scalar, m.M32 * scalar, m.M33 * scalar, m.M34 * scalar, m.M41 * scalar, m.M42 * scalar, m.M43 * scalar, m.M44 * scalar);
-    /// <summary>Returns a new matrix with the negated elements of the given matrix.</summary>
-    public static Matrix4x4 Negate(Matrix4x4 m)
-      => new(-m.M11, -m.M12, -m.M13, -m.M14, -m.M21, -m.M22, -m.M23, -m.M24, -m.M31, -m.M32, -m.M33, -m.M34, -m.M41, -m.M42, -m.M43, -m.M44);
-    /// <summary>Subtracts the second matrix from the first.</summary>
-    public static Matrix4x4 Subtract(Matrix4x4 m1, Matrix4x4 m2)
-      => new(m1.M11 - m2.M11, m1.M12 - m2.M12, m1.M13 - m2.M13, m1.M14 - m2.M14, m1.M21 - m2.M21, m1.M22 - m2.M22, m1.M23 - m2.M23, m1.M24 - m2.M24, m1.M31 - m2.M31, m1.M32 - m2.M32, m1.M33 - m2.M33, m1.M34 - m2.M34, m1.M41 - m2.M41, m1.M42 - m2.M42, m1.M43 - m2.M43, m1.M44 - m2.M44);
     /// <summary>Transforms the given matrix by applying the given Quaternion rotation.</summary>
     /// <param name="value">The source matrix to transform.</param>
     /// <param name="rotation">The rotation to apply.</param>
@@ -1252,11 +1354,6 @@ namespace Flux
         M44 = value.M44
       };
     }
-    /// <summary>Transposes the rows and columns of a matrix.</summary>
-    /// <param name="matrix">The source matrix.</param>
-    /// <returns>The transposed matrix.</returns>
-    public static Matrix4x4 Transpose(Matrix4x4 matrix)
-      => new(matrix.M11, matrix.M21, matrix.M31, matrix.M41, matrix.M12, matrix.M22, matrix.M32, matrix.M42, matrix.M13, matrix.M23, matrix.M33, matrix.M43, matrix.M14, matrix.M24, matrix.M34, matrix.M44);
     #endregion Static methods
 
     #region Operator overloads
@@ -1459,7 +1556,7 @@ namespace Flux
     }
     /// <summary>Returns a String representing this matrix instance.</summary>
     public override string ToString()
-      => $"{GetType().Name} {{ M11={M11} M12={M12} M13={M13} M14={M14}, M21={M21} M22={M22} M23={M23} M24={M24}, M31={M31} M32={M32} M33={M33} M34={M34}, M41={M41} M42={M42} M43={M43} M44={M44} }}";
+      => $"{GetType().Name} {{ {{M11:{M11} M12:{M12} M13:{M13} M14:{M14}}} {{M21:{M21} M22:{M22} M23:{M23} M24:{M24}}} {{M31:{M31} M32:{M32} M33:{M33} M34:{M34}}} {{M41:{M41} M42:{M42} M43:{M43} M44:{M44}}} }}";
     #endregion Object overrides
   }
 }

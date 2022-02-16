@@ -1,10 +1,29 @@
 namespace Flux
 {
   public class CubicInterpolation
-    : IFourfoldInterpolatable
+    : IInterpolatable
   {
-    public double GetInterpolation(double v0, double v1, double v2, double v3, double mu)
-      => Interpolate(v0, v1, v2, v3, mu);
+    private double m_v0, m_v1, m_v2, m_v3;
+
+    public CubicInterpolation(double v0, double v1, double v2, double v3)
+    {
+      m_v0 = v0;
+      m_v1 = v1;
+      m_v2 = v2;
+      m_v3 = v3;
+    }
+
+    public double V0
+      => m_v0;
+    public double V1
+      => m_v1;
+    public double V2
+      => m_v2;
+    public double V3
+      => m_v3;
+
+    public double GetInterpolation(double mu)
+      => Interpolate(m_v0, m_v1, m_v2, m_v3, mu);
 
     /// <summary>Cubic interpolation is the simplest method that offers true continuity between the segments. As such it requires more than just the two endpoints of the segment but also the two points on either side of them.</summary>
     /// <param name="v0">Pre-source point.</param>
