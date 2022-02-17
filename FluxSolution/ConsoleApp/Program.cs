@@ -23,7 +23,8 @@ namespace ConsoleApp
 
       var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
 
-      System.Console.WriteLine(ints.GetMaximumSumSubarray(out var startIndex, out var count));
+      var sum = ints.GetMaximumSumSubarray(out var startIndex, out var count);
+      System.Console.WriteLine($"Total sum equals {sum} ({sum.ToNamedGrouping().ToLowerInvariant()}) from {count} values starting at index {startIndex} (ending index is {startIndex + count - 1}).");
       return;
 
       for (var n = 0; n <= 31; n++)
