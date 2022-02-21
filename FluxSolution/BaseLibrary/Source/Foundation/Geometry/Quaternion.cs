@@ -83,10 +83,10 @@ namespace Flux
       var test = m_x * m_y + m_z * m_w;
 
       if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
-        return new(2 * System.Math.Atan2(m_x, m_w), Math.PI / 2, 0);
+        return new(2 * System.Math.Atan2(m_x, m_w), System.Math.PI / 2, 0);
 
       if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
-        return new(-2 * System.Math.Atan2(m_x, m_w), -Math.PI / 2, 0);
+        return new(-2 * System.Math.Atan2(m_x, m_w), -System.Math.PI / 2, 0);
 
       var h = System.Math.Atan2(2 * m_y * m_w - 2 * m_x * m_z, sqx - sqy - sqz + sqw);
       var a = System.Math.Asin(2 * test / unit);

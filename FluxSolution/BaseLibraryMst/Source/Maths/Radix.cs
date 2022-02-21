@@ -229,8 +229,6 @@ namespace Maths
       if (value >= int.MinValue && value <= int.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((int)value, 10), 200000).Assert(35076, 0.25);
       if (value >= long.MinValue && value <= long.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((long)value, 10), 200000).Assert(35076L, 0.25);
       Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits(value, 10), 200000).Assert((System.Numerics.BigInteger)35076, 1.2);
-      if (value >= uint.MinValue && value <= uint.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((uint)value, 10), 200000).Assert(35076U, 0.25);
-      if (value >= ulong.MinValue && value <= ulong.MaxValue) Flux.Services.Performance.Measure(() => Flux.Maths.ReverseDigits((ulong)value, 10), 200000).Assert(35076UL, 0.25);
     }
 
     [TestMethod]

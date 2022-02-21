@@ -1,3 +1,5 @@
+using System;
+
 namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>

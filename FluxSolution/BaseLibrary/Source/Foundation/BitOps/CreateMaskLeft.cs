@@ -13,12 +13,12 @@ namespace Flux
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     public static int CreateMaskLeftInt32(int bit1Count)
       => bit1Count >= 0 && bit1Count < 32
-      ? int.MinValue >> bit1Count
+      ? int.MinValue >> (bit1Count - 1)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     public static long CreateMaskLeftInt64(int bit1Count)
       => bit1Count >= 0 && bit1Count < 64
-      ? long.MinValue >> bit1Count
+      ? long.MinValue >> (bit1Count - 1)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
 
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>

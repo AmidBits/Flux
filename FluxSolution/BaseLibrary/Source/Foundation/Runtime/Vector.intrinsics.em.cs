@@ -531,14 +531,14 @@ namespace Flux
     public static Vector128<double> RoundToEven(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source)
-      : Vector128.Create(System.Math.Round(source.GetElement(0), MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), MidpointRounding.ToEven));
+      : Vector128.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToEven));
     /// <summary>Returns a new vector with the components rounded to their nearest integer values.</summary>
     public static Vector256<double> RoundToEven(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToNearestInteger(source)
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source.GetLower()).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source.GetUpper()))
-      : Vector256.Create(System.Math.Round(source.GetElement(0), MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), MidpointRounding.ToEven), System.Math.Round(source.GetElement(2), MidpointRounding.ToEven), System.Math.Round(source.GetElement(3), MidpointRounding.ToEven));
+      : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToEven), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToEven), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToEven), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToEven));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards negative infinity.</summary>
     public static Vector128<double> RoundToNegativeInfinity(this Vector128<double> source)

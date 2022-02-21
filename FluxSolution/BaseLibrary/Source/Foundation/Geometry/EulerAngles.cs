@@ -195,10 +195,10 @@ namespace Flux
       var test = x * y + z * w;
 
       if (test > 0.499 * unit) // singularity at north pole.
-        return new(2 * System.Math.Atan2(x, w), Math.PI / 2, 0);
+        return new(2 * System.Math.Atan2(x, w), System.Math.PI / 2, 0);
 
       if (test < -0.499 * unit) // // singularity at south pole
-        return new(-2 * System.Math.Atan2(x, w), -Math.PI / 2, 0);
+        return new(-2 * System.Math.Atan2(x, w), -System.Math.PI / 2, 0);
 
       var h = System.Math.Atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw);
       var a = System.Math.Asin(2 * test / unit);
