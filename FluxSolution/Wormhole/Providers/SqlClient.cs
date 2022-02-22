@@ -355,7 +355,7 @@ namespace Wormhole
 
 			using (var sbc = new System.Data.SqlClient.SqlBulkCopy(connection)
 			{
-				BatchSize = (int)((-Flux.Maths.Logistic(System.Math.Clamp(Flux.Maths.ISqrt(sourceFieldNames.Length), 1, 20), 0.3, 5, 20) + 30) * 1000),
+				BatchSize = (int)((-Flux.Probability.Logistic(System.Math.Clamp(Flux.Maths.ISqrt(sourceFieldNames.Length), 1, 20), 0.3, 5, 20) + 30) * 1000),
 				BulkCopyTimeout = (int)System.TimeSpan.FromHours(3).TotalSeconds,
 				DestinationTableName = targetEntity.QualifiedNameQuoted(3),
 				EnableStreaming = true,

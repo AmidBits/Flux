@@ -7,8 +7,8 @@ namespace Flux
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
 
     /// <summary></summary>
-    public static System.Collections.Generic.IReadOnlyList<byte> ByteBitLength
-      => System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), i => (byte)BitLength((uint)i)));
+    //public static System.Collections.Generic.IReadOnlyList<byte> ByteBitLength
+    //  => System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), i => (byte)BitLength((uint)i)));
 
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>

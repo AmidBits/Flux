@@ -20,6 +20,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+      var v1 = 0x0102030405060708;
+      var v2 = Flux.BitOps.ReverseBytes(v1);
+      var v2b = Flux.BitOps.ReverseBytes((uint)v1);
+
       var v = 17.ToBigInteger();
       var l2 = Flux.BitOps.Log2(0);
       var bl = Flux.BitOps.BitLength(v);

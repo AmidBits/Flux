@@ -5,10 +5,6 @@ namespace Flux
     // https://en.wikipedia.org/wiki/Bit_numbering#Most_significant_bit
     // http://aggregate.org/MAGIC/
 
-    /// <summary></summary>
-    public static System.Collections.Generic.IReadOnlyList<byte> ByteMostSignificant1Bit
-      => System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), i => (byte)MostSignificant1Bit((uint)i)));
-
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set) by clearing the least significant 1 bit in each iteration of a loop.</summary>
     public static System.Numerics.BigInteger MostSignificant1Bit(System.Numerics.BigInteger value)
       => value == 0
