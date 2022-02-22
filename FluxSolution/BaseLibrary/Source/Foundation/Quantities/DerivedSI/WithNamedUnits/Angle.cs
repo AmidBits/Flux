@@ -122,10 +122,9 @@
     /// <summary>Convert the angle specified in arcseconds to radians.</summary>
     public static double ConvertArcsecondToRadian(double arcsecond)
       => arcsecond / 206264.806247;
-    private const double DegreeToGradianMultiplier = 10.0 / 9.0;
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
     public static double ConvertDegreeToGradian(double degree)
-      => degree * DegreeToGradianMultiplier;
+      => degree * (10.0 / 9.0);
     /// <summary>Convert the angle specified in degrees to radians.</summary>
     public static double ConvertDegreeToRadian(double degree)
       => degree * Maths.PiOver180;
@@ -171,12 +170,91 @@
       => ConvertRotationAngleToCartesian2(Maths.PiX2 - (radian % Maths.PiX2 is var rad && rad < 0 ? rad + Maths.PiX2 : rad) + Maths.PiOver2);
     public static double ConvertTurnToRadian(double revolutions)
       => revolutions * Maths.PiX2;
-
-    //public static Angle FromCartesian2(double x, double y)
-    //  => new Angle(CartesianCoord2.ConvertToRotationAngle(x, y));
-    //public static Angle FromCartesian2Ex(double x, double y)
-    //  => new Angle(CartesianCoord2.ConvertToRotationAngleEx(x, y));
     #endregion Static methods
+
+    #region Trigonometry static methods
+
+    #region Gudermannian
+    /// <summary>Returns the Gudermannian of the specified value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Gudermannian_function"/>
+    public static double Gd(double value)
+      => System.Math.Atan(System.Math.Sinh(value));
+
+    // Inverse function:
+
+    /// <summary>Returns the inverse Gudermannian of the specified value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
+    /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
+    /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
+    public static double Agd(double value)
+      => System.Math.Atanh(System.Math.Sin(value));
+    #endregion Gudermannian
+
+    #region Hyperbolic reciprocals/inverse
+    // Hyperbolic reciprocals (1 divided by):
+
+    /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+    public static double Csch(double v)
+      => 1 / System.Math.Sinh(v);
+    /// <summary>Returns the hyperbolic secant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+    public static double Sech(double v)
+      => 1 / System.Math.Cosh(v);
+    /// <summary>Returns the hyperbolic cotangent of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+    public static double Coth(double v)
+      => System.Math.Cosh(v) / System.Math.Sinh(v);
+
+    // Inverse hyperbolic reciprocals:
+
+    /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    static public double Acsch(double v)
+      => System.Math.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
+    /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    static public double Asech(double v)
+      => System.Math.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
+    /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+    static public double Acoth(double v)
+      => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
+    #endregion Hyperbolic reciprocals/inverse
+
+    #region Reciprocals/Inverse
+    // Reciprocals (1 divided by):
+
+    /// <summary>Returns the cosecant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+    public static double Csc(double v)
+      => 1 / System.Math.Sin(v);
+    /// <summary>Returns the secant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+    public static double Sec(double v)
+      => 1 / System.Math.Cos(v);
+    /// <summary>Returns the cotangent of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+    public static double Cot(double v)
+      => 1 / System.Math.Tan(v);
+
+    // Inverse reciprocals:
+
+    /// <summary>Returns the inverse cosecant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+    public static double Acsc(double v)
+      => System.Math.Asin(1 / v);
+    /// <summary>Returns the inverse secant of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+    public static double Asec(double v)
+      => System.Math.Acos(1 / v);
+    /// <summary>Returns the inverse cotangent of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+    public static double Acot(double v)
+      => System.Math.Atan(1 / v);
+    #endregion Reciprocals/Inverse
+
+    #endregion Trigonometry static methods
 
     #region Overloaded operators
     public static explicit operator Angle(double value)
