@@ -24,18 +24,18 @@ namespace Flux
 
     /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
     public static int LeadingZeroCount(int value)
-      => LeadingZeroCount(unchecked((uint)value));
+      => System.Numerics.BitOperations.LeadingZeroCount(unchecked((uint)value));
     /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
     public static int LeadingZeroCount(long value)
-      => LeadingZeroCount(unchecked((ulong)value));
+      => System.Numerics.BitOperations.LeadingZeroCount(unchecked((ulong)value));
 
-    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
-    [System.CLSCompliant(false)]
-    public static int LeadingZeroCount(uint value)
-      => System.Numerics.BitOperations.LeadingZeroCount(value); // (value == 0) ? 32 : 31 - Log2(value);
-    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
-    [System.CLSCompliant(false)]
-    public static int LeadingZeroCount(ulong value)
-      => System.Numerics.BitOperations.LeadingZeroCount(value); // (value == 0) ? 64 : 63 - Log2(value); // (value <= uint.MaxValue) ? 32 + LeadingZeroCount((uint)value) : LeadingZeroCount((uint)(value >> 32));
+    ///// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
+    //[System.CLSCompliant(false)]
+    //public static int LeadingZeroCount(uint value)
+    //  => System.Numerics.BitOperations.LeadingZeroCount(value); // (value == 0) ? 32 : 31 - Log2(value);
+    ///// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
+    //[System.CLSCompliant(false)]
+    //public static int LeadingZeroCount(ulong value)
+    //  => System.Numerics.BitOperations.LeadingZeroCount(value); // (value == 0) ? 64 : 63 - Log2(value); // (value <= uint.MaxValue) ? 32 + LeadingZeroCount((uint)value) : LeadingZeroCount((uint)(value >> 32));
   }
 }

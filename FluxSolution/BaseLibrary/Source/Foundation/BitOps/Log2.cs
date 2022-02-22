@@ -22,19 +22,19 @@ namespace Flux
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     public static int Log2(int value)
-      => Log2(unchecked((uint)value));
+      => System.Numerics.BitOperations.Log2(unchecked((uint)value));
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     public static int Log2(long value)
-      => Log2(unchecked((ulong)value));
+      => System.Numerics.BitOperations.Log2(unchecked((ulong)value));
 
-    /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
-    [System.CLSCompliant(false)]
-    public static int Log2(uint value)
-      => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
-    /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
-    [System.CLSCompliant(false)]
-    public static int Log2(ulong value)
-      => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
+    ///// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
+    //[System.CLSCompliant(false)]
+    //public static int Log2(uint value)
+    //  => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
+    ///// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
+    //[System.CLSCompliant(false)]
+    //public static int Log2(ulong value)
+    //  => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
   }
 }

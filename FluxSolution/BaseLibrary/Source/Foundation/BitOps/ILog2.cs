@@ -15,8 +15,7 @@ namespace Flux
 
     [System.CLSCompliant(false)]
     public static int ByByteTable(uint value)
-    {
-      return value switch
+      => value switch
       {
         var v when v > 0x00FFFFFF => 0x18 + ByteTable[value >> 0x18],
         var v when v > 0x0000FFFF => 0x10 + ByteTable[value >> 0x10],
@@ -24,12 +23,10 @@ namespace Flux
         var v when v > 0x00000000 => 0x00 + ByteTable[value >> 0x00],
         _ => 0,
       };
-    }
 
     [System.CLSCompliant(false)]
     public static int ByByteTable(ulong value)
-    {
-      return value switch
+      => value switch
       {
         var v when v > 0x00FFFFFFFFFFFFFFUL => 0x38 + ByteTable[value >> 0x38],
         var v when v > 0x0000FFFFFFFFFFFFUL => 0x30 + ByteTable[value >> 0x30],
@@ -37,7 +34,6 @@ namespace Flux
         var v when v > 0x00000000FFFFFFFFUL => 0x20 + ByteTable[value >> 0x20],
         _ => ByByteTable((uint)(value & 0xFFFFFFFFUL)),
       };
-    }
 
     /// <summary>Contains the bit positions.</summary>
     public static readonly byte[] DeBruijnTable = new byte[] { 0, 9, 1, 10, 13, 21, 2, 29, 11, 14, 16, 18, 22, 25, 3, 30, 8, 12, 20, 28, 15, 17, 24, 7, 19, 27, 23, 6, 26, 5, 4, 31 };
