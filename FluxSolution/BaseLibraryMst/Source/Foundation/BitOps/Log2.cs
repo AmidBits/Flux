@@ -26,29 +26,5 @@ namespace Foundation.BitOps
       var expected = 19; // Log2() returns an int.
       Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
     }
-    [TestMethod]
-    public void Log2_UInt32()
-    {
-      Assert.AreEqual(pi[4], Flux.BitOps.Log2(pbi[18]));
-    }
-    [TestMethod]
-    public void Log2_UInt32_Speed()
-    {
-      var value = 670530U;
-      var expected = 19; // Log2() returns an int.
-      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.3);
-    }
-    [TestMethod]
-    public void Log2_UInt64()
-    {
-      Assert.AreEqual(pi[4], Flux.BitOps.Log2(pbi[18]));
-    }
-    [TestMethod]
-    public void Log2_UInt64_Speed()
-    {
-      var value = 670530UL;
-      var expected = 19; // Log2() returns an int.
-      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 0.3);
-    }
   }
 }

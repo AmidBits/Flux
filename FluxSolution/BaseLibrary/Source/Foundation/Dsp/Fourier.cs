@@ -206,7 +206,7 @@
       var k = data.GetLength(0);
       var n = data.GetLength(1);
 
-      if ((!BitOps.IsPowerOf2(k)) || (!BitOps.IsPowerOf2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
+      if ((!BitOps.IsPow2(k)) || (!BitOps.IsPow2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
@@ -322,7 +322,7 @@
       var len = data.Length;
 
       // check data length
-      if ((len < minLength) || (len > maxLength) || (!BitOps.IsPowerOf2(len)))
+      if ((len < minLength) || (len > maxLength) || (!BitOps.IsPow2(len)))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }

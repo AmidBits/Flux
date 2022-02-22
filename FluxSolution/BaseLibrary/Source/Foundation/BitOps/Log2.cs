@@ -31,22 +31,10 @@ namespace Flux
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     [System.CLSCompliant(false)]
     public static int Log2(uint value)
-    {
-#if NETCOREAPP
-      return System.Numerics.BitOperations.Log2(value);
-#else
-      return PopCount(FoldRight(value) >> 1);
-#endif
-    }
+      => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     [System.CLSCompliant(false)]
     public static int Log2(ulong value)
-    {
-#if NETCOREAPP
-      return System.Numerics.BitOperations.Log2(value);
-#else
-      return PopCount(FoldRight(value) >> 1);
-#endif
-    }
+      => System.Numerics.BitOperations.Log2(value); // PopCount(FoldRight(value) >> 1);
   }
 }

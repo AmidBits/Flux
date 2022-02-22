@@ -44,25 +44,5 @@ namespace Foundation.BitOps
       var expected = 44;
       Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
     }
-    [TestMethod]
-    public void LeadingZeroCount_UInt32()
-      => Assert.AreEqual(27, Flux.BitOps.LeadingZeroCount(18U));
-    [TestMethod]
-    public void LeadingZeroCount_UInt32_Speed()
-    {
-      var value = 670530U;
-      var expected = 12;
-      Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
-    }
-    [TestMethod]
-    public void LeadingZeroCount_UInt64()
-      => Assert.AreEqual(59, Flux.BitOps.LeadingZeroCount(18UL));
-    [TestMethod]
-    public void LeadingZeroCount_UInt64_Speed()
-    {
-      var value = 670530UL;
-      var expected = 44;
-      Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
-    }
   }
 }

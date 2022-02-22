@@ -30,7 +30,7 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static void FoldLeft(ref uint value)
     {
-      if (value != 0)
+      if (value > 0)
       {
         value |= value << 1;
         value |= value << 2;
@@ -45,6 +45,7 @@ namespace Flux
     public static uint FoldLeft(uint value)
     {
       FoldLeft(ref value);
+
       return value;
     }
 
@@ -53,7 +54,7 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static void FoldLeft(ref ulong value)
     {
-      if (value != 0)
+      if (value > 0)
       {
         value |= value << 1;
         value |= value << 2;
@@ -69,6 +70,7 @@ namespace Flux
     public static ulong FoldLeft(ulong value)
     {
       FoldLeft(ref value);
+
       return value;
     }
   }

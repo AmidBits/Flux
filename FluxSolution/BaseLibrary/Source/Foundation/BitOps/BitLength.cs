@@ -6,10 +6,9 @@ namespace Flux
     // http://aggregate.org/MAGIC/
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
 
-    private static System.Collections.Generic.IReadOnlyList<int>? m_byteBitLength;
     /// <summary></summary>
-    public static System.Collections.Generic.IReadOnlyList<int> ByteBitLength
-      => m_byteBitLength ??= System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), n => BitLength(n)));
+    public static System.Collections.Generic.IReadOnlyList<byte> ByteBitLength
+      => System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), i => (byte)BitLength((uint)i)));
 
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
@@ -17,6 +16,17 @@ namespace Flux
       => value < 0
       ? 0
       : Log2(value) + 1;
+    //{
+    //  if (value > 255)
+    //  {
+    //    value.ToByteArrayEx(out var byteIndex, out var byteValue);
+
+    //    return ByteBitLength[byteValue] + byteIndex * 8;
+    //  }
+    //  else if (value > 0) return ByteBitLength[(int)value];
+
+    //  return 0;
+    //}
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     public static int BitLength(int value)
@@ -28,114 +38,110 @@ namespace Flux
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     [System.CLSCompliant(false)]
     public static int BitLength(uint value)
-    {
-#if NETCOREAPP
-      if (System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
-        return value < 0 ? 32 : Log2(value) + 1;
-#endif
+      => value <= 0
+      ? (value == 0 ? 0 : 32)
+      : System.Numerics.BitOperations.Log2(value) + 1;
+    //{
+    //  var count = 0;
 
-      var count = 0;
+    //  if (value > 0)
+    //  {
+    //    unchecked
+    //    {
+    //      if (value > 0xFFFF)
+    //      {
+    //        count += 16;
+    //        value >>= 16;
+    //      }
 
-      if (value > 0)
-      {
-        unchecked
-        {
-          if (value > 0x0000FFFF)
-          {
-            count += 16;
-            value >>= 16;
-          }
+    //      if (value > 0xFF)
+    //      {
+    //        count += 8;
+    //        value >>= 8;
+    //      }
 
-          if (value > 0x000000FF)
-          {
-            count += 8;
-            value >>= 8;
-          }
+    //      if (value > 0xF)
+    //      {
+    //        count += 4;
+    //        value >>= 4;
+    //      }
 
-          if (value > 0x0000000F)
-          {
-            count += 4;
-            value >>= 4;
-          }
+    //      if (value > 0x3)
+    //      {
+    //        count += 2;
+    //        value >>= 2;
+    //      }
 
-          if (value > 0x00000003)
-          {
-            count += 2;
-            value >>= 2;
-          }
+    //      if (value > 0x1)
+    //      {
+    //        count++;
+    //        value >>= 1;
+    //      }
 
-          if (value > 0x00000001)
-          {
-            count++;
-            value >>= 1;
-          }
+    //      if (value > 0)
+    //        count++;
+    //    }
+    //  }
 
-          if (value > 0x00000000)
-            count++;
-        }
-      }
-
-      return count;
-    }
+    //  return count;
+    //}
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>The implementation is relatively fast.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Bit-length"/>
+    /// <see cref = "https://en.wikipedia.org/wiki/Bit-length" />
     [System.CLSCompliant(false)]
     public static int BitLength(ulong value)
-    {
-#if NETCOREAPP
-      if (System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
-        return value < 0 ? 64 : Log2(value) + 1;
-#endif
+      => value <= 0
+      ? (value == 0 ? 0 : 64)
+      : System.Numerics.BitOperations.Log2(value) + 1;
+    //{
+    //  var count = 0;
 
-      var count = 0;
+    //  if (value > 0)
+    //  {
+    //    unchecked
+    //    {
+    //      if (value > 0xFFFFFFFF)
+    //      {
+    //        count += 32;
+    //        value >>= 32;
+    //      }
 
-      if (value > 0)
-      {
-        unchecked
-        {
-          if (value > 0x00000000FFFFFFFF)
-          {
-            count += 32;
-            value >>= 32;
-          }
+    //      if (value > 0xFFFF)
+    //      {
+    //        count += 16;
+    //        value >>= 16;
+    //      }
 
-          if (value > 0x0000FFFF)
-          {
-            count += 16;
-            value >>= 16;
-          }
+    //      if (value > 0xFF)
+    //      {
+    //        count += 8;
+    //        value >>= 8;
+    //      }
 
-          if (value > 0x000000FF)
-          {
-            count += 8;
-            value >>= 8;
-          }
+    //      if (value > 0xF)
+    //      {
+    //        count += 4;
+    //        value >>= 4;
+    //      }
 
-          if (value > 0x0000000F)
-          {
-            count += 4;
-            value >>= 4;
-          }
+    //      if (value > 0x3)
+    //      {
+    //        count += 2;
+    //        value >>= 2;
+    //      }
 
-          if (value > 0x00000003)
-          {
-            count += 2;
-            value >>= 2;
-          }
+    //      if (value > 0x1)
+    //      {
+    //        count++;
+    //        value >>= 1;
+    //      }
 
-          if (value > 0x00000001)
-          {
-            count++;
-            value >>= 1;
-          }
+    //      if (value > 0)
+    //        count++;
+    //    }
+    //  }
 
-          if (value > 0x00000000)
-            count++;
-        }
-      }
-
-      return count;
-    }
+    //  return count;
+    //}
   }
 }
