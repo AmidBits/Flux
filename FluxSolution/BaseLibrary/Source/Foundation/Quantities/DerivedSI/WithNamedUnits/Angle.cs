@@ -190,7 +190,7 @@
       => System.Math.Atanh(System.Math.Sin(value));
     #endregion Gudermannian
 
-    #region Hyperbolic reciprocals/inverse
+    #region Hyperbolic Reciprocals/Inverse
     // Hyperbolic reciprocals (1 divided by):
 
     /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
@@ -220,7 +220,7 @@
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
     static public double Acoth(double v)
       => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
-    #endregion Hyperbolic reciprocals/inverse
+    #endregion Hyperbolic Reciprocals/Inverse
 
     #region Reciprocals/Inverse
     // Reciprocals (1 divided by):
@@ -253,6 +253,98 @@
     public static double Acot(double v)
       => System.Math.Atan(1 / v);
     #endregion Reciprocals/Inverse
+
+    #region Sinc
+    /// <summary>Returns the normalized sinc of the specified value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
+    public static double Sincn(double value)
+      => Sincu(System.Math.PI * value);
+
+    /// <summary>Returns the unnormalized sinc of the specified value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
+    public static double Sincu(double value)
+      => value != 0 ? System.Math.Sin(value) / value : 1;
+    #endregion Sinc
+
+    #region Versed/Inverse
+    // Versed functions.
+
+    /// <summary>Returns the versed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Vsin(double value)
+      => 1 - System.Math.Cos(value);
+    /// <summary>Returns the versed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Vcos(double value)
+      => 1 + System.Math.Cos(value);
+    /// <summary>Returns the coversed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Cvsin(double value)
+      => 1 - System.Math.Sin(value);
+    /// <summary>Returns the coversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Cvcos(double value)
+      => 1 + System.Math.Sin(value);
+
+    // Inverse versed functions:
+
+    /// <summary>Returns the inverse of versed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Avsin(double y)
+      => System.Math.Acos(1 - y);
+    /// <summary>Returns the inverse of versed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Avcos(double y)
+      => System.Math.Acos(y - 1);
+    /// <summary>Returns the inverse of coversed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Acvsin(double y)
+      => System.Math.Asin(1 - y);
+    /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Acvcos(double y)
+      => System.Math.Asin(y - 1);
+    #endregion Versed/Inverse
+
+    #region Haversed/Inverse
+    // Haversed functions (half of the versed versions above):
+
+    /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Hvsin(double value)
+      => (1 - System.Math.Cos(value)) / 2;
+    /// <summary>Returns the haversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Hvcos(double value)
+      => (1 + System.Math.Cos(value)) / 2;
+    /// <summary>Returns the hacoversed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Hcvsin(double value)
+      => (1 - System.Math.Sin(value)) / 2;
+    /// <summary>Returns the hacoversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+    public static double Hcvcos(double value)
+      => (1 + System.Math.Sin(value)) / 2;
+
+    // Inversed haversed functions:
+
+    /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Ahvsin(double y)
+      => System.Math.Acos(1 - 2 * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
+    /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Ahvcos(double y)
+      => System.Math.Acos(2 * y - 1); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
+    /// <summary>Returns the inverse of cohaversed sine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Ahcvsin(double y)
+      => System.Math.Asin(1 - 2 * y);
+    /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+    public static double Ahcvcos(double y)
+      => System.Math.Asin(2 * y - 1);
+    #endregion Versine/Haversine
 
     #endregion Trigonometry static methods
 
