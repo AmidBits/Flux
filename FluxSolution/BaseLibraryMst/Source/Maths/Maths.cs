@@ -136,13 +136,13 @@ namespace Maths
     [TestMethod]
     public void SincN()
     {
-      Assert.AreEqual(0.636619772367581, Flux.Maths.Sincn(0.5), Flux.Maths.EpsilonCpp32);
+      Assert.AreEqual(0.636619772367581, Flux.Angle.Sincn(0.5), Flux.Maths.EpsilonCpp32);
     }
 
     [TestMethod]
     public void SincU()
     {
-      Assert.AreEqual(0.958851077208406, Flux.Maths.Sincu(0.5), Flux.Maths.EpsilonCpp32);
+      Assert.AreEqual(0.958851077208406, Flux.Angle.Sincu(0.5), Flux.Maths.EpsilonCpp32);
     }
 
     [TestMethod]
