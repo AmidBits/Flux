@@ -32,7 +32,6 @@ namespace ConsoleApp
       var ms1b = Flux.BitOps.MostSignificant1Bit(v);
       var pc = Flux.BitOps.PopCount(v);
 
-
       var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
 
       var sum = ints.GetMaximumSumSubarray(out var startIndex, out var count);
