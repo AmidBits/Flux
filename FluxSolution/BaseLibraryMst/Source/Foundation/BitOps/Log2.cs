@@ -26,5 +26,65 @@ namespace Foundation.BitOps
       var expected = 19; // Log2() returns an int.
       Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
     }
+
+    [TestMethod]
+    public void Log2_Int32()
+    {
+      var value = 18;
+      var expected = 4;
+      Assert.AreEqual(expected, Flux.BitOps.Log2(value));
+    }
+    [TestMethod]
+    public void Log2_Int32_Speed()
+    {
+      var value = 670530;
+      var expected = 19;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
+    }
+
+    [TestMethod]
+    public void Log2_Int64()
+    {
+      var value = 18L;
+      var expected = 4;
+      Assert.AreEqual(expected, Flux.BitOps.Log2(value));
+    }
+    [TestMethod]
+    public void Log2_Int64_Speed()
+    {
+      var value = 670530L;
+      var expected = 19;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
+    }
+
+    [TestMethod]
+    public void Log2_UInt32()
+    {
+      var value = 18U;
+      var expected = 4;
+      Assert.AreEqual(expected, Flux.BitOps.Log2(value));
+    }
+    [TestMethod]
+    public void Log2_UInt32_Speed()
+    {
+      var value = 670530U;
+      var expected = 19;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
+    }
+
+    [TestMethod]
+    public void Log2_UInt64()
+    {
+      var value = 18UL;
+      var expected = 4;
+      Assert.AreEqual(expected, Flux.BitOps.Log2(value));
+    }
+    [TestMethod]
+    public void Log2_UInt64_Speed()
+    {
+      var value = 670530UL;
+      var expected = 19;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.Log2(value), 1000000).Assert(expected, 1);
+    }
   }
 }
