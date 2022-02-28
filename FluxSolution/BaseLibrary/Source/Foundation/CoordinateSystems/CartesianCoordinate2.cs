@@ -268,7 +268,6 @@ namespace Flux
     : System.IEquatable<CartesianCoordinate2>
   {
     public readonly static CartesianCoordinate2 Zero;
-    public readonly static CartesianCoordinate2[] Axes = new CartesianCoordinate2[] { new(1, 1), new(-1, 1), new(-1, -1), new(1, -1) };
 
     private readonly double m_x;
     private readonly double m_y;
@@ -278,20 +277,6 @@ namespace Flux
       m_x = x;
       m_y = y;
     }
-
-    public double MathCosX
-      => System.Math.Cos(X);
-    public double MathSinX
-      => System.Math.Sin(X);
-    public double MathTanX
-      => System.Math.Tan(X);
-
-    public double MathCosY
-      => System.Math.Cos(Y);
-    public double MathSinY
-      => System.Math.Sin(Y);
-    public double MathTanY
-      => System.Math.Tan(Y);
 
     public double X
       => m_x;

@@ -26,6 +26,8 @@ namespace Flux
       var radAzimuth = m_azimuth.Value;
       return new CartesianCoordinate2(m_radius * System.Math.Cos(radAzimuth), m_radius * System.Math.Sin(radAzimuth));
     }
+    public System.Numerics.Complex ToComplex()
+      => System.Numerics.Complex.FromPolarCoordinates(m_radius, m_azimuth.Value);
 
     #region Overloaded operators
     public static bool operator ==(PolarCoordinate a, PolarCoordinate b)

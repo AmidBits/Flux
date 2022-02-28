@@ -222,7 +222,6 @@ namespace Flux
     : System.IEquatable<CartesianCoordinate3>
   {
     public static readonly CartesianCoordinate3 Zero;
-    public readonly static CartesianCoordinate3[] Axes = new CartesianCoordinate3[] { new(1, 1, 1), new(-1, 1, 1), new(-1, -1, 1), new(1, -1, 1), new(1, -1, -1), new(-1, -1, -1), new(-1, 1, -1), new(1, 1, -1) };
 
     private readonly double m_x;
     private readonly double m_y;
@@ -235,33 +234,22 @@ namespace Flux
       m_z = z;
     }
 
-    public double MathCosX
-      => System.Math.Cos(X);
-    public double MathSinX
-      => System.Math.Sin(X);
-    public double MathTanX
-      => System.Math.Tan(X);
-
-    public double MathCosY
-      => System.Math.Cos(Y);
-    public double MathSinY
-      => System.Math.Sin(Y);
-    public double MathTanY
-      => System.Math.Tan(Y);
-
-    public double MathCosZ
-      => System.Math.Cos(Z);
-    public double MathSinZ
-      => System.Math.Sin(Z);
-    public double MathTanZ
-      => System.Math.Tan(Z);
-
     public double X
       => m_x;
     public double Y
       => m_y;
     public double Z
       => m_z;
+
+    /// <summary>Returns the axes angles to the 3D X-axis.</summary>
+    public (double toYaxis, double toZaxis) AnglesToAxisX
+      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_x));
+    /// <summary>Returns the axes angles to the 3D Y-axis.</summary>
+    public (double toXaxis, double toZaxis) AnglesToAxisY
+      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_y));
+    /// <summary>Returns the axes angles to the 3D Z-axis.</summary>
+    public (double toXaxis, double toYaxis) AnglesToAxisZ
+      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_z), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_z));
 
     /// <summary>Returns the angle to the 3D X-axis.</summary>
     public double AngleToAxisX
@@ -275,8 +263,10 @@ namespace Flux
 
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    public Point3 ToPoint3(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+    /// <summary>Convert to integer Point3 by using the specified rounding.</summary>
+    public Point3 ToPoint3(System.MidpointRounding midpointRounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
+    /// <summary>Convert to integer Point3 by using <see cref="MidpointRounding.ToEven"/> rounding.</summary>
     public Point3 ToPoint3()
       => ToPoint3(System.MidpointRounding.ToEven);
     /// <summary>Returns a quaternion from two vectors.</summary>

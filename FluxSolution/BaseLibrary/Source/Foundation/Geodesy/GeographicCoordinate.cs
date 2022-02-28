@@ -95,7 +95,7 @@ namespace Flux
 
       var cosLatitude = System.Math.Cos(lat);
 
-      var sinc = Maths.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
+      var sinc = Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
@@ -251,7 +251,7 @@ namespace Flux
     /// <remarks>The haversine formula is numerically better-conditioned for small distances. Although this formula is accurate for most distances on a sphere, it too suffers from rounding errors for the special (and somewhat unusual) case of antipodal points (on opposite ends of the sphere).</remarks>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
     public static double GetCentralAngleHaversineFormula(double latitude1, double longitude1, double latitude2, double longitude2)
-      => Maths.Ahvsin(Maths.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Maths.Hvsin(longitude2 - longitude1));
+      => Angle.Ahvsin(Angle.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Angle.Hvsin(longitude2 - longitude1));
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Central_angle"/>

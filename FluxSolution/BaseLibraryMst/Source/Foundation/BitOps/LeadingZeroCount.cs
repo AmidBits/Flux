@@ -24,9 +24,14 @@ namespace Foundation.BitOps
       var expected = 108;
       Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value, 128), 1000000).Assert(expected, 1);
     }
+
     [TestMethod]
     public void LeadingZeroCount_Int32()
-      => Assert.AreEqual(27, Flux.BitOps.LeadingZeroCount(18));
+    {
+      var value = 18;
+      var expected = 27;
+      Assert.AreEqual(expected, Flux.BitOps.LeadingZeroCount(value));
+    }
     [TestMethod]
     public void LeadingZeroCount_Int32_Speed()
     {
@@ -34,13 +39,48 @@ namespace Foundation.BitOps
       var expected = 12;
       Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
     }
+
     [TestMethod]
     public void LeadingZeroCount_Int64()
-      => Assert.AreEqual(59, Flux.BitOps.LeadingZeroCount(18L));
+    {
+      var value = 18L;
+      var expected = 59;
+      Assert.AreEqual(expected, Flux.BitOps.LeadingZeroCount(value));
+    }
     [TestMethod]
     public void LeadingZeroCount_Int64_Speed()
     {
       var value = 670530L;
+      var expected = 44;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
+    }
+
+    [TestMethod]
+    public void LeadingZeroCount_UInt32()
+    {
+      var value = 18U;
+      var expected = 27;
+      Assert.AreEqual(expected, Flux.BitOps.LeadingZeroCount(value));
+    }
+    [TestMethod]
+    public void LeadingZeroCount_UInt32_Speed()
+    {
+      var value = 670530U;
+      var expected = 12;
+      Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
+    }
+
+    [TestMethod]
+    public void LeadingZeroCount_UInt64()
+    {
+      var value = 18UL;
+      var expected = 59;
+      Assert.AreEqual(expected, Flux.BitOps.LeadingZeroCount(value));
+    }
+    [TestMethod]
+    public void LeadingZeroCount_UInt64_Speed()
+    {
+      var value = 670530UL;
       var expected = 44;
       Flux.Services.Performance.Measure(() => Flux.BitOps.LeadingZeroCount(value), 1000000).Assert(expected, 0.3);
     }

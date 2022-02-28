@@ -23,20 +23,6 @@ namespace Flux
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
-    //[System.CLSCompliant(false)]
-    //public static void FoldRight(ref uint value)
-    //{
-    //  if (value != 0)
-    //  {
-    //    value |= value >> 1;
-    //    value |= value >> 2;
-    //    value |= value >> 4;
-    //    value |= value >> 8;
-    //    value |= value >> 16;
-    //  }
-    //}
-    /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
-    /// <returns>Returns all ones from the MSB down.</returns>
     [System.CLSCompliant(false)]
     public static uint FoldRight(uint value)
     {
@@ -52,21 +38,6 @@ namespace Flux
       return value;
     }
 
-    /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
-    /// <returns>Returns all ones from the MSB down.</returns>
-    //[System.CLSCompliant(false)]
-    //public static void FoldRight(ref ulong value)
-    //{
-    //  if (value != 0)
-    //  {
-    //    value |= value >> 1;
-    //    value |= value >> 2;
-    //    value |= value >> 4;
-    //    value |= value >> 8;
-    //    value |= value >> 16;
-    //    value |= value >> 32;
-    //  }
-    //}
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
     [System.CLSCompliant(false)]
