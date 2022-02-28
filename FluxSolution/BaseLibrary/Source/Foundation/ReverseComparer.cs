@@ -11,18 +11,21 @@ namespace Flux
     public sealed class ReverseComparer<T>
       : System.Collections.Generic.Comparer<T>
     {
-      private readonly System.Collections.Generic.IComparer<T> m_comparer;
+      private readonly System.Collections.Generic.IComparer<T> m_sourceComparer;
 
       private ReverseComparer()
         : this(System.Collections.Generic.Comparer<T>.Default) { }
-      public ReverseComparer(System.Collections.Generic.IComparer<T> comparer)
-        => m_comparer = comparer;
+      public ReverseComparer(System.Collections.Generic.IComparer<T> sourceComparer)
+        => m_sourceComparer = sourceComparer;
+
+      public System.Collections.Generic.IComparer<T> Source
+        => m_sourceComparer;
 
       public override int Compare([System.Diagnostics.CodeAnalysis.AllowNull] T x, [System.Diagnostics.CodeAnalysis.AllowNull] T y)
-        => -m_comparer.Compare(x, y);
+        => -m_sourceComparer.Compare(x, y);
 
       public override string ToString()
-        => $"{GetType().Name} {{ {m_comparer} }}";
+        => $"{GetType().Name} {{ {m_sourceComparer} }}";
     }
   }
 }
