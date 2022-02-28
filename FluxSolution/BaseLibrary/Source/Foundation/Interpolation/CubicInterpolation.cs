@@ -41,7 +41,7 @@ namespace Flux
       var a2 = v2 - v0;
       var a3 = v1;
 
-      return (a0 * mu * mu2 + a1 * mu2 + a2 * mu + a3);
+      return a0 * mu * mu2 + a1 * mu2 + a2 * mu + a3;
     }
   }
 }
