@@ -1,13 +1,5 @@
 ﻿namespace Flux
 {
-  /// <summary>Provides static methods for creating value ranges.</summary>
-  public struct ValueRange
-  {
-    public static ValueRange<T> Create<T>(T low, T high)
-      where T : System.IComparable<T>, System.IEquatable<T>
-      => new(low, high);
-  }
-
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
   public struct ValueRange<T>
     : System.IEquatable<ValueRange<T>>
@@ -30,9 +22,10 @@
       => m_hi;
 
     public bool IsValid
-       => m_lo.CompareTo(m_hi) < 0;
+      => m_lo.CompareTo(m_hi) < 0 && m_hi.CompareTo(m_lo) > 0;
 
     #region Static methods
+    /// <summary>The relative complement of B in A (also called the set-theoretic difference of A and B), denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.</summary>
     public static System.Collections.Generic.List<ValueRange<T>> Difference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
@@ -48,8 +41,10 @@
 
       return list;
     }
+    /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
     public static ValueRange<T> Intersect(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(MaxLo(a, b), MinHi(a, b)) : Empty;
+    /// <summary>The symmetric difference, an extension of the complement, of two sets A and B, denoted by (A \ B) ∪ (B \ A) or (A - B) ∪ (B - A), is the set of all elements that are members from A, but not members of B union all elements that are members of B but not members of A.</summary>
     public static System.Collections.Generic.List<ValueRange<T>> SymmetricDifference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
@@ -67,6 +62,7 @@
 
       return list;
     }
+    /// <summary>The union of A and B, denoted by A ∪ B, is the set of all things that are members of A or of B or of both.</summary>
     public static ValueRange<T> Union(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(MinLo(a, b), MaxHi(a, b)) : Empty;
     public static ValueRange<T> UnionAll(ValueRange<T> a, ValueRange<T> b)
