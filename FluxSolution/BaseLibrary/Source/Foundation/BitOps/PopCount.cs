@@ -39,11 +39,11 @@ namespace Flux
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     public static int PopCount(int value)
-      => PopCount(unchecked((uint)value));
+      => System.Numerics.BitOperations.PopCount(unchecked((uint)value));
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     public static int PopCount(long value)
-      => PopCount(unchecked((ulong)value));
+      => System.Numerics.BitOperations.PopCount(unchecked((ulong)value));
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     [System.CLSCompliant(false)]

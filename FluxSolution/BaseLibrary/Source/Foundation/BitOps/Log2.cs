@@ -10,17 +10,11 @@ namespace Flux
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     public static int Log2(System.Numerics.BigInteger value)
-    {
-      if (value > 255)
-      {
-        value.ToByteArrayEx(out var byteIndex, out var byteValue);
-
-        return ILog2.ByteTable[byteValue] + byteIndex * 8;
-      }
-      else if (value > 0) return ILog2.ByteTable[(int)value];
-
-      return 0;
-    }
+      => value > 255 && value.ToByteArrayEx(out var byteIndex, out var byteValue) is var _ 
+      ? System.Numerics.BitOperations.Log2(byteValue) + byteIndex * 8 
+      : value > 0 
+      ? System.Numerics.BitOperations.Log2((uint)value) 
+      : 0;
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
     public static int Log2(int value)
