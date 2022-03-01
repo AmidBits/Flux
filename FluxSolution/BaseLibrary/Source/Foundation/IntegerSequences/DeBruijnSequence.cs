@@ -31,6 +31,12 @@ namespace Flux.Numerics
 
       var a = new int[size_k * order_n];
 
+      DeBruijn(1, 1);
+
+      sequence.AddRange(sequence.GetRange(0, order_n - 1));
+
+      return sequence;
+
       void DeBruijn(int t, int p)
       {
         if (t > order_n)
@@ -52,12 +58,6 @@ namespace Flux.Numerics
           }
         }
       }
-
-      DeBruijn(1, 1);
-
-      sequence.AddRange(sequence.GetRange(0, order_n - 1));
-
-      return sequence;
     }
 
     /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
@@ -74,13 +74,15 @@ namespace Flux.Numerics
   {
     public int OrderN { get; }
     public int SizeK { get; }
-    System.Collections.Generic.List<T> Alphabet { get; }
 
-    public DeBruijnSequence(int sizeK, int orderN, System.Collections.Generic.List<T> alphabet)
+    public System.Collections.Generic.IReadOnlyList<T> Alphabet { get; }
+
+    public DeBruijnSequence(int sizeK, int orderN, System.Collections.Generic.IEnumerable<T> alphabet)
     {
       OrderN = orderN;
       SizeK = sizeK;
-      Alphabet = alphabet;
+
+      Alphabet = System.Linq.Enumerable.ToList(alphabet);
     }
 
     /// <summary>Creates a new sequence with the code indices expanded.</summary>

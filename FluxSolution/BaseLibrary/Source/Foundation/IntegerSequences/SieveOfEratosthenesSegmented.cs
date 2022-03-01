@@ -19,7 +19,8 @@ namespace Flux.Numerics
     }
 
     /// <summary>Yields a sequence of prime numbers up to the specified max number.</summary>
-    public System.Collections.Generic.IEnumerable<long> GetPrimeNumbers(long maxNumber) => GetSegments(0, (int)System.Math.DivRem(maxNumber, int.MaxValue, out var remainder) + (remainder > 0 ? 1 : 0));
+    public System.Collections.Generic.IEnumerable<long> GetPrimeNumbers(long maxNumber)
+      => GetSegments(0, (int)System.Math.DivRem(maxNumber, int.MaxValue, out var remainder) + (remainder > 0 ? 1 : 0));
 
     private System.Collections.Generic.IEnumerable<long> GetSegment(int segmentIndex)
     {
