@@ -6,10 +6,6 @@ namespace Flux
     // http://aggregate.org/MAGIC/
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
 
-    /// <summary></summary>
-    //public static System.Collections.Generic.IReadOnlyList<byte> ByteBitLength
-    //  => System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), i => (byte)BitLength((uint)i)));
-
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     public static int BitLength(System.Numerics.BigInteger value)
@@ -19,10 +15,14 @@ namespace Flux
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     public static int BitLength(int value)
-      => BitLength(unchecked((uint)value));
+      => value > 0
+      ? System.Numerics.BitOperations.Log2(unchecked((uint)value)) + 1
+      : 0;
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     public static int BitLength(long value)
-      => BitLength(unchecked((ulong)value));
+      => value > 0
+      ? System.Numerics.BitOperations.Log2(unchecked((ulong)value)) + 1
+      : 0;
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     [System.CLSCompliant(false)]

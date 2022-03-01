@@ -12,25 +12,21 @@ namespace Flux
 
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     public static int CreateMaskLeftInt32(int bit1Count)
-      => bit1Count >= 0 && bit1Count < 32
-      ? int.MinValue >> (bit1Count - 1)
-      : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
+      => unchecked((int)CreateMaskLeftUInt32(bit1Count));
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     public static long CreateMaskLeftInt64(int bit1Count)
-      => bit1Count >= 0 && bit1Count < 64
-      ? long.MinValue >> (bit1Count - 1)
-      : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
+      => unchecked((long)CreateMaskLeftUInt64(bit1Count));
 
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     [System.CLSCompliant(false)]
     public static uint CreateMaskLeftUInt32(int bit1Count)
-      => bit1Count >= 0 && bit1Count <= 31
+      => bit1Count >= 0 && bit1Count <= 32
       ? uint.MaxValue << (32 - bit1Count)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
     /// <summary>Create a bit mask with the specified number of MSBs (Most Significant Bits) set to 1.</summary>
     [System.CLSCompliant(false)]
     public static ulong CreateMaskLeftUInt64(int bit1Count)
-      => bit1Count >= 0 && bit1Count <= 63
+      => bit1Count >= 0 && bit1Count <= 64
       ? ulong.MaxValue << (64 - bit1Count)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
   }

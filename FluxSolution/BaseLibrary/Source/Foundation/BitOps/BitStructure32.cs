@@ -5,35 +5,19 @@
     : System.IEquatable<BitStructure32>
   {
     [System.Runtime.InteropServices.FieldOffset(0)]
-    private readonly byte m_byte0;
+    private byte m_byte0;
     [System.Runtime.InteropServices.FieldOffset(1)]
-    private readonly byte m_byte1;
+    private byte m_byte1;
     [System.Runtime.InteropServices.FieldOffset(2)]
-    private readonly byte m_byte2;
+    private byte m_byte2;
     [System.Runtime.InteropServices.FieldOffset(3)]
-    private readonly byte m_byte3;
+    private byte m_byte3;
     [System.Runtime.InteropServices.FieldOffset(0)]
     private int m_int32;
     [System.Runtime.InteropServices.FieldOffset(0)]
     private uint m_uint32;
     [System.Runtime.InteropServices.FieldOffset(0)]
     private float m_single;
-
-    public byte Byte0
-    { get => m_byte0; }
-    public byte Byte1
-    { get => m_byte1; }
-    public byte Byte2
-    { get => m_byte2; }
-    public byte Byte3
-    { get => m_byte3; }
-    public int Int32
-    { get => m_int32; set => m_int32 = value; }
-    [System.CLSCompliant(false)]
-    public uint UInt32
-    { get => m_uint32; set => m_uint32 = value; }
-    public float Single
-    { get => m_single; set => m_single = value; }
 
     public BitStructure32(byte[] bytes, int offset = 0)
       : this()
@@ -55,6 +39,22 @@
     public BitStructure32(float value)
       : this()
       => m_single = value;
+
+    public byte Byte0
+    { get => m_byte0; set => m_byte0 = value; }
+    public byte Byte1
+    { get => m_byte1; set => m_byte1 = value; }
+    public byte Byte2
+    { get => m_byte2; set => m_byte2 = value; }
+    public byte Byte3
+    { get => m_byte3; set => m_byte3 = value; }
+    public int Int32
+    { get => m_int32; set => m_int32 = value; }
+    [System.CLSCompliant(false)]
+    public uint UInt32
+    { get => m_uint32; set => m_uint32 = value; }
+    public float Single
+    { get => m_single; set => m_single = value; }
 
     // Operators
     public static bool operator ==(BitStructure32 a, BitStructure32 b)

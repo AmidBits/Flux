@@ -18,13 +18,13 @@ namespace Flux
     /// <summary>Create a bit mask with the specified number of LSBs (Least Significant Bits) set to 1.</summary>
     [System.CLSCompliant(false)]
     public static uint CreateMaskRightUInt32(int bit1Count)
-      => bit1Count >= 0 && bit1Count < 32
+      => (bit1Count >= 0 && bit1Count <= 32)
       ? uint.MaxValue >> (32 - bit1Count)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
     /// <summary>Create a bit mask with the specified number of LSBs (Least Significant Bits) set to 1.</summary>
     [System.CLSCompliant(false)]
     public static ulong CreateMaskRightUInt64(int bit1Count)
-      => bit1Count >= 0 && bit1Count < 64
+      => bit1Count >= 0 && bit1Count <= 64
       ? ulong.MaxValue >> (64 - bit1Count)
       : throw new System.ArgumentOutOfRangeException(nameof(bit1Count));
   }
