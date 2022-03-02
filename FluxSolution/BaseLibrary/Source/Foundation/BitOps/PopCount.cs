@@ -4,10 +4,8 @@ namespace Flux
 
   public static partial class BitOps
   {
-    // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetNaive
     // http://aggregate.org/MAGIC/#Population%20Count%20(Ones%20Count)
-    // http://aggregate.org/MAGIC/
-    // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
+    // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetNaive
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     public static int PopCount(System.Numerics.BigInteger value)
@@ -26,7 +24,7 @@ namespace Flux
 
       while (byteArrayLength - index >= 4)
       {
-        count += System.Numerics.BitOperations.PopCount(System.BitConverter.ToUInt32(byteArray, 0));
+        count += System.Numerics.BitOperations.PopCount(System.BitConverter.ToUInt32(byteArray, index));
 
         index += 4;
       }
