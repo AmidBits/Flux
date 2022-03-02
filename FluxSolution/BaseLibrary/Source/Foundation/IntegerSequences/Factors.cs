@@ -8,17 +8,8 @@ namespace Flux.Numerics
     public Factors(System.Numerics.BigInteger number)
       => Number = number;
 
-    private System.Numerics.BigInteger? m_aliquotSum;
     public System.Numerics.BigInteger AliquotSum
-    {
-      get
-      {
-        if (!m_aliquotSum.HasValue)
-          Compute();
-
-        return m_aliquotSum!.Value;
-      }
-    }
+      => Sum - Number;
 
     private System.Numerics.BigInteger? m_count;
     public System.Numerics.BigInteger Count
@@ -46,13 +37,14 @@ namespace Flux.Numerics
 
     private void Compute()
     {
+      m_sum = 0;
+      m_count = 0;
+
       foreach (var divisor in GetNumberSequence())
       {
-        m_sum = m_sum.HasValue ? m_sum + divisor : divisor;
-        m_count = m_count.HasValue ? m_count + 1 : 1;
+        m_sum = m_sum.Value + divisor;
+        m_count = m_count.Value + 1;
       }
-
-      m_aliquotSum = m_sum - Number;
     }
 
     // INumberSequence

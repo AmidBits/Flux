@@ -62,7 +62,7 @@ namespace Flux.Numerics
     /// <summary>Creates a new sequence ascending prime numbers, greater than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPrimes(System.Numerics.BigInteger startAt)
-      => GetAscendingPotentialPrimes(startAt).Where(IsPrimeNumber);
+      => GetAscendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes(System.Numerics.BigInteger number)
     {
@@ -113,18 +113,8 @@ namespace Flux.Numerics
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPrimes(System.Numerics.BigInteger number, int count)
-    {
-      foreach (var ppn in GetClosestPotentialPrimes(number))
-      {
-        if (IsPrimeNumber(ppn))
-        {
-          yield return ppn;
-
-          if (--count <= 0) yield break;
-        }
-      }
-    }
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPrimes(System.Numerics.BigInteger number)
+      => GetClosestPotentialPrimes(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Returns a sequence of cousine primes, each of which is a pair of primes that differ by four.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cousin_prime"/>
@@ -173,7 +163,7 @@ namespace Flux.Numerics
     /// <summary>Creates a new sequence descending prime numbers, less than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDescendingPrimes(System.Numerics.BigInteger startAt)
-      => GetDescendingPotentialPrimes(startAt).Where(IsPrimeNumber);
+      => GetDescendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorization"/>
@@ -243,9 +233,7 @@ namespace Flux.Numerics
         if (list.Count == 4)
         {
           if (list[1] - list[0] == 2 && list[2] - list[0] == 6 && list[3] - list[0] == 8)
-          {
             yield return (list[0], list[1], list[2], list[3], index++);
-          }
 
           list.RemoveAt(0);
         }
@@ -267,13 +255,9 @@ namespace Flux.Numerics
         if (list.Count == 5)
         {
           if (list[1] - list[0] == 4 && list[2] - list[1] == 2 && list[3] - list[1] == 6 && list[4] - list[1] == 8)
-          {
             yield return (list[0], list[1], list[2], list[3], list[4], index++);
-          }
           else if (list[1] - list[0] == 2 && list[2] - list[0] == 6 && list[3] - list[0] == 8 && list[4] - list[0] == 12)
-          {
             yield return (list[0], list[1], list[2], list[3], list[4], index++);
-          }
 
           list.RemoveAt(0);
         }
@@ -295,9 +279,7 @@ namespace Flux.Numerics
         if (list.Count == 6)
         {
           if (list[1] - list[0] == 4 && list[2] - list[1] == 2 && list[3] - list[1] == 6 && list[4] - list[1] == 8 && list[5] - list[1] == 12)
-          {
             yield return (list[0], list[1], list[2], list[3], list[4], list[5], index++);
-          }
 
           list.RemoveAt(0);
         }
@@ -401,19 +383,20 @@ namespace Flux.Numerics
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
     public static bool IsPrimeNumber(System.Numerics.BigInteger number)
     {
-      if (number <= long.MaxValue) return IsPrimeNumber((long)number);
-      else if (number <= 3) return number >= 2;
-      else if (number % 2 == 0 || number % 3 == 0) return false;
+      if (number <= long.MaxValue)
+        return IsPrimeNumber((long)number);
+
+      if (number <= 3)
+        return number >= 2;
+
+      if (number % 2 == 0 || number % 3 == 0)
+        return false;
 
       var limit = Maths.ISqrt(number);
 
       for (var k = 5; k <= limit; k += 6)
-      {
         if ((number % k) == 0 || (number % (k + 2)) == 0)
-        {
           return false;
-        }
-      }
 
       return true;
     }
@@ -422,18 +405,17 @@ namespace Flux.Numerics
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
     public static bool IsPrimeNumber(int source)
     {
-      if (source <= 3) return source >= 2;
-      else if (source % 2 == 0 || source % 3 == 0) return false;
+      if (source <= 3)
+        return source >= 2;
+
+      if (source % 2 == 0 || source % 3 == 0)
+        return false;
 
       var limit = Maths.ISqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
-      {
         if ((source % k) == 0 || (source % (k + 2)) == 0)
-        {
           return false;
-        }
-      }
 
       return true;
     }
@@ -442,19 +424,20 @@ namespace Flux.Numerics
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
     public static bool IsPrimeNumber(long source)
     {
-      if (source <= int.MaxValue) return IsPrimeNumber((int)source);
-      else if (source <= 3) return source >= 2;
-      else if (source % 2 == 0 || source % 3 == 0) return false;
+      if (source <= int.MaxValue)
+        return IsPrimeNumber((int)source);
+
+      if (source <= 3)
+        return source >= 2;
+
+      if (source % 2 == 0 || source % 3 == 0)
+        return false;
 
       var limit = Maths.ISqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
-      {
         if ((source % k) == 0 || (source % (k + 2)) == 0)
-        {
           return false;
-        }
-      }
 
       return true;
     }
