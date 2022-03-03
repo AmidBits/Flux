@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Numerics
 {
   public sealed class PrimeNumber
-    : ASequencedNumbers<System.Numerics.BigInteger>
+    : ANumberSequenceable<System.Numerics.BigInteger>
   {
     #region Constants
     /// <summary>Represents the largest prime number possible in a byte (unsigned).</summary>
@@ -445,7 +445,7 @@ namespace Flux.Numerics
   }
 
   public sealed class PrimeNumberReverse
-    : ISequencedNumbers<System.Numerics.BigInteger>
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartAt { get; }
 

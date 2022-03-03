@@ -1,16 +1,13 @@
 namespace Flux.Numerics
 {
   public sealed class CompositeNumber
-    : ASequencedNumbers<System.Numerics.BigInteger>
+    : ANumberSequenceable<System.Numerics.BigInteger>
   {
     // INumberSequence
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-    {
-      for (var k = System.Numerics.BigInteger.One; ; k++)
-        if (IsComposite(k))
-          yield return k;
-    }
+      => GetCompositeNumbers();
 
+    #region Static methods
     public static bool IsComposite(System.Numerics.BigInteger value)
     {
       if (value <= long.MaxValue)
@@ -67,6 +64,13 @@ namespace Flux.Numerics
       return false;
     }
 
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompositeNumbers()
+    {
+      for (var k = System.Numerics.BigInteger.One; ; k++)
+        if (IsComposite(k))
+          yield return k;
+    }
+
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_composite_number"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyCompositeNumbers()
@@ -79,5 +83,6 @@ namespace Flux.Numerics
           largestCountOfDivisors = countOfDivisors;
         }
     }
+    #endregion Static methods
   }
 }

@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public sealed class LeonardoNumber
-    : ASequencedNumbers<System.Numerics.BigInteger>
+    : ANumberSequenceable<System.Numerics.BigInteger>
   {
     /// <summary>This is the first number in the sequence (L0).</summary>
     public System.Numerics.BigInteger FirstNumber { get; init; } = 1;
@@ -18,6 +18,10 @@ namespace Flux.Numerics
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => GetLeonardoNumbers(FirstNumber, SecondNumber, StepSize);
 
+    #region Static methods
+    /// <summary>Creates a new sequence with Leonardo numbers.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
+    /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetLeonardoNumbers(System.Numerics.BigInteger first, System.Numerics.BigInteger second, System.Numerics.BigInteger step)
     {
       while (true)
@@ -27,5 +31,6 @@ namespace Flux.Numerics
         (first, second) = (second, first + second + step);
       }
     }
+    #endregion Static methods
   }
 }

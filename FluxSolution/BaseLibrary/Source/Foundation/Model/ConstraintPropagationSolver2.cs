@@ -210,7 +210,7 @@ namespace Flux
             var indices = PositiveFacts.IndicesOf(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
-              PositiveFacts.RemoveAt(index);
+              PositiveFacts.RemoveAt((int)index);
 
             PositiveFacts.Add(h);
           }

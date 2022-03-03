@@ -139,7 +139,7 @@ namespace Flux.Numerics
 
     // IEnumerable<long>
     public System.Collections.Generic.IEnumerator<int> GetEnumerator()
-      => m_sieveOfEratosthenes.Cast<bool>().IndicesOf(b => b).GetEnumerator();
+      => m_sieveOfEratosthenes.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

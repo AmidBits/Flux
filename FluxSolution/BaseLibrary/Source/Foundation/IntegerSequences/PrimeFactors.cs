@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public sealed class PrimeFactors
-    : ASequencedNumbers<System.Numerics.BigInteger>
+    : ANumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }
 
@@ -10,10 +10,7 @@ namespace Flux.Numerics
 
     // INumberSequence
     public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-    {
-      foreach (var primeFactor in GetPrimeFactors(Number))
-        yield return primeFactor;
-    }
+      => GetPrimeFactors(Number);
 
     #region Static methods
     /// <summary>Results in a sequence of prime factors for the specified number.</summary>

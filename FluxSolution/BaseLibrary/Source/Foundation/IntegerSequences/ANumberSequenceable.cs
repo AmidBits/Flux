@@ -1,13 +1,7 @@
 namespace Flux.Numerics
 {
-	public interface ISequencedNumbers<T>
-		: System.Collections.Generic.IEnumerable<T>
-	{
-		System.Collections.Generic.IEnumerable<T> GetNumberSequence();
-	}
-
-	public abstract class ASequencedNumbers<T>
-		: ISequencedNumbers<T>
+	public abstract class ANumberSequenceable<T>
+		: INumberSequenceable<T>
   {
 		public abstract System.Collections.Generic.IEnumerable<T> GetNumberSequence();
 

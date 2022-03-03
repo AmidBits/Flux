@@ -9,20 +9,24 @@ namespace Flux.Numerics
   {
     private System.Collections.BitArray m_sieve = new(0);
     /// <summary>Holds the boolean values for each index. Each index represents a number (true means it is a prime number, and false that it is not).</summary>
-    public System.Collections.BitArray Sieve => m_sieve;
+    public System.Collections.BitArray Sieve
+      => m_sieve;
 
     public bool this[int number]
     {
       get
       {
         if (number < 0) throw new System.ArgumentOutOfRangeException(nameof(number));
-        else if (number > Length) m_sieve = CreateBitArray(number);
+
+        if (number > Length)
+          m_sieve = CreateBitArray(number);
 
         return m_sieve[number];
       }
     }
 
-    public int Length => m_sieve.Length;
+    public int Length
+      => m_sieve.Length;
 
     public SieveOfEratosthenes(int maxNumber)
       => m_sieve = CreateBitArray(maxNumber);
@@ -31,10 +35,11 @@ namespace Flux.Numerics
     }
 
     public System.Collections.Generic.IEnumerable<int> GetCompositeNumbers()
-      => m_sieve.Cast<bool>().IndicesOf(b => !b);
+      => m_sieve.GetIndicesEqualToFalse();
     public System.Collections.Generic.IEnumerable<int> GetPrimeNumbers()
-      => m_sieve.Cast<bool>().IndicesOf(b => b);
+      => m_sieve.GetIndicesEqualToTrue();
 
+    #region Static methods
     public static System.Collections.BitArray CreateBitArray(int length)
     {
       if (length < 1) throw new System.ArgumentOutOfRangeException(nameof(length));
@@ -63,10 +68,11 @@ namespace Flux.Numerics
 
       return ba;
     }
+    #endregion Static methods
 
     // IEnumerable<int>
     public System.Collections.Generic.IEnumerator<int> GetEnumerator()
-      => m_sieve.Cast<bool>().IndicesOf(b => b).GetEnumerator();
+      => GetPrimeNumbers().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

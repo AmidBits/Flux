@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public sealed class Factors
-    : ASequencedNumbers<System.Numerics.BigInteger>
+    : ANumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }
 

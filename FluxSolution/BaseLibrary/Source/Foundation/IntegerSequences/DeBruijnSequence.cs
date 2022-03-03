@@ -4,7 +4,7 @@ namespace Flux.Numerics
 {
   // https://www.rosettacode.org/wiki/De_Bruijn_sequences
   public sealed class DeBruijnSequence
-    : ASequencedNumbers<int>
+    : ANumberSequenceable<int>
   {
     public int OrderN { get; set; }
     public int SizeK { get; set; }
@@ -70,7 +70,7 @@ namespace Flux.Numerics
   }
 
   public sealed class DeBruijnSequence<T>
-    : ISequencedNumbers<T>
+    : INumberSequenceable<T>
   {
     public int OrderN { get; }
     public int SizeK { get; }

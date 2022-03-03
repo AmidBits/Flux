@@ -168,7 +168,7 @@ namespace Flux
             var indices = KnownFacts.IndicesOf(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
-              KnownFacts.RemoveAt(index);
+              KnownFacts.RemoveAt((int)index);
 
             KnownFacts.Add(h);
           }

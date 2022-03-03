@@ -69,7 +69,7 @@ namespace Flux.Numerics
 
     // IEnumerable<int>
     public System.Collections.Generic.IEnumerator<int> GetEnumerator()
-      => m_sieve.Cast<bool>().IndicesOf(b => b).GetEnumerator();
+      => m_sieve.GetIndicesEqualToTrue().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }
