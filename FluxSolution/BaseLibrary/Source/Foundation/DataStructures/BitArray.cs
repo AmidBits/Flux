@@ -38,6 +38,11 @@
     public bool Get(long index)
       => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
+      => System.Linq.Enumerable.Cast<bool>(this).IndicesOf(b => !b);
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
+      => System.Linq.Enumerable.Cast<bool>(this).IndicesOf(b => b);
+
     public void Set(long index, bool value)
     {
       if (index < 0 || (ulong)index >= (ulong)m_bitLength) throw new System.ArgumentOutOfRangeException(nameof(index));
