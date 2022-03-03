@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
   public sealed class VanEckSequence
-  : ASequencedNumbers<System.Numerics.BigInteger>
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartWith { get; set; }
 

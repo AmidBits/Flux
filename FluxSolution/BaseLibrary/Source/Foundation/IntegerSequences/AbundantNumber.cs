@@ -2,8 +2,13 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public static class AbundantNumber
+  public class AbundantNumber
+    : ASequencedNumbers<System.Numerics.BigInteger>
   {
+    // INumberSequence
+    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => System.Linq.Enumerable.Select(GetAbundantNumbers(), t => t.n);
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger n, System.Numerics.BigInteger sum)> GetAbundantNumbers()
       => Flux.Linq.Enumerable.Range((System.Numerics.BigInteger)3, ulong.MaxValue, 1).AsParallel().AsOrdered().Select(n => (n, sum: Numerics.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
