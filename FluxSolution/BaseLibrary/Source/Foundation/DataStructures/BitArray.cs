@@ -1,5 +1,13 @@
 ﻿namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse(this BitArray source)
+      => System.Linq.Enumerable.Cast<bool>(source).IndicesOf(b => !b);
+    public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue(this BitArray source)
+      => System.Linq.Enumerable.Cast<bool>(source).IndicesOf(b => b);
+  }
+
   public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {
