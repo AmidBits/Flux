@@ -11,55 +11,118 @@
   public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {
-    private readonly long[] m_bitArray;
+    private readonly ulong[] m_bitArray;
     private readonly long m_bitLength;
 
-    public bool this[long index] { get => Get(index); set => Set(index, value); }
+    private readonly long m_byteLength;
+    private readonly long m_uint16Length;
+    private readonly long m_uint32Length;
+    private readonly long m_uint64Length;
 
-    public BitArray(long length, bool defaultValue)
+    public bool this[long index] { get => GetBit(index); set => SetBit(index, value); }
+
+    public BitArray(long bitLength, bool defaultValue)
     {
-      if (length < 0) throw new System.ArgumentOutOfRangeException(nameof(length));
+      if (bitLength < 0) throw new System.ArgumentOutOfRangeException(nameof(bitLength));
 
-      m_bitArray = new long[((length - 1) / 64) + 1];
-      m_bitLength = length;
+      m_bitArray = new ulong[((bitLength - 1) / 64) + 1];
+      m_bitLength = bitLength;
+
+      m_byteLength = (m_bitLength / 8) + ((m_bitLength % 8) > 0 ? 1 : 0);
+      m_uint16Length = (m_bitLength / 16) + ((m_bitLength % 16) > 0 ? 1 : 0);
+      m_uint32Length = (m_bitLength / 32) + ((m_bitLength % 32) > 0 ? 1 : 0);
+      m_uint64Length = (m_bitLength / 64) + ((m_bitLength % 64) > 0 ? 1 : 0);
 
       if (defaultValue)
         SetAll(defaultValue);
       else
         System.Array.Clear(m_bitArray, 0, m_bitArray.Length);
     }
-    public BitArray(long length)
-      : this(length, false)
+    public BitArray(long bitLength)
+      : this(bitLength, false)
     { }
 
     public long Length
       => m_bitLength;
 
-    public bool Get(long index)
-      => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
+    public bool GetBit(long bitIndex)
+      => (bool)((m_bitArray[(bitIndex >> 6)] & (1UL << (int)(bitIndex % 64))) != 0);
+
+    [System.CLSCompliant(false)]
+    public byte GetByte(long index)
+      => (byte)((m_bitArray[(index >> 4)] >> (int)((index % 8) << 3)) & 0xFF);
+
+    public short GetInt16(long index)
+      => unchecked((short)GetUInt16(index));
+    public int GetInt32(long index)
+      => unchecked((int)GetUInt32(index));
+    public long GetInt64(long index)
+      => unchecked((long)GetUInt64(index));
+
+    [System.CLSCompliant(false)]
+    public ushort GetUInt16(long index)
+      => (ushort)((m_bitArray[(index >> 2)] >> (int)((index % 4) << 4)) & 0xFFFFU);
+    [System.CLSCompliant(false)]
+    public uint GetUInt32(long index)
+      => (uint)((m_bitArray[(index >> 1)] >> (int)((index % 2) << 5)) & 0xFFFFFFFFU);
+    [System.CLSCompliant(false)]
+    public ulong GetUInt64(long index)
+      => m_bitArray[index];
 
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
       => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => !b);
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
       => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => b);
 
-    public void Set(long index, bool value)
-    {
-      if (index < 0 || (ulong)index >= (ulong)m_bitLength) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-      if (value)
-        m_bitArray[index >> 6] |= (1L << (int)(index % 64));
-      else
-        m_bitArray[index >> 6] &= ~(1L << (int)(index % 64));
-    }
-
+    [System.CLSCompliant(false)]
+    public void SetAll(ulong value)
+      => System.Array.Fill(m_bitArray, value);
     public void SetAll(bool value)
-    {
-      var fillValue = value ? -1L : 0L;
+      => SetAll(value ? 0xFFFFFFFFFFFFFFFF : 0UL);
 
-      for (int i = 0; i < m_bitLength; i++)
-        m_bitArray[i] = fillValue;
+    public void SetBit(long bitIndex, bool value)
+    {
+      if (value)
+        m_bitArray[(bitIndex >> 6)] |= (1UL << (int)(bitIndex % 64));
+      else
+        m_bitArray[(bitIndex >> 6)] &= ~(1UL << (int)(bitIndex % 64));
     }
+
+    [System.CLSCompliant(false)]
+    public void SetByte(long index, byte value)
+    {
+      var shiftCount = (int)((index % 8) << 3);
+      var arrayIndex = (index >> 4);
+
+      m_bitArray[arrayIndex] = (m_bitArray[arrayIndex] & ~(0xFFUL << shiftCount)) | ((ulong)value << shiftCount);
+    }
+
+    public void SetInt16(long index, short value)
+      => SetUInt16(index, unchecked((ushort)value));
+    public void SetInt32(long index, int value)
+      => SetUInt32(index, unchecked((uint)value));
+    public void SetInt64(long index, long value)
+      => SetUInt64(index, unchecked((ulong)value));
+
+    [System.CLSCompliant(false)]
+    public void SetUInt16(long index, ushort value)
+    {
+      var shiftCount = (int)((index % 4) << 4);
+      var arrayIndex = (index >> 2);
+
+      m_bitArray[arrayIndex] = (m_bitArray[arrayIndex] & ~(0xFFFFUL << shiftCount)) | ((ulong)value << shiftCount);
+    }
+    [System.CLSCompliant(false)]
+    public void SetUInt32(long index, uint value)
+    {
+      var shiftCount = (int)((index % 2) << 5);
+      var arrayIndex = (index >> 1);
+
+      m_bitArray[arrayIndex] = (m_bitArray[arrayIndex] & ~(0xFFFFFFFFUL << shiftCount)) | ((ulong)value << shiftCount);
+    }
+    [System.CLSCompliant(false)]
+    public void SetUInt64(long index, ulong value)
+      => m_bitArray[index] = value;
 
     public System.Numerics.BigInteger ToBigInteger()
       => new(ToByteArray());
@@ -80,14 +143,14 @@
     }
 
     public System.Collections.IEnumerator GetEnumerator()
-      => new BitArrayEnumerator(this);
+      => new BitArrayExEnumerator(this);
     System.Collections.Generic.IEnumerator<bool> System.Collections.Generic.IEnumerable<bool>.GetEnumerator()
-      => new BitArrayEnumerator(this);
+      => new BitArrayExEnumerator(this);
 
     public override string ToString()
       => $"{GetType().Name} {{ Length = {Length} }}";
 
-    private sealed class BitArrayEnumerator
+    private sealed class BitArrayExEnumerator
       : Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
     {
       private readonly BitArray m_bitArray;
@@ -96,7 +159,7 @@
 
       private bool m_current;
 
-      internal BitArrayEnumerator(BitArray bitArray)
+      internal BitArrayExEnumerator(BitArray bitArray)
       {
         m_bitArray = bitArray;
 
