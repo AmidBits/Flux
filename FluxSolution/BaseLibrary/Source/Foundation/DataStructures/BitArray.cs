@@ -14,10 +14,10 @@
     private readonly ulong[] m_bitArray;
     private readonly long m_bitLength;
 
-    private readonly long m_byteLength;
-    private readonly long m_uint16Length;
-    private readonly long m_uint32Length;
-    private readonly long m_uint64Length;
+    //private readonly long m_byteLength;
+    //private readonly long m_uint16Length;
+    //private readonly long m_uint32Length;
+    //private readonly long m_uint64Length;
 
     public bool this[long index] { get => GetBit(index); set => SetBit(index, value); }
 
@@ -28,10 +28,10 @@
       m_bitArray = new ulong[((bitLength - 1) / 64) + 1];
       m_bitLength = bitLength;
 
-      m_byteLength = (m_bitLength / 8) + ((m_bitLength % 8) > 0 ? 1 : 0);
-      m_uint16Length = (m_bitLength / 16) + ((m_bitLength % 16) > 0 ? 1 : 0);
-      m_uint32Length = (m_bitLength / 32) + ((m_bitLength % 32) > 0 ? 1 : 0);
-      m_uint64Length = (m_bitLength / 64) + ((m_bitLength % 64) > 0 ? 1 : 0);
+      //m_byteLength = (m_bitLength / 8) + ((m_bitLength % 8) > 0 ? 1 : 0);
+      //m_uint16Length = (m_bitLength / 16) + ((m_bitLength % 16) > 0 ? 1 : 0);
+      //m_uint32Length = (m_bitLength / 32) + ((m_bitLength % 32) > 0 ? 1 : 0);
+      //m_uint64Length = (m_bitLength / 64) + ((m_bitLength % 64) > 0 ? 1 : 0);
 
       if (defaultValue)
         SetAll(defaultValue);
