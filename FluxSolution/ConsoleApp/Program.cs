@@ -17,7 +17,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var ba = new Flux.BitArray(long.MaxValue);
+      var ba = new Flux.BitArray(1025);
       //ba.SetBit(32, true);
       //ba.SetByte(4, 1);
       //ba.SetUInt16(2, 1);
@@ -31,6 +31,7 @@ namespace ConsoleApp
       ba[37] = true;
       ba[38] = true;
       ba[39] = true;
+      ba[1027] = true;
       //ba.SetInt64(0, -1);
       //ba.SetByte(1, 5);
       var i64 = ba.GetUInt64(0);
@@ -38,6 +39,10 @@ namespace ConsoleApp
       var i16 = ba.GetUInt16(2);
       var i8 = ba.GetByte(4);
       var i1 = ba.GetBit(32);
+
+      var bi = ba.ToBigInteger();
+      var bl = bi.GetBitLength();
+      var bia = bi.ToByteArray();
     }
 
     private static void Main(string[] args)

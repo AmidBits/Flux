@@ -1,13 +1,5 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-    public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse(this BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).GetIndicesInt32(b => !b);
-    public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue(this BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).GetIndicesInt32(b => b);
-  }
-
   public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {
@@ -70,9 +62,9 @@
       => m_bitArray[index];
 
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
-      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => !b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt64(b => !b);
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
-      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt64(b => b);
 
     [System.CLSCompliant(false)]
     public void SetAll(ulong value)
