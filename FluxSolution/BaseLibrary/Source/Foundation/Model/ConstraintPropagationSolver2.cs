@@ -207,7 +207,7 @@ namespace Flux
                 h.Pet = kf.Pet;
             }
 
-            var indices = PositiveFacts.IndicesOf(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
+            var indices = PositiveFacts.GetIndicesInt32(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
               PositiveFacts.RemoveAt((int)index);

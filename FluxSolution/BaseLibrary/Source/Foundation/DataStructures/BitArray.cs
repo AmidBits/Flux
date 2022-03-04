@@ -3,9 +3,9 @@
   public static partial class ExtensionMethods
   {
     public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse(this BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).IndicesOf(b => !b);
+      => System.Linq.Enumerable.Cast<bool>(source).GetIndicesInt32(b => !b);
     public static System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue(this BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).IndicesOf(b => b);
+      => System.Linq.Enumerable.Cast<bool>(source).GetIndicesInt32(b => b);
   }
 
   public sealed class BitArray
@@ -39,9 +39,9 @@
       => (index >= 0 && (ulong)index < (ulong)m_bitLength) ? (m_bitArray[index >> 6] & (1L << (int)(index % 64))) != 0 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
-      => System.Linq.Enumerable.Cast<bool>(this).IndicesOf(b => !b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => !b);
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
-      => System.Linq.Enumerable.Cast<bool>(this).IndicesOf(b => b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt32(b => b);
 
     public void Set(long index, bool value)
     {
