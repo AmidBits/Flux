@@ -17,7 +17,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var ba = new Flux.BitArray(1025);
+      var ba = new Flux.BitArray(4097);
       //ba.SetBit(32, true);
       //ba.SetByte(4, 1);
       //ba.SetUInt16(2, 1);

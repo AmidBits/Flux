@@ -40,7 +40,8 @@ namespace Flux
     }
     public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeMeters = 1.0)
       : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Length(altitudeMeters))
-    { }
+    {
+    }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToEqualEarthProjection()
