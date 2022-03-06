@@ -118,6 +118,8 @@
 
     public System.Numerics.BigInteger ToBigInteger()
       => new(ToByteArray());
+    public string ToBinaryString()
+      => string.Concat(System.Linq.Enumerable.Select(System.Linq.Enumerable.Cast<bool>(this), b => b ? '1' : '0'));
     public byte[] ToByteArray()
     {
       var bytes = new byte[System.Math.DivRem(m_bitLength, 8, out var remainder) + (remainder == 0 ? 0 : 1)];

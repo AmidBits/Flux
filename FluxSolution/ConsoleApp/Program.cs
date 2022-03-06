@@ -23,6 +23,8 @@ namespace ConsoleApp
       //ba.SetUInt16(2, 1);
       //ba.SetUInt32(1, 1);
       //ba.SetUInt64(0, 1UL << 32);
+      ba[1] = true;
+      ba[8] = true;
       ba[32] = true;
       ba[33] = true;
       ba[34] = true;
@@ -43,6 +45,10 @@ namespace ConsoleApp
       var bi = ba.ToBigInteger();
       var bl = bi.GetBitLength();
       var bia = bi.ToByteArray();
+      
+      var s = ba.ToBinaryString();
+
+      System.Console.WriteLine(s);
     }
 
     private static void Main(string[] args)
