@@ -8,39 +8,32 @@ namespace Flux
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly double m_degree;
+    private readonly double m_degLongitude;
 
-    public Longitude(double degree)
-      => m_degree = IsLongitude(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Longitude(Angle angle)
-      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Longitude(double degLongitude)
+      => m_degLongitude = IsLongitude(degLongitude) ? Wrap(degLongitude) : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
+    public Longitude(Angle longitude)
+      : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
-    public double MathCos
-      => System.Math.Cos(Radian);
-    public double MathSin
-      => System.Math.Sin(Radian);
-    public double MathTan
-      => System.Math.Tan(Radian);
-
     public double Radian
-      => Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degLongitude);
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset
-      => GetTheoreticalTimezoneOffset(m_degree);
+      => GetTheoreticalTimezoneOffset(m_degLongitude);
 
     public double Value
-      => m_degree;
+      => m_degLongitude;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedX()
-      => ToAngle().Value;
+      => Radian;
 
     public Angle ToAngle()
-      => new(m_degree, AngleUnit.Degree);
+      => new(m_degLongitude, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
@@ -58,7 +51,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator double(Longitude v)
-      => v.m_degree;
+      => v.m_degLongitude;
     public static explicit operator Longitude(double v)
       => new(v);
 
@@ -77,25 +70,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Longitude operator -(Longitude v)
-      => new(-v.m_degree);
+      => new(-v.m_degLongitude);
     public static Longitude operator +(Longitude a, double b)
-      => new(Wrap(a.m_degree + b));
+      => new(Wrap(a.m_degLongitude + b));
     public static Longitude operator +(Longitude a, Longitude b)
       => a + b.Value;
     public static Longitude operator /(Longitude a, double b)
-      => new(Wrap(a.m_degree / b));
+      => new(Wrap(a.m_degLongitude / b));
     public static Longitude operator /(Longitude a, Longitude b)
       => a / b.Value;
     public static Longitude operator *(Longitude a, double b)
-      => new(Wrap(a.m_degree * b));
+      => new(Wrap(a.m_degLongitude * b));
     public static Longitude operator *(Longitude a, Longitude b)
       => a * b.Value;
     public static Longitude operator %(Longitude a, double b)
-      => new(Wrap(a.m_degree % b));
+      => new(Wrap(a.m_degLongitude % b));
     public static Longitude operator %(Longitude a, Longitude b)
       => a % b.Value;
     public static Longitude operator -(Longitude a, double b)
-      => new(Wrap(a.m_degree - b));
+      => new(Wrap(a.m_degLongitude - b));
     public static Longitude operator -(Longitude a, Longitude b)
       => a - b.Value;
     #endregion Overloaded operators
@@ -103,7 +96,7 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Longitude other)
-      => m_degree.CompareTo(other.m_degree);
+      => m_degLongitude.CompareTo(other.m_degLongitude);
 
     #region IConvertible
     public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -127,14 +120,14 @@ namespace Flux
 
     // IEquatable
     public bool Equals(Longitude other)
-      => m_degree == other.m_degree;
+      => m_degLongitude == other.m_degLongitude;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Longitude o && Equals(o);
     public override int GetHashCode()
-      => m_degree.GetHashCode();
+      => m_degLongitude.GetHashCode();
     public override string ToString()
       => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides

@@ -7,7 +7,7 @@ namespace Flux
       => GetAzimuthAngle((ThirtytwoWindCompassRose)(int)interCardinalDirection);
   }
 
-  /// <summary>The intercardinal(intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions.The directional values are the degrees they represent.</summary>
+  /// <summary>The intercardinal(intermediate, or, historically, ordinal[1]) directions are the four intermediate compass directions located halfway between each pair of cardinal directions.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction#Additional_points"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum InterCardinalDirection

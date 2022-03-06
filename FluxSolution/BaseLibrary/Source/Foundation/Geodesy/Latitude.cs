@@ -13,47 +13,40 @@ namespace Flux
     public static Latitude TropicOfCapricorn
       => new(-23.43648);
 
-    private readonly double m_degree;
+    private readonly double m_degLatitude;
 
-    public Latitude(double degree)
-      => m_degree = IsLatitude(degree) ? Clamp(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Latitude(Angle angle)
-      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Latitude(double degLatitude)
+      => m_degLatitude = IsLatitude(degLatitude) ? Clamp(degLatitude) : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
+    public Latitude(Angle latitude)
+      : this(latitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     public Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(ToAngle().Value));
+      => new(GetApproximateLatitudinalHeight(Radian));
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     public Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(ToAngle().Value));
+      => new(GetApproximateLongitudinalWidth(Radian));
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     public Length ApproximateRadius
-      => new(GetApproximateRadius(ToAngle().Value));
-
-    public double MathCos
-      => System.Math.Cos(Radian);
-    public double MathSin
-      => System.Math.Sin(Radian);
-    public double MathTan
-      => System.Math.Tan(Radian);
+      => new(GetApproximateRadius(Radian));
 
     public double Radian
-      => Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degLatitude);
 
     public double Value
-      => m_degree;
+      => m_degLatitude;
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToAngle().Value / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + Radian / 2))), -System.Math.PI, System.Math.PI);
 
     public Angle ToAngle()
-      => new(m_degree, AngleUnit.Degree);
+      => new(m_degLatitude, AngleUnit.Degree);
 
     #region Static methods
     public static double Clamp(double degLatitude)
@@ -90,7 +83,7 @@ namespace Flux
 
     #region Overloaded operators
     public static explicit operator double(Latitude v)
-      => v.m_degree;
+      => v.m_degLatitude;
     public static explicit operator Latitude(double v)
       => new(v);
 
@@ -109,25 +102,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Latitude operator -(Latitude v)
-      => new(-v.m_degree);
+      => new(-v.m_degLatitude);
     public static Latitude operator +(Latitude a, double b)
-      => new(Clamp(a.m_degree + b));
+      => new(Clamp(a.m_degLatitude + b));
     public static Latitude operator +(Latitude a, Latitude b)
       => a + b.Value;
     public static Latitude operator /(Latitude a, double b)
-      => new(Clamp(a.m_degree / b));
+      => new(Clamp(a.m_degLatitude / b));
     public static Latitude operator /(Latitude a, Latitude b)
       => a / b.Value;
     public static Latitude operator *(Latitude a, double b)
-      => new(Clamp(a.m_degree * b));
+      => new(Clamp(a.m_degLatitude * b));
     public static Latitude operator *(Latitude a, Latitude b)
       => a * b.Value;
     public static Latitude operator %(Latitude a, double b)
-      => new(Clamp(a.m_degree % b));
+      => new(Clamp(a.m_degLatitude % b));
     public static Latitude operator %(Latitude a, Latitude b)
       => a % b.Value;
     public static Latitude operator -(Latitude a, double b)
-      => new(Clamp(a.m_degree - b));
+      => new(Clamp(a.m_degLatitude - b));
     public static Latitude operator -(Latitude a, Latitude b)
       => a - b.Value;
     #endregion Overloaded operators
@@ -135,7 +128,7 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Latitude other)
-      => m_degree.CompareTo(other.m_degree);
+      => m_degLatitude.CompareTo(other.m_degLatitude);
 
     #region IConvertible
     public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -159,14 +152,14 @@ namespace Flux
 
     // IEquatable
     public bool Equals(Latitude other)
-      => m_degree == other.m_degree;
+      => m_degLatitude == other.m_degLatitude;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Latitude o && Equals(o);
     public override int GetHashCode()
-      => m_degree.GetHashCode();
+      => m_degLatitude.GetHashCode();
     public override string ToString()
       => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides

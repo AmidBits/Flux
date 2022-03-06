@@ -8,52 +8,43 @@ namespace Flux
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
-    public const AngleUnit DefaultUnit = AngleUnit.Degree;
+    private readonly double m_degAzimuth;
 
-    private readonly double m_degree;
-
-    public Azimuth(double degree)
-      => m_degree = IsAzimuth(degree) ? Wrap(degree) : throw new System.ArgumentOutOfRangeException(nameof(degree));
-    public Azimuth(Angle angle)
-      : this(angle.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Azimuth(double degAzimuth)
+      => m_degAzimuth = IsAzimuth(degAzimuth) ? Wrap(degAzimuth) : throw new System.ArgumentOutOfRangeException(nameof(degAzimuth));
+    public Azimuth(Angle azimuth)
+      : this(azimuth.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
-    public double MathCos
-      => System.Math.Cos(Radian);
-    public double MathSin
-      => System.Math.Sin(Radian);
-    public double MathTan
-      => System.Math.Tan(Radian);
-
     public double Radian
-      => Angle.ConvertDegreeToRadian(m_degree);
+      => Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     public double Value
-      => m_degree;
+      => m_degAzimuth;
 
     public Angle ToAngle()
-      => new(m_degree, AngleUnit.Degree);
+      => new(m_degAzimuth, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Finding the angle between two bearings.</summary>
-    public static double DeltaBearing(double degBearing1, double degBearing2)
-      => Flux.Maths.Wrap(degBearing2 - degBearing1, MinValue, MaxValue);
+    public static double DeltaBearing(double degAzimuth1, double degAzimuth2)
+      => Flux.Maths.Wrap(degAzimuth2 - degAzimuth1, MinValue, MaxValue);
 
     /// <summary>Returns whether the specified bearing (in degrees) is a valid bearing, i.e. [0, 360).</summary>
-    public static bool IsAzimuth(double degBearing)
-      => degBearing >= MinValue && degBearing <= MaxValue;
+    public static bool IsAzimuth(double degAzimuth)
+      => degAzimuth >= MinValue && degAzimuth <= MaxValue;
 
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
-    public static int LatchNeedle(double radBearing, int positions)
-      => (int)System.Math.Round(Maths.Wrap(radBearing, 0, Maths.PiX2) / (Maths.PiX2 / positions) % positions);
+    public static int LatchNeedle(double radAzimuth, int positions)
+      => (int)System.Math.Round(Maths.Wrap(radAzimuth, 0, Maths.PiX2) / (Maths.PiX2 / positions) % positions);
 
-    public static double Wrap(double degBearing)
-      => Maths.Wrap(degBearing, MinValue, MaxValue) % MaxValue;
+    public static double Wrap(double degAzimuth)
+      => Maths.Wrap(degAzimuth, MinValue, MaxValue) % MaxValue;
     #endregion Static methods
 
     #region Overloaded operators
     public static explicit operator double(Azimuth v)
-     => v.m_degree;
+     => v.m_degAzimuth;
     public static explicit operator Azimuth(double v)
       => new(v);
 
@@ -72,25 +63,25 @@ namespace Flux
       => !a.Equals(b);
 
     public static Azimuth operator -(Azimuth v)
-      => new(-v.m_degree);
+      => new(-v.m_degAzimuth);
     public static Azimuth operator +(Azimuth a, double b)
-      => new(Wrap(a.m_degree + b));
+      => new(Wrap(a.m_degAzimuth + b));
     public static Azimuth operator +(Azimuth a, Azimuth b)
       => a + b.Value;
     public static Azimuth operator /(Azimuth a, double b)
-      => new(Wrap(a.m_degree / b));
+      => new(Wrap(a.m_degAzimuth / b));
     public static Azimuth operator /(Azimuth a, Azimuth b)
       => a / b.Value;
     public static Azimuth operator *(Azimuth a, double b)
-      => new(Wrap(a.m_degree * b));
+      => new(Wrap(a.m_degAzimuth * b));
     public static Azimuth operator *(Azimuth a, Azimuth b)
       => a * b.Value;
     public static Azimuth operator %(Azimuth a, double b)
-      => new(Wrap(a.m_degree % b));
+      => new(Wrap(a.m_degAzimuth % b));
     public static Azimuth operator %(Azimuth a, Azimuth b)
       => a % b.Value;
     public static Azimuth operator -(Azimuth a, double b)
-      => new(Wrap(a.m_degree - b));
+      => new(Wrap(a.m_degAzimuth - b));
     public static Azimuth operator -(Azimuth a, Azimuth b)
       => a - b.Value;
     #endregion Overloaded operators
@@ -98,7 +89,7 @@ namespace Flux
     #region Implemented interfaces
     // IComparable
     public int CompareTo(Azimuth other)
-      => m_degree.CompareTo(other.m_degree);
+      => m_degAzimuth.CompareTo(other.m_degAzimuth);
 
     #region IConvertible
     public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -122,14 +113,14 @@ namespace Flux
 
     // IEquatable
     public bool Equals(Azimuth other)
-      => m_degree == other.m_degree;
+      => m_degAzimuth == other.m_degAzimuth;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Azimuth o && Equals(o);
     public override int GetHashCode()
-      => m_degree.GetHashCode();
+      => m_degAzimuth.GetHashCode();
     public override string ToString()
       => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides
