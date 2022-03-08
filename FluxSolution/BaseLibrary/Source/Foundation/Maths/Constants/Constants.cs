@@ -10,5 +10,7 @@ namespace Flux
     /// <summary>Represents the Euler–Mascheroni constant.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Euler–Mascheroni_constant"/>
     public const double EulerMascheroni = 0.57721566490153286060651209008240243;
+
+    public const double RiemannZetaFunction2 = System.Math.PI * System.Math.PI / 6;
   }
 }

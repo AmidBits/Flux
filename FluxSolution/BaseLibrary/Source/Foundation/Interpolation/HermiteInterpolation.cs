@@ -1,5 +1,14 @@
 namespace Flux
 {
+  /// <summary>Hermite interpolation like cubic requires 4 points so that it can achieve a higher degree of continuity. In addition it has nice tension and biasing controls. Tension can be used to tighten up the curvature at the known points. The bias is used to twist the curve about the known points. The examples shown here have the default tension and bias values of 0, it will be left as an exercise for the reader to explore different tension and bias values.</summary>
+  /// <param name="v0">Pre-source point.</param>
+  /// <param name="v1">Source point.</param>
+  /// <param name="v2">Target point.</param>
+  /// <param name="v3">Post-target point.</param>
+  /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points mu ranges between 0 and 1. Values of mu outside the range result in extrapolation.</param>
+  /// <param name="tension">1 is high, 0 normal, -1 is low.</param>
+  /// <param name="bias">0 is even, positive is towards first segment, negative towards the other.</param>
+  /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
   public class HermiteInterpolation
     : IInterpolatable
   {
@@ -37,15 +46,6 @@ namespace Flux
     public double GetInterpolation(double mu)
       => Interpolate(m_v0, m_v1, m_v2, m_v3, mu, m_tension, m_bias);
 
-    /// <summary>Hermite interpolation like cubic requires 4 points so that it can achieve a higher degree of continuity. In addition it has nice tension and biasing controls. Tension can be used to tighten up the curvature at the known points. The bias is used to twist the curve about the known points. The examples shown here have the default tension and bias values of 0, it will be left as an exercise for the reader to explore different tension and bias values.</summary>
-    /// <param name="v0">Pre-source point.</param>
-    /// <param name="v1">Source point.</param>
-    /// <param name="v2">Target point.</param>
-    /// <param name="v3">Post-target point.</param>
-    /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points mu ranges between 0 and 1. Values of mu outside the range result in extrapolation.</param>
-    /// <param name="tension">1 is high, 0 normal, -1 is low.</param>
-    /// <param name="bias">0 is even, positive is towards first segment, negative towards the other.</param>
-    /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
     public static double Interpolate(double v0, double v1, double v2, double v3, double mu, double tension, double bias)
     {
       var mu2 = mu * mu;
