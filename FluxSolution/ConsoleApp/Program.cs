@@ -17,6 +17,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var pn = new Flux.Dsp.PerlinNoise();
+      var xyz1 = pn.Noise(3.14, 42, 7);
+      var xyz2 = pn.Noise(3.14, 42, 7);
+      var pxyz = 0.13691995878400012;
     }
 
     private static void Main(string[] args)
