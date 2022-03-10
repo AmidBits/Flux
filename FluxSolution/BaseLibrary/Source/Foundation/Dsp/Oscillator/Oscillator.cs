@@ -28,7 +28,7 @@ namespace Flux.Dsp.Synthesis
     public IOscillator? FrequencyModulator { get; set; }
 
     /// <summary>The wave generator used to produce the waveform of the oscillator.</summary>
-    public IMonoWaveGeneratable? Generator { get; set; }
+    public IMonoWaveMuGeneratable? Generator { get; set; }
 
     /// <summary>Indicates whether the sample polarity should be inverted.</summary>
     public bool InvertPolarity { get; set; }
@@ -87,7 +87,7 @@ namespace Flux.Dsp.Synthesis
     /// <summary>The period of the signal, in seconds. Can be used to set the frequency.</summary>
     public double SignalPeriod { get; private set; }
 
-    public Oscillator(IMonoWaveGeneratable generator, double frequency, double sampleRate = 44100)
+    public Oscillator(IMonoWaveMuGeneratable generator, double frequency, double sampleRate = 44100)
     {
       Generator = generator;
 
@@ -104,7 +104,7 @@ namespace Flux.Dsp.Synthesis
     /// <summary>Generates the next sample for the oscillator (all operational components are integrated in ths process).</summary>
     public double Next(double? normalizedFrequency)
     {
-      Current = Generator?.GenerateMonoWave(m_phase) ?? 0;
+      Current = Generator?.GenerateMonoWaveMu(m_phase) ?? 0;
 
       if (InvertPolarity)
         Current = -Current;

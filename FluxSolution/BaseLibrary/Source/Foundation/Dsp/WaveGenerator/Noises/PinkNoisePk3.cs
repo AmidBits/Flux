@@ -4,7 +4,7 @@
   /// <remarks>his is an approximation to a -10dB/decade filter using a weighted sum of first order filters.It is accurate to within +/-0.05dB above 9.2Hz (44100Hz sampling rate). Unity gain is at Nyquist, but can be adjusted by scaling the numbers at the end of each line.</remarks>
   /// <see cref="http://www.firstpr.com.au/dsp/pink-noise/#Filtering"/>
   public sealed class PinkNoisePk3
-    : IMonoWaveGeneratable
+    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -18,9 +18,9 @@
 
     /// <summary>A bipolar (-1 to 1) pink noise sample. The phase is ignored.</summary>
     /// <returns>A pink noise sample inthe -1 to 1 range.</returns>
-    public double GenerateMonoWave(double phase2Pi)
+    public double Sample()
     {
-      var white = m_rng.NextDouble(phase2Pi); // The variable 'white' was probably intended to be a new random value each time.
+      var white = m_rng.NextDouble(); // The variable 'white' was probably intended to be a new random value each time.
 
       m_b0 = 0.99886 * m_b0 + white * 0.0555179;
       m_b1 = 0.99332 * m_b1 + white * 0.0750759;
@@ -35,5 +35,10 @@
 
       return (pink);
     }
+
+    public double GenerateMonoWaveMu(double phaseMu)
+      => Sample();
+    public double GenerateMonoWavePi2(double phasePi2)
+      => Sample();
   }
 }

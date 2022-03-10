@@ -2,7 +2,7 @@ namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
   public sealed class SampleAndHold
-    : IMonoWaveGeneratable
+    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -14,7 +14,7 @@ namespace Flux.Dsp.WaveGenerator
       : this(new System.Random())
     { }
 
-    public double GenerateMonoWave(double phase)
+    public double Sample(double phase)
     {
       if (phase < m_hold)
       {
@@ -25,6 +25,11 @@ namespace Flux.Dsp.WaveGenerator
 
       return m_sample;
     }
+
+    public double GenerateMonoWaveMu(double phaseMu)
+      => Sample(phaseMu);
+    public double GenerateMonoWavePi2(double phasePi2)
+      => Sample(phasePi2);
   }
 
   // /// <summary>A sample and hold based on the frequencies corresponding to all MIDI notes, which is a subset of the chromatic scale.</summary>

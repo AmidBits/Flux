@@ -3,7 +3,7 @@
   /// <see cref="https://en.wikipedia.org/wiki/Brownian_noise"/>
   /// <seealso cref="http://vellocet.com/dsp/noise/VRand.html"/>
   public sealed class BrownNoise
-     : IMonoWaveGeneratable
+     : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -15,7 +15,7 @@
       : this(new System.Random())
     { }
 
-    public double GenerateMonoWave(double phase)
+    public double Sample()
     {
       while (true)
       {
@@ -33,5 +33,10 @@
 
       return (m_brown * 0.125);
     }
+
+    public double GenerateMonoWaveMu(double phaseMu)
+      => Sample();
+    public double GenerateMonoWavePi2(double phasePi2)
+      => Sample();
   }
 }

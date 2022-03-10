@@ -2,10 +2,12 @@
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
   public sealed class SquareWave
-    : IMonoWaveGeneratable
+    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
   {
-    public double GenerateMonoWave(double phase)
-      => phase < 0.5 ? 1 : -1;
+    public double GenerateMonoWaveMu(double phaseMu)
+      => SampleMu(phaseMu);
+    public double GenerateMonoWavePi2(double phasePi2)
+      => SamplePi2(phasePi2);
 
     /// <summary>Generates a square wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
     public static double SampleMu(double phaseMu)
@@ -13,7 +15,7 @@
       ? 1
       : -1;
     /// <summary>Generates a square wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
-    public static double SquarePi2(double phasePi2)
+    public static double SamplePi2(double phasePi2)
       => Tools.AbsolutePhasePiX2(phasePi2) < System.Math.PI
       ? 1
       : -1;
