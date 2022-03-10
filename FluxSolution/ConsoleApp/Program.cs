@@ -17,12 +17,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      // p = -[-2, 0] or +[0, 2]
-      var x = 0;
-      var ysaw = (x % Flux.Maths.PiX2 / System.Math.PI) is var p && p < 0 ? p + 1 : 1 - p;
-      var ysqr = x < 0 ? -1 : 1;
-
-      var pn = new Flux.Dsp.PerlinNoise();
+      var pn = new Flux.Dsp.Perlin3();
       var xyz1 = pn.Noise(3.14, 42, 7);
       var xyz2 = pn.Noise(3.14, 42, 7);
       var pxyz = 0.13691995878400012;
