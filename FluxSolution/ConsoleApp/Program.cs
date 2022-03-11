@@ -21,6 +21,16 @@ namespace ConsoleApp
       var xyz1 = pn.Noise(3.14, 42, 7);
       var xyz2 = pn.Noise(3.14, 42, 7);
       var pxyz = 0.13691995878400012;
+
+      var x = 2;
+      var a = 3;
+      var b = 4;  
+      var c = 5;  
+      var d = 6;
+
+      var pc = Flux.Polynomial.CubicX(x, a, b, c, d);
+      var pf = Flux.Polynomial.Function(x, a, b, c, d);
+
     }
 
     private static void Main(string[] args)
