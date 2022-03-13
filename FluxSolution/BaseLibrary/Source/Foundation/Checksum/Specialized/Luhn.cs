@@ -54,7 +54,7 @@ namespace Flux.Checksum
     public override bool Equals(object? obj)
       => obj is Luhn o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_sequence.CombineHashCore(), m_checkDigit);
+      => System.HashCode.Combine(m_sequence.CombineHashCodes(), m_checkDigit);
     public override string ToString()
       => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
   }

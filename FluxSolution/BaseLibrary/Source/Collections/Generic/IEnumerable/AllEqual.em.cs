@@ -13,16 +13,13 @@ namespace Flux
       if (enumerator.MoveNext() && valueSelector(enumerator.Current) is var firstValue)
       {
         while (enumerator.MoveNext())
-        {
-          var currentValue = valueSelector(enumerator.Current);
-
-          if (!equalityComparer.Equals(currentValue, firstValue))
+          if (!equalityComparer.Equals(valueSelector(enumerator.Current), firstValue))
             return false;
-        }
 
         return true;
       }
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+
+      return false;
     }
     public static bool AllEqual<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
       => AllEqual(source, valueSelector, System.Collections.Generic.EqualityComparer<TValue>.Default);

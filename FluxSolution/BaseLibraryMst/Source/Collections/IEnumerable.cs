@@ -19,7 +19,7 @@ namespace Collections.Generic
     [TestMethod]
     public void Choose()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.Choose((e, i) => ((i & 1) == 1, e)).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.Choose((e, i) => (i & 1) == 1, (e, i) => e).ToArray());
     }
 
     [TestMethod]

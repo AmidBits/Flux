@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -12,20 +10,19 @@ namespace Flux
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-      var indexOfMaximumValue = -1;
+      var maxIndex = -1;
       maxValue = default!;
 
       var index = -1;
-      foreach (var value in source.Select(valueSelector))
-      {
+
+      foreach (var value in System.Linq.Enumerable.Select(source, valueSelector))
         if (index++ == -1 || comparer.Compare(value, maxValue) > 0)
         {
-          indexOfMaximumValue = index;
+          maxIndex = index;
           maxValue = value;
         }
-      }
 
-      return indexOfMaximumValue;
+      return maxIndex;
     }
     /// <summary>Returns the index of the maximum value, as well as the actual value as an output parameter. If no value was found, -1 is returned and the maxValue is set to its default value. Uses the default comparer.</summary>
     public static int IndexOfMax<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, out TValue maxValue)

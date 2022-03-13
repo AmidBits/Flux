@@ -489,7 +489,7 @@
     public override bool Equals(object? obj)
       => obj is MidiOutCapabilities moc && Equals(moc);
     public override int GetHashCode()
-      => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashCore();
+      => System.Linq.Enumerable.Empty<object>().Append(ChannelMask, DriverVersion, Manufacturer, Name, Notes, ProductIdentifier, Support, Technology, Voices).CombineHashCodes();
     public override string ToString()
       => $"<{Manufacturer}, \"{Name}\", v{DriverVersion}>";
   };

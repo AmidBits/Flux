@@ -9,7 +9,7 @@ namespace Flux
       => ThrowOnNull(source).Aggregate(seed, (hash, e) => unchecked(hash ^ ((e?.GetHashCode() ?? 0) + (int)0x9e3779b9 + (hash << 6) + (hash >> 2))), (hash) => hash);
 
     /// <summary>Combines the hash codes for the elements in the sequence, using the .NET core hash combiner.</summary>
-    public static int CombineHashCore<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static int CombineHashCodes<T>(this System.Collections.Generic.IEnumerable<T> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

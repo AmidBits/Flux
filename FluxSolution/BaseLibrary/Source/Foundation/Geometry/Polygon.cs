@@ -688,7 +688,7 @@ namespace Flux.Geometry
     public override bool Equals(object? obj)
       => obj is Polygon o && Equals(o);
     public override int GetHashCode()
-      => Vertices.CombineHashCore();
+      => Vertices.CombineHashCodes();
     public override string? ToString()
       => $"{GetType().Name} {{ {string.Join(@", ", Vertices)} }}";
     #endregion Object overrides
