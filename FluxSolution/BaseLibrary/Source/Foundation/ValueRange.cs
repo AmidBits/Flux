@@ -25,8 +25,11 @@
       => m_lo.CompareTo(m_hi) < 0 && m_hi.CompareTo(m_lo) > 0;
 
     #region Static methods
+    /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
+    public static ValueRange<T> Intersect(ValueRange<T> a, ValueRange<T> b)
+      => IsOverlapping(a, b) ? new ValueRange<T>(MaxLo(a, b), MinHi(a, b)) : Empty;
     /// <summary>The relative complement of B in A (also called the set-theoretic difference of A and B), denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.</summary>
-    public static System.Collections.Generic.List<ValueRange<T>> Difference(ValueRange<T> a, ValueRange<T> b)
+    public static System.Collections.Generic.List<ValueRange<T>> LeftDifference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
 
@@ -41,9 +44,22 @@
 
       return list;
     }
-    /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
-    public static ValueRange<T> Intersect(ValueRange<T> a, ValueRange<T> b)
-      => IsOverlapping(a, b) ? new ValueRange<T>(MaxLo(a, b), MinHi(a, b)) : Empty;
+    /// <summary>Right different is the set of all elements that are members of B, but not members of A.</summary>
+    public static System.Collections.Generic.List<ValueRange<T>> RightDifference(ValueRange<T> a, ValueRange<T> b)
+    {
+      var list = new System.Collections.Generic.List<ValueRange<T>>();
+
+      if (IsOverlapping(a, b))
+      {
+        if (b.m_lo.CompareTo(a.m_lo) < 0)
+          list.Add(new ValueRange<T>(b.m_lo, a.m_lo));
+        if (a.m_hi.CompareTo(b.m_hi) < 0)
+          list.Add(new ValueRange<T>(a.m_hi, b.m_hi));
+      }
+      else list.Add(b);
+
+      return list;
+    }
     /// <summary>The symmetric difference, an extension of the complement, of two sets A and B, denoted by (A \ B) ∪ (B \ A) or (A - B) ∪ (B - A), is the set of all elements that are members from A, but not members of B union all elements that are members of B but not members of A.</summary>
     public static System.Collections.Generic.List<ValueRange<T>> SymmetricDifference(ValueRange<T> a, ValueRange<T> b)
     {
