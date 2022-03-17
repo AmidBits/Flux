@@ -51,9 +51,7 @@ namespace Flux
         while (greater > decreasingpart && transform[decreasingpart].Item1 >= transform[greater].Item1) // Find the smallest element in the decreasing partition that is greater than (or equal to) the item in front of the decreasing partition.
           greater--;
 
-        var tmp = transform[decreasingpart];
-        transform[decreasingpart] = transform[greater];
-        transform[greater] = tmp;
+        (transform[greater], transform[decreasingpart]) = (transform[decreasingpart], transform[greater]);
 
         System.Array.Reverse(transform, decreasingpart + 1, sourceCount - decreasingpart - 1); // Reverse the decreasing partition.
 

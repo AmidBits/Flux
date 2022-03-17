@@ -3,11 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     private static void SwapImpl<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
-    {
-      var tmp = source[indexA];
-      source[indexA] = source[indexB];
-      source[indexB] = tmp;
-    }
+      => (source[indexB], source[indexA]) = (source[indexA], source[indexB]);
 
     /// <summary>Swap two elements by the specified indices.</summary>
     public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)

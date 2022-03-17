@@ -56,7 +56,7 @@ namespace Flux.Metrical
 
       for (var i = 0; i < sourceCount; i++)
       {
-        var rotate = v1; v1 = v0; v0 = rotate;
+        (v0, v1) = (v1, v0);
 
         v0[0] = i + CostOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
 

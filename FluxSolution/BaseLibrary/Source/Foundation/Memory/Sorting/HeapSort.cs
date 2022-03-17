@@ -176,9 +176,7 @@ namespace Flux.Sorting
       while (j > i)
       {
         var p = GetParent(j);
-        var swap = tmp;
-        tmp = source[p];
-        source[p] = swap;
+        (source[p], tmp) = (tmp, source[p]);
         j = p;
       }
     }

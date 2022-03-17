@@ -11,7 +11,7 @@ namespace Flux
   public class CubicPbInterpolation
     : IInterpolatable
   {
-    private double m_v0, m_v1, m_v2, m_v3;
+    private readonly double m_v0, m_v1, m_v2, m_v3;
 
     public CubicPbInterpolation(double v0, double v1, double v2, double v3)
     {

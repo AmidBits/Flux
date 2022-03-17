@@ -6,11 +6,7 @@ namespace Flux
     internal static void SwapImpl(this System.Text.StringBuilder source, int indexA, int indexB)
     {
       if (indexA != indexB)
-      {
-        var tmp = source[indexA];
-        source[indexA] = source[indexB];
-        source[indexB] = tmp;
-      }
+        (source[indexB], source[indexA]) = (source[indexA], source[indexB]);
     }
     /// <summary>Swap two elements by the specified indices.</summary>
     public static void Swap(this System.Text.StringBuilder source, int indexA, int indexB)
