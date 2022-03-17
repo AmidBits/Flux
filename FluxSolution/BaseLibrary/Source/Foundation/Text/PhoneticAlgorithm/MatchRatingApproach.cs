@@ -82,11 +82,7 @@ namespace Flux
         var small = code2.ToStringBuilder();
 
         if (large.Length < small.Length)
-        {
-          var tmp = large;
-          large = small;
-          small = tmp;
-        }
+          (small, large) = (large, small);
 
         for (int i = 0; i < small.Length;)
         {

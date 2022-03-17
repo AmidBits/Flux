@@ -9,7 +9,7 @@ namespace Flux
         T[] array => array,
         System.Collections.Generic.List<T> list => AsSpan(list),
         System.Array array when array.Rank == 1 && array.GetType().GetElementType() == typeof(T) => (T[])array,
-        _ => throw new System.ArgumentOutOfRangeException("Cannot perform non-allocating cast."),
+        _ => throw new System.ArgumentException("Cannot perform non-allocating cast."),
       };
     }
   }

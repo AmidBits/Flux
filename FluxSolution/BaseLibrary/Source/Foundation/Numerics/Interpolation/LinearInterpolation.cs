@@ -8,7 +8,7 @@ namespace Flux
   public class LinearInterpolation
     : IInterpolatable
   {
-    private double m_v1, m_v2;
+    private readonly double m_v1, m_v2;
 
     public LinearInterpolation(double v1, double v2)
     {

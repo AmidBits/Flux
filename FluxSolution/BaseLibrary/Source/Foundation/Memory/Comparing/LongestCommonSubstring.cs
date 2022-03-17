@@ -80,8 +80,8 @@ namespace Flux.Metrical
 
       for (var i = source.Length - 1; i >= 0; i--)
       {
-        var swap = v1; v1 = v0; v0 = swap;
-
+        (v0, v1) = (v1, v0);
+        
         for (var j = target.Length - 1; j >= 0; j--)
         {
           if (EqualityComparer.Equals(source[i], target[j]))

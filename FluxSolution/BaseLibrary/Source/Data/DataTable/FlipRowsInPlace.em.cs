@@ -10,11 +10,7 @@ namespace Flux
       if (count < 1 || startIndex + count > source.Rows.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       for (int sourceRowIndex = startIndex, targetRowIndex = startIndex + count - 1; sourceRowIndex < targetRowIndex; sourceRowIndex++, targetRowIndex--)
-      {
-        var itemArray = source.Rows[sourceRowIndex].ItemArray;
-        source.Rows[sourceRowIndex].ItemArray = source.Rows[targetRowIndex].ItemArray;
-        source.Rows[targetRowIndex].ItemArray = itemArray;
-      }
+        (source.Rows[targetRowIndex].ItemArray, source.Rows[sourceRowIndex].ItemArray) = (source.Rows[sourceRowIndex].ItemArray, source.Rows[targetRowIndex].ItemArray);
     }
   }
 }

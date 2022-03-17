@@ -8,7 +8,7 @@ namespace Flux
   public class CosineInterpolation
     : IInterpolatable
   {
-    private double m_v1, m_v2;
+    private readonly double m_v1, m_v2;
 
     public CosineInterpolation(double v1, double v2)
     {

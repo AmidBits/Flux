@@ -334,11 +334,7 @@
         var s = rBits[i];
 
         if (s > i)
-        {
-          var t = data[i];
-          data[i] = data[s];
-          data[s] = t;
-        }
+          (data[s], data[i]) = (data[i], data[s]);
       }
     }
 

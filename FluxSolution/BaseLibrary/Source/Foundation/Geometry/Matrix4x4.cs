@@ -347,13 +347,13 @@ namespace Flux
       };
     }
     public EulerAngles ToEulerAnglesTaitBryanZYX()
-      => new EulerAngles(
+      => new(
         System.Math.Atan2(M11, M21),
         System.Math.Atan2(System.Math.Sqrt(1 - M31 * M31), -M31),
         System.Math.Atan2(M33, M32)
       );
     public EulerAngles ToEulerAnglesProperEulerZXZ()
-      => new EulerAngles(
+      => new(
         System.Math.Atan2(-M23, M13),
         System.Math.Atan2(M33, System.Math.Sqrt(1 - M33 * M33)),
         System.Math.Atan2(M32, M31)

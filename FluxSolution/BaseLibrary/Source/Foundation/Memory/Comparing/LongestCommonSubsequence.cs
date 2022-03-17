@@ -75,12 +75,10 @@ namespace Flux.Metrical
 
       for (var i = sourceCount - 1; i >= 0; i--)
       {
-        var swap = v1; v1 = v0; v0 = swap;
-
+        (v0, v1) = (v1, v0);
+        
         for (var j = targetCount - 1; j >= 0; j--)
-        {
           v0[j] = EqualityComparer.Equals(source[i], target[j]) ? v1[j + 1] + 1 : System.Math.Max(v1[j], v0[j + 1]);
-        }
       }
 
       return v0[0] + equalAtStart + equalAtEnd;

@@ -127,7 +127,7 @@ namespace Flux.DataStructures
 
         if (smallerIndex == index) break;
 
-        var tmp = m_data[index]; m_data[index] = m_data[smallerIndex]; m_data[smallerIndex] = tmp;
+        (m_data[smallerIndex], m_data[index]) = (m_data[index], m_data[smallerIndex]);
       }
     }
     private void HeapifyUp(int index)
@@ -138,7 +138,7 @@ namespace Flux.DataStructures
 
         if (m_data[parentIndex].CompareTo(m_data[index]) >= 0) break;
 
-        var tmp = m_data[index]; m_data[index] = m_data[parentIndex]; m_data[parentIndex] = tmp;
+        (m_data[parentIndex], m_data[index]) = (m_data[index], m_data[parentIndex]);
 
         index = parentIndex;
       }
