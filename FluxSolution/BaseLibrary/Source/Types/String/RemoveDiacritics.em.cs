@@ -9,7 +9,7 @@ namespace Flux
 
       for (var index = 0; index < source.Length; index++)
       {
-        yield return (char)ExtensionMethods.RemoveDiacriticalLatinStroke((System.Text.Rune)source[index]).Value;
+        yield return (char)ExtensionMethods.ReplaceDiacriticalLatinStroke((System.Text.Rune)source[index]).Value;
       }
     }
 
@@ -36,6 +36,6 @@ namespace Flux
 
     /// <summary>Remove diacritical marks and latin strokes (the latter are unaffected by normalization forms in NET).</summary>
     public static System.Collections.Generic.IEnumerable<char> RemoveDiacriticalMarksAndStrokes(this string source)
-      => RemoveDiacriticalMarks(source, c => (char)ExtensionMethods.RemoveDiacriticalLatinStroke((System.Text.Rune)c).Value);
+      => RemoveDiacriticalMarks(source, c => (char)ExtensionMethods.ReplaceDiacriticalLatinStroke((System.Text.Rune)c).Value);
   }
 }

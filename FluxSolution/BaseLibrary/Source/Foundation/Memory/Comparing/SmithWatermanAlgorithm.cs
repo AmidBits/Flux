@@ -20,21 +20,18 @@
     public SmithWatermanAlgorithm(int linearGapPenalty, System.Func<T, T, int> substitutionMatrix)
       : this(linearGapPenalty, substitutionMatrix, System.Collections.Generic.EqualityComparer<T>.Default)
     { }
-    public SmithWatermanAlgorithm()
+    public SmithWatermanAlgorithm(int linearGapPenalty, int substitutionMatrixEqual, int substitutionMatrixUnequal)
     {
       EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
-      SubstitutionMatrix = (s, t) => EqualityComparer.Equals(s, t) ? 1 : -1;
-      LinearGapPenalty = -1;
+      SubstitutionMatrix = (s, t) => EqualityComparer.Equals(s, t) ? substitutionMatrixEqual : substitutionMatrixUnequal;
+      LinearGapPenalty = linearGapPenalty;
     }
 
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
 
-      for (var i = source.Length; i >= 0; i--)
-        matrix[i, 0] = i * LinearGapPenalty;
-      for (var j = target.Length; j >= 0; j--)
-        matrix[0, j] = j * LinearGapPenalty;
+      System.Array.Clear(matrix);
 
       for (var si = 1; si <= source.Length; si++)
       {
@@ -44,11 +41,12 @@
         {
           var te = target[ti - 1];
 
-          var scoreSub = matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te);
-          var scoreDel = matrix[si - 1, ti] + LinearGapPenalty;
-          var scoreIns = matrix[si, ti - 1] + LinearGapPenalty;
-
-          matrix[si, ti] = Maths.Max(scoreSub, scoreDel, scoreIns);
+          matrix[si, ti] = Maths.Max(
+            matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
+            matrix[si - 1, ti] + LinearGapPenalty, // Delete.
+            matrix[si, ti - 1] + LinearGapPenalty, // Insert.
+            0 // Minimum max cost.
+          );
         }
       }
 
@@ -57,47 +55,39 @@
 
     public (System.Collections.Generic.List<T> source, System.Collections.Generic.List<T> target) TracebackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var si = matrix.GetLength(0) - 1;
-      var ti = matrix.GetLength(1) - 1;
+      var best = 0;
+      var si = 0;
+      var ti = 0;
+
+      for (var msi = matrix.GetLength(0) - 1; msi >= 0; msi--)
+        for (var mti = matrix.GetLength(1) - 1; mti >= 0; mti--)
+          if (matrix[msi, mti] > best)
+          {
+            best = matrix[msi, mti];
+            si = msi;
+            ti = mti;
+          }
 
       var s = new System.Collections.Generic.List<T>();
       var t = new System.Collections.Generic.List<T>();
 
-      while (si > 0 && ti > 0)
+      while (matrix[si, ti] > 0)
       {
         if (matrix[si, ti] - SubstitutionMatrix(source[si - 1], target[ti - 1]) == matrix[si - 1, ti - 1])
         {
-          si -= 1;
-          ti -= 1;
-          s.Insert(0, target[ti]);
-          t.Insert(0, source[si]);
-        }
-        else if (matrix[si, ti] - LinearGapPenalty == matrix[si, ti - 1])
-        {
-          ti -= 1;
-          s.Insert(0, target[ti]);
-          t.Insert(0, GapPlaceholder);
+          s.Insert(0, target[ti -= 1]);
+          t.Insert(0, source[si -= 1]);
         }
         else if (matrix[si, ti] - LinearGapPenalty == matrix[si - 1, ti])
         {
-          si -= 1;
           s.Insert(0, GapPlaceholder);
-          t.Insert(0, source[si]);
+          t.Insert(0, source[si -= 1]);
         }
-      }
-
-      while (ti > 0)
-      {
-        ti -= 1;
-        s.Insert(0, target[ti]);
-        t.Insert(0, GapPlaceholder);
-      }
-
-      while (si > 0)
-      {
-        si -= 1;
-        s.Insert(0, GapPlaceholder);
-        t.Insert(0, source[si]);
+        else if (matrix[si, ti] - LinearGapPenalty == matrix[si, ti - 1])
+        {
+          s.Insert(0, target[ti -= 1]);
+          t.Insert(0, GapPlaceholder);
+        }
       }
 
       return (s, t);

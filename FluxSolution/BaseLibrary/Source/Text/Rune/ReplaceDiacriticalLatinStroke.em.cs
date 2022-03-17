@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Removes latin stroke diacriticals from any character with the strokes, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>
-    public static System.Text.Rune RemoveDiacriticalLatinStroke(this System.Text.Rune source)
+    public static System.Text.Rune ReplaceDiacriticalLatinStroke(this System.Text.Rune source)
       => source.Value switch
       {
         '\u023A' => (System.Text.Rune)'A', // Latin Capital Letter A with stroke

@@ -48,11 +48,11 @@
         {
           var te = target[ti - 1];
 
-          var scoreSub = matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te);
-          var scoreDel = matrix[si - 1, ti] + LinearGapPenalty;
-          var scoreIns = matrix[si, ti - 1] + LinearGapPenalty;
-
-          matrix[si, ti] = Maths.Max(scoreSub, scoreDel, scoreIns);
+          matrix[si, ti] = Maths.Max(
+            matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
+            matrix[si - 1, ti] + LinearGapPenalty, // Delete.
+            matrix[si, ti - 1] + LinearGapPenalty // Insert.
+          );
         }
       }
 
@@ -71,21 +71,17 @@
       {
         if (matrix[si, ti] == matrix[si - 1, ti - 1] + SubstitutionMatrix(source[si - 1], target[ti - 1]))
         {
-          si -= 1;
-          ti -= 1;
-          s.Insert(0, target[ti]);
-          t.Insert(0, source[si]);
+          s.Insert(0, target[ti -= 1]);
+          t.Insert(0, source[si -= 1]);
         }
         else if (matrix[si, ti] == matrix[si - 1, ti] + LinearGapPenalty)
         {
-          si -= 1;
           s.Insert(0, GapPlaceholder);
-          t.Insert(0, source[si]);
+          t.Insert(0, source[si -= 1]);
         }
         else if (matrix[si, ti] == matrix[si, ti - 1] + LinearGapPenalty)
         {
-          ti -= 1;
-          s.Insert(0, target[ti]);
+          s.Insert(0, target[ti -= 1]);
           t.Insert(0, GapPlaceholder);
         }
       }
