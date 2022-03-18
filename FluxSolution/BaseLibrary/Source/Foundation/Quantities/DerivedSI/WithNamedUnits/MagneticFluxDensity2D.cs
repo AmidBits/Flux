@@ -60,8 +60,7 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(MagneticFluxDensity2D other)
-      => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(MagneticFluxDensity2D other) => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

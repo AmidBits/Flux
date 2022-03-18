@@ -16,120 +16,104 @@ namespace Flux
       : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
+    [System.Diagnostics.Contracts.Pure]
     public double Radian
       => Angle.ConvertDegreeToRadian(m_degLongitude);
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public int TheoreticalTimezoneOffset
       => GetTheoreticalTimezoneOffset(m_degLongitude);
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_degLongitude;
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
+    [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedX()
       => Radian;
 
+    [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degLongitude, AngleUnit.Degree);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="degLongitude"></param>
+    [System.Diagnostics.Contracts.Pure]
     public static int GetTheoreticalTimezoneOffset(double degLongitude)
       => System.Convert.ToInt32(System.Math.Truncate((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15));
 
     /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsLongitude(double degLongitude)
       => degLongitude >= MinValue && degLongitude <= MaxValue;
 
+    [System.Diagnostics.Contracts.Pure]
     public static double Wrap(double degLongitude)
       => Maths.Wrap(degLongitude, MinValue, MaxValue) % MaxValue;
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Longitude v)
-      => v.m_degLongitude;
-    public static explicit operator Longitude(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Longitude v) => v.m_degLongitude;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Longitude(double v) => new(v);
 
-    public static bool operator <(Longitude a, Longitude b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Longitude a, Longitude b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Longitude a, Longitude b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Longitude a, Longitude b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Longitude a, Longitude b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Longitude a, Longitude b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Longitude a, Longitude b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Longitude a, Longitude b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Longitude a, Longitude b)
-      => a.Equals(b);
-    public static bool operator !=(Longitude a, Longitude b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Longitude a, Longitude b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Longitude a, Longitude b) => !a.Equals(b);
 
-    public static Longitude operator -(Longitude v)
-      => new(-v.m_degLongitude);
-    public static Longitude operator +(Longitude a, double b)
-      => new(Wrap(a.m_degLongitude + b));
-    public static Longitude operator +(Longitude a, Longitude b)
-      => a + b.Value;
-    public static Longitude operator /(Longitude a, double b)
-      => new(Wrap(a.m_degLongitude / b));
-    public static Longitude operator /(Longitude a, Longitude b)
-      => a / b.Value;
-    public static Longitude operator *(Longitude a, double b)
-      => new(Wrap(a.m_degLongitude * b));
-    public static Longitude operator *(Longitude a, Longitude b)
-      => a * b.Value;
-    public static Longitude operator %(Longitude a, double b)
-      => new(Wrap(a.m_degLongitude % b));
-    public static Longitude operator %(Longitude a, Longitude b)
-      => a % b.Value;
-    public static Longitude operator -(Longitude a, double b)
-      => new(Wrap(a.m_degLongitude - b));
-    public static Longitude operator -(Longitude a, Longitude b)
-      => a - b.Value;
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude v) => new(-v.m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, double b) => new(Wrap(a.m_degLongitude + b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, Longitude b) => a + b.Value;
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator /(Longitude a, double b) => new(Wrap(a.m_degLongitude / b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator /(Longitude a, Longitude b) => a / b.Value;
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator *(Longitude a, double b) => new(Wrap(a.m_degLongitude * b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator *(Longitude a, Longitude b) => a * b.Value;
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator %(Longitude a, double b) => new(Wrap(a.m_degLongitude % b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator %(Longitude a, Longitude b) => a % b.Value;
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude a, double b) => new(Wrap(a.m_degLongitude - b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude a, Longitude b) => a - b.Value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Longitude other)
-      => m_degLongitude.CompareTo(other.m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(Longitude other) => m_degLongitude.CompareTo(other.m_degLongitude);
 
     #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    [System.Diagnostics.Contracts.Pure] public bool ToBoolean(System.IFormatProvider? provider) => m_degLongitude != 0;
+    [System.Diagnostics.Contracts.Pure] public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_degLongitude);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_degLongitude);
+    [System.Diagnostics.Contracts.Pure] public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_degLongitude, conversionType, provider);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_degLongitude);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_degLongitude);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_degLongitude);
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(Longitude other)
-      => m_degLongitude == other.m_degLongitude;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(Longitude other) => m_degLongitude == other.m_degLongitude;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Longitude o && Equals(o);
-    public override int GetHashCode()
-      => m_degLongitude.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Longitude o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLongitude.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
     #endregion Object overrides
   }
 }

@@ -13,17 +13,14 @@ namespace Flux
     public Probability(double ratio)
       => m_probability = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
-    /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
-    public Ratio ToOdds()
-      => new(m_probability, 1 - m_probability);
-
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_probability;
 
     #region Static methods
     /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
     /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
+    [System.Diagnostics.Contracts.Pure]
     public static double Expit(double x)
       => 1 / (System.Math.Exp(-x) + 1);
 
@@ -35,6 +32,7 @@ namespace Flux
     /// <param name="k">The logistic growth rate or steepness of the curve (k).</param>
     /// <param name="x0">The x-value of the sigmoid's midpoint (x0).</param>
     /// <param name="L">The curve's maximum value (L).</param>
+    [System.Diagnostics.Contracts.Pure]
     public static double Logistic(double x, double k = 1, double x0 = 0, double L = 1)
       => L / (System.Math.Exp(-(k * (x - x0))) + 1);
 
@@ -44,6 +42,7 @@ namespace Flux
     /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Logistic_map"/>
     /// <seealso cref="RickerModel(double, double, double)"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double LogisticMap(double Xn, double r)
       => r * Xn * (1 - Xn);
 
@@ -51,6 +50,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
+    [System.Diagnostics.Contracts.Pure]
     public static double Logit(double probability)
       => System.Math.Log(OddsRatio(probability));
 
@@ -58,6 +58,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
+    [System.Diagnostics.Contracts.Pure]
     public static double OddsRatio(double probability)
       => probability / (1 - probability);
 
@@ -65,6 +66,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
     /// <returns>The probability, which is in the range [0, 1].</returns>
+    [System.Diagnostics.Contracts.Pure]
     public static Probability OfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
     {
       var accumulation = 1d;
@@ -76,8 +78,15 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
     /// <returns>The probability, which is in the range [0, 1].</returns>
+    [System.Diagnostics.Contracts.Pure]
     public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
       => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_probability);
+
+    /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
+    [System.Diagnostics.Contracts.Pure]
+    public Ratio ToOdds()
+      => new(m_probability, 1 - m_probability);
     #endregion Static methods
 
     #region Overloaded operators
@@ -126,32 +135,30 @@ namespace Flux
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(Probability other)
-      => m_probability.CompareTo(other.m_probability);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
 
     #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    [System.Diagnostics.Contracts.Pure] public bool ToBoolean(System.IFormatProvider? provider) => m_probability != 0;
+    [System.Diagnostics.Contracts.Pure] public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_probability);
+    [System.Diagnostics.Contracts.Pure] public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_probability);
+    [System.Diagnostics.Contracts.Pure] public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_probability);
+    [System.Diagnostics.Contracts.Pure] public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_probability);
+    [System.Diagnostics.Contracts.Pure] public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_probability);
+    [System.Diagnostics.Contracts.Pure] public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_probability);
+    [System.Diagnostics.Contracts.Pure] public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_probability);
+    [System.Diagnostics.Contracts.Pure] public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_probability);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_probability);
+    [System.Diagnostics.Contracts.Pure] public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_probability);
+    [System.Diagnostics.Contracts.Pure] public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_probability);
+    [System.Diagnostics.Contracts.Pure] public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_probability, conversionType, provider);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_probability);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_probability);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_probability);
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(Probability other)
-      => m_probability == other.m_probability;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(Probability other) => m_probability == other.m_probability;
     #endregion Implemented interfaces
 
     #region Object overrides

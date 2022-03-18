@@ -278,48 +278,63 @@ namespace Flux
       m_y = y;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public double X
       => m_x;
+    [System.Diagnostics.Contracts.Pure]
     public double Y
       => m_y;
 
     /// <summary>Returns the angle to the 2D X-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double AngleToAxisX
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x);
     /// <summary>Returns the angle to the 2D Y-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double AngleToAxisY
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y);
 
     /// <summary>Returns the X-slope of the line to the point (x, y).</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double LineSlopeX
       => System.Math.CopySign(m_x / m_y, m_x);
     /// <summary>Returns the Y-slope of the line to the point (x, y).</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double LineSlopeY
       => System.Math.CopySign(m_y / m_x, m_y);
 
+    [System.Diagnostics.Contracts.Pure]
     public EllipseGeometry ToEllipse()
       => new(m_x, m_y);
+    [System.Diagnostics.Contracts.Pure]
     public Point2 ToPoint2(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)));
+    [System.Diagnostics.Contracts.Pure]
     public Point2 ToPoint2()
       => ToPoint2(System.MidpointRounding.ToEven);
+    [System.Diagnostics.Contracts.Pure]
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    [System.Diagnostics.Contracts.Pure]
     public Angle ToRotationAngle()
       => (Angle)ConvertCartesian2ToRotationAngle(m_x, m_y);
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    [System.Diagnostics.Contracts.Pure]
     public Angle ToRotationAngleEx()
       => (Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector128"/> with the cartesian values as vector elements [X, Y].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector128<double> ToVector128()
       => System.Runtime.Intrinsics.Vector128.Create(m_x, m_y);
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, <paramref name="z"/>, <paramref name="w"/>].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256(double z, double w)
       => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, z, w);
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, X, Y], i.e. the values are duplicated.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(m_x, m_y);
 
@@ -480,71 +495,47 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> xy)
-      => new(xy.Item1, xy.Item2);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(CartesianCoordinate2 cc2) => new(cc2.X, cc2.Y);
 
-    public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => a.Equals(b);
-    public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b) => !a.Equals(b);
 
-    public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc)
-      => new(-cc.X, -cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc) => new(-cc.X, -cc.Y);
 
-    public static CartesianCoordinate2 operator --(CartesianCoordinate2 cc)
-      => cc - 1;
-    public static CartesianCoordinate2 operator ++(CartesianCoordinate2 cc)
-      => cc + 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator --(CartesianCoordinate2 cc) => cc - 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator ++(CartesianCoordinate2 cc) => cc + 1;
 
-    public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new(cc1.X + cc2.X, cc1.Y + cc2.Y);
-    public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc, double scalar)
-      => new(cc.X + scalar, cc.Y + scalar);
-    public static CartesianCoordinate2 operator +(double scalar, CartesianCoordinate2 cc)
-      => new(scalar + cc.X, scalar + cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X + cc2.X, cc1.Y + cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc, double scalar) => new(cc.X + scalar, cc.Y + scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(double scalar, CartesianCoordinate2 cc) => new(scalar + cc.X, scalar + cc.Y);
 
-    public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new(cc1.X - cc2.X, cc1.Y - cc2.Y);
-    public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc, double scalar)
-      => new(cc.X - scalar, cc.Y - scalar);
-    public static CartesianCoordinate2 operator -(double scalar, CartesianCoordinate2 cc)
-      => new(scalar - cc.X, scalar - cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X - cc2.X, cc1.Y - cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc, double scalar) => new(cc.X - scalar, cc.Y - scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(double scalar, CartesianCoordinate2 cc) => new(scalar - cc.X, scalar - cc.Y);
 
-    public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new(cc1.X * cc2.X, cc1.Y * cc2.Y);
-    public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc, double scalar)
-      => new(cc.X * scalar, cc.Y * scalar);
-    public static CartesianCoordinate2 operator *(double scalar, CartesianCoordinate2 cc)
-      => new(scalar * cc.X, scalar * cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X * cc2.X, cc1.Y * cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc, double scalar) => new(cc.X * scalar, cc.Y * scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(double scalar, CartesianCoordinate2 cc) => new(scalar * cc.X, scalar * cc.Y);
 
-    public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new(cc1.X / cc2.X, cc1.Y / cc2.Y);
-    public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc, double scalar)
-      => new(cc.X / scalar, cc.Y / scalar);
-    public static CartesianCoordinate2 operator /(double scalar, CartesianCoordinate2 cc)
-      => new(scalar / cc.X, scalar / cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X / cc2.X, cc1.Y / cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc, double scalar) => new(cc.X / scalar, cc.Y / scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(double scalar, CartesianCoordinate2 cc) => new(scalar / cc.X, scalar / cc.Y);
 
-    public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2)
-      => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
-    public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc, double scalar)
-      => new(cc.X % scalar, cc.Y % scalar);
-    public static CartesianCoordinate2 operator %(double scalar, CartesianCoordinate2 cc)
-      => new(scalar % cc.X, scalar % cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(double scalar, CartesianCoordinate2 cc) => new(scalar % cc.X, scalar % cc.Y);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(CartesianCoordinate2 other)
-      => m_x == other.m_x && m_y == other.m_y;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate2 other) => m_x == other.m_x && m_y == other.m_y;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is CartesianCoordinate2 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y);
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2 o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
     #endregion Object overrides
   }
 }

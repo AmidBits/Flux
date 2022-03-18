@@ -234,54 +234,64 @@ namespace Flux
       m_z = z;
     }
 
-    public double X
-      => m_x;
-    public double Y
-      => m_y;
-    public double Z
-      => m_z;
+    [System.Diagnostics.Contracts.Pure] public double X => m_x;
+    [System.Diagnostics.Contracts.Pure] public double Y => m_y;
+    [System.Diagnostics.Contracts.Pure] public double Z => m_z;
 
     /// <summary>Returns the axes angles to the 3D X-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public (double toYaxis, double toZaxis) AnglesToAxisX
       => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_x));
     /// <summary>Returns the axes angles to the 3D Y-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public (double toXaxis, double toZaxis) AnglesToAxisY
       => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_y));
     /// <summary>Returns the axes angles to the 3D Z-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public (double toXaxis, double toYaxis) AnglesToAxisZ
       => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_z), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_z));
 
     /// <summary>Returns the angle to the 3D X-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double AngleToAxisX
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2)), m_x);
     /// <summary>Returns the angle to the 3D Y-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double AngleToAxisY
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2) + System.Math.Pow(m_x, 2)), m_y);
     /// <summary>Returns the angle to the 3D Z-axis.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double AngleToAxisZ
       => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), m_z);
 
+    [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
     /// <summary>Convert to integer Point3 by using the specified rounding.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public Point3 ToPoint3(System.MidpointRounding midpointRounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
     /// <summary>Convert to integer Point3 by using <see cref="MidpointRounding.ToEven"/> rounding.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public Point3 ToPoint3()
       => ToPoint3(System.MidpointRounding.ToEven);
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
+    [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion(CartesianCoordinate3 rotatingTo)
       => Quaternion.FromTwoVectors(this, rotatingTo);
+    [System.Diagnostics.Contracts.Pure]
     public SphericalCoordinate ToSphericalCoordinate()
     {
       var x2y2 = m_x * m_x + m_y * m_y;
       return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
     }
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256(double w)
       => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, m_z, w);
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, 0].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(0);
 
@@ -411,71 +421,47 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> xyz)
-      => new(xyz.Item1, xyz.Item2, xyz.Item3);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> vt3) => new(vt3.Item1, vt3.Item2, vt3.Item3);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double, double>(CartesianCoordinate3 cc3) => new(cc3.X, cc3.Y, cc3.Z);
 
-    public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b)
-      => a.Equals(b);
-    public static bool operator !=(CartesianCoordinate3 a, CartesianCoordinate3 b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate3 a, CartesianCoordinate3 b) => !a.Equals(b);
 
-    public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc)
-      => new(-cc.X, -cc.Y, -cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc) => new(-cc.X, -cc.Y, -cc.Z);
 
-    public static CartesianCoordinate3 operator --(CartesianCoordinate3 cc)
-      => cc - 1;
-    public static CartesianCoordinate3 operator ++(CartesianCoordinate3 cc)
-      => cc + 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator --(CartesianCoordinate3 cc) => cc - 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator ++(CartesianCoordinate3 cc) => cc + 1;
 
-    public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new(cc1.X + cc2.X, cc1.Y + cc2.Y, cc1.Z + cc2.Z);
-    public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc, double scalar)
-      => new(cc.X + scalar, cc.Y + scalar, cc.Z + scalar);
-    public static CartesianCoordinate3 operator +(double scalar, CartesianCoordinate3 cc)
-      => new(scalar + cc.X, scalar + cc.Y, scalar + cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2) => new(cc1.X + cc2.X, cc1.Y + cc2.Y, cc1.Z + cc2.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator +(CartesianCoordinate3 cc, double scalar) => new(cc.X + scalar, cc.Y + scalar, cc.Z + scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator +(double scalar, CartesianCoordinate3 cc) => new(scalar + cc.X, scalar + cc.Y, scalar + cc.Z);
 
-    public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new(cc1.X - cc2.X, cc1.Y - cc2.Y, cc1.Z - cc2.Z);
-    public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc, double scalar)
-      => new(cc.X - scalar, cc.Y - scalar, cc.Z - scalar);
-    public static CartesianCoordinate3 operator -(double scalar, CartesianCoordinate3 cc)
-      => new(scalar - cc.X, scalar - cc.Y, scalar - cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2) => new(cc1.X - cc2.X, cc1.Y - cc2.Y, cc1.Z - cc2.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator -(CartesianCoordinate3 cc, double scalar) => new(cc.X - scalar, cc.Y - scalar, cc.Z - scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator -(double scalar, CartesianCoordinate3 cc) => new(scalar - cc.X, scalar - cc.Y, scalar - cc.Z);
 
-    public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new(cc1.X * cc2.X, cc1.Y * cc2.Y, cc1.Z * cc2.Z);
-    public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc, double scalar)
-      => new(cc.X * scalar, cc.Y * scalar, cc.Z * scalar);
-    public static CartesianCoordinate3 operator *(double scalar, CartesianCoordinate3 cc)
-      => new(scalar * cc.X, scalar * cc.Y, scalar * cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2) => new(cc1.X * cc2.X, cc1.Y * cc2.Y, cc1.Z * cc2.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator *(CartesianCoordinate3 cc, double scalar) => new(cc.X * scalar, cc.Y * scalar, cc.Z * scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator *(double scalar, CartesianCoordinate3 cc) => new(scalar * cc.X, scalar * cc.Y, scalar * cc.Z);
 
-    public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new(cc1.X / cc2.X, cc1.Y / cc2.Y, cc1.Z / cc2.Z);
-    public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc, double scalar)
-      => new(cc.X / scalar, cc.Y / scalar, cc.Z / scalar);
-    public static CartesianCoordinate3 operator /(double scalar, CartesianCoordinate3 cc)
-      => new(scalar / cc.X, scalar / cc.Y, scalar / cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2) => new(cc1.X / cc2.X, cc1.Y / cc2.Y, cc1.Z / cc2.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator /(CartesianCoordinate3 cc, double scalar) => new(cc.X / scalar, cc.Y / scalar, cc.Z / scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator /(double scalar, CartesianCoordinate3 cc) => new(scalar / cc.X, scalar / cc.Y, scalar / cc.Z);
 
-    public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2)
-      => new(cc1.X % cc2.X, cc1.Y % cc2.Y, cc1.Z % cc2.Z);
-    public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc, double scalar)
-      => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
-    public static CartesianCoordinate3 operator %(double scalar, CartesianCoordinate3 cc)
-      => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc1, CartesianCoordinate3 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y, cc1.Z % cc2.Z);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator %(CartesianCoordinate3 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3 operator %(double scalar, CartesianCoordinate3 cc) => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(CartesianCoordinate3 other)
-      => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate3 other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is CartesianCoordinate3 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y, m_z);
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength(this)}) }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate3 o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength(this)}) }}";
     #endregion Object overrides
   }
 }
