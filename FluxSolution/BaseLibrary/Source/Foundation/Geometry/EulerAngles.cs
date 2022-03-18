@@ -53,6 +53,7 @@ namespace Flux
     //public double Tilt
     //  => m_b;
 
+    [System.Diagnostics.Contracts.Pure]
     public AxisAngle ToAxisAngle()
     {
       var c1 = System.Math.Cos(m_y / 2);
@@ -85,6 +86,7 @@ namespace Flux
 
       return new(x, y, z, angle);
     }
+    [System.Diagnostics.Contracts.Pure]
     public Matrix4x4 ToMatrixTaitBryanXYZ()
     {
       var c1 = System.Math.Cos(m_y);
@@ -101,6 +103,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+    [System.Diagnostics.Contracts.Pure]
     public Matrix4x4 ToMatrixLhTaitBryanYXZ()
     {
       var c1 = System.Math.Cos(m_y);
@@ -117,6 +120,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+    [System.Diagnostics.Contracts.Pure]
     public Matrix4x4 ToMatrixLhTaitBryanZYX()
     {
       var c3 = System.Math.Cos(m_y);
@@ -133,6 +137,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+    [System.Diagnostics.Contracts.Pure]
     public Matrix4x4 ToMatrixLhProperEulerZXZ()
     {
       var c1 = System.Math.Cos(m_y);
@@ -149,6 +154,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+    [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
       var cy = System.Math.Cos(m_y * 0.5);
@@ -167,6 +173,7 @@ namespace Flux
     }
 
     #region Static methods
+    [System.Diagnostics.Contracts.Pure]
     public (double x, double y, double z, double w) ConvertToQuaternion()
     {
       var c1 = System.Math.Cos(m_y / 2);
@@ -184,6 +191,7 @@ namespace Flux
       return (x, y, z, w);
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public static EulerAngles ConvertQuaternionToEulerAngles(double x, double y, double z, double w)
     {
       var sqw = w * w;
@@ -209,25 +217,19 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(EulerAngles a, EulerAngles b)
-      => a.Equals(b);
-    public static bool operator !=(EulerAngles a, EulerAngles b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(EulerAngles a, EulerAngles b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(EulerAngles a, EulerAngles b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(EulerAngles other)
-      => m_y == other.m_y && m_p == other.m_p && m_r == other.m_r;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(EulerAngles other) => m_y == other.m_y && m_p == other.m_p && m_r == other.m_r;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is EulerAngles o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_y, m_p, m_r);
-    public override string ToString()
-      => $"{GetType().Name} {{ Heading = {m_y}, Attitude = {m_p}, Bank = {m_r} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is EulerAngles o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_y, m_p, m_r);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Heading = {m_y}, Attitude = {m_p}, Bank = {m_r} }}";
     #endregion Object overrides
   }
 }

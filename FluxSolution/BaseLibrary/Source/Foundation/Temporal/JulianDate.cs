@@ -40,18 +40,22 @@ namespace Flux
     public JulianDate AddMilliseconds(int milliseconds)
       => this + (milliseconds / 1000d / 86400d);
 
+    [System.Diagnostics.Contracts.Pure]
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
 
+    [System.Diagnostics.Contracts.Pure]
     public void GetParts(ConversionCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
     {
       ToJulianDayNumber().GetDateParts(calendar, out year, out month, out day);
       ConvertToTimeParts(m_value, out hour, out minute, out second, out millisecond);
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public JulianDayNumber ToJulianDayNumber()
       => new((int)(m_value + 0.5));
 
+    [System.Diagnostics.Contracts.Pure]
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ToJulianDayNumber().GetDateParts(calendar, out var year, out var month, out var day);
@@ -60,6 +64,7 @@ namespace Flux
       return new(year, month, day, hour, minute, second, millisecond);
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToTimeString()
       => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200 + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 

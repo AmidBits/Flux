@@ -33,10 +33,13 @@ namespace Flux
     public double Angle
       => m_angle;
 
+    [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_angle);
+    [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate3 ToAxis()
       => new(m_x, m_y, m_z);
+    [System.Diagnostics.Contracts.Pure]
     public EulerAngles ToEulerAngles()
     {
       var s = System.Math.Sin(m_angle);
@@ -55,6 +58,7 @@ namespace Flux
 
       return new(heading, attitude, bank);
     }
+    [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
       var h = m_angle / 2;
@@ -67,23 +71,29 @@ namespace Flux
     }
 
     #region Overloaded operators
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator ==(AxisAngle a, AxisAngle b)
       => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator !=(AxisAngle a, AxisAngle b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
+    [System.Diagnostics.Contracts.Pure]
     public bool Equals(AxisAngle other)
       => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z && m_angle == other.m_angle;
     #endregion Implemented interfaces
 
     #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is AxisAngle o && Equals(o);
+    [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z, m_angle);
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_x}, Z = {m_x}, Angle = {new Angle(m_angle).ToUnitString(AngleUnit.Radian)} ({new Angle(m_angle).ToUnitString(AngleUnit.Degree, "N1")}) }}";
     #endregion Object overrides

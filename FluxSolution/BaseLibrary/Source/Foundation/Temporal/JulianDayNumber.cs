@@ -37,10 +37,8 @@ namespace Flux
     public int Value
       => m_value;
 
-    [System.Diagnostics.Contracts.Pure]
     public JulianDayNumber AddWeeks(int weeks)
       => this + (weeks * 7);
-    [System.Diagnostics.Contracts.Pure]
     public JulianDayNumber AddDays(int days)
       => this + days;
 
