@@ -90,47 +90,28 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Probability v)
-      => v.m_probability;
-    public static explicit operator Probability(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Probability v) => v.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Probability(double v) => new(v);
 
-    public static bool operator <(Probability a, Probability b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Probability a, Probability b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Probability a, Probability b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Probability a, Probability b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Probability a, Probability b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Probability a, Probability b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Probability a, Probability b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Probability a, Probability b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Probability a, Probability b)
-      => a.Equals(b);
-    public static bool operator !=(Probability a, Probability b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Probability a, Probability b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Probability a, Probability b) => !a.Equals(b);
 
-    public static Probability operator -(Probability v)
-      => new(-v.m_probability);
-    public static Probability operator +(Probability a, double b)
-      => new(a.m_probability + b);
-    public static Probability operator +(Probability a, Probability b)
-      => a + b.m_probability;
-    public static Probability operator /(Probability a, double b)
-      => new(a.m_probability / b);
-    public static Probability operator /(Probability a, Probability b)
-      => a / b.m_probability;
-    public static Probability operator *(Probability a, double b)
-      => new(a.m_probability * b);
-    public static Probability operator *(Probability a, Probability b)
-      => a * b.m_probability;
-    public static Probability operator %(Probability a, double b)
-      => new(a.m_probability % b);
-    public static Probability operator %(Probability a, Probability b)
-      => a % b.m_probability;
-    public static Probability operator -(Probability a, double b)
-      => new(a.m_probability - b);
-    public static Probability operator -(Probability a, Probability b)
-      => a - b.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static Probability operator -(Probability v) => new(-v.m_probability);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator +(Probability a, double b) => new(a.m_probability + b);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator +(Probability a, Probability b) => a + b.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static Probability operator /(Probability a, double b) => new(a.m_probability / b);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator /(Probability a, Probability b) => a / b.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static Probability operator *(Probability a, double b) => new(a.m_probability * b);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator *(Probability a, Probability b) => a * b.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static Probability operator %(Probability a, double b) => new(a.m_probability % b);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator %(Probability a, Probability b) => a % b.m_probability;
+    [System.Diagnostics.Contracts.Pure] public static Probability operator -(Probability a, double b) => new(a.m_probability - b);
+    [System.Diagnostics.Contracts.Pure] public static Probability operator -(Probability a, Probability b) => a - b.m_probability;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -162,12 +143,9 @@ namespace Flux
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Probability o && Equals(o);
-    public override int GetHashCode()
-      => m_probability.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_probability} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Probability o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_probability.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_probability} }}";
     #endregion Object overrides
   }
 }

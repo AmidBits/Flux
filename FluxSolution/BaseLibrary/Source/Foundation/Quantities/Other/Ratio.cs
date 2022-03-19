@@ -22,14 +22,18 @@ namespace Flux
       m_denominator = denominator;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public double Numerator
       => m_numerator;
+    [System.Diagnostics.Contracts.Pure]
     public double Denominator
       => m_denominator;
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_numerator / m_denominator;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToRatioString(RatioFormat format)
       => format switch
       {
@@ -39,49 +43,42 @@ namespace Flux
       };
 
     #region Overloaded operators
-    public static explicit operator double(Ratio v)
-      => v.Value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Ratio v) => v.Value;
 
-    public static bool operator ==(Ratio a, Ratio b)
-      => a.Equals(b);
-    public static bool operator !=(Ratio a, Ratio b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Ratio a, Ratio b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Ratio a, Ratio b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
 
     #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+    [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    [System.Diagnostics.Contracts.Pure] public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+    [System.Diagnostics.Contracts.Pure] public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+    [System.Diagnostics.Contracts.Pure] public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+    [System.Diagnostics.Contracts.Pure] public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+    [System.Diagnostics.Contracts.Pure] public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+    [System.Diagnostics.Contracts.Pure] public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+    [System.Diagnostics.Contracts.Pure] public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+    [System.Diagnostics.Contracts.Pure] public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+    [System.Diagnostics.Contracts.Pure] public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
+    [System.Diagnostics.Contracts.Pure] public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+    [System.Diagnostics.Contracts.Pure] public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+    [System.Diagnostics.Contracts.Pure] public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
+    [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(Ratio other)
-      => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(Ratio other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Ratio o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_numerator, m_denominator);
-    public override string ToString()
-      => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({Value}) }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Ratio o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_numerator, m_denominator);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Numerator = {m_numerator}, Denominator = {m_denominator} ({Value}) }}";
     #endregion Object overrides
   }
 }

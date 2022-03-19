@@ -10,9 +10,11 @@ namespace Flux
     public UvIndex(double value)
       => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToString(string? format = null)
       => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
 
@@ -20,53 +22,33 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(UvIndex v)
-      => v.m_value;
-    public static explicit operator UvIndex(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(UvIndex v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator UvIndex(double v) => new(v);
 
-    public static bool operator <(UvIndex a, UvIndex b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(UvIndex a, UvIndex b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(UvIndex a, UvIndex b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(UvIndex a, UvIndex b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(UvIndex a, UvIndex b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(UvIndex a, UvIndex b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(UvIndex a, UvIndex b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(UvIndex a, UvIndex b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(UvIndex a, UvIndex b)
-      => a.Equals(b);
-    public static bool operator !=(UvIndex a, UvIndex b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(UvIndex a, UvIndex b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(UvIndex a, UvIndex b) => !a.Equals(b);
 
-    public static UvIndex operator -(UvIndex v)
-      => new(-v.m_value);
-    public static UvIndex operator +(UvIndex a, double b)
-      => new(a.m_value + b);
-    public static UvIndex operator +(UvIndex a, UvIndex b)
-      => a + b.m_value;
-    public static UvIndex operator /(UvIndex a, double b)
-      => new(a.m_value / b);
-    public static UvIndex operator /(UvIndex a, UvIndex b)
-      => a / b.m_value;
-    public static UvIndex operator *(UvIndex a, double b)
-      => new(a.m_value * b);
-    public static UvIndex operator *(UvIndex a, UvIndex b)
-      => a * b.m_value;
-    public static UvIndex operator %(UvIndex a, double b)
-      => new(a.m_value % b);
-    public static UvIndex operator %(UvIndex a, UvIndex b)
-      => a % b.m_value;
-    public static UvIndex operator -(UvIndex a, double b)
-      => new(a.m_value - b);
-    public static UvIndex operator -(UvIndex a, UvIndex b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator -(UvIndex v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator +(UvIndex a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator +(UvIndex a, UvIndex b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator /(UvIndex a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator /(UvIndex a, UvIndex b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator *(UvIndex a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator *(UvIndex a, UvIndex b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator %(UvIndex a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator %(UvIndex a, UvIndex b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator -(UvIndex a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static UvIndex operator -(UvIndex a, UvIndex b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(UvIndex other)
-      => m_value.CompareTo(other.m_value);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -89,17 +71,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(UvIndex other)
-      => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(UvIndex other) => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is UvIndex o && Equals(o);
-    public override int GetHashCode()
-      => m_value.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_value} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is UvIndex o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_value} }}";
     #endregion Object overrides
   }
 }

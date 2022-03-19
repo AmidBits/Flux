@@ -308,25 +308,20 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Fraction v)
-      => v.Value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Fraction v) => v.Value;
 
-    public static bool operator <(Fraction a, Fraction b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Fraction a, Fraction b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Fraction a, Fraction b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Fraction a, Fraction b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Fraction a, Fraction b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Fraction a, Fraction b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Fraction a, Fraction b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Fraction a, Fraction b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Fraction a, Fraction b)
-      => a.Equals(b);
-    public static bool operator !=(Fraction a, Fraction b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Fraction a, Fraction b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Fraction a, Fraction b) => !a.Equals(b);
 
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction f)
       => new(f.m_numerator, -f.m_denominator, false);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator +(Fraction a, Fraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -336,18 +331,25 @@ namespace Flux
 
       return new Fraction(an + bn, lcm);
     }
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator +(Fraction a, System.Numerics.BigInteger b)
       => a + new Fraction(b);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator /(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator /(Fraction a, System.Numerics.BigInteger b)
       => a / new Fraction(b);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator *(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator *(Fraction a, System.Numerics.BigInteger b)
       => a * new Fraction(b);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator %(Fraction a, System.Numerics.BigInteger b)
       => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction a, Fraction b)
     {
       var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -357,6 +359,7 @@ namespace Flux
 
       return new Fraction(an - bn, lcm);
     }
+    [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction a, System.Numerics.BigInteger b)
       => a - new Fraction(b);
     #endregion Overloaded operators
@@ -396,10 +399,13 @@ namespace Flux
     #endregion Implemented interfaces
 
     #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is Fraction o && Equals(o);
+    [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => System.HashCode.Combine(m_numerator, m_denominator);
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
     {
       var sb = new System.Text.StringBuilder();

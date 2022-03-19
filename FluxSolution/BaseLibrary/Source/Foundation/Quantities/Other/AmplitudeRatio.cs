@@ -33,14 +33,18 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public PowerRatio ToPowerRatio()
       => new(System.Math.Pow(m_value, 2));
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
       => unit switch
       {
@@ -61,49 +65,31 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(AmplitudeRatio v)
-      => v.m_value;
-    public static explicit operator AmplitudeRatio(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(AmplitudeRatio v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator AmplitudeRatio(double v) => new(v);
 
-    public static bool operator <(AmplitudeRatio a, AmplitudeRatio b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(AmplitudeRatio a, AmplitudeRatio b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(AmplitudeRatio a, AmplitudeRatio b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(AmplitudeRatio a, AmplitudeRatio b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(AmplitudeRatio a, AmplitudeRatio b)
-      => a.Equals(b);
-    public static bool operator !=(AmplitudeRatio a, AmplitudeRatio b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(AmplitudeRatio a, AmplitudeRatio b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(AmplitudeRatio a, AmplitudeRatio b) => !a.Equals(b);
 
-    public static AmplitudeRatio operator -(AmplitudeRatio v)
-      => new(-v.m_value);
-    public static AmplitudeRatio operator +(AmplitudeRatio a, double b)
-      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
-    public static AmplitudeRatio operator +(AmplitudeRatio a, AmplitudeRatio b)
-      => a + b.m_value;
-    public static AmplitudeRatio operator /(AmplitudeRatio a, double b)
-      => new(a.m_value - b);
-    public static AmplitudeRatio operator /(AmplitudeRatio a, AmplitudeRatio b)
-      => a / b.m_value;
-    public static AmplitudeRatio operator *(AmplitudeRatio a, double b)
-      => new(a.m_value + b);
-    public static AmplitudeRatio operator *(AmplitudeRatio a, AmplitudeRatio b)
-      => a * b.m_value;
-    public static AmplitudeRatio operator -(AmplitudeRatio a, double b)
-      => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
-    public static AmplitudeRatio operator -(AmplitudeRatio a, AmplitudeRatio b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator -(AmplitudeRatio v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator +(AmplitudeRatio a, double b) => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator +(AmplitudeRatio a, AmplitudeRatio b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator /(AmplitudeRatio a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator /(AmplitudeRatio a, AmplitudeRatio b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator *(AmplitudeRatio a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator *(AmplitudeRatio a, AmplitudeRatio b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator -(AmplitudeRatio a, double b) => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
+    [System.Diagnostics.Contracts.Pure] public static AmplitudeRatio operator -(AmplitudeRatio a, AmplitudeRatio b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(AmplitudeRatio other)
-      => m_value.CompareTo(other.m_value);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(AmplitudeRatio other) => m_value.CompareTo(other.m_value);
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -126,17 +112,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(AmplitudeRatio other)
-      => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(AmplitudeRatio other) => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is AmplitudeRatio o && Equals(o);
-    public override int GetHashCode()
-      => m_value.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is AmplitudeRatio o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }
