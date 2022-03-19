@@ -32,14 +32,18 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(PowerUnit unit = DefaultUnit)
       => unit switch
       {
@@ -51,52 +55,34 @@ namespace Flux
     /// <summary>Creates a new Power instance from the specified current and voltage.</summary>
     /// <param name="current"></param>
     /// <param name="voltage"></param>
+    [System.Diagnostics.Contracts.Pure]
     public static Power From(ElectricCurrent current, Voltage voltage)
       => new(current.Value * voltage.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Power v)
-      => v.m_value;
-    public static explicit operator Power(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Power v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Power(double v) => new(v);
 
-    public static bool operator <(Power a, Power b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Power a, Power b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Power a, Power b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Power a, Power b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Power a, Power b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Power a, Power b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Power a, Power b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Power a, Power b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Power a, Power b)
-      => a.Equals(b);
-    public static bool operator !=(Power a, Power b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Power a, Power b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Power a, Power b) => !a.Equals(b);
 
-    public static Power operator -(Power v)
-      => new(-v.m_value);
-    public static Power operator +(Power a, double b)
-      => new(a.m_value + b);
-    public static Power operator +(Power a, Power b)
-      => a + b.m_value;
-    public static Power operator /(Power a, double b)
-      => new(a.m_value / b);
-    public static Power operator /(Power a, Power b)
-      => a / b.m_value;
-    public static Power operator *(Power a, double b)
-      => new(a.m_value * b);
-    public static Power operator *(Power a, Power b)
-      => a * b.m_value;
-    public static Power operator %(Power a, double b)
-      => new(a.m_value % b);
-    public static Power operator %(Power a, Power b)
-      => a % b.m_value;
-    public static Power operator -(Power a, double b)
-      => new(a.m_value - b);
-    public static Power operator -(Power a, Power b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Power operator -(Power v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static Power operator +(Power a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static Power operator +(Power a, Power b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Power operator /(Power a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static Power operator /(Power a, Power b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Power operator *(Power a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static Power operator *(Power a, Power b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Power operator %(Power a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static Power operator %(Power a, Power b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Power operator -(Power a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static Power operator -(Power a, Power b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -32,11 +32,14 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(ForceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(ForceUnit unit = DefaultUnit)
       => unit switch
       {

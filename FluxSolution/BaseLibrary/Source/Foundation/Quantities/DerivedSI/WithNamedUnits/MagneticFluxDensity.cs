@@ -34,16 +34,20 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
-
+    [System.Diagnostics.Contracts.Pure]
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)},{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+    [System.Diagnostics.Contracts.Pure]
     public MetricMultiplicative ToMetricMultiplicative()
       => new(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch
       {
@@ -52,47 +56,28 @@ namespace Flux
       };
 
     #region Overloaded operators
-    public static explicit operator double(MagneticFluxDensity v)
-      => v.m_value;
-    public static explicit operator MagneticFluxDensity(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(MagneticFluxDensity v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator MagneticFluxDensity(double v) => new(v);
 
-    public static bool operator <(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a.Equals(b);
-    public static bool operator !=(MagneticFluxDensity a, MagneticFluxDensity b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(MagneticFluxDensity a, MagneticFluxDensity b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(MagneticFluxDensity a, MagneticFluxDensity b) => !a.Equals(b);
 
-    public static MagneticFluxDensity operator -(MagneticFluxDensity v)
-      => new(-v.m_value);
-    public static MagneticFluxDensity operator +(MagneticFluxDensity a, double b)
-      => new(a.m_value + b);
-    public static MagneticFluxDensity operator +(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a + b.m_value;
-    public static MagneticFluxDensity operator /(MagneticFluxDensity a, double b)
-      => new(a.m_value / b);
-    public static MagneticFluxDensity operator /(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a / b.m_value;
-    public static MagneticFluxDensity operator *(MagneticFluxDensity a, double b)
-      => new(a.m_value * b);
-    public static MagneticFluxDensity operator *(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a * b.m_value;
-    public static MagneticFluxDensity operator %(MagneticFluxDensity a, double b)
-      => new(a.m_value % b);
-    public static MagneticFluxDensity operator %(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a % b.m_value;
-    public static MagneticFluxDensity operator -(MagneticFluxDensity a, double b)
-      => new(a.m_value - b);
-    public static MagneticFluxDensity operator -(MagneticFluxDensity a, MagneticFluxDensity b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator -(MagneticFluxDensity v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator +(MagneticFluxDensity a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator +(MagneticFluxDensity a, MagneticFluxDensity b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator /(MagneticFluxDensity a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator /(MagneticFluxDensity a, MagneticFluxDensity b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator *(MagneticFluxDensity a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator *(MagneticFluxDensity a, MagneticFluxDensity b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator %(MagneticFluxDensity a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator %(MagneticFluxDensity a, MagneticFluxDensity b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator -(MagneticFluxDensity a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static MagneticFluxDensity operator -(MagneticFluxDensity a, MagneticFluxDensity b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -124,12 +109,9 @@ namespace Flux
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is MagneticFluxDensity o && Equals(o);
-    public override int GetHashCode()
-      => m_value.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is MagneticFluxDensity o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

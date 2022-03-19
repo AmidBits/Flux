@@ -31,11 +31,14 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AngularAccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
@@ -44,53 +47,33 @@ namespace Flux
       };
 
     #region Overloaded operators
-    public static explicit operator double(AngularAcceleration v)
-      => v.m_value;
-    public static explicit operator AngularAcceleration(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(AngularAcceleration v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator AngularAcceleration(double v) => new(v);
 
-    public static bool operator <(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(AngularAcceleration a, AngularAcceleration b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(AngularAcceleration a, AngularAcceleration b)
-      => a.Equals(b);
-    public static bool operator !=(AngularAcceleration a, AngularAcceleration b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(AngularAcceleration a, AngularAcceleration b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(AngularAcceleration a, AngularAcceleration b) => !a.Equals(b);
 
-    public static AngularAcceleration operator -(AngularAcceleration v)
-      => new(-v.m_value);
-    public static AngularAcceleration operator +(AngularAcceleration a, double b)
-      => new(a.m_value + b);
-    public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b)
-      => a + b.m_value;
-    public static AngularAcceleration operator /(AngularAcceleration a, double b)
-      => new(a.m_value / b);
-    public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b)
-      => a / b.m_value;
-    public static AngularAcceleration operator *(AngularAcceleration a, double b)
-      => new(a.m_value * b);
-    public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b)
-      => a * b.m_value;
-    public static AngularAcceleration operator %(AngularAcceleration a, double b)
-      => new(a.m_value % b);
-    public static AngularAcceleration operator %(AngularAcceleration a, AngularAcceleration b)
-      => a % b.m_value;
-    public static AngularAcceleration operator -(AngularAcceleration a, double b)
-      => new(a.m_value - b);
-    public static AngularAcceleration operator -(AngularAcceleration a, AngularAcceleration b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator -(AngularAcceleration v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator +(AngularAcceleration a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator +(AngularAcceleration a, AngularAcceleration b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator /(AngularAcceleration a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator /(AngularAcceleration a, AngularAcceleration b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator *(AngularAcceleration a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator *(AngularAcceleration a, AngularAcceleration b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator %(AngularAcceleration a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator %(AngularAcceleration a, AngularAcceleration b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator -(AngularAcceleration a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static AngularAcceleration operator -(AngularAcceleration a, AngularAcceleration b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    public int CompareTo(AngularAcceleration other)
-      => m_value.CompareTo(other.m_value);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(AngularAcceleration other) => m_value.CompareTo(other.m_value);
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -113,17 +96,13 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable
-    public bool Equals(AngularAcceleration other)
-      => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(AngularAcceleration other) => m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is AngularAcceleration o && Equals(o);
-    public override int GetHashCode()
-      => m_value.GetHashCode();
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is AngularAcceleration o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

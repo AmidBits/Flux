@@ -32,14 +32,18 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(VoltageUnit unit = DefaultUnit)
       => unit switch
       {
@@ -51,57 +55,40 @@ namespace Flux
     /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>
     /// <param name="current"></param>
     /// <param name="resistance"></param>
+    [System.Diagnostics.Contracts.Pure]
     public static Voltage From(ElectricCurrent current, ElectricalResistance resistance)
       => new(current.Value * resistance.Value);
     /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
     /// <param name="power"></param>
     /// <param name="current"></param>
+    [System.Diagnostics.Contracts.Pure]
     public static Voltage From(Power power, ElectricCurrent current)
       => new(power.Value / current.Value);
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Voltage v)
-      => v.m_value;
-    public static explicit operator Voltage(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Voltage v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Voltage(double v) => new(v);
 
-    public static bool operator <(Voltage a, Voltage b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Voltage a, Voltage b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Voltage a, Voltage b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Voltage a, Voltage b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Voltage a, Voltage b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Voltage a, Voltage b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Voltage a, Voltage b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Voltage a, Voltage b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Voltage a, Voltage b)
-      => a.Equals(b);
-    public static bool operator !=(Voltage a, Voltage b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Voltage a, Voltage b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Voltage a, Voltage b) => !a.Equals(b);
 
-    public static Voltage operator -(Voltage v)
-      => new(-v.m_value);
-    public static Voltage operator +(Voltage a, double b)
-      => new(a.m_value + b);
-    public static Voltage operator +(Voltage a, Voltage b)
-      => a + b.m_value;
-    public static Voltage operator /(Voltage a, double b)
-      => new(a.m_value / b);
-    public static Voltage operator /(Voltage a, Voltage b)
-      => a / b.m_value;
-    public static Voltage operator *(Voltage a, double b)
-      => new(a.m_value * b);
-    public static Voltage operator *(Voltage a, Voltage b)
-      => a * b.m_value;
-    public static Voltage operator %(Voltage a, double b)
-      => new(a.m_value % b);
-    public static Voltage operator %(Voltage a, Voltage b)
-      => a % b.m_value;
-    public static Voltage operator -(Voltage a, double b)
-      => new(a.m_value - b);
-    public static Voltage operator -(Voltage a, Voltage b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator -(Voltage v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator +(Voltage a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator +(Voltage a, Voltage b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator /(Voltage a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator /(Voltage a, Voltage b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator *(Voltage a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator *(Voltage a, Voltage b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator %(Voltage a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator %(Voltage a, Voltage b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator -(Voltage a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static Voltage operator -(Voltage a, Voltage b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

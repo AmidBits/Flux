@@ -32,11 +32,14 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(DensityUnit unit = DefaultUnit)
       => unit switch
       {
@@ -50,47 +53,28 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Density v)
-      => v.m_value;
-    public static explicit operator Density(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Density v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Density(double v) => new(v);
 
-    public static bool operator <(Density a, Density b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Density a, Density b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Density a, Density b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Density a, Density b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Density a, Density b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Density a, Density b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Density a, Density b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Density a, Density b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Density a, Density b)
-      => a.Equals(b);
-    public static bool operator !=(Density a, Density b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Density a, Density b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Density a, Density b) => !a.Equals(b);
 
-    public static Density operator -(Density v)
-      => new(-v.m_value);
-    public static Density operator +(Density a, double b)
-      => new(a.m_value + b);
-    public static Density operator +(Density a, Density b)
-      => a + b.m_value;
-    public static Density operator /(Density a, double b)
-      => new(a.m_value / b);
-    public static Density operator /(Density a, Density b)
-      => a / b.m_value;
-    public static Density operator *(Density a, double b)
-      => new(a.m_value * b);
-    public static Density operator *(Density a, Density b)
-      => a * b.m_value;
-    public static Density operator %(Density a, double b)
-      => new(a.m_value % b);
-    public static Density operator %(Density a, Density b)
-      => a % b.m_value;
-    public static Density operator -(Density a, double b)
-      => new(a.m_value - b);
-    public static Density operator -(Density a, Density b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Density operator -(Density v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static Density operator +(Density a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static Density operator +(Density a, Density b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Density operator /(Density a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static Density operator /(Density a, Density b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Density operator *(Density a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static Density operator *(Density a, Density b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Density operator %(Density a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static Density operator %(Density a, Density b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Density operator -(Density a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static Density operator -(Density a, Density b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces

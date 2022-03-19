@@ -49,14 +49,18 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
+    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(PressureUnit unit = DefaultUnit)
       => unit switch
       {
@@ -72,47 +76,28 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator double(Pressure v)
-      => v.m_value;
-    public static explicit operator Pressure(double v)
-      => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Pressure v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Pressure(double v) => new(v);
 
-    public static bool operator <(Pressure a, Pressure b)
-      => a.CompareTo(b) < 0;
-    public static bool operator <=(Pressure a, Pressure b)
-      => a.CompareTo(b) <= 0;
-    public static bool operator >(Pressure a, Pressure b)
-      => a.CompareTo(b) > 0;
-    public static bool operator >=(Pressure a, Pressure b)
-      => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Pressure a, Pressure b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Pressure a, Pressure b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Pressure a, Pressure b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Pressure a, Pressure b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Pressure a, Pressure b)
-      => a.Equals(b);
-    public static bool operator !=(Pressure a, Pressure b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Pressure a, Pressure b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Pressure a, Pressure b) => !a.Equals(b);
 
-    public static Pressure operator -(Pressure v)
-      => new(-v.m_value);
-    public static Pressure operator +(Pressure a, double b)
-      => new(a.m_value + b);
-    public static Pressure operator +(Pressure a, Pressure b)
-      => a + b.m_value;
-    public static Pressure operator /(Pressure a, double b)
-      => new(a.m_value / b);
-    public static Pressure operator /(Pressure a, Pressure b)
-      => a / b.m_value;
-    public static Pressure operator *(Pressure a, double b)
-      => new(a.m_value * b);
-    public static Pressure operator *(Pressure a, Pressure b)
-      => a * b.m_value;
-    public static Pressure operator %(Pressure a, double b)
-      => new(a.m_value % b);
-    public static Pressure operator %(Pressure a, Pressure b)
-      => a % b.m_value;
-    public static Pressure operator -(Pressure a, double b)
-      => new(a.m_value - b);
-    public static Pressure operator -(Pressure a, Pressure b)
-      => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator -(Pressure v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator +(Pressure a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator +(Pressure a, Pressure b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator /(Pressure a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator /(Pressure a, Pressure b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator *(Pressure a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator *(Pressure a, Pressure b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator %(Pressure a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator %(Pressure a, Pressure b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator -(Pressure a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static Pressure operator -(Pressure a, Pressure b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
