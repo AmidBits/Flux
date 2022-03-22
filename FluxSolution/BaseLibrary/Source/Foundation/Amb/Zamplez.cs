@@ -13,15 +13,16 @@ namespace Flux
     /// <summary>Run the amb operator zample.</summary>
     public static void RunAmbOperator()
     {
+      System.Console.WriteLine();
+      System.Console.WriteLine(nameof(RunAmbOperator));
+      System.Console.WriteLine();
+
       RunAmbOpTesting();
       RunAmbOpZebraPuzzle();
     }
 
     public static void RunAmbOpTesting()
     {
-      System.Console.WriteLine(nameof(RunAmbOperator));
-      System.Console.WriteLine();
-
       for (var i = 0; i < 3; i++)
       {
         AmbTestingImpl();

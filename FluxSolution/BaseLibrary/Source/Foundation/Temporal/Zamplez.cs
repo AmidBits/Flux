@@ -6,6 +6,7 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunTemporal()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunTemporal));
       System.Console.WriteLine();
 

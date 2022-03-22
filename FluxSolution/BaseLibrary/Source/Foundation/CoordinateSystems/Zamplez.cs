@@ -6,6 +6,7 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunCoordinateSystems));
       System.Console.WriteLine();
 

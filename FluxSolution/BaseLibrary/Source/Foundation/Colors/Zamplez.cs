@@ -6,6 +6,7 @@ namespace Flux
     /// <summary>Run the colors zample.</summary>
     public static void RunColors()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunColors));
       System.Console.WriteLine();
 

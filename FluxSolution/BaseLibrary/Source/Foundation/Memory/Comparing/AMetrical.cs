@@ -11,19 +11,30 @@ namespace Flux.Metrical
     { }
 
     /// <summary>This can be used to backtrack a dynamically programmed matrix.</summary>
-    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int sourceIndex, int targetIndex)
+    public System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int sourceIndex, int targetIndex, T placeholder)
     {
       if (sourceIndex == 0 | targetIndex == 0)
         return new System.Collections.Generic.List<T>();
+
+      // If source and target are equal, add item (no edit) and move down the center.
       if (EqualityComparer.Equals(source[sourceIndex - 1], target[targetIndex - 1]))
       {
-        var list = Backtrack(matrix, source, target, sourceIndex - 1, targetIndex - 1);
+        var list = Backtrack(matrix, source, target, sourceIndex - 1, targetIndex - 1, placeholder);
         list.Add(source[sourceIndex - 1]);
         return list;
       }
+
+      // If the matrix target cost is less, move to target.
+      if (matrix[sourceIndex, targetIndex - 1] < matrix[sourceIndex - 1, targetIndex])
+        return Backtrack(matrix, source, target, sourceIndex, targetIndex - 1, placeholder);
+      // If the matrix source cost is less, move to source.
       if (matrix[sourceIndex, targetIndex - 1] > matrix[sourceIndex - 1, targetIndex])
-        return Backtrack(matrix, source, target, sourceIndex, targetIndex - 1);
-      return Backtrack(matrix, source, target, sourceIndex - 1, targetIndex);
+        return Backtrack(matrix, source, target, sourceIndex - 1, targetIndex, placeholder);
+
+      // If the matrix has equal costs, add placeholder (an edit) and move down the center.
+      var unequal = Backtrack(matrix, source, target, sourceIndex - 1, targetIndex - 1, placeholder);
+      unequal.Add(placeholder);
+      return unequal;
     }
 
     /// <summary>This can be used to trim the start and end of a sequence.</summary>

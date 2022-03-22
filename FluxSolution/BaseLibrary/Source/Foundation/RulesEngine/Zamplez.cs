@@ -6,6 +6,7 @@ namespace Flux
     /// <summary>Run the rules engine zample.</summary>
     public static void RunRulesEngine()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunRulesEngine));
       System.Console.WriteLine();
 

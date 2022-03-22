@@ -36,7 +36,9 @@
     {
       public static void Run()
       {
+        System.Console.WriteLine();
         System.Console.WriteLine($"{nameof(ParallelVsSerial)} comparison:");
+        System.Console.WriteLine();
         System.Console.WriteLine(Flux.Services.Performance.Measure(() => RegularForLoop(10, 0.05), 1));
         System.Console.WriteLine(Flux.Services.Performance.Measure(() => ParallelForLoop(10, 0.05), 1));
         System.Console.WriteLine();

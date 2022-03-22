@@ -199,6 +199,7 @@ namespace Flux
     /// <summary>Run the locale zample.</summary>
     public static void RunLocale()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunLocale));
       System.Console.WriteLine();
 

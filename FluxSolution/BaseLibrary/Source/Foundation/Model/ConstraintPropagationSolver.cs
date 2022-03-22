@@ -103,7 +103,7 @@ namespace Flux
         matrix[5, index] = kf.Animal != EnumAnimal.Unkown ? kf.Animal.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(matrix.ToConsoleBlock(uniformWidth: true, centerContent: true));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToConsoleStrings(uniformWidth: true, centerContent: true)));
     }
 
     public static void Example()

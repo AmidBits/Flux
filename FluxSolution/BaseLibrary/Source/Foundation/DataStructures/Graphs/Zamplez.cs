@@ -4,6 +4,7 @@
   {
     public static void RunDataStructuresGraphs()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunDataStructuresGraphs));
       System.Console.WriteLine();
 

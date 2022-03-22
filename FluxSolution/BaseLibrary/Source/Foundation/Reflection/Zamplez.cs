@@ -8,6 +8,7 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunReflection()
     {
+      System.Console.WriteLine();
       System.Console.WriteLine(nameof(RunReflection));
       System.Console.WriteLine();
 

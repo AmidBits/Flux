@@ -131,7 +131,7 @@ namespace Flux
         matrix[5, index] = kf.Pet != EnumPet.Unknown ? kf.Pet.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(matrix.ToConsoleBlock(uniformWidth: true, centerContent: true));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToConsoleStrings(uniformWidth: true, centerContent: true)));
     }
 
     public static void Example()
@@ -233,7 +233,7 @@ namespace Flux
             {
               var list = PositiveFacts.Where(pf => pf.UnknownCount() == 4 && pf.Drink != EnumDrink.Unknown).ToList();
               if (list.Count == 1)
-                list[0].House.RemoveAll(i=>i!=pf.House[0]);
+                list[0].House.RemoveAll(i => i != pf.House[0]);
             }
             else if (pf.Nationality == EnumNationality.Unknown)
             {
