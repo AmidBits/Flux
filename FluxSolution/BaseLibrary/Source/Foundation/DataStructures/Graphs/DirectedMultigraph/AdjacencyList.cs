@@ -7,9 +7,15 @@
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyList
   {
-    private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>> m_list = new();
+    private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>> m_list;
 
-    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues = new();
+    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues;
+
+    public AdjacencyList()
+    {
+      m_list = new();
+      m_vertexValues = new();
+    }
 
     /// <summary>Returns the count of vertices within the adjacency matrix.</summary>
     public int Count
