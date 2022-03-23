@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
+    : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
   {
     public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
@@ -81,8 +81,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<T>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Enplethy other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Enplethy o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -104,7 +106,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Enplethy other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

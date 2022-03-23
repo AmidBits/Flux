@@ -34,13 +34,12 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TimeUnit>
+    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
     /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
-    public static Time Flick
-      => new(1.0 / 705600000.0);
+    public static Time Flick => new(1.0 / 705600000.0);
 
     private readonly double m_value;
 
@@ -121,6 +120,8 @@ namespace Flux
     #region Implemented interfaces
     // IComparable<T>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Time o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;

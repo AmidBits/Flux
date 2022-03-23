@@ -40,7 +40,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LengthUnit>
+    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
     public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
@@ -130,10 +130,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
+    // IComparable<T>
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(Length other) => m_value.CompareTo(other.m_value);
     // IComparable
-    [System.Diagnostics.Contracts.Pure]
-    public int CompareTo(Length other)
-      => m_value.CompareTo(other.m_value);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Length o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -155,7 +155,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Length other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

@@ -24,7 +24,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
+    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -131,6 +131,8 @@ namespace Flux
     #region Implemented interfaces
     // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Temperature o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
