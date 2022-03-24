@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
+    : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
   {
     public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
@@ -108,6 +108,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Enplethy other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

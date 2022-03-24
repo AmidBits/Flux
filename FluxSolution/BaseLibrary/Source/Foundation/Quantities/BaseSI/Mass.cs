@@ -28,7 +28,7 @@ namespace Flux
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, MassUnit>
+    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, MassUnit>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -127,6 +127,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Mass other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

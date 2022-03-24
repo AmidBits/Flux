@@ -24,7 +24,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
+    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -156,6 +156,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Temperature other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

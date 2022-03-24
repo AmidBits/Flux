@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luminous_intensity"/>
   public struct LuminousIntensity
-    : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LuminousIntensityUnit>
+    : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LuminousIntensityUnit>
   {
     public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
@@ -104,6 +104,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(LuminousIntensity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

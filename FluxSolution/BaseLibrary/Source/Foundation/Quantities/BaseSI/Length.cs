@@ -40,7 +40,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LengthUnit>
+    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
     public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
@@ -157,6 +157,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Length other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides
