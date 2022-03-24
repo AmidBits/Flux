@@ -46,7 +46,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, ISiDerivedUnitQuantifiable<double, VolumeUnit>
+    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -161,6 +161,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Volume other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

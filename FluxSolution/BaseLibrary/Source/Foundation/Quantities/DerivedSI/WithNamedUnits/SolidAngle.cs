@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
+    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(SolidAngle other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

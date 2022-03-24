@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>irradiance, unit of watt per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Irradiance"/>
   public struct Irradiance
-    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
+    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
   {
     public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 
@@ -105,6 +105,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Irradiance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

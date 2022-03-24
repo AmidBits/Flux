@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable, System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, ISiDerivedUnitQuantifiable<double, InductanceUnit>
+    : System.IComparable, System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, InductanceUnit>
   {
     public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Inductance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

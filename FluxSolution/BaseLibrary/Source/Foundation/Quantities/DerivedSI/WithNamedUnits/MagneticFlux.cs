@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux
-    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, ISiDerivedUnitQuantifiable<double, MagneticFluxUnit>
+    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, ISiDerivedUnitQuantifiable<double, MagneticFluxUnit>
   {
     public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(MagneticFlux other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
   public struct DynamicViscosity
-    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, ISiDerivedUnitQuantifiable<double, DynamicViscosityUnit>
+    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DynamicViscosityUnit>
   {
     public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
 
@@ -106,6 +106,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(DynamicViscosity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

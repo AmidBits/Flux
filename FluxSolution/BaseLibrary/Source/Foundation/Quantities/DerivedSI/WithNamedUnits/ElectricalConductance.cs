@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical conductance, unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalConductance
-    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, ISiDerivedUnitQuantifiable<double, ElectricalConductanceUnit>
+    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalConductanceUnit>
   {
     public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
 
@@ -106,6 +106,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(ElectricalConductance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

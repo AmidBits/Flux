@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
+    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -119,6 +119,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Voltage other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

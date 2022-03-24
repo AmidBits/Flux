@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Surface density, unit of kilograms per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
   public struct AreaDensity
-    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
+    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
   {
     public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 
@@ -106,6 +106,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AreaDensity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

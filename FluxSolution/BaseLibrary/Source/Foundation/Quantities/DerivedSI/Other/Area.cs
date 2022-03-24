@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable, System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, ISiDerivedUnitQuantifiable<double, AreaUnit>
+    : System.IComparable, System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AreaUnit>
   {
     public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
 
@@ -112,6 +112,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Area other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

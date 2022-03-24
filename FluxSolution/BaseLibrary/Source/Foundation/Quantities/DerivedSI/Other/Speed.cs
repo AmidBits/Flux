@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, ISiDerivedUnitQuantifiable<double, SpeedUnit>
+    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
   {
     public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 
@@ -150,6 +150,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Speed other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

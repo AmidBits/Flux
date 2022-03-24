@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
-    : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
+    : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
   {
     public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
@@ -107,6 +107,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AngularVelocity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

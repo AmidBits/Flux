@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, ISiDerivedUnitQuantifiable<double, FlowUnit>
+    : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FlowUnit>
   {
     public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
@@ -105,6 +105,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Flow other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

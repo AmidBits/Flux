@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
+    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
   {
     public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -103,6 +103,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(ElectricCharge other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric resistance, unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalResistance
-    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
+    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
   {
     public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
@@ -134,6 +134,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(ElectricalResistance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

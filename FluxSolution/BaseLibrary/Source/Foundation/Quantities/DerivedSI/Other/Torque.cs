@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Torque unit of newton meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
   public struct Torque
-    : System.IComparable, System.IComparable<Torque>, System.IConvertible, System.IEquatable<Torque>, ISiDerivedUnitQuantifiable<double, TorqueUnit>
+    : System.IComparable, System.IComparable<Torque>, System.IConvertible, System.IEquatable<Torque>, System.IFormattable, ISiDerivedUnitQuantifiable<double, TorqueUnit>
   {
     public const TorqueUnit DefaultUnit = TorqueUnit.NewtonMeter;
 
@@ -106,6 +106,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Torque other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

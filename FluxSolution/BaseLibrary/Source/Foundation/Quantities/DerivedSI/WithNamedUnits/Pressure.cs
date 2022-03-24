@@ -27,7 +27,7 @@ namespace Flux
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PressureUnit>
+    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PressureUnit>
   {
     public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 
@@ -128,6 +128,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Pressure other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
   public struct LuminousFlux
-    : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, ISiDerivedUnitQuantifiable<double, LuminousFluxUnit>
+    : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, System.IFormattable, ISiDerivedUnitQuantifiable<double, LuminousFluxUnit>
   {
     public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(LuminousFlux other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

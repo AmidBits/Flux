@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PowerUnit>
+    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PowerUnit>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -113,6 +113,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Power other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

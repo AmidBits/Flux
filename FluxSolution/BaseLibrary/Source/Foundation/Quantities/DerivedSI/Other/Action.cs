@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public struct Action
-    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, ISiDerivedUnitQuantifiable<double, ActionUnit>
+    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ActionUnit>
   {
     public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
@@ -99,6 +99,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Action other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

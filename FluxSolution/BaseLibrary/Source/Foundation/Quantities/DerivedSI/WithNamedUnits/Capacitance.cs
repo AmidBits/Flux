@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
+    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -102,6 +102,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Capacitance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

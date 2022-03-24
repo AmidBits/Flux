@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Force"/>
   public struct Force
-    : System.IComparable, System.IComparable<Force>, System.IConvertible, System.IEquatable<Force>, ISiDerivedUnitQuantifiable<double, ForceUnit>
+    : System.IComparable, System.IComparable<Force>, System.IConvertible, System.IEquatable<Force>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ForceUnit>
   {
     public const ForceUnit DefaultUnit = ForceUnit.Newton;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Force other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

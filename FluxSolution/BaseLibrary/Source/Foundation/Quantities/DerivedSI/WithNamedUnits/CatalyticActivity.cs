@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
+    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
   {
     public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 
@@ -100,6 +100,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(CatalyticActivity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

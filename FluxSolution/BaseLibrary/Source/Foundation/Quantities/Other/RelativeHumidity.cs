@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable, System.IComparable<RelativeHumidity>, System.IConvertible, System.IEquatable<RelativeHumidity>, IUnitQuantifiable<double, RelativeHumidityUnit>
+    : System.IComparable, System.IComparable<RelativeHumidity>, System.IConvertible, System.IEquatable<RelativeHumidity>, System.IFormattable, IUnitQuantifiable<double, RelativeHumidityUnit>
   {
     public const RelativeHumidityUnit DefaultUnit = RelativeHumidityUnit.Percent;
 
@@ -99,6 +99,9 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(RelativeHumidity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides
