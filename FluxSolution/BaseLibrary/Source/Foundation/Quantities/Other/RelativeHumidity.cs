@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/>
   public struct RelativeHumidity
-    : System.IComparable<RelativeHumidity>, System.IConvertible, System.IEquatable<RelativeHumidity>, IUnitQuantifiable<double, RelativeHumidityUnit>
+    : System.IComparable, System.IComparable<RelativeHumidity>, System.IConvertible, System.IEquatable<RelativeHumidity>, IUnitQuantifiable<double, RelativeHumidityUnit>
   {
     public const RelativeHumidityUnit DefaultUnit = RelativeHumidityUnit.Percent;
 
@@ -72,8 +72,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(RelativeHumidity other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is RelativeHumidity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -95,7 +97,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(RelativeHumidity other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

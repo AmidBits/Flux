@@ -483,7 +483,7 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IEquatable
+    // IEquatable<>
     public bool Equals(GeographicCoordinate other)
       => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
     #endregion Implemented interfaces

@@ -56,7 +56,7 @@ namespace Flux
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
   public struct PartsPerNotation
-    : System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IQuantifiable<double>
   {
     public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
@@ -136,8 +136,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is PartsPerNotation o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -159,7 +161,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
     #endregion Implemented interfaces
 

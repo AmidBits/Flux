@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
   public struct LuminousFlux
-    : System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, ISiDerivedUnitQuantifiable<double, LuminousFluxUnit>
+    : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, ISiDerivedUnitQuantifiable<double, LuminousFluxUnit>
   {
     public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
@@ -73,8 +73,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(LuminousFlux other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is LuminousFlux o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -96,7 +98,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(LuminousFlux other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

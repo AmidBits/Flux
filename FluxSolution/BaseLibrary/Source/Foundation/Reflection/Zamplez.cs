@@ -14,12 +14,13 @@ namespace Flux
 
       Write(typeof(Flux.ISiBaseUnitQuantifiable<,>));
       Write(typeof(Flux.ISiDerivedUnitQuantifiable<,>));
-      Write(typeof(Flux.IUnitQuantifiable<,>));
-      Write(typeof(Flux.IQuantifiable<>));
+      Write(typeof(Flux.IUnitQuantifiable<,>), typeof(Flux.ISiDerivedUnitQuantifiable<,>), typeof(Flux.ISiBaseUnitQuantifiable<,>));
+      Write(typeof(Flux.IQuantifiable<>), typeof(Flux.IUnitQuantifiable<,>));
 
-      static void Write(System.Type type)
+      static void Write(System.Type type, params System.Type[] excludingTypes)
       {
-        var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).ToList();
+        var exclusions = excludingTypes.SelectMany(type => type.GetDerivedTypes());
+        var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).Where(t => !exclusions.Contains(t)).ToList();
         System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
         System.Console.WriteLine();
       }

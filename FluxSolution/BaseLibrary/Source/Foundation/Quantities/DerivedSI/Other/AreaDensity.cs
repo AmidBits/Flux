@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Surface density, unit of kilograms per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
   public struct AreaDensity
-    : System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
+    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
   {
     public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 
@@ -79,8 +79,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(AreaDensity other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is AreaDensity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -102,7 +104,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AreaDensity other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

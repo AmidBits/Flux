@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>UV index, unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
   public struct UvIndex
-    : System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, IQuantifiable<double>
   {
     private readonly double m_value;
 
@@ -47,8 +47,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is UvIndex o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -70,7 +72,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(UvIndex other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

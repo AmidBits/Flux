@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Simple fraction, unit of rational number, i.e. in the form of numerator and denominator.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public struct Fraction
-    : System.IComparable<Fraction>, System.IConvertible, System.IEquatable<Fraction>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<Fraction>, System.IConvertible, System.IEquatable<Fraction>, IQuantifiable<double>
   {
     public const char FractionSlash = '\u2044';
 
@@ -365,7 +365,7 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure]
     public int CompareTo(Fraction other)
       => (Sign != other.Sign)
@@ -373,6 +373,8 @@ namespace Flux
       : (m_denominator.Equals(other.m_denominator))
       ? m_numerator.CompareTo(other.m_numerator)
       : (m_numerator * other.m_denominator).CompareTo(m_denominator * other.m_numerator);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Fraction o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -394,7 +396,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Fraction other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
     #endregion Implemented interfaces
 

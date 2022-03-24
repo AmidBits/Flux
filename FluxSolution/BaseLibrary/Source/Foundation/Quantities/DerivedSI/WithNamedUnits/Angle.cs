@@ -55,7 +55,7 @@
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
+    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -327,8 +327,10 @@
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Angle o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -350,7 +352,7 @@
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable<Angle>
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Angle other) => m_radAngle == other.m_radAngle;
 
     // IFormattable

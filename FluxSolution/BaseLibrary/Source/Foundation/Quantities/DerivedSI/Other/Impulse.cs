@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Impulse, unit of Newton second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Impulse"/>
   public struct Impulse
-    : System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, ISiDerivedUnitQuantifiable<double, ImpulseUnit>
+    : System.IComparable, System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, ISiDerivedUnitQuantifiable<double, ImpulseUnit>
   {
     public const ImpulseUnit DefaultUnit = ImpulseUnit.NewtonSecond;
 
@@ -78,8 +78,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Impulse other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Impulse o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -101,7 +103,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Impulse other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

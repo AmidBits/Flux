@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
-    : System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
+    : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
   {
     public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
@@ -80,8 +80,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(AngularVelocity other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is AngularVelocity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -103,7 +105,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AngularVelocity other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

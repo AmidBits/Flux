@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, ISiDerivedUnitQuantifiable<double, DensityUnit>
+    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, ISiDerivedUnitQuantifiable<double, DensityUnit>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
@@ -78,8 +78,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Density other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Density o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -101,7 +103,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Density other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

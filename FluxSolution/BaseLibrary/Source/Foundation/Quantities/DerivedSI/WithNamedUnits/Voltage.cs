@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
+    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -92,8 +92,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Voltage o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -115,7 +117,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Voltage other) => m_value == other.m_value;
     #endregion Implemented interfaces
 

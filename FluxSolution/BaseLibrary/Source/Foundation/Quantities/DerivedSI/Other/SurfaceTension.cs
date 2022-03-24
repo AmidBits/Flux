@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Surface tension, unit of Newton per meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
   public struct SurfaceTension
-    : System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, ISiDerivedUnitQuantifiable<double, SurfaceTensionUnit>
+    : System.IComparable, System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, ISiDerivedUnitQuantifiable<double, SurfaceTensionUnit>
   {
     public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
 
@@ -79,8 +79,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(SurfaceTension other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is SurfaceTension o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
