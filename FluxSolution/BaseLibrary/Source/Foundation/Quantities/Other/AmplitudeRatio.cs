@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct AmplitudeRatio
-    : System.IComparable<AmplitudeRatio>, System.IConvertible, System.IEquatable<AmplitudeRatio>, IUnitQuantifiable<double, AmplitudeRatioUnit>
+    : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IEquatable<AmplitudeRatio>, System.IFormattable, IUnitQuantifiable<double, AmplitudeRatioUnit>
   {
     public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
 
@@ -88,8 +88,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(AmplitudeRatio other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is AmplitudeRatio o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -111,8 +113,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AmplitudeRatio other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

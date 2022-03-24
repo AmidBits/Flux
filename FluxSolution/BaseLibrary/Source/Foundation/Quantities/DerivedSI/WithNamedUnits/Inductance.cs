@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, ISiDerivedUnitQuantifiable<double, InductanceUnit>
+    : System.IComparable, System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, InductanceUnit>
   {
     public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
 
@@ -73,8 +73,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Inductance other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Inductance o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -96,8 +98,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Inductance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

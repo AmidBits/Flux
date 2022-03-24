@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
-    : System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, IUnitQuantifiable<double, AbsoluteHumidityUnit>
+    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
   {
     public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
 
@@ -79,8 +79,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is AbsoluteHumidity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -102,8 +104,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(AbsoluteHumidity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

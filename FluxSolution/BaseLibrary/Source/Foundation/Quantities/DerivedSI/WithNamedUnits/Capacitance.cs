@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
+    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -75,8 +75,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Capacitance other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Capacitance o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -98,8 +100,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Capacitance other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
+    : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
   {
     public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
@@ -103,8 +103,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Frequency other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Frequency o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -126,8 +128,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Frequency other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

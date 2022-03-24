@@ -40,7 +40,7 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure]
     public bool Equals(Rate<TNumerator, TDenominator> other)
       => m_numerator.Equals(other.m_numerator) && m_denominator.Equals(other.m_denominator);

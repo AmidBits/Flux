@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
   public struct Probability
-    : System.IComparable<Probability>, System.IConvertible, System.IEquatable<Probability>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IEquatable<Probability>, System.IFormattable, IQuantifiable<double>
   {
     public const double MaxValue = 1;
     public const double MinValue = 0;
@@ -115,8 +115,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Probability o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -138,8 +140,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_probability);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Probability other) => m_probability == other.m_probability;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

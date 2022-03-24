@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, ElectricCurrentUnit>
+    : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, ElectricCurrentUnit>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -116,6 +116,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(ElectricCurrent other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

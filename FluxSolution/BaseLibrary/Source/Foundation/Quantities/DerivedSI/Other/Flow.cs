@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, ISiDerivedUnitQuantifiable<double, FlowUnit>
+    : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FlowUnit>
   {
     public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
@@ -78,8 +78,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Flow other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Flow o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -101,8 +103,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Flow other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

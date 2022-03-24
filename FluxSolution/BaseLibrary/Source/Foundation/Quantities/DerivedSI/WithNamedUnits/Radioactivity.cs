@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
-    : System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
+    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
   {
     public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
 
@@ -73,8 +73,10 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Radioactivity other) => m_value.CompareTo(other.m_value);
+    // IComparable
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Radioactivity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -96,8 +98,11 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Radioactivity other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

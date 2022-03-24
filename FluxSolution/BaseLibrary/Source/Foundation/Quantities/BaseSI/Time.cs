@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TimeUnit>
+    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -145,6 +145,9 @@ namespace Flux
 
     // IEquatable<T>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Time other) => m_value == other.m_value;
+
+    // IFormattable
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
     #endregion Implemented interfaces
 
     #region Object overrides

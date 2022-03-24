@@ -71,7 +71,7 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Ratio other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
     #endregion Implemented interfaces
 
