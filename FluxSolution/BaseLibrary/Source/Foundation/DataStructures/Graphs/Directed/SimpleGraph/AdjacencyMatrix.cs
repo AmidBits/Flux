@@ -7,9 +7,12 @@
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyMatrix
   {
+    /// <summary>This is the adjacency matrix (of a directed simple graph) which consists of its edges.</summary>
     private int[,] m_matrix;
 
+    /// <summary>The values of vertices.</summary>
     private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues;
+    /// <summary>The values of edges.</summary>
     private readonly System.Collections.Generic.Dictionary<(int, int), object> m_edgeValues;
 
     public AdjacencyMatrix(int[,] matrix)

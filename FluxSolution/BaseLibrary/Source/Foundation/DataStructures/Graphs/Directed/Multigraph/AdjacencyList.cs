@@ -7,8 +7,10 @@
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyList
   {
+    /// <summary>This is the adjacency list (of a directed multigraph) which consists of edges and the values of the edges.</summary>
     private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>> m_list;
 
+    /// <summary>The values of vertices.</summary>
     private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues;
 
     public AdjacencyList()
