@@ -2,6 +2,13 @@ namespace Flux
 {
   public static class Console
   {
+    //public void Write(string value, System.ConsoleColor color )
+    //{
+    //  System.Console.ForegroundColor = color;
+    //  System.Console.WriteLine(value);
+    //  System.Console.ResetColor();
+    //}
+
     public static (int minLeft, int minTop, int maxLeft, int maxTop) WriteToConsole(this System.Collections.Generic.IEnumerable<string> source, int left, int top)
     {
       var index = 0;
