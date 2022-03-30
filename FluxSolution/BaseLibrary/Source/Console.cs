@@ -2,11 +2,52 @@ namespace Flux
 {
   public static class Console
   {
-    //public void Write(string value, System.ConsoleColor color )
+    public static void WriteColor(string value, System.ConsoleColor foreground, System.ConsoleColor background)
+    {
+      var backgroundColor = System.Console.BackgroundColor;
+      var foregroundColor = System.Console.ForegroundColor;
+      System.Console.BackgroundColor = background;
+      System.Console.ForegroundColor = foreground;
+      System.Console.Write(value);
+      System.Console.BackgroundColor = backgroundColor;
+      System.Console.ForegroundColor = foregroundColor;
+    }
+    public static void WriteError(string value)
+      => WriteColor(value, System.ConsoleColor.White, System.ConsoleColor.Red);
+    public static void WriteInformation(string value)
+      => WriteColor(value, System.ConsoleColor.White, System.ConsoleColor.Blue);
+    public static void WriteSuccess(string value)
+      => WriteColor(value, System.ConsoleColor.Black, System.ConsoleColor.Green);
+    public static void WriteWarning(string value)
+      => WriteColor(value, System.ConsoleColor.Black, System.ConsoleColor.Yellow);
+
+    //public static void Write(string value, int? x, int? y = null, System.ConsoleColor? color = null)
     //{
-    //  System.Console.ForegroundColor = color;
-    //  System.Console.WriteLine(value);
-    //  System.Console.ResetColor();
+    //  if (color.HasValue)
+    //    System.Console.ForegroundColor = color.Value;
+
+    //  if (x.HasValue || y.HasValue)
+    //  {
+    //    var (left, top) = System.Console.GetCursorPosition();
+
+    //    if (x.HasValue)
+    //      left = x.Value;
+    //    if (y.HasValue)
+    //      top = y.Value;
+
+    //    System.Console.SetCursorPosition(left, top);
+    //  }
+
+    //  System.Console.Write(value);
+
+    //  if (color.HasValue)
+    //    System.Console.ResetColor();
+    //}
+    //public static void WriteLine(string value, int? x = null, int? y = null, System.ConsoleColor? color = null)
+    //{
+    //  Write(value, x, y, color);
+
+    //  System.Console.WriteLine();
     //}
 
     public static (int minLeft, int minTop, int maxLeft, int maxTop) WriteToConsole(this System.Collections.Generic.IEnumerable<string> source, int left, int top)
