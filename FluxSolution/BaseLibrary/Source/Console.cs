@@ -12,14 +12,29 @@ namespace Flux
       System.Console.BackgroundColor = backgroundColor;
       System.Console.ForegroundColor = foregroundColor;
     }
+    public static void WriteColorLine(string value, System.ConsoleColor foreground, System.ConsoleColor background)
+    {
+      WriteColor(value, foreground, background);
+
+      System.Console.WriteLine();
+    }
+
     public static void WriteError(string value)
-      => WriteColor(value, System.ConsoleColor.White, System.ConsoleColor.Red);
+      => WriteColor(value, System.ConsoleColor.Red, System.ConsoleColor.Black);
+    public static void WriteErrorLine(string value)
+      => WriteColorLine(value, System.ConsoleColor.Red, System.ConsoleColor.Black);
     public static void WriteInformation(string value)
-      => WriteColor(value, System.ConsoleColor.White, System.ConsoleColor.Blue);
+      => WriteColor(value, System.ConsoleColor.Blue, System.ConsoleColor.Black);
+    public static void WriteInformationLine(string value)
+      => WriteColorLine(value, System.ConsoleColor.Blue, System.ConsoleColor.Black);
     public static void WriteSuccess(string value)
-      => WriteColor(value, System.ConsoleColor.Black, System.ConsoleColor.Green);
+      => WriteColor(value, System.ConsoleColor.Green, System.ConsoleColor.Black);
+    public static void WriteSuccessLine(string value)
+      => WriteColorLine(value, System.ConsoleColor.Green, System.ConsoleColor.Black);
     public static void WriteWarning(string value)
-      => WriteColor(value, System.ConsoleColor.Black, System.ConsoleColor.Yellow);
+      => WriteColor(value, System.ConsoleColor.Yellow, System.ConsoleColor.Black);
+    public static void WriteWarningLine(string value)
+      => WriteColorLine(value, System.ConsoleColor.Yellow, System.ConsoleColor.Black);
 
     //public static void Write(string value, int? x, int? y = null, System.ConsoleColor? color = null)
     //{
