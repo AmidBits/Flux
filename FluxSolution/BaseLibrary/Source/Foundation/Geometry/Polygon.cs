@@ -2,6 +2,7 @@ using System.Linq;
 
 namespace Flux.Geometry
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct Polygon
     : System.IEquatable<Polygon>
     //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter

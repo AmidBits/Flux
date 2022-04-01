@@ -1,6 +1,7 @@
 namespace Flux.Geometry
 {
   /// <summary></summary>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct ViewPort
     : System.IEquatable<ViewPort>
   {

@@ -3,6 +3,7 @@ namespace Flux
   /// <summary>Euler-angles 3D rotation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Euler_angles"/>
   /// <remarks>The Tait-Bryan sequence z-y'-x" (intrinsic rotations) or x-y-z (extrinsic rotations) represents the intrinsic rotations are known as: yaw, pitch and roll.</remarks>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct EulerAngles
     : System.IEquatable<EulerAngles>
   {

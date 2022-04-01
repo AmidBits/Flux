@@ -264,6 +264,7 @@ namespace Flux
 
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct CartesianCoordinate2
     : System.IEquatable<CartesianCoordinate2>
   {

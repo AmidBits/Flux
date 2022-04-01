@@ -118,15 +118,15 @@ namespace Flux
       IsSame(dane, tea); // 4
       IsSame(green, coffee); // 6
 
-      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cats = Term(nameof(cats)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
-      IsUnequal(dog, cats, birds, horse, zebra);
+      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), bird = Term(nameof(bird)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
+      IsUnequal(dog, cat, bird, horse, zebra);
       IsSame(swede, dog); // 3
 
       Flux.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
       IsUnequal(pallmall, dunhill, bluemaster, prince, blend);
-      IsSame(pallmall, birds); // 7
+      IsSame(pallmall, bird); // 7
       IsSame(dunhill, yellow); // 8
-      IsNextTo(blend, cats); // 11
+      IsNextTo(blend, cat); // 11
       IsNextTo(horse, dunhill); // 12
       IsSame(bluemaster, beer); // 13
       IsSame(german, prince); // 14
@@ -145,20 +145,21 @@ namespace Flux
       foreach (var (key, value) in terms.Select(kvp => (kvp.Key, kvp.Value)))
         a[key.Value - 1].Add(value);
 
-      var nationality = string.Concat(a.Where(l => l.Contains(nameof(zebra))).Select(l => l[0]));
+      var animal = string.Concat(a.Where(l => l.Contains(nameof(zebra))).Select(l => l[0]));
       var drink = string.Concat(a.Where(l => l.Contains(nameof(water))).Select(l => l[0]));
 
       foreach (var house in a)
       {
-        System.Console.Write("|");
+        System.Console.Write('|');
         foreach (var attrib in house)
-          System.Console.Write($"{attrib,-10}|");
+          System.Console.Write($"{attrib,-11}|");
         System.Console.WriteLine();
       }
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"The {nationality} owns the zebra.");
+      System.Console.WriteLine($"The {animal} owns the zebra.");
       System.Console.WriteLine($"The {drink} drinks water.");
+      System.Console.WriteLine();
     }
   }
 }

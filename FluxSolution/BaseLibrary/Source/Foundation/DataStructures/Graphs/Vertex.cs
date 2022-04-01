@@ -2,6 +2,7 @@ namespace Flux
 {
   namespace DataStructures.Graphs
   {
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public class Vertex<TKey, TValue>
     : System.IEquatable<Vertex<TKey, TValue>>
     where TKey : System.IEquatable<TKey>
@@ -17,7 +18,7 @@ namespace Flux
       }
 
       public bool Equals(Vertex<TKey, TValue>? other)
-        => Key.Equals(other.Key) && Value.Equals(other.Value);
+        => other is not null && Key.Equals(other.Key) && Value.Equals(other.Value);
 
       public override bool Equals(object? obj)
         => obj is Vertex<TKey, TValue> o && Equals(o);

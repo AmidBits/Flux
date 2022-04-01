@@ -1,5 +1,6 @@
 namespace Flux.Geometry
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct HexF
     : System.IEquatable<HexF>
   {

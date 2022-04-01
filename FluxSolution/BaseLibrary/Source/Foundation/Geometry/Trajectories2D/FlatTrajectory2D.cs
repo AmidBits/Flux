@@ -1,5 +1,6 @@
 namespace Flux.Mechanics
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct FlatTrajectory2D
     : System.IEquatable<FlatTrajectory2D>, ITrajectory2D
   {

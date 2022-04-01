@@ -1,6 +1,6 @@
 namespace Flux.Text
 {
-  public ref struct Sequences
+  public static class Sequences
   {
     /// <summary>ASCII</summary>
     /// <see cref="https://en.wikipedia.org/wiki/ASCII"/>

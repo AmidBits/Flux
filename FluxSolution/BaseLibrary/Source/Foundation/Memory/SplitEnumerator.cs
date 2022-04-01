@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-  public static partial class ExtensionsMethods
+  public static partial class ExtensionMethods
   {
     public static SplitEnumerator<char> EnumerateSplits(this string source, string separator)
       => new(source.AsSpan(), separator.AsSpan());

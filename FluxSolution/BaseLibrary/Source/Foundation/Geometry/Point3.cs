@@ -1,5 +1,6 @@
 namespace Flux
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct Point3
     : System.IEquatable<Point3>
   {

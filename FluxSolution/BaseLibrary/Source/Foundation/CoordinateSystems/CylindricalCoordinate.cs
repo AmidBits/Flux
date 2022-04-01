@@ -2,6 +2,7 @@ namespace Flux
 {
   /// <summary>Cylindrical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct CylindricalCoordinate
     : System.IEquatable<CylindricalCoordinate>
   {

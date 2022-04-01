@@ -1,5 +1,6 @@
 namespace Flux.Mechanics
 {
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct DroppedTrajectory2D // Projectile dropped from a moving system.
     : System.IEquatable<DroppedTrajectory2D>, ITrajectory2D
   {

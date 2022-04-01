@@ -3,6 +3,7 @@ using System.Linq;
 namespace Flux.Geometry
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct Hex
     : System.IEquatable<Hex>
   {

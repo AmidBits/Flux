@@ -5,6 +5,7 @@ namespace Flux.Geometry
   // https://en.wikipedia.org/wiki/Centered_hexagonal_number
   // https://hexnet.org/content/hex-numbers
   // https://www.redblobgames.com/grids/hexagons/
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public sealed class HexagonShape
   {
     /// <summary></summary>
