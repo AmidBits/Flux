@@ -200,7 +200,7 @@ namespace Flux
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadius.Value);
+      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), z ?? Earth.MeanRadiusWgs84.Value);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
@@ -217,7 +217,7 @@ namespace Flux
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
-      var angularDistance = metersBoxRadius / Earth.EquatorialRadius.Value;
+      var angularDistance = metersBoxRadius / Earth.EquatorialRadiusWgs84.Value;
 
       var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(radLatitude));
 

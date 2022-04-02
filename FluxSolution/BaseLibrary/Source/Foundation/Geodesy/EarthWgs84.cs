@@ -1,8 +1,10 @@
 namespace Flux
 {
   /// <summary>Earth related information in terms of WGS-84.</summary>
-  public static partial class Wgs84
+  public static partial class EarthWgs84
   {
+    public const double QuarterMeridianInMeters = 10001965.729; // WGS-84
+    
     public const double SemiMajorAxisInMeters = 6378137.0; // WGS-84
     public const double SemiMinorAxisInMeters = 6356752.314245; // WGS-84
 
@@ -20,26 +22,24 @@ namespace Flux
       => EquatorialRadius * 2;
     /// <summary>Radius Earth's semi-major axis.</summary>
     public static Length EquatorialRadius
-      => new (SemiMajorAxisInMeters);
+      => new(SemiMajorAxisInMeters);
 
     public static Length MeanRadius
       => new(6371008.7714); // WGS-84
 
+    /// <summary>This is the amount of oblateness of the Earth.</summary>
     public static double Oblateness
       => (EquatorialRadius.Value - PolarRadius.Value) / EquatorialRadius.Value;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
     public static Length PolarCircumference
-      => QuarterMeridian * 4;
+      => new(QuarterMeridianInMeters * 4);
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
     public static Length PolarDiameter
       => PolarRadius * 2;
     /// <summary>Radius of Earth's semi-minor axis.</summary>
     public static Length PolarRadius
-      => new (SemiMinorAxisInMeters);
-
-    public static Length QuarterMeridian
-      => new(10001965.729); // WGS-84
+      => new(SemiMinorAxisInMeters);
 
     public static Volume Volume
       => new(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);

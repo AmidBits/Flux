@@ -76,8 +76,8 @@ namespace Flux
       var cos = System.Math.Cos(radLatitude);
       var sin = System.Math.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadius.Value, 2) * sin, 2);
-      var denominator = System.Math.Pow(Earth.EquatorialRadius.Value * cos, 2) + System.Math.Pow(Earth.PolarRadius.Value * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(Earth.EquatorialRadiusWgs84.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(Earth.PolarRadiusWgs84.Value, 2) * sin, 2);
+      var denominator = System.Math.Pow(Earth.EquatorialRadiusWgs84.Value * cos, 2) + System.Math.Pow(Earth.PolarRadiusWgs84.Value * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }
