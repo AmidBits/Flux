@@ -3,7 +3,8 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Calculate the quartiles of the ordered values.</summary>
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source)
+    /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
+    public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IList<double> source)
     {
       var count = source.Count;
       var indexQ2 = count / 2;
@@ -53,7 +54,7 @@ namespace Flux
 
       return (q1, q2, q3);
     }
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IEnumerable<double> source)
-      => GetQuartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.OrderBy(source, k => k)));
+    public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IEnumerable<double> source)
+      => Quartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.OrderBy(source, k => k)));
   }
 }

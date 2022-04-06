@@ -17,9 +17,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var x = new System.Collections.Generic.List<int>() { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
-    
-      var qs = x.Select(n => (double)n).GetQuartiles();
+      var x = new System.Collections.Generic.List<double>() { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 };
+
+      var qs = x.Quartiles();
+      var pr = x.PercentileRank(22.5);
+
+      var q = 0.25;
+      var qr1 = Maths.Quantile(x, q, Maths.QuantileType.R1);
+      var qr2 = Maths.Quantile(x, q, Maths.QuantileType.R2);
+      var qr3 = Maths.Quantile(x, q, Maths.QuantileType.R3);
+      var qr4 = Maths.Quantile(x, q, Maths.QuantileType.R4);
+      var qr5 = Maths.Quantile(x, q, Maths.QuantileType.R5);
+      var qr6 = Maths.Quantile(x, q, Maths.QuantileType.R6);
+      var qr7 = Maths.Quantile(x, q, Maths.QuantileType.R7);
+      var qr8 = Maths.Quantile(x, q, Maths.QuantileType.R8);
+      var qr9 = Maths.Quantile(x, q, Maths.QuantileType.R9);
 
       return;
 
