@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Maths
   {
+    /// <summary>Nine algorithms (estimate types and interpolation schemes(.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
     public enum QuantileType
     {
       R1,
