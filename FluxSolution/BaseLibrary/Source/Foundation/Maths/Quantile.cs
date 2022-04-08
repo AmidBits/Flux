@@ -41,12 +41,10 @@ namespace Flux
 
       double EmpiricalDistributionFunction(double h)
       {
-        var hf = System.Math.Floor(h);
-        var hfi = System.Convert.ToInt32(hf);
-        var hc = System.Math.Ceiling(h);
-        var hci = System.Convert.ToInt32(hc);
+        var lo = System.Convert.ToInt32(System.Math.Floor(h));
+        var hi = System.Convert.ToInt32(System.Math.Ceiling(h));
 
-        return x[hfi] + (h - hf) * (x[hci] - x[hfi]);
+        return x[lo] + (h - lo) * (x[hi] - x[lo]);
       }
     }
   }

@@ -33,7 +33,7 @@ namespace ConsoleApp
       var qr8 = Maths.Quantile(x, q, Maths.QuantileType.R8);
       var qr9 = Maths.Quantile(x, q, Maths.QuantileType.R9);
 
-      return;
+      return; 
 
       System.Console.Write($"It's a ");
       Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
