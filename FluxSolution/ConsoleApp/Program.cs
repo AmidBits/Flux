@@ -17,9 +17,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var x = new System.Collections.Generic.List<double>() { 6, 7, 15, 36, 39,40,40, 41, 42, 43, 47, 49 };
+      var x = new System.Collections.Generic.List<double>() { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
       //var x = new System.Collections.Generic.List<double>() { 7, 15, 36, 39, 40, 41 };
-      
+
       System.Console.WriteLine($"Values = {string.Join(", ", x)}");
 
       var qs = x.Quartiles();
@@ -28,12 +28,14 @@ namespace ConsoleApp
       System.Console.WriteLine($"Method 1, Q1 = {q1.q1}, Q2 = {q1.q2}, Q3 = {q1.q3} ... {q1}");
       var q2 = x.QuartileMethod2();
       System.Console.WriteLine($"Method 2, Q1 = {q2.q1}, Q2 = {q2.q2}, Q3 = {q2.q3} ... {q2}");
+      var q3 = x.QuartileMethod3();
+      System.Console.WriteLine($"Method 3, Q1 = {q3.q1}, Q2 = {q3.q2}, Q3 = {q3.q3} ... {q3}");
       var q4 = x.QuartileMethod4();
       System.Console.WriteLine($"Method 4, Q1 = {q4.q1}, Q2 = {q4.q2}, Q3 = {q4.q3} ... {q4}");
       //System.Console.WriteLine($"Quartile, Q1 = {x.Quartile(0.25, x.Count-1, 1)}, Q2 = {x.Quartile(0.50, x.Count-1, 1)}, Q3 = {x.Quartile(0.75, x.Count-1, 1)}");
       //var pr = x.PercentileRank(22.5);
 
-      for (var q = 0.0; q <= 1; q += 0.25)
+      for (var q = 0.25; q < 1; q += 0.25)
       {
         System.Console.WriteLine($"Q = {q}");
         var qr1 = Maths.Quantile(x, q, Maths.QuantileType.R1);

@@ -14,50 +14,52 @@ namespace Flux
       return c + a * (source[k] - c);
     }
 
-    public static (double q1, double q2, double q3) QuartileMethod1(this System.Collections.Generic.IList<double> source)
+    public static (double q1, double q2, double q3) QuartileMethod1(this System.Collections.Generic.List<double> source)
     {
-      var m2 = source.Count / 2;
-
       var e2 = (source.Count & 1) == 0;
+
+      var m2 = source.Count / 2;
       var q2 = e2 ? (source[m2 - 1] + source[m2]) / 2 : source[m2];
 
-      var m2Even = (m2 & 1) == 1;
+      var o2 = (m2 & 1) == 1;
 
       var m1 = m2 / 2;
-      var m3 = m2 + m1 ;
+      var q1 = o2 ? source[m1] : (source[m1] + source[m1 + 1]) / 2;
 
-      if (m2Even) // If m2 is odd:
-        return (source[m1], q2, source[m3]);
-      else // Else is even:
-        return ((source[m1] + source[m1 + 1]) / 2, q2, (source[m3] + source[m3 + 1]) / 2);
+      var m3 = source.Count - (m2 - m1);
+      var q3 = o2 ? source[m3] : (source[m3 - 1] + source[m3]) / 2;
+
+      return (q1, q2, q3);
     }
 
     public static (double q1, double q2, double q3) QuartileMethod2(this System.Collections.Generic.IList<double> source)
     {
+      var o2 = (source.Count & 1) == 1;
+
       var m2 = source.Count / 2;
+      var q2 = o2 ? source[m2] : (source[m2 - 1] + source[m2]) / 2;
 
-      var odd = (source.Count & 1) == 1;
+      if (o2) m2 += 1; // If odd counts, include median in both halfs.
 
-      var q2 = odd ? source[m2] : (source[m2] + source[m2 + 1]) / 2;
+      o2 = (m2 & 1) == 1;
 
       var m1 = m2 / 2;
-      var m3 = m2 + m1;
+      var q1 = o2 ? source[m1] : (source[m1 - 1] + source[m1]) / 2;
 
-      if (odd)
-      {
-        // m1 -= 1;
-        m2 += 1;
-      }
+      var m3 = source.Count - (m2 - m1);
+      var q3 = o2 ? source[m3] : (source[m3 - 1] + source[m3]) / 2;
 
-      if ((m2 & 1) == 1) // If m2 is odd:
-        return (source[m1], q2, source[m3 + 1]);
-      else // Else is even:
-        return ((source[m1] + source[m1 + 1]) / 2, q2, (source[m3] + source[m3 + 1]) / 2);
+      return (q1, q2, q3);
+    }
+
+    public static (double q1, double q2, double q3) QuartileMethod3(this System.Collections.Generic.IList<double> source)
+    {
+      return (-1.0, -1.0, -1.0);
     }
 
     /// <summary>General function to compute empirical quantiles.</summary>
     public static (double q1, double q2, double q3) QuartileMethod4(this System.Collections.Generic.IList<double> source)
-      => (EmpiricalQuartile(source, 0.25), EmpiricalQuartile(source, 0.50), EmpiricalQuartile(source, 0.75));
+    => (EmpiricalQuartile(source, 0.25), EmpiricalQuartile(source, 0.50), EmpiricalQuartile(source, 0.75));
 
     /// <summary>Calculate the quartiles of the ordered values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
