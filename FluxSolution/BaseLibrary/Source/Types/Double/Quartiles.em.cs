@@ -2,6 +2,63 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    public static double EmpiricalQuartile(this System.Collections.Generic.IList<double> source, double p)
+    {
+      var a = p * (source.Count + 1);
+      var k = System.Convert.ToInt32(System.Math.Truncate(a));
+
+      a -= k;
+
+      var c = source[k - 1];
+
+      return c + a * (source[k] - c);
+    }
+
+    public static (double q1, double q2, double q3) QuartileMethod1(this System.Collections.Generic.IList<double> source)
+    {
+      var m2 = source.Count / 2;
+
+      var e2 = (source.Count & 1) == 0;
+      var q2 = e2 ? (source[m2 - 1] + source[m2]) / 2 : source[m2];
+
+      var m2Even = (m2 & 1) == 1;
+
+      var m1 = m2 / 2;
+      var m3 = m2 + m1 ;
+
+      if (m2Even) // If m2 is odd:
+        return (source[m1], q2, source[m3]);
+      else // Else is even:
+        return ((source[m1] + source[m1 + 1]) / 2, q2, (source[m3] + source[m3 + 1]) / 2);
+    }
+
+    public static (double q1, double q2, double q3) QuartileMethod2(this System.Collections.Generic.IList<double> source)
+    {
+      var m2 = source.Count / 2;
+
+      var odd = (source.Count & 1) == 1;
+
+      var q2 = odd ? source[m2] : (source[m2] + source[m2 + 1]) / 2;
+
+      var m1 = m2 / 2;
+      var m3 = m2 + m1;
+
+      if (odd)
+      {
+        // m1 -= 1;
+        m2 += 1;
+      }
+
+      if ((m2 & 1) == 1) // If m2 is odd:
+        return (source[m1], q2, source[m3 + 1]);
+      else // Else is even:
+        return ((source[m1] + source[m1 + 1]) / 2, q2, (source[m3] + source[m3 + 1]) / 2);
+    }
+
+    /// <summary>General function to compute empirical quantiles.</summary>
+    public static (double q1, double q2, double q3) QuartileMethod4(this System.Collections.Generic.IList<double> source)
+      => (EmpiricalQuartile(source, 0.25), EmpiricalQuartile(source, 0.50), EmpiricalQuartile(source, 0.75));
+
     /// <summary>Calculate the quartiles of the ordered values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
     public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IList<double> source)
