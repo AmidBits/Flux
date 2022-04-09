@@ -3,11 +3,12 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Generates all possible permutations of the elements in the sequence.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Permutation"/>
     /// <see cref="https://stackoverflow.com/a/4319074"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+      //if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       var sourceCount = source.Count;
 
@@ -20,7 +21,7 @@ namespace Flux
       }
       else
       {
-        var initialOrder = new int[sourceCount]; //Figure out where we are in the sequence of all permutations
+        var initialOrder = new int[sourceCount]; // Figure out where we are in the sequence of all permutations
 
         for (int i = 0; i < sourceCount; i++)
           initialOrder[i] = i;
@@ -35,10 +36,10 @@ namespace Flux
             transform[i].Item1 = transform[i - 1].Item1;
       }
 
-      yield return ApplyTransform(source, transform);
-
       while (true)
       {
+        yield return ApplyTransform(source, transform);
+
         //Ref: E. W. Dijkstra, A Discipline of Programming, Prentice-Hall, 1997
         var decreasingpart = sourceCount - 2;
         while (decreasingpart >= 0 && transform[decreasingpart].Item1 >= transform[decreasingpart + 1].Item1) //Find the largest partition from the back that is in decreasing (non-increasing) order.
@@ -51,16 +52,15 @@ namespace Flux
         while (greater > decreasingpart && transform[decreasingpart].Item1 >= transform[greater].Item1) // Find the smallest element in the decreasing partition that is greater than (or equal to) the item in front of the decreasing partition.
           greater--;
 
-        (transform[greater], transform[decreasingpart]) = (transform[decreasingpart], transform[greater]);
+        (transform[greater], transform[decreasingpart]) = (transform[decreasingpart], transform[greater]); // Swap.
 
         System.Array.Reverse(transform, decreasingpart + 1, sourceCount - decreasingpart - 1); // Reverse the decreasing partition.
-
-        yield return ApplyTransform(source, transform);
       }
 
       static System.Collections.Generic.IEnumerable<T> ApplyTransform(System.Collections.Generic.IList<T> items, System.ValueTuple<int, int>[] transform)
       {
-        for (int i = 0; i < transform.Length; i++)
+        var transformLength = transform.Length;
+        for (var i = 0; i < transformLength; i++)
           yield return items[transform[i].Item2];
       }
     }
