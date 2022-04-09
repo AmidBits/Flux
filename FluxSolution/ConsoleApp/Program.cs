@@ -22,18 +22,10 @@ namespace ConsoleApp
 
       System.Console.WriteLine($"Values = {string.Join(", ", x)}");
 
-      var qs = x.Quartiles();
-      System.Console.WriteLine($"Quartiles, Q1 = {qs.q1}, Q2 = {qs.q2}, Q3 = {qs.q3}, IQR = {qs.q3 - qs.q1} ... ({qs})");
-      var q1 = x.QuartileMethod1();
-      System.Console.WriteLine($"Method 1, Q1 = {q1.q1}, Q2 = {q1.q2}, Q3 = {q1.q3} ... {q1}");
-      var q2 = x.QuartileMethod2();
-      System.Console.WriteLine($"Method 2, Q1 = {q2.q1}, Q2 = {q2.q2}, Q3 = {q2.q3} ... {q2}");
-      var q3 = x.QuartileMethod3();
-      System.Console.WriteLine($"Method 3, Q1 = {q3.q1}, Q2 = {q3.q2}, Q3 = {q3.q3} ... {q3}");
-      var q4 = x.QuartileMethod4();
-      System.Console.WriteLine($"Method 4, Q1 = {q4.q1}, Q2 = {q4.q2}, Q3 = {q4.q3} ... {q4}");
-      //System.Console.WriteLine($"Quartile, Q1 = {x.Quartile(0.25, x.Count-1, 1)}, Q2 = {x.Quartile(0.50, x.Count-1, 1)}, Q3 = {x.Quartile(0.75, x.Count-1, 1)}");
-      //var pr = x.PercentileRank(22.5);
+      System.Console.WriteLine($"Method 1: {x.QuartilesMethod1()}");
+      System.Console.WriteLine($"Method 2: {x.QuartilesMethod2()}");
+      //System.Console.WriteLine($"Method 3: {x.QuartileMethod3()}");
+      System.Console.WriteLine($"Method 4: {x.QuartilesMethod4()}");
 
       for (var q = 0.25; q < 1; q += 0.25)
       {

@@ -6,20 +6,24 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
     public enum QuantileType
     {
+      /// <summary></summary>
       R1,
+      /// <summary></summary>
       R2,
+      /// <summary></summary>
       R3,
+      /// <summary></summary>
       R4,
+      /// <summary></summary>
       R5,
+      /// <summary></summary>
       R6,
+      /// <summary></summary>
       R7,
+      /// <summary></summary>
       R8,
+      /// <summary></summary>
       R9,
-    }
-
-    public static double Quartile(this System.Collections.Generic.List<double> source, double rthQuartile, double frequencyCount, double cumulativeFrequency)
-    {
-      return source[0] + ((rthQuartile * (source.Count / 4) - cumulativeFrequency) / frequencyCount) * (source[source.Count - 1] - source[0]);
     }
 
     /// <summary>Estimating quantiles from a sample.</summary>
@@ -43,15 +47,17 @@ namespace Flux
     public static double Quantile(this System.Collections.Generic.List<int> source, double p, QuantileType type)
       => Quantile(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), p, type);
 
-    private static double Quantile_Value(System.Collections.Generic.List<double> zeroBased, int oneBasedIndex)
-      => zeroBased[System.Math.Clamp(oneBasedIndex - 1, 0, zeroBased.Count - 1)];
-
-    private static double Quantile_EmpiricalDistributionFunction(System.Collections.Generic.List<double> x, double h)
+    private static double Quantile_EmpiricalDistributionFunction(System.Collections.Generic.List<double> source, double h)
     {
       var lo = System.Convert.ToInt32(System.Math.Floor(h));
       var hi = System.Convert.ToInt32(System.Math.Ceiling(h));
 
-      return Quantile_Value(x, lo) + (h - lo) * (Quantile_Value(x, hi) - Quantile_Value(x, lo));
+      var sourceCountM1 = source.Count - 1;
+
+      var lov = source[System.Math.Clamp(lo - 1, 0, sourceCountM1)];
+      var hiv = source[System.Math.Clamp(hi - 1, 0, sourceCountM1)];
+
+      return lov + (h - lo) * (hiv - lov);
     }
 
     /// <summary>Inverse of empirical distribution function.</summary>
@@ -61,7 +67,12 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_Value(source, System.Convert.ToInt32(System.Math.Ceiling(source.Count * p)));
+      var sourceCount = source.Count;
+      var sourceCountM1 = sourceCount - 1;
+
+      var index = System.Convert.ToInt32(System.Math.Ceiling(sourceCount * p)) - 1;
+
+      return source[System.Math.Clamp(index, 0, sourceCountM1)];
     }
 
     /// <summary>The same as R-1, but with averaging at discontinuities.</summary>
@@ -71,9 +82,15 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = source.Count * p + 0.5;
+      var sourceCount = source.Count;
+      var sourceCountM1 = sourceCount - 1;
 
-      return (Quantile_Value(source, System.Convert.ToInt32(System.Math.Ceiling(h - 0.5))) + Quantile_Value(source, System.Convert.ToInt32(System.Math.Floor(h + 0.5)))) / 2;
+      var h = sourceCount * p + 0.5;
+
+      var indexLo = System.Convert.ToInt32(System.Math.Ceiling(h - 0.5)) - 1;
+      var indexHi = System.Convert.ToInt32(System.Math.Floor(h + 0.5)) - 1;
+
+      return (source[System.Math.Clamp(indexLo, 0, sourceCountM1)] + source[System.Math.Clamp(indexHi, 0, sourceCountM1)]) / 2;
     }
 
     /// <summary>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</summary>
@@ -83,7 +100,12 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_Value(source, System.Convert.ToInt32(System.Math.Round(source.Count * p - 0.5, System.MidpointRounding.ToEven)));
+      var sourceCount = source.Count;
+      var sourceCountM1 = sourceCount - 1;
+
+      var index = System.Convert.ToInt32(System.Math.Round(sourceCount * p - 0.5, System.MidpointRounding.ToEven)) - 1;
+
+      return source[System.Math.Clamp(index, 0, sourceCountM1)];
     }
 
     /// <summary>Linear interpolation of the empirical distribution function.</summary>
