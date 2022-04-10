@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Quantiles
   {
     /// <summary>Nine algorithms (estimate types and interpolation schemes(.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
@@ -47,7 +47,7 @@ namespace Flux
     public static double Quantile(this System.Collections.Generic.List<int> source, double p, QuantileType type)
       => Quantile(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), p, type);
 
-    private static double Quantile_EmpiricalDistributionFunction(System.Collections.Generic.List<double> source, double h)
+    public static double EmpiricalDistributionFunction(System.Collections.Generic.List<double> source, double h)
     {
       var lo = System.Convert.ToInt32(System.Math.Floor(h));
       var hi = System.Convert.ToInt32(System.Math.Ceiling(h));
@@ -115,7 +115,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, source.Count * p);
+      return EmpiricalDistributionFunction(source, source.Count * p);
     }
 
     /// <summary>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</summary>
@@ -125,7 +125,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, source.Count * p + 0.5);
+      return EmpiricalDistributionFunction(source, source.Count * p + 0.5);
     }
 
     /// <summary>Linear interpolation of the expectations for the order statistics for the uniform distribution on [0,1]. That is, it is the linear interpolation between points (ph, xh), where ph = h/(N+1) is the probability that the last of (N+1) randomly drawn values will not exceed the h-th smallest of the first N randomly drawn values.</summary>
@@ -135,7 +135,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, (source.Count + 1) * p);
+      return EmpiricalDistributionFunction(source, (source.Count + 1) * p);
     }
 
     /// <summary>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</summary>
@@ -145,7 +145,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, (source.Count - 1) * p + 1);
+      return EmpiricalDistributionFunction(source, (source.Count - 1) * p + 1);
     }
 
     /// <summary>Linear interpolation of the approximate medians for order statistics.</summary>
@@ -155,7 +155,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, (source.Count + 1 / 3) * p + 1 / 3);
+      return EmpiricalDistributionFunction(source, (source.Count + 1 / 3) * p + 1 / 3);
     }
 
     /// <summary>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</summary>
@@ -165,7 +165,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return Quantile_EmpiricalDistributionFunction(source, (source.Count + 1 / 4) * p + 3 / 8);
+      return EmpiricalDistributionFunction(source, (source.Count + 1 / 4) * p + 3 / 8);
     }
   }
 }

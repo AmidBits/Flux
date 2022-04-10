@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Quartiles
   {
     public enum QuartileMethod
     {
@@ -84,21 +84,21 @@ namespace Flux
     //public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IEnumerable<double> source)
     //  => Quartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.OrderBy(source, k => k)));
 
-    public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IList<double> source, QuartileMethod method)
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source, QuartileMethod method)
       => method switch
       {
-        QuartileMethod.Method1 => QuartilesMethod1(source),
-        QuartileMethod.Method2 => QuartilesMethod2(source),
+        QuartileMethod.Method1 => GetQuartilesMethod1(source),
+        QuartileMethod.Method2 => GetQuartilesMethod2(source),
         //QuartileMethod.Method3 => QuartilesMethod3(source),
-        QuartileMethod.Method4 => QuartilesMethod4(source),
+        QuartileMethod.Method4 => GetQuartilesMethod4(source),
         _ => throw new System.ArgumentOutOfRangeException(nameof(method)),
       };
-    public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IList<int> source, QuartileMethod method)
-      => Quartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), method);
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<int> source, QuartileMethod method)
+      => GetQuartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), method);
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
-    public static (double q1, double q2, double q3) QuartilesMethod1(this System.Collections.Generic.IList<double> source)
+    public static (double q1, double q2, double q3) GetQuartilesMethod1(this System.Collections.Generic.IList<double> source)
     {
       var e2 = (source.Count & 1) == 0;
 
@@ -118,7 +118,7 @@ namespace Flux
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
-    public static (double q1, double q2, double q3) QuartilesMethod2(this System.Collections.Generic.IList<double> source)
+    public static (double q1, double q2, double q3) GetQuartilesMethod2(this System.Collections.Generic.IList<double> source)
     {
       var o2 = (source.Count & 1) == 1;
 
@@ -140,12 +140,12 @@ namespace Flux
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
-    public static (double q1, double q2, double q3) QuartilesMethod3(this System.Collections.Generic.IList<double> source)
+    public static (double q1, double q2, double q3) GetQuartilesMethod3(this System.Collections.Generic.IList<double> source)
       => throw new System.NotImplementedException();
 
     /// <summary>General function to compute empirical quartiles.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
-    public static (double q1, double q2, double q3) QuartilesMethod4(this System.Collections.Generic.IList<double> source)
+    public static (double q1, double q2, double q3) GetQuartilesMethod4(this System.Collections.Generic.IList<double> source)
     => (EmpiricalQuartile(source, 0.25), EmpiricalQuartile(source, 0.50), EmpiricalQuartile(source, 0.75));
   }
 }
