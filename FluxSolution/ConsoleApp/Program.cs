@@ -15,40 +15,9 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-      
-      //var x = new System.Collections.Generic.List<double>() { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
-      var x = new System.Collections.Generic.List<double>() { 7, 15, 36, 39, 40, 41 };
+      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      System.Console.WriteLine($"Values = {string.Join(", ", x)}");
 
-      System.Console.WriteLine($"Method 1: {x.GetQuartilesMethod1()}");
-      System.Console.WriteLine($"Method 2: {x.GetQuartilesMethod2()}");
-      //System.Console.WriteLine($"Method 3: {x.QuartileMethod3()}");
-      System.Console.WriteLine($"Method 4: {x.GetQuartilesMethod4()}");
-
-      for (var q = 0.25; q < 1; q += 0.25)
-      {
-        System.Console.WriteLine($"Q = {q}");
-        var qr1 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R1);
-        System.Console.WriteLine($"R1 = {qr1}");
-        var qr2 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R2);
-        System.Console.WriteLine($"R2 = {qr2}");
-        var qr3 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R3);
-        System.Console.WriteLine($"R3 = {qr3}");
-        var qr4 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R4);
-        System.Console.WriteLine($"R4 = {qr4}");
-        var qr5 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R5);
-        System.Console.WriteLine($"R5 = {qr5}");
-        var qr6 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R6);
-        System.Console.WriteLine($"R6 = {qr6}");
-        var qr7 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R7);
-        System.Console.WriteLine($"R7 = {qr7}");
-        var qr8 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R8);
-        System.Console.WriteLine($"R8 = {qr8}");
-        var qr9 = Quantiles.Quantile(x, q, Quantiles.QuantileType.R9);
-        System.Console.WriteLine($"R9 = {qr9}");
-      }
 
       return;
 
