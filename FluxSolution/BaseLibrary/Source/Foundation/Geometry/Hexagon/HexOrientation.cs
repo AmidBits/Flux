@@ -7,28 +7,38 @@ namespace Flux.Geometry
     public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
     public static readonly HexOrientation PointyTopped = new(System.Math.Sqrt(3.0), System.Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, System.Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
 
-    public readonly double F0;
-    public readonly double F1;
-    public readonly double F2;
-    public readonly double F3;
-    public readonly double B0;
-    public readonly double B1;
-    public readonly double B2;
-    public readonly double B3;
-    public readonly double StartAngle; // in multiples of 60°
+    public readonly double m_f0;
+    public readonly double m_f1;
+    public readonly double m_f2;
+    public readonly double m_f3;
+    public readonly double m_b0;
+    public readonly double m_b1;
+    public readonly double m_b2;
+    public readonly double m_b3;
+    public readonly double m_startAngle; // in multiples of 60°
 
     private HexOrientation(double f0, double f1, double f2, double f3, double b0, double b1, double b2, double b3, double startAngle)
     {
-      F0 = f0;
-      F1 = f1;
-      F2 = f2;
-      F3 = f3;
-      B0 = b0;
-      B1 = b1;
-      B2 = b2;
-      B3 = b3;
-      StartAngle = startAngle;
+      m_f0 = f0;
+      m_f1 = f1;
+      m_f2 = f2;
+      m_f3 = f3;
+      m_b0 = b0;
+      m_b1 = b1;
+      m_b2 = b2;
+      m_b3 = b3;
+      m_startAngle = startAngle;
     }
+
+    public double F0 => m_f0;
+    public double F1 => m_f1;
+    public double F2 => m_f2;
+    public double F3 => m_f3;
+    public double B0 => m_b0;
+    public double B1 => m_b1;
+    public double B2 => m_b2;
+    public double B3 => m_b3;
+    public double StartAngle => m_startAngle; // in multiples of 60°
 
     #region Overloaded operators
     public static bool operator ==(HexOrientation a, HexOrientation b)
@@ -40,7 +50,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(HexOrientation other)
-      => F0 == other.F0 && F1 == other.F1 && F2 == other.F2 && F3 == other.F3 && B0 == other.B0 && B1 == other.B1 && B2 == other.B2 && B3 == other.B3 && StartAngle == other.StartAngle;
+      => m_f0 == other.m_f0 && m_f1 == other.m_f1 && m_f2 == other.m_f2 && m_f3 == other.m_f3 && m_b0 == other.m_b0 && m_b1 == other.m_b1 && m_b2 == other.m_b2 && m_b3 == other.m_b3 && m_startAngle == other.m_startAngle;
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -49,19 +59,19 @@ namespace Flux.Geometry
     public override int GetHashCode()
     {
       var hc = new System.HashCode();
-      hc.Add(F0);
-      hc.Add(F1);
-      hc.Add(F2);
-      hc.Add(F3);
-      hc.Add(B0);
-      hc.Add(B1);
-      hc.Add(B2);
-      hc.Add(B3);
-      hc.Add(StartAngle);
+      hc.Add(m_f0);
+      hc.Add(m_f1);
+      hc.Add(m_f2);
+      hc.Add(m_f3);
+      hc.Add(m_b0);
+      hc.Add(m_b1);
+      hc.Add(m_b2);
+      hc.Add(m_b3);
+      hc.Add(m_startAngle);
       return hc.ToHashCode();
     }
     public override string? ToString()
-      => $"{GetType().Name} {{ F = [{F0}, {F1}, {F2}, {F3}], B = [{B0}, {B1}, {B2}, {B3}], StartAngle = {StartAngle}° }}";
+      => $"{GetType().Name} {{ F = [{m_f0}, {m_f1}, {m_f2}, {m_f3}], B = [{m_b0}, {m_b1}, {m_b2}, {m_b3}], StartAngle = {m_startAngle}° }}";
     #endregion Object overrides
   }
 }

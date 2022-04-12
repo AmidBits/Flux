@@ -6,24 +6,28 @@ namespace Flux.Geometry
   {
     public static readonly HexF Zero;
 
-    public readonly double Q;
-    public readonly double R;
-    public readonly double S;
+    public readonly double m_q;
+    public readonly double m_r;
+    public readonly double m_s;
 
     public HexF(double q, double r, double s)
     {
       if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {System.Math.Round(q + r + s)}).");
 
-      Q = q;
-      R = r;
-      S = s;
+      m_q = q;
+      m_r = r;
+      m_s = s;
     }
     public HexF(double q, double r)
     : this(q, r, -q - r)
     { }
 
+    [System.Diagnostics.Contracts.Pure] public double Q => m_q;
+    [System.Diagnostics.Contracts.Pure] public double R => m_r;
+    [System.Diagnostics.Contracts.Pure] public double S => m_s;
+
     public Hex ToRoundedHex()
-      => RoundToNearest(Q, R, S);
+      => RoundToNearest(m_q, m_r, m_s);
 
     //static public List<Hex> HexLinedraw(Hex a, Hex b)
     //{
@@ -43,7 +47,7 @@ namespace Flux.Geometry
     public static bool IsCubeCoordinate(double q, double r, double s)
       => System.Math.Round(q + r + s) == 0;
     public static HexF Lerp(HexF source, HexF target, double mu)
-      => new(source.Q * (1 - mu) + target.Q * mu, source.R * (1 - mu) + target.R * mu, source.S * (1 - mu) + target.S * mu);
+      => new(source.m_q * (1 - mu) + target.m_q * mu, source.m_r * (1 - mu) + target.m_r * mu, source.m_s * (1 - mu) + target.m_s * mu);
     public static Hex RoundToNearest(double q, double r, double s)
     {
       var rq = (int)System.Math.Round(q);
@@ -75,16 +79,16 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(HexF other)
-      => Q == other.Q && R == other.R && S == other.S;
+      => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is HexF o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Q, R, S);
+      => System.HashCode.Combine(m_q, m_r, m_s);
     public override string ToString()
-      => $"{GetType().Name} {{ Q = {Q}, R = {R}, S = {S} }}";
+      => $"{GetType().Name} {{ Q = {m_q}, R = {m_r}, S = {m_s} }}";
     #endregion Object overrides
   }
 }

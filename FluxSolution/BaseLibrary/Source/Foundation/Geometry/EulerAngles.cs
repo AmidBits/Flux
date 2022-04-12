@@ -18,43 +18,13 @@ namespace Flux
       m_r = roll;
     }
 
-    ///// <summary>The horizontal directional (left/right) angle.</summary>
-    //public double Azimuth
-    //  => m_h;
-    ///// <summary>The horizontal directional (left/right) angle.</summary>
-    //public double Bearing
-    //  => m_h;
-    ///// <summary>The horizontal directional (left/right) angle.</summary>
-    //public double Heading
-    //  => m_h;
-    /// <summary>The horizontal directional (left/right) angle.</summary>
-    public double Yaw
-      => m_y;
+    /// <summary>The horizontal directional (left/right) angle. A.k.a. Azimuth, Bearing and Heading.</summary>
+    public Angle Yaw => new(m_y);
+    /// <summary>The vertical directional (up/down) angle. A.k.a. Attitude, Elevation and Inclination.</summary>
+    public Angle Pitch => new(m_p);
+    /// <summary>The horizontal lean (left/right) angle. A.k.a. Bank and Tilt.</summary>
+    public Angle Roll => new(m_r);
 
-    ///// <summary>The vertical directional (up/down) angle.</summary>
-    //public double Attitude
-    //  => m_a;
-    ///// <summary>The vertical directional (up/down) angle.</summary>
-    //public double Elevation
-    //  => m_a;
-    ///// <summary>The vertical directional (up/down) angle.</summary>
-    //public double Inclination
-    //  => m_a;
-    /// <summary>The vertical directional (up/down) angle.</summary>
-    public double Pitch
-      => m_p;
-
-    ///// <summary>The horizontal lean (left/right) angle.</summary>
-    //public double Bank
-    //  => m_b;
-    /// <summary>The horizontal lean (left/right) angle.</summary>
-    public double Roll
-      => m_r;
-    ///// <summary>The horizontal lean (left/right) angle.</summary>
-    //public double Tilt
-    //  => m_b;
-
-    [System.Diagnostics.Contracts.Pure]
     public AxisAngle ToAxisAngle()
     {
       var c1 = System.Math.Cos(m_y / 2);

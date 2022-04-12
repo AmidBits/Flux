@@ -25,21 +25,12 @@ namespace Flux
       m_angle = a;
     }
 
-    public double X
-      => m_x;
-    public double Y
-      => m_y;
-    public double Z
-      => m_z;
-    public double Angle
-      => m_angle;
+    [System.Diagnostics.Contracts.Pure] public double X => m_x;
+    [System.Diagnostics.Contracts.Pure] public double Y => m_y;
+    [System.Diagnostics.Contracts.Pure] public double Z => m_z;
+    [System.Diagnostics.Contracts.Pure] public Angle Angle => new(m_angle);
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3 Axis => new(m_x, m_y, m_z);
 
-    [System.Diagnostics.Contracts.Pure]
-    public Angle ToAngle()
-      => new(m_angle);
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToAxis()
-      => new(m_x, m_y, m_z);
     [System.Diagnostics.Contracts.Pure]
     public EulerAngles ToEulerAngles()
     {

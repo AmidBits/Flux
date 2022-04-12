@@ -6,24 +6,29 @@ namespace Flux
   {
     public static readonly EllipseGeometry Empty;
 
-    /// <summary>The height (Y axis) of the ellipse.</summary>
-    public readonly double SemiMinorAxis;
-    /// <summary>The width (X axis) of the ellipse.</summary>
-    public readonly double SemiMajorAxis;
+    public readonly double m_semiMinorAxis;
+    public readonly double m_semiMajorAxis;
 
     public EllipseGeometry(double semiMinorAxis, double semiMajorAxis)
     {
-      SemiMinorAxis = System.Math.Min(semiMinorAxis, semiMajorAxis);
-      SemiMajorAxis = System.Math.Max(semiMinorAxis, semiMajorAxis);
+      m_semiMinorAxis = System.Math.Min(semiMinorAxis, semiMajorAxis);
+      m_semiMajorAxis = System.Math.Max(semiMinorAxis, semiMajorAxis);
     }
 
+    /// <summary>The height (Y axis) of the ellipse.</summary>
+    public double SemiMinorAxis 
+      => m_semiMinorAxis;
+    /// <summary>The width (X axis) of the ellipse.</summary>
+    public double SemiMajorAxis 
+      => m_semiMajorAxis;
+
     public double GetSurfaceArea()
-      => SurfaceArea(SemiMajorAxis, SemiMinorAxis);
+      => SurfaceArea(m_semiMajorAxis, m_semiMinorAxis);
     public bool GetSurfaceContains(CartesianCoordinate2 point)
-      => SurfaceContains(point.X, point.Y, SemiMajorAxis, SemiMinorAxis, 0);
+      => SurfaceContains(point.X, point.Y, m_semiMajorAxis, m_semiMinorAxis, 0);
     /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double GetSurfacePerimeter()
-      => SurfacePerimeter(SemiMajorAxis, SemiMinorAxis);
+      => SurfacePerimeter(m_semiMajorAxis, m_semiMinorAxis);
 
     #region Static methods
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
@@ -99,20 +104,20 @@ namespace Flux
     #region Implemented interfaces
     // EComparable<T>
     public int CompareTo(EllipseGeometry other)
-      => (SemiMajorAxis + SemiMinorAxis).CompareTo(other.SemiMajorAxis + other.SemiMinorAxis);
+      => (m_semiMajorAxis + m_semiMinorAxis).CompareTo(other.m_semiMajorAxis + other.m_semiMinorAxis);
 
     // IEquatable<T>
     public bool Equals(EllipseGeometry other)
-      => SemiMajorAxis == other.SemiMajorAxis && SemiMinorAxis == other.SemiMinorAxis;
+      => m_semiMajorAxis == other.m_semiMajorAxis && m_semiMinorAxis == other.m_semiMinorAxis;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is EllipseGeometry o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(SemiMajorAxis, SemiMinorAxis);
+      => System.HashCode.Combine(m_semiMajorAxis, m_semiMinorAxis);
     public override string? ToString()
-      => $"{GetType().Name} {{ {nameof(SemiMajorAxis)} = {SemiMajorAxis}, {nameof(SemiMinorAxis)} = {SemiMinorAxis}>";
+      => $"{GetType().Name} {{ {nameof(m_semiMajorAxis)} = {m_semiMajorAxis}, {nameof(m_semiMinorAxis)} = {m_semiMinorAxis}>";
     #endregion Object overrides
   }
 }

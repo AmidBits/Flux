@@ -9,22 +9,22 @@ namespace Flux
     private const double NormalizeEpsilon = 1.192092896e-07f; // smallest such that 1.0+NormalizeEpsilon != 1.0
 
     /// <summary>The normal vector X of the Plane.</summary>
-    public double X;
+    private readonly double m_x;
     /// <summary>The normal vector Y of the Plane.</summary>
-    public double Y;
+    private readonly double m_y;
     /// <summary>The normal vector Z of the Plane.</summary>
-    public double Z;
+    private readonly double m_z;
 
     /// <summary>The distance of the Plane along its normal from the origin.</summary>
-    public double Distance;
+    private readonly double m_distance;
 
     /// <summary>Constructs a Plane from the X, Y, and Z components of its normal, and its distance from the origin on that normal.</summary>
     public Plane(double x, double y, double z, double d)
     {
-      X = x;
-      Y = y;
-      Z = z;
-      Distance = d;
+      m_x = x;
+      m_y = y;
+      m_z = z;
+      m_distance = d;
     }
 
     /// <summary>Constructs a Plane from the given normal and distance along the normal from the origin.</summary>
@@ -39,6 +39,16 @@ namespace Flux
       : this(value.X, value.Y, value.Z, value.W)
     {
     }
+
+    /// <summary>The normal vector X of the Plane.</summary>
+    public double X => m_x;
+    /// <summary>The normal vector Y of the Plane.</summary>
+    public double Y => m_y;
+    /// <summary>The normal vector Z of the Plane.</summary>
+    public double Z => m_z;
+
+    /// <summary>The distance of the Plane along its normal from the origin.</summary>
+    public double Distance => m_distance;
 
     #region Static methods
     /// <summary>Creates a Plane that contains the three given points.</summary>
@@ -70,17 +80,17 @@ namespace Flux
     }
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
     public static double Dot(Plane plane, Vector4 value)
-      => plane.X * value.X + plane.Y * value.Y + plane.Z * value.Z + plane.Distance * value.W;
+      => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance * value.W;
     /// <summary>Returns the dot product of a specified Vector4 and the normal vector of this Plane plus the distance (D) value of the Plane.</summary>
     public static double DotCoordinate(Plane plane, Vector4 value)
-      => plane.X * value.X + plane.Y * value.Y + plane.Z * value.Z + plane.Distance;
+      => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance;
     /// <summary>Returns the dot product of a specified Vector4 and the Normal vector of this Plane.</summary>
     public static double DotNormal(Plane plane, Vector4 value)
-      => plane.X * value.X + plane.Y * value.Y + plane.Z * value.Z;
+      => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z;
     /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
     public static Plane Normalize(Plane value)
     {
-      var f = value.X * value.X + value.Y * value.Y + value.Z * value.Z;
+      var f = value.m_x * value.m_x + value.m_y * value.m_y + value.m_z * value.m_z;
 
       if (System.Math.Abs(f - 1) < NormalizeEpsilon)
       {
@@ -89,7 +99,7 @@ namespace Flux
 
       double fInv = 1 / System.Math.Sqrt(f);
 
-      return new Plane(value.X * fInv, value.Y * fInv, value.Z * fInv, value.Distance * fInv);
+      return new Plane(value.m_x * fInv, value.m_y * fInv, value.m_z * fInv, value.m_distance * fInv);
     }
     /// <summary>Transforms a normalized Plane by a Matrix.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
@@ -98,7 +108,7 @@ namespace Flux
     {
       Matrix4x4.OptimizedInverse(matrix, out var m);
 
-      double x = plane.X, y = plane.Y, z = plane.Z, w = plane.Distance;
+      double x = plane.m_x, y = plane.m_y, z = plane.m_z, w = plane.m_distance;
 
       return new Plane(
           x * m.M11 + y * m.M12 + z * m.M13 + w * m.M14,
@@ -138,30 +148,30 @@ namespace Flux
       var m23 = yz2 + wx2;
       var m33 = 1.0f - xx2 - yy2;
 
-      double x = plane.X, y = plane.Y, z = plane.Z;
+      double x = plane.m_x, y = plane.m_y, z = plane.m_z;
 
       return new Plane(
           x * m11 + y * m21 + z * m31,
           x * m12 + y * m22 + z * m32,
           x * m13 + y * m23 + z * m33,
-          plane.Distance);
+          plane.m_distance);
     }
     #endregion Static methods
 
     #region Overloaded operators
     /// <summary>Returns a boolean indicating whether the two given Planes are equal.</summary>
     public static bool operator ==(Plane value1, Plane value2)
-      => value1.X == value2.X && value1.Y == value2.Y && value1.Z == value2.Z && value1.Distance == value2.Distance;
+      => value1.m_x == value2.m_x && value1.m_y == value2.m_y && value1.m_z == value2.m_z && value1.m_distance == value2.m_distance;
     /// <summary>Returns a boolean indicating whether the two given Planes are not equal.</summary>
     public static bool operator !=(Plane value1, Plane value2)
-      => value1.X != value2.X || value1.Y != value2.Y || value1.Z != value2.Z || value1.Distance != value2.Distance;
+      => value1.m_x != value2.m_x || value1.m_y != value2.m_y || value1.m_z != value2.m_z || value1.m_distance != value2.m_distance;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
     /// <summary>Returns a boolean indicating whether the given Plane is equal to this Plane instance.</summary>
     public readonly bool Equals(Plane p)
-      => X == p.X && Y == p.Y && Z == p.Z && Distance == p.Distance;
+      => m_x == p.m_x && m_y == p.m_y && m_z == p.m_z && m_distance == p.m_distance;
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -170,10 +180,10 @@ namespace Flux
       => obj is Plane o && Equals(o);
     /// <summary>Returns the hash code for this instance.</summary>
     public override readonly int GetHashCode()
-      => System.HashCode.Combine(X, Y, Z, Distance);
+      => System.HashCode.Combine(m_x, m_y, m_z, m_distance);
     /// <summary>Returns a String representing this Plane instance.</summary>
     public override readonly string ToString()
-      => $"{GetType().Name} {{ X = {X} Y = {Y} Z = {Z}, Distance = {Distance} }}";
+      => $"{GetType().Name} {{ X = {m_x} Y = {m_y} Z = {m_z}, Distance = {m_distance} }}";
     #endregion Object overrides
   }
 }

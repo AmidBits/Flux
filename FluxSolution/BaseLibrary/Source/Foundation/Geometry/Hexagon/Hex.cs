@@ -19,26 +19,30 @@ namespace Flux.Geometry
 
     public static readonly Hex Zero;
 
-    public readonly int Q;
-    public readonly int R;
-    public readonly int S;
+    public readonly int m_q;
+    public readonly int m_r;
+    public readonly int m_s;
 
     public Hex(int q, int r, int s)
     {
       if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
 
-      Q = q;
-      R = r;
-      S = s;
+      m_q = q;
+      m_r = r;
+      m_s = s;
     }
     public Hex(int q, int r)
       : this(q, r, -q - r)
     { }
 
+    public int Q => m_q;
+    public int R => m_r;
+    public int S => m_s;
+
     #region Static methods
     /// <summary>Returns a new hex representing the sum of the two specified hex vectors.</summary>
     public static Hex Add(Hex a, Hex b)
-      => new(a.Q + b.Q, a.R + b.R, a.S + b.S);
+      => new(a.m_q + b.m_q, a.m_r + b.m_r, a.m_s + b.m_s);
     /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
       => Flux.Linq.Enumerable.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
@@ -69,7 +73,7 @@ namespace Flux.Geometry
     {
       for (var q = -radius; q <= radius; q++)
         for (int r = System.Math.Max(-radius, -q - radius), rei = System.Math.Min(radius, -q + radius); r <= rei; r++)
-          yield return new Hex(center.Q + q, center.R + r);
+          yield return new Hex(center.m_q + q, center.m_r + r);
     }
     /// <summary>Create a new sequence of the hex cubes making up the ring at the radius from the center hex, starting at the specified (directional) cornerIndex.</summary>
     /// <param name="center">The center reference hex.</param>
@@ -105,10 +109,10 @@ namespace Flux.Geometry
       => q + r + s == 0;
     /// <summary>The magnitude (length) of a hex vector is half of a hex grid Manhattan distance.</summary>
     public static int Magnitude(Hex hex)
-      => (System.Math.Abs(hex.Q) + System.Math.Abs(hex.R) + System.Math.Abs(hex.S)) / 2;
+      => (System.Math.Abs(hex.m_q) + System.Math.Abs(hex.m_r) + System.Math.Abs(hex.m_s)) / 2;
     /// <summary>Returns a new hex representing the product of the specified hex vector and the scalar value.</summary>
     public static Hex Multiply(Hex h, int scalar)
-      => new(h.Q * scalar, h.R * scalar, h.S * scalar);
+      => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
     /// <summary>Returns the neighbor of the specified hex and direction.</summary>
     /// <param name="hex">The reference hex.</param>
     /// <param name="direction">The hexagon direction [0, 5].</param>
@@ -117,13 +121,13 @@ namespace Flux.Geometry
       => Add(hex, Direction(direction));
     /// <summary>Returns the next corner hex in a clockwise direction on the same ring as the specified 'corner' hex. This can also be use for other any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
     public static Hex NextCornerCw(Hex hex)
-      => new(-hex.S, -hex.Q, -hex.R);
+      => new(-hex.m_s, -hex.m_q, -hex.m_r);
     /// <summary>Returns the next corner hex in a counter-clockwise direction on the same ring as the specified 'corner' hex. This can also be use for any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
     public static Hex NextCornerCcw(Hex hex)
-      => new(-hex.R, -hex.S, -hex.Q);
+      => new(-hex.m_r, -hex.m_s, -hex.m_q);
     /// <summary>Returns a new hex representing the difference of the two specified hex vectors.</summary>
     public static Hex Subtract(Hex a, Hex b)
-      => new(a.Q - b.Q, a.R - b.R, a.S - b.S);
+      => new(a.m_q - b.m_q, a.m_r - b.m_r, a.m_s - b.m_s);
     #endregion Static methods
 
     #region Overloaded operators
@@ -143,16 +147,16 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(Hex other)
-      => Q == other.Q && R == other.R && S == other.S;
+      => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Hex o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Q, R, S);
+      => System.HashCode.Combine(m_q, m_r, m_s);
     public override string ToString()
-      => $"{GetType().Name} {{ Q = {Q}, R = {R}, S = {S} }}";
+      => $"{GetType().Name} {{ Q = {m_q}, R = {m_r}, S = {m_s} }}";
     #endregion Object overrides
   }
 }

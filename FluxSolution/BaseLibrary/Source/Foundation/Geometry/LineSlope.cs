@@ -13,6 +13,8 @@ namespace Flux.Geometry
     public LineSlope(double x1, double y1, double x2, double y2)
       => m_slope = (y2 - y1) / (x2 - x1);
 
+    public double Slope => m_slope;
+
     #region Static methods
     #endregion Static methods
 

@@ -15,11 +15,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-
-
-
-      return;
+      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       System.Console.Write($"It's a ");
       Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
@@ -29,15 +25,14 @@ namespace ConsoleApp
       Flux.Console.WriteSuccess($"{nameof(Flux.Console.WriteSuccess)}");
       System.Console.Write($" as well as a ");
       Flux.Console.WriteWarning($"{nameof(Flux.Console.WriteWarning)}");
-      System.Console.Write($".");
+      System.Console.WriteLine($".");
 
-      //foreach (System.ConsoleColor color in System.Enum.GetValues(typeof(System.ConsoleColor)))
-      //{
-      //  System.Console.ForegroundColor = color;
-      //  System.Console.WriteLine(color.ToString());
-      //  System.Console.ResetColor();
-      //}
-      //Flux.Zamplez.RunReflection();
+      foreach (System.ConsoleColor color in System.Enum.GetValues(typeof(System.ConsoleColor)))
+      {
+        System.Console.ForegroundColor = color;
+        System.Console.WriteLine(color.ToString());
+        System.Console.ResetColor();
+      }
     }
 
     private static void Main(string[] args)

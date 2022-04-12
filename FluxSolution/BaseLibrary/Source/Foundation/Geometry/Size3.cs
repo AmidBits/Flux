@@ -6,31 +6,35 @@ namespace Flux
   {
     public static readonly Size3 Zero;
 
-    public readonly int Width;
-    public readonly int Height;
-    public readonly int Depth;
+    private readonly int m_width;
+    private readonly int m_height;
+    private readonly int m_depth;
 
     public Size3(int width, int height, int depth)
     {
-      Width = width;
-      Height = height;
-      Depth = depth;
+      m_width = width;
+      m_height = height;
+      m_depth = depth;
     }
 
+    [System.Diagnostics.Contracts.Pure] public int Width => m_width;
+    [System.Diagnostics.Contracts.Pure] public int Height => m_height;
+    [System.Diagnostics.Contracts.Pure] public int Depth => m_depth;
+
     public Point3 Center()
-      => new(Width / 2, Height / 2, Depth / 2);
+      => new(m_width / 2, m_height / 2, m_depth / 2);
 
     /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>
     public Point3 UniqueIndexToPoint(long index)
     {
-      var xy = (long)Width * (long)Height;
+      var xy = (long)m_width * (long)m_height;
       var irxy = index % xy;
 
-      return new Point3((int)(irxy % Width), (int)(irxy / Width), (int)(index / xy));
+      return new Point3((int)(irxy % m_width), (int)(irxy / m_width), (int)(index / xy));
     }
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
     public long PointToUniqueIndex(int x, int y, int z)
-      => x + (y * Width) + (z * Width * Height);
+      => x + (y * m_width) + (z * m_width * m_height);
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
     public long PointToUniqueIndex(in Point3 point)
       => PointToUniqueIndex(point.X, point.Y, point.X);
@@ -38,34 +42,34 @@ namespace Flux
     #region Static methods
     /// <summary>Adds a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
     public static Size3 Add(in Size3 a, in Size3 b)
-      => new(unchecked(a.Width + b.Width), unchecked(a.Height + b.Height), unchecked(a.Depth + b.Depth));
+      => new(unchecked(a.m_width + b.m_width), unchecked(a.m_height + b.m_height), unchecked(a.m_depth + b.m_depth));
     /// <summary>Adds a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
     public static Size3 Add(in Size3 a, int b)
-      => new(unchecked(a.Width + b), unchecked(a.Height + b), unchecked(a.Depth + b));
+      => new(unchecked(a.m_width + b), unchecked(a.m_height + b), unchecked(a.m_depth + b));
     /// <summary>Divides the components of the <see cref="Size3"/> by the corresponding components of another <see cref="Size3"/> producing two quotients as a new <see cref="Size3"/>.</summary>
     public static Size3 Divide(in Size3 dividend, Size3 divisor)
-      => new(unchecked(dividend.Width / divisor.Width), unchecked(dividend.Height / divisor.Height), unchecked(dividend.Depth / divisor.Depth));
+      => new(unchecked(dividend.m_width / divisor.m_width), unchecked(dividend.m_height / divisor.m_height), unchecked(dividend.m_depth / divisor.m_depth));
     /// <summary>Divides the components of the <see cref="Size3"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size3"/>.</summary>
     public static Size3 Divide(in Size3 dividend, int divisor)
-      => new(unchecked(dividend.Width / divisor), unchecked(dividend.Height / divisor), unchecked(dividend.Depth / divisor));
+      => new(unchecked(dividend.m_width / divisor), unchecked(dividend.m_height / divisor), unchecked(dividend.m_depth / divisor));
     /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size3"/> producing two quotients as a new <see cref="Size3"/>.</summary>
     public static Size3 Divide(int dividend, in Size3 divisors)
-      => new(unchecked(dividend / divisors.Width), unchecked(dividend / divisors.Height), unchecked(dividend / divisors.Depth));
+      => new(unchecked(dividend / divisors.m_width), unchecked(dividend / divisors.m_height), unchecked(dividend / divisors.m_depth));
     /// <summary>Multiplies <see cref="Size3"/> by an <see cref="int"/> producing <see cref="Size3"/>.</summary>
     public static Size3 Multiply(in Size3 size, int multiplier)
-      => new(unchecked(size.Width * multiplier), unchecked(size.Height * multiplier), unchecked(size.Depth * multiplier));
+      => new(unchecked(size.m_width * multiplier), unchecked(size.m_height * multiplier), unchecked(size.m_depth * multiplier));
     /// <summary>Subtracts a <see cref='Size3'/> by another <see cref='Size3'/>.</summary>
     public static Size3 Subtract(in Size3 a, in Size3 b)
-      => new(unchecked(a.Width - b.Width), unchecked(a.Height - b.Height), unchecked(a.Depth - b.Depth));
+      => new(unchecked(a.m_width - b.m_width), unchecked(a.m_height - b.m_height), unchecked(a.m_depth - b.m_depth));
     /// <summary>Subtracts a <see cref='Size3'/> by a <see cref='in'/>.</summary>
     public static Size3 Subtract(in Size3 a, int b)
-      => new(unchecked(a.Width - b), unchecked(a.Height - b), unchecked(a.Depth - b));
+      => new(unchecked(a.m_width - b), unchecked(a.m_height - b), unchecked(a.m_depth - b));
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size3'/>.</summary>
     public static Size3 Subtract(int a, in Size3 b)
-      => new(unchecked(a - b.Width), unchecked(a - b.Height), unchecked(a - b.Depth));
+      => new(unchecked(a - b.m_width), unchecked(a - b.m_height), unchecked(a - b.m_depth));
     /// <summary>Creates a <see cref='Point3'/> from a <see cref='Size3'/>.</summary>
     public static Point3 ToPoint3(in Size3 size)
-      => new(size.Width, size.Height, size.Depth);
+      => new(size.m_width, size.m_height, size.m_depth);
     #endregion Static methods
 
     #region Overloaded operators
@@ -99,16 +103,16 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     public bool Equals(Size3 other)
-      => Width == other.Width && Height == other.Height && Depth == other.Depth;
+      => m_width == other.m_width && m_height == other.m_height && m_depth == other.m_depth;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is Size3 o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Width, Height, Depth);
+      => System.HashCode.Combine(m_width, m_height, m_depth);
     public override string? ToString()
-      => $"{GetType().Name} {{ Width = {Width}, Height = {Height}, Depth = {Depth} }}";
+      => $"{GetType().Name} {{ Width = {m_width}, Height = {m_height}, Depth = {m_depth} }}";
     #endregion Object overrides
   }
 }

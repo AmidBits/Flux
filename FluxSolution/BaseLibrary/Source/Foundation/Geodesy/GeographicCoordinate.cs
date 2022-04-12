@@ -3,6 +3,7 @@ namespace Flux
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct GeographicCoordinate
     : System.IEquatable<GeographicCoordinate>
   {
@@ -26,22 +27,29 @@ namespace Flux
       => new(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Length Altitude { get; }
+    public readonly double m_meterAltitude;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public Latitude Latitude { get; }
+    public readonly double m_radLatitude;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public Longitude Longitude { get; }
+    public readonly double m_radLongitude;
 
     public GeographicCoordinate(Latitude latitude, Longitude longitude, Length altitude)
     {
-      Altitude = ValidAltitude(altitude.Value) ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      Latitude = latitude;
-      Longitude = longitude;
+      m_meterAltitude = ValidAltitude(altitude.Value) ? altitude.Value : throw new System.ArgumentOutOfRangeException(nameof(altitude));
+      m_radLatitude = latitude.Value;
+      m_radLongitude = longitude.Value;
     }
     public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeMeters = 1.0)
       : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Length(altitudeMeters))
     {
     }
+
+    /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
+    public Length Altitude => new(m_meterAltitude);
+    /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
+    public Latitude Latitude => new(m_radLatitude);
+    /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
+    public Longitude Longitude => new(m_radLongitude);
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToEqualEarthProjection()
@@ -54,8 +62,8 @@ namespace Flux
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = Latitude.Radian;
-      var lon = Longitude.Radian;
+      var lat = m_radLatitude;
+      var lon = m_radLongitude;
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude
@@ -64,14 +72,14 @@ namespace Flux
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, m_meterAltitude);
     }
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToNaturalEarthProjection()
     {
-      var lat = Latitude.ToAngle().Value;
-      var lon = Longitude.ToAngle().Value;
+      var lat = m_radLatitude;
+      var lon = m_radLongitude;
 
       var latP2 = System.Math.Pow(lat, 2);
       var latP4 = latP2 * latP2;
@@ -83,16 +91,16 @@ namespace Flux
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, m_meterAltitude);
     }
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/></summary>
     public SphericalCoordinate ToSphericalCoordinate()
-      => new(Altitude.Value, System.Math.PI - (Latitude.ToAngle().Value + Maths.PiOver2), Longitude.ToAngle().Value + System.Math.PI);
+      => new(m_meterAltitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     public CartesianCoordinate3 ToWinkelTripelProjection()
     {
-      var lat = Latitude.ToAngle().Value;
-      var lon = Longitude.ToAngle().Value;
+      var lat = m_radLatitude;
+      var lon = m_radLongitude;
 
       var cosLatitude = System.Math.Cos(lat);
 
@@ -101,7 +109,7 @@ namespace Flux
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new CartesianCoordinate3(x, y, Altitude.Value);
+      return new CartesianCoordinate3(x, y, m_meterAltitude);
     }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
@@ -485,16 +493,16 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable<>
     public bool Equals(GeographicCoordinate other)
-      => Altitude == other.Altitude && Latitude == other.Latitude && Longitude == other.Longitude;
+      => m_meterAltitude == other.m_meterAltitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is GeographicCoordinate o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Altitude, Latitude, Longitude);
+      => System.HashCode.Combine(m_meterAltitude, m_radLatitude, m_radLongitude);
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", Altitude.Value)} m }}";
+      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", m_meterAltitude)} m }}";
     #endregion Object overrides
   }
 }

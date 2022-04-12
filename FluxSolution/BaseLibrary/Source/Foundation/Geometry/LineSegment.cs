@@ -6,10 +6,10 @@ namespace Flux.Geometry
   {
     public static readonly LineSegment Empty;
 
-    public double m_x1;
-    public double m_y1;
-    public double m_x2;
-    public double m_y2;
+    private readonly double m_x1;
+    private readonly double m_y1;
+    private readonly double m_x2;
+    private readonly double m_y2;
 
     public LineSegment(double x1, double y1, double x2, double y2)
     {
