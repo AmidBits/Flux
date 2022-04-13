@@ -35,20 +35,26 @@ namespace Flux.Hashing
     }
 
     // Operators
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator ==(Elf a, Elf b)
       => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator !=(Elf a, Elf b)
       => !a.Equals(b);
 
     // IEquatable
+    [System.Diagnostics.Contracts.Pure]
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Elf other)
       => m_hash == other.m_hash;
 
     // Object (overrides)
+    [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is Elf o && Equals(o);
+    [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => m_hash.GetHashCode();
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{nameof(Elf)} {{ HashCode = {m_hash} }}";
   }

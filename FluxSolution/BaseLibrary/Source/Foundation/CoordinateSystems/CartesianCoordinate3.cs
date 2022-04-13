@@ -302,64 +302,81 @@ namespace Flux
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
+    [System.Diagnostics.Contracts.Pure]
     public static double AngleBetween(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate3.EuclideanLength(a) * CartesianCoordinate3.EuclideanLength(b)), -1, 1));
 
     /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 CrossProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => new(a.m_y * b.m_z - a.m_z * b.m_y, a.m_z * b.m_x - a.m_x * b.m_z, a.m_x * b.m_y - a.m_y * b.m_x);
 
     /// <summary>Returns the dot product of two 3D vectors.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static double DotProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => a.m_x * b.m_x + a.m_y * b.m_y + a.m_z * b.m_z;
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double ChebyshevDistance(CartesianCoordinate3 source, CartesianCoordinate3 target, double edgeLength = 1)
       => ChebyshevLength(target - source, edgeLength);
     /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double ChebyshevLength(CartesianCoordinate3 source, double edgeLength = 1)
       => Maths.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength), System.Math.Abs(source.m_z / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static double EuclideanDistance(CartesianCoordinate3 source, CartesianCoordinate3 target)
       => CartesianCoordinate3.EuclideanLength(target - source);
     /// <summary>Compute the Euclidean length of the vector.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static double EuclideanLength(CartesianCoordinate3 source)
       => System.Math.Sqrt(EuclideanLengthSquared(source));
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static double EuclideanLengthSquared(CartesianCoordinate3 source)
       => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2) + System.Math.Pow(source.m_z, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
       => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
       => new(Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveX, toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveY, toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveZ, toExclusiveZ));
 
     /// <summary>Returns the direction cosines.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 GetDirectionCosines(CartesianCoordinate3 source, CartesianCoordinate3 target)
       => Normalize(target - source);
     /// <summary>Returns the direction ratios.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 GetDirectionRatios(CartesianCoordinate3 source, CartesianCoordinate3 target)
       => target - source;
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 InterpolateCosine(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
       => new(CosineInterpolation.Interpolate(p1.m_x, p2.m_x, mu), CosineInterpolation.Interpolate(p1.m_y, p2.m_y, mu), CosineInterpolation.Interpolate(p1.Z, p2.Z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 InterpolateCubic(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu)
       => new(CubicInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), CubicInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), CubicInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 InterpolateHermite2(CartesianCoordinate3 p0, CartesianCoordinate3 p1, CartesianCoordinate3 p2, CartesianCoordinate3 p3, double mu, double tension, double bias)
       => new(HermiteInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 InterpolateLinear(CartesianCoordinate3 p1, CartesianCoordinate3 p2, double mu)
       => new(LinearInterpolation.Interpolate(p1.m_x, p2.m_x, mu), LinearInterpolation.Interpolate(p1.m_y, p2.m_y, mu), LinearInterpolation.Interpolate(p1.m_z, p2.m_z, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 Lerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)
     {
       var imu = 1 - mu;
@@ -369,22 +386,27 @@ namespace Flux
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double ManhattanDistance(CartesianCoordinate3 source, CartesianCoordinate3 target, double edgeLength = 1)
       => ManhattanLength(target - source, edgeLength);
 
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 Nlerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)
       => Normalize(Lerp(source, target, mu));
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double ManhattanLength(CartesianCoordinate3 source, double edgeLength = 1)
       => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength) + System.Math.Abs(source.m_z / edgeLength);
 
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 Normalize(CartesianCoordinate3 source)
       => EuclideanLength(source) is var m && m != 0 ? source / m : source;
 
     /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    [System.Diagnostics.Contracts.Pure]
     public static int OrthantNumber(CartesianCoordinate3 source, CartesianCoordinate3 center, OrthantNumbering numbering)
       => numbering switch
       {
@@ -396,15 +418,18 @@ namespace Flux
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 Orthogonal(CartesianCoordinate3 source)
       => System.Math.Abs(source.m_x) > System.Math.Abs(source.m_z) ? new CartesianCoordinate3(-source.m_y, source.m_x, 0) : new CartesianCoordinate3(0, -source.m_x, source.m_y);
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+    [System.Diagnostics.Contracts.Pure]
     public static double ScalarTripleProduct(CartesianCoordinate3 a, CartesianCoordinate3 b, CartesianCoordinate3 c)
       => DotProduct(a, CrossProduct(b, c));
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 Slerp(CartesianCoordinate3 source, CartesianCoordinate3 target, double mu)
     {
       var dp = System.Math.Clamp(DotProduct(source, target), -1.0, 1.0); // Ensure precision doesn't exceed acos limits.
@@ -417,6 +442,7 @@ namespace Flux
 
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 VectorTripleProduct(CartesianCoordinate3 a, CartesianCoordinate3 b, CartesianCoordinate3 c)
       => CrossProduct(a, CrossProduct(b, c));
     #endregion Static methods

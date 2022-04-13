@@ -57,9 +57,11 @@ namespace Flux.RulesEngine
 		#endregion IDictionary implementation
 
 		/// <summary>Create a new dictionary with the specified rules compiled.</summary>
+		[System.Diagnostics.Contracts.Pure]
 		public RulesDictionary<T> CompileRules<T>(params string[] ruleName)
 			=> new(m_rules.Where(kvp => ruleName.Contains(kvp.Key)));
 		/// <summary>Create a new dictionary with all rules compiled.</summary>
+		[System.Diagnostics.Contracts.Pure]
 		public RulesDictionary<T> CompileRules<T>()
 			=> new(this);
 	}
@@ -114,6 +116,7 @@ namespace Flux.RulesEngine
 		#endregion IDictionary implementation
 
 		/// <summary>Create a new dictionary by evaluating the specified value against the compiled rules. The result contains the rule name and whether it succeeded.</summary>
+		[System.Diagnostics.Contracts.Pure]
 		public System.Collections.Generic.IDictionary<string, bool> EvaluateRules(T value)
 			=> m_rules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Invoke(value));
 	}

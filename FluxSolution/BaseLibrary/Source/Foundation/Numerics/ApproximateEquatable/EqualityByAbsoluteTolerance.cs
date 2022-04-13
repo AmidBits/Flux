@@ -13,9 +13,11 @@ namespace Flux
     {
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public bool IsApproximatelyEqual(double a, double b)
       => IsApproximatelyEqual(a, b, m_absoluteTolerance);
 
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsApproximatelyEqual(double a, double b, double absoluteTolerance = 1E-15)
       => a == b || (System.Math.Abs(a - b) <= absoluteTolerance);
   }

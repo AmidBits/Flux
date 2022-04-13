@@ -30,9 +30,11 @@ namespace Flux
     public double V3
       => m_v3;
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetInterpolation(double mu)
       => Interpolate(m_v0, m_v1, m_v2, m_v3, mu);
 
+    [System.Diagnostics.Contracts.Pure]
     public static double Interpolate(double v0, double v1, double v2, double v3, double mu)
     {
       var mu2 = mu * mu;

@@ -21,9 +21,11 @@ namespace Flux
     public double V2
       => m_v2;
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetInterpolation(double mu)
       => Interpolate(m_v1, m_v2, mu);
 
+    [System.Diagnostics.Contracts.Pure]
     public static double Interpolate(double v1, double v2, double mu)
     {
       var mu2 = (1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0;

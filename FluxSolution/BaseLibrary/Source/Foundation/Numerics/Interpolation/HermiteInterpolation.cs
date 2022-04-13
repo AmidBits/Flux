@@ -43,9 +43,11 @@ namespace Flux
     public double Bias { get => m_bias; set => m_bias = value; }
     public double Tension { get => m_tension; set => m_tension = value; }
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetInterpolation(double mu)
       => Interpolate(m_v0, m_v1, m_v2, m_v3, mu, m_tension, m_bias);
 
+    [System.Diagnostics.Contracts.Pure]
     public static double Interpolate(double v0, double v1, double v2, double v3, double mu, double tension, double bias)
     {
       var mu2 = mu * mu;

@@ -24,19 +24,26 @@ namespace Flux
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
+    [System.Diagnostics.Contracts.Pure]
     public double Value
       => m_value;
 
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddWeeks(int weeks)
       => this + (weeks * 7);
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddDays(int days)
       => this + days;
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddHours(int hours)
       => this + (hours / 24d);
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddMinutes(int minutes)
       => this + (minutes / 1440d);
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddSeconds(int seconds)
       => this + (seconds / 86400d);
+    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddMilliseconds(int milliseconds)
       => this + (milliseconds / 1000d / 86400d);
 

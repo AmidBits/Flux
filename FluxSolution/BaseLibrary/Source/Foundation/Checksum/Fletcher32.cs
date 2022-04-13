@@ -34,8 +34,10 @@ namespace Flux.Checksum
     }
 
     // Operators
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator ==(Fletcher32 a, Fletcher32 b)
       => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator !=(Fletcher32 a, Fletcher32 b)
       => !a.Equals(b);
 
@@ -44,10 +46,13 @@ namespace Flux.Checksum
       => m_hash == other.m_hash;
 
     // Object (overrides)
+    [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is Fletcher32 o && Equals(o);
+    [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => m_hash.GetHashCode();
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
        => $"{nameof(Fletcher32)} {{ CheckSum = {m_hash} }}";
   }
