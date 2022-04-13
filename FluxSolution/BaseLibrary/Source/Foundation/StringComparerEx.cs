@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>This is an extension type to the already built-in System.StringComparer, with the addition of being System.Char compatible, since char lack in implementation (for obvious reasons).</summary>
   /// <remarks>There is an obvious performance penalty in that the type char is compared using char.ToString() and so proxied as strings.</remarks>
   public sealed class StringComparerEx
-    : System.StringComparer
+    : System.StringComparer // Implicit IComparer<string> and IEqualityComparer<string>.
     , System.Collections.Generic.IComparer<char>
     , System.Collections.Generic.IEqualityComparer<char>
   {
@@ -27,28 +27,37 @@ namespace Flux
     private StringComparerEx(System.StringComparer stringComparer)
       => m_stringComparer = stringComparer; // Public instances must specify settings on creation.
 
+    #region Implemented interfaces
     // IComparer<string>
+    [System.Diagnostics.Contracts.Pure]
     public override int Compare(string? x, string? y)
       => m_stringComparer.Compare(x, y);
-    // IEqualityComparer<string>
-    public override bool Equals(string? x, string? y)
-      => m_stringComparer.Equals(x, y);
-    // Object overrides
-    public override int GetHashCode(string s)
-      => m_stringComparer.GetHashCode(s);
-
     // IComparer<char>
+    [System.Diagnostics.Contracts.Pure]
     public int Compare(char x, char y)
       => m_stringComparer.Compare(x.ToString(), y.ToString());
+
+    // IEqualityComparer<string>
+    [System.Diagnostics.Contracts.Pure]
+    public override bool Equals(string? x, string? y)
+      => m_stringComparer.Equals(x, y);
     // IEqualityComparer<char>
+    [System.Diagnostics.Contracts.Pure]
     public bool Equals(char x, char y)
       => m_stringComparer.Equals(x.ToString(), y.ToString());
+    #endregion Implemented interfaces
 
+    #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
+    public override int GetHashCode(string s)
+      => m_stringComparer.GetHashCode(s);
+    [System.Diagnostics.Contracts.Pure]
     public int GetHashCode(char c)
       => m_stringComparer.GetHashCode(c.ToString());
 
-    // Object overrides
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{GetType().Name} {{ {m_stringComparer} }}";
+    #endregion Object overrides
   }
 }

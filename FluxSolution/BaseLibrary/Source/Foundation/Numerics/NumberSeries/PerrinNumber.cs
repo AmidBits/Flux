@@ -16,6 +16,7 @@ namespace Flux.Numerics
       => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers(), (e, i) => i == index));
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPerrinNumbers()
     {
       System.Numerics.BigInteger a = 3, b = 0, c = 2;

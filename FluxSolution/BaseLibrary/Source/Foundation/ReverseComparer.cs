@@ -21,9 +21,11 @@ namespace Flux
       public System.Collections.Generic.IComparer<T> Source
         => m_sourceComparer;
 
+      [System.Diagnostics.Contracts.Pure]
       public override int Compare([System.Diagnostics.CodeAnalysis.AllowNull] T x, [System.Diagnostics.CodeAnalysis.AllowNull] T y)
         => -m_sourceComparer.Compare(x, y);
 
+      [System.Diagnostics.Contracts.Pure]
       public override string ToString()
         => $"{GetType().Name} {{ {m_sourceComparer} }}";
     }

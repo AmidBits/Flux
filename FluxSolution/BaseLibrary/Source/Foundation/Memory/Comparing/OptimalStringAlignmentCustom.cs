@@ -20,6 +20,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -52,6 +53,7 @@ namespace Flux.Metrical
       return ldg;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);

@@ -19,6 +19,7 @@ namespace Flux.Sorting
       : this(MergeSortType.TopDown, System.Collections.Generic.Comparer<T>.Default)
     { }
 
+    [System.Diagnostics.Contracts.Pure]
     public T[] SortToCopy(System.ReadOnlySpan<T> source)
     {
       var target = new T[source.Length];
@@ -37,6 +38,7 @@ namespace Flux.Sorting
 
       return target;
     }
+    [System.Diagnostics.Contracts.Pure]
     public T[] SortToCopy(System.Span<T> source)
     {
       var target = new T[source.Length];
@@ -58,6 +60,7 @@ namespace Flux.Sorting
 
     #region MergeSort bottom-up helpers (Span)
     /// <summary>The <paramref name="source"/> array has the items to sort, and the <paramref name="target"/> is the work array.</summary>
+    [System.Diagnostics.Contracts.Pure]
     private void BottomUpMergeSort(System.Span<T> source, System.Span<T> target, int length)
     {
       for (var width = 1; width < length; width = 2 * width) // Each 1-element run in A is already "sorted". Make successively longer sorted runs of length 2, 4, 8, 16... until whole array is sorted.
@@ -72,6 +75,7 @@ namespace Flux.Sorting
     }
 
     /// <summary>Left run is source[leftIndex:rightIndex-1] and right run is source[rightIndex:endIndex-1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     private void BottomUpMerge(System.Span<T> source, System.Span<T> target, int leftIndex, int rightIndex, int endIndex)
     {
       int l = leftIndex, r = rightIndex, k = leftIndex;
@@ -84,6 +88,7 @@ namespace Flux.Sorting
       }
     }
 
+    [System.Diagnostics.Contracts.Pure]
     private static void CopyArray(System.Span<T> source, System.Span<T> target, int length)
     {
       for (var index = 0; index < length; index++)
@@ -92,6 +97,7 @@ namespace Flux.Sorting
     #endregion MergeSort bottom-up helpers (Span)
 
     #region MergeSort top-down helpers (Span)
+    [System.Diagnostics.Contracts.Pure]
     private void TopDownMergeSort(System.Span<T> source, System.Span<T> target, int length)
     {
       CopyArray(source, target, 0, length); // One time copy of source[] to target[].
@@ -100,6 +106,7 @@ namespace Flux.Sorting
     }
 
     /// <summary>Sort the given run of array <paramref name="source"/> using array <paramref name="target"/> as source; beginIndex is inclusive; endIndex is exclusive (.e. source[endIndex] is not in the set).</summary>
+    [System.Diagnostics.Contracts.Pure]
     private void TopDownSplitMerge(System.Span<T> target, System.Span<T> source, int beginIndex, int endIndex)
     {
       if (endIndex - beginIndex <= 1) // Already sorted?
@@ -114,6 +121,7 @@ namespace Flux.Sorting
     }
 
     /// <summary>Left half is source[begin:middle-1], right half is source[middle:end-1], result is target[begin:end-1].</summary>
+    [System.Diagnostics.Contracts.Pure]
     private void TopDownMerge(System.Span<T> source, System.Span<T> target, int beginIndex, int middleIndex, int endIndex)
     {
       int i = beginIndex, j = middleIndex, k = beginIndex;
@@ -127,6 +135,7 @@ namespace Flux.Sorting
     }
 
     /// <summary>Copy <paramref name="source"/> to <paramref name="target"/> starting at beginIndex (inclusive) up to endIndex (exclusive).</summary>
+    [System.Diagnostics.Contracts.Pure]
     private static void CopyArray(System.Span<T> source, System.Span<T> target, int beginIndex, int endIndex)
     {
       for (var index = beginIndex; index < endIndex; index++)

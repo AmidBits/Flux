@@ -13,6 +13,7 @@ namespace Flux.Sorting
       : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
+    [System.Diagnostics.Contracts.Pure]
     public void SortInPlace(System.Span<T> source)
     {
       for (var i = 0; i < source.Length - 1; i++)

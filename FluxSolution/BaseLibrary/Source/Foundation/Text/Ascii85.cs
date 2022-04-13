@@ -9,6 +9,7 @@ namespace Flux.Text
 
     public static readonly char[] Characters = System.Linq.Enumerable.Range(33, 85).Select(i => System.Convert.ToChar(i)).ToArray();
 
+    [System.Diagnostics.Contracts.Pure]
     public static byte[] Encode(System.ReadOnlySpan<char> characters)
     {
       if (characters == null) throw new System.ArgumentNullException(nameof(characters));
@@ -53,6 +54,7 @@ namespace Flux.Text
 
       return stream.ToArray();
     }
+    [System.Diagnostics.Contracts.Pure]
     private static byte[] EncodeValue(uint value, int count)
     {
       var encoded = new byte[count - 1];
@@ -68,6 +70,7 @@ namespace Flux.Text
       return encoded;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public static string Decode(byte[] bytes)
     {
       if (bytes == null) throw new System.ArgumentNullException(nameof(bytes));
@@ -96,6 +99,7 @@ namespace Flux.Text
 
       return sb.ToString();
     }
+    [System.Diagnostics.Contracts.Pure]
     private static char[] DecodeValue(uint value, int count)
     {
       var encoded = new char[5];

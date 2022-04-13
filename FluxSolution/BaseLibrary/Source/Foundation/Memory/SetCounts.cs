@@ -3,6 +3,7 @@ namespace Flux
   public static partial class Spans
   {
     /// <summary>Returns the number of unfound (not found) and the number of unique elements. Optionally the function returns early if there are unfound elements. Uses the specified equality comparer.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static (int unfoundCount, int uniqueCount) SetCounts<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       var unfoundCount = 0;

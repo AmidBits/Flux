@@ -15,6 +15,7 @@ namespace Flux.Numerics
     #region Static methods
     /// <summary>Results in a sequence of prime factors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeFactors(System.Numerics.BigInteger number)
     {
       foreach (var prime in Flux.Numerics.PrimeNumber.GetAscendingPrimes(2))

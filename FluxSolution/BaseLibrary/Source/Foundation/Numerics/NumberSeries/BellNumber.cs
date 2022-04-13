@@ -11,6 +11,7 @@ namespace Flux.Numerics
     /// <summary>Yields a Bell number of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetBellNumbers()
     {
       var current = new System.Numerics.BigInteger[1] { 1 };

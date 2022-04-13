@@ -8,6 +8,7 @@ namespace Flux.Numerics
       => GetCompositeNumbers();
 
     #region Static methods
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsComposite(System.Numerics.BigInteger value)
     {
       if (value <= long.MaxValue)
@@ -28,6 +29,7 @@ namespace Flux.Numerics
       return false;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsComposite(int value)
     {
       if (value <= 3)
@@ -44,6 +46,7 @@ namespace Flux.Numerics
 
       return false;
     }
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsComposite(long value)
     {
       if (value <= int.MaxValue)
@@ -64,6 +67,7 @@ namespace Flux.Numerics
       return false;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompositeNumbers()
     {
       for (var k = System.Numerics.BigInteger.One; ; k++)
@@ -73,6 +77,7 @@ namespace Flux.Numerics
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_composite_number"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyCompositeNumbers()
     {
       var largestCountOfDivisors = System.Numerics.BigInteger.Zero;

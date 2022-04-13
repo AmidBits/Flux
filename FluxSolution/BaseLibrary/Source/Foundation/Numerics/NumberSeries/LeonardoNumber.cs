@@ -22,6 +22,7 @@ namespace Flux.Numerics
     /// <summary>Creates a new sequence with Leonardo numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetLeonardoNumbers(System.Numerics.BigInteger first, System.Numerics.BigInteger second, System.Numerics.BigInteger step)
     {
       while (true)

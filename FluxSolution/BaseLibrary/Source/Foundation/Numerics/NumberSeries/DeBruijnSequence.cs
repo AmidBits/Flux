@@ -25,6 +25,7 @@ namespace Flux.Numerics
 
     #region Static methods
     /// <summary>Creates a new sequence with DeBruijn numbers, which are the indices in a k-sized alphabet of order_n size.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.List<int> GetDeBruijnSequence(int size_k, int order_n)
     {
       var sequence = new System.Collections.Generic.List<int>();
@@ -86,16 +87,20 @@ namespace Flux.Numerics
     }
 
     /// <summary>Creates a new sequence with the code indices expanded.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<T>> GetExpandedSequence()
       => GetNumberSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
 
     // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IEnumerable<T> GetNumberSequence()
       => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, (System.Collections.Generic.IList<T>)Alphabet);
 
     // IEnumerable
+    [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
       => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

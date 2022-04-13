@@ -21,14 +21,17 @@
     public T High
       => m_hi;
 
+    [System.Diagnostics.Contracts.Pure]
     public bool IsValid
       => m_lo.CompareTo(m_hi) < 0 && m_hi.CompareTo(m_lo) > 0;
 
     #region Static methods
     /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static ValueRange<T> Intersect(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(MaxLo(a, b), MinHi(a, b)) : Empty;
     /// <summary>The relative complement of B in A (also called the set-theoretic difference of A and B), denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.List<ValueRange<T>> LeftDifference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
@@ -45,6 +48,7 @@
       return list;
     }
     /// <summary>Right different is the set of all elements that are members of B, but not members of A.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.List<ValueRange<T>> RightDifference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
@@ -61,6 +65,7 @@
       return list;
     }
     /// <summary>The symmetric difference, an extension of the complement, of two sets A and B, denoted by (A \ B) ∪ (B \ A) or (A - B) ∪ (B - A), is the set of all elements that are members from A, but not members of B union all elements that are members of B but not members of A.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.List<ValueRange<T>> SymmetricDifference(ValueRange<T> a, ValueRange<T> b)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
@@ -79,41 +84,54 @@
       return list;
     }
     /// <summary>The union of A and B, denoted by A ∪ B, is the set of all things that are members of A or of B or of both.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static ValueRange<T> Union(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(MinLo(a, b), MaxHi(a, b)) : Empty;
+    [System.Diagnostics.Contracts.Pure]
     public static ValueRange<T> UnionAll(ValueRange<T> a, ValueRange<T> b)
       => new(MinLo(a, b), MaxHi(a, b));
 
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsOverlapping(ValueRange<T> a, ValueRange<T> b)
       => a.m_lo.CompareTo(b.m_hi) < 0 && b.m_lo.CompareTo(a.m_hi) < 0;
 
+    [System.Diagnostics.Contracts.Pure]
     public static T MaxHi(ValueRange<T> a, ValueRange<T> b)
       => a.m_hi.CompareTo(b.m_hi) >= 0 ? a.m_hi : b.m_hi;
+    [System.Diagnostics.Contracts.Pure]
     public static T MaxLo(ValueRange<T> a, ValueRange<T> b)
       => a.m_lo.CompareTo(b.m_lo) >= 0 ? a.m_lo : b.m_lo;
+    [System.Diagnostics.Contracts.Pure]
     public static T MinHi(ValueRange<T> a, ValueRange<T> b)
       => a.m_hi.CompareTo(b.m_hi) <= 0 ? a.m_hi : b.m_hi;
+    [System.Diagnostics.Contracts.Pure]
     public static T MinLo(ValueRange<T> a, ValueRange<T> b)
       => a.m_lo.CompareTo(b.m_lo) <= 0 ? a.m_lo : b.m_lo;
     #endregion Static methods
 
     #region Overloaded operators
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator ==(ValueRange<T> a, ValueRange<T> b)
       => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure]
     public static bool operator !=(ValueRange<T> a, ValueRange<T> b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
+    [System.Diagnostics.Contracts.Pure]
     public bool Equals(ValueRange<T> other)
       => m_lo.Equals(other.m_lo) && m_hi.Equals(other.m_hi);
     #endregion Implemented interfaces
 
     #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is ValueRange<T> o && Equals(o);
+    [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => System.HashCode.Combine(m_lo, m_hi);
+    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{GetType().Name} {{ Low = {m_lo}, High = {m_hi} }}";
     #endregion Object overrides

@@ -13,18 +13,12 @@ namespace Flux
     public Cent(int cents)
       => m_value = cents;
 
-    [System.Diagnostics.Contracts.Pure]
-    public int Value
-      => m_value;
+    [System.Diagnostics.Contracts.Pure] public int Value => m_value;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Frequency ShiftPitch(Frequency frequency)
-      => new(PitchShift(frequency.Value, m_value));
+    [System.Diagnostics.Contracts.Pure] public Frequency ShiftPitch(Frequency frequency) => new(PitchShift(frequency.Value, m_value));
 
-    [System.Diagnostics.Contracts.Pure]
-    public double ToFrequencyRatio()
-      => ConvertCentToFrequencyRatio(m_value);
+    [System.Diagnostics.Contracts.Pure] public double ToFrequencyRatio() => ConvertCentToFrequencyRatio(m_value);
 
     #region Static methods
     /// <summary>Convert a specified interval ratio to a number of cents.</summary>

@@ -16,6 +16,7 @@ namespace Flux.Numerics
       => System.Numerics.BigInteger.Pow(2, number) - 1;
     /// <summary>Results in a sequence of mersenne numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetMersenneNumbers()
     {
       for (var number = 1; number <= int.MaxValue; number++)

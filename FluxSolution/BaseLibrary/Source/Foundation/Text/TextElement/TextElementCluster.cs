@@ -1,13 +1,13 @@
 ﻿namespace Flux.Text
 {
-  public sealed class GraphemeCluster
+  public sealed class TextElementCluster
   {
     public string Chars { get; }
     public System.Collections.Generic.IReadOnlyList<System.Text.Rune> Runes { get; }
 
     public int SourceIndex { get; }
 
-    public GraphemeCluster(string textElement, int sourceIndex)
+    public TextElementCluster(string textElement, int sourceIndex)
     {
       if (textElement is null) throw new System.ArgumentNullException(nameof(textElement));
       if (new System.Globalization.StringInfo(textElement).LengthInTextElements != 1) throw new System.ArgumentOutOfRangeException(textElement);
@@ -18,12 +18,12 @@
       SourceIndex = sourceIndex;
     }
 
-    public static System.Collections.Generic.IEnumerable<GraphemeCluster> GetAll(string text)
+    public static System.Collections.Generic.IEnumerable<TextElementCluster> GetAll(string text)
     {
       var e = System.Globalization.StringInfo.GetTextElementEnumerator(text);
 
       while (e.MoveNext())
-        yield return new GraphemeCluster((string)e.Current, e.ElementIndex);
+        yield return new TextElementCluster((string)e.Current, e.ElementIndex);
     }
 
     public override string ToString()

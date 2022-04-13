@@ -11,6 +11,7 @@ namespace Flux.Numerics
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Smooth_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNsmoothNumbers()
     {
       for (var number = System.Numerics.BigInteger.One; true; number++)
@@ -18,6 +19,7 @@ namespace Flux.Numerics
           yield return number;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public bool IsNsmoothNumber(System.Numerics.BigInteger number)
     {
       if (number <= 1)

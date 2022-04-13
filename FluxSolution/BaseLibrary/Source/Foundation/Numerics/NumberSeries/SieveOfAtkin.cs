@@ -28,6 +28,7 @@ namespace Flux.Numerics
     public SieveOfAtkin(int length)
       => m_sieve = CreateBitArray(length);
 
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.BitArray CreateBitArray(int length)
     {
       var bits = new System.Collections.BitArray(length, false);

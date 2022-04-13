@@ -18,6 +18,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
+    [System.Diagnostics.Contracts.Pure]
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -37,6 +38,7 @@ namespace Flux.Metrical
       return scsg;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IList<T> GetSupersequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
       matrix = GetMatrix(source, target);
@@ -74,6 +76,7 @@ namespace Flux.Metrical
       }
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var length = source.Length + target.Length;
@@ -81,12 +84,15 @@ namespace Flux.Metrical
       return length - 2 * (length - GetLengthMetric(source, target));
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public int GetLengthMetric(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetMatrix(source, target)[source.Length, target.Length];
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetLengthMetric(source, target) / (double)System.Math.Max(source.Length, target.Length);
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingCoefficient(source, target);
   }

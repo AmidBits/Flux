@@ -13,10 +13,12 @@ namespace Flux.Sorting
       : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
+    [System.Diagnostics.Contracts.Pure]
     public void SortInPlace(System.Span<T> source)
       => QuickSortImpl(source, 0, source.Length - 1);
 
     #region Quick sort helpers
+    [System.Diagnostics.Contracts.Pure]
     private void QuickSortImpl(System.Span<T> source, int lowIndex, int highIndex)
     {
       if (lowIndex < highIndex)
@@ -28,6 +30,7 @@ namespace Flux.Sorting
       }
     }
 
+    [System.Diagnostics.Contracts.Pure]
     private int QuickPartition(System.Span<T> source, int lowIndex, int highIndex)
     {
       var pivotValue = source[highIndex];

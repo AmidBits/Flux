@@ -31,7 +31,8 @@ namespace Flux.Text
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public string NumberToString(System.Numerics.BigInteger number)
+    [System.Diagnostics.Contracts.Pure]
+    public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
     {
       var sb = new System.Text.StringBuilder();
 
@@ -45,18 +46,17 @@ namespace Flux.Text
         }
       }
 
-      return sb.ToString();
+      return sb;
     }
 
     /// <summary>Convert a sign-value notaion string into a number.</summary>
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public System.Numerics.BigInteger StringToNumber(string number)
+    [System.Diagnostics.Contracts.Pure]
+     public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
     {
-      if (number is null) throw new System.ArgumentNullException(nameof(number));
-
-      var bi = new System.Numerics.BigInteger();
+      var bi = System.Numerics.BigInteger.Zero;
 
       foreach (var item in SignValueSystem)
       {

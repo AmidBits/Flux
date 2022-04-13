@@ -25,6 +25,7 @@ namespace Flux.Text
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     /// System.Collections.Generic.IList<string>
+    [System.Diagnostics.Contracts.Pure]
     public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
     {
       var sb = new System.Text.StringBuilder(128);
@@ -42,6 +43,7 @@ namespace Flux.Text
 
       return sb;
     }
+    [System.Diagnostics.Contracts.Pure]
     public bool TryNumberToText(System.Numerics.BigInteger number, out System.Text.StringBuilder? result)
     {
       try
@@ -60,15 +62,16 @@ namespace Flux.Text
     /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
+    [System.Diagnostics.Contracts.Pure]
     public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
     {
       var bi = System.Numerics.BigInteger.Zero;
 
-      foreach (var textElement in number.EnumerateRunes())
+      foreach (var rune in number.EnumerateRunes())
       {
         bi *= Symbols.Length;
 
-        var position = Symbols.IndexOf(textElement);
+        var position = Symbols.IndexOf(rune);
 
         bi += position > -1 ? position : throw new System.InvalidOperationException();
       }
@@ -76,6 +79,7 @@ namespace Flux.Text
       return bi;
     }
     /// <summary>Convert a positional notation text string into a number.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
     {
       try
@@ -90,6 +94,7 @@ namespace Flux.Text
     }
 
     /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static PositionalNotation ForRadix(int radix)
       => radix switch
       {
@@ -101,6 +106,7 @@ namespace Flux.Text
         _ => throw new System.ArgumentOutOfRangeException(nameof(radix))
       };
 
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.Dictionary<int, System.Text.StringBuilder> ToStringRadices(System.Numerics.BigInteger number)
     {
       var dictionary = new System.Collections.Generic.Dictionary<int, System.Text.StringBuilder>();

@@ -4,17 +4,17 @@ using System.Linq;
 namespace Flux.Text
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
-  public sealed class GraphemeTokenizer
-    : ITokenizer<IToken<GraphemeCluster>>
+  public sealed class TextElementTokenizer
+    : ITokenizer<IToken<TextElementCluster>>
   {
-    public System.Collections.Generic.IEnumerable<IToken<GraphemeCluster>> GetTokens(string expression)
+    public System.Collections.Generic.IEnumerable<IToken<TextElementCluster>> GetTokens(string expression)
     {
       using var sr = new System.IO.StringReader(expression);
-      using var trtee = new GraphemeEnumerator(sr);
+      using var trtee = new TextElementEnumerator(sr);
       
       foreach (var (grapheme, index) in trtee.Select((e, i) => (e, i)))
       {
-        yield return new GraphemeToken(index, grapheme);
+        yield return new TextElementToken(index, grapheme);
       }
     }
   }

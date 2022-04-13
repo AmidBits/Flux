@@ -13,6 +13,7 @@
 
     public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
+    [System.Diagnostics.Contracts.Pure]
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
     {
       length = 0; // Length is returned in the matrix[0, 0].
@@ -48,6 +49,7 @@
       return matrix;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
     {
       matrix = GetMatrix(source, out var length);
@@ -58,6 +60,7 @@
       return result;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public int GetLengthMeasure(System.ReadOnlySpan<T> source)
     {
       GetMatrix(source, out var length);

@@ -17,6 +17,7 @@ namespace Flux.Metrical
     { }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -140,6 +141,7 @@ namespace Flux.Metrical
     //  return ldg;
     //}
 
+    [System.Diagnostics.Contracts.Pure]
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -152,9 +154,11 @@ namespace Flux.Metrical
       return matrix[sourceCount + 1, targetCount + 1];
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1 - GetSimpleMatchingDistance(source, target);
 
+    [System.Diagnostics.Contracts.Pure]
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }

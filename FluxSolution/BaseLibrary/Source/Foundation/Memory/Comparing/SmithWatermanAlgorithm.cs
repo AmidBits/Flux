@@ -27,6 +27,7 @@
       LinearGapPenalty = linearGapPenalty;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
@@ -53,6 +54,7 @@
       return matrix;
     }
 
+    [System.Diagnostics.Contracts.Pure]
     public (System.Collections.Generic.List<T> source, System.Collections.Generic.List<T> target) TracebackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var best = 0;
