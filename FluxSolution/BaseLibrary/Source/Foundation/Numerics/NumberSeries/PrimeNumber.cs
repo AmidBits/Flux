@@ -46,13 +46,9 @@ namespace Flux.Numerics
       var quotient = System.Numerics.BigInteger.DivRem(startAt, 6, out var remainder);
 
       if (remainder == 5) // On a potential prime before an ascending % 6 number. E.g. 11.
-      {
         yield return 6 * ++quotient + 1;
-      }
       else if (remainder == 0) // Between two potential primes on a % 6 number. E.g. 12.
-      {
         yield return 6 * quotient++ + 1;
-      }
 
       for (var index = 6 * (quotient + (remainder > 0 ? 1 : 0)); true; index += 6)
       {
@@ -62,6 +58,7 @@ namespace Flux.Numerics
     }
     /// <summary>Creates a new sequence ascending prime numbers, greater than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPrimes(System.Numerics.BigInteger startAt)
       => GetAscendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
@@ -115,6 +112,7 @@ namespace Flux.Numerics
         }
       }
     }
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPrimes(System.Numerics.BigInteger number)
       => GetClosestPotentialPrimes(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
@@ -147,13 +145,9 @@ namespace Flux.Numerics
       var quotient = System.Numerics.BigInteger.DivRem(startAt, 6, out var remainder);
 
       if (remainder == 1) // On a potential prime before a descending % 6 number. E.g. 13.
-      {
         yield return 6 * quotient-- - 1;
-      }
       else if (remainder == 0) // Between two potential primes on a % 6 number. E.g. 12.
-      {
         yield return 6 * quotient-- - 1;
-      }
 
       for (var index = 6 * quotient; index > 0; index -= 6)
       {
@@ -166,6 +160,7 @@ namespace Flux.Numerics
     }
     /// <summary>Creates a new sequence descending prime numbers, less than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDescendingPrimes(System.Numerics.BigInteger startAt)
       => GetDescendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
@@ -220,6 +215,7 @@ namespace Flux.Numerics
     }
 
     /// <summary>Results in an ascending sequence of gaps between prime numbers starting with the specified number.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeGaps(System.Numerics.BigInteger startAt)
       => GetAscendingPrimes(startAt).PartitionTuple2(false, (leading, trailing, index) => trailing - leading);
 
@@ -296,36 +292,43 @@ namespace Flux.Numerics
 
     /// <summary>Returns a sequence of prime triplets, each of which is a set of three prime numbers of the form (p, p + 2, p + 6) or (p, p + 4, p + 6).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Prime_triplet"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger)> GetPrimeTriplets()
       => 0 is var index ? GetAscendingPrimes(SmallestPrime.ToBigInteger()).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == 6 && t.midling - t.leading is var gap2to1 && (gap2to1 == 2 || gap2to1 == 4)) : throw new System.Exception();
 
     /// <summary>Returns a sequence of super-primes, which is a subsequence of prime numbers that occupy prime-numbered positions within the sequence of all prime numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Super-prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSuperPrimes()
       => GetAscendingPrimes(SmallestPrime.ToBigInteger()).Where((p, i) => IsPrimeNumber(((System.Numerics.BigInteger)i + System.Numerics.BigInteger.One)));
 
     /// <summary>Returns a sequence of teim primes, each of which is a pair of primes that differ by two.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Twin_prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger)> GetTwinPrimes()
       => GetAscendingPrimes(SmallestPrime.ToBigInteger()).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == 2);
 
     /// <summary>Indicates whether the prime number is also an additive prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber(Maths.DigitSum(primeNumber, 10));
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoCongruentModuloPrime(System.Numerics.BigInteger primeNumber, System.Numerics.BigInteger a, System.Numerics.BigInteger d)
       => (primeNumber % a == d);
     /// <summary>Indicates whether the prime number is also an Eisenstein prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Eisenstein_prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoEisensteinPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 3, 2);
     /// <summary>Indicates whether the prime number is also a Gaussian prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoGaussianPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 4, 3);
     /// <summary>Indicates whether the prime number is also a left truncatable prime.</summary>
@@ -356,20 +359,24 @@ namespace Flux.Numerics
     /// <summary>Indicates whether the prime number is also a Pythagorean prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Pythagorean_prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoPythagoreanPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 4, 1);
     /// <summary>Indicates whether the prime number is also a safe prime prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Safe_prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoSafePrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber - 1) / 2);
     /// <summary>Indicates whether the prime number is also a Sophie Germain prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sophie_Germain_prime"/>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoSophieGermainPrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber * 2) + 1);
 
     /// <summary>Indicates whether a specified number is a prime candidate.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static bool IsPrimeCandidate(System.Numerics.BigInteger number)
       => number % 6 is var remainder && (remainder == 5 || remainder == 1);
     /// <summary>Indicates whether a specified number is a prime candidate, and also returns the properties of "6n-1"/"6n+1".</summary>
@@ -423,7 +430,7 @@ namespace Flux.Numerics
       if (source % 2 == 0 || source % 3 == 0)
         return false;
 
-      var limit = Maths.ISqrt(source);
+      var limit = System.Math.Sqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
         if ((source % k) == 0 || (source % (k + 2)) == 0)
@@ -446,7 +453,7 @@ namespace Flux.Numerics
       if (source % 2 == 0 || source % 3 == 0)
         return false;
 
-      var limit = Maths.ISqrt(source);
+      var limit = System.Math.Sqrt(source);
 
       for (var k = 5; k <= limit; k += 6)
         if ((source % k) == 0 || (source % (k + 2)) == 0)

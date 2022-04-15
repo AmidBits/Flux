@@ -30,15 +30,5 @@
 			static bool IsSqrt(System.Numerics.BigInteger number, System.Numerics.BigInteger root)
 				=> (root * root is var lowerBound) && (lowerBound + root + root + 1 is var upperBound) ? (number >= lowerBound && number < upperBound) : throw new System.Exception();
 		}
-
-		/// <summary>Returns the integer square root of the specified number. Provided for a consistent call site, and internally calls System.Math.Floor(System.Math.Sqrt()).</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Integer_square_root"/>
-		public static int ISqrt(int value)
-			=> System.Convert.ToInt32(System.Math.Floor(System.Math.Sqrt(value)));
-
-		/// <summary>Returns the integer square root of the specified number. Provided for a consistent call site, and internally calls System.Math.Floor(System.Math.Sqrt()).</summary>
-		/// <see cref="https://en.wikipedia.org/wiki/Integer_square_root"/>
-		public static long ISqrt(long value)
-			=> System.Convert.ToInt64(System.Math.Floor(System.Math.Sqrt(value)));
 	}
 }

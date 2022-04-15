@@ -38,7 +38,7 @@ namespace Flux.Numerics
       if (value % 2 == 0 || value % 3 == 0)
         return true;
 
-      var limit = Maths.ISqrt(value);
+      var limit = System.Math.Sqrt(value);
 
       for (var k = 5; k <= limit; k += 6)
         if ((value % k) == 0 || (value % (k + 2)) == 0)
@@ -58,7 +58,7 @@ namespace Flux.Numerics
       if (value % 2 == 0 || value % 3 == 0)
         return true;
 
-      var limit = Maths.ISqrt(value);
+      var limit = System.Math.Sqrt(value);
 
       for (var k = 5; k <= limit; k += 6)
         if ((value % k) == 0 || (value % (k + 2)) == 0)
