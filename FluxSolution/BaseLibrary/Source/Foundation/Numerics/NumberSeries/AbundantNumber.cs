@@ -13,7 +13,7 @@ namespace Flux.Numerics
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger n, System.Numerics.BigInteger sum)> GetAbundantNumbers()
-      => Flux.Linq.Enumerable.Range((System.Numerics.BigInteger)3, ulong.MaxValue, 1).AsParallel().AsOrdered().Select(n => (n, sum: Numerics.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
+      => Liq.Range((System.Numerics.BigInteger)3, bi => true, bi => bi + 1).AsParallel().AsOrdered().Select(n => (n, sum: Numerics.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>

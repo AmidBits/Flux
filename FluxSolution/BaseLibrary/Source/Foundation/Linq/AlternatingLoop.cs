@@ -1,13 +1,13 @@
-namespace Flux.Linq
+namespace Flux
 {
-  public static partial class Enumerable
+  public static partial class Liq
   {
     /// <summary>Produces a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> AlternatingRange(System.Numerics.BigInteger mean, int count, System.Numerics.BigInteger step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> AlternatingLoop(this System.Numerics.BigInteger mean, int count, System.Numerics.BigInteger step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -16,7 +16,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 
@@ -31,11 +31,11 @@ namespace Flux.Linq
       }
     }
 
-    public static System.Collections.Generic.IEnumerable<decimal> AlternatingRange(decimal mean, int count, decimal step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<decimal> AlternatingLoop(decimal mean, int count, decimal step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -44,7 +44,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 
@@ -58,11 +58,11 @@ namespace Flux.Linq
           break;
       }
     }
-    public static System.Collections.Generic.IEnumerable<double> AlternatingRange(double mean, int count, double step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<double> AlternatingLoop(double mean, int count, double step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -71,7 +71,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 
@@ -85,11 +85,11 @@ namespace Flux.Linq
           break;
       }
     }
-    public static System.Collections.Generic.IEnumerable<float> AlternatingRange(float mean, int count, float step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<float> AlternatingLoop(float mean, int count, float step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -98,7 +98,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 
@@ -113,11 +113,11 @@ namespace Flux.Linq
       }
     }
 
-    public static System.Collections.Generic.IEnumerable<int> AlternatingRange(int mean, int count, int step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<int> AlternatingLoop(int mean, int count, int step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -126,7 +126,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 
@@ -140,11 +140,11 @@ namespace Flux.Linq
           break;
       }
     }
-    public static System.Collections.Generic.IEnumerable<long> AlternatingRange(long mean, int count, long step, AlternatingRangeDirection direction)
+    public static System.Collections.Generic.IEnumerable<long> AlternatingLoop(long mean, int count, long step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {
-        case AlternatingRangeDirection.AwayFromMean:
+        case AlternatingLoopDirection.AwayFromMean:
           for (var index = 1; index <= count; index++)
           {
             yield return mean;
@@ -153,7 +153,7 @@ namespace Flux.Linq
             step *= -1;
           }
           break;
-        case AlternatingRangeDirection.TowardsMean:
+        case AlternatingLoopDirection.TowardsMean:
           if ((count & 1) == 1) step *= -1;
           mean += step * (count / 2);
 

@@ -1,51 +1,38 @@
-namespace Flux.Linq
+namespace Flux
 {
-  public static partial class Enumerable
+  public static partial class Liq
   {
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> For(System.Numerics.BigInteger initializer, System.Func<System.Numerics.BigInteger, bool> conditionSelector, System.Func<System.Numerics.BigInteger, System.Numerics.BigInteger> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Range(this System.Numerics.BigInteger start, System.Func<System.Numerics.BigInteger, bool> conditionSelector, System.Func<System.Numerics.BigInteger, System.Numerics.BigInteger> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
 
-    public static System.Collections.Generic.IEnumerable<decimal> For(decimal initializer, System.Func<decimal, bool> conditionSelector, System.Func<decimal, decimal> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<decimal> Range(this decimal start, System.Func<decimal, bool> conditionSelector, System.Func<decimal, decimal> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
-    public static System.Collections.Generic.IEnumerable<double> For(double initializer, System.Func<double, bool> conditionSelector, System.Func<double, double> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<double> Range(this double start, System.Func<double, bool> conditionSelector, System.Func<double, double> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
-    public static System.Collections.Generic.IEnumerable<float> For(float initializer, System.Func<float, bool> conditionSelector, System.Func<float, float> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<float> Range(this float start, System.Func<float, bool> conditionSelector, System.Func<float, float> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
-    }
-
-    public static System.Collections.Generic.IEnumerable<int> For(int initializer, System.Func<int, bool> conditionSelector, System.Func<int, int> iteratorSelector)
-    {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
-    }
-    public static System.Collections.Generic.IEnumerable<long> For(long initializer, System.Func<long, bool> conditionSelector, System.Func<long, long> iteratorSelector)
-    {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
 
-    [System.CLSCompliant(false)]
-    public static System.Collections.Generic.IEnumerable<uint> For(uint initializer, System.Func<uint, bool> conditionSelector, System.Func<uint, uint> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<int> Range(this int start, System.Func<int, bool> conditionSelector, System.Func<int, int> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
-    [System.CLSCompliant(false)]
-    public static System.Collections.Generic.IEnumerable<ulong> For(ulong initializer, System.Func<ulong, bool> conditionSelector, System.Func<ulong, ulong> iteratorSelector)
+    public static System.Collections.Generic.IEnumerable<long> Range(this long start, System.Func<long, bool> conditionSelector, System.Func<long, long> iteratorSelector)
     {
-      for (var value = initializer; conditionSelector(value); initializer = iteratorSelector(value))
-        yield return value;
+      for (; conditionSelector(start); start = iteratorSelector(start))
+        yield return start;
     }
   }
 }

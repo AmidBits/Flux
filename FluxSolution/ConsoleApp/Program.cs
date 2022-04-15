@@ -16,7 +16,7 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-
+      
       System.Console.Write($"It's a ");
       Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
       System.Console.Write($" and some ");
