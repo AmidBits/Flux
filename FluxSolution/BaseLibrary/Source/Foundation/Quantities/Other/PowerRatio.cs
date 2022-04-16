@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class PowerRatioUnitEm
   {
     public static string GetUnitSymbol(this PowerRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch

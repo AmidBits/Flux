@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringBuilderEm
   {
     /// <summary>Makes any upper case character with a whitespace on the left and a lower case character on the right into a lower case character.</summary>
     public static System.Text.StringBuilder ToLowerFirstCharacters(this System.Text.StringBuilder source)

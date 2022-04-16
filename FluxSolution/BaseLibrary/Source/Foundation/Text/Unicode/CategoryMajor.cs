@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux
 {
   /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
   public static partial class Unicode

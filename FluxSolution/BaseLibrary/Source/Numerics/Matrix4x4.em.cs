@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Matrix4x4Em
   {
     public static double[,] ToArray(this System.Numerics.Matrix4x4 source)
     {

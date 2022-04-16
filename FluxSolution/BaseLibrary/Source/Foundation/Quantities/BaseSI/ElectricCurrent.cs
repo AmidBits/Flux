@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ElectricCurrentUnitEm
   {
     public static string GetUnitString(this ElectricCurrentUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
       => useNameInstead ? unit.ToString() : unit switch

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class TypeEm
   {
     public static object? CreateInstance(this System.Type source)
       => source.IsGenericType ? throw new System.TypeInitializationException(@"A generic type.", null) : System.Activator.CreateInstance(source);

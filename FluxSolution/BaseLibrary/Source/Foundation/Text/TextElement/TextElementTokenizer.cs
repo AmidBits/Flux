@@ -1,13 +1,13 @@
 using System.Linq;
 
 /// <summary>A grapheme is a text element in dot NET.</summary>
-namespace Flux.Text
+namespace Flux
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
   public sealed class TextElementTokenizer
-    : ITokenizer<IToken<TextElementCluster>>
+    : Text.ITokenizer<Text.IToken<TextElementCluster>>
   {
-    public System.Collections.Generic.IEnumerable<IToken<TextElementCluster>> GetTokens(string expression)
+    public System.Collections.Generic.IEnumerable<Text.IToken<TextElementCluster>> GetTokens(string expression)
     {
       using var sr = new System.IO.StringReader(expression);
       using var trtee = new TextElementEnumerator(sr);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DoubleEm
   {
     /// <summary>Deconstructs the decimal number into its basic components as a named ValueType for use.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Double-precision_floating-point_format"/>

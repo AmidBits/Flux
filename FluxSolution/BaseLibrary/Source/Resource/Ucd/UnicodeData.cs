@@ -35,7 +35,7 @@ namespace Flux.Resources.Ucd
 						objects[index] = index switch
 						{
 							0 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var value) ? value : System.DBNull.Value,
-							2 => Text.Unicode.TryParseCategoryMajorMinor(e.Current[index], out var value) ? value.ToUnicodeCategory() : System.DBNull.Value,
+							2 => Unicode.TryParseCategoryMajorMinor(e.Current[index], out var value) ? value.ToUnicodeCategory() : System.DBNull.Value,
 							_ => e.Current[index],
 						};
 					}

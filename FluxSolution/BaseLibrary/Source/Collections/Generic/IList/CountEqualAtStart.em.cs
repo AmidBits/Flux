@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class IListEm
 	{
 		/// <summary>Reports the length (or count) of equality at the start of the sequences. Using the specified comparer.</summary>
 		/// <param name="minLength">The smaller length of the two spans.</param>

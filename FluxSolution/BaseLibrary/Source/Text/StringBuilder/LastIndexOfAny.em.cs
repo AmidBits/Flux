@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class StringBuilderEm
 	{
 		/// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
 		public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char> equalityComparer)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class StringBuilderEm
 	{
 		/// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
 		public static bool EqualsAt(this System.Text.StringBuilder source, int sourceIndex, System.ReadOnlySpan<char> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<char> equalityComparer)

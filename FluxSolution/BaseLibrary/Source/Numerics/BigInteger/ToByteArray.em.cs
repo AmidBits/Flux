@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BigIntegerEm
   {
     /// <summary>Returns either the built-in byte array, or if a zero byte padding is present, a byte array excluding the zero byte is returned.</summary>
     public static byte[] ToByteArrayEx(this System.Numerics.BigInteger source, out int length)

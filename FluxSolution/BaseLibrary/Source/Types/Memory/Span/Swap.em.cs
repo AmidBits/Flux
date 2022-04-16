@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class SpanEm
   {
     public static System.Span<T> SwapImpl<T>(this System.Span<T> source, int indexA, int indexB)
     {

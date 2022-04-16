@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DateTimeEm
   {
     /// <summary>Determines the number of days in the month of the source.</summary>
     public static int DaysInMonth(this System.DateTime source)

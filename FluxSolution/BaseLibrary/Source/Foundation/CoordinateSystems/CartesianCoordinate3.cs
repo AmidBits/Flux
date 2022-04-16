@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class CartesianCoordinate3Em
   {
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this CartesianCoordinate3 source, CartesianCoordinate3 before, CartesianCoordinate3 after)
@@ -9,36 +9,36 @@ namespace Flux
 
     /// <summary>Compute the sum angle of all vectors.</summary>
     public static double AngleSum(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source, CartesianCoordinate3 vector)
-      => AggregateTuple2(source, 0.0, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
+      => source.AggregateTuple2(0.0, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => AggregateTuple2(source, 0.0, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, c) => a / 2);
+      => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, c) => a / 2);
     /// <summary>Compute the surface area of the polygon.</summary>
     public static double ComputeArea(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
       => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static CartesianCoordinate3 ComputeCentroid(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => Aggregate(source, CartesianCoordinate3.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
+      => source.Aggregate(CartesianCoordinate3.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => AggregateTuple2(source, 0.0, true, (a, e1, e2, i) => a + CartesianCoordinate3.EuclideanLength(e2 - e1), (a, c) => a);
+      => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + CartesianCoordinate3.EuclideanLength(e2 - e1), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => PartitionTuple3(source, 2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+      => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<(CartesianCoordinate3 v1, CartesianCoordinate3 v2, CartesianCoordinate3 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => PartitionTuple3(source, 2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+      => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
     public static System.Collections.Generic.IEnumerable<CartesianCoordinate3> GetMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => PartitionTuple2(source, true, (v1, v2, index) => (v1 + v2) / 2);
+      => source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
     public static System.Collections.Generic.IEnumerable<(CartesianCoordinate3 v1, CartesianCoordinate3 vm, CartesianCoordinate3 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => PartitionTuple2(source, true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
+      => source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
@@ -125,8 +125,8 @@ namespace Flux
       {
         triplet = mode switch
         {
-          Geometry.TriangulationType.Sequential => System.Linq.Enumerable.First(PartitionTuple3(copy, 2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d))),
-          Geometry.TriangulationType.Randomized => RandomElement(PartitionTuple3(copy, 2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d))),
+          Geometry.TriangulationType.Sequential => System.Linq.Enumerable.First(copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d))),
+          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(),
           Geometry.TriangulationType.SmallestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle > b.angle ? a : b),
           Geometry.TriangulationType.LeastSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
@@ -142,12 +142,12 @@ namespace Flux
     /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate3>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple2(GetMidpoints(source), true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate3>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source)
-      => ComputeCentroid(source) is var c ? PartitionTuple2(source, true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate3>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>

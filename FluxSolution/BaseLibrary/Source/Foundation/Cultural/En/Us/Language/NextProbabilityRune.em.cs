@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class RandomEm
   {
     /// <summary>Returns the next probable rune based on the rng <paramref name="source"/>.</summary>
     public static System.Text.Rune NextProbabilityRuneEnUs(this System.Random source)

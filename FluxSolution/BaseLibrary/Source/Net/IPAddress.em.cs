@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IPAddressEm
   {
     /// <summary>Returns the 16-bit words (as integers) of an IP address. This is mainly useful for IPv6 addresses.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/IPv6"/>

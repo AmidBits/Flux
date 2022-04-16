@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IntEm
   {
     /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>

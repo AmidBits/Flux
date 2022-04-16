@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ReadOnlySpanEm
   {
     /// <summary>Returns a random element from the sequence in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public static bool RandomElement<T>(this System.ReadOnlySpan<T> source, out T result, System.Random rng)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IListEm
   {
     private static void SwapImpl<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
       => (source[indexB], source[indexA]) = (source[indexA], source[indexB]);

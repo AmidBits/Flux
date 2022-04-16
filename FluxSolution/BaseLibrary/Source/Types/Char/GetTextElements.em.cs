@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class CharEm
   {
     /// <summary>Returns a new sequence of text elements (grapheme strings) from the sequence of characters.</summary>
     /// <remarks>The process uses a small buffer of characters.</remarks>

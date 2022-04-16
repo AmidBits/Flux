@@ -1,13 +1,13 @@
 namespace Flux
 {
   /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
-  public static partial class ExtensionMethods
+  public static partial class Unicode
   {
-    public static Text.UnicodeCategoryMajorMinorCode ToMajorMinorCode(this System.Globalization.UnicodeCategory unicodeCategory)
-      => (Text.UnicodeCategoryMajorMinorCode)unicodeCategory;
+    public static UnicodeCategoryMajorMinorCode ToMajorMinorCode(this System.Globalization.UnicodeCategory unicodeCategory)
+      => (UnicodeCategoryMajorMinorCode)unicodeCategory;
 
     /// <summary>Converts a MajorMinorCode enum to a UnicodeCategory enum.</summary>
-    public static System.Globalization.UnicodeCategory ToUnicodeCategory(this Text.UnicodeCategoryMajorMinorCode categoryCode)
+    public static System.Globalization.UnicodeCategory ToUnicodeCategory(this UnicodeCategoryMajorMinorCode categoryCode)
       => (System.Globalization.UnicodeCategory)categoryCode;
   }
 }

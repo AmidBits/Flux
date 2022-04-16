@@ -2,7 +2,7 @@
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class RandomEm
   {
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringBuilderEm
   {
     /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
     public static System.Text.StringBuilder SplitCamelCase(this System.Text.StringBuilder source)

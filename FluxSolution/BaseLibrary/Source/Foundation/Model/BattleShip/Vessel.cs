@@ -2,7 +2,7 @@
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class VesselEm
   {
     public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Size2 size, int screenPositionLeft, int screenPositionTop)
     {

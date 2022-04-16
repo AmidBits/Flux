@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DoubleEm
   {
     /// <summary>Calculate the mean of a sequence, also return the count and the sum of values in the sequence as output parameters.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Mean"/>

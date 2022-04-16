@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class JulianDayNumberEm
   {
     public static JulianDayNumber ToJulianDayNumber(this System.DateTime source, ConversionCalendar calendar)
-      => ToMomentUtc(source).ToJulianDayNumber(calendar);
+      => source.ToMomentUtc().ToJulianDayNumber(calendar);
   }
 
   /// <summary>Julian Day Number unit of days.</summary>

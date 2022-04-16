@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Spans
+  public static partial class MemoryEm
   {
     /// <summary>Returns the number of unfound (not found) and the number of unique elements. Optionally the function returns early if there are unfound elements. Uses the specified equality comparer.</summary>
     [System.Diagnostics.Contracts.Pure]

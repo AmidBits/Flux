@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class TypeEm
   {
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from types in the specified type collection.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source, params System.Type[] types)
@@ -13,6 +13,6 @@ namespace Flux
     }
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from types within the Flux type library.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source)
-      => GetDerivedTypes(source, typeof(ExtensionMethods).Assembly.GetTypes());
+      => GetDerivedTypes(source, typeof(TypeEm).Assembly.GetTypes());
   }
 }

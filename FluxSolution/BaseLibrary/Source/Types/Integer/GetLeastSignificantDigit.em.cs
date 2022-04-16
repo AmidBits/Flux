@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IntEm
   {
     public static System.Numerics.BigInteger GetLeastSignificantDigit(this System.Numerics.BigInteger source, int radix = 10)
       => source % radix;

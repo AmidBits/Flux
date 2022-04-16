@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class RelativeHumidityUnitEm
   {
     public static string GetUnitString(this RelativeHumidityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch

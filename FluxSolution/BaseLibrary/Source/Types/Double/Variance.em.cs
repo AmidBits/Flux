@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DoubleEm
   {
     /// <summary>Calculate the variance (how far a set of numbers is spread out) of a sequence, using the Welford's Online algorithm. Variance is the mean squared deviation. To compute the standard deviation, simply do the System.Math.Sqrt(variance).</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Variance"/>

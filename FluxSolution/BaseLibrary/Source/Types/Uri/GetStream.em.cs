@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class UriEm
   {
     /// <summary>Creates and returns a System.IO.Stream from the URI source.</summary>
     /// <param name="uri"></param>

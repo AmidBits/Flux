@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IListEm
   {
     /// <summary>Creates a new list from the specified array that is satisfying the specified predicate.</summary>
     public static System.Collections.Generic.List<TResult> ToList<TValue, TResult>(this System.Collections.Generic.IList<TValue> source, System.Func<TValue, bool> predicate, System.Func<TValue, TResult> resultSelector)

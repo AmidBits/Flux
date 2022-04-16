@@ -1,11 +1,11 @@
 using System.Linq;
 
 /// <summary>A grapheme is a text element in dot NET.</summary>
-namespace Flux.Text
+namespace Flux
 {
   /// <summary>An implementation of a demarcated and classified section of a grapheme.</summary>
   public sealed class TextElementToken
-    : IToken<TextElementCluster>
+    : Text.IToken<TextElementCluster>
   {
     public int Index { get; }
     public TextElementCluster Value { get; }

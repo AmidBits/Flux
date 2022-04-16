@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DateTimeEm
   {
     /// <summary>Determines the week of year for the <paramref name="source"/>.</summary>
     public static int GetWeekOfYear(this System.DateTime source, System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DataTableEm
   {
     /// <summary>Reverse the rows of the <see cref="System.Data.DataTable"/> in-line. The process swaps itemArray's within the data table.</summary>
     public static void FlipRowsInPlace(this System.Data.DataTable source, int startIndex, int count)

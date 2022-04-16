@@ -8,7 +8,7 @@ namespace Types
   [TestClass]
   public class DateTime
   {
-    private readonly System.DateTime source = new System.DateTime(1967, 5, 30);
+    private readonly System.DateTime source = new(1967, 5, 30);
     private readonly System.DateTime target = new System.DateTime(2017, 5, 30).AddDays(73);
 
     [TestMethod]
@@ -212,17 +212,21 @@ namespace Types
     }
 
     [TestMethod]
-    public void UnixTime()
+    public void ToUnixTimestamp()
     {
-      Assert.AreEqual(-81820800, source.ToUnixTimestamp(), nameof(Flux.ExtensionMethods.ToUnixTimestamp));
-      Assert.AreEqual(-81820800000, source.ToUnixUltraTimestamp(), nameof(Flux.ExtensionMethods.ToUnixUltraTimestamp));
+      Assert.AreEqual(-81820800, source.ToUnixTimestamp(), nameof(ToUnixTimestamp));
+    }
+    [TestMethod]
+    public void ToUnixUltraTimestamp()
+    {
+      Assert.AreEqual(-81820800000, source.ToUnixUltraTimestamp(), nameof(ToUnixUltraTimestamp));
     }
 
     [TestMethod]
-    public void Week()
+    public void WeekOfYear()
     {
-      Assert.AreEqual(22, source.WeekOfYear(), nameof(Flux.ExtensionMethods.WeekOfYear));
-      Assert.AreEqual(32, target.WeekOfYear(), nameof(Flux.ExtensionMethods.WeekOfYear));
+      Assert.AreEqual(22, source.WeekOfYear(), nameof(WeekOfYear));
+      Assert.AreEqual(32, target.WeekOfYear(), nameof(WeekOfYear));
     }
   }
 }

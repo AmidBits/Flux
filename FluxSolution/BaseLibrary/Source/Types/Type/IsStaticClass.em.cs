@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class TypeEm
   {
     /// <summary>Determines whether the type is a static class, based on it being abstract and sealed.</summary>
     public static bool IsStaticClass(this System.Type source)

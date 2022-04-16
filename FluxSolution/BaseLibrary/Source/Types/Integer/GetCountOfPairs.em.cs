@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IntEm
   {
     /// <summary>Given an array of integers, and a number sum, find the number of pairs of integers in the array whose sum is equal to sum.</summary>
     public static int GetCountOfPairsEqualToSum(this System.Collections.Generic.IList<int> source, int sum)

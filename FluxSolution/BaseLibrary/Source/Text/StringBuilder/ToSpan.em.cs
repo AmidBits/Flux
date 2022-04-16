@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringBuilderEm
   {
     /// <summary>Returns a Span of char from the string builder.</summary>
     public static System.Span<char> ToSpan(this System.Text.StringBuilder source, int startIndex, int length)

@@ -1,28 +1,28 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Unicode
   {
     /// <summary>Creates a new sequence of all runes in the specified Unicode block.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetAllRunes(this Text.UnicodeBlock source)
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetAllRunes(this UnicodeBlock source)
     {
       for (int first = GetMinRune(source).Value, last = GetMaxRune(source).Value; first <= last; first++)
         yield return (System.Text.Rune)first;
     }
     /// <summary>Returns the last rune (code point) in the specified Unicode block.</summary>
-    public static System.Text.Rune GetMaxRune(this Text.UnicodeBlock source)
+    public static System.Text.Rune GetMaxRune(this UnicodeBlock source)
       => (System.Text.Rune)GetMaxValue(source);
     /// <summary>Returns the first rune (code point) in the specified Unicode block.</summary>
-    public static System.Text.Rune GetMinRune(this Text.UnicodeBlock source)
+    public static System.Text.Rune GetMinRune(this UnicodeBlock source)
       => (System.Text.Rune)GetMinValue(source);
 
     /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
-    public static int GetMaxValue(this Text.UnicodeBlock source)
+    public static int GetMaxValue(this UnicodeBlock source)
       => (int)source & 0x7FFFFFFF;
     /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
-    public static int GetMinValue(this Text.UnicodeBlock source)
+    public static int GetMinValue(this UnicodeBlock source)
       => (int)((long)source >> 32 & 0x7FFFFFFF);
 
-    public static string ToConsoleTable(this Text.UnicodeBlock source, int skipFirst, int skipLast, bool includeTitle = true)
+    public static string ToConsoleTable(this UnicodeBlock source, int skipFirst, int skipLast, bool includeTitle = true)
     {
       var sb = new System.Text.StringBuilder();
 
@@ -80,7 +80,7 @@ namespace Flux
 
       return sb.ToString();
     }
-    public static string ToConsoleTable(this Text.UnicodeBlock source)
+    public static string ToConsoleTable(this UnicodeBlock source)
       => ToConsoleTable(source, 0, 0);
   }
 }

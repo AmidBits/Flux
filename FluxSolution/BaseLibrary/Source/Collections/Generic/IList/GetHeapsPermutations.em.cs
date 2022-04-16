@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IListEm
   {
     /// <summary>Heap's algorithm generates all possible permutations of n objects.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>

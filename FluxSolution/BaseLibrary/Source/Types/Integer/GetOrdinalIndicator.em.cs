@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IntEm
   {
     public static string GetOrdinalIndicator(this System.Numerics.BigInteger source)
       => (int)(source % 10 is var d && d < 4 && source % 100 is var dd && (dd < 11 || dd > 13) ? d : 0) switch
@@ -13,9 +13,9 @@ namespace Flux
       };
 
     public static string GetOrdinalIndicator(this int source)
-      => GetOrdinalIndicator(ToBigInteger(source));
+      => GetOrdinalIndicator(source.ToBigInteger());
 
     public static string GetOrdinalIndicator(this long source)
-      => GetOrdinalIndicator(ToBigInteger(source));
+      => GetOrdinalIndicator(source.ToBigInteger());
   }
 }

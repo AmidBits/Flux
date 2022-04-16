@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ReadOnlySpanEm
   {
     /// <summary>Returns the index within source where the rotation of the target begins, or -1 if not found.</summary>
     public static int IndexOfRotation<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class IListEm
 	{
 		/// <summary>Reports the length (or count) of equality at both the start and the end of the sequence. Using the specified comparer.</summary>
 		public static int CountEqualOnBothSides<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)

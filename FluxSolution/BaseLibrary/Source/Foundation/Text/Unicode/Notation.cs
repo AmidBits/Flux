@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Text
+namespace Flux
 {
   /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
   public static partial class Unicode

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IntEm
   {
     public static System.Numerics.BigInteger GetMostSignificantDigit(this System.Numerics.BigInteger source, int radix = 10)
       => source == 0 ? 0 : source / System.Numerics.BigInteger.Pow(radix, Maths.DigitCount(source, radix));

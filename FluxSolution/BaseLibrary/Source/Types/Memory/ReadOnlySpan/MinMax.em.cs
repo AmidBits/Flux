@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ReadOnlySpanEm
   {
     /// <summary>Returns the min and max T from the source as output parameters.</summary>
     public static void CreateMinMax<T>(this System.ReadOnlySpan<T> source, out T min, out T max)

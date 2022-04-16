@@ -64,14 +64,12 @@ namespace Collections.Generic
     }
 
     [TestMethod]
-    public void IndexOfMax()
+    public void ExtremaIndices()
     {
-      Assert.AreEqual(5, integers.IndexOfMax(v => v, out var _));
-    }
-    [TestMethod]
-    public void IndexOfMin()
-    {
-      Assert.AreEqual(0, integers.IndexOfMin(v => v, out var _));
+      var (elementMin, indexMin, elementMax, indexMax) = integers.Extrema(v => v);
+
+      Assert.AreEqual(5, indexMax);
+      Assert.AreEqual(0, indexMin);
     }
 
     [TestMethod]
@@ -166,7 +164,7 @@ namespace Collections.Generic
     [TestMethod]
     public void TakeEvery()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, 0).ToArray());
     }
 
     [TestMethod]

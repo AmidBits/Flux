@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux
 {
   public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElementCluster>

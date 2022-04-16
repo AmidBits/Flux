@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BigIntegerEm
   {
     public static bool IsPerfectIRoot(this System.Numerics.BigInteger number, int nth, System.Numerics.BigInteger root)
       => number == System.Numerics.BigInteger.Pow(root, nth);

@@ -1,8 +1,6 @@
-using System;
-
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringEm
   {
     public static SplitEnumerator<char> EnumerateSplits(this string source, string separator)
       => new(source.AsSpan(), separator.AsSpan());

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class IBinarySearchTreeEm
 	{
 		/// <summary>Gets the maximum (with the greatest key) node.</summary>
 		public static DataStructures.Immutable.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this DataStructures.Immutable.IBinarySearchTree<TKey, TValue> source)

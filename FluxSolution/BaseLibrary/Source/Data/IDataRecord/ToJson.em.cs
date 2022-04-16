@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IDataRecordEm
   {
     /// <summary>Results in a string formatted as a JSON array from the column values in the current row.</summary>
     public static string GetJsonArray(this System.Data.IDataRecord source, System.Func<object, string> valueSelector)

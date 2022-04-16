@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class IListEm
   {
     // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class TypeEm
   {
     /// <summary>Creates a new sequence with the inheritance type chain of the <paramref name="source"/>.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetBaseTypeChain(this System.Type source)

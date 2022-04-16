@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ReadOnlySpanEm
   {
     /// <summary>Copy the specified count from source into target at the specified offset.</summary>
     public static void CopyInto<T>(this System.ReadOnlySpan<T> source, System.Span<T> target, int offset, int count)

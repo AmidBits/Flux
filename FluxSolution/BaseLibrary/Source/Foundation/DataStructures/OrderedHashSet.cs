@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DataStructuresEm
   {
     public static DataStructures.OrderedHashSet<T> ToOrderedHashSet<T>(this System.Collections.Generic.IEnumerable<T> source)
       where T : notnull

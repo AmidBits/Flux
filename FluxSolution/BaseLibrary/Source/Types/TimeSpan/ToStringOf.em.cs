@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class TimeSpanEm
   {
     public static string ToStringOf(this System.TimeSpan source)
       => string.Join(' ', System.Array.Empty<string>().Append(ToStringOfDays(source), ToStringOfHours(source), ToStringOfMinutes(source), ToStringOfSeconds(source)).Where(s => s.Length > 0)).Trim();

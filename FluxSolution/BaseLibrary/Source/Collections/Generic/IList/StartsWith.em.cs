@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class IListEm
 	{
 		/// <summary>Indicates whether the sequence starts with the other sequence. Uses the specified comparer.</summary>
 		public static bool StartsWith<T>(this System.Collections.Generic.IList<T> source, System.Collections.Generic.IList<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)

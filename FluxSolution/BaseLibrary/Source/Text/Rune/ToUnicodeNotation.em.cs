@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class RuneEm
 	{
 		/// <summary>Returns a string representing the <see cref="System.Text.Rune"/> as a Unicode notation.</summary>
 		public static string ToUnicodeNotation(this System.Text.Rune source)
-			=> Text.Unicode.NotationToString(source);
+			=> Unicode.NotationToString(source);
 	}
 }

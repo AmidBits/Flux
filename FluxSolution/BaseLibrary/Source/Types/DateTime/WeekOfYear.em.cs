@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DateTimeEm
   {
     /// <summary>Determines the current week of year of the <paramref name="source"/>. Using the specified <paramref name="dateTimeFormatInfo"/>.</summary>
     public static int WeekOfYear(this System.DateTime source, System.Globalization.DateTimeFormatInfo dateTimeFormatInfo)

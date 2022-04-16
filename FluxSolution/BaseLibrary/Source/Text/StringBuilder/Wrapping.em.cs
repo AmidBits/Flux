@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class StringBuilderEm
 	{
 		/// <summary>Indicates whether the source is wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
 		public static bool IsWrapped(this System.Text.StringBuilder source, char left, char right)

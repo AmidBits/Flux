@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class MagneticFluxUnitEm
   {
     public static string GetUnitString(this MagneticFluxUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
       => useNameInsteadOfSymbol ? unit.ToString() : unit switch

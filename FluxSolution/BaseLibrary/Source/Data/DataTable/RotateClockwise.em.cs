@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DataTableEm
   {
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rotated right.</summary>
     /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>

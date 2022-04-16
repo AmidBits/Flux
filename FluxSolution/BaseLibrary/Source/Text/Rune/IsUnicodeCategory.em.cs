@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class RuneEm
   {
     /// <summary>Determines whether the character is in any of the specified unicode categories.</summary>
     public static bool IsUnicodeCategory(this System.Text.Rune source, params System.Globalization.UnicodeCategory[] category)

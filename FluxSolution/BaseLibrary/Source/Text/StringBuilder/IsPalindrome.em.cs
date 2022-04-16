@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringBuilderEm
   {
     /// <summary>Determines whether the string is a palindrome.</summary>
     public static bool IsPalindrome(this System.Text.StringBuilder source)

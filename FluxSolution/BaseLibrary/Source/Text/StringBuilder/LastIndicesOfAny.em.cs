@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ExtensionMethods
+	public static partial class StringBuilderEm
 	{
 		/// <summary>Returns the last indices of any specified characters found within the string builder. Uses the specified comparer.</summary>
 		public static System.Collections.Generic.IDictionary<char, int> LastIndicesOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char> equalityComparer)

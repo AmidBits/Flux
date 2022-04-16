@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class DateTimeEm
   {
     /// <summary>Determines the life time in years (age) with fractions between the source (e.g. a birth) and the specified target (e.g. a birthday). This algorithm works the same in either direction. The fractional portion of the result is the percentage of the number of days that have passed since the last "birthday" to the "birthday" that has not yet occured.</summary>
     public static double AgeInTotalYears(this System.DateTime source, System.DateTime target, out int ageInYears)
