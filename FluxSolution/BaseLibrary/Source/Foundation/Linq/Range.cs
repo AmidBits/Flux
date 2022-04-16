@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Liq
+  public static partial class Enumerable
   {
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Range(this System.Numerics.BigInteger start, System.Numerics.BigInteger count, System.Numerics.BigInteger step)
     {

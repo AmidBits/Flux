@@ -144,12 +144,12 @@ namespace Flux.Numerics
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number)
-      => Liq.Sum(GetDivisors(number));
+      => Enumerable.Sum(GetDivisors(number));
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static System.Numerics.BigInteger GetSumOfProperDivisors(System.Numerics.BigInteger number)
-      => Liq.Sum(GetProperDivisors(number));
+      => Enumerable.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>
