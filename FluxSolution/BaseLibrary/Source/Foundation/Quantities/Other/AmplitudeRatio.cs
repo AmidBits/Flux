@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class AmplitudeRatioUnitEm
   {
-    public static string GetUnitSymbol(this AmplitudeRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this AmplitudeRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => "dBV",
@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct AmplitudeRatio
-    : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IEquatable<AmplitudeRatio>, System.IFormattable, IUnitQuantifiable<double, AmplitudeRatioUnit>
+    : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IEquatable<AmplitudeRatio>, System.IFormattable, IMetricOneQuantifiable, IUnitQuantifiable<double, AmplitudeRatioUnit>
   {
     public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
 
@@ -34,23 +34,8 @@ namespace Flux
       };
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public PowerRatio ToPowerRatio()
       => new(System.Math.Pow(m_value, 2));
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
-      => unit switch
-      {
-        AmplitudeRatioUnit.DecibelVolt => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>
@@ -118,6 +103,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(AmplitudeRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(AmplitudeRatioUnit unit = DefaultUnit)
+      => unit switch
+      {
+        AmplitudeRatioUnit.DecibelVolt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

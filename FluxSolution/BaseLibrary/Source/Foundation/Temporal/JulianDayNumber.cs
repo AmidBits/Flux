@@ -34,10 +34,6 @@ namespace Flux
       => GetDayOfWeekISO8601(m_value);
 
     [System.Diagnostics.Contracts.Pure]
-    public int Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public JulianDayNumber AddWeeks(int weeks)
       => this + (weeks * 7);
     [System.Diagnostics.Contracts.Pure]
@@ -206,6 +202,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(JulianDayNumber other) => m_value == other.m_value;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public int Value
+      => m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

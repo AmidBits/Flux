@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public struct Action
-    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ActionUnit>
+    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ActionUnit>
   {
     public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
@@ -28,21 +28,6 @@ namespace Flux
       => m_value = unit switch
       {
         ActionUnit.JouleSecond => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(ActionUnit unit = DefaultUnit)
-      => unit switch
-      {
-        ActionUnit.JouleSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -102,6 +87,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(ActionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(ActionUnit unit = DefaultUnit)
+      => unit switch
+      {
+        ActionUnit.JouleSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

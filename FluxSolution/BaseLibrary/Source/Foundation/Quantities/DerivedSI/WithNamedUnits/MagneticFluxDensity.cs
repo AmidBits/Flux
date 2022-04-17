@@ -21,7 +21,7 @@ namespace Flux
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity
-    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, MagneticFluxDensityUnit>
+    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -35,25 +35,8 @@ namespace Flux
       };
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)},{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
     public MetricMultiplicative ToMetricMultiplicative()
       => new(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        MagneticFluxDensityUnit.Tesla => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator double(MagneticFluxDensity v) => v.m_value;
@@ -111,6 +94,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)},{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

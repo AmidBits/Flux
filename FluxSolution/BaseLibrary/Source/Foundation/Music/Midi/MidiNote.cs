@@ -17,8 +17,6 @@ namespace Flux
     public MidiNote(int midiNoteNumber)
       => m_number = IsMidiNote(midiNoteNumber) ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
-    [System.Diagnostics.Contracts.Pure] public int Value => m_number;
-
     /// <summary>Determines the name of the specified MIDI note.</summary>
     [System.Diagnostics.Contracts.Pure] public string GetScientificPitchNotationLabel(bool preferUnicode = false) => GetScientificPitchNotationLabels(preferUnicode)[m_number % 12];
     /// <summary>Determines the octave of the MIDI note.</summary>
@@ -171,6 +169,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(MidiNote other) => m_number == other.m_number;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public int Value
+      => m_number;
     #endregion Implemented interfaces
 
     #region Object overrides

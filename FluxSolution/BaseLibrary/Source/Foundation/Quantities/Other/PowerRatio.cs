@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class PowerRatioUnitEm
   {
-    public static string GetUnitSymbol(this PowerRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this PowerRatioUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         PowerRatioUnit.DecibelWatt => "dBW",
@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
   public struct PowerRatio
-    : System.IComparable, System.IComparable<PowerRatio>, System.IConvertible, System.IEquatable<PowerRatio>, System.IFormattable, IUnitQuantifiable<double, PowerRatioUnit>
+    : System.IComparable, System.IComparable<PowerRatio>, System.IConvertible, System.IEquatable<PowerRatio>, System.IFormattable, IMetricOneQuantifiable, IUnitQuantifiable<double, PowerRatioUnit>
   {
     public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
 
@@ -34,23 +34,8 @@ namespace Flux
       };
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public AmplitudeRatio ToAmplitudeRatio()
       => new(System.Math.Sqrt(m_value));
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
-      => unit switch
-      {
-        PowerRatioUnit.DecibelWatt => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     /// <summary>Creates a new PowerRatio instance from the difference of the specified voltages (numerator and denominator).</summary>
@@ -135,6 +120,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(PowerRatioUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(PowerRatioUnit unit = DefaultUnit)
+      => unit switch
+      {
+        PowerRatioUnit.DecibelWatt => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

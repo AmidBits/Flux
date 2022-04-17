@@ -17,18 +17,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public CartesianCoordinate3 Value
-      => m_value;
-
-    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    public CartesianCoordinate3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        MagneticFluxDensityUnit.Tesla => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     #region Overloaded operators
     public static bool operator ==(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
       => a.Equals(b);
@@ -61,7 +49,24 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(MagneticFluxDensity3D other) => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public bool Equals(MagneticFluxDensity3D other)
+      => m_value == other.m_value;
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3 Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -31,23 +31,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure] public double Value => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        LuminousIntensityUnit.Candela => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     #region Static methods
     #endregion Static methods
 
@@ -77,7 +60,7 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable<T>
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(LuminousIntensity other) => m_value.CompareTo(other.m_value);
     // IComparable
     [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is LuminousIntensity o ? CompareTo(o) : -1;
@@ -102,11 +85,31 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable<T>
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(LuminousIntensity other) => m_value == other.m_value;
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(LuminousIntensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        LuminousIntensityUnit.Candela => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

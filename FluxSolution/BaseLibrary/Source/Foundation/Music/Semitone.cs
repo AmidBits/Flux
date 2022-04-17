@@ -13,10 +13,6 @@ namespace Flux
     public Semitone(int semitones)
       => m_value = semitones;
 
-    [System.Diagnostics.Contracts.Pure]
-    public int Value
-      => m_value;
-
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Frequency ShiftPitch(Frequency frequency)
@@ -108,6 +104,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Semitone other) => m_value == other.m_value;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public int Value
+      => m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

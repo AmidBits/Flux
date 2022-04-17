@@ -11,10 +11,6 @@ namespace Flux
       => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public string ToString(string? format = null)
       => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
 
@@ -77,6 +73,11 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

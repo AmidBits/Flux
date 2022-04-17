@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
+    : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
   {
     public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
@@ -34,27 +34,12 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure] public double Value => m_value;
-
     /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
     [System.Diagnostics.Contracts.Pure] public Time ToPeriod() => new(1.0 / m_value);
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
     public MetricMultiplicative ToMetricMultiplicative()
       => new(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(FrequencyUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(FrequencyUnit unit = DefaultUnit)
-      => unit switch
-      {
-        FrequencyUnit.Hertz => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
@@ -133,6 +118,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(FrequencyUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(FrequencyUnit unit = DefaultUnit)
+      => unit switch
+      {
+        FrequencyUnit.Hertz => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

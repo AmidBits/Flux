@@ -21,10 +21,6 @@ namespace Flux
       => Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degAzimuth;
-
-    [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degAzimuth, AngleUnit.Degree);
 
@@ -102,6 +98,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Azimuth other) => m_degAzimuth == other.m_degAzimuth;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_degAzimuth;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Surface tension, unit of Newton per meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
   public struct SurfaceTension
-    : System.IComparable, System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SurfaceTensionUnit>
+    : System.IComparable, System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, SurfaceTensionUnit>
   {
     public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
 
@@ -29,18 +29,6 @@ namespace Flux
       => m_value = unit switch
       {
         SurfaceTensionUnit.NewtonPerMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    public double Value
-      => m_value;
-
-    public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    public double ToUnitValue(SurfaceTensionUnit unit = DefaultUnit)
-      => unit switch
-      {
-        SurfaceTensionUnit.NewtonPerMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -109,6 +97,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(SurfaceTensionUnit unit = DefaultUnit)
+      => unit switch
+      {
+        SurfaceTensionUnit.NewtonPerMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

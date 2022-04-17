@@ -32,23 +32,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure] public double Value => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(CapacitanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(CapacitanceUnit unit = DefaultUnit)
-      => unit switch
-      {
-        CapacitanceUnit.Farad => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator double(Capacitance v) => v.m_value;
     [System.Diagnostics.Contracts.Pure] public static explicit operator Capacitance(double v) => new(v);
@@ -105,6 +88,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(CapacitanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(CapacitanceUnit unit = DefaultUnit)
+      => unit switch
+      {
+        CapacitanceUnit.Farad => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

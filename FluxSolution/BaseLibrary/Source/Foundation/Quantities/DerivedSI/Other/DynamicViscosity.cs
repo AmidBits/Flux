@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
   public struct DynamicViscosity
-    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DynamicViscosityUnit>
+    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, DynamicViscosityUnit>
   {
     public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
 
@@ -29,21 +29,6 @@ namespace Flux
       => m_value = unit switch
       {
         DynamicViscosityUnit.PascalSecond => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(DynamicViscosityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(DynamicViscosityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        DynamicViscosityUnit.PascalSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -109,6 +94,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(DynamicViscosityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(DynamicViscosityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        DynamicViscosityUnit.PascalSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

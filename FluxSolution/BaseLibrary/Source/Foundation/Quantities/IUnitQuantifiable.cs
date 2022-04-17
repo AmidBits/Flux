@@ -4,6 +4,9 @@
     : IQuantifiable<TType>
     where TUnit : System.Enum
   {
+    /// <summary>The unit value of the quantity.</summary>
+    new TType Value { get; }
+
     /// <summary>Create a string representing the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <param name="format">Pptionally format the value.</param>
@@ -15,8 +18,5 @@
     /// <summary>Create a value representing the value in the specified unit.</summary>
     /// <param name="unit">The unit to convert to.</param>
     TType ToUnitValue(TUnit unit);
-
-    /// <summary>The unit value of the quantity.</summary>
-    new TType Value { get; }
   }
 }

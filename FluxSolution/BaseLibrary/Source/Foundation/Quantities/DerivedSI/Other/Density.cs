@@ -10,7 +10,6 @@ namespace Flux
       };
   }
 
-
   public enum DensityUnit
   {
     KilogramPerCubicMeter,
@@ -19,7 +18,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DensityUnit>
+    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, DensityUnit>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
@@ -29,21 +28,6 @@ namespace Flux
       => m_value = unit switch
       {
         DensityUnit.KilogramPerCubicMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(DensityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        DensityUnit.KilogramPerCubicMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -108,6 +92,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(DensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(DensityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        DensityUnit.KilogramPerCubicMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

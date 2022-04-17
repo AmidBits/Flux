@@ -56,7 +56,7 @@ namespace Flux
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
   public struct PartsPerNotation
-    : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IMetricOneQuantifiable, IUnitQuantifiable<double, PartsPerNotationUnit>
   {
     public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
@@ -84,29 +84,6 @@ namespace Flux
 
       //m_unit = unit;
     }
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_parts;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
-      => unit switch
-      {
-        PartsPerNotationUnit.One => m_parts,
-        PartsPerNotationUnit.Percent => m_parts * 1e2,
-        PartsPerNotationUnit.PerMille => m_parts * 1e3,
-        PartsPerNotationUnit.PerMyriad => m_parts * 1e4,
-        PartsPerNotationUnit.PerCentMille => m_parts * 1e5,
-        PartsPerNotationUnit.PartsPerMillion => m_parts * 1e6,
-        PartsPerNotationUnit.PartsPerBillion => m_parts * 1e9,
-        PartsPerNotationUnit.PartsPerTrillion => m_parts * 1e12,
-        PartsPerNotationUnit.PartsPerQuadrillion => m_parts * 1e15,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     #endregion Static methods
@@ -163,6 +140,34 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_parts, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_parts;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
+      => unit switch
+      {
+        PartsPerNotationUnit.One => m_parts,
+        PartsPerNotationUnit.Percent => m_parts * 1e2,
+        PartsPerNotationUnit.PerMille => m_parts * 1e3,
+        PartsPerNotationUnit.PerMyriad => m_parts * 1e4,
+        PartsPerNotationUnit.PerCentMille => m_parts * 1e5,
+        PartsPerNotationUnit.PartsPerMillion => m_parts * 1e6,
+        PartsPerNotationUnit.PartsPerBillion => m_parts * 1e9,
+        PartsPerNotationUnit.PartsPerTrillion => m_parts * 1e12,
+        PartsPerNotationUnit.PartsPerQuadrillion => m_parts * 1e15,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

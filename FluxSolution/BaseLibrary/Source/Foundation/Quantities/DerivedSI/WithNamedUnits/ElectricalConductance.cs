@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical conductance, unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalConductance
-    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalConductanceUnit>
+    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ElectricalConductanceUnit>
   {
     public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
 
@@ -32,20 +32,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ElectricalConductanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(ElectricalConductanceUnit unit = DefaultUnit)
-      => unit switch
-      {
-        ElectricalConductanceUnit.Siemens => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
     [System.Diagnostics.Contracts.Pure]
     public ElectricalResistance ToElectricResistance()
       => new(1 / m_value);
@@ -109,6 +95,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(ElectricalConductanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(ElectricalConductanceUnit unit = DefaultUnit)
+      => unit switch
+      {
+        ElectricalConductanceUnit.Siemens => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

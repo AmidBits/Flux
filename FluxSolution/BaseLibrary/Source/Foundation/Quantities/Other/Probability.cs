@@ -13,10 +13,6 @@ namespace Flux
     public Probability(double ratio)
       => m_probability = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_probability;
-
     #region Static methods
     /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
     /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
@@ -145,6 +141,11 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_probability;
     #endregion Implemented interfaces
 
     #region Object overrides

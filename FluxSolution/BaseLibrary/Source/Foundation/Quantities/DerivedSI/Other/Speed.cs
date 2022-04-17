@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
+    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
   {
     public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 
@@ -57,25 +57,6 @@ namespace Flux
         SpeedUnit.Knot => value * (1852.0 / 3600.0),
         SpeedUnit.MeterPerSecond => value,
         SpeedUnit.MilePerHour => value * (1397.0 / 3125.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(SpeedUnit unit = DefaultUnit)
-      => unit switch
-      {
-        SpeedUnit.FootPerSecond => m_value * (1250.0 / 381.0),
-        SpeedUnit.KilometerPerHour => m_value * (18.0 / 5.0),
-        SpeedUnit.Knot => m_value * (3600.0 / 1852.0),
-        SpeedUnit.MeterPerSecond => m_value,
-        SpeedUnit.MilePerHour => m_value * (3125.0 / 1397.0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -153,6 +134,30 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(SpeedUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(SpeedUnit unit = DefaultUnit)
+      => unit switch
+      {
+        SpeedUnit.FootPerSecond => m_value * (1250.0 / 381.0),
+        SpeedUnit.KilometerPerHour => m_value * (18.0 / 5.0),
+        SpeedUnit.Knot => m_value * (3600.0 / 1852.0),
+        SpeedUnit.MeterPerSecond => m_value,
+        SpeedUnit.MilePerHour => m_value * (3125.0 / 1397.0),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

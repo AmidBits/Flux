@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
-    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
+    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
   {
     public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
 
@@ -29,21 +29,6 @@ namespace Flux
       => m_value = unit switch
       {
         RadioactivityUnit.Becquerel => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        RadioactivityUnit.Becquerel => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -103,6 +88,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        RadioactivityUnit.Becquerel => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

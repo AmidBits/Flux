@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
+    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
   {
     public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -32,21 +32,6 @@ namespace Flux
       => m_value = unit switch
       {
         ElectricChargeUnit.Coulomb => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(ElectricChargeUnit unit = DefaultUnit)
-      => unit switch
-      {
-        ElectricChargeUnit.Coulomb => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -106,6 +91,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(ElectricChargeUnit unit = DefaultUnit)
+      => unit switch
+      {
+        ElectricChargeUnit.Coulomb => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

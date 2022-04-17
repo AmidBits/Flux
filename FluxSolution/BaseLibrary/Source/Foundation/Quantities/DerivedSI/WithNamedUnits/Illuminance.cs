@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
+    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
   {
     public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 
@@ -33,25 +33,8 @@ namespace Flux
       };
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
     public MetricMultiplicative ToMetricMultiplicative()
       => new(m_value, MetricMultiplicativePrefix.One);
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(IlluminanceUnit unit = DefaultUnit)
-      => unit switch
-      {
-        IlluminanceUnit.Lux => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator double(Illuminance v) => v.m_value;
@@ -109,6 +92,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(IlluminanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(IlluminanceUnit unit = DefaultUnit)
+      => unit switch
+      {
+        IlluminanceUnit.Lux => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

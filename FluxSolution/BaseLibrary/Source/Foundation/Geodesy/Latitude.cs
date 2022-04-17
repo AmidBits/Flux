@@ -40,10 +40,6 @@ namespace Flux
     public double Radian
       => Angle.ConvertDegreeToRadian(m_degLatitude);
 
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degLatitude;
-
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
@@ -146,6 +142,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Latitude other) => m_degLatitude == other.m_degLatitude;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_degLatitude;
     #endregion Implemented interfaces
 
     #region Object overrides

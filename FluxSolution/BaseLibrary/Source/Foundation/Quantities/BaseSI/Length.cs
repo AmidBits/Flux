@@ -67,34 +67,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure] public double Value => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(LengthUnit unit = DefaultUnit)
-      => unit switch
-      {
-        LengthUnit.Millimeter => m_value * 1000,
-        LengthUnit.Centimeter => m_value * 100,
-        LengthUnit.Inch => m_value / 0.0254,
-        LengthUnit.Decimeter => m_value * 10,
-        LengthUnit.Foot => m_value / 0.3048,
-        LengthUnit.Yard => m_value / 0.9144,
-        LengthUnit.Meter => m_value,
-        LengthUnit.NauticalMile => m_value / 1852,
-        LengthUnit.Mile => m_value / 1609.344,
-        LengthUnit.Kilometer => m_value / 1000,
-        LengthUnit.AstronomicalUnit => m_value / 149597870700,
-        LengthUnit.Parsec => m_value / OneParsecInMeters,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     #region Static methods
     /// <summary>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</summary>
     /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
@@ -130,7 +102,7 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    // IComparable<T>
+    // IComparable<>
     [System.Diagnostics.Contracts.Pure] public int CompareTo(Length other) => m_value.CompareTo(other.m_value);
     // IComparable
     [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Length o ? CompareTo(o) : -1;
@@ -155,11 +127,42 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
     #endregion IConvertible
 
-    // IEquatable<T>
+    // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Length other) => m_value == other.m_value;
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(LengthUnit unit = DefaultUnit)
+      => unit switch
+      {
+        LengthUnit.Millimeter => m_value * 1000,
+        LengthUnit.Centimeter => m_value * 100,
+        LengthUnit.Inch => m_value / 0.0254,
+        LengthUnit.Decimeter => m_value * 10,
+        LengthUnit.Foot => m_value / 0.3048,
+        LengthUnit.Yard => m_value / 0.9144,
+        LengthUnit.Meter => m_value,
+        LengthUnit.NauticalMile => m_value / 1852,
+        LengthUnit.Mile => m_value / 1609.344,
+        LengthUnit.Kilometer => m_value / 1000,
+        LengthUnit.AstronomicalUnit => m_value / 149597870700,
+        LengthUnit.Parsec => m_value / OneParsecInMeters,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

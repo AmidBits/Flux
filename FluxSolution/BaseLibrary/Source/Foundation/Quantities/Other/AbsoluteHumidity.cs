@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class AbsoluteHumidityUnitEm
   {
-    public static string GetUnitSymbol(this AbsoluteHumidityUnit unit, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this AbsoluteHumidityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
-    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
+    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IMetricOneQuantifiable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
   {
     public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
 
@@ -28,21 +28,6 @@ namespace Flux
       => m_value = unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitSymbol()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(AbsoluteHumidityUnit unit = DefaultUnit)
-      => unit switch
-      {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -109,6 +94,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(AbsoluteHumidityUnit unit = DefaultUnit)
+      => unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

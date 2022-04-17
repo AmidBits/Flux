@@ -46,7 +46,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
+    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -68,33 +68,6 @@ namespace Flux
         VolumeUnit.CubicMeter => value,
         VolumeUnit.CubicMile => value * (8140980127813632.0 / 1953125.0),// 
         VolumeUnit.CubicKilometer => value * 1e9,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(VolumeUnit unit = DefaultUnit)
-      => unit switch
-      {
-        VolumeUnit.Millilitre => m_value * 1000000,
-        VolumeUnit.Centilitre => m_value * 100000,
-        VolumeUnit.Decilitre => m_value * 10000,
-        VolumeUnit.Litre => m_value * 1000,
-        VolumeUnit.ImperialGallon => m_value / 0.004546,
-        VolumeUnit.ImperialQuart => m_value * 879.87699319635,
-        VolumeUnit.USGallon => m_value / 0.003785,
-        VolumeUnit.USQuart => m_value * 1056.68821,// Approximate.
-        VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
-        VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
-        VolumeUnit.CubicMeter => m_value,
-        VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
-        VolumeUnit.CubicKilometer => m_value / 1e9,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -164,6 +137,38 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(VolumeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(VolumeUnit unit = DefaultUnit)
+      => unit switch
+      {
+        VolumeUnit.Millilitre => m_value * 1000000,
+        VolumeUnit.Centilitre => m_value * 100000,
+        VolumeUnit.Decilitre => m_value * 10000,
+        VolumeUnit.Litre => m_value * 1000,
+        VolumeUnit.ImperialGallon => m_value / 0.004546,
+        VolumeUnit.ImperialQuart => m_value * 879.87699319635,
+        VolumeUnit.USGallon => m_value / 0.003785,
+        VolumeUnit.USQuart => m_value * 1056.68821,// Approximate.
+        VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
+        VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
+        VolumeUnit.CubicMeter => m_value,
+        VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
+        VolumeUnit.CubicKilometer => m_value / 1e9,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

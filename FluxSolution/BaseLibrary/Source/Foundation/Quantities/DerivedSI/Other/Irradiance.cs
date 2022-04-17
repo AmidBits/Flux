@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>irradiance, unit of watt per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Irradiance"/>
   public struct Irradiance
-    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
+    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
   {
     public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 
@@ -28,21 +28,6 @@ namespace Flux
       => m_value = unit switch
       {
         IrradianceUnit.WattPerSquareMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(IrradianceUnit unit = DefaultUnit)
-      => unit switch
-      {
-        IrradianceUnit.WattPerSquareMeter => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -108,6 +93,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(IrradianceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(IrradianceUnit unit = DefaultUnit)
+      => unit switch
+      {
+        IrradianceUnit.WattPerSquareMeter => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -49,29 +49,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(PressureUnit unit = DefaultUnit)
-      => unit switch
-      {
-        PressureUnit.Millibar => m_value / 100,
-        PressureUnit.Bar => m_value / 100000,
-        PressureUnit.HectoPascal => m_value / 100,
-        PressureUnit.Pascal => m_value,
-        PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     #region Static methods
     #endregion Static methods
 
@@ -131,6 +108,30 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(PressureUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(PressureUnit unit = DefaultUnit)
+      => unit switch
+      {
+        PressureUnit.Millibar => m_value / 100,
+        PressureUnit.Bar => m_value / 100000,
+        PressureUnit.HectoPascal => m_value / 100,
+        PressureUnit.Pascal => m_value,
+        PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

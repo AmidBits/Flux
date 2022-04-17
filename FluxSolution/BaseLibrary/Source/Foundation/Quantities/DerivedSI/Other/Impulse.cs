@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Impulse, unit of Newton second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Impulse"/>
   public struct Impulse
-    : System.IComparable, System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ImpulseUnit>
+    : System.IComparable, System.IComparable<Impulse>, System.IConvertible, System.IEquatable<Impulse>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ImpulseUnit>
   {
     public const ImpulseUnit DefaultUnit = ImpulseUnit.NewtonSecond;
 
@@ -28,21 +28,6 @@ namespace Flux
       => m_value = unit switch
       {
         ImpulseUnit.NewtonSecond => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ImpulseUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(ImpulseUnit unit = DefaultUnit)
-      => unit switch
-      {
-        ImpulseUnit.NewtonSecond => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -108,6 +93,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(ImpulseUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(ImpulseUnit unit = DefaultUnit)
+      => unit switch
+      {
+        ImpulseUnit.NewtonSecond => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

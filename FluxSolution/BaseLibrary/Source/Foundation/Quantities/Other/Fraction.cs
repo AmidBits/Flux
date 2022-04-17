@@ -88,10 +88,6 @@ namespace Flux
       ? -1
       : 1;
 
-    /// <summary>Returns the decimal representation (as a double) of the fraction after performing division.</summary>
-    public double Value
-      => ToQuotient();
-
     public System.Numerics.BigInteger ToIntegerQuotient(out System.Numerics.BigInteger remainder)
       => System.Numerics.BigInteger.DivRem(m_numerator, m_denominator, out remainder);
     /// <summary>Yields a string with the fraction in improper (if applicable) fractional notation.</summary>
@@ -398,6 +394,10 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Fraction other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
+
+    // IQuantifiable<>
+    public double Value
+      => ToQuotient();
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
+    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
@@ -29,21 +29,6 @@ namespace Flux
       => m_value = unit switch
       {
         SolidAngleUnit.Steradian => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
-      => unit switch
-      {
-        SolidAngleUnit.Steradian => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -103,6 +88,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(SolidAngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
+      => unit switch
+      {
+        SolidAngleUnit.Steradian => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

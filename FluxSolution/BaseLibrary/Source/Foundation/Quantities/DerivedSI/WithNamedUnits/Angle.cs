@@ -1,22 +1,5 @@
 ﻿namespace Flux
 {
-  public static partial class AngleUnitEm
-  {
-    public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
-      => useFullName ? unit.ToString() : unit switch
-      {
-        AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
-        AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
-        AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
-        AngleUnit.Gradian => "grad",
-        AngleUnit.NatoMil => "mils",
-        AngleUnit.Milliradian => "mrad",
-        AngleUnit.Radian => preferUnicode ? "\u33ad" : "rad",
-        AngleUnit.Turn => "turns",
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-  }
-
   [System.Flags]
   public enum AngleNames
   {
@@ -38,6 +21,23 @@
     ObliqueAngle = 128
   }
 
+  public static partial class AngleUnitEm
+  {
+    public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
+      {
+        AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
+        AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
+        AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
+        AngleUnit.Gradian => "grad",
+        AngleUnit.NatoMil => "mils",
+        AngleUnit.Milliradian => "mrad",
+        AngleUnit.Radian => preferUnicode ? "\u33ad" : "rad",
+        AngleUnit.Turn => "turns",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+  }
+
   public enum AngleUnit
   {
     Arcminute,
@@ -55,7 +55,7 @@
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
+    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, AngleUnit>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -88,33 +88,12 @@
 
     [System.Diagnostics.Contracts.Pure] public double Degree => ConvertRadianToDegree(m_radAngle);
 
-    /// <summary>The quantity value in unit radian.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Value => m_radAngle;
-
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_radAngle);
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2Ex() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(AngleUnit unit = DefaultUnit)
-      => unit switch
-      {
-        AngleUnit.Arcminute => ConvertRadianToArcminute(m_radAngle),
-        AngleUnit.Arcsecond => ConvertRadianToArcsecond(m_radAngle),
-        AngleUnit.Degree => ConvertRadianToDegree(m_radAngle),
-        AngleUnit.Gradian => ConvertRadianToGradian(m_radAngle),
-        AngleUnit.NatoMil => ConvertRadianToNatoMil(m_radAngle),
-        AngleUnit.Milliradian => ConvertRadianToMilliradian(m_radAngle),
-        AngleUnit.Radian => m_radAngle,
-        AngleUnit.Turn => ConvertRadianToTurn(m_radAngle),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     /// <summary>Convert the angle specified in arcminutes to radians.</summary>
@@ -359,6 +338,33 @@
     [System.Diagnostics.Contracts.Pure]
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"{GetType().Name} {{{{ {{0:D3}} }}}}", this);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{new MetricMultiplicative(m_radAngle, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_radAngle;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(AngleUnit unit = DefaultUnit)
+      => unit switch
+      {
+        AngleUnit.Arcminute => ConvertRadianToArcminute(m_radAngle),
+        AngleUnit.Arcsecond => ConvertRadianToArcsecond(m_radAngle),
+        AngleUnit.Degree => ConvertRadianToDegree(m_radAngle),
+        AngleUnit.Gradian => ConvertRadianToGradian(m_radAngle),
+        AngleUnit.NatoMil => ConvertRadianToNatoMil(m_radAngle),
+        AngleUnit.Milliradian => ConvertRadianToMilliradian(m_radAngle),
+        AngleUnit.Radian => m_radAngle,
+        AngleUnit.Turn => ConvertRadianToTurn(m_radAngle),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

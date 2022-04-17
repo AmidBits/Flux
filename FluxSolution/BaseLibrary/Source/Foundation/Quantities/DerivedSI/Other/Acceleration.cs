@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration
-    : System.IComparable, System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AccelerationUnit>
+    : System.IComparable, System.IComparable<Acceleration>, System.IConvertible, System.IEquatable<Acceleration>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, AccelerationUnit>
   {
     public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
 
@@ -31,21 +31,6 @@ namespace Flux
       => m_value = unit switch
       {
         AccelerationUnit.MeterPerSecondSquare => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
-      => unit switch
-      {
-        AccelerationUnit.MeterPerSecondSquare => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -105,6 +90,26 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // ISiDerivedUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
+      => unit switch
+      {
+        AccelerationUnit.MeterPerSecondSquare => m_value,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

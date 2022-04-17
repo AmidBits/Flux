@@ -25,10 +25,6 @@ namespace Flux
     public int TheoreticalTimezoneOffset
       => GetTheoreticalTimezoneOffset(m_degLongitude);
 
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degLongitude;
-
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
@@ -110,6 +106,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(Longitude other) => m_degLongitude == other.m_degLongitude;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_degLongitude;
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -25,10 +25,6 @@ namespace Flux
     { }
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public JulianDate AddWeeks(int weeks)
       => this + (weeks * 7);
     [System.Diagnostics.Contracts.Pure]
@@ -171,6 +167,11 @@ namespace Flux
 
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(JulianDate other) => m_value == other.m_value;
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
     #endregion Implemented interfaces
 
     #region Object overrides

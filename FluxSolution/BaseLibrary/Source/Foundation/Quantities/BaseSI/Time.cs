@@ -62,32 +62,7 @@ namespace Flux
       : this(timeSpan.TotalSeconds)
     { }
 
-    [System.Diagnostics.Contracts.Pure] public double Value => m_value;
-
     [System.Diagnostics.Contracts.Pure] public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_value);
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
-    [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(TimeUnit unit = DefaultUnit)
-      => unit switch
-      {
-        TimeUnit.Nanosecond => m_value * 1000000000,
-        TimeUnit.Microsecond => m_value * 1000000,
-        TimeUnit.Millisecond => m_value * 1000,
-        TimeUnit.Second => m_value,
-        TimeUnit.Minute => m_value / 60,
-        TimeUnit.Hour => m_value / 3600,
-        TimeUnit.Day => m_value / 86400,
-        TimeUnit.Week => m_value / 604800,
-        TimeUnit.Fortnight => m_value / 1209600,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
 
     #region Static methods
     #endregion Static methods
@@ -148,6 +123,34 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IMetricOneQuantifiable
+    [System.Diagnostics.Contracts.Pure]
+    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
+       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
+
+    // IUnitQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
+    [System.Diagnostics.Contracts.Pure]
+    public string ToUnitString(TimeUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+    [System.Diagnostics.Contracts.Pure]
+    public double ToUnitValue(TimeUnit unit = DefaultUnit)
+      => unit switch
+      {
+        TimeUnit.Nanosecond => m_value * 1000000000,
+        TimeUnit.Microsecond => m_value * 1000000,
+        TimeUnit.Millisecond => m_value * 1000,
+        TimeUnit.Second => m_value,
+        TimeUnit.Minute => m_value / 60,
+        TimeUnit.Hour => m_value / 3600,
+        TimeUnit.Day => m_value / 86400,
+        TimeUnit.Week => m_value / 604800,
+        TimeUnit.Fortnight => m_value / 1209600,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
     #endregion Implemented interfaces
 
     #region Object overrides

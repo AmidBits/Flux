@@ -92,10 +92,6 @@ namespace Flux
       => m_value = value / multiplicativePrefix.GetUnitFactor();
 
     [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
-
-    [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))} {multiplicativePrefix.GetUnitString(useFullName, preferUnicode)}";
     [System.Diagnostics.Contracts.Pure]
@@ -158,6 +154,11 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure]
+    public double Value
+      => m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
