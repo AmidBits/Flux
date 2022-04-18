@@ -133,7 +133,7 @@ namespace Flux
       => obj is VersionEx o && Equals(o);
     [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
-      => m_parts.CombineHashCodes();
+      => m_parts.GetHashCodes().CombineHashCodes();
     [System.Diagnostics.Contracts.Pure]
     public override string? ToString()
       => string.Join('.', m_parts);

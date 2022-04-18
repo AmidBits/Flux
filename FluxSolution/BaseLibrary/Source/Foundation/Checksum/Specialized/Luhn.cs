@@ -41,8 +41,8 @@ namespace Flux.Checksum.Special
       => Verify(numberSequence.Select(c => c - '0'));
 
     // Operators
-   public static bool operator ==(Luhn a, Luhn b)
-      => a.Equals(b);
+    public static bool operator ==(Luhn a, Luhn b)
+       => a.Equals(b);
     public static bool operator !=(Luhn a, Luhn b)
       => !a.Equals(b);
 
@@ -54,7 +54,7 @@ namespace Flux.Checksum.Special
     public override bool Equals(object? obj)
       => obj is Luhn o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_sequence.CombineHashCodes(), m_checkDigit);
+      => m_sequence.GetHashCodes().Append(m_checkDigit.GetHashCode()).CombineHashCodes();
     public override string ToString()
       => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
   }

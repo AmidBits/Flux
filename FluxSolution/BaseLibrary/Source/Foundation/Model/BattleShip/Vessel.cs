@@ -191,7 +191,7 @@ namespace Flux
       public override bool Equals(object? obj)
         => obj is Vessel o && Equals(o);
       public override int GetHashCode()
-        => System.HashCode.Combine(m_positions.CombineHashCodes(), Orientation);
+        => m_positions.GetHashCodes().Append(Orientation.GetHashCode()).CombineHashCodes();
       public override string? ToString()
         => $"{GetType().Name} {{ Size = {m_positions.Count}, Orientation = {Orientation} }}";
       #endregion Object overrides
