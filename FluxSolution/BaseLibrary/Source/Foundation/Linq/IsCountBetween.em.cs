@@ -14,7 +14,7 @@ namespace Flux
 
       var counter = 0;
 
-      for (var index = 0; counter < minCount && counter <= maxCount && e.MoveNext(); index++)
+      for (var index = 0; counter <= maxCount && e.MoveNext(); index++)
         if (predicate(e.Current, index))
           counter++;
 

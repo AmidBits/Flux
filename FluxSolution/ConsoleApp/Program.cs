@@ -16,7 +16,8 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-      foreach (var enumType in Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum))
+      var enumElements = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum).ToArray();
+      foreach (var enumType in enumElements)
         System.Console.WriteLine(enumType.FullName);
       return;
 
