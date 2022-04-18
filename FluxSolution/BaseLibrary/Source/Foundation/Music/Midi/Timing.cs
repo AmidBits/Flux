@@ -1,4 +1,4 @@
-namespace Flux.Midi
+namespace Flux.Music.Midi
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_beat_clock"/>

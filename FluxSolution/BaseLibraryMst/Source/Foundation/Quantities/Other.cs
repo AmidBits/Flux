@@ -64,7 +64,7 @@ namespace Foundation.Units
     [TestMethod]
     public void MidiNote()
     {
-      var u = new Flux.MidiNote(69);
+      var u = new Flux.Music.Midi.MidiNote(69);
 
       Assert.AreEqual(69, u.Value);
       Assert.AreEqual(4, u.GetOctave());

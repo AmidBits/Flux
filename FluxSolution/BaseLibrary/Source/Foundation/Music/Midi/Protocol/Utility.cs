@@ -1,4 +1,4 @@
-namespace Flux.Midi.Protocol
+namespace Flux.Music.Midi.Protocol
 {
   public sealed class Utility
   {

@@ -1,4 +1,4 @@
-namespace Flux.Midi
+namespace Flux.Music.Midi
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
@@ -11,7 +11,7 @@ namespace Flux.Midi
     private readonly byte m_second;
     private readonly byte m_frame;
 
-    public MidiTimeCode(MidiTimeCodeType rate, int hour, int minute, int second, int frame)
+    public MidiTimeCode(Flux.Music.Midi.MidiTimeCodeType rate, int hour, int minute, int second, int frame)
     {
       m_rateType = rate;
       m_hour = hour >= 0 && hour <= 23 ? (byte)hour : throw new System.ArgumentOutOfRangeException(nameof(hour));

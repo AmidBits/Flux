@@ -1,4 +1,4 @@
-namespace Flux.Midi.Sequencer
+namespace Flux.Music.Midi.Sequencer
 {
   public sealed class MeterEvent
   {

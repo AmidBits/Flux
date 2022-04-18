@@ -1,6 +1,6 @@
-namespace Flux.Midi.Protocol.Channel
+namespace Flux.Music.Midi.Protocol
 {
-  public sealed class Mode
+  public sealed class ChannelMode
   {
     public static byte[] AllSoundOff(int channel)
       => Voice.ControlChange(channel, ControlChangeController.AllNotesOff, 0);

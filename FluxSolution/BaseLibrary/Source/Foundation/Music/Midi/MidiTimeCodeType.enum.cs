@@ -2,18 +2,18 @@ namespace Flux
 {
   public static partial class MidiTimeCodeTypeEm
   {
-    public static double GetTimeCodeRate(this Midi.MidiTimeCodeType source)
+    public static double GetTimeCodeRate(this Music.Midi.MidiTimeCodeType source)
       => source switch
       {
-        Midi.MidiTimeCodeType.TwentyFour => 24,
-        Midi.MidiTimeCodeType.TwentyFive => 25,
-        Midi.MidiTimeCodeType.TwentyNineNinetySeven => 29.97,
-        Midi.MidiTimeCodeType.Thirty => 30,
+        Music.Midi.MidiTimeCodeType.TwentyFour => 24,
+        Music.Midi.MidiTimeCodeType.TwentyFive => 25,
+        Music.Midi.MidiTimeCodeType.TwentyNineNinetySeven => 29.97,
+        Music.Midi.MidiTimeCodeType.Thirty => 30,
         _ => throw new System.ArgumentOutOfRangeException(nameof(source)),
       };
   }
 
-  namespace Midi
+  namespace Music.Midi
   {
     public enum MidiTimeCodeType
       : byte
