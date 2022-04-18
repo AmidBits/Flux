@@ -16,9 +16,12 @@ namespace Flux.Colors
       m_lightness = lightness >= 0 && lightness <= 1 ? lightness : throw new System.ArgumentOutOfRangeException(nameof(lightness));
     }
 
-    public double Hue { get => m_hue; set => m_hue = value >= 0 && value <= 360 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Saturation { get => m_saturation; set => m_saturation = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Lightness { get => m_lightness; set => m_lightness = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Hue
+      => m_hue;
+    public double Saturation
+      => m_saturation;
+    public double Lightness
+      => m_lightness;
 
     public double GetChroma()
       => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;

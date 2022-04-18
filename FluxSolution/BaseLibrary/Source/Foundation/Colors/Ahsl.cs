@@ -18,8 +18,10 @@ namespace Flux.Colors
       : this(alpha, new Hsl(hue, saturation, lightness))
     { }
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Hsl HSL { get => m_hsl; set => m_hsl = value; }
+    public double Alpha
+      => m_alpha;
+    public Hsl HSL
+      => m_hsl;
 
     /// <summary>Creates an HSVA color corresponding to the HSL instance.</summary>
     public Ahsv ToAhsv()

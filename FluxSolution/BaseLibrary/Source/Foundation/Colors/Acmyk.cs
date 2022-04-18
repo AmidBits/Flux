@@ -18,8 +18,10 @@ namespace Flux.Colors
       : this(alpha, new Cmyk(cyan, magenta, yellow, black))
     { }
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Cmyk CMYK { get => m_cmyk; set => m_cmyk = value; }
+    public double Alpha
+      => m_alpha;
+    public Cmyk CMYK
+      => m_cmyk;
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Argb ToArgb()

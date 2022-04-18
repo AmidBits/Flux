@@ -19,7 +19,7 @@ namespace ConsoleApp
       foreach (var enumType in Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum))
         System.Console.WriteLine(enumType.FullName);
       return;
-      
+
       System.Console.Write($"It's a ");
       Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
       System.Console.Write($" and some ");

@@ -18,8 +18,10 @@ namespace Flux.Colors
       : this(alpha, new Hsi(hue, saturation, intensity))
     { }
 
-    public double Alpha { get => m_alpha; set => m_alpha = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public Hsi HSI { get => m_hsi; set => m_hsi = value; }
+    public double Alpha
+      => m_alpha;
+    public Hsi HSI
+    => m_hsi;
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Argb ToArgb()

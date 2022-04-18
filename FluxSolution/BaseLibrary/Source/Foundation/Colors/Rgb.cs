@@ -19,9 +19,12 @@ namespace Flux.Colors
       : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
     { }
 
-    public int Red { get => m_red; set => m_red = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public int Green { get => m_green; set => m_green = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public int Blue { get => m_blue; set => m_blue = value >= 0 && value <= 255 ? (byte)value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public int Red
+      => m_red;
+    public int Green
+      => m_green;
+    public int Blue
+      => m_blue;
 
     /// <summary>Returns the chroma for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>

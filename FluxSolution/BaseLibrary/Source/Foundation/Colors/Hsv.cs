@@ -16,9 +16,12 @@ namespace Flux.Colors
       m_value = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
     }
 
-    public double Hue { get => m_hue; set => m_hue = value >= 0 && value <= 360 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Saturation { get => m_saturation; set => m_saturation = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
-    public double Value { get => m_value; set => m_value = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value)); }
+    public double Hue
+      => m_hue;
+    public double Saturation
+      => m_saturation;
+    public double Value
+      => m_value;
 
     public double GetChroma()
       => m_value * m_saturation;
