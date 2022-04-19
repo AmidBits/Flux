@@ -16,13 +16,13 @@ namespace Collections.Generic
       Assert.AreEqual(0.4, d.CumulativeMassFunction(45), nameof(CumulativeMassFunction));
     }
 
-    [TestMethod]
-    public void PercentRank()
-    {
-      var actual = d.PercentRank().ToArray();
-      var expected = new double[] { 0, 25, 50, 75, 100 };
-      CollectionAssert.AreEqual(expected, actual, nameof(PercentileRank));
-    }
+    //[TestMethod]
+    //public void PercentRank()
+    //{
+    //  var actual = d.PercentRank().ToArray();
+    //  var expected = new double[] { 0, 25, 50, 75, 100 };
+    //  CollectionAssert.AreEqual(expected, actual, nameof(PercentileRank));
+    //}
 
     [TestMethod]
     public void PercentileRank()

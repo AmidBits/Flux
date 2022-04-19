@@ -26,6 +26,10 @@ namespace Flux
       => Interpolate(m_v1, m_v2, mu);
 
     [System.Diagnostics.Contracts.Pure]
+    public static double ImputeUnit(double v1, double v2, double v12)
+      => 1 / (v2 - v1) * (v12 - v1);
+
+    [System.Diagnostics.Contracts.Pure]
     public static double Interpolate(double v1, double v2, double mu)
       => v1 * (1 - mu) + v2 * mu;
   }

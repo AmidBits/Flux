@@ -16,6 +16,53 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
+      var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
+      a = a.Reverse().ToArray();
+
+      //var lower = 0;
+      //var middle = 0;
+      //var upper = 0;
+
+      // var values = new int[] { 8, 9, 10, 11, 11, 11, 11, 12, 12, 12, 13 };
+      // var values = new int[] { 2, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5 };
+      // var values = new int[] { 2, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5 };
+      //var values = a;// new int[] { 13, 17, 17, 18, 19, 19, 19, 21, 21, 23, 24 };
+
+      //var n = values.Length;
+      //var index = 0.0;
+      //foreach (var i in values)
+      //{
+      //  //var pr = ((values.Count(v => v < i) + (.5 * values.Count(v => v == i))) / n);
+      //  var pr = index / (index + (values.Length - index - 1));
+      //  if (pr < .27)
+      //    lower += 1;
+      //  else if (pr > .73)
+      //    upper += 1;
+      //  else
+      //    middle += 1;
+      //  index++;
+      //}
+
+      //System.Console.WriteLine("Upper: " + upper);
+      //System.Console.WriteLine("Middle: " + middle);
+      //System.Console.WriteLine("Lower: " + lower);
+
+      var b = a.Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, (double)i / (double)(i + (a.Length - i - 1)))).ToArray();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, b));
+
+      var e = b.ExtremaClosestToKey(t => t.Key, 5);
+      System.Console.WriteLine(e);
+
+      var ipx = LinearInterpolation.ImputeUnit(e.elementLt.Key, e.elementGt.Key, 5);
+
+      var ip = LinearInterpolation.Interpolate(5, e.elementGt.Value, e.elementLt.Value);
+      System.Console.WriteLine(ip);
+
+
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.Histogram(out var sum).CumulativeMassFunction(sum)));
+      return;
+
       var enumElements = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum).ToArray();
       foreach (var enumType in enumElements)
         System.Console.WriteLine(enumType.FullName);
