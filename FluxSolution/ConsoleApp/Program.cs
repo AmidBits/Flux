@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Flux;
@@ -10,15 +11,59 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public sealed class Histogram<TKey>
+    : System.Collections.Generic.IReadOnlyDictionary<TKey, int>
+  {
+    private readonly System.Collections.Generic.SortedDictionary<TKey, int> m_bins;
+
+
+
+    public void Add(TKey key)
+    {
+      if (ContainsKey(key))
+        m_bins[key]++;
+      else
+        m_bins.Add(key, 1);
+    }
+    public void Add(System.Collections.Generic.IEnumerable<TKey> keys)
+    {
+      foreach (var key in keys)
+        Add(key);
+    }
+    public void Add(TKey key, int count)
+    {
+      if (TryGetValue(key, out var currentCount))
+        m_bins[key] = currentCount + count;
+      else
+        m_bins.Add(key, currentCount);
+    }
+
+    // IReadOnlyDictionary<>
+    public int this[TKey key] => ((System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_bins)[key];
+    public System.Collections.Generic.IEnumerable<TKey> Keys => ((System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_bins).Keys;
+    public System.Collections.Generic.IEnumerable<int> Values => ((System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_bins).Values;
+    public int Count => ((System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, int>>)m_bins).Count;
+    public bool ContainsKey(TKey key) => ((System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_bins).ContainsKey(key);
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, int>> GetEnumerator() => ((System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>>)m_bins).GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.IEnumerable)m_bins).GetEnumerator();
+    public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out int value) => ((System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_bins).TryGetValue(key, out value);
+  }
+
   public class Program
   {
+
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
       a = a.Reverse().ToArray();
+
+      var h = new Histogram<int>();
+      h.
 
       //var lower = 0;
       //var middle = 0;
@@ -48,6 +93,11 @@ namespace ConsoleApp
       //System.Console.WriteLine("Middle: " + middle);
       //System.Console.WriteLine("Lower: " + lower);
 
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum1).CumulativeMassFunction(sum1)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum2).PercentRank(sum2)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum3).PercentileRank(sum3)));
+      //return;
+
       var b = a.Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, (double)i / (double)(i + (a.Length - i - 1)))).ToArray();
       System.Console.WriteLine(string.Join(System.Environment.NewLine, b));
 
@@ -60,7 +110,7 @@ namespace ConsoleApp
       System.Console.WriteLine(ip);
 
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.Histogram(out var sum).CumulativeMassFunction(sum)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum).CumulativeMassFunction(sum)));
       return;
 
       var enumElements = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum).ToArray();

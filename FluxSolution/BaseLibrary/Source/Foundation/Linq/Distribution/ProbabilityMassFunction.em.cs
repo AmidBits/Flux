@@ -29,12 +29,12 @@ namespace Flux
 			=> ProbabilityMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
 
 		/// <summary>The PMF is a function that maps from values to probabilities.</summary>
-		public static System.Collections.Generic.IDictionary<TValue, double> ProbabilityMassFunction<TValue>(this System.Collections.Generic.IDictionary<TValue, int> source, int sumOfAllFrequencies, double factor = 1)
-			where TValue : notnull
+		public static System.Collections.Generic.IDictionary<TKey, double> ProbabilityMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int sumOfAllFrequencies, double factor = 1)
+			where TKey : notnull
 		{
 			if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			var pmf = new System.Collections.Generic.Dictionary<TValue, double>();
+			var pmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
 			foreach (var kvp in source.OrderBy(kvp => kvp.Key))
 				pmf.Add(kvp.Key, kvp.Value / (double)sumOfAllFrequencies * factor);
