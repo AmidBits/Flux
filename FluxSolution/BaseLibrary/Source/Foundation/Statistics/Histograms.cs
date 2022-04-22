@@ -10,7 +10,7 @@ namespace Flux
     private readonly int[] m_buckets;
     /// <summary>Contains the requested buckets plus underflow/overflow buckets for values outside of min/max.</summary>
     public System.ReadOnlySpan<int> Buckets
-      => m_buckets;
+      => (System.ReadOnlySpan<int>)m_buckets;
 
     public HistogramUniform(int bucketCount, double minimumValue, double maximumValue)
     {
@@ -31,14 +31,14 @@ namespace Flux
     {
       foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
       {
-        var bucketIndex = (int)(BucketCount * (value - MinimumValue) / (MaximumValue - MinimumValue));
+        var bucketIndex = System.Convert.ToInt32(Maths.Rescale(value, MinimumValue, MaximumValue, 1, BucketCount));
 
-        if (bucketIndex < 0)
+        if (value < MinimumValue)
           m_buckets[0]++;
-        else if (bucketIndex >= BucketCount)
+        else if (value > MaximumValue)
           m_buckets[BucketCount + 1]++;
-        else // if (bucketIndex >= 0 && bucketIndex < BucketCount)
-          m_buckets[bucketIndex + 1]++;
+        else // If within the boundary of min and max.
+          m_buckets[bucketIndex]++;
       }
     }
   }
