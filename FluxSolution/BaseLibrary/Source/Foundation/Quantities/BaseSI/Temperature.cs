@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class TemperatureUnitEm
   {
-    public static string GetUnitString(this TemperatureUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this TemperatureUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        TemperatureUnit.Celsius => useUnicodeIfAvailable ? "\u2103" : $"{Angle.DegreeSymbol}C",
-        TemperatureUnit.Fahrenheit => useUnicodeIfAvailable ? "\u2109" : $"{Angle.DegreeSymbol}F",
-        TemperatureUnit.Kelvin => useUnicodeIfAvailable ? "\u212A" : $"K",
+        TemperatureUnit.Celsius => preferUnicode ? "\u2103" : $"{Angle.DegreeSymbol}C",
+        TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : $"{Angle.DegreeSymbol}F",
+        TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : $"K",
         TemperatureUnit.Rankine => $"{Angle.DegreeSymbol}R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

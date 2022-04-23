@@ -24,9 +24,9 @@ namespace ConsoleApp
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
       a = a.Reverse().ToArray();
 
-      var h = new Flux.HistogramUniform(2, a.Min(), a.Max());
-      h.AddTo(a.Select(i=>(double)i));
-      h.
+      var h = new Flux.Histogram1(1, 4, 8, 12, 16);
+      h.Add(a.Select(i => (double)i));
+      
       //var lower = 0;
       //var middle = 0;
       //var upper = 0;

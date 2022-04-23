@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class EnplethyUnitEm
   {
-    public static string GetUnitString(this EnplethyUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this EnplethyUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        EnplethyUnit.Mole => useUnicodeIfAvailable ? "\u33d6" : "mol",
+        EnplethyUnit.Mole => preferUnicode ? "\u33d6" : "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -20,11 +20,10 @@ namespace Flux
   public struct Enplethy
     : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
   {
-    public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
+    // The unit of the Avagadro constant is the reciprocal mole (or per mole). I.e. any 1 mol of any substance contains this amount of fundamental units.
+    public const double AvagadroConstant = 6.02214076e23;
 
-    // The unit of the Avagadro constant is the reciprocal mole, i.e. "per" mole.
-    public static Enplethy AvagadroConstant
-      => new(6.02214076e23);
+    public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
     private readonly double m_value;
 

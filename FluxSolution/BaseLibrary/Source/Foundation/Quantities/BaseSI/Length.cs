@@ -2,9 +2,11 @@ namespace Flux
 {
   public static partial class LengthUnitEm
   {
-    public static string GetUnitString(this LengthUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this LengthUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
+        LengthUnit.Nanometer => "nm",
+        LengthUnit.Micrometer => preferUnicode ? "\u03bc" : "µm",
         LengthUnit.Millimeter => "mm",
         LengthUnit.Centimeter => "cm",
         LengthUnit.Inch => "in",
@@ -12,10 +14,10 @@ namespace Flux
         LengthUnit.Foot => "ft",
         LengthUnit.Yard => "yd",
         LengthUnit.Meter => "m",
-        LengthUnit.NauticalMile => "nm",
-        LengthUnit.Mile => "mi",
         LengthUnit.Kilometer => "km",
-        LengthUnit.AstronomicalUnit => useUnicodeIfAvailable ? "\u3373" : "au",
+        LengthUnit.Mile => "mi",
+        LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
+        LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
         LengthUnit.Parsec => "pc",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -23,6 +25,8 @@ namespace Flux
 
   public enum LengthUnit
   {
+    Nanometer,
+    Micrometer,
     Millimeter,
     Centimeter,
     Inch,
@@ -30,9 +34,9 @@ namespace Flux
     Foot,
     Yard,
     Meter,
-    NauticalMile,
-    Mile,
     Kilometer,
+    Mile,
+    NauticalMile,
     AstronomicalUnit,
     Parsec,
   }
@@ -52,16 +56,18 @@ namespace Flux
     public Length(double value, LengthUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        LengthUnit.Millimeter => value / 1000,
-        LengthUnit.Centimeter => value / 100,
+        LengthUnit.Nanometer => value * 1E-9,
+        LengthUnit.Micrometer => value * 1E-6,
+        LengthUnit.Millimeter => value * 1E-3,
+        LengthUnit.Centimeter => value * 1E-2,
         LengthUnit.Inch => value * 0.0254,
-        LengthUnit.Decimeter => value / 10,
+        LengthUnit.Decimeter => value * 1E-1,
         LengthUnit.Foot => value * 0.3048,
         LengthUnit.Yard => value * 0.9144,
         LengthUnit.Meter => value,
-        LengthUnit.NauticalMile => value * 1852,
+        LengthUnit.Kilometer => value * 1E+3,
         LengthUnit.Mile => value * 1609.344,
-        LengthUnit.Kilometer => value * 1000,
+        LengthUnit.NauticalMile => value * 1852,
         LengthUnit.AstronomicalUnit => value * 149597870700,
         LengthUnit.Parsec => value * OneParsecInMeters,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -149,16 +155,18 @@ namespace Flux
     public double ToUnitValue(LengthUnit unit = DefaultUnit)
       => unit switch
       {
-        LengthUnit.Millimeter => m_value * 1000,
-        LengthUnit.Centimeter => m_value * 100,
+        LengthUnit.Nanometer => m_value * 1E+9,
+        LengthUnit.Micrometer => m_value * 1E+6,
+        LengthUnit.Millimeter => m_value * 1E+3,
+        LengthUnit.Centimeter => m_value * 1E+2,
         LengthUnit.Inch => m_value / 0.0254,
-        LengthUnit.Decimeter => m_value * 10,
+        LengthUnit.Decimeter => m_value * 1E+1,
         LengthUnit.Foot => m_value / 0.3048,
         LengthUnit.Yard => m_value / 0.9144,
         LengthUnit.Meter => m_value,
-        LengthUnit.NauticalMile => m_value / 1852,
+        LengthUnit.Kilometer => m_value * 1E-3,
         LengthUnit.Mile => m_value / 1609.344,
-        LengthUnit.Kilometer => m_value / 1000,
+        LengthUnit.NauticalMile => m_value / 1852,
         LengthUnit.AstronomicalUnit => m_value / 149597870700,
         LengthUnit.Parsec => m_value / OneParsecInMeters,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),

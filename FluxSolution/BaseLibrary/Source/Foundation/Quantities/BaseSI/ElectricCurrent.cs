@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ElectricCurrentUnitEm
   {
-    public static string GetUnitString(this ElectricCurrentUnit unit, bool useNameInstead = false, bool useUnicodeIfAvailable = false)
-      => useNameInstead ? unit.ToString() : unit switch
+    public static string GetUnitString(this ElectricCurrentUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         ElectricCurrentUnit.Ampere => "A",
         ElectricCurrentUnit.Milliampere => "mA",

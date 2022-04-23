@@ -1,45 +1,97 @@
 namespace Flux
 {
-  public sealed class HistogramUniform
+  public interface IHistogram<TKey>
   {
-    public int BucketCount { get; }
+    void Add(System.Collections.Generic.IEnumerable<TKey> keys);
+    System.ReadOnlySpan<int> Bins { get; }
+    int Count { get; }
+    int MaxValue { get; }
+    int MinValue { get; }
+  }
 
-    public double MaximumValue { get; }
-    public double MinimumValue { get; }
+  public sealed class Histogram1
+    //: IHistogram<double>
+  {
+    private readonly int[] m_bins;
 
-    private readonly int[] m_buckets;
+    public readonly double[] m_binRanges;
+
+    public Histogram1(params double[] binRanges)
+    {
+      m_bins = new int[1 + binRanges.Length + 1];
+
+      m_binRanges = binRanges;
+    }
+
     /// <summary>Contains the requested buckets plus underflow/overflow buckets for values outside of min/max.</summary>
-    public System.ReadOnlySpan<int> Buckets
-      => (System.ReadOnlySpan<int>)m_buckets;
+    public System.ReadOnlySpan<int> Bins
+      => (System.ReadOnlySpan<int>)m_bins;
 
-    public HistogramUniform(int bucketCount, double minimumValue, double maximumValue)
-    {
-      BucketCount = bucketCount;
+    public int Count
+      => m_bins.Length;
 
-      m_buckets = new int[1 + BucketCount + 1];
+    public double MaxValue
+      => m_binRanges[^1];
+    public double MinValue
+      => m_binRanges[0];
 
-      MaximumValue = maximumValue;
-      MinimumValue = minimumValue;
-    }
-    public HistogramUniform(int bucketCount, double minimumValue, double maximumValue, System.Collections.Generic.IEnumerable<double> values)
-      : this(bucketCount, minimumValue, maximumValue)
-    {
-      AddTo(values);
-    }
-
-    public void AddTo(System.Collections.Generic.IEnumerable<double> values)
+    public void Add(System.Collections.Generic.IEnumerable<double> values)
     {
       foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
       {
-        var bucketIndex = System.Convert.ToInt32(Maths.Rescale(value, MinimumValue, MaximumValue, 1, BucketCount));
+        var binIndex = System.Convert.ToInt32(Maths.Rescale(value, MinValue, MaxValue, 1, m_bins.Length));
 
-        if (value < MinimumValue)
-          m_buckets[0]++;
-        else if (value > MaximumValue)
-          m_buckets[BucketCount + 1]++;
+        if (value < MinValue)
+          m_bins[0]++;
+        else if (value > MaxValue)
+          m_bins[Count + 1]++;
         else // If within the boundary of min and max.
-          m_buckets[bucketIndex]++;
+          m_bins[binIndex]++;
       }
     }
   }
+
+  //public sealed class Histogram2<TKey>
+  //  : IHistogram<int>
+  //{
+  //  private readonly int[] m_bins;
+
+  //  public readonly int m_maxValue;
+  //  public readonly int m_minValue;
+
+  //  public Histogram2(int minValue, int maxValue)
+  //  {
+  //    m_bins = new int[1 + binRanges.Length + 1];
+
+  //    m_minValue = minValue;
+  //    m_maxValue = maxValue;
+  //  }
+
+  //  /// <summary>Contains the requested buckets plus underflow/overflow buckets for values outside of min/max.</summary>
+  //  public System.ReadOnlySpan<int> Bins
+  //    => (System.ReadOnlySpan<int>)m_bins;
+
+  //  public int Count
+  //    => m_bins.Length;
+
+  //  public int MaxValue
+  //    => m_maxValue;
+  //  public int MinValue
+  //    => m_minValue;
+
+  //  public void Add(System.Collections.Generic.IEnumerable<int> values)
+  //  {
+  //    foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
+  //    {
+  //      var binIndex = System.Convert.ToInt32(Maths.Rescale(value, MinValue, MaxValue, 1, m_bins.Length));
+
+  //      if (value < MinValue)
+  //        m_bins[0]++;
+  //      else if (value > MaxValue)
+  //        m_bins[Count + 1]++;
+  //      else // If within the boundary of min and max.
+  //        m_bins[binIndex]++;
+  //    }
+  //  }
+  //}
 }

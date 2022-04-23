@@ -21,7 +21,7 @@ namespace Flux
         MetricMultiplicativePrefix.Deci => "d",
         MetricMultiplicativePrefix.Centi => "c",
         MetricMultiplicativePrefix.Milli => "m",
-        MetricMultiplicativePrefix.Micro => preferUnicode ? "\u03bc" : "\u00b5",
+        MetricMultiplicativePrefix.Micro => preferUnicode ? "\u03bc" : "µ",
         MetricMultiplicativePrefix.Nano => "n",
         MetricMultiplicativePrefix.Pico => "p",
         MetricMultiplicativePrefix.Femto => "f",
