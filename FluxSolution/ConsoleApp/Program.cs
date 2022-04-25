@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -11,22 +12,22 @@ using Flux;
 
 namespace ConsoleApp
 {
+
   public class Program
   {
-
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
-
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
       a = a.Reverse().ToArray();
 
-      var h = new Flux.Histogram1(1, 4, 8, 12, 16);
-      h.Add(a.Select(i => (double)i));
-      
+      var h = new Flux.DataStructures.SimpleHistogram<int>();
+      h.Add(new int[] { 1, 4, 8, 12, 16 });
+      h.Add(a);
+      //h.Add(a.Select(i => (double)i));
+
       //var lower = 0;
       //var middle = 0;
       //var upper = 0;
