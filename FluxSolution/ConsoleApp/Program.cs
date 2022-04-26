@@ -21,11 +21,18 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
+
+      var hb = new Flux.DataStructures.HistogramX();
+      foreach(var a1 in a)
+        hb.AddValue(a1);
+
       a = a.Reverse().ToArray();
 
       var h = new Flux.DataStructures.SimpleHistogram<int>();
-      h.Add(new int[] { 1, 4, 8, 12, 16 });
-      h.Add(a);
+      h.Add(new int[] { 1, 2, 2, 3, 5 });
+      // h.Add(a);
+      var pmf = h.ToProbabilityMassFunction();
+      var cdf = h.CumulativeDistributionFunction(3);
       //h.Add(a.Select(i => (double)i));
 
       //var lower = 0;

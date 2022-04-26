@@ -12,8 +12,8 @@ namespace Flux
       => PercentileRank(source, value, System.Collections.Generic.Comparer<T>.Default);
 
     /// <summary>Computes the percentile ranks of all values in the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it.</summary>
-    public static System.Collections.Generic.IDictionary<TValue, double> PercentileRank<TValue>(this System.Collections.Generic.IDictionary<TValue, int> source, int sumOfAllFrequencies)
-      where TValue : notnull
+    public static System.Collections.Generic.SortedDictionary<TKey, double> PercentileRank<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int sumOfAllFrequencies)
+      where TKey : notnull
       => CumulativeMassFunction(source, sumOfAllFrequencies, 100);
 
     ///// <summary>The percentile rank (PR), is the function that maps values to their percentile rank in a distribution.</summary>
