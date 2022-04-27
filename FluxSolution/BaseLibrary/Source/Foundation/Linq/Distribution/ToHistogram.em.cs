@@ -19,7 +19,9 @@ namespace Flux
       foreach (var item in source)
       {
         var key = keySelector(item, index);
-        var frequency = frequencySelector(item, index++);
+        var frequency = frequencySelector(item, index);
+
+        index++;
         sumOfAllFrequencies += frequency;
 
         if (histogram.TryGetValue(key, out var value))
@@ -50,13 +52,13 @@ namespace Flux
 
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.SortedDictionary<TSource, int> ToHistogram<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, out int sumOfAllFrequencies, System.Collections.Generic.IComparer<TSource> comparer)
-      where TSource : notnull
+    public static System.Collections.Generic.SortedDictionary<TKey, int> ToHistogram<TKey>(this System.Collections.Generic.IEnumerable<TKey> source, out int sumOfAllFrequencies, System.Collections.Generic.IComparer<TKey> comparer)
+      where TKey : notnull
       => ToHistogram(source, (e, i) => e, (e, i) => 1, out sumOfAllFrequencies, comparer);
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. This version can be used for semi-aggregate data sources, hence the frequency selector. Uses the default comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.SortedDictionary<TSource, int> ToHistogram<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, out int sumOfAllFrequencies)
-      where TSource : notnull
-      => ToHistogram(source, (e, i) => e, (e, i) => 1, out sumOfAllFrequencies, System.Collections.Generic.Comparer<TSource>.Default);
+    public static System.Collections.Generic.SortedDictionary<TKey, int> ToHistogram<TKey>(this System.Collections.Generic.IEnumerable<TKey> source, out int sumOfAllFrequencies)
+      where TKey : notnull
+      => ToHistogram(source, (e, i) => e, (e, i) => 1, out sumOfAllFrequencies, System.Collections.Generic.Comparer<TKey>.Default);
   }
 }

@@ -12,6 +12,48 @@ using Flux;
 
 namespace ConsoleApp
 {
+  public class Histogram<TKey>
+  {
+    private System.Collections.Generic.IDictionary<TKey, int> m_data;
+    private int m_frequencySum;
+
+    public Histogram(System.Collections.Generic.IComparer<TKey> comparer)
+    {
+      m_data = new System.Collections.Generic.SortedDictionary<TKey, int>(comparer);
+      m_frequencySum = 0;
+    }
+    public Histogram()
+      : this(System.Collections.Generic.Comparer<TKey>.Default)
+    {
+    }
+
+    public System.Collections.Generic.IReadOnlyDictionary<TKey, int> Data
+      => (System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_data;
+    public int FrequencySum
+      => m_frequencySum;
+
+    public void Add<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector)
+    {
+      var index = 0;
+
+      foreach (var item in source)
+      {
+        var key = keySelector(item, index);
+        var frequency = frequencySelector(item, index);
+
+        m_frequencySum += frequency;
+
+        if (m_data.TryGetValue(key, out var value))
+          frequency += value;
+
+        m_data[key] = frequency;
+
+        index++;
+      }
+    }
+    public void Add(System.Collections.Generic.IEnumerable<TKey> source)
+      => Add(source, (e, i) => e, (e, i) => 1);
+  }
 
   public class Program
   {
@@ -21,18 +63,31 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
-
-      var hb = new Flux.DataStructures.HistogramX();
-      foreach(var a1 in a)
-        hb.AddValue(a1);
-
       a = a.Reverse().ToArray();
 
-      var h = new Flux.DataStructures.SimpleHistogram<int>();
-      h.Add(new int[] { 1, 2, 2, 3, 5 });
-      // h.Add(a);
-      var pmf = h.ToProbabilityMassFunction();
-      var cdf = h.CumulativeDistributionFunction(3);
+      var hg = new Histogram<int>();
+      hg.Add(a, (e, i) => e, (e, i) => 1);
+
+      var h = a.ToHistogram(out var sof);
+      System.Console.WriteLine($"{string.Join(System.Environment.NewLine, h)} ({sof})");
+      System.Console.WriteLine();
+
+      var pmf = h.ProbabilityMassFunction(sof);
+      System.Console.WriteLine($"PMF: {string.Join(System.Environment.NewLine, pmf)}");
+      System.Console.WriteLine();
+
+      var cdf = h.CumulativeMassFunction(sof);
+      System.Console.WriteLine($"CDF: {string.Join(System.Environment.NewLine, cdf)}");
+      System.Console.WriteLine();
+
+      var pr = h.PercentRank(sof);
+      System.Console.WriteLine($" PR: {string.Join(System.Environment.NewLine, pr)}");
+      System.Console.WriteLine();
+
+      var pl = h.PercentileRank(sof);
+      System.Console.WriteLine($" PL: {string.Join(System.Environment.NewLine, pl)}");
+      System.Console.WriteLine();
+      return;
       //h.Add(a.Select(i => (double)i));
 
       //var lower = 0;
