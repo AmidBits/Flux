@@ -1,34 +1,46 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructures.Statistics
 {
   //public interface IHistogramBin
   //{
   //  public int Count { get; }
   //}
 
-  public struct HistogramBin
-    : System.IComparable<double>, System.IComparable<HistogramBin>, System.IEquatable<HistogramBin>
+  /// <summary>A bin (a.k.a. bucket) for a histogram.</summary>
+  public record struct Bin
+    : System.IComparable<double>, System.IComparable<Bin>
   {
     private int m_count;
 
-    private readonly double m_lowerBound;
-    private readonly double m_upperBound;
+    private double m_lowerBound;
+    private double m_upperBound;
 
-    public HistogramBin(double lowerBound, double upperBound, int count = 0)
+    public Bin(double lowerBound, double upperBound, int count)
     {
+      if (lowerBound > upperBound) throw new System.ArgumentOutOfRangeException(nameof(lowerBound));
+      if (upperBound < lowerBound) throw new System.ArgumentOutOfRangeException(nameof(upperBound));
+      if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+
       m_count = count;
 
       m_lowerBound = lowerBound;
       m_upperBound = upperBound;
     }
-
+    public Bin(double value, int count)
+      : this(value, value, count)
+    {
+    }
 
     /// <summary>The number of datapoints in the bin.</summary>
     public int Count { get => m_count; set => m_count = value; }
 
+    //public bool HasWidth => m_lowerBound != m_upperBound;
+
     /// <summary>The lower bound of the bin.</summary>
-    public double LowerBound => m_lowerBound;
+    public double LowerBound { get => m_lowerBound; set => m_lowerBound = value; }
     /// <summary>The upper bound of the bin.</summary>
-    public double UpperBound => m_upperBound;
+    public double UpperBound { get => m_upperBound; set => m_upperBound = value; }
+
+    public string AutoLabel => m_lowerBound != m_upperBound ? $"{m_lowerBound} - {m_upperBound}" : m_lowerBound.ToString();
 
     /// <summary>Width of the bin.</summary>
     public double Width => m_upperBound - m_lowerBound;
@@ -44,67 +56,81 @@ namespace Flux.DataStructures
     public int CompareTo(double x)
       => UpperBound < x ? -1 : LowerBound > x ? 1 : 0;
 
-    public int CompareTo(HistogramBin other)
+    public int CompareTo(Bin other)
     {
       if (UpperBound > other.LowerBound && LowerBound < other.UpperBound)
         throw new System.ArgumentException("The bins overlap.");
 
       return LowerBound < other.LowerBound ? -1 : 1;
     }
-
-    public bool Equals(HistogramBin other)
-      => m_count == other.m_count && m_lowerBound == other.m_lowerBound && m_upperBound == other.m_upperBound;
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] object? obj)
-      => obj is var o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_count, m_lowerBound, m_upperBound);
     public override string ToString()
-      => $"{GetType().Name} {{ {m_lowerBound} - {m_upperBound} = {m_count} }}";
+      => $"{GetType().Name} {{ {AutoLabel} = {m_count} }}";
     #endregion Object overrides
   }
 
-  public class HistogramX
+  public class Histogram
   {
-    private readonly List<HistogramBin> m_bins;
+    private readonly List<Bin> m_bins;
 
-    public HistogramX(params HistogramBin[] bins)
+    private Bin m_binGreaterThan;
+    private Bin m_binInBetween;
+    private Bin m_binLessThan;
+
+    public Histogram(params Bin[] bins)
     {
       m_bins = new();
 
       foreach (var bin in bins)
         AddBin(bin);
+
+      m_bins.Sort();
+
+      m_binGreaterThan = new(double.MaxValue, 0);
+      m_binInBetween = new(0, 0);
+      m_binLessThan = new(double.MinValue, 0);
     }
 
-    public void AddBin(HistogramBin bin)
+    public Bin AddBin(Bin bin)
     {
       if (m_bins.Contains(bin)) throw new System.ArgumentException($"The bin already exist.");
 
       m_bins.Add(bin);
       m_bins.Sort();
+
+      return bin;
     }
 
-    public void AddValue(double value)
+    public Bin AddValue(double value)
     {
-      if (m_bins.Any(b => b.CompareTo(value) == 0))
+      for (var i = 0; i < m_bins.Count; i++)
       {
-        for (var i = 0; i < m_bins.Count; i++)
+        var bin = m_bins[i];
+
+        if (bin.CompareTo(value) == 0)
         {
-          var bin = m_bins[i];
-          if (bin.CompareTo(value) == 0)
-          {
-            bin.Count += 1;
-            m_bins[i] = bin;
-          }
+          bin.Count += 1;
+
+          m_bins[i] = bin;
+
+          return bin;
         }
       }
-      else
-      {
-        var bin = new HistogramBin(value, value, 1);
-        AddBin(bin);
-      }
+
+      if (m_bins[0].CompareTo(value) < 0)
+        m_binLessThan.Count++;
+      if (m_bins[m_bins.Count - 1].CompareTo(value) > 0)
+        m_binGreaterThan.Count++;
+      return AddBin(new Bin(value, value, 1)); // No bin exists, create one specific for the value.
+    }
+
+    public override string ToString()
+    {
+      return $"{GetType().Name} {{ {string.Join(", ", m_bins)} }}";
     }
   }
 

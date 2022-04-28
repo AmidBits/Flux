@@ -3,15 +3,15 @@ namespace Flux
   public static partial class Maths // Full (integer) rounding:
   {
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when equally distant between two intervals.</summary>
-    public static decimal RoundToMultipleOf(decimal value, decimal interval, FullRounding mode)
+    public static decimal RoundToMultiple(decimal value, decimal interval, FullRounding mode)
       => Round(value / interval, mode) * interval;
 
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when equally distant between two intervals.</summary>
-    public static double RoundToMultipleOf(double value, double interval, FullRounding mode)
+    public static double RoundToMultiple(double value, double interval, FullRounding mode)
       => Round(value / interval, mode) * interval;
 
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
-    public static int RoundToMultipleOf(int number, int interval, FullRounding mode)
+    public static int RoundToMultiple(int number, int interval, FullRounding mode)
     {
       if (number % interval is var remainder && remainder == 0)
         return number;
@@ -28,7 +28,7 @@ namespace Flux
       };
     }
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
-    public static long RoundToMultipleOf(long number, long interval, FullRounding mode)
+    public static long RoundToMultiple(long number, long interval, FullRounding mode)
     {
       if (number % interval is var remainder && remainder == 0)
         return number;
@@ -49,11 +49,11 @@ namespace Flux
   public static partial class Maths // Half (midpoint) rounding:
   {
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when equally distant between two intervals.</summary>
-    public static decimal RoundToMultipleOf(decimal value, decimal interval, HalfRounding mode)
+    public static decimal RoundToMultiple(decimal value, decimal interval, HalfRounding mode)
     => Round(value / interval, mode) * interval;
 
     /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when equally distant between two intervals.</summary>
-    public static double RoundToMultipleOf(double value, double interval, HalfRounding mode)
+    public static double RoundToMultiple(double value, double interval, HalfRounding mode)
       => Round(value / interval, mode) * interval;
   }
 }

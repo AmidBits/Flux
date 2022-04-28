@@ -11,5 +11,24 @@ namespace Flux
     public const double EpsilonCpp64 = 2.2204460492503131E-016; // System.Math.Exp(-52 * System.Math.Log(2)); System.Math.Pow(2, -52);
     /// <summary>A C# epsilon for System.Double.</summary>
     public const double Epsilon1E15 = 1E-15d;
+
+    public static double ComputeMachineEpsilonNegative()
+    {
+      var epsilon = 1d;
+
+      while (epsilon / 2d is var half && (1d - half) < 1d)
+        epsilon = half;
+
+      return epsilon;
+    }
+    public static double ComputeMachineEpsilonPositive()
+    {
+      var epsilon = 1d;
+
+      while (epsilon / 2d is var half && (1d + half) > 1d)
+        epsilon = half;
+
+      return epsilon;
+    }
   }
 }

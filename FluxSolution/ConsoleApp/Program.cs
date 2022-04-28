@@ -19,16 +19,31 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+     
+      //for (var i = 0; i < 21; i++)
+      //  System.Console.WriteLine($"{i} = {System.Math.Log(i, 10)}");
+
+      var lo10 = System.Math.Log(399000, 10);
+      var l5 = System.Math.Pow(10, 5);
+      var l6 = System.Math.Pow(10, 6);
+      var z = 399000.0.RoundToNearestPower(10);
 
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
 
-      var hb = new Flux.DataStructures.HistogramX();
-      foreach(var a1 in a)
+      var hb = new Flux.DataStructures.Statistics.Histogram();
+      //hb.AddBin(new Flux.DataStructures.Statistics.Bin(int.MinValue, 1, 0));
+      hb.AddBin(new Flux.DataStructures.Statistics.Bin(1, 4, 0));
+      hb.AddBin(new Flux.DataStructures.Statistics.Bin(4, 9, 0));
+      hb.AddBin(new Flux.DataStructures.Statistics.Bin(9, 13, 0));
+      //hb.AddBin(new Flux.DataStructures.Statistics.Bin(13, int.MaxValue, 0));
+      foreach (var a1 in a)
         hb.AddValue(a1);
+
+      System.Console.WriteLine(hb.ToString());
 
       a = a.Reverse().ToArray();
 
-      var h = new Flux.DataStructures.SimpleHistogram<int>();
+      var h = new Flux.DataStructures.Statistics.SimpleHistogram<int>();
       h.Add(new int[] { 1, 2, 2, 3, 5 });
       // h.Add(a);
       var pmf = h.ToProbabilityMassFunction();
