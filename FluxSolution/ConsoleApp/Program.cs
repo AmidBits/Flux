@@ -12,54 +12,6 @@ using Flux;
 
 namespace ConsoleApp
 {
-  public class Histogram<TKey>
-  {
-    private System.Collections.Generic.IDictionary<TKey, int> m_data;
-    private int m_frequencySum;
-
-    public Histogram(System.Collections.Generic.IEnumerable<TKey> collection, System.Collections.Generic.IComparer<TKey> comparer)
-    {
-      m_data = new System.Collections.Generic.SortedDictionary<TKey, int>(comparer);
-
-      Add(collection, (e, i) => e, (e, i) => 1);
-
-      m_frequencySum = 0;
-    }
-    public Histogram(System.Collections.Generic.IEnumerable<TKey> collection)
-      : this(collection, System.Collections.Generic.Comparer<TKey>.Default) { }
-    public Histogram()
-      : this(System.Linq.Enumerable.Empty<TKey>()) { }
-
-    public System.Collections.Generic.IReadOnlyDictionary<TKey, int> Data
-      => (System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_data;
-    public int FrequencySum
-      => m_frequencySum;
-
-    public void Add<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      var index = 0;
-
-      foreach (var item in source)
-      {
-        var key = keySelector(item, index);
-        var frequency = frequencySelector(item, index);
-
-        m_frequencySum += frequency;
-
-        if (m_data.TryGetValue(key, out var value))
-          frequency += value;
-
-        m_data[key] = frequency;
-
-        index++;
-      }
-    }
-    public void Add(System.Collections.Generic.IEnumerable<TKey> source)
-      => Add(source, (e, i) => e, (e, i) => 1);
-  }
-
   public class Program
   {
     private static void TimedMain(string[] args)
@@ -67,32 +19,49 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
-      a = a.Reverse().ToArray();
+      var intervals = new double[] { 18, 25, 35, 45, 55, 65 };
 
-      var hg = new Histogram<int>();
-      hg.Add(a, (e, i) => e, (e, i) => 1);
+      var hbi1 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(1000).CreateClosedOpen(intervals, i => i, (lo, hi) => $"[{lo},{hi})", i => 1);
+      System.Console.WriteLine(hbi1);
 
-      var h = a.ToHistogram(out var sof);
-      System.Console.WriteLine($"{string.Join(System.Environment.NewLine, h)} ({sof})");
-      System.Console.WriteLine();
+      //var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(18, 25, 35, 45, 55, 65);
+      ////var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
 
-      var pmf = h.ProbabilityMassFunction(sof);
-      System.Console.WriteLine($"PMF: {string.Join(System.Environment.NewLine, pmf)}");
-      System.Console.WriteLine();
+      //var a = new int[] { 1000, 13, 12, 11, 8, 4, 3, 2, 1, 1, 1, -1 };
+      //a = a.Reverse().ToArray();
 
-      var cdf = h.CumulativeMassFunction(sof);
-      System.Console.WriteLine($"CDF: {string.Join(System.Environment.NewLine, cdf)}");
-      System.Console.WriteLine();
+      //foreach (var av in new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(100))
+      //  hbi.AddValue(av);
 
-      var pr = h.PercentRank(sof);
-      System.Console.WriteLine($" PR: {string.Join(System.Environment.NewLine, pr)}");
-      System.Console.WriteLine();
+      var hbi2 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 20).Take(20).CreateDegenerate(i => (double)i, i => 1);
+      System.Console.WriteLine(hbi2);
 
-      var pl = h.PercentileRank(sof);
-      System.Console.WriteLine($" PL: {string.Join(System.Environment.NewLine, pl)}");
-      System.Console.WriteLine();
       return;
+
+      //var hg = new Histogram<int>();
+      //hg.Add(a, (e, i) => e, (e, i) => 1);
+
+      //var h = a.ToHistogram(out var sof);
+      //System.Console.WriteLine($"{string.Join(System.Environment.NewLine, h)} ({sof})");
+      //System.Console.WriteLine();
+
+      //var pmf = h.ProbabilityMassFunction(sof);
+      //System.Console.WriteLine($"PMF: {string.Join(System.Environment.NewLine, pmf)}");
+      //System.Console.WriteLine();
+
+      //var cdf = h.CumulativeMassFunction(sof);
+      //System.Console.WriteLine($"CDF: {string.Join(System.Environment.NewLine, cdf)}");
+      //System.Console.WriteLine();
+
+      //var pr = h.PercentRank(sof);
+      //System.Console.WriteLine($" PR: {string.Join(System.Environment.NewLine, pr)}");
+      //System.Console.WriteLine();
+
+      //var pl = h.PercentileRank(sof);
+      //System.Console.WriteLine($" PL: {string.Join(System.Environment.NewLine, pl)}");
+      //System.Console.WriteLine();
+      //return;
+
       //h.Add(a.Select(i => (double)i));
 
       //var lower = 0;
@@ -123,47 +92,47 @@ namespace ConsoleApp
       //System.Console.WriteLine("Middle: " + middle);
       //System.Console.WriteLine("Lower: " + lower);
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum1).CumulativeMassFunction(sum1)));
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum2).PercentRank(sum2)));
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum3).PercentileRank(sum3)));
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum1).CumulativeMassFunction(sum1)));
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum2).PercentRank(sum2)));
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum3).PercentileRank(sum3)));
+      ////return;
+
+      //var b = a.Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, (double)i / (double)(i + (a.Length - i - 1)))).ToArray();
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, b));
+
+      //var e = b.ExtremaClosestToKey(t => t.Key, 5);
+      //System.Console.WriteLine(e);
+
+      //var ipx = LinearInterpolation.ImputeUnit(e.elementLt.Key, e.elementGt.Key, 5);
+
+      //var ip = LinearInterpolation.Interpolate(5, e.elementGt.Value, e.elementLt.Value);
+      //System.Console.WriteLine(ip);
+
+
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum).CumulativeMassFunction(sum)));
       //return;
 
-      var b = a.Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, (double)i / (double)(i + (a.Length - i - 1)))).ToArray();
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, b));
+      //var enumElements = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum).ToArray();
+      //foreach (var enumType in enumElements)
+      //  System.Console.WriteLine(enumType.FullName);
+      //return;
 
-      var e = b.ExtremaClosestToKey(t => t.Key, 5);
-      System.Console.WriteLine(e);
+      //System.Console.Write($"It's a ");
+      //Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
+      //System.Console.Write($" and some ");
+      //Flux.Console.WriteInformation($"{nameof(Flux.Console.WriteInformation)}");
+      //System.Console.Write($" with a bit of ");
+      //Flux.Console.WriteSuccess($"{nameof(Flux.Console.WriteSuccess)}");
+      //System.Console.Write($" as well as a ");
+      //Flux.Console.WriteWarning($"{nameof(Flux.Console.WriteWarning)}");
+      //System.Console.WriteLine($".");
 
-      var ipx = LinearInterpolation.ImputeUnit(e.elementLt.Key, e.elementGt.Key, 5);
-
-      var ip = LinearInterpolation.Interpolate(5, e.elementGt.Value, e.elementLt.Value);
-      System.Console.WriteLine(ip);
-
-
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, a.ToHistogram((e, i) => e, out var sum).CumulativeMassFunction(sum)));
-      return;
-
-      var enumElements = Flux.AssemblyInfo.Flux.Assembly.GetTypes().Where(t => t.IsEnum).ToArray();
-      foreach (var enumType in enumElements)
-        System.Console.WriteLine(enumType.FullName);
-      return;
-
-      System.Console.Write($"It's a ");
-      Flux.Console.WriteError($"{nameof(Flux.Console.WriteError)}");
-      System.Console.Write($" and some ");
-      Flux.Console.WriteInformation($"{nameof(Flux.Console.WriteInformation)}");
-      System.Console.Write($" with a bit of ");
-      Flux.Console.WriteSuccess($"{nameof(Flux.Console.WriteSuccess)}");
-      System.Console.Write($" as well as a ");
-      Flux.Console.WriteWarning($"{nameof(Flux.Console.WriteWarning)}");
-      System.Console.WriteLine($".");
-
-      foreach (System.ConsoleColor color in System.Enum.GetValues(typeof(System.ConsoleColor)))
-      {
-        System.Console.ForegroundColor = color;
-        System.Console.WriteLine(color.ToString());
-        System.Console.ResetColor();
-      }
+      //foreach (System.ConsoleColor color in System.Enum.GetValues(typeof(System.ConsoleColor)))
+      //{
+      //  System.Console.ForegroundColor = color;
+      //  System.Console.WriteLine(color.ToString());
+      //  System.Console.ResetColor();
+      //}
     }
 
     private static void Main(string[] args)
