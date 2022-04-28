@@ -77,46 +77,8 @@ namespace Flux
     : System.Collections.Generic.SortedDictionary<TKey, int>
     where TKey : notnull
   {
-    //#region Static methods
-    //public void AddDegenerate(int frequency, double value, System.Func<double, TKey> keySelector)
-    //{
-    //  var key = keySelector(value);
-
-    //  m_histogram[key] = m_histogram.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
-    //}
-    //public void AddClosedOpen(int frequency, double value, System.Collections.Generic.IList<double> intervals, System.Func<double, double, TKey> keySelector)
-    //{
-    //  var key = GetIntervalKey(value, intervals);
-
-    //  m_histogram[key] = m_histogram.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
-
-    //  TKey GetIntervalKey(double value, System.Collections.Generic.IList<double> intervals)
-    //  {
-    //    if (value < intervals[0])
-    //      return keySelector(double.NegativeInfinity, intervals[0]);
-
-    //    for (var i = 1; i < intervals.Count; i++)
-    //      if (value < intervals[i])
-    //        return keySelector(intervals[i - 1], intervals[i]);
-
-    //    return keySelector(intervals[intervals.Count - 1], double.PositiveInfinity);
-    //  }
-    //}
-    //#endregion Static methods
-
-    //#region Implemented interfaces
-    //// IReadOnlyDictionary<,>
-    //public int this[TKey key] => m_histogram[key];
-    //public System.Collections.Generic.IEnumerable<TKey> Keys => m_histogram.Keys;
-    //public System.Collections.Generic.IEnumerable<int> Values => m_histogram.Values;
-    //public int Count => m_histogram.Count;
-    //public bool ContainsKey(TKey key) => m_histogram.ContainsKey(key);
-    //public System.Collections.Generic.IEnumerator<KeyValuePair<TKey, int>> GetEnumerator() => m_histogram.GetEnumerator();
-    //public bool TryGetValue(TKey key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out int value) => m_histogram.TryGetValue(key, out value);
-    //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.IEnumerable)m_histogram).GetEnumerator();
-    //#endregion Implemented interfaces
-
-    public override string ToString() => string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(this, kvp => $"{kvp.Key}\t:\t{kvp.Value}"));
+    public override string ToString() 
+      => string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(this, kvp => $"{kvp.Key}\t:\t{kvp.Value}"));
   }
 
   public interface IBucket
