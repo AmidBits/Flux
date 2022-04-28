@@ -17,15 +17,18 @@ namespace ConsoleApp
     private System.Collections.Generic.IDictionary<TKey, int> m_data;
     private int m_frequencySum;
 
-    public Histogram(System.Collections.Generic.IComparer<TKey> comparer)
+    public Histogram(System.Collections.Generic.IEnumerable<TKey> collection, System.Collections.Generic.IComparer<TKey> comparer)
     {
       m_data = new System.Collections.Generic.SortedDictionary<TKey, int>(comparer);
+
+      Add(collection, (e, i) => e, (e, i) => 1);
+
       m_frequencySum = 0;
     }
+    public Histogram(System.Collections.Generic.IEnumerable<TKey> collection)
+      : this(collection, System.Collections.Generic.Comparer<TKey>.Default) { }
     public Histogram()
-      : this(System.Collections.Generic.Comparer<TKey>.Default)
-    {
-    }
+      : this(System.Linq.Enumerable.Empty<TKey>()) { }
 
     public System.Collections.Generic.IReadOnlyDictionary<TKey, int> Data
       => (System.Collections.Generic.IReadOnlyDictionary<TKey, int>)m_data;
@@ -34,6 +37,8 @@ namespace ConsoleApp
 
     public void Add<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, int> frequencySelector)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var index = 0;
 
       foreach (var item in source)
