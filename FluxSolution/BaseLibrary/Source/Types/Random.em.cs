@@ -9,13 +9,31 @@ namespace Flux
     /// <summary>Generates an array with the specified count of random bytes.</summary>
     public static byte[] GetRandomBytes([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, int count)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
       var buffer = new byte[count];
-      (source ?? throw new System.ArgumentNullException(nameof(source))).NextBytes(buffer);
+      source.NextBytes(buffer);
       return buffer;
     }
     /// <summary>Generates a span with the specified count of random bytes.</summary>
-    public static System.Span<byte> GetRandomByteSpan([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, int count)
+    public static System.ReadOnlySpan<byte> GetRandomByteSpan([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, int count)
       => GetRandomBytes(source, count);
+
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetRandomBigIntegers([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, System.Numerics.BigInteger minValue, System.Numerics.BigInteger maxValue)
+    {
+      while (true)
+        yield return source.NextBigInteger(minValue, maxValue);
+    }
+    public static System.Collections.Generic.IEnumerable<int> GetRandomInt32s([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, int minValue, int maxValue)
+    {
+      while (true)
+        yield return source.Next(minValue, maxValue);
+    }
+    public static System.Collections.Generic.IEnumerable<long> GetRandomInt64s([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, long minValue, long maxValue)
+    {
+      while (true)
+        yield return source.NextInt64(minValue, maxValue);
+    }
 
     /// <summary>Returns a non-negative random BigInteger that is less than the specified maxValue.</summary>
     public static System.Numerics.BigInteger NextBigInteger([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, System.Numerics.BigInteger maxValue)

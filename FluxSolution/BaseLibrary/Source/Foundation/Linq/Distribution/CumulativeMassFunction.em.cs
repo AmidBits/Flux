@@ -6,6 +6,29 @@ namespace Flux
   {
     // http://www.greenteapress.com/thinkstats/thinkstats.pdf
 
+    /// <summary>The CDF is the function that maps values to their percentile rank, in a probability range [0, 1], in a distribution.</summary>
+    /// <remarks>For consistency, a discrete CDF should be called a cumulative mass function(CMF), but that seems just ignored.</remarks>
+    public static System.Collections.Generic.SortedDictionary<TKey, double> CumulativeMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int frequencySum, double factor = 1)
+      where TKey : notnull
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var cmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
+
+      var counter = 0;
+
+      foreach (var kvp in source.OrderBy(kvp => kvp.Key))
+      {
+        counter += kvp.Value;
+
+        cmf.Add(kvp.Key, counter / (double)frequencySum * factor);
+      }
+
+      return cmf;
+    }
+
+
+
     /// <summary>The CDF is the function that maps values to their percentil rank, in a probability range [0, 1], in a distribution. Uses the specified comparer.</summary>
     public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue> comparer)
     {
@@ -26,26 +49,5 @@ namespace Flux
     /// <summary>The CDF is the function that maps values to their percentil rank, in a probability range [0, 1], in a distribution. Uses the default comparer.</summary>
     public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value)
       => CumulativeMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
-
-    /// <summary>The CDF is the function that maps values to their percentile rank, in a probability range [0, 1], in a distribution.</summary>
-    /// <remarks>For consistency, a discrete CDF should be called a cumulative mass function(CMF), but that seems just ignored.</remarks>
-    public static System.Collections.Generic.SortedDictionary<TKey, double> CumulativeMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int sumOfAllFrequencies, double factor = 1)
-      where TKey : notnull
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      var pmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
-
-      var counter = 0;
-
-      foreach (var kvp in source.OrderBy(kvp => kvp.Key))
-      {
-        counter += kvp.Value;
-
-        pmf.Add(kvp.Key, counter / (double)sumOfAllFrequencies * factor);
-      }
-
-      return pmf;
-    }
   }
 }
