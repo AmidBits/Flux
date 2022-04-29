@@ -21,14 +21,40 @@ namespace ConsoleApp
 
       var intervals = new double[] { 18, 25, 35, 45, 55, 65 };
 
-      var hbi1 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(1000).CreateClosedOpen(intervals, i => i, (lo, hi) => $"[{lo},{hi})", i => 1);
+      var hbi1 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(1000).CreateClosedOpen(intervals, i => i, (lo, hi) => $"[{lo},{hi})", i => 1, true);
       System.Console.WriteLine(hbi1);
 
       //var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(18, 25, 35, 45, 55, 65);
       ////var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
 
-      //var a = new int[] { 1000, 13, 12, 11, 8, 4, 3, 2, 1, 1, 1, -1 };
-      //a = a.Reverse().ToArray();
+      var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
+      a = a.Reverse().ToArray();
+      //a = new int[] { 1, 2, 3, 6, 6, 6, 7, 8, 9 };
+      //a = new int[] { 1, 2, 3, 4, 4, 5, 6, 7, 8 };
+      a = new int[] { 2, 4, 5, 6, 6, 7, 9, 12, 14, 15, 18, 19, 22, 24, 26, 28 };
+      //a = new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
+      //a = new int[] { 15, 20, 35, 40, 50 };
+
+      var v1 = Flux.Enumerable.PercentRankV1(2, 5);
+      var v2 = Flux.Enumerable.PercentileRankInc(0.4, 5);
+      var v3 = Flux.Enumerable.PercentileRankExc(0.4, 5);
+
+      var pmf = a.ProbabilityMassFunction(item => item, item => 1, 1);
+      var cmf = a.CumulativeMassFunction(a => a, a => 1, 1);
+
+      var pr1 = a.ToHistogram(out var sum).PercentRank();
+      var prl = a.ToHistogram(out var sum1).PercentileRank(sum1);
+      var pr2 = a.PercentRank(a => a, a => 1, 1);
+
+      var percentile = 50;
+
+      var ptl = a.PercentileRank(a.Length);
+      var prs1 = a.PercentRanksV1(a => a, a => 1);
+      var pinc2 = a.PercentileValueInc(percentile);
+      var pexc3 = a.PercentileValueExc(percentile);
+
+      var pon = Maths.PercentileOrdinalNearest(0.05, 10);
+      var pol = Maths.PercentileOrdinalLerp(0.05, 10);
 
       //foreach (var av in new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(100))
       //  hbi.AddValue(av);
@@ -36,12 +62,10 @@ namespace ConsoleApp
       var hbi2 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 20).Take(20).CreateDegenerate(i => (double)i, i => 1);
       System.Console.WriteLine(hbi2);
 
-      return;
-
       //var hg = new Histogram<int>();
       //hg.Add(a, (e, i) => e, (e, i) => 1);
 
-      //var h = a.ToHistogram(out var sof);
+      //var h = a.ToHistogram(out var sof); 
       //System.Console.WriteLine($"{string.Join(System.Environment.NewLine, h)} ({sof})");
       //System.Console.WriteLine();
 

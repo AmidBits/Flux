@@ -4,6 +4,150 @@ namespace Flux
   {
     // https://en.wikipedia.org/wiki/Percentile_rank
 
+    public enum Variant
+    {
+      Matlab,
+      PercentileInc,
+      PercentileExc,
+    }
+
+    public static double PercentRankV1(int index, int count)
+      => 100.0 / count * (index - 0.5) / 100.0;
+    public static double PercentileRankInc(double percentile, int count)
+      => percentile * (count - 1) + 1;
+    public static double PercentileRankExc(double percentile, int count)
+      => percentile * (count + 1);
+
+    /// <summary>Returns the percentile percent rank of the sequence.</summary>
+    public static System.Collections.Generic.SortedDictionary<TKey, double> PercentRanksV1<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
+      where TKey : notnull
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var keys = new System.Collections.Generic.HashSet<TKey>();
+
+      var pr1 = new System.Collections.Generic.SortedDictionary<TKey, double>();
+
+      var sumOfFrequencies = 0;
+
+      foreach (var item in source)
+      {
+        var key = keySelector(item);
+
+        keys.Add(key);
+
+        var frequency = frequencySelector(item);
+
+        sumOfFrequencies += frequency;
+
+        pr1[key] = pr1.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
+      }
+
+      var index = 1;
+
+      foreach (var key in keys.OrderBy(k => k))
+      {
+        pr1[key] = PercentRankV1(index, sumOfFrequencies);
+
+        index++;
+      }
+
+      return pr1;
+    }
+
+    public static double PercentileValueInc(this System.Collections.Generic.IList<int> source, double percentile)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
+
+      var x = PercentileRankInc(percentile, source.Count);
+      var m = x % 1;
+
+      var i = System.Convert.ToInt32(System.Math.Floor(x));
+
+      var v3 = source[System.Math.Clamp(i, 0, source.Count - 1)];
+      var v2 = source[System.Math.Clamp(i - 1, 0, source.Count - 1)];
+
+      return v2 + m * (v3 - v2);
+    }
+    public static double PercentileValueInc(this System.Collections.Generic.IList<int> source, int percentile)
+      => PercentileValueInc(source, percentile / 100.0);
+
+    public static double PercentileValueExc(this System.Collections.Generic.IList<int> source, double percentile)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
+
+      var x = PercentileRankExc(percentile, source.Count);
+      var m = x % 1;
+
+      var i = System.Convert.ToInt32(System.Math.Floor(x));
+
+      var v3 = source[System.Math.Clamp(i, 0, source.Count - 1)];
+      var v2 = source[System.Math.Clamp(i - 1, 0, source.Count - 1)];
+
+      return v2 + m * (v3 - v2);
+    }
+    public static double PercentileValueExc(this System.Collections.Generic.IList<int> source, int percentile)
+      => PercentileValueExc(source, percentile / 100.0);
+
+    public static System.Collections.Generic.IEnumerable<(double percentile, double percentileValue)> PercentRanksV3<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
+      where TKey : notnull
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var keys = new System.Collections.Generic.HashSet<TKey>();
+
+      var pr1 = new System.Collections.Generic.SortedDictionary<TKey, double>();
+
+      var sumOfFrequencies = 0;
+
+      foreach (var item in source)
+      {
+        var key = keySelector(item);
+
+        keys.Add(key);
+
+        var frequency = frequencySelector(item);
+
+        sumOfFrequencies += frequency;
+
+        pr1[key] = pr1.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
+      }
+
+      var index = 1;
+
+      foreach (var percentile in System.Linq.Enumerable.Range(0, 101))
+      {
+        var x = PercentileRankExc(percentile / 100.0, sumOfFrequencies);
+        //if (x < 1)
+        //{
+        //  x = 1;
+        //}
+        //else if (x > pr1.Count)
+        //{
+        //  x = pr1.Count;
+        //}
+        var i3 = System.Convert.ToInt32(System.Math.Floor(x));
+        var i2 = i3 - 1;
+        i3 = System.Math.Clamp(i3, 0, 4);
+        i2 = System.Math.Clamp(i2, 0, 4);
+        //if (i3 <= 0) i3++;
+        //var i2 = i3 - 1;
+        //if (i3 >= 5) i3 = 4;
+        //if (i2 >= 5) i2 = 4;
+
+        var v3 = System.Convert.ToInt32(pr1.ElementAt(i3).Key.ToString());
+        var v2 = System.Convert.ToInt32(pr1.ElementAt(i2).Key.ToString());
+        var m = x % 1;
+
+        yield return (percentile, v2 + m * (v3 - v2));
+
+        //index++;
+      }
+    }
+
+
     /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
     public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T> comparer)
       => 100.0 * CumulativeMassFunction(source, value, comparer);

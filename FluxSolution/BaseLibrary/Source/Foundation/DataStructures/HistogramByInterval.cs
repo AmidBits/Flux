@@ -21,7 +21,7 @@ namespace Flux
       return h;
     }
 
-    public static Histogram<TKey> CreateClosedOpen<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IList<double> intervals, System.Func<TSource, double> valueSelector, System.Func<double, double, TKey> keySelector, System.Func<TSource, int> frequencySelector)
+    public static Histogram<TKey> CreateClosedOpen<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IList<double> intervals, System.Func<TSource, double> valueSelector, System.Func<double, double, TKey> keySelector, System.Func<TSource, int> frequencySelector, bool removeSlushBuckets = false)
       where TKey : notnull
     {
       var h = new Histogram<TKey>();
@@ -35,6 +35,12 @@ namespace Flux
           h[key] = currentFrequency + frequency;
         else
           h.Add(key, frequency);
+      }
+
+      if (removeSlushBuckets)
+      {
+        h.Remove(h.First().Key);
+        h.Remove(h.Last().Key);
       }
 
       return h;
@@ -77,8 +83,8 @@ namespace Flux
     : System.Collections.Generic.SortedDictionary<TKey, int>
     where TKey : notnull
   {
-    public override string ToString() 
-      => string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(this, kvp => $"{kvp.Key}\t:\t{kvp.Value}"));
+    public override string ToString()
+      => string.Join(", ", System.Linq.Enumerable.Select(this, kvp => $"{kvp.Key}={kvp.Value}"));
   }
 
   public interface IBucket
