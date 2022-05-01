@@ -36,9 +36,7 @@ namespace ConsoleApp
       a = new int[] { 15, 20, 35, 40, 50 };
 
 //      var v1 = Flux.Enumerable.PercentRankMatlab(2, 5);
-      var v2 = Flux.Enumerable.PercentRankInc(0.4, 5);
-      var v3 = Flux.Enumerable.PercentRankExc(0.4, 5);
-
+  
       var pmf = a.ProbabilityMassFunction(item => item, item => 1, 1);
       var cmf = a.CumulativeMassFunction(a => a, a => 1, 1);
 
@@ -48,15 +46,13 @@ namespace ConsoleApp
 
       var percentile = 0.40;
 
-      var ptl = a.PercentileRank(a.Length);
-
       var princ = percentile.PercentRankInc(a.Length);
       var prexc = percentile.PercentRankExc(a.Length);
       var pvinc = a.PercentileValueInc(percentile);
       var pvexc = a.PercentileValueExc(percentile);
 
-      var pon = Maths.PercentileOrdinalNearest(0.05, 10);
-      var pol = Maths.PercentileOrdinalLerp(0.05, 10);
+      var pon = Maths.PercentileOrdinalNearest(percentile, a.Length);
+      var pol = Maths.PercentileOrdinalLerp(percentile, a.Length);
 
       //foreach (var av in new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(100))
       //  hbi.AddValue(av);
