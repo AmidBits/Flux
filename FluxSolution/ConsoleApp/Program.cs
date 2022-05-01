@@ -33,11 +33,11 @@ namespace ConsoleApp
       //a = new int[] { 1, 2, 3, 4, 4, 5, 6, 7, 8 };
       a = new int[] { 2, 4, 5, 6, 6, 7, 9, 12, 14, 15, 18, 19, 22, 24, 26, 28 };
       //a = new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
-      //a = new int[] { 15, 20, 35, 40, 50 };
+      a = new int[] { 15, 20, 35, 40, 50 };
 
-      var v1 = Flux.Enumerable.PercentRankV1(2, 5);
-      var v2 = Flux.Enumerable.PercentileRankInc(0.4, 5);
-      var v3 = Flux.Enumerable.PercentileRankExc(0.4, 5);
+//      var v1 = Flux.Enumerable.PercentRankMatlab(2, 5);
+      var v2 = Flux.Enumerable.PercentRankInc(0.4, 5);
+      var v3 = Flux.Enumerable.PercentRankExc(0.4, 5);
 
       var pmf = a.ProbabilityMassFunction(item => item, item => 1, 1);
       var cmf = a.CumulativeMassFunction(a => a, a => 1, 1);
@@ -46,12 +46,14 @@ namespace ConsoleApp
       var prl = a.ToHistogram(out var sum1).PercentileRank(sum1);
       var pr2 = a.PercentRank(a => a, a => 1, 1);
 
-      var percentile = 50;
+      var percentile = 0.40;
 
       var ptl = a.PercentileRank(a.Length);
-      var prs1 = a.PercentRanksV1(a => a, a => 1);
-      var pinc2 = a.PercentileValueInc(percentile);
-      var pexc3 = a.PercentileValueExc(percentile);
+
+      var princ = percentile.PercentRankInc(a.Length);
+      var prexc = percentile.PercentRankExc(a.Length);
+      var pvinc = a.PercentileValueInc(percentile);
+      var pvexc = a.PercentileValueExc(percentile);
 
       var pon = Maths.PercentileOrdinalNearest(0.05, 10);
       var pol = Maths.PercentileOrdinalLerp(0.05, 10);
