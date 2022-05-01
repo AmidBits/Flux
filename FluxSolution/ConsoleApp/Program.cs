@@ -35,8 +35,8 @@ namespace ConsoleApp
       //a = new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
       a = new int[] { 15, 20, 35, 40, 50 };
 
-//      var v1 = Flux.Enumerable.PercentRankMatlab(2, 5);
-  
+      //      var v1 = Flux.Enumerable.PercentRankMatlab(2, 5);
+
       var pmf = a.ProbabilityMassFunction(item => item, item => 1, 1);
       var cmf = a.CumulativeMassFunction(a => a, a => 1, 1);
 
@@ -48,8 +48,8 @@ namespace ConsoleApp
 
       var princ = percentile.PercentRankInc(a.Length);
       var prexc = percentile.PercentRankExc(a.Length);
-      var pvinc = a.PercentileValueInc(percentile);
-      var pvexc = a.PercentileValueExc(percentile);
+      var pvinc = a.Select(i => (double)i).PercentileValueInc(percentile);
+      var pvexc = a.Select(i => (double)i).PercentileValueExc(percentile);
 
       var pon = Maths.PercentileOrdinalNearest(percentile, a.Length);
       var pol = Maths.PercentileOrdinalLerp(percentile, a.Length);

@@ -61,46 +61,41 @@ namespace Flux
 
     /// <summary>Excel percentile value (inc). Noted as an alternative by NIST.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/>
-    public static double PercentileValueInc(this System.Collections.Generic.IList<int> source, double percentile)
+    public static double PercentileValueInc(this System.Collections.Generic.IEnumerable<double> source, double percentile)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
 
-      var x = PercentRankInc(percentile, source.Count);
+      var x = PercentRankInc(percentile, source.Count());
       var m = x % 1;
 
       var i = System.Convert.ToInt32(System.Math.Floor(x));
 
-      var v3 = source[System.Math.Clamp(i, 0, source.Count - 1)];
-      var v2 = source[System.Math.Clamp(i - 1, 0, source.Count - 1)];
+      var v3 = source.ElementAt(System.Math.Clamp(i, 0, source.Count() - 1));
+      var v2 = source.ElementAt(System.Math.Clamp(i - 1, 0, source.Count() - 1));
 
       return v2 + m * (v3 - v2);
     }
-    /// <summary>Excel percentile value (inc). Noted as an alternative by NIST.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/>
-    public static double PercentileValueInc(this System.Collections.Generic.IList<int> source, int percentile)
-      => PercentileValueInc(source, percentile / 100.0);
 
     /// <summary>Excel percentile value (exc). The primary variant recommended by NIST.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile#Third_variant,_C_=_0"/>
-    public static double PercentileValueExc(this System.Collections.Generic.IList<int> source, double percentile)
+    public static double PercentileValueExc(this System.Collections.Generic.IEnumerable<double> source, double percentile)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
 
-      var x = PercentRankExc(percentile, source.Count);
+      var count = source.Count();
+
+      var x = PercentRankExc(percentile, count);
       var m = x % 1;
 
       var i = System.Convert.ToInt32(System.Math.Floor(x));
 
-      var v3 = source[System.Math.Clamp(i, 0, source.Count - 1)];
-      var v2 = source[System.Math.Clamp(i - 1, 0, source.Count - 1)];
+      var v3 = source.ElementAt(System.Math.Clamp(i, 0, count - 1));
+      var v2 = source.ElementAt(System.Math.Clamp(i - 1, 0, count - 1));
 
       return v2 + m * (v3 - v2);
     }
-    /// <summary>Excel percentile value (exc). The primary variant recommended by NIST.</summary>
-    public static double PercentileValueExc(this System.Collections.Generic.IList<int> source, int percentile)
-      => PercentileValueExc(source, percentile / 100.0);
 
     //public static System.Collections.Generic.IEnumerable<(double percentile, double percentileValue)> PercentRanksV3<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
     //  where TKey : notnull
