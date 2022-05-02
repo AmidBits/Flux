@@ -11,16 +11,6 @@ namespace Flux
       PercentileExc,
     }
 
-    /// <summary>Matlab percent rank.</summary>
-    //public static double PercentRankMatlab(int index, int count)
-    //  => 100.0 / count * (index - 0.5) / 100.0;
-    /// <summary>Excel percent rank (inc). Noted as an alternative by NIST.</summary>
-    public static double PercentRankInc(this double percentile, int count)
-      => percentile * (count - 1) + 1;
-    /// <summary>Excel percent rank (exc). Primary variant recommended by NIST.</summary>
-    public static double PercentRankExc(this double percentile, int count)
-      => percentile * (count + 1);
-
     /// <summary>Matlab percentile value (prctile).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile#First_variant,_C_=_1/2"/>
     //public static System.Collections.Generic.SortedDictionary<TKey, double> PercentileValueMatlab<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
@@ -58,44 +48,6 @@ namespace Flux
 
     //  return pr1;
     //}
-
-    /// <summary>Excel percentile value (inc). Noted as an alternative by NIST.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/>
-    public static double PercentileValueInc(this System.Collections.Generic.IEnumerable<double> source, double percentile)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
-
-      var x = PercentRankInc(percentile, source.Count());
-      var m = x % 1;
-
-      var i = System.Convert.ToInt32(System.Math.Floor(x));
-
-      var v3 = source.ElementAt(System.Math.Clamp(i, 0, source.Count() - 1));
-      var v2 = source.ElementAt(System.Math.Clamp(i - 1, 0, source.Count() - 1));
-
-      return v2 + m * (v3 - v2);
-    }
-
-    /// <summary>Excel percentile value (exc). The primary variant recommended by NIST.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Percentile#Third_variant,_C_=_0"/>
-    public static double PercentileValueExc(this System.Collections.Generic.IEnumerable<double> source, double percentile)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (percentile < 0 || percentile > 1) throw new System.ArgumentOutOfRangeException(nameof(percentile));
-
-      var count = source.Count();
-
-      var x = PercentRankExc(percentile, count);
-      var m = x % 1;
-
-      var i = System.Convert.ToInt32(System.Math.Floor(x));
-
-      var v3 = source.ElementAt(System.Math.Clamp(i, 0, count - 1));
-      var v2 = source.ElementAt(System.Math.Clamp(i - 1, 0, count - 1));
-
-      return v2 + m * (v3 - v2);
-    }
 
     //public static System.Collections.Generic.IEnumerable<(double percentile, double percentileValue)> PercentRanksV3<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
     //  where TKey : notnull

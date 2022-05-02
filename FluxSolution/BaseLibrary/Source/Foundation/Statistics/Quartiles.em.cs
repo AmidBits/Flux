@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Quartiles
   {
-    public enum QuartileMethod
+    public enum DiscreteDistributionMethod
     {
       /// <summary>This rule is employed by the TI-83 calculator boxplot and "1-Var Stats" functions.</summary>
       Method1,
       /// <summary>The values found by this method are also known as "Tukey's hinges".</summary>
       Method2,
-      /// <summary>This method is not implemented.</summary>
-      //Method3,
+      /// <summary>This method is not implemented at this time.</summary>
+      Method3,
       /// <summary>This interpolates between data points to find the pth empirical quantile</summary>
       Method4,
     }
@@ -84,16 +84,16 @@ namespace Flux
     //public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IEnumerable<double> source)
     //  => Quartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.OrderBy(source, k => k)));
 
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source, QuartileMethod method)
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source, DiscreteDistributionMethod method)
       => method switch
       {
-        QuartileMethod.Method1 => GetQuartilesMethod1(source),
-        QuartileMethod.Method2 => GetQuartilesMethod2(source),
-        //QuartileMethod.Method3 => QuartilesMethod3(source),
-        QuartileMethod.Method4 => GetQuartilesMethod4(source),
+        DiscreteDistributionMethod.Method1 => GetQuartilesMethod1(source),
+        DiscreteDistributionMethod.Method2 => GetQuartilesMethod2(source),
+        DiscreteDistributionMethod.Method3 => GetQuartilesMethod3(source),
+        DiscreteDistributionMethod.Method4 => GetQuartilesMethod4(source),
         _ => throw new System.ArgumentOutOfRangeException(nameof(method)),
       };
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<int> source, QuartileMethod method)
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<int> source, DiscreteDistributionMethod method)
       => GetQuartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), method);
 
     /// <summary></summary>
@@ -138,7 +138,7 @@ namespace Flux
       return (q1, q2, q3);
     }
 
-    /// <summary></summary>
+    /// <summary>Method 3 is not implemented at this time.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quartile"/>
     public static (double q1, double q2, double q3) GetQuartilesMethod3(this System.Collections.Generic.IList<double> source)
       => throw new System.NotImplementedException();

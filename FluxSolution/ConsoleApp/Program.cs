@@ -46,13 +46,16 @@ namespace ConsoleApp
 
       var percentile = 0.40;
 
-      var princ = percentile.PercentRankInc(a.Length);
-      var prexc = percentile.PercentRankExc(a.Length);
-      var pvinc = a.Select(i => (double)i).PercentileValueInc(percentile);
-      var pvexc = a.Select(i => (double)i).PercentileValueExc(percentile);
+      var prexc = Flux.Percentiles.PercentRank(percentile, a.Length, Percentiles.LerpVariant.ExcelExc);
+      var pvexc = a.Select(i => (double)i).PercentileValue(percentile, Percentiles.LerpVariant.ExcelExc);
 
-      var pon = Maths.PercentileOrdinalNearest(percentile, a.Length);
-      var pol = Maths.PercentileOrdinalLerp(percentile, a.Length);
+      var princ = Flux.Percentiles.PercentRank(percentile, a.Length, Percentiles.LerpVariant.ExcelInc);
+      var pvinc = a.Select(i => (double)i).PercentileValue(percentile, Percentiles.LerpVariant.ExcelInc);
+
+      //var prmlb = a.Select(i => (double)i).PercentileRanksMatlab();
+      //var pvmlb = a.Select(i => (double)i).PercentileValuesMatlab(percentile);
+
+      var pon = Flux.Percentiles.PercentNearestOrdinalRank(percentile, a.Length);
 
       //foreach (var av in new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(100))
       //  hbi.AddValue(av);
