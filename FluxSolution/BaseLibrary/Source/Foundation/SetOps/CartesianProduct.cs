@@ -2,18 +2,12 @@ namespace Flux
 {
   public static partial class SetOps
   {
-    /// <summary>Creates a new sequence of elements as the set of all ordered pairs (s, t) where s is in source and t is in target.</summary>
-    public static System.Collections.Generic.IEnumerable<(T1, T2)> CartesianProduct<T1, T2>(this System.Collections.Generic.IEnumerable<T1> source, System.Collections.Generic.IEnumerable<T2> target)
+    /// <summary>Creates a new sequence with the cartesian product of all elements in the specified sequences.</summary>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> CartesianProduct<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> source)
     {
-      using var eSource = source.GetEnumerator();
+      System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> emptyProduct = new[] { System.Linq.Enumerable.Empty<T>() };
 
-      while (eSource.MoveNext())
-      {
-        using var eTarget = target.GetEnumerator();
-
-        while (eTarget.MoveNext())
-          yield return (eSource.Current, eTarget.Current);
-      }
+      return source.Aggregate(emptyProduct, (accumulator, sequence) => from accumulatorSequence in accumulator from item in sequence select accumulatorSequence.Concat(new[] { item }));
     }
   }
 }

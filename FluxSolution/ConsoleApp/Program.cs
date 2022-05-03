@@ -19,7 +19,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      int[][] items = {
+                    new[] { 1, 2, 3 },
+                    new[] { 4, 5, 6 },
+                    new[] { 7, 8, 9 }
+                };
 
+      var routes = items.CartesianProduct();
+      foreach (var route in routes)
+        System.Console.WriteLine(string.Join(", ", route));
     }
 
     private static void Main(string[] args)
