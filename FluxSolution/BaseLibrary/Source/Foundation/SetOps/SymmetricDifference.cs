@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SetOps
   {
     /// <summary>Creates a new sequence of elements that are present either in the source set or in the specified target set, but not both. Uses the specified equality comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<T> SymmetricDifference<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.IEnumerable<T> SymmetricDifference<T>(this System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       return source.Count == 0 // If source is an empty set, then the symmetric difference is target.
       ? target

@@ -19,6 +19,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var mf = new Flux.Numerics.MöbiusNumber();
+
+      //var mns = mf.ToArray();
+
+      var set = new char[] { 'a', 'b', 'c' };
+      var powerSet = set.PowerSet().ToList();
+      foreach (var subSet in powerSet)
+        System.Console.WriteLine($"{subSet.Count} : {string.Join(", ", subSet)}");
+      var z = set.CartesianProduct(set, (xy, i) => xy).ToList();
+      var cartesianProduct = Flux.SetOps.CartesianProduct(set, set).ToList();
+      System.Console.WriteLine($"{string.Join(", ", cartesianProduct)}");
+
       var intervals = new double[] { 18, 25, 35, 45, 55, 65 };
 
       var hbi1 = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 100).Take(1000).CreateClosedOpen(intervals, i => i, (lo, hi) => $"[{lo},{hi})", i => 1, true);
@@ -27,7 +39,7 @@ namespace ConsoleApp
       //var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(18, 25, 35, 45, 55, 65);
       ////var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
 
-      
+
 
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
       a = a.Reverse().ToArray();

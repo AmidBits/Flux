@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SetOps
   {
     /// <summary>Creates a new sequence of elements that are in the source set but not in the specified target set. Uses the specified equality comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<T> SourceDifference<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.IEnumerable<T> SourceDifference<T>(this System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       if (source.Count == 0 || object.ReferenceEquals(source, target)) // An empty set cannot have any difference it's already empty, or a set minus itself is an empty set.
         return System.Linq.Enumerable.Empty<T>();
