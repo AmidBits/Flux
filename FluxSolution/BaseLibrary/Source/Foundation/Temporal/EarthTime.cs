@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Earth
+  public static partial class EarthTime
   {
     /// <summary>Average number of days in one Gregorian calendar year.</summary>
     public const double DaysInYearGregorianCalendar = 365.2425;

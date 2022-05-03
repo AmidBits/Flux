@@ -46,11 +46,11 @@ namespace ConsoleApp
 
       var percentile = 0.40;
 
-      var prexc = Flux.Percentiles.PercentRank(percentile, a.Length, Percentiles.LerpVariant.ExcelExc);
-      var pvexc = a.Select(i => (double)i).PercentileValue(percentile, Percentiles.LerpVariant.ExcelExc);
+      var prexc = Flux.Percentiles.PercentRank(percentile, a.Length, Flux.Percentiles.LerpVariant.ExcelExc);
+      var pvexc = Flux.Percentiles.PercentileValue(a.Select(i => (double)i), percentile, Flux.Percentiles.LerpVariant.ExcelExc);
 
-      var princ = Flux.Percentiles.PercentRank(percentile, a.Length, Percentiles.LerpVariant.ExcelInc);
-      var pvinc = a.Select(i => (double)i).PercentileValue(percentile, Percentiles.LerpVariant.ExcelInc);
+      var princ = Flux.Percentiles.PercentRank(percentile, a.Length, Flux.Percentiles.LerpVariant.ExcelInc);
+      var pvinc = Flux.Percentiles.PercentileValue(a.Select(i => (double)i), percentile, Flux.Percentiles.LerpVariant.ExcelInc);
 
       //var prmlb = a.Select(i => (double)i).PercentileRanksMatlab();
       //var pvmlb = a.Select(i => (double)i).PercentileValuesMatlab(percentile);
