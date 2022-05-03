@@ -186,7 +186,7 @@ namespace Flux
     }
 
     public bool Contains(TType item)
-      => System.Array.Exists(m_array, t => t.Equals(item));
+      => System.Array.Exists(m_array, t => t?.Equals(item) ?? false);
 
     public void CopyTo(TType[] array, int arrayIndex)
       => m_array.CopyTo(array, arrayIndex);

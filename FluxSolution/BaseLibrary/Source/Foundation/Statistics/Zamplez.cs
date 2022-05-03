@@ -58,6 +58,47 @@ namespace Flux
         System.Console.WriteLine($"(Average: {values.Average()})");
       }
     }
+
+    static void RunStats()
+    {
+      var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
+      a = a.Reverse().ToArray();
+      //a = new int[] { 1, 2, 3, 6, 6, 6, 7, 8, 9 };
+      //a = new int[] { 1, 2, 3, 4, 4, 5, 6, 7, 8 };
+      //a = new int[] { 2, 4, 5, 6, 6, 7, 9, 12, 14, 15, 18, 19, 22, 24, 26, 28 };
+      //a = new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
+      //  a = new int[] { 15, 20, 35, 40, 50 };
+      //a = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 20).Take(200).OrderBy(k => k).ToArray();
+
+      var hg = new Histogram<int>();
+      foreach (var k in a)
+        hg[k] = hg.TryGetValue(k, out var v) ? v + 1 : 1;
+
+      var h = a.ToHistogram(out var sof);
+      System.Console.WriteLine("H:");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, h));
+      System.Console.WriteLine();
+
+      var pmf = h.ProbabilityMassFunction(sof);
+      System.Console.WriteLine("PMF:");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, pmf));
+      System.Console.WriteLine();
+
+      var cdf = h.CumulativeMassFunction(sof);
+      System.Console.WriteLine("CDF:");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, cdf));
+      System.Console.WriteLine();
+
+      var pr = h.PercentRank(sof);
+      System.Console.WriteLine("PR:");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
+      System.Console.WriteLine();
+
+      var pl = h.PercentileRank(sof);
+      System.Console.WriteLine("PL:");
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, pl));
+      System.Console.WriteLine();
+    }
   }
 }
 #endif
