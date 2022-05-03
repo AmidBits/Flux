@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class CartesianCoordinate3Em
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this CartesianCoordinate3 source, CartesianCoordinate3 before, CartesianCoordinate3 after)

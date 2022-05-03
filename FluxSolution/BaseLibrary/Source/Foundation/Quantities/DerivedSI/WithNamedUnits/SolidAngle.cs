@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SolidAngleUnitEm
+  public static partial class ExtensionMethods
   {
     public static string GetUnitString(this SolidAngleUnit unit, bool useNameInsteadOfSymbol, bool useUnicodeIfAvailable)
       => useNameInsteadOfSymbol ? unit.ToString() : unit switch

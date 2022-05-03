@@ -21,7 +21,7 @@
     ObliqueAngle = 128
   }
 
-  public static partial class AngleUnitEm
+  public static partial class ExtensionMethods
   {
     public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SixteenWindCompassRoseEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 22.5° notch, starting at 0), from a fifteen value compass point [0, 15].</summary>
     public static Azimuth GetAzimuthAngle(this SixteenWindCompassRose sixteenWindCompassRose)

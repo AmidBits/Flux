@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SurfaceTensionUnitEm
+  public static partial class ExtensionMethods
   {
     public static string GetUnitString(this SurfaceTensionUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TorqueUnitEm
+  public static partial class ExtensionMethods
   {
     public static string GetUnitString(this TorqueUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch

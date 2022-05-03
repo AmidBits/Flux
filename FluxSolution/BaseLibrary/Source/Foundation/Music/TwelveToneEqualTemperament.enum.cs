@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TwelveToneEqualTemperamentEm
+  public static partial class ExtensionMethods
   {
     public static double GetFrequencyRatios(this Music.TwelveToneEqualTemperament source)
       => Semitone.ConvertSemitoneToFrequencyRatio((int)source);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class JulianDateEm
+  public static partial class ExtensionMethods
   {
     public static JulianDate ToJulianDate(this System.DateTime source, ConversionCalendar calendar)
       => source.ToMomentUtc().ToJulianDate(calendar);

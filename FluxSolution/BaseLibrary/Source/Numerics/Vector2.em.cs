@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Vector2Em
+  public static partial class ExtensionMethods
   {
     #region 2D Vector (Non-Collection) Computations.
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>

@@ -27,6 +27,8 @@ namespace ConsoleApp
       //var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(18, 25, 35, 45, 55, 65);
       ////var hbi = new Flux.DataStructures.Statistics.HistogramByInterval(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
 
+      
+
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
       a = a.Reverse().ToArray();
       //a = new int[] { 1, 2, 3, 6, 6, 6, 7, 8, 9 };
