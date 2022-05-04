@@ -136,103 +136,103 @@ namespace Flux
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
-    /// <summary>Creates a sequence of staggered (by one element) 4-tuple elements.</summary>
-    /// <returns>A sequence of 4-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+    ///// <summary>Creates a sequence of staggered (by one element) 4-tuple elements.</summary>
+    ///// <returns>A sequence of 4-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    //public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
+    //  if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
+    //  if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+    //  using var e = source.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is var item1 && item1 is var back3)
-        if (e.MoveNext() && e.Current is var item2 && item2 is var back2)
-          if (e.MoveNext() && e.Current is var item3 && item3 is var back1)
-            if (e.MoveNext())
-            {
-              var index = 0;
+    //  if (e.MoveNext() && e.Current is var item1 && item1 is var back3)
+    //    if (e.MoveNext() && e.Current is var item2 && item2 is var back2)
+    //      if (e.MoveNext() && e.Current is var item3 && item3 is var back1)
+    //        if (e.MoveNext())
+    //        {
+    //          var index = 0;
 
-              do
-              {
-                var current = e.Current;
+    //          do
+    //          {
+    //            var current = e.Current;
 
-                seed = aggregateComputor(seed, back3, back2, back1, current, index++);
+    //            seed = aggregateComputor(seed, back3, back2, back1, current, index++);
 
-                back3 = back2;
-                back2 = back1;
-                back1 = current;
-              }
-              while (e.MoveNext());
+    //            back3 = back2;
+    //            back2 = back1;
+    //            back1 = current;
+    //          }
+    //          while (e.MoveNext());
 
-              if (wrap >= 1)
-                seed = aggregateComputor(seed, back3, back2, back1, item1, index++);
-              if (wrap >= 2)
-                seed = aggregateComputor(seed, back2, back1, item1, item2, index++);
-              if (wrap == 3)
-                seed = aggregateComputor(seed, back1, item1, item2, item3, index++);
+    //          if (wrap >= 1)
+    //            seed = aggregateComputor(seed, back3, back2, back1, item1, index++);
+    //          if (wrap >= 2)
+    //            seed = aggregateComputor(seed, back2, back1, item1, item2, index++);
+    //          if (wrap == 3)
+    //            seed = aggregateComputor(seed, back1, item1, item2, item3, index++);
 
-              return resultSelector(seed, index);
-            }
-            else throw new System.ArgumentException($@"The sequence has only 3 elements.", nameof(source));
-          else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
-        else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
+    //          return resultSelector(seed, index);
+    //        }
+    //        else throw new System.ArgumentException($@"The sequence has only 3 elements.", nameof(source));
+    //      else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
+    //    else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
+    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    //}
 
-    /// <summary>Creates a sequence of staggered (by one element) 5-tuple elements.</summary>
-    /// <returns>A sequence of 5-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple5<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+    ///// <summary>Creates a sequence of staggered (by one element) 5-tuple elements.</summary>
+    ///// <returns>A sequence of 5-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    //public static TResult AggregateTuple5<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
+    //  if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 4) throw new System.ArgumentException(@"A 5-tuple can only wrap 0, 1, 2, 3 or 4 elements.", nameof(wrap));
+    //  if (wrap < 0 || wrap > 4) throw new System.ArgumentException(@"A 5-tuple can only wrap 0, 1, 2, 3 or 4 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+    //  using var e = source.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is var item1 && item1 is var back4)
-        if (e.MoveNext() && e.Current is var item2 && item2 is var back3)
-          if (e.MoveNext() && e.Current is var item3 && item3 is var back2)
-            if (e.MoveNext() && e.Current is var item4 && item4 is var back1)
-              if (e.MoveNext())
-              {
-                var index = 0;
+    //  if (e.MoveNext() && e.Current is var item1 && item1 is var back4)
+    //    if (e.MoveNext() && e.Current is var item2 && item2 is var back3)
+    //      if (e.MoveNext() && e.Current is var item3 && item3 is var back2)
+    //        if (e.MoveNext() && e.Current is var item4 && item4 is var back1)
+    //          if (e.MoveNext())
+    //          {
+    //            var index = 0;
 
-                do
-                {
-                  var current = e.Current;
+    //            do
+    //            {
+    //              var current = e.Current;
 
-                  seed = aggregateComputor(seed, back4, back3, back2, back1, current, index++);
+    //              seed = aggregateComputor(seed, back4, back3, back2, back1, current, index++);
 
-                  back4 = back3;
-                  back3 = back2;
-                  back2 = back1;
-                  back1 = current;
-                }
-                while (e.MoveNext());
+    //              back4 = back3;
+    //              back3 = back2;
+    //              back2 = back1;
+    //              back1 = current;
+    //            }
+    //            while (e.MoveNext());
 
-                if (wrap >= 1)
-                  seed = aggregateComputor(seed, back4, back3, back2, back1, item1, index++);
-                if (wrap >= 2)
-                  seed = aggregateComputor(seed, back3, back2, back1, item1, item2, index++);
-                if (wrap >= 3)
-                  seed = aggregateComputor(seed, back2, back1, item1, item2, item3, index++);
-                if (wrap == 4)
-                  seed = aggregateComputor(seed, back1, item1, item2, item3, item4, index++);
+    //            if (wrap >= 1)
+    //              seed = aggregateComputor(seed, back4, back3, back2, back1, item1, index++);
+    //            if (wrap >= 2)
+    //              seed = aggregateComputor(seed, back3, back2, back1, item1, item2, index++);
+    //            if (wrap >= 3)
+    //              seed = aggregateComputor(seed, back2, back1, item1, item2, item3, index++);
+    //            if (wrap == 4)
+    //              seed = aggregateComputor(seed, back1, item1, item2, item3, item4, index++);
 
-                return resultSelector(seed, index);
-              }
-              else throw new System.ArgumentException($@"The sequence has only 4 elements.", nameof(source));
-            else throw new System.ArgumentException($@"The sequence has only 3 elements.", nameof(source));
-          else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
-        else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
+    //            return resultSelector(seed, index);
+    //          }
+    //          else throw new System.ArgumentException($@"The sequence has only 4 elements.", nameof(source));
+    //        else throw new System.ArgumentException($@"The sequence has only 3 elements.", nameof(source));
+    //      else throw new System.ArgumentException($@"The sequence has only 2 elements.", nameof(source));
+    //    else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
+    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    //}
   }
 }

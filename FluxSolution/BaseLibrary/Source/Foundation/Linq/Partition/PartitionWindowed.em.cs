@@ -8,8 +8,8 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (size <= 0) throw new System.ArgumentOutOfRangeException(nameof(size), @"Must be greater than zero.");
-      if (step > size) throw new System.ArgumentOutOfRangeException(nameof(step), @"Must be less than or equal to step.");
+      if (size <= 0) throw new System.ArgumentOutOfRangeException(nameof(size), "Must be greater than zero.");
+      if (step > size) throw new System.ArgumentOutOfRangeException(nameof(step), "Must be less than or equal to size.");
 
       var queue = new System.Collections.Generic.Queue<System.Collections.Generic.List<TSource>>();
 
@@ -36,7 +36,7 @@ namespace Flux
         }
         while (e.MoveNext());
       }
-      else throw new System.ArgumentException(@"The sequence is empty");
+      else throw new System.ArgumentException("The sequence is empty");
 
       if (includeTrailing)
         while (queue.Count > 0 && queue.Peek().Count > 0)

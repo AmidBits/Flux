@@ -123,136 +123,136 @@ namespace Flux
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
 
-    /// <summary>Create a new sequence of 4-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the third element.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple4<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, int, TResult> resultSelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+    ///// <summary>Create a new sequence of 4-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the third element.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple4<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, int, TResult> resultSelector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
+    //  if (wrap < 0 || wrap > 3) throw new System.ArgumentException(@"A 4-tuple can only wrap 0, 1, 2 or 3 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+    //  using var e = source.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is var item1 && item1 is var back3)
-        if (e.MoveNext() && e.Current is var item2 && item2 is var back2)
-          if (e.MoveNext() && e.Current is var item3 && item3 is var back1)
-            if (e.MoveNext())
-            {
-              var index = 0;
+    //  if (e.MoveNext() && e.Current is var item1 && item1 is var back3)
+    //    if (e.MoveNext() && e.Current is var item2 && item2 is var back2)
+    //      if (e.MoveNext() && e.Current is var item3 && item3 is var back1)
+    //        if (e.MoveNext())
+    //        {
+    //          var index = 0;
 
-              do
-              {
-                var current = e.Current;
+    //          do
+    //          {
+    //            var current = e.Current;
 
-                yield return resultSelector(back3, back2, back1, current, index++);
+    //            yield return resultSelector(back3, back2, back1, current, index++);
 
-                back3 = back2;
-                back2 = back1;
-                back1 = current;
-              }
-              while (e.MoveNext());
+    //            back3 = back2;
+    //            back2 = back1;
+    //            back1 = current;
+    //          }
+    //          while (e.MoveNext());
 
-              if (wrap >= 1) yield return resultSelector(back3, back2, back1, item1, index++);
-              if (wrap >= 2) yield return resultSelector(back2, back1, item1, item2, index++);
-              if (wrap == 3) yield return resultSelector(back1, item1, item2, item3, index++);
-            }
-            else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
-          else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
-        else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
+    //          if (wrap >= 1) yield return resultSelector(back3, back2, back1, item1, index++);
+    //          if (wrap >= 2) yield return resultSelector(back2, back1, item1, item2, index++);
+    //          if (wrap == 3) yield return resultSelector(back1, item1, item2, item3, index++);
+    //        }
+    //        else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
+    //      else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
+    //    else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
+    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    //}
 
-    /// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple5<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+    ///// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple5<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 4) throw new System.ArgumentException(@"A 5-tuple can only wrap 0, 1, 2, 3 or 4 elements.", nameof(wrap));
+    //  if (wrap < 0 || wrap > 4) throw new System.ArgumentException(@"A 5-tuple can only wrap 0, 1, 2, 3 or 4 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+    //  using var e = source.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is TSource item1 && item1 is var back4)
-        if (e.MoveNext() && e.Current is TSource item2 && item2 is var back3)
-          if (e.MoveNext() && e.Current is TSource item3 && item3 is var back2)
-            if (e.MoveNext() && e.Current is TSource item4 && item4 is var back1)
-              if (e.MoveNext())
-              {
-                var index = 0;
+    //  if (e.MoveNext() && e.Current is TSource item1 && item1 is var back4)
+    //    if (e.MoveNext() && e.Current is TSource item2 && item2 is var back3)
+    //      if (e.MoveNext() && e.Current is TSource item3 && item3 is var back2)
+    //        if (e.MoveNext() && e.Current is TSource item4 && item4 is var back1)
+    //          if (e.MoveNext())
+    //          {
+    //            var index = 0;
 
-                do
-                {
-                  var current = e.Current;
+    //            do
+    //            {
+    //              var current = e.Current;
 
-                  yield return resultSelector(back4, back3, back2, back1, current, index++);
+    //              yield return resultSelector(back4, back3, back2, back1, current, index++);
 
-                  back4 = back3;
-                  back3 = back2;
-                  back2 = back1;
-                  back1 = current;
-                }
-                while (e.MoveNext());
+    //              back4 = back3;
+    //              back3 = back2;
+    //              back2 = back1;
+    //              back1 = current;
+    //            }
+    //            while (e.MoveNext());
 
-                if (wrap >= 1) yield return resultSelector(back4, back3, back2, back1, item1, index++);
-                if (wrap >= 2) yield return resultSelector(back3, back2, back1, item1, item2, index++);
-                if (wrap >= 3) yield return resultSelector(back2, back1, item1, item2, item3, index++);
-                if (wrap == 4) yield return resultSelector(back1, item1, item2, item3, item4, index++);
-              }
-              else throw new System.ArgumentException(@"The sequence has only 4 elements.", nameof(source));
-            else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
-          else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
-        else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
+    //            if (wrap >= 1) yield return resultSelector(back4, back3, back2, back1, item1, index++);
+    //            if (wrap >= 2) yield return resultSelector(back3, back2, back1, item1, item2, index++);
+    //            if (wrap >= 3) yield return resultSelector(back2, back1, item1, item2, item3, index++);
+    //            if (wrap == 4) yield return resultSelector(back1, item1, item2, item3, item4, index++);
+    //          }
+    //          else throw new System.ArgumentException(@"The sequence has only 4 elements.", nameof(source));
+    //        else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
+    //      else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
+    //    else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
+    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    //}
 
-    /// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple6<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+    ///// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple6<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //  if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 5) throw new System.ArgumentException(@"A 6-tuple can only wrap 0, 1, 2, 3, 4 or 5 elements.", nameof(wrap));
+    //  if (wrap < 0 || wrap > 5) throw new System.ArgumentException(@"A 6-tuple can only wrap 0, 1, 2, 3, 4 or 5 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+    //  using var e = source.GetEnumerator();
 
-      if (e.MoveNext() && e.Current is TSource item1 && item1 is var back5)
-        if (e.MoveNext() && e.Current is TSource item2 && item2 is var back4)
-          if (e.MoveNext() && e.Current is TSource item3 && item3 is var back3)
-            if (e.MoveNext() && e.Current is TSource item4 && item4 is var back2)
-              if (e.MoveNext() && e.Current is TSource item5 && item5 is var back1)
-                if (e.MoveNext())
-                {
-                  var index = 0;
+    //  if (e.MoveNext() && e.Current is TSource item1 && item1 is var back5)
+    //    if (e.MoveNext() && e.Current is TSource item2 && item2 is var back4)
+    //      if (e.MoveNext() && e.Current is TSource item3 && item3 is var back3)
+    //        if (e.MoveNext() && e.Current is TSource item4 && item4 is var back2)
+    //          if (e.MoveNext() && e.Current is TSource item5 && item5 is var back1)
+    //            if (e.MoveNext())
+    //            {
+    //              var index = 0;
 
-                  do
-                  {
-                    var current = e.Current;
+    //              do
+    //              {
+    //                var current = e.Current;
 
-                    yield return resultSelector(back5, back4, back3, back2, back1, current, index++);
+    //                yield return resultSelector(back5, back4, back3, back2, back1, current, index++);
 
-                    back5 = back4;
-                    back4 = back3;
-                    back3 = back2;
-                    back2 = back1;
-                    back1 = current;
-                  }
-                  while (e.MoveNext());
+    //                back5 = back4;
+    //                back4 = back3;
+    //                back3 = back2;
+    //                back2 = back1;
+    //                back1 = current;
+    //              }
+    //              while (e.MoveNext());
 
-                  if (wrap >= 1) yield return resultSelector(back5, back4, back3, back2, back1, item1, index++);
-                  if (wrap >= 2) yield return resultSelector(back4, back3, back2, back1, item1, item2, index++);
-                  if (wrap >= 3) yield return resultSelector(back3, back2, back1, item1, item2, item3, index++);
-                  if (wrap >= 4) yield return resultSelector(back2, back1, item1, item2, item3, item4, index++);
-                  if (wrap == 5) yield return resultSelector(back1, item1, item2, item3, item4, item5, index++);
-                }
-                else throw new System.ArgumentException(@"The sequence has only 5 elements.", nameof(source));
-              else throw new System.ArgumentException(@"The sequence has only 4 elements.", nameof(source));
-            else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
-          else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
-        else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
+    //              if (wrap >= 1) yield return resultSelector(back5, back4, back3, back2, back1, item1, index++);
+    //              if (wrap >= 2) yield return resultSelector(back4, back3, back2, back1, item1, item2, index++);
+    //              if (wrap >= 3) yield return resultSelector(back3, back2, back1, item1, item2, item3, index++);
+    //              if (wrap >= 4) yield return resultSelector(back2, back1, item1, item2, item3, item4, index++);
+    //              if (wrap == 5) yield return resultSelector(back1, item1, item2, item3, item4, item5, index++);
+    //            }
+    //            else throw new System.ArgumentException(@"The sequence has only 5 elements.", nameof(source));
+    //          else throw new System.ArgumentException(@"The sequence has only 4 elements.", nameof(source));
+    //        else throw new System.ArgumentException(@"The sequence has only 3 elements.", nameof(source));
+    //      else throw new System.ArgumentException(@"The sequence has only 2 elements.", nameof(source));
+    //    else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
+    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+    //}
   }
 }
