@@ -19,6 +19,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+      var str = "\U0001D11E\U0001D11E\U0001D11E\U0001D11E";
+      System.Console.WriteLine(str.Length);
+      foreach (var rune in new Flux.RuneEnumerator(new System.IO.StringReader(str)))
+        System.Console.WriteLine($"{rune} : {rune.Value.ToString("X2")}");
+      foreach (var textElement in new Flux.TextElementEnumerator(new System.IO.StringReader(str)))
+        System.Console.WriteLine($"{textElement} : {textElement.Chars.Length} ({textElement.Runes.Count})");
+      return;
+
       int[][] items = {
                     new[] { 1, 2, 3 },
                     new[] { 4, 5, 6 },

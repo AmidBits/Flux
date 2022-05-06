@@ -1,5 +1,13 @@
-namespace Flux.Text
+namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.Stream source, System.Text.Encoding encoding)
+      => new Flux.RuneEnumerator(source, encoding);
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.TextReader source)
+      => new Flux.RuneEnumerator(source);
+  }
+
   public sealed class RuneEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
   {

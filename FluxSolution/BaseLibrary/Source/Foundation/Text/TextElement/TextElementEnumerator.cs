@@ -1,5 +1,13 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static System.Collections.Generic.IEnumerable<TextElementCluster> EnumerateTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
+      => new Flux.TextElementEnumerator(source, encoding);
+    public static System.Collections.Generic.IEnumerable<TextElementCluster> EnumerateTextElements(this System.IO.TextReader source)
+      => new Flux.TextElementEnumerator(source);
+  }
+
   public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElementCluster>
   {
