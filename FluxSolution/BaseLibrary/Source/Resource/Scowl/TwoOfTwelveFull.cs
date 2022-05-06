@@ -28,7 +28,7 @@ namespace Flux.Resources.Scowl
 
 			using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-			foreach (var item in sr.ReadLines().Select(s => reSplit.Split(s.Trim())))
+			foreach (var item in sr.ReadLines(false).Select(s => reSplit.Split(s.Trim())))
 				yield return item;
 		}
 	}

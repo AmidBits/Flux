@@ -25,7 +25,7 @@ namespace Flux.Resources.ProjectGutenberg
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-      foreach (var item in sr.ReadLines().Where(s => s.Length == 78 && reMatch.IsMatch(s)).Select(s => reSplit.Split(s)))
+      foreach (var item in sr.ReadLines(false).Where(s => s.Length == 78 && reMatch.IsMatch(s)).Select(s => reSplit.Split(s)))
         yield return item;
     }
   }

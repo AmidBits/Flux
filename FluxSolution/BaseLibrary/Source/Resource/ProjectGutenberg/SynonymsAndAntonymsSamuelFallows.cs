@@ -33,7 +33,7 @@ namespace Flux.Resources.ProjectGutenberg
 
         using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-        foreach (var line in sr.ReadLines())
+        foreach (var line in sr.ReadLines(false))
         {
           if (line == @"=" || line.Length == 0)
           {
