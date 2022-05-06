@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
+  /// <summary>The functionality here relates to U+xxxxx style formatting.</summary>
   public static partial class Unicode
   {
     public static readonly System.Text.RegularExpressions.Regex ParseUnotationRegex = new(@"(?<=U\+)[0-9A-F]{4,6}", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>The functionality of this class relates to U+hhhh style formatting.</summary>
+  /// <summary>The functionality here relates to the major and minor part of unicode categories.</summary>
   public static partial class Unicode
   {
     /// <summary>Parses two characters representing the major and minor portions.</summary>

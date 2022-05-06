@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  /// <summary>The functionality of this class relates to \uxxxx and \UXXXXXXXX style formatting.</summary>
+  /// <summary>The functionality here relates to \uxxxx and \UXXXXXXXX style formatting.</summary>
   public static partial class Unicode
   {
     public static readonly System.Text.RegularExpressions.Regex ParseCsharpLiteralRegex = new(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
