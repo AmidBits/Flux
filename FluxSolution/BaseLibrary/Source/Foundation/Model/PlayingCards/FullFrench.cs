@@ -324,6 +324,6 @@ namespace Flux.Model.PlayingCards.FullFrench
 		public override int GetHashCode()
 			=> System.HashCode.Combine(Deck, Rune);
 		public override string ToString()
-			=> $"{GetType().Name} {{ {GetRank(Rune)} of {GetSuit(Rune)} '{Rune}' {Unicode.NotationToString(Rune)}, Deck #{Deck} }}";
+			=> $"{GetType().Name} {{ {GetRank(Rune)} of {GetSuit(Rune)} '{Rune}' {Unicode.ToUnotationString(Rune)}, Deck #{Deck} }}";
 	}
 }

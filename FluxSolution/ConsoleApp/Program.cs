@@ -20,10 +20,10 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
-      var str = "\U0001D11E\U0001D11E\U0001D11E\U0001D11E";
+      var str = "\U0001D11EABC✋😉👍";
       System.Console.WriteLine(str.Length);
       foreach (var rune in new Flux.RuneEnumerator(new System.IO.StringReader(str)))
-        System.Console.WriteLine($"{rune} : {rune.Value.ToString("X2")}");
+        System.Console.WriteLine($"Rune: {rune} : {rune.Value.ToString("X2")}");
       foreach (var textElement in new Flux.TextElementEnumerator(new System.IO.StringReader(str)))
         System.Console.WriteLine($"{textElement} : {textElement.Chars.Length} ({textElement.Runes.Count})");
       return;
