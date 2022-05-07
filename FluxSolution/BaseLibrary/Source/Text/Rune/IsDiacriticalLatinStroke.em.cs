@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class RuneEm
+  public static partial class Unicode
   {
     /// <summary>Determines whether the character is a latin diacritical stroke.</summary>
     public static bool IsDiacriticalLatinStroke(this System.Text.Rune source)

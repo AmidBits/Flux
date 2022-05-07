@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux
 {
 	public ref struct Utf8JsonStreamReader
 	{

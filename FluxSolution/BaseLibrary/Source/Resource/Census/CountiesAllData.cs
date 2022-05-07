@@ -18,7 +18,7 @@ namespace Flux.Resources.Census
     // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
     public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
     {
-      using var e = Uri.GetStream().ReadCsv(new Text.Csv.CsvOptions()).GetEnumerator();
+      using var e = Uri.GetStream().ReadCsv(new CsvOptions()).GetEnumerator();
 
       if (e.MoveNext())
       {

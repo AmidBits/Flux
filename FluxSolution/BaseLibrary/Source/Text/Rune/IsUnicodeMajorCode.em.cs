@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class RuneEm
+  public static partial class Unicode
   {
     /// <summary>Determines whether the character is any of the specified unicode category major codes.</summary>
     public static bool IsUnicodeMajorCode(this System.Text.Rune source, params UnicodeCategoryMajorCode[] majorCodes)

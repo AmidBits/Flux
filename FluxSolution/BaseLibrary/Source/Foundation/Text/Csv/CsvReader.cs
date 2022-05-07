@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Flux.Text.Csv
+namespace Flux
 {
   public sealed class CsvReader
     : Data.TabularDataReader

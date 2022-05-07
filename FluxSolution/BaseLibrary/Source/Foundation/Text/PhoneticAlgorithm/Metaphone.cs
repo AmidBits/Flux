@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux.Text.PhoneticAlgorithm
+﻿namespace Flux.PhoneticAlgorithm
 {
 	/// <summary>Implements the Metaphone algorithm</summary>
 	public sealed class Metaphone

@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Flux.Text
+namespace Flux
 {
   /// <see cref="https://en.wikipedia.org/wiki/Ascii85"/>
   public static class Ascii85

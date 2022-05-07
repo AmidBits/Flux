@@ -15,12 +15,15 @@ namespace Flux
     public static System.Text.Rune GetMinRune(this UnicodeBlock source)
       => (System.Text.Rune)GetMinValue(source);
 
-    /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
+    /// <summary>Returns the last UTF-32 value in the specified Unicode block.</summary>
     public static int GetMaxValue(this UnicodeBlock source)
       => (int)source & 0x7FFFFFFF;
-    /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
+    /// <summary>Returns the first UTF-32 value in the specified Unicode block.</summary>
     public static int GetMinValue(this UnicodeBlock source)
       => (int)((long)source >> 32 & 0x7FFFFFFF);
+
+    public static bool IsSurrogate(this UnicodeBlock source)
+      => source == UnicodeBlock.HighSurrogates || source == UnicodeBlock.LowSurrogates || source == UnicodeBlock.HighPrivateUseSurrogates;
 
     public static string ToConsoleTable(this UnicodeBlock source, int skipFirst, int skipLast, bool includeTitle = true)
     {

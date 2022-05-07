@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   // https://en.wikipedia.org/wiki/QWERTY

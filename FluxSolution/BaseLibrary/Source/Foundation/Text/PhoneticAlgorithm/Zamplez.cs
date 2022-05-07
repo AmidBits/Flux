@@ -12,7 +12,7 @@ namespace Flux
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = Flux.Reflection.GetTypesDerivedFrom(typeof(Flux.Text.IPhoneticAlgorithmEncoder)).Select(t => (Flux.Text.IPhoneticAlgorithmEncoder?)System.Activator.CreateInstance(t));
+      var ipaes = Flux.Reflection.GetTypesDerivedFrom(typeof(IPhoneticAlgorithmEncoder)).Select(t => (IPhoneticAlgorithmEncoder?)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
 
       foreach (var ipae in ipaes)

@@ -1,5 +1,5 @@
 /// <summary>A rune is a Unicode code point.</summary>
-namespace Flux.Text
+namespace Flux
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
   public sealed class RuneTokenizer

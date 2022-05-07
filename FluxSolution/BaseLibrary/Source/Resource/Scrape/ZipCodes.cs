@@ -18,7 +18,7 @@ namespace Flux.Resources.Scrape
     // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
     public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
     {
-      using var e = Uri.GetStream().ReadCsv(new Text.Csv.CsvOptions()).GetEnumerator();
+      using var e = Uri.GetStream().ReadCsv(new CsvOptions()).GetEnumerator();
 
       if (e.MoveNext())
       {

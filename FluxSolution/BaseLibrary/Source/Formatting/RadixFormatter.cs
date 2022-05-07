@@ -30,7 +30,7 @@ namespace Flux.Formatting
     {
       try
       {
-        var pn = new Text.PositionalNotation(radixNumerals);
+        var pn = new PositionalNotation(radixNumerals);
         result = pn.NumberToText(number);
         return true;
       }

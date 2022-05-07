@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  namespace Text.PhoneticAlgorithm
+  namespace PhoneticAlgorithm
   {
     //  // https://github.com/iourinski/DMSoundex/blob/master/DMSoundex.pm
 

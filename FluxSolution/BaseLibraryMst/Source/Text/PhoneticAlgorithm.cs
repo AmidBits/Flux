@@ -9,13 +9,13 @@ namespace Text
 		[TestMethod]
 		public void AmericanSoundex_Default()
 		{
-			Assert.AreEqual("S620", new Flux.Text.PhoneticAlgorithm.AmericanSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
+			Assert.AreEqual("S620", new Flux.PhoneticAlgorithm.AmericanSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
 		}
 
 		[TestMethod]
 		public void AmericanSoundex_WikiSamples()
 		{
-			var soundex = new Flux.Text.PhoneticAlgorithm.AmericanSoundex();
+			var soundex = new Flux.PhoneticAlgorithm.AmericanSoundex();
 
 			Assert.AreEqual("R163", soundex.EncodePhoneticAlgorithm("Robert"));
 			Assert.AreEqual("R163", soundex.EncodePhoneticAlgorithm("Rupert"));
@@ -29,13 +29,13 @@ namespace Text
 		[TestMethod]
 		public void Metaphone_Default()
 		{
-			Assert.AreEqual("SNRHK", new Flux.Text.PhoneticAlgorithm.Metaphone().EncodePhoneticAlgorithm("Señor Hugo"));
+			Assert.AreEqual("SNRHK", new Flux.PhoneticAlgorithm.Metaphone().EncodePhoneticAlgorithm("Señor Hugo"));
 		}
 
 		[TestMethod]
 		public void Metaphone_NikitaSamples()
 		{
-			var metaphone = new Flux.Text.PhoneticAlgorithm.Metaphone() { MaxCodeLength = 4 };
+			var metaphone = new Flux.PhoneticAlgorithm.Metaphone() { MaxCodeLength = 4 };
 
 			Assert.AreEqual("FXPL", metaphone.EncodePhoneticAlgorithm("Fishpoole"));
 			Assert.AreEqual("JLTL", metaphone.EncodePhoneticAlgorithm("Gellately"));
@@ -69,13 +69,13 @@ namespace Text
     [TestMethod]
  		public void RefinedSoundex_Default()
 		{
-			Assert.AreEqual("S309040", new Flux.Text.PhoneticAlgorithm.RefinedSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
+			Assert.AreEqual("S309040", new Flux.PhoneticAlgorithm.RefinedSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
 		}
 
 		[TestMethod]
 		public void RefinedSoundex_NikitaSamples()
 		{
-			var refinedSoundex = new Flux.Text.PhoneticAlgorithm.RefinedSoundex();
+			var refinedSoundex = new Flux.PhoneticAlgorithm.RefinedSoundex();
 
 			Assert.AreEqual("B1905", refinedSoundex.EncodePhoneticAlgorithm("Braz"));
 			Assert.AreEqual("B1905", refinedSoundex.EncodePhoneticAlgorithm("Broz"));

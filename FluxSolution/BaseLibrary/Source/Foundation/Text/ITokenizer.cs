@@ -1,4 +1,4 @@
-namespace Flux.Text
+namespace Flux
 {
   /// <see cref="https://en.wikipedia.org/wiki/Lexical_analysis"/>
   public interface ITokenizer<TValue>

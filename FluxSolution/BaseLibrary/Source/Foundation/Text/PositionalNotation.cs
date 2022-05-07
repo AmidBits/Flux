@@ -1,6 +1,6 @@
 using System;
 
-namespace Flux.Text
+namespace Flux
 {
   /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>

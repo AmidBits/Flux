@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Flux.Text
+namespace Flux
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
   public sealed class SignValueNotation
