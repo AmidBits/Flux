@@ -3,10 +3,13 @@ namespace Flux
   public sealed class CsvReader
     : Data.TabularDataReader
   {
+    private readonly System.Text.StringBuilder m_csvValue = new(8192);
+
     private readonly CsvOptions m_options;
 
     private readonly System.IO.TextReader m_textReader;
-    //private readonly System.IO.StreamReader m_streamReader;
+
+    private CsvTokenType m_tokenType = CsvTokenType.None;
 
     /// <summary>Creates a new CSV reader on the stream with the specified options.</summary>
     public CsvReader(System.IO.TextReader textReader, CsvOptions options)
@@ -27,12 +30,9 @@ namespace Flux
       m_fieldTypes.AddRange(System.Linq.Enumerable.Repeat(typeof(string), FieldNames.Count));
     }
 
-    private CsvTokenType m_tokenType = CsvTokenType.None;
     /// <summary>Returns the current type of token of the reader.</summary>
     public CsvTokenType TokenType
       => m_tokenType;
-
-    private readonly System.Text.StringBuilder m_csvValue = new(8192);
 
     /// <summary>Reads a field value ending with either a comma or a carriage return.</summary>
     public string ReadFieldValue()
@@ -148,6 +148,7 @@ namespace Flux
     // Statics
     public static string UnescapeCsv(string source)
       => source?.Unwrap('"', '"').Replace("\"\"", "\"", System.StringComparison.Ordinal) ?? string.Empty;
+    //=> source is not null && source.Length >= 2 && source[0] == '"' && source[^1] == '"' ? source[1..^1].Replace("\"\"", "\"", System.StringComparison.Ordinal) : string.Empty;
 
     // DataReader
     public override bool Read()

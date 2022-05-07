@@ -35,8 +35,8 @@
     /// <param name="encoding">Encoding to use when reading character data</param>
     public BinaryReader(BitConverter bitConverter, System.IO.Stream stream, System.Text.Encoding encoding)
     {
-      if (stream == null) throw new System.ArgumentNullException(nameof(stream));
-      if (!stream.CanRead) throw new System.ArgumentException("Stream isn't writable.", nameof(stream));
+      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      if (!stream.CanRead) throw new System.ArgumentException("Stream isn't readable.", nameof(stream));
 
       m_stream = stream;
       m_bitConverter = bitConverter ?? throw new System.ArgumentNullException(nameof(bitConverter));

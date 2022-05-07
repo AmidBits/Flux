@@ -7,13 +7,13 @@ namespace Flux
   public ref struct PositionalNotation
   {
     public static PositionalNotation Base2
-      => new(Sequences.Base62[..2]);
+      => new(RuneSequences.Base62[..2]);
     public static PositionalNotation Base8
-      => new(Sequences.Base62[..8]);
+      => new(RuneSequences.Base62[..8]);
     public static PositionalNotation Base10
-      => new(Sequences.Base62[..10]);
+      => new(RuneSequences.Base62[..10]);
     public static PositionalNotation Base16
-      => new(Sequences.Base62[..16]);
+      => new(RuneSequences.Base62[..16]);
 
     public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
@@ -102,7 +102,7 @@ namespace Flux
         8 => Base8,
         10 => Base10,
         16 => Base16,
-        var r when r >= 2 && r <= 62 => new PositionalNotation(Sequences.Base62[..r]),
+        var r when r >= 2 && r <= 62 => new PositionalNotation(RuneSequences.Base62[..r]),
         _ => throw new System.ArgumentOutOfRangeException(nameof(radix))
       };
 
