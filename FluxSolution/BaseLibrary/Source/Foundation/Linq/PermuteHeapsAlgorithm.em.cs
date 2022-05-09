@@ -1,16 +1,16 @@
 namespace Flux
 {
-  public static partial class IListEm
+  public static partial class Enumerable
   {
     /// <summary>Heap's algorithm generates all possible permutations of n objects.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> GetHeapsPermutations<T>(this System.Collections.Generic.IList<T> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> PermuteHeapsAlgorithm<T>(this System.Collections.Generic.IEnumerable<T> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      return Permutate(source);
+      return Permute(source.ToList());
 
-      static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permutate(System.Collections.Generic.IList<T> list)
+      static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permute(System.Collections.Generic.IList<T> list)
       {
         var stackState = new int[list.Count];
 
@@ -23,9 +23,9 @@ namespace Flux
           if (stackState[stackIndex] < stackIndex)
           {
             if ((stackIndex & 1) == 0)
-              Swap(list, 0, stackIndex);
+              list.Swap(0, stackIndex);
             else
-              Swap(list, stackState[stackIndex], stackIndex);
+              list.Swap(stackState[stackIndex], stackIndex);
 
             yield return (System.Collections.Generic.IReadOnlyList<T>)list;
 

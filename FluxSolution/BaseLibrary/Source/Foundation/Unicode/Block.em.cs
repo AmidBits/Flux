@@ -5,21 +5,15 @@ namespace Flux
     /// <summary>Creates a new sequence of all runes in the specified Unicode block.</summary>
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetAllRunes(this UnicodeBlock source)
     {
-      for (int first = GetMinRune(source).Value, last = GetMaxRune(source).Value; first <= last; first++)
+      for (int first = GetMinUtf32(source), last = GetMaxUtf32(source); first <= last; first++)
         yield return (System.Text.Rune)first;
     }
-    /// <summary>Returns the last rune (code point) in the specified Unicode block.</summary>
-    public static System.Text.Rune GetMaxRune(this UnicodeBlock source)
-      => (System.Text.Rune)GetMaxValue(source);
-    /// <summary>Returns the first rune (code point) in the specified Unicode block.</summary>
-    public static System.Text.Rune GetMinRune(this UnicodeBlock source)
-      => (System.Text.Rune)GetMinValue(source);
 
     /// <summary>Returns the last UTF-32 value in the specified Unicode block.</summary>
-    public static int GetMaxValue(this UnicodeBlock source)
+    public static int GetMaxUtf32(this UnicodeBlock source)
       => (int)source & 0x7FFFFFFF;
     /// <summary>Returns the first UTF-32 value in the specified Unicode block.</summary>
-    public static int GetMinValue(this UnicodeBlock source)
+    public static int GetMinUtf32(this UnicodeBlock source)
       => (int)((long)source >> 32 & 0x7FFFFFFF);
 
     public static bool IsSurrogate(this UnicodeBlock source)
@@ -29,8 +23,8 @@ namespace Flux
     {
       var sb = new System.Text.StringBuilder();
 
-      var actualFirst = GetMinRune(source).Value + skipFirst;
-      var actualLast = GetMaxRune(source).Value - skipLast;
+      var actualFirst = GetMinUtf32(source) + skipFirst;
+      var actualLast = GetMaxUtf32(source) - skipLast;
 
       var roundedFirst = Maths.RoundToMultiple(actualFirst, 0x10, FullRounding.Floor);
       var roundedLast = Maths.RoundToMultiple(actualLast, 0x10, FullRounding.Ceiling);

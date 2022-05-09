@@ -9,10 +9,9 @@ namespace Flux
 			if (target is null) throw new System.ArgumentNullException(nameof(target));
 			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-			var sourceCount = source.Count;
 			var targetCount = target.Count;
 
-			if (sourceCount < targetCount) return false;
+			if (source.Count < targetCount) return false;
 
 			for (var index = 0; index < targetCount; index++)
 				if (!equalityComparer.Equals(source[index], target[index]))

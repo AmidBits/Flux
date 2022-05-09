@@ -7,7 +7,7 @@ namespace Flux.Model.Maze
   {
     public System.Func<System.Collections.Generic.IEnumerable<Cell>, System.Random, Cell> Selector { get; set; } = (list, random) =>
     {
-      list.RandomElement(out var element);
+      list.TryGetRandomElement(out var element);
 
       return element; // Prim's algorithm by default
     };
@@ -25,7 +25,7 @@ namespace Flux.Model.Maze
         var unvisited = cell.GetEdgesWithoutPaths();
         if (unvisited.Any())
         {
-          unvisited.RandomElement(out var element, Rng);
+          unvisited.TryGetRandomElement(out var element, Rng);
 
           active.Add(cell.ConnectPath(element, true));
         }

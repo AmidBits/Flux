@@ -45,7 +45,7 @@ namespace Flux.Geometry
       => new(a.m_q + b.m_q, a.m_r + b.m_r, a.m_s + b.m_s);
     /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
-      => Enumerable.ForLoop(0, radius + 1, 6).AsParallel().Sum() + 1;
+      => Enumerable.Loop(0, radius + 1, 6).AsParallel().Sum() + 1;
     /// <summary>Returns the count of hexes in the ring of the specified radius.</summary>
     public static int ComputeRingCount(int radius)
       => radius * 6;

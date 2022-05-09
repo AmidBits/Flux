@@ -19,31 +19,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var runes = new System.Collections.Generic.List<System.Text.Rune>();
 
-      foreach (var ub in Flux.UnicodeBlock.GetValues<Flux.UnicodeBlock>().Where(ub => !ub.IsSurrogate()))
-        foreach (var rune in ub.GetAllRunes())
-          if (rune.Utf16SequenceLength >= 2)
-            System.Console.WriteLine($"{rune.GetUnicodeBlock()} {rune.Value.ToString("X4")}");
-      return;
-
-      var str = "\U0001D11EABC✋😉👍";
-      System.Console.WriteLine(str.Length);
-      foreach (var rune in new Flux.RuneEnumerator(new System.IO.StringReader(str)))
-        System.Console.WriteLine($"Rune: {rune} : {rune.Value.ToString("X2")}");
-      foreach (var textElement in new Flux.TextElementEnumerator(new System.IO.StringReader(str)))
-        System.Console.WriteLine($"{textElement} : {textElement.Chars.Length} ({textElement.Runes.Count})");
-      return;
-
-      int[][] items = {
-                    new[] { 1, 2, 3 },
-                    new[] { 4, 5, 6 },
-                    new[] { 7, 8, 9 }
-                };
-
-      var routes = items.CartesianProduct();
-      foreach (var route in routes)
-        System.Console.WriteLine(string.Join(", ", route));
     }
 
     private static void Main(string[] args)

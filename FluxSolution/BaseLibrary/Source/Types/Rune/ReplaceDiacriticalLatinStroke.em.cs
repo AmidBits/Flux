@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Unicode
   {
-    /// <summary>Removes latin stroke diacriticals from any character with the strokes, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
+    /// <summary>Replaces a character with diacritical latin stroke with the closest 'plain' character, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>
     public static System.Text.Rune ReplaceDiacriticalLatinStroke(this System.Text.Rune source)
       => source.Value switch

@@ -12,7 +12,7 @@ namespace Flux
       ? -Factorial(-value)
       : value <= 1
       ? 1
-      : Enumerable.ForLoop(2, value - 1, 1).AsParallel().Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
+      : Enumerable.Loop(2, value - 1, 1).AsParallel().Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
     // => ParallelSplitFactorial.Default.ComputeProduct(value);
 
     ///// <summary>The factorial of a non-negative integer value, is the product of all positive integers less than or equal to the value.</summary>

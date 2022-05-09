@@ -132,7 +132,7 @@ namespace Flux.Model
 
       foreach (var square in Squares.RandomElements(1))
       {
-        values[square].RandomElement(out var value);
+        values[square].TryGetRandomElement(out var value);
 
         if (Assign(values, square, value.ToString()) == null)
         {

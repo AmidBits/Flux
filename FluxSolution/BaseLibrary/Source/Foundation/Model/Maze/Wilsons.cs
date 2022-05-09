@@ -24,7 +24,7 @@ namespace Flux.Model.Maze
 
         while (unvisited.Contains(cell))
         {
-          cell.Edges.Select(kvp => kvp.Value).RandomElement(out cell, Rng);
+          cell.Edges.Select(kvp => kvp.Value).TryGetRandomElement(out cell, Rng);
 
           if (path.IndexOf(cell) is int position && position > -1)
             path.RemoveRange(position, path.Count - position);
