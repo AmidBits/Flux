@@ -106,15 +106,18 @@ namespace Flux
     /// <param name="matrix">The transformation matrix to apply to the Plane.</param>
     public static Plane Transform(Plane plane, Matrix4 matrix)
     {
-      Matrix4.OptimizedInverse(matrix, out var m);
+      matrix.TryGetInverseOptimized(out var m);
 
-      double x = plane.m_x, y = plane.m_y, z = plane.m_z, w = plane.m_distance;
+      var x = plane.m_x;
+      var y = plane.m_y;
+      var z = plane.m_z;
+      var w = plane.m_distance;
 
       return new Plane(
-          x * m.m_11 + y * m.m_12 + z * m.m_13 + w * m.m_14,
-          x * m.m_21 + y * m.m_22 + z * m.m_23 + w * m.m_24,
-          x * m.m_31 + y * m.m_32 + z * m.m_33 + w * m.m_34,
-          x * m.m_41 + y * m.m_42 + z * m.m_43 + w * m.m_44);
+          x * m.M11 + y * m.M12 + z * m.M13 + w * m.M14,
+          x * m.M21 + y * m.M22 + z * m.M23 + w * m.M24,
+          x * m.M31 + y * m.M32 + z * m.M33 + w * m.M34,
+          x * m.M41 + y * m.M42 + z * m.M43 + w * m.M44);
     }
     /// <summary>Transforms a normalized Plane by a Quaternion rotation.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
