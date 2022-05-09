@@ -58,7 +58,7 @@ namespace Flux
       return new(x, y, z, angle);
     }
     [System.Diagnostics.Contracts.Pure]
-    public Matrix4x4 ToMatrixTaitBryanXYZ()
+    public Matrix4 ToMatrixTaitBryanXYZ()
     {
       var c1 = System.Math.Cos(m_y);
       var s1 = System.Math.Sin(m_y);
@@ -67,7 +67,7 @@ namespace Flux
       var c3 = System.Math.Cos(m_r);
       var s3 = System.Math.Sin(m_r);
 
-      return new Matrix4x4(
+      return new Matrix4(
         c2 * c3, -s2, c2 * s3, 0,
         s1 * s3 + c1 * c3 * s2, c1 * s2, c1 * s2 * s3 - c3 * s1, 0,
         c3 * s1 * s2 - c1 * s3, c2 * s1, c1 * c3 + s1 * s2 * s3, 0,
@@ -75,7 +75,7 @@ namespace Flux
       );
     }
     [System.Diagnostics.Contracts.Pure]
-    public Matrix4x4 ToMatrixLhTaitBryanYXZ()
+    public Matrix4 ToMatrixLhTaitBryanYXZ()
     {
       var c1 = System.Math.Cos(m_y);
       var s1 = System.Math.Sin(m_y);
@@ -84,7 +84,7 @@ namespace Flux
       var c3 = System.Math.Cos(m_r);
       var s3 = System.Math.Sin(m_r);
 
-      return new Matrix4x4(
+      return new Matrix4(
         c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, 0,
         c2 * s3, c2 * c3, -s2, 0,
         c1 * s2 * s3 - c3 * s1, c1 * c3 * s2 + s1 * s3, c1 * c2, 0,
@@ -92,7 +92,7 @@ namespace Flux
       );
     }
     [System.Diagnostics.Contracts.Pure]
-    public Matrix4x4 ToMatrixLhTaitBryanZYX()
+    public Matrix4 ToMatrixLhTaitBryanZYX()
     {
       var c3 = System.Math.Cos(m_y);
       var s3 = System.Math.Sin(m_y);
@@ -101,7 +101,7 @@ namespace Flux
       var c1 = System.Math.Cos(m_r);
       var s1 = System.Math.Sin(m_r);
 
-      return new Matrix4x4(
+      return new Matrix4(
         c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, 0,
         c2 * s1, c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, 0,
         -s2, c2 * s3, c2 * c3, 0,
@@ -109,7 +109,7 @@ namespace Flux
       );
     }
     [System.Diagnostics.Contracts.Pure]
-    public Matrix4x4 ToMatrixLhProperEulerZXZ()
+    public Matrix4 ToMatrixLhProperEulerZXZ()
     {
       var c1 = System.Math.Cos(m_y);
       var s1 = System.Math.Sin(m_y);
@@ -118,7 +118,7 @@ namespace Flux
       var c3 = System.Math.Cos(m_r);
       var s3 = System.Math.Sin(m_r);
 
-      return new Matrix4x4(
+      return new Matrix4(
         c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, 0,
         c3 * s1 + c1 * c2 * s3, c1 * c2 * c3 - s1 * s3, -c1 * s2, 0,
         s2 * s3, c3 * s2, c2, 0,

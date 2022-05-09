@@ -47,6 +47,18 @@ namespace Flux
     public double TrueAnomaly
       => m_trueAnomaly;
 
+    public Flux.Matrix4 ToMatrix4()
+    {
+      ToRotationMatrix(m_longitudeOfAscendingNode, m_inclination, m_argumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+
+      return new Matrix4(
+        x1, x2, x3, 0,
+        y1, y2, y3, 0,
+        z1, z2, z3, 0,
+        0, 0, 0, 0
+      );
+    }
+
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Matrix4x4 ToMatrix4x4()
     {

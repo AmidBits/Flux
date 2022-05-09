@@ -183,12 +183,12 @@ namespace Flux
     public static Vector4 Sqrt(in Vector4 v)
       => (Vector4)v.m_v256d.Sqrt();
     /// <summary>Transforms a vector by the given matrix.</summary>
-    public static Vector4 Transform(in Vector4 v, in Matrix4x4 m)
+    public static Vector4 Transform(in Vector4 v, in Matrix4 m)
       => new(
-        v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + v.W * m.M41,
-        v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + v.W * m.M42,
-        v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + v.W * m.M43,
-        v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + v.W * m.M44
+        v.X * m.m_11 + v.Y * m.m_21 + v.Z * m.m_31 + v.W * m.m_41,
+        v.X * m.m_12 + v.Y * m.m_22 + v.Z * m.m_32 + v.W * m.m_42,
+        v.X * m.m_13 + v.Y * m.m_23 + v.Z * m.m_33 + v.W * m.m_43,
+        v.X * m.m_14 + v.Y * m.m_24 + v.Z * m.m_34 + v.W * m.m_44
       );
     /// <summary>Transforms a vector by the given Quaternion rotation value.</summary>
     public static Vector4 Transform(in Vector4 v, in Quaternion q)

@@ -1,83 +1,98 @@
 namespace Flux
 {
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary></summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Matrix4x4
-    : System.IEquatable<Matrix4x4>
+  public struct Matrix4
+    : System.IEquatable<Matrix4>
   {
     /// <summary>Returns an empty matrix.</summary>
-    public static readonly Matrix4x4 Empty;
+    public static readonly Matrix4 Empty;
 
     /// <summary>Returns the multiplicative identity matrix.</summary>
-    public static Matrix4x4 Identity
+    public static Matrix4 Identity
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    public static Matrix4x4 ChangeOfBasisMatrix
+    public static Matrix4 ChangeOfBasisMatrix
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
 
-    /// <summary>Value at row 1, column 1 of the matrix.</summary>
-    public double M11;
-    /// <summary>Value at row 1, column 2 of the matrix.</summary>
-    public double M12;
-    /// <summary>Value at row 1, column 3 of the matrix.</summary>
-    public double M13;
-    /// <summary>Value at row 1, column 4 of the matrix.</summary>
-    public double M14;
+    public double m_11;
+    public double m_12;
+    public double m_13;
+    public double m_14;
 
-    /// <summary>Value at row 2, column 1 of the matrix.</summary>
-    public double M21;
-    /// <summary>Value at row 2, column 2 of the matrix.</summary>
-    public double M22;
-    /// <summary>Value at row 2, column 3 of the matrix.</summary>
-    public double M23;
-    /// <summary>Value at row 2, column 4 of the matrix.</summary>
-    public double M24;
+    public double m_21;
+    public double m_22;
+    public double m_23;
+    public double m_24;
 
-    /// <summary>Value at row 3, column 1 of the matrix.</summary>
-    public double M31;
-    /// <summary>Value at row 3, column 2 of the matrix.</summary>
-    public double M32;
-    /// <summary>Value at row 3, column 3 of the matrix.</summary>
-    public double M33;
-    /// <summary>Value at row 3, column 4 of the matrix.</summary>
-    public double M34;
+    public double m_31;
+    public double m_32;
+    public double m_33;
+    public double m_34;
 
-    /// <summary>Value at row 4, column 1 of the matrix.</summary>
-    public double M41;
-    /// <summary>Value at row 4, column 2 of the matrix.</summary>
-    public double M42;
-    /// <summary>Value at row 4, column 3 of the matrix.</summary>
-    public double M43;
-    /// <summary>Value at row 4, column 4 of the matrix.</summary>
-    public double M44;
+    public double m_41;
+    public double m_42;
+    public double m_43;
+    public double m_44;
 
     /// <summary>
     /// Constructs a Matrix4x4 from the given components.
     /// </summary>
-    public Matrix4x4(double m11, double m12, double m13, double m14, double m21, double m22, double m23, double m24, double m31, double m32, double m33, double m34, double m41, double m42, double m43, double m44)
+    public Matrix4(double m11, double m12, double m13, double m14, double m21, double m22, double m23, double m24, double m31, double m32, double m33, double m34, double m41, double m42, double m43, double m44)
     {
-      M11 = m11;
-      M12 = m12;
-      M13 = m13;
-      M14 = m14;
+      m_11 = m11;
+      m_12 = m12;
+      m_13 = m13;
+      m_14 = m14;
 
-      M21 = m21;
-      M22 = m22;
-      M23 = m23;
-      M24 = m24;
+      m_21 = m21;
+      m_22 = m22;
+      m_23 = m23;
+      m_24 = m24;
 
-      M31 = m31;
-      M32 = m32;
-      M33 = m33;
-      M34 = m34;
+      m_31 = m31;
+      m_32 = m32;
+      m_33 = m33;
+      m_34 = m34;
 
-      M41 = m41;
-      M42 = m42;
-      M43 = m43;
-      M44 = m44;
+      m_41 = m41;
+      m_42 = m42;
+      m_43 = m43;
+      m_44 = m44;
     }
+
+    /// <summary>Value at row 1, column 1 of the matrix.</summary>
+    public double M11 => m_11;
+    /// <summary>Value at row 1, column 2 of the matrix.</summary>
+    public double M12 => m_12;
+    /// <summary>Value at row 1, column 3 of the matrix.</summary>
+    public double M13 => m_13;
+    /// <summary>Value at row 1, column 4 of the matrix.</summary>
+    public double M14 => m_14;
+    /// <summary>Value at row 2, column 1 of the matrix.</summary>
+    public double M21 => m_21;
+    /// <summary>Value at row 2, column 2 of the matrix.</summary>
+    public double M22 => m_22;
+    /// <summary>Value at row 2, column 3 of the matrix.</summary>
+    public double M23 => m_23;
+    /// <summary>Value at row 2, column 4 of the matrix.</summary>
+    public double M24 => m_24;
+    /// <summary>Value at row 3, column 1 of the matrix.</summary>
+    public double M31 => m_31;
+    /// <summary>Value at row 3, column 2 of the matrix.</summary>
+    public double M32 => m_32;
+    /// <summary>Value at row 3, column 3 of the matrix.</summary>
+    public double M33 => m_33;
+    /// <summary>Value at row 3, column 4 of the matrix.</summary>
+    public double M34 => m_34;
+    /// <summary>Value at row 4, column 1 of the matrix.</summary>
+    public double M41 => m_41;
+    /// <summary>Value at row 4, column 2 of the matrix.</summary>
+    public double M42 => m_42;
+    /// <summary>Value at row 4, column 3 of the matrix.</summary>
+    public double M43 => m_43;
+    /// <summary>Value at row 4, column 4 of the matrix.</summary>
+    public double M44 => m_44;
 
     /// <summary>Returns whether the matrix is empty.</summary>
     public bool IsEmpty
@@ -89,7 +104,7 @@ namespace Flux
 
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
     public double GetDeterminantGeneral()
-      => M14 * M23 * M32 * M41 - M13 * M24 * M32 * M41 - M14 * M22 * M33 * M41 + M12 * M24 * M33 * M41 + M13 * M22 * M34 * M41 - M12 * M23 * M34 * M41 - M14 * M23 * M31 * M42 + M13 * M24 * M31 * M42 + M14 * M21 * M33 * M42 - M11 * M24 * M33 * M42 - M13 * M21 * M34 * M42 + M11 * M23 * M34 * M42 + M14 * M22 * M31 * M43 - M12 * M24 * M31 * M43 - M14 * M21 * M32 * M43 + M11 * M24 * M32 * M43 + M12 * M21 * M34 * M43 - M11 * M22 * M34 * M43 - M13 * M22 * M31 * M44 + M12 * M23 * M31 * M44 + M13 * M21 * M32 * M44 - M11 * M23 * M32 * M44 - M12 * M21 * M33 * M44 + M11 * M22 * M33 * M44;
+      => m_14 * m_23 * m_32 * m_41 - m_13 * m_24 * m_32 * m_41 - m_14 * m_22 * m_33 * m_41 + m_12 * m_24 * m_33 * m_41 + m_13 * m_22 * m_34 * m_41 - m_12 * m_23 * m_34 * m_41 - m_14 * m_23 * m_31 * m_42 + m_13 * m_24 * m_31 * m_42 + m_14 * m_21 * m_33 * m_42 - m_11 * m_24 * m_33 * m_42 - m_13 * m_21 * m_34 * m_42 + m_11 * m_23 * m_34 * m_42 + m_14 * m_22 * m_31 * m_43 - m_12 * m_24 * m_31 * m_43 - m_14 * m_21 * m_32 * m_43 + m_11 * m_24 * m_32 * m_43 + m_12 * m_21 * m_34 * m_43 - m_11 * m_22 * m_34 * m_43 - m_13 * m_22 * m_31 * m_44 + m_12 * m_23 * m_31 * m_44 + m_13 * m_21 * m_32 * m_44 - m_11 * m_23 * m_32 * m_44 - m_12 * m_21 * m_33 * m_44 + m_11 * m_22 * m_33 * m_44;
     /// <summary>Computes the determinant (optimized) of the matrix.</summary>
     public double GetDeterminantOptimized()
     {
@@ -120,10 +135,10 @@ namespace Flux
       // add: 6 + 8 + 3 = 17
       // mul: 12 + 16 = 28
 
-      double a = M11, b = M12, c = M13, d = M14;
-      double e = M21, f = M22, g = M23, h = M24;
-      double i = M31, j = M32, k = M33, l = M34;
-      double m = M41, n = M42, o = M43, p = M44;
+      double a = m_11, b = m_12, c = m_13, d = m_14;
+      double e = m_21, f = m_22, g = m_23, h = m_24;
+      double i = m_31, j = m_32, k = m_33, l = m_34;
+      double m = m_41, n = m_42, o = m_43, p = m_44;
 
       double kp_lo = k * p - l * o;
       double jp_ln = j * p - l * n;
@@ -139,35 +154,38 @@ namespace Flux
     }
 
     /// <summary>Computes the general inverse of the matrix.</summary>
-    public Matrix4x4 GetInverseGeneral()
+    public Matrix4 GetInverseGeneral()
     {
       var det = 1 / GetDeterminantGeneral();
 
-      return new Matrix4x4
+      return new Matrix4
       (
-        (M23 * M34 * M42 - M24 * M33 * M42 + M24 * M32 * M43 - M22 * M34 * M43 - M23 * M32 * M44 + M22 * M33 * M44) * det,
-        (M14 * M33 * M42 - M13 * M34 * M42 - M14 * M32 * M43 + M12 * M34 * M43 + M13 * M32 * M44 - M12 * M33 * M44) * det,
-        (M13 * M24 * M42 - M14 * M23 * M42 + M14 * M22 * M43 - M12 * M24 * M43 - M13 * M22 * M44 + M12 * M23 * M44) * det,
-        (M14 * M23 * M32 - M13 * M24 * M32 - M14 * M22 * M33 + M12 * M24 * M33 + M13 * M22 * M34 - M12 * M23 * M34) * det,
-        (M24 * M33 * M41 - M23 * M34 * M41 - M24 * M31 * M43 + M21 * M34 * M43 + M23 * M31 * M44 - M21 * M33 * M44) * det,
-        (M13 * M34 * M41 - M14 * M33 * M41 + M14 * M31 * M43 - M11 * M34 * M43 - M13 * M31 * M44 + M11 * M33 * M44) * det,
-        (M14 * M23 * M41 - M13 * M24 * M41 - M14 * M21 * M43 + M11 * M24 * M43 + M13 * M21 * M44 - M11 * M23 * M44) * det,
-        (M13 * M24 * M31 - M14 * M23 * M31 + M14 * M21 * M33 - M11 * M24 * M33 - M13 * M21 * M34 + M11 * M23 * M34) * det,
-        (M22 * M34 * M41 - M24 * M32 * M41 + M24 * M31 * M42 - M21 * M34 * M42 - M22 * M31 * M44 + M21 * M32 * M44) * det,
-        (M14 * M32 * M41 - M12 * M34 * M41 - M14 * M31 * M42 + M11 * M34 * M42 + M12 * M31 * M44 - M11 * M32 * M44) * det,
-        (M12 * M24 * M41 - M14 * M22 * M41 + M14 * M21 * M42 - M11 * M24 * M42 - M12 * M21 * M44 + M11 * M22 * M44) * det,
-        (M14 * M22 * M31 - M12 * M24 * M31 - M14 * M21 * M32 + M11 * M24 * M32 + M12 * M21 * M34 - M11 * M22 * M34) * det,
-        (M23 * M32 * M41 - M22 * M33 * M41 - M23 * M31 * M42 + M21 * M33 * M42 + M22 * M31 * M43 - M21 * M32 * M43) * det,
-        (M12 * M33 * M41 - M13 * M32 * M41 + M13 * M31 * M42 - M11 * M33 * M42 - M12 * M31 * M43 + M11 * M32 * M43) * det,
-        (M13 * M22 * M41 - M12 * M23 * M41 - M13 * M21 * M42 + M11 * M23 * M42 + M12 * M21 * M43 - M11 * M22 * M43) * det,
-        (M12 * M23 * M31 - M13 * M22 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 + M11 * M22 * M33) * det
+        (m_23 * m_34 * m_42 - m_24 * m_33 * m_42 + m_24 * m_32 * m_43 - m_22 * m_34 * m_43 - m_23 * m_32 * m_44 + m_22 * m_33 * m_44) * det,
+        (m_14 * m_33 * m_42 - m_13 * m_34 * m_42 - m_14 * m_32 * m_43 + m_12 * m_34 * m_43 + m_13 * m_32 * m_44 - m_12 * m_33 * m_44) * det,
+        (m_13 * m_24 * m_42 - m_14 * m_23 * m_42 + m_14 * m_22 * m_43 - m_12 * m_24 * m_43 - m_13 * m_22 * m_44 + m_12 * m_23 * m_44) * det,
+        (m_14 * m_23 * m_32 - m_13 * m_24 * m_32 - m_14 * m_22 * m_33 + m_12 * m_24 * m_33 + m_13 * m_22 * m_34 - m_12 * m_23 * m_34) * det,
+
+        (m_24 * m_33 * m_41 - m_23 * m_34 * m_41 - m_24 * m_31 * m_43 + m_21 * m_34 * m_43 + m_23 * m_31 * m_44 - m_21 * m_33 * m_44) * det,
+        (m_13 * m_34 * m_41 - m_14 * m_33 * m_41 + m_14 * m_31 * m_43 - m_11 * m_34 * m_43 - m_13 * m_31 * m_44 + m_11 * m_33 * m_44) * det,
+        (m_14 * m_23 * m_41 - m_13 * m_24 * m_41 - m_14 * m_21 * m_43 + m_11 * m_24 * m_43 + m_13 * m_21 * m_44 - m_11 * m_23 * m_44) * det,
+        (m_13 * m_24 * m_31 - m_14 * m_23 * m_31 + m_14 * m_21 * m_33 - m_11 * m_24 * m_33 - m_13 * m_21 * m_34 + m_11 * m_23 * m_34) * det,
+
+        (m_22 * m_34 * m_41 - m_24 * m_32 * m_41 + m_24 * m_31 * m_42 - m_21 * m_34 * m_42 - m_22 * m_31 * m_44 + m_21 * m_32 * m_44) * det,
+        (m_14 * m_32 * m_41 - m_12 * m_34 * m_41 - m_14 * m_31 * m_42 + m_11 * m_34 * m_42 + m_12 * m_31 * m_44 - m_11 * m_32 * m_44) * det,
+        (m_12 * m_24 * m_41 - m_14 * m_22 * m_41 + m_14 * m_21 * m_42 - m_11 * m_24 * m_42 - m_12 * m_21 * m_44 + m_11 * m_22 * m_44) * det,
+        (m_14 * m_22 * m_31 - m_12 * m_24 * m_31 - m_14 * m_21 * m_32 + m_11 * m_24 * m_32 + m_12 * m_21 * m_34 - m_11 * m_22 * m_34) * det,
+
+        (m_23 * m_32 * m_41 - m_22 * m_33 * m_41 - m_23 * m_31 * m_42 + m_21 * m_33 * m_42 + m_22 * m_31 * m_43 - m_21 * m_32 * m_43) * det,
+        (m_12 * m_33 * m_41 - m_13 * m_32 * m_41 + m_13 * m_31 * m_42 - m_11 * m_33 * m_42 - m_12 * m_31 * m_43 + m_11 * m_32 * m_43) * det,
+        (m_13 * m_22 * m_41 - m_12 * m_23 * m_41 - m_13 * m_21 * m_42 + m_11 * m_23 * m_42 + m_12 * m_21 * m_43 - m_11 * m_22 * m_43) * det,
+        (m_12 * m_23 * m_31 - m_13 * m_22 * m_31 + m_13 * m_21 * m_32 - m_11 * m_23 * m_32 - m_12 * m_21 * m_33 + m_11 * m_22 * m_33) * det
       );
     }
     /// <summary>Attempts to calculate the inverse of the given matrix. If successful, result will contain the inverted matrix.</summary>
     /// <param name="matrix">The source matrix to invert.</param>
     /// <param name="result">If successful, contains the inverted matrix.</param>
     /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
-    public bool GetInverseOptimized(out Matrix4x4 result)
+    public bool TryGetInverseOptimized(out Matrix4 result)
     {
       //                                       -1
       // If you have matrix M, inverse Matrix M   can compute
@@ -261,10 +279,10 @@ namespace Flux
       //
       // Cost of operation
       // 53 adds, 104 muls, and 1 div.
-      double a = M11, b = M12, c = M13, d = M14;
-      double e = M21, f = M22, g = M23, h = M24;
-      double i = M31, j = M32, k = M33, l = M34;
-      double m = M41, n = M42, o = M43, p = M44;
+      double a = m_11, b = m_12, c = m_13, d = m_14;
+      double e = m_21, f = m_22, g = m_23, h = m_24;
+      double i = m_31, j = m_32, k = m_33, l = m_34;
+      double m = m_41, n = m_42, o = m_43, p = m_44;
 
       var kp_lo = k * p - l * o;
       var jp_ln = j * p - l * n;
@@ -282,24 +300,24 @@ namespace Flux
 
       if (System.Math.Abs(det) < double.Epsilon)
       {
-        result = new Matrix4x4(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+        result = new Matrix4(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         return false;
       }
 
-      result = new Matrix4x4();
+      result = new Matrix4();
 
       double invDet = 1 / det;
 
-      result.M11 = a11 * invDet;
-      result.M21 = a12 * invDet;
-      result.M31 = a13 * invDet;
-      result.M41 = a14 * invDet;
+      result.m_11 = a11 * invDet;
+      result.m_21 = a12 * invDet;
+      result.m_31 = a13 * invDet;
+      result.m_41 = a14 * invDet;
 
-      result.M12 = -(b * kp_lo - c * jp_ln + d * jo_kn) * invDet;
-      result.M22 = +(a * kp_lo - c * ip_lm + d * io_km) * invDet;
-      result.M32 = -(a * jp_ln - b * ip_lm + d * in_jm) * invDet;
-      result.M42 = +(a * jo_kn - b * io_km + c * in_jm) * invDet;
+      result.m_12 = -(b * kp_lo - c * jp_ln + d * jo_kn) * invDet;
+      result.m_22 = +(a * kp_lo - c * ip_lm + d * io_km) * invDet;
+      result.m_32 = -(a * jp_ln - b * ip_lm + d * in_jm) * invDet;
+      result.m_42 = +(a * jo_kn - b * io_km + c * in_jm) * invDet;
 
       var gp_ho = g * p - h * o;
       var fp_hn = f * p - h * n;
@@ -308,10 +326,10 @@ namespace Flux
       var eo_gm = e * o - g * m;
       var en_fm = e * n - f * m;
 
-      result.M13 = +(b * gp_ho - c * fp_hn + d * fo_gn) * invDet;
-      result.M23 = -(a * gp_ho - c * ep_hm + d * eo_gm) * invDet;
-      result.M33 = +(a * fp_hn - b * ep_hm + d * en_fm) * invDet;
-      result.M43 = -(a * fo_gn - b * eo_gm + c * en_fm) * invDet;
+      result.m_13 = +(b * gp_ho - c * fp_hn + d * fo_gn) * invDet;
+      result.m_23 = -(a * gp_ho - c * ep_hm + d * eo_gm) * invDet;
+      result.m_33 = +(a * fp_hn - b * ep_hm + d * en_fm) * invDet;
+      result.m_43 = -(a * fo_gn - b * eo_gm + c * en_fm) * invDet;
 
       var gl_hk = g * l - h * k;
       var fl_hj = f * l - h * j;
@@ -320,44 +338,44 @@ namespace Flux
       var ek_gi = e * k - g * i;
       var ej_fi = e * j - f * i;
 
-      result.M14 = -(b * gl_hk - c * fl_hj + d * fk_gj) * invDet;
-      result.M24 = +(a * gl_hk - c * el_hi + d * ek_gi) * invDet;
-      result.M34 = -(a * fl_hj - b * el_hi + d * ej_fi) * invDet;
-      result.M44 = +(a * fk_gj - b * ek_gi + c * ej_fi) * invDet;
+      result.m_14 = -(b * gl_hk - c * fl_hj + d * fk_gj) * invDet;
+      result.m_24 = +(a * gl_hk - c * el_hi + d * ek_gi) * invDet;
+      result.m_34 = -(a * fl_hj - b * el_hi + d * ej_fi) * invDet;
+      result.m_44 = +(a * fk_gj - b * ek_gi + c * ej_fi) * invDet;
 
       return true;
     }
 
     /// <summary>Creates a new matrix with the elements negated.</summary>
-    public Matrix4x4 GetNegated()
-      => new(-M11, -M12, -M13, -M14, -M21, -M22, -M23, -M24, -M31, -M32, -M33, -M34, -M41, -M42, -M43, -M44);
+    public Matrix4 GetNegated()
+      => new(-m_11, -m_12, -m_13, -m_14, -m_21, -m_22, -m_23, -m_24, -m_31, -m_32, -m_33, -m_34, -m_41, -m_42, -m_43, -m_44);
 
     /// <summary>Creates a new matrix with the rows and columns transposed.</summary>
-    public Matrix4x4 GetTransposed()
-      => new(M11, M21, M31, M41, M12, M22, M32, M42, M13, M23, M33, M43, M14, M24, M34, M44);
+    public Matrix4 GetTransposed()
+      => new(m_11, m_21, m_31, m_41, m_12, m_22, m_32, m_42, m_13, m_23, m_33, m_43, m_14, m_24, m_34, m_44);
 
     /// <summary>Creates a new 4x4 two-dimensional array from the matrix.</summary>
     public double[,] ToArray()
     {
       return new double[,]
       {
-        { M11, M12, M13, M14 },
-        { M21, M22, M23, M24 },
-        { M31, M32, M33, M34 },
-        { M41, M42, M43, M44 }
+        { m_11, m_12, m_13, m_14 },
+        { m_21, m_22, m_23, m_24 },
+        { m_31, m_32, m_33, m_34 },
+        { m_41, m_42, m_43, m_44 }
       };
     }
     public EulerAngles ToEulerAnglesTaitBryanZYX()
       => new(
-        System.Math.Atan2(M11, M21),
-        System.Math.Atan2(System.Math.Sqrt(1 - M31 * M31), -M31),
-        System.Math.Atan2(M33, M32)
+        System.Math.Atan2(m_11, m_21),
+        System.Math.Atan2(System.Math.Sqrt(1 - m_31 * m_31), -m_31),
+        System.Math.Atan2(m_33, m_32)
       );
     public EulerAngles ToEulerAnglesProperEulerZXZ()
       => new(
-        System.Math.Atan2(-M23, M13),
-        System.Math.Atan2(M33, System.Math.Sqrt(1 - M33 * M33)),
-        System.Math.Atan2(M32, M31)
+        System.Math.Atan2(-m_23, m_13),
+        System.Math.Atan2(m_33, System.Math.Sqrt(1 - m_33 * m_33)),
+        System.Math.Atan2(m_32, m_31)
       );
 
     #region Static methods
@@ -367,7 +385,7 @@ namespace Flux
     /// <param name="cameraUpVector">The up vector of the camera.</param>
     /// <param name="cameraForwardVector">The forward vector of the camera.</param>
     /// <returns>The created billboard matrix</returns>
-    public static Matrix4x4 CreateBillboard(Vector4 objectPosition, Vector4 cameraPosition, Vector4 cameraUpVector, Vector4 cameraForwardVector)
+    public static Matrix4 CreateBillboard(Vector4 objectPosition, Vector4 cameraPosition, Vector4 cameraUpVector, Vector4 cameraForwardVector)
     {
       const double epsilon = 1e-4f;
 
@@ -378,7 +396,7 @@ namespace Flux
       var xaxis = Vector4.Normalize(Vector4.Cross(cameraUpVector, zaxis));
       var yaxis = Vector4.Cross(zaxis, xaxis);
 
-      return new Matrix4x4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
+      return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
     }
     /// <summary>
     /// Creates a cylindrical billboard that rotates around a specified axis.
@@ -389,7 +407,7 @@ namespace Flux
     /// <param name="cameraForwardVector">Forward vector of the camera.</param>
     /// <param name="objectForwardVector">Forward vector of the object.</param>
     /// <returns>The created billboard matrix.</returns>
-    public static Matrix4x4 CreateConstrainedBillboard(Vector4 objectPosition, Vector4 cameraPosition, Vector4 rotateAxis, Vector4 cameraForwardVector, Vector4 objectForwardVector)
+    public static Matrix4 CreateConstrainedBillboard(Vector4 objectPosition, Vector4 cameraPosition, Vector4 rotateAxis, Vector4 cameraForwardVector, Vector4 objectForwardVector)
     {
       const double epsilon = 1e-4f;
       const double minAngle = 1 - (0.1f * Maths.PiOver180); // 0.1 degrees
@@ -427,7 +445,7 @@ namespace Flux
         zaxis = Vector4.Normalize(Vector4.Cross(xaxis, yaxis));
       }
 
-      return new Matrix4x4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
+      return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
     }
     /// <summary>
     /// Creates a matrix that rotates around an arbitrary vector.
@@ -435,7 +453,7 @@ namespace Flux
     /// <param name="axis">The axis to rotate around.</param>
     /// <param name="angle">The angle to rotate around the given axis, in radians.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateFromAxisAngle(Vector4 axis, double angle)
+    public static Matrix4 CreateFromAxisAngle(Vector4 axis, double angle)
     {
       // a: angle
       // x, y, z: unit vector for axis.
@@ -467,14 +485,14 @@ namespace Flux
       double xx = x * x, yy = y * y, zz = z * z;
       double xy = x * y, xz = x * z, yz = y * z;
 
-      return new Matrix4x4(xx + ca * (1 - xx), xy - ca * xy + sa * z, xz - ca * xz - sa * y, 0, xy - ca * xy - sa * z, yy + ca * (1 - yy), yz - ca * yz + sa * x, 0, xz - ca * xz + sa * y, yz - ca * yz - sa * x, zz + ca * (1 - zz), 0, 0, 0, 0, 1);
+      return new Matrix4(xx + ca * (1 - xx), xy - ca * xy + sa * z, xz - ca * xz - sa * y, 0, xy - ca * xy - sa * z, yy + ca * (1 - yy), yz - ca * yz + sa * x, 0, xz - ca * xz + sa * y, yz - ca * yz - sa * x, zz + ca * (1 - zz), 0, 0, 0, 0, 1);
     }
     /// <summary>
     /// Creates a rotation matrix from the given Quaternion rotation value.
     /// </summary>
     /// <param name="quaternion">The source Quaternion.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateFromQuaternion(Quaternion quaternion)
+    public static Matrix4 CreateFromQuaternion(Quaternion quaternion)
     {
       var xx = quaternion.X * quaternion.X;
       var yy = quaternion.Y * quaternion.Y;
@@ -487,7 +505,7 @@ namespace Flux
       var yz = quaternion.Y * quaternion.Z;
       var wx = quaternion.X * quaternion.W;
 
-      return new Matrix4x4(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy), 0, 2 * (xy - wz), 1 - 2 * (zz + xx), 2 * (yz + wx), 0, 2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (yy + xx), 0, 0, 0, 0, 1);
+      return new Matrix4(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy), 0, 2 * (xy - wz), 1 - 2 * (zz + xx), 2 * (yz + wx), 0, 2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (yy + xx), 0, 0, 0, 0, 1);
     }
     /// <summary>
     /// Creates a rotation matrix from the specified yaw, pitch, and roll.
@@ -496,7 +514,7 @@ namespace Flux
     /// <param name="pitch">Angle of rotation, in radians, around the X-axis.</param>
     /// <param name="roll">Angle of rotation, in radians, around the Z-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateFromYawPitchRoll(double yaw, double pitch, double roll)
+    public static Matrix4 CreateFromYawPitchRoll(double yaw, double pitch, double roll)
       => CreateFromQuaternion(Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
     /// <summary>
     /// Creates a view matrix.
@@ -505,7 +523,7 @@ namespace Flux
     /// <param name="cameraTarget">The target towards which the camera is pointing.</param>
     /// <param name="cameraUpVector">The direction that is "up" from the camera's point of view.</param>
     /// <returns>The view matrix.</returns>
-    public static Matrix4x4 CreateLookAt(Vector4 cameraPosition, Vector4 cameraTarget, Vector4 cameraUpVector)
+    public static Matrix4 CreateLookAt(Vector4 cameraPosition, Vector4 cameraTarget, Vector4 cameraUpVector)
     {
       Vector4 zaxis = Vector4.Normalize(cameraPosition - cameraTarget);
       Vector4 xaxis = Vector4.Normalize(Vector4.Cross(cameraUpVector, zaxis));
@@ -521,7 +539,7 @@ namespace Flux
     /// <param name="zNearPlane">Minimum Z-value of the view volume.</param>
     /// <param name="zFarPlane">Maximum Z-value of the view volume.</param>
     /// <returns>The orthographic projection matrix.</returns>
-    public static Matrix4x4 CreateOrthographic(double width, double height, double zNearPlane, double zFarPlane)
+    public static Matrix4 CreateOrthographic(double width, double height, double zNearPlane, double zFarPlane)
       => new(2 / width, 0, 0, 0, 0, 2 / height, 0, 0, 0, 0, 1 / (zNearPlane - zFarPlane), 0, 0, 0, zNearPlane / (zNearPlane - zFarPlane), 1);
     /// <summary>
     /// Builds a customized, orthographic projection matrix.
@@ -533,7 +551,7 @@ namespace Flux
     /// <param name="zNearPlane">Minimum Z-value of the view volume.</param>
     /// <param name="zFarPlane">Maximum Z-value of the view volume.</param>
     /// <returns>The orthographic projection matrix.</returns>
-    public static Matrix4x4 CreateOrthographicOffCenter(double left, double right, double bottom, double top, double zNearPlane, double zFarPlane)
+    public static Matrix4 CreateOrthographicOffCenter(double left, double right, double bottom, double top, double zNearPlane, double zFarPlane)
       => new(2 / (right - left), 0, 0, 0, 0, 2 / (top - bottom), 0, 0, 0, 0, 1 / (zNearPlane - zFarPlane), 0, (left + right) / (left - right), (top + bottom) / (bottom - top), zNearPlane / (zNearPlane - zFarPlane), 1);
     /// <summary>
     /// Creates a perspective projection matrix based on a field of view, aspect ratio, and near and far view plane distances. 
@@ -543,7 +561,7 @@ namespace Flux
     /// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     /// <param name="farPlaneDistance">Distance to the far view plane.</param>
     /// <returns>The perspective projection matrix.</returns>
-    public static Matrix4x4 CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
+    public static Matrix4 CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
     {
       if (fieldOfView <= 0 || fieldOfView >= System.Math.PI) throw new System.ArgumentOutOfRangeException(nameof(fieldOfView));
       if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
@@ -553,7 +571,7 @@ namespace Flux
       var yScale = 1 / System.Math.Tan(fieldOfView * 0.5);
       var xScale = yScale / aspectRatio;
 
-      return new Matrix4x4(xScale, 0, 0, 0, 0, yScale, 0, 0, 0, 0, farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
+      return new Matrix4(xScale, 0, 0, 0, 0, yScale, 0, 0, 0, 0, farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
     }
     /// <summary>
     /// Creates a perspective projection matrix from the given view volume dimensions.
@@ -563,13 +581,13 @@ namespace Flux
     /// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     /// <param name="farPlaneDistance">Distance to the far view plane.</param>
     /// <returns>The perspective projection matrix.</returns>
-    public static Matrix4x4 CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
+    public static Matrix4 CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
     {
       if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
       if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
       if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-      return new Matrix4x4(2 * nearPlaneDistance / width, 0, 0, 0, 0, 2 * nearPlaneDistance / height, 0, 0, 0, 0, farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
+      return new Matrix4(2 * nearPlaneDistance / width, 0, 0, 0, 0, 2 * nearPlaneDistance / height, 0, 0, 0, 0, farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
     }
     /// <summary>
     /// Creates a customized, perspective projection matrix.
@@ -581,20 +599,20 @@ namespace Flux
     /// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     /// <param name="farPlaneDistance">Distance to of the far view plane.</param>
     /// <returns>The perspective projection matrix.</returns>
-    public static Matrix4x4 CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
+    public static Matrix4 CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
     {
       if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
       if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
       if (nearPlaneDistance >= farPlaneDistance) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
 
-      return new Matrix4x4(2 * nearPlaneDistance / (right - left), 0, 0, 0, 0, 2 * nearPlaneDistance / (top - bottom), 0, 0, (left + right) / (right - left), (top + bottom) / (top - bottom), farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
+      return new Matrix4(2 * nearPlaneDistance / (right - left), 0, 0, 0, 0, 2 * nearPlaneDistance / (top - bottom), 0, 0, (left + right) / (right - left), (top + bottom) / (top - bottom), farPlaneDistance / (nearPlaneDistance - farPlaneDistance), -1, 0, 0, nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance), 0);
     }
     /// <summary>
     /// Creates a Matrix that reflects the coordinate system about a specified Plane.
     /// </summary>
     /// <param name="value">The Plane about which to create a reflection.</param>
     /// <returns>A new matrix expressing the reflection.</returns>
-    public static Matrix4x4 CreateReflection(Plane value)
+    public static Matrix4 CreateReflection(Plane value)
     {
       value = Plane.Normalize(value);
 
@@ -606,14 +624,14 @@ namespace Flux
       var fb = -2 * b;
       var fc = -2 * c;
 
-      return new Matrix4x4(fa * a + 1, fb * a, fc * a, 0, fa * b, fb * b + 1, fc * b, 0, fa * c, fb * c, fc * c + 1, 0, fa * value.Distance, fb * value.Distance, fc * value.Distance, 1);
+      return new Matrix4(fa * a + 1, fb * a, fc * a, 0, fa * b, fb * b + 1, fc * b, 0, fa * c, fb * c, fc * c + 1, 0, fa * value.Distance, fb * value.Distance, fc * value.Distance, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the X-axis.
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the X-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationX(double radians)
+    public static Matrix4 CreateRotationX(double radians)
     {
       // [  1  0  0  0 ]
       // [  0  c  s  0 ]
@@ -623,7 +641,7 @@ namespace Flux
       var c = System.Math.Cos(radians);
       var s = System.Math.Sin(radians);
 
-      return new Matrix4x4(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1);
+      return new Matrix4(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the X-axis, from a center point.
@@ -631,7 +649,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the X-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationX(double radians, Vector4 centerPoint)
+    public static Matrix4 CreateRotationX(double radians, Vector4 centerPoint)
     {
       // [  1  0  0  0 ]
       // [  0  c  s  0 ]
@@ -644,14 +662,14 @@ namespace Flux
       var y = centerPoint.Y * (1 - c) + centerPoint.Z * s;
       var z = centerPoint.Z * (1 - c) - centerPoint.Y * s;
 
-      return new Matrix4x4(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, y, z, 1);
+      return new Matrix4(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, y, z, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the Y-axis.
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the Y-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationY(double radians)
+    public static Matrix4 CreateRotationY(double radians)
     {
       // [  c  0 -s  0 ]
       // [  0  1  0  0 ]
@@ -661,7 +679,7 @@ namespace Flux
       var c = System.Math.Cos(radians);
       var s = System.Math.Sin(radians);
 
-      return new Matrix4x4(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1);
+      return new Matrix4(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the Y-axis, from a center point.
@@ -669,7 +687,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the Y-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationY(double radians, Vector4 centerPoint)
+    public static Matrix4 CreateRotationY(double radians, Vector4 centerPoint)
     {
       // [  c  0 -s  0 ]
       // [  0  1  0  0 ]
@@ -682,14 +700,14 @@ namespace Flux
       var x = centerPoint.X * (1 - c) - centerPoint.Z * s;
       var z = centerPoint.Z * (1 - c) + centerPoint.X * s;
 
-      return new Matrix4x4(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, x, 0, z, 1);
+      return new Matrix4(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, x, 0, z, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the Z-axis.
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the Z-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationZ(double radians)
+    public static Matrix4 CreateRotationZ(double radians)
     {
       // [  c  s  0  0 ]
       // [ -s  c  0  0 ]
@@ -699,7 +717,7 @@ namespace Flux
       var c = System.Math.Cos(radians);
       var s = System.Math.Sin(radians);
 
-      return new Matrix4x4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      return new Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     }
     /// <summary>
     /// Creates a matrix for rotating points around the Z-axis, from a center point.
@@ -707,7 +725,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the Z-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4x4 CreateRotationZ(double radians, Vector4 centerPoint)
+    public static Matrix4 CreateRotationZ(double radians, Vector4 centerPoint)
     {
       // [  c  s  0  0 ]
       // [ -s  c  0  0 ]
@@ -729,7 +747,7 @@ namespace Flux
     /// <param name="yScale">Value to scale by on the Y-axis.</param>
     /// <param name="zScale">Value to scale by on the Z-axis.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(double xScale, double yScale, double zScale)
+    public static Matrix4 CreateScale(double xScale, double yScale, double zScale)
       => new(xScale, 0, 0, 0, 0, yScale, 0, 0, 0, 0, zScale, 0, 0, 0, 0, 1);
     /// <summary>
     /// Creates a scaling matrix with a center point.
@@ -739,7 +757,7 @@ namespace Flux
     /// <param name="zScale">Value to scale by on the Z-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(double xScale, double yScale, double zScale, Vector4 centerPoint)
+    public static Matrix4 CreateScale(double xScale, double yScale, double zScale, Vector4 centerPoint)
     {
       var tx = centerPoint.X * (1 - xScale);
       var ty = centerPoint.Y * (1 - yScale);
@@ -750,7 +768,7 @@ namespace Flux
     /// <summary>Creates a scaling matrix.</summary>
     /// <param name="scales">The vector containing the amount to scale by on each axis.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(Vector4 scales)
+    public static Matrix4 CreateScale(Vector4 scales)
       => new(scales.X, 0, 0, 0, 0, scales.Y, 0, 0, 0, 0, scales.Z, 0, 0, 0, 0, 1);
     /// <summary>
     /// Creates a scaling matrix with a center point.
@@ -758,7 +776,7 @@ namespace Flux
     /// <param name="scales">The vector containing the amount to scale by on each axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(Vector4 scales, Vector4 centerPoint)
+    public static Matrix4 CreateScale(Vector4 scales, Vector4 centerPoint)
     {
       var tx = centerPoint.X * (1 - scales.X);
       var ty = centerPoint.Y * (1 - scales.Y);
@@ -771,7 +789,7 @@ namespace Flux
     /// </summary>
     /// <param name="scale">The uniform scaling factor.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(double scale)
+    public static Matrix4 CreateScale(double scale)
       => new(scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1);
     /// <summary>
     /// Creates a uniform scaling matrix that scales equally on each axis with a center point.
@@ -779,7 +797,7 @@ namespace Flux
     /// <param name="scale">The uniform scaling factor.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4x4 CreateScale(double scale, Vector4 centerPoint)
+    public static Matrix4 CreateScale(double scale, Vector4 centerPoint)
     {
       var tx = centerPoint.X * (1 - scale);
       var ty = centerPoint.Y * (1 - scale);
@@ -793,7 +811,7 @@ namespace Flux
     /// <param name="lightDirection">The direction from which the light that will cast the shadow is coming.</param>
     /// <param name="plane">The Plane onto which the new matrix should flatten geometry so as to cast a shadow.</param>
     /// <returns>A new Matrix that can be used to flatten geometry onto the specified plane from the specified direction.</returns>
-    public static Matrix4x4 CreateShadow(Vector4 lightDirection, Plane plane)
+    public static Matrix4 CreateShadow(Vector4 lightDirection, Plane plane)
     {
       Plane p = Plane.Normalize(plane);
 
@@ -806,25 +824,25 @@ namespace Flux
 
       return new()
       {
-        M11 = a * lightDirection.X + dot,
-        M21 = b * lightDirection.X,
-        M31 = c * lightDirection.X,
-        M41 = d * lightDirection.X,
+        m_11 = a * lightDirection.X + dot,
+        m_21 = b * lightDirection.X,
+        m_31 = c * lightDirection.X,
+        m_41 = d * lightDirection.X,
 
-        M12 = a * lightDirection.Y,
-        M22 = b * lightDirection.Y + dot,
-        M32 = c * lightDirection.Y,
-        M42 = d * lightDirection.Y,
+        m_12 = a * lightDirection.Y,
+        m_22 = b * lightDirection.Y + dot,
+        m_32 = c * lightDirection.Y,
+        m_42 = d * lightDirection.Y,
 
-        M13 = a * lightDirection.Z,
-        M23 = b * lightDirection.Z,
-        M33 = c * lightDirection.Z + dot,
-        M43 = d * lightDirection.Z,
+        m_13 = a * lightDirection.Z,
+        m_23 = b * lightDirection.Z,
+        m_33 = c * lightDirection.Z + dot,
+        m_43 = d * lightDirection.Z,
 
-        M14 = 0,
-        M24 = 0,
-        M34 = 0,
-        M44 = dot
+        m_14 = 0,
+        m_24 = 0,
+        m_34 = 0,
+        m_44 = dot
       };
     }
     /// <summary>
@@ -832,7 +850,7 @@ namespace Flux
     /// </summary>
     /// <param name="position">The amount to translate in each axis.</param>
     /// <returns>The translation matrix.</returns>
-    public static Matrix4x4 CreateTranslation(Vector4 position)
+    public static Matrix4 CreateTranslation(Vector4 position)
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, position.X, position.Y, position.Z, 1);
     /// <summary>
     /// Creates a translation matrix.
@@ -841,7 +859,7 @@ namespace Flux
     /// <param name="yPosition">The amount to translate on the Y-axis.</param>
     /// <param name="zPosition">The amount to translate on the Z-axis.</param>
     /// <returns>The translation matrix.</returns>
-    public static Matrix4x4 CreateTranslation(double xPosition, double yPosition, double zPosition)
+    public static Matrix4 CreateTranslation(double xPosition, double yPosition, double zPosition)
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, xPosition, yPosition, zPosition, 1);
     /// <summary>
     /// Creates a world matrix with the specified parameters.
@@ -850,13 +868,13 @@ namespace Flux
     /// <param name="forward">Forward direction of the object.</param>
     /// <param name="up">Upward direction of the object, usually [0, 1, 0].</param>
     /// <returns>The world matrix.</returns>
-    public static Matrix4x4 CreateWorld(Vector4 position, Vector4 forward, Vector4 up)
+    public static Matrix4 CreateWorld(Vector4 position, Vector4 forward, Vector4 up)
     {
       var zaxis = Vector4.Normalize(-forward);
       var xaxis = Vector4.Normalize(Vector4.Cross(up, zaxis));
       var yaxis = Vector4.Cross(zaxis, xaxis);
 
-      return new Matrix4x4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, position.X, position.Y, position.Z, 1);
+      return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, position.X, position.Y, position.Z, 1);
     }
 
     /// <summary>
@@ -1062,7 +1080,7 @@ namespace Flux
     //}
 
     /// <summary>Calculates the determinant of the matrix.</summary>
-    public static double OptimizedDeterminant(Matrix4x4 matrix)
+    public static double OptimizedDeterminant(Matrix4 matrix)
     {
       // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
       // | e f g h | = a | j k l | - b | i k l | + c | i j l | - d | i j k |
@@ -1091,10 +1109,10 @@ namespace Flux
       // add: 6 + 8 + 3 = 17
       // mul: 12 + 16 = 28
 
-      double a = matrix.M11, b = matrix.M12, c = matrix.M13, d = matrix.M14;
-      double e = matrix.M21, f = matrix.M22, g = matrix.M23, h = matrix.M24;
-      double i = matrix.M31, j = matrix.M32, k = matrix.M33, l = matrix.M34;
-      double m = matrix.M41, n = matrix.M42, o = matrix.M43, p = matrix.M44;
+      double a = matrix.m_11, b = matrix.m_12, c = matrix.m_13, d = matrix.m_14;
+      double e = matrix.m_21, f = matrix.m_22, g = matrix.m_23, h = matrix.m_24;
+      double i = matrix.m_31, j = matrix.m_32, k = matrix.m_33, l = matrix.m_34;
+      double m = matrix.m_41, n = matrix.m_42, o = matrix.m_43, p = matrix.m_44;
 
       double kp_lo = k * p - l * o;
       double jp_ln = j * p - l * n;
@@ -1114,7 +1132,7 @@ namespace Flux
     /// <param name="matrix">The source matrix to invert.</param>
     /// <param name="result">If successful, contains the inverted matrix.</param>
     /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
-    public static bool OptimizedInverse(Matrix4x4 matrix, out Matrix4x4 result)
+    public static bool OptimizedInverse(Matrix4 matrix, out Matrix4 result)
     {
       //                                       -1
       // If you have matrix M, inverse Matrix M   can compute
@@ -1208,10 +1226,10 @@ namespace Flux
       //
       // Cost of operation
       // 53 adds, 104 muls, and 1 div.
-      double a = matrix.M11, b = matrix.M12, c = matrix.M13, d = matrix.M14;
-      double e = matrix.M21, f = matrix.M22, g = matrix.M23, h = matrix.M24;
-      double i = matrix.M31, j = matrix.M32, k = matrix.M33, l = matrix.M34;
-      double m = matrix.M41, n = matrix.M42, o = matrix.M43, p = matrix.M44;
+      double a = matrix.m_11, b = matrix.m_12, c = matrix.m_13, d = matrix.m_14;
+      double e = matrix.m_21, f = matrix.m_22, g = matrix.m_23, h = matrix.m_24;
+      double i = matrix.m_31, j = matrix.m_32, k = matrix.m_33, l = matrix.m_34;
+      double m = matrix.m_41, n = matrix.m_42, o = matrix.m_43, p = matrix.m_44;
 
       var kp_lo = k * p - l * o;
       var jp_ln = j * p - l * n;
@@ -1229,24 +1247,24 @@ namespace Flux
 
       if (System.Math.Abs(det) < double.Epsilon)
       {
-        result = new Matrix4x4(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
+        result = new Matrix4(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         return false;
       }
 
-      result = new Matrix4x4();
+      result = new Matrix4();
 
       double invDet = 1 / det;
 
-      result.M11 = a11 * invDet;
-      result.M21 = a12 * invDet;
-      result.M31 = a13 * invDet;
-      result.M41 = a14 * invDet;
+      result.m_11 = a11 * invDet;
+      result.m_21 = a12 * invDet;
+      result.m_31 = a13 * invDet;
+      result.m_41 = a14 * invDet;
 
-      result.M12 = -(b * kp_lo - c * jp_ln + d * jo_kn) * invDet;
-      result.M22 = +(a * kp_lo - c * ip_lm + d * io_km) * invDet;
-      result.M32 = -(a * jp_ln - b * ip_lm + d * in_jm) * invDet;
-      result.M42 = +(a * jo_kn - b * io_km + c * in_jm) * invDet;
+      result.m_12 = -(b * kp_lo - c * jp_ln + d * jo_kn) * invDet;
+      result.m_22 = +(a * kp_lo - c * ip_lm + d * io_km) * invDet;
+      result.m_32 = -(a * jp_ln - b * ip_lm + d * in_jm) * invDet;
+      result.m_42 = +(a * jo_kn - b * io_km + c * in_jm) * invDet;
 
       var gp_ho = g * p - h * o;
       var fp_hn = f * p - h * n;
@@ -1255,10 +1273,10 @@ namespace Flux
       var eo_gm = e * o - g * m;
       var en_fm = e * n - f * m;
 
-      result.M13 = +(b * gp_ho - c * fp_hn + d * fo_gn) * invDet;
-      result.M23 = -(a * gp_ho - c * ep_hm + d * eo_gm) * invDet;
-      result.M33 = +(a * fp_hn - b * ep_hm + d * en_fm) * invDet;
-      result.M43 = -(a * fo_gn - b * eo_gm + c * en_fm) * invDet;
+      result.m_13 = +(b * gp_ho - c * fp_hn + d * fo_gn) * invDet;
+      result.m_23 = -(a * gp_ho - c * ep_hm + d * eo_gm) * invDet;
+      result.m_33 = +(a * fp_hn - b * ep_hm + d * en_fm) * invDet;
+      result.m_43 = -(a * fo_gn - b * eo_gm + c * en_fm) * invDet;
 
       var gl_hk = g * l - h * k;
       var fl_hj = f * l - h * j;
@@ -1267,42 +1285,42 @@ namespace Flux
       var ek_gi = e * k - g * i;
       var ej_fi = e * j - f * i;
 
-      result.M14 = -(b * gl_hk - c * fl_hj + d * fk_gj) * invDet;
-      result.M24 = +(a * gl_hk - c * el_hi + d * ek_gi) * invDet;
-      result.M34 = -(a * fl_hj - b * el_hi + d * ej_fi) * invDet;
-      result.M44 = +(a * fk_gj - b * ek_gi + c * ej_fi) * invDet;
+      result.m_14 = -(b * gl_hk - c * fl_hj + d * fk_gj) * invDet;
+      result.m_24 = +(a * gl_hk - c * el_hi + d * ek_gi) * invDet;
+      result.m_34 = -(a * fl_hj - b * el_hi + d * ej_fi) * invDet;
+      result.m_44 = +(a * fk_gj - b * ek_gi + c * ej_fi) * invDet;
 
       return true;
     }
 
     /// <summary>Linearly interpolates between the corresponding values of two matrices.</summary>
     /// <param name="amount">The relative weight of the second source matrix.</param>
-    public static Matrix4x4 Lerp(Matrix4x4 m1, Matrix4x4 m2, double amount) => new(
+    public static Matrix4 Lerp(Matrix4 m1, Matrix4 m2, double amount) => new(
       // First row
-      m1.M11 + (m2.M11 - m1.M11) * amount,
-      m1.M12 + (m2.M12 - m1.M12) * amount,
-      m1.M13 + (m2.M13 - m1.M13) * amount,
-      m1.M14 + (m2.M14 - m1.M14) * amount,
+      m1.m_11 + (m2.m_11 - m1.m_11) * amount,
+      m1.m_12 + (m2.m_12 - m1.m_12) * amount,
+      m1.m_13 + (m2.m_13 - m1.m_13) * amount,
+      m1.m_14 + (m2.m_14 - m1.m_14) * amount,
       // Second row
-      m1.M21 + (m2.M21 - m1.M21) * amount,
-      m1.M22 + (m2.M22 - m1.M22) * amount,
-      m1.M23 + (m2.M23 - m1.M23) * amount,
-      m1.M24 + (m2.M24 - m1.M24) * amount,
+      m1.m_21 + (m2.m_21 - m1.m_21) * amount,
+      m1.m_22 + (m2.m_22 - m1.m_22) * amount,
+      m1.m_23 + (m2.m_23 - m1.m_23) * amount,
+      m1.m_24 + (m2.m_24 - m1.m_24) * amount,
       // Third row
-      m1.M31 + (m2.M31 - m1.M31) * amount,
-      m1.M32 + (m2.M32 - m1.M32) * amount,
-      m1.M33 + (m2.M33 - m1.M33) * amount,
-      m1.M34 + (m2.M34 - m1.M34) * amount,
+      m1.m_31 + (m2.m_31 - m1.m_31) * amount,
+      m1.m_32 + (m2.m_32 - m1.m_32) * amount,
+      m1.m_33 + (m2.m_33 - m1.m_33) * amount,
+      m1.m_34 + (m2.m_34 - m1.m_34) * amount,
       // Fourth row
-      m1.M41 + (m2.M41 - m1.M41) * amount,
-      m1.M42 + (m2.M42 - m1.M42) * amount,
-      m1.M43 + (m2.M43 - m1.M43) * amount,
-      m1.M44 + (m2.M44 - m1.M44) * amount
+      m1.m_41 + (m2.m_41 - m1.m_41) * amount,
+      m1.m_42 + (m2.m_42 - m1.m_42) * amount,
+      m1.m_43 + (m2.m_43 - m1.m_43) * amount,
+      m1.m_44 + (m2.m_44 - m1.m_44) * amount
     );
     /// <summary>Transforms the given matrix by applying the given Quaternion rotation.</summary>
     /// <param name="value">The source matrix to transform.</param>
     /// <param name="rotation">The rotation to apply.</param>
-    public static Matrix4x4 Transform(Matrix4x4 value, Quaternion rotation)
+    public static Matrix4 Transform(Matrix4 value, Quaternion rotation)
     {
       // Compute rotation matrix.
       double x2 = rotation.X + rotation.X;
@@ -1334,25 +1352,25 @@ namespace Flux
       return new()
       {
         // First row
-        M11 = value.M11 * q11 + value.M12 * q21 + value.M13 * q31,
-        M12 = value.M11 * q12 + value.M12 * q22 + value.M13 * q32,
-        M13 = value.M11 * q13 + value.M12 * q23 + value.M13 * q33,
-        M14 = value.M14,
+        m_11 = value.m_11 * q11 + value.m_12 * q21 + value.m_13 * q31,
+        m_12 = value.m_11 * q12 + value.m_12 * q22 + value.m_13 * q32,
+        m_13 = value.m_11 * q13 + value.m_12 * q23 + value.m_13 * q33,
+        m_14 = value.m_14,
         // Second row
-        M21 = value.M21 * q11 + value.M22 * q21 + value.M23 * q31,
-        M22 = value.M21 * q12 + value.M22 * q22 + value.M23 * q32,
-        M23 = value.M21 * q13 + value.M22 * q23 + value.M23 * q33,
-        M24 = value.M24,
+        m_21 = value.m_21 * q11 + value.m_22 * q21 + value.m_23 * q31,
+        m_22 = value.m_21 * q12 + value.m_22 * q22 + value.m_23 * q32,
+        m_23 = value.m_21 * q13 + value.m_22 * q23 + value.m_23 * q33,
+        m_24 = value.m_24,
         // Third row
-        M31 = value.M31 * q11 + value.M32 * q21 + value.M33 * q31,
-        M32 = value.M31 * q12 + value.M32 * q22 + value.M33 * q32,
-        M33 = value.M31 * q13 + value.M32 * q23 + value.M33 * q33,
-        M34 = value.M34,
+        m_31 = value.m_31 * q11 + value.m_32 * q21 + value.m_33 * q31,
+        m_32 = value.m_31 * q12 + value.m_32 * q22 + value.m_33 * q32,
+        m_33 = value.m_31 * q13 + value.m_32 * q23 + value.m_33 * q33,
+        m_34 = value.m_34,
         // Fourth row
-        M41 = value.M41 * q11 + value.M42 * q21 + value.M43 * q31,
-        M42 = value.M41 * q12 + value.M42 * q22 + value.M43 * q32,
-        M43 = value.M41 * q13 + value.M42 * q23 + value.M43 * q33,
-        M44 = value.M44
+        m_41 = value.m_41 * q11 + value.m_42 * q21 + value.m_43 * q31,
+        m_42 = value.m_41 * q12 + value.m_42 * q22 + value.m_43 * q32,
+        m_43 = value.m_41 * q13 + value.m_42 * q23 + value.m_43 * q33,
+        m_44 = value.m_44
       };
     }
     #endregion Static methods
@@ -1364,12 +1382,12 @@ namespace Flux
     /// <param name="value1">The first matrix to compare.</param>
     /// <param name="value2">The second matrix to compare.</param>
     /// <returns>True if the given matrices are equal; False otherwise.</returns>
-    public static bool operator ==(Matrix4x4 value1, Matrix4x4 value2)
-      => (value1.M11 == value2.M11 && value1.M22 == value2.M22 && value1.M33 == value2.M33 && value1.M44 == value2.M44 && // Check diagonal element first for early out.
-          value1.M12 == value2.M12 && value1.M13 == value2.M13 && value1.M14 == value2.M14 &&
-          value1.M21 == value2.M21 && value1.M23 == value2.M23 && value1.M24 == value2.M24 &&
-          value1.M31 == value2.M31 && value1.M32 == value2.M32 && value1.M34 == value2.M34 &&
-          value1.M41 == value2.M41 && value1.M42 == value2.M42 && value1.M43 == value2.M43);
+    public static bool operator ==(Matrix4 value1, Matrix4 value2)
+      => (value1.m_11 == value2.m_11 && value1.m_22 == value2.m_22 && value1.m_33 == value2.m_33 && value1.m_44 == value2.m_44 && // Check diagonal element first for early out.
+          value1.m_12 == value2.m_12 && value1.m_13 == value2.m_13 && value1.m_14 == value2.m_14 &&
+          value1.m_21 == value2.m_21 && value1.m_23 == value2.m_23 && value1.m_24 == value2.m_24 &&
+          value1.m_31 == value2.m_31 && value1.m_32 == value2.m_32 && value1.m_34 == value2.m_34 &&
+          value1.m_41 == value2.m_41 && value1.m_42 == value2.m_42 && value1.m_43 == value2.m_43);
 
     /// <summary>
     /// Returns a boolean indicating whether the given two matrices are not equal.
@@ -1377,36 +1395,36 @@ namespace Flux
     /// <param name="value1">The first matrix to compare.</param>
     /// <param name="value2">The second matrix to compare.</param>
     /// <returns>True if the given matrices are not equal; False if they are equal.</returns>
-    public static bool operator !=(Matrix4x4 value1, Matrix4x4 value2)
-      => (value1.M11 != value2.M11 || value1.M12 != value2.M12 || value1.M13 != value2.M13 || value1.M14 != value2.M14 ||
-          value1.M21 != value2.M21 || value1.M22 != value2.M22 || value1.M23 != value2.M23 || value1.M24 != value2.M24 ||
-          value1.M31 != value2.M31 || value1.M32 != value2.M32 || value1.M33 != value2.M33 || value1.M34 != value2.M34 ||
-          value1.M41 != value2.M41 || value1.M42 != value2.M42 || value1.M43 != value2.M43 || value1.M44 != value2.M44);
+    public static bool operator !=(Matrix4 value1, Matrix4 value2)
+      => (value1.m_11 != value2.m_11 || value1.m_12 != value2.m_12 || value1.m_13 != value2.m_13 || value1.m_14 != value2.m_14 ||
+          value1.m_21 != value2.m_21 || value1.m_22 != value2.m_22 || value1.m_23 != value2.m_23 || value1.m_24 != value2.m_24 ||
+          value1.m_31 != value2.m_31 || value1.m_32 != value2.m_32 || value1.m_33 != value2.m_33 || value1.m_34 != value2.m_34 ||
+          value1.m_41 != value2.m_41 || value1.m_42 != value2.m_42 || value1.m_43 != value2.m_43 || value1.m_44 != value2.m_44);
 
     /// <summary>
     /// Returns a new matrix with the negated elements of the given matrix.
     /// </summary>
     /// <param name="value">The source matrix.</param>
     /// <returns>The negated matrix.</returns>
-    public static Matrix4x4 operator -(Matrix4x4 value)
+    public static Matrix4 operator -(Matrix4 value)
       => new()
       {
-        M11 = -value.M11,
-        M12 = -value.M12,
-        M13 = -value.M13,
-        M14 = -value.M14,
-        M21 = -value.M21,
-        M22 = -value.M22,
-        M23 = -value.M23,
-        M24 = -value.M24,
-        M31 = -value.M31,
-        M32 = -value.M32,
-        M33 = -value.M33,
-        M34 = -value.M34,
-        M41 = -value.M41,
-        M42 = -value.M42,
-        M43 = -value.M43,
-        M44 = -value.M44
+        m_11 = -value.m_11,
+        m_12 = -value.m_12,
+        m_13 = -value.m_13,
+        m_14 = -value.m_14,
+        m_21 = -value.m_21,
+        m_22 = -value.m_22,
+        m_23 = -value.m_23,
+        m_24 = -value.m_24,
+        m_31 = -value.m_31,
+        m_32 = -value.m_32,
+        m_33 = -value.m_33,
+        m_34 = -value.m_34,
+        m_41 = -value.m_41,
+        m_42 = -value.m_42,
+        m_43 = -value.m_43,
+        m_44 = -value.m_44
       };
     /// <summary>
     /// Adds two matrices together.
@@ -1414,25 +1432,25 @@ namespace Flux
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The resulting matrix.</returns>
-    public static Matrix4x4 operator +(Matrix4x4 value1, Matrix4x4 value2)
+    public static Matrix4 operator +(Matrix4 value1, Matrix4 value2)
       => new()
       {
-        M11 = value1.M11 + value2.M11,
-        M12 = value1.M12 + value2.M12,
-        M13 = value1.M13 + value2.M13,
-        M14 = value1.M14 + value2.M14,
-        M21 = value1.M21 + value2.M21,
-        M22 = value1.M22 + value2.M22,
-        M23 = value1.M23 + value2.M23,
-        M24 = value1.M24 + value2.M24,
-        M31 = value1.M31 + value2.M31,
-        M32 = value1.M32 + value2.M32,
-        M33 = value1.M33 + value2.M33,
-        M34 = value1.M34 + value2.M34,
-        M41 = value1.M41 + value2.M41,
-        M42 = value1.M42 + value2.M42,
-        M43 = value1.M43 + value2.M43,
-        M44 = value1.M44 + value2.M44
+        m_11 = value1.m_11 + value2.m_11,
+        m_12 = value1.m_12 + value2.m_12,
+        m_13 = value1.m_13 + value2.m_13,
+        m_14 = value1.m_14 + value2.m_14,
+        m_21 = value1.m_21 + value2.m_21,
+        m_22 = value1.m_22 + value2.m_22,
+        m_23 = value1.m_23 + value2.m_23,
+        m_24 = value1.m_24 + value2.m_24,
+        m_31 = value1.m_31 + value2.m_31,
+        m_32 = value1.m_32 + value2.m_32,
+        m_33 = value1.m_33 + value2.m_33,
+        m_34 = value1.m_34 + value2.m_34,
+        m_41 = value1.m_41 + value2.m_41,
+        m_42 = value1.m_42 + value2.m_42,
+        m_43 = value1.m_43 + value2.m_43,
+        m_44 = value1.m_44 + value2.m_44
       };
     /// <summary>
     /// Subtracts the second matrix from the first.
@@ -1440,25 +1458,25 @@ namespace Flux
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The result of the subtraction.</returns>
-    public static Matrix4x4 operator -(Matrix4x4 value1, Matrix4x4 value2)
+    public static Matrix4 operator -(Matrix4 value1, Matrix4 value2)
       => new()
       {
-        M11 = value1.M11 - value2.M11,
-        M12 = value1.M12 - value2.M12,
-        M13 = value1.M13 - value2.M13,
-        M14 = value1.M14 - value2.M14,
-        M21 = value1.M21 - value2.M21,
-        M22 = value1.M22 - value2.M22,
-        M23 = value1.M23 - value2.M23,
-        M24 = value1.M24 - value2.M24,
-        M31 = value1.M31 - value2.M31,
-        M32 = value1.M32 - value2.M32,
-        M33 = value1.M33 - value2.M33,
-        M34 = value1.M34 - value2.M34,
-        M41 = value1.M41 - value2.M41,
-        M42 = value1.M42 - value2.M42,
-        M43 = value1.M43 - value2.M43,
-        M44 = value1.M44 - value2.M44
+        m_11 = value1.m_11 - value2.m_11,
+        m_12 = value1.m_12 - value2.m_12,
+        m_13 = value1.m_13 - value2.m_13,
+        m_14 = value1.m_14 - value2.m_14,
+        m_21 = value1.m_21 - value2.m_21,
+        m_22 = value1.m_22 - value2.m_22,
+        m_23 = value1.m_23 - value2.m_23,
+        m_24 = value1.m_24 - value2.m_24,
+        m_31 = value1.m_31 - value2.m_31,
+        m_32 = value1.m_32 - value2.m_32,
+        m_33 = value1.m_33 - value2.m_33,
+        m_34 = value1.m_34 - value2.m_34,
+        m_41 = value1.m_41 - value2.m_41,
+        m_42 = value1.m_42 - value2.m_42,
+        m_43 = value1.m_43 - value2.m_43,
+        m_44 = value1.m_44 - value2.m_44
       };
     /// <summary>
     /// Multiplies a matrix by another matrix.
@@ -1466,29 +1484,29 @@ namespace Flux
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The result of the multiplication.</returns>
-    public static Matrix4x4 operator *(Matrix4x4 value1, Matrix4x4 value2)
+    public static Matrix4 operator *(Matrix4 value1, Matrix4 value2)
       => new()
       {
         // First row
-        M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21 + value1.M13 * value2.M31 + value1.M14 * value2.M41,
-        M12 = value1.M11 * value2.M12 + value1.M12 * value2.M22 + value1.M13 * value2.M32 + value1.M14 * value2.M42,
-        M13 = value1.M11 * value2.M13 + value1.M12 * value2.M23 + value1.M13 * value2.M33 + value1.M14 * value2.M43,
-        M14 = value1.M11 * value2.M14 + value1.M12 * value2.M24 + value1.M13 * value2.M34 + value1.M14 * value2.M44,
+        m_11 = value1.m_11 * value2.m_11 + value1.m_12 * value2.m_21 + value1.m_13 * value2.m_31 + value1.m_14 * value2.m_41,
+        m_12 = value1.m_11 * value2.m_12 + value1.m_12 * value2.m_22 + value1.m_13 * value2.m_32 + value1.m_14 * value2.m_42,
+        m_13 = value1.m_11 * value2.m_13 + value1.m_12 * value2.m_23 + value1.m_13 * value2.m_33 + value1.m_14 * value2.m_43,
+        m_14 = value1.m_11 * value2.m_14 + value1.m_12 * value2.m_24 + value1.m_13 * value2.m_34 + value1.m_14 * value2.m_44,
         // Second row
-        M21 = value1.M21 * value2.M11 + value1.M22 * value2.M21 + value1.M23 * value2.M31 + value1.M24 * value2.M41,
-        M22 = value1.M21 * value2.M12 + value1.M22 * value2.M22 + value1.M23 * value2.M32 + value1.M24 * value2.M42,
-        M23 = value1.M21 * value2.M13 + value1.M22 * value2.M23 + value1.M23 * value2.M33 + value1.M24 * value2.M43,
-        M24 = value1.M21 * value2.M14 + value1.M22 * value2.M24 + value1.M23 * value2.M34 + value1.M24 * value2.M44,
+        m_21 = value1.m_21 * value2.m_11 + value1.m_22 * value2.m_21 + value1.m_23 * value2.m_31 + value1.m_24 * value2.m_41,
+        m_22 = value1.m_21 * value2.m_12 + value1.m_22 * value2.m_22 + value1.m_23 * value2.m_32 + value1.m_24 * value2.m_42,
+        m_23 = value1.m_21 * value2.m_13 + value1.m_22 * value2.m_23 + value1.m_23 * value2.m_33 + value1.m_24 * value2.m_43,
+        m_24 = value1.m_21 * value2.m_14 + value1.m_22 * value2.m_24 + value1.m_23 * value2.m_34 + value1.m_24 * value2.m_44,
         // Third row
-        M31 = value1.M31 * value2.M11 + value1.M32 * value2.M21 + value1.M33 * value2.M31 + value1.M34 * value2.M41,
-        M32 = value1.M31 * value2.M12 + value1.M32 * value2.M22 + value1.M33 * value2.M32 + value1.M34 * value2.M42,
-        M33 = value1.M31 * value2.M13 + value1.M32 * value2.M23 + value1.M33 * value2.M33 + value1.M34 * value2.M43,
-        M34 = value1.M31 * value2.M14 + value1.M32 * value2.M24 + value1.M33 * value2.M34 + value1.M34 * value2.M44,
+        m_31 = value1.m_31 * value2.m_11 + value1.m_32 * value2.m_21 + value1.m_33 * value2.m_31 + value1.m_34 * value2.m_41,
+        m_32 = value1.m_31 * value2.m_12 + value1.m_32 * value2.m_22 + value1.m_33 * value2.m_32 + value1.m_34 * value2.m_42,
+        m_33 = value1.m_31 * value2.m_13 + value1.m_32 * value2.m_23 + value1.m_33 * value2.m_33 + value1.m_34 * value2.m_43,
+        m_34 = value1.m_31 * value2.m_14 + value1.m_32 * value2.m_24 + value1.m_33 * value2.m_34 + value1.m_34 * value2.m_44,
         // Fourth row
-        M41 = value1.M41 * value2.M11 + value1.M42 * value2.M21 + value1.M43 * value2.M31 + value1.M44 * value2.M41,
-        M42 = value1.M41 * value2.M12 + value1.M42 * value2.M22 + value1.M43 * value2.M32 + value1.M44 * value2.M42,
-        M43 = value1.M41 * value2.M13 + value1.M42 * value2.M23 + value1.M43 * value2.M33 + value1.M44 * value2.M43,
-        M44 = value1.M41 * value2.M14 + value1.M42 * value2.M24 + value1.M43 * value2.M34 + value1.M44 * value2.M44
+        m_41 = value1.m_41 * value2.m_11 + value1.m_42 * value2.m_21 + value1.m_43 * value2.m_31 + value1.m_44 * value2.m_41,
+        m_42 = value1.m_41 * value2.m_12 + value1.m_42 * value2.m_22 + value1.m_43 * value2.m_32 + value1.m_44 * value2.m_42,
+        m_43 = value1.m_41 * value2.m_13 + value1.m_42 * value2.m_23 + value1.m_43 * value2.m_33 + value1.m_44 * value2.m_43,
+        m_44 = value1.m_41 * value2.m_14 + value1.m_42 * value2.m_24 + value1.m_43 * value2.m_34 + value1.m_44 * value2.m_44
       };
     /// <summary>
     /// Multiplies a matrix by a scalar value.
@@ -1496,68 +1514,68 @@ namespace Flux
     /// <param name="value1">The source matrix.</param>
     /// <param name="value2">The scaling factor.</param>
     /// <returns>The scaled matrix.</returns>
-    public static Matrix4x4 operator *(Matrix4x4 value1, double value2)
+    public static Matrix4 operator *(Matrix4 value1, double value2)
       => new()
       {
-        M11 = value1.M11 * value2,
-        M12 = value1.M12 * value2,
-        M13 = value1.M13 * value2,
-        M14 = value1.M14 * value2,
-        M21 = value1.M21 * value2,
-        M22 = value1.M22 * value2,
-        M23 = value1.M23 * value2,
-        M24 = value1.M24 * value2,
-        M31 = value1.M31 * value2,
-        M32 = value1.M32 * value2,
-        M33 = value1.M33 * value2,
-        M34 = value1.M34 * value2,
-        M41 = value1.M41 * value2,
-        M42 = value1.M42 * value2,
-        M43 = value1.M43 * value2,
-        M44 = value1.M44 * value2
+        m_11 = value1.m_11 * value2,
+        m_12 = value1.m_12 * value2,
+        m_13 = value1.m_13 * value2,
+        m_14 = value1.m_14 * value2,
+        m_21 = value1.m_21 * value2,
+        m_22 = value1.m_22 * value2,
+        m_23 = value1.m_23 * value2,
+        m_24 = value1.m_24 * value2,
+        m_31 = value1.m_31 * value2,
+        m_32 = value1.m_32 * value2,
+        m_33 = value1.m_33 * value2,
+        m_34 = value1.m_34 * value2,
+        m_41 = value1.m_41 * value2,
+        m_42 = value1.m_42 * value2,
+        m_43 = value1.m_43 * value2,
+        m_44 = value1.m_44 * value2
       };
     #endregion Operator overloads
 
     #region Implemented interfaces
     // IEquatable
     /// <summary>Returns a boolean indicating whether this matrix instance is equal to the specified matrix.</summary>
-    public bool Equals(Matrix4x4 m)
-      => M11 == m.M11 && M22 == m.M22 && M33 == m.M33 && M44 == m.M44 && // Check diagonal elements first for early out.
-      M12 == m.M12 && M13 == m.M13 && M14 == m.M14 &&
-      M21 == m.M21 && M23 == m.M23 && M24 == m.M24 &&
-      M31 == m.M31 && M32 == m.M32 && M34 == m.M34 &&
-      M41 == m.M41 && M42 == m.M42 && M43 == m.M43;
+    public bool Equals(Matrix4 m)
+      => m_11 == m.m_11 && m_22 == m.m_22 && m_33 == m.m_33 && m_44 == m.m_44 && // Check diagonal elements first for early out.
+      m_12 == m.m_12 && m_13 == m.m_13 && m_14 == m.m_14 &&
+      m_21 == m.m_21 && m_23 == m.m_23 && m_24 == m.m_24 &&
+      m_31 == m.m_31 && m_32 == m.m_32 && m_34 == m.m_34 &&
+      m_41 == m.m_41 && m_42 == m.m_42 && m_43 == m.m_43;
     #endregion Implemented interfaces
 
     #region Object overrides
     /// <summary>Returns a boolean indicating whether the given Object is equal to this matrix instance.</summary>
     public override bool Equals(object? obj)
-      => obj is Matrix4x4 o && Equals(o);
+      => obj is Matrix4 o && Equals(o);
     /// <summary>Returns the hash code for this instance.</summary>
     public override int GetHashCode()
     {
       var hc = new System.HashCode();
-      hc.Add(M11);
-      hc.Add(M12);
-      hc.Add(M13);
-      hc.Add(M14);
-      hc.Add(M21);
-      hc.Add(M22);
-      hc.Add(M23);
-      hc.Add(M24);
-      hc.Add(M31);
-      hc.Add(M32);
-      hc.Add(M33);
-      hc.Add(M34);
-      hc.Add(M41);
-      hc.Add(M42);
-      hc.Add(M43);
-      hc.Add(M44);
+      hc.Add(m_11);
+      hc.Add(m_12);
+      hc.Add(m_13);
+      hc.Add(m_14);
+      hc.Add(m_21);
+      hc.Add(m_22);
+      hc.Add(m_23);
+      hc.Add(m_24);
+      hc.Add(m_31);
+      hc.Add(m_32);
+      hc.Add(m_33);
+      hc.Add(m_34);
+      hc.Add(m_41);
+      hc.Add(m_42);
+      hc.Add(m_43);
+      hc.Add(m_44);
       return hc.ToHashCode();
     }
     /// <summary>Returns a String representing this matrix instance.</summary>
     public override string ToString()
-      => $"{GetType().Name} {{ {{M11:{M11} M12:{M12} M13:{M13} M14:{M14}}} {{M21:{M21} M22:{M22} M23:{M23} M24:{M24}}} {{M31:{M31} M32:{M32} M33:{M33} M34:{M34}}} {{M41:{M41} M42:{M42} M43:{M43} M44:{M44}}} }}";
+      => $"{GetType().Name} {{ {{M11:{m_11} M12:{m_12} M13:{m_13} M14:{m_14}}} {{M21:{m_21} M22:{m_22} M23:{m_23} M24:{m_24}}} {{M31:{m_31} M32:{m_32} M33:{m_33} M34:{m_34}}} {{M41:{m_41} M42:{m_42} M43:{m_43} M44:{m_44}}} }}";
     #endregion Object overrides
   }
 }
