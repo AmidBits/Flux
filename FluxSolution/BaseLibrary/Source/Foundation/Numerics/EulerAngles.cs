@@ -7,32 +7,32 @@ namespace Flux
   public struct EulerAngles
     : System.IEquatable<EulerAngles>
   {
-    private readonly double m_y; // Yaw.
-    private readonly double m_p; // Pitch.
-    private readonly double m_r; // Roll.
+    private readonly double m_radYaw; // Yaw.
+    private readonly double m_radPitch; // Pitch.
+    private readonly double m_radRoll; // Roll.
 
     public EulerAngles(double yaw, double pitch, double roll)
     {
-      m_y = yaw;
-      m_p = pitch;
-      m_r = roll;
+      m_radYaw = yaw;
+      m_radPitch = pitch;
+      m_radRoll = roll;
     }
 
     /// <summary>The horizontal directional (left/right) angle. A.k.a. Azimuth, Bearing and Heading.</summary>
-    public Angle Yaw => new(m_y);
+    public Angle Yaw => new(m_radYaw);
     /// <summary>The vertical directional (up/down) angle. A.k.a. Attitude, Elevation and Inclination.</summary>
-    public Angle Pitch => new(m_p);
+    public Angle Pitch => new(m_radPitch);
     /// <summary>The horizontal lean (left/right) angle. A.k.a. Bank and Tilt.</summary>
-    public Angle Roll => new(m_r);
+    public Angle Roll => new(m_radRoll);
 
     public AxisAngle ToAxisAngle()
     {
-      var c1 = System.Math.Cos(m_y / 2);
-      var s1 = System.Math.Sin(m_y / 2);
-      var c2 = System.Math.Cos(m_p / 2);
-      var s2 = System.Math.Sin(m_p / 2);
-      var c3 = System.Math.Cos(m_r / 2);
-      var s3 = System.Math.Sin(m_r / 2);
+      var c1 = System.Math.Cos(m_radYaw / 2);
+      var s1 = System.Math.Sin(m_radYaw / 2);
+      var c2 = System.Math.Cos(m_radPitch / 2);
+      var s2 = System.Math.Sin(m_radPitch / 2);
+      var c3 = System.Math.Cos(m_radRoll / 2);
+      var s3 = System.Math.Sin(m_radRoll / 2);
 
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
@@ -60,12 +60,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixTaitBryanXYZ()
     {
-      var c1 = System.Math.Cos(m_y);
-      var s1 = System.Math.Sin(m_y);
-      var c2 = System.Math.Cos(m_p);
-      var s2 = System.Math.Sin(m_p);
-      var c3 = System.Math.Cos(m_r);
-      var s3 = System.Math.Sin(m_r);
+      var c1 = System.Math.Cos(m_radYaw);
+      var s1 = System.Math.Sin(m_radYaw);
+      var c2 = System.Math.Cos(m_radPitch);
+      var s2 = System.Math.Sin(m_radPitch);
+      var c3 = System.Math.Cos(m_radRoll);
+      var s3 = System.Math.Sin(m_radRoll);
 
       return new Matrix4(
         c2 * c3, -s2, c2 * s3, 0,
@@ -77,12 +77,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhTaitBryanYXZ()
     {
-      var c1 = System.Math.Cos(m_y);
-      var s1 = System.Math.Sin(m_y);
-      var c2 = System.Math.Cos(m_p);
-      var s2 = System.Math.Sin(m_p);
-      var c3 = System.Math.Cos(m_r);
-      var s3 = System.Math.Sin(m_r);
+      var c1 = System.Math.Cos(m_radYaw);
+      var s1 = System.Math.Sin(m_radYaw);
+      var c2 = System.Math.Cos(m_radPitch);
+      var s2 = System.Math.Sin(m_radPitch);
+      var c3 = System.Math.Cos(m_radRoll);
+      var s3 = System.Math.Sin(m_radRoll);
 
       return new Matrix4(
         c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, 0,
@@ -94,12 +94,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhTaitBryanZYX()
     {
-      var c3 = System.Math.Cos(m_y);
-      var s3 = System.Math.Sin(m_y);
-      var c2 = System.Math.Cos(m_p);
-      var s2 = System.Math.Sin(m_p);
-      var c1 = System.Math.Cos(m_r);
-      var s1 = System.Math.Sin(m_r);
+      var c3 = System.Math.Cos(m_radYaw);
+      var s3 = System.Math.Sin(m_radYaw);
+      var c2 = System.Math.Cos(m_radPitch);
+      var s2 = System.Math.Sin(m_radPitch);
+      var c1 = System.Math.Cos(m_radRoll);
+      var s1 = System.Math.Sin(m_radRoll);
 
       return new Matrix4(
         c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, 0,
@@ -111,12 +111,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhProperEulerZXZ()
     {
-      var c1 = System.Math.Cos(m_y);
-      var s1 = System.Math.Sin(m_y);
-      var c2 = System.Math.Cos(m_p);
-      var s2 = System.Math.Sin(m_p);
-      var c3 = System.Math.Cos(m_r);
-      var s3 = System.Math.Sin(m_r);
+      var c1 = System.Math.Cos(m_radYaw);
+      var s1 = System.Math.Sin(m_radYaw);
+      var c2 = System.Math.Cos(m_radPitch);
+      var s2 = System.Math.Sin(m_radPitch);
+      var c3 = System.Math.Cos(m_radRoll);
+      var s3 = System.Math.Sin(m_radRoll);
 
       return new Matrix4(
         c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, 0,
@@ -128,12 +128,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
-      var cy = System.Math.Cos(m_y * 0.5);
-      var sy = System.Math.Sin(m_y * 0.5);
-      var cp = System.Math.Cos(m_p * 0.5);
-      var sp = System.Math.Sin(m_p * 0.5);
-      var cr = System.Math.Cos(m_r * 0.5);
-      var sr = System.Math.Sin(m_r * 0.5);
+      var cy = System.Math.Cos(m_radYaw * 0.5);
+      var sy = System.Math.Sin(m_radYaw * 0.5);
+      var cp = System.Math.Cos(m_radPitch * 0.5);
+      var sp = System.Math.Sin(m_radPitch * 0.5);
+      var cr = System.Math.Cos(m_radRoll * 0.5);
+      var sr = System.Math.Sin(m_radRoll * 0.5);
 
       var w = cr * cp * cy + sr * sp * sy;
       var x = sr * cp * cy - cr * sp * sy;
@@ -147,12 +147,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public (double x, double y, double z, double w) ConvertToQuaternion()
     {
-      var c1 = System.Math.Cos(m_y / 2);
-      var s1 = System.Math.Sin(m_y / 2);
-      var c2 = System.Math.Cos(m_p / 2);
-      var s2 = System.Math.Sin(m_p / 2);
-      var c3 = System.Math.Cos(m_r / 2);
-      var s3 = System.Math.Sin(m_r / 2);
+      var c1 = System.Math.Cos(m_radYaw / 2);
+      var s1 = System.Math.Sin(m_radYaw / 2);
+      var c2 = System.Math.Cos(m_radPitch / 2);
+      var s2 = System.Math.Sin(m_radPitch / 2);
+      var c3 = System.Math.Cos(m_radRoll / 2);
+      var s3 = System.Math.Sin(m_radRoll / 2);
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
       var x = c1c2 * s3 + s1s2 * c3;
@@ -194,13 +194,13 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(EulerAngles other) => m_y == other.m_y && m_p == other.m_p && m_r == other.m_r;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(EulerAngles other) => m_radYaw == other.m_radYaw && m_radPitch == other.m_radPitch && m_radRoll == other.m_radRoll;
     #endregion Implemented interfaces
 
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is EulerAngles o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_y, m_p, m_r);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Heading = {m_y}, Attitude = {m_p}, Bank = {m_r} }}";
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radYaw, m_radPitch, m_radRoll);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Heading = {m_radYaw}, Attitude = {m_radPitch}, Bank = {m_radRoll} }}";
     #endregion Object overrides
   }
 }

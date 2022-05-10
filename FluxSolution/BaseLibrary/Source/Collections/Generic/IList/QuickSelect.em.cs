@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IListEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quickselect"/>
@@ -25,15 +25,15 @@ namespace Flux
       {
         var pivotValue = source[pivotIndex];
 
-        source.Swap(pivotIndex, rightIndex);
+        source.AsSpan().Swap(pivotIndex, rightIndex);
 
         var storeIndex = leftIndex;
 
         for (var i = leftIndex; i < rightIndex; i++)
           if (comparer.Compare(source[i], pivotValue) <= 0)
-            source.Swap(storeIndex++, i);
+            source.AsSpan().Swap(storeIndex++, i);
 
-        source.Swap(rightIndex, storeIndex);
+        source.AsSpan().Swap(rightIndex, storeIndex);
 
         return storeIndex;
       }

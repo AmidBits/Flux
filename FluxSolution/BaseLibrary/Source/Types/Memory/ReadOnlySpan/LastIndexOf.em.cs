@@ -36,7 +36,7 @@ namespace Flux
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      for (int index = source.Length - value.Length; index >= 0; index--)
+      for (var index = source.Length - value.Length; index >= 0; index--)
         if (EqualsAt(source, index, value, 0, value.Length, equalityComparer))
           return index;
 

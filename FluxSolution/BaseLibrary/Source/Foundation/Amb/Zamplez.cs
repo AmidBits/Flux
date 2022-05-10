@@ -35,10 +35,10 @@ namespace Flux
         var amb = new Flux.AmbOps.Amb();
 
         #region Flow & Measurements
-        m_ap.Shuffle();
-        m_rn.Shuffle();
-        m_en.Shuffle();
-        m_on.Shuffle();
+        m_ap.AsSpan().Shuffle();
+        m_rn.AsSpan().Shuffle();
+        m_en.AsSpan().Shuffle();
+        m_on.AsSpan().Shuffle();
 
         //var l = a.Length + b.Length + c.Length + d.Length;
         //System.Console.WriteLine($"Length: {l}");

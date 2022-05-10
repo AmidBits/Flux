@@ -7,12 +7,12 @@ namespace Flux
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      var targetLength = target.Length;
+      var targetIndex = target.Length;
 
-      if (source.Length < targetLength) return false;
+      if (source.Length < targetIndex) return false;
 
-      for (var index = 0; index < targetLength; index++)
-        if (!equalityComparer.Equals(source[index], target[index]))
+      while (--targetIndex >= 0)
+        if (!equalityComparer.Equals(source[targetIndex], target[targetIndex]))
           return false;
 
       return true;

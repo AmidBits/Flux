@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IListEm
+  public static partial class ExtensionMethods
   {
     public static System.Span<T> AsSpan<T>(this System.Collections.Generic.IList<T> source)
     {
