@@ -6,7 +6,7 @@ namespace Flux
   public struct Plane
     : System.IEquatable<Plane>
   {
-    private const double NormalizeEpsilon = 1.192092896e-07f; // smallest such that 1.0+NormalizeEpsilon != 1.0
+    private const double NormalizeEpsilon = 1.192092896e-07f; // Smallest such that 1.0+NormalizeEpsilon != 1.0
 
     /// <summary>The normal vector X of the Plane.</summary>
     private readonly double m_x;
@@ -19,17 +19,18 @@ namespace Flux
     private readonly double m_distance;
 
     /// <summary>Constructs a Plane from the X, Y, and Z components of its normal, and its distance from the origin on that normal.</summary>
-    public Plane(double x, double y, double z, double d)
+    public Plane(double x, double y, double z, double distance)
     {
       m_x = x;
       m_y = y;
       m_z = z;
-      m_distance = d;
+
+      m_distance = distance;
     }
 
-    /// <summary>Constructs a Plane from the given normal and distance along the normal from the origin.</summary>
-    public Plane(Vector4 normal, double d)
-      : this(normal.X, normal.Y, normal.Z, d)
+    /// <summary>Constructs a Plane from the given normal (the W component is not used) and distance along the normal from the origin.</summary>
+    public Plane(Vector4 normal, double distance)
+      : this(normal.X, normal.Y, normal.Z, distance)
     {
     }
 

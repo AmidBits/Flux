@@ -2,6 +2,9 @@ namespace Flux.Randomization
 {
   public static class NumberGenerator
   {
+    public static System.Random Default
+      => Crypto;
+
     private static readonly System.Threading.ThreadLocal<System.Random> m_crng = new(() => new Randomization.Cryptographic());
     /// <summary>Gets the standard crypto random number generator (System.Security.Cryptography.RandomNumberGenerator).</summary>
     public static System.Random Crypto

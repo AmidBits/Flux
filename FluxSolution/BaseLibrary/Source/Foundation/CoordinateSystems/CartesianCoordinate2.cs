@@ -360,8 +360,7 @@ namespace Flux
     public static double ConvertCartesian2ToRotationAngleEx(double x, double y)
       => Maths.PiX2 - ConvertCartesian2ToRotationAngle(y, -x); // Pass the cartesian vector (x, y) rotated 90 degrees counter-clockwise.
 
-    /// <summary>Returns the cross product of two 2D vectors.</summary>
-    /// <remarks>For 2D vectors, this is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
+    /// <summary>For 2D vectors, the cross product of two vectors, is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double CrossProduct(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.X * b.Y - a.Y * b.X;
@@ -395,15 +394,23 @@ namespace Flux
     public static double EuclideanLengthSquared(CartesianCoordinate2 source)
       => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2);
 
+    /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the specified rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random random)
+      => new(random.NextDouble(toExclusiveX), random.NextDouble(toExclusiveY));
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
-      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY));
+      => FromRandomAbsolute(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
+    /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, System.Random random)
+      //=> new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      => new(random.NextDouble(-toExclusiveX, toExclusiveX), random.NextDouble(-toExclusiveY, toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
-      //=> new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
-      => new(Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveX, toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveY, toExclusiveY));
+      => FromRandomCenterZero(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
 
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]

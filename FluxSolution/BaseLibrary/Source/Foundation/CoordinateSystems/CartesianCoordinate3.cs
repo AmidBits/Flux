@@ -342,12 +342,20 @@ namespace Flux
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random random)
+      => new(random.NextDouble(toExclusiveX), random.NextDouble(toExclusiveY), random.NextDouble(toExclusiveZ));
+    /// <summary>Create a new random vector using the crypto-grade rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveZ));
+      => FromRandomAbsolute(toExclusiveX, toExclusiveY, toExclusiveZ, Randomization.NumberGenerator.Default);
+    /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random random)
+      => new(random.NextDouble(-toExclusiveX, toExclusiveX), random.NextDouble(-toExclusiveY, toExclusiveY), random.NextDouble(-toExclusiveZ, toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveX, toExclusiveX), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveY, toExclusiveY), Randomization.NumberGenerator.Crypto.NextDouble(-toExclusiveZ, toExclusiveZ));
+      => FromRandomCenterZero(toExclusiveX, toExclusiveY, toExclusiveZ, Randomization.NumberGenerator.Default);
 
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
