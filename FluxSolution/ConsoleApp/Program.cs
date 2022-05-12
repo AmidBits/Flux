@@ -22,7 +22,10 @@ namespace ConsoleApp
       var a = new Flux.CartesianCoordinate3(2, 3, 5);
       var b = new Flux.CartesianCoordinate3(4, 6, 12);
       var dr = Flux.CartesianCoordinate3.GetDirectionRatios(a, b);
-      
+
+
+      var enUS = new System.Globalization.CultureInfo("en-US");
+      var se = new System.Globalization.CultureInfo("se");
     }
 
     private static void Main(string[] args)

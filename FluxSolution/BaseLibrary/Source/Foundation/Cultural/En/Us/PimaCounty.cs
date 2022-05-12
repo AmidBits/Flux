@@ -1,6 +1,7 @@
 namespace Flux
 {
   public record struct PimaCountyPayPeriod
+    : System.IComparable<PimaCountyPayPeriod>
   {
     public static System.DateTime ReferenceDate
       => new(2014, 11, 2);
@@ -25,5 +26,10 @@ namespace Flux
       => StartDate.AddDays(13); // Two weeks.
     public System.DateTime StartDate
       => TargetDate.AddDays((ReferenceDate - TargetDate).Days % 14);
+
+    #region Implemented interfaces
+    public int CompareTo(PimaCountyPayPeriod other)
+      => m_targetDate.CompareTo(other.m_targetDate);
+    #endregion Implemented interfaces
   }
 }
