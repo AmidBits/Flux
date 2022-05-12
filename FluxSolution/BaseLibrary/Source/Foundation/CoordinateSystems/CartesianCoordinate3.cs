@@ -272,10 +272,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Point3 ToPoint3(System.MidpointRounding midpointRounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_z, midpointRounding)));
-    /// <summary>Convert to integer Point3 by using <see cref="MidpointRounding.ToEven"/> rounding.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Point3 ToPoint3()
-      => ToPoint3(System.MidpointRounding.ToEven);
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
     [System.Diagnostics.Contracts.Pure]

@@ -307,12 +307,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public EllipseGeometry ToEllipse()
       => new(m_x, m_y);
+    /// <summary>Convert to integer Point2 by using the specified rounding.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Point2 ToPoint2(System.MidpointRounding midpointRounding = System.MidpointRounding.ToEven)
+    public Point2 ToPoint2(System.MidpointRounding midpointRounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, midpointRounding)), System.Convert.ToInt32(System.Math.Round(m_y, midpointRounding)));
-    [System.Diagnostics.Contracts.Pure]
-    public Point2 ToPoint2()
-      => ToPoint2(System.MidpointRounding.ToEven);
     [System.Diagnostics.Contracts.Pure]
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));

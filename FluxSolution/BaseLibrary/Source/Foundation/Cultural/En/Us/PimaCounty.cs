@@ -1,20 +1,27 @@
 namespace Flux
 {
-  public class PimaCountyPayPeriod
+  public record struct PimaCountyPayPeriod
   {
     public static System.DateTime ReferenceDate
-      => new System.DateTime(2014, 11, 2);
+      => new(2014, 11, 2);
 
-    public System.DateTime TargetDate { get; init; }
+    private System.DateTime m_targetDate;
 
     public PimaCountyPayPeriod(System.DateTime target)
-      => TargetDate = target;
+      => m_targetDate = new(target.Year, target.Month, target.Day);
+    public PimaCountyPayPeriod()
+      : this(System.DateTime.Now)
+    {
+    }
+
+    public System.DateTime TargetDate
+    { get => m_targetDate; set => m_targetDate = new(value.Year, value.Month, value.Day); }
 
     public System.DateTime ApprovalDate
       => StartDate.AddDays(12); // One day before pay period ends.
-    public System.DateTime GetPayPeriodCheckDate(System.DateTime source)
+    public System.DateTime CheckDate
       => StartDate.AddDays(19); // Six days after pay period ends.
-    public System.DateTime EndDate(System.DateTime source)
+    public System.DateTime EndDate
       => StartDate.AddDays(13); // Two weeks.
     public System.DateTime StartDate
       => TargetDate.AddDays((ReferenceDate - TargetDate).Days % 14);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  /// <summary>Specifies the strategy that mathematical rounding should process a number.</summary>
+  /// <summary>Specifies how mathematical rounding methods should process a number.</summary>
   public enum FullRounding
   {
     /// <summary>Rounds a number to an integer that is further away from zero.</summary>
