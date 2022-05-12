@@ -12,7 +12,7 @@ namespace Flux
       var dt = new System.Data.DataTable(tableName);
 
       for (var index = 0; index < source.FieldCount; index++)
-        dt.Columns.Add(source.GetNameEx(index));
+        dt.Columns.Add(source.GetNameEx(index), source.GetFieldType(index));
 
       dt.Load(source);
 

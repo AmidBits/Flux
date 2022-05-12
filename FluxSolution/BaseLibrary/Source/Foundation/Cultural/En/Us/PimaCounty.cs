@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.UnitedStates.Arizona.Pima
 {
   public record struct PimaCountyPayPeriod
     : System.IComparable<PimaCountyPayPeriod>

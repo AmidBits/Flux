@@ -26,6 +26,12 @@ namespace ConsoleApp
 
       var enUS = new System.Globalization.CultureInfo("en-US");
       var se = new System.Globalization.CultureInfo("se");
+
+      var tz = new Flux.Resources.DotNet.TimeZones();
+      var dataTable = new Flux.Resources.DotNet.TimeZones().AcquireDataTable();
+      var dataTable2 = new Flux.Resources.DotNet.TimeZones().AcquireDataReader();
+
+      System.Console.WriteLine(dataTable.ToConsoleBlock(uniformMaxWidth: true));
     }
 
     private static void Main(string[] args)

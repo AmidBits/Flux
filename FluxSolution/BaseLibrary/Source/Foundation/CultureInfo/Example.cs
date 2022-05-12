@@ -7,6 +7,8 @@ namespace Flux
     {
       switch(source.TwoLetterISOLanguageName)
       {
+        case "en":
+          return true;
         default:
           return false;
       }
