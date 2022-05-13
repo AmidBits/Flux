@@ -1,7 +1,6 @@
-using System.Linq;
-
 namespace Flux.Resources.W3c
 {
+  /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
   public sealed class NamedCharacterReferences
     : ATabularDataAcquirer
   {
@@ -14,11 +13,16 @@ namespace Flux.Resources.W3c
     public NamedCharacterReferences(System.Uri uri)
       => Uri = uri;
 
-    /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
-    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
-    {
-      yield return new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
+    public override string[] FieldNames
+      => new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
+    public override Type[] FieldTypes
+      => FieldNames.Select(s => typeof(string)).ToArray();
 
+    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetStrings();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetStrings()
+    {
       var m_reMatchUnicodeNotation = new System.Text.RegularExpressions.Regex(@"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})", System.Text.RegularExpressions.RegexOptions.Compiled);
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);

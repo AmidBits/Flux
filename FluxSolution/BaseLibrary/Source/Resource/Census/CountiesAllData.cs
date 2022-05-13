@@ -1,5 +1,8 @@
 namespace Flux.Resources.Census
 {
+  /// <summary>Census all data.</summary>
+  /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
+  // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
   public sealed class CountiesAllData
     : ATabularDataAcquirer
   {
@@ -13,12 +16,24 @@ namespace Flux.Resources.Census
     public CountiesAllData(System.Uri uri)
       => Uri = uri;
 
-    /// <summary>Census all data.</summary>
-    /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
-    // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
-    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+    private string[]? m_fieldNames = null;
+    public override string[] FieldNames
+      => m_fieldNames ??= GetStrings().First().ToArray();
+
+    private System.Type[]? m_fieldTypes = null;
+    public override System.Type[] FieldTypes
+      => m_fieldTypes ??= FieldNames.Select((e, i) =>
+      {
+        return i switch
+        {
+          >= 5 => typeof(int),
+          _ => typeof(string),
+        };
+      }).ToArray();
+
+    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
-      using var e = Uri.GetStream().ReadCsv(new CsvOptions()).GetEnumerator();
+      using var e = GetStrings().GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -43,5 +58,10 @@ namespace Flux.Resources.Census
       }
     }
 
+    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    {
+      foreach (var record in Uri.GetStream().ReadCsv(new CsvOptions()))
+        yield return record;
+    }
   }
 }

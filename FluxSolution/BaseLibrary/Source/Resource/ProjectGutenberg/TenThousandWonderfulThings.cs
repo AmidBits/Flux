@@ -13,10 +13,16 @@ namespace Flux.Resources.ProjectGutenberg
     public TenThousandWonderfulThings(System.Uri uri)
       => Uri = uri;
 
-    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
-    {
-      yield return new string[] { @"Title", @"Text" };
+    public override string[] FieldNames
+      => new string[] { @"Title", @"Text" };
+    public override Type[] FieldTypes
+      => FieldNames.Select(s => typeof(string)).ToArray();
 
+    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetStrings();
+
+    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    {
       var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);

@@ -1,5 +1,8 @@
 namespace Flux.Resources.Scrape
 {
+  /// <summary>A free zip code file.</summary>
+  /// <see cref="http://federalgovernmentzipcodes.us/"/>
+  // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public sealed class ZipCodes
     : ATabularDataAcquirer
   {
@@ -11,14 +14,27 @@ namespace Flux.Resources.Scrape
     public System.Uri Uri { get; private set; }
 
     public ZipCodes(System.Uri uri)
-      => Uri = uri;
+      => Uri = uri ?? throw new System.ArgumentNullException(nameof(uri));
 
-    /// <summary>A free zip code file.</summary>
-    /// <see cref="http://federalgovernmentzipcodes.us/"/>
-    // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
-    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
+    private string[]? m_fieldNames = null;
+    public override string[] FieldNames
+      => m_fieldNames ??= GetStrings().First().ToArray();
+
+    private System.Type[]? m_fieldTypes = null;
+    public override System.Type[] FieldTypes
+      => m_fieldTypes ??= FieldNames.Select((e, i) =>
+      {
+        return i switch
+        {
+          0 or 16 or 17 or 18 => typeof(int),
+          6 or 7 or 8 or 9 or 10 => typeof(double),
+          _ => typeof(string),
+        };
+      }).ToArray();
+
+    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
-      using var e = Uri.GetStream().ReadCsv(new CsvOptions()).GetEnumerator();
+      using var e = GetStrings().GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -36,20 +52,14 @@ namespace Flux.Resources.Scrape
               case 16:
               case 17:
               case 18:
-                if (int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue))
-                  objects[index] = intValue;
-                else
-                  objects[index] = System.DBNull.Value;
+                objects[index] = int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value;
                 break;
               case 6:
               case 7:
               case 8:
               case 9:
               case 10:
-                if (double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue))
-                  objects[index] = doubleValue;
-                else
-                  objects[index] = System.DBNull.Value;
+                objects[index] = double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value;
                 break;
               default:
                 objects[index] = e.Current[index];
@@ -61,5 +71,8 @@ namespace Flux.Resources.Scrape
         }
       }
     }
+
+    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+      => Uri.GetStream().ReadCsv(new CsvOptions());
   }
 }

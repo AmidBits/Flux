@@ -1,7 +1,6 @@
-using System.Linq;
-
 namespace Flux.Resources.ProjectGutenberg
 {
+  /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
   public sealed class TableOfContents
     : ATabularDataAcquirer
   {
@@ -15,11 +14,16 @@ namespace Flux.Resources.ProjectGutenberg
     public TableOfContents(System.Uri uri)
       => Uri = uri;
 
-    /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
-    public override System.Collections.Generic.IEnumerable<object[]> AcquireTabularData()
-    {
-      yield return new string[] { @"Ebook", @"Number" };
+    public override string[] FieldNames
+      => new string[] { @"Ebook", @"Number" };
+    public override Type[] FieldTypes
+      => FieldNames.Select(s => typeof(string)).ToArray();
 
+    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetStrings();
+
+    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    {
       var reMatch = new System.Text.RegularExpressions.Regex(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled);
       var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled);
 

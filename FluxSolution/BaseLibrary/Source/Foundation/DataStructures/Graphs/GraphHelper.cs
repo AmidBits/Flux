@@ -7,6 +7,10 @@
     public static System.Collections.Generic.IEnumerable<(TVertex destination, double distance)> GetDijkstraShortestPathTree<TVertex, TValue>(System.Collections.Generic.List<TVertex> vertices, System.Collections.Generic.List<(TVertex x, TVertex y, TValue value)> edges, int origin, System.Func<object, double> distanceSelector)
       where TVertex : notnull
     {
+      if (vertices is null) throw new System.ArgumentNullException(nameof(vertices));
+      if (edges is null) throw new System.ArgumentNullException(nameof(edges));
+      if (distanceSelector is null) throw new System.ArgumentNullException(nameof(distanceSelector));
+
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
       while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.

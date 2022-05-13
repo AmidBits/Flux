@@ -5,7 +5,9 @@ namespace Flux
     None,
     StartLine,
     StartField,
+    StartStream,
     EndField,
-    EndLine
+    EndLine,
+    EndStream
   }
 }

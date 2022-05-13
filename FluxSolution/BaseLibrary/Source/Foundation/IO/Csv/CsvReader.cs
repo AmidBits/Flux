@@ -87,7 +87,69 @@ namespace Flux
       return m_csvValue.ToString();
     }
 
+    public void ClearEndOfLine()
+    {
+      if (m_textReader.Peek() == 13)
+        m_textReader.Read();
+      if (m_textReader.Peek() == 10)
+        m_textReader.Read();
+    }
+
+    public bool IsEndOfLine
+      => m_textReader.Peek() is var peek && (peek == 13 || peek == 10);
+    public bool IsEndOfStream
+      => m_textReader.Peek() == -1;
+
     public CsvTokenType ReadToNextToken()
+    {
+      switch (TokenType)
+      {
+        case CsvTokenType.None:
+          m_tokenType = IsEndOfStream ? CsvTokenType.EndStream : CsvTokenType.StartStream;
+          break;
+        case CsvTokenType.StartLine:
+          m_fieldValues.Clear();
+
+          m_tokenType = IsEndOfStream ? CsvTokenType.None : CsvTokenType.StartField;
+          break;
+        case CsvTokenType.StartField:
+          m_fieldValues.Add(ReadFieldValue());
+          m_tokenType = CsvTokenType.EndField;
+          break;
+        case CsvTokenType.StartStream:
+          m_tokenType = IsEndOfStream ? CsvTokenType.EndStream : CsvTokenType.StartLine;
+          break;
+        case CsvTokenType.EndField:
+          var lastField = (string)m_fieldValues[m_fieldValues.Count - 1];
+
+          if (lastField == "\n")
+          {
+            m_fieldValues.RemoveAt(m_fieldValues.Count - 1);
+            m_tokenType = CsvTokenType.EndLine;
+            break;
+          }
+          else if (lastField.EndsWith('\n'))
+          {
+            m_fieldValues[m_fieldValues.Count - 1] = lastField.Substring(0, lastField.Length - 1);
+            m_tokenType = CsvTokenType.EndLine;
+            break;
+          }
+
+          m_tokenType = IsEndOfStream ? CsvTokenType.EndLine : CsvTokenType.StartField;
+          break;
+        case CsvTokenType.EndLine:
+          m_tokenType = IsEndOfStream ? CsvTokenType.EndStream : CsvTokenType.StartLine; // Either end of stream or start of a new line.
+          break;
+        case CsvTokenType.EndStream:
+          break;
+        default:
+          throw new System.ArgumentOutOfRangeException(nameof(TokenType));
+      }
+
+      return m_tokenType;
+    }
+
+    public CsvTokenType ReadToNextToken2()
     {
       switch (TokenType)
       {
@@ -115,8 +177,10 @@ namespace Flux
           m_tokenType = CsvTokenType.EndField; // The content of the field has already been acquired, so it's the end of a field.
           break;
         case CsvTokenType.EndField:
-          if (ReadFieldValue() is var endFieldValue && endFieldValue == "\n") // A single line feed is an end of line.
+          if (ReadFieldValue() is var endFieldValue && endFieldValue.EndsWith('\n')) // A single line feed is an end of line.
           {
+            m_fieldValues.Add(endFieldValue.Substring(0, endFieldValue.Length - 1));
+
             m_tokenType = CsvTokenType.EndLine;
           }
           else // Otherwise a 'start' of another field.
@@ -138,7 +202,7 @@ namespace Flux
 
     public bool ReadToToken(CsvTokenType tokenType)
     {
-      while (ReadToNextToken() != CsvTokenType.None)
+      while (ReadToNextToken() != CsvTokenType.EndStream)
         if (TokenType == tokenType)
           return true;
 

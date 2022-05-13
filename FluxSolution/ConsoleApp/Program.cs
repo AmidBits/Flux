@@ -27,11 +27,28 @@ namespace ConsoleApp
       var enUS = new System.Globalization.CultureInfo("en-US");
       var se = new System.Globalization.CultureInfo("se");
 
+      var itda = new Flux.Resources.Census.CountiesAllData(new System.Uri(Flux.Resources.Census.CountiesAllData.LocalFile));
+      var zc = new Flux.Resources.Scrape.ZipCodes(new System.Uri(Flux.Resources.Scrape.ZipCodes.LocalFile));
+      var ud = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
+      var blocks = new Flux.Resources.Ucd.Blocks(new System.Uri(Flux.Resources.Ucd.Blocks.LocalFile));
+      var totf = new Flux.Resources.Scowl.TwoOfTwelveFull(new System.Uri(Flux.Resources.Scowl.TwoOfTwelveFull.LocalFile));
+      var saasf = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(new System.Uri(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.LocalFile));
+      var toc = new Flux.Resources.ProjectGutenberg.TableOfContents(new System.Uri(Flux.Resources.ProjectGutenberg.TableOfContents.LocalFile));
+      var ttwt = new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile));
+      var wud= new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(new System.Uri(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.LocalFile));
+      var ncr = new Flux.Resources.W3c.NamedCharacterReferences(new System.Uri(Flux.Resources.W3c.NamedCharacterReferences.LocalFile));
       var tz = new Flux.Resources.DotNet.TimeZones();
-      var dataTable = new Flux.Resources.DotNet.TimeZones().AcquireDataTable();
-      var dataTable2 = new Flux.Resources.DotNet.TimeZones().AcquireDataReader();
+      var dataReader = tz.AcquireDataReader(); 
+      var array = dataReader.ToArray();
+      var dataTable = itda.AcquireDataTable();
 
-      System.Console.WriteLine(dataTable.ToConsoleBlock(uniformMaxWidth: true));
+      //foreach (var gfv in itda.GetFieldValues())
+      //{
+      //  System.Console.WriteLine(gfv[0]);
+      //  System.Console.WriteLine(gfv[1]);
+      //  System.Console.WriteLine();
+      //}
+      System.Console.WriteLine(dataTable.ToConsoleBlock(uniformMaxWidth: false));
     }
 
     private static void Main(string[] args)

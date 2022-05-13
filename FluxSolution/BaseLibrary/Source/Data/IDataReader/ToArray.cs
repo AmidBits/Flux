@@ -5,18 +5,26 @@ namespace Flux
   public static partial class IDataReaderEm
   {
     /// <summary>Creates a new data table with values from the IDataReader. The specified table name is used in constructing the data table.</summary>
-    public static System.Data.DataTable ToDataTable(this System.Data.IDataReader source, string tableName)
+    public static object[][] ToArray(this System.Data.IDataReader source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var dt = new System.Data.DataTable(tableName);
+      var count = 0;
 
-      for (var index = 0; index < source.FieldCount; index++)
-        dt.Columns.Add(source.GetNameEx(index));
+      var array = new object[2][];
 
-      dt.Load(source);
+      while (source.Read())
+      {
+        if (count == array.Length)
+          System.Array.Resize(ref array, array.Length * 2);
 
-      return dt;
+        array[count++] = source.GetValues();
+      }
+
+      if (count < array.Length)
+        System.Array.Resize(ref array, count);
+
+      return array;
     }
 
     ///// <summary>Creates a new data table from the IDataReader using the specified column names.</summary>
