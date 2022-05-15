@@ -225,7 +225,7 @@
 
       [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
       [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-      static extern bool GetCursorPos(out Point2 point);
+      static extern bool GetCursorPos(out CartesianCoordinateI2 point);
     }
     public static byte[] GetKeyboardState()
     {

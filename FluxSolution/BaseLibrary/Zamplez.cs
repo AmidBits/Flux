@@ -23,6 +23,7 @@
       ParallelVsSerial.Run();
       RunPhoneticAlgorithms();
       RunReflection();
+      RunResource();
       RunRulesEngine();
       RunSetOps();
       RunStatistics();

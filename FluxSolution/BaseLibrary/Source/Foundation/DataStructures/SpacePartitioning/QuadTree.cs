@@ -4,7 +4,7 @@ namespace Flux.DataStructures
 {
   public interface IQuadtree
   {
-    Point2 Position { get; set; }
+    CartesianCoordinateI2 Position { get; set; }
   }
 
   /// <summary></summary>
@@ -13,8 +13,8 @@ namespace Flux.DataStructures
   public sealed class Quadtree<T>
     where T : IQuadtree
   {
-    public Point2 BoundaryHigh { get; private set; }
-    public Point2 BoundaryLow { get; private set; }
+    public CartesianCoordinateI2 BoundaryHigh { get; private set; }
+    public CartesianCoordinateI2 BoundaryLow { get; private set; }
 
     private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     /// <summary>A list of items in this tree.</summary>
@@ -26,7 +26,7 @@ namespace Flux.DataStructures
     /// <summary>A list of sub-trees.</summary>
     public System.Collections.Generic.IReadOnlyList<Quadtree<T>> Nodes => (System.Collections.Generic.IReadOnlyList<Quadtree<T>>)m_nodes;
 
-    public Quadtree(Point2 boundaryLow, Point2 boundaryHigh)
+    public Quadtree(CartesianCoordinateI2 boundaryLow, CartesianCoordinateI2 boundaryHigh)
     {
       BoundaryLow = boundaryLow;
       BoundaryHigh = boundaryHigh;
@@ -40,7 +40,7 @@ namespace Flux.DataStructures
       m_nodes.Clear();
     }
 
-    public bool InScope(Point2 position)
+    public bool InScope(CartesianCoordinateI2 position)
       => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y;
 
     public bool Insert(T item)
@@ -100,14 +100,14 @@ namespace Flux.DataStructures
     {
       if (m_nodes is null)
       {
-        var midPoint = new Point2((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
+        var midPoint = new CartesianCoordinateI2((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
 
         m_nodes = new System.Collections.Generic.List<Quadtree<T>>()
         {
-           new Quadtree<T>(new Point2(midPoint.X, midPoint.Y), new Point2(BoundaryHigh.X, BoundaryHigh.Y)),
-           new Quadtree<T>(new Point2(BoundaryLow.X, midPoint.Y), new Point2(midPoint.X - 1, BoundaryHigh.Y)),
-           new Quadtree<T>(new Point2(BoundaryLow.X, BoundaryLow.Y), new Point2(midPoint.X - 1, midPoint.Y - 1)),
-           new Quadtree<T>(new Point2(midPoint.X, BoundaryLow.Y), new Point2(BoundaryHigh.X, midPoint.Y - 1))
+           new Quadtree<T>(new CartesianCoordinateI2(midPoint.X, midPoint.Y), new CartesianCoordinateI2(BoundaryHigh.X, BoundaryHigh.Y)),
+           new Quadtree<T>(new CartesianCoordinateI2(BoundaryLow.X, midPoint.Y), new CartesianCoordinateI2(midPoint.X - 1, BoundaryHigh.Y)),
+           new Quadtree<T>(new CartesianCoordinateI2(BoundaryLow.X, BoundaryLow.Y), new CartesianCoordinateI2(midPoint.X - 1, midPoint.Y - 1)),
+           new Quadtree<T>(new CartesianCoordinateI2(midPoint.X, BoundaryLow.Y), new CartesianCoordinateI2(BoundaryHigh.X, midPoint.Y - 1))
         };
       }
 

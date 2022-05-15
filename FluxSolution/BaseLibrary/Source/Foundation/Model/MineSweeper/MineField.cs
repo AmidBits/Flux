@@ -7,7 +7,7 @@ namespace Flux.Model.MineSweeper
     public Mines Mines { get; }
     public Warnings Warnings { get; }
 
-    public bool IsEmptyAt(Point2 point)
+    public bool IsEmptyAt(CartesianCoordinateI2 point)
       => !Mines.HasMineAt(point) && !Warnings.HasWarningAt(point);
 
     public MineField(Size2 fieldSize, int mineCount)

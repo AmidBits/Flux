@@ -5,10 +5,10 @@ namespace Flux.Geometry
     : System.IEquatable<HexLayout>
   {
     public readonly Size2 Size;
-    public readonly Point2 Origin;
+    public readonly CartesianCoordinateI2 Origin;
     public readonly HexOrientation Orientation;
 
-    public HexLayout(HexOrientation orientation, Size2 size, Point2 origin)
+    public HexLayout(HexOrientation orientation, Size2 size, CartesianCoordinateI2 origin)
     {
       Orientation = orientation;
       Size = size;

@@ -33,7 +33,7 @@ namespace Flux.Resources.Census
 
     public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
-      using var e = GetStrings().GetEnumerator();
+      using var e = GetStrings().Skip(1).GetEnumerator();
 
       if (e.MoveNext())
       {

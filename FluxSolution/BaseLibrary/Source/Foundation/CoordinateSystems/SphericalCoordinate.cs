@@ -18,27 +18,24 @@ namespace Flux
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public double Radius
-      => m_radius;
+    [System.Diagnostics.Contracts.Pure] public double Radius => m_radius;
     /// <summary>Polar angle or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Angle Inclination
-      => new(m_radInclination);
+    [System.Diagnostics.Contracts.Pure] public Angle Inclination => new(m_radInclination);
     /// <summary>Azimuthal angle.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Angle Azimuth
-      => new(m_radAzimuth);
+    [System.Diagnostics.Contracts.Pure] public Angle Azimuth => new(m_radAzimuth);
 
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinateR3"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToCartesianCoordinate3()
+    public CartesianCoordinateR3 ToCartesianCoordinate3()
     {
       var sinInclination = System.Math.Sin(m_radInclination);
       return new(m_radius * System.Math.Cos(m_radAzimuth) * sinInclination, m_radius * System.Math.Sin(m_radAzimuth) * sinInclination, m_radius * System.Math.Cos(m_radInclination));
     }
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(m_radius * System.Math.Sin(m_radInclination), m_radAzimuth, m_radius * System.Math.Cos(m_radInclination));
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public GeographicCoordinate ToGeographicCoordinate()
       => new(Angle.ConvertRadianToDegree(System.Math.PI - m_radInclination - Maths.PiOver2), Angle.ConvertRadianToDegree(m_radAzimuth - System.Math.PI), m_radius);

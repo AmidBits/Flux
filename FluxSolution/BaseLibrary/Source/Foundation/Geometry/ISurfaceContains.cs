@@ -2,6 +2,6 @@ namespace Flux
 {
   public interface ISurfaceContains
   {
-    bool GetSurfaceContains(CartesianCoordinate2 cc2);
+    bool GetSurfaceContains(CartesianCoordinateR2 cc2);
   }
 }

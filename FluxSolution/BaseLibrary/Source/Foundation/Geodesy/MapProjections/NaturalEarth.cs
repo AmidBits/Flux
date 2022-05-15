@@ -7,7 +7,7 @@
     public static readonly NaturalEarthProjection Default;
 
 //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
+    public CartesianCoordinateR3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.Radian;
       var lon = project.Longitude.Radian;
@@ -22,7 +22,7 @@
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3(x, y, project.Altitude.Value);
+      return new CartesianCoordinateR3(x, y, project.Altitude.Value);
     }
 //#pragma warning restore CA1822 // Mark members as static
   }

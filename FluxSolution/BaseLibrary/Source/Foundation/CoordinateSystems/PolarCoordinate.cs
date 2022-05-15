@@ -16,17 +16,15 @@ namespace Flux
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public double Radius
-      => m_radius;
+    [System.Diagnostics.Contracts.Pure] public double Radius => m_radius;
     /// <summary>Polar angle or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Angle Azimuth
-      => new(m_azimuth);
+    [System.Diagnostics.Contracts.Pure] public Angle Azimuth => new(m_azimuth);
 
+    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinateR2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2 ToCartesianCoordinate2()
+    public CartesianCoordinateR2 ToCartesianCoordinateR2()
       => new(m_radius * System.Math.Cos(m_azimuth), m_radius * System.Math.Sin(m_azimuth));
+    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Complex ToComplex()
       => System.Numerics.Complex.FromPolarCoordinates(m_radius, m_azimuth);

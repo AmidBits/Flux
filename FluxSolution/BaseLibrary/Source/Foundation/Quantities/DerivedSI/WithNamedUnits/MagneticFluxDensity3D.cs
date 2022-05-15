@@ -4,13 +4,13 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
   public struct MagneticFluxDensity3D
-    : System.IEquatable<MagneticFluxDensity3D>, ISiDerivedUnitQuantifiable<CartesianCoordinate3, MagneticFluxDensityUnit>
+    : System.IEquatable<MagneticFluxDensity3D>, ISiDerivedUnitQuantifiable<CartesianCoordinateR3, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
-    private readonly CartesianCoordinate3 m_value;
+    private readonly CartesianCoordinateR3 m_value;
 
-    public MagneticFluxDensity3D(CartesianCoordinate3 value, MagneticFluxDensityUnit unit = DefaultUnit)
+    public MagneticFluxDensity3D(CartesianCoordinateR3 value, MagneticFluxDensityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         MagneticFluxDensityUnit.Tesla => value,
@@ -55,13 +55,13 @@ namespace Flux
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 Value
+    public CartesianCoordinateR3 Value
       => m_value;
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
+    public CartesianCoordinateR3 ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => m_value,

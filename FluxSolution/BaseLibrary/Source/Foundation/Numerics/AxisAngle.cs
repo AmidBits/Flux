@@ -29,7 +29,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y => m_y;
     [System.Diagnostics.Contracts.Pure] public double Z => m_z;
     [System.Diagnostics.Contracts.Pure] public Angle Angle => new(m_radAngle);
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3 Axis => new(m_x, m_y, m_z);
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinateR3 Axis => new(m_x, m_y, m_z);
 
     [System.Diagnostics.Contracts.Pure]
     public EulerAngles ToEulerAngles()
