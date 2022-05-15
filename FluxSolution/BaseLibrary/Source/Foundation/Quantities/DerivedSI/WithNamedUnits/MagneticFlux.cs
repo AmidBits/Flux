@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux
-    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, MagneticFluxUnit>
+    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, ISiDerivedUnitQuantifiable<double, MagneticFluxUnit>
   {
     public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 

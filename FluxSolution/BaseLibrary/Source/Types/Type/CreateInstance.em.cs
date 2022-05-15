@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class TypeEm
   {
+    public static object? CreateInstance(this System.Type source, params object[] args)
+      => source.IsGenericType ? throw new System.TypeInitializationException(@"A generic type.", null) : System.Activator.CreateInstance(source, args);
     public static object? CreateInstance(this System.Type source)
       => source.IsGenericType ? throw new System.TypeInitializationException(@"A generic type.", null) : System.Activator.CreateInstance(source);
     public static object? CreateGenericInstance(this System.Type source, params System.Type[] genericTypeArguments)

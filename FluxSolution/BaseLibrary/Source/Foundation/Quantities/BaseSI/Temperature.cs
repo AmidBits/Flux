@@ -15,16 +15,16 @@ namespace Flux
 
   public enum TemperatureUnit
   {
+    Kelvin, // DefaultUnit first for actual instatiation defaults.
     Celsius,
     Fahrenheit,
-    Kelvin,
     Rankine,
   }
 
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
+    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 

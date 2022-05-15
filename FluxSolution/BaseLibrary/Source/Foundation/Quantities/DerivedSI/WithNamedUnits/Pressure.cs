@@ -16,18 +16,17 @@ namespace Flux
 
   public enum PressureUnit
   {
+    Pascal, // DefaultUnit first for actual instatiation defaults.
     Millibar,
     Bar,
     HectoPascal,
-    /// <summary>Pascal.</summary>
-    Pascal,
     Psi,
   }
 
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PressureUnit>
+    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, System.IFormattable, ISiDerivedUnitQuantifiable<double, PressureUnit>
   {
     public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 

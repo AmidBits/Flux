@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
+    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
   {
     public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 

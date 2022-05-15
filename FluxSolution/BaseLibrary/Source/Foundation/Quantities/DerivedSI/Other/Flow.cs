@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Volumetric flow, unit of cubic meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
   public struct Flow
-    : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, FlowUnit>
+    : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IEquatable<Flow>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FlowUnit>
   {
     public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 

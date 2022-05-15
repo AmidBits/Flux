@@ -17,18 +17,18 @@ namespace Flux
 
   public enum MassUnit
   {
+    Kilogram, // DefaultUnit first for actual instatiation defaults.
     Milligram,
     Gram,
     Ounce,
     Pound,
-    Kilogram,
     MetricTon,
   }
 
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, MassUnit>
+    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, ISiBaseUnitQuantifiable<double, MassUnit>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 

@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, DensityUnit>
+    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DensityUnit>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 

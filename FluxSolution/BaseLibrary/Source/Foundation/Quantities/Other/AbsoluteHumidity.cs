@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
   public struct AbsoluteHumidity
-    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IMetricOneQuantifiable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
+    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
   {
     public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
 

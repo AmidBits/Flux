@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable, System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, EnergyUnit>
+    : System.IComparable, System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, System.IFormattable, ISiDerivedUnitQuantifiable<double, EnergyUnit>
   {
     public const EnergyUnit DefaultUnit = EnergyUnit.Joule;
 
@@ -119,7 +119,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Energy o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} J }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
   }
 }

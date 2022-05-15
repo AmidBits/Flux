@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
+    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
   public struct Inductance
-    : System.IComparable, System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, InductanceUnit>
+    : System.IComparable, System.IComparable<Inductance>, System.IConvertible, System.IEquatable<Inductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, InductanceUnit>
   {
     public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
 

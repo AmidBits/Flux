@@ -40,6 +40,7 @@
 
   public enum AngleUnit
   {
+    Radian,
     Arcminute,
     Arcsecond,
     Degree,
@@ -48,14 +49,13 @@
     NatoMil,
     /// <summary>This is sometimes also refered to as a 'mil'.</summary>
     Milliradian,
-    Radian,
     Turn,
   }
 
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, AngleUnit>
+    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -90,10 +90,10 @@
 
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinateR2 ToCartesian2() => (CartesianCoordinateR2)ConvertRotationAngleToCartesian2(m_radAngle);
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_radAngle);
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinateR2 ToCartesian2Ex() => (CartesianCoordinateR2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2Ex() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
 
     #region Static methods
     /// <summary>Convert the angle specified in arcminutes to radians.</summary>

@@ -16,17 +16,17 @@ namespace Flux
 
   public enum SpeedUnit
   {
+    MeterPerSecond, // DefaultUnit first for actual instatiation defaults.
     FootPerSecond,
     KilometerPerHour,
     Knot,
-    MeterPerSecond,
     MilePerHour,
   }
 
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
+    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
   {
     public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 

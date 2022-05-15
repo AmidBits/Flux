@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
   public struct Frequency
-    : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
+    : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, ISiDerivedUnitQuantifiable<double, FrequencyUnit>
   {
     public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
-    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
+    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
   {
     public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
 

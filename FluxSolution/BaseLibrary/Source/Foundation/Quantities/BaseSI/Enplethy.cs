@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
   public struct Enplethy
-    : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
+    : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, System.IFormattable, ISiBaseUnitQuantifiable<double, EnplethyUnit>
   {
     /// <summary>The number of atoms contained in 1 mol of carbon-12 (which has the molar mass of 12 g) is called the Avogadro number. The Avogadro constant is the proportionality factor that relates the number of constituent particles (usually molecules, atoms or ions) in a sample with the amount of substance in that sample. It's unit is the reciprocal mole (or per mole). I.e. any 1 mol of any substance contains this amount of fundamental units. A fundamental unit can be atoms (e.g. iron, Fe), molecules (e.g. oxygen, O2) or formula units (e.g. water, H2O).</summary>
     public const double AvagadrosNumber = 6.02214076e23;

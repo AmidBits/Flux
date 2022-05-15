@@ -4,45 +4,45 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
-    public static double AngleBetween(this CartesianCoordinateR2 source, CartesianCoordinateR2 before, CartesianCoordinateR2 after)
-      => CartesianCoordinateR2.AngleBetween(before - source, after - source);
+    public static double AngleBetween(this CartesianCoordinate2 source, CartesianCoordinate2 before, CartesianCoordinate2 after)
+      => CartesianCoordinate2.AngleBetween(before - source, after - source);
 
     /// <summary>Compute the sum angle of all vectors.</summary>
-    public static double AngleSum(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source, CartesianCoordinateR2 vector)
+    public static double AngleSum(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source, CartesianCoordinate2 vector)
       => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, c) => a / 2);
     /// <summary>Compute the surface area of the polygon.</summary>
-    public static double ComputeArea(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static double ComputeArea(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    public static CartesianCoordinateR2 ComputeCentroid(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
-      => source.Aggregate(CartesianCoordinateR2.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
+    public static CartesianCoordinate2 ComputeCentroid(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+      => source.Aggregate(CartesianCoordinate2.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
-    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
-      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinateR2.EuclideanDistance(e1, e2), (a, c) => a);
+    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinate2.EuclideanDistance(e1, e2), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<(CartesianCoordinateR2 v1, CartesianCoordinateR2 v2, CartesianCoordinateR2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2 v1, CartesianCoordinate2 v2, CartesianCoordinate2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
-    public static System.Collections.Generic.IEnumerable<CartesianCoordinateR2> GetMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<CartesianCoordinate2> GetMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / 2);
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
-    public static System.Collections.Generic.IEnumerable<(CartesianCoordinateR2 v1, CartesianCoordinateR2 vm, CartesianCoordinateR2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2 v1, CartesianCoordinate2 vm, CartesianCoordinate2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
       => source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
 
     /// <summary>Determines the inclusion of a vector in the polygon (2D planar). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
-    public static int InsidePolygon(this System.Collections.Generic.IList<CartesianCoordinateR2> source, CartesianCoordinateR2 vector)
+    public static int InsidePolygon(this System.Collections.Generic.IList<CartesianCoordinate2> source, CartesianCoordinate2 vector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -73,12 +73,12 @@ namespace Flux
       {
         if (a.Y <= vector.Y)
         {
-          if (b.Y > vector.Y && CartesianCoordinateR2.SideTest(vector, a, b) > 0)
+          if (b.Y > vector.Y && CartesianCoordinate2.SideTest(vector, a, b) > 0)
             wn++;
         }
         else
         {
-          if (b.Y <= vector.Y && CartesianCoordinateR2.SideTest(vector, a, b) < 0)
+          if (b.Y <= vector.Y && CartesianCoordinate2.SideTest(vector, a, b) < 0)
             wn--;
         }
       }
@@ -87,7 +87,7 @@ namespace Flux
     }
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
-    public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
     {
       bool negative = false, positive = false;
 
@@ -105,7 +105,7 @@ namespace Flux
       return negative ^ positive;
     }
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -123,11 +123,11 @@ namespace Flux
       return true;
     }
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinateR2.EuclideanDistance(v1, v2)).GetEnumerator();
+      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate2.EuclideanDistance(v1, v2)).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -144,15 +144,15 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitAlongMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitAlongMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
     {
-      var midpointPolygon = new System.Collections.Generic.List<CartesianCoordinateR2>();
+      var midpointPolygon = new System.Collections.Generic.List<CartesianCoordinate2>();
 
       foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (v1, v2, index) => (v1, v2)))
       {
         midpointPolygon.Add(pair.v1.vm);
 
-        yield return new System.Collections.Generic.List<CartesianCoordinateR2>() { pair.v1.v2, pair.v2.vm, pair.v1.vm };
+        yield return new System.Collections.Generic.List<CartesianCoordinate2>() { pair.v1.v2, pair.v2.vm, pair.v1.vm };
       }
 
       yield return midpointPolygon;
@@ -161,11 +161,11 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source, Geometry.TriangulationType mode)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source, Geometry.TriangulationType mode)
     {
-      var copy = new System.Collections.Generic.List<CartesianCoordinateR2>(source);
+      var copy = new System.Collections.Generic.List<CartesianCoordinate2>(source);
 
-      (CartesianCoordinateR2 v1, CartesianCoordinateR2 v2, CartesianCoordinateR2 v3, int index, double angle) triplet = default;
+      (CartesianCoordinate2 v1, CartesianCoordinate2 v2, CartesianCoordinate2 v3, int index, double angle) triplet = default;
 
       while (copy.Count >= 3)
       {
@@ -179,7 +179,7 @@ namespace Flux
           Geometry.TriangulationType.MostSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
           _ => throw new System.Exception(),
         };
-        yield return new System.Collections.Generic.List<CartesianCoordinateR2>() { triplet.v2, triplet.v3, triplet.v1 };
+        yield return new System.Collections.Generic.List<CartesianCoordinate2>() { triplet.v2, triplet.v3, triplet.v1 };
 
         copy.RemoveAt((triplet.index + 1) % copy.Count);
       }
@@ -187,20 +187,20 @@ namespace Flux
 
     /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
-      => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinateR2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+      => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
-      => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinateR2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+      => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitInHalf(this System.Collections.Generic.IEnumerable<CartesianCoordinateR2> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitInHalf(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
     {
-      var polygon1 = new System.Collections.Generic.List<CartesianCoordinateR2>();
-      var polygon2 = new System.Collections.Generic.List<CartesianCoordinateR2>();
+      var polygon1 = new System.Collections.Generic.List<CartesianCoordinate2>();
+      var polygon2 = new System.Collections.Generic.List<CartesianCoordinate2>();
 
       foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
       {
@@ -215,7 +215,7 @@ namespace Flux
 
       if (polygon1.Count > polygon2.Count)
       {
-        var midpoint = CartesianCoordinateR2.Nlerp(polygon1[^1], polygon2[0], 0.5);
+        var midpoint = CartesianCoordinate2.Nlerp(polygon1[^1], polygon2[0], 0.5);
 
         polygon1.Add(midpoint);
         polygon2.Insert(0, midpoint);
@@ -234,7 +234,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinateR2>> SplitVertexToVertices(this System.Collections.Generic.IList<CartesianCoordinateR2> source, int index)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitVertexToVertices(this System.Collections.Generic.IList<CartesianCoordinate2> source, int index)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -245,19 +245,19 @@ namespace Flux
 
       for (var i = startIndex; i < count; i++)
       {
-        yield return new System.Collections.Generic.List<CartesianCoordinateR2>() { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
+        yield return new System.Collections.Generic.List<CartesianCoordinate2>() { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
       }
     }
 
-    public static CartesianCoordinateR2 ToCartesianCoordinate2(this CartesianCoordinateI2 source)
+    public static CartesianCoordinate2 ToCartesianCoordinate2(this CartesianCoordinateI2 source)
       => new(source.X, source.Y);
-    public static CartesianCoordinateR2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
+    public static CartesianCoordinate2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
       => new(source.X, source.Y);
-    public static CartesianCoordinateI2 ToPoint2(this CartesianCoordinateR2 source, System.Func<double, double> transformSelector)
+    public static CartesianCoordinateI2 ToPoint2(this CartesianCoordinate2 source, System.Func<double, double> transformSelector)
       => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)));
-    public static CartesianCoordinateI2 ToPoint2(this CartesianCoordinateR2 source, HalfRounding behavior)
+    public static CartesianCoordinateI2 ToPoint2(this CartesianCoordinate2 source, HalfRounding behavior)
       => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)));
-    public static System.Numerics.Vector2 ToVector2(this CartesianCoordinateR2 source)
+    public static System.Numerics.Vector2 ToVector2(this CartesianCoordinate2 source)
       => new((float)source.X, (float)source.Y);
   }
   #endregion ExtensionMethods
@@ -265,15 +265,15 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct CartesianCoordinateR2
-    : System.IEquatable<CartesianCoordinateR2>
+  public struct CartesianCoordinate2
+    : System.IEquatable<CartesianCoordinate2>
   {
-    public readonly static CartesianCoordinateR2 Zero;
+    public readonly static CartesianCoordinate2 Zero;
 
     private readonly double m_x;
     private readonly double m_y;
 
-    public CartesianCoordinateR2(double x, double y)
+    public CartesianCoordinate2(double x, double y)
     {
       m_x = x;
       m_y = y;
@@ -300,23 +300,23 @@ namespace Flux
     public double LineSlopeY
       => System.Math.CopySign(m_y / m_x, m_y);
 
-    /// <summary>Converts the <see cref="CartesianCoordinateR2"/> to a <see cref="EllipseGeometry"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="EllipseGeometry"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public EllipseGeometry ToEllipseGeometry()
       => new(m_x, m_y);
-    /// <summary>Converts the <see cref="CartesianCoordinateR2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinateI2 ToCartesianCoordinateI2(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinateR2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinateI2 ToCartesianCoordinateI2(Flux.FullRounding rounding)
       => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinateR2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinateI2"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinateI2 ToCartesianCoordinateI2(Flux.HalfRounding rounding)
       => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinateR2"/> to a <see cref="PolarCoordinate"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="PolarCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
@@ -350,8 +350,8 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double AngleBetween(CartesianCoordinateR2 a, CartesianCoordinateR2 b)
-      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinateR2.EuclideanLength(a) * CartesianCoordinateR2.EuclideanLength(b)), -1, 1));
+    public static double AngleBetween(CartesianCoordinate2 a, CartesianCoordinate2 b)
+      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate2.EuclideanLength(a) * CartesianCoordinate2.EuclideanLength(b)), -1, 1));
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -366,119 +366,119 @@ namespace Flux
 
     /// <summary>For 2D vectors, the cross product of two vectors, is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double CrossProduct(CartesianCoordinateR2 a, CartesianCoordinateR2 b)
+    public static double CrossProduct(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.X * b.Y - a.Y * b.X;
 
     /// <summary>Returns the dot product of two 2D vectors.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double DotProduct(CartesianCoordinateR2 a, CartesianCoordinateR2 b)
+    public static double DotProduct(CartesianCoordinate2 a, CartesianCoordinate2 b)
       => a.X * b.X + a.Y * b.Y;
 
     /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevDistance(CartesianCoordinateR2 source, CartesianCoordinateR2 target, double edgeLength = 1)
+    public static double ChebyshevDistance(CartesianCoordinate2 source, CartesianCoordinate2 target, double edgeLength = 1)
       => ChebyshevLength(target - source, edgeLength);
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevLength(CartesianCoordinateR2 source, double edgeLength = 1)
+    public static double ChebyshevLength(CartesianCoordinate2 source, double edgeLength = 1)
       => System.Math.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanDistance(CartesianCoordinateR2 source, CartesianCoordinateR2 target)
+    public static double EuclideanDistance(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => EuclideanLength(target - source);
     /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLength(CartesianCoordinateR2 source)
+    public static double EuclideanLength(CartesianCoordinate2 source)
       => System.Math.Sqrt(EuclideanLengthSquared(source));
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLengthSquared(CartesianCoordinateR2 source)
+    public static double EuclideanLengthSquared(CartesianCoordinate2 source)
       => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2);
 
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the specified rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random random)
+    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random random)
       => new(random.NextDouble(toExclusiveX), random.NextDouble(toExclusiveY));
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
+    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
       => FromRandomAbsolute(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, System.Random random)
+    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, System.Random random)
       //=> new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
       => new(random.NextDouble(-toExclusiveX, toExclusiveX), random.NextDouble(-toExclusiveY, toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
+    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
       => FromRandomCenterZero(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
 
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 GetDirectionCosines(CartesianCoordinateR2 source, CartesianCoordinateR2 target)
+    public static CartesianCoordinate2 GetDirectionCosines(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => Normalize(target - source);
     /// <summary>Returns the direction ratios.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 GetDirectionRatios(CartesianCoordinateR2 source, CartesianCoordinateR2 target)
+    public static CartesianCoordinate2 GetDirectionRatios(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => target - source;
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static Geometry.LineSlope GetLineSlope(CartesianCoordinateR2 source, CartesianCoordinateR2 target)
+    public static Geometry.LineSlope GetLineSlope(CartesianCoordinate2 source, CartesianCoordinate2 target)
       => new(source.X, source.Y, target.X, target.Y);
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 InterpolateCosine(CartesianCoordinateR2 y1, CartesianCoordinateR2 y2, double mu)
+    public static CartesianCoordinate2 InterpolateCosine(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
       => new(CosineInterpolation.Interpolate(y1.m_x, y2.m_x, mu), CosineInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 InterpolateCubic(CartesianCoordinateR2 y0, CartesianCoordinateR2 y1, CartesianCoordinateR2 y2, CartesianCoordinateR2 y3, double mu)
+    public static CartesianCoordinate2 InterpolateCubic(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu)
       => new(CubicInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), CubicInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 InterpolateHermite2(CartesianCoordinateR2 y0, CartesianCoordinateR2 y1, CartesianCoordinateR2 y2, CartesianCoordinateR2 y3, double mu, double tension, double bias)
+    public static CartesianCoordinate2 InterpolateHermite2(CartesianCoordinate2 y0, CartesianCoordinate2 y1, CartesianCoordinate2 y2, CartesianCoordinate2 y3, double mu, double tension, double bias)
       => new(HermiteInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 InterpolateLinear(CartesianCoordinateR2 y1, CartesianCoordinateR2 y2, double mu)
+    public static CartesianCoordinate2 InterpolateLinear(CartesianCoordinate2 y1, CartesianCoordinate2 y2, double mu)
       => new(LinearInterpolation.Interpolate(y1.m_x, y2.m_x, mu), LinearInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 Lerp(CartesianCoordinateR2 source, CartesianCoordinateR2 target, double mu)
+    public static CartesianCoordinate2 Lerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
     {
       var imu = 1 - mu;
 
-      return new CartesianCoordinateR2(source.X * imu + target.X * mu, source.Y * imu + target.Y * mu);
+      return new CartesianCoordinate2(source.X * imu + target.X * mu, source.Y * imu + target.Y * mu);
     }
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanDistance(CartesianCoordinateR2 source, CartesianCoordinateR2 target, double edgeLength = 1)
+    public static double ManhattanDistance(CartesianCoordinate2 source, CartesianCoordinate2 target, double edgeLength = 1)
       => ManhattanLength(target - source, edgeLength);
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanLength(CartesianCoordinateR2 source, double edgeLength = 1)
+    public static double ManhattanLength(CartesianCoordinate2 source, double edgeLength = 1)
       => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength);
 
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 Nlerp(CartesianCoordinateR2 source, CartesianCoordinateR2 target, double mu)
+    public static CartesianCoordinate2 Nlerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
       => Normalize(Lerp(source, target, mu));
 
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 Normalize(CartesianCoordinateR2 source)
+    public static CartesianCoordinate2 Normalize(CartesianCoordinate2 source)
       => EuclideanLength(source) is var m && m != 0 ? source / m : source;
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
     [System.Diagnostics.Contracts.Pure]
-    public static int OrthantNumber(CartesianCoordinateR2 source, CartesianCoordinateR2 center, OrthantNumbering numbering)
+    public static int OrthantNumber(CartesianCoordinate2 source, CartesianCoordinate2 center, OrthantNumbering numbering)
       => numbering switch
       {
         OrthantNumbering.Traditional => source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 0 : 1) : (source.m_x >= center.m_x ? 3 : 2),
@@ -489,16 +489,16 @@ namespace Flux
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 PerpendicularCcw(CartesianCoordinateR2 source)
+    public static CartesianCoordinate2 PerpendicularCcw(CartesianCoordinate2 source)
       => new(-source.m_y, source.m_x);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 PerpendicularCw(CartesianCoordinateR2 source)
+    public static CartesianCoordinate2 PerpendicularCw(CartesianCoordinate2 source)
       => new(source.m_y, -source.m_x);
 
     /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double PerpendicularDistanceTo(CartesianCoordinateR2 source, CartesianCoordinateR2 a, CartesianCoordinateR2 b)
+    public static double PerpendicularDistanceTo(CartesianCoordinate2 source, CartesianCoordinate2 a, CartesianCoordinate2 b)
     {
       var cc21 = b - a;
 
@@ -512,71 +512,71 @@ namespace Flux
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
     /// <param name="source">A given point.</param>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 PerpendicularFoot(CartesianCoordinateR2 source, double a, double b, double c)
+    public static CartesianCoordinate2 PerpendicularFoot(CartesianCoordinate2 source, double a, double b, double c)
     {
       var m = -1 * (a * source.m_x + b * source.m_y + c) / (a * a + b * b);
 
-      return new CartesianCoordinateR2(m * (a + source.m_x), m * (b + source.m_y));
+      return new CartesianCoordinate2(m * (a + source.m_x), m * (b + source.m_y));
     }
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static int SideTest(CartesianCoordinateR2 source, CartesianCoordinateR2 a, CartesianCoordinateR2 b)
+    public static int SideTest(CartesianCoordinate2 source, CartesianCoordinate2 a, CartesianCoordinate2 b)
       => System.Math.Sign((source.m_x - b.m_x) * (a.m_y - b.m_y) - (source.m_y - b.m_y) * (a.m_x - b.m_x));
 
     /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinateR2 Slerp(CartesianCoordinateR2 source, CartesianCoordinateR2 target, double mu)
+    public static CartesianCoordinate2 Slerp(CartesianCoordinate2 source, CartesianCoordinate2 target, double mu)
     {
       var dp = System.Math.Clamp(DotProduct(source, target), -1.0, 1.0); // Ensure precision doesn't exceed acos limits.
       var theta = System.Math.Acos(dp) * mu; // Angle between start and desired.
       var cos = System.Math.Cos(theta);
       var sin = System.Math.Sin(theta);
 
-      return new CartesianCoordinateR2(source.m_x * cos + (target.m_x - source.m_x) * dp * sin, source.m_y * cos + (target.m_y - source.m_y) * dp * sin);
+      return new CartesianCoordinate2(source.m_x * cos + (target.m_x - source.m_x) * dp * sin, source.m_y * cos + (target.m_y - source.m_y) * dp * sin);
     }
     #endregion Static methods
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinateR2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
-    [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(CartesianCoordinateR2 cc2) => new(cc2.X, cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(CartesianCoordinate2 cc2) => new(cc2.X, cc2.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinateR2 a, CartesianCoordinateR2 b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinateR2 a, CartesianCoordinateR2 b) => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b) => !a.Equals(b);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator -(CartesianCoordinateR2 cc) => new(-cc.X, -cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc) => new(-cc.X, -cc.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator --(CartesianCoordinateR2 cc) => cc - 1;
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator ++(CartesianCoordinateR2 cc) => cc + 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator --(CartesianCoordinate2 cc) => cc - 1;
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator ++(CartesianCoordinate2 cc) => cc + 1;
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator +(CartesianCoordinateR2 cc1, CartesianCoordinateR2 cc2) => new(cc1.X + cc2.X, cc1.Y + cc2.Y);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator +(CartesianCoordinateR2 cc, double scalar) => new(cc.X + scalar, cc.Y + scalar);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator +(double scalar, CartesianCoordinateR2 cc) => new(scalar + cc.X, scalar + cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X + cc2.X, cc1.Y + cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(CartesianCoordinate2 cc, double scalar) => new(cc.X + scalar, cc.Y + scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator +(double scalar, CartesianCoordinate2 cc) => new(scalar + cc.X, scalar + cc.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator -(CartesianCoordinateR2 cc1, CartesianCoordinateR2 cc2) => new(cc1.X - cc2.X, cc1.Y - cc2.Y);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator -(CartesianCoordinateR2 cc, double scalar) => new(cc.X - scalar, cc.Y - scalar);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator -(double scalar, CartesianCoordinateR2 cc) => new(scalar - cc.X, scalar - cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X - cc2.X, cc1.Y - cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(CartesianCoordinate2 cc, double scalar) => new(cc.X - scalar, cc.Y - scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator -(double scalar, CartesianCoordinate2 cc) => new(scalar - cc.X, scalar - cc.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator *(CartesianCoordinateR2 cc1, CartesianCoordinateR2 cc2) => new(cc1.X * cc2.X, cc1.Y * cc2.Y);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator *(CartesianCoordinateR2 cc, double scalar) => new(cc.X * scalar, cc.Y * scalar);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator *(double scalar, CartesianCoordinateR2 cc) => new(scalar * cc.X, scalar * cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X * cc2.X, cc1.Y * cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(CartesianCoordinate2 cc, double scalar) => new(cc.X * scalar, cc.Y * scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator *(double scalar, CartesianCoordinate2 cc) => new(scalar * cc.X, scalar * cc.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator /(CartesianCoordinateR2 cc1, CartesianCoordinateR2 cc2) => new(cc1.X / cc2.X, cc1.Y / cc2.Y);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator /(CartesianCoordinateR2 cc, double scalar) => new(cc.X / scalar, cc.Y / scalar);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator /(double scalar, CartesianCoordinateR2 cc) => new(scalar / cc.X, scalar / cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X / cc2.X, cc1.Y / cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(CartesianCoordinate2 cc, double scalar) => new(cc.X / scalar, cc.Y / scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator /(double scalar, CartesianCoordinate2 cc) => new(scalar / cc.X, scalar / cc.Y);
 
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator %(CartesianCoordinateR2 cc1, CartesianCoordinateR2 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator %(CartesianCoordinateR2 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
-    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinateR2 operator %(double scalar, CartesianCoordinateR2 cc) => new(scalar % cc.X, scalar % cc.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc1, CartesianCoordinate2 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(CartesianCoordinate2 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
+    [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2 operator %(double scalar, CartesianCoordinate2 cc) => new(scalar % cc.X, scalar % cc.Y);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinateR2 other) => m_x == other.m_x && m_y == other.m_y;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate2 other) => m_x == other.m_x && m_y == other.m_y;
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinateR2 o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2 o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
     #endregion Object overrides

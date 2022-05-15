@@ -17,7 +17,7 @@ namespace Flux
       Write(typeof(Flux.IUnitQuantifiable<,>), typeof(Flux.ISiDerivedUnitQuantifiable<,>), typeof(Flux.ISiBaseUnitQuantifiable<,>));
       Write(typeof(Flux.IQuantifiable<>), typeof(Flux.IUnitQuantifiable<,>));
 
-      Write(typeof(Flux.IMetricOneQuantifiable));
+      //Write(typeof(Flux.IMetricOneQuantifiable));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {

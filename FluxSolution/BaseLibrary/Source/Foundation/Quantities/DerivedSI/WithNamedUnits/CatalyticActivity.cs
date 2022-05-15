@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
+    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
   {
     public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 

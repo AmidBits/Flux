@@ -19,6 +19,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      //var types = typeof(Flux.IMetricOneQuantifiable).GetDerivedTypes().OrderBy(t => t.Name).ToList();
+      //foreach (var type in types)
+      //{
+      //  var instance = type.CreateInstance(1, null);
+      //  System.Console.WriteLine(instance.ToString());
+      //  System.Console.WriteLine(((Flux.IMetricOneQuantifiable)instance).ToMetricOneString(MetricMultiplicativePrefix.Milli, null, false, false));
+      //}
+      ////System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
+      //System.Console.WriteLine();
+
+
       var a = new Flux.Angle(1/60.0, AngleUnit.Degree);
       var r = a.ToUnitValue(AngleUnit.Arcminute);
       var mr = a.ToMetricOneString(MetricMultiplicativePrefix.Micro);

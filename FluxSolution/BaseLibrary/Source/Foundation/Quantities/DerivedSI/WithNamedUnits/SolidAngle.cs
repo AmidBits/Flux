@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
+    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 

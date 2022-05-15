@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>irradiance, unit of watt per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Irradiance"/>
   public struct Irradiance
-    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
+    : System.IComparable, System.IComparable<Irradiance>, System.IConvertible, System.IEquatable<Irradiance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IrradianceUnit>
   {
     public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 

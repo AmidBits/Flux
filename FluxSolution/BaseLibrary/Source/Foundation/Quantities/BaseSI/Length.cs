@@ -25,6 +25,7 @@ namespace Flux
 
   public enum LengthUnit
   {
+    Meter,
     Nanometer,
     Micrometer,
     Millimeter,
@@ -33,7 +34,6 @@ namespace Flux
     Decimeter,
     Foot,
     Yard,
-    Meter,
     Kilometer,
     Mile,
     NauticalMile,
@@ -44,7 +44,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, LengthUnit>
+    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, ISiBaseUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
     public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;

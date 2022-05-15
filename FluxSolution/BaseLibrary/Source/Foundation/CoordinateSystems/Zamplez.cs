@@ -32,7 +32,7 @@ namespace Flux
 
         // Show 2D coordinate systems also.
         {
-          var cc2 = new Flux.CartesianCoordinateR2(cc3.X, cc3.Y); // CartesianCoordinate2 (2D)
+          var cc2 = new Flux.CartesianCoordinate2(cc3.X, cc3.Y); // CartesianCoordinate2 (2D)
           System.Console.WriteLine($" ({cc2})");
 
           var pc = cc2.ToPolarCoordinate(); // PolarCoordinate (2D)

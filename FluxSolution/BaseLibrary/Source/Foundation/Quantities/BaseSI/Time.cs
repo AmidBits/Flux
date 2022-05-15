@@ -20,10 +20,10 @@ namespace Flux
 
   public enum TimeUnit
   {
+    Second,
     Nanosecond,
     Microsecond,
     Millisecond,
-    Second,
     Minute,
     Hour,
     Day,
@@ -34,7 +34,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, IMetricOneQuantifiable, ISiBaseUnitQuantifiable<double, TimeUnit>
+    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, ISiBaseUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 

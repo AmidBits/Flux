@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, PowerUnit>
+    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, ISiDerivedUnitQuantifiable<double, PowerUnit>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 

@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
   public struct AngularVelocity
-    : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
+    : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngularVelocityUnit>
   {
     public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 

@@ -3,13 +3,13 @@ namespace Flux
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration3D
-      : System.IEquatable<AngularAcceleration3D>, ISiDerivedUnitQuantifiable<CartesianCoordinateR3, AngularAccelerationUnit>
+      : System.IEquatable<AngularAcceleration3D>, ISiDerivedUnitQuantifiable<CartesianCoordinate3, AngularAccelerationUnit>
   {
     public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
 
-    private readonly CartesianCoordinateR3 m_value;
+    private readonly CartesianCoordinate3 m_value;
 
-    public AngularAcceleration3D(CartesianCoordinateR3 value, AngularAccelerationUnit unit = DefaultUnit)
+    public AngularAcceleration3D(CartesianCoordinate3 value, AngularAccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquare => value,
@@ -53,13 +53,13 @@ namespace Flux
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinateR3 Value
+    public CartesianCoordinate3 Value
       => m_value;
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AngularAccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinateR3 ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
+    public CartesianCoordinate3 ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquare => m_value,

@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
+    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
   {
     public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 

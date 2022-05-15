@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Surface density, unit of kilograms per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
   public struct AreaDensity
-    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
+    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
   {
     public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 

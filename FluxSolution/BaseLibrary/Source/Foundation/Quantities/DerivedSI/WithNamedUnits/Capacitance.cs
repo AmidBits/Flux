@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
+    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 

@@ -28,7 +28,7 @@ namespace Flux.Dsp
     }
 
     #region Static methods
-    public static CartesianCoordinateR2 RandomGradient(int ix, int iy)
+    public static CartesianCoordinate2 RandomGradient(int ix, int iy)
     {
       // No precomputed gradients mean this works for any number of grid coordinates
       const int w = 8 * 4;
@@ -43,7 +43,7 @@ namespace Flux.Dsp
 
       var random = a * (3.14159265 / ~(~0u >> 1)); // in [0, 2*Pi]
 
-      return new CartesianCoordinateR2(System.Math.Cos(random), System.Math.Sin(random));
+      return new CartesianCoordinate2(System.Math.Cos(random), System.Math.Sin(random));
     }
     public static double DotGridGradient(int ix, int iy, double x, double y)
     {

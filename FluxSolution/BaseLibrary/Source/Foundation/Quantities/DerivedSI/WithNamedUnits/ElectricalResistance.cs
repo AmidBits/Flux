@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric resistance, unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalResistance
-    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
+    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
   {
     public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 

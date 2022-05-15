@@ -19,7 +19,7 @@ namespace Flux
 
     public double GetSurfaceArea()
       => SurfaceArea(m_radius);
-    public bool GetSurfaceContains(CartesianCoordinateR2 cc2)
+    public bool GetSurfaceContains(CartesianCoordinate2 cc2)
       => SurfaceContains(cc2.X, cc2.Y, m_radius);
     public double GetSurfacePerimeter()
       => System.Math.PI * System.Math.Pow(m_radius, 2);

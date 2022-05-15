@@ -24,6 +24,7 @@ namespace Flux
 
   public enum VolumeUnit
   {
+    CubicMeter, // DefaultUnit first for actual instatiation defaults.
     Millilitre,
     Centilitre,
     Decilitre,
@@ -38,7 +39,6 @@ namespace Flux
     USQuart,
     CubicFeet,
     CubicYard,
-    CubicMeter,
     CubicMile,
     CubicKilometer,
   }
@@ -46,7 +46,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, IMetricOneQuantifiable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
+    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
