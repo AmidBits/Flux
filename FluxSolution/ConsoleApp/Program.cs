@@ -32,7 +32,7 @@ namespace ConsoleApp
 
       var a = new Flux.Angle(1/60.0, AngleUnit.Degree);
       var r = a.ToUnitValue(AngleUnit.Arcminute);
-      var mr = a.ToMetricOneString(MetricMultiplicativePrefix.Micro);
+      //var mr = a.ToMetricOneString(MetricMultiplicativePrefix.Micro);
     } 
 
     private static void Main(string[] args)
