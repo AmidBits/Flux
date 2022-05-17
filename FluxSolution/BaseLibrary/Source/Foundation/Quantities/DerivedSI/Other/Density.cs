@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Density unit of kilograms per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Density"/>
   public struct Density
-    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DensityUnit>
+    : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IEquatable<Density>, System.IFormattable, IUnitQuantifiable<double, DensityUnit>
   {
     public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
@@ -92,11 +92,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

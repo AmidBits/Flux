@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
   public struct LuminousFlux
-    : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, System.IFormattable, ISiDerivedUnitQuantifiable<double, LuminousFluxUnit>
+    : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IEquatable<LuminousFlux>, System.IFormattable, IUnitQuantifiable<double, LuminousFluxUnit>
   {
     public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

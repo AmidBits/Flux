@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical capacitance unit of Farad.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
   public struct Capacitance
-    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, CapacitanceUnit>
+    : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, IUnitQuantifiable<double, CapacitanceUnit>
   {
     public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

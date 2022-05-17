@@ -20,7 +20,7 @@ namespace Flux
   /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Area"/>
   public struct Area
-    : System.IComparable, System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AreaUnit>
+    : System.IComparable, System.IComparable<Area>, System.IConvertible, System.IEquatable<Area>, System.IFormattable, IUnitQuantifiable<double, AreaUnit>
   {
     public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
 
@@ -99,11 +99,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

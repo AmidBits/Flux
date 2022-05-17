@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric resistance, unit of Ohm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalResistance
-    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalResistanceUnit>
+    : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, IUnitQuantifiable<double, ElectricalResistanceUnit>
   {
     public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
@@ -122,11 +122,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

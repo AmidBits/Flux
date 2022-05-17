@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Illuminance unit of lux.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
   public struct Illuminance
-    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, IlluminanceUnit>
+    : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, System.IEquatable<Illuminance>, System.IFormattable, IUnitQuantifiable<double, IlluminanceUnit>
   {
     public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 
@@ -92,11 +92,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

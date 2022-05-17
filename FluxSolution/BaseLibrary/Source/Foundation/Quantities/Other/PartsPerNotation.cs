@@ -141,11 +141,6 @@ namespace Flux
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure] public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
 
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_parts, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
     // IQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public double Value

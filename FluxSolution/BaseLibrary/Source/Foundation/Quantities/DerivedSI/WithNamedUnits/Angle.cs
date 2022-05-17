@@ -26,9 +26,9 @@
     public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
-        AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
-        AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
+        AngleUnit.Arcminute => preferUnicode ? Unicode.Prime.ToString() : Unicode.Apostrophe.ToString(),
+        AngleUnit.Arcsecond => preferUnicode ? Unicode.DoublePrime.ToString() : Unicode.QuotationMark.ToString(),
+        AngleUnit.Degree => preferUnicode ? Unicode.DegreeSign.ToString() : "deg",
         AngleUnit.Gradian => "grad",
         AngleUnit.NatoMil => "mils",
         AngleUnit.Milliradian => "mrad",
@@ -55,13 +55,16 @@
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public struct Angle
-    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AngleUnit>
+    : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, System.IFormattable, IUnitQuantifiable<double, AngleUnit>
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
-    public const char DegreeSymbol = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
-    public const char DoublePrimeSymbol = '\u2033'; // Designates arc second.
-    public const char PrimeSymbol = '\u2032'; // Designates arc minute.
+    /// <summary>This is the symbol for degree.</summary>
+    public const char UnicodeDegreeSign = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
+    /// <summary>This is the symbol for arc second.</summary>
+    public const char UnicodeDoublePrime = '\u2033';
+    /// <summary>This is the symbol for arc minute.</summary>
+    public const char UnicodePrime = '\u2032';
 
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
@@ -338,11 +341,6 @@
     [System.Diagnostics.Contracts.Pure]
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider ?? new Formatting.AngleFormatter(), format ?? $"{GetType().Name} {{{{ {{0:D3}} }}}}", this);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_radAngle, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Surface density, unit of kilograms per square meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
   public struct AreaDensity
-    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, AreaDensityUnit>
+    : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, IUnitQuantifiable<double, AreaDensityUnit>
   {
     public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 
@@ -93,11 +93,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

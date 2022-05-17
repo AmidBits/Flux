@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
   public struct Speed
-    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SpeedUnit>
+    : System.IComparable, System.IComparable<Speed>, System.IConvertible, System.IEquatable<Speed>, System.IFormattable, IUnitQuantifiable<double, SpeedUnit>
   {
     public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
 
@@ -134,11 +134,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    // IMetricOneQuantifiable
-    [System.Diagnostics.Contracts.Pure]
-    public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-       => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

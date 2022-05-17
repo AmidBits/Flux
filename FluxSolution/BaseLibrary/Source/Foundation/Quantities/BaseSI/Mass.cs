@@ -10,25 +10,27 @@ namespace Flux
         MassUnit.Ounce => "oz",
         MassUnit.Pound => "lb",
         MassUnit.Kilogram => "kg",
-        MassUnit.MetricTon => "t",
+        MassUnit.Tonne => "t",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum MassUnit
   {
-    Kilogram, // DefaultUnit first for actual instatiation defaults.
+    /// <summary>This is the default unit for mass.</summary>
+    Kilogram,
     Milligram,
     Gram,
     Ounce,
     Pound,
-    MetricTon,
+    /// <summary>Metric ton.</summary>
+    Tonne,
   }
 
   /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
   public struct Mass
-    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, ISiBaseUnitQuantifiable<double, MassUnit>
+    : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, IUnitQuantifiable<double, MassUnit>
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -45,7 +47,7 @@ namespace Flux
         MassUnit.Ounce => value / 35.27396195,
         MassUnit.Pound => value * 0.45359237,
         MassUnit.Kilogram => value,
-        MassUnit.MetricTon => value * 1000,
+        MassUnit.Tonne => value * 1000,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -109,11 +111,6 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public double Value
@@ -130,7 +127,7 @@ namespace Flux
         MassUnit.Ounce => m_value * 35.27396195,
         MassUnit.Pound => m_value / 0.45359237,
         MassUnit.Kilogram => m_value,
-        MassUnit.MetricTon => m_value / 1000,
+        MassUnit.Tonne => m_value / 1000,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces

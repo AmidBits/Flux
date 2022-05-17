@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Solid_angle"/>
   public struct SolidAngle
-    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, ISiDerivedUnitQuantifiable<double, SolidAngleUnit>
+    : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IEquatable<SolidAngle>, System.IFormattable, IUnitQuantifiable<double, SolidAngleUnit>
   {
     public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

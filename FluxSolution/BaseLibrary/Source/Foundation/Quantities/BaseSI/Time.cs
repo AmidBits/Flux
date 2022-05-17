@@ -20,6 +20,7 @@ namespace Flux
 
   public enum TimeUnit
   {
+    /// <summary>This is the default unit for time.</summary>
     Second,
     Nanosecond,
     Microsecond,
@@ -34,7 +35,7 @@ namespace Flux
   /// <summary>Time. SI unit of second. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Time"/>
   public struct Time
-    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, ISiBaseUnitQuantifiable<double, TimeUnit>
+    : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -123,11 +124,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

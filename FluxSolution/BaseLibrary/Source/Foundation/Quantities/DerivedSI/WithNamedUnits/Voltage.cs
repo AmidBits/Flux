@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Voltage unit of volt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
   public struct Voltage
-    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VoltageUnit>
+    : System.IComparable, System.IComparable<Voltage>, System.IConvertible, System.IEquatable<Voltage>, System.IFormattable, IUnitQuantifiable<double, VoltageUnit>
   {
     public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -103,11 +103,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luminous_intensity"/>
   public struct LuminousIntensity
-    : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, System.IFormattable, ISiBaseUnitQuantifiable<double, LuminousIntensityUnit>
+    : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, System.IFormattable, IUnitQuantifiable<double, LuminousIntensityUnit>
   {
     public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
@@ -90,11 +90,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

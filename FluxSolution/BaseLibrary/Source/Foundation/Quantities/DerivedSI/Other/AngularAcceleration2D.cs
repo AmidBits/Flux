@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public struct AngularAcceleration2D
-    : System.IEquatable<AngularAcceleration2D>, ISiDerivedUnitQuantifiable<CartesianCoordinate2, AngularAccelerationUnit>
+    : System.IEquatable<AngularAcceleration2D>, IUnitQuantifiable<CartesianCoordinate2, AngularAccelerationUnit>
   {
     public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
 

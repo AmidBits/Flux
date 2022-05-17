@@ -18,7 +18,7 @@ namespace Flux
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public struct Action
-    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ActionUnit>
+    : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IEquatable<Action>, System.IFormattable, IUnitQuantifiable<double, ActionUnit>
   {
     public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
@@ -87,11 +87,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

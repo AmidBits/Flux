@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Power unit of watt.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Power"/>
   public struct Power
-    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, ISiDerivedUnitQuantifiable<double, PowerUnit>
+    : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, IUnitQuantifiable<double, PowerUnit>
   {
     public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -97,11 +97,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

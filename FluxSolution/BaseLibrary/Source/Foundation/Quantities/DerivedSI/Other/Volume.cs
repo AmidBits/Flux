@@ -46,7 +46,7 @@ namespace Flux
   /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
   public struct Volume
-    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, ISiDerivedUnitQuantifiable<double, VolumeUnit>
+    : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, IUnitQuantifiable<double, VolumeUnit>
   {
     public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -137,11 +137,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

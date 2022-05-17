@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
   public struct MagneticFluxDensity3D
-    : System.IEquatable<MagneticFluxDensity3D>, ISiDerivedUnitQuantifiable<CartesianCoordinate3, MagneticFluxDensityUnit>
+    : System.IEquatable<MagneticFluxDensity3D>, IUnitQuantifiable<CartesianCoordinate3, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 

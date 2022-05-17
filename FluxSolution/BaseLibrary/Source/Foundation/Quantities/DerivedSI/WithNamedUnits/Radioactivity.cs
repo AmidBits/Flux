@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Radioactivity unit of becquerel.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
   public struct Radioactivity
-    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, RadioactivityUnit>
+    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, IUnitQuantifiable<double, RadioactivityUnit>
   {
     public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

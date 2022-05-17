@@ -29,11 +29,13 @@ namespace ConsoleApp
       ////System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
       //System.Console.WriteLine();
 
+      System.Console.WriteLine(((System.Text.Rune)0x00b0).ToString());
 
-      var a = new Flux.Angle(1/60.0, AngleUnit.Degree);
+      var a = (Flux.IUnitQuantifiable<double, AngleUnit>)new Flux.Angle(1 / 60.0, AngleUnit.Degree);
+      
       var r = a.ToUnitValue(AngleUnit.Arcminute);
       //var mr = a.ToMetricOneString(MetricMultiplicativePrefix.Micro);
-    } 
+    }
 
     private static void Main(string[] args)
     {

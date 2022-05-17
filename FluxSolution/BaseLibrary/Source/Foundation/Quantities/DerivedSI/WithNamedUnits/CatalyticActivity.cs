@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Catalytic activity unit of Katal.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
   public struct CatalyticActivity
-    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, CatalyticActivityUnit>
+    : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, System.IEquatable<CatalyticActivity>, System.IFormattable, IUnitQuantifiable<double, CatalyticActivityUnit>
   {
     public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

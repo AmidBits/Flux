@@ -25,6 +25,7 @@ namespace Flux
 
   public enum LengthUnit
   {
+    /// <summary>This is the default unit for length.</summary>
     Meter,
     Nanometer,
     Micrometer,
@@ -44,7 +45,7 @@ namespace Flux
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
   public struct Length
-    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, ISiBaseUnitQuantifiable<double, LengthUnit>
+    : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, IUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
     public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
@@ -138,11 +139,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

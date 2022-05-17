@@ -21,7 +21,7 @@ namespace Flux
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public struct MagneticFluxDensity
-    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, MagneticFluxDensityUnit>
+    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -94,11 +94,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{ToMetricMultiplicative().ToUnitString(prefix, format, useFullName, preferUnicode)},{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

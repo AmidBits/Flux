@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
   public struct DynamicViscosity
-    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, ISiDerivedUnitQuantifiable<double, DynamicViscosityUnit>
+    : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, IUnitQuantifiable<double, DynamicViscosityUnit>
   {
     public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
 
@@ -94,11 +94,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

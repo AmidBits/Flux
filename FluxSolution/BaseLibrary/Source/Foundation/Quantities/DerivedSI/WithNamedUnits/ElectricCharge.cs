@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electric charge unit of Coulomb.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
   public struct ElectricCharge
-    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricChargeUnit>
+    : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, IUnitQuantifiable<double, ElectricChargeUnit>
   {
     public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -91,11 +91,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

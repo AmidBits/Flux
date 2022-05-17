@@ -6,6 +6,10 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         EnergyUnit.Joule => "J",
+        EnergyUnit.ElectronVolt => "eV",
+        EnergyUnit.Calorie => "cal",
+        EnergyUnit.WattHour => "W·h",
+        EnergyUnit.KilowattHour => "kW·h",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -15,12 +19,15 @@ namespace Flux
     /// <summary>Joule.</summary>
     Joule,
     ElectronVolt,
+    Calorie,
+    WattHour,
+    KilowattHour
   }
 
   /// <summary>Energy unit of Joule.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
   public struct Energy
-    : System.IComparable, System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, System.IFormattable, ISiDerivedUnitQuantifiable<double, EnergyUnit>
+    : System.IComparable, System.IComparable<Energy>, System.IConvertible, System.IEquatable<Energy>, System.IFormattable, IUnitQuantifiable<double, EnergyUnit>
   {
     public const EnergyUnit DefaultUnit = EnergyUnit.Joule;
 
@@ -31,6 +38,9 @@ namespace Flux
       {
         EnergyUnit.Joule => value,
         EnergyUnit.ElectronVolt => value / 1.602176634e-19,
+        EnergyUnit.Calorie => value / 4.184,
+        EnergyUnit.WattHour => value / 3.6e3,
+        EnergyUnit.KilowattHour => value / 3.6e6,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -94,11 +104,6 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
-
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public double Value
@@ -112,6 +117,9 @@ namespace Flux
       {
         EnergyUnit.Joule => m_value,
         EnergyUnit.ElectronVolt => m_value * 1.602176634e-19,
+        EnergyUnit.Calorie => m_value * 4.184,
+        EnergyUnit.WattHour => m_value * 3.6e3,
+        EnergyUnit.KilowattHour => m_value * 3.6e6,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces

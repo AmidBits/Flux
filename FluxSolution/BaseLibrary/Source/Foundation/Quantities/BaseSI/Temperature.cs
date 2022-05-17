@@ -5,17 +5,18 @@ namespace Flux
     public static string GetUnitString(this TemperatureUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        TemperatureUnit.Celsius => preferUnicode ? "\u2103" : $"{Angle.DegreeSymbol}C",
-        TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : $"{Angle.DegreeSymbol}F",
-        TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : $"K",
-        TemperatureUnit.Rankine => $"{Angle.DegreeSymbol}R",
+        TemperatureUnit.Celsius => preferUnicode ? Unicode.DegreeCelsius.ToString() : $"{Unicode.DegreeSign}C",
+        TemperatureUnit.Fahrenheit => preferUnicode ? Unicode.DegreeFahrenheit.ToString() : $"{Unicode.DegreeSign}F",
+        TemperatureUnit.Kelvin => preferUnicode ? Unicode.KelvinSign.ToString() : $"K",
+        TemperatureUnit.Rankine => $"{Unicode.DegreeSign}R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum TemperatureUnit
   {
-    Kelvin, // DefaultUnit first for actual instatiation defaults.
+    /// <summary>This is the default unit for temperature.</summary>
+    Kelvin,
     Celsius,
     Fahrenheit,
     Rankine,
@@ -24,7 +25,7 @@ namespace Flux
   /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
   public struct Temperature
-    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, ISiBaseUnitQuantifiable<double, TemperatureUnit>
+    : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, IUnitQuantifiable<double, TemperatureUnit>
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -139,11 +140,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

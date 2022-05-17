@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Electrical conductance, unit of Siemens.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public struct ElectricalConductance
-    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, System.IFormattable, ISiDerivedUnitQuantifiable<double, ElectricalConductanceUnit>
+    : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, System.IEquatable<ElectricalConductance>, System.IFormattable, IUnitQuantifiable<double, ElectricalConductanceUnit>
   {
     public const ElectricalConductanceUnit DefaultUnit = ElectricalConductanceUnit.Siemens;
 
@@ -95,11 +95,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

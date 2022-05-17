@@ -47,7 +47,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CylindricalCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_azimuth, m_height);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.DegreeSymbol}, Height = {m_height} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.UnicodeDegreeSign}, Height = {m_height} }}";
     #endregion Object overrides
   }
 }

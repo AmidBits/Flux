@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public struct Acceleration2D
-    : System.IEquatable<Acceleration2D>, ISiDerivedUnitQuantifiable<CartesianCoordinate2, AccelerationUnit>
+    : System.IEquatable<Acceleration2D>, IUnitQuantifiable<CartesianCoordinate2, AccelerationUnit>
   {
     public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
 

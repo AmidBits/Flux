@@ -19,7 +19,7 @@ namespace Flux
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public struct MagneticFlux
-    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, ISiDerivedUnitQuantifiable<double, MagneticFluxUnit>
+    : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxUnit>
   {
     public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
@@ -88,11 +88,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

@@ -26,7 +26,7 @@ namespace Flux
   /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
   public struct Pressure
-    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, System.IFormattable, ISiDerivedUnitQuantifiable<double, PressureUnit>
+    : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IEquatable<Pressure>, System.IFormattable, IUnitQuantifiable<double, PressureUnit>
   {
     public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 
@@ -107,11 +107,6 @@ namespace Flux
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //  => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // ISiDerivedUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]

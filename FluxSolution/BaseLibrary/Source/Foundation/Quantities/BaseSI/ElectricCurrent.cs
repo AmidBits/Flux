@@ -13,6 +13,7 @@ namespace Flux
 
   public enum ElectricCurrentUnit
   {
+    /// <summary>This is the default unit for mass.</summary>
     Ampere,
     Milliampere,
   }
@@ -20,7 +21,7 @@ namespace Flux
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
   public struct ElectricCurrent
-    : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, System.IFormattable, ISiBaseUnitQuantifiable<double, ElectricCurrentUnit>
+    : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, System.IFormattable, IUnitQuantifiable<double, ElectricCurrentUnit>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -109,11 +110,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public string ToString(string? format, IFormatProvider? formatProvider)
       => m_value.ToString(format, formatProvider);
-
-    //// IMetricOneQuantifiable
-    //[System.Diagnostics.Contracts.Pure]
-    //public string ToMetricOneString(MetricMultiplicativePrefix prefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-    //   => $"{new MetricMultiplicative(m_value, MetricMultiplicativePrefix.One).ToUnitString(prefix, format, useFullName, preferUnicode)}{DefaultUnit.GetUnitString(useFullName, preferUnicode)}";
 
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
