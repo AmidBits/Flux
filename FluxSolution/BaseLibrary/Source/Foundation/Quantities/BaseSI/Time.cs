@@ -5,9 +5,10 @@ namespace Flux
     public static string GetUnitString(this TimeUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        TimeUnit.Nanosecond => "ns",
-        TimeUnit.Microsecond => "\u00B5s",
-        TimeUnit.Millisecond => "ms",
+        TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
+        TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
+        TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
+        TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
         TimeUnit.Second => "s",
         TimeUnit.Minute => "min",
         TimeUnit.Hour => "h",
@@ -22,6 +23,7 @@ namespace Flux
   {
     /// <summary>This is the default unit for time.</summary>
     Second,
+    Picosecond,
     Nanosecond,
     Microsecond,
     Millisecond,
@@ -47,6 +49,7 @@ namespace Flux
     public Time(double value, TimeUnit unit = DefaultUnit)
       => m_value = unit switch
       {
+        TimeUnit.Picosecond => value / 1000000000000,
         TimeUnit.Nanosecond => value / 1000000000,
         TimeUnit.Microsecond => value / 1000000,
         TimeUnit.Millisecond => value / 1000,
@@ -136,6 +139,7 @@ namespace Flux
     public double ToUnitValue(TimeUnit unit = DefaultUnit)
       => unit switch
       {
+        TimeUnit.Picosecond => m_value * 1000000000000,
         TimeUnit.Nanosecond => m_value * 1000000000,
         TimeUnit.Microsecond => m_value * 1000000,
         TimeUnit.Millisecond => m_value * 1000,

@@ -5,20 +5,20 @@ namespace Flux
     public static string GetUnitString(this LengthUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        LengthUnit.Nanometer => "nm",
-        LengthUnit.Micrometer => preferUnicode ? "\u03bc" : "µm",
-        LengthUnit.Millimeter => "mm",
-        LengthUnit.Centimeter => "cm",
-        LengthUnit.Inch => "in",
-        LengthUnit.Decimeter => "dm",
+        LengthUnit.Nanometer => preferUnicode ? "\u339A" : "nm",
+        LengthUnit.Micrometer => preferUnicode ? "\u339B" : "µm",
+        LengthUnit.Millimeter => preferUnicode ? "\u339C" : "mm",
+        LengthUnit.Centimeter => preferUnicode ? "\u339D" : "cm",
+        LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
+        LengthUnit.Decimeter => preferUnicode ? "\u3377" : "dm",
         LengthUnit.Foot => "ft",
         LengthUnit.Yard => "yd",
         LengthUnit.Meter => "m",
-        LengthUnit.Kilometer => "km",
+        LengthUnit.Kilometer => preferUnicode ? "\u339E" : "km",
         LengthUnit.Mile => "mi",
         LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
         LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
-        LengthUnit.Parsec => "pc",
+        LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

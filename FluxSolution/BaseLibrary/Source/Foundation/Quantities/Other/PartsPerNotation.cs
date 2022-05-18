@@ -8,49 +8,40 @@ namespace Flux
         PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
         PartsPerNotationUnit.PartsPerTrillion => "ppt",
         PartsPerNotationUnit.PartsPerBillion => "ppb",
-        PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33d9" : "ppm",
+        PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
         PartsPerNotationUnit.PerCentMille => "pcm",
-        PartsPerNotationUnit.PerMyriad => "\u2030",
+        PartsPerNotationUnit.PerMyriad => "\u2031",
         PartsPerNotationUnit.PerMille => "\u2030",
-        PartsPerNotationUnit.Percent => preferUnicode ? "\u0025" : "pct",
+        PartsPerNotationUnit.Percent => "\u0025",
         PartsPerNotationUnit.One => "pp1",
         _ => string.Empty,
       };
 
+    /// <summary>Please note that not all units have an equivalent prefix.</summary>
     public static MetricMultiplicativePrefix ToMetricMultiplicativePrefix(this PartsPerNotationUnit unit)
-    {
-      return unit switch
-      {
-        PartsPerNotationUnit.Percent => MetricMultiplicativePrefix.Hecto,
-        PartsPerNotationUnit.PerMille => MetricMultiplicativePrefix.Kilo,
-        PartsPerNotationUnit.PartsPerMillion => MetricMultiplicativePrefix.Mega,
-        PartsPerNotationUnit.PartsPerBillion => MetricMultiplicativePrefix.Giga,
-        PartsPerNotationUnit.PartsPerTrillion => MetricMultiplicativePrefix.Tera,
-        PartsPerNotationUnit.PartsPerQuadrillion => MetricMultiplicativePrefix.Peta,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-    }
+      => (MetricMultiplicativePrefix)(int)unit;
   }
 
   public enum PartsPerNotationUnit
   {
-    One,
-    /// <summary>Percent. This is also the actual Unicode char value of the notation unit.</summary>
-    Percent,
-    /// <summary>Per mille. This is also the actual Unicode char value of the notation unit.</summary>
-    PerMille,
-    /// <summary>Permyriad. This is also the actual Unicode char value of the notation unit.</summary>
-    PerMyriad,
+    /// <summary>This represents a per one (i.e. so many to one).</summary>
+    One = 1,
+    /// <summary>Percent.</summary>
+    Percent = 2,
+    /// <summary>Permille.</summary>
+    PerMille = 3,
+    /// <summary>Permyriad.</summary>
+    PerMyriad = 4,
     /// <summary>Per cent mille, abbreviated "pcm".</summary>
-    PerCentMille,
+    PerCentMille = 5,
     /// <summary>Abbreviated "ppm".</summary>
-    PartsPerMillion,
+    PartsPerMillion = 6,
     /// <summary>Abbreviated "ppb".</summary>
-    PartsPerBillion,
+    PartsPerBillion = 9,
     /// <summary>Abbreviated "ppt".</summary>
-    PartsPerTrillion,
+    PartsPerTrillion = 12,
     /// <summary>Abbreviated "ppq".</summary>
-    PartsPerQuadrillion,
+    PartsPerQuadrillion = 15,
   }
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>

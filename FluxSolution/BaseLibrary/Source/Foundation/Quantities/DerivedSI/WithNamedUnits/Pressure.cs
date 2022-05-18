@@ -6,9 +6,10 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         PressureUnit.Millibar => "mbar",
-        PressureUnit.Bar => "bar",
-        PressureUnit.HectoPascal => "hPa",
-        PressureUnit.Pascal => "Pa",
+        PressureUnit.Bar => preferUnicode ? "\u3374" : "bar",
+        PressureUnit.HectoPascal => preferUnicode ? "\u3371" : "hPa",
+        PressureUnit.KiloPascal => preferUnicode ? "\u33AA" : "kPa",
+        PressureUnit.Pascal => preferUnicode ? "\u33A9" : "Pa",
         PressureUnit.Psi => "psi",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -20,6 +21,7 @@ namespace Flux
     Millibar,
     Bar,
     HectoPascal,
+    KiloPascal,
     Psi,
   }
 
@@ -43,6 +45,7 @@ namespace Flux
         PressureUnit.Millibar => value * 100,
         PressureUnit.Bar => value / 100000,
         PressureUnit.HectoPascal => value * 100,
+        PressureUnit.KiloPascal => value * 1000,
         PressureUnit.Pascal => value,
         PressureUnit.Psi => value * (8896443230521.0 / 1290320000.0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -122,6 +125,7 @@ namespace Flux
         PressureUnit.Millibar => m_value / 100,
         PressureUnit.Bar => m_value / 100000,
         PressureUnit.HectoPascal => m_value / 100,
+        PressureUnit.KiloPascal => m_value / 1000,
         PressureUnit.Pascal => m_value,
         PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),

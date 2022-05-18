@@ -26,13 +26,13 @@
     public static string GetUnitString(this AngleUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AngleUnit.Arcminute => preferUnicode ? Unicode.Prime.ToString() : Unicode.Apostrophe.ToString(),
-        AngleUnit.Arcsecond => preferUnicode ? Unicode.DoublePrime.ToString() : Unicode.QuotationMark.ToString(),
-        AngleUnit.Degree => preferUnicode ? Unicode.DegreeSign.ToString() : "deg",
+        AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
+        AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
+        AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
         AngleUnit.Gradian => "grad",
         AngleUnit.NatoMil => "mils",
         AngleUnit.Milliradian => "mrad",
-        AngleUnit.Radian => preferUnicode ? "\u33ad" : "rad",
+        AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
         AngleUnit.Turn => "turns",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -40,6 +40,7 @@
 
   public enum AngleUnit
   {
+    /// <summary>This is the default unit for length.</summary>
     Radian,
     Arcminute,
     Arcsecond,
@@ -59,13 +60,6 @@
   {
     public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
-    /// <summary>This is the symbol for degree.</summary>
-    public const char UnicodeDegreeSign = '\u00B0'; // Add 'C' or 'F' to designate "degree Celsius" or "degree Fahrenheit".
-    /// <summary>This is the symbol for arc second.</summary>
-    public const char UnicodeDoublePrime = '\u2033';
-    /// <summary>This is the symbol for arc minute.</summary>
-    public const char UnicodePrime = '\u2032';
-
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
     public const double OneFullRotationInRadians = Maths.PiX2;
@@ -73,8 +67,6 @@
 
     private readonly double m_radAngle;
 
-    //private Angle(double value)
-    //  => m_value = value;
     public Angle(double value, AngleUnit unit = DefaultUnit)
       => m_radAngle = unit switch
       {

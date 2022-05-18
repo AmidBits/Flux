@@ -5,11 +5,11 @@ namespace Flux
     public static string GetUnitString(this MassUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        MassUnit.Milligram => "mg",
+        MassUnit.Milligram => preferUnicode ? "\u338E" : "mg",
         MassUnit.Gram => "g",
         MassUnit.Ounce => "oz",
         MassUnit.Pound => "lb",
-        MassUnit.Kilogram => "kg",
+        MassUnit.Kilogram => preferUnicode ? "\u338F" : "kg",
         MassUnit.Tonne => "t",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

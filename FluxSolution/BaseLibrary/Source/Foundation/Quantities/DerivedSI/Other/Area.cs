@@ -5,8 +5,8 @@ namespace Flux
     public static string GetUnitString(this AreaUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AreaUnit.SquareMeter => "m²",
-        AreaUnit.Hectare => "ha",
+        AreaUnit.SquareMeter => preferUnicode ? "\u33A1" : "m²",
+        AreaUnit.Hectare => preferUnicode ? "\u33CA" : "ha",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

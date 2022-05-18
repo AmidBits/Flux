@@ -5,10 +5,10 @@ namespace Flux
     public static string GetUnitString(this TemperatureUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        TemperatureUnit.Celsius => preferUnicode ? Unicode.DegreeCelsius.ToString() : $"{Unicode.DegreeSign}C",
-        TemperatureUnit.Fahrenheit => preferUnicode ? Unicode.DegreeFahrenheit.ToString() : $"{Unicode.DegreeSign}F",
-        TemperatureUnit.Kelvin => preferUnicode ? Unicode.KelvinSign.ToString() : $"K",
-        TemperatureUnit.Rankine => $"{Unicode.DegreeSign}R",
+        TemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
+        TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
+        TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : $"K",
+        TemperatureUnit.Rankine => $"\u00B0R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

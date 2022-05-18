@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this AngularVelocityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AngularVelocityUnit.RadianPerSecond => "rad/s",
+        AngularVelocityUnit.RadianPerSecond => preferUnicode ? "\u33AE" : "rad/s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

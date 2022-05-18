@@ -6,7 +6,7 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         ElectricCurrentUnit.Ampere => "A",
-        ElectricCurrentUnit.Milliampere => "mA",
+        ElectricCurrentUnit.Milliampere => preferUnicode ? "\u3383" : "mA",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

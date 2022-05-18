@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this SolidAngleUnit unit, bool useNameInsteadOfSymbol, bool useUnicodeIfAvailable)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this SolidAngleUnit unit, bool useFullName, bool preferUnicode)
+      => useFullName ? unit.ToString() : unit switch
       {
-        SolidAngleUnit.Steradian => useUnicodeIfAvailable ? "\u33db" : "sr",
+        SolidAngleUnit.Steradian => preferUnicode ? "\u33DB" : "sr",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

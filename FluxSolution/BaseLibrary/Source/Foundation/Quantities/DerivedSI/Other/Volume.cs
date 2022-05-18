@@ -5,9 +5,10 @@ namespace Flux
     public static string GetUnitString(this VolumeUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        VolumeUnit.Millilitre => "ml",
+        VolumeUnit.Microlitre => preferUnicode ? "\u3395" : "µl",
+        VolumeUnit.Millilitre => preferUnicode ? "\u3396" : "ml",
         VolumeUnit.Centilitre => "cl",
-        VolumeUnit.Decilitre => "dl",
+        VolumeUnit.Decilitre => preferUnicode ? "\u3397" : "dl",
         VolumeUnit.Litre => "l",
         VolumeUnit.ImperialGallon => "gal (imp)",
         VolumeUnit.ImperialQuart => "qt (imp)",
@@ -15,9 +16,9 @@ namespace Flux
         VolumeUnit.USQuart => "qt (US)",
         VolumeUnit.CubicFeet => "ft³",
         VolumeUnit.CubicYard => "yd³",
-        VolumeUnit.CubicMeter => "m³",
+        VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
         VolumeUnit.CubicMile => "mi³",
-        VolumeUnit.CubicKilometer => "km³",
+        VolumeUnit.CubicKilometer => preferUnicode ? "\u33A6" : "km³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -25,6 +26,7 @@ namespace Flux
   public enum VolumeUnit
   {
     CubicMeter, // DefaultUnit first for actual instatiation defaults.
+    Microlitre,
     Millilitre,
     Centilitre,
     Decilitre,

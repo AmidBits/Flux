@@ -5,8 +5,6 @@ namespace Flux
   public struct Fraction
     : System.IComparable, System.IComparable<Fraction>, System.IConvertible, System.IEquatable<Fraction>, IQuantifiable<double>
   {
-    public const char FractionSlash = '\u2044';
-
     public static readonly Fraction EpsilonLikeSingle = new(1, 1000000);
     public static readonly Fraction EpsilonLikeDouble = new(1, 1000000000000000);
 
@@ -103,7 +101,7 @@ namespace Flux
         {
           sb.Append(' ');
           sb.Append(remainder);
-          sb.Append(FractionSlash);
+          sb.Append('\u2044');
           sb.Append(m_denominator);
         }
       }
@@ -113,7 +111,7 @@ namespace Flux
     }
     /// <summary>Yields a string with the fraction in proper fractional notation.</summary>
     public string ToProperString()
-      => $"{m_numerator}{FractionSlash}{m_denominator}";
+      => $"{m_numerator}\u2044{m_denominator}";
     public double ToQuotient()
       => (double)m_numerator / (double)m_denominator;
 

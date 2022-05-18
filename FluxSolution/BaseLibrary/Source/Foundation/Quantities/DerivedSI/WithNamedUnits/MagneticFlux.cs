@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this MagneticFluxUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this MagneticFluxUnit unit, bool useFullName = false, bool preferUnicode = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        MagneticFluxUnit.Weber => useUnicodeIfAvailable ? "\u33dd" : "Wb",
+        MagneticFluxUnit.Weber => preferUnicode ? "\u33DD" : "Wb",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

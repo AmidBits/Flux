@@ -7,8 +7,8 @@ namespace Flux
       {
         SpeedUnit.FootPerSecond => "ft/s",
         SpeedUnit.KilometerPerHour => "km/h",
-        SpeedUnit.Knot => "knot",
-        SpeedUnit.MeterPerSecond => "m/h",
+        SpeedUnit.Knot => preferUnicode ? "\u33CF" : "knot",
+        SpeedUnit.MeterPerSecond => preferUnicode ? "\u33A7" : "m/s",
         SpeedUnit.MilePerHour => "mph",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

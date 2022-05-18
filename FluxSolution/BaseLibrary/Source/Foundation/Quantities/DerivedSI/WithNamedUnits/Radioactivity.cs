@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this RadioactivityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        RadioactivityUnit.Becquerel => "Bq",
+        RadioactivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this AccelerationUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AccelerationUnit.MeterPerSecondSquare => "m/s²",
+        AccelerationUnit.MeterPerSecondSquare => preferUnicode ? "\u33A8" : "m/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this FrequencyUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
+    public static string GetUnitString(this FrequencyUnit unit, bool useNameInsteadOfSymbol = false, bool preferUnicode = false)
       => useNameInsteadOfSymbol ? unit.ToString() : unit switch
       {
-        FrequencyUnit.Hertz => useUnicodeIfAvailable ? "\u3390" : "Hz",
+        FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

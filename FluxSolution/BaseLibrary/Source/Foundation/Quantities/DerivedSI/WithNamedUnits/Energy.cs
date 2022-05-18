@@ -7,7 +7,7 @@ namespace Flux
       {
         EnergyUnit.Joule => "J",
         EnergyUnit.ElectronVolt => "eV",
-        EnergyUnit.Calorie => "cal",
+        EnergyUnit.Calorie => preferUnicode ? "\u3388" : "cal",
         EnergyUnit.WattHour => "W·h",
         EnergyUnit.KilowattHour => "kW·h",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),

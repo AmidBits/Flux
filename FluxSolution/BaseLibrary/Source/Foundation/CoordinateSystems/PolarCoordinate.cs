@@ -42,7 +42,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is PolarCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_azimuth, m_radius);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.UnicodeDegreeSign} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
     #endregion Object overrides
   }
 }

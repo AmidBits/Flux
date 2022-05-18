@@ -10,26 +10,6 @@ namespace Flux
   /// <remarks>A glyph is a visual "image", typically in a font, used to represent visual "symbols". One or more glyphs may be used to represent a grapheme.</remarks>
   public static partial class Unicode
   {
-    /// <summary>This is the Unicode codepoint for quotation mark.</summary>
-    public static readonly System.Text.Rune QuotationMark = (System.Text.Rune)0x0022;
-
-    /// <summary>This is the Unicode codepoint for apostrophe.</summary>
-    public static readonly System.Text.Rune Apostrophe = (System.Text.Rune)0x0027;
-
-    /// <summary>This is the Unicode codepoint for degree sign.</summary>
-    public static readonly System.Text.Rune DegreeSign = (System.Text.Rune)0x00b0;
-    /// <summary>This is the Unicode codepoint for arc minute.</summary>
-    public static readonly System.Text.Rune Prime = (System.Text.Rune)0x2032;
-    /// <summary>This is the Unicode codepoint for arc second.</summary>
-    public static readonly System.Text.Rune DoublePrime = (System.Text.Rune)0x2033;
-
-    /// <summary>This is the Unicode codepoint for degree celsius.</summary>
-    public static readonly System.Text.Rune DegreeCelsius = (System.Text.Rune)0x2103;
-    /// <summary>This is the Unicode codepoint for degree fahrenheit.</summary>
-    public static readonly System.Text.Rune DegreeFahrenheit = (System.Text.Rune)0x2109;
-    /// <summary>This is the Unicode codepoint for Kelvin sign.</summary>
-    public static readonly System.Text.Rune KelvinSign = (System.Text.Rune)0x212a;
-
     public static System.Collections.Generic.IDictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>> GetCharactersByUnicodeCategory()
     {
       var unicodeCategoryCharacters = new System.Collections.Generic.Dictionary<System.Globalization.UnicodeCategory, System.Collections.Generic.List<char>>();

@@ -64,7 +64,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is SphericalCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radInclination, m_radAzimuth);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}{Angle.UnicodeDegreeSign} (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}{Angle.UnicodeDegreeSign}), Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}{Angle.UnicodeDegreeSign} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}\u00B0 (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}\u00B0), Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
     #endregion Object overrides
   }
 }

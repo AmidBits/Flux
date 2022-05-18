@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this LuminousFluxUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        LuminousFluxUnit.Lumen => "lm",
+        LuminousFluxUnit.Lumen => preferUnicode ? "\u33D0" : "lm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
