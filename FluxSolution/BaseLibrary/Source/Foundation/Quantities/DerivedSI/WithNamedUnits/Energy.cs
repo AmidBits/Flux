@@ -8,8 +8,8 @@ namespace Flux
         EnergyUnit.Joule => "J",
         EnergyUnit.ElectronVolt => "eV",
         EnergyUnit.Calorie => preferUnicode ? "\u3388" : "cal",
-        EnergyUnit.WattHour => "W·h",
-        EnergyUnit.KilowattHour => "kW·h",
+        EnergyUnit.WattHour => "W\u22C5h",
+        EnergyUnit.KilowattHour => "kW\u22C5h",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

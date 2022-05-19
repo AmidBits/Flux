@@ -9,10 +9,14 @@ namespace Flux
     {
       using var sr = new System.IO.StringReader(expression);
       using var trtee = new TextElementEnumerator(sr);
-      
-      foreach (var (grapheme, index) in trtee.Select((e, i) => (e, i)))
+
+      var index = 0;
+
+      foreach (var te in trtee)
       {
-        yield return new TextElementToken(index, grapheme);
+        yield return new TextElementToken(index, te);
+
+        index += te.Chars.Length;
       }
     }
   }

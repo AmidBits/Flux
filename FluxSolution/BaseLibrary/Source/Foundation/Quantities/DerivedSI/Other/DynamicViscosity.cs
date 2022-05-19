@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this DynamicViscosityUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        DynamicViscosityUnit.PascalSecond => "Pa·s",
+        DynamicViscosityUnit.PascalSecond => "Pa\u22C5s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

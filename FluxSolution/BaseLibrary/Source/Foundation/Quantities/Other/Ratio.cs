@@ -11,8 +11,6 @@ namespace Flux
   public struct Ratio
     : System.IConvertible, System.IEquatable<Ratio>, IQuantifiable<double>
   {
-    public const string RatioSymbol = "\u2236";
-
     private readonly double m_numerator;
     private readonly double m_denominator;
 
@@ -33,7 +31,7 @@ namespace Flux
     public string ToRatioString(RatioFormat format)
       => format switch
       {
-        RatioFormat.AcolonB => $"{m_numerator}{RatioSymbol}{m_denominator}",
+        RatioFormat.AcolonB => $"{m_numerator}\u2236{m_denominator}",
         RatioFormat.AtoB => $"{m_numerator} to {m_denominator}",
         _ => throw new System.ArgumentOutOfRangeException(nameof(format))
       };

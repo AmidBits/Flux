@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this ImpulseUnit unit, bool useFullName = false, bool preferUnicode = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        ImpulseUnit.NewtonSecond => "N·s",
+        ImpulseUnit.NewtonSecond => "N\u22C5s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

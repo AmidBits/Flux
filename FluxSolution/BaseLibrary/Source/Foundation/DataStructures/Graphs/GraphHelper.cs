@@ -6,6 +6,7 @@
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
     public static System.Collections.Generic.IEnumerable<(TVertex destination, double distance)> GetDijkstraShortestPathTree<TVertex, TValue>(System.Collections.Generic.List<TVertex> vertices, System.Collections.Generic.List<(TVertex x, TVertex y, TValue value)> edges, int origin, System.Func<object, double> distanceSelector)
       where TVertex : notnull
+      where TValue : notnull
     {
       if (vertices is null) throw new System.ArgumentNullException(nameof(vertices));
       if (edges is null) throw new System.ArgumentNullException(nameof(edges));

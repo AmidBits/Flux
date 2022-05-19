@@ -2,10 +2,13 @@
 namespace Flux
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
-  public sealed class RuneTokenizer
+  public struct RuneTokenizer
     : ITokenizer<IToken<System.Text.Rune>>
   {
-    public bool Normalize { get; } = true;
+    public bool Normalize { get; }
+
+    public RuneTokenizer(bool normalize)
+      => Normalize = normalize;
 
     public System.Collections.Generic.IEnumerable<IToken<System.Text.Rune>> GetTokens(string expression)
     {

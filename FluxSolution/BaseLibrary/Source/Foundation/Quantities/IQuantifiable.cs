@@ -6,7 +6,7 @@
     where TType : struct
   {
     /// <summary>The value of the quantity.</summary>
-    /// <returns></returns>
+    /// <returns>The quantity based on the default unit.</returns>
     TType Value { get; }
   }
 }

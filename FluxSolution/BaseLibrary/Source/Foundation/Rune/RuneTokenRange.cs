@@ -20,41 +20,6 @@ namespace Flux
     }
 
     public override string ToString()
-    {
-      var sb = new System.Text.StringBuilder();
-
-      sb.Append('<');
-
-      sb.Append(System.Text.Rune.GetUnicodeCategory(Value));
-
-      sb.Append('=');
-
-      sb.Append('"');
-      sb.Append(Value);
-      sb.Append('"');
-
-      sb.Append('@');
-
-      sb.Append(Index);
-
-      sb.Append('+');
-
-      sb.Append(Value.Utf16SequenceLength);
-
-      if (Depth.HasValue && Group.HasValue)
-      {
-        sb.Append('[');
-        sb.Append("Depth=");
-        sb.Append(Depth);
-        sb.Append(',');
-        sb.Append("Group=");
-        sb.Append(Group);
-        sb.Append(']');
-      }
-
-      sb.Append('>');
-
-      return sb.ToString();
-    }
+      => $"{GetType().Name} {{ {System.Text.Rune.GetUnicodeCategory(Value)} \"{Value}\" {Value.ToUnotationString()}, Index = {Index}, Length = {Value.Utf16SequenceLength}, Depth = {Depth}, Group = {Group} }}";
   }
 }

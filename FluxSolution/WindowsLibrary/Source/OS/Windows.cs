@@ -3,7 +3,7 @@
   [System.Runtime.Versioning.SupportedOSPlatform("Windows")]
   public class User32
   {
-    #region Enums
+#region Enums
     [System.Flags]
     public enum MouseEventFlags
     {
@@ -191,7 +191,7 @@
       VK_PA1 = 0xFD,
       VK_OEM_CLEAR = 0xFE
     }
-    #endregion Enums
+#endregion Enums
 
     //[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     //private struct Point

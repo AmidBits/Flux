@@ -5,20 +5,20 @@
   /// <typeparam name="TUnit">The unit enum.</typeparam>
   public interface IUnitQuantifiable<TType, TUnit>
     : IQuantifiable<TType>
-    where TType : struct//, System.IComparable<TType>, System.IEquatable<TType>
+    where TType : struct, System.IEquatable<TType>
     where TUnit : System.Enum
   {
     /// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <param name="format">The format for the unit value.</param>
-    /// <param name="useFullName">Optionally use the full name, rather than symbols or shorter (e.g. acronym) variants.</param>
-    /// <param name="preferUnicode">Optionally prefer Unicode characters, where and when available.</param>
-    /// <returns></returns>
+    /// <param name="useFullName">Optionally use the full actual name of the enum, rather than symbols or shorter (e.g. acronym) variants.</param>
+    /// <param name="preferUnicode">Optionally prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
+    /// <returns>A string with the quantity and symbol based on the specified unit.</returns>
     string ToUnitString(TUnit unit, string? format, bool useFullName, bool preferUnicode);
 
     /// <summary>Create the value of the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
-    /// <returns></returns>
+    /// <returns>The quantity based on the specified unit.</returns>
     TType ToUnitValue(TUnit unit);
   }
 }
