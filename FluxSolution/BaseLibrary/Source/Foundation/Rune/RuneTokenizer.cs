@@ -5,17 +5,17 @@ namespace Flux
   public struct RuneTokenizer
     : ITokenizer<IToken<System.Text.Rune>>
   {
-    public bool Normalize { get; }
+    public System.Text.NormalizationForm? NormalizationForm { get; }
 
-    public RuneTokenizer(bool normalize)
-      => Normalize = normalize;
+    public RuneTokenizer(System.Text.NormalizationForm normalizationForm)
+      => NormalizationForm = normalizationForm;
 
     public System.Collections.Generic.IEnumerable<IToken<System.Text.Rune>> GetTokens(string expression)
     {
       if (expression is null) throw new System.ArgumentNullException(nameof(expression));
 
-      if (Normalize)
-        expression = expression.Normalize();
+      if (NormalizationForm.HasValue)
+        expression = expression.Normalize(NormalizationForm.Value);
 
       var punctuationBracketDepth = 0;
       var punctuationBracketGroup = 0;

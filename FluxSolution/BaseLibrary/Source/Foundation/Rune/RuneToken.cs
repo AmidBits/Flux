@@ -15,6 +15,6 @@ namespace Flux
     }
 
     public override string ToString()
-      => $"{GetType().Name} {{ {System.Text.Rune.GetUnicodeCategory(Value)} \"{Value}\" {Value.ToUnotationString()}, Index = {Index}, Length = {Value.Utf16SequenceLength} }}";
+      => $"{GetType().Name} {{ \"{Value}\", Index = {Index}, Length = {Value.Utf16SequenceLength}, {Value.ToStringEx()} }}";
   }
 }
