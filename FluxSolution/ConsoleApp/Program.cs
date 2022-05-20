@@ -17,7 +17,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var s = "3\u00D7(\U0001F92D9\u22126)";
 

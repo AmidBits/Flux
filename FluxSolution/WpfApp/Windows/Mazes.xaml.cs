@@ -208,6 +208,13 @@ namespace WpfApp
       EnableControls(true);
     }
 
+    private void Button_Click_Walker(object sender, RoutedEventArgs e)
+    {
+      EnableControls(false);
+      CarveMaze(new Flux.Model.Maze.WalkerCave());
+      EnableControls(true);
+    }
+
     private void Button_Click_Wilsons(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
