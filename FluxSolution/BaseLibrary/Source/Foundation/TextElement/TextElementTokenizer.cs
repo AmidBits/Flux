@@ -8,11 +8,11 @@ namespace Flux
     public System.Collections.Generic.IEnumerable<IToken<TextElementCluster>> GetTokens(string expression)
     {
       using var sr = new System.IO.StringReader(expression);
-      using var trtee = new TextElementEnumerator(sr);
+      using var tee = new TextElementEnumerator(sr);
 
       var index = 0;
 
-      foreach (var te in trtee)
+      foreach (var te in tee)
       {
         yield return new TextElementToken(index, te);
 
