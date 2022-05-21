@@ -4,14 +4,14 @@ namespace Flux.Model.TicTacToe2
 {
   public struct Move
   {
-    public CartesianCoordinateI2 Point { get; }
+    public CartesianCoordinate2I Point { get; }
 
     public int MaxScore { get; }
     public int MinScore { get; }
 
     public Move(int row, int column, int maxScore, int minScore)
     {
-      Point = new CartesianCoordinateI2(column, row);
+      Point = new CartesianCoordinate2I(column, row);
 
       MaxScore = maxScore;
       MinScore = minScore;
@@ -209,7 +209,7 @@ namespace Flux.Model.TicTacToe2
       return counts;
     }
 
-    public static bool TryGetMove(int[,] board, CartesianCoordinateI2 location, out int maxScore, out int minScore)
+    public static bool TryGetMove(int[,] board, CartesianCoordinate2I location, out int maxScore, out int minScore)
     {
       if (board[location.Y, location.X] == 0) // can only try empty squares.
       {
@@ -324,7 +324,7 @@ namespace Flux.Model.TicTacToe2
       var moves = new System.Collections.Generic.List<Move>();
       for (var r = rows - 1; r >= 0; r--)
         for (var c = columns - 1; c >= 0; c--)
-          if (TryGetMove(board, new CartesianCoordinateI2(c, r), out var maxScore, out var minScore))
+          if (TryGetMove(board, new CartesianCoordinate2I(c, r), out var maxScore, out var minScore))
             moves.Add(new Move(r, c, maxScore, minScore));
       return moves;
     }

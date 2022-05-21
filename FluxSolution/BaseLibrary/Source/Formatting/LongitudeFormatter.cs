@@ -1,21 +1,22 @@
 namespace Flux.Formatting
 {
-  /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
+  /// <summary>Use of degrees-minutes-seconds is also called DMS notation and a W/E directional suffix.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
   /// <example>
-  /// var value = "40 11 15 ";
-  /// Flux.IFormatProvider.DmsFormatter.TryParse(value, out var result);
+  /// var value = "40 11 15 E";
+  /// Flux.IFormatProvider.LongitudeFormatter.TryParse(value, out var result);
   /// System.Console.WriteLine(result);
-  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSNS}", result)); // For a north-south suffix.
-  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.DmsFormatter(), "{0:DMSEW}", result)); // For a east-west suffix.
+  /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.LongitudeFormatter(), "{0:DMS}", result));
   /// </example>
   public sealed class LongitudeFormatter
     : AFormatter
   {
     public bool InsertSpaces { get; set; }
-    public System.Text.Rune SymbolDegrees { get; set; } = new System.Text.Rune('\u00B0');
-    public System.Text.Rune SymbolMinutes { get; set; } = new System.Text.Rune('\u2032');
-    public System.Text.Rune SymbolSeconds { get; set; } = new System.Text.Rune('\u2033');
+    public bool PreferUnicode { get; set; }
+
+    public System.Text.Rune SymbolDegrees => new System.Text.Rune('\u00B0');
+    public System.Text.Rune SymbolMinutes => new System.Text.Rune(PreferUnicode ? '\u2032' : '\'');
+    public System.Text.Rune SymbolSeconds => new System.Text.Rune(PreferUnicode ? '\u2033' : '"');
 
     private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
 
@@ -29,9 +30,9 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    /// <summary>Try formatting either a latitude or a longitude from a decimal value according to the format parameter as shown.</summary>
-    /// <param name="value">Either latitude or longitude.</param>
-    /// <param name="format">[D|DM|DMS]{numberOfDecimaPlaces}{NS|EW}</param>
+    /// <summary>Try formatting a longitude from a decimal value according to the format parameter as shown.</summary>
+    /// <param name="value">A longitude value.</param>
+    /// <param name="format">[D|DM|DMS]{numberOfDecimaPlaces}</param>
     /// <param name="result">{-}[nn.nnnn\u00B0|nn\u00B0nn.nn\u2032|nn\u00B0nn\u2032nn\u2033]</param>
     /// <returns></returns>
     public bool TryFormat(double value, string format, out string result)
@@ -40,13 +41,9 @@ namespace Flux.Formatting
       {
         var space = InsertSpaces ? @" " : string.Empty;
 
-        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
+        if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper()) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          var decimalDegrees = System.Math.Abs(value);
-          var degrees = System.Math.Floor(decimalDegrees);
-          var decimalMinutes = 60 * (decimalDegrees - degrees);
-          var minutes = System.Math.Floor(decimalMinutes);
-          var decimalSeconds = 60 * decimalMinutes - 60 * minutes;
+          Convert.DecimalDegreesToDms(value, out var degrees, out var decimalMinutes, out var minutes, out var seconds);
 
           var sb = new System.Text.StringBuilder();
 
@@ -60,13 +57,13 @@ namespace Flux.Formatting
             switch (sp)
             {
               case @"D":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", decimalDegrees);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", value); // Simply show as decimal degrees.
                 break;
               case @"DM":
                 sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
                 break;
               case @"DMS":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", seconds);
                 break;
             }
 
@@ -84,7 +81,7 @@ namespace Flux.Formatting
       return false;
     }
 
-    /// <summary>Try parsing a single DMS part (i.e. either latitude OR longitude).</summary>
+    /// <summary>Try parsing a longitude DMS.</summary>
     public static bool TryParse(string dms, out double result)
     {
       try
@@ -104,7 +101,7 @@ namespace Flux.Formatting
           if (m.Groups["S"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
             value += decimalSeconds / 3600;
 
-          if (m.Groups["C"] is var g4 && g4.Success && g4.Value[0] == 'E')
+          if (m.Groups["C"] is var g4 && g4.Success && g4.Value[0] == 'W')
             value = -value;
 
           result = value;

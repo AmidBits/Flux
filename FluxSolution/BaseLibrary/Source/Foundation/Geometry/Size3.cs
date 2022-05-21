@@ -21,26 +21,26 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Height => m_height;
     [System.Diagnostics.Contracts.Pure] public int Depth => m_depth;
 
-    public CartesianCoordinateI3 Center()
+    public CartesianCoordinate3I Center()
       => new(m_width / 2, m_height / 2, m_depth / 2);
 
-    /// <summary>Convert the <see cref="Size3"/> to a <see cref="CartesianCoordinateI3"/>.</summary>
-    public CartesianCoordinateI3 ToCartesianCoordinateI3()
+    /// <summary>Convert the <see cref="Size3"/> to a <see cref="CartesianCoordinate3I"/>.</summary>
+    public CartesianCoordinate3I ToCartesianCoordinateI3()
       => new(m_width, m_height, m_depth);
 
     /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>
-    public CartesianCoordinateI3 UniqueIndexToPoint(long index)
+    public CartesianCoordinate3I UniqueIndexToPoint(long index)
     {
       var xy = (long)m_width * (long)m_height;
       var irxy = index % xy;
 
-      return new CartesianCoordinateI3((int)(irxy % m_width), (int)(irxy / m_width), (int)(index / xy));
+      return new CartesianCoordinate3I((int)(irxy % m_width), (int)(irxy / m_width), (int)(index / xy));
     }
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
     public long PointToUniqueIndex(int x, int y, int z)
       => x + (y * m_width) + (z * m_width * m_height);
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
-    public long PointToUniqueIndex(in CartesianCoordinateI3 point)
+    public long PointToUniqueIndex(in CartesianCoordinate3I point)
       => PointToUniqueIndex(point.X, point.Y, point.X);
 
     #region Static methods
@@ -71,8 +71,8 @@ namespace Flux
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size3'/>.</summary>
     public static Size3 Subtract(int a, in Size3 b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height), unchecked(a - b.m_depth));
-    /// <summary>Creates a <see cref='CartesianCoordinateI3'/> from a <see cref='Size3'/>.</summary>
-    public static CartesianCoordinateI3 ToPoint3(in Size3 size)
+    /// <summary>Creates a <see cref='CartesianCoordinate3I'/> from a <see cref='Size3'/>.</summary>
+    public static CartesianCoordinate3I ToPoint3(in Size3 size)
       => new(size.m_width, size.m_height, size.m_depth);
     #endregion Static methods
 

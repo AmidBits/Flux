@@ -10,8 +10,10 @@ namespace Flux
 
     private readonly double m_degLongitude;
 
+    /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(double degLongitude)
-      => m_degLongitude = IsLongitude(degLongitude) ? Wrap(degLongitude) : throw new System.ArgumentOutOfRangeException(nameof(degLongitude));
+      => m_degLongitude = Wrap(degLongitude);
+    /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(Angle longitude)
       : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
@@ -116,7 +118,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Longitude o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLongitude.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", m_degLongitude)} }}";
     #endregion Object overrides
   }
 }

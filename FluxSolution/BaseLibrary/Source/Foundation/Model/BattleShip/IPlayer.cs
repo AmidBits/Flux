@@ -12,13 +12,13 @@
 
     System.Collections.Generic.List<Vessel> PlaceShips();
 
-    CartesianCoordinateI2 GetShot();
+    CartesianCoordinate2I GetShot();
 
-    void OpponentShot(CartesianCoordinateI2 shot);
+    void OpponentShot(CartesianCoordinate2I shot);
 
-    void ShotHit(CartesianCoordinateI2 shot, bool sunk);
+    void ShotHit(CartesianCoordinate2I shot, bool sunk);
 
-    void ShotMiss(CartesianCoordinateI2 shot);
+    void ShotMiss(CartesianCoordinate2I shot);
 
     void GameWon();
 

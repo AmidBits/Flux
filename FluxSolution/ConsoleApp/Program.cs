@@ -17,7 +17,16 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
+      var coord = Flux.GeographicCoordinate.TucsonAzUsa;
+      Flux.Formatting.LatitudeFormatter.TryParse("40° 26′ 46″ N", out var lat);
+      Flux.Formatting.LongitudeFormatter.TryParse("79° 58′ 56″ W", out var lon);
+      coord = new Flux.GeographicCoordinate(lat, lon);
+
+      System.Console.WriteLine($"{string.Format(new Flux.Formatting.LatitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Latitude.Value)} {string.Format(new Flux.Formatting.LongitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Longitude.Value)}");
+
+      return;
 
       var s = "3\u00D7(\U0001F92D9\u22126)";
 
@@ -26,6 +35,11 @@ namespace ConsoleApp
 
       var rts = rt.GetTokens(s).ToArray();
       var tets = tet.GetTokens(s).ToArray();
+
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, rts.Select(t => t.ToString())));
+      System.Console.WriteLine();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, tets.Select(t => t.ToString())));
+      System.Console.WriteLine();
 
       //var types = typeof(Flux.IMetricOneQuantifiable).GetDerivedTypes().OrderBy(t => t.Name).ToList();
       //foreach (var type in types)

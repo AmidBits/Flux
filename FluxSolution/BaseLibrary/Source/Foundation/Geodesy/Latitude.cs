@@ -15,8 +15,10 @@ namespace Flux
 
     private readonly double m_degLatitude;
 
+    /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(double degLatitude)
-      => m_degLatitude = IsLatitude(degLatitude) ? Clamp(degLatitude) : throw new System.ArgumentOutOfRangeException(nameof(degLatitude));
+      => m_degLatitude = Fold(degLatitude);
+    /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(Angle latitude)
       : this(latitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
@@ -52,8 +54,8 @@ namespace Flux
       => new(m_degLatitude, AngleUnit.Degree);
 
     #region Static methods
-    public static double Clamp(double degLatitude)
-      => System.Math.Clamp(degLatitude, MinValue, MaxValue);
+    public static double Fold(double degLatitude)
+      => Maths.Fold(degLatitude, MinValue, MaxValue);
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -102,15 +104,15 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(Latitude a, Latitude b) => !a.Equals(b);
 
     [System.Diagnostics.Contracts.Pure] public static Latitude operator -(Latitude v) => new(-v.m_degLatitude);
-    [System.Diagnostics.Contracts.Pure] public static Latitude operator +(Latitude a, double b) => new(Clamp(a.m_degLatitude + b));
+    [System.Diagnostics.Contracts.Pure] public static Latitude operator +(Latitude a, double b) => new(Fold(a.m_degLatitude + b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator +(Latitude a, Latitude b) => a + b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Latitude operator /(Latitude a, double b) => new(Clamp(a.m_degLatitude / b));
+    [System.Diagnostics.Contracts.Pure] public static Latitude operator /(Latitude a, double b) => new(Fold(a.m_degLatitude / b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator /(Latitude a, Latitude b) => a / b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Latitude operator *(Latitude a, double b) => new(Clamp(a.m_degLatitude * b));
+    [System.Diagnostics.Contracts.Pure] public static Latitude operator *(Latitude a, double b) => new(Fold(a.m_degLatitude * b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator *(Latitude a, Latitude b) => a * b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Latitude operator %(Latitude a, double b) => new(Clamp(a.m_degLatitude % b));
+    [System.Diagnostics.Contracts.Pure] public static Latitude operator %(Latitude a, double b) => new(Fold(a.m_degLatitude % b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator %(Latitude a, Latitude b) => a % b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Latitude operator -(Latitude a, double b) => new(Clamp(a.m_degLatitude - b));
+    [System.Diagnostics.Contracts.Pure] public static Latitude operator -(Latitude a, double b) => new(Fold(a.m_degLatitude - b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator -(Latitude a, Latitude b) => a - b.Value;
     #endregion Overloaded operators
 
@@ -152,7 +154,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Latitude o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLatitude.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLatitude}\u00B0, {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", m_degLatitude)} }}";
     #endregion Object overrides
   }
 }

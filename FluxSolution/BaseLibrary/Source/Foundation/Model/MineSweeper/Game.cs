@@ -17,7 +17,7 @@ namespace Flux.Model.MineSweeper
       {
         for (var j = 0; j < mineField.Field.Size.Width; j++)
         {
-          var p = new CartesianCoordinateI2(i, j);
+          var p = new CartesianCoordinate2I(i, j);
 
           var isUncovered = !covers.IsCovered(p);
 
@@ -52,7 +52,7 @@ namespace Flux.Model.MineSweeper
 
       while (System.Console.ReadLine() is var line && !string.IsNullOrEmpty(line))
       {
-        if (CartesianCoordinateI2.TryParse(line, out var point))
+        if (CartesianCoordinate2I.TryParse(line, out var point))
         {
           gameState.CursorPosition = point;
 
@@ -80,7 +80,7 @@ namespace Flux.Model.MineSweeper
     public static GameState SwitchFlag(GameState current)
       => (current ?? throw new System.ArgumentNullException(nameof(current))).Do(current.Covers().SwitchFlag(current.CursorPosition));
 
-    private static Covers UncoverDeep(this Covers covers, MineField mineField, CartesianCoordinateI2 point)
+    private static Covers UncoverDeep(this Covers covers, MineField mineField, CartesianCoordinate2I point)
     {
       if (!covers.IsCovered(point))
         return covers;

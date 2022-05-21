@@ -10,10 +10,12 @@ namespace Flux
 
     private readonly double m_degAzimuth;
 
+    /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(double degAzimuth)
-      => m_degAzimuth = IsAzimuth(degAzimuth) ? Wrap(degAzimuth) : throw new System.ArgumentOutOfRangeException(nameof(degAzimuth));
+      => m_degAzimuth = Wrap(degAzimuth);
+    /// <summary>Creates a new Azimuth from the specfied Angle instance. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(Angle azimuth)
-      : this(azimuth.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
+      : this(azimuth.ToUnitValue(AngleUnit.Degree)) // Call this to ensure value is between min/max.
     { }
 
     [System.Diagnostics.Contracts.Pure]
@@ -108,7 +110,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Azimuth o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degAzimuth.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToAngle().ToUnitString(AngleUnit.Degree)} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degAzimuth}\u00B0 }}";
     #endregion Object overrides
   }
 }
