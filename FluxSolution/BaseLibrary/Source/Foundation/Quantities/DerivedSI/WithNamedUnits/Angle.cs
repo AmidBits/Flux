@@ -38,6 +38,13 @@
       };
   }
 
+  public enum DegreesMinutesSecondsFormat
+  {
+    DecimalDegrees,
+    DegreesDecimalMinutes,
+    DegreesMinutesDecimalSeconds
+  }
+
   public enum AngleUnit
   {
     /// <summary>This is the default unit for length.</summary>
@@ -90,34 +97,117 @@
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2Ex() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
 
+    [System.Diagnostics.Contracts.Pure]
+    public string ToStringDms(DegreesMinutesSecondsFormat format, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
+    {
+      if (decimalPoints < 0 || decimalPoints >= 15) throw new System.ArgumentOutOfRangeException(nameof(decimalPoints));
+
+      var m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
+
+      var space = useSpaces ? @" " : string.Empty;
+
+      var value = ConvertRadianToDegree(m_radAngle);
+
+      var symbolDegrees = '\u00B0';
+      var symbolMinutes = preferUnicode ? '\u2032' : '\'';
+      var symbolSeconds = preferUnicode ? '\u2033' : '"';
+
+      var (degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(value);
+
+      var sb = new System.Text.StringBuilder();
+
+      switch (format)
+      {
+        case DegreesMinutesSecondsFormat.DecimalDegrees:
+          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(decimalPoints >= 0 ? decimalPoints : 4)}}}{symbolDegrees}", value); // Simply show as decimal degrees.
+          break;
+        case DegreesMinutesSecondsFormat.DegreesDecimalMinutes:
+          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{symbolDegrees}{space}{{0:N{(decimalPoints >= 0 ? decimalPoints : 2)}}}{symbolMinutes}", decimalMinutes);
+          break;
+        case DegreesMinutesSecondsFormat.DegreesMinutesDecimalSeconds:
+          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{symbolDegrees}{space}{minutes:N0}{symbolMinutes}{space}{{0:N{(decimalPoints >= 0 ? decimalPoints : 0)}}}{symbolSeconds}", decimalSeconds);
+          break;
+      }
+
+      return sb.ToString();
+    }
+
     #region Static methods
     /// <summary>Convert the angle specified in arcminutes to radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertArcminuteToRadian(double arcminAngle) => arcminAngle / 3437.746771;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertArcminuteToRadian(double arcminAngle)
+          => arcminAngle / 3437.746771;
     /// <summary>Convert the angle specified in arcseconds to radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertArcsecondToRadian(double arcsecAngle) => arcsecAngle / 206264.806247;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertArcsecondToRadian(double arcsecAngle)
+      => arcsecAngle / 206264.806247;
+    [System.Diagnostics.Contracts.Pure]
+    public static (double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegree)
+    {
+      var absDegrees = System.Math.Abs(decimalDegree);
+      var floorAbsDegrees = System.Math.Floor(absDegrees);
+      var fractionAbsDegrees = absDegrees - floorAbsDegrees;
+
+      var degrees = System.Math.Sign(decimalDegree) * floorAbsDegrees;
+      var decimalMinutes = 60 * fractionAbsDegrees;
+      var minutes = System.Math.Floor(decimalMinutes);
+      var decimalSeconds = 3600 * fractionAbsDegrees - 60 * minutes;
+
+      return (degrees, decimalMinutes, minutes, decimalSeconds);
+    }
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertDegreeToGradian(double degAngle) => degAngle * (10.0 / 9.0);
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertDegreeToGradian(double degAngle)
+      => degAngle * (10.0 / 9.0);
     /// <summary>Convert the angle specified in degrees to radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertDegreeToRadian(double degAngle) => degAngle * Maths.PiOver180;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertDegreeToTurn(double degAngle) => degAngle / 360;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertDegreeToRadian(double degAngle)
+      => degAngle * Maths.PiOver180;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertDegreeToTurn(double degAngle)
+      => degAngle / 360;
     /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertGradianToDegree(double gradAngle) => gradAngle * 0.9;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertGradianToDegree(double gradAngle)
+      => gradAngle * 0.9;
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertGradianToRadian(double gradAngle) => gradAngle * Maths.PiOver200;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertGradianToTurn(double gradAngle) => gradAngle / 400;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertMilliradianToRadian(double milliradAngle) => milliradAngle * 1000;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertNatoMilToRadian(double milAngle) => milAngle * System.Math.PI / 3200;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertGradianToRadian(double gradAngle)
+      => gradAngle * Maths.PiOver200;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertGradianToTurn(double gradAngle)
+      => gradAngle / 400;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertMilliradianToRadian(double milliradAngle)
+      => milliradAngle * 1000;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertNatoMilToRadian(double milAngle)
+      => milAngle * System.Math.PI / 3200;
     /// <summary>Convert the angle specified in radians to arcminutes.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToArcminute(double radAngle) => radAngle * 3437.746771;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToArcminute(double radAngle)
+      => radAngle * 3437.746771;
     /// <summary>Convert the angle specified in radians to arcseconds.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToArcsecond(double radAngle) => radAngle * 206264.806247;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToArcsecond(double radAngle)
+      => radAngle * 206264.806247;
     /// <summary>Convert the angle specified in radians to degrees.</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToDegree(double radAngle) => radAngle * Maths.PiInto180;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToDegree(double radAngle)
+      => radAngle * Maths.PiInto180;
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToGradian(double radAngle) => radAngle * Maths.PiInto200;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToMilliradian(double radAngle) => radAngle / 1000;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / System.Math.PI;
-    [System.Diagnostics.Contracts.Pure] public static double ConvertRadianToTurn(double radAngle) => radAngle / Maths.PiX2;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToGradian(double radAngle)
+      => radAngle * Maths.PiInto200;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToMilliradian(double radAngle)
+      => radAngle / 1000;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToNatoMil(double radAngle)
+      => radAngle * 3200 / System.Math.PI;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRadianToTurn(double radAngle)
+      => radAngle / Maths.PiX2;
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
@@ -128,7 +218,49 @@
     [System.Diagnostics.Contracts.Pure]
     public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
       => ConvertRotationAngleToCartesian2(Maths.PiX2 - (radAngle % Maths.PiX2 is var rad && rad < 0 ? rad + Maths.PiX2 : rad) + Maths.PiOver2);
-    [System.Diagnostics.Contracts.Pure] public static double ConvertTurnToRadian(double revolutions) => revolutions * Maths.PiX2;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)
+      => degrees + minutes / 60 + seconds / 3600;
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertTurnToRadian(double revolutions)
+      => revolutions * Maths.PiX2;
+
+    public static Angle FromDegreesMinutesSeconds(double degrees, double minutes, double seconds)
+      => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
+    public static Angle ParseDegreesMinutesSeconds(string dms)
+    {
+      var re = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
+
+      var result = 0.0;
+
+      if (re.Match(dms) is var m && m.Success)
+      {
+        if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
+          result += degrees;
+
+        if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
+          result += minutes / 60;
+
+        if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
+          result += seconds / 3600;
+
+        if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
+          result = -result;
+      }
+
+      return new(result);
+    }
+
+    public static void ToDegreesMinutesSeconds(double decimalDegrees, out double degrees, out double minutes, out double seconds)
+    {
+      var absDegrees = System.Math.Abs(decimalDegrees);
+      var floorAbsDegrees = System.Math.Floor(absDegrees);
+
+      degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
+      var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
+      minutes = System.Math.Floor(decimalMinutes);
+      seconds = 60 * decimalMinutes - 60 * minutes;
+    }
     #endregion Static methods
 
     #region Trigonometry static methods

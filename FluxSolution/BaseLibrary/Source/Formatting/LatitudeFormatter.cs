@@ -14,9 +14,9 @@ namespace Flux.Formatting
     public bool InsertSpaces { get; set; }
     public bool PreferUnicode { get; set; }
 
-    public System.Text.Rune SymbolDegrees => new System.Text.Rune('\u00B0');
-    public System.Text.Rune SymbolMinutes => new System.Text.Rune(PreferUnicode ? '\u2032' : '\'');
-    public System.Text.Rune SymbolSeconds => new System.Text.Rune(PreferUnicode ? '\u2033' : '"');
+    public static System.Text.Rune SymbolDegrees => new('\u00B0');
+    public System.Text.Rune SymbolMinutes => new(PreferUnicode ? '\u2032' : '\'');
+    public System.Text.Rune SymbolSeconds => new(PreferUnicode ? '\u2033' : '"');
 
     private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
 
@@ -43,7 +43,7 @@ namespace Flux.Formatting
 
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper(System.Globalization.CultureInfo.CurrentCulture)) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          Convert.DecimalDegreesToDms(value, out var degrees, out var decimalMinutes, out var minutes, out var seconds);
+          var (degrees, decimalMinutes, minutes, decimalSeconds) = Angle.ConvertDecimalDegreeToSexagesimalDegree(value);
 
           var sb = new System.Text.StringBuilder();
 
@@ -63,7 +63,7 @@ namespace Flux.Formatting
                 sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
                 break;
               case @"DMS":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", seconds);
+                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
                 break;
             }
 
@@ -81,27 +81,63 @@ namespace Flux.Formatting
       return false;
     }
 
+    private static System.Text.RegularExpressions.Regex m_reParse
+      => new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
+
+    private static System.Text.RegularExpressions.Regex[] m_reParses = new System.Text.RegularExpressions.Regex[]
+    {
+      new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+)[^0-9]*(?<Minutes>\d+)[^0-9\.]*(?<Seconds>\d+(\.\d+)?)[^ENWS]*(?<Direction>[ENWS])"),
+      new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)[^ENWS]*(?<Direction>[ENWS])"),
+      new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^ENWS]*(?<Direction>[ENWS])?")
+    };
+
+    public static bool TryParseDmsToDecimalDegrees(string dms, out double result)
+    {
+      result = 0.0;
+
+      foreach (var re in m_reParses)
+      {
+        if (re.Match(dms) is var m && m.Success)
+        {
+          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
+            result += degrees;
+
+          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
+            result += minutes / 60;
+
+          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
+            result += seconds / 3600;
+
+          if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
+            result = -result;
+
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+
     /// <summary>Try parsing a latitude DMS.</summary>
     public static bool TryParse(string dms, out double result)
     {
       try
       {
-        var regex = new System.Text.RegularExpressions.Regex(@"(?<D>\d+(\.\d+)?)[^0-9\.]*(?<M>\d+(\.\d+)?)[^0-9\.]*(?<S>\d+(\.\d+)?)[^NS]*(?<C>[NS])?");
-
         var value = 0.0;
 
-        if (regex.Match(dms) is var m && m.Success)
+        if (m_reParse.Match(dms) is var m && m.Success)
         {
-          if (m.Groups["D"] is var g1 && g1.Success && double.TryParse(g1.Value, out var decimalDegrees))
+          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var decimalDegrees))
             value += decimalDegrees;
 
-          if (m.Groups["M"] is var g2 && g2.Success && double.TryParse(g2.Value, out var decimalMinutes))
+          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var decimalMinutes))
             value += decimalMinutes / 60;
 
-          if (m.Groups["S"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
+          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var decimalSeconds))
             value += decimalSeconds / 3600;
 
-          if (m.Groups["C"] is var g4 && g4.Success && g4.Value[0] == 'S')
+          if (m.Groups["Direction"] is var g4 && g4.Success && g4.Value[0] == 'S')
             value = -value;
 
           result = value;

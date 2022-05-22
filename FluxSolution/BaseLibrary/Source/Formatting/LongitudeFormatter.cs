@@ -14,9 +14,9 @@ namespace Flux.Formatting
     public bool InsertSpaces { get; set; }
     public bool PreferUnicode { get; set; }
 
-    public System.Text.Rune SymbolDegrees => new System.Text.Rune('\u00B0');
-    public System.Text.Rune SymbolMinutes => new System.Text.Rune(PreferUnicode ? '\u2032' : '\'');
-    public System.Text.Rune SymbolSeconds => new System.Text.Rune(PreferUnicode ? '\u2033' : '"');
+    public static System.Text.Rune SymbolDegrees => new('\u00B0');
+    public System.Text.Rune SymbolMinutes => new(PreferUnicode ? '\u2032' : '\'');
+    public System.Text.Rune SymbolSeconds => new(PreferUnicode ? '\u2033' : '"');
 
     private static readonly System.Text.RegularExpressions.Regex m_regexFormat = new(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
 
@@ -43,7 +43,7 @@ namespace Flux.Formatting
 
         if (m_regexFormat.Match((format ?? throw new System.ArgumentNullException(nameof(format))).ToUpper()) is System.Text.RegularExpressions.Match m && m.Success)
         {
-          Convert.DecimalDegreesToDms(value, out var degrees, out var decimalMinutes, out var minutes, out var seconds);
+          var (degrees, decimalMinutes, minutes, decimalSeconds) = Angle.ConvertDecimalDegreeToSexagesimalDegree(value);
 
           var sb = new System.Text.StringBuilder();
 
@@ -57,13 +57,13 @@ namespace Flux.Formatting
             switch (sp)
             {
               case @"D":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", value); // Simply show as decimal degrees.
+                sb.AppendFormat($"{{0:N{(dp >= 0 ? dp : 4)}}}{SymbolDegrees}", value); // Simply show as decimal degrees.
                 break;
               case @"DM":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
+                sb.AppendFormat($"{degrees:N0}{SymbolDegrees}{space}{{0:N{(dp >= 0 ? dp : 2)}}}{SymbolMinutes}", decimalMinutes);
                 break;
               case @"DMS":
-                sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", seconds);
+                sb.AppendFormat($"{degrees:N0}{SymbolDegrees}{space}{minutes:N0}{SymbolMinutes}{space}{{0:N{(dp >= 0 ? dp : 0)}}}{SymbolSeconds}", decimalSeconds);
                 break;
             }
 

@@ -20,10 +20,13 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var coord = Flux.GeographicCoordinate.TucsonAzUsa;
-      Flux.Formatting.LatitudeFormatter.TryParse("40° 26′ 46″ N", out var lat);
-      Flux.Formatting.LongitudeFormatter.TryParse("79° 58′ 56″ W", out var lon);
+      var lat = coord.Latitude.Value;
+      var lon = coord.Longitude.Value;
+      //Flux.Formatting.LatitudeFormatter.TryParseDmsToDecimalDegrees("40° 26′ 46″ N", out var lat);
+      //Flux.Formatting.LatitudeFormatter.TryParseDmsToDecimalDegrees("79° 58′ 56″ W", out var lon);
       coord = new Flux.GeographicCoordinate(lat, lon);
 
+      System.Console.WriteLine(coord);
       System.Console.WriteLine($"{string.Format(new Flux.Formatting.LatitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Latitude.Value)} {string.Format(new Flux.Formatting.LongitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Longitude.Value)}");
 
       return;
