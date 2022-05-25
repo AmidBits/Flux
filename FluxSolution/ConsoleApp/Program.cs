@@ -19,7 +19,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var rng = new System.Random();
+
       var coord = Flux.GeographicCoordinate.TucsonAzUsa;
+      System.Console.WriteLine($"{coord.Latitude.ToSexagesimalDegreeString()}, {coord.Longitude.ToSexagesimalDegreeString()}");
       var lat = coord.Latitude.Value;
       var lon = coord.Longitude.Value;
       //Flux.Formatting.LatitudeFormatter.TryParseDmsToDecimalDegrees("40° 26′ 46″ N", out var lat);
@@ -27,7 +30,6 @@ namespace ConsoleApp
       coord = new Flux.GeographicCoordinate(lat, lon);
 
       System.Console.WriteLine(coord);
-      System.Console.WriteLine($"{string.Format(new Flux.Formatting.LatitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Latitude.Value)} {string.Format(new Flux.Formatting.LongitudeFormatter() { InsertSpaces = true, PreferUnicode = true }, @"{0:D3}", coord.Longitude.Value)}");
 
       return;
 

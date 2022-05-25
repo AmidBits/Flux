@@ -38,11 +38,16 @@
       };
   }
 
-  public enum DegreesMinutesSecondsFormat
+  public enum SexagesimalDegreeFormat
   {
     DecimalDegrees,
     DegreesDecimalMinutes,
     DegreesMinutesDecimalSeconds
+  }
+  public enum SexagesimalDegreeDirection
+  {
+    EastWest,
+    NorthSouth
   }
 
   public enum AngleUnit
@@ -98,38 +103,40 @@
     [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2Ex() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToStringDms(DegreesMinutesSecondsFormat format, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
+    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
     {
+      if (decimalPoints < 0) decimalPoints = format switch
+      {
+        SexagesimalDegreeFormat.DecimalDegrees => 4,
+        SexagesimalDegreeFormat.DegreesDecimalMinutes => 2,
+        SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds => 0,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(format))
+      };
+
       if (decimalPoints < 0 || decimalPoints >= 15) throw new System.ArgumentOutOfRangeException(nameof(decimalPoints));
 
-      var m_regexFormat = new System.Text.RegularExpressions.Regex(@"(?<Parts>DMS|DM|D)(?<DecimalPlaces>\d+)?");
+      var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(ConvertRadianToDegree(m_radAngle));
 
-      var space = useSpaces ? @" " : string.Empty;
-
-      var value = ConvertRadianToDegree(m_radAngle);
+      var spacing = useSpaces ? @" " : string.Empty;
 
       var symbolDegrees = '\u00B0';
       var symbolMinutes = preferUnicode ? '\u2032' : '\'';
       var symbolSeconds = preferUnicode ? '\u2033' : '"';
 
-      var (degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(value);
-
-      var sb = new System.Text.StringBuilder();
-
-      switch (format)
+      var directional = direction switch
       {
-        case DegreesMinutesSecondsFormat.DecimalDegrees:
-          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{{0:N{(decimalPoints >= 0 ? decimalPoints : 4)}}}{symbolDegrees}", value); // Simply show as decimal degrees.
-          break;
-        case DegreesMinutesSecondsFormat.DegreesDecimalMinutes:
-          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{symbolDegrees}{space}{{0:N{(decimalPoints >= 0 ? decimalPoints : 2)}}}{symbolMinutes}", decimalMinutes);
-          break;
-        case DegreesMinutesSecondsFormat.DegreesMinutesDecimalSeconds:
-          sb.AppendFormat(System.Globalization.CultureInfo.CurrentCulture, $"{degrees:N0}{symbolDegrees}{space}{minutes:N0}{symbolMinutes}{space}{{0:N{(decimalPoints >= 0 ? decimalPoints : 0)}}}{symbolSeconds}", decimalSeconds);
-          break;
-      }
+        SexagesimalDegreeDirection.EastWest => degrees < 0 ? 'W' : 'E',
+        SexagesimalDegreeDirection.NorthSouth => degrees < 0 ? 'S' : 'N',
+        _ => throw new System.ArgumentOutOfRangeException(nameof(direction))
+      };
 
-      return sb.ToString();
+      return format switch
+      {
+        SexagesimalDegreeFormat.DecimalDegrees => string.Format($"{{0:N{decimalPoints}}}{symbolDegrees}{spacing}{directional}", System.Math.Abs(decimalDegrees)),// Show as decimal degrees.
+        SexagesimalDegreeFormat.DegreesDecimalMinutes => string.Format($"{System.Math.Abs(degrees):N0}{symbolDegrees}{spacing}{{0:N{decimalPoints}}}{symbolMinutes}{spacing}{directional}", decimalMinutes),// Show as degrees and decimal minutes.
+        SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds => string.Format($"{System.Math.Abs(degrees):N0}{symbolDegrees}{spacing}{minutes:N0}{symbolMinutes}{spacing}{{0:N{decimalPoints}}}{symbolSeconds}{spacing}{directional}", decimalSeconds),// Show as degrees, minutes and decimal seconds.
+        _ => throw new System.ArgumentOutOfRangeException(nameof(format)),
+      };
     }
 
     #region Static methods
@@ -142,18 +149,18 @@
     public static double ConvertArcsecondToRadian(double arcsecAngle)
       => arcsecAngle / 206264.806247;
     [System.Diagnostics.Contracts.Pure]
-    public static (double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegree)
+    public static (double decimalDegrees, double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegrees)
     {
-      var absDegrees = System.Math.Abs(decimalDegree);
+      var absDegrees = System.Math.Abs(decimalDegrees);
       var floorAbsDegrees = System.Math.Floor(absDegrees);
       var fractionAbsDegrees = absDegrees - floorAbsDegrees;
 
-      var degrees = System.Math.Sign(decimalDegree) * floorAbsDegrees;
+      var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
       var decimalMinutes = 60 * fractionAbsDegrees;
       var minutes = System.Math.Floor(decimalMinutes);
       var decimalSeconds = 3600 * fractionAbsDegrees - 60 * minutes;
 
-      return (degrees, decimalMinutes, minutes, decimalSeconds);
+      return (decimalDegrees, System.Convert.ToInt32(degrees), decimalMinutes, System.Convert.ToInt32(minutes), decimalSeconds);
     }
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -225,41 +232,44 @@
     public static double ConvertTurnToRadian(double revolutions)
       => revolutions * Maths.PiX2;
 
-    public static Angle FromDegreesMinutesSeconds(double degrees, double minutes, double seconds)
+    public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds)
       => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
-    public static Angle ParseDegreesMinutesSeconds(string dms)
+    public static Angle ParseSexagesimalDegrees(string dms)
     {
       var re = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
 
-      var result = 0.0;
+      var decimalDegrees = 0.0;
 
       if (re.Match(dms) is var m && m.Success)
       {
         if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
-          result += degrees;
+          decimalDegrees += degrees;
 
         if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
-          result += minutes / 60;
+          decimalDegrees += minutes / 60;
 
         if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
-          result += seconds / 3600;
+          decimalDegrees += seconds / 3600;
 
         if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
-          result = -result;
+          decimalDegrees = -decimalDegrees;
       }
+      else throw new System.ArgumentOutOfRangeException(nameof(dms));
 
-      return new(result);
+      return new(ConvertDegreeToRadian(decimalDegrees));
     }
-
-    public static void ToDegreesMinutesSeconds(double decimalDegrees, out double degrees, out double minutes, out double seconds)
+    public static bool TryParseSexagesimalDegrees(string dms, out Angle result)
     {
-      var absDegrees = System.Math.Abs(decimalDegrees);
-      var floorAbsDegrees = System.Math.Floor(absDegrees);
-
-      degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
-      var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
-      minutes = System.Math.Floor(decimalMinutes);
-      seconds = 60 * decimalMinutes - 60 * minutes;
+      try
+      {
+        result = ParseSexagesimalDegrees(dms);
+        return true;
+      }
+      catch
+      {
+        result = default;
+        return false;
+      }
     }
     #endregion Static methods
 

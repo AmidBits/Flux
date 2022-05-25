@@ -12,7 +12,7 @@ namespace Flux
 
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(double degLongitude)
-      => m_degLongitude = Wrap(degLongitude);
+      => m_degLongitude = WrapLongitude(degLongitude);
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(Angle longitude)
       : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
@@ -38,6 +38,10 @@ namespace Flux
     public Angle ToAngle()
       => new(m_degLongitude, AngleUnit.Degree);
 
+    [System.Diagnostics.Contracts.Pure]
+    public string ToSexagesimalDegreeString(bool useSpaces = false, bool preferUnicode = false)
+      => ToAngle().ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.EastWest, -1, useSpaces, preferUnicode);
+
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="degLongitude"></param>
@@ -45,14 +49,10 @@ namespace Flux
     public static int GetTheoreticalTimezoneOffset(double degLongitude)
       => System.Convert.ToInt32(System.Math.Truncate((degLongitude + System.Math.CopySign(7.5, degLongitude)) / 15));
 
-    /// <summary>Returns whether the specified longitude (in degrees) is a valid longitude, i.e. [-180, +180].</summary>
+    /// <summary>A longitude is wrapped over within the range [-180, +180].</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static bool IsLongitude(double degLongitude)
-      => degLongitude >= MinValue && degLongitude <= MaxValue;
-
-    [System.Diagnostics.Contracts.Pure]
-    public static double Wrap(double degLongitude)
-      => Maths.Wrap(degLongitude, MinValue, MaxValue) % MaxValue;
+    public static double WrapLongitude(double degLongitude)
+      => Maths.Wrap(degLongitude, MinValue, MaxValue);
     #endregion Static methods
 
     #region Overloaded operators
@@ -68,15 +68,15 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(Longitude a, Longitude b) => !a.Equals(b);
 
     [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude v) => new(-v.m_degLongitude);
-    [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, double b) => new(Wrap(a.m_degLongitude + b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude + b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, Longitude b) => a + b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Longitude operator /(Longitude a, double b) => new(Wrap(a.m_degLongitude / b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator /(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude / b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator /(Longitude a, Longitude b) => a / b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Longitude operator *(Longitude a, double b) => new(Wrap(a.m_degLongitude * b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator *(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude * b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator *(Longitude a, Longitude b) => a * b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Longitude operator %(Longitude a, double b) => new(Wrap(a.m_degLongitude % b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator %(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude % b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator %(Longitude a, Longitude b) => a % b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude a, double b) => new(Wrap(a.m_degLongitude - b));
+    [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude - b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude a, Longitude b) => a - b.Value;
     #endregion Overloaded operators
 
@@ -118,7 +118,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Longitude o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLongitude.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", m_degLongitude)} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
     #endregion Object overrides
   }
 }

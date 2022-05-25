@@ -488,9 +488,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
     {
-      if (Formatting.LatitudeFormatter.TryParse(latitudeDMS, out var latitude) && Formatting.LongitudeFormatter.TryParse(longitudeDMS, out var longitude))
+      if (Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
       {
-        result = new GeographicCoordinate(latitude, longitude, earthRadius);
+        result = new GeographicCoordinate(latitude.ToUnitValue(AngleUnit.Degree), longitude.ToUnitValue(AngleUnit.Degree), earthRadius);
         return true;
       }
 
@@ -527,7 +527,7 @@ namespace Flux
       => System.HashCode.Combine(m_meterAltitude, m_radLatitude, m_radLongitude);
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {string.Format(new Formatting.LatitudeFormatter(), @"{0:DMS}", Latitude.Value)} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {string.Format(new Formatting.LongitudeFormatter(), @"{0:DMS}", Longitude.Value)} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", m_meterAltitude)} m }}";
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", m_meterAltitude)} m }}";
     #endregion Object overrides
   }
 }

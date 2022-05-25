@@ -6,6 +6,6 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<T> Intersection<T>(this System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
       => source.Count == 0 || (target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0)
       ? System.Linq.Enumerable.Empty<T>()
-      : System.Linq.Enumerable.Where(target, t => source.Contains(t));
+      : System.Linq.Enumerable.Where(target, t => System.Linq.Enumerable.Contains(source, t));
   }
 }

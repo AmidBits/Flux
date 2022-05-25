@@ -11,9 +11,9 @@ namespace Flux
 
       foreach (var t in target)
       {
-        if (source.Contains(t))
+        if (System.Linq.Enumerable.Contains(source, t))
         {
-          if (!unique.Contains(t))
+          if (!System.Linq.Enumerable.Contains(unique, t))
             unique.Add(t);
         }
         else

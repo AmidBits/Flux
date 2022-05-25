@@ -11,9 +11,9 @@ namespace Flux
       if (target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0) // A set minus an empty set, is the resulting set.
         return source;
 
-      var intersection = new System.Collections.Generic.HashSet<T>(System.Linq.Enumerable.Where(target, t => source.Contains(t)), equalityComparer);
+      var intersection = new System.Collections.Generic.HashSet<T>(System.Linq.Enumerable.Where(target, t => System.Linq.Enumerable.Contains(source, t)), equalityComparer);
 
-      return System.Linq.Enumerable.Where(source, t => !intersection.Contains(t));
+      return System.Linq.Enumerable.Where(source, t => !System.Linq.Enumerable.Contains(intersection, t));
     }
     /// <summary>Creates a new sequence of elements that are in the source set but not in the specified target set. Uses the default equality comparer.</summary>
     public static System.Collections.Generic.IEnumerable<T> SourceDifference<T>(System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)

@@ -7,7 +7,7 @@ namespace Flux
     {
       System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> emptyProduct = new[] { System.Linq.Enumerable.Empty<T>() };
 
-      return source.Aggregate(emptyProduct, (accumulator, sequence) => from accumulatorSequence in accumulator from item in sequence select accumulatorSequence.Concat(new[] { item }));
+      return System.Linq.Enumerable.Aggregate(source, emptyProduct, (accumulator, sequence) => from accumulatorSequence in accumulator from item in sequence select accumulatorSequence.Concat(new[] { item }));
     }
   }
 }
