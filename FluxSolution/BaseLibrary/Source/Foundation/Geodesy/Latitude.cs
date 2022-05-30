@@ -8,10 +8,8 @@ namespace Flux
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    public static Latitude TropicOfCancer
-      => new(23.43648);
-    public static Latitude TropicOfCapricorn
-      => new(-23.43648);
+    public static Latitude TropicOfCancer => new(23.43648);
+    public static Latitude TropicOfCapricorn => new(-23.43648);
 
     private readonly double m_degLatitude;
 
@@ -26,20 +24,22 @@ namespace Flux
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(Radian));
+      => new(GetApproximateLatitudinalHeight(InRadians));
+
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(Radian));
+      => new(GetApproximateLongitudinalWidth(InRadians));
+
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateRadius
-      => new(GetApproximateRadius(Radian));
+      => new(GetApproximateRadius(InRadians));
 
     [System.Diagnostics.Contracts.Pure]
-    public double Radian
+    public double InRadians
       => Angle.ConvertDegreeToRadian(m_degLatitude);
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
@@ -47,15 +47,15 @@ namespace Flux
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + Radian / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + InRadians / 2))), -System.Math.PI, System.Math.PI);
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degLatitude, AngleUnit.Degree);
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToSexagesimalDegreeString(bool useSpaces = false, bool preferUnicode = false)
-      => ToAngle().ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
+      => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
 
     #region Static methods
     /// <summary>A latitude is folded over the range [-90, +90].</summary>
@@ -67,10 +67,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static double GetApproximateLatitudinalHeight(double radLatitude)
       => 111132.954 + -559.822 * System.Math.Cos(2 * radLatitude) + 1.175 * System.Math.Cos(4 * radLatitude) + -0.0023 * System.Math.Cos(6 * radLatitude);
+
     /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double GetApproximateLongitudinalWidth(double radLatitude)
       => 111412.84 * System.Math.Cos(radLatitude) + -93.5 * System.Math.Cos(3 * radLatitude) + 0.118 * System.Math.Cos(5 * radLatitude);
+
     /// <summary>Determines an approximate radius in meters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>

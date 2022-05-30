@@ -19,7 +19,7 @@ namespace Flux
     { }
 
     [System.Diagnostics.Contracts.Pure]
-    public double Radian
+    public double InRadians
       => Angle.ConvertDegreeToRadian(m_degLongitude);
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
@@ -32,15 +32,15 @@ namespace Flux
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedX()
-      => Radian;
+      => InRadians;
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degLongitude, AngleUnit.Degree);
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToSexagesimalDegreeString(bool useSpaces = false, bool preferUnicode = false)
-      => ToAngle().ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.EastWest, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
+      => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.EastWest, -1, useSpaces, preferUnicode);
 
     #region Static methods
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
@@ -118,7 +118,9 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Longitude o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLongitude.GetHashCode();
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
+    [System.Diagnostics.Contracts.Pure]
+    public override string ToString()
+      => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
     #endregion Object overrides
   }
 }

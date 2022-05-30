@@ -6,17 +6,17 @@ namespace Flux.Mechanics
   {
     private Acceleration m_gravitationalAcceleration;
     private Angle m_initialAngle;
-    private Speed m_initialVelocity;
+    private LinearVelocity m_initialVelocity;
     private Length m_verticalDifference;
 
-    public UphillTrajectory2D(Length verticalDifference, Angle initialAngle, Speed initialVelocity, Acceleration gravitationalAcceleration)
+    public UphillTrajectory2D(Length verticalDifference, Angle initialAngle, LinearVelocity initialVelocity, Acceleration gravitationalAcceleration)
     {
       m_verticalDifference = verticalDifference;
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public UphillTrajectory2D(Length verticalDifference, Angle initialAngle, Speed initialVelocity)
+    public UphillTrajectory2D(Length verticalDifference, Angle initialAngle, LinearVelocity initialVelocity)
       : this(verticalDifference, initialAngle, initialVelocity, Acceleration.StandardAccelerationOfGravity)
     { }
 
@@ -25,7 +25,7 @@ namespace Flux.Mechanics
     /// <summary>Initial angle in radians (RAD).</summary>
     public Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public LinearVelocity InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
     /// <summary>The difference of vertical level in meters (M).</summary>
     public Length VerticalDifference { get => m_verticalDifference; set => m_verticalDifference = value; }
 

@@ -7,16 +7,16 @@ namespace Flux.Mechanics
     private Length m_droppedHeight;
     private Acceleration m_gravitationalAcceleration;
     private Angle m_initialAngle;
-    private Speed m_initialVelocity;
+    private LinearVelocity m_initialVelocity;
 
-    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, Speed initialVelocity, Acceleration gravitationalAcceleration)
+    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, LinearVelocity initialVelocity, Acceleration gravitationalAcceleration)
     {
       m_droppedHeight = droppedHeight;
       m_initialAngle = initialAngle;
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, Speed initialVelocity)
+    public DroppedTrajectory2D(Length droppedHeight, Angle initialAngle, LinearVelocity initialVelocity)
       : this(droppedHeight, initialAngle, initialVelocity, Acceleration.StandardAccelerationOfGravity)
     { }
 
@@ -27,7 +27,7 @@ namespace Flux.Mechanics
     /// <summary>Initial angle in radians (RAD).</summary>
     public Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public Speed InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public LinearVelocity InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
 
     public double MaxHeight
       => m_droppedHeight.Value;

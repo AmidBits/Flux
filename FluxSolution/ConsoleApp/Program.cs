@@ -22,7 +22,7 @@ namespace ConsoleApp
       var rng = new System.Random();
 
       var coord = Flux.GeographicCoordinate.TucsonAzUsa;
-      System.Console.WriteLine($"{coord.Latitude.ToSexagesimalDegreeString()}, {coord.Longitude.ToSexagesimalDegreeString()}");
+      System.Console.WriteLine($"{coord.Latitude.ToSexagesimalDegreeString()} ({coord.Latitude.ToAngle().ToUnitString(AngleUnit.Degree, preferUnicode: true)}), {coord.Longitude.ToSexagesimalDegreeString()}");
       var lat = coord.Latitude.Value;
       var lon = coord.Longitude.Value;
       //Flux.Formatting.LatitudeFormatter.TryParseDmsToDecimalDegrees("40° 26′ 46″ N", out var lat);

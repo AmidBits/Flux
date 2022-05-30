@@ -8,7 +8,7 @@
 
     //#pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
-      => new(System.Math.Asin(System.Math.Cos(project.Latitude.Radian) * System.Math.Sin(project.Longitude.Radian)), System.Math.Atan(System.Math.Tan(project.Latitude.Radian) / System.Math.Cos(project.Longitude.Radian)), project.Altitude.Value);
+      => new(System.Math.Asin(System.Math.Cos(project.Latitude.InRadians) * System.Math.Sin(project.Longitude.InRadians)), System.Math.Atan(System.Math.Tan(project.Latitude.InRadians) / System.Math.Cos(project.Longitude.InRadians)), project.Altitude.Value);
     public GeographicCoordinate ProjectReverse(CartesianCoordinate3 project)
       => new(System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X)), System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)), project.Z);
     //#pragma warning restore CA1822 // Mark members as static

@@ -45,8 +45,7 @@ namespace Flux
 
   namespace Model.BattleShip
   {
-    public sealed class Vessel
-      : System.IEquatable<Vessel>
+    public record class Vessel
     {
       private readonly System.Collections.Generic.List<CartesianCoordinate2I> m_positions;
 
@@ -80,7 +79,7 @@ namespace Flux
         if (m_positions[0].X < 0 || m_positions[0].Y < 0)
           return false;
 
-        if (Orientation == VesselOrientation.Horizontal)
+        if (m_orientation == VesselOrientation.Horizontal)
         {
           if (m_positions[0].Y >= boardSize.Height || m_positions[0].X + m_positions.Count > boardSize.Width)
             return false;
@@ -97,7 +96,7 @@ namespace Flux
       public static bool AnyHitsOn(Vessel ship, System.Collections.Generic.IEnumerable<CartesianCoordinate2I> shots)
         => ship.m_positions.Any(location => shots.Any(shot => shot == location));
       public static bool AnyHits(System.Collections.Generic.IEnumerable<Vessel> ships, System.Collections.Generic.IEnumerable<CartesianCoordinate2I> shots)
-        => ships.Any(ship => ship.m_positions.Any(location => shots.Any(shot => shot == location)));
+        => ships.Any(ship => AnyHitsOn(ship, shots));
       public static bool IsSunk(Vessel ship, System.Collections.Generic.IEnumerable<CartesianCoordinate2I> shots)
         => ship.m_positions.All(l => shots.Any(s => s == l));
 
@@ -164,37 +163,6 @@ namespace Flux
 
         return ships;
       }
-
-      #region Overloaded operators
-      public static bool operator ==(Vessel a, Vessel b)
-        => a.Equals(b);
-      public static bool operator !=(Vessel a, Vessel b)
-        => !a.Equals(b);
-      #endregion Overloaded operators
-
-      #region Implemented interfaces
-      // IEquatable
-      public bool Equals(Vessel? other)
-      {
-        if (other is null || Orientation != other.Orientation || Length != other.Length)
-          return false;
-
-        for (var index = 0; index < m_positions.Count; index++) // Ensure all positions are equal.
-          if (m_positions[index] != other.m_positions[index])
-            return false;
-
-        return true;
-      }
-      #endregion Implemented interfaces
-
-      #region Object overrides
-      public override bool Equals(object? obj)
-        => obj is Vessel o && Equals(o);
-      public override int GetHashCode()
-        => m_positions.GetHashCodes().Append(Orientation.GetHashCode()).CombineHashCodes();
-      public override string? ToString()
-        => $"{GetType().Name} {{ Size = {m_positions.Count}, Orientation = {Orientation} }}";
-      #endregion Object overrides
     }
   }
 }

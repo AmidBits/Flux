@@ -80,7 +80,15 @@ namespace Flux
     /// <param name="frequency"></param>
     /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
-    [System.Diagnostics.Contracts.Pure] public static Length ComputeWavelength(Speed phaseVelocity, Frequency frequency) => new(phaseVelocity.Value / frequency.Value);
+    [System.Diagnostics.Contracts.Pure] public static Length ComputeWavelength(LinearVelocity phaseVelocity, Frequency frequency) 
+      => new(phaseVelocity.Value / frequency.Value);
+
+    /// <summary>Creates a new <see cref="Length"/> instance from <see cref="LinearVelocity"/> and <see cref="AngularVelocity"/></summary>
+    /// <param name="speed"></param>
+    /// <param name="angularVelocity"></param>
+    [System.Diagnostics.Contracts.Pure]
+    public static Length From(LinearVelocity speed, AngularVelocity angularVelocity)
+      => new(speed.Value / angularVelocity.Value);
     #endregion Static methods
 
     #region Overloaded operators

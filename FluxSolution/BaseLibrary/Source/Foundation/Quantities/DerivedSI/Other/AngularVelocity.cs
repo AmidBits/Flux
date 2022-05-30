@@ -31,10 +31,30 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    public Frequency ToFrequency()
+      => new(m_value / Maths.PiX2);
+
     #region Static methods
+    /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
+      => radPerSecond / Maths.PiX2;
+
+    /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+    [System.Diagnostics.Contracts.Pure]
+    public static double ConvertRotationalSpeedToAngularVelocity(double revolutionPerMinute)
+      => revolutionPerMinute / 60;
+
     [System.Diagnostics.Contracts.Pure]
     public static AngularVelocity From(Angle angle, Time time)
       => new(angle.Value / time.Value);
+
+    /// <summary>Creates a new <see cref="AngularVelocity"/> instance from <see cref="LinearVelocity">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
+    /// <param name="tangentialSpeed"></param>
+    /// <param name="radius"></param>
+    [System.Diagnostics.Contracts.Pure]
+    public static AngularVelocity From(LinearVelocity tangentialSpeed, Length radius)
+      => new(tangentialSpeed.Value / radius.Value);
     #endregion Static methods
 
     #region Overloaded operators

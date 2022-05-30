@@ -527,7 +527,7 @@ namespace Flux
       => System.HashCode.Combine(m_meterAltitude, m_radLatitude, m_radLongitude);
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({string.Format(@"{0:N6}", Latitude.Value)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({string.Format(@"{0:N6}", Longitude.Value)}), Altitude = {string.Format(@"{0:N0}", m_meterAltitude)} m }}";
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.Value}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.Value}), Altitude = {Altitude.ToUnitString(LengthUnit.Meter)} }}";
     #endregion Object overrides
   }
 }

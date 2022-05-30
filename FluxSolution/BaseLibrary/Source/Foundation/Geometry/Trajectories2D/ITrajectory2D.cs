@@ -7,7 +7,7 @@ namespace Flux.Mechanics
     /// <summary>Initial angle.</summary>
     Angle InitialAngle { get; set; }
     /// <summary>Initial velocity.</summary>
-    Speed InitialVelocity { get; set; }
+    LinearVelocity InitialVelocity { get; set; }
 
     /// <summary>Yields the greatest parabolic height an object reaches within the trajectory</summary>
     double MaxHeight { get; }
