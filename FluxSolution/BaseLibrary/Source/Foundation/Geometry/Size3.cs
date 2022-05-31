@@ -24,8 +24,12 @@ namespace Flux
     public CartesianCoordinate3I Center()
       => new(m_width / 2, m_height / 2, m_depth / 2);
 
+    /// <summary>Convert the <see cref="Size3"/> to a <see cref="CartesianCoordinate3"/>.</summary>
+    public CartesianCoordinate3 ToCartesianCoordinate3()
+      => new(m_width, m_height, m_depth);
+
     /// <summary>Convert the <see cref="Size3"/> to a <see cref="CartesianCoordinate3I"/>.</summary>
-    public CartesianCoordinate3I ToCartesianCoordinateI3()
+    public CartesianCoordinate3I ToCartesianCoordinate3I()
       => new(m_width, m_height, m_depth);
 
     /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>

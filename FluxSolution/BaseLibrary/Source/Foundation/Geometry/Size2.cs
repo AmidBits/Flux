@@ -21,16 +21,22 @@ namespace Flux
     public CartesianCoordinate2I Center()
       => new(m_width / 2, m_height / 2);
 
+    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2"/>.</summary>
+    public CartesianCoordinate2 ToCartesianCoordinate2()
+      => new(m_width, m_height);
+
     /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2I"/>.</summary>
-    public CartesianCoordinate2I ToCartesianCoordinateI2()
+    public CartesianCoordinate2I ToCartesianCoordinate2I()
       => new(m_width, m_height);
 
     /// <summary>Convert a mapped index to a 2D point. This index is uniquely mapped using the size</summary>
     public CartesianCoordinate2I UniqueIndexToPoint(long index)
       => new((int)(index % m_width), (int)(index / m_width));
+
     /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
     public long PointToUniqueIndex(int x, int y)
       => x + (y * m_width);
+
     /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
     public long PointToUniqueIndex(CartesianCoordinate2I point)
       => PointToUniqueIndex(point.X, point.Y);
