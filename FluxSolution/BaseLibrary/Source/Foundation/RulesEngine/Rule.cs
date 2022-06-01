@@ -44,23 +44,23 @@ namespace Flux.RulesEngine
     [System.Diagnostics.Contracts.Pure]
     public static System.Linq.Expressions.Expression BuildExpression<T>(Rule rule, System.Linq.Expressions.ParameterExpression parameterExpression)
     {
-      var meProperty = System.Linq.Expressions.MemberExpression.Property(parameterExpression, rule.m_name);
       var propertyType = typeof(T).GetProperty(rule.m_name)?.PropertyType ?? throw new System.ArgumentNullException(nameof(rule), $"There is no property named {rule.m_name} in the type.");
+      var propertyExpression = System.Linq.Expressions.MemberExpression.Property(parameterExpression, rule.m_name);
 
       if (System.Linq.Expressions.ExpressionType.TryParse(rule.m_operator, out System.Linq.Expressions.ExpressionType expressionType))
       {
-        var ceRight = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.m_value, propertyType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
+        var constantExpression = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.m_value, propertyType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
 
-        return System.Linq.Expressions.Expression.MakeBinary(expressionType, meProperty, ceRight);
+        return System.Linq.Expressions.Expression.MakeBinary(expressionType, propertyExpression, constantExpression);
       }
-      else
+      else // Could not parse the operator, so we'll try to get 
       {
         var methodInfo = propertyType.GetMethods().Where(mi => mi.Name == rule.m_operator && mi.GetParameters() is var pi && pi.Length == 1 && pi[0].ParameterType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())).First();
         var parameterType = methodInfo.GetParameters()[0].ParameterType;
 
-        var ceArgument = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.m_value, parameterType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
+        var constantExpression = System.Linq.Expressions.Expression.Constant(System.Convert.ChangeType(rule.m_value, parameterType, null) ?? throw new System.ArgumentNullException(nameof(rule), $"The rule value cannot be converted to {propertyType.Name}."));
 
-        return System.Linq.Expressions.Expression.Call(meProperty, methodInfo, ceArgument);
+        return System.Linq.Expressions.Expression.Call(propertyExpression, methodInfo, constantExpression);
       }
     }
 
