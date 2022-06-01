@@ -2,6 +2,7 @@
 {
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
   public sealed class GameOfLife
+    : IConsoleWritable
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
@@ -25,9 +26,10 @@
         }
       }
     }
-    public GameOfLife(int height, int width, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
-      : this(new Size2(height, width), canLifeLogicWrapAroundEdges, probabilityOfBeingInitiallyAlive)
-    { }
+    public GameOfLife()
+      : this(new Size2(40, 20), true, 0.25)
+    {
+    }
 
     public Size2 CellGrid
       => m_cellGrid;

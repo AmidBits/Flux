@@ -2,33 +2,33 @@ using System.Linq;
 
 namespace Flux.Model.Maze
 {
-    public abstract class AMaze
-        : IMazeBraidable, IMazeCarvable
+  public abstract class AMaze
+      : IMazeBraidable, IMazeCarvable
+  {
+    protected System.Random Rng { get; set; } = new System.Random();
+
+    public virtual void BraidMaze(Grid grid, double threshold = 0.5)
     {
-        protected System.Random Rng { get; set; } = new System.Random();
+      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-        public virtual void BraidMaze(Grid grid, double threshold = 0.5)
+      foreach (var cell in grid.GetDeadEnds().ToList())
+      {
+        if (Rng.NextDouble() <= threshold)
         {
-            if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+          var unlinkedNeighbors = cell.Edges.Where(kvp => !cell.Paths.ContainsValue(kvp.Value));
 
-            foreach (var cell in grid.GetDeadEnds().ToList())
-            {
-                if (Rng.NextDouble() <= threshold)
-                {
-                    var unlinkedNeighbors = cell.Edges.Where(kvp => !cell.Paths.ContainsValue(kvp.Value));
+          var preferredNeighbors = unlinkedNeighbors.OrderBy(kvp => kvp.Value.Paths.Count);
 
-                    var preferredNeighbors = unlinkedNeighbors.OrderBy(kvp => kvp.Value.Paths.Count);
+          if (preferredNeighbors.Any())
+          {
+            preferredNeighbors.TryGetRandomElement(out var neighbor, Rng);
 
-                    if (preferredNeighbors.Any())
-                    {
-                        preferredNeighbors.TryGetRandomElement(out var neighbor, Rng);
-
-                        cell.ConnectPath(neighbor.Value, true);
-                    }
-                }
-            }
+            cell.ConnectPath(neighbor.Value, true);
+          }
         }
-
-        public abstract void CarveMaze(Grid grid);
+      }
     }
+
+    public abstract void CarveMaze(Grid grid);
+  }
 }

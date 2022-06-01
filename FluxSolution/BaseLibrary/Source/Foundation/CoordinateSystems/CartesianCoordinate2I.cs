@@ -2,7 +2,7 @@ namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct CartesianCoordinate2I
-    : System.IEquatable<CartesianCoordinate2I>
+    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly CartesianCoordinate2I Zero;
@@ -310,6 +310,8 @@ namespace Flux
     #endregion Overloaded operators
 
     #region Implemented interfaces
+    public int CompareTo(CartesianCoordinate2I other)
+      => m_x > other.m_x ? 1 : m_x < other.m_x ? -1 : m_y > other.m_y ? 1 : m_y < other.m_y ? -1 : 0;
     public bool Equals(CartesianCoordinate2I other)
       => m_x == other.m_x && m_y == other.m_y;
     #endregion Implemented interfaces

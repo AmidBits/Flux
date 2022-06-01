@@ -19,6 +19,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var g = new Flux.Model.Grid<int>(10, 10);
+
+      g[2, 7] = 65;
+
+      System.Console.WriteLine(g.ToConsoleBlock());
     }
 
     private static void Main(string[] args)
