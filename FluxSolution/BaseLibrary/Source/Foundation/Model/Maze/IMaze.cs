@@ -2,6 +2,6 @@ namespace Flux.Model.Maze
 {
   public interface IMaze
   {
-    Grid MazeGrid { get; set; }
+    Grid GridMaze { get; set; }
   }
 }
