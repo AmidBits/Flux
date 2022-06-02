@@ -5,9 +5,6 @@
   {
     private readonly System.Collections.Generic.IDictionary<(int row, int column), TValue> m_values;
 
-    /// <summary>The size of the grid. The width represents the number of columns, and the height the number of rows.</summary>
-    public Size2 Size { get; }
-
     private readonly int m_rows;
     private readonly int m_columns;
 
@@ -27,12 +24,12 @@
     }
 
     public (int row, int column) RowColumnToKey(int row, int column)
-      => row >= 0 && row < Size.Height ? column >= 0 && column < Size.Width ? (row, column) : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+      => row >= 0 && row < m_rows ? column >= 0 && column < m_columns ? (row, column) : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
 
     public (int row, int column) IndexToKey(int index)
-      => (index / Size.Width, index % Size.Width);
+      => (index / m_columns, index % m_columns);
     public int KeyToIndex((int row, int column) key)
-      => key.column + (key.row * Size.Width);
+      => key.column + (key.row * m_columns);
 
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<(int row, int column), TValue>> GetEnumerator()
       => m_values.GetEnumerator();
@@ -48,25 +45,30 @@
     public void SetValue(int row, int column, TValue value)
       => m_values[RowColumnToKey(row, column)] = value;
 
-    public string[,] ToArray()
+    public string[,] ToArray(bool includeHeaders = true)
     {
-      var a = new string[Size.Height, Size.Width];
+      var extra = (includeHeaders ? 1 : 0);
 
-      for (var y = 0; y < Size.Height; y++)
-      {
-        for (var x = 0; x < Size.Width; x++)
-        {
-          if (TryGetValue(y, x, out var value))
-            a[y, x] = "V";
-          else
-            a[y, x] = "\u00B7";
-        }
-      }
+      var array = new string[m_rows + extra, m_columns + extra];
 
-      return a;
+      for (var row = 0; row < m_rows; row++)
+        for (var column = 0; column < m_columns; column++)
+          array[row + extra, column + extra] = TryGetValue(row, column, out var value) ? "V" : "\u00B7";
+
+      return array;
+    }
+    public object[,] ToArray(System.Func<TValue, object> resultSelector)
+    {
+      var array = new object[m_rows, m_columns];
+
+      for (var row = 0; row < m_rows; row++)
+        for (var column = 0; column < m_columns; column++)
+          array[row, column] = TryGetValue(row, column, out var value) ? resultSelector(value) : resultSelector(default!);
+
+      return array;
     }
 
     public string ToConsoleBlock()
-      => string.Join(System.Environment.NewLine, ToArray().ToConsoleStrings('\0', '\0', true, true));
+      => string.Join(System.Environment.NewLine, ToArray(v => default(TValue)?.Equals(v) ?? false ? "\u00B7" : "V").ToConsoleStrings('\0', '\0', true, true));
   }
 }
