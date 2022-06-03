@@ -24,8 +24,8 @@ namespace Flux
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.SourceDifference(os1, os2).Select(v => v.ToString()).Prepend("Source-Diff").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.SymmetricDifference(os1, os2).Select(v => v.ToString()).Prepend("Sym-Diff").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.TargetDifference(os1, os2).Select(v => v.ToString()).Prepend("Target-Diff").WriteToConsole(maxLeft + padding, minTop);
-      (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Intersection(os1, os2).Select(v => v.ToString()).Prepend("Intersection").WriteToConsole(maxLeft + padding, minTop);
-      (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Union(os1, os2).Select(v => v.ToString()).Prepend("Union").WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Intersection(os1, os2).Select(v => v.ToString()).Prepend($"Intersection {SetOps.UnicodeIntersection} ").WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Union(os1, os2).Select(v => v.ToString()).Prepend($"Union {SetOps.UnicodeUnion} ").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.UnionAll(os1, os2).Select(v => v.ToString()).Prepend("Union-All").WriteToConsole(maxLeft + padding, minTop);
 
       //System.Console.WriteLine($"{System.Environment.NewLine}{nameof(os1)}"); foreach (var item in os1) System.Console.WriteLine(item);
@@ -39,10 +39,10 @@ namespace Flux
 
       System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.Equality)} = {Flux.SetOps.Equality(os1, os2)}");
       System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsOverlapping)} = {Flux.SetOps.IsOverlapping(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSubsetOf)} = {Flux.SetOps.IsSubsetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsProperSubsetOf)} = {Flux.SetOps.IsProperSubsetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSupersetOf)} = {Flux.SetOps.IsSupersetOf(os1, os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsProperSupersetOf)} = {Flux.SetOps.IsProperSupersetOf(os1, os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSubsetOf)} {SetOps.UnicodeSubsetOf} = {Flux.SetOps.IsSubsetOf(os1, os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsProperSubsetOf)} {SetOps.UnicodeSubsetOfOrEqualTo} = {Flux.SetOps.IsProperSubsetOf(os1, os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsSupersetOf)} {SetOps.UnicodeSupersetOf} = {Flux.SetOps.IsSupersetOf(os1, os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.SetOps.IsProperSupersetOf)} {SetOps.UnicodeSupersetOfOrEqualTo} = {Flux.SetOps.IsProperSupersetOf(os1, os2)}");
 
       System.Console.WriteLine();
     }
