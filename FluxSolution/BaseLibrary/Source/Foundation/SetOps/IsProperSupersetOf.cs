@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class SetOps
   {
+    public static System.Text.Rune UnicodeSupersetOf => (System.Text.Rune)0x2283;
+
     /// <summary>Determines whether the source set is a proper (strict) superset of a specified target set.</summary>
     public static bool IsProperSupersetOf<T>(this System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
       => source.Count != 0 // An empty set is not a proper superset of any set.

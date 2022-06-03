@@ -45,25 +45,15 @@
     public void SetValue(int row, int column, TValue value)
       => m_values[RowColumnToKey(row, column)] = value;
 
-    public string[,] ToArray(bool includeHeaders = true)
+    public object[,] ToArray(System.Func<TValue, object> resultSelector, bool includeHeaderAxes = false)
     {
-      var extra = (includeHeaders ? 1 : 0);
+      var extra = (includeHeaderAxes ? 1 : 0);
 
-      var array = new string[m_rows + extra, m_columns + extra];
+      var array = new object[m_rows + extra, m_columns + extra];
 
       for (var row = 0; row < m_rows; row++)
         for (var column = 0; column < m_columns; column++)
-          array[row + extra, column + extra] = TryGetValue(row, column, out var value) ? "V" : "\u00B7";
-
-      return array;
-    }
-    public object[,] ToArray(System.Func<TValue, object> resultSelector)
-    {
-      var array = new object[m_rows, m_columns];
-
-      for (var row = 0; row < m_rows; row++)
-        for (var column = 0; column < m_columns; column++)
-          array[row, column] = TryGetValue(row, column, out var value) ? resultSelector(value) : resultSelector(default!);
+          array[row + extra, column + extra] = resultSelector(TryGetValue(row, column, out var value) ? value : default!);
 
       return array;
     }
