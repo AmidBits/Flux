@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
-  public sealed class Factors
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class Factors
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }
 
@@ -45,14 +45,6 @@ namespace Flux.Numerics
         m_sum = m_sum.Value + divisor;
         m_count = m_count.Value + 1;
       }
-    }
-
-    // INumberSequence
-    [System.Diagnostics.Contracts.Pure]
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-    {
-      foreach (var divisor in GetDivisors(Number))
-        yield return divisor;
     }
 
     #region Static methods
@@ -161,5 +153,22 @@ namespace Flux.Numerics
     public static bool IsPerfectNumber(System.Numerics.BigInteger number)
       => GetSumOfDivisors(number) - number == number;
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+    {
+      foreach (var divisor in GetDivisors(Number))
+        yield return divisor;
+    }
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

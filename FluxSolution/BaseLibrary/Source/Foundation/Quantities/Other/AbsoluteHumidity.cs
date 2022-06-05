@@ -17,7 +17,7 @@ namespace Flux
 
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
-  public struct AbsoluteHumidity
+  public readonly struct AbsoluteHumidity
     : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
   {
     public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
@@ -95,10 +95,9 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AbsoluteHumidityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

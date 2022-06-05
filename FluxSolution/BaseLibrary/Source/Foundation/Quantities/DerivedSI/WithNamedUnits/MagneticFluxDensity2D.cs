@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
-  public struct MagneticFluxDensity2D
+  public readonly struct MagneticFluxDensity2D
     : System.IEquatable<MagneticFluxDensity2D>, IUnitQuantifiable<CartesianCoordinate2, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
@@ -52,10 +52,9 @@ namespace Flux
     public bool Equals(MagneticFluxDensity2D other)
       => m_value == other.m_value;
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2 Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

@@ -20,7 +20,7 @@ namespace Flux
 
   /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-  public struct ElectricCurrent
+  public readonly struct ElectricCurrent
     : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, System.IFormattable, IUnitQuantifiable<double, ElectricCurrentUnit>
   {
     public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
@@ -111,10 +111,9 @@ namespace Flux
     public string ToString(string? format, IFormatProvider? formatProvider)
       => m_value.ToString(format, formatProvider);
 
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

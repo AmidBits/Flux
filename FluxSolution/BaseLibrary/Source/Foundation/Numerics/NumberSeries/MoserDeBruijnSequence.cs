@@ -1,18 +1,14 @@
 namespace Flux.Numerics
 {
-  public sealed class MoserDeBruijnSequence
-  : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Creates a new sequence with Moser/DeBruijn numbers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
+  public record class MoserDeBruijnSequence
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     public int MaxNumber { get; set; }
 
     public MoserDeBruijnSequence(int maxNumber)
       => MaxNumber = maxNumber;
-
-    // INumberSequence
-    /// <summary>Creates a new sequence with Moser/DeBruijn numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetMoserDeBruijnSequence(MaxNumber);
 
     #region Static methods
     /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
@@ -39,5 +35,18 @@ namespace Flux.Numerics
       return sequence;
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetMoserDeBruijnSequence(MaxNumber);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
-  public struct Acceleration3D
+  public readonly struct Acceleration3D
     : System.IEquatable<Acceleration3D>, IUnitQuantifiable<CartesianCoordinate3, AccelerationUnit>
   {
     public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
@@ -52,10 +52,9 @@ namespace Flux
     public bool Equals(Acceleration3D other)
       => m_value == other.m_value;
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3 Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AccelerationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

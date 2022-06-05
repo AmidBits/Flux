@@ -1,12 +1,8 @@
 namespace Flux.Numerics
 {
-  public sealed class CompositeNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class CompositeNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetCompositeNumbers();
-
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
     public static bool IsComposite(System.Numerics.BigInteger value)
@@ -89,5 +85,18 @@ namespace Flux.Numerics
         }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetCompositeNumbers();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

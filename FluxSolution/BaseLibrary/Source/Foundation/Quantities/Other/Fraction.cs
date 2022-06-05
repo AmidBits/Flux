@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Simple fraction, unit of rational number, i.e. in the form of numerator and denominator.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
-  public struct Fraction
+  public readonly struct Fraction
     : System.IComparable, System.IComparable<Fraction>, System.IConvertible, System.IEquatable<Fraction>, IQuantifiable<double>
   {
     public static readonly Fraction EpsilonLikeSingle = new(1, 1000000);

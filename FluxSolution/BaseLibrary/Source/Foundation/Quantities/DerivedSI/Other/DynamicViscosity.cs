@@ -18,7 +18,7 @@ namespace Flux
 
   /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
-  public struct DynamicViscosity
+  public readonly struct DynamicViscosity
     : System.IComparable, System.IComparable<DynamicViscosity>, System.IConvertible, System.IEquatable<DynamicViscosity>, System.IFormattable, IUnitQuantifiable<double, DynamicViscosityUnit>
   {
     public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
@@ -95,10 +95,9 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(DynamicViscosityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

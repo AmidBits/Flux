@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>A structure encapsulating a 3D Plane.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Plane
+  public readonly struct Plane
     : System.IEquatable<Plane>
   {
     private const double NormalizeEpsilon = 1.192092896e-07f; // Smallest such that 1.0+NormalizeEpsilon != 1.0
@@ -42,14 +42,14 @@ namespace Flux
     }
 
     /// <summary>The normal vector X of the Plane.</summary>
-    public double X => m_x;
+    public double X { get => m_x; init => m_x = value; }
     /// <summary>The normal vector Y of the Plane.</summary>
-    public double Y => m_y;
+    public double Y { get => m_y; init => m_y = value; }
     /// <summary>The normal vector Z of the Plane.</summary>
-    public double Z => m_z;
+    public double Z { get => m_z; init => m_z = value; }
 
     /// <summary>The distance of the Plane along its normal from the origin.</summary>
-    public double Distance => m_distance;
+    public double Distance { get => m_distance; init => m_distance = value; }
 
     #region Static methods
     /// <summary>Creates a Plane that contains the three given points.</summary>

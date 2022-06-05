@@ -44,7 +44,7 @@ namespace Flux
 
   /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Length"/>
-  public struct Length
+  public readonly struct Length
     : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, IUnitQuantifiable<double, LengthUnit>
   {
     public const double PiParsecsInMeters = 96939420213600000;
@@ -148,10 +148,9 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(LengthUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";

@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
-  public struct Hsl
+  public readonly struct Hsl
     : System.IEquatable<Hsl>, IHtmlColorFormattable
   {
     public static readonly Hsl Empty;
 
-    private double m_hue;
-    private double m_saturation;
-    private double m_lightness;
+    private readonly double m_hue;
+    private readonly double m_saturation;
+    private readonly double m_lightness;
 
     public Hsl(double hue, double saturation, double lightness)
     {
@@ -16,12 +16,9 @@ namespace Flux.Colors
       m_lightness = lightness >= 0 && lightness <= 1 ? lightness : throw new System.ArgumentOutOfRangeException(nameof(lightness));
     }
 
-    public double Hue
-      => m_hue;
-    public double Saturation
-      => m_saturation;
-    public double Lightness
-      => m_lightness;
+    public double Hue { get => m_hue; init => m_hue = value; }
+    public double Saturation { get => m_saturation; init => m_saturation = value; }
+    public double Lightness { get => m_lightness; init => m_lightness = value; }
 
     public double GetChroma()
       => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;

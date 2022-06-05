@@ -58,7 +58,9 @@
       return array;
     }
 
+    public string ToConsoleBlock(System.Func<TValue, object> resultSelector)
+      => string.Join(System.Environment.NewLine, ToArray(resultSelector).ToConsoleStrings('\0', '\0', true, true));
     public string ToConsoleBlock()
-      => string.Join(System.Environment.NewLine, ToArray(v => default(TValue)?.Equals(v) ?? false ? "\u00B7" : "V").ToConsoleStrings('\0', '\0', true, true));
+      => ToConsoleBlock(v => default(TValue)?.Equals(v) ?? false ? "\u00B7" : "V");
   }
 }

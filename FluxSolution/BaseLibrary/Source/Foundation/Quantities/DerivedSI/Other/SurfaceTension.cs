@@ -18,7 +18,7 @@ namespace Flux
 
   /// <summary>Surface tension, unit of Newton per meter.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
-  public struct SurfaceTension
+  public readonly struct SurfaceTension
     : System.IComparable, System.IComparable<SurfaceTension>, System.IConvertible, System.IEquatable<SurfaceTension>, System.IFormattable, IUnitQuantifiable<double, SurfaceTensionUnit>
   {
     public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
@@ -98,10 +98,9 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(SurfaceTensionUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

@@ -1,20 +1,16 @@
 namespace Flux.Numerics
 {
-  public sealed class VanEckSequence
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
+  /// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+  /// <remarks>This function runs indefinitely, if allowed.</remarks>
+  public record class VanEckSequence
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger StartWith { get; set; }
 
     public VanEckSequence(System.Numerics.BigInteger startsWith)
       => StartWith = startsWith;
-
-    // INumberSequence
-    /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-    /// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
-    /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetVanEckSequence(StartWith);
 
     #region Static methods
     /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
@@ -49,5 +45,19 @@ namespace Flux.Numerics
       }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetVanEckSequence(StartWith);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

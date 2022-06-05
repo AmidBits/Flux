@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
-  public struct Argb
+  public readonly struct Argb
     : System.IEquatable<Argb>, IHtmlColorFormattable
   {
     public static readonly Argb Empty;
 
-    private byte m_alpha;
-    private Rgb m_rgb;
+    private readonly byte m_alpha;
+    private readonly Rgb m_rgb;
 
     public Argb(int alpha, Rgb rgb)
     {
@@ -21,10 +21,8 @@ namespace Flux.Colors
       : this((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb)
     { }
 
-    public int Alpha
-      => m_alpha;
-    public Rgb RGB
-      => m_rgb;
+    public byte Alpha { get => m_alpha; init => m_alpha = value; }
+    public Rgb RGB { get => m_rgb; init => m_rgb = value; }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
     public Argb ToGrayscale(GrayscaleMethod method)

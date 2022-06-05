@@ -80,7 +80,7 @@ namespace Flux
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
-  public struct MetricMultiplicative
+  public readonly struct MetricMultiplicative
     : System.IComparable, System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, System.IFormattable, IUnitQuantifiable<double, MetricMultiplicativePrefix>
   {
     private readonly double m_value;
@@ -156,9 +156,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

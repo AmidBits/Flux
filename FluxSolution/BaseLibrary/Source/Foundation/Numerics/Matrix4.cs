@@ -3,7 +3,7 @@ namespace Flux
   /// <summary></summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Matrix4
+  public readonly struct Matrix4
     : System.IEquatable<Matrix4>
   {
     /// <summary>Returns an empty matrix.</summary>
@@ -16,24 +16,24 @@ namespace Flux
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
 
     private readonly double m_11; // Row 1, 4 columns.
-    public double m_12;
-    public double m_13;
-    public double m_14;
+    private readonly double m_12;
+    private readonly double m_13;
+    private readonly double m_14;
 
-    public double m_21; // Row 2, 4 columns.
-    public double m_22;
-    public double m_23;
-    public double m_24;
+    private readonly double m_21; // Row 2, 4 columns.
+    private readonly double m_22;
+    private readonly double m_23;
+    private readonly double m_24;
 
-    public double m_31; // Row 3, 4 columns.
-    public double m_32;
-    public double m_33;
-    public double m_34;
+    private readonly double m_31; // Row 3, 4 columns.
+    private readonly double m_32;
+    private readonly double m_33;
+    private readonly double m_34;
 
-    public double m_41; // Row 4, 4 columns.
-    public double m_42;
-    public double m_43;
-    public double m_44;
+    private readonly double m_41; // Row 4, 4 columns.
+    private readonly double m_42;
+    private readonly double m_43;
+    private readonly double m_44;
 
     /// <summary>
     /// Constructs a Matrix4x4 from the given components.

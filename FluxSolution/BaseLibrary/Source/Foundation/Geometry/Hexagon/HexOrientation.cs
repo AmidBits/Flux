@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct HexOrientation
+  public readonly struct HexOrientation
     : System.IEquatable<HexOrientation>
   {
     public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
@@ -30,15 +30,17 @@ namespace Flux.Geometry
       m_startAngle = startAngle;
     }
 
-    public double F0 => m_f0;
-    public double F1 => m_f1;
-    public double F2 => m_f2;
-    public double F3 => m_f3;
-    public double B0 => m_b0;
-    public double B1 => m_b1;
-    public double B2 => m_b2;
-    public double B3 => m_b3;
-    public double StartAngle => m_startAngle; // in multiples of 60°
+    public double F0 { get => m_f0; init => m_f0 = value; }
+    public double F1 { get => m_f1; init => m_f1 = value; }
+    public double F2 { get => m_f2; init => m_f2 = value; }
+    public double F3 { get => m_f3; init => m_f3 = value; }
+    public double B0 { get => m_b0; init => m_b0 = value; }
+    public double B1 { get => m_b1; init => m_b1 = value; }
+    public double B2 { get => m_b2; init => m_b2 = value; }
+    public double B3 { get => m_b3; init => m_b3 = value; }
+
+    /// <summary>In multiples of 60°.</summary>
+    public double StartAngle { get => m_startAngle; init => m_startAngle = value; }
 
     #region Overloaded operators
     public static bool operator ==(HexOrientation a, HexOrientation b)

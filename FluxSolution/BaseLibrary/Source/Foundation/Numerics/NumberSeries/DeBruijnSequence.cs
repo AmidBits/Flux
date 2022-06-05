@@ -3,8 +3,8 @@ using System.Linq;
 namespace Flux.Numerics
 {
   // https://www.rosettacode.org/wiki/De_Bruijn_sequences
-  public sealed class DeBruijnSequence
-    : ANumberSequenceable<int>
+  public record class DeBruijnSequence
+    : INumberSequenceable<int>
   {
     public int OrderN { get; set; }
     public int SizeK { get; set; }
@@ -18,10 +18,6 @@ namespace Flux.Numerics
     /// <summary>Creates a new sequence with the code indices expanded.</summary>
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<int>> GetExpandedSequence<T>()
       => GetNumberSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
-
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<int> GetNumberSequence()
-      => GetDeBruijnSequence(SizeK, OrderN);
 
     #region Static methods
     /// <summary>Creates a new sequence with DeBruijn numbers, which are the indices in a k-sized alphabet of order_n size.</summary>
@@ -68,6 +64,19 @@ namespace Flux.Numerics
     public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence<T>(int size_k, int order_n, params T[] alphabet)
       => GetDeBruijnSequence(size_k, order_n, (System.Collections.Generic.IList<T>)alphabet);
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<int> GetNumberSequence()
+      => GetDeBruijnSequence(SizeK, OrderN);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 
   public sealed class DeBruijnSequence<T>

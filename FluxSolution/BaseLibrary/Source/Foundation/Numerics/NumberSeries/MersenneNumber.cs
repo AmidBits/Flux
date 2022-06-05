@@ -1,14 +1,10 @@
 namespace Flux.Numerics
 {
-  public sealed class MersenneNumber
-  : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Results in a sequence of mersenne numbers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
+  public record class MersenneNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    /// <summary>Results in a sequence of mersenne numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetMersenneNumbers();
-
     #region Static methods
     /// <summary>Results in the mersenne number for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
@@ -27,5 +23,18 @@ namespace Flux.Numerics
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetMersennePrimes()
       => System.Linq.Enumerable.Where(GetMersenneNumbers(), PrimeNumber.IsPrimeNumber);
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetMersenneNumbers();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

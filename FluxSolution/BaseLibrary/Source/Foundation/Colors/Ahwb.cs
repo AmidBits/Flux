@@ -1,12 +1,12 @@
 namespace Flux.Colors
 {
-  public struct Ahwb
+  public readonly struct Ahwb
     : System.IEquatable<Ahwb>
   {
     public static readonly Ahwb Empty;
 
-    private double m_alpha;
-    private Hwb m_hwb;
+    private readonly double m_alpha;
+    private readonly Hwb m_hwb;
 
     public Ahwb(double alpha, Hwb hwb)
     {
@@ -17,10 +17,8 @@ namespace Flux.Colors
       : this(alpha, new Hwb(hue, white, black))
     { }
 
-    public double Alpha
-      => m_alpha;
-    public Hwb HWB
-      => m_hwb;
+    public double Alpha { get => m_alpha; init => m_alpha = value; }
+    public Hwb HWB { get => m_hwb; init => m_hwb = value; }
 
     /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
     public Ahsv ToAhsv()

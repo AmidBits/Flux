@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>UV index, unit of itself.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
-  public struct UvIndex
+  public readonly struct UvIndex
     : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, System.IFormattable, IQuantifiable<double>
   {
     private readonly double m_value;
@@ -75,9 +75,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

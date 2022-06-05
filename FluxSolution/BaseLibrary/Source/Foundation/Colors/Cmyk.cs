@@ -2,15 +2,15 @@ namespace Flux.Colors
 {
   /// <summary>CMYK refers to the four ink plates used in some color printing: Cyan, Magenta, Yellow, and Key (black).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/CMYK_color_model"/>
-  public struct Cmyk
+  public readonly struct Cmyk
     : System.IEquatable<Cmyk>
   {
     public static readonly Cmyk Empty;
 
-    private double m_cyan;
-    private double m_magenta;
-    private double m_yellow;
-    private double m_key;
+    private readonly double m_cyan;
+    private readonly double m_magenta;
+    private readonly double m_yellow;
+    private readonly double m_key;
 
     public Cmyk(double cyan, double magenta, double yellow, double key)
     {
@@ -20,14 +20,10 @@ namespace Flux.Colors
       m_key = key >= 0 && key <= 1 ? key : throw new System.ArgumentOutOfRangeException(nameof(key));
     }
 
-    public double Cyan
-      => m_cyan;
-    public double Magenta
-      => m_magenta;
-    public double Yellow
-      => m_yellow;
-    public double Key
-      => m_key;
+    public double Cyan { get => m_cyan; init => m_cyan = value; }
+    public double Magenta { get => m_magenta; init => m_magenta = value; }
+    public double Yellow { get => m_yellow; init => m_yellow = value; }
+    public double Key { get => m_key; init => m_key = value; }
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Rgb ToRgb()

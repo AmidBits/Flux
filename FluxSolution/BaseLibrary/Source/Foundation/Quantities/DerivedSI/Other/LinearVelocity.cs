@@ -25,7 +25,7 @@ namespace Flux
 
   /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
-  public struct LinearVelocity
+  public readonly struct LinearVelocity
     : System.IComparable, System.IComparable<LinearVelocity>, System.IConvertible, System.IEquatable<LinearVelocity>, System.IFormattable, IUnitQuantifiable<double, LinearVelocityUnit>
   {
     public const LinearVelocityUnit DefaultUnit = LinearVelocityUnit.MeterPerSecond;
@@ -130,10 +130,9 @@ namespace Flux
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(LinearVelocityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

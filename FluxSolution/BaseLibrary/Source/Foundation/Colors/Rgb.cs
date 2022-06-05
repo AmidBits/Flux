@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
-  public struct Rgb
+  public readonly struct Rgb
     : System.IEquatable<Rgb>, IHtmlColorFormattable
   {
     public static readonly Rgb Empty;
 
-    private byte m_blue;
-    private byte m_green;
-    private byte m_red;
+    private readonly byte m_blue;
+    private readonly byte m_green;
+    private readonly byte m_red;
 
     public Rgb(int red, int green, int blue)
     {

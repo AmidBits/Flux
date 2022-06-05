@@ -2,14 +2,9 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public class AbundantNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class AbundantNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    [System.Diagnostics.Contracts.Pure]
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => System.Linq.Enumerable.Select(GetAbundantNumbers(), t => t.n);
-
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger n, System.Numerics.BigInteger sum)> GetAbundantNumbers()
@@ -49,5 +44,19 @@ namespace Flux.Numerics
     public static bool IsAbundantNumber(System.Numerics.BigInteger value)
       => Factors.GetSumOfDivisors(value) - value > value;
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => System.Linq.Enumerable.Select(GetAbundantNumbers(), t => t.n);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

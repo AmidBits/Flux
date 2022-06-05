@@ -9,7 +9,7 @@ namespace Flux
   /// <summary>Julian Date unit of days with time of day fraction.</summary>
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
-  public struct JulianDate
+  public readonly struct JulianDate
     : System.IComparable<JulianDate>, System.IConvertible, System.IEquatable<JulianDate>, IQuantifiable<double>
   {
     public readonly static JulianDate Zero;
@@ -169,9 +169,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(JulianDate other) => m_value == other.m_value;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_value;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

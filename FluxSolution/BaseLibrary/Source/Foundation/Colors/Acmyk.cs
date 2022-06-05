@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
-  public struct Acmyk
+  public readonly struct Acmyk
     : System.IEquatable<Acmyk>
   {
     public static readonly Acmyk Empty;
 
-    private double m_alpha;
-    private Cmyk m_cmyk;
+    private readonly double m_alpha;
+    private readonly Cmyk m_cmyk;
 
     public Acmyk(double alpha, Cmyk cmyk)
     {
@@ -18,10 +18,8 @@ namespace Flux.Colors
       : this(alpha, new Cmyk(cyan, magenta, yellow, black))
     { }
 
-    public double Alpha
-      => m_alpha;
-    public Cmyk CMYK
-      => m_cmyk;
+    public double Alpha { get => m_alpha; init => m_alpha = value; }
+    public Cmyk CMYK { get => m_cmyk; init => m_cmyk = value; }
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
     public Argb ToArgb()

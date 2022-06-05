@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct HexF
+  public readonly struct HexF
     : System.IEquatable<HexF>
   {
     public static readonly HexF Zero;
@@ -22,9 +22,9 @@ namespace Flux.Geometry
     : this(q, r, -q - r)
     { }
 
-    [System.Diagnostics.Contracts.Pure] public double Q => m_q;
-    [System.Diagnostics.Contracts.Pure] public double R => m_r;
-    [System.Diagnostics.Contracts.Pure] public double S => m_s;
+    [System.Diagnostics.Contracts.Pure] public double Q { get => m_q; init => m_q = value; }
+    [System.Diagnostics.Contracts.Pure] public double R { get => m_r; init => m_r = value; }
+    [System.Diagnostics.Contracts.Pure] public double S { get => m_s; init => m_s = value; }
 
     public Hex ToRoundedHex()
       => RoundToNearest(m_q, m_r, m_s);

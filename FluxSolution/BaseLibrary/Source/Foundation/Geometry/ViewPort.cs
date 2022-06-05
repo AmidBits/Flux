@@ -2,18 +2,18 @@ namespace Flux.Geometry
 {
   /// <summary></summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct ViewPort
+  public readonly struct ViewPort
     : System.IEquatable<ViewPort>
   {
     public static readonly ViewPort Empty;
 
-    private readonly float m_canvasHeight;
-    private readonly float m_canvasWidth;
+    private readonly double m_canvasHeight;
+    private readonly double m_canvasWidth;
     private readonly int m_rasterHeight;
     private readonly int m_rasterWidth;
-    private readonly System.Numerics.Quaternion m_worldToCamera;
+    private readonly Quaternion m_worldToCamera;
 
-    public ViewPort(float canvasWidth, float canvasHeight, int rasterWidth, int rasterHeight, System.Numerics.Quaternion worldToCamera)
+    public ViewPort(double canvasWidth, double canvasHeight, int rasterWidth, int rasterHeight, Quaternion worldToCamera)
     {
       m_canvasHeight = canvasHeight;
       m_canvasWidth = canvasWidth;
@@ -23,29 +23,31 @@ namespace Flux.Geometry
 
       m_worldToCamera = worldToCamera;
     }
-    public ViewPort(System.Numerics.Quaternion worldToCamera, int rasterWidth = 1920, int rasterHeight = 1024, float canvasWidth = 2, float canvasHeight = 2)
+    public ViewPort(Quaternion worldToCamera, int rasterWidth = 1920, int rasterHeight = 1024, float canvasWidth = 2, float canvasHeight = 2)
       : this(canvasWidth, canvasHeight, rasterWidth, rasterHeight, worldToCamera)
     { }
 
-    public double CanvasHeight => m_canvasHeight;
-    public double CanvasWidth => m_canvasWidth;
-    public int RasterHeight => m_rasterHeight;
-    public int RasterWidth => m_rasterWidth;
-    public System.Numerics.Quaternion WorldToCamera => m_worldToCamera;
+    public double CanvasHeight { get => m_canvasHeight; init => m_canvasHeight = value; }
+    public double CanvasWidth { get => m_canvasWidth; init => m_canvasWidth = value; }
+
+    public int RasterHeight { get => m_rasterHeight; init => m_rasterHeight = value; }
+    public int RasterWidth { get => m_rasterWidth; init => m_rasterWidth = value; }
+
+    public Quaternion WorldToCamera { get => m_worldToCamera; init => m_worldToCamera = value; }
 
     /// <summary>Transform the 3D point from world space to camera space.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public System.Numerics.Vector3 TransformWorldToCamera(System.Numerics.Vector3 source)
-      => System.Numerics.Vector3.Transform(source, m_worldToCamera);
+    public CartesianCoordinate3 TransformWorldToCamera(CartesianCoordinate3 source)
+      => System.Numerics.Vector3.Transform(source.ToVector3(), m_worldToCamera.ToQuaternion()).ToCartesianCoordinate3();
 
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public static System.Numerics.Vector2 TransformCameraToCanvas(System.Numerics.Vector3 source)
+    public static CartesianCoordinate2 TransformCameraToCanvas(CartesianCoordinate3 source)
       => new(source.X / -source.Z, source.Y / -source.Z); // camera space vector on the canvas, using perspective projection
 
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection, output whether the point is within the bounds of the canvas.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public System.Numerics.Vector2 TransformCameraToCanvas(System.Numerics.Vector3 source, out bool visible)
+    public CartesianCoordinate2 TransformCameraToCanvas(CartesianCoordinate3 source, out bool visible)
     {
       var screen = TransformCameraToCanvas(source);
       visible = (System.Math.Abs(screen.X) > m_canvasWidth || System.Math.Abs(screen.Y) > m_canvasHeight); // if the absolute value screen space of X or Y is greater than the canvas size, X or Y respectively, the point is not visible
@@ -54,13 +56,13 @@ namespace Flux.Geometry
 
     /// <summary>Convert from screen vector to a normalized device coordinate (NDC). The NDC will be in the range [0.0, 1.0].</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public System.Numerics.Vector2 TransformCanvasToNdc(System.Numerics.Vector2 source)
-      => new((source.X + m_canvasWidth / 2f) / m_canvasWidth, (source.Y + m_canvasHeight / 2f) / m_canvasHeight); // normalize vector, will be in the range [0.0, 1.0]
+    public CartesianCoordinate2 TransformCanvasToNdc(CartesianCoordinate2 source)
+      => new((source.X + m_canvasWidth / 2) / m_canvasWidth, (source.Y + m_canvasHeight / 2) / m_canvasHeight); // normalize vector, will be in the range [0.0, 1.0]
 
     /// <summary>Convert from normalize device coordinate (NDC) to pixel coordinate, with the Y coordinate inverted. (Why is that?)</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
-    public System.Numerics.Vector2 TransformNdcToRaster(System.Numerics.Vector2 ndc)
-      => new(ndc.X * m_rasterWidth, (1f - ndc.Y) * m_rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
+    public CartesianCoordinate2 TransformNdcToRaster(CartesianCoordinate2 ndc)
+      => new(ndc.X * m_rasterWidth, (1 - ndc.Y) * m_rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
 
     #region Overloaded operators
     public static bool operator ==(ViewPort a, ViewPort b)

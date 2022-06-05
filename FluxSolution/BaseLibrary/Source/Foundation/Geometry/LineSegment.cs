@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct LineSegment
+  public readonly struct LineSegment
     : System.IEquatable<LineSegment>
   {
     public static readonly LineSegment Empty;
@@ -19,14 +19,10 @@ namespace Flux.Geometry
       m_y2 = y2;
     }
 
-    public double X1
-      => m_x1;
-    public double Y1
-      => m_y1;
-    public double X2
-      => m_x2;
-    public double Y2
-      => m_y2;
+    public double X1 { get => m_x1; init => m_x1 = value; }
+    public double Y1 { get => m_y1; init => m_y1 = value; }
+    public double X2 { get => m_x2; init => m_x2 = value; }
+    public double Y2 { get => m_y2; init => m_y2 = value; }
 
     public LineSlope ToLineSlope()
       => new(m_x1, m_y1, m_x2, m_y2);

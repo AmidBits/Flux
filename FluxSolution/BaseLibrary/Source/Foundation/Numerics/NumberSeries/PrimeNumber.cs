@@ -2,8 +2,8 @@ using System.Linq;
 
 namespace Flux.Numerics
 {
-  public sealed class PrimeNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class PrimeNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     #region Constants
     /// <summary>Represents the largest prime number possible in a byte (unsigned).</summary>
@@ -30,10 +30,6 @@ namespace Flux.Numerics
     /// <summary>Represents the smallest prime number.</summary>
     public const int SmallestPrime = 2;
     #endregion Constants
-
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetAscendingPrimes(2);
 
     #region Statics
     /// <summary>Creates a new sequence of ascending potential primes, greater than the specified number.</summary>
@@ -462,6 +458,20 @@ namespace Flux.Numerics
       return true;
     }
     #endregion Statics
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetAscendingPrimes(2);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 
   public sealed class PrimeNumberReverse

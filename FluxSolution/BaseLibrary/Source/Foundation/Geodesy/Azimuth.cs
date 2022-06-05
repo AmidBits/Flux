@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Azimuth unit of degree. The unit here is defined in the range [0, +360]. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
-  public struct Azimuth
+  public readonly struct Azimuth
     : System.IComparable<Azimuth>, System.IConvertible, System.IEquatable<Azimuth>, IQuantifiable<double>
   {
     public const double MaxValue = 360;
@@ -98,9 +98,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(Azimuth other) => m_degAzimuth == other.m_degAzimuth;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degAzimuth;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_degAzimuth; init => m_degAzimuth = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

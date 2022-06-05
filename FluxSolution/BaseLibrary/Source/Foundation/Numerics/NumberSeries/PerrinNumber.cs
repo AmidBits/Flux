@@ -1,14 +1,10 @@
 namespace Flux.Numerics
 {
-  public sealed class PerrinNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+  public record class PerrinNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetPerrinNumbers();
-
     #region Static methods
     /// <summary>Yields a Perrin number of the specified value number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
@@ -37,5 +33,18 @@ namespace Flux.Numerics
       }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetPerrinNumbers();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

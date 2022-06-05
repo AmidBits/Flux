@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
-  public sealed class NsmoothNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class NsmoothNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     private readonly System.Collections.Generic.IReadOnlyList<System.Numerics.BigInteger> m_primeNumbers; // Needs to be converted to BitArray instead.
 
@@ -32,10 +32,6 @@ namespace Flux.Numerics
       return false;
     }
 
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetNsmoothNumbers();
-
     #region Static methods
     /// <summary>Creates an 5-smooth number generator, a.k.a. regular numbers.</summary>
     public static NsmoothNumber RegularNumbers()
@@ -44,5 +40,19 @@ namespace Flux.Numerics
     public static NsmoothNumber HumbleNumbers()
       => new(7);
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetNsmoothNumbers();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

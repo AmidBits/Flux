@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
-  public struct Hwb
+  public readonly struct Hwb
     : System.IEquatable<Hwb>
   {
     public static readonly Hwb Empty;
 
-    private double m_hue;
-    private double m_white;
-    private double m_black;
+    private readonly double m_hue;
+    private readonly double m_white;
+    private readonly double m_black;
 
     public Hwb(double hue, double white, double black)
     {
@@ -16,12 +16,9 @@ namespace Flux.Colors
       m_black = black >= 0 && black <= 1 ? black : throw new System.ArgumentOutOfRangeException(nameof(black));
     }
 
-    public double Hue
-      => m_hue;
-    public double White
-      => m_white;
-    public double Black
-      => m_black;
+    public double Hue { get => m_hue; init => m_hue = value; }
+    public double White { get => m_white; init => m_white = value; }
+    public double Black { get => m_black; init => m_black = value; }
 
     public double GetChroma()
       => 3 * m_black * m_white / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));

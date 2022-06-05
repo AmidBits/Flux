@@ -1,19 +1,25 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Quaternion ToQuaternion(this System.Numerics.Quaternion source)
+      => new(source.X, source.Y, source.Z, source.W);
+  }
+
   /// <summary>A structure encapsulating a four-dimensional vector (x,y,z,w), which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).</summary>
   /// <see cref="https://github.com/mono/mono/blob/c5b88ec4f323f2bdb7c7d0a595ece28dae66579c/mcs/class/referencesource/System.Numerics/System/Numerics/Quaternion.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Quaternion
+  public readonly struct Quaternion
     : System.IEquatable<Quaternion>
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion Identity
       => new(0, 0, 0, 1);
 
-    public double m_x;
-    public double m_y;
-    public double m_z;
-    public double m_w;
+    private readonly double m_x;
+    private readonly double m_y;
+    private readonly double m_z;
+    private readonly double m_w;
 
     /// <summary>Constructs a Quaternion from the given components.</summary>
     public Quaternion(double x, double y, double z, double w)
@@ -25,17 +31,13 @@ namespace Flux
     }
 
     /// <summary>Specifies the X-value of the vector component of the Quaternion.</summary>
-    public double X
-      => m_x;
+    public double X { get => m_x; init => m_x = value; }
     /// <summary>Specifies the Y-value of the vector component of the Quaternion.</summary>
-    public double Y
-      => m_y;
+    public double Y { get => m_y; init => m_y = value; }
     /// <summary>Specifies the Z-value of the vector component of the Quaternion.</summary>
-    public double Z
-      => m_z;
+    public double Z { get => m_z; init => m_z = value; }
     /// <summary>Specifies the rotation component of the Quaternion.</summary>
-    public double W
-      => m_w;
+    public double W { get => m_w; init => m_w = value; }
 
     /// <summary>Returns whether the Quaternion is the identity Quaternion.</summary>
     public bool IsIdentity
@@ -95,6 +97,9 @@ namespace Flux
 
       return new(h, a, b);
     }
+
+    public System.Numerics.Quaternion ToQuaternion()
+      => new System.Numerics.Quaternion((float)m_x, (float)m_y, (float)m_z, (float)m_w);
 
     #region Static methods
     public static Quaternion CreateNormalized(double x, double y, double z, double w)

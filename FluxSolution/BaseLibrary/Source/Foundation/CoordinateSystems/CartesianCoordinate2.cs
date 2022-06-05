@@ -265,7 +265,7 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct CartesianCoordinate2
+  public readonly struct CartesianCoordinate2
     : System.IEquatable<CartesianCoordinate2>
   {
     public readonly static CartesianCoordinate2 Zero;
@@ -279,8 +279,8 @@ namespace Flux
       m_y = y;
     }
 
-    [System.Diagnostics.Contracts.Pure] public double X => m_x;
-    [System.Diagnostics.Contracts.Pure] public double Y => m_y;
+    [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
+    [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
     /// <summary>Returns the angle to the 2D X-axis.</summary>
     [System.Diagnostics.Contracts.Pure]

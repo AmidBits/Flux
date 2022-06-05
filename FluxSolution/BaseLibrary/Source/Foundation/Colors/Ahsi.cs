@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
   /// <summary>Hsia is the same as Hsi with the addition of an alpha channel.</summary>
-  public struct Ahsi
+  public readonly struct Ahsi
     : System.IEquatable<Ahsi>
   {
     public static readonly Ahsi Empty;
 
-    private double m_alpha;
-    private Hsi m_hsi;
+    private readonly double m_alpha;
+    private readonly Hsi m_hsi;
 
     public Ahsi(double alpha, Hsi hsi)
     {
@@ -18,10 +18,8 @@ namespace Flux.Colors
       : this(alpha, new Hsi(hue, saturation, intensity))
     { }
 
-    public double Alpha
-      => m_alpha;
-    public Hsi HSI
-    => m_hsi;
+    public double Alpha { get => m_alpha; init => m_alpha = value; }
+    public Hsi HSI { get => m_hsi; init => m_hsi = value; }
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Argb ToArgb()

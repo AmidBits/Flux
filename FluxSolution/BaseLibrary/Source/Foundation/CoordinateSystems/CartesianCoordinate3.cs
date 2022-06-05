@@ -219,7 +219,7 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct CartesianCoordinate3
+  public readonly struct CartesianCoordinate3
     : System.IEquatable<CartesianCoordinate3>
   {
     public static readonly CartesianCoordinate3 Zero;
@@ -235,9 +235,9 @@ namespace Flux
       m_z = z;
     }
 
-    [System.Diagnostics.Contracts.Pure] public double X => m_x;
-    [System.Diagnostics.Contracts.Pure] public double Y => m_y;
-    [System.Diagnostics.Contracts.Pure] public double Z => m_z;
+    [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
+    [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
+    [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
     /// <summary>Returns the axes angles to the 3D X-axis.</summary>
     [System.Diagnostics.Contracts.Pure]

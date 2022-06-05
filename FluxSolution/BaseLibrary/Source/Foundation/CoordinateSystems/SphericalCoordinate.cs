@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct SphericalCoordinate
+  public readonly struct SphericalCoordinate
     : System.IEquatable<SphericalCoordinate>
   {
     private readonly double m_radius;
@@ -18,11 +18,11 @@ namespace Flux
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Radius => m_radius;
-    /// <summary>Polar angle or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public Angle Inclination => new(m_radInclination);
-    /// <summary>Azimuthal angle.</summary>
-    [System.Diagnostics.Contracts.Pure] public Angle Azimuth => new(m_radAzimuth);
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
+    /// <summary>Polar angle or angular coordinate, in radians.</summary>
+    [System.Diagnostics.Contracts.Pure] public Angle Inclination { get => new(m_radInclination); init => m_radInclination = value.Value; }
+    /// <summary>Azimuthal angle, in radians.</summary>
+    [System.Diagnostics.Contracts.Pure] public Angle Azimuth { get => new(m_radAzimuth); init => m_radAzimuth = value.Value; }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

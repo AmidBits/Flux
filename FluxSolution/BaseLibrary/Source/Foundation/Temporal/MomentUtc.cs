@@ -11,7 +11,7 @@ namespace Flux
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
-  public struct MomentUtc
+  public readonly struct MomentUtc
     : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
   {
     public static readonly MomentUtc Empty;

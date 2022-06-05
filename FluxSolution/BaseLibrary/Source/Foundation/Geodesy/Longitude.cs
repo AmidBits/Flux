@@ -110,9 +110,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(Longitude other) => m_degLongitude == other.m_degLongitude;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degLongitude;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLongitude; init => m_degLongitude = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

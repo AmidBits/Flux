@@ -1,7 +1,7 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct CircleGeometry
+  public readonly struct CircleGeometry
     : System.IComparable<CircleGeometry>, System.IEquatable<CircleGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
   {
     public static readonly CircleGeometry Empty;

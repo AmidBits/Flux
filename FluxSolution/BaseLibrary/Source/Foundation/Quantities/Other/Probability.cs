@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
-  public struct Probability
+  public readonly struct Probability
     : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IEquatable<Probability>, System.IFormattable, IQuantifiable<double>
   {
     public const double MaxValue = 1;
@@ -143,9 +143,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_probability;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_probability; init => m_probability = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

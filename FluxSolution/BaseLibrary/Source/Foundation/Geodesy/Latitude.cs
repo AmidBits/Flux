@@ -149,9 +149,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(Latitude other) => m_degLatitude == other.m_degLatitude;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_degLatitude;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLatitude; init => m_degLatitude = value; }
     #endregion Implemented interfaces
 
     #region Object overrides

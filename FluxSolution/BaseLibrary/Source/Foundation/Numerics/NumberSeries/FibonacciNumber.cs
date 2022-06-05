@@ -1,15 +1,11 @@
 namespace Flux.Numerics
 {
-  public sealed class FibonacciNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+  /// <remarks>This function runs indefinitely, if allowed.</remarks>
+  public record class FibonacciNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
-    /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetFibonacciSequence();
-
     #region Statics
     //  /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
     //  /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
@@ -44,5 +40,19 @@ namespace Flux.Numerics
       return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
     }
     #endregion Statics
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetFibonacciSequence();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

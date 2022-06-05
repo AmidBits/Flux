@@ -8,7 +8,7 @@ namespace Flux
 
   /// <summary>A ratio indicates how many times one number contains another. It is two related quantities measured with the same unit (here System.Double), and is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
-  public struct Ratio
+  public readonly struct Ratio
     : System.IConvertible, System.IEquatable<Ratio>, IQuantifiable<double>
   {
     private readonly double m_numerator;

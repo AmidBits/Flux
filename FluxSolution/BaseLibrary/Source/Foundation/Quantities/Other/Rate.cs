@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
-  public struct Rate<TNumerator, TDenominator>
+  public readonly struct Rate<TNumerator, TDenominator>
     : System.IEquatable<Rate<TNumerator, TDenominator>>
     where TNumerator : IQuantifiable<double>
     where TDenominator : IQuantifiable<double>

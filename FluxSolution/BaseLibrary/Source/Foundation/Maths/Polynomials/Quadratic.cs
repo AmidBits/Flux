@@ -8,8 +8,6 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
     public static double Quadratic(double x, double a, double b, double c)
       => (a * x * x) + (b * x) + c;
-    public static double QuadraticX(double x, double a, double b, double c)
-      => (a * x * x) + Linear(x, b, c);
     /// <summary>A univariate quadratic function (factored form), or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>

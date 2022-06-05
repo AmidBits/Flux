@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Semitone, unit of itself. A musical interval equal to one hundred cents.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
-  public struct Semitone
+  public readonly struct Semitone
     : System.IComparable<Semitone>, System.IConvertible, System.IEquatable<Semitone>, IQuantifiable<int>
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;

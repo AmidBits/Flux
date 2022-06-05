@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
-  public struct MagneticFluxDensity3D
+  public readonly struct MagneticFluxDensity3D
     : System.IEquatable<MagneticFluxDensity3D>, IUnitQuantifiable<CartesianCoordinate3, MagneticFluxDensityUnit>
   {
     public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
@@ -53,10 +53,9 @@ namespace Flux
     public bool Equals(MagneticFluxDensity3D other)
       => m_value == other.m_value;
 
-    // ISiDerivedUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 Value
-      => m_value;
+    // IQuantifiable<>
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3 Value { get => m_value; init => m_value = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(MagneticFluxDensityUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

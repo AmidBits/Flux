@@ -4,7 +4,7 @@ namespace Flux.Geometry
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Hex
+  public readonly struct Hex
     : System.IEquatable<Hex>
   {
     public static Hex[] Directions
@@ -35,9 +35,9 @@ namespace Flux.Geometry
       : this(q, r, -q - r)
     { }
 
-    public int Q => m_q;
-    public int R => m_r;
-    public int S => m_s;
+    [System.Diagnostics.Contracts.Pure] public int Q { get => m_q; init => m_q = value; }
+    [System.Diagnostics.Contracts.Pure] public int R { get => m_r; init => m_r = value; }
+    [System.Diagnostics.Contracts.Pure] public int S { get => m_s; init => m_s = value; }
 
     #region Static methods
     /// <summary>Returns a new hex representing the sum of the two specified hex vectors.</summary>

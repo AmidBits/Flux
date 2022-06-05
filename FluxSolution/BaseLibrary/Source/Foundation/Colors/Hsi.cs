@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
-  public struct Hsi
+  public readonly struct Hsi
     : System.IEquatable<Hsi>
   {
     public static readonly Hsi Empty;
 
-    private double m_hue;
-    private double m_saturation;
-    private double m_intensity;
+    private readonly double m_hue;
+    private readonly double m_saturation;
+    private readonly double m_intensity;
 
     public Hsi(double hue, double saturation, double intensity)
     {
@@ -16,12 +16,9 @@ namespace Flux.Colors
       m_intensity = intensity >= 0 && intensity <= 1 ? intensity : throw new System.ArgumentOutOfRangeException(nameof(intensity));
     }
 
-    public double Hue
-      => m_hue;
-    public double Saturation
-      => m_saturation;
-    public double Intensity
-      => m_intensity;
+    public double Hue { get => m_hue; init => m_hue = value; }
+    public double Saturation { get => m_saturation; init => m_saturation = value; }
+    public double Intensity { get => m_intensity; init => m_intensity = value; }
 
     public double GetChroma()
       => 3 * m_intensity * m_saturation / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));

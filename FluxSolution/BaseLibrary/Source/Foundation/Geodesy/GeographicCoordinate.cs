@@ -33,23 +33,19 @@ namespace Flux
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public readonly double m_radLongitude;
 
-    public GeographicCoordinate(Latitude latitude, Longitude longitude, Length altitude)
+    public GeographicCoordinate(double degLatitude, double degLongitude, double meterAltitude = 1.0)
     {
-      m_meterAltitude = ValidAltitude(altitude.Value) ? altitude.Value : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_radLatitude = latitude.Value;
-      m_radLongitude = longitude.Value;
-    }
-    public GeographicCoordinate(double latitudeDeg, double longitudeDeg, double altitudeMeters = 1.0)
-      : this(new Latitude(latitudeDeg), new Longitude(longitudeDeg), new Length(altitudeMeters))
-    {
+      m_meterAltitude = ValidAltitude(meterAltitude) ? meterAltitude : throw new System.ArgumentOutOfRangeException(nameof(meterAltitude));
+      m_radLatitude = Angle.ConvertDegreeToRadian(degLatitude);
+      m_radLongitude = Angle.ConvertDegreeToRadian(degLongitude);
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Altitude => new(m_meterAltitude);
+    [System.Diagnostics.Contracts.Pure] public Length Altitude { get => new(m_meterAltitude); init => m_meterAltitude = value.Value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    [System.Diagnostics.Contracts.Pure] public Latitude Latitude => new(m_radLatitude);
+    [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => new(Angle.ConvertRadianToDegree(m_radLatitude)); init => m_radLatitude = value.InRadians; }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    [System.Diagnostics.Contracts.Pure] public Longitude Longitude => new(m_radLongitude);
+    [System.Diagnostics.Contracts.Pure] public Longitude Longitude { get => new(Angle.ConvertRadianToDegree(m_radLongitude)); init => m_radLongitude = value.InRadians; }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]

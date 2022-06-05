@@ -1,19 +1,15 @@
 namespace Flux.Numerics
 {
-  public sealed class CenteredPolygonalNumber
-    : ANumberSequenceable<int>
+  /// <summary></summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+  /// <remarks>This function runs indefinitely, if allowed.</remarks>
+  public record class CenteredPolygonalNumber
+    : INumberSequenceable<int>
   {
     public int NumberOfSides { get; set; }
 
     public CenteredPolygonalNumber(int numberOfSides)
       => NumberOfSides = numberOfSides;
-
-    // INumberSequence
-    /// <summary></summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-    /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public override System.Collections.Generic.IEnumerable<int> GetNumberSequence()
-      => GetSequence(NumberOfSides);
 
     #region Static methods
     /// <summary></summary>
@@ -48,5 +44,19 @@ namespace Flux.Numerics
         yield return GetNumber(index, numberOfSides);
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<int> GetNumberSequence()
+      => GetSequence(NumberOfSides);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<int> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

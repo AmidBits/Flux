@@ -1,7 +1,10 @@
 namespace Flux.Numerics
 {
-  public sealed class LeonardoNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  /// <summary>Creates a new sequence with Leonardo numbers.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
+  /// <remarks>This function runs indefinitely, if allowed.</remarks>
+  public record class LeonardoNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     /// <summary>This is the first number in the sequence (L0).</summary>
     public System.Numerics.BigInteger FirstNumber { get; init; } = 1;
@@ -10,13 +13,6 @@ namespace Flux.Numerics
 
     /// <summary>This is size of increase between each iteration.</summary>
     public System.Numerics.BigInteger StepSize { get; init; } = 1;
-
-    // INumberSequence
-    /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
-    /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetLeonardoNumbers(FirstNumber, SecondNumber, StepSize);
 
     #region Static methods
     /// <summary>Creates a new sequence with Leonardo numbers.</summary>
@@ -33,5 +29,18 @@ namespace Flux.Numerics
       }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetLeonardoNumbers(FirstNumber, SecondNumber, StepSize);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

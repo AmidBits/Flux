@@ -9,12 +9,12 @@ namespace Flux
   /// <param name="tension">1 is high, 0 normal, -1 is low.</param>
   /// <param name="bias">0 is even, positive is towards first segment, negative towards the other.</param>
   /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-  public class HermiteInterpolation
-    : IInterpolatable
+  public readonly struct HermiteInterpolation
+    : IInterpolatable, System.IEquatable<HermiteInterpolation>
   {
     private readonly double m_v0, m_v1, m_v2, m_v3;
 
-    private double m_bias, m_tension;
+    private readonly double m_bias, m_tension;
 
     public HermiteInterpolation(double v0, double v1, double v2, double v3, double bias, double tension)
     {
@@ -31,17 +31,13 @@ namespace Flux
     {
     }
 
-    public double V0
-       => m_v0;
-    public double V1
-      => m_v1;
-    public double V2
-      => m_v2;
-    public double V3
-      => m_v3;
+    public double V0 { get => m_v0; init => m_v0 = value; }
+    public double V1 { get => m_v1; init => m_v1 = value; }
+    public double V2 { get => m_v2; init => m_v2 = value; }
+    public double V3 { get => m_v3; init => m_v3 = value; }
 
-    public double Bias { get => m_bias; set => m_bias = value; }
-    public double Tension { get => m_tension; set => m_tension = value; }
+    public double Bias { get => m_bias; init => m_bias = value; }
+    public double Tension { get => m_tension; init => m_tension = value; }
 
     [System.Diagnostics.Contracts.Pure]
     public double GetInterpolation(double mu)
@@ -66,5 +62,31 @@ namespace Flux
 
       return a0 * v1 + a1 * m0 + a2 * m1 + a3 * v2;
     }
+
+    #region Static methods
+    [System.Diagnostics.Contracts.Pure]
+    public static double Interpolate(double v1, double v2, double mu)
+    {
+      var mu2 = (1.0 - System.Math.Cos(mu * System.Math.PI)) / 2.0;
+
+      return v1 * (1.0 - mu2) + v2 * mu2;
+    }
+    #endregion Static methods
+
+    #region Overloaded operators
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(HermiteInterpolation a, HermiteInterpolation b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(HermiteInterpolation a, HermiteInterpolation b) => !a.Equals(b);
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+    // IEquatable<>
+    [System.Diagnostics.Contracts.Pure] public bool Equals(HermiteInterpolation other) => m_v0 == other.m_v0 && m_v1 == other.m_v1 && m_v2 == other.m_v2 && m_v3 == other.m_v3 && m_bias == other.m_bias && m_tension == other.m_tension;
+    #endregion Implemented interfaces
+
+    #region Object overrides
+    [System.Diagnostics.Contracts.Pure] public override bool Equals([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] object? obj) => obj is HermiteInterpolation o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_v0, m_v1, m_v2, m_v3, m_bias, m_tension);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ V0 = {m_v0}, V1 = {m_v1}, V2 = {m_v2}, V3 = {m_v3}, Bias = {m_bias}, Tension = {m_tension} }}";
+    #endregion Object overrides
   }
 }

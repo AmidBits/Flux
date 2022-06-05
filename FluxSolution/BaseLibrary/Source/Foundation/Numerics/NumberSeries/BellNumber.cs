@@ -1,12 +1,8 @@
 namespace Flux.Numerics
 {
-  public sealed class BellNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class BellNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetBellNumbers();
-
     #region Static methods
     /// <summary>Yields a Bell number of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
@@ -28,5 +24,18 @@ namespace Flux.Numerics
       }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetBellNumbers();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

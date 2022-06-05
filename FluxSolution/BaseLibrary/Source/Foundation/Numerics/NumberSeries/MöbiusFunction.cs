@@ -1,7 +1,7 @@
 namespace Flux.Numerics
 {
-  public sealed class MöbiusNumber
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class MöbiusNumber
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     private readonly int m_maxValue;
     private readonly sbyte[] m_sieve;
@@ -52,8 +52,18 @@ namespace Flux.Numerics
     private System.Numerics.BigInteger GetMöbiusNumber(int number)
       => m_sieve[number].ToBigInteger();
 
+    #region Implemented interfaces
     // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
       => System.Linq.Enumerable.Range(1, int.MaxValue - 1).Select(i => GetMöbiusNumber(i));
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

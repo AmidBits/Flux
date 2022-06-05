@@ -1,7 +1,7 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct Size2
+  public readonly struct Size2
     : System.IEquatable<Size2>
   {
     public static readonly Size2 Zero;
@@ -15,8 +15,8 @@ namespace Flux
       m_height = height;
     }
 
-    [System.Diagnostics.Contracts.Pure] public int Width => m_width;
-    [System.Diagnostics.Contracts.Pure] public int Height => m_height;
+    [System.Diagnostics.Contracts.Pure] public int Width { get => m_width; init => m_width = value; }
+    [System.Diagnostics.Contracts.Pure] public int Height { get => m_height; init => m_height = value; }
 
     public CartesianCoordinate2I Center()
       => new(m_width / 2, m_height / 2);

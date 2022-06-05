@@ -1,7 +1,7 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct EllipseGeometry
+  public readonly struct EllipseGeometry
     : System.IComparable<EllipseGeometry>, System.IEquatable<EllipseGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
   {
     public static readonly EllipseGeometry Empty;

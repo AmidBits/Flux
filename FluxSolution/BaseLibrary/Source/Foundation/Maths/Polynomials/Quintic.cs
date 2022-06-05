@@ -7,8 +7,6 @@ namespace Flux
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sextic_function"/>
     public static double Quintic(double x, double a, double b, double c, double d, double e, double f)
-      => (a * x * x * x * x * x) + (b * x * x * x * x) + (c * x * x * x) + (d * x * x) + (e * x) + f;
-    public static double QuinticX(double x, double a, double b, double c, double d, double e, double f)
-      => (a * x * x * x * x * x) + QuarticX(x, b, c, d, e, f);
+      => a * System.Math.Pow(x, 5) + b * System.Math.Pow(x, 4) + c * System.Math.Pow(x, 3) + (d * x * x) + (e * x) + f;
   }
 }

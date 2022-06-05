@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct LineSlope
+  public readonly struct LineSlope
     : System.IEquatable<LineSlope>
   {
     public static readonly LineSlope Zero;
@@ -13,7 +13,7 @@ namespace Flux.Geometry
     public LineSlope(double x1, double y1, double x2, double y2)
       => m_slope = (y2 - y1) / (x2 - x1);
 
-    public double Slope => m_slope;
+    public double Slope { get => m_slope; init => m_slope = value; }
 
     #region Static methods
     #endregion Static methods

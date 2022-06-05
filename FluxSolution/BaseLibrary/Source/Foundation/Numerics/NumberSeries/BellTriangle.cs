@@ -1,12 +1,8 @@
 namespace Flux.Numerics
 {
-  public sealed class BellTriangle
-    : ANumberSequenceable<System.Numerics.BigInteger[]>
+  public record class BellTriangle
+    : INumberSequenceable<System.Numerics.BigInteger[]>
   {
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger[]> GetNumberSequence()
-      => GetBellTriangle();
-
     #region Static methods
     /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in a Bell triangle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
@@ -28,5 +24,18 @@ namespace Flux.Numerics
       }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger[]> GetNumberSequence()
+      => GetBellTriangle();
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger[]> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

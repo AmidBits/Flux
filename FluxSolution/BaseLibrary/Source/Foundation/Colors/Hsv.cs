@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
-  public struct Hsv
+  public readonly struct Hsv
     : System.IEquatable<Hsv>
   {
     public static readonly Hsv Empty;
 
-    private double m_hue;
-    private double m_saturation;
-    private double m_value;
+    private readonly double m_hue;
+    private readonly double m_saturation;
+    private readonly double m_value;
 
     public Hsv(double hue, double saturation, double value)
     {
@@ -16,12 +16,9 @@ namespace Flux.Colors
       m_value = value >= 0 && value <= 1 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
     }
 
-    public double Hue
-      => m_hue;
-    public double Saturation
-      => m_saturation;
-    public double Value
-      => m_value;
+    public double Hue { get => m_hue; init => m_hue = value; }
+    public double Saturation { get => m_saturation; init => m_saturation = value; }
+    public double Value { get => m_value; init => m_value = value; }
 
     public double GetChroma()
       => m_value * m_saturation;

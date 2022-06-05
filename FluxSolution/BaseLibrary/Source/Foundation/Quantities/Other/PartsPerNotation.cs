@@ -46,7 +46,7 @@ namespace Flux
 
   /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
-  public struct PartsPerNotation
+  public readonly struct PartsPerNotation
     : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IUnitQuantifiable<double, PartsPerNotationUnit>
   {
     public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
@@ -133,9 +133,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_parts;
+    [System.Diagnostics.Contracts.Pure] public double Value { get => m_parts; init => m_parts = value; }
+    // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";

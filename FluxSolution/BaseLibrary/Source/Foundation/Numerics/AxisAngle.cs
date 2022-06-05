@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Axis-angle 3D rotation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct AxisAngle
+  public readonly struct AxisAngle
     : System.IEquatable<AxisAngle>
   {
     private readonly double m_x;

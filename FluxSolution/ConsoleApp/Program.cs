@@ -19,18 +19,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Flux.Zamplez.RunSetOps(); return;
+      var r1 = Flux.Polynomial.Univariate(3, 2, -6, 2, -1);
+      var r2 = Flux.Polynomial.Univariate(2, 2, 0, 3, 1);
 
-      var a = new int[] { 1, 2, 3, 4 };
-      var b = new int[] { 1, 1, 1, 2, 2, 3, 4 };
-
-      var e = Flux.SetOps.Equality(a, b);
+      var septic = Flux.Polynomial.Septic(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5);
+      var dynamic2 = Flux.Polynomial.Univariate(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5);
 
       var g = new Flux.Model.Grid<int>(10, 10);
 
-      g[2, 7] = 65;
+      g[2, 7] = 'A';
+      g[5, 4] = 'X';
 
-      System.Console.WriteLine(g.ToConsoleBlock());
+      System.Console.WriteLine(g.ToConsoleBlock(v => v == default ? "\u00B7" : ((System.Text.Rune)v).ToString()));
     }
 
     private static void Main(string[] args)

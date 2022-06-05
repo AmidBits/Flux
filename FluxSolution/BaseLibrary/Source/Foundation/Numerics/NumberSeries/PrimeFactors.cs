@@ -1,16 +1,12 @@
 namespace Flux.Numerics
 {
-  public sealed class PrimeFactors
-    : ANumberSequenceable<System.Numerics.BigInteger>
+  public record class PrimeFactors
+    : INumberSequenceable<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }
 
     public PrimeFactors(System.Numerics.BigInteger number)
       => Number = number;
-
-    // INumberSequence
-    public override System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
-      => GetPrimeFactors(Number);
 
     #region Static methods
     /// <summary>Results in a sequence of prime factors for the specified number.</summary>
@@ -30,5 +26,19 @@ namespace Flux.Numerics
         }
     }
     #endregion Static methods
+
+    #region Implemented interfaces
+    // INumberSequence
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNumberSequence()
+      => GetPrimeFactors(Number);
+
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
+      => GetNumberSequence().GetEnumerator();
+    [System.Diagnostics.Contracts.Pure]
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+      => GetEnumerator();
+    #endregion Implemented interfaces
   }
 }

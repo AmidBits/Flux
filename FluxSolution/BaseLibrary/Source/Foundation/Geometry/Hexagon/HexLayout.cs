@@ -1,12 +1,12 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct HexLayout
+  public readonly struct HexLayout
     : System.IEquatable<HexLayout>
   {
-    public readonly Size2 Size;
-    public readonly CartesianCoordinate2I Origin;
-    public readonly HexOrientation Orientation;
+    public readonly Size2 Size { get; init; }
+    public readonly CartesianCoordinate2I Origin { get; init; }
+    public readonly HexOrientation Orientation { get; init; }
 
     public HexLayout(HexOrientation orientation, Size2 size, CartesianCoordinate2I origin)
     {

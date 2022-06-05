@@ -1,7 +1,7 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct CartesianCoordinate3I
+  public readonly struct CartesianCoordinate3I
     : System.IEquatable<CartesianCoordinate3I>
   {
     /// <summary>Returns the vector (0,0).</summary>
@@ -32,9 +32,9 @@ namespace Flux
       m_z = array[startIndex];
     }
 
-    [System.Diagnostics.Contracts.Pure] public int X => m_x;
-    [System.Diagnostics.Contracts.Pure] public int Y => m_y;
-    [System.Diagnostics.Contracts.Pure] public int Z => m_z;
+    [System.Diagnostics.Contracts.Pure] public int X { get => m_x; init => m_x = value; }
+    [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
+    [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
     /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CartesianCoordinate3"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

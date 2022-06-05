@@ -1,13 +1,13 @@
 namespace Flux.Colors
 {
   /// <summary>Hsva is the same as Hsv with the addition of an alpha channel.</summary>
-  public struct Ahsv
+  public readonly struct Ahsv
     : System.IEquatable<Ahsv>
   {
     public static readonly Ahsv Empty;
 
-    private double m_alpha;
-    private Hsv m_hsv;
+    private readonly double m_alpha;
+    private readonly Hsv m_hsv;
 
     public Ahsv(double alpha, Hsv hsv)
     {
@@ -18,10 +18,8 @@ namespace Flux.Colors
       : this(alpha, new Hsv(hue, saturation, value))
     { }
 
-    public double Alpha
-      => m_alpha;
-    public Hsv HSV
-    => m_hsv;
+    public double Alpha { get => m_alpha; init => m_alpha = value; }
+    public Hsv HSV { get => m_hsv; init => m_hsv = value; }
 
     /// <summary>Creates an HSL color corresponding to the HSV instance.</summary>
     public Ahsl ToAhsl()
