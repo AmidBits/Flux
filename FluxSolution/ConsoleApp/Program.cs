@@ -19,6 +19,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var sb = new Flux.SpanBuilder<char>();
+
+      sb.Append("cool.");
+      sb.Insert(4, "ix");
+      sb.Insert(0, "is ");
+      sb.Insert(0, "This ");
+      sb.Remove(5, 3);
+      var s = sb.AsReadOnlySpan().ToString();
+
+
+      var size = System.IntPtr.Size;
+
+      foreach (var type in typeof(Flux.AbsoluteHumidity).Assembly.GetTypes().OrderBy(t => t.Name).Where(t => t.IsClass))
+        System.Console.WriteLine(type);
+
       var r1 = Flux.Polynomial.Univariate(3, 2, -6, 2, -1);
       var r2 = Flux.Polynomial.Univariate(2, 2, 0, 3, 1);
 
