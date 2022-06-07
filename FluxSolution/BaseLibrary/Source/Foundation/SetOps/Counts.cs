@@ -7,15 +7,15 @@ namespace Flux
     {
       var unfoundCount = 0;
 
-      //var shs = new System.Collections.Generic
+      var shs = new System.Collections.Generic.HashSet<T>(source, equalityComparer);
 
       var unique = new System.Collections.Generic.HashSet<T>(equalityComparer);
 
       foreach (var t in target)
       {
-        if (System.Linq.Enumerable.Contains(source, t))
+        if (shs.Contains(t))
         {
-          if (!System.Linq.Enumerable.Contains(unique, t))
+          if (!unique.Contains(t))
             unique.Add(t);
         }
         else

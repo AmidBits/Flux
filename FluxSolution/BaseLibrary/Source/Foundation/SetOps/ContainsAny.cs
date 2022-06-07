@@ -13,7 +13,10 @@ namespace Flux
 
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      return System.Linq.Enumerable.Any(source, s => ths.Contains(s));
+      if (ths.Count == 0) // If target is empty, 
+        return false;
+
+      return source.Any(s => ths.Contains(s));
     }
   }
 }
