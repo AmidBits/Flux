@@ -16,7 +16,7 @@ namespace Flux
 
         for (var inner = 0; inner < powerCount; inner++)
           if ((outer & (System.Numerics.BigInteger.One << inner)) > 0)
-            list.Add(hs![inner]);
+            list.Add(hs[inner]);
 
         yield return list;
       }
