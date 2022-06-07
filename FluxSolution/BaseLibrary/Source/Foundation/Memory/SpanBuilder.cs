@@ -1,89 +1,119 @@
 namespace Flux
 {
-  public ref partial struct SpanBuilder<T>
+  public static partial class ExtensionMethods
   {
-    private int bufferPosition;
-    private Span<T> buffer;
-
-    public SpanBuilder(System.Span<T> initialBuffer)
+    public static void AppendLine(ref this SpanBuilder<char> source, System.ReadOnlySpan<char> value)
     {
-      bufferPosition = 0;
-      buffer = initialBuffer;
+      source.Append(value);
+      source.Append(System.Environment.NewLine);
+    }
+
+    public static void InsertLine(ref this SpanBuilder<char> source, int index, System.ReadOnlySpan<char> value)
+    {
+      source.Insert(index, value);
+      source.Insert(index + value.Length, System.Environment.NewLine);
+    }
+
+    public static string ToString(ref this SpanBuilder<char> source, int startIndex, int length)
+      => source.AsReadOnlySpan().Slice(startIndex, length).ToString();
+    public static string ToString(ref this SpanBuilder<char> source, int startIndex)
+      => source.ToString(startIndex, source.Length - startIndex);
+  }
+
+  public ref partial struct SpanBuilder<TItem>
+  {
+    private System.Span<TItem> m_buffer;
+    private int m_bufferPosition;
+
+    public SpanBuilder(int capacity)
+    {
+      m_buffer = new TItem[capacity];
+      m_bufferPosition = 0;
+    }
+    public SpanBuilder(System.Span<TItem> value)
+      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
+    {
+      value.CopyTo(m_buffer);
     }
     public SpanBuilder()
-      : this(new T[32])
+      : this(32)
     {
     }
-
-    /// <summary>The length of the current content of the SpanBuilder.</summary>
-    public int Length => bufferPosition;
 
     /// <summary>The current capacity of the SpanBuilder.</summary>
-    public int Capacity => buffer.Length;
+    public int Capacity
+      => m_buffer.Length;
 
-    public ref T this[int index] => ref buffer[index];
+    /// <summary>The length of the current content of the SpanBuilder.</summary>
+    public int Length
+      => m_bufferPosition;
 
-    public void Append(ReadOnlySpan<T> value)
+    /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
+    public ref TItem this[int index]
+      => ref m_buffer[index];
+
+    /// <summary>Appends the sequence of items to this instance.</summary>
+    public void Append(ReadOnlySpan<TItem> value)
     {
-      if (bufferPosition + value.Length is var needed && needed > buffer.Length) Grow(needed * 2);
+      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);
 
-      value.CopyTo(buffer[bufferPosition..]);
+      value.CopyTo(m_buffer[m_bufferPosition..]);
 
-      bufferPosition += value.Length;
+      m_bufferPosition += value.Length;
     }
 
-    public System.ReadOnlySpan<T> AsReadOnlySpan() => buffer[..bufferPosition];
+    public System.ReadOnlySpan<TItem> AsReadOnlySpan()
+      => m_buffer[..m_bufferPosition];
 
-    public void Clear() => bufferPosition = 0;
+    /// <summary>Removes all items in this instance.</summary>
+    public void Clear()
+      => m_bufferPosition = 0;
 
-    public void EnsureCapacity(int newCapacity)
+    /// <summary>Ensures the buffer capacity. If needed it will grow the capacity.</summary>
+    public void EnsureCapacity(int capacity)
     {
-      if (newCapacity < 0) throw new ArgumentOutOfRangeException(nameof(newCapacity));
-
-      if (newCapacity > Capacity)
-        Grow(newCapacity);
+      if (capacity > m_buffer.Length)
+        GrowCapacity(capacity);
     }
 
-    private void Grow(int capacity = 0)
+    /// <summary>Grows the buffer capacity to at least that specified.</summary>
+    private void GrowCapacity(int capacity = 0)
     {
-      var newCapacity = capacity > Capacity ? capacity : Capacity * 2;
+      var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
 
-      var rented = System.Buffers.ArrayPool<T>.Shared.Rent(newCapacity);
-      buffer.CopyTo(rented);
-      buffer = rented;
-      System.Buffers.ArrayPool<T>.Shared.Return(rented);
+      var rented = System.Buffers.ArrayPool<TItem>.Shared.Rent(newCapacity);
+      m_buffer.CopyTo(rented);
+      m_buffer = rented;
+      System.Buffers.ArrayPool<TItem>.Shared.Return(rented);
     }
 
-    public void Insert(int index, System.ReadOnlySpan<T> value)
+    /// <summary>Inserts the sequence of items into this instance at the specified index.</summary>
+    public void Insert(int index, System.ReadOnlySpan<TItem> value)
     {
-      if (index < 0 || index > bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
+      if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
 
-      if (bufferPosition + value.Length is var needed && needed > buffer.Length) Grow(needed);
+      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed);
 
       var endIndex = index + value.Length;
 
-      buffer[index..bufferPosition].CopyTo(buffer[endIndex..]); // Move right side of old content.
+      m_buffer[index..m_bufferPosition].CopyTo(m_buffer[endIndex..]); // Move right side of old content.
 
-      value.CopyTo(buffer[index..endIndex]); // Insert new content in buffer gap.
+      value.CopyTo(m_buffer[index..endIndex]); // Insert new content in buffer gap.
 
-      bufferPosition += value.Length;
+      m_bufferPosition += value.Length;
     }
 
+    /// <summary>Removes the specified range of items from this instance.</summary>
     public void Remove(int startIndex, int length)
     {
-      if (startIndex < 0 || startIndex >= bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      if (length < 0 || startIndex + length is var endIndex && endIndex >= bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(length));
+      if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (length < 0 || startIndex + length is var endIndex && endIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(length));
 
-      buffer[(startIndex + length)..bufferPosition].CopyTo(buffer[startIndex..]);
+      m_buffer[(startIndex + length)..m_bufferPosition].CopyTo(m_buffer[startIndex..]);
 
-      bufferPosition -= length;
+      m_bufferPosition -= length;
 
-      buffer.Slice(bufferPosition, length).Clear();
+      m_buffer.Slice(m_bufferPosition, length).Clear();
     }
-
-    #region Object overrides
-    public override string ToString()
-      => AsReadOnlySpan().ToString();
-    #endregion Object overrides
   }
 }
