@@ -3,8 +3,14 @@ namespace Flux
   public static partial class SetOps
   {
     /// <summary>Determines whether the source collection contains all of the elements in the specified target sequence.</summary>
-    public static bool ContainsAll<T>(this System.Collections.Generic.ICollection<T> source, System.Collections.Generic.IEnumerable<T> target)
-      => (target is System.Collections.Generic.ICollection<T> ic && ic.Count == 0) // If target is empty, there is nothing to exclude, all is true.
-      || !System.Linq.Enumerable.Any(target, t => !source.Contains(t));
+    public static bool ContainsAll<T>( System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
+    {
+      if (target is System.Collections.Generic.ICollection<T> tc && tc.Count == 0)
+        return true; // If target is empty, all is included, the result is true.
+
+      var shs = new System.Collections.Generic.HashSet<T>(source);
+
+      return !target.Any(t => !source.Contains(t));
+    }
   }
 }

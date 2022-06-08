@@ -12,6 +12,9 @@ namespace Flux
 
       var ths = new System.Collections.Generic.HashSet<T>(target, equalityComparer);
 
+      if(ths.Count == 0)
+        return System.Linq.Enumerable.Empty<T>(); // If either sequence is empty, the result is empty.
+
       return source.Where(s => ths.Contains(s));
     }
     public static System.Collections.Generic.IEnumerable<T> Intersection<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)

@@ -18,8 +18,8 @@ namespace Flux
       var padding = 2;
       padding++;
 
-      var (minLeft, minTop, maxLeft, maxTop) = os1.Select(v => v.ToString()).Prepend("Set 1").WriteToConsole();
-      (minLeft, minTop, maxLeft, maxTop) = os2.Select(v => v.ToString()).Prepend("Set 1").WriteToConsole(maxLeft + padding, minTop);
+      var (minLeft, minTop, maxLeft, maxTop) = os1.Select(v => v.ToString()).Prepend("Set:1").WriteToConsole();
+      (minLeft, minTop, maxLeft, maxTop) = os2.Select(v => v.ToString()).Prepend("Set:2").WriteToConsole(maxLeft + padding, minTop);
 
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.SourceDifference(os1, os2).Select(v => v.ToString()).Prepend("Source-Diff").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.SymmetricDifference(os1, os2).Select(v => v.ToString()).Prepend("Sym-Diff").WriteToConsole(maxLeft + padding, minTop);
