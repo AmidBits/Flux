@@ -26,7 +26,7 @@ namespace Flux
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.TargetDifference(os1, os2).Select(v => v.ToString()).Prepend("Target-Diff").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Intersection(os1, os2).Select(v => v.ToString()).Prepend($"Intersection {SetOps.UnicodeIntersection} ").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.Union(os1, os2).Select(v => v.ToString()).Prepend($"Union {SetOps.UnicodeUnion} ").WriteToConsole(maxLeft + padding, minTop);
-      (minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.UnionAll(os1, os2).Select(v => v.ToString()).Prepend("Union-All").WriteToConsole(maxLeft + padding, minTop);
+      //(minLeft, minTop, maxLeft, maxTop) = Flux.SetOps.UnionAll(os1, os2).Select(v => v.ToString()).Prepend("Union-All").WriteToConsole(maxLeft + padding, minTop);
 
       //System.Console.WriteLine($"{System.Environment.NewLine}{nameof(os1)}"); foreach (var item in os1) System.Console.WriteLine(item);
       //System.Console.WriteLine($"{System.Environment.NewLine}{nameof(os2)}"); foreach (var item in os2) System.Console.WriteLine(item);

@@ -10,7 +10,7 @@ namespace Flux
 
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      if (ths.Count == 0) // If target is empty, there is nothing to contain, so the result is false.
+      if (!ths.Any()) // If target is empty, there is nothing to contain, so the result is false.
         return false;
 
       return source.Any(s => ths.Contains(s));
