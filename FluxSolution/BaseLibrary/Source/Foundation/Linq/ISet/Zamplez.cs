@@ -27,12 +27,12 @@ namespace Flux
       (minLeft, minTop, maxLeft, maxTop) = os1.CartesianProduct(new System.Collections.Generic.HashSet<int>[] { os2 }).Select(v => string.Join(",", v)).Prepend($"Cartesian-Product ").WriteToConsole(maxLeft + padding, minTop);
       (minLeft, minTop, maxLeft, maxTop) = os1.PowerSet().Select(v => string.Join(",", v)).Prepend($"Power-Set ").WriteToConsole(maxLeft + padding, minTop);
 
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.Equality)} = {os1.Equality(os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.IsOverlapping)} = {os1.IsOverlapping(os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.IsSubsetOf)} \u2286 = {os1.IsSubsetOf(os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.IsProperSubsetOf)} \u2282 = {os1.IsProperSubsetOf(os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.IsSupersetOf)} \u2287 = {os1.IsSupersetOf(os2)}");
-      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(Flux.ISet.IsProperSupersetOf)} \u2283 = {os1.IsProperSupersetOf(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.SetEquals)} = {os1.SetEquals(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.Overlaps)} = {os1.Overlaps(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.IsSubsetOf)} \u2286 = {os1.IsSubsetOf(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.IsProperSubsetOf)} \u2282 = {os1.IsProperSubsetOf(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.IsSupersetOf)} \u2287 = {os1.IsSupersetOf(os2)}");
+      System.Console.WriteLine($"{System.Environment.NewLine}{nameof(System.Collections.Generic.ISet<int>.IsProperSupersetOf)} \u2283 = {os1.IsProperSupersetOf(os2)}");
 
       System.Console.WriteLine();
     }
