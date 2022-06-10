@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMehods
+  public static partial class ExtensionMethods
   {
     public static System.Collections.Generic.IComparer<T> CreateReverseComparer<T>(this System.Collections.Generic.IComparer<T> source)
       => new ReverseComparer<T>(source);
