@@ -12,9 +12,11 @@ namespace Flux
 
       if (probability <= 0 && probability > 1) throw new System.ArgumentOutOfRangeException(nameof(probability));
 
-      foreach (var element in source)
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
         if (random.NextDouble() < probability)
-          yield return element;
+          yield return e.Current;
     }
     /// <summary>Returns the specified percent of random elements from the sequence. Uses the .NET cryptographic random number generator.</summary>
     /// <param name="probability">Percent (or probability) as a value in the range [0, 1].</param>

@@ -13,7 +13,7 @@ namespace Flux
 
       using var se = source.GetEnumerator();
 
-      return target.TakeWhile(te => se.MoveNext() && equalityComparer.Equals(se.Current, te)).Count();
+      return target.TakeWhile(tv => se.MoveNext() && equalityComparer.Equals(se.Current, tv)).Count();
     }
     /// <summary>Determines whether the beginning of the first sequence is equivalent to the second sequence. Uses the specified equality comparer.</summary>
     public static int CountEqualAtStart<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)

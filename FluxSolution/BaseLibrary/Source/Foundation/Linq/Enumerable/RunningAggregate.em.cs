@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    public static System.Collections.Generic.IEnumerable<(TAccumulate cumulative, TSource element, int index)> RunningAggregate<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate initial, System.Func<TAccumulate, TSource, int, TAccumulate> func)
+    public static System.Collections.Generic.IEnumerable<(TAccumulate cumulative, TSource element, int index)> RunningAggregate<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate initial, System.Func<TAccumulate, TSource, int, TAccumulate> accumulator)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (func is null) throw new System.ArgumentNullException(nameof(func));
+      if (accumulator is null) throw new System.ArgumentNullException(nameof(accumulator));
 
       var cumulative = initial;
 
@@ -13,7 +13,7 @@ namespace Flux
 
       foreach (var item in source)
       {
-        cumulative = func(cumulative, item, index);
+        cumulative = accumulator(cumulative, item, index);
 
         yield return (cumulative, item, index);
 

@@ -16,8 +16,8 @@ namespace Flux
 
         do
         {
-          if (predicate(e.Current, index++))
-            value = e.Current;
+          if (e.Current is var current && predicate(current, index++))
+            value = current;
         }
         while (e.MoveNext());
       }

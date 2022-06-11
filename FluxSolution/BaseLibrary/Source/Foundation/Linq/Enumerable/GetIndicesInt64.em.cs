@@ -10,9 +10,11 @@ namespace Flux
 
       var index = 0L;
 
-      foreach (var element in source)
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
       {
-        if (predicate(element, index))
+        if (predicate(e.Current, index))
           yield return index;
 
         index++;

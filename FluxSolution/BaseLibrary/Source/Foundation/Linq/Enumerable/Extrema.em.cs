@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the specified comparer.</summary>
-    public static (TSource elementMin, int indexMin, TSource elementMax, int indexMax) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)
+    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
@@ -14,41 +14,41 @@ namespace Flux
       if (e.MoveNext())
       {
         var index = 0;
-        var valueCurrent = valueSelector(e.Current);
+        var value = valueSelector(e.Current);
 
-        var elementMin = e.Current;
-        var indexMin = index;
-        var valueMin = valueCurrent;
+        var minItem = e.Current;
+        var minIndex = index;
+        var minValue = value;
 
-        var elementMax = e.Current;
-        var indexMax = index;
-        var valueMax = valueCurrent;
+        var maxItem = e.Current;
+        var maxIndex = index;
+        var maxValue = value;
 
         while (e.MoveNext())
         {
           index++;
-          valueCurrent = valueSelector(e.Current);
+          value = valueSelector(e.Current);
 
-          if (comparer.Compare(valueCurrent, valueMin) < 0)
+          if (comparer.Compare(value, minValue) < 0)
           {
-            elementMin = e.Current;
-            indexMin = index;
-            valueMin = valueCurrent;
+            minItem = e.Current;
+            minIndex = index;
+            minValue = value;
           }
-          if (comparer.Compare(valueCurrent, valueMax) > 0)
+          if (comparer.Compare(value, maxValue) > 0)
           {
-            elementMax = e.Current;
-            indexMax = index;
-            valueMax = valueCurrent;
+            maxItem = e.Current;
+            maxIndex = index;
+            maxValue = value;
           }
         }
 
-        return (elementMin, indexMin, elementMax, indexMax);
+        return (minItem, minIndex, maxItem, maxIndex);
       }
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
     /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the default comparer.</summary>
-    public static (TSource elementMin, int indexMin, TSource elementMax, int indexMax) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
+    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
       => Extrema(source, valueSelector, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

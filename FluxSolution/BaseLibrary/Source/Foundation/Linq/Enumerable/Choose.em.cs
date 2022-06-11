@@ -11,12 +11,14 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var element in source)
-      {
-        var chosen = predicate(element, index);
+      using var e = source.GetEnumerator();
 
-        if (chosen)
-          yield return resultSelector(element, index);
+      while (e.MoveNext())
+      {
+        var current = e.Current;
+
+        if (predicate(current, index))
+          yield return resultSelector(current, index);
 
         index++;
       }

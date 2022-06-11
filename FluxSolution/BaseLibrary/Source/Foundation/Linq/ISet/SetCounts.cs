@@ -7,14 +7,16 @@ namespace Flux
     {
       var unfoundCount = 0;
 
-      var unique = new System.Collections.Generic.HashSet<T>();
+      var hsUnique = new System.Collections.Generic.HashSet<T>();
 
-      foreach (var t in target)
+      using var e = target.GetEnumerator();
+
+      while (e.MoveNext())
       {
-        if (source.Contains(t))
+        if (e.Current is var current && source.Contains(current))
         {
-          if (!unique.Contains(t))
-            unique.Add(t);
+          if (!hsUnique.Contains(current))
+            hsUnique.Add(current);
         }
         else
         {
@@ -25,7 +27,7 @@ namespace Flux
         }
       }
 
-      return (unfoundCount, unique.Count);
+      return (unfoundCount, hsUnique.Count);
     }
   }
 }

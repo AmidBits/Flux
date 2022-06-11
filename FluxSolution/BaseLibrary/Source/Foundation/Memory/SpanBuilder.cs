@@ -27,7 +27,7 @@ namespace Flux
 
     public SpanBuilder(int capacity)
     {
-      m_buffer = new TItem[capacity];
+      m_buffer = System.Buffers.ArrayPool<TItem>.Shared.Rent(capacity);
       m_bufferPosition = 0;
     }
     public SpanBuilder(System.ReadOnlySpan<TItem> value)

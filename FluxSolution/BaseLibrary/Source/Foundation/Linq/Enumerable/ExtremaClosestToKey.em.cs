@@ -3,45 +3,53 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Locate the max element that is less than and the min element that is greater than the specified reference value identified by the <see cref="keySelector"/>. Uses the specified comparer.</summary>
-    public static (TSource elementLt, int indexLt, TSource elementGt, int indexGt) ExtremaClosestToKey<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, TKey targetKey, System.Collections.Generic.IComparer<TKey> comparer)
+    public static (TSource ltItem, int ltIndex, TSource gtItem, int gtIndex) ExtremaClosestToKey<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, TKey targetKey, System.Collections.Generic.IComparer<TKey> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
-      var elementLt = default(TSource)!;
-      var indexLt = -1;
-      var keyLt = targetKey;
-
-      var elementGt = default(TSource)!;
-      var indexGt = -1;
-      var keyGt = targetKey;
-
       using var e = source.GetEnumerator();
 
-      for (var index = 0; e.MoveNext(); index++)
+      if (e.MoveNext())
       {
-        var key = keySelector(e.Current);
-        var cmp = comparer.Compare(key, targetKey);
+        var ltItem = default(TSource)!;
+        var ltIndex = -1;
+        var ltKey = targetKey;
 
-        if (cmp < 0 && (indexLt < 0 || comparer.Compare(key, keyLt) > 0))
+        var gtItem = default(TSource)!;
+        var gtIndex = -1;
+        var gtKey = targetKey;
+
+        var index = 0;
+
+        while (e.MoveNext())
         {
-          elementLt = e.Current;
-          indexLt = index;
-          keyLt = key;
+          var key = keySelector(e.Current);
+          var cmp = comparer.Compare(key, targetKey);
+
+          if (cmp < 0 && (ltIndex < 0 || comparer.Compare(key, ltKey) > 0))
+          {
+            ltItem = e.Current;
+            ltIndex = index;
+            ltKey = key;
+          }
+          if (cmp > 0 && (gtIndex < 0 || comparer.Compare(key, gtKey) < 0))
+          {
+            gtItem = e.Current;
+            gtIndex = index;
+            gtKey = key;
+          }
+
+          index++;
         }
-        if (cmp > 0 && (indexGt < 0 || comparer.Compare(key, keyGt) < 0))
-        {
-          elementGt = e.Current;
-          indexGt = index;
-          keyGt = key;
-        }
+
+        return (ltItem, ltIndex, gtItem, gtIndex);
       }
-
-      return (elementLt, indexLt, elementGt, indexGt);
+      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
     /// <summary>Locate the max element that is less than and the min element that is greater than the specified reference value identified by the <see cref="keySelector"/>. Uses the default comparer.</summary>
-    public static (TSource elementLt, int indexLt, TSource elementGt, int indexGt) ExtremaClosestToKey<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> valueSelector, TKey targetKey)
+    public static (TSource ltItem, int ltIndex, TSource gtItem, int gtIndex) ExtremaClosestToKey<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> valueSelector, TKey targetKey)
       => ExtremaClosestToKey(source, valueSelector, targetKey, System.Collections.Generic.Comparer<TKey>.Default);
   }
 }

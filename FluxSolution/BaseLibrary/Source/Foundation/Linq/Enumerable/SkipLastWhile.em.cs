@@ -12,11 +12,15 @@ namespace Flux
 
       var counter = 0;
 
-      foreach (var element in source)
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
       {
-        if (predicate(element, counter++))
+        var current = e.Current;
+
+        if (predicate(current, counter++))
         {
-          buffer.Enqueue(element);
+          buffer.Enqueue(current);
         }
         else
         {
@@ -25,7 +29,7 @@ namespace Flux
             yield return buffer.Dequeue();
           }
 
-          yield return element;
+          yield return current;
         }
       }
     }

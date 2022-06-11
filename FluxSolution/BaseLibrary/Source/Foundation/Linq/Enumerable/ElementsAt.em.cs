@@ -8,25 +8,28 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<T> ElementsAt<T>(this System.Collections.Generic.IEnumerable<T> source, params int[] indices)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (indices is null) throw new System.ArgumentNullException(nameof(indices));
 
-      var cache = new System.Collections.Generic.Dictionary<int, T>((indices ?? throw new System.ArgumentNullException(nameof(indices))).Length);
+      var index = 0;
+      var cache = new System.Collections.Generic.Dictionary<int, T>(indices.Length);
 
-      var indexCounter = 0;
+      using var e = source.GetEnumerator();
 
-      foreach (var item in source)
+      while (e.MoveNext())
       {
-        if (indices.Contains(indexCounter))
+        if (indices.Contains(index))
         {
-          cache.Add(indexCounter, item);
+          if (!cache.ContainsKey(index))
+            cache.Add(index, e.Current);
 
-          if (cache.Count == indices.Length) break;
+          if (cache.Count == indices.Length)
+            break;
         }
 
-        indexCounter++;
+        index++;
       }
 
-      foreach (var index in indices)
-        yield return cache[index];
+      return indices.Select(i => cache[i]);
     }
   }
 }

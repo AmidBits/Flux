@@ -15,12 +15,14 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var sourceItem in source)
-      {
-        var sourceKey = keySelector(sourceItem);
+      using var e = source.GetEnumerator();
 
-        if (map.ContainsKey(sourceKey))
-          map[sourceKey].Add(index);
+      while (e.MoveNext())
+      {
+        var key = keySelector(e.Current);
+
+        if (map.ContainsKey(key))
+          map[key].Add(index);
 
         index++;
       }
