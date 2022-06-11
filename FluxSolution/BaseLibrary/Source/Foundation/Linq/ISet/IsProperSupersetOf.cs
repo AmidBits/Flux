@@ -7,7 +7,7 @@
 //      => source.Any() // An empty set is not a proper superset of any set.
 //      && (
 //        (target is System.Collections.Generic.ICollection<T> tc && !tc.Any()) // If target is an empty set then this is a superset.
-//        || (source.Counts(target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < source.Count)
+//        || (source.SetCounts(target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < source.Count)
 //      );
 //  }
 //}

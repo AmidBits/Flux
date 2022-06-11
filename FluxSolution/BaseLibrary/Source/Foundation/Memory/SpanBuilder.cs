@@ -30,10 +30,23 @@ namespace Flux
       m_buffer = new TItem[capacity];
       m_bufferPosition = 0;
     }
+    public SpanBuilder(System.ReadOnlySpan<TItem> value)
+      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
+    {
+      value.CopyTo(m_buffer);
+      m_bufferPosition = value.Length;
+    }
     public SpanBuilder(System.Span<TItem> value)
       : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
     {
       value.CopyTo(m_buffer);
+      m_bufferPosition = value.Length;
+    }
+    public SpanBuilder(TItem[] value)
+      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
+    {
+      value.CopyTo(m_buffer);
+      m_bufferPosition = value.Length;
     }
     public SpanBuilder()
       : this(32)

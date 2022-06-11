@@ -9,6 +9,6 @@
 //      target is System.Collections.Generic.ICollection<T> tc && tc.Any() is var ta &&
 //      ((!sa && ta) || (sa && !ta)) // If either set is empty and the other set is not, they cannot be equal.
 //      )
-//      && (source.Counts(target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == source.Count);
+//      && (source.SetCounts(target, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == source.Count);
 //  }
 //}

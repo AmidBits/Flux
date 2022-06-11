@@ -14,10 +14,7 @@ namespace Flux
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
       if (ths.Any()) // If target is empty, source is the result.
-      {
-        ths.IntersectWith(source);
-        return source.Except(ths); // Return the IEnumerable<> rather than changing the source and then returning it.
-      }
+        return source.Except(ths.Intersect(source)); // Return the IEnumerable<> rather than changing the source and then returning it.
 
       return source;
     }

@@ -6,10 +6,10 @@ namespace Flux
   public static partial class Zamplez
   {
     /// <summary>Run the set ops zample.</summary>
-    public static void RunSetOps()
+    public static void RunISetOps()
     {
       System.Console.WriteLine();
-      System.Console.WriteLine(nameof(RunSetOps));
+      System.Console.WriteLine(nameof(RunISetOps));
       System.Console.WriteLine();
 
       var os1 = new System.Collections.Generic.HashSet<int>() { 1, 2, 3, 4, 5, 6 };

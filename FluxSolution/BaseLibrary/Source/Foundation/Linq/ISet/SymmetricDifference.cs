@@ -8,10 +8,11 @@ namespace Flux
       if (ReferenceEquals(source, target)) // A symmetric difference of a set with itself is an empty set.
         return System.Linq.Enumerable.Empty<T>();
 
+      if (!source.Any())
+        return target;
+
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      if (!source.Any()) 
-        return ths;
       if (!ths.Any()) 
         return source;
 

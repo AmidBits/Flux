@@ -25,7 +25,7 @@
       RunReflection();
       RunResource();
       RunRulesEngine();
-      RunSetOps();
+      RunISetOps();
       RunStatistics();
       RunTemporal();
 #else
