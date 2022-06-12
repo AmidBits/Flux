@@ -12,16 +12,14 @@ namespace Flux
 
       var counter = 0;
 
-      foreach (var element in source)
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
       {
-        if (predicate(element, counter++))
-        {
-          buffer.Add(element);
-        }
+        if (e.Current is var current && predicate(current, counter++))
+          buffer.Add(current);
         else
-        {
           buffer.Clear();
-        }
       }
 
       return buffer;

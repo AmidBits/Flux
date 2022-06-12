@@ -6,9 +6,9 @@ namespace Flux
   {
     /// <summary>Returns a sequence with the elements from the source and the specified elements.</summary>
     public static System.Collections.Generic.IEnumerable<T> Prepend<T>(this System.Collections.Generic.IEnumerable<T> source, params T[] prepend)
-      => System.Linq.Enumerable.Concat(prepend, source);
+      => prepend.Concat(source);
     /// <summary>Returns a sequence with the elements from the source and the specified sequences.</summary>
     public static System.Collections.Generic.IEnumerable<T> Prepend<T>(this System.Collections.Generic.IEnumerable<T> source, params System.Collections.Generic.IEnumerable<T>[] others)
-      => System.Linq.Enumerable.Concat(others.SelectMany(prepend => prepend), source);
+      => others.SelectMany(prepend => prepend).Concat(source);
   }
 }

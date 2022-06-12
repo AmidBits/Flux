@@ -17,10 +17,7 @@ namespace Flux
         }
         while (e.MoveNext());
       }
-      else
-      {
-        throw new System.ArgumentException(@"The sequence is empty.", name ?? nameof(source));
-      }
+      else throw new System.ArgumentException("The sequence is empty.", name ?? nameof(source));
     }
   }
 }

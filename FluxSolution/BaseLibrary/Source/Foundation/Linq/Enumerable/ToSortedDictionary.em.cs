@@ -14,9 +14,13 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var item in source)
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
       {
-        sd.Add(keySelector(item, index), valueSelector(item, index));
+        var current = e.Current;
+
+        sd.Add(keySelector(current, index), valueSelector(current, index));
 
         index++;
       }
