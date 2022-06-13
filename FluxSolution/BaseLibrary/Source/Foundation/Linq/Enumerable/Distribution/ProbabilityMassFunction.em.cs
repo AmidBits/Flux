@@ -72,6 +72,5 @@ namespace Flux
     /// <summary>The PMF is a function that maps from values to probabilities. Uses the default comparer.</summary>
     public static double ProbabilityMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value)
       => ProbabilityMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
-
   }
 }

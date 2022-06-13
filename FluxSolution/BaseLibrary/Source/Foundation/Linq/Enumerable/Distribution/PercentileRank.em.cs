@@ -108,6 +108,7 @@ namespace Flux
     /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
     public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T> comparer)
       => 100.0 * CumulativeMassFunction(source, value, comparer);
+
     /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the default comparer.</summary>
     public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
       => PercentileRank(source, value, System.Collections.Generic.Comparer<T>.Default);

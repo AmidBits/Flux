@@ -8,10 +8,10 @@ namespace Flux
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> func, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> accumulator, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (func is null) throw new System.ArgumentNullException(nameof(func));
+      if (accumulator is null) throw new System.ArgumentNullException(nameof(accumulator));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
@@ -35,13 +35,13 @@ namespace Flux
 
           var index = 0;
 
-          var value = func(seed, store, index++);
+          var value = accumulator(seed, store, index++);
 
           while (e.MoveNext())
           {
             store.RemoveAt(0);
             store.Add(e.Current);
-            value = func(value, store, index++);
+            value = accumulator(value, store, index++);
           }
 
           while (tupleWrap-- > 0)
@@ -49,7 +49,7 @@ namespace Flux
             store.RemoveAt(0);
             store.Add(start[0]);
             start.RemoveAt(0);
-            value = func(value, store, index++);
+            value = accumulator(value, store, index++);
           }
 
           return resultSelector(value, index);
