@@ -2,18 +2,21 @@ namespace Flux
 {
   /// <summary>Kepler elements for computing orbits.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
+  /// <see cref="https://www.amsat.org/keplerian-elements-tutorial/"/>
   public struct KeplerianElements
     : System.IEquatable<KeplerianElements>
   {
+    public const double TheObliquityOfTheEclipticInDegrees = 23.4;
+
     /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
     private readonly double m_eccentricity;
     /// <summary>The longest diameter of an ellipse.</summary>
     private readonly double m_semiMajorAxis;
-    /// <summary>The angle between the orbital plane and the reference plane.</summary>
+    /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
     private readonly double m_inclination;
-    /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node).</summary>
+    /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
     private readonly double m_longitudeOfAscendingNode;
-    /// <summary>The angle between the ascending node and the periapsis.</summary>
+    /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
     private readonly double m_argumentOfPeriapsis;
     /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
     private readonly double m_trueAnomaly;
@@ -55,7 +58,7 @@ namespace Flux
         x1, x2, x3, 0,
         y1, y2, y3, 0,
         z1, z2, z3, 0,
-        0, 0, 0, 0
+        0, 0, 0, 1
       );
     }
 
@@ -66,10 +69,10 @@ namespace Flux
 
       return new System.Numerics.Matrix4x4
       (
-        (float)x1, (float)x2, (float)x3, 0f,
-        (float)y1, (float)y2, (float)y3, 0f,
-        (float)z1, (float)z2, (float)z3, 0f,
-        0f, 0f, 0f, 1f
+        (float)x1, (float)x2, (float)x3, 0,
+        (float)y1, (float)y2, (float)y3, 0,
+        (float)z1, (float)z2, (float)z3, 0,
+        0, 0, 0, 1
       );
     }
 
@@ -100,6 +103,20 @@ namespace Flux
       z2 = -si * co;
       z3 = ci;
     }
+    [System.Diagnostics.Contracts.Pure]
+    public static EulerAngles ToEulerAngles(CartesianCoordinate3 x, CartesianCoordinate3 y, CartesianCoordinate3 z)
+    {
+      x = CartesianCoordinate3.Normalize(x);
+      y = CartesianCoordinate3.Normalize(y);
+      z = CartesianCoordinate3.Normalize(z);
+
+      var alpha = System.Math.Atan2(-x.Y, z.X);
+      var beta = System.Math.Atan2(z.Z, System.Math.Sqrt(z.X * z.X + z.Y * z.Y));
+      var gamma = System.Math.Atan2(y.Z, x.Z);
+
+      return new(alpha, beta, gamma);
+    }
+
     [System.Diagnostics.Contracts.Pure]
     public static void ToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double longitudeOfAscendingNode, out double inclination, out double argumentOfPeriapsis)
     {
