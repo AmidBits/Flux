@@ -38,7 +38,8 @@ namespace Flux.Randomization
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     protected override double Sample()
-      => (double)(SampleUInt64() >> 11) / (double)(1L << 53);
+      => (double)(SampleUInt64() >> 11) / (double)(1UL << 53);
+      //=> System.BitConverter.UInt64BitsToDouble((0x3FFUL << 52) | (SampleUInt64() >> 12)) - 1; // Right shift 12 means upper bits bias.
 
     internal abstract ulong SampleUInt64();
 

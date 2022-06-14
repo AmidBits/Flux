@@ -7,7 +7,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (interval <= 0) throw new System.ArgumentOutOfRangeException(nameof(interval));
-      if (initialOffset <= 0) throw new System.ArgumentOutOfRangeException(nameof(initialOffset));
+      if (initialOffset < 0) throw new System.ArgumentOutOfRangeException(nameof(initialOffset));
 
       return source.Skip(initialOffset).Where((e, i) => i % interval == 0);
     }

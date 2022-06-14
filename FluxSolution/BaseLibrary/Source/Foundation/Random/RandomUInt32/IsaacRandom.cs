@@ -134,7 +134,7 @@ namespace Flux.Randomization
         m_randcnt = 0;
       }
 
-      return result;
+      return result & 0x7FFFFFFF;
     }
     #endregion
 
