@@ -39,11 +39,15 @@ namespace Flux.Randomization
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     protected override double Sample()
       => (double)(SampleUInt64() >> 11) / (double)(1UL << 53);
-      //=> System.BitConverter.UInt64BitsToDouble((0x3FFUL << 52) | (SampleUInt64() >> 12)) - 1; // Right shift 12 means upper bits bias.
+    //=> System.BitConverter.UInt64BitsToDouble((0x3FFUL << 52) | (SampleUInt64() >> 12)) - 1; // Right shift 12 means upper bits bias.
 
-    internal abstract ulong SampleUInt64();
-
+    /// <summary>Returns a random signed 64-bit integer in the range [0, long.MaxValue].</summary>
     public long SampleInt64()
-      => unchecked((long)SampleUInt64());
+      => unchecked((long)(SampleUInt64() & 0x7FFF_FFFF_FFFF_FFFF));
+
+    #region Implemented interfaces
+    /// <summary>Returns a random unsigned 64-bit integer.</summary>
+    internal abstract ulong SampleUInt64();
+    #endregion Implemented interfaces
   }
 }

@@ -19,7 +19,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Flux.Zamplez.RunISetOps(); return;
+      var h1 = new Flux.Histogram1( .1, .2, .3, .4, .5, .6, .7, .8, .9);
+      h1.Add(System.Linq.Enumerable.Range(0, 100000).Select(i =>
+      {
+        var d = (double)Flux.Randomization.Xoshiro256P.Default.Next(int.MaxValue) / int.MaxValue;
+        //System.Diagnostics.Debug.WriteLine(d);
+        return d;
+      }));
+      h1.Add(h1.MinValue - 0.1);
+      h1.Add(h1.MaxValue + 0.1);
 
       var g = new Flux.Model.Grid<int>(10, 10);
       g[2, 7] = 'A';

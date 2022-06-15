@@ -1,16 +1,17 @@
 namespace Flux
 {
   public interface IHistogram<TKey>
+    where TKey : System.IComparable<TKey>
   {
     void Add(System.Collections.Generic.IEnumerable<TKey> keys);
     System.ReadOnlySpan<int> Bins { get; }
     int Count { get; }
-    int MaxValue { get; }
-    int MinValue { get; }
+    TKey MaxValue { get; }
+    TKey MinValue { get; }
   }
 
   public sealed class Histogram1
-    //: IHistogram<double>
+    : IHistogram<double>
   {
     private readonly int[] m_bins;
 
@@ -35,19 +36,30 @@ namespace Flux
     public double MinValue
       => m_binRanges[0];
 
+    public void Add(double value)
+    {
+      //var v = value / MinValue;
+      //v += 1;
+      //var binIndex = System.Convert.ToInt32(v);
+      //var binIndex = System.Convert.ToInt32(Maths.Rescale(value, MinValue, MaxValue, 1, m_binRanges.Length));
+
+      //if (value < MinValue)
+      //  m_bins[0]++;
+      //else if (value > MaxValue)
+      //  m_bins[m_bins.Length - 1]++;
+      //else if (binIndex == 0)
+      //  throw new Exception();
+      //else // If within the boundary of min and max.
+      {
+        //var binIndex = System.Convert.ToInt32(Maths.Rescale(value, MinValue, MaxValue, 1, m_binRanges.Length));
+        var binIndex = System.Convert.ToInt32(value * 10);
+        m_bins[binIndex]++;
+      }
+    }
     public void Add(System.Collections.Generic.IEnumerable<double> values)
     {
       foreach (var value in values ?? throw new System.ArgumentNullException(nameof(values)))
-      {
-        var binIndex = System.Convert.ToInt32(Maths.Rescale(value, MinValue, MaxValue, 1, m_bins.Length));
-
-        if (value < MinValue)
-          m_bins[0]++;
-        else if (value > MaxValue)
-          m_bins[Count + 1]++;
-        else // If within the boundary of min and max.
-          m_bins[binIndex]++;
-      }
+        Add(value);
     }
   }
 
