@@ -8,51 +8,39 @@ namespace Flux
   {
     public const double TheObliquityOfTheEclipticInDegrees = 23.4;
 
-    /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
     private readonly double m_eccentricity;
-    /// <summary>The longest diameter of an ellipse.</summary>
     private readonly double m_semiMajorAxis;
-    /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-    private readonly double m_inclination;
-    /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-    private readonly double m_longitudeOfAscendingNode;
-    /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-    private readonly double m_argumentOfPeriapsis;
-    /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
+    private readonly double m_radInclination;
+    private readonly double m_radLongitudeOfAscendingNode;
+    private readonly double m_radArgumentOfPeriapsis;
     private readonly double m_trueAnomaly;
 
     public KeplerianElements(double semiMajorAxis, double eccentricity, double inclination, double longitudeOfAscendingNode, double argumentOfPeriapsis, double trueAnomaly)
     {
       m_semiMajorAxis = semiMajorAxis;
       m_eccentricity = eccentricity;
-      m_inclination = inclination;
-      m_longitudeOfAscendingNode = longitudeOfAscendingNode;
-      m_argumentOfPeriapsis = argumentOfPeriapsis;
+      m_radInclination = inclination;
+      m_radLongitudeOfAscendingNode = longitudeOfAscendingNode;
+      m_radArgumentOfPeriapsis = argumentOfPeriapsis;
       m_trueAnomaly = trueAnomaly;
     }
 
-    [System.Diagnostics.Contracts.Pure]
-    public double SemiMajorAxis
-      => m_semiMajorAxis;
-    [System.Diagnostics.Contracts.Pure]
-    public double Eccentricity
-      => m_eccentricity;
-    [System.Diagnostics.Contracts.Pure]
-    public double Inclination
-      => m_inclination;
-    [System.Diagnostics.Contracts.Pure]
-    public double LongitudeOfAscendingNode
-      => m_longitudeOfAscendingNode;
-    [System.Diagnostics.Contracts.Pure]
-    public double ArgumentOfPeriapsis
-      => m_argumentOfPeriapsis;
-    [System.Diagnostics.Contracts.Pure]
-    public double TrueAnomaly
-      => m_trueAnomaly;
+    /// <summary>The longest diameter of an ellipse.</summary>
+    [System.Diagnostics.Contracts.Pure] public double SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
+    /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
+    [System.Diagnostics.Contracts.Pure] public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+    /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
+    [System.Diagnostics.Contracts.Pure] public double Inclination { get => m_radInclination; init => m_radInclination = Angle.ConvertDegreeToRadian(value); }
+    /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
+    [System.Diagnostics.Contracts.Pure] public double LongitudeOfAscendingNode { get => m_radLongitudeOfAscendingNode; init => m_radLongitudeOfAscendingNode = Angle.ConvertDegreeToRadian(value); }
+    /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
+    [System.Diagnostics.Contracts.Pure] public double ArgumentOfPeriapsis { get => m_radArgumentOfPeriapsis; init => m_radArgumentOfPeriapsis = Angle.ConvertDegreeToRadian(value); }
+    /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
+    [System.Diagnostics.Contracts.Pure] public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
     public Flux.Matrix4 ToMatrix4()
     {
-      ToRotationMatrix(m_longitudeOfAscendingNode, m_inclination, m_argumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+      ToRotationMatrix(m_radLongitudeOfAscendingNode, m_radInclination, m_radArgumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
 
       return new Matrix4(
         x1, x2, x3, 0,
@@ -65,7 +53,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Matrix4x4 ToMatrix4x4()
     {
-      ToRotationMatrix(m_longitudeOfAscendingNode, m_inclination, m_argumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+      ToRotationMatrix(m_radLongitudeOfAscendingNode, m_radInclination, m_radArgumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
 
       return new System.Numerics.Matrix4x4
       (
@@ -139,7 +127,7 @@ namespace Flux
     // IEquatable
     [System.Diagnostics.Contracts.Pure]
     public bool Equals(KeplerianElements other)
-      => m_semiMajorAxis == other.m_semiMajorAxis && m_eccentricity == other.m_eccentricity && m_inclination == other.m_inclination && m_longitudeOfAscendingNode == other.m_longitudeOfAscendingNode && m_argumentOfPeriapsis == other.m_argumentOfPeriapsis && m_trueAnomaly == other.m_trueAnomaly;
+      => m_semiMajorAxis == other.m_semiMajorAxis && m_eccentricity == other.m_eccentricity && m_radInclination == other.m_radInclination && m_radLongitudeOfAscendingNode == other.m_radLongitudeOfAscendingNode && m_radArgumentOfPeriapsis == other.m_radArgumentOfPeriapsis && m_trueAnomaly == other.m_trueAnomaly;
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -148,10 +136,10 @@ namespace Flux
       => obj is KeplerianElements o && Equals(o);
     [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
-      => System.HashCode.Combine(m_semiMajorAxis, m_eccentricity, m_inclination, m_longitudeOfAscendingNode, m_argumentOfPeriapsis, m_trueAnomaly);
+      => System.HashCode.Combine(m_semiMajorAxis, m_eccentricity, m_radInclination, m_radLongitudeOfAscendingNode, m_radArgumentOfPeriapsis, m_trueAnomaly);
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {m_inclination}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis}, TrueAnomaly = {m_trueAnomaly} }}";
+      => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {m_radInclination}, LongitudeOfAscendingNode = {m_radLongitudeOfAscendingNode}, ArgumentOfPeriapsis = {m_radArgumentOfPeriapsis}, TrueAnomaly = {m_trueAnomaly} }}";
     #endregion Object overrides
   }
 }
