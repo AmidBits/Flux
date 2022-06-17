@@ -312,6 +312,13 @@ namespace Flux
     public static double AngleBetween(CartesianCoordinate3 a, CartesianCoordinate3 b)
       => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate3.EuclideanLength(a) * CartesianCoordinate3.EuclideanLength(b)), -1, 1));
 
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate3 ConvertEclipticToEquatorial(CartesianCoordinate3 ecliptic, double obliquityOfTheEcliptic) 
+      => Flux.Matrix4.Transform(new Flux.Matrix4(1, 0, 0, 0, 0, System.Math.Cos(obliquityOfTheEcliptic), -System.Math.Sin(obliquityOfTheEcliptic), 0, 0, System.Math.Sin(obliquityOfTheEcliptic), System.Math.Cos(obliquityOfTheEcliptic), 0, 0, 0, 0, 1), ecliptic);
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate3 ConvertEquatorialToEcliptic(CartesianCoordinate3 equatorial, double obliquityOfTheEcliptic)
+      => Flux.Matrix4.Transform(new Flux.Matrix4(1, 0, 0, 0, 0, System.Math.Cos(obliquityOfTheEcliptic), System.Math.Sin(obliquityOfTheEcliptic), 0, 0, -System.Math.Sin(obliquityOfTheEcliptic), System.Math.Cos(obliquityOfTheEcliptic), 0, 0, 0, 0, 1), equatorial);
+
     /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 CrossProduct(CartesianCoordinate3 a, CartesianCoordinate3 b)

@@ -1317,6 +1317,14 @@ namespace Flux
       m1.m_43 + (m2.m_43 - m1.m_43) * amount,
       m1.m_44 + (m2.m_44 - m1.m_44) * amount
     );
+
+    public static CartesianCoordinate3 Transform(Matrix4 matrix, CartesianCoordinate3 vector)
+      => new CartesianCoordinate3(
+        vector.X * matrix.M11 + vector.Y * matrix.M12 + vector.Z * matrix.M13,
+        vector.X * matrix.M21 + vector.Y * matrix.M22 + vector.Z * matrix.M23,
+        vector.X * matrix.M31 + vector.Y * matrix.M32 + vector.Z * matrix.M33
+      );
+
     /// <summary>Transforms the given matrix by applying the given Quaternion rotation.</summary>
     /// <param name="value">The source matrix to transform.</param>
     /// <param name="rotation">The rotation to apply.</param>
