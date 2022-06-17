@@ -94,7 +94,7 @@ namespace Flux
       second = (int)totalSeconds;
       totalSeconds -= second;
 
-      millisecond = (int)totalSeconds;
+      millisecond = (int)(totalSeconds * 1000);
     }
 
     /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>

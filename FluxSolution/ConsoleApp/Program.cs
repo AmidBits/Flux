@@ -19,7 +19,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var tle = new TwoLineElements() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
+      var jd = new Flux.JulianDate(50.28438588);
+      var jdts = jd.ToMomentUtc(ConversionCalendar.JulianCalendar);
+      var tle = new TwoLineElementSet2() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
 
 
       var g = new Flux.Model.Grid<int>(10, 10);
