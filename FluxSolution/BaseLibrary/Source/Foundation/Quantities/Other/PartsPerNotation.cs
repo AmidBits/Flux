@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this PartsPerNotationUnit source, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this PartsPerNotationUnit source, bool preferUnicode, bool useFullName = false)
       => useFullName ? source.ToString() : source switch
       {
         PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
@@ -136,8 +136,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_parts; init => m_parts = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
       => unit switch

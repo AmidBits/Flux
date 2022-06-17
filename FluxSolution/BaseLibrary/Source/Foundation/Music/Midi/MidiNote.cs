@@ -24,7 +24,7 @@ namespace Flux.Music.Midi
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     [System.Diagnostics.Contracts.Pure] public Frequency ToFrequency() => new(ConvertToFrequency(m_number));
-    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, bool useFullName = false, bool preferUnicode = false) => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
+    [System.Diagnostics.Contracts.Pure] public string ToString(string? format, bool preferUnicode = false, bool useFullName = false) => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>

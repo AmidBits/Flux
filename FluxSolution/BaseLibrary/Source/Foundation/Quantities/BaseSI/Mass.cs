@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this MassUnit unit, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this MassUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
         MassUnit.Milligram => preferUnicode ? "\u338E" : "mg",
@@ -115,8 +115,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(MassUnit unit = DefaultUnit, string? valueFormat = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(useFullName, preferUnicode)}";
+    public string ToUnitString(MassUnit unit = DefaultUnit, string? valueFormat = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(MassUnit unit = DefaultUnit)
       => unit switch

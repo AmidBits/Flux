@@ -1,5 +1,17 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static Matrix4 ToMatrix4(this System.Numerics.Matrix4x4 source)
+      => new
+      (
+        source.M11, source.M12, source.M13, source.M14,
+        source.M21, source.M22, source.M23, source.M24,
+        source.M31, source.M32, source.M33, source.M34,
+        source.M41, source.M42, source.M43, source.M44
+      );
+  }
+
   /// <summary></summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -365,6 +377,7 @@ namespace Flux
         { m_41, m_42, m_43, m_44 }
       };
     }
+
     public EulerAngles ToEulerAnglesTaitBryanZYX()
       => new(
         System.Math.Atan2(m_11, m_21),
@@ -376,6 +389,15 @@ namespace Flux
         System.Math.Atan2(-m_23, m_13),
         System.Math.Atan2(m_33, System.Math.Sqrt(1 - m_33 * m_33)),
         System.Math.Atan2(m_32, m_31)
+      );
+
+    public System.Numerics.Matrix4x4 ToMatrix4x4()
+      => new System.Numerics.Matrix4x4
+      (
+        (float)m_11, (float)m_12, (float)m_13, (float)m_14,
+        (float)m_21, (float)m_22, (float)m_23, (float)m_24,
+        (float)m_31, (float)m_32, (float)m_33, (float)m_34,
+        (float)m_41, (float)m_42, (float)m_43, (float)m_44
       );
 
     #region Static methods

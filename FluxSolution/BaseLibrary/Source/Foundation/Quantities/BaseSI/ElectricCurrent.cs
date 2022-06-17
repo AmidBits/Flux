@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this ElectricCurrentUnit unit, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this ElectricCurrentUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
         ElectricCurrentUnit.Ampere => "A",
@@ -115,8 +115,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
       => unit switch

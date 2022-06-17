@@ -42,7 +42,7 @@ namespace Flux
 
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
-    public static System.Collections.Generic.SortedDictionary<TKey, int> ToHistogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, out int sumOfAllFrequencies, System.Collections.Generic.IComparer<TKey>? comparer = null)
+    public static System.Collections.Generic.SortedDictionary<TKey, int> ToHistogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, out int sumOfAllFrequencies, System.Collections.Generic.IComparer<TKey> comparer)
       where TKey : notnull
       => ToHistogram(source, keySelector, (e, i) => 1, out sumOfAllFrequencies, comparer);
 

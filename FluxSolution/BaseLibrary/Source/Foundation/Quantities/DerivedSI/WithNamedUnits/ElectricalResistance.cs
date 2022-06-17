@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this ElectricalResistanceUnit unit, bool useNameInsteadOfSymbol = false, bool useUnicodeIfAvailable = false)
-      => useNameInsteadOfSymbol ? unit.ToString() : unit switch
+    public static string GetUnitString(this ElectricalResistanceUnit unit, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        ElectricalResistanceUnit.Ohm => useUnicodeIfAvailable ? "\u2126" : "ohm",
+        ElectricalResistanceUnit.Ohm => preferUnicode ? "\u2126" : "ohm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -127,8 +127,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString()}";
+    public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(ElectricalResistanceUnit unit = DefaultUnit)
       => unit switch

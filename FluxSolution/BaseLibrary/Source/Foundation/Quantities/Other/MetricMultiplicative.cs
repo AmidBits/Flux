@@ -4,7 +4,7 @@ namespace Flux
   {
     public static double GetUnitFactor(this MetricMultiplicativePrefix source)
       => System.Math.Pow(10, (int)source);
-    public static string GetUnitString(this MetricMultiplicativePrefix source, bool useFullName = false, bool preferUnicode = false)
+    public static string GetUnitString(this MetricMultiplicativePrefix source, bool preferUnicode, bool useFullName = false)
       => useFullName ? source.ToString() : source switch
       {
         MetricMultiplicativePrefix.Yotta => "Y",
@@ -92,8 +92,8 @@ namespace Flux
       => m_value = value / multiplicativePrefix.GetUnitFactor();
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool useFullName = false, bool preferUnicode = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))} {multiplicativePrefix.GetUnitString(useFullName, preferUnicode)}";
+    public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))} {multiplicativePrefix.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
     public double ToUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
       => m_value / multiplicativePrefix.GetUnitFactor();

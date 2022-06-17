@@ -69,9 +69,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(Ratio other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public double Value
-      => m_numerator / m_denominator;
+    [System.Diagnostics.Contracts.Pure] public double Value => m_numerator / m_denominator;
     #endregion Implemented interfaces
 
     #region Object overrides

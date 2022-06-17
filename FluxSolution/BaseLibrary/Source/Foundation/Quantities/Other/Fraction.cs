@@ -394,8 +394,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public bool Equals(Fraction other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
 
     // IQuantifiable<>
-    public double Value
-      => ToQuotient();
+    [System.Diagnostics.Contracts.Pure] public double Value => ToQuotient();
     #endregion Implemented interfaces
 
     #region Object overrides
