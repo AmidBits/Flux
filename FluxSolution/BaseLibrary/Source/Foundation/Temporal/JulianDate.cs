@@ -72,6 +72,24 @@ namespace Flux
       => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200 + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 
     #region Static methods
+    [System.Diagnostics.Contracts.Pure]
+    public static (int days, int hours, int minutes, double seconds) ConvertToParts(double julianDateFraction)
+    {
+      var days = (int)julianDateFraction;
+      julianDateFraction -= days;
+
+      julianDateFraction *= 24;
+      var hours = (int)julianDateFraction;
+      julianDateFraction -= hours;
+
+      julianDateFraction *= 60;
+      var minutes = (int)julianDateFraction;
+      julianDateFraction -= minutes;
+
+      var seconds = julianDateFraction * 60;
+
+      return (days, hours, minutes, seconds);
+    }
     /// <summary>Converts the time components to a Julian Date (JD) "time-of-day" fraction value. This is not the same as the number of seconds.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertFromTimeParts(int hour, int minute, int second, int millisecond)
