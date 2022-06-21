@@ -1,6 +1,6 @@
 # Flux
 
-As the name implies, this is an API of sorts, or rather a solution used for source file reference inside of other projects. 
+As the name implies, this is an API and a solution used for source file reference inside of other projects. 
 
 If using Visual Studio you can reference files external to your project, by editing the project file. E.g.:
 
