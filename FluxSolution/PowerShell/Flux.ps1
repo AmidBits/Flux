@@ -12,7 +12,7 @@ Clear-Host
 
 "PowerShell $($PSVersionTable.PSVersion) $($PSVersionTable.PSEdition) on $($PSVersionTable.OS) ($($PSVersionTable.Platform))"
 
-$vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net5.0' }
+$vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net6.0' }
 
 [string]$assemblyFileName = Expand-FileToPath "$($vsProjectReference.ProjectName).dll" $vsProjectReference
 
