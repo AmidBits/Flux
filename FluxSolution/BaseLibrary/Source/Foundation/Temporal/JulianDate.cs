@@ -73,7 +73,7 @@ namespace Flux
 
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
-    public static (int days, int hours, int minutes, double seconds) ConvertToParts(double julianDateFraction)
+    public static (int days, int hours, int minutes, double seconds) ConvertToJdf(double julianDateFraction)
     {
       var days = (int)julianDateFraction;
       julianDateFraction -= days;

@@ -2,6 +2,6 @@ namespace Flux
 {
 	public interface IFactorialFunction
 	{
-		System.Numerics.BigInteger ComputeProduct(System.Numerics.BigInteger number);
+		System.Numerics.BigInteger ComputeFactorial(System.Numerics.BigInteger number);
 	}
 }
