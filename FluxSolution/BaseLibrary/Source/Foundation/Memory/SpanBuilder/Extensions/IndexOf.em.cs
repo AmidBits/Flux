@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ReadOnlySpanEm
   {
     /// <summary>Reports the index of the first occurence that satisfy the predicate.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    public static int IndexOf<T>(ref this SpanBuilder<T> source, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -17,7 +17,7 @@ namespace Flux
     }
 
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int IndexOf<T>(ref this SpanBuilder<T> source, T value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
@@ -28,11 +28,11 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value)
-      => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static int IndexOf<T>(ref this SpanBuilder<T> source, T value)
+      => IndexOf(ref source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int IndexOf<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
@@ -41,13 +41,13 @@ namespace Flux
       var maxLength = source.Length - targetLength;
 
       for (var index = 0; index < maxLength; index++)
-        if (EqualsAt(source, index, target, 0, targetLength, equalityComparer))
+        if (EqualsAt(ref source, index, target, 0, targetLength, equalityComparer))
           return index;
 
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
-      => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static int IndexOf<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> value)
+      => IndexOf(ref source, value, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

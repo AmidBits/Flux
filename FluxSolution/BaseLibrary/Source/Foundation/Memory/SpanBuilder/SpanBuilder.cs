@@ -20,29 +20,29 @@ namespace Flux
       => source.ToString(startIndex, source.Length - startIndex);
   }
 
-  public ref partial struct SpanBuilder<TItem>
+  public ref partial struct SpanBuilder<T>
   {
-    private System.Span<TItem> m_buffer;
+    private System.Span<T> m_buffer;
     private int m_bufferPosition;
 
     public SpanBuilder(int capacity)
     {
-      m_buffer = System.Buffers.ArrayPool<TItem>.Shared.Rent(capacity);
+      m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(capacity);
       m_bufferPosition = 0;
     }
-    public SpanBuilder(System.ReadOnlySpan<TItem> value)
+    public SpanBuilder(System.ReadOnlySpan<T> value)
       : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
     {
       value.CopyTo(m_buffer);
       m_bufferPosition = value.Length;
     }
-    public SpanBuilder(System.Span<TItem> value)
+    public SpanBuilder(System.Span<T> value)
       : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
     {
       value.CopyTo(m_buffer);
       m_bufferPosition = value.Length;
     }
-    public SpanBuilder(TItem[] value)
+    public SpanBuilder(T[] value)
       : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
     {
       value.CopyTo(m_buffer);
@@ -62,11 +62,11 @@ namespace Flux
       => m_bufferPosition;
 
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
-    public ref TItem this[int index]
+    public ref T this[int index]
       => ref m_buffer[index];
 
     /// <summary>Appends the sequence of items to this instance.</summary>
-    public void Append(ReadOnlySpan<TItem> value)
+    public void Append(ReadOnlySpan<T> value)
     {
       if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);
 
@@ -75,12 +75,15 @@ namespace Flux
       m_bufferPosition += value.Length;
     }
 
-    public System.ReadOnlySpan<TItem> AsReadOnlySpan()
+    public System.ReadOnlySpan<T> AsReadOnlySpan()
       => m_buffer[..m_bufferPosition];
 
     /// <summary>Removes all items in this instance.</summary>
     public void Clear()
       => m_bufferPosition = 0;
+
+    //public static SpanBuilder<T> Create(T[] value)
+    //  => new SpanBuilder<T> { m_buffer = value, m_bufferPosition = value.Length };
 
     /// <summary>Ensures the buffer capacity. If needed it will grow the capacity.</summary>
     public void EnsureCapacity(int capacity)
@@ -94,14 +97,14 @@ namespace Flux
     {
       var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
 
-      var rented = System.Buffers.ArrayPool<TItem>.Shared.Rent(newCapacity);
+      var rented = System.Buffers.ArrayPool<T>.Shared.Rent(newCapacity);
       m_buffer.CopyTo(rented);
       m_buffer = rented;
-      System.Buffers.ArrayPool<TItem>.Shared.Return(rented);
+      System.Buffers.ArrayPool<T>.Shared.Return(rented);
     }
 
     /// <summary>Inserts the sequence of items into this instance at the specified index.</summary>
-    public void Insert(int index, System.ReadOnlySpan<TItem> value)
+    public void Insert(int index, System.ReadOnlySpan<T> value)
     {
       if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
 

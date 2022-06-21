@@ -71,7 +71,7 @@ namespace Flux
       {
         bi *= Symbols.Length;
 
-        var position = Symbols.IndexOf(rune);
+        var position = MemoryExtensions.IndexOf(Symbols, rune);
 
         bi += position > -1 ? position : throw new System.InvalidOperationException();
       }

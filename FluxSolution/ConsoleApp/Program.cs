@@ -19,19 +19,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var jd0 = new Flux.JulianDate(0);
-      System.Console.WriteLine(jd0);
-      System.Console.WriteLine(jd0.ToJulianDayNumber().ToDateString(ConversionCalendar.JulianCalendar));
-      System.Console.WriteLine(jd0.ToJulianDayNumber().ToDateString(ConversionCalendar.GregorianCalendar));
-      var jd1 = new Flux.JulianDayNumber(2451545);
-      System.Console.WriteLine(jd1.ToDateString(ConversionCalendar.JulianCalendar));
-      System.Console.WriteLine(jd1.ToDateString(ConversionCalendar.GregorianCalendar));
+      var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
+      //var x = new Flux.SpanBuilder<char>("Hello    World!");
+      var xros = x.AsReadOnlySpan();
+      var y = xros.NormalizeAdjacent(System.Array.Empty<int>());
+      var w = MemoryExtensions.IndexOf(y, 7);
+      var z = MemoryExtensions.IndexOf(y, new int[] { 5, 7 });
 
-      var jdt = System.DateTime.Now.ToMomentUtc().ToJulianDate();
 
-      var jd = new Flux.JulianDate(50.28438588);
-      var pts = JulianDate.ConvertToJdf(jd.Value);
-      var jdts = jd.ToMomentUtc(ConversionCalendar.JulianCalendar);
       var tle = new TwoLineElementSet2() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
 
 

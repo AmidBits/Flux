@@ -120,6 +120,6 @@ namespace Flux.Cultural.EnUs.PimaCounty
       => $"{GetType().Name} {{ {ToUnitString()} }}";
 
     public string ToUnitString()
-      => new System.Span<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToCharArray()).NormalizeAll(' ', char.IsWhiteSpace).ToString();
+      => new System.ReadOnlySpan<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToCharArray()).NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }
 }
