@@ -58,10 +58,10 @@ namespace Flux
         switch (calendar)
         {
           case ConversionCalendar.GregorianCalendar:
-            sb.Append(@"Gregorian Proleptic Calendar, ");
+            sb.Append(@"Gregorian Calendar, ");
             break;
           case ConversionCalendar.JulianCalendar:
-            sb.Append(@"Julian Proleptic Calendar, ");
+            sb.Append(@"Julian Calendar, ");
             break;
           default:
             throw new System.ArgumentOutOfRangeException(nameof(calendar));

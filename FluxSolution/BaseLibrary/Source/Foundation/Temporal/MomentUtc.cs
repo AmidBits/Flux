@@ -22,7 +22,7 @@ namespace Flux
     private readonly byte m_hour;
     private readonly byte m_minute;
     private readonly byte m_second;
-    private readonly short m_millisecond;
+    private readonly int m_millisecond;
 
     public MomentUtc(int year, int month, int day, int hour, int minute, int second, int millisecond)
     {
@@ -32,7 +32,7 @@ namespace Flux
       m_hour = hour >= 0 && hour < 24 ? (byte)hour : throw new System.ArgumentOutOfRangeException(nameof(hour));
       m_minute = minute >= 0 && minute <= 59 ? (byte)minute : throw new System.ArgumentOutOfRangeException(nameof(minute));
       m_second = second >= 0 && second <= 59 ? (byte)second : throw new System.ArgumentOutOfRangeException(nameof(second));
-      m_millisecond = millisecond >= 0 && millisecond <= 999 ? (short)millisecond : throw new System.ArgumentOutOfRangeException(nameof(millisecond));
+      m_millisecond = millisecond >= 0 && millisecond <= 999 ? millisecond : throw new System.ArgumentOutOfRangeException(nameof(millisecond));
     }
     public MomentUtc(int year, int month, int day, int hour, int minute, int second)
       : this(year, month, day, hour, minute, second, 0)

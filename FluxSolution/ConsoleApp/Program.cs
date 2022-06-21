@@ -19,6 +19,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var jd0 = new Flux.JulianDate(0);
+      System.Console.WriteLine(jd0);
+      System.Console.WriteLine(jd0.ToJulianDayNumber().ToDateString(ConversionCalendar.JulianCalendar));
+      System.Console.WriteLine(jd0.ToJulianDayNumber().ToDateString(ConversionCalendar.GregorianCalendar));
+      var jd1 = new Flux.JulianDayNumber(2451545);
+      System.Console.WriteLine(jd1.ToDateString(ConversionCalendar.JulianCalendar));
+      System.Console.WriteLine(jd1.ToDateString(ConversionCalendar.GregorianCalendar));
+
       var jdt = System.DateTime.Now.ToMomentUtc().ToJulianDate();
 
       var jd = new Flux.JulianDate(50.28438588);
