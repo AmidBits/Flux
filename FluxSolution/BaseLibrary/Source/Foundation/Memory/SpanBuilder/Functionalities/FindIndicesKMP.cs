@@ -80,7 +80,7 @@
     }
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public System.Collections.Generic.List<int> KnuthMorrisPrattSearch(System.ReadOnlySpan<T> target)
+    public System.Collections.Generic.List<int> FindIndicesKMP(System.ReadOnlySpan<T> target)
       => FindIndicesKMP(target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

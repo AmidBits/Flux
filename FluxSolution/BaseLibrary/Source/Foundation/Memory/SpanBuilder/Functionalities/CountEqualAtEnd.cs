@@ -11,11 +11,13 @@ namespace Flux
       var sourceIndex = m_bufferPosition;
       var targetIndex = target.Length;
 
-      for (var atEnd = 0; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
-        if (!equalityComparer.Equals(m_buffer[sourceIndex], target[targetIndex]))
-          return atEnd;
+      var atEnd = 0;
 
-      return 0;
+      for (; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
+        if (!equalityComparer.Equals(m_buffer[sourceIndex], target[targetIndex]))
+          break;
+
+      return atEnd;
     }
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the default comparer.</summary>
     public int CountEqualAtEnd(System.ReadOnlySpan<T> target)

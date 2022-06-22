@@ -11,7 +11,7 @@ namespace Flux
       var indexLt = -1;
       var indexGt = -1;
 
-      for (var index = m_bufferPosition - 1; index >= 0; index--)
+      for (var index = 0; index < m_bufferPosition; index++)
       {
         var value = valueSelector(m_buffer[index]);
 

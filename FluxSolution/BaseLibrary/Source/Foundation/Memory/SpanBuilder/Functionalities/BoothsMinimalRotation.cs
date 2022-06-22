@@ -6,11 +6,9 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
     public int BoothsMinimalRotation(System.Collections.Generic.IComparer<T> comparer)
     {
-      var sourceLength = m_bufferPosition;
-
-      var s = new T[sourceLength * 2]; // Double up the string, to avoid using index remainder.
-      CopyTo(s);
-      CopyTo(s, sourceLength);
+      var s = new T[m_bufferPosition * 2]; // Double up the string, to avoid using index remainder.
+      AsReadOnlySpan().CopyTo(s);
+      AsReadOnlySpan().CopyTo(s, m_bufferPosition);
 
       var sLength = s.Length;
 

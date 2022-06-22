@@ -69,7 +69,8 @@ namespace Flux
     /// <summary>Adds the value to this instance.</summary>
     public void Append(T value)
     {
-      if (m_bufferPosition + 1 is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);
+      if (m_bufferPosition + 1 is var needed && needed > m_buffer.Length)
+        EnsureCapacity(needed * 2);
 
       m_buffer[m_bufferPosition] = value;
 
@@ -78,7 +79,7 @@ namespace Flux
     /// <summary>Adds the sequence of items to this instance.</summary>
     public void Append(ReadOnlySpan<T> value)
     {
-      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);
+      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) EnsureCapacity(needed * 2);
 
       value.CopyTo(m_buffer[m_bufferPosition..]);
 
@@ -95,30 +96,52 @@ namespace Flux
     //public static SpanBuilder<T> Create(T[] value)
     //  => new SpanBuilder<T> { m_buffer = value, m_bufferPosition = value.Length };
 
-    /// <summary>Ensures the buffer capacity. If needed it will grow the capacity.</summary>
-    public void EnsureCapacity(int capacity)
-    {
-      if (capacity > m_buffer.Length)
-        GrowCapacity(capacity);
-    }
-
     /// <summary>Grows the buffer capacity to at least that specified.</summary>
-    private void GrowCapacity(int capacity = 0)
+    private int EnsureCapacity(int capacity = 0)
     {
-      var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
+      var realCapacity = m_buffer.Length;
 
-      var rented = System.Buffers.ArrayPool<T>.Shared.Rent(newCapacity);
-      m_buffer.CopyTo(rented);
-      m_buffer = rented;
-      System.Buffers.ArrayPool<T>.Shared.Return(rented);
+      if (capacity > realCapacity)
+      {
+        if (realCapacity == 0)
+          realCapacity = 32;
+
+        while (capacity > realCapacity)
+          realCapacity <<= 1;
+
+        //var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
+
+        var rented = System.Buffers.ArrayPool<T>.Shared.Rent(realCapacity);
+        m_buffer.CopyTo(rented);
+        m_buffer = rented;
+        System.Buffers.ArrayPool<T>.Shared.Return(rented);
+      }
+
+      return realCapacity;
     }
 
+    /// <summary>Inserts the value into this instance at the specified index.</summary>
+    public void Insert(int index, T value)
+    {
+      if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
+
+      EnsureCapacity(m_bufferPosition + 1);
+
+      var moveIndex = index + 1;
+
+      m_buffer[index..m_bufferPosition].CopyTo(m_buffer[moveIndex..]); // Move right side of old content.
+
+      m_buffer[m_bufferPosition] = value;
+
+      m_bufferPosition++;
+    }
     /// <summary>Inserts the sequence of items into this instance at the specified index.</summary>
     public void Insert(int index, System.ReadOnlySpan<T> value)
     {
       if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
 
-      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed);
+      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length)
+        EnsureCapacity(needed);
 
       var endIndex = index + value.Length;
 

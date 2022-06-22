@@ -18,6 +18,26 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+      var bmr = new Flux.SpanBuilder<char>("bbaaccaadd");
+      System.Console.WriteLine($"{nameof(bmr.BoothsMinimalRotation)} = {bmr.BoothsMinimalRotation()}");
+
+      var hw = new Flux.SpanBuilder<char>("Hello 2 World");
+      //                                   01234567890
+
+      System.Console.WriteLine($"{nameof(hw.CountEqualAtEnd)} = {hw.CountEqualAtEnd(" World")}");
+      System.Console.WriteLine($"{nameof(hw.CountEqualAtStart)} = {hw.CountEqualAtStart("Hello ")}");
+      System.Console.WriteLine($"{nameof(hw.EndsWith)} = {hw.EndsWith(" World")}");
+      System.Console.WriteLine($"{nameof(hw.EqualsAt)} = {hw.EqualsAt(5, " ")}");
+      System.Console.WriteLine($"{nameof(hw.FindIndexBMH)} = {hw.FindIndexBMH("l")}");
+      System.Console.WriteLine($"{nameof(hw.FindIndicesKMP)} = {string.Join(',', hw.FindIndicesKMP("l"))}");
+      System.Console.WriteLine($"{nameof(hw.GetExtremum)} = {hw.GetExtremum(v => v)}");
+      System.Console.WriteLine($"{nameof(hw.GetInfimumAndSupremum)} = {hw.GetInfimumAndSupremum('o', v => v)}");
+      System.Console.WriteLine($"{nameof(hw.IndexOf)} = {hw.IndexOf(" ")}");
+      System.Console.WriteLine($"{nameof(hw.IndexOfAny)} = {hw.IndexOfAny('d', 'r')}");
+      System.Console.WriteLine($"{nameof(hw.IndicesOfAll)} = {string.Join(',', hw.IndicesOfAll('d', 'r', 'l'))}");
+      hw.InsertOrdinalIndicatorSuffix((s1, s2) => true);
+      System.Console.WriteLine($"InsertOrdinalIndicatorSuffix = {hw.AsReadOnlySpan()}");
+      System.Console.WriteLine($"{nameof(hw.StartsWith)} = {hw.StartsWith("Hello ")}");
 
       var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
       //var x = new Flux.SpanBuilder<char>("Hello    World!");

@@ -56,7 +56,7 @@
     }
     /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public int BoyerMooreHorspoolSearch(System.ReadOnlySpan<T> target)
+    public int FindIndexBMH(System.ReadOnlySpan<T> target)
       => FindIndexBMH(target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
