@@ -5,9 +5,9 @@ namespace Flux
     /// <summary>Attempts to select a random element from the span in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public bool TryRandomElement(out T result, System.Random random)
     {
-      if (random is not null && m_bufferPosition is var sourceLength && sourceLength > 0)
+      if (random is not null && m_bufferPosition > 0)
       {
-        result = m_buffer[random.Next(sourceLength)];
+        result = m_buffer[random.Next(m_bufferPosition)];
         return true;
       }
 

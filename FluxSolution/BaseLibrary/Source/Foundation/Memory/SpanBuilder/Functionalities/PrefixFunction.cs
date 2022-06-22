@@ -6,11 +6,9 @@ namespace Flux
     // https://cp-algorithms.com/string/prefix-function.html
     public int[] PrefixFunction(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var sourceLength = m_bufferPosition;
+      var p = new int[m_bufferPosition];
 
-      var p = new int[sourceLength];
-
-      for (int i = 1; i < sourceLength; i++)
+      for (int i = 1; i < m_bufferPosition; i++)
       {
         var j = p[i - 1];
 

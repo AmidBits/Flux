@@ -66,7 +66,16 @@ namespace Flux
     public ref T this[int index]
       => ref m_buffer[index];
 
-    /// <summary>Appends the sequence of items to this instance.</summary>
+    /// <summary>Adds the value to this instance.</summary>
+    public void Append(T value)
+    {
+      if (m_bufferPosition + 1 is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);
+
+      m_buffer[m_bufferPosition] = value;
+
+      m_bufferPosition++;
+    }
+    /// <summary>Adds the sequence of items to this instance.</summary>
     public void Append(ReadOnlySpan<T> value)
     {
       if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) GrowCapacity(needed * 2);

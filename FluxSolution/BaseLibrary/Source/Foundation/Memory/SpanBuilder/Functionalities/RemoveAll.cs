@@ -7,13 +7,11 @@ namespace Flux
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var sourceLength = m_bufferPosition;
-
-      var target = new T[sourceLength];
+      var target = new T[m_bufferPosition];
 
       var removedIndex = 0;
 
-      for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
+      for (var sourceIndex = 0; sourceIndex < m_bufferPosition; sourceIndex++)
       {
         var sourceValue = m_buffer[sourceIndex];
 
