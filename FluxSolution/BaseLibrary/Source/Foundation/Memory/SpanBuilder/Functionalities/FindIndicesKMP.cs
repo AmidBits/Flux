@@ -1,10 +1,10 @@
 ﻿namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public ref partial struct SpanBuilder<T>
   {
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public System.Collections.Generic.List<int> FindIndicesKMP(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       var table = CreateTable(target, equalityComparer);
 
@@ -13,12 +13,12 @@
       var sourceIndex = 0;
       var targetIndex = 0;
 
-      var sourceLength = source.Length;
+      var sourceLength = m_bufferPosition;
       var targetLength = target.Length;
 
       while (sourceIndex < sourceLength)
       {
-        if (equalityComparer.Equals(target[targetIndex], source[sourceIndex]))
+        if (equalityComparer.Equals(target[targetIndex], m_buffer[sourceIndex]))
         {
           sourceIndex++;
           targetIndex++;
@@ -80,7 +80,7 @@
     }
     /// <summary>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattSearch<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
-      => FindIndicesKMP(ref source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    public System.Collections.Generic.List<int> KnuthMorrisPrattSearch(System.ReadOnlySpan<T> target)
+      => FindIndicesKMP(target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

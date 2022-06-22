@@ -1,15 +1,15 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public ref partial struct SpanBuilder<T>
   {
     /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny<T>(ref this SpanBuilder<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
+    public int IndexOfAny(System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      for (var index = 0; index < source.Length; index++)
+      for (var index = 0; index < m_bufferPosition; index++)
       {
-        var character = source[index];
+        var character = m_buffer[index];
 
         if (System.Array.Exists(values, c => equalityComparer.Equals(c, character)))
           return index;
@@ -18,7 +18,7 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the default comparer.</summary>
-    public static int IndexOfAny<T>(ref this SpanBuilder<T> source, params T[] values)
-      => IndexOfAny(ref source, System.Collections.Generic.EqualityComparer<T>.Default, values);
+    public int IndexOfAny(params T[] values)
+      => IndexOfAny(System.Collections.Generic.EqualityComparer<T>.Default, values);
   }
 }

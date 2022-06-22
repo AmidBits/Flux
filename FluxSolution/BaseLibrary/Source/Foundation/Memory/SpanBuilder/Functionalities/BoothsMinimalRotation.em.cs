@@ -1,16 +1,16 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public ref partial struct SpanBuilder<T>
   {
     /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
-    public static int BoothsMinimalRotation<T>(ref this SpanBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public int BoothsMinimalRotation(System.Collections.Generic.IComparer<T> comparer)
     {
-      var sourceLength = source.Length;
+      var sourceLength = m_bufferPosition;
 
       var s = new T[sourceLength * 2]; // Double up the string, to avoid using index remainder.
-      source.CopyTo(s);
-      source.CopyTo(s, sourceLength);
+      CopyTo(s);
+      CopyTo(s, sourceLength);
 
       var sLength = s.Length;
 
@@ -48,7 +48,7 @@ namespace Flux
     }
     /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the default comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
-    public static int BoothsMinimalRotation<T>(ref this SpanBuilder<T> source)
-      => BoothsMinimalRotation(ref source, System.Collections.Generic.Comparer<T>.Default);
+    public int BoothsMinimalRotation()
+      => BoothsMinimalRotation(System.Collections.Generic.Comparer<T>.Default);
   }
 }

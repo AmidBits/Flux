@@ -1,25 +1,24 @@
 ﻿namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public ref partial struct SpanBuilder<T>
   {
     /// <summary>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int FindIndexBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      where T : notnull
+    public int FindIndexBMH(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var skippable = CreateTable(source, target);
+      var skippable = CreateTable(AsReadOnlySpan(), target);
 
       var skip = 0;
 
-      var sourceLength = source.Length;
+      var sourceLength = m_bufferPosition;
       var targetLength = target.Length;
 
       while (sourceLength - skip >= targetLength)
       {
-        if (Same(source[skip..], target, targetLength, equalityComparer))
+        if (Same(AsReadOnlySpan()[skip..], target, targetLength, equalityComparer))
           return skip;
 
-        skip += skippable[source[skip + targetLength - 1]];
+        skip += skippable[m_buffer[skip + targetLength - 1]];
       }
 
       return -1;
@@ -57,8 +56,7 @@
     }
     /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int BoyerMooreHorspoolSearch<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
-      where T : notnull
-      => FindIndexBMH(ref source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    public int BoyerMooreHorspoolSearch(System.ReadOnlySpan<T> target)
+      => FindIndexBMH(target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
