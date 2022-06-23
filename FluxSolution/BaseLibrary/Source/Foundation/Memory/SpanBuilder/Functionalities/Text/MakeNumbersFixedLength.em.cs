@@ -1,11 +1,9 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class ExtensionMethods
   {
-    public static System.Text.StringBuilder MakeIntegersFixedLength(this System.Text.StringBuilder source, int length)
+    public static void MakeNumbersFixedLength(ref this SpanBuilder<char> source, int length)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       bool wasDigit = false;
       var digitCount = 0;
 
@@ -14,7 +12,7 @@ namespace Flux
         var isDigit = char.IsDigit(source[index]);
 
         if (!isDigit && wasDigit && digitCount < length)
-          source.Insert(index + 1, @"0", length - digitCount);
+          source.Insert(index + digitCount, '0', length - digitCount);
         else if (isDigit && !wasDigit)
           digitCount = 1;
         else
@@ -23,9 +21,7 @@ namespace Flux
         wasDigit = isDigit;
       }
 
-      if (wasDigit) source.Insert(0, @"0", length - digitCount);
-
-      return source;
+      if (wasDigit) source.Insert(0, '0', length - digitCount);
     }
   }
 }

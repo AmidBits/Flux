@@ -67,14 +67,12 @@ namespace Flux
       => ref m_buffer[index];
 
     /// <summary>Adds the value to this instance.</summary>
-    public void Append(T value)
+    public void Append(T value, int count = 1)
     {
-      if (m_bufferPosition + 1 is var needed && needed > m_buffer.Length)
-        EnsureCapacity(needed * 2);
+      EnsureCapacity(m_bufferPosition + count);
 
-      m_buffer[m_bufferPosition] = value;
-
-      m_bufferPosition++;
+      while (count-- > 0)
+        m_buffer[m_bufferPosition++] = value;
     }
     /// <summary>Adds the sequence of items to this instance.</summary>
     public void Append(ReadOnlySpan<T> value)
@@ -121,19 +119,20 @@ namespace Flux
     }
 
     /// <summary>Inserts the value into this instance at the specified index.</summary>
-    public void Insert(int index, T value)
+    public void Insert(int index, T value, int count = 1)
     {
       if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
 
-      EnsureCapacity(m_bufferPosition + 1);
+      EnsureCapacity(m_bufferPosition + count);
 
-      var moveIndex = index + 1;
+      var moveIndex = index + count;
 
       m_buffer[index..m_bufferPosition].CopyTo(m_buffer[moveIndex..]); // Move right side of old content.
 
-      m_buffer[m_bufferPosition] = value;
+      m_bufferPosition += count; // Update the position (length) before copying data (count is altered below).
 
-      m_bufferPosition++;
+      while (count-- > 0)
+        m_buffer[index++] = value;
     }
     /// <summary>Inserts the sequence of items into this instance at the specified index.</summary>
     public void Insert(int index, System.ReadOnlySpan<T> value)

@@ -194,7 +194,7 @@ namespace Text
     public void MakeIntegersFixedLength()
     {
       var expected = @"The 0003 item is before the 0013.";
-      var actual = new System.Text.StringBuilder(@"The 3 item is before the 13.").MakeIntegersFixedLength(4).ToString();
+      var actual = new System.Text.StringBuilder(@"The 3 item is before the 13.").MakeNumbersFixedLength(4).ToString();
       Assert.AreEqual(expected, actual);
     }
 

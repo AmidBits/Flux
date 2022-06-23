@@ -35,9 +35,13 @@ namespace ConsoleApp
       System.Console.WriteLine($"{nameof(hw.IndexOf)} = {hw.IndexOf(" ")}");
       System.Console.WriteLine($"{nameof(hw.IndexOfAny)} = {hw.IndexOfAny('d', 'r')}");
       System.Console.WriteLine($"{nameof(hw.IndicesOfAll)} = {string.Join(',', hw.IndicesOfAll('d', 'r', 'l'))}");
+      hw.MakeNumbersFixedLength(4);
+      System.Console.WriteLine($"MakeIntegersFixedLength = {hw.AsReadOnlySpan()}");
       hw.InsertOrdinalIndicatorSuffix((s1, s2) => true);
       System.Console.WriteLine($"InsertOrdinalIndicatorSuffix = {hw.AsReadOnlySpan()}");
       System.Console.WriteLine($"{nameof(hw.StartsWith)} = {hw.StartsWith("Hello ")}");
+      hw.PadRight(20, '-');
+      System.Console.WriteLine($"PadRight = {hw.AsReadOnlySpan()}");
 
       var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
       //var x = new Flux.SpanBuilder<char>("Hello    World!");
