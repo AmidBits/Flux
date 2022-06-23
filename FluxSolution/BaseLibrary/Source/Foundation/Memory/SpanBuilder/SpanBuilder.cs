@@ -155,13 +155,15 @@ namespace Flux
     public void Remove(int startIndex, int length)
     {
       if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      if (length < 0 || startIndex + length is var endIndex && endIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(length));
+      if (length < 0 || startIndex + length is var endIndex && endIndex > m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(length));
 
       m_buffer[(startIndex + length)..m_bufferPosition].CopyTo(m_buffer[startIndex..]);
 
       m_bufferPosition -= length;
 
       m_buffer.Slice(m_bufferPosition, length).Clear();
+
+      m_buffer.Slice(m_bufferPosition).Clear();
     }
   }
 }

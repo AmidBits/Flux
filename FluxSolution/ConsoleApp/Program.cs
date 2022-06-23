@@ -41,7 +41,11 @@ namespace ConsoleApp
       System.Console.WriteLine($"InsertOrdinalIndicatorSuffix = {hw.AsReadOnlySpan()}");
       System.Console.WriteLine($"{nameof(hw.StartsWith)} = {hw.StartsWith("Hello ")}");
       hw.PadRight(20, '-');
-      System.Console.WriteLine($"PadRight = {hw.AsReadOnlySpan()}");
+      System.Console.WriteLine($"PadRight(20) = {hw.AsReadOnlySpan()}");
+      hw.PadLeft(23, '-');
+      System.Console.WriteLine($"PadLeft(23) = {hw.AsReadOnlySpan()}");
+      hw.PadEven(28, "LEFT", "RIGHT");
+      System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
 
       var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
       //var x = new Flux.SpanBuilder<char>("Hello    World!");
