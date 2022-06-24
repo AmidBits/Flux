@@ -6,15 +6,15 @@ namespace Flux.Metrical
   /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class DamerauLevenshteinDistance<T>
-    : AMetrical<T>, IEditDistanceEquatable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : IEditDistanceBacktrackable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
     where T : notnull
   {
     public DamerauLevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public DamerauLevenshteinDistance()
-      : base()
-    { }
+      => EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
+
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -144,7 +144,7 @@ namespace Flux.Metrical
     [System.Diagnostics.Contracts.Pure]
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+      ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
       if (sourceCount == 0) return targetCount;
       else if (targetCount == 0) return sourceCount;

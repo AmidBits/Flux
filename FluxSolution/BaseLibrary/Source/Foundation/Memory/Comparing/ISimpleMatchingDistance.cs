@@ -1,4 +1,4 @@
-namespace Flux.Metrical
+namespace Flux
 {
   /// <summary>Represents the simple matching distance (SMD) which measures dissimilarity and diversity of sample sets. The simple matching coefficient (SMC) can also be derived from this (SMC = 1 - SMD).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Simple_matching_coefficient"/>

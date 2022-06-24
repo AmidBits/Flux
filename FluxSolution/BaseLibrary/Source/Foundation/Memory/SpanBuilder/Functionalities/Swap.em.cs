@@ -11,7 +11,7 @@ namespace Flux
     /// <summary>Swap two elements by the specified indices.</summary>
     public void Swap(int indexA, int indexB)
     {
-      if (Length == 0)
+      if (m_bufferPosition == 0)
         throw new System.ArgumentException(@"The span builder is empty.");
       else if (indexA < 0 || indexA >= Length)
         throw new System.ArgumentOutOfRangeException(nameof(indexA));
@@ -22,9 +22,9 @@ namespace Flux
     }
 
     public void SwapFirstWith(int index)
-      => Swap(0, index);
+      => SwapImpl(0, index);
 
     public void SwapLastWith(int index)
-      => Swap(index, Length - 1);
+      => SwapImpl(index, m_bufferPosition - 1);
   }
 }

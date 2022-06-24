@@ -6,16 +6,14 @@ namespace Flux
     // https://cp-algorithms.com/string/z-function.html
     public int[] ZFunction(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      var sourceLength = m_bufferPosition;
+      var z = new int[m_bufferPosition];
 
-      var z = new int[sourceLength];
-
-      for (int i = 1, l = 0, r = 0; i < sourceLength; i++)
+      for (int i = 1, l = 0, r = 0; i < m_bufferPosition; i++)
       {
         if (i <= r)
           z[i] = System.Math.Min(r - i + 1, z[i - l]);
 
-        while (i + z[i] < sourceLength && equalityComparer.Equals(m_buffer[z[i]], m_buffer[i + z[i]]))
+        while (i + z[i] < m_bufferPosition && equalityComparer.Equals(m_buffer[z[i]], m_buffer[i + z[i]]))
           z[i]++;
 
         if (i + z[i] - 1 > r)

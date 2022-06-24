@@ -8,7 +8,7 @@ namespace Flux
     {
       var p = new int[m_bufferPosition];
 
-      for (int i = 1; i < m_bufferPosition; i++)
+      for (var i = 1; i < m_bufferPosition; i++)
       {
         var j = p[i - 1];
 

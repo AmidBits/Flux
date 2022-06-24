@@ -18,8 +18,11 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
       var bmr = new Flux.SpanBuilder<char>("bbaaccaadd");
-      System.Console.WriteLine($"{nameof(bmr.BoothsMinimalRotation)} = {bmr.BoothsMinimalRotation()}");
+      var bmr2 = (Span<char>)bmr.ToString(0).ToCharArray();
+      System.Console.WriteLine($"{nameof(Flux.BoothsAlgorithm)} = {bmr.FindMinimalRotationB()}");
+
 
       var hw = new Flux.SpanBuilder<char>("Hello 2 World");
       //                                   01234567890
@@ -28,8 +31,8 @@ namespace ConsoleApp
       System.Console.WriteLine($"{nameof(hw.CountEqualAtStart)} = {hw.CountEqualAtStart("Hello ")}");
       System.Console.WriteLine($"{nameof(hw.EndsWith)} = {hw.EndsWith(" World")}");
       System.Console.WriteLine($"{nameof(hw.EqualsAt)} = {hw.EqualsAt(5, " ")}");
-      System.Console.WriteLine($"{nameof(hw.FindIndexBMH)} = {hw.FindIndexBMH("l")}");
-      System.Console.WriteLine($"{nameof(hw.FindIndicesKMP)} = {string.Join(',', hw.FindIndicesKMP("l"))}");
+      System.Console.WriteLine($"{nameof(Flux.BoyerMooreHorspoolAlgorithm)} = {hw.FindIndexOfBMH("l")}");
+      System.Console.WriteLine($"{nameof(Flux.KnuthMorrisPrattAlgorithm)} = {string.Join(',', hw.FindIndicesOfKMP("l"))}");
       System.Console.WriteLine($"{nameof(hw.GetExtremum)} = {hw.GetExtremum(v => v)}");
       System.Console.WriteLine($"{nameof(hw.GetInfimumAndSupremum)} = {hw.GetInfimumAndSupremum('o', v => v)}");
       System.Console.WriteLine($"{nameof(hw.IndexOf)} = {hw.IndexOf(" ")}");
@@ -46,6 +49,10 @@ namespace ConsoleApp
       System.Console.WriteLine($"PadLeft(23) = {hw.AsReadOnlySpan()}");
       hw.PadEven(28, "LEFT", "RIGHT");
       System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
+
+      hw.CircularCopyTo(bmr2, 0, hw.Length);
+
+      var map = hw.CreateIndexMap(item => item);
 
       var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
       //var x = new Flux.SpanBuilder<char>("Hello    World!");

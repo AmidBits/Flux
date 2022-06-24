@@ -4,18 +4,18 @@ namespace Flux.Metrical
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistanceCustom<T>
-    : AMetrical<T>, IEditDistanceCustomEquatable<T>
+    : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
   {
     public double CostOfDeletion { get; set; } = 1;
     public double CostOfInsertion { get; set; } = 1;
     public double CostOfSubstitution { get; set; } = 1;
 
     public LevenshteinDistanceCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      : base(equalityComparer)
-    { }
+      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
     public LevenshteinDistanceCustom()
-      : base()
-    { }
+      => EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
+
+    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -45,7 +45,7 @@ namespace Flux.Metrical
     [System.Diagnostics.Contracts.Pure]
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+      ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
       if (sourceCount == 0) return targetCount;
       else if (targetCount == 0) return sourceCount;

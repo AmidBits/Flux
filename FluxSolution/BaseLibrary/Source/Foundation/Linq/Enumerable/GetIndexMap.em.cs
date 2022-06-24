@@ -29,7 +29,7 @@ namespace Flux
 
       return map;
     }
-    /// <summary>Creates a new dictionary with all indices of all target occurences in the source. Uses the default equality comparer.</summary>
+    /// <summary>Creates a new dictionary with all indices of all source occurences in the source. Uses the default equality comparer.</summary>
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.List<int>> GetIndexMap<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IEnumerable<TSource> target, System.Func<TSource, TKey> keySelector)
       where TKey : notnull
       => GetIndexMap(source, target, keySelector, System.Collections.Generic.EqualityComparer<TKey>.Default);

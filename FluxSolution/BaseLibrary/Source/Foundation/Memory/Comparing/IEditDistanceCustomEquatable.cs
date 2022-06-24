@@ -1,4 +1,4 @@
-namespace Flux.Metrical
+namespace Flux
 {
 	/// <summary>The edit distance is a way of quantifying how dissimilar two sequences (e.g., words) are to one another by counting the minimum number of operations required to transform one sequence into the other.</summary>
 	/// <see cref="https://en.wikipedia.org/wiki/Edit_distance"/>
