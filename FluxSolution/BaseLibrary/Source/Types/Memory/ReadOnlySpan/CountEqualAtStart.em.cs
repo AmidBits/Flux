@@ -9,10 +9,12 @@ namespace Flux
 
       var minLength = System.Math.Min(source.Length, target.Length);
 
-      var index = 0;
-      while (index < minLength && equalityComparer.Equals(source[index], target[index]))
-        index++;
-      return index;
+      var count = 0;
+
+      while (count < minLength && equalityComparer.Equals(source[count], target[count]))
+        count++;
+
+      return count;
     }
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the default comparer.</summary>
     public static int CountEqualAtStart<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

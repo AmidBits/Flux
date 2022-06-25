@@ -15,7 +15,7 @@ namespace Types
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = 3;
-      var actual = span.BoyerMooreHorspoolSearch(new int[] { 10, 20, 30 });
+      var actual = BoyerMooreHorspoolAlgorithm.FindIndexBMH(span, new int[] { 10, 20, 30 });
 
       Assert.AreEqual(expected, actual);
     }
@@ -52,7 +52,7 @@ namespace Types
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = new int[] { 3, 11 };
-      var actual = span.KnuthMorrisPrattSearch(new int[] { 10, 20, 30 });
+      var actual = KnuthMorrisPrattAlgorithm.FindIndicesKMP(span, new int[] { 10, 20, 30 });
 
       Assert.AreEqual(expected.Length, actual.Count, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");
