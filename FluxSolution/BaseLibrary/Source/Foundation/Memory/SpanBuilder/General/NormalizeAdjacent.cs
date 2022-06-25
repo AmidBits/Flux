@@ -3,31 +3,31 @@ namespace Flux
   public ref partial struct SpanBuilder<T>
   {
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
-    public System.ReadOnlySpan<T> NormalizeAdjacent(System.Collections.Generic.IEqualityComparer<T> equalityComparer, System.Collections.Generic.IList<T> values)
+    public void NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      var target = new T[m_bufferPosition];
-
-      var index = 0;
+      var targetIndex = 0;
       var previous = default(T);
 
-      for (var indexOfSource = 0; indexOfSource < m_bufferPosition; indexOfSource++)
+      for (var sourceIndex = 0; sourceIndex < m_bufferPosition; sourceIndex++)
       {
-        var current = m_buffer[indexOfSource];
+        var current = m_buffer[sourceIndex];
 
         if (!equalityComparer.Equals(current, previous) || (values.Count > 0 && !values.Contains(current, equalityComparer)))
         {
-          target[index++] = current;
+          m_buffer[targetIndex++] = current;
 
           previous = current;
         }
       }
 
-      return target[..index];
+      m_bufferPosition = targetIndex;
+
+      Clear();
     }
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the default comparer.</summary>
-    public System.ReadOnlySpan<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values)
-      => NormalizeAdjacent(System.Collections.Generic.EqualityComparer<T>.Default, values);
+    public void NormalizeAdjacent(System.Collections.Generic.IList<T> values)
+      => NormalizeAdjacent(values, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

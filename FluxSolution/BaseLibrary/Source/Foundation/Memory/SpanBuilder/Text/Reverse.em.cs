@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
-    public static void Reverse(ref this SpanBuilder<char> source, int startIndex, int endIndex)
+    public static void ReverseChars(ref this SpanBuilder<char> source, int startIndex, int endIndex)
     {
       if (startIndex < 0 || startIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       if (endIndex < startIndex || endIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
@@ -25,7 +25,7 @@ namespace Flux
       source.Remove(startIndex, endIndex - startIndex + 1);
     }
     /// <summary>Reverse all characters sort of in-place. Handles surrogates.</summary>
-    public static void Reverse(ref this SpanBuilder<char> source)
-      => Reverse(ref source, 0, source.Length - 1);
+    public static void ReverseChars(ref this SpanBuilder<char> source)
+      => ReverseChars(ref source, 0, source.Length - 1);
   }
 }
