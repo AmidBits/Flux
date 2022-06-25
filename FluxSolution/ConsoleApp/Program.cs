@@ -49,7 +49,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"PadLeft(23) = {hw.AsReadOnlySpan()}");
       hw.PadEven(28, "LEFT", "RIGHT");
       System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
-      hw.FindIndexOfBMH
+
       hw.CircularCopyTo(bmr2, 0, hw.Length);
 
       var map = hw.CreateIndexMap(item => item);

@@ -8,8 +8,8 @@ namespace Flux
       if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       if (endIndex < startIndex || endIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
 
-      for (; startIndex < endIndex; startIndex++, endIndex--)
-        SwapImpl(startIndex, endIndex);
+      while (startIndex < endIndex)
+        SwapImpl(startIndex++, endIndex--);
     }
     /// <summary>Reverse all characters within the span builder.</summary>
     public void Reverse()
