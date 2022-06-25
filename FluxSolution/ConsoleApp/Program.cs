@@ -31,8 +31,8 @@ namespace ConsoleApp
       System.Console.WriteLine($"{nameof(hw.CountEqualAtStart)} = {hw.CountEqualAtStart("Hello ")}");
       System.Console.WriteLine($"{nameof(hw.EndsWith)} = {hw.EndsWith(" World")}");
       System.Console.WriteLine($"{nameof(hw.EqualsAt)} = {hw.EqualsAt(5, " ")}");
-      System.Console.WriteLine($"{nameof(Flux.BoyerMooreHorspoolAlgorithm)} = {hw.FindIndexOfBMH("l")}");
-      System.Console.WriteLine($"{nameof(Flux.KnuthMorrisPrattAlgorithm)} = {string.Join(',', hw.FindIndicesOfKMP("l"))}");
+      System.Console.WriteLine($"{nameof(Flux.BoyerMooreHorspoolAlgorithm)} = {hw.FindIndexBMH("l")}");
+      System.Console.WriteLine($"{nameof(Flux.KnuthMorrisPrattAlgorithm)} = {string.Join(',', hw.FindIndicesKMP("l"))}");
       System.Console.WriteLine($"{nameof(hw.GetExtremum)} = {hw.GetExtremum(v => v)}");
       System.Console.WriteLine($"{nameof(hw.GetInfimumAndSupremum)} = {hw.GetInfimumAndSupremum('o', v => v)}");
       System.Console.WriteLine($"{nameof(hw.IndexOf)} = {hw.IndexOf(" ")}");
@@ -49,7 +49,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"PadLeft(23) = {hw.AsReadOnlySpan()}");
       hw.PadEven(28, "LEFT", "RIGHT");
       System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
-
+      hw.FindIndexOfBMH
       hw.CircularCopyTo(bmr2, 0, hw.Length);
 
       var map = hw.CreateIndexMap(item => item);

@@ -4,12 +4,12 @@
   /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
   public static class BoyerMooreHorspoolAlgorithm
   {
-    public static int FindIndexOfBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int FindIndexBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
-      => FindIndexOfBMH(source.AsReadOnlySpan(), target, equalityComparer);
-    public static int FindIndexOfBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
+      => FindIndexBMH(source.AsReadOnlySpan(), target, equalityComparer);
+    public static int FindIndexBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => FindIndexOfBMH(source.AsReadOnlySpan(), target);
+      => FindIndexBMH(source.AsReadOnlySpan(), target);
 
     /// <summary>Creates a map of the amount of safely skippable elements.</summary>
     public static System.Collections.Generic.Dictionary<T, int> CreateTable<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
@@ -46,7 +46,7 @@
 
     /// <summary>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int FindIndexOfBMH<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int FindIndexBMH<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
     {
       var skippable = CreateTable(source, target, equalityComparer);
@@ -68,37 +68,8 @@
     }
     /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-    public static int FindIndexOfBMH<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public static int FindIndexBMH<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
-      => FindIndexOfBMH(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+      => FindIndexBMH(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
-
-  //public ref partial struct SpanBuilder<T>
-  //{
-  //  /// <summary>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</summary>
-  //  /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-  //  public int FindIndexBMH(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-  //  {
-  //    var skippable = BoyerMooreHorspoolAlgorithm.CreateTable(AsReadOnlySpan(), target, equalityComparer);
-
-  //    var skip = 0;
-
-  //    var sourceLength = m_bufferPosition;
-  //    var targetLength = target.Length;
-
-  //    while (sourceLength - skip >= targetLength)
-  //    {
-  //      if (BoyerMooreHorspoolAlgorithm.IsSame(AsReadOnlySpan()[skip..], target, targetLength, equalityComparer))
-  //        return skip;
-
-  //      skip += skippable[m_buffer[skip + targetLength - 1]];
-  //    }
-
-  //    return -1;
-  //  }
-  //  /// <summary>Searches a text for the index of a substring. Returns -1 if not found. Uses the default equality comparer.</summary>
-  //  /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
-  //  public int FindIndexBMH(System.ReadOnlySpan<T> target)
-  //    => FindIndexBMH(target, System.Collections.Generic.EqualityComparer<T>.Default);
-  //}
 }
