@@ -8,7 +8,7 @@ namespace Flux
       if (m_bufferPosition != target.Length)
         return -1; // If length is different, target cannot be a rotation in source. They have to be equal in length.
 
-      var c = new SpanBuilder<T>(AsReadOnlySpan().ToArray());
+      var c = new SpanBuilder<T>(AsReadOnlySpan());
 
       c.Replicate(1);
 
