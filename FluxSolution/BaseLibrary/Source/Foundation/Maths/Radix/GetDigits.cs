@@ -8,24 +8,60 @@ namespace Flux
     /// <summary>Returns the digits (as numbers) of a value.</summary>
     public static System.Span<System.Numerics.BigInteger> GetDigits(this System.Numerics.BigInteger value, int radix)
     {
-      var span = GetDigitsReversed(value, radix);
-      span.Reverse();
-      return span;
+      AssertRadix(radix);
+
+      var list = new System.Collections.Generic.List<System.Numerics.BigInteger>();
+
+      while (value != 0)
+      {
+        list.Insert(0, value % radix);
+        value /= radix;
+      }
+
+      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+
+      //var span = GetDigitsReversed(value, radix);
+      //span.Reverse();
+      //return span;
     }
 
     /// <summary>Returns the digits (as numbers) of a value.</summary>
     public static System.Span<int> GetDigits(this int value, int radix)
     {
-      var span = GetDigitsReversed(value, radix);
-      span.Reverse();
-      return span;
+      AssertRadix(radix);
+
+      var list = new System.Collections.Generic.List<int>();
+
+      while (value != 0)
+      {
+        list.Insert(0, value % radix);
+        value /= radix;
+      }
+
+      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+
+      //var span = GetDigitsReversed(value, radix);
+      //span.Reverse();
+      //return span;
     }
     /// <summary>Returns the digits (as numbers) of a value.</summary>
     public static System.Span<long> GetDigits(this long value, int radix)
     {
-      var span = GetDigitsReversed(value, radix);
-      span.Reverse();
-      return span;
+      AssertRadix(radix);
+
+      var list = new System.Collections.Generic.List<long>();
+
+      while (value != 0)
+      {
+        list.Insert(0, value % radix);
+        value /= radix;
+      }
+
+      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+
+      //var span = GetDigitsReversed(value, radix);
+      //span.Reverse();
+      //return span;
     }
   }
 }

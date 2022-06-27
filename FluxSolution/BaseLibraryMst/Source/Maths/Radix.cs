@@ -152,6 +152,7 @@ namespace Maths
     [TestMethod]
     public void GetComponents()
     {
+      var x = Flux.Maths.GetPlaceValues(670530, 2).ToArray();
       CollectionAssert.AreEqual(new int[] { 0, 2, 0, 0, 0, 0, 64, 0, 256, 512, 0, 2048, 4096, 8192, 0, 0, 0, 131072, 0, 524288 }, Flux.Maths.GetPlaceValues(670530, 2).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=2");
       CollectionAssert.AreEqual(new int[] { 0, 30, 500, 0, 70000, 600000 }, Flux.Maths.GetPlaceValues(670530, 10).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=10");
       CollectionAssert.AreEqual(new int[] { 2, 64, 2816, 12288, 655360 }, Flux.Maths.GetPlaceValues(670530, 16).ToArray(), nameof(Flux.Maths.GetPlaceValues) + ".Radix=16");
