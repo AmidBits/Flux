@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
     public static System.ReadOnlySpan<T> NormalizeAll<T>(this System.ReadOnlySpan<T> source, T normalizeWith, System.Func<T, bool> predicate)

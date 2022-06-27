@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed.</summary>
     public static System.ReadOnlySpan<T> RemoveAll<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)

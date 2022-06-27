@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Attempts to select a random element from the span in the output variable. Uses the specified random number generator (the .NET cryptographic if null).</summary>
     public static bool TryRandomElement<T>(this System.ReadOnlySpan<T> source, out T result, System.Random random)

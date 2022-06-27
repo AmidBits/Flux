@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Locate the index of the minimum element and the index of the maximum element of the sequence. Uses the specified comparer.</summary>
     public static (int indexMinimum, int indexMaximum) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)

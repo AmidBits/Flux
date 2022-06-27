@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Reports the length (or count) of equality at the start of the sequences. Using the specified comparer.</summary>
     public static int CountEqualAtStart<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
     public static System.ReadOnlySpan<T> NormalizeAdjacent<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, System.Collections.Generic.IList<T> values)

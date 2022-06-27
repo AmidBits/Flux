@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Create a new char array with all diacritical (latin) strokes, which are not covered by the normalization forms in NET, replaced. Can be done simplistically because the diacritical latin stroke characters (and replacements) all fit in a single char.</summary>
     public static char[] ReplaceDiacriticalLatinStrokes(this System.ReadOnlySpan<char> source)

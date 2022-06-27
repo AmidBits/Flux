@@ -1,18 +1,18 @@
 namespace Flux
 {
-  public class StringBuilder<TType>
-    : System.Collections.Generic.IList<TType>
+  public class StringBuilder<T>
+    : System.Collections.Generic.IList<T>
   {
-    private const int DefaultBufferSize = 16;
+    private const int DefaultBufferSize = 32;
 
-    private TType[] m_array;
+    private T[] m_array;
 
     private int m_head; // Start of content.
     private int m_tail; // End of content.
 
     private StringBuilder(int count)
     {
-      m_array = new TType[count];
+      m_array = new T[count];
 
       m_head = count / 2;
       m_tail = count / 2;
@@ -26,7 +26,7 @@ namespace Flux
     {
       var length = m_tail - m_head;
 
-      var array = new TType[m_array.Length * 2];
+      var array = new T[m_array.Length * 2];
 
       var head = (array.Length - length) / 2;
       var tail = head + length;
@@ -45,7 +45,7 @@ namespace Flux
         DoubleBuffer();
     }
 
-    public StringBuilder<TType> Append(TType value)
+    public StringBuilder<T> Append(T value)
     {
       m_version++;
 
@@ -56,7 +56,7 @@ namespace Flux
 
       return this;
     }
-    public StringBuilder<TType> Append(System.ReadOnlySpan<TType> span)
+    public StringBuilder<T> Append(System.ReadOnlySpan<T> span)
     {
       m_version++;
 
@@ -69,7 +69,7 @@ namespace Flux
       return this;
     }
 
-    public StringBuilder<TType> Insert(int startIndex, int count, TType filler = default!)
+    public StringBuilder<T> Insert(int startIndex, int count, T filler = default!)
     {
       m_version++;
       EnsureBuffer(count);
@@ -89,7 +89,7 @@ namespace Flux
       return this;
     }
 
-    public StringBuilder<TType> Prepend(TType value)
+    public StringBuilder<T> Prepend(T value)
     {
       m_version++;
 
@@ -100,7 +100,7 @@ namespace Flux
 
       return this;
     }
-    public StringBuilder<TType> Prepend(System.ReadOnlySpan<TType> span)
+    public StringBuilder<T> Prepend(System.ReadOnlySpan<T> span)
     {
       m_version++;
 
@@ -113,7 +113,7 @@ namespace Flux
       return this;
     }
 
-    public StringBuilder<TType> Remove(int startIndex, int count)
+    public StringBuilder<T> Remove(int startIndex, int count)
     {
       m_version++;
       startIndex += m_head;
@@ -132,21 +132,21 @@ namespace Flux
       return this;
     }
 
-    public System.ReadOnlySpan<TType> ToReadOnlySpan(int startAt, int count)
+    public System.ReadOnlySpan<T> ToReadOnlySpan(int startAt, int count)
     {
       if (m_head + startAt > m_tail) throw new System.ArgumentOutOfRangeException(nameof(startAt));
       if (m_head + startAt + count > m_tail) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var a = new TType[count];
+      var a = new T[count];
       System.Array.Copy(m_array, m_head + startAt, a, 0, count);
       return a;
     }
-    public System.Span<TType> ToSpan(int startAt, int count)
+    public System.Span<T> ToSpan(int startAt, int count)
     {
       if (m_head + startAt > m_tail) throw new System.ArgumentOutOfRangeException(nameof(startAt));
       if (m_head + startAt + count > m_tail) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var a = new TType[count];
+      var a = new T[count];
       System.Array.Copy(m_array, m_head + startAt, a, 0, count);
       return a;
     }
@@ -154,7 +154,7 @@ namespace Flux
     #region Implementation of IList<TType>
     private int m_version = 0;
 
-    public TType this[int index]
+    public T this[int index]
     {
       get => m_array[index];
       set
@@ -169,7 +169,7 @@ namespace Flux
     public bool IsReadOnly
       => false;
 
-    public void Add(TType item)
+    public void Add(T item)
     {
       m_version++;
       Append(item);
@@ -179,19 +179,19 @@ namespace Flux
     {
       m_version++;
 
-      m_array = new TType[DefaultBufferSize];
+      m_array = new T[DefaultBufferSize];
 
       m_head = DefaultBufferSize / 2;
       m_tail = DefaultBufferSize / 2;
     }
 
-    public bool Contains(TType item)
+    public bool Contains(T item)
       => System.Array.Exists(m_array, t => t?.Equals(item) ?? false);
 
-    public void CopyTo(TType[] array, int arrayIndex)
+    public void CopyTo(T[] array, int arrayIndex)
       => m_array.CopyTo(array, arrayIndex);
 
-    public System.Collections.Generic.IEnumerator<TType> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
     {
       for (var index = m_head; index < m_tail; index++)
         yield return m_array[index];
@@ -199,16 +199,16 @@ namespace Flux
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
 
-    public int IndexOf(TType item)
+    public int IndexOf(T item)
       => System.Array.IndexOf(m_array, item);
 
-    public void Insert(int index, TType item)
+    public void Insert(int index, T item)
     {
       m_version++;
       m_array = m_array.Insert(index, item);
     }
 
-    public bool Remove(TType item)
+    public bool Remove(T item)
     {
       if (IndexOf(item) is var index && index > -1)
       {

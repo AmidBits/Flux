@@ -1,80 +1,108 @@
-﻿namespace Flux.Metrical
+﻿namespace Flux
 {
-  /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
-  public sealed class LongestAlternatingSubsequence<T>
+  public static partial class ExtensionMethods
   {
-    public LongestAlternatingSubsequence(System.Collections.Generic.IComparer<T> comparer)
-      => Comparer = comparer;
-    public LongestAlternatingSubsequence()
-      : this(System.Collections.Generic.Comparer<T>.Default)
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
+    public static T[] LongestAlternatingSubsequence<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T> comparer)
+      => new Metrical.LongestAlternatingSubsequence<T>(comparer).GetSubsequence(source, out var _);
+
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the default comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
+    public static T[] LongestAlternatingSubsequence<T>(this System.ReadOnlySpan<T> source)
+      => LongestAlternatingSubsequence(source, System.Collections.Generic.Comparer<T>.Default);
+
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
+    public static T[] LongestAlternatingSubsequence<T>(this SpanBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
+      where T : notnull
+      => new Metrical.LongestAlternatingSubsequence<T>(comparer).GetSubsequence(source.AsReadOnlySpan(), out var _);
+
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the default comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
+    public static T[] LongestAlternatingSubsequence<T>(this SpanBuilder<T> source)
+      where T : notnull
+      => LongestAlternatingSubsequence(source, System.Collections.Generic.Comparer<T>.Default);
+  }
+
+  namespace Metrical
+  {
+    /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
+    public sealed class LongestAlternatingSubsequence<T>
     {
-    }
-
-    public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
-
-    [System.Diagnostics.Contracts.Pure]
-    public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
-    {
-      var sourceLength = source.Length;
-
-      var matrix = new int[sourceLength, 2];
-
-      for (var i = 0; i < sourceLength; i++) // Initialize BOTH dimensions to 1.
+      public LongestAlternatingSubsequence(System.Collections.Generic.IComparer<T> comparer)
+        => Comparer = comparer;
+      public LongestAlternatingSubsequence()
+        : this(System.Collections.Generic.Comparer<T>.Default)
       {
-        matrix[i, 0] = 1; // Length of the longest alternating subsequence ending at index i and last element is greater than its previous element.
-        matrix[i, 1] = 1; // Length of the longest alternating subsequence ending at index i and last element is smaller than its previous element.
       }
 
-      length = 0;
+      public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
-      for (var i = 1; i < sourceLength; i++)
+      [System.Diagnostics.Contracts.Pure]
+      public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
       {
-        for (var j = 0; j < i; j++)
+        var sourceLength = source.Length;
+
+        var matrix = new int[sourceLength, 2];
+
+        for (var i = 0; i < sourceLength; i++) // Initialize BOTH dimensions to 1.
         {
-          var cmp = Comparer.Compare(source[j], source[i]);
-
-          if (cmp < 0 && matrix[j, 1] + 1 is var mj1p1 && matrix[i, 0] < mj1p1)
-            matrix[i, 0] = mj1p1;
-
-          if (cmp > 0 && matrix[j, 0] + 1 is var mj0p1 && matrix[i, 1] < mj0p1)
-            matrix[i, 1] = mj0p1;
+          matrix[i, 0] = 1; // Length of the longest alternating subsequence ending at index i and last element is greater than its previous element.
+          matrix[i, 1] = 1; // Length of the longest alternating subsequence ending at index i and last element is smaller than its previous element.
         }
 
-        length = System.Math.Max(length, System.Math.Max(matrix[i, 0], matrix[i, 1]));
-      }
+        length = 0;
 
-      return matrix;
-    }
-
-    [System.Diagnostics.Contracts.Pure]
-    public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
-    {
-      matrix = GetMatrix(source, out var length);
-
-      var subsequence = new T[length];
-
-      for (int i = 0, mark = 0; i < source.Length; i++)
-      {
-        var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
-
-        if (max > mark)
+        for (var i = 1; i < sourceLength; i++)
         {
-          subsequence[mark] = source[i];
+          for (var j = 0; j < i; j++)
+          {
+            var cmp = Comparer.Compare(source[j], source[i]);
 
-          mark++;
+            if (cmp < 0 && matrix[j, 1] + 1 is var mj1p1 && matrix[i, 0] < mj1p1)
+              matrix[i, 0] = mj1p1;
+
+            if (cmp > 0 && matrix[j, 0] + 1 is var mj0p1 && matrix[i, 1] < mj0p1)
+              matrix[i, 1] = mj0p1;
+          }
+
+          length = System.Math.Max(length, System.Math.Max(matrix[i, 0], matrix[i, 1]));
         }
+
+        return matrix;
       }
 
-      return subsequence;
-    }
+      [System.Diagnostics.Contracts.Pure]
+      public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
+      {
+        matrix = GetMatrix(source, out var length);
 
-    [System.Diagnostics.Contracts.Pure]
-    public int GetLengthMeasure(System.ReadOnlySpan<T> source)
-    {
-      GetMatrix(source, out var length);
+        var subsequence = new T[length];
 
-      return length;
+        for (int i = 0, mark = 0; i < source.Length; i++)
+        {
+          var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
+
+          if (max > mark)
+          {
+            subsequence[mark] = source[i];
+
+            mark++;
+          }
+        }
+
+        return subsequence;
+      }
+
+      [System.Diagnostics.Contracts.Pure]
+      public int GetLengthMeasure(System.ReadOnlySpan<T> source)
+      {
+        GetMatrix(source, out var length);
+
+        return length;
+      }
     }
   }
 }

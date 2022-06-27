@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ReadOnlySpanEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the source replicated (copied) the specified number of times.</summary>
     public static T[] Replicate<T>(this System.ReadOnlySpan<T> source, int count)
