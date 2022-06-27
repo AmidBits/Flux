@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
   public readonly struct EqualityByAbsoluteTolerance
-    : IEqualityApproximatable, System.IEquatable<EqualityByAbsoluteTolerance>
+    : IEqualityApproximable, System.IEquatable<EqualityByAbsoluteTolerance>
   {
     private readonly double m_absoluteTolerance;
 

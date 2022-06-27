@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
   public readonly struct EqualityByRelativeTolerance
-   : IEqualityApproximatable, System.IEquatable<EqualityByRelativeTolerance>
+   : IEqualityApproximable, System.IEquatable<EqualityByRelativeTolerance>
   {
     private readonly double m_relativeTolerance;
 
