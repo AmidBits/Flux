@@ -25,24 +25,29 @@ namespace ConsoleApp
 
 
       var hw = new Flux.SpanBuilder<char>("Hello 2 World");
+
+      var rsb = hw.ToRuneSpanBuilder();
+      rsb.Reverse();
+      var hw2 = rsb.ToCharSpanBuilder();
+
       //                                   01234567890
 
-      System.Console.WriteLine($"{nameof(hw.CountEqualAtEnd)} = {hw.CountEqualAtEnd(" World")}");
-      System.Console.WriteLine($"{nameof(hw.CountEqualAtStart)} = {hw.CountEqualAtStart("Hello ")}");
-      System.Console.WriteLine($"{nameof(hw.EndsWith)} = {hw.EndsWith(" World")}");
-      System.Console.WriteLine($"{nameof(hw.EqualsAt)} = {hw.EqualsAt(5, " ")}");
+      System.Console.WriteLine($"CountEqualAtEnd = {hw.AsReadOnlySpan().CountEqualAtEnd(" World")}");
+      System.Console.WriteLine($"CountEqualAtStart = {hw.AsReadOnlySpan().CountEqualAtStart("Hello ")}");
+      System.Console.WriteLine($"EndsWith = {hw.AsReadOnlySpan().EndsWith(" World")}");
+      System.Console.WriteLine($"EqualsAt = {hw.AsReadOnlySpan().EqualsAt(5, " ")}");
       System.Console.WriteLine($"{nameof(Flux.BoyerMooreHorspoolAlgorithm)} = {hw.FindIndexBMH("l")}");
       System.Console.WriteLine($"{nameof(Flux.KnuthMorrisPrattAlgorithm)} = {string.Join(',', hw.FindIndicesKMP("l"))}");
-      System.Console.WriteLine($"{nameof(hw.GetExtremum)} = {hw.GetExtremum(v => v)}");
-      System.Console.WriteLine($"{nameof(hw.GetInfimumAndSupremum)} = {hw.GetInfimumAndSupremum('o', v => v)}");
-      System.Console.WriteLine($"{nameof(hw.IndexOf)} = {hw.IndexOf(" ")}");
-      System.Console.WriteLine($"{nameof(hw.IndexOfAny)} = {hw.IndexOfAny(new char[] { 'd', 'r' })}");
-      System.Console.WriteLine($"{nameof(hw.IndicesOfAll)} = {string.Join(',', hw.IndicesOfAll(new char[] { 'd', 'r', 'l' }))}");
+      System.Console.WriteLine($"GetExtremum = {hw.AsReadOnlySpan().GetExtremum(v => v)}");
+      System.Console.WriteLine($"GetInfimumAndSupremum = {hw.AsReadOnlySpan().GetInfimumAndSupremum('o', v => v)}");
+      System.Console.WriteLine($"IndexOf = {hw.AsReadOnlySpan().IndexOf(" ")}");
+      System.Console.WriteLine($"IndexOfAny = {hw.AsReadOnlySpan().IndexOfAny(new char[] { 'd', 'r' })}");
+      System.Console.WriteLine($"IndicesOfAll = {string.Join(',', hw.AsReadOnlySpan().IndicesOfAll(new char[] { 'd', 'r', 'l' }))}");
       hw.MakeNumbersFixedLength(4);
       System.Console.WriteLine($"MakeIntegersFixedLength = {hw.AsReadOnlySpan()}");
       hw.InsertOrdinalIndicatorSuffix((s1, s2) => true);
       System.Console.WriteLine($"InsertOrdinalIndicatorSuffix = {hw.AsReadOnlySpan()}");
-      System.Console.WriteLine($"{nameof(hw.StartsWith)} = {hw.StartsWith("Hello ")}");
+      System.Console.WriteLine($"StartsWith = {hw.AsReadOnlySpan().StartsWith("Hello ")}");
       hw.PadRight(20, '-');
       System.Console.WriteLine($"PadRight(20) = {hw.AsReadOnlySpan()}");
       hw.PadLeft(23, '-');
@@ -50,16 +55,16 @@ namespace ConsoleApp
       hw.PadEven(28, "LEFT", "RIGHT");
       System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
 
-      hw.CircularCopyTo(bmr2, 0, hw.Length);
+      hw.AsReadOnlySpan().CircularCopyTo(bmr2, 0, hw.Length);
 
-      var map = hw.CreateIndexMap(item => item);
+      var map = hw.AsReadOnlySpan().CreateIndexMap(item => item);
 
       hw.RemoveAll(new char[] { 'l' });
 
       bmr.Reverse();
       System.Console.WriteLine($"Reverse = {bmr.AsReadOnlySpan()}");
 
-      bmr.Replicate(1);
+      bmr.Repeat(1);
 
       var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
       //var x = new Flux.SpanBuilder<char>("Hello    World!");

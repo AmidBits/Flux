@@ -47,7 +47,7 @@ namespace Flux
       return -1;
     }
     /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
-      => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
+    //public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
+    //  => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

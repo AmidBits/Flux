@@ -19,7 +19,7 @@ namespace Flux
       return true;
     }
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the default comparer.</summary>
-    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => EndsWith(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
+    //public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    //  => EndsWith(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

@@ -3,7 +3,7 @@ namespace Flux
   public ref partial struct SpanBuilder<T>
   {
     /// <summary>Returns the source replicated (copied) the specified number of times.</summary>
-    public void Replicate(int count)
+    public void Repeat(int count)
     {
       var slice = AsReadOnlySpan();
 

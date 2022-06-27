@@ -86,6 +86,8 @@ namespace Flux
 
     public System.ReadOnlySpan<T> AsReadOnlySpan()
       => m_buffer[..m_bufferPosition];
+    public System.Span<T> AsSpan()
+      => m_buffer[..m_bufferPosition];
 
     private void Cleanup()
       => m_buffer.Slice(m_bufferPosition).Clear();
