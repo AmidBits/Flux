@@ -1,10 +1,10 @@
 namespace Flux
 {
-  public static partial class MemoryEm
+  public static partial class ExtensionMethods
   {
     /// <summary>Returns the number of unfound (not found) and the number of unique elements. Optionally the function returns early if there are unfound elements. Uses the specified equality comparer.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static (int unfoundCount, int uniqueCount) SetCounts<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static (int unfoundCount, int uniqueCount) SetStatistics<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
       var unfoundCount = 0;
 
@@ -31,7 +31,7 @@ namespace Flux
       return (unfoundCount, unique.Count);
     }
     /// <summary>Returns the number of unfound (not found) and the number of unique elements. Optionally the function returns early if there are unfound elements. Uses the default equality comparer.</summary>
-    public static (int unfoundCount, int uniqueCount) SetCounts<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound)
-      => SetCounts(source, target, returnIfUnfound, System.Collections.Generic.EqualityComparer<T>.Default);
+    public static (int unfoundCount, int uniqueCount) SetStatistics<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound)
+      => SetStatistics(source, target, returnIfUnfound, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

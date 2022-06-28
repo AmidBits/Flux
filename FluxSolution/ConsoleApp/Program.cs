@@ -66,12 +66,13 @@ namespace ConsoleApp
 
       bmr.Repeat(1);
 
-      var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
-      //var x = new Flux.SpanBuilder<char>("Hello    World!");
-      var xros = x.AsReadOnlySpan();
-      var y = xros.NormalizeAdjacent(System.Array.Empty<int>());
-      var w = MemoryExtensions.IndexOf(y, 7);
-      var z = MemoryExtensions.IndexOf(y, new int[] { 5, 7 });
+      //      var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
+
+      var x = new Flux.SpanBuilder<char>("Hello    World!");
+      var y = x.Clone();
+      x.NormalizeAdjacent(new char[] { ' ' });
+      //var w = MemoryExtensions.IndexOf(y, 7);
+      //var z = MemoryExtensions.IndexOf(y, new int[] { 5, 7 });
 
 
       var tle = new TwoLineElementSet2() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
