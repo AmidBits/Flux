@@ -14,10 +14,15 @@ namespace Flux
       source.Insert(index + value.Length, System.Environment.NewLine);
     }
 
-    public static string ToString(ref this SpanBuilder<char> source, int startIndex, int length)
-      => source.AsReadOnlySpan().Slice(startIndex, length).ToString();
-    public static string ToString(ref this SpanBuilder<char> source, int startIndex)
-      => source.ToString(startIndex, source.Length - startIndex);
+    //public static string ToString(ref this SpanBuilder<char> source, int startAt, int length)
+    //  => source.AsReadOnlySpan().Slice(startAt, length).ToString();
+    //public static string ToString(ref this SpanBuilder<char> source, int startAt)
+    //  => source.AsReadOnlySpan().Slice(startAt).ToString();
+
+    //public static string ToString(ref this SpanBuilder<System.Text.Rune> source, int startAt, int length)
+    //  => source.AsReadOnlySpan().Slice(startAt, length).ToStringEx();
+    //public static string ToString(ref this SpanBuilder<System.Text.Rune> source, int startAt)
+    //  => source.AsReadOnlySpan().Slice(startAt).ToStringEx();
   }
 
   public ref partial struct SpanBuilder<T>
@@ -170,5 +175,13 @@ namespace Flux
 
       Cleanup();
     }
+
+    public string ToString(int startAt, int length)
+      => AsReadOnlySpan().ToString(startAt, length);
+    public string ToString(int startAt)
+      => AsReadOnlySpan().ToString(startAt);
+
+    public override string ToString()
+      => AsReadOnlySpan().ToString();
   }
 }
