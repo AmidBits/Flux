@@ -538,39 +538,36 @@ namespace Flux
     public void SwapLastWith(int index)
       => SwapImpl(index, m_bufferPosition - 1);
 
-    /// <summary>Creates a new list from the specified array from the specified offset and count.</summary>
-    public T[] ToArray(int offset, int count)
+    /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
+    public void Unwrap(T left, T right)
     {
-      if (offset < 0 || offset >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(offset));
-      if (count < 0 || offset + count >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(count));
-
-      var target = new T[count];
-      AsReadOnlySpan().Slice(offset, count).CopyTo(target);
-      return target;
+      if (AsReadOnlySpan().IsWrapped(left, right))
+      {
+        Remove(0, 1);
+        Remove(Length - 1, 1);
+      }
     }
-    /// <summary>Creates a new list from the specified array from the specified offset to the end.</summary>
-    public T[] ToArray(int offset)
-      => ToArray(offset, m_bufferPosition - offset);
-    /// <summary>Creates a new list from the specified span builder.</summary>
-    public T[] ToArray()
-      => ToArray(0, m_bufferPosition);
-
-    /// <summary>Creates a new list from the specified array from the specified offset and count.</summary>
-    public System.Collections.Generic.List<T> ToList(int offset, int count)
+    /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
+    public void Unwrap(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
     {
-      if (offset < 0 || offset >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(offset));
-      if (count < 0 || offset + count >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(count));
-
-      var target = new System.Collections.Generic.List<T>(count);
-      while (count-- > 0)
-        target.Add(m_buffer[offset++]);
-      return target;
+      if (AsReadOnlySpan().IsWrapped(left, right))
+      {
+        Remove(0, left.Length);
+        Remove(Length - right.Length, right.Length);
+      }
     }
-    /// <summary>Creates a new list from the specified array from the specified offset to the end.</summary>
-    public System.Collections.Generic.List<T> ToList(int offset)
-      => ToList(offset, m_bufferPosition - offset);
-    /// <summary>Creates a new list from the specified span builder.</summary>
-    public System.Collections.Generic.List<T> ToList()
-      => ToList(0, m_bufferPosition);
+
+    /// <summary>Add the specified characters to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped. E.g. in SQL brackets, or parenthesis.</summary>
+    public void Wrap(T left, T right)
+    {
+      Insert(0, left);
+      Append(right);
+    }
+    /// <summary>Add the specified wrap strings to the source, if they do not already exist. Change the default force to true to always wrap the source, even if it is null (which produces a wrapped empty string) or already wrapped.</summary>
+    public void Wrap(System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
+    {
+      Insert(0, left);
+      Append(right);
+    }
   }
 }

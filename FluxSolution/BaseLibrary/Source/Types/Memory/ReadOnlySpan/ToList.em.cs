@@ -3,15 +3,15 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Creates a new list from the specified array that is satisfying the specified predicate.</summary>
-    public static System.Collections.Generic.List<TResult> ToList<TValue, TResult>(this System.ReadOnlySpan<TValue> source, System.Func<TValue, bool> predicate, System.Func<TValue, TResult> resultSelector)
+    public static System.Collections.Generic.List<TResult> ToList<TValue, TResult>(this System.ReadOnlySpan<TValue> source, System.Func<TValue, int, bool> predicate, System.Func<TValue, int, TResult> resultSelector)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
       var target = new System.Collections.Generic.List<TResult>();
 
-      foreach (var item in source)
-        if (predicate(item))
-          target.Add(resultSelector(item));
+      for (var index = 0; index < source.Length; index++)
+        if (source[index] is var item && predicate(item, index))
+          target.Add(resultSelector(item, index));
 
       return target;
     }
