@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class SpanEm
   {
-    /// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
+    /// <summary>In-place shuffle (randomized) of the span. Uses the specified rng.</summary>
     public static System.Span<T> Shuffle<T>(this System.Span<T> source, System.Random random)
     {
       if (random is null) throw new System.ArgumentNullException(nameof(random));
@@ -12,7 +12,7 @@ namespace Flux
 
       return source;
     }
-    /// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
+    /// <summary>In-place shuffle (randomized) of the span. Uses a cryptographic rng.</summary>
     public static System.Span<T> Shuffle<T>(this System.Span<T> source)
       => Shuffle(source, Randomization.NumberGenerator.Crypto);
   }

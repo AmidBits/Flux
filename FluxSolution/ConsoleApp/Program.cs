@@ -19,61 +19,57 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var bmr = new Flux.SpanBuilder<char>("bbaaccaadd");
-      var bmr2 = (Span<char>)bmr.ToString(0).ToCharArray();
-      System.Console.WriteLine($"{nameof(Flux.BoothsAlgorithm)} = {bmr.FindMinimalRotationB()}");
+      var hw = new Flux.SequenceBuilder<char>();
 
+      hw.Append("Hello World!");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.NormalizeAdjacent(System.Array.Empty<char>());
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(hw.Length);
+      hw.Clear();
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(hw.Length);
 
-      var hw = new Flux.SpanBuilder<char>("Hello 2 World");
+      //hw.Insert(3, 4, '1');
+      //hw.Insert(3, 4, '2');
 
-      var rsb = hw.ToRuneSpanBuilder();
-      rsb.Reverse();
-      var hw2 = rsb.ToCharSpanBuilder();
+      hw.Prepend("1234567890");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Prepend("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Prepend("@#$%");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Append("ZYXWVUTSRQPONMLKJIHGFEDCBA");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
 
-      //                                   01234567890
+      hw.Insert(20, 10, '|');
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Insert(20, 10, '-');
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Insert(20, "0987654321");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Insert(20, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
 
-      System.Console.WriteLine($"CountEqualAtEnd = {hw.AsReadOnlySpan().CountEqualAtEnd(" World")}");
-      System.Console.WriteLine($"CountEqualAtStart = {hw.AsReadOnlySpan().CountEqualAtStart("Hello ")}");
-      System.Console.WriteLine($"EndsWith = {hw.AsReadOnlySpan().EndsWith(" World")}");
-      System.Console.WriteLine($"EqualsAt = {hw.AsReadOnlySpan().EqualsAt(5, " ")}");
-      System.Console.WriteLine($"{nameof(Flux.BoyerMooreHorspoolAlgorithm)} = {hw.FindIndexBMH("l")}");
-      System.Console.WriteLine($"{nameof(Flux.KnuthMorrisPrattAlgorithm)} = {string.Join(',', hw.FindIndicesKMP("l"))}");
-      System.Console.WriteLine($"GetExtremum = {hw.AsReadOnlySpan().GetExtremum(v => v)}");
-      System.Console.WriteLine($"GetInfimumAndSupremum = {hw.AsReadOnlySpan().GetInfimumAndSupremum('o', v => v)}");
-      System.Console.WriteLine($"IndexOf = {hw.AsReadOnlySpan().IndexOf(" ")}");
-      System.Console.WriteLine($"IndexOfAny = {hw.AsReadOnlySpan().IndexOfAny(new char[] { 'd', 'r' })}");
-      System.Console.WriteLine($"IndicesOfAll = {string.Join(',', hw.AsReadOnlySpan().IndicesOfAll(new char[] { 'd', 'r', 'l' }))}");
-      hw.MakeNumbersFixedLength(4);
-      System.Console.WriteLine($"MakeIntegersFixedLength = {hw.AsReadOnlySpan()}");
-      hw.InsertOrdinalIndicatorSuffix((s1, s2) => true);
-      System.Console.WriteLine($"InsertOrdinalIndicatorSuffix = {hw.AsReadOnlySpan()}");
-      System.Console.WriteLine($"StartsWith = {hw.AsReadOnlySpan().StartsWith("Hello ")}");
-      hw.PadRight(20, '-');
-      System.Console.WriteLine($"PadRight(20) = {hw.AsReadOnlySpan()}");
-      hw.PadLeft(23, '-');
-      System.Console.WriteLine($"PadLeft(23) = {hw.AsReadOnlySpan()}");
-      hw.PadEven(28, "LEFT", "RIGHT");
-      System.Console.WriteLine($"PadEven(28) = {hw.AsReadOnlySpan()}");
+      hw.Remove(20, 26);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Remove(20, 10);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Remove(20, 10);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Remove(20, 10);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
 
-      hw.AsReadOnlySpan().CircularCopyTo(bmr2, 0, hw.Length);
-
-      var map = hw.AsReadOnlySpan().CreateIndexMap(item => item);
-
-      hw.RemoveAll(new char[] { 'l' });
-
-      bmr.Reverse();
-      System.Console.WriteLine($"Reverse = {bmr.AsReadOnlySpan()}");
-
-      bmr.Repeat(1);
-
-      //      var x = new Flux.SpanBuilder<int>(new int[] { 2, 3, 5, 5, 7, 11 });
-
-      var x = new Flux.SpanBuilder<char>("Hello    World!");
-      var y = x.Clone();
-      x.NormalizeAdjacent(new char[] { ' ' });
-      //var w = MemoryExtensions.IndexOf(y, 7);
-      //var z = MemoryExtensions.IndexOf(y, new int[] { 5, 7 });
-
+      hw.Remove(hw.Length - 26, 26);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Remove(0, 4);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      hw.Remove(0, 26);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(hw.Length);
+      hw.Remove(0, 10);
+      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(hw.Length);
 
       var tle = new TwoLineElementSet2() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
 

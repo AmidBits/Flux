@@ -2,37 +2,37 @@ namespace Flux
 {
   public static partial class SpanEm
   {
-    /// <summary>Replace (in-place) all characters using the specified replacement selector function.</summary>
-    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, System.Func<T, T> replacementSelector)
+    /// <summary>In-place replacement of all characters using the specified replacement selector function.</summary>
+    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, System.Func<T, int, T> replacementSelector)
     {
       if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
 
       for (var index = source.Length - 1; index >= 0; index--)
-        source[index] = replacementSelector(source[index]);
+        source[index] = replacementSelector(source[index], index);
 
       return source;
     }
 
-    /// <summary>Replace (in-place) all characters satisfying the predicate with the specified character.</summary>
-    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, System.Func<T, bool> predicate)
+    /// <summary>In-place replacement of all characters satisfying the predicate with the specified character.</summary>
+    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
       for (var index = source.Length - 1; index >= 0; index--)
-        if (predicate(source[index]))
+        if (predicate(source[index], index))
           source[index] = replacement;
 
       return source;
     }
-    /// <summary>Replace (in-place) all specified elements with the specified element. Uses the specified comparer.</summary>
+    /// <summary>In-place replacement of all specified elements with the specified replacement element. Uses the specified comparer.</summary>
     public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] replace)
     {
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
-      return ReplaceAll(source, replacement, t => System.Array.Exists(replace, e => equalityComparer.Equals(e, t)));
+      return ReplaceAll(source, replacement, (e, i) => System.Array.Exists(replace, a => equalityComparer.Equals(a, e)));
     }
 
-    /// <summary>Replace (in-place) all specified elements with the specified element. Uses the default comparer.</summary>
+    /// <summary>In-place replacement of all specified elements with the specified replacement element. Uses the default comparer.</summary>
     public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, params T[] replace)
       => ReplaceAll(source, replacement, System.Collections.Generic.EqualityComparer<T>.Default, replace);
   }
