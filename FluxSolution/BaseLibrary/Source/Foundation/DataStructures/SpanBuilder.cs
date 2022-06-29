@@ -217,7 +217,7 @@ namespace Flux
     /// <summary>Adds the sequence of items to this instance.</summary>
     public void Append(ReadOnlySpan<T> value)
     {
-      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length) EnsureCapacity(needed * 2);
+      EnsureCapacity(m_bufferPosition + value.Length);
 
       value.CopyTo(m_buffer[m_bufferPosition..]);
 
@@ -258,6 +258,7 @@ namespace Flux
         //var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
 
         var rented = System.Buffers.ArrayPool<T>.Shared.Rent(realCapacity);
+        System.Array.Clear(rented);
         m_buffer.CopyTo(rented);
         m_buffer = rented;
         System.Buffers.ArrayPool<T>.Shared.Return(rented);
