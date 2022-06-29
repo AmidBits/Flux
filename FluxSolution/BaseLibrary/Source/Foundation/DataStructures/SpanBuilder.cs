@@ -321,7 +321,7 @@ namespace Flux
 
       m_bufferPosition = targetIndex;
 
-      Clear();
+      Cleanup();
     }
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the default comparer.</summary>
     public void NormalizeAdjacent(System.Collections.Generic.IList<T> values)
@@ -354,7 +354,7 @@ namespace Flux
 
       m_bufferPosition = normalizedIndex;
 
-      Clear();
+      Cleanup();
     }
     /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
     public void NormalizeAll(T normalizeWith, System.Collections.Generic.IEqualityComparer<T> equalityComparer, System.Collections.Generic.IList<T> normalize)
@@ -464,6 +464,30 @@ namespace Flux
         Insert(m_bufferPosition, slice);
     }
 
+    /// <summary>Replace (in-place) all characters using the specified replacement selector function.</summary>
+    public void ReplaceAll(System.Func<T, T> replacementSelector)
+    {
+      if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
+
+      for (var index = m_bufferPosition - 1; index >= 0; index--)
+        m_buffer[index] = replacementSelector(m_buffer[index]);
+    }
+    /// <summary>Replace (in-place) all characters satisfying the predicate with the specified character.</summary>
+    public void ReplaceAll(T replacement, System.Func<T, bool> predicate)
+    {
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
+      for (var index = m_bufferPosition - 1; index >= 0; index--)
+        if (predicate(m_buffer[index]))
+          m_buffer[index] = replacement;
+    }
+    /// <summary>Replace (in-place) all specified elements with the specified element. Uses the specified comparer.</summary>
+    public void ReplaceAll(T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] replace)
+      => ReplaceAll(replacement, t => System.Array.Exists(replace, e => equalityComparer.Equals(e, t)));
+    /// <summary>Replace (in-place) all specified elements with the specified element. Uses the default comparer.</summary>
+    public void ReplaceAll(T replacement, params T[] replace)
+      => ReplaceAll(replacement, System.Collections.Generic.EqualityComparer<T>.Default, replace);
+
     /// <summary>Reverse all characters in the range [startIndex, endIndex] within the span builder.</summary>
     public void Reverse(int startIndex, int endIndex)
     {
@@ -476,6 +500,18 @@ namespace Flux
     /// <summary>Reverse all characters within the span builder.</summary>
     public void Reverse()
       => Reverse(0, m_bufferPosition - 1);
+
+    /// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
+    public void Shuffle(System.Random random)
+    {
+      if (random is null) throw new System.ArgumentNullException(nameof(random));
+
+      for (var index = m_bufferPosition - 1; index > 0; index--) // Shuffle each element by swapping with a random element of a lower index.
+        Swap(index, random.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
+    }
+    /// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
+    public void Shuffle()
+      => Shuffle(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Swap two elements by the specified indices.</summary>
     internal void SwapImpl(int indexA, int indexB)
