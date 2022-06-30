@@ -1,9 +1,8 @@
 namespace Flux
 {
   public ref struct SequenceBuilder<T>
-  //: System.Collections.Generic.IList<T>
   {
-    private const int DefaultBufferSize = 16;
+    private const int DefaultBufferSize = 32;
 
     private int m_version = 0;
 

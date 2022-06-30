@@ -84,7 +84,7 @@ namespace ConsoleApp
     {
       var originalOutputEncoding = SetEncoding();
 
-      SetSize(0.9);
+      SetSize(0.75);
 
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 

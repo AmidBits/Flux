@@ -161,7 +161,7 @@ namespace Flux
   #endregion Extension methods.
 
   public ref partial struct SpanBuilder<T>
-    where T : notnull
+//    where T : notnull
   {
     private System.Span<T> m_buffer;
     private int m_bufferPosition;
