@@ -6,28 +6,26 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> PermuteHeapsAlgorithm<T>(this System.Collections.Generic.IEnumerable<T> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      return Permute(source.ToArray());
 
-      return Permute(source.ToList());
-
-      static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permute(System.Collections.Generic.IList<T> list)
+      static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permute(T[] array)
       {
-        var stackState = new int[list.Count];
+        var stackState = new int[array.Length];
 
         System.Array.Fill(stackState, default);
 
-        yield return (System.Collections.Generic.IReadOnlyList<T>)list;
+        yield return (System.Collections.Generic.IReadOnlyList<T>)array;
 
         for (var stackIndex = 0; stackIndex < stackState.Length;)
         {
           if (stackState[stackIndex] < stackIndex)
           {
             if ((stackIndex & 1) == 0)
-              list.AsSpan().Swap(0, stackIndex);
+              array.AsSpan().Swap(0, stackIndex);
             else
-              list.AsSpan().Swap(stackState[stackIndex], stackIndex);
+              array.AsSpan().Swap(stackState[stackIndex], stackIndex);
 
-            yield return (System.Collections.Generic.IReadOnlyList<T>)list;
+            yield return (System.Collections.Generic.IReadOnlyList<T>)array;
 
             stackState[stackIndex]++;
             stackIndex = 0;

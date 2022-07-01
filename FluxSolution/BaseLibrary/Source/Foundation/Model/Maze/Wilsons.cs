@@ -12,12 +12,12 @@ namespace Flux.Model.Maze
       var path = new System.Collections.Generic.List<Cell>();
 
       var unvisited = grid.GetValues().ToList();
-      unvisited.AsReadOnlySpan().TryRandomElement(out var unvisitedElement, Rng);
+      unvisited.AsSpan().AsReadOnlySpan().TryRandomElement(out var unvisitedElement, Rng);
       unvisited.Remove(unvisitedElement);
 
       while (unvisited.Any())
       {
-        unvisited.AsReadOnlySpan().TryRandomElement(out Cell cell, Rng);
+        ((System.ReadOnlySpan<Cell>)System.Runtime.InteropServices.CollectionsMarshal.AsSpan(unvisited)).TryRandomElement(out Cell cell, Rng);
 
         path.Clear();
         path.Add(cell);

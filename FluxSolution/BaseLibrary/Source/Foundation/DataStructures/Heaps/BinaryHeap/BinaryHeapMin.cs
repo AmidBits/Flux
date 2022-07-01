@@ -106,7 +106,7 @@ namespace Flux.DataStructures
         if (smallerIndex == index)
           break;
 
-        m_data.AsSpan().Swap(index, smallerIndex);
+        m_data.Swap(index, smallerIndex);
       }
     }
     private void HeapifyUp(int index)
@@ -118,7 +118,7 @@ namespace Flux.DataStructures
         if (m_data[parentIndex].CompareTo(m_data[index]) <= 0)
           break;
 
-        m_data.AsSpan().Swap(index, parentIndex);
+        m_data.Swap(index, parentIndex);
 
         index = parentIndex;
       }

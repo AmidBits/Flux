@@ -15,7 +15,7 @@ namespace Flux
 
       for (var i = 0; i < distinctCount; i++)
         while (distinct[i] != -1 && distinct[distinct[i]] != distinct[i])
-          distinct.AsSpan().Swap(i, distinct[i]);
+          distinct.Swap(i, distinct[i]);
 
       return distinct;
     }

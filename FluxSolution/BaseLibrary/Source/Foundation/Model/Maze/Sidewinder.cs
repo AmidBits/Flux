@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 
 namespace Flux.Model.Maze
 {
@@ -29,7 +29,7 @@ namespace Flux.Model.Maze
 
           if (atBoundary2 || (!atBoundary1 && Rng.Next(2) == 0)) // should close out
           {
-            if (run.AsReadOnlySpan().TryRandomElement(out var member, Rng) && member.Edges.ContainsKey(direction1))
+            if (run.AsSpan().AsReadOnlySpan().TryRandomElement(out var member, Rng) && member.Edges.ContainsKey(direction1))
               member.ConnectPath(member.Edges[direction1], true);
 
             run.Clear();
