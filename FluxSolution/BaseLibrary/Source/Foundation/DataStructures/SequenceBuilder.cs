@@ -1,6 +1,166 @@
 namespace Flux
 {
-  public ref struct SequenceBuilder<T>
+  #region Extension methods.
+  public static partial class ExtensionMethods
+  {
+    public static void AppendLine( this SequenceBuilder<char> source, System.ReadOnlySpan<char> value)
+    {
+      source.Append(value);
+      source.Append(System.Environment.NewLine);
+    }
+
+    public static void InsertLine( this SequenceBuilder<char> source, int index, System.ReadOnlySpan<char> value)
+    {
+      source.Insert(index, value);
+      source.Insert(index + value.Length, System.Environment.NewLine);
+    }
+
+    /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
+    /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
+    public static void InsertOrdinalIndicatorSuffix( this SequenceBuilder<char> source, System.Func<string, string, bool> predicate)
+    {
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
+      var wasDigit = false;
+
+      for (var index = source.Length - 1; index >= 0; index--)
+      {
+        var c = source[index];
+
+        var isDigit = char.IsDigit(c);
+
+        if (isDigit && !wasDigit)
+        {
+          var isBetweenTenAndTwenty = index > 0 && source[index - 1] == '1';
+
+          var suffix = c switch
+          {
+            '1' when !isBetweenTenAndTwenty => @"st",
+            '2' when !isBetweenTenAndTwenty => @"nd",
+            '3' when !isBetweenTenAndTwenty => @"rd",
+            _ => @"th"
+          };
+
+          if (predicate(source.ToString(0, index + 1), suffix))
+            source.Insert(index + 1, suffix);
+        }
+
+        wasDigit = isDigit;
+      }
+    }
+    /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
+    public static void InsertOrdinalIndicatorSuffix( this SequenceBuilder<char> source)
+      => InsertOrdinalIndicatorSuffix( source, (s1, s2) => true);
+
+    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
+    public static void JoinToCamelCase( this SequenceBuilder<char> source, System.Func<char, bool> predicate)
+    {
+      for (var index = 0; index < source.Length; index++)
+        if (predicate(source[index]))
+        {
+          do { source.Remove(index, 1); }
+          while (predicate(source[index]));
+
+          if (index < source.Length)
+            source[index] = char.ToUpper(source[index]);
+        }
+    }
+    public static void JoinToCamelCase( this SequenceBuilder<char> source)
+      => JoinToCamelCase( source, char.IsWhiteSpace);
+
+    public static void MakeNumbersFixedLength( this SequenceBuilder<char> source, int length)
+    {
+      bool wasDigit = false;
+      var digitCount = 0;
+
+      for (var index = source.Length - 1; index >= 0; index--)
+      {
+        var isDigit = char.IsDigit(source[index]);
+
+        if (!isDigit && wasDigit && digitCount < length)
+          source.Insert(index + digitCount, '0', length - digitCount);
+        else if (isDigit && !wasDigit)
+          digitCount = 1;
+        else
+          digitCount++;
+
+        wasDigit = isDigit;
+      }
+
+      if (wasDigit) source.Insert(0, '0', length - digitCount);
+    }
+
+    /// <summary>Create a new char array with all diacritical (latin) strokes, which are not covered by the normalization forms in NET, replaced. Can be done simplistically because the diacritical latin stroke characters (and replacements) all fit in a single char.</summary>
+    public static void ReplaceDiacriticalLatinStrokes( this SequenceBuilder<char> source)
+    {
+      for (var index = source.Length - 1; index >= 0; index--)
+        source[index] = (char)((System.Text.Rune)source[index]).ReplaceDiacriticalLatinStroke().Value;
+    }
+
+    /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
+    public static void SplitFromCamelCase( this SequenceBuilder<char> source)
+    {
+      for (var index = source.Length - 1; index > 0; index--)
+        if (char.IsUpper(source[index]) && (!char.IsUpper(source[index - 1]) || char.IsLower(source[index + 1])))
+          source.Insert(index, ' ');
+    }
+
+    public static SequenceBuilder<char> ToSequenceBuilderOfChar(this  SpanBuilder<System.Text.Rune> source)
+    {
+      var target = new SequenceBuilder<char>();
+
+      for (var index = 0; index < source.Length; index++)
+        target.Append(source[index].ToString());
+
+      return target;
+    }
+
+    //public static SpanBuilder<System.Text.Rune> ToRuneBuilder( this SequenceBuilder<char> source)
+    //{
+    //  var runes = new SpanBuilder<System.Text.Rune>();
+
+    //  for (var index = 0; index < source.Length; index++)
+    //  {
+    //    var c1 = source[index];
+
+    //    if (char.IsHighSurrogate(c1))
+    //    {
+    //      var c2 = source[++index];
+
+    //      if (!char.IsLowSurrogate(c2))
+    //        throw new System.InvalidOperationException(@"Missing low surrogate (required after high surrogate).");
+
+    //      runes.Append(new System.Text.Rune(c1, c2));
+    //    }
+    //    else if (char.IsLowSurrogate(c1))
+    //      throw new System.InvalidOperationException(@"Unexpected low surrogate (only allowed after high surrogate).");
+    //    else
+    //      runes.Append(new System.Text.Rune(c1));
+    //  }
+
+    //  return runes;
+    //}
+
+    public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this  SequenceBuilder<char> source)
+    {
+      var target = new SequenceBuilder<System.Text.Rune>();
+
+      foreach (var rune in source.AsReadOnlySpan().EnumerateRunes())
+        target.Append(rune);
+
+      return target;
+    }
+
+    public static string ToString( this SequenceBuilder<char> source, int startIndex, int length)
+      => source.AsReadOnlySpan().Slice(startIndex, length).ToString();
+    public static string ToString( this SequenceBuilder<char> source, int startIndex)
+      => source.ToString(startIndex, source.Length - startIndex);
+  }
+  #endregion Extension methods.
+
+  public class SequenceBuilder<T>
   {
     private const int DefaultBufferSize = 32;
 
@@ -35,7 +195,7 @@ namespace Flux
     /// <summary>Grows a uniform (left and right) buffer capacity to at least that specified.</summary>
     private void EnsureUniformSpace(int length)
     {
-      if (Length + length * 2 < Capacity)
+      if (Length + length + length < Capacity) // We got space, just need to make sure we have it on both sides.
       {
         var newHead = (m_array.Length - Length) / 2;
         var newTail = newHead + Length;
@@ -82,7 +242,6 @@ namespace Flux
         System.Array.Clear(newArray);
 
         System.Array.Copy(m_array, m_head, newArray, m_head, Length);
-        //System.Array.Clear(newArray, m_tail, newArray.Length - m_tail);
 
         System.Buffers.ArrayPool<T>.Shared.Return(m_array);
 
@@ -130,13 +289,14 @@ namespace Flux
       }
     }
 
-    public SequenceBuilder<T> Append(T value)
+    public SequenceBuilder<T> Append(T value, int count = 1)
     {
       m_version++;
 
-      EnsureAppendSpace(1);
+      EnsureAppendSpace(count);
 
-      m_array[m_tail++] = value;
+      while (count-- > 0)
+        m_array[m_tail++] = value;
 
       return this;
     }
@@ -158,6 +318,8 @@ namespace Flux
 
     public void Clear()
     {
+      m_version++;
+
       System.Array.Clear(m_array);
 
       m_head = m_array.Length / 2;
@@ -171,7 +333,7 @@ namespace Flux
       return m_array[m_head + index];
     }
 
-    public SequenceBuilder<T> Insert(int startAt, int count, T value)
+    public SequenceBuilder<T> Insert(int startAt, T value, int count = 1)
     {
       m_version++;
 
@@ -279,6 +441,57 @@ namespace Flux
     /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the default equality comparer.</summary>
     public void NormalizeAll(T normalizeWith, System.Collections.Generic.IList<T> normalize)
       => NormalizeAll(normalizeWith, normalize.Contains);
+
+    /// <summary>Pads the StringBuilder evenly on both sides to the specified width by the specified padding characters for left and right respectively.</summary>
+    public void PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Length)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Length, 2, out var remainder);
+
+        PadLeft(Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
+    }
+    /// <summary>Pads the StringBuilder evenly on both sides to the specified width by the specified padding strings for left and right respectively.</summary>
+    public void PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Length)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Length, 2, out var remainder);
+
+        PadLeft(Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
+    }
+
+    /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
+    public void PadLeft(int totalWidth, T padding)
+      => Insert(0, padding, totalWidth - Length);
+    /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
+    public void PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Length < totalWidth)
+        Insert(0, padding);
+
+      Remove(0, Length - totalWidth);
+    }
+
+    /// <summary>Pads this StringBuilder on the right with the specified padding character.</summary>
+    public void PadRight(int totalWidth, T padding)
+      => Append(padding, totalWidth - Length);
+    /// <summary>Pads this StringBuilder on the right with the specified padding string.</summary>
+    public void PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Length < totalWidth)
+        Append(padding);
+
+      Remove(totalWidth, Length - totalWidth);
+    }
 
     public SequenceBuilder<T> Prepend(T value)
     {

@@ -19,59 +19,44 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var hw = new Flux.SpanBuilder<char>();
+      var sb1 = new Flux.SpanBuilder<char>();
+      var sb2 = new Flux.SequenceBuilder<char>();
 
-      hw.Append("Hello World!");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.NormalizeAdjacent(System.Array.Empty<char>());
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      System.Console.WriteLine(hw.Length);
-      hw.Clear();
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      System.Console.WriteLine(hw.Length);
+      sb1.Append("Hello World!");
+      sb2.Append("Hello World!");
 
-      //hw.Insert(3, 4, '1');
-      //hw.Insert(3, 4, '2');
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
 
-      hw.Insert(0,"1234567890");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Insert(0,"ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Insert(0,"@#$%");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Append("ZYXWVUTSRQPONMLKJIHGFEDCBA");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      sb1.Insert(0, "1234567890");
+      sb2.Insert(0, "1234567890");
 
-      hw.Insert(20, '|', 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Insert(20, '-', 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Insert(20, "0987654321");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Insert(20, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
 
-      hw.Remove(20, 26);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Remove(20, 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Remove(20, 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Remove(20, 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
+      sb1.Append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+      sb2.Append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
-      hw.Remove(hw.Length - 26, 26);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Remove(0, 4);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      hw.Remove(0, 26);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      System.Console.WriteLine(hw.Length);
-      hw.Remove(0, 10);
-      System.Console.WriteLine(hw.AsReadOnlySpan().ToString());
-      System.Console.WriteLine(hw.Length);
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
 
-      var tle = new TwoLineElementSet2() { Inclination = 51.6416, RightAscensionOfAscendingNode = 247.4627, Eccentricity = 0.0006703, ArgumentOfPerigee = 130.5360, MeanAnomaly = 325.0288, MeanMotion = 15.72125391 };
+      sb1.Remove(10, 12);
+      sb2.Remove(10, 12);
+
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
+
+      sb1.Insert(0, "ZYXWVUTSRQPONMLKJIHGFEDCBA");
+      sb2.Insert(0, "ZYXWVUTSRQPONMLKJIHGFEDCBA");
+
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
+
+      sb1.Append("0987654321");
+      sb2.Append("0987654321");
+
+      System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
+      System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
 
 
       var g = new Flux.Model.Grid<int>(10, 10);

@@ -160,8 +160,8 @@ namespace Flux
   }
   #endregion Extension methods.
 
-  public ref partial struct SpanBuilder<T>
-//    where T : notnull
+  public ref struct SpanBuilder<T>
+    where T : notnull
   {
     private System.Span<T> m_buffer;
     private int m_bufferPosition;
@@ -414,6 +414,10 @@ namespace Flux
 
       Remove(totalWidth, Length - totalWidth);
     }
+    public void Prepend(T value)
+      => Insert(0, value);
+    public void Prepend(System.ReadOnlySpan<T> value)
+      => Insert(0, value);
 
     /// <summary>Removes the specified range of items from this instance.</summary>
     public void Remove(int startIndex, int length)
