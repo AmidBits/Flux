@@ -163,32 +163,29 @@ namespace Flux
   public ref struct SpanBuilder<T>
     where T : notnull
   {
+    private const int DefaultBufferSize = 32;
+
     private System.Span<T> m_buffer;
-    private int m_bufferPosition;
+
+    private int m_position;
 
     public SpanBuilder(int capacity)
     {
-      m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(capacity);
-      m_bufferPosition = 0;
+      var powerOf2Capacity = BitOps.FoldRight(capacity) + 1;
+
+      m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
+
+      m_position = 0;
     }
     public SpanBuilder(System.ReadOnlySpan<T> value)
-      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
-    {
-      value.CopyTo(m_buffer);
-      m_bufferPosition = value.Length;
-    }
+      : this(value.Length)
+      => Append(value);
     public SpanBuilder(System.Span<T> value)
-      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
-    {
-      value.CopyTo(m_buffer);
-      m_bufferPosition = value.Length;
-    }
+      : this(value.Length)
+      => Append(value);
     public SpanBuilder(T[] value)
-      : this(System.Convert.ToInt32(System.Math.Pow(2, System.Convert.ToInt32(System.Math.Log(value.Length - 1, 2)) + 1)))
-    {
-      value.CopyTo(m_buffer);
-      m_bufferPosition = value.Length;
-    }
+      : this(value.Length)
+      => Append(value);
     public SpanBuilder()
       : this(32)
     {
@@ -204,7 +201,7 @@ namespace Flux
 
     /// <summary>The content length of the builder.</summary>
     public int Length
-      => m_bufferPosition;
+      => m_position;
 
     /// <summary>Grows the buffer capacity to at least that specified.</summary>
     private int EnsureCapacity(int capacity = 0)
@@ -233,36 +230,36 @@ namespace Flux
 
     /// <summary>Clears all unused capacity.</summary>
     private void Cleanup()
-      => m_buffer.Slice(m_bufferPosition).Clear();
+      => m_buffer.Slice(m_position).Clear();
 
     /// <summary>Appends the value to the builder.</summary>
     public void Append(T value, int count = 1)
     {
-      EnsureCapacity(m_bufferPosition + count);
+      EnsureCapacity(m_position + count);
 
       while (count-- > 0)
-        m_buffer[m_bufferPosition++] = value;
+        m_buffer[m_position++] = value;
     }
     /// <summary>Appends the values to the builder.</summary>
     public void Append(ReadOnlySpan<T> value)
     {
-      EnsureCapacity(m_bufferPosition + value.Length);
+      EnsureCapacity(m_position + value.Length);
 
-      value.CopyTo(m_buffer[m_bufferPosition..]);
+      value.CopyTo(m_buffer[m_position..]);
 
-      m_bufferPosition += value.Length;
+      m_position += value.Length;
     }
 
     /// <summary>Returns a non-allocating readonly span.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => m_buffer[..m_bufferPosition];
+      => m_buffer[..m_position];
     /// <summary>Returns a non-allocating span.</summary>
     public System.Span<T> AsSpan()
-      => m_buffer[..m_bufferPosition];
+      => m_buffer[..m_position];
 
     /// <summary>Removes all items from the builder.</summary>
     public void Clear()
-      => m_bufferPosition = 0;
+      => m_position = 0;
 
     /// <summary>Creates a new builder with the same content.</summary>
     public SpanBuilder<T> Clone()
@@ -279,15 +276,15 @@ namespace Flux
     /// <summary>Inserts the value at the specified index of the builder.</summary>
     public void Insert(int index, T value, int count = 1)
     {
-      if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
+      if (index < 0 || index > m_position) throw new ArgumentOutOfRangeException(nameof(index));
 
-      EnsureCapacity(m_bufferPosition + count);
+      EnsureCapacity(m_position + count);
 
       var moveIndex = index + count;
 
-      m_buffer[index..m_bufferPosition].CopyTo(m_buffer[moveIndex..]); // Move right side of old content.
+      m_buffer[index..m_position].CopyTo(m_buffer[moveIndex..]); // Move right side of old content.
 
-      m_bufferPosition += count; // Update the position (length) before copying data (count is altered below).
+      m_position += count; // Update the position (length) before copying data (count is altered below).
 
       while (count-- > 0)
         m_buffer[index++] = value;
@@ -295,18 +292,18 @@ namespace Flux
     /// <summary>Inserts the values at the specified index of the builder.</summary>
     public void Insert(int index, System.ReadOnlySpan<T> value)
     {
-      if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
+      if (index < 0 || index > m_position) throw new ArgumentOutOfRangeException(nameof(index));
 
-      if (m_bufferPosition + value.Length is var needed && needed > m_buffer.Length)
+      if (m_position + value.Length is var needed && needed > m_buffer.Length)
         EnsureCapacity(needed);
 
       var endIndex = index + value.Length;
 
-      m_buffer[index..m_bufferPosition].CopyTo(m_buffer[endIndex..]); // Move right side of old content.
+      m_buffer[index..m_position].CopyTo(m_buffer[endIndex..]); // Move right side of old content.
 
       value.CopyTo(m_buffer[index..endIndex]); // Insert new content in buffer gap.
 
-      m_bufferPosition += value.Length;
+      m_position += value.Length;
     }
 
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
@@ -317,7 +314,7 @@ namespace Flux
       var targetIndex = 0;
       var previous = default(T);
 
-      for (var sourceIndex = 0; sourceIndex < m_bufferPosition; sourceIndex++)
+      for (var sourceIndex = 0; sourceIndex < m_position; sourceIndex++)
       {
         var current = m_buffer[sourceIndex];
 
@@ -329,7 +326,7 @@ namespace Flux
         }
       }
 
-      m_bufferPosition = targetIndex;
+      m_position = targetIndex;
 
       Cleanup();
     }
@@ -346,7 +343,7 @@ namespace Flux
 
       var isPrevious = true; // Set to true in order for trimming to occur on the left.
 
-      for (var sourceIndex = 0; sourceIndex < m_bufferPosition; sourceIndex++)
+      for (var sourceIndex = 0; sourceIndex < m_position; sourceIndex++)
       {
         var character = m_buffer[sourceIndex];
 
@@ -362,7 +359,7 @@ namespace Flux
 
       if (isPrevious) normalizedIndex--;
 
-      m_bufferPosition = normalizedIndex;
+      m_position = normalizedIndex;
 
       Cleanup();
     }
@@ -434,14 +431,14 @@ namespace Flux
     /// <summary>Removes the specified range of values from the builder.</summary>
     public void Remove(int startIndex, int length)
     {
-      if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      if (length < 0 || startIndex + length is var endIndex && endIndex > m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(length));
+      if (startIndex < 0 || startIndex >= m_position) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (length < 0 || startIndex + length is var endIndex && endIndex > m_position) throw new System.ArgumentOutOfRangeException(nameof(length));
 
-      m_buffer[(startIndex + length)..m_bufferPosition].CopyTo(m_buffer[startIndex..]);
+      m_buffer[(startIndex + length)..m_position].CopyTo(m_buffer[startIndex..]);
 
-      m_bufferPosition -= length;
+      m_position -= length;
 
-      m_buffer.Slice(m_bufferPosition, length).Clear();
+      m_buffer.Slice(m_position, length).Clear();
 
       Cleanup();
     }
@@ -453,7 +450,7 @@ namespace Flux
 
       var removedIndex = 0;
 
-      for (var sourceIndex = 0; sourceIndex < m_bufferPosition; sourceIndex++)
+      for (var sourceIndex = 0; sourceIndex < m_position; sourceIndex++)
       {
         var sourceValue = m_buffer[sourceIndex];
 
@@ -461,7 +458,7 @@ namespace Flux
           m_buffer[removedIndex++] = sourceValue;
       }
 
-      m_bufferPosition = removedIndex;
+      m_position = removedIndex;
 
       Cleanup();
     }
@@ -475,10 +472,10 @@ namespace Flux
     /// <summary>Repears the content of the  the specified number of times.</summary>
     public void Repeat(int count)
     {
-      var slice = AsReadOnlySpan();
+      var original = AsReadOnlySpan().ToArray();
 
       while (count-- > 0)
-        Insert(m_bufferPosition, slice);
+        Append(original);
     }
 
     /// <summary>Replace (in-place) all characters using the specified replacement selector function.</summary>
@@ -486,7 +483,7 @@ namespace Flux
     {
       if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
 
-      for (var index = m_bufferPosition - 1; index >= 0; index--)
+      for (var index = m_position - 1; index >= 0; index--)
         m_buffer[index] = replacementSelector(m_buffer[index]);
     }
     /// <summary>Replace (in-place) all characters satisfying the predicate with the specified character.</summary>
@@ -494,7 +491,7 @@ namespace Flux
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      for (var index = m_bufferPosition - 1; index >= 0; index--)
+      for (var index = m_position - 1; index >= 0; index--)
         if (predicate(m_buffer[index]))
           m_buffer[index] = replacement;
     }
@@ -508,22 +505,29 @@ namespace Flux
     /// <summary>Reverse all characters in the range [startIndex, endIndex] within the span builder.</summary>
     public void Reverse(int startIndex, int endIndex)
     {
-      if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-      if (endIndex < startIndex || endIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
+      if (startIndex < 0 || startIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+      if (endIndex < startIndex || endIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
 
       while (startIndex < endIndex)
-        SwapImpl(startIndex++, endIndex--);
+        Swap(startIndex++, endIndex--);
     }
     /// <summary>Reverse all characters within the span builder.</summary>
     public void Reverse()
-      => Reverse(0, m_bufferPosition - 1);
+      => Reverse(0, Length - 1);
+
+    public void SetValue(int index, T value)
+    {
+      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      m_buffer[index] = value;
+    }
 
     /// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
     public void Shuffle(System.Random random)
     {
       if (random is null) throw new System.ArgumentNullException(nameof(random));
 
-      for (var index = m_bufferPosition - 1; index > 0; index--) // Shuffle each element by swapping with a random element of a lower index.
+      for (var index = m_position - 1; index > 0; index--) // Shuffle each element by swapping with a random element of a lower index.
         Swap(index, random.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
     }
     /// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
@@ -531,29 +535,17 @@ namespace Flux
       => Shuffle(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Swap two elements by the specified indices.</summary>
-    internal void SwapImpl(int indexA, int indexB)
-    {
-      if (indexA != indexB)
-        (m_buffer[indexB], m_buffer[indexA]) = (m_buffer[indexA], m_buffer[indexB]);
-    }
-    /// <summary>Swap two elements by the specified indices.</summary>
     public void Swap(int indexA, int indexB)
     {
-      if (m_bufferPosition == 0)
-        throw new System.ArgumentException(@"The span builder is empty.");
-      else if (indexA < 0 || indexA >= Length)
-        throw new System.ArgumentOutOfRangeException(nameof(indexA));
-      else if (indexB < 0 || indexB >= Length)
-        throw new System.ArgumentOutOfRangeException(nameof(indexB));
-      else
-        SwapImpl(indexA, indexB);
+      if (indexA != indexB)
+      {
+        var a = GetValue(indexA);
+        var b = GetValue(indexB);
+
+        SetValue(indexA, b);
+        SetValue(indexB, a);
+      }
     }
-
-    public void SwapFirstWith(int index)
-      => SwapImpl(0, index);
-
-    public void SwapLastWith(int index)
-      => SwapImpl(index, m_bufferPosition - 1);
 
     /// <summary>Remove the specified wrap strings from the source, if they exist.</summary>
     public void Unwrap(T left, T right)
