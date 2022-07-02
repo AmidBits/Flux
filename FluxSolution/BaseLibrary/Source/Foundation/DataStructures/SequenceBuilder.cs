@@ -187,9 +187,6 @@ namespace Flux
     public SequenceBuilder(System.Span<T> values)
       : this(values.Length)
       => Append(values);
-    public SequenceBuilder(T[] values)
-      : this(values.Length)
-      => Append(values);
     public SequenceBuilder()
       : this(DefaultBufferSize)
     {

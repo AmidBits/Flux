@@ -183,9 +183,6 @@ namespace Flux
     public SpanBuilder(System.Span<T> value)
       : this(value.Length)
       => Append(value);
-    public SpanBuilder(T[] value)
-      : this(value.Length)
-      => Append(value);
     public SpanBuilder()
       : this(32)
     {
@@ -203,6 +200,20 @@ namespace Flux
     public int Length
       => m_position;
 
+    //private int EnsureFreeCapacity(int freeCapacity)
+    //{
+    //  if (Capacity - Length < freeCapacity)
+    //  {
+    //    var capacity = BitOps.FoldRight(DefaultBufferSize + Capacity + freeCapacity) + 1;
+
+    //    var rented = System.Buffers.ArrayPool<T>.Shared.Rent(capacity);
+    //    System.Array.Clear(rented);
+    //    System.Array.Copy(m_buffer, rented, m_position);
+    //    System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+    //    m_buffer = rented;
+    //  }
+    //}
+
     /// <summary>Grows the buffer capacity to at least that specified.</summary>
     private int EnsureCapacity(int capacity = 0)
     {
@@ -210,13 +221,7 @@ namespace Flux
 
       if (capacity > realCapacity)
       {
-        if (realCapacity == 0)
-          realCapacity = 32;
-
-        while (capacity > realCapacity)
-          realCapacity <<= 1;
-
-        //var newCapacity = capacity > m_buffer.Length ? capacity : m_buffer.Length * 2;
+        realCapacity = realCapacity == 0 ? DefaultBufferSize : BitOps.FoldRight(realCapacity) + 1;
 
         var rented = System.Buffers.ArrayPool<T>.Shared.Rent(realCapacity);
         System.Array.Clear(rented);

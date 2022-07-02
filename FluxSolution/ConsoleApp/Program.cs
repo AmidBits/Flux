@@ -19,11 +19,27 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+      var sh = new Flux.DataStructures.Statistics.SimpleHistogram<string>();
+      for (var i = 0; i < 100; i++)
+      {
+        var lo = i / 10 * 10 + 1;
+        var hi = lo + 9;
+        sh.Add($"{lo}-{hi}", i);
+      }
+      System.Console.WriteLine(sh.Count);
+      System.Console.WriteLine(sh.Frequencies);
+      System.Console.WriteLine(string.Join(',', sh.Keys));
+      System.Console.WriteLine(string.Join(',', sh.Values));
+
       var sb1 = new Flux.SpanBuilder<char>();
       var sb2 = new Flux.SequenceBuilder<char>();
 
       sb1.Append("Hello World!");
       sb2.Append("Hello World!");
+
+      sb1.Repeat(1);
+      sb2.Repeat(1);
 
       System.Console.WriteLine(sb1.AsReadOnlySpan().ToString());
       System.Console.WriteLine(sb2.AsReadOnlySpan().ToString());
