@@ -3,13 +3,13 @@ namespace Flux
   #region Extension methods.
   public static partial class ExtensionMethods
   {
-    public static void AppendLine( this SequenceBuilder<char> source, System.ReadOnlySpan<char> value)
+    public static void AppendLine(this SequenceBuilder<char> source, System.ReadOnlySpan<char> value)
     {
       source.Append(value);
       source.Append(System.Environment.NewLine);
     }
 
-    public static void InsertLine( this SequenceBuilder<char> source, int index, System.ReadOnlySpan<char> value)
+    public static void InsertLine(this SequenceBuilder<char> source, int index, System.ReadOnlySpan<char> value)
     {
       source.Insert(index, value);
       source.Insert(index + value.Length, System.Environment.NewLine);
@@ -18,7 +18,7 @@ namespace Flux
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static void InsertOrdinalIndicatorSuffix( this SequenceBuilder<char> source, System.Func<string, string, bool> predicate)
+    public static void InsertOrdinalIndicatorSuffix(this SequenceBuilder<char> source, System.Func<string, string, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -51,11 +51,11 @@ namespace Flux
     }
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
-    public static void InsertOrdinalIndicatorSuffix( this SequenceBuilder<char> source)
-      => InsertOrdinalIndicatorSuffix( source, (s1, s2) => true);
+    public static void InsertOrdinalIndicatorSuffix(this SequenceBuilder<char> source)
+      => InsertOrdinalIndicatorSuffix(source, (s1, s2) => true);
 
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static void JoinToCamelCase( this SequenceBuilder<char> source, System.Func<char, bool> predicate)
+    public static void JoinToCamelCase(this SequenceBuilder<char> source, System.Func<char, bool> predicate)
     {
       for (var index = 0; index < source.Length; index++)
         if (predicate(source[index]))
@@ -67,10 +67,10 @@ namespace Flux
             source[index] = char.ToUpper(source[index]);
         }
     }
-    public static void JoinToCamelCase( this SequenceBuilder<char> source)
-      => JoinToCamelCase( source, char.IsWhiteSpace);
+    public static void JoinToCamelCase(this SequenceBuilder<char> source)
+      => JoinToCamelCase(source, char.IsWhiteSpace);
 
-    public static void MakeNumbersFixedLength( this SequenceBuilder<char> source, int length)
+    public static void MakeNumbersFixedLength(this SequenceBuilder<char> source, int length)
     {
       bool wasDigit = false;
       var digitCount = 0;
@@ -93,21 +93,21 @@ namespace Flux
     }
 
     /// <summary>Create a new char array with all diacritical (latin) strokes, which are not covered by the normalization forms in NET, replaced. Can be done simplistically because the diacritical latin stroke characters (and replacements) all fit in a single char.</summary>
-    public static void ReplaceDiacriticalLatinStrokes( this SequenceBuilder<char> source)
+    public static void ReplaceDiacriticalLatinStrokes(this SequenceBuilder<char> source)
     {
       for (var index = source.Length - 1; index >= 0; index--)
         source[index] = (char)((System.Text.Rune)source[index]).ReplaceDiacriticalLatinStroke().Value;
     }
 
     /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
-    public static void SplitFromCamelCase( this SequenceBuilder<char> source)
+    public static void SplitFromCamelCase(this SequenceBuilder<char> source)
     {
       for (var index = source.Length - 1; index > 0; index--)
         if (char.IsUpper(source[index]) && (!char.IsUpper(source[index - 1]) || char.IsLower(source[index + 1])))
           source.Insert(index, ' ');
     }
 
-    public static SequenceBuilder<char> ToSequenceBuilderOfChar(this  SpanBuilder<System.Text.Rune> source)
+    public static SequenceBuilder<char> ToSequenceBuilderOfChar(this SpanBuilder<System.Text.Rune> source)
     {
       var target = new SequenceBuilder<char>();
 
@@ -143,7 +143,7 @@ namespace Flux
     //  return runes;
     //}
 
-    public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this  SequenceBuilder<char> source)
+    public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this SequenceBuilder<char> source)
     {
       var target = new SequenceBuilder<System.Text.Rune>();
 
@@ -153,14 +153,15 @@ namespace Flux
       return target;
     }
 
-    public static string ToString( this SequenceBuilder<char> source, int startIndex, int length)
+    public static string ToString(this SequenceBuilder<char> source, int startIndex, int length)
       => source.AsReadOnlySpan().Slice(startIndex, length).ToString();
-    public static string ToString( this SequenceBuilder<char> source, int startIndex)
+    public static string ToString(this SequenceBuilder<char> source, int startIndex)
       => source.ToString(startIndex, source.Length - startIndex);
   }
   #endregion Extension methods.
 
   public class SequenceBuilder<T>
+    where T : notnull
   {
     private const int DefaultBufferSize = 32;
 
@@ -182,15 +183,6 @@ namespace Flux
       : this(DefaultBufferSize)
     {
     }
-
-    public T this[int index]
-    { get => GetValue(index); set => SetValue(index, value); }
-
-    public int Capacity
-      => m_array.Length;
-
-    public int Length
-      => m_tail - m_head;
 
     /// <summary>Grows a uniform (left and right) buffer capacity to at least that specified.</summary>
     private void EnsureUniformSpace(int length)
@@ -289,6 +281,19 @@ namespace Flux
       }
     }
 
+    /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
+    public T this[int index]
+    { get => GetValue(index); set => SetValue(index, value); }
+
+    /// <summary>The current capacity of the builder.</summary>
+    public int Capacity
+      => m_array.Length;
+
+    /// <summary>The content length of the builder.</summary>
+    public int Length
+      => m_tail - m_head;
+
+    /// <summary>Appends the value to the builder.</summary>
     public SequenceBuilder<T> Append(T value, int count = 1)
     {
       m_version++;
@@ -300,6 +305,7 @@ namespace Flux
 
       return this;
     }
+    /// <summary>Appends the values to the builder.</summary>
     public SequenceBuilder<T> Append(System.ReadOnlySpan<T> value)
     {
       m_version++;
@@ -313,9 +319,14 @@ namespace Flux
       return this;
     }
 
+    /// <summary>Returns a non-allocating readonly span.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
       => new System.ReadOnlySpan<T>(m_array, m_head, m_tail - m_head);
+    /// <summary>Returns a non-allocating span.</summary>
+    public System.Span<T> AsSpan()
+      => new System.Span<T>(m_array, m_head, m_tail - m_head);
 
+    /// <summary>Removes all items from the builder.</summary>
     public void Clear()
     {
       m_version++;
@@ -326,6 +337,11 @@ namespace Flux
       m_tail = m_array.Length / 2;
     }
 
+    /// <summary>Creates a new builder with the same content.</summary>
+    public SpanBuilder<T> Clone()
+      => new(AsReadOnlySpan());
+
+    /// <summary>Gets the value at the specified index.</summary>
     public T GetValue(int index)
     {
       if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -333,6 +349,7 @@ namespace Flux
       return m_array[m_head + index];
     }
 
+    /// <summary>Inserts the value at the specified index of the builder.</summary>
     public SequenceBuilder<T> Insert(int startAt, T value, int count = 1)
     {
       m_version++;
@@ -356,6 +373,7 @@ namespace Flux
 
       return this;
     }
+    /// <summary>Inserts the values at the specified index of the builder.</summary>
     public SequenceBuilder<T> Insert(int startAt, System.ReadOnlySpan<T> value)
     {
       m_version++;
@@ -493,6 +511,7 @@ namespace Flux
       Remove(totalWidth, Length - totalWidth);
     }
 
+    /// <summary>Inserts the value at the start of the builder.</summary>
     public SequenceBuilder<T> Prepend(T value)
     {
       m_version++;
@@ -503,6 +522,7 @@ namespace Flux
 
       return this;
     }
+    /// <summary>Inserts the values at the start of the builder.</summary>
     public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> value)
     {
       m_version++;
@@ -516,6 +536,7 @@ namespace Flux
       return this;
     }
 
+    /// <summary>Removes the specified range of values from the builder.</summary>
     public SequenceBuilder<T> Remove(int startAt, int count)
     {
       m_version++;

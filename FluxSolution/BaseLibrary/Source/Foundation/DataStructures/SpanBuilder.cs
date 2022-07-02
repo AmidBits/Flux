@@ -194,53 +194,17 @@ namespace Flux
     {
     }
 
-    /// <summary>The current capacity of the SpanBuilder.</summary>
-    public int Capacity
-      => m_buffer.Length;
-
-    /// <summary>The length of the current content of the SpanBuilder.</summary>
-    public int Length
-      => m_bufferPosition;
-
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public ref T this[int index]
       => ref m_buffer[index];
 
-    /// <summary>Adds the value to this instance.</summary>
-    public void Append(T value, int count = 1)
-    {
-      EnsureCapacity(m_bufferPosition + count);
+    /// <summary>The current capacity of the builder.</summary>
+    public int Capacity
+      => m_buffer.Length;
 
-      while (count-- > 0)
-        m_buffer[m_bufferPosition++] = value;
-    }
-    /// <summary>Adds the sequence of items to this instance.</summary>
-    public void Append(ReadOnlySpan<T> value)
-    {
-      EnsureCapacity(m_bufferPosition + value.Length);
-
-      value.CopyTo(m_buffer[m_bufferPosition..]);
-
-      m_bufferPosition += value.Length;
-    }
-
-    public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => m_buffer[..m_bufferPosition];
-    public System.Span<T> AsSpan()
-      => m_buffer[..m_bufferPosition];
-
-    private void Cleanup()
-      => m_buffer.Slice(m_bufferPosition).Clear();
-
-    /// <summary>Removes all items in this instance.</summary>
-    public void Clear()
-      => m_bufferPosition = 0;
-
-    public SpanBuilder<T> Clone()
-      => new SpanBuilder<T>(m_buffer.Slice(0, m_bufferPosition));
-
-    //public static SpanBuilder<T> Create(T[] value)
-    //  => new SpanBuilder<T> { m_buffer = value, m_bufferPosition = value.Length };
+    /// <summary>The content length of the builder.</summary>
+    public int Length
+      => m_bufferPosition;
 
     /// <summary>Grows the buffer capacity to at least that specified.</summary>
     private int EnsureCapacity(int capacity = 0)
@@ -267,7 +231,52 @@ namespace Flux
       return realCapacity;
     }
 
-    /// <summary>Inserts the value into this instance at the specified index.</summary>
+    /// <summary>Clears all unused capacity.</summary>
+    private void Cleanup()
+      => m_buffer.Slice(m_bufferPosition).Clear();
+
+    /// <summary>Appends the value to the builder.</summary>
+    public void Append(T value, int count = 1)
+    {
+      EnsureCapacity(m_bufferPosition + count);
+
+      while (count-- > 0)
+        m_buffer[m_bufferPosition++] = value;
+    }
+    /// <summary>Appends the values to the builder.</summary>
+    public void Append(ReadOnlySpan<T> value)
+    {
+      EnsureCapacity(m_bufferPosition + value.Length);
+
+      value.CopyTo(m_buffer[m_bufferPosition..]);
+
+      m_bufferPosition += value.Length;
+    }
+
+    /// <summary>Returns a non-allocating readonly span.</summary>
+    public System.ReadOnlySpan<T> AsReadOnlySpan()
+      => m_buffer[..m_bufferPosition];
+    /// <summary>Returns a non-allocating span.</summary>
+    public System.Span<T> AsSpan()
+      => m_buffer[..m_bufferPosition];
+
+    /// <summary>Removes all items from the builder.</summary>
+    public void Clear()
+      => m_bufferPosition = 0;
+
+    /// <summary>Creates a new builder with the same content.</summary>
+    public SpanBuilder<T> Clone()
+      => new(AsReadOnlySpan());
+
+    /// <summary>Gets the value at the specified index.</summary>
+    public T GetValue(int index)
+    {
+      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      return m_buffer[index];
+    }
+
+    /// <summary>Inserts the value at the specified index of the builder.</summary>
     public void Insert(int index, T value, int count = 1)
     {
       if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
@@ -283,7 +292,7 @@ namespace Flux
       while (count-- > 0)
         m_buffer[index++] = value;
     }
-    /// <summary>Inserts the sequence of items into this instance at the specified index.</summary>
+    /// <summary>Inserts the values at the specified index of the builder.</summary>
     public void Insert(int index, System.ReadOnlySpan<T> value)
     {
       if (index < 0 || index > m_bufferPosition) throw new ArgumentOutOfRangeException(nameof(index));
@@ -414,12 +423,15 @@ namespace Flux
 
       Remove(totalWidth, Length - totalWidth);
     }
+
+    /// <summary>Inserts the value at the start of the builder.</summary>
     public void Prepend(T value)
       => Insert(0, value);
+    /// <summary>Inserts the values at the start of the builder.</summary>
     public void Prepend(System.ReadOnlySpan<T> value)
       => Insert(0, value);
 
-    /// <summary>Removes the specified range of items from this instance.</summary>
+    /// <summary>Removes the specified range of values from the builder.</summary>
     public void Remove(int startIndex, int length)
     {
       if (startIndex < 0 || startIndex >= m_bufferPosition) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
@@ -460,7 +472,7 @@ namespace Flux
     public void RemoveAll(System.Collections.Generic.IList<T> remove)
       => RemoveAll(remove.Contains);
 
-    /// <summary>Returns the source replicated (copied) the specified number of times.</summary>
+    /// <summary>Repears the content of the  the specified number of times.</summary>
     public void Repeat(int count)
     {
       var slice = AsReadOnlySpan();
