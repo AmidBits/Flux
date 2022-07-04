@@ -1,13 +1,13 @@
-namespace Flux.Randomization
+namespace Flux.Random
 {
-  /// <summary>The 64-bit generator xoshiro256** (XOR/shift/rotate) is our all-purpose, rock-solid generator (not a cryptographically secure generator, though, like all PRNGs in these pages). It has excellent (sub-ns) speed, a state space (256 bits) that is large enough for any parallel application, and it passes all tests we are aware of.</summary>
+  /// <summary>The 64-bit generator xoshiro256** (XOR/shift/rotate) is our all-purpose, rock-solid (though not a cryptographically secure) generator. It has excellent (sub-ns) speed, a state space (256 bits) that is large enough for any parallel application, and it passes all tests we are aware of.</summary>
   /// <see cref="http://xoshiro.di.unimi.it/"/>
   /// <seealso cref="http://xoshiro.di.unimi.it/xoshiro256starstar.c"/>
   public sealed class Xoshiro256SS
     : ARandomUInt64
   {
-    public static System.Random Default
-      => new Xoshiro256SS();
+    //public static System.Random Default
+    //  => new Xoshiro256SS();
 
     private ulong m_state0, m_state1, m_state2, m_state3, m_t;
 

@@ -40,12 +40,14 @@ namespace Flux.Model
 
     public bool ForceStartWithAlpha { get; set; }
 
+    public System.Random RandomNumberGenerator { get; init; } = new System.Random();
+
     /// <summary>Creates a new password sequence of specified length and various options.</summary>
     public System.Collections.Generic.IEnumerable<char> GetPassword(int length)
     {
       if (length > 0 && ForceStartWithAlpha)
       {
-        yield return GetRandomBiased(AlphaLower + AlphaUpper).First();
+        yield return GetRandomBiased(AlphaLower + AlphaUpper, RandomNumberGenerator).First();
 
         length--;
       }
@@ -64,18 +66,18 @@ namespace Flux.Model
         if (AllowSymbols3) characterPool.Append(Symbols3);
         if (AllowSymbols4) characterPool.Append(Symbols4);
 
-        foreach (var character in GetRandomBiased(characterPool.ToString()).Take(length))
+        foreach (var character in GetRandomBiased(characterPool.ToString(), RandomNumberGenerator).Take(length))
         {
           yield return character;
         }
       }
     }
     /// <summary>Creates a new password sequence leading with the specified lenth of characters, the the specified length of inner characters, and finally the specified elngth of trailing characters.</summary>
-    public static System.Collections.Generic.IEnumerable<char> GetPassword(string leadingPool, int leadingLength, string innerPool, int innerLength, string trailingPool, int trailingLength)
+    public static System.Collections.Generic.IEnumerable<char> GetPassword(string leadingPool, int leadingLength, string innerPool, int innerLength, string trailingPool, int trailingLength, System.Random rng)
     {
       if (leadingLength > 0)
       {
-        foreach (var character in GetRandomBiased(leadingPool).Take(leadingLength))
+        foreach (var character in GetRandomBiased(leadingPool, rng).Take(leadingLength))
         {
           yield return character;
         }
@@ -83,7 +85,7 @@ namespace Flux.Model
 
       if (innerLength > 0)
       {
-        foreach (var character in GetRandomBiased(innerPool).Take(innerLength))
+        foreach (var character in GetRandomBiased(innerPool, rng).Take(innerLength))
         {
           yield return character;
         }
@@ -91,7 +93,7 @@ namespace Flux.Model
 
       if (trailingLength > 0)
       {
-        foreach (var character in GetRandomBiased(trailingPool).Take(trailingLength))
+        foreach (var character in GetRandomBiased(trailingPool, rng).Take(trailingLength))
         {
           yield return character;
         }
@@ -99,21 +101,21 @@ namespace Flux.Model
     }
 
     /// <summary>Creates a new sequence where each char is randomized from the entire set of the specified characters. The more often a char appear in the specified characters the more likely it is to appear in the sequence (i.e. biased).</summary>
-    public static System.Collections.Generic.IEnumerable<char> GetRandomBiased(string characterPool)
+    public static System.Collections.Generic.IEnumerable<char> GetRandomBiased(string characterPool, System.Random rng)
     {
       for (var index = ushort.MaxValue; index > 0; index--)
       {
-        yield return characterPool.RandomElements(1).First();
+        yield return characterPool.RandomElements(1, rng).First();
       }
     }
     /// <summary>Creates a new sequence where all chars from the entire set of specified characters are randomly distributed over and over (unbiased).</summary>
-    public static System.Collections.Generic.IEnumerable<char> GetRandomUnbiased(string characterPool)
+    public static System.Collections.Generic.IEnumerable<char> GetRandomUnbiased(string characterPool, System.Random rng)
     {
       if (characterPool is null) throw new System.ArgumentNullException(nameof(characterPool));
 
       for (var index = ushort.MaxValue / characterPool.Length; index > 0; index--)
       {
-        foreach (var character in characterPool.Distinct().RandomElements(1))
+        foreach (var character in characterPool.Distinct().RandomElements(1, rng))
         {
           yield return character;
         }

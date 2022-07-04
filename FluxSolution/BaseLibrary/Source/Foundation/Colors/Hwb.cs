@@ -76,20 +76,14 @@ namespace Flux.Colors
 
     #region Static member
     public static Hwb FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hwb(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Hwb FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+      => rng is null
+      ? throw new System.ArgumentNullException(nameof(rng))
+      : (new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()));
     #endregion Static member
 
     #region Overloaded operators
-    public static bool operator ==(Hwb a, Hwb b)
-      => a.Equals(b);
-    public static bool operator !=(Hwb a, Hwb b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Hwb a, Hwb b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Hwb a, Hwb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

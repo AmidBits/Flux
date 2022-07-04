@@ -1,4 +1,4 @@
-namespace Flux.Randomization
+namespace Flux.Random
 {
   /// <remarks>In earlier .net implementations, only Sample() was required to be overridden, whereas later implementations changed requirements of more overrides.</remarks>
   /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.random"/>
@@ -43,7 +43,7 @@ namespace Flux.Randomization
 
     /// <summary>Returns a random signed 64-bit integer in the range [0, long.MaxValue].</summary>
     public long SampleInt64()
-      => unchecked((long)(SampleUInt64() & 0x7FFF_FFFF_FFFF_FFFF));
+      => (long)(SampleUInt64() & 0x7FFF_FFFF_FFFF_FFFF);
 
     #region Implemented interfaces
     /// <summary>Returns a random unsigned 64-bit integer.</summary>

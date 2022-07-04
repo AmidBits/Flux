@@ -161,7 +161,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source, Geometry.TriangulationType mode)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source, Geometry.TriangulationType mode, System.Random rng)
     {
       var copy = new System.Collections.Generic.List<CartesianCoordinate2>(source);
 
@@ -172,7 +172,7 @@ namespace Flux
         triplet = mode switch
         {
           Geometry.TriangulationType.Sequential => System.Linq.Enumerable.First(copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d))),
-          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(),
+          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(rng),
           Geometry.TriangulationType.SmallestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle > b.angle ? a : b),
           Geometry.TriangulationType.LeastSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
@@ -400,21 +400,13 @@ namespace Flux
 
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the specified rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random random)
-      => new(random.NextDouble(toExclusiveX), random.NextDouble(toExclusiveY));
-    /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY)
-      => FromRandomAbsolute(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
+    public static CartesianCoordinate2 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random rng)
+      => new(rng.NextDouble(toExclusiveX), rng.NextDouble(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, System.Random random)
+    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, System.Random rng)
       //=> new(Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.NextDouble(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
-      => new(random.NextDouble(-toExclusiveX, toExclusiveX), random.NextDouble(-toExclusiveY, toExclusiveY));
-    /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2 FromRandomCenterZero(double toExclusiveX, double toExclusiveY)
-      => FromRandomCenterZero(toExclusiveX, toExclusiveY, Randomization.NumberGenerator.Default);
+      => new(rng.NextDouble(-toExclusiveX, toExclusiveX), rng.NextDouble(-toExclusiveY, toExclusiveY));
 
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -540,6 +532,9 @@ namespace Flux
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(CartesianCoordinate2 cc2) => new(cc2.X, cc2.Y);
+
+    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2(double[] v) => new(v[0], v[1]);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double[](CartesianCoordinate2 v) => new double[] { v.m_x, v.m_y };
 
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate2 a, CartesianCoordinate2 b) => a.Equals(b);
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate2 a, CartesianCoordinate2 b) => !a.Equals(b);

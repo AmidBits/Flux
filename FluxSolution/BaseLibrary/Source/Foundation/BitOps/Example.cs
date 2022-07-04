@@ -4,7 +4,7 @@
   {
     public static void Example(System.Random? rng = null)
     {
-      if (rng is null) rng = Randomization.NumberGenerator.Xoshiro256P;
+      if (rng is null) rng = Random.NumberGenerators.Xoshiro256P;
 
       for (var i = 100; i >= 0; i--)
       //System.Linq.ParallelEnumerable.Range(-15, 32).ForAll(i =>

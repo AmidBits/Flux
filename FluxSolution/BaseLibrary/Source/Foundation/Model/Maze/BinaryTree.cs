@@ -20,7 +20,7 @@ namespace Flux.Model.Maze
 
         if (direction.Any())
         {
-          direction.TryGetRandomElement(out var element, Rng);
+          direction.TryGetRandomElement(out var element, RandomNumberGenerator);
 
           cell.ConnectPath(element.Value, true);
         }

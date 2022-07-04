@@ -15,7 +15,7 @@ namespace Flux.Model.Maze
 
       while (counter > 0)
       {
-        var next = current.Edges.RandomElement().Value;
+        var next = current.Edges.RandomElement(RandomNumberGenerator).Value;
 
         if (current.GetEdgesWithoutPaths().Contains(next))
         {

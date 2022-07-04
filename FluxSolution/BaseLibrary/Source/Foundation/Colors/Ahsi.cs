@@ -27,20 +27,14 @@ namespace Flux.Colors
 
     #region Static members
     public static Ahsi FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Ahsi(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    }
-    public static Ahsi FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+      => rng is null
+      ? throw new System.ArgumentNullException(nameof(rng))
+      : new Ahsi(rng.NextDouble(), Hsi.FromRandom(rng));
     #endregion Static members
 
     #region Overloaded operators
-    public static bool operator ==(Ahsi a, Ahsi b)
-      => a.Equals(b);
-    public static bool operator !=(Ahsi a, Ahsi b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Ahsi a, Ahsi b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Ahsi a, Ahsi b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interface

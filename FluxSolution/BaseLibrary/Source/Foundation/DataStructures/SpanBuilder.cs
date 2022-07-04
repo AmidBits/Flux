@@ -528,16 +528,13 @@ namespace Flux
     }
 
     /// <summary>Returns a shuffled (randomized) sequence. Uses the specified Random.</summary>
-    public void Shuffle(System.Random random)
+    public void Shuffle(System.Random rng)
     {
-      if (random is null) throw new System.ArgumentNullException(nameof(random));
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       for (var index = m_position - 1; index > 0; index--) // Shuffle each element by swapping with a random element of a lower index.
-        Swap(index, random.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
+        Swap(index, rng.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
     }
-    /// <summary>Returns a shuffled (randomized) sequence. Uses the cryptographic Random.</summary>
-    public void Shuffle()
-      => Shuffle(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Swap two elements by the specified indices.</summary>
     public void Swap(int indexA, int indexB)

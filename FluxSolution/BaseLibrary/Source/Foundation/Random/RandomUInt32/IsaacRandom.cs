@@ -1,4 +1,4 @@
-namespace Flux.Randomization
+namespace Flux.Random
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/ISAAC_(cipher)"/>
@@ -7,8 +7,8 @@ namespace Flux.Randomization
   public class IsaacRandom
     : ARandomUInt32
   {
-    public static System.Random Default
-      => new IsaacRandom();
+    //public static System.Random Default
+    //  => new IsaacRandom();
 
     #region Isaac
     private uint m_randcnt;

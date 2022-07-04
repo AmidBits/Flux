@@ -82,19 +82,15 @@ namespace Flux.Colors
     }
 
     #region Static methods
-    public static Hsv Random(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      return new Hsv(rng.NextDouble(0, 360), rng.NextDouble(), rng.NextDouble());
-    }
+    public static Hsv FromRandom(System.Random rng)
+      => rng is null
+      ? throw new System.ArgumentNullException(nameof(rng))
+      : new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble());
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Hsv a, Hsv b)
-      => a.Equals(b);
-    public static bool operator !=(Hsv a, Hsv b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Hsv a, Hsv b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Hsv a, Hsv b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -17,7 +17,12 @@ namespace Flux.Colors
     }
     public Rgb(int rgb)
       : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
-    { }
+    {
+    }
+    public Rgb(byte[] rgb, int offset)
+      : this(rgb[offset], rgb[offset + 1], rgb[offset + 2])
+    {
+    }
 
     public int Red
       => m_red;
@@ -206,15 +211,9 @@ namespace Flux.Colors
 
     #region Static methods
     public static Rgb FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      var bytes = rng.GetRandomBytes(3);
-
-      return new Rgb(bytes[0], bytes[1], bytes[2]);
-    }
-    public static Rgb FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+      => rng is null
+      ? throw new System.ArgumentNullException(nameof(rng))
+      : new(rng.GetRandomBytes(3), 0);
 
     //public static double GetChroma(byte red, byte green, byte blue, out double r, out double g, out double b, out double min, out double max)
     //{
@@ -288,9 +287,7 @@ namespace Flux.Colors
 
     //  return hue;
     //}
-    #endregion Static methods
 
-    #region Overloaded operators
     /// <summary>
     /// Returns a color based on XAML color string.
     /// </summary>
@@ -345,10 +342,11 @@ namespace Flux.Colors
     //}
 
     // Operators
-    public static bool operator ==(Rgb a, Rgb b)
-      => a.Equals(b);
-    public static bool operator !=(Rgb a, Rgb b)
-      => !a.Equals(b);
+    #endregion Static methods
+
+    #region Overloaded operators
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Rgb a, Rgb b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Rgb a, Rgb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

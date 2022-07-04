@@ -154,7 +154,7 @@ namespace Flux
 
           do
           {
-            ship = new Vessel(size, new CartesianCoordinate2I(Randomization.NumberGenerator.Crypto.Next(gridSize.Width), Randomization.NumberGenerator.Crypto.Next(gridSize.Height)), (VesselOrientation)Randomization.NumberGenerator.Crypto.Next(2));
+            ship = new Vessel(size, new CartesianCoordinate2I(Random.NumberGenerators.Crypto.Next(gridSize.Width), Random.NumberGenerators.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 

@@ -2,7 +2,7 @@ namespace Flux.Cryptography
 {
   // http://burtleburtle.net/bob/rand/isaacafa.html
   public sealed class Isaac
-    : Randomization.IsaacRandom
+    : Random.IsaacRandom
   {
     public byte[] Vernam(string text)
     {

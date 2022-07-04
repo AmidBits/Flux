@@ -14,7 +14,7 @@
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
       m_cellGrid = cellGrid;
 
-      var random = new Flux.Randomization.Xoshiro256SS();
+      var random = new Flux.Random.Xoshiro256SS();
 
       for (var r = m_cellGrid.Height - 1; r >= 0; r--)
       {

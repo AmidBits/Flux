@@ -32,13 +32,15 @@ namespace Flux
 
       static void AmbTestingImpl()
       {
+        var rng = new System.Random();
+
         var amb = new Flux.AmbOps.Amb();
 
         #region Flow & Measurements
-        m_ap.AsSpan().Shuffle();
-        m_rn.AsSpan().Shuffle();
-        m_en.AsSpan().Shuffle();
-        m_on.AsSpan().Shuffle();
+        m_ap.AsSpan().Shuffle(rng);
+        m_rn.AsSpan().Shuffle(rng);
+        m_en.AsSpan().Shuffle(rng);
+        m_on.AsSpan().Shuffle(rng);
 
         //var l = a.Length + b.Length + c.Length + d.Length;
         //System.Console.WriteLine($"Length: {l}");

@@ -1,4 +1,4 @@
-namespace Flux.Randomization
+namespace Flux.Random
 {
   public sealed class Cryptographic
     : System.Random
@@ -6,7 +6,7 @@ namespace Flux.Randomization
     /// <summary>Returns a non-negative random integer.</summary>
     /// <returns>A non-negative random integer.</returns>
     public override int Next()
-      => System.Security.Cryptography.RandomNumberGenerator.GetInt32(int.MaxValue);
+      => Next(int.MaxValue);
     /// <summary>Returns a non-negative random integer that is less than the specified maximum.</summary>
     /// <returns>A non-negative random integer that is less than the specified maximum.</returns>
     public override int Next(int maxValue)
@@ -21,7 +21,7 @@ namespace Flux.Randomization
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     public override double NextDouble()
-      => (double)System.Security.Cryptography.RandomNumberGenerator.GetInt32(int.MaxValue) / (double)int.MaxValue;
+      => Sample();
     /// <summary>Needs to return a value that is greater than or equal to 0.0, and less than 1.0</summary>
     /// <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
     protected override double Sample()

@@ -10,7 +10,8 @@ namespace Flux
       System.Console.WriteLine(nameof(RunColors));
       System.Console.WriteLine();
 
-      var argb = Flux.Colors.Argb.FromRandom();
+      var argb = new Flux.Colors.Argb(new System.Random().GetRandomBytes(4), 0);
+
       //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
       //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
       //rgb = new Flux.Media.Colors.Rgb(0x0, 0x0, 0x0);

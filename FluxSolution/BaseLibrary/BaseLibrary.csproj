@@ -7,7 +7,7 @@
 		<Company>Private</Company>
 		<PackageId>BaseLibrary</PackageId>
 		<Product>Flux</Product>
-		<Description>Flux is a free .NET extension API with various functionalities.</Description>
+		<Description>Flux is a .NET extension API with various functionalities.</Description>
 		<Copyright>Freeware</Copyright>
 		<PackageProjectUrl>https://github.com/AmidBits/Flux</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/AmidBits/Flux</RepositoryUrl>

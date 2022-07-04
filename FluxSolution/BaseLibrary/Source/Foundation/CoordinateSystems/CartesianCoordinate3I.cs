@@ -114,10 +114,10 @@ namespace Flux
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate3I FromRandomAbsolute(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ));
+      => new(Random.NumberGenerators.Crypto.Next(toExclusiveX), Random.NumberGenerators.Crypto.Next(toExclusiveY), Random.NumberGenerators.Crypto.Next(toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
     public static CartesianCoordinate3I FromRandomCenterZero(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
+      => new(Random.NumberGenerators.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Random.NumberGenerators.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1), Random.NumberGenerators.Crypto.Next(toExclusiveZ * 2 - 1) - (toExclusiveZ - 1));
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate3I"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     public static CartesianCoordinate3I FromUniqueIndex(long index, int gridWidth, int gridHeight)

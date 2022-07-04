@@ -16,10 +16,16 @@ namespace Flux.Colors
     }
     public Argb(int alpha, int red, int green, int blue)
       : this(alpha, new Rgb(red, green, blue))
-    { }
+    {
+    }
     public Argb(int argb)
       : this((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb)
-    { }
+    {
+    }
+    public Argb(byte[] argb, int offset)
+      : this(argb[offset], argb[offset + 1], argb[offset + 2], argb[offset + 3])
+    {
+    }
 
     public byte Alpha { get => m_alpha; init => m_alpha = value; }
     public Rgb RGB { get => m_rgb; init => m_rgb = value; }
@@ -91,15 +97,9 @@ namespace Flux.Colors
 
     #region Static methods
     public static Argb FromRandom(System.Random rng)
-    {
-      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-      var bytes = rng.GetRandomBytes(4);
-
-      return new Argb(bytes[0], bytes[1], bytes[2], bytes[3]);
-    }
-    public static Argb FromRandom()
-      => FromRandom(Randomization.NumberGenerator.Crypto);
+      => rng is null
+      ? throw new System.ArgumentNullException(nameof(rng))
+      : (new(rng.GetRandomBytes(4), 0));
 
     /// <summary>Creates a new RGBA color by parsing the specified string.</summary>
     /// <param name="colorString">The color string. Any format used in XAML should work.</param>
@@ -153,15 +153,15 @@ namespace Flux.Colors
     #endregion Static methods
 
     #region Overloaded operators
+    [System.Diagnostics.Contracts.Pure]
     public static explicit operator int(Argb v)
       => (v.Alpha << 24) | (v.RGB.Red << 16) | (v.RGB.Green << 8) | (v.RGB.Blue << 0);
+    [System.Diagnostics.Contracts.Pure]
     public static explicit operator Argb(int v)
       => unchecked(new Argb((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
 
-    public static bool operator ==(Argb a, Argb b)
-      => a.Equals(b);
-    public static bool operator !=(Argb a, Argb b)
-      => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Argb a, Argb b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Argb a, Argb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

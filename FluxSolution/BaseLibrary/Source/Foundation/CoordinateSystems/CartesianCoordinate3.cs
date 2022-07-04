@@ -115,7 +115,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source, Geometry.TriangulationType mode)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<CartesianCoordinate3> source, Geometry.TriangulationType mode, System.Random rng)
     {
       var copy = new System.Collections.Generic.List<CartesianCoordinate3>(source);
 
@@ -126,7 +126,7 @@ namespace Flux
         triplet = mode switch
         {
           Geometry.TriangulationType.Sequential => System.Linq.Enumerable.First(copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d))),
-          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(),
+          Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(rng),
           Geometry.TriangulationType.SmallestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle > b.angle ? a : b),
           Geometry.TriangulationType.LeastSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
@@ -313,7 +313,7 @@ namespace Flux
       => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate3.EuclideanLength(a) * CartesianCoordinate3.EuclideanLength(b)), -1, 1));
 
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3 ConvertEclipticToEquatorial(CartesianCoordinate3 ecliptic, double obliquityOfTheEcliptic) 
+    public static CartesianCoordinate3 ConvertEclipticToEquatorial(CartesianCoordinate3 ecliptic, double obliquityOfTheEcliptic)
       => Flux.Matrix4.Transform(new Flux.Matrix4(1, 0, 0, 0, 0, System.Math.Cos(obliquityOfTheEcliptic), -System.Math.Sin(obliquityOfTheEcliptic), 0, 0, System.Math.Sin(obliquityOfTheEcliptic), System.Math.Cos(obliquityOfTheEcliptic), 0, 0, 0, 0, 1), ecliptic);
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3 ConvertEquatorialToEcliptic(CartesianCoordinate3 equatorial, double obliquityOfTheEcliptic)
@@ -355,20 +355,12 @@ namespace Flux
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random random)
-      => new(random.NextDouble(toExclusiveX), random.NextDouble(toExclusiveY), random.NextDouble(toExclusiveZ));
-    /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
-      => FromRandomAbsolute(toExclusiveX, toExclusiveY, toExclusiveZ, Randomization.NumberGenerator.Default);
+    public static CartesianCoordinate3 FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random rng)
+      => new(rng.NextDouble(toExclusiveX), rng.NextDouble(toExclusiveY), rng.NextDouble(toExclusiveZ));
     /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random random)
-      => new(random.NextDouble(-toExclusiveX, toExclusiveX), random.NextDouble(-toExclusiveY, toExclusiveY), random.NextDouble(-toExclusiveZ, toExclusiveZ));
-    /// <summary>Create a new random vector in the range (-toExlusive, toExclusive) using the crypto-grade rng.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ)
-      => FromRandomCenterZero(toExclusiveX, toExclusiveY, toExclusiveZ, Randomization.NumberGenerator.Default);
+    public static CartesianCoordinate3 FromRandomCenterZero(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random rng)
+      => new(rng.NextDouble(-toExclusiveX, toExclusiveX), rng.NextDouble(-toExclusiveY, toExclusiveY), rng.NextDouble(-toExclusiveZ, toExclusiveZ));
 
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -471,6 +463,9 @@ namespace Flux
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate3(System.ValueTuple<double, double, double> vt3) => new(vt3.Item1, vt3.Item2, vt3.Item3);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double, double>(CartesianCoordinate3 cc3) => new(cc3.X, cc3.Y, cc3.Z);
+
+    [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate3(double[] v) => new(v[0], v[1], v[2]);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double[](CartesianCoordinate3 v) => new double[] { v.m_x, v.m_y, v.m_z };
 
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate3 a, CartesianCoordinate3 b) => a.Equals(b);
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate3 a, CartesianCoordinate3 b) => !a.Equals(b);

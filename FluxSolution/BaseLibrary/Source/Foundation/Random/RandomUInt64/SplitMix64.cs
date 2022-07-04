@@ -1,12 +1,12 @@
-namespace Flux.Randomization
+namespace Flux.Random
 {
   /// <see cref="http://xoshiro.di.unimi.it/"/>
   /// <seealso cref="	/// <see cref="http://xoshiro.di.unimi.it/splitmix64.c"/>
   public sealed class SplitMix64
     : ARandomUInt64
   {
-    public static System.Random Default
-      => new SplitMix64();
+    //public static System.Random Default
+    //  => new SplitMix64();
 
     private ulong m_state;
 

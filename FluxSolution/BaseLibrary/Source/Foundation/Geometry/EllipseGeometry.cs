@@ -52,7 +52,7 @@ namespace Flux
         var angle = offsetRadians + segment * circularArc;
 
         if (maxRandomVariation > Flux.Maths.Epsilon1E7)
-          angle += Randomization.NumberGenerator.Crypto.NextDouble(0, circularArc * maxRandomVariation);
+          angle += Random.NumberGenerators.Crypto.NextDouble(0, circularArc * maxRandomVariation);
 
         var (x, y) = Flux.Angle.ConvertRotationAngleToCartesian2Ex(angle);
 

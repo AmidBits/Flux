@@ -27,9 +27,9 @@ namespace Flux.Model.Maze
           var atBoundary1 = !cell.Edges.ContainsKey(direction1);
           var atBoundary2 = !cell.Edges.ContainsKey(direction2);
 
-          if (atBoundary2 || (!atBoundary1 && Rng.Next(2) == 0)) // should close out
+          if (atBoundary2 || (!atBoundary1 && RandomNumberGenerator.Next(2) == 0)) // should close out
           {
-            if (run.AsSpan().AsReadOnlySpan().TryRandomElement(out var member, Rng) && member.Edges.ContainsKey(direction1))
+            if (run.AsSpan().AsReadOnlySpan().TryRandomElement(out var member, RandomNumberGenerator) && member.Edges.ContainsKey(direction1))
               member.ConnectPath(member.Edges[direction1], true);
 
             run.Clear();

@@ -16,7 +16,7 @@ namespace Flux.Model.MineSweeper
       => m_mines.Contains(point);
 
     public static Mines Create(Field field, int count)
-      => new(System.Linq.Enumerable.Repeat(Randomization.NumberGenerator.Crypto, count * 2).Select(r => new CartesianCoordinate2I(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
+      => new(System.Linq.Enumerable.Repeat(Random.NumberGenerators.Crypto, count * 2).Select(r => new CartesianCoordinate2I(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
 
     #region IReadOnlySet implementation
     public int Count

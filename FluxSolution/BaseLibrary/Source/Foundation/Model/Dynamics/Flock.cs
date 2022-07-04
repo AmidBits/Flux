@@ -224,7 +224,7 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
       if (body is null) throw new System.ArgumentNullException(nameof(body));
       if (Disabled) return;
 
-      body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Randomization.NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Randomization.NumberGenerator.Crypto.NextDouble() - 0.5f, (float)Randomization.NumberGenerator.Crypto.NextDouble() - 0.5f);
+      body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f);
     }
   }
 }

@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   public abstract class AMaze
       : IMazeBraidable, IMazeCarvable
   {
-    protected System.Random Rng { get; set; } = new System.Random();
+    public System.Random RandomNumberGenerator { get; init; } = new System.Random();
 
     public virtual void BraidMaze(Grid grid, double threshold = 0.5)
     {
@@ -13,7 +13,7 @@ namespace Flux.Model.Maze
 
       foreach (var cell in grid.GetDeadEnds().ToList())
       {
-        if (Rng.NextDouble() <= threshold)
+        if (RandomNumberGenerator.NextDouble() <= threshold)
         {
           var unlinkedNeighbors = cell.Edges.Where(kvp => !cell.Paths.ContainsValue(kvp.Value));
 
@@ -21,7 +21,7 @@ namespace Flux.Model.Maze
 
           if (preferredNeighbors.Any())
           {
-            preferredNeighbors.TryGetRandomElement(out var neighbor, Rng);
+            preferredNeighbors.TryGetRandomElement(out var neighbor, RandomNumberGenerator);
 
             cell.ConnectPath(neighbor.Value, true);
           }

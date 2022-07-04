@@ -1,4 +1,4 @@
-﻿namespace Flux.Randomization
+﻿namespace Flux.Random
 {
   public interface IRandomSamplingInt64
   {

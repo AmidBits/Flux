@@ -23,8 +23,8 @@ namespace Flux.Model.Maze
     }
     private void DivideHorizontally(Grid grid, int row, int column, int height, int width)
     {
-      var divideSouthOf = Rng.Next(height - 1);
-      var passageAt = Rng.Next(width);
+      var divideSouthOf = RandomNumberGenerator.Next(height - 1);
+      var passageAt = RandomNumberGenerator.Next(width);
 
       for (var i = 0; i < width; i++)
       {
@@ -41,8 +41,8 @@ namespace Flux.Model.Maze
     }
     private void DivideVertically(Grid grid, int row, int column, int height, int width)
     {
-      var divideEastOf = Rng.Next(width - 1);
-      var passageAt = Rng.Next(height);
+      var divideEastOf = RandomNumberGenerator.Next(width - 1);
+      var passageAt = RandomNumberGenerator.Next(height);
 
       for (var i = 0; i < height; i++)
       {

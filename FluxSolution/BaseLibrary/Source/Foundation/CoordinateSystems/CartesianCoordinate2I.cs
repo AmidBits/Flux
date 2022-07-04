@@ -99,10 +99,10 @@ namespace Flux
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate2I FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX), Randomization.NumberGenerator.Crypto.Next(toExclusiveY));
+      => new(Random.NumberGenerators.Crypto.Next(toExclusiveX), Random.NumberGenerators.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
     public static CartesianCoordinate2I FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
-      => new(Randomization.NumberGenerator.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Randomization.NumberGenerator.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
+      => new(Random.NumberGenerators.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Random.NumberGenerators.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2I"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     public static CartesianCoordinate2I FromUniqueIndex(long index, int gridWidth)

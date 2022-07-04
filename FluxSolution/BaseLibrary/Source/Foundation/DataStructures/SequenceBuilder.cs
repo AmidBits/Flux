@@ -659,18 +659,15 @@ namespace Flux
     }
 
     /// <summary>Shuffle all items in the builder. Uses the specified Random.</summary>
-    public SequenceBuilder<T> Shuffle(System.Random random)
+    public SequenceBuilder<T> Shuffle(System.Random rng)
     {
-      if (random is null) throw new System.ArgumentNullException(nameof(random));
+      if (rng is null) throw new System.ArgumentNullException(nameof(rng));
 
       for (var index = Length - 1; index > 0; index--) // Shuffle each element by swapping with a random element of a lower index.
-        Swap(index, random.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
+        Swap(index, rng.Next(index + 1)); // Since 'Next(max-value-excluded)' we add one.
 
       return this;
     }
-    /// <summary>Shuffle all items in the builder. Uses the cryptographic Random.</summary>
-    public SequenceBuilder<T> Shuffle()
-      => Shuffle(Randomization.NumberGenerator.Crypto);
 
     /// <summary>Swap two elements by the specified indices.</summary>
     public SequenceBuilder<T> Swap(int indexA, int indexB)

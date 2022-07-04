@@ -4,9 +4,9 @@ namespace Flux.Wpf
 {
 	public static partial class Windows
 	{
-		public static System.Windows.Point Point(this System.Random random)
+		public static System.Windows.Point Point(this System.Random rng)
 		{
-			return new System.Windows.Point(random.NextDouble(), random.NextDouble());
+			return new System.Windows.Point(rng.NextDouble(), rng.NextDouble());
 		}
 
 		#region System.Windows.Point

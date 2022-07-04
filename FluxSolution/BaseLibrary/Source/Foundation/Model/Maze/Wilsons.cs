@@ -12,19 +12,19 @@ namespace Flux.Model.Maze
       var path = new System.Collections.Generic.List<Cell>();
 
       var unvisited = grid.GetValues().ToList();
-      unvisited.AsSpan().AsReadOnlySpan().TryRandomElement(out var unvisitedElement, Rng);
+      unvisited.AsSpan().AsReadOnlySpan().TryRandomElement(out var unvisitedElement, RandomNumberGenerator);
       unvisited.Remove(unvisitedElement);
 
       while (unvisited.Any())
       {
-        ((System.ReadOnlySpan<Cell>)System.Runtime.InteropServices.CollectionsMarshal.AsSpan(unvisited)).TryRandomElement(out Cell cell, Rng);
+        ((System.ReadOnlySpan<Cell>)System.Runtime.InteropServices.CollectionsMarshal.AsSpan(unvisited)).TryRandomElement(out Cell cell, RandomNumberGenerator);
 
         path.Clear();
         path.Add(cell);
 
         while (unvisited.Contains(cell))
         {
-          cell.Edges.Select(kvp => kvp.Value).TryGetRandomElement(out cell, Rng);
+          cell.Edges.Select(kvp => kvp.Value).TryGetRandomElement(out cell, RandomNumberGenerator);
 
           if (path.IndexOf(cell) is int position && position > -1)
             path.RemoveRange(position, path.Count - position);

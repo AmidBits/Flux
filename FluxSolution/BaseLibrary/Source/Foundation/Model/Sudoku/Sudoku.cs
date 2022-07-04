@@ -126,13 +126,13 @@ namespace Flux.Model
       => Search(Parse(puzzle).Last());
 
     /// <summary>Create a new random sudoku puzzle.</summary>
-    public static System.Collections.Generic.List<string> Create(int count = 17)
+    public static System.Collections.Generic.List<string> Create(System.Random rng, int count = 17)
     {
       var values = Squares.Select(i => ColumnLabels).ToList();
 
-      foreach (var square in Squares.RandomElements(1))
+      foreach (var square in Squares.RandomElements(1, rng))
       {
-        values[square].TryGetRandomElement(out var value);
+        values[square].TryGetRandomElement(out var value, rng);
 
         if (Assign(values, square, value.ToString()) == null)
         {
@@ -145,7 +145,7 @@ namespace Flux.Model
         }
       }
 
-      return Create(count);
+      return Create(rng, count);
     }
 
     /// <summary>Create a new sequence representing the 9 sudoku "box" squares the index is found in.</summary>
